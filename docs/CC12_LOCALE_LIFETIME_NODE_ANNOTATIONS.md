@@ -1,0 +1,7 @@
+# Locale lifetime and node annotations
+
+Root saved the accepted145-byte base-constructor and141-byte derived-constructor findings,251-byte destructor/30-byte scalar-deleting wrapper findings, and119-byte node payload cleanup with its conditional selected narrow unwind. Existing base/constructor names and the compiler scalar-deleting label are retained. The former FUN names for the locale destructor and string-map node payload destructor now have provisional descriptive names.
+
+Comments retain every prior prefix and append the current-publication reload/captured-section behavior, no publication rollback, normal cleanup order, raw listing gaps, live narrow reload and external EH frame-base premise. The active semantic locale and dormant actual4040h image remain qualified separately; normalized Source helper interfaces do not establish original return/register or exception ABI. No listing/flow/body/prototype repair occurred.
+
+The lease-checked annotation tool took the Ghidra write lock, verified the existing bsp project/program, recorded all old names/comments and saved the project. Root independently checked full post-comments, preserved three established names, changed only two FUN names, and copied15 refreshed export files. The original PE hash remains unchanged. Evidence: `reports/cc12_locale_lifetime_node_annotations.json`; retained log/dependencies/exports: `local/cc12_locale_lifetime_node_annotations/`. No new C++, build/test/runtime, native ABI or application/game validation credit is added.

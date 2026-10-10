@@ -1,0 +1,362 @@
+{
+  "schema": "bsp.cc12_locale_lifetime_node.annotations.v1",
+  "status": "saved_provisional_names_and_preserved_evidence_comments",
+  "annotation_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\ghidra-annotations-20261010T190306Z.json",
+    "bytes": 9239,
+    "sha256": "e276875e6487a33fc621b197febbb43bb2d14ce1186c9bdc2e9350f6862f0602"
+  },
+  "prior_values_and_applied_evidence": [
+    {
+      "address": "00736540",
+      "before": {
+        "address": "00736540",
+        "function_name": "BSP_Singleton_Register_00f8bc4c",
+        "comment": "[BSP reconstruction 00736540]\nHypothesis, not a recovered symbol. Register helper as 00736100, publishing DAT_00f8bc4c. Paired with the unregister helper 007365e0."
+      },
+      "after": {
+        "address": "00736540",
+        "name": "BSP_Singleton_Register_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. Register helper as 00736100, publishing DAT_00f8bc4c. Paired with the unregister helper 007365e0. CC12 complete145B base constructor: captures original receiver and actual section from first415350 manager lookup, publishes that receiver inF8BC4C, then performs second lookup and reloads CURRENT publication as registration argument. Normal release uses captured section. Selected cleanup does not undo publication or registration. Provider return/register/lifetime and EH runtime premises remain external. Descriptive name provisional. docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_startup_constructor_owner_primary_review.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00737ce0",
+      "before": {
+        "address": "00737ce0",
+        "function_name": "FUN_00737ce0"
+      },
+      "after": {
+        "address": "00737ce0",
+        "name": "BSP_StringMapNode_DestroyPayloads",
+        "evidence": "Provisional descriptive hypothesis, not recovered symbol. Complete119B/38instruction normal body captures wide pointer from original node+C BEFOREstate0; nonnull captures wrapped2*length+2 BEFORE419CC0 thenBD1510. After wide normal return reloads CURRENT narrow pointer+4 BEFOREstate-1; nonnull captures CURRENT length+1 before separate getter/return. No header writes/node recycle/aliased dedup/cached pool. Selected C86260 action loads original node fromEBP-10 and tails41DD20; current narrow cleanup only under external EBP=caller entryESP relation. Same canonical raw string publication/manager/gate required, distinct from map node-slot pool. New raw-wide Source overload is normalized; fault-state timing, native EH/double failure and full node/map/app binding remain unqualified. docs/CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_map_node_owner_primary_review.json; docs/CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md; reports/cc12_locale_map_node_cleanup_primary_review.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0073c960",
+      "before": {
+        "address": "0073c960",
+        "function_name": "BSP_LocaleTableManager_Construct",
+        "comment": "[BSP reconstruction 0073c960]\nHypothesis, not a recovered symbol. __fastcall f(void *this) returning this, plain RET at 0073c9ec, body 0073c960-0073c9ec. Constructor of the 0x4040-byte object allocated at 0073e030 and published in DAT_00f8bc4c, which is the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure. Runs 00736540 first with the same ECX (base vtable 00cfea5c plus lifetime registration), then stores the derived vtable 00cff140, zeroes the name-vector pointers +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14 (0x1000 hash bucket heads of 4 bytes; bucket = hash & 0xfff in 00a9fc30/00a9ec70), and zeroes +0x4014 count, +0x4018/+0x401c language name and the two .lanx vectors at +0x4024..+0x402c and +0x4034..+0x403c. It never writes +4, +0x4020 or +0x4030, the leading allocator word of each 16-byte vector. Destroyed at 007382f2 in BSP_Application_Shutdown, unregister pair 007365e0. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json.\n\n[BSP reconstruction 0073c960] update\nHypothesis, not a recovered symbol. __fastcall f(void *this) returning this, plain RET at 0073c9ec, body 0073c960-0073c9ec. Constructor of the 0x4040-byte object allocated at 0073e030 and published in DAT_00f8bc4c, which is the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure. Runs 00736540 first with the same ECX (base vtable 00cfea5c plus lifetime registration), then stores the derived vtable 00cff140, zeroes the name-vector pointers +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14 (0x1000 hash bucket heads of 4 bytes; bucket = hash & 0xfff in 00a9fc30/00a9ec70), and zeroes +0x4014 count, +0x4018/+0x401c language name and the two .lanx vectors at +0x4024..+0x402c and +0x4034..+0x403c. It never writes +4, +0x4020 or +0x4030, the leading allocator word of each 16-byte vector. Destroyed at 007382f2 in BSP_Application_Shutdown, unregister pair 007365e0. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json. | Hypothesis, not a recovered symbol. ECX=this EAX=this RET0073c9ec. Constructor writes empty registered-name vector,4096 zero bucket heads/count, empty language and two sidecar vectors. GameLocaleHost retains the existing LocaleTables value model initialized to those values. Native vtable/singleton publication and unmodeled padding are excluded. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof."
+      },
+      "after": {
+        "address": "0073c960",
+        "name": "BSP_LocaleTableManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(void *this) returning this, plain RET at 0073c9ec, body 0073c960-0073c9ec. Constructor of the 0x4040-byte object allocated at 0073e030 and published in DAT_00f8bc4c, which is the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure. Runs 00736540 first with the same ECX (base vtable 00cfea5c plus lifetime registration), then stores the derived vtable 00cff140, zeroes the name-vector pointers +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14 (0x1000 hash bucket heads of 4 bytes; bucket = hash & 0xfff in 00a9fc30/00a9ec70), and zeroes +0x4014 count, +0x4018/+0x401c language name and the two .lanx vectors at +0x4024..+0x402c and +0x4034..+0x403c. It never writes +4, +0x4020 or +0x4030, the leading allocator word of each 16-byte vector. Destroyed at 007382f2 in BSP_Application_Shutdown, unregister pair 007365e0. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json. | Hypothesis, not a recovered symbol. ECX=this EAX=this RET0073c9ec. Constructor writes empty registered-name vector,4096 zero bucket heads/count, empty language and two sidecar vectors. GameLocaleHost retains the existing LocaleTables value model initialized to those values. Native vtable/singleton publication and unmodeled padding are excluded. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. CC12 complete141B derived constructor: invokes736540 before derived CFF140/field initialization, keeps EH state-1; five map rows do not prove armed cleanup. Actual4040h field image and untouched+4/+4020/+4030 remain distinct from active4064h semantic LocaleTables. Existing dormant derived-field Source helper is void and is not a native return/register ABI bridge; earlier returns-this wording remains an ABI hypothesis, not Source proof. Native startup admitted window ignores its result and frees captured allocation on failure without publication rollback. docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_startup_constructor_owner_primary_review.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0073c9f0",
+      "before": {
+        "address": "0073c9f0",
+        "function_name": "FUN_0073c9f0"
+      },
+      "after": {
+        "address": "0073c9f0",
+        "name": "BSP_LocaleTableManager_Destroy",
+        "evidence": "Provisional descriptive hypothesis, not recovered symbol. Complete251B raw normal destructor preserves sidecar/language/map/range/base-call ordering. After range cleanup reloads CURRENT first pointer before free; no direct locale publication access. Final7365E0 current-publication unregister and selected EH actions retain their separate lifetime/runtime premises. Four CALL_RETURN listing holes are retained with raw ADDESP4 bytes, no repair. Semantic LocaleTables cleanup does not establish actual node/pool ownership. docs/CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_profile_lifetime_primary_review.json; docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_base_lifetime_primary_review.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0073caf0",
+      "before": {
+        "address": "0073caf0",
+        "function_name": "CG_scalar_deleting_dtor_0073caf0"
+      },
+      "after": {
+        "address": "0073caf0",
+        "name": "CG_scalar_deleting_dtor_0073caf0",
+        "evidence": "Retain existing compiler scalar-deleting-destructor label. Complete30B raw body: captures receiver, calls73C9F0, THEN tests low flag bit and optionally frees captured receiver; returns captured receiver withRET4 while retaining full DWORD flag argument. No direct publication access; destructor/free failure and provider ABI remain external. Stored listing omits3B caller cleanup and is not repaired. docs/CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_profile_lifetime_primary_review.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "post_comments": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\post_comments.json",
+    "bytes": 8847,
+    "sha256": "eca3ea7d31398ed303de38ff2452b0cceb042368d109f52010ec83264457ff95"
+  },
+  "ledger_changes": [
+    {
+      "before": {
+        "address": "00736540",
+        "name": "BSP_Singleton_Register_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. Register helper as 00736100, publishing DAT_00f8bc4c. Paired with the unregister helper 007365e0."
+      },
+      "after": {
+        "address": "00736540",
+        "name": "BSP_Singleton_Register_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. Register helper as 00736100, publishing DAT_00f8bc4c. Paired with the unregister helper 007365e0. CC12 complete145B base constructor: captures original receiver and actual section from first415350 manager lookup, publishes that receiver inF8BC4C, then performs second lookup and reloads CURRENT publication as registration argument. Normal release uses captured section. Selected cleanup does not undo publication or registration. Provider return/register/lifetime and EH runtime premises remain external. Descriptive name provisional. docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_startup_constructor_owner_primary_review.json."
+      }
+    },
+    {
+      "before": {
+        "address": "0073c960",
+        "name": "BSP_LocaleTableManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(void *this) returning this, plain RET at 0073c9ec, body 0073c960-0073c9ec. Constructor of the 0x4040-byte object allocated at 0073e030 and published in DAT_00f8bc4c, which is the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure. Runs 00736540 first with the same ECX (base vtable 00cfea5c plus lifetime registration), then stores the derived vtable 00cff140, zeroes the name-vector pointers +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14 (0x1000 hash bucket heads of 4 bytes; bucket = hash & 0xfff in 00a9fc30/00a9ec70), and zeroes +0x4014 count, +0x4018/+0x401c language name and the two .lanx vectors at +0x4024..+0x402c and +0x4034..+0x403c. It never writes +4, +0x4020 or +0x4030, the leading allocator word of each 16-byte vector. Destroyed at 007382f2 in BSP_Application_Shutdown, unregister pair 007365e0. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json. | Hypothesis, not a recovered symbol. ECX=this EAX=this RET0073c9ec. Constructor writes empty registered-name vector,4096 zero bucket heads/count, empty language and two sidecar vectors. GameLocaleHost retains the existing LocaleTables value model initialized to those values. Native vtable/singleton publication and unmodeled padding are excluded. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof."
+      },
+      "after": {
+        "address": "0073c960",
+        "name": "BSP_LocaleTableManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(void *this) returning this, plain RET at 0073c9ec, body 0073c960-0073c9ec. Constructor of the 0x4040-byte object allocated at 0073e030 and published in DAT_00f8bc4c, which is the localisation manager of docs/APP_INIT_LOCALE.md, not a GUI structure. Runs 00736540 first with the same ECX (base vtable 00cfea5c plus lifetime registration), then stores the derived vtable 00cff140, zeroes the name-vector pointers +8/+0xc/+0x10, memsets 0x4000 bytes at +0x14 (0x1000 hash bucket heads of 4 bytes; bucket = hash & 0xfff in 00a9fc30/00a9ec70), and zeroes +0x4014 count, +0x4018/+0x401c language name and the two .lanx vectors at +0x4024..+0x402c and +0x4034..+0x403c. It never writes +4, +0x4020 or +0x4030, the leading allocator word of each 16-byte vector. Destroyed at 007382f2 in BSP_Application_Shutdown, unregister pair 007365e0. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json. | Hypothesis, not a recovered symbol. ECX=this EAX=this RET0073c9ec. Constructor writes empty registered-name vector,4096 zero bucket heads/count, empty language and two sidecar vectors. GameLocaleHost retains the existing LocaleTables value model initialized to those values. Native vtable/singleton publication and unmodeled padding are excluded. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. CC12 complete141B derived constructor: invokes736540 before derived CFF140/field initialization, keeps EH state-1; five map rows do not prove armed cleanup. Actual4040h field image and untouched+4/+4020/+4030 remain distinct from active4064h semantic LocaleTables. Existing dormant derived-field Source helper is void and is not a native return/register ABI bridge; earlier returns-this wording remains an ABI hypothesis, not Source proof. Native startup admitted window ignores its result and frees captured allocation on failure without publication rollback. docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_startup_constructor_owner_primary_review.json."
+      }
+    },
+    {
+      "before": null,
+      "after": {
+        "address": "0073c9f0",
+        "name": "BSP_LocaleTableManager_Destroy",
+        "evidence": "Provisional descriptive hypothesis, not recovered symbol. Complete251B raw normal destructor preserves sidecar/language/map/range/base-call ordering. After range cleanup reloads CURRENT first pointer before free; no direct locale publication access. Final7365E0 current-publication unregister and selected EH actions retain their separate lifetime/runtime premises. Four CALL_RETURN listing holes are retained with raw ADDESP4 bytes, no repair. Semantic LocaleTables cleanup does not establish actual node/pool ownership. docs/CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_profile_lifetime_primary_review.json; docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_base_lifetime_primary_review.json."
+      }
+    },
+    {
+      "before": null,
+      "after": {
+        "address": "0073caf0",
+        "name": "CG_scalar_deleting_dtor_0073caf0",
+        "evidence": "Retain existing compiler scalar-deleting-destructor label. Complete30B raw body: captures receiver, calls73C9F0, THEN tests low flag bit and optionally frees captured receiver; returns captured receiver withRET4 while retaining full DWORD flag argument. No direct publication access; destructor/free failure and provider ABI remain external. Stored listing omits3B caller cleanup and is not repaired. docs/CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_profile_lifetime_primary_review.json."
+      }
+    },
+    {
+      "before": null,
+      "after": {
+        "address": "00737ce0",
+        "name": "BSP_StringMapNode_DestroyPayloads",
+        "evidence": "Provisional descriptive hypothesis, not recovered symbol. Complete119B/38instruction normal body captures wide pointer from original node+C BEFOREstate0; nonnull captures wrapped2*length+2 BEFORE419CC0 thenBD1510. After wide normal return reloads CURRENT narrow pointer+4 BEFOREstate-1; nonnull captures CURRENT length+1 before separate getter/return. No header writes/node recycle/aliased dedup/cached pool. Selected C86260 action loads original node fromEBP-10 and tails41DD20; current narrow cleanup only under external EBP=caller entryESP relation. Same canonical raw string publication/manager/gate required, distinct from map node-slot pool. New raw-wide Source overload is normalized; fault-state timing, native EH/double failure and full node/map/app binding remain unqualified. docs/CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md; reports/cc12_locale_map_node_owner_primary_review.json; docs/CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md; reports/cc12_locale_map_node_cleanup_primary_review.json."
+      }
+    }
+  ],
+  "ledger_change_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\ledger_changes.json",
+    "bytes": 7729,
+    "sha256": "6e425d7215a7e12912659f2a90a9db7f7cc342fca8cb7d7eaabaaed450d99bcd"
+  },
+  "existing_names_preserved": [
+    "00736540",
+    "0073c960",
+    "0073caf0"
+  ],
+  "FUN_names_changed_provisionally": [
+    "00737ce0",
+    "0073c9f0"
+  ],
+  "accepted_dependencies": [
+    {
+      "project_path": "reports\\cc12_locale_startup_constructor_owner_primary_review.json",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_startup_constructor_owner_primary_review.json",
+        "bytes": 1618745,
+        "sha256": "1b2416d8f3bbcead8a9e521e31a5eeca3780cc8e45dea0bb0b3537ef10be82e6"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\cc12_locale_startup_constructor_owner_primary_review.json",
+        "bytes": 1618745,
+        "sha256": "1b2416d8f3bbcead8a9e521e31a5eeca3780cc8e45dea0bb0b3537ef10be82e6"
+      }
+    },
+    {
+      "project_path": "docs\\CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md",
+        "bytes": 2791,
+        "sha256": "f0f9800ef4475c5bdca916af975a00a88b05db0b852267c236f062ba4197ae93"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_PRIMARY_REVIEW.md",
+        "bytes": 2791,
+        "sha256": "f0f9800ef4475c5bdca916af975a00a88b05db0b852267c236f062ba4197ae93"
+      }
+    },
+    {
+      "project_path": "reports\\cc12_locale_profile_lifetime_primary_review.json",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_profile_lifetime_primary_review.json",
+        "bytes": 1622749,
+        "sha256": "f0256ed4d6d6938d39ad15928b5193363d3befdf9f32972507f825581a0d8456"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\cc12_locale_profile_lifetime_primary_review.json",
+        "bytes": 1622749,
+        "sha256": "f0256ed4d6d6938d39ad15928b5193363d3befdf9f32972507f825581a0d8456"
+      }
+    },
+    {
+      "project_path": "docs\\CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md",
+        "bytes": 2402,
+        "sha256": "a2257be8bc42cd053c3efe0cd5bcd2b97c08a307e6db7e44e302cb8b887ff5d3"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\CC12_LOCALE_PROFILE_LIFETIME_PRIMARY_REVIEW.md",
+        "bytes": 2402,
+        "sha256": "a2257be8bc42cd053c3efe0cd5bcd2b97c08a307e6db7e44e302cb8b887ff5d3"
+      }
+    },
+    {
+      "project_path": "reports\\cc12_locale_base_lifetime_primary_review.json",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_base_lifetime_primary_review.json",
+        "bytes": 1607914,
+        "sha256": "1fe9d1828042eb2fae5ef48dd0af8ac2ce4345d6c7ca30f1c933ec820b51f6d2"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\cc12_locale_base_lifetime_primary_review.json",
+        "bytes": 1607914,
+        "sha256": "1fe9d1828042eb2fae5ef48dd0af8ac2ce4345d6c7ca30f1c933ec820b51f6d2"
+      }
+    },
+    {
+      "project_path": "docs\\CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md",
+        "bytes": 1906,
+        "sha256": "1daa953f2992bdcfbf7eb09225302bc258ccdee82b8b87606682d6c7c9539dbd"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md",
+        "bytes": 1906,
+        "sha256": "1daa953f2992bdcfbf7eb09225302bc258ccdee82b8b87606682d6c7c9539dbd"
+      }
+    },
+    {
+      "project_path": "reports\\cc12_locale_map_node_owner_primary_review.json",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_map_node_owner_primary_review.json",
+        "bytes": 1610777,
+        "sha256": "614060eb939a377a908a450ab21fff7d326241cc4929685bdd221a31e93f71d9"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\cc12_locale_map_node_owner_primary_review.json",
+        "bytes": 1610777,
+        "sha256": "614060eb939a377a908a450ab21fff7d326241cc4929685bdd221a31e93f71d9"
+      }
+    },
+    {
+      "project_path": "docs\\CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+        "bytes": 1702,
+        "sha256": "32e42555019bcdacd34023abe070a17b3d8cf42ff2e14d0f279c2280849f79a1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+        "bytes": 1702,
+        "sha256": "32e42555019bcdacd34023abe070a17b3d8cf42ff2e14d0f279c2280849f79a1"
+      }
+    },
+    {
+      "project_path": "reports\\cc12_locale_map_node_cleanup_primary_review.json",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_map_node_cleanup_primary_review.json",
+        "bytes": 1618155,
+        "sha256": "6a6223497fe49a0f460252deade94974cd870002e9be95e8cd201db24c8e8fcf"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\cc12_locale_map_node_cleanup_primary_review.json",
+        "bytes": 1618155,
+        "sha256": "6a6223497fe49a0f460252deade94974cd870002e9be95e8cd201db24c8e8fcf"
+      }
+    },
+    {
+      "project_path": "docs\\CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+        "bytes": 1813,
+        "sha256": "189544af75cf47da16c257cc48581e0fd449ba92354bfb99339765918ddb54d8"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\accepted_dependencies\\CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+        "bytes": 1813,
+        "sha256": "189544af75cf47da16c257cc48581e0fd449ba92354bfb99339765918ddb54d8"
+      }
+    }
+  ],
+  "refreshed_complete_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00736540\\metadata.json",
+      "bytes": 210,
+      "sha256": "633b3860a4a87abea8d13afcbd43ebb73124c88700f78d0e560f038f4611222a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00736540\\decompiled.c",
+      "bytes": 1114,
+      "sha256": "85aa8c8fd5665a57ee7e8d81c93a5755c5541b9af017bc9559132cf2294bdf86"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00736540\\assembly.txt",
+      "bytes": 1201,
+      "sha256": "b825253fade9ed04ab38086926618bf28dc6ce351b4ad18b9ad492e6948d3725"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00737ce0\\metadata.json",
+      "bytes": 315,
+      "sha256": "9aa06b217ee1b87a5994a86ccb6d3f10bc74bcfa320dfae330dd2c3b265e8cda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00737ce0\\decompiled.c",
+      "bytes": 1854,
+      "sha256": "fefd1e32ba65193ba22b5711afaa317d0b8ce1bdf32a718275b9d8cecc7cd5ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\00737ce0\\assembly.txt",
+      "bytes": 1058,
+      "sha256": "c516f760ffa4772a981024c99502351d500f443153df0f4ee30a728288711362"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c960\\metadata.json",
+      "bytes": 230,
+      "sha256": "df1c45de4e285bee50fcf0f9f60303f81ffbff2911b42efdaf9069150ec4ef8c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c960\\decompiled.c",
+      "bytes": 3287,
+      "sha256": "e1858f902eebd5963697b4782fa70341051836120e5948b4e8cefd0aea0382df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c960\\assembly.txt",
+      "bytes": 1189,
+      "sha256": "22afcd9c5342b3c2fff7e6a012b68db514fca7b36f75b9ed716bcb37a83f381b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c9f0\\metadata.json",
+      "bytes": 312,
+      "sha256": "214c64e820a53f936be29eb8a1e566cdb587d43120b2c4dff35784efd6a05657"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c9f0\\decompiled.c",
+      "bytes": 2154,
+      "sha256": "38834eb9279bf58ef4a8b207e14c1ff71625ef7f816304e55d1cdf8a183d955d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073c9f0\\assembly.txt",
+      "bytes": 2114,
+      "sha256": "23150dbf7f7ab6b749d2142fe77acd240552ed01ab3ab84a0bd26d902734176c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073caf0\\metadata.json",
+      "bytes": 279,
+      "sha256": "6008c179435aeb801a1552d36481edd5ee289fcc1f94a6e8896443147d3a8b94"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073caf0\\decompiled.c",
+      "bytes": 809,
+      "sha256": "e4c1191c24ca765871dc3be6e820139265547d839df41ef5a44f572dfa764d41"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_lifetime_node_annotations\\exports\\0073caf0\\assembly.txt",
+      "bytes": 244,
+      "sha256": "52017b7547871520e612f0722859ae18569562d47934fd1326808b248e10c031"
+    }
+  ],
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "boundary": "Root lease/write-lock annotation tool verified existing bsp project/program and saved it. Old comments and compiler scalar-deleting label retained. No body/listing/flow/prototype repair, new Native decode, C++/build/test/runtime, native ABI or application/game validation credit."
+}
