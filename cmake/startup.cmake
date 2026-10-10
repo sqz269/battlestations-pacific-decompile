@@ -120,6 +120,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_camera_reso
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_back_row_selection_fragment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_fallback_resource_type_initializer.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_skin_model_type_id_publication_fragment.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_compact_type_id_publication_fragment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_lock10_unlock_helper.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_debug_feature_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_box_box.cpp)
