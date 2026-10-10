@@ -132,6 +132,12 @@ const GameNativeHierarchyServices& GameVfsHost::borrow_hierarchy_services() {
     const auto services = borrow_raw_services(); // Existing interrupted-operation gate.
     return resources_->borrow_hierarchy_services(services.bindings, native_->raw_strings());
 }
+const GameNativeAnimationExtraItemServices& GameVfsHost::borrow_animation_extra_item_services() {
+    if (!core_ready_)
+        throw std::logic_error("animation extra-item services require completed VFS core startup");
+    const auto services = borrow_raw_services(); // Existing interrupted-operation gate.
+    return resources_->borrow_animation_extra_item_services(services.bindings, native_->raw_strings());
+}
 NativeVfsOwnerServices& GameVfsHost::native_owners() noexcept { return native_->owners(); }
 GameNativeTypeStorage& GameVfsHost::native_types() noexcept { return native_->types(); }
 

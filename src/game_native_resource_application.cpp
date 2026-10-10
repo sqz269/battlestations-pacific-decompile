@@ -4,7 +4,11 @@
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_shader_process.hpp"
+#include "bsp/native_animation_channel_body_reader.hpp"
+#include "bsp/native_animation_group_lifetime.hpp"
+#include "bsp/native_bone_resource_item_reader.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_resource_extra_item_lifetime.hpp"
 #include "bsp/native_resource_extra_parser_singletons.hpp"
 #include "bsp/native_game_resource_parsers.hpp"
 #include "bsp/native_resource_hierarchy_parser.hpp"
@@ -79,6 +83,90 @@ struct HierarchyBinding {
             throw std::logic_error("hierarchy services cannot be rebound to another domain");
     }
 };
+
+struct AnimationExtraItemMappedData {
+    const volatile std::uint32_t* group;
+    const volatile std::uint32_t* channel;
+    const volatile std::uint32_t* animation;
+    const volatile std::uint32_t* bone;
+};
+
+AnimationExtraItemMappedData animation_extra_item_mapped_data(GameNativeReadOnlyData& data) {
+    const AnimationExtraItemMappedData mapped{
+        static_cast<const volatile std::uint32_t*>(data.data_at(0x00d62ed4, 8)),
+        static_cast<const volatile std::uint32_t*>(data.data_at(0x00d632b0, 8)),
+        static_cast<const volatile std::uint32_t*>(data.data_at(0x00d6328c, 0x24)),
+        static_cast<const volatile std::uint32_t*>(data.data_at(0x00d632b8, 0x24))};
+    // Retained extra-item/R28 evidence qualifies only the used prefixes/slots;
+    // the 44-byte item captures are not a claim about complete vtable extents.
+    if (mapped.group[0] != 0x00bd30e0u || mapped.group[1] != 0x00b78d00u ||
+            mapped.channel[0] != 0x00bd30e0u || mapped.channel[1] != 0x00b8ad60u ||
+            mapped.animation[0] != 0x00bd30e0u || mapped.animation[1] != 0x00b8a760u ||
+            mapped.animation[8] != 0x00b8ad80u ||
+            mapped.bone[0] != 0x00bd30e0u || mapped.bone[1] != 0x00b8af10u ||
+            mapped.bone[8] != 0x00b8af30u)
+        throw std::logic_error("animation extra-item mapped profiles differ from supported slots");
+    return mapped;
+}
+
+class AnimationExtraItemReaders final : public NativeResourceExtraItemReaderCalls {
+public:
+    AnimationExtraItemReaders(NativeResourceStreamReadContext& reads,
+        NativeAnimationChannelBodyReader& channels) noexcept
+        : reads_(reads), channels_(channels) {}
+
+    void read_item(std::uintptr_t target, void* item, void* handle) override {
+        if (target == 0x00b8ad80u) {
+            read_native_animation_channels_00b8ad80(item, handle, reads_, channels_);
+            return;
+        }
+        if (target == 0x00b8af30u) {
+            read_native_bone_resource_item_00b8af30(item, handle, reads_);
+            return;
+        }
+        throw std::logic_error("unsupported captured animation extra-item reader target");
+    }
+
+private:
+    NativeResourceStreamReadContext& reads_;
+    NativeAnimationChannelBodyReader& channels_;
+};
+
+struct AnimationExtraItemBinding {
+    const GameNativeHierarchyServices& hierarchy;
+    GameNativeReadOnlyData& data;
+    const AnimationExtraItemMappedData mapped;
+    NativeAnimationChannelBodyReader channels;
+    AnimationExtraItemReaders readers;
+    NativeAnimationDeleteCalls deletes;
+    NativeResourceExtraItemLifetimeContext lifetime;
+    NativeResourceExtraItemReferences references;
+    GameNativeAnimationExtraItemServices services;
+
+    AnimationExtraItemBinding(const GameNativeHierarchyServices& actual_hierarchy,
+        GameNativeReadOnlyData& actual_data, AnimationExtraItemMappedData actual_mapped) noexcept
+        : hierarchy(actual_hierarchy), data(actual_data), mapped(actual_mapped),
+          channels(hierarchy.reads), readers(hierarchy.reads, channels),
+          deletes({hierarchy.reads.strings, mapped.group, mapped.channel}),
+          lifetime{hierarchy.reads.strings, deletes, mapped.group},
+          references(hierarchy.reads.streams, lifetime, mapped.animation, mapped.bone),
+          services(readers, references) {}
+    AnimationExtraItemBinding(const AnimationExtraItemBinding&) = delete;
+    AnimationExtraItemBinding& operator=(const AnimationExtraItemBinding&) = delete;
+
+    void require_same_domain(const GameNativeHierarchyServices& actual_hierarchy,
+        GameNativeReadOnlyData& actual_data, AnimationExtraItemMappedData actual_mapped) const {
+        // The hierarchy borrow has already checked its original read/node/raw
+        // string domain. These retained references never retarget that context.
+        if (&hierarchy != &actual_hierarchy || &data != &actual_data ||
+                mapped.group != actual_mapped.group || mapped.channel != actual_mapped.channel ||
+                mapped.animation != actual_mapped.animation || mapped.bone != actual_mapped.bone ||
+                &lifetime.strings != &hierarchy.reads.strings || &lifetime.group_deletes != &deletes ||
+                lifetime.group_profile_00d62ed4 != mapped.group ||
+                &services.readers != &readers || &services.references != &references)
+            throw std::logic_error("animation extra-item services cannot be rebound to another domain");
+    }
+};
 }
 
 struct GameNativeResourceApplication::Impl {
@@ -110,6 +198,7 @@ struct GameNativeResourceApplication::Impl {
     // offsets. Neither member accesses the borrowed host during destruction.
     GameNativeReadOnlyData& hierarchy_data;
     std::unique_ptr<HierarchyBinding> hierarchy_binding;
+    std::unique_ptr<AnimationExtraItemBinding> animation_extra_item_binding;
 
     Impl(GameSingletonHost& host, NativeStringRawPoolContext& strings,
         GameNativeReadOnlyData& mapped)
@@ -180,6 +269,21 @@ const GameNativeHierarchyServices& GameNativeResourceApplication::borrow_hierarc
         state.hierarchy_binding->require_same_domain(
             vfs, strings, state.hierarchy_data, mapped, pool, empty);
     return state.hierarchy_binding->services;
+}
+
+const GameNativeAnimationExtraItemServices& GameNativeResourceApplication::borrow_animation_extra_item_services(
+    NativeVfsRuntimeBindings& vfs, NativeStringRawPoolContext& strings) {
+    // Reuse the actual retained hierarchy services and all their repeat-domain
+    // and operability checks. This creates no native payload or parser frame.
+    const auto& hierarchy = borrow_hierarchy_services(vfs, strings);
+    auto& state = *impl_;
+    const auto mapped = animation_extra_item_mapped_data(state.hierarchy_data);
+    if (!state.animation_extra_item_binding)
+        state.animation_extra_item_binding = std::make_unique<AnimationExtraItemBinding>(
+            hierarchy, state.hierarchy_data, mapped);
+    else
+        state.animation_extra_item_binding->require_same_domain(hierarchy, state.hierarchy_data, mapped);
+    return state.animation_extra_item_binding->services;
 }
 
 void* GameNativeResourceApplication::manager_004c1400() {

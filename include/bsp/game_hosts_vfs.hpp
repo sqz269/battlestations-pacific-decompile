@@ -129,6 +129,10 @@ public:
     // cleanup runs here. Keep all borrowed contexts through the shared drain;
     // later invocation/failure/retirement admission belongs to the caller.
     const GameNativeHierarchyServices& borrow_hierarchy_services();
+    // Same explicit domain/readiness gates. Only binds genuine Bone/AnimationChannels
+    // readers and reference terminals; invocation and pre-drain retirement are
+    // separate admissions and must retain any interrupted native frame.
+    const GameNativeAnimationExtraItemServices& borrow_animation_extra_item_services();
     // Original BE1890 over this same manager/factory/provider/lifetime graph.
     // The mount remains owned by the native manager until its normal drain.
     void* mount(const char* system_path,const char* virtual_path,
