@@ -122,3 +122,7 @@ There are zero new Native windows, byte comparisons, C++ changes, Ghidra mutatio
 analysis/repair operations, ledger changes, builds, tests or runtime actions.
 Metadata acceptance does not establish original ABI compatibility, current game
 behavior, startup execution, CRT completeness, gameplay or rendering parity.
+
+## Primary review
+
+Root independently retained 105 pin occurrences (48 report references plus 57 complete-manifest references) and verified 10 baseline/current tracked files. 3 complete raw typed responses passed the current strict validator at modification 5 with actual GPR/program identity. This review adds no C++, live Native inspection, Ghidra mutation, build, test or runtime credit. The stated ownership/application/ABI gates remain held.

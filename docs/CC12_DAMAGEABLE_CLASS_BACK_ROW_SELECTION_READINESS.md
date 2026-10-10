@@ -143,3 +143,7 @@ The prior Root Source 616 review is retained context: 616 selected inputs,
 82 Core + 3 App whole objects, 194 unique positive Core definitions and three
 existing checks. This readiness packet ran no build, test, probe or fixture;
 historical vector tests and provider checks give it no new reader-execution credit.
+
+## Primary review
+
+Root independently retained 33 pin occurrences and verified 24 baseline/current tracked files. The exact 51-byte/15-instruction region and all 858 retained parent starts match the original PE. This review adds no C++, live Native inspection, Ghidra mutation, build, test or runtime credit. The stated ownership/application/ABI gates remain held.
