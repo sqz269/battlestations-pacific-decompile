@@ -1,0 +1,1959 @@
+{
+  "schema": "bsp-allocation-stats-startup-owner-handover-readiness-v1",
+  "packet": "cc12_allocation_stats_startup_owner_handover_readiness",
+  "utc": "2026-10-10T08:34:27.210259+00:00",
+  "worker_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing",
+  "worker_baseline": "08748971b356b38ed2bbecd38d36ead738452476",
+  "accepted_main_separate_Source_context": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+  "decision": {
+    "existing_Source_allocator_free_ready": true,
+    "genuine_raw_constructor_available": true,
+    "durable_actual_stats_process_cell_ready": false,
+    "complete_destructor_failure_contract_ready": false,
+    "both_stats_profile_delete_bindings_ready": false,
+    "startup_handover_ready": false,
+    "summary": "Existing allocation/free providers suffice. Hold startup replacement until complete stats lifecycle, permanent shared publication cell and both profile bindings are established through canonical drain."
+  },
+  "owned_files": [
+    "docs/CC12_ALLOCATION_STATS_STARTUP_OWNER_HANDOVER_READINESS.md",
+    "reports/cc12_allocation_stats_startup_owner_handover_readiness.json"
+  ],
+  "lease_addresses": [
+    "0073d478",
+    "00bf681b",
+    "00bf65ac",
+    "00c86a30",
+    "00c86a3c"
+  ],
+  "read_only_related_retained_addresses": [
+    "00be27f0",
+    "00be2890",
+    "00be2930",
+    "00cc6ab0",
+    "0109cefc",
+    "01090aa0"
+  ],
+  "scope": {
+    "new_Native_queries": 0,
+    "new_Native_windows": 0,
+    "installed_PE_reads": 0,
+    "Ghidra_mutations": 0,
+    "implementation_changes": 0,
+    "startup_edits": 0,
+    "CMake_edits": 0,
+    "builds": 0,
+    "tests": 0
+  },
+  "Source_domains": {
+    "allocation": "singleton_lifetime_allocate({SingletonAllocationKind::object,12,12}); existing ordinary malloc/new-handler/retry/bad_alloc provider.",
+    "free": "singleton_lifetime_free: matching current CRT free; no Native heap identity or machine ABI claim.",
+    "manager": "GameNativeStringProcess process manager01090AA0 is borrowed by GameSingletonHost; same canonical manager raw drain.",
+    "deletion": "Actual current profile is read only after owner slot pop; flags1; finite binding map rejects unknown/missing profiles. No D685E0/F4 case.",
+    "stats_cell": "Standalone constructor and cache context borrow actual0109CEFC references; no durable owner/cell established by inspected Source domain.",
+    "startup": "GameStartupHost local AllocationStatsState; semantic constructor stores null profile,40000000,0; no actual base publication/registration.",
+    "query_limit": "Complete tracked src/include searches and named full provider snapshots; no whole-program/external/unknown symbol absence claim.",
+    "constructor": {
+      "context": "NativeAllocationStatsConstructorContext: void* volatile& actual_manager_01090aa0; void* volatile& actual_allocation_stats_0109cefc.",
+      "base": "void* construct_native_allocation_stats_base_00be2750(void*, NativeAllocationStatsConstructorContext&)",
+      "derived": "void* construct_native_allocation_stats_00be2900(void*, NativeAllocationStatsConstructorContext&)",
+      "original_ABI": "Both retained native bodies consume ECX receiver, no stack arguments, return original receiver in EAX, plain RET. Source adds explicit context and is not a drop-in ABI.",
+      "storage": "Caller-owned valid aligned 12-byte receiver, valid uint32_t field accesses, disjoint context/publication cells and stable binding lifetimes. Actual raw manager/vector/captured section storage remains valid through all calls and cleanup.",
+      "ordinary_base_order": [
+        "Construct private Source base cleanup before D685E0 profile store.",
+        "Genuine00415350 first lookup, capture first manager+10 section, form8B CE37FC guard.",
+        "Conditional actual EnterCriticalSection followed by volatileDWORD+18 increment.",
+        "Arm private guard cleanup before publishing original receiver to actual0109CEFC.",
+        "Genuine00415350 second lookup; only after return load CURRENT0109CEFC and genuine00BD0C30 register.",
+        "Decrement/Leave first captured section with guard armed throughLeave; disarm guard/base; return originalreceiver."
+      ],
+      "ordinary_derived_order": "After base success, store D685F4 at0, rawDWORD40000000 at4, zero at8; return originalreceiver.",
+      "Cpp_cleanup": "Private Source state1->0 invokes actual00411EE0 before state0->-1 actual00412430. Second escaping MSVC C++ cleanup exception terminates. No rollback, retry, clear, unregister or receiverallocation/free.",
+      "genuine_getter_scope": "Existing lazy manager creation is retained; no private manager or policy replacement.",
+      "profile_words": "Original Native identity DWORDs, not callable rebuilt vtables.",
+      "unchanged_projection": "platform_window semantic AllocationStatsState constructor and GameHost local startup use are unchanged."
+    }
+  },
+  "retained_schedules": {
+    "ordinary_startup": {
+      "EDI": "ExplicitXOR at73D433; later zero comparison requires intervening callees ordinary nonvolatileEDI contract.",
+      "frame": "EntryESP=S, registrationS-12, quiescentESP=S-148h, allocation spillS-130h, original sentinelS-4.",
+      "allocation": "Retained12B allocator request at73D45D; return saved atQ+18h; currentEDI stored toQ+144h before conditionalBE2900 call.",
+      "postcall": "OR EBX,-1 then CMP[01090AB0],EDI then storeEBX to sameQ+144h sentinel; no intervening call afterOR.",
+      "qualifications": "No global-data read, callee proof or hardware-fault coverage inferred. State0 table and action operands still require actual shared-helper frame ABI for Native delivery."
+    },
+    "descriptor_state0": {
+      "interpretation": "Conditional retained32-bit V3 absolute-pointer EH layout; actual Program datatype name and loaded Java CodeSource unexposed.",
+      "descriptor_words": [
+        {
+          "offset": 0,
+          "little_endian_u32": "19930522"
+        },
+        {
+          "offset": 4,
+          "little_endian_u32": "00000031"
+        },
+        {
+          "offset": 8,
+          "little_endian_u32": "00db60c0"
+        },
+        {
+          "offset": 12,
+          "little_endian_u32": "00000000"
+        },
+        {
+          "offset": 16,
+          "little_endian_u32": "00000000"
+        },
+        {
+          "offset": 20,
+          "little_endian_u32": "00000000"
+        },
+        {
+          "offset": 24,
+          "little_endian_u32": "00000000"
+        },
+        {
+          "offset": 28,
+          "little_endian_u32": "00000000"
+        },
+        {
+          "offset": 32,
+          "little_endian_u32": "00000001"
+        }
+      ],
+      "unwind_count": 49,
+      "map_address": "00db60c0",
+      "map_declared_bytes": 392,
+      "only_entry_read": 0,
+      "entry_bytes_read": 8,
+      "remaining_entries_unread": 48,
+      "state0": {
+        "to_state_signed_i32": -1,
+        "action_pointer": "00c86a30"
+      },
+      "EHFlags_raw": 1,
+      "flags_interpreted": false,
+      "layout_sources_retained_from_preceding_packet": "retained/layout_source/",
+      "first_map_scope": "[00DB60C0,00DB60C8) only",
+      "frame_qualification": "Physical allocation spillS-130 and sentinelS-4 known. Actual action operands and helper EBP restoration remain separate; no cleanup inferred from map alone."
+    },
+    "tail_internal_contract": {
+      "retained_action": "MOV EAX,[EBP-130h]; PUSH EAX; CALL 00BF65AC, with nested metadata identifying returning_free and returning 00BF9DC8 target.",
+      "frame": "Accepted actual prologue/helper ordinary path gives action EBP=forwarded raw argument 2+0Ch; prologue own FS node is distinct.",
+      "caller": "C07B35 CALL EAX pushes C07B37; action entry ESP=T-20h.",
+      "return": "Conditional ordinary free return reaches physical POP ECX; RET, resuming C07B37 with ESP=T-1Ch.",
+      "operand_identity": "Reads current [actionEBP-130h]. It does not read current0109CEFC publication or independently recover an original allocation identity.",
+      "tail_effects": "Discards free argument slot into ECX; consumes original action return. No tail publication store or additional cleanup call.",
+      "conditional_parent": "Parent allocation spill mapping still requires OS raw second argument to equal the parent registration node."
+    },
+    "tail_stack_derivation": {
+      "kind": "Offline symbolic word/ESP algebra; no instruction or Native execution",
+      "A": "ESP at startup action entry; retained call-setting helper gives A=T-20h",
+      "frame": "action EBP=forwarded raw argument 2+0Ch on accepted ordinary path",
+      "steps": [
+        {
+          "site": "action entry",
+          "ESP_from_A": 0,
+          "top_word": "original action return = 00c07b37"
+        },
+        {
+          "site": "00c86a36 PUSH EAX",
+          "ESP_from_A": -4,
+          "top_word": "current [action EBP-130h] pointer P"
+        },
+        {
+          "site": "00c86a37 CALL free",
+          "ESP_from_A": -8,
+          "top_word": "free return = 00c86a3c"
+        },
+        {
+          "site": "ordinary cdecl free return to 00c86a3c",
+          "ESP_from_A": -4,
+          "top_word": "argument slot; contents not assumed preserved by free"
+        },
+        {
+          "site": "00c86a3c physical POP ECX",
+          "ESP_from_A": 0,
+          "top_word": "original action return = 00c07b37"
+        },
+        {
+          "site": "00c86a3d physical RET",
+          "ESP_from_A": 4,
+          "target": "original action return = 00c07b37"
+        }
+      ],
+      "final_ESP_from_A": 4,
+      "final_ESP_from_helper_T": -28,
+      "balanced_argument_cleanup_bytes": 4,
+      "consumed_action_return_bytes": 4,
+      "action_return": "00c07b37",
+      "tail_EBP_unchanged": true,
+      "ECX": "Overwritten by POP from the free argument slot; the loaded value is not used or required to equal P.",
+      "conditions": [
+        "Observed action is invoked by the retained ordinary helper path.",
+        "The free call returns ordinarily with cdecl stack shape; it does not corrupt the action return word.",
+        "Required frame/stack accesses are valid; no fault, nonlocal exit or hardware exception is modelled."
+      ],
+      "no_new_native_execution": true,
+      "parent_registration_association_proved": false
+    },
+    "tail_remaining_holds": [
+      "Actual OS/handler association between raw forwarded argument 2 and parent registration node.",
+      "Free implementation, its actual execution and fault behavior; ordinary cdecl shape is an explicit condition.",
+      "Native FH3 identity, filters, nested/fault/nonlocal paths and successful exception cleanup.",
+      "Previously excluded unwind-body gap, stored handler/table/data contents and actual canonical availability.",
+      "Original ABI delivery, Source raw owner/startup composition and publication/registration failure ownership.",
+      "Native execution, startup and gameplay."
+    ],
+    "destructor": {
+      "incoming_receiver_capture": "EDI",
+      "first_profile": "00D685E0 before state0",
+      "first_manager": "capture first manager+10 section in ESI; if nonnull enter then increment its+18",
+      "state1": "before second manager getter",
+      "unregister_subject": "CURRENT0109CEFC reloaded after second getter, not necessarily captured receiver",
+      "unregister_service": "00BCFCA0 on second manager",
+      "publication_clear": "Unconditionally write0109CEFC=null only after normal unregister, before captured-section leave",
+      "normal_unlock": "decrement first captured section+18, leave same section",
+      "last_profile": "00CE3818 on captured receiver only after normal leave",
+      "handler": "00CC6AB0 referenced but not opened; Native exception chain restored normally",
+      "no_budget_startupword_metric": "not read"
+    },
+    "derived_scalar": {
+      "bytes": 30,
+      "instructions": 11,
+      "receiver": "captured ECX in ESI",
+      "destructor": "00BE27F0 before flags test",
+      "flags": "stacked bit0 only",
+      "free": "captured receiver via genuine returning_free only for bit0",
+      "argument_cleanup": "00BE2945 ADD ESP,4 on free path",
+      "return": "captured original EAX, RET4"
+    },
+    "base_scalar": [
+      "Capture ECX receiver in saved ESI; call actual BE27F0 first.",
+      "Only after destructor normal return test bit0 of actual caller flag at entryESP+4.",
+      "If clear skip free; if set push captured receiver, call BF65AC and consume argument with physical ADD ESP,4.",
+      "Set EAX to captured receiver, restore ESI, RET4; no post-free dereference or other flags-bit branch.",
+      "No failure cleanup, Source valid-alias contract or full original ABI/CRT equivalence inferred."
+    ]
+  },
+  "required_preservation": [
+    "Allocation request12, saved return, conditional null comparison, state0 before conditional ctor, global01090AB0 comparison before sentinel-1 store.",
+    "Constructor second getter precedes CURRENT stats reload; registration subject need not equal captured receiver; release uses first captured section.",
+    "Constructor Source cleanup does not unregister, clear publication or free receiver; outer startup cleanup is separate.",
+    "Startup action loads current parent allocation spill under conditional frame association, never stats publication. Original pointer identity requires intact spill.",
+    "Published/registered effects persist if construction escapes; no rollback/retry/drain-after-failure safety claim.",
+    "BE27F0 normal unregister uses CURRENT stats and second manager, then clears publication, releases first section, resets original receiver.",
+    "BE2890 andBE2930 call destructor before testing flagsbit0 and conditional free of original receiver; a destructor escape does not ordinarily reach free.",
+    "Original ECX/EAX/RET or RET4 ABIs, SEH/hardware/fault behavior and OS parent-node delivery remain separately held.",
+    "Saved action/scalar body splits and CALL_RETURN overrides remain unchanged; six bytes after tail POP/RET remain uninterpreted."
+  ],
+  "smallest_missing_contract": [
+    {
+      "order": 1,
+      "name": "Actual destructor failure evidence",
+      "contract": "CC6AB0 referenced handler and justified descriptor/actions must be admitted in a future separately scoped gate; never infer it from constructor or adjacent family."
+    },
+    {
+      "order": 2,
+      "name": "Complete raw lifecycle",
+      "contract": "Implement genuine BE27F0 and BE2890/BE2930 normal and admitted ordinary Source failure schedules; no fallback callbacks or free-on-destructor-escape invention."
+    },
+    {
+      "order": 3,
+      "name": "Shared actual stats owner/publication/delete domain",
+      "contract": "One durable0109CEFC cell, canonical01090AA0 context, valid aligned12B receiver storage, both actual profile bindings installed before constructor publication/registration and retained through canonical drain; all readers borrow same cell."
+    },
+    {
+      "order": 4,
+      "name": "Bounded startup handover",
+      "contract": "Only after1-3, use existing12B allocator plus accepted constructor. Preserve states/spill identity/publication effects, define conditional Source cleanup without claiming OS delivery; no scope-exit delete after success."
+    }
+  ],
+  "integration_status_update": {
+    "reported_by": "Root during this audit",
+    "accepted_main": "e9396b4883232059bdad28753bc95403536403bf",
+    "Root_reported_Source_context": "Source749:749inputs,116selectedCore,5App,303defs,753pins; Core1990members;3/3existingchecks",
+    "qualification": "Informational Root handoff; this packet does not replay or adopt Source749, rebase its frozen inputs, or claim its build/tests as fresh readiness work."
+  },
+  "evidence": {
+    "schema": 1,
+    "packet": "cc12_allocation_stats_startup_owner_handover_readiness",
+    "utc": "2026-10-10T08:29:06.024157+00:00",
+    "worker_commit": "08748971b356b38ed2bbecd38d36ead738452476",
+    "accepted_main_context": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+    "new_Native_queries_reads_mutations": 0,
+    "source": [
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/game_hosts.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/game_hosts_singletons.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/game_hosts_singletons.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/platform_window.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/platform_window.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_allocation_stats_constructor.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_allocation_stats_constructor.hpp",
+          "bytes": 2659,
+          "sha256": "69e905aa6213df280c5fe40cf658d44568bc7e63fe0267530b196f5aab2251ec"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_allocation_stats_constructor.hpp",
+          "bytes": 2659,
+          "sha256": "69e905aa6213df280c5fe40cf658d44568bc7e63fe0267530b196f5aab2251ec"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_allocation_stats_constructor.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_allocation_stats_constructor.cpp",
+          "bytes": 3494,
+          "sha256": "8f47655e5a7475baa9ac06f38f98682e35821709f3540e20f055d0824fc6c389"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_allocation_stats_constructor.cpp",
+          "bytes": 3494,
+          "sha256": "8f47655e5a7475baa9ac06f38f98682e35821709f3540e20f055d0824fc6c389"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_resource_load_cache.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_resource_load_cache.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_singleton_destruction.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_singleton_destruction.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/singleton_lifetime.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/singleton_lifetime.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/game_native_string_process.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\game_native_string_process.hpp",
+          "bytes": 2363,
+          "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\game_native_string_process.hpp",
+          "bytes": 2363,
+          "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/game_native_string_process.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\game_native_string_process.cpp",
+          "bytes": 593,
+          "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\game_native_string_process.cpp",
+          "bytes": 593,
+          "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_singleton_publication.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_singleton_publication.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_singleton_removal_reorder.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_singleton_removal_reorder.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+          "bytes": 2257,
+          "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+          "bytes": 2257,
+          "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_diagnostic_sink_lifetime.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_diagnostic_sink_lifetime.cpp",
+          "bytes": 5460,
+          "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_diagnostic_sink_lifetime.cpp",
+          "bytes": 5460,
+          "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "include/bsp/native_render_service_base.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\include\\bsp\\native_render_service_base.hpp",
+          "bytes": 2361,
+          "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\include\\bsp\\native_render_service_base.hpp",
+          "bytes": 2361,
+          "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "src/native_render_service_base.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\src\\native_render_service_base.cpp",
+          "bytes": 4563,
+          "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\src\\native_render_service_base.cpp",
+          "bytes": 4563,
+          "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "cmake/startup.cmake",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\cmake\\startup.cmake",
+          "bytes": 202013,
+          "sha256": "dca870955b758c4e0d9137377e927dba12ecfda119ea7299d70f72975553f9ab"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\cmake\\startup.cmake",
+          "bytes": 202013,
+          "sha256": "dca870955b758c4e0d9137377e927dba12ecfda119ea7299d70f72975553f9ab"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "repository_path": "CMakeLists.txt",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087_working\\CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working_Git_exact": true
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/game_hosts.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/game_hosts_singletons.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/game_hosts_singletons.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/platform_window.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/platform_window.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_allocation_stats_constructor.hpp",
+        "absent_at_commit": true
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_allocation_stats_constructor.cpp",
+        "absent_at_commit": true
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_resource_load_cache.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_resource_load_cache.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_singleton_destruction.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_singleton_destruction.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/singleton_lifetime.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/singleton_lifetime.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/game_native_string_process.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\game_native_string_process.hpp",
+          "bytes": 2363,
+          "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/game_native_string_process.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\game_native_string_process.cpp",
+          "bytes": 593,
+          "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_singleton_publication.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_singleton_publication.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_singleton_removal_reorder.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_singleton_removal_reorder.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+          "bytes": 2257,
+          "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_diagnostic_sink_lifetime.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_diagnostic_sink_lifetime.cpp",
+          "bytes": 5460,
+          "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "include/bsp/native_render_service_base.hpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\include\\bsp\\native_render_service_base.hpp",
+          "bytes": 2361,
+          "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "src/native_render_service_base.cpp",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\src\\native_render_service_base.cpp",
+          "bytes": 4563,
+          "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "cmake/startup.cmake",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\cmake\\startup.cmake",
+          "bytes": 202013,
+          "sha256": "dca870955b758c4e0d9137377e927dba12ecfda119ea7299d70f72975553f9ab"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "repository_path": "CMakeLists.txt",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        }
+      }
+    ],
+    "queries": [
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "name": "stats_owner_publication",
+        "pattern": "AllocationStatsState|actual_allocation_stats|allocation_stats_0109cefc|construct_native_allocation_stats|D685E0|D685F4|d685e0|d685f4|0109cefc|0109CEFC",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "AllocationStatsState|actual_allocation_stats|allocation_stats_0109cefc|construct_native_allocation_stats|D685E0|D685F4|d685e0|d685f4|0109cefc|0109CEFC",
+          "08748971b356b38ed2bbecd38d36ead738452476",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 0,
+        "matches": 30,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\worker087_stats_owner_publication.txt",
+          "bytes": 4471,
+          "sha256": "6fcc27852f33bbcc331e48d03bb7164d072b4af1b149146db7ac3a37ce8df408"
+        }
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "name": "lifecycle_implementation",
+        "pattern": "BE27F0|be27f0|BE2890|be2890|BE2930|be2930|CC6AB0|cc6ab0",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "BE27F0|be27f0|BE2890|be2890|BE2930|be2930|CC6AB0|cc6ab0",
+          "08748971b356b38ed2bbecd38d36ead738452476",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 1,
+        "matches": 0,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\worker087_lifecycle_implementation.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "name": "action_implementation",
+        "pattern": "C86A30|c86a30|C86A3C|c86a3c|73D478|73d478",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "C86A30|c86a30|C86A3C|c86a3c|73D478|73d478",
+          "08748971b356b38ed2bbecd38d36ead738452476",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 1,
+        "matches": 0,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\worker087_action_implementation.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "name": "stats_owner_publication",
+        "pattern": "AllocationStatsState|actual_allocation_stats|allocation_stats_0109cefc|construct_native_allocation_stats|D685E0|D685F4|d685e0|d685f4|0109cefc|0109CEFC",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "AllocationStatsState|actual_allocation_stats|allocation_stats_0109cefc|construct_native_allocation_stats|D685E0|D685F4|d685e0|d685f4|0109cefc|0109CEFC",
+          "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 0,
+        "matches": 17,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\accepted_main_f95_stats_owner_publication.txt",
+          "bytes": 2430,
+          "sha256": "5e11c8a1ad0aa996657ed56d9e555294727d4cd20acc4523a171bf59319b392d"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "name": "lifecycle_implementation",
+        "pattern": "BE27F0|be27f0|BE2890|be2890|BE2930|be2930|CC6AB0|cc6ab0",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "BE27F0|be27f0|BE2890|be2890|BE2930|be2930|CC6AB0|cc6ab0",
+          "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 1,
+        "matches": 0,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\accepted_main_f95_lifecycle_implementation.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "name": "action_implementation",
+        "pattern": "C86A30|c86a30|C86A3C|c86a3c|73D478|73d478",
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-E",
+          "C86A30|c86a30|C86A3C|c86a3c|73D478|73d478",
+          "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit": 1,
+        "matches": 0,
+        "complete_sorted_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\queries\\accepted_main_f95_action_implementation.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "retained_reports": [
+      {
+        "repository_path": "reports/cc12_allocation_stats_lifecycle_body_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_lifecycle_body_gate.json",
+          "bytes": 33375,
+          "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+          "bytes": 3913,
+          "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_base_profile_slot0_identity_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_base_profile_slot0_identity_gate.json",
+          "bytes": 151820,
+          "sha256": "74f79654f9ce7feeeb009ebbf09a00152cbf8fd100aec5518ffedb9c9680be34"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_BASE_PROFILE_SLOT0_IDENTITY_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_BASE_PROFILE_SLOT0_IDENTITY_GATE.md",
+          "bytes": 7406,
+          "sha256": "0cf785984c499384e30b27cbba686276976e0b6e26d973e0ec88a9438978037b"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_constructor_caller_cleanup_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_constructor_caller_cleanup_gate.json",
+          "bytes": 636215,
+          "sha256": "849871ddb978eb7d8ac9e17d37af0ec54ad5811e50de9d416912a2029e4f1b39"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_CONSTRUCTOR_CALLER_CLEANUP_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_CONSTRUCTOR_CALLER_CLEANUP_GATE.md",
+          "bytes": 12076,
+          "sha256": "959d313a2caf3e7a9c5a3b7029ff325b7612370f059d008d679a429902368dff"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_startup_allocation_readiness.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_startup_allocation_readiness.json",
+          "bytes": 365942,
+          "sha256": "1bb06e865427311173ed48d71e55fefddf734e49c545d93d629f0e232930ca62"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_STARTUP_ALLOCATION_READINESS.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_STARTUP_ALLOCATION_READINESS.md",
+          "bytes": 10648,
+          "sha256": "5b1a941be9ad31b48a5b035fff986b89f29081a2664bf6b80401cd4daefb2c69"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_call_setting_frame_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_call_setting_frame_gate.json",
+          "bytes": 412350,
+          "sha256": "060b5569ef081b8806e2a02f5bca1b1aea816081cbf1b392796464235634458b"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_CALL_SETTING_FRAME_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_CALL_SETTING_FRAME_GATE.md",
+          "bytes": 9923,
+          "sha256": "b3c5db330f0105a70b59adb2d0757b48f6c6891f19fcc9212d25a8c519abd613"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_seh_prolog_metadata_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_seh_prolog_metadata_gate.json",
+          "bytes": 269803,
+          "sha256": "071671e46f08ebeddc419ca747611e5888c2b132cfac13b422d7028fcf4d8788"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_SEH_PROLOG_METADATA_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_SEH_PROLOG_METADATA_GATE.md",
+          "bytes": 9151,
+          "sha256": "651030ba59938306e231d7172f7d2a64a831cd864421342814e58e759f509e3f"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_startup_action_tail_metadata_gate.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_startup_action_tail_metadata_gate.json",
+          "bytes": 187064,
+          "sha256": "5bbdd9fd5e86d031827e3656318ccdb1182e7a8028294ebac2180024a9603177"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_STARTUP_ACTION_TAIL_METADATA_GATE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_STARTUP_ACTION_TAIL_METADATA_GATE.md",
+          "bytes": 7212,
+          "sha256": "40e31f224d6102c8f82aacfee0cb50d76fcb0786364a6c5bb722a04cf14f3aa2"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_raw_constructor_source.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_raw_constructor_source.json",
+          "bytes": 964231,
+          "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+          "bytes": 8371,
+          "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+        }
+      },
+      {
+        "repository_path": "reports/cc12_allocation_stats_raw_owner_retained_readiness_primary_review.json",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\reports\\cc12_allocation_stats_raw_owner_retained_readiness_primary_review.json",
+          "bytes": 10515,
+          "sha256": "78189c08cb7eb57dae91c126f129235ac0063726be746f2f4536586e240b8a45"
+        }
+      },
+      {
+        "repository_path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS_PRIMARY_REVIEW.md",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "Git": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained\\docs\\CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS_PRIMARY_REVIEW.md",
+          "bytes": 2120,
+          "sha256": "e4f75ee7e2f4b2202e262f692e503657e9dbd0a21a66f31db0160122766a992d"
+        }
+      }
+    ],
+    "retained_bundles": [
+      {
+        "packet": "cc12_allocation_stats_raw_constructor_source",
+        "all_manifest_payloads_replayed": 2666,
+        "evidence_bundle.zip": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_raw_constructor_source\\evidence_bundle.zip",
+          "bytes": 43421210,
+          "sha256": "b96d5b34c1fd0b603c2c29b381779829ce8c8cdfb5f67953d9533c3657b0b3cd"
+        },
+        "bundle_manifest.json": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_raw_constructor_source\\bundle_manifest.json",
+          "bytes": 571841,
+          "sha256": "2cd3bec754de2db17f088746dfb6e66a1d0964a7d65a598f3b58f301f4056057"
+        },
+        "final_verification.json": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_raw_constructor_source\\final_verification.json",
+          "bytes": 2491,
+          "sha256": "f77227d1c2e81fb1a7ecd5d104caddb449d8ff5c88c6d8bf015de10e3803725b"
+        }
+      },
+      {
+        "packet": "cc12_allocation_stats_startup_action_tail_metadata_gate",
+        "all_manifest_payloads_replayed": 237,
+        "evidence_bundle.zip": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_startup_action_tail_metadata_gate\\evidence_bundle.zip",
+          "bytes": 10040957,
+          "sha256": "d64538152cd6dd6326c6833a7456d88025c0bb403cd786771aedee794f0b0fed"
+        },
+        "bundle_manifest.json": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_startup_action_tail_metadata_gate\\bundle_manifest.json",
+          "bytes": 47725,
+          "sha256": "a121009fe97c6dd016769000e664236f04b9494e302ecc242ab083fdb0dd0924"
+        },
+        "final_verification.json": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_bundles\\cc12_allocation_stats_startup_action_tail_metadata_gate\\final_verification.json",
+          "bytes": 1909,
+          "sha256": "86a5506b2507fde3ce117f3c27b0c453d65534a54e5b16fc55ccead349bfb286"
+        }
+      }
+    ],
+    "retained_lifecycle_artifacts": [
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/after_00be27f0.txt",
+          "bytes": 1007,
+          "sha256": "58a74e8d13a808498dc5195cbe0abf59ba9ca1166d65cf8e0db9e22db117b278"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\after_00be27f0.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\58a74e8d13a808498dc5195cbe0abf59ba9ca1166d65cf8e0db9e22db117b278\\after_00be27f0.txt",
+          "bytes": 1007,
+          "sha256": "58a74e8d13a808498dc5195cbe0abf59ba9ca1166d65cf8e0db9e22db117b278"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/after_00be2930.txt",
+          "bytes": 1061,
+          "sha256": "d76760d3d469493e5450e3e87966d6ccad339102e41f13da53813764345056bf"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\after_00be2930.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\d76760d3d469493e5450e3e87966d6ccad339102e41f13da53813764345056bf\\after_00be2930.txt",
+          "bytes": 1061,
+          "sha256": "d76760d3d469493e5450e3e87966d6ccad339102e41f13da53813764345056bf"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/annotation_live_count.txt",
+          "bytes": 57,
+          "sha256": "0041c20bc4159611d65d9048506e7ac1582593ec2bfc3ff5f01c8e523577eb2c"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\annotation_live_count.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\0041c20bc4159611d65d9048506e7ac1582593ec2bfc3ff5f01c8e523577eb2c\\annotation_live_count.txt",
+          "bytes": 57,
+          "sha256": "0041c20bc4159611d65d9048506e7ac1582593ec2bfc3ff5f01c8e523577eb2c"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/before_00be27f0.txt",
+          "bytes": 127,
+          "sha256": "ad0a07eef01c840c7a8cc646057835270e6a1e3de9abe1fc34200b4f732e87cb"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\before_00be27f0.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\ad0a07eef01c840c7a8cc646057835270e6a1e3de9abe1fc34200b4f732e87cb\\before_00be27f0.txt",
+          "bytes": 127,
+          "sha256": "ad0a07eef01c840c7a8cc646057835270e6a1e3de9abe1fc34200b4f732e87cb"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/before_00be2930.txt",
+          "bytes": 127,
+          "sha256": "f45074e0d9ef8659b229710bc1648696ee586a6fbb8a46557995bf0b9434c89b"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\before_00be2930.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\f45074e0d9ef8659b229710bc1648696ee586a6fbb8a46557995bf0b9434c89b\\before_00be2930.txt",
+          "bytes": 127,
+          "sha256": "f45074e0d9ef8659b229710bc1648696ee586a6fbb8a46557995bf0b9434c89b"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/body_cli.txt",
+          "bytes": 2401,
+          "sha256": "ed4b00712f817e89b978da777b8d0dee712689d6ab72c3ba5163158aff2b9068"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\body_cli.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\ed4b00712f817e89b978da777b8d0dee712689d6ab72c3ba5163158aff2b9068\\body_cli.txt",
+          "bytes": 2401,
+          "sha256": "ed4b00712f817e89b978da777b8d0dee712689d6ab72c3ba5163158aff2b9068"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/body_raw.json",
+          "bytes": 30989,
+          "sha256": "7593aec0ffaa9f347776b22184170e7a85deb3fd4b93ba9bbd67b0385209f989"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\body_raw.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\7593aec0ffaa9f347776b22184170e7a85deb3fd4b93ba9bbd67b0385209f989\\body_raw.json",
+          "bytes": 30989,
+          "sha256": "7593aec0ffaa9f347776b22184170e7a85deb3fd4b93ba9bbd67b0385209f989"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/export_00be27f0.txt",
+          "bytes": 132,
+          "sha256": "32ed260909111a0fc478feb9cfd91935d18ca8e59db3d2f7109824379346dbd5"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\export_00be27f0.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\32ed260909111a0fc478feb9cfd91935d18ca8e59db3d2f7109824379346dbd5\\export_00be27f0.txt",
+          "bytes": 132,
+          "sha256": "32ed260909111a0fc478feb9cfd91935d18ca8e59db3d2f7109824379346dbd5"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/export_00be2930.txt",
+          "bytes": 132,
+          "sha256": "6a4850a089a3b6206d38bc0cb0e8cfa0ba4e074d1a9249324ac019760cba0b90"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\export_00be2930.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\6a4850a089a3b6206d38bc0cb0e8cfa0ba4e074d1a9249324ac019760cba0b90\\export_00be2930.txt",
+          "bytes": 132,
+          "sha256": "6a4850a089a3b6206d38bc0cb0e8cfa0ba4e074d1a9249324ac019760cba0b90"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/ghidra-annotations-20261010T045554Z.json",
+          "bytes": 2223,
+          "sha256": "a6816e0b117945c5c978cc2902bb9f6821a86594d9a2587b3d5bcd35d9cc2d7e"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\ghidra-annotations-20261010T045554Z.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\a6816e0b117945c5c978cc2902bb9f6821a86594d9a2587b3d5bcd35d9cc2d7e\\ghidra-annotations-20261010T045554Z.json",
+          "bytes": 2223,
+          "sha256": "a6816e0b117945c5c978cc2902bb9f6821a86594d9a2587b3d5bcd35d9cc2d7e"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/ledger_name_00be27f0.txt",
+          "bytes": 49,
+          "sha256": "71b2690cf3f662a519db72870f00bf5a8bbe1dbb2dca3c4ca7110ffc985390e4"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\ledger_name_00be27f0.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\71b2690cf3f662a519db72870f00bf5a8bbe1dbb2dca3c4ca7110ffc985390e4\\ledger_name_00be27f0.txt",
+          "bytes": 49,
+          "sha256": "71b2690cf3f662a519db72870f00bf5a8bbe1dbb2dca3c4ca7110ffc985390e4"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/ledger_name_00be2930.txt",
+          "bytes": 54,
+          "sha256": "fc7bd419afc398df46e73c8d221dea4308b799f972e7930f8302b4313c5e07f7"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\ledger_name_00be2930.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\fc7bd419afc398df46e73c8d221dea4308b799f972e7930f8302b4313c5e07f7\\ledger_name_00be2930.txt",
+          "bytes": 54,
+          "sha256": "fc7bd419afc398df46e73c8d221dea4308b799f972e7930f8302b4313c5e07f7"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/locked_lifecycle_annotation.txt",
+          "bytes": 250,
+          "sha256": "8280b048e03e55cd0e44d458db8a28b9a412523d105fc33b274ef910f86a5fc5"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\locked_lifecycle_annotation.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\8280b048e03e55cd0e44d458db8a28b9a412523d105fc33b274ef910f86a5fc5\\locked_lifecycle_annotation.txt",
+          "bytes": 250,
+          "sha256": "8280b048e03e55cd0e44d458db8a28b9a412523d105fc33b274ef910f86a5fc5"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/original_00be27f0_153.bin",
+          "bytes": 153,
+          "sha256": "b72f0798253c1f33f427f0571ce2ddb1f50bcf2536beac4bcfa56a2a7634821a"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\original_00be27f0_153.bin",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\b72f0798253c1f33f427f0571ce2ddb1f50bcf2536beac4bcfa56a2a7634821a\\original_00be27f0_153.bin",
+          "bytes": 153,
+          "sha256": "b72f0798253c1f33f427f0571ce2ddb1f50bcf2536beac4bcfa56a2a7634821a"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/original_00be2930_21.bin",
+          "bytes": 21,
+          "sha256": "5c7f50d52bf582133ca5df51b87dd7d3bac1a4aebb99d6c1570bd8b7b5a92434"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\original_00be2930_21.bin",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\5c7f50d52bf582133ca5df51b87dd7d3bac1a4aebb99d6c1570bd8b7b5a92434\\original_00be2930_21.bin",
+          "bytes": 21,
+          "sha256": "5c7f50d52bf582133ca5df51b87dd7d3bac1a4aebb99d6c1570bd8b7b5a92434"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/original_00be2945_3.bin",
+          "bytes": 3,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\original_00be2945_3.bin",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d\\original_00be2945_3.bin",
+          "bytes": 3,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/original_00be2948_6.bin",
+          "bytes": 6,
+          "sha256": "4dfa6a342560bc708c4b910ee0255418b23c70c72f6c8193267c6bc131b223b1"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\original_00be2948_6.bin",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\4dfa6a342560bc708c4b910ee0255418b23c70c72f6c8193267c6bc131b223b1\\original_00be2948_6.bin",
+          "bytes": 6,
+          "sha256": "4dfa6a342560bc708c4b910ee0255418b23c70c72f6c8193267c6bc131b223b1"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/physical_comparison.json",
+          "bytes": 17130,
+          "sha256": "dd456ea797d0ead42122ae4f276da375d06ed61442e4ace483badf50e195fe14"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\physical_comparison.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\dd456ea797d0ead42122ae4f276da375d06ed61442e4ace483badf50e195fe14\\physical_comparison.json",
+          "bytes": 17130,
+          "sha256": "dd456ea797d0ead42122ae4f276da375d06ed61442e4ace483badf50e195fe14"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/scalar_gap_cli.txt",
+          "bytes": 25,
+          "sha256": "09793a62a95bd0c94aa56f8cbd57fb3c461ed6960b626c7f2902cc55bf87da19"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\scalar_gap_cli.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\09793a62a95bd0c94aa56f8cbd57fb3c461ed6960b626c7f2902cc55bf87da19\\scalar_gap_cli.txt",
+          "bytes": 25,
+          "sha256": "09793a62a95bd0c94aa56f8cbd57fb3c461ed6960b626c7f2902cc55bf87da19"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/scalar_gap_raw.json",
+          "bytes": 8486,
+          "sha256": "3369cc7e4aa9fc888cb15aeb3fe17f263472daf6dea907081215fb8416623206"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\scalar_gap_raw.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\3369cc7e4aa9fc888cb15aeb3fe17f263472daf6dea907081215fb8416623206\\scalar_gap_raw.json",
+          "bytes": 8486,
+          "sha256": "3369cc7e4aa9fc888cb15aeb3fe17f263472daf6dea907081215fb8416623206"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_after_annotation.json",
+          "bytes": 30373,
+          "sha256": "c5e53a45f1a4f6a4788ad64af9344e235ad139cc62d1dd7f3cbfd375d518bac5"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_after_annotation.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\c5e53a45f1a4f6a4788ad64af9344e235ad139cc62d1dd7f3cbfd375d518bac5\\typed_after_annotation.json",
+          "bytes": 30373,
+          "sha256": "c5e53a45f1a4f6a4788ad64af9344e235ad139cc62d1dd7f3cbfd375d518bac5"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_after_body.json",
+          "bytes": 14811,
+          "sha256": "304b89197c4692ea9ff4959c639a3b98434a23b54ffbfb466e0bbbbb79881aea"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_after_body.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\304b89197c4692ea9ff4959c639a3b98434a23b54ffbfb466e0bbbbb79881aea\\typed_after_body.json",
+          "bytes": 14811,
+          "sha256": "304b89197c4692ea9ff4959c639a3b98434a23b54ffbfb466e0bbbbb79881aea"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_all_starts.json",
+          "bytes": 296543,
+          "sha256": "b756e150b793d36863bd6821f5c005976e5bb70235240abed21e12a17845efe9"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_all_starts.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\b756e150b793d36863bd6821f5c005976e5bb70235240abed21e12a17845efe9\\typed_all_starts.json",
+          "bytes": 296543,
+          "sha256": "b756e150b793d36863bd6821f5c005976e5bb70235240abed21e12a17845efe9"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_all_starts_cli.txt",
+          "bytes": 211,
+          "sha256": "85ffcedb288c3c1acd1ba56f29c6441e180173e4f2d6cda61903de00cc001eba"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_all_starts_cli.txt",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\85ffcedb288c3c1acd1ba56f29c6441e180173e4f2d6cda61903de00cc001eba\\typed_all_starts_cli.txt",
+          "bytes": 211,
+          "sha256": "85ffcedb288c3c1acd1ba56f29c6441e180173e4f2d6cda61903de00cc001eba"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_gap_before_repair.json",
+          "bytes": 23771,
+          "sha256": "02785d6de3677874cb7c4c5801181c8b3bc11d4d9db6c66ad2863fe0e5ec0a04"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_gap_before_repair.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\02785d6de3677874cb7c4c5801181c8b3bc11d4d9db6c66ad2863fe0e5ec0a04\\typed_gap_before_repair.json",
+          "bytes": 23771,
+          "sha256": "02785d6de3677874cb7c4c5801181c8b3bc11d4d9db6c66ad2863fe0e5ec0a04"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_gap_three_bytes_before.json",
+          "bytes": 11022,
+          "sha256": "81f166e3936912e3f82c930b938e3cf16f4bc990161333229b3db08a3f7191ff"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_gap_three_bytes_before.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\81f166e3936912e3f82c930b938e3cf16f4bc990161333229b3db08a3f7191ff\\typed_gap_three_bytes_before.json",
+          "bytes": 11022,
+          "sha256": "81f166e3936912e3f82c930b938e3cf16f4bc990161333229b3db08a3f7191ff"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_initial.json",
+          "bytes": 14811,
+          "sha256": "d371a2fa48da90603c2b184a3494e591114fd42950eb9ec71df85ada0d57681f"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_initial.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\d371a2fa48da90603c2b184a3494e591114fd42950eb9ec71df85ada0d57681f\\typed_initial.json",
+          "bytes": 14811,
+          "sha256": "d371a2fa48da90603c2b184a3494e591114fd42950eb9ec71df85ada0d57681f"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_allocation_stats_lifecycle_body_gate/typed_scalar_gap_gate.json",
+          "bytes": 18503,
+          "sha256": "5559a7542388e996175a31baacd4892bfb035f6380ed070c7fa53b9e766028ba"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_allocation_stats_lifecycle_body_gate\\typed_scalar_gap_gate.json",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\5559a7542388e996175a31baacd4892bfb035f6380ed070c7fa53b9e766028ba\\typed_scalar_gap_gate.json",
+          "bytes": 18503,
+          "sha256": "5559a7542388e996175a31baacd4892bfb035f6380ed070c7fa53b9e766028ba"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_stats_lifecycle_capture_body.py",
+          "bytes": 4164,
+          "sha256": "e2ed211701a26c9d744af573fe6198c268bec49c4907be820e653715963d3a20"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_stats_lifecycle_capture_body.py",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\e2ed211701a26c9d744af573fe6198c268bec49c4907be820e653715963d3a20\\cc12_stats_lifecycle_capture_body.py",
+          "bytes": 4164,
+          "sha256": "e2ed211701a26c9d744af573fe6198c268bec49c4907be820e653715963d3a20"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_stats_lifecycle_capture_gap.py",
+          "bytes": 4022,
+          "sha256": "e8ecadbc1177c0d0520e0a4852ae726135cbddf54595ead1896d0cc581640afd"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_stats_lifecycle_capture_gap.py",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\e8ecadbc1177c0d0520e0a4852ae726135cbddf54595ead1896d0cc581640afd\\cc12_stats_lifecycle_capture_gap.py",
+          "bytes": 4022,
+          "sha256": "e8ecadbc1177c0d0520e0a4852ae726135cbddf54595ead1896d0cc581640afd"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_stats_lifecycle_compare.py",
+          "bytes": 4178,
+          "sha256": "1c723c758e41411c8ea95f53341b4b1841629b6b4ee5e46dfd5b9e3f190b71c9"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_stats_lifecycle_compare.py",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\1c723c758e41411c8ea95f53341b4b1841629b6b4ee5e46dfd5b9e3f190b71c9\\cc12_stats_lifecycle_compare.py",
+          "bytes": 4178,
+          "sha256": "1c723c758e41411c8ea95f53341b4b1841629b6b4ee5e46dfd5b9e3f190b71c9"
+        }
+      },
+      {
+        "prior": {
+          "path": "local/cc12_stats_lifecycle_annotate.py",
+          "bytes": 4342,
+          "sha256": "099c0f0bb12ed8aa3ad275c619f395871042624e18c536cdfba370b5e3a0b4bf"
+        },
+        "resolved_existing_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\frozen\\retained_lifecycle\\local\\cc12_stats_lifecycle_annotate.py",
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\retained_lifecycle\\099c0f0bb12ed8aa3ad275c619f395871042624e18c536cdfba370b5e3a0b4bf\\cc12_stats_lifecycle_annotate.py",
+          "bytes": 4342,
+          "sha256": "099c0f0bb12ed8aa3ad275c619f395871042624e18c536cdfba370b5e3a0b4bf"
+        }
+      }
+    ],
+    "search_domains": [
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "tracked_paths": 4204,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\worker087\\tracked_src_include_paths.txt",
+          "bytes": 159553,
+          "sha256": "130832bfc3fbf221ba31991f700e60446ea5534512a87c5ca1ef8325337e4dd4"
+        }
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "tracked_paths": 4202,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_owner_handover_readiness\\frozen\\Source\\accepted_main_f95\\tracked_src_include_paths.txt",
+          "bytes": 159457,
+          "sha256": "9099eb0fd1e5e1d6ad0bef17de7641b6df0de642611aad23f428cbb2c65e4af1"
+        }
+      }
+    ],
+    "delete_profiles": [
+      {
+        "label": "worker087",
+        "commit": "08748971b356b38ed2bbecd38d36ead738452476",
+        "complete_cases": [
+          "0x00ce7d38",
+          "0x00d5b5e8",
+          "0x00d24d94",
+          "0x00d5bfcc",
+          "0x00ce3d98",
+          "0x00ce3a44",
+          "0x00ce6c68",
+          "0x00d5e480",
+          "0x00d5e5f4",
+          "0x00d68cbc",
+          "0x00d68cc0",
+          "0x00d5f0a4",
+          "0x00d621ec",
+          "0x00d62260",
+          "0x00d626f4",
+          "0x00d62a3c",
+          "0x00d5e5a4",
+          "0x00d5e5a8",
+          "0x00ce7550",
+          "0x00d5e15c",
+          "0x00d5e60c",
+          "0x00ce752c",
+          "0x00d68d50",
+          "0x00d62b64",
+          "0x00cfd7fc",
+          "0x00cfd80c",
+          "0x00cfd81c",
+          "0x00cfd82c",
+          "0x00cfd83c",
+          "0x00cfea34",
+          "0x00cfea44",
+          "0x00d63128",
+          "0x00d63084",
+          "0x00d63094",
+          "0x00d630a4",
+          "0x00d630b4",
+          "0x00d630c4",
+          "0x00d630d4",
+          "0x00d0dea0",
+          "0x00ce3818",
+          "0x00d0da64",
+          "0x00d5e594",
+          "0x00d5e59c",
+          "0x00d5b44c",
+          "0x00d5b460",
+          "0x00d5b478",
+          "0x00d58f78",
+          "0x00d24138",
+          "0x00d2413c",
+          "0x00d5b5f4",
+          "0x00d5b5f8",
+          "0x00d5b72c",
+          "0x00d5b630",
+          "0x00cf81cc",
+          "0x00d62c18",
+          "0x00d68ec0",
+          "0x00d5e5dc",
+          "0x00d5e5d4",
+          "0x00cfea10",
+          "0x00cfb6c4",
+          "0x00d68200",
+          "0x00d68cf8",
+          "0x00d68d04",
+          "0x00d688b0",
+          "0x00cfea1c",
+          "0x00d190b4",
+          "0x00cf7e70",
+          "0x00ce7548",
+          "0x00d190c0",
+          "0x00d19284",
+          "0x00d190c4",
+          "0x00cf7e74",
+          "0x00d6418c",
+          "0x00d68b94",
+          "0x00cfd84c",
+          "0x00d5b56c",
+          "0x00ce44dc"
+        ],
+        "allocation_stats_profiles_present": false,
+        "unknown_profile_error": "raw singleton deletion requires a recovered profile and its actual bindings"
+      },
+      {
+        "label": "accepted_main_f95",
+        "commit": "f95dc28b7371449a488bdf88ee8ffb5599113bc5",
+        "complete_cases": [
+          "0x00ce7d38",
+          "0x00d5b5e8",
+          "0x00d24d94",
+          "0x00d5bfcc",
+          "0x00ce3d98",
+          "0x00ce3a44",
+          "0x00ce6c68",
+          "0x00d5e480",
+          "0x00d5e5f4",
+          "0x00d68cbc",
+          "0x00d68cc0",
+          "0x00d5f0a4",
+          "0x00d621ec",
+          "0x00d62260",
+          "0x00d626f4",
+          "0x00d62a3c",
+          "0x00d5e5a4",
+          "0x00d5e5a8",
+          "0x00ce7550",
+          "0x00d5e15c",
+          "0x00d5e60c",
+          "0x00ce752c",
+          "0x00d68d50",
+          "0x00d62b64",
+          "0x00cfd7fc",
+          "0x00cfd80c",
+          "0x00cfd81c",
+          "0x00cfd82c",
+          "0x00cfd83c",
+          "0x00cfea34",
+          "0x00cfea44",
+          "0x00d63128",
+          "0x00d63084",
+          "0x00d63094",
+          "0x00d630a4",
+          "0x00d630b4",
+          "0x00d630c4",
+          "0x00d630d4",
+          "0x00d0dea0",
+          "0x00ce3818",
+          "0x00d0da64",
+          "0x00d5e594",
+          "0x00d5e59c",
+          "0x00d5b44c",
+          "0x00d5b460",
+          "0x00d5b478",
+          "0x00d58f78",
+          "0x00d24138",
+          "0x00d2413c",
+          "0x00d5b5f4",
+          "0x00d5b5f8",
+          "0x00d5b72c",
+          "0x00d5b630",
+          "0x00cf81cc",
+          "0x00d62c18",
+          "0x00d68ec0",
+          "0x00d5e5dc",
+          "0x00d5e5d4",
+          "0x00cfea10",
+          "0x00cfb6c4",
+          "0x00d68200",
+          "0x00d68cf8",
+          "0x00d68d04",
+          "0x00d688b0",
+          "0x00cfea1c",
+          "0x00d190b4",
+          "0x00cf7e70",
+          "0x00ce7548",
+          "0x00d190c0",
+          "0x00d19284",
+          "0x00d190c4",
+          "0x00cf7e74",
+          "0x00d6418c",
+          "0x00d68b94",
+          "0x00cfd84c",
+          "0x00d5b56c",
+          "0x00ce44dc"
+        ],
+        "allocation_stats_profiles_present": false,
+        "unknown_profile_error": "raw singleton deletion requires a recovered profile and its actual bindings"
+      }
+    ]
+  },
+  "offline_pre_freeze_verification": {
+    "success": true,
+    "full_pin_occurrences": 143,
+    "unique_frozen_pins": 143,
+    "Git_paths_replayed": 70,
+    "complete_queries_replayed": 6,
+    "retained_nested_ZIP_payloads_replayed": 2903,
+    "lifecycle_original_pins_replayed": 32,
+    "retained_startup_code_bytes_redecoded": 139,
+    "retained_startup_instructions_redecoded": 41,
+    "new_Native_bytes": 0,
+    "retained_tail_uninterpreted_bytes": 6
+  },
+  "preparation_notes": "Two early local-only attempts looked for lifecycle receipts at original relative paths. Successful collection uses already frozen copies from the slot0 packet, validates all32 original size/SHA pins, and leaves originals unchanged.",
+  "freeze_boundary": "Complete new report/document/scripts/inputs are immutable archive payloads; archive and manifest hashes live out of band in final_verification.json to avoid self-reference."
+}
