@@ -41,12 +41,35 @@ public:
 // Application-owned canonical metadata for actual render-resource companions.
 // Binding borrows both objects, validates that the companion uses raw+04, and
 // performs no native write, retain or release. One live identity has exactly
-// one companion; replacement is never implicit. All companions must unbind
-// before this registry is destroyed. The registry serializes its metadata only
+// one companion; replacement is never implicit. All companions must unbind and
+// pending admissions must cancel before this registry is destroyed. The
+// registry outlives every active token. It serializes its metadata only
 // and holds no lock across terminal dispatch; callers still provide the native
 // resource/lifetime synchronization that keeps a resolved companion alive.
 class NativeRenderActualOwnerRegistry final : public NativeRenderActualOwners {
 public:
+    // Owns one unavailable entry in this same registry. Its mapped-value address
+    // survives rehash; no iterator or Native storage is retained or inspected.
+    // Move/cancel/publish share the caller's serialized ownership contract.
+    class BindingAdmission final {
+    public:
+        BindingAdmission() noexcept = default;
+        BindingAdmission(const BindingAdmission&) = delete;
+        BindingAdmission& operator=(const BindingAdmission&) = delete;
+        BindingAdmission(BindingAdmission&&) noexcept;
+        BindingAdmission& operator=(BindingAdmission&&) noexcept;
+        ~BindingAdmission() noexcept;
+        void cancel() noexcept;
+        explicit operator bool() const noexcept { return registry_ != nullptr; }
+    private:
+        friend class NativeRenderActualOwnerRegistry;
+        BindingAdmission(NativeRenderActualOwnerRegistry&, void*,
+            RenderCommandReference**) noexcept;
+        NativeRenderActualOwnerRegistry* registry_{};
+        void* identity_{};
+        RenderCommandReference** entry_{};
+    };
+
     NativeRenderActualOwnerRegistry();
     ~NativeRenderActualOwnerRegistry() override;
     NativeRenderActualOwnerRegistry(const NativeRenderActualOwnerRegistry&) = delete;
@@ -55,11 +78,20 @@ public:
     NativeRenderActualOwnerRegistry& operator=(NativeRenderActualOwnerRegistry&&) = delete;
 
     void bind(void* raw_identity, RenderCommandReference&);
+    // Reserve an aligned opaque key before Native construction, without reading
+    // raw+04. May allocate/throw; any existing key is rejected, even if prepared.
+    [[nodiscard]] BindingAdmission prepare_binding(void* raw_identity);
+    // Requires this registry's exact still-null entry, then the SAME live +04
+    // alias checks as bind. After successful locking/validation, only fill that
+    // entry and consume the token: no insertion, rehash, retain or callback.
+    // Invalid capabilities/aliases/counts terminate; mutex failure can throw.
+    void publish(BindingAdmission&&, RenderCommandReference&);
     // Exact-match retirement for nonthrowing native terminal callbacks. A
     // missing/mismatched binding is a lifetime contract violation.
     void unbind(void* raw_identity, RenderCommandReference&) noexcept;
     RenderCommandReference* find(void* raw_identity);
     RenderCommandReference& resolve_actual(void* raw_identity) override;
+    // Includes unavailable prepared entries; find/resolve cannot use them.
     std::size_t size() const;
     bool empty() const;
 

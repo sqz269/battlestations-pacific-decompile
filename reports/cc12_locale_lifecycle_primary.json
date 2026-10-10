@@ -1,0 +1,154 @@
+{
+  "schema": "bsp.cc12.locale-lifecycle-primary.v1",
+  "status": "accepted_normal_flow_contract_only",
+  "worker_commit": "da51854bc0beb187030cd01141a7c9c9914bdf6b",
+  "copied_inputs": [
+    {
+      "path": "local/cc12_locale_lifecycle_primary/evidence.zip",
+      "bytes": 21454497,
+      "sha256": "2ac9681ad36c883276831391458a30e72bddbd85777966f4fbbfddd0ee607def"
+    },
+    {
+      "path": "local/cc12_locale_lifecycle_primary/replay.py",
+      "bytes": 10765,
+      "sha256": "b353c4b12531d6032438a6fbdb5980fd5f1b0d37587859c9d5f90dacbab661fd"
+    },
+    {
+      "path": "local/cc12_locale_lifecycle_primary/guarded_replay.py",
+      "bytes": 1307,
+      "sha256": "999d6ac8b4580909d74efe9f03535ebf13f14c8d64de783bcc36eb12100ef2c8"
+    },
+    {
+      "path": "local/cc12_locale_lifecycle_primary/worker_report.json",
+      "bytes": 74911,
+      "sha256": "9264fb23d1e7c5933db2fcc87f1dfd738c4a119eb2926a567b8846e811241dbd"
+    },
+    {
+      "path": "local/cc12_locale_lifecycle_primary/worker_document.md",
+      "bytes": 11852,
+      "sha256": "952b75d3b5ca9c2b149d6c81249ac2be7e2ab4e6ac1251bb4b420258138eab73"
+    }
+  ],
+  "guarded_replay": {
+    "path": "local/cc12_locale_lifecycle_primary/Root_guarded_replay.json",
+    "bytes": 1342,
+    "sha256": "fda9296e832db274f87551d004b252f6d81e4b60bd6b2be3d72dd24111fba7d1"
+  },
+  "actual_frozen_Git_Source": 4215,
+  "actual_accepted_particle_Git_Source": 4215,
+  "actual_dependency_blobs": 12,
+  "current_Root_Source_changes_since_frozen_epoch": [
+    "include/bsp/native_render_context.hpp",
+    "src/native_render_context.cpp"
+  ],
+  "Root_HEAD": "097040e5ca0d67785afb5dacf0dc7b80d720fc43",
+  "independent_complete_decode": [
+    {
+      "address": "00436230",
+      "hull_bytes": 211,
+      "stored_bytes": 208,
+      "instructions": 68,
+      "ranges": [
+        [
+          4416048,
+          4416232
+        ],
+        [
+          4416236,
+          4416258
+        ]
+      ]
+    },
+    {
+      "address": "00435A50",
+      "hull_bytes": 138,
+      "stored_bytes": 124,
+      "instructions": 51,
+      "ranges": [
+        [
+          4414032,
+          4414060
+        ],
+        [
+          4414072,
+          4414084
+        ],
+        [
+          4414088,
+          4414169
+        ]
+      ]
+    }
+  ],
+  "unowned_real_continuations": [
+    {
+      "address": 4416233,
+      "bytes": "83c404",
+      "mnemonic": "add",
+      "operands": "esp, 4",
+      "stored_body_owned": false
+    },
+    {
+      "address": 4414061,
+      "bytes": "83c601",
+      "mnemonic": "add",
+      "operands": "esi, 1",
+      "stored_body_owned": false
+    },
+    {
+      "address": 4414064,
+      "bytes": "83c404",
+      "mnemonic": "add",
+      "operands": "esp, 4",
+      "stored_body_owned": false
+    },
+    {
+      "address": 4414067,
+      "bytes": "3b772c",
+      "mnemonic": "cmp",
+      "operands": "esi, dword ptr [edi + 0x2c]",
+      "stored_body_owned": false
+    },
+    {
+      "address": 4414070,
+      "bytes": "72e9",
+      "mnemonic": "jb",
+      "operands": "0x435a61",
+      "stored_body_owned": false
+    },
+    {
+      "address": 4414085,
+      "bytes": "83c404",
+      "mnemonic": "add",
+      "operands": "esp, 4",
+      "stored_body_owned": false
+    }
+  ],
+  "fresh_Native_hull_bytes": 349,
+  "stored_body_bytes": 332,
+  "prior_reused_Native_bytes": 730,
+  "typed_GPR_modification": "72",
+  "decision": {
+    "normal_initializer_destructor_contract_established": true,
+    "handler_unwind_established": false,
+    "profile_virtual0_established": false,
+    "canonical_Source_owner_ready": false,
+    "raw_map_composition_GO": false,
+    "application_GO": false
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_new_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Normal in-hull flow assumes external calls return; stored CALL_TERMINATOR and CALL_RETURN override metadata remain unchanged.",
+    "Both free thunks no_return=false is separate evidence; no listing/body/prototype/flow repair.",
+    "The 17 unowned gap bytes are real continuations; no padding or function-ownership claim.",
+    "Allocation/failure domains, payload-before-pool teardown, canonical storage, profile dispatch and out-of-hull unwind remain unready.",
+    "Next profile/unwind packet is separate evidence; this packet neither reads nor proves it."
+  ]
+}
