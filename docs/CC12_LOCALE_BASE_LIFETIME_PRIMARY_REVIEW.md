@@ -1,0 +1,9 @@
+# Locale base lifetime: primary acceptance
+
+Root accepted worker `90c7ba1a29baaad65c6897244f9d3d301fc52e90`. The complete153B `7365E0` body captures its original receiver and the first sound manager's section, then performs a second manager lookup before loading the current locale publication for unregistering. Only normal unregister return clears that publication. It then releases the captured section, restores the captured receiver's root profile and returns. The unregister argument is not necessarily the captured receiver.
+
+The exact selector,36B FuncInfo,16B map and two8B actions establish state1 section cleanup followed by state0 captured-receiver reset under the retained handler/provider contracts. They establish no publication rollback, receiver free or retry. State1 remains armed during the normal section release; valid surviving storage, ordinary-return primitives and compatible exception behavior remain required. Faults, double exceptions and reentrant destruction are unqualified.
+
+Root copied all3498 payloads, ran the copied ZIP-only replay, independently matched five spans/231B to the original PE and decoded all46 instructions. It checked3352 epoch inputs plus four artifacts and3352 actual worker Git objects/current files separately. Six complete Source sections total305B. Worker70 App indices are explicitly a subset; Root additionally checks the actual current80-object inventory for address-named absence, without behavior or missing-before-image credit.
+
+Raw map/node cleanup, derived EH actions and actual pool/range context lifetimes still gate full raw lifetime composition. The4040h image remains dormant beside the active semantic locale; no application activation, C++, build/test/runtime, OriginalABI or Ghidra mutation is added. Evidence: `reports/cc12_locale_base_lifetime_primary_review.json`; Root proof: `local/cc12_locale_base_lifetime_primary/`.

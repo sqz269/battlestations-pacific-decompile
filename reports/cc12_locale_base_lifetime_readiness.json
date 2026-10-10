@@ -1,0 +1,1105 @@
+{
+  "schema": "cc12_locale_base_lifetime_readiness_v1",
+  "status": "bounded_base_readiness_complete_full_locale_lifetime_open",
+  "baseline_head": "e85d46d9b1b19fe5b99ea0dfaffebb492daf091e",
+  "source_epoch": "Source3352-particle-model-typed-views",
+  "owned_files": [
+    "docs/CC12_LOCALE_BASE_LIFETIME_READINESS.md",
+    "reports/cc12_locale_base_lifetime_readiness.json"
+  ],
+  "scope": {
+    "body": {
+      "start": "007365E0",
+      "end": "00736678",
+      "bytes": 153,
+      "instructions": 40
+    },
+    "selector": {
+      "start": "00C85F70",
+      "bytes": 10
+    },
+    "FuncInfo": {
+      "start": "00DB53BC",
+      "bytes": 36
+    },
+    "unwind_map": {
+      "start": "00DB53AC",
+      "bytes": 16
+    },
+    "admitted_actions": {
+      "start": "00C85F60",
+      "bytes": 16
+    },
+    "total_bytes": 231,
+    "manager_or_unregister_or_cleanup_provider_body_expansion": false
+  },
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "imagebase": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "raw_pointer": 4096,
+          "raw_size": 9310208
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "raw_pointer": 9314304,
+          "raw_size": 1204224
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "raw_pointer": 10518528,
+          "raw_size": 65536
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "raw_pointer": 10584064,
+          "raw_size": 1634304
+        }
+      ]
+    },
+    "all_spans_disk_exact": true,
+    "spans": [
+      {
+        "address": 7562720,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/007365e0_153.bin",
+          "bytes": 153,
+          "sha256": "fda24f78440f9fb22d9711a4c3b05e7056f9b4297d42b3e9d2ca23e73ccf8e54",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7562720,
+            "length": 153,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 7562720,
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": 7562722,
+            "bytes": "68705fc800",
+            "mnemonic": "push",
+            "operands": "0xc85f70"
+          },
+          {
+            "address": 7562727,
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": 7562733,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7562734,
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], esp"
+          },
+          {
+            "address": 7562741,
+            "bytes": "83ec0c",
+            "mnemonic": "sub",
+            "operands": "esp, 0xc"
+          },
+          {
+            "address": 7562744,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7562745,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "address": 7562746,
+            "bytes": "8bf9",
+            "mnemonic": "mov",
+            "operands": "edi, ecx"
+          },
+          {
+            "address": 7562748,
+            "bytes": "897c2408",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 8], edi"
+          },
+          {
+            "address": 7562752,
+            "bytes": "c7075ceacf00",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi], 0xcfea5c"
+          },
+          {
+            "address": 7562758,
+            "bytes": "c744241c00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": 7562766,
+            "bytes": "e83dedcdff",
+            "mnemonic": "call",
+            "operands": "0x415350"
+          },
+          {
+            "address": 7562771,
+            "bytes": "8b7010",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": 7562774,
+            "bytes": "85f6",
+            "mnemonic": "test",
+            "operands": "esi, esi"
+          },
+          {
+            "address": 7562776,
+            "bytes": "c744240cfc37ce00",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xc], 0xce37fc"
+          },
+          {
+            "address": 7562784,
+            "bytes": "89742410",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x10], esi"
+          },
+          {
+            "address": 7562788,
+            "bytes": "740b",
+            "mnemonic": "je",
+            "operands": "0x736631"
+          },
+          {
+            "address": 7562790,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7562791,
+            "bytes": "ff151822ce00",
+            "mnemonic": "call",
+            "operands": "dword ptr [0xce2218]"
+          },
+          {
+            "address": 7562797,
+            "bytes": "83461801",
+            "mnemonic": "add",
+            "operands": "dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": 7562801,
+            "bytes": "c644241c01",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x1c], 1"
+          },
+          {
+            "address": 7562806,
+            "bytes": "e815edcdff",
+            "mnemonic": "call",
+            "operands": "0x415350"
+          },
+          {
+            "address": 7562811,
+            "bytes": "8b0d4cbcf800",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [0xf8bc4c]"
+          },
+          {
+            "address": 7562817,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": 7562818,
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "address": 7562820,
+            "bytes": "e857964900",
+            "mnemonic": "call",
+            "operands": "0xbcfca0"
+          },
+          {
+            "address": 7562825,
+            "bytes": "c7054cbcf80000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [0xf8bc4c], 0"
+          },
+          {
+            "address": 7562835,
+            "bytes": "85f6",
+            "mnemonic": "test",
+            "operands": "esi, esi"
+          },
+          {
+            "address": 7562837,
+            "bytes": "740b",
+            "mnemonic": "je",
+            "operands": "0x736662"
+          },
+          {
+            "address": 7562839,
+            "bytes": "834618ff",
+            "mnemonic": "add",
+            "operands": "dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": 7562843,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7562844,
+            "bytes": "ff151022ce00",
+            "mnemonic": "call",
+            "operands": "dword ptr [0xce2210]"
+          },
+          {
+            "address": 7562850,
+            "bytes": "8b4c2414",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": 7562854,
+            "bytes": "c7071838ce00",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi], 0xce3818"
+          },
+          {
+            "address": 7562860,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "address": 7562861,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": 7562862,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": 7562869,
+            "bytes": "83c418",
+            "mnemonic": "add",
+            "operands": "esp, 0x18"
+          },
+          {
+            "address": 7562872,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "partial_tail": null
+      },
+      {
+        "address": 13131632,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c85f70_10.bin",
+          "bytes": 10,
+          "sha256": "dadbe3e722545deef2b88f7cc89630c770d6d0da36514a83b9bc2c35bccfcbf7",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13131632,
+            "length": 10,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 13131632,
+            "bytes": "b8bc53db00",
+            "mnemonic": "mov",
+            "operands": "eax, 0xdb53bc"
+          },
+          {
+            "address": 13131637,
+            "bytes": "e9c90bf7ff",
+            "mnemonic": "jmp",
+            "operands": "0xbf6b43"
+          }
+        ],
+        "partial_tail": null
+      },
+      {
+        "address": 14373820,
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db53bc_36.bin",
+          "bytes": 36,
+          "sha256": "30c3ee2f0a51673f425df3d3b5204ef923548ac0ea12000a4df50d42333f27a8",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14373820,
+            "length": 36,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [],
+        "partial_tail": null
+      },
+      {
+        "address": 14373804,
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db53ac_16.bin",
+          "bytes": 16,
+          "sha256": "f287dc5752860ed82ff3eb2946c2960698d6fe77658bf816a944c16bd8134fb5",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14373804,
+            "length": 16,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [],
+        "partial_tail": null
+      },
+      {
+        "address": 13131616,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c85f60_16.bin",
+          "bytes": 16,
+          "sha256": "e6f62fad3445e04f081a94b27acd04e4d64a7817a43f5927ad3fc16764b814cd",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13131616,
+            "length": 16,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 13131616,
+            "bytes": "8b4de8",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x18]"
+          },
+          {
+            "address": 13131619,
+            "bytes": "e9c8c478ff",
+            "mnemonic": "jmp",
+            "operands": "0x412430"
+          },
+          {
+            "address": 13131624,
+            "bytes": "8d4dec",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp - 0x14]"
+          },
+          {
+            "address": 13131627,
+            "bytes": "e970bf78ff",
+            "mnemonic": "jmp",
+            "operands": "0x411ee0"
+          }
+        ],
+        "partial_tail": null
+      }
+    ],
+    "typed_flow": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "007365e0"
+      },
+      "modification_number_before": "55",
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "007365e0"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "007365e0"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "007365e0"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "007365e0"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "007365e2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "007365e2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "function_at_query": {
+        "space": "ram",
+        "offset": "007365e0"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "007365e0"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "007365e0"
+          },
+          "name": "BSP_Singleton_Unregister_00f8bc4c",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "153",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "007365e0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00736678"
+                },
+                "length": "153"
+              }
+            ]
+          }
+        }
+      ],
+      "direct_call_targets": [],
+      "modification_number_after": "55"
+    },
+    "listing_gaps": [],
+    "body_modification_number": "55",
+    "receiver": "ECX captured in EDI and saved for EH; no stack args; plainRET; no meaningful EAX result",
+    "normal_order": [
+      {
+        "address": "00736600",
+        "operation": "capturedreceiver profile=CFEA5C"
+      },
+      {
+        "address": "00736606",
+        "operation": "arm state0"
+      },
+      {
+        "address": "0073660E",
+        "operation": "first actual manager get415350"
+      },
+      {
+        "address": "00736613",
+        "operation": "capture firstmanager+10 section"
+      },
+      {
+        "address": "00736627",
+        "operation": "if section nonnull EnterIATCE2218"
+      },
+      {
+        "address": "0073662D",
+        "operation": "increment currentcapturedsection+18"
+      },
+      {
+        "address": "00736631",
+        "operation": "arm state1"
+      },
+      {
+        "address": "00736636",
+        "operation": "second actual manager get415350"
+      },
+      {
+        "address": "0073663B",
+        "operation": "reload currentF8BC4C after secondgetter"
+      },
+      {
+        "address": "00736644",
+        "operation": "unregisterBCFCA0(secondmanager,currentpublication)"
+      },
+      {
+        "address": "00736649",
+        "operation": "unconditional F8BC4C=0 after unregister normalreturn"
+      },
+      {
+        "address": "00736657",
+        "operation": "if capturedsectionnonnull decrement itscurrent+18"
+      },
+      {
+        "address": "0073665C",
+        "operation": "Leave capturedsection viaIATCE2210"
+      },
+      {
+        "address": "00736666",
+        "operation": "capturedreceiver profile=CE3818"
+      }
+    ],
+    "FuncInfo_DWORDs": [
+      429065506,
+      2,
+      14373804,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "unwind_map": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00C85F60",
+        "target": "00412430"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00C85F68",
+        "target": "00411EE0"
+      }
+    ],
+    "cleanup_actions": [
+      {
+        "address": 13131616,
+        "bytes": "8b4de8",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x18]"
+      },
+      {
+        "address": 13131619,
+        "bytes": "e9c8c478ff",
+        "mnemonic": "jmp",
+        "operands": "0x412430"
+      },
+      {
+        "address": 13131624,
+        "bytes": "8d4dec",
+        "mnemonic": "lea",
+        "operands": "ecx, [ebp - 0x14]"
+      },
+      {
+        "address": 13131627,
+        "bytes": "e970bf78ff",
+        "mnemonic": "jmp",
+        "operands": "0x411ee0"
+      }
+    ],
+    "failure": {
+      "state0": "saved originalreceiver to accepted00412430 root-profile reset",
+      "state1": "local capturedsection guard to accepted00411EE0 then state0",
+      "publication": "no action clears/restores publication; before explicitclear retain currentpublication/provider effects; afterclear cannot restore",
+      "receiver_free": false,
+      "unregister_retry": false,
+      "normal_release_state": "state1 remains armed; no safe double-release or fault recovery inferred",
+      "outside_contract": [
+        "invalid receiver/manager/capturedsection memory",
+        "throw or fault in Win32 criticalsection primitive",
+        "second exception during cleanup",
+        "unrestricted SEH translation",
+        "reentrant destruction",
+        "failure before state0 arms"
+      ]
+    }
+  },
+  "prior_code_dependency": {
+    "schema": "pin_dependency_v1",
+    "prior_worker_commit": "ca840ebc7ad2010ce00af8ad59f949af0d2a0ac1",
+    "accepted_on_main": "68cfbc7d5",
+    "prior_bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\evidence.zip",
+      "bytes": 43819024,
+      "sha256": "6462b203010cb44e7f5a23362d10eeac297c14466778ea06ad0dea750a03a903",
+      "payloads": 3522,
+      "payload_bytes": 280787882
+    },
+    "prior_epoch": "Source3352-particle-startup",
+    "current_epoch": "Source3352-particle-model-typed-views",
+    "current_unchanged_source_pins": [
+      {
+        "path": "include/bsp/gui_startup.hpp",
+        "bytes": 12017,
+        "sha256": "625f71034415a96315aff758371b9e52a07747e06455b51108e9893e3adc8bb9",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/gui_startup.cpp",
+        "bytes": 5432,
+        "sha256": "ef86036b6cc55c6ae4a9ad3a118933f83762510dc1e2ce3be612df6d3b0e76d4",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "bytes": 12775,
+        "sha256": "397bf3eb722ff71175b5e7011a569bf16efeeead5d3f132f3cfc4995fc22f058",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "bytes": 21946,
+        "sha256": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/locale_tables.hpp",
+        "bytes": 9471,
+        "sha256": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/locale_tables.cpp",
+        "bytes": 12433,
+        "sha256": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 126110,
+        "sha256": "6cc3e21931ee19e8aa6f7be92e995797b309bfd0a75f8767df7b475fc925bfbb",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 26650,
+        "sha256": "99c7143f6de7aae8933b783c4e1f584ac50af697e401189abe64d18d0fbaaa13",
+        "unchanged_from_constructor_epoch": true
+      }
+    ],
+    "dependency_only": true,
+    "previous_Native_constructor_base_evidence_replayed_here": false,
+    "recursive_Root_proof_tree_retained": false,
+    "accepted_contract": [
+      "exact4040h LocaleTableManagerImage",
+      "constructor Source is derivedfields only",
+      "nativebase uses two actual manager lookups andF8BC4Creload",
+      "capturedsection guard andno basecleanup publication repair",
+      "semanticapp locale4064h andrawloader/textconsumer work remain unresolved",
+      "00411EE0 actual section guard cleanup and00412430 generic root profile reset remain accepted constructor dependencies; their bodies are not freshly expanded",
+      "007365E0 base lifetime is the present fresh finite Native scope"
+    ],
+    "profile_lifetime": {
+      "worker_commit": "11e8d43fdd4e8279dc2694aad85abf74a823e3c9",
+      "Root_acceptance": "accepted, integrated and pushed on main20a408581",
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\evidence.zip",
+        "bytes": 42875668,
+        "sha256": "7e46c1147721b72c74a650dff3f8b8723d06772ec2d33beae518549d0ec550d4",
+        "payloads": 3495,
+        "payload_bytes": 275992344
+      },
+      "current_Source_same": true,
+      "Native_evidence_replayed_here": false,
+      "Root_broader_App_census_borrowed_here": false
+    }
+  },
+  "Source": {
+    "epoch": "Source3352-particle-model-typed-views",
+    "selected_project_inputs": 3352,
+    "artifacts": 4,
+    "current_integrator_all3356_exact_at_capture": true,
+    "worker_exact": 3345,
+    "worker_LF_only_differences": [
+      "cmake/startup.cmake",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "Git_worker_exact": 3352,
+    "Git_Source_exact": 3345,
+    "Git_LF_equivalent": 3352,
+    "all_byte_cohorts_retained": true,
+    "artifact_pins": [
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_core.lib",
+        "bytes": 73965334,
+        "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+        "provenance": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73965334,
+          "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_core.lib"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+        "provenance": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5102592,
+          "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_game.exe"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+        "provenance": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7549530,
+          "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\bsp_game.map"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+        "provenance": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Testing\\Temporary\\LastTest.log"
+        }
+      }
+    ],
+    "Core_archive_entries": 1991,
+    "Core_COFF_indices": 1988,
+    "App_COFF_indices": 70,
+    "App_census_scope": "Source-frozen bsp_game target only; no all-compiler-target absence claim",
+    "all_full_indices_reparsed": true,
+    "address_named_symbol_mentions": {
+      "007365e0": [],
+      "00736540": [],
+      "0073c9f0": [],
+      "0073caf0": []
+    },
+    "symbol_absence_scope": "Exact address-named symbols in frozenCore andbsp_game-target App indices only; source binding separately inspected",
+    "retained_whole_COFF_objects": 14,
+    "complete_selected_sections": [
+      {
+        "object": "sound_lifetime_access",
+        "prefix": "?get_manager_00415350@",
+        "index": 8,
+        "name": ".text$mn",
+        "declared_size": 62,
+        "raw_pointer": 1440,
+        "payload_bytes": 62,
+        "bytes": 62,
+        "sha256": "f675601968614c274acd78ff1d929b164352ab4f9d81432ee223fc03b74d4d17",
+        "relocations": [
+          {
+            "offset": 16,
+            "type": 20,
+            "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+          },
+          {
+            "offset": 42,
+            "type": 20,
+            "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ"
+          }
+        ],
+        "decoded_instructions": 24
+      },
+      {
+        "object": "sound_lifetime_access",
+        "prefix": "?native_system_section_10@",
+        "index": 10,
+        "name": ".text$mn",
+        "declared_size": 28,
+        "raw_pointer": 1570,
+        "payload_bytes": 28,
+        "bytes": 28,
+        "sha256": "469d87aecab442f920356e4bc4d6f9c00c6439e8de1d4cf3e4c717bf2be0a2ee",
+        "relocations": [],
+        "decoded_instructions": 14
+      },
+      {
+        "object": "sound_lifetime_access",
+        "prefix": "?unregister_object@",
+        "index": 15,
+        "name": ".text$mn",
+        "declared_size": 28,
+        "raw_pointer": 1702,
+        "payload_bytes": 28,
+        "bytes": 28,
+        "sha256": "a43e09149efa9b152858ae41cae8864781f1733d4551a286ac358ed8318e4be8",
+        "relocations": [
+          {
+            "offset": 13,
+            "type": 20,
+            "symbol": "?unregister_object@ConcreteSingletonLifetimeManager@bsp@@QAEXPAX@Z"
+          },
+          {
+            "offset": 24,
+            "type": 20,
+            "symbol": "?unregister_native_singleton_object_00bcfca0@bsp@@YIXPAX00@Z"
+          }
+        ],
+        "decoded_instructions": 12
+      },
+      {
+        "object": "sound_lifetime_access",
+        "prefix": "??0CapturedSoundLifetimeSection@",
+        "index": 4,
+        "name": ".text$mn",
+        "declared_size": 119,
+        "raw_pointer": 1169,
+        "payload_bytes": 119,
+        "bytes": 119,
+        "sha256": "563728379ecfbf4fe4dcb53031020e5b67cb79a3df96820616a0ecfc50d06d19",
+        "relocations": [
+          {
+            "offset": 28,
+            "type": 20,
+            "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+          },
+          {
+            "offset": 48,
+            "type": 6,
+            "symbol": "__imp__EnterCriticalSection@4"
+          },
+          {
+            "offset": 73,
+            "type": 20,
+            "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ"
+          },
+          {
+            "offset": 98,
+            "type": 20,
+            "symbol": "?singleton_enter_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z"
+          }
+        ],
+        "decoded_instructions": 47
+      },
+      {
+        "object": "sound_lifetime_access",
+        "prefix": "??1CapturedSoundLifetimeSection@",
+        "index": 6,
+        "name": ".text$mn",
+        "declared_size": 46,
+        "raw_pointer": 1348,
+        "payload_bytes": 46,
+        "bytes": 46,
+        "sha256": "159e614f98a4f5afdb78d25a3bd519d3106341eaa949a4142dc25cf05b6e5979",
+        "relocations": [
+          {
+            "offset": 14,
+            "type": 20,
+            "symbol": "?singleton_leave_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z"
+          },
+          {
+            "offset": 41,
+            "type": 6,
+            "symbol": "__imp__LeaveCriticalSection@4"
+          }
+        ],
+        "decoded_instructions": 18
+      },
+      {
+        "object": "game_hosts_singletons",
+        "prefix": "?sound_lifetime@",
+        "index": 159,
+        "name": ".text$mn",
+        "declared_size": 22,
+        "raw_pointer": 16194,
+        "payload_bytes": 22,
+        "bytes": 22,
+        "sha256": "0218c2831f335d373d98f3f55ca04efe8f7c1857ffee2dd0177720597fa7cb4f",
+        "relocations": [],
+        "decoded_instructions": 8
+      }
+    ],
+    "complete_selected_code_bytes": 305,
+    "borrowed_actual_access": "GameSingletonHost sound_lifetime borrows actual01090AA0 publicationcell; Source rawbranch captures section+10 and calls actualunregister; semanticbranch is separate",
+    "raw_layout": "existing4040 LocaleTableManagerImage; derivedfields-only dormant constructor",
+    "active_owner": "semantic GameLocaleHost4064/LocaleTables; unchanged constructordependency sourcepins",
+    "raw_locale_profile_binding": false
+  },
+  "next_frontier": {
+    "base_dormant_contract": "separate capturedreceiver + localepublicationcell + borrowed actualSoundaccess; twoGet/currentpublication argument; capturedfirstsection; unconditional postunregister clear; preservefailure sideeffects",
+    "required_lifetimes": [
+      "actual managerpublicationcell",
+      "localepublicationcell",
+      "capturedsection",
+      "original raw receiver",
+      "provider context retained through destructor/drain"
+    ],
+    "next_read_only": [
+      "0073C240 raw mapcleanup",
+      "derived0073C9F0 directly referenced EH map/actions individually bounded",
+      "actualpool/rangerelease context andexception compatibility"
+    ],
+    "later_dormant_composition": "full raw constructor/lifetime/context only after remaining destructor dependencies close",
+    "application_activation_GO": false,
+    "complete_lifetime_implementation_GO": false,
+    "Cpp_implemented": false,
+    "application_gates": [
+      "rawloader/textconsumer contract",
+      "owning lifecycle/drain order",
+      "exact typedCFF140 profile binding"
+    ],
+    "preserve": [
+      "Native constructor failurepublication sideeffects",
+      "secondlookup/currentpublication ordering",
+      "independent capturedreceiver",
+      "no silentpublication repair",
+      "no privateregistration domain"
+    ]
+  },
+  "validation": {
+    "bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_base_lifetime_readiness\\evidence.zip",
+      "bytes": 42857288,
+      "sha256": "0ae3d79e8153b512367feb2c9833f37ca9c0c5c9b5b3256db85600114c3c15dc",
+      "payloads": 3498,
+      "payload_bytes": 275711249
+    },
+    "portable_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_base_lifetime_readiness\\evidence.zip",
+      "payloads": 3498,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 6,
+      "Native_spans": 5,
+      "Native_retained_bytes": 231,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_base_lifetime_readiness\\physical_relocation\\evidence.zip",
+      "payloads": 3498,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 6,
+      "Native_spans": 5,
+      "Native_retained_bytes": 231,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_base_lifetime_readiness\\physical_relocation\\evidence.zip",
+      "bytes": 42857288,
+      "sha256": "0ae3d79e8153b512367feb2c9833f37ca9c0c5c9b5b3256db85600114c3c15dc"
+    },
+    "readiness_only": true,
+    "Cpp_changes": false,
+    "new_build_or_CTest": false,
+    "Original_execution": false,
+    "fixture": false,
+    "ABI": false,
+    "startup_process": false,
+    "gameplay": false,
+    "Ghidra_mutation": false,
+    "recursive_Root_proof_tree": false,
+    "replay_live_state": false
+  }
+}
