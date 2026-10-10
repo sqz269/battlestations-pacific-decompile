@@ -1,0 +1,1314 @@
+{
+  "schema": 1,
+  "packet": "cc12_skin_model_writer_owner_metadata",
+  "status": "selected_writer_still_unowned_metadata_complete_initializer_gates_held",
+  "baseline_main": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+  "inspection_git_head": "5d6b7cbc3ec508da92bfaa8e53b6a53d7239c068",
+  "owned_tracked_files": [
+    "docs/CC12_SKIN_MODEL_WRITER_OWNER_METADATA.md",
+    "reports/cc12_skin_model_writer_owner_metadata.json"
+  ],
+  "scope": {
+    "initial_metadata_addresses": [
+      "01090344",
+      "00CD8524"
+    ],
+    "fresh_leased_incoming_reference_metadata_addresses": [
+      "00B8F920",
+      "00B8F940",
+      "00B91630",
+      "00B91624"
+    ],
+    "new_Native_byte_disassembly_decompile_callee_data_handler_table_openings": false,
+    "new_physical_window": false,
+    "GPR_POST_Ghidra_script_restart_or_config_mutation": false,
+    "Cxx_CMake_ledger_build_test_runtime": false,
+    "loaded_Java_CodeSource_attested": false
+  },
+  "retained_physical_scope": {
+    "start": "00CD8524",
+    "end_inclusive": "00CD8529",
+    "bytes": 6,
+    "observation": "Previously accepted MOV DWORD PTR [01090344], ECX only",
+    "bytes_reopened_or_revalidated_here": false,
+    "predecessor_following_instruction_ECX_origin_or_full_body_admitted": false
+  },
+  "typed_flow_batches": [
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\typed_flow_primary.json",
+        "bytes": 10360,
+        "sha256": "651c1bb984be014873c441eca657b897052f1ed29cc37bde92b8d72d8bc7a8e6"
+      },
+      "utc": "2026-10-10T02:21:33.504246+00:00",
+      "responses": [
+        {
+          "query": "00CD8524",
+          "http_status": 200,
+          "raw_sha256": "9083a7e2f62275c95f7d6242f91f4c9e8f04f92aea9b7cb2717594f2876df0dd",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd8524"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00cd852a"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00cd852a"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "01090344",
+          "http_status": 200,
+          "raw_sha256": "08cac9c8cec472037bf2c5d845feb8a6ffd996114724f16de896af9dd0c09eb9",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "01090344"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": null,
+              "instruction_containing": null,
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "01090344"
+                },
+                "length": 4,
+                "java_class": "ghidra.program.database.code.DataDB",
+                "kind": "data",
+                "defined": true
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "01090344"
+                },
+                "length": 4,
+                "java_class": "ghidra.program.database.code.DataDB",
+                "kind": "data",
+                "defined": true
+              }
+            },
+            "instruction_flow": null,
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        }
+      ],
+      "strict_raw_and_identity_validation": true,
+      "all_modification_numbers": "5"
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\typed_flow_references.json",
+        "bytes": 29934,
+        "sha256": "e0cf7b20339d8fe92bb62cfedb61665823e641ca6d5ea15ad6d0465f4f61f10a"
+      },
+      "utc": "2026-10-10T02:23:15.238477+00:00",
+      "responses": [
+        {
+          "query": "00B8F920",
+          "http_status": 200,
+          "raw_sha256": "ce461d4db2f373c97e4b4bb672609d0e243c6b4cf8a6b1f163f78391a55ebdf2",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00b8f920"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f920"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f920"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f920"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f920"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00b8f925"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00b8f925"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": {
+              "space": "ram",
+              "offset": "00b8f920"
+            },
+            "function_containing_query": {
+              "space": "ram",
+              "offset": "00b8f920"
+            },
+            "functions": [
+              {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00b8f920"
+                },
+                "name": "BSP_SkinModel_GetCurrentType",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "6",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00b8f920"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00b8f925"
+                      },
+                      "length": "6"
+                    }
+                  ]
+                }
+              }
+            ],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "00B8F940",
+          "http_status": 200,
+          "raw_sha256": "c2e12f7bb2c2af66a19f6bd924adcb8768da8e0503cb72728fe03af69fba92c1",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00b8f940"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f940"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f940"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f940"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b8f940"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00b8f945"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00b8f945"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "00B91630",
+          "http_status": 200,
+          "raw_sha256": "0e840d4ebf040db832592b8ee9782c81ee1d35ddca7eda90a0a21ddacabe3f5a",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00b91630"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91630"
+                },
+                "length": 2,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91630"
+                },
+                "length": 2,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91630"
+                },
+                "length": 2,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91630"
+                },
+                "length": 2,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00b91632"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00b91632"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "00B91624",
+          "http_status": 200,
+          "raw_sha256": "8f238ac43f858cd3254c941fd50020d83ce65a1f69f6f72713aa085cf0cbe52a",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00b91624"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91624"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91624"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91624"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b91624"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00b91629"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00b91629"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "00CD8524",
+          "http_status": 200,
+          "raw_sha256": "9083a7e2f62275c95f7d6242f91f4c9e8f04f92aea9b7cb2717594f2876df0dd",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd8524"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd8524"
+                },
+                "length": 6,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00cd852a"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00cd852a"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "query": "01090344",
+          "http_status": 200,
+          "raw_sha256": "08cac9c8cec472037bf2c5d845feb8a6ffd996114724f16de896af9dd0c09eb9",
+          "payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "01090344"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": null,
+              "instruction_containing": null,
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "01090344"
+                },
+                "length": 4,
+                "java_class": "ghidra.program.database.code.DataDB",
+                "kind": "data",
+                "defined": true
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "01090344"
+                },
+                "length": 4,
+                "java_class": "ghidra.program.database.code.DataDB",
+                "kind": "data",
+                "defined": true
+              }
+            },
+            "instruction_flow": null,
+            "function_at_query": null,
+            "function_containing_query": null,
+            "functions": [],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        }
+      ],
+      "strict_raw_and_identity_validation": true,
+      "all_modification_numbers": "5"
+    }
+  ],
+  "xref_HTTP_capture": {
+    "file": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\xrefs_raw.json",
+      "bytes": 8763,
+      "sha256": "658729c40bbda60a96582de1985f89a1821f7411ec3cfd44052dc0b3544da09e"
+    },
+    "all_raw_responses_count": 5,
+    "xref_response": {
+      "url": "http://127.0.0.1:8089/get_xrefs_to?address=01090344&limit=100&program=battlestationspacific.exe",
+      "endpoint": "get_xrefs_to",
+      "method": "GET",
+      "http_status": 200,
+      "raw_response": "From 00b8f920 in BSP_SkinModel_GetCurrentType [READ]\nFrom 00b8f940 [READ]\nFrom 00b91630 [READ]\nFrom 00b91624 [DATA]\nFrom 00cd8524 [WRITE]",
+      "raw_response_base64": "RnJvbSAwMGI4ZjkyMCBpbiBCU1BfU2tpbk1vZGVsX0dldEN1cnJlbnRUeXBlIFtSRUFEXQpGcm9tIDAwYjhmOTQwIFtSRUFEXQpGcm9tIDAwYjkxNjMwIFtSRUFEXQpGcm9tIDAwYjkxNjI0IFtEQVRBXQpGcm9tIDAwY2Q4NTI0IFtXUklURV0=",
+      "raw_sha256": "39dbabf1eed26fe5e54f8eccf607971b03e30f71b4933dfe2ccc1cf6a196a24f"
+    },
+    "normal_identity_raw_response_count": 4,
+    "identity_before_and_after_replayed": true,
+    "typed_flow_modification_5_envelope_before_and_after": true,
+    "reference_rows": [
+      {
+        "address": "00B8F920",
+        "reference_category": "READ"
+      },
+      {
+        "address": "00B8F940",
+        "reference_category": "READ"
+      },
+      {
+        "address": "00B91630",
+        "reference_category": "READ"
+      },
+      {
+        "address": "00B91624",
+        "reference_category": "DATA"
+      },
+      {
+        "address": "00CD8524",
+        "reference_category": "WRITE"
+      }
+    ],
+    "recorded_direct_writers": 1,
+    "indirect_or_unresolved_writers_excluded": false,
+    "transport_recorder": "Ignored wrapper invokes unchanged bsp.main xrefs command; only allowed GET endpoints; raw bytes persisted before client parsing/CLI annotation; autostart disabled"
+  },
+  "ownership_findings": {
+    "writer_function_at": null,
+    "writer_function_containing": null,
+    "writer_function_records": [],
+    "writer_exact_instruction_length": 6,
+    "writer_flow_override": "NONE",
+    "writer_default_and_effective_flow": "FALL_THROUGH",
+    "writer_default_and_effective_fallthrough": "00CD852A",
+    "writer_fallthrough_overridden": false,
+    "global_code_unit": {
+      "kind": "data",
+      "length": 4,
+      "defined": true,
+      "instruction_at": null,
+      "instruction_containing": null,
+      "instruction_flow": null
+    },
+    "owned_reader": {
+      "address": "00B8F920",
+      "name": "BSP_SkinModel_GetCurrentType",
+      "body_ranges": [
+        {
+          "start": "00B8F920",
+          "end_inclusive": "00B8F925",
+          "length": 6
+        }
+      ],
+      "body_complete": true,
+      "no_return": false,
+      "is_thunk": false,
+      "direct_thunk_target": null
+    },
+    "other_reference_sources_unowned": [
+      "00B8F940",
+      "00B91630",
+      "00B91624"
+    ],
+    "DATA_reference_category_is_not_a_data_code_unit": "B91624 has exact 5-byte InstructionDB metadata despite DATA reference category",
+    "nearest_index_candidate": "00CD8460 BSP_GroupPool_InitializeStatic",
+    "nearest_candidate_admitted_as_owner": false,
+    "metadata_only_not_new_body_byte_ABI_or_instruction_semantics_proof": true
+  },
+  "current_Source_context": {
+    "complete_current_files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\native_resource_postprocess_full.hpp",
+        "bytes": 2781,
+        "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7",
+        "repository_path": "include/bsp/native_resource_postprocess_full.hpp",
+        "baseline_git_blob": "dcae95be6fd7bc8ae6af13eb0d6cf82c5580986f",
+        "inspection_git_blob": "dcae95be6fd7bc8ae6af13eb0d6cf82c5580986f",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\include\\bsp\\native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\include\\bsp\\native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_resource_postprocess_full.cpp",
+        "bytes": 20341,
+        "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6",
+        "repository_path": "src/native_resource_postprocess_full.cpp",
+        "baseline_git_blob": "bcb1945ada079af0ee3112c652875ef1c7c1ad9e",
+        "inspection_git_blob": "bcb1945ada079af0ee3112c652875ef1c7c1ad9e",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\src\\native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\src\\native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\native_point_light_provider.hpp",
+        "bytes": 3912,
+        "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1",
+        "repository_path": "include/bsp/native_point_light_provider.hpp",
+        "baseline_git_blob": "82920143ea106ca1e7892ca3cbf0cac467adb684",
+        "inspection_git_blob": "82920143ea106ca1e7892ca3cbf0cac467adb684",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\include\\bsp\\native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\include\\bsp\\native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_point_light_provider.cpp",
+        "bytes": 11224,
+        "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef",
+        "repository_path": "src/native_point_light_provider.cpp",
+        "baseline_git_blob": "48deec991495859f2b669ee731e9dff2a9af96db",
+        "inspection_git_blob": "48deec991495859f2b669ee731e9dff2a9af96db",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\src\\native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\src\\native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\game_native_type_storage.hpp",
+        "bytes": 6399,
+        "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8",
+        "repository_path": "include/bsp/game_native_type_storage.hpp",
+        "baseline_git_blob": "292782400c1244b84ee4475956838fbbc0811076",
+        "inspection_git_blob": "292782400c1244b84ee4475956838fbbc0811076",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\include\\bsp\\game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\include\\bsp\\game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\game_native_type_storage.cpp",
+        "bytes": 4725,
+        "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92",
+        "repository_path": "src/game_native_type_storage.cpp",
+        "baseline_git_blob": "ec4a8466c7628fdc84d7a070ed7103bc3cd828b3",
+        "inspection_git_blob": "ec4a8466c7628fdc84d7a070ed7103bc3cd828b3",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\src\\game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\src\\game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\game_native_vfs_application.cpp",
+        "bytes": 8470,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "repository_path": "src/game_native_vfs_application.cpp",
+        "baseline_git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+        "inspection_git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\src\\game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\src\\game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        }
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\game_native_resource_application.cpp",
+        "bytes": 6579,
+        "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+        "repository_path": "src/game_native_resource_application.cpp",
+        "baseline_git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+        "inspection_git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+        "raw_equal_to_baseline_git": true,
+        "equal_after_crlf_normalization": true,
+        "complete_current_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\current_Source\\src\\game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "baseline_git_bytes": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\baseline_git\\src\\game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        }
+      }
+    ],
+    "getter": "native_skin_model_type_00b8f920 reads a borrowed const volatile uint32 cell",
+    "consumers": [
+      "NativeResourcePostprocessContext.skin_model_type_01090344",
+      "NativePointLightPopulationRuntime.token_01090344"
+    ],
+    "selected_retained_type_and_application_sources_have_no_named_writer_or_backing": true,
+    "search_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\source_matches.txt",
+      "bytes": 1018,
+      "sha256": "56091a3e4161c79de1389619bef391cb6c787a58e409ca36c509911669680f41"
+    },
+    "no_guard_name_descriptor_or_counter_domain_inferred_from_other_families": true,
+    "distinct_roles": [
+      "SkinModel01090344",
+      "skined-mesh resource01090454",
+      "excluded01090370",
+      "camera resource01090288",
+      "compact0109042C"
+    ]
+  },
+  "next_scope_proposal_not_performed": {
+    "first_metadata_query": {
+      "address": "00CD8523",
+      "purpose": "Locate actual containing instruction immediately before known store; no inferred aligned entry"
+    },
+    "physical_lookbehind": {
+      "start": "00CD8515",
+      "end_exclusive": "00CD8524",
+      "length": 15,
+      "reason": "Bounded immediate-predecessor inspection seeking incoming ECX definition, using verified instruction starts only",
+      "lower_edge_is_instruction_or_function_entry_claimed": false,
+      "do_not_decode_from_unverified_lower_boundary": true,
+      "different_or_wider_scope_requires_separate_approval": true
+    },
+    "fresh_lease_and_Root_scope_required": true,
+    "queried_or_opened": false,
+    "existing_store_does_not_need_reopening": true,
+    "predecessor_resolution_would_not_admit_whole_initializer": true
+  },
+  "held_gates": [
+    "actual complete function owner and entry",
+    "incoming ECX value definition",
+    "full body/control extent",
+    "original argument/register/stack/return ABI",
+    "guard/name/layout",
+    "real parent and counter chain",
+    "partial-state and repeat-call semantics",
+    "caller/CRT consumer and placement",
+    "production retained backing and initializer",
+    "build, ABI and runtime validation"
+  ],
+  "completed_camera_packet_preservation": {
+    "commit": "de4588ca44d2a4fa4d003b5dbe87390d0a469bb5",
+    "four_files": [
+      {
+        "file": "include/bsp/native_camera_resource_initializer_fragment.hpp",
+        "sha256": "789341dd8930b436f67f9c9465f9393210d412b95ffeb67632cc661e8487bfc6",
+        "matches_completed_commit": true
+      },
+      {
+        "file": "src/native_camera_resource_initializer_fragment.cpp",
+        "sha256": "dc63cf5f9f28928fbd9830f362f987ed2bde560b628e9fbca38d94419bb733d4",
+        "matches_completed_commit": true
+      },
+      {
+        "file": "docs/CC12_CAMERA_RESOURCE_INITIALIZER_FRAGMENT_SOURCE.md",
+        "sha256": "cd85d1f09c98ab824fa96bb6a7be3d8436a015d34bd1a0eeb9778fe19bebfb67",
+        "matches_completed_commit": true
+      },
+      {
+        "file": "reports/cc12_camera_resource_initializer_fragment_source.json",
+        "sha256": "bf2bdab3e857614cf742622f4326f70eaa58be35600eeebf43d094dd36906c93",
+        "matches_completed_commit": true
+      }
+    ],
+    "completed_report_and_bundle_hashes_unchanged": true,
+    "files_or_receipts_changed": false
+  },
+  "input_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_SKIN_MODEL_WRITER_DISCOVERY.md",
+      "bytes": 6193,
+      "sha256": "9f21d829a7c06bd425b18fa1e3ef78bc059b2611a7306ef8416e697f8b0c29c4",
+      "baseline_git_blob": "83bfdc74bf724a2acabb0323572d132dfcd0269a",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\docs\\CC12_SKIN_MODEL_WRITER_DISCOVERY.md",
+        "bytes": 6193,
+        "sha256": "9f21d829a7c06bd425b18fa1e3ef78bc059b2611a7306ef8416e697f8b0c29c4"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_skin_model_writer_discovery.json",
+      "bytes": 23983,
+      "sha256": "2b345d4c9296162b7af47c9a0ad6c4d931c8cb67aef6353fe38faf87828cb32c",
+      "baseline_git_blob": "e109c8e4a3e0ec53e7288c698516256ee612406d",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\reports\\cc12_skin_model_writer_discovery.json",
+        "bytes": 23983,
+        "sha256": "2b345d4c9296162b7af47c9a0ad6c4d931c8cb67aef6353fe38faf87828cb32c"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+      "bytes": 10333,
+      "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a",
+      "baseline_git_blob": "0c5bd7518e0b5e38a1c931cefc9b0d18b87b63c7",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\docs\\CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+        "bytes": 10333,
+        "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_remaining_resource_descriptors_source_readiness.json",
+      "bytes": 41864,
+      "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3",
+      "baseline_git_blob": "35db9ba1587e07c034b3595abbdcbd5821bead34",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\reports\\cc12_remaining_resource_descriptors_source_readiness.json",
+        "bytes": 41864,
+        "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "baseline_git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\tools\\bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "baseline_git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "baseline_git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\tools\\ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "baseline_git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\frozen\\inputs\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\capture_xrefs.py",
+      "bytes": 3329,
+      "sha256": "0a5f84b4a80164a45f5d59b141f421fb623713e98b49cb28056a0a8714464d47"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\finalize.py",
+      "bytes": 16720,
+      "sha256": "38e49d3f23bcb46cb4eda72b92889f4852ec39848a6f6561085f89c1186c999a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\source_matches.txt",
+      "bytes": 1018,
+      "sha256": "56091a3e4161c79de1389619bef391cb6c787a58e409ca36c509911669680f41"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\typed_flow_primary.json",
+      "bytes": 10360,
+      "sha256": "651c1bb984be014873c441eca657b897052f1ed29cc37bde92b8d72d8bc7a8e6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\typed_flow_references.json",
+      "bytes": 29934,
+      "sha256": "e0cf7b20339d8fe92bb62cfedb61665823e641ca6d5ea15ad6d0465f4f61f10a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\xrefs_cli.txt",
+      "bytes": 143,
+      "sha256": "fb9c541c8b14871e61ac1c65dc999cb8cd87ec48bce50cd02c6bedf94c48378b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\xrefs_raw.json",
+      "bytes": 8763,
+      "sha256": "658729c40bbda60a96582de1985f89a1821f7411ec3cfd44052dc0b3544da09e"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_SKIN_MODEL_WRITER_OWNER_METADATA.md",
+    "bytes": 6787,
+    "sha256": "80ff1d8eb43fbe31f596936662019cfe03a78a234d1df08c47df800430319436"
+  },
+  "validation": {
+    "typed_responses_strictly_pure_replayed": 8,
+    "raw_HTTP_receipts_hash_replayed": 13,
+    "all_typed_modification_numbers": "5",
+    "actual_GPR_and_program_identity_accepted": true,
+    "Source_files_match_baseline_and_inspection_Git": 8,
+    "new_build_tests_or_Native_execution": false,
+    "initializer_Source_packet_ready": false
+  }
+}
