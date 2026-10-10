@@ -7233,6 +7233,154 @@
             "Independent generated-DATA output review and Root DATA acceptance remain separate pending gates.",
             "The new bound plan remains inert and no selected adopter execution or authority is granted."
           ]
+        },
+        "fresh_F6_prepare01_closed_actual_DATA_accepted_separate_DATA_only_adoption_authorized": {
+          "status": "CLOSED_ACTUAL_DATA_AND_MINIMAL_PLAN_PEERS_ACCEPTED_SEPARATE_DATA_ONLY_ADOPTION_AUTHORIZED_ACTUAL_ADOPTER_TERMINAL_PENDING",
+          "Source_credit": 0,
+          "Root_actual_materialized_DATA_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_complete_actual_materialized_DATA_peer_accepted_DATA01.json",
+            "bytes": 109849,
+            "sha256": "868cc83d9c651498357510e961b224e67e20adec307714fa377bcf1d730cfc69"
+          },
+          "Root_acceptance_checks": 536,
+          "closed_independent_component_counts": {
+            "generated_graph": {
+              "checks": 467157,
+              "equal_current_pins": 29031
+            },
+            "main_review": {
+              "checks": 1196243,
+              "equal_current_pins": 42314
+            },
+            "readonly_seal": {
+              "checks": 325338,
+              "equal_current_pins": 42319
+            },
+            "final_verification": {
+              "checks": 367712,
+              "equal_current_pins": 42322
+            }
+          },
+          "complete_independent_predicate_digests": {
+            "generated_graph": "5531c36fa2835a9f56cb15ec9e8d2d656655872ee98cb64c4e98ef925a465993",
+            "main_review": "32bf378c26368908f4c4d95a6fb46845a558d96e472dffb16e89d092de35798c",
+            "readonly_seal": "d2ecc0d7c0893a32a0dcace37e659286a91e8ba010aa37167ae2ed094501fa9d",
+            "final_verification": "c591239e67d3feb8f6c67b4d98e8db27be3ee37fb30f2fe08a1070c04f7b3db6"
+          },
+          "closed_actual_output_peer_selection": {
+            "schema": "Root_F6_prepare01_closed_actual_output_peer_selection_v1",
+            "author": "Root",
+            "Source_credit": 0,
+            "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_actual_generated_DATA_independent_peer_20261010",
+            "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_actual_generated_DATA_independent_peer_20261010\\review_family",
+            "external": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_actual_generated_DATA_independent_peer_20261010\\final_transport.DATA.json",
+              "bytes": 133451968,
+              "sha256": "3a47f4744065b2e287dcf0c1827c4535fe8e0689ea29bdc1466d7bdacf778d43"
+            },
+            "complete_actual_outer_closer_tool": {
+              "tool": "exec_command",
+              "arguments": {
+                "cmd": "@'\nimport runpy,stat,sys\nfrom pathlib import Path\nD=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_review_startup_sources/local/cc12_type1011_F6_prepare01_actual_generated_DATA_independent_peer_20261010')\nhelper=D/'review_family/close_actual_F6_generated_peer_DATA01.py'\ncapture=D/'complete_actual_own_native_capture.DATA.json'\ncapture.chmod(stat.S_IREAD)\nsys.argv=[str(helper),'transport','--capture',str(capture),'--verification',str(D/'final_verification.DATA.json'),'--output',str(D/'final_transport.DATA.json')]\nrunpy.run_path(str(helper),run_name='__main__')\n'@ | & 'C:/ProgramData/miniconda3/python.exe' -I -B -E -S -",
+                "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_review_startup_sources",
+                "max_output_tokens": 1700,
+                "yield_time_ms": 1000
+              },
+              "result": {
+                "chunk_id": "334428",
+                "wall_time_seconds": 3.8363717,
+                "exit_code": 0,
+                "original_token_count": 140,
+                "output": "{\"status\": \"COMPLETE_INDEPENDENT_F6_ACTUAL_DATA_NATIVE_TRANSPORT_CLOSED\", \"external\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\\\local\\\\cc12_type1011_F6_prepare01_actual_generated_DATA_independent_peer_20261010\\\\final_transport.DATA.json\", \"bytes\": 133451968, \"sha256\": \"3a47f4744065b2e287dcf0c1827c4535fe8e0689ea29bdc1466d7bdacf778d43\"}, \"checks\": 39, \"verification_checks\": 367712, \"verification_pins\": 42322, \"files\": 12, \"members\": 12, \"Source_credit\": 0, \"Root_acceptance\": false, \"all_authority\": false}\r\n"
+              }
+            },
+            "actual_external_future_terminal_was_null": true,
+            "phase_authority": false,
+            "runtime_authority": false,
+            "DATA_adoption_authority": false
+          },
+          "bounded_adopter_plan_peer_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_F6_prepare01_bound_adopter_plan_peer_accepted_DATA01.json",
+            "bytes": 5438307,
+            "sha256": "dc55eeae955e0553c6fc3e40c49bbeab547684d50de1feb64ac0cdfaa8a51460"
+          },
+          "selected_actual_seal_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\adoption_plan.F6_prepare01.actual_seals_bound.inert_DATA01.json",
+            "bytes": 54282,
+            "sha256": "1040befb7e6c5b195e3322acd5d894bbe3b2b3c0de8296427e874a1f16157a2a"
+          },
+          "separate_DATA_adoption_authorization": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_DATA_adoption_instruction_DATA01.json",
+            "bytes": 3467,
+            "sha256": "99f1b11a331a1129e6df4ec2cff2599896fc123f6d9679bee0345cbc91f2c8e1"
+          },
+          "whole_Root_acceptance_and_authorization_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_complete_DATA_acceptance_and_authorization_native_DATA01.json",
+            "bytes": 10192,
+            "sha256": "09a09eecabd4600681e6676dc09736fb3da7b0d555ba08cc69cca74e4c2e697d"
+          },
+          "actual_adopter_initial_chunk_id": "606e0f",
+          "actual_adopter_session_id": 50467,
+          "actual_adopter_terminal": null,
+          "actual_adopter_output_review": null,
+          "actual_fixture_execution": null,
+          "DATA_adoption_authority": true,
+          "dispatch_authority": false,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "original_clock_started": false,
+          "original_capture_replayed": false
+        },
+        "fresh_F6_prepare01_actual_DATA_adoption_closed_pending_complete_adopted_output_review": {
+          "status": "ROOT_AUTHORIZED_DATA_ADOPTION_ONLY; complete adopted output review pending",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "actual_execution_event": null,
+          "actual_DATA_adoption_completed": true,
+          "actual_adopter_session": 50467,
+          "actual_adopter_terminal_chunk": "4da094",
+          "actual_adopter_exit_code": 0,
+          "complete_original_native_envelope_count": 9,
+          "whole_original_native_capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_actual_DATA_adoption_native_DATA01.json",
+            "bytes": 7752,
+            "sha256": "861815abefadf548f86fc9e601dc298ffa03d24c318f402b0bf61514b57d2ac9"
+          },
+          "actual_final_Root_seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F6D07_adopter01\\type1011_f6_prepare01_adopted01\\Root_seal.json",
+            "bytes": 18544,
+            "sha256": "5730212a8e4b9be55dce8a1406a671fa110f2d0776e970f98f5e933168887829"
+          },
+          "separate_DATA_adoption_instruction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_DATA_adoption_instruction_DATA01.json",
+            "bytes": 3467,
+            "sha256": "99f1b11a331a1129e6df4ec2cff2599896fc123f6d9679bee0345cbc91f2c8e1"
+          },
+          "selected_actual_seals_bound_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\adoption_plan.F6_prepare01.actual_seals_bound.inert_DATA01.json",
+            "bytes": 54282,
+            "sha256": "1040befb7e6c5b195e3322acd5d894bbe3b2b3c0de8296427e874a1f16157a2a"
+          },
+          "selected_adopter_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\selected_adopter.py",
+            "bytes": 64940,
+            "sha256": "a5286b8975e4762464bac6fdd927cce36ce83ecd2634e1686fc5e206d58dcfed"
+          },
+          "complete_adopted_output_review_pending": true,
+          "fixture_dispatch_authorized": false,
+          "dispatch_executed": false,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "future_API_terminal_or_runtime_proven": false,
+          "ABI_qualification": false,
+          "game_validation": false,
+          "prepare_runtime_clock_started": false,
+          "F6_fixture_absent": true,
+          "Root_SQLite_absent": true,
+          "historical_original_F5_capture_preserved": true
         }
       }
     }

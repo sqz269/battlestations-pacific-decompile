@@ -1,0 +1,1483 @@
+{
+  "schema": "cc12.locale_node_slot_provider_owner.design.v1",
+  "status": "complete Native provider and scalar-wrapper contracts; owner lifetime unresolved at two unbounded reference sites",
+  "decision": {
+    "provider_Native_contract_closed": true,
+    "scalar_wrapper_Native_contract_closed": true,
+    "actual_static_base_proved": "00E1768C from MOV ECX immediate at0073C230, not inferred by subtracting section offsets",
+    "existing_Source_provider_identified": false,
+    "owner_initialization_lifetime_closed": false,
+    "raw_map_Cpp_composition_GO": false,
+    "application_GO": false,
+    "qualification": "This packet authorizes and performs Native readiness only. A future dormant provider implementation may use the now-established raw contract under an explicit already-initialized actual-owner precondition, but it would not establish a canonical Source binding or the owner's lifecycle. No C++ is supplied or activated here."
+  },
+  "fresh_scope": {
+    "complete_function_bodies": [
+      {
+        "entry": "00736090",
+        "end_inclusive": "007360F8",
+        "bytes": 105,
+        "instructions": 36
+      },
+      {
+        "entry": "0073C220",
+        "end_inclusive": "0073C23F",
+        "bytes": 32,
+        "instructions": 11
+      }
+    ],
+    "initial_data": {
+      "entry": "00E1768C",
+      "bytes": 56,
+      "value": "all zero in Ghidra and the file-backed .data range of the original image"
+    },
+    "fresh_raw_bytes": 193,
+    "fresh_complete_code_bytes": 137,
+    "fresh_initial_data_bytes": 56,
+    "reused_prior_bytes": 409,
+    "typed_query_commands": 17,
+    "owner_sites": "00CC8D30 and00CD9410: size/prototype checks, complete typed listing/function metadata and exact one-instruction context only; no body-sized byte reads or inferred routine boundaries",
+    "GPR": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe verified by bsp.py Client before queries; retained typed captures before/after use modification67",
+    "mutations": "None: no C++, ledger, annotation, function/body/listing/prototype/flow repair, build, tests, probes, game or OS changes."
+  },
+  "provider_00736090": {
+    "stored_signature": "undefined FUN_00736090(void), incomplete analysis prototype, left untouched",
+    "recovered_ABI": "Original __thiscall-like ECX=actual pool base, one DWORD stacked actual slot at incomingESP+4, RET4. EBX/EBP/ESI/EDI preserved. No meaningful EAX return is established; the final import's incidental return is not a success result.",
+    "normal_order": [
+      "Save nonvolatile registers and capture ECX pool in ESI; compute section=pool+0Ch in EDI.",
+      "Call CURRENT EnterCriticalSection through IAT00CE2218. Increment CURRENT DWORD[section+18h] modulo2^32.",
+      "Only after Enter/depth increment, read the stacked slot pointer, then CURRENT DWORD[slot+18h] block index, CURRENT DWORD[pool+28h] table pointer, then CURRENT table[index]. No pre-Enter cache of these fields.",
+      "Compute wrapped32 address(slot)-address(block), treat those bits as signed32, then92492493 signed-IMUL/high-plus-input/SAR4/sign correction. This implements signed division by28 with truncation toward zero; keep low16 for the free index.",
+      "Read CURRENT unsigned16 count at block+7800h. Store low16 slot index at block+7000h+2*captured_count. ADD1 to the CURRENT count WORD at+7800h modulo2^16, after that store.",
+      "Compare saved block index to CURRENT DWORD[pool+34h] unsigned; JNC/JAE skips when index>=minimum, otherwise write the lower index.",
+      "Decrement CURRENT depth DWORD modulo2^32, then call CURRENT LeaveCriticalSection through IAT00CE2210, restore registers and RET4."
+    ],
+    "no_extra_behavior": "No payload/header reads other than slot+18 allocator identity; no string cleanup, node-link mutation, heap free, null/range/capacity/overflow validation or local FS/EH/unlock guard.",
+    "semantic_name": "Slot return/free-index publication is an evidence-backed descriptive hypothesis, not a recovered symbol."
+  },
+  "wrapper_0073C220": {
+    "stored_signature": "undefined FUN_0073c220(void), left untouched",
+    "recovered_ABI": "ECX=actual original node, one DWORD flags argument at incomingESP+4, of which only bit0 of its low byte is tested. ESI preserved; RET4. Return EAX=the original node address bits, including after slot return, with no promise that it remains a live dereferenceable object.",
+    "order": [
+      "Capture ECX node in ESI and call00737CE0 with the original node before reading flags.",
+      "After payload normal return, TEST byte[ESP+8],1 (incoming flags at incomingESP+4 because ESI is saved). If bit0 is clear, skip the slot return; all other flag bits are ignored.",
+      "When bit0 is set, push original ESI node, load literal ECX=00E1768C, and call the complete00736090 provider.",
+      "Set EAX=original ESI node, restore ESI and RET4."
+    ],
+    "failure": "An escaping payload failure precedes flag testing and node-slot return. An escaping slot-provider failure prevents the final EAX/RET path. There is no wrapper-local EH or extra rollback. Existing00737CE0 cleanup behavior remains a separate accepted dependency.",
+    "classification": "Scalar deleting-destructor-shaped wrapper is descriptive only. It conditionally recycles the slot; it is not an unconditional free, direct CRT deallocation or newly established owning C++ type."
+  },
+  "inline_map_comparison": {
+    "dependency": "Previously accepted complete0073C240228-byte body; no fresh map query or bytes",
+    "equivalent_data_schedule": "Binding provider ECX to actual00E1768C yields the same section, depth, post-Enter slot index/table/block reads, signed quotient/low16 publication, current count increment, unsigned minimum update and depth/Leave ordering as the inline73C27A..73C2DC sequence.",
+    "map_only": "Map saves next before payload cleanup and returns the node slot unconditionally after normal cleanup; it does not need the scalar wrapper's flag gate. Map traverses current bucket heads and does final bucket/count clears separately.",
+    "import_identity_difference": "The map caches Enter IAT00CE2218 once at function entry; standalone00736090 rereads that IAT at each call. Both reload Leave IAT00CE2210 per return. Factoring through the standalone provider is equivalent only under stable imports, not under arbitrary IAT mutation/hooking between nodes.",
+    "other_ABI_difference": "The provider is a distinct ECX-pool/stacked-slot RET4 frame; the inline map keeps original current node in a register. A normalized C++ composition does not claim stack-argument aliasing, register or fault-boundary ABI equivalence."
+  },
+  "proved_fields": {
+    "base": {
+      "address": "00E1768C",
+      "evidence": "0073C230 literal MOV ECX"
+    },
+    "section": {
+      "offset": "0C",
+      "address": "00E17698",
+      "evidence": "00736096 LEA EDI,[ESI+C] and Enter/Leave calls; inline map literal matches"
+    },
+    "depth": {
+      "offset": "24",
+      "address": "00E176B0",
+      "width": "DWORD",
+      "evidence": "section+18h increment/decrement"
+    },
+    "table_publication": {
+      "offset": "28",
+      "address": "00E176B4",
+      "width": "DWORD pointer",
+      "evidence": "007360AB current pool+28 read; selected DWORD entry indexed by node+18"
+    },
+    "minimum": {
+      "offset": "34",
+      "address": "00E176C0",
+      "width": "DWORD unsigned index",
+      "evidence": "007360DF compare,007360E2 unsigned skip,007360E4 conditional store"
+    },
+    "extent_limit": "Accesses require at least38h bytes through the last DWORD; this is not proof that38h is the complete owner size or that intervening fields are initialized.",
+    "node_and_block": "Slot+18 DWORD block identity;1Ch stride; selected block WORD free stack+7000h and WORD count+7800h. No allocation size, initial count, page count/capacity fields or constructor-produced slot identities are established by return alone.",
+    "headers": "Separate payload contract: narrow length+0/pointer+4; wide length+8/pointer+Ch, relative to original node. Provider does not read these headers; wrapper calls the accepted helper."
+  },
+  "owner_provenance_stop": {
+    "data_xrefs": "Section E17698 has map PUSH references; depth E176B0 has map RMWs; table E176B4 has map read; minimum E176C0 has map compare/write. General provider accesses are pool-relative and therefore need not appear as fixed-cell xrefs.",
+    "base_xrefs": [
+      "007373F1 in FUN_007373F0",
+      "0073C230 in FUN_0073C220",
+      "00A9FCDD in BSP_StringMap_InsertOrGet",
+      "00CC8D30 with no containing function",
+      "00CD9410 with no containing function"
+    ],
+    "bounded_sites": [
+      {
+        "address": "00CC8D30",
+        "instruction": "MOV ECX,0xe1768c",
+        "instruction_length": 5,
+        "function_at_query": null,
+        "function_containing_query": null,
+        "body_ranges": [],
+        "flow": "NONE override; ordinary fallthrough00CC8D35"
+      },
+      {
+        "address": "00CD9410",
+        "instruction": "MOV ECX,0xe1768c",
+        "instruction_length": 5,
+        "function_at_query": null,
+        "function_containing_query": null,
+        "body_ranges": [],
+        "flow": "NONE override; ordinary fallthrough00CD9415"
+      }
+    ],
+    "not_established": "No admitted complete body extent or subsequent call target for either site. Startup and teardown roles are provisional address-region leads, not established functions. No InitCriticalSection, allocator-list registration, profile/vtable, table construction, node allocation, atexit registration, destruction order or owner lifetime proof is inferred.",
+    "initial_bytes": "All56 bytes in the inspected owner-prefix span are initially zero in both the original file-backed .data and Ghidra. That is image-state evidence only, not an initialized critical section, empty live allocator or permission to substitute zeroed storage.",
+    "stop_reason": "At most two extra owner-reference sites were admitted. Neither supplies a function/body size; no body expansion, repair, additional constructor/teardown follow or third site is performed. Exact missing dependency is bounded routine/target and lifecycle evidence for00CC8D30/00CD9410 and their actual initialization/destruction providers."
+  },
+  "failure_and_admission": {
+    "failure": "No local cleanup exists around Enter/depth/metadata/Leave. Earlier writes or a held section can remain after a failure. No null handling, rollback, noexcept translation, retry guarantee or asynchronous/SEH recovery is established. Wrapper payload failures retain the accepted helper's separate narrow-cleanup behavior.",
+    "borrowed_lifetime": "Require the same actual initialized owner and alive section/cells/table/selected block through return, an aligned unique allocated1Ch slot with coherent current block ID, valid extents and free-stack capacity. Keep payload and map lifetime rules from corrected readiness. Initialized owner and canonical Source binding remain unresolved here.",
+    "arithmetic_aliasing": "Use modulo32 address/depth arithmetic, signed bit interpretation for division, low16 slot truncation and current WORD increment. Avoid C++ unrelated-pointer subtraction. Require valid capacity/index/address extents and nonoverlap that preserves metadata; do not insert guards or assume old_count+1 reproduces current-count RMW under aliasing.",
+    "synchronization": "Node section covers metadata return only. It does not establish safe map/payload reentry, concurrent ownership mutation or publication lifetime. Stable Enter/Leave imports are a necessary factoring assumption; no arbitrary stack/import mutation or native EH/ABI parity claim."
+  },
+  "next_packet": {
+    "smallest_owner_frontier": "Separate read-only boundary/target readiness for00CC8D30 and00CD9410, starting from retained exact entry instruction/flow metadata. Admit only bounded complete spans after establishing extent; preserve any unresolved listing state. Any repair or constructor/destructor expansion requires separate explicit ownership/authorization.",
+    "Source_frontier": "The exact raw slot-return provider can now be designed from105-byte evidence; current Source lacks it and lacks a canonical initialized owner authority. Later implementation should borrow actual00E1768C ownership, preserve post-Enter reloads and failure/import limits, and avoid private pools or zero-storage substitution.",
+    "remaining": "Owner initialization/destruction, node allocation and capacity, map constructor/insertion/lookup, derived locale destructor EH/ranges, owning locale and loader lifetimes, binary ABI and game validation remain separate gates."
+  },
+  "owned_files": [
+    "docs/CC12_LOCALE_NODE_SLOT_PROVIDER_OWNER.md",
+    "reports/cc12_locale_node_slot_provider_owner.json"
+  ],
+  "capture_head": "1232117fcb9ba549faa23a7bdb809297a8ea3a31",
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "headers": {
+      "entry": "retained/PE/headers.bin",
+      "bytes": 696,
+      "sha256": "f5ca968caf7e4a7bea8956f7825264c0649f7cf66b35916c24dc902396c21314",
+      "provenance": "exact installed PE header bytes"
+    },
+    "imagebase": 4194304,
+    "sections": [
+      {
+        "name": ".text",
+        "virtual_size": 9306422,
+        "rva": 4096,
+        "raw_pointer": 4096,
+        "raw_size": 9310208
+      },
+      {
+        "name": ".rdata",
+        "virtual_size": 1202980,
+        "rva": 9314304,
+        "raw_pointer": 9314304,
+        "raw_size": 1204224
+      },
+      {
+        "name": ".data",
+        "virtual_size": 2719452,
+        "rva": 10518528,
+        "raw_pointer": 10518528,
+        "raw_size": 65536
+      },
+      {
+        "name": ".rsrc",
+        "virtual_size": 1630400,
+        "rva": 13238272,
+        "raw_pointer": 10584064,
+        "raw_size": 1634304
+      }
+    ]
+  },
+  "original_image_copy": {
+    "entry": "retained/PE/original_image.bin",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "qualification": "Read-only copy of the same hash-verified installed PE for self-contained disk-range/hash replay. Only explicitly selected Native spans and PE header mapping are analyzed; copying the image does not expand routine/body admission."
+  },
+  "fresh_Native": [
+    {
+      "address": 7561360,
+      "kind": "complete_code",
+      "pin": {
+        "entry": "retained/FreshNative/00736090_105.bin",
+        "bytes": 105,
+        "sha256": "8b2109e966d16357a252382c58ebcac5e2d3870901c277716741b7eb94047f1a",
+        "provenance": {
+          "tool": "bsp.py ghidra bytes",
+          "address": 7561360,
+          "length": 105,
+          "project": "C:/Users/sqz269/bsp.gpr",
+          "program": "/battlestationspacific.exe",
+          "disk_exact": true,
+          "disk_offset": 3367056,
+          "section": ".text"
+        }
+      },
+      "decode": [
+        {
+          "address": 7561360,
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": 7561361,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561362,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7561363,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561364,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 7561366,
+          "bytes": "8d7e0c",
+          "mnemonic": "lea",
+          "operands": "edi, [esi + 0xc]"
+        },
+        {
+          "address": 7561369,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561370,
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]"
+        },
+        {
+          "address": 7561376,
+          "bytes": "83471801",
+          "mnemonic": "add",
+          "operands": "dword ptr [edi + 0x18], 1"
+        },
+        {
+          "address": 7561380,
+          "bytes": "8b442414",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": 7561384,
+          "bytes": "8b5818",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [eax + 0x18]"
+        },
+        {
+          "address": 7561387,
+          "bytes": "8b4e28",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": 7561390,
+          "bytes": "8b0c99",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + ebx*4]"
+        },
+        {
+          "address": 7561393,
+          "bytes": "2bc1",
+          "mnemonic": "sub",
+          "operands": "eax, ecx"
+        },
+        {
+          "address": 7561395,
+          "bytes": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": 7561397,
+          "bytes": "b893244992",
+          "mnemonic": "mov",
+          "operands": "eax, 0x92492493"
+        },
+        {
+          "address": 7561402,
+          "bytes": "f7ed",
+          "mnemonic": "imul",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561404,
+          "bytes": "03d5",
+          "mnemonic": "add",
+          "operands": "edx, ebp"
+        },
+        {
+          "address": 7561406,
+          "bytes": "c1fa04",
+          "mnemonic": "sar",
+          "operands": "edx, 4"
+        },
+        {
+          "address": 7561409,
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7561411,
+          "bytes": "c1e81f",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f"
+        },
+        {
+          "address": 7561414,
+          "bytes": "03c2",
+          "mnemonic": "add",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7561416,
+          "bytes": "0fb79100780000",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x7800]"
+        },
+        {
+          "address": 7561423,
+          "bytes": "6689845100700000",
+          "mnemonic": "mov",
+          "operands": "word ptr [ecx + edx*2 + 0x7000], ax"
+        },
+        {
+          "address": 7561431,
+          "bytes": "6683810078000001",
+          "mnemonic": "add",
+          "operands": "word ptr [ecx + 0x7800], 1"
+        },
+        {
+          "address": 7561439,
+          "bytes": "3b5e34",
+          "mnemonic": "cmp",
+          "operands": "ebx, dword ptr [esi + 0x34]"
+        },
+        {
+          "address": 7561442,
+          "bytes": "7303",
+          "mnemonic": "jae",
+          "operands": "0x7360e7"
+        },
+        {
+          "address": 7561444,
+          "bytes": "895e34",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], ebx"
+        },
+        {
+          "address": 7561447,
+          "bytes": "834718ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [edi + 0x18], -1"
+        },
+        {
+          "address": 7561451,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561452,
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]"
+        },
+        {
+          "address": 7561458,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 7561459,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 7561460,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561461,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": 7561462,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "disk_offset": 3367056,
+      "section": ".text"
+    },
+    {
+      "address": 7586336,
+      "kind": "complete_code",
+      "pin": {
+        "entry": "retained/FreshNative/0073c220_32.bin",
+        "bytes": 32,
+        "sha256": "7221080a52beaaebcd51ceec1a833f03b9f16eb853d84c0ba61004b02ddb1b80",
+        "provenance": {
+          "tool": "bsp.py ghidra bytes",
+          "address": 7586336,
+          "length": 32,
+          "project": "C:/Users/sqz269/bsp.gpr",
+          "program": "/battlestationspacific.exe",
+          "disk_exact": true,
+          "disk_offset": 3392032,
+          "section": ".text"
+        }
+      },
+      "decode": [
+        {
+          "address": 7586336,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7586337,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 7586339,
+          "bytes": "e8b8baffff",
+          "mnemonic": "call",
+          "operands": "0x737ce0"
+        },
+        {
+          "address": 7586344,
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": 7586349,
+          "bytes": "740b",
+          "mnemonic": "je",
+          "operands": "0x73c23a"
+        },
+        {
+          "address": 7586351,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7586352,
+          "bytes": "b98c76e100",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xe1768c"
+        },
+        {
+          "address": 7586357,
+          "bytes": "e8569effff",
+          "mnemonic": "call",
+          "operands": "0x736090"
+        },
+        {
+          "address": 7586362,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": 7586364,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 7586365,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "disk_offset": 3392032,
+      "section": ".text"
+    },
+    {
+      "address": 14775948,
+      "kind": "initial_image_data",
+      "pin": {
+        "entry": "retained/FreshNative/00e1768c_56.bin",
+        "bytes": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "provenance": {
+          "tool": "bsp.py ghidra bytes",
+          "address": 14775948,
+          "length": 56,
+          "project": "C:/Users/sqz269/bsp.gpr",
+          "program": "/battlestationspacific.exe",
+          "disk_exact": true,
+          "disk_offset": 10581644,
+          "section": ".data"
+        }
+      },
+      "decode": [],
+      "disk_offset": 10581644,
+      "section": ".data"
+    }
+  ],
+  "reused_Native": [
+    {
+      "address": 7586368,
+      "pin": {
+        "entry": "retained/PriorNative/0073c240_228.bin",
+        "bytes": 228,
+        "sha256": "744732c51b30bb8c7b5cd02771c8bbf68817e4a8146177b82d15784a18d87b35",
+        "provenance": {
+          "entry": "retained/PriorNative/0073c240_228.bin",
+          "bytes": 228,
+          "sha256": "744732c51b30bb8c7b5cd02771c8bbf68817e4a8146177b82d15784a18d87b35",
+          "provenance": {
+            "dependency": "cc12_locale_raw_map_cleanup_readiness",
+            "original_pin": {
+              "entry": "retained/Native/0073c240_228.bin",
+              "bytes": 228,
+              "sha256": "744732c51b30bb8c7b5cd02771c8bbf68817e4a8146177b82d15784a18d87b35",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 7586368,
+                "length": 228,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 7568608,
+      "pin": {
+        "entry": "retained/PriorNative/00737ce0_119.bin",
+        "bytes": 119,
+        "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+        "provenance": {
+          "entry": "retained/PriorNative/00737ce0_119.bin",
+          "bytes": 119,
+          "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+          "provenance": {
+            "dependency": "cc12_locale_map_node_owner_readiness",
+            "original_pin": {
+              "entry": "retained/Native/00737ce0_119.bin",
+              "bytes": 119,
+              "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 7568608,
+                "length": 119,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 13132392,
+      "pin": {
+        "entry": "retained/PriorNative/00c86268_10.bin",
+        "bytes": 10,
+        "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+        "provenance": {
+          "entry": "retained/PriorNative/00c86268_10.bin",
+          "bytes": 10,
+          "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+          "provenance": {
+            "dependency": "cc12_locale_map_node_cleanup_readiness",
+            "original_pin": {
+              "entry": "retained/Native/00c86268_10.bin",
+              "bytes": 10,
+              "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 13132392,
+                "length": 10,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 14374972,
+      "pin": {
+        "entry": "retained/PriorNative/00db583c_36.bin",
+        "bytes": 36,
+        "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+        "provenance": {
+          "entry": "retained/PriorNative/00db583c_36.bin",
+          "bytes": 36,
+          "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+          "provenance": {
+            "dependency": "cc12_locale_map_node_cleanup_readiness",
+            "original_pin": {
+              "entry": "retained/Native/00db583c_36.bin",
+              "bytes": 36,
+              "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 14374972,
+                "length": 36,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 14374964,
+      "pin": {
+        "entry": "retained/PriorNative/00db5834_8.bin",
+        "bytes": 8,
+        "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+        "provenance": {
+          "entry": "retained/PriorNative/00db5834_8.bin",
+          "bytes": 8,
+          "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+          "provenance": {
+            "dependency": "cc12_locale_map_node_cleanup_readiness",
+            "original_pin": {
+              "entry": "retained/Native/00db5834_8.bin",
+              "bytes": 8,
+              "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 14374964,
+                "length": 8,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 13132384,
+      "pin": {
+        "entry": "retained/PriorNative/00c86260_8.bin",
+        "bytes": 8,
+        "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+        "provenance": {
+          "entry": "retained/PriorNative/00c86260_8.bin",
+          "bytes": 8,
+          "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+          "provenance": {
+            "dependency": "cc12_locale_map_node_cleanup_readiness",
+            "original_pin": {
+              "entry": "retained/Native/00c86260_8.bin",
+              "bytes": 8,
+              "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+              "provenance": {
+                "tool": "bsp.py ghidra bytes",
+                "address": 13132384,
+                "length": 8,
+                "verification": "Client.verify before every typed call",
+                "disk_exact": true
+              }
+            }
+          }
+        }
+      },
+      "fresh": false
+    }
+  ],
+  "whole_committed_dependencies": [
+    {
+      "name": "corrected_map_readiness",
+      "commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+      "commit_pin": {
+        "entry": "retained/Git/corrected_map_readiness/commit.txt",
+        "bytes": 755,
+        "sha256": "b4a83ea4e2bea4ce26babc78707df2359671a24b5576681cc47d59097d63f940",
+        "provenance": "a2dd1792dc1d5e54c02519051f9b1042aeed8542"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+          "blob": "95b16915faf532da8787e001e2b91aa84d912f29",
+          "pin": {
+            "entry": "retained/Git/corrected_map_readiness/docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+            "bytes": 11158,
+            "sha256": "67a311d23079098f197537c72a04d24accd710303649de98f34cc0d433dab3dd",
+            "provenance": {
+              "commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+              "blob": "95b16915faf532da8787e001e2b91aa84d912f29"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/corrected_map_readiness/docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+            "bytes": 11158,
+            "sha256": "67a311d23079098f197537c72a04d24accd710303649de98f34cc0d433dab3dd",
+            "provenance": {
+              "commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+              "blob": "95b16915faf532da8787e001e2b91aa84d912f29"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_clear_source_readiness.json",
+          "blob": "c846c5249dc63b2c9f0c560fc0334ae800b57cfc",
+          "pin": {
+            "entry": "retained/Git/corrected_map_readiness/reports/cc12_locale_raw_map_clear_source_readiness.json",
+            "bytes": 67909,
+            "sha256": "e4e58639718358ef3e94c698aaa783570d364e9c42f387acf33cdfb5be697cc2",
+            "provenance": {
+              "commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+              "blob": "c846c5249dc63b2c9f0c560fc0334ae800b57cfc"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/CurrentDependencies/corrected_map_readiness/reports/cc12_locale_raw_map_clear_source_readiness.json",
+            "bytes": 69671,
+            "sha256": "d0004443317a8180b7e0a2d0ea44a43f801646299b2be7926f7702b672eb900a",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_locale_raw_map_clear_source_readiness.json"
+          },
+          "current_exact": false,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "historical_uncorrected_map_readiness",
+      "commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+      "commit_pin": {
+        "entry": "retained/Git/historical_uncorrected_map_readiness/commit.txt",
+        "bytes": 854,
+        "sha256": "bfcdbe210e6d824efb55ed6b97455d2700e0ca191620f12b57c4b61cd3115c50",
+        "provenance": "5cd08cb762216d94d9ae533fe16b6461e5f2961f"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+          "blob": "e65030d305ddc53bd95bf26d856299a51585caac",
+          "pin": {
+            "entry": "retained/Git/historical_uncorrected_map_readiness/docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+            "bytes": 10075,
+            "sha256": "dfe46d0ee660ec64d52bb316118eeb9195dc71efe010f2d8ca19f4494c20baf9",
+            "provenance": {
+              "commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+              "blob": "e65030d305ddc53bd95bf26d856299a51585caac"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/CurrentDependencies/historical_uncorrected_map_readiness/docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+            "bytes": 11158,
+            "sha256": "67a311d23079098f197537c72a04d24accd710303649de98f34cc0d433dab3dd",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md"
+          },
+          "current_exact": false,
+          "current_LF_equivalent": false
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_clear_source_readiness.json",
+          "blob": "972a26cb6f72a9b083c848bf19bbffb9bcda6c52",
+          "pin": {
+            "entry": "retained/Git/historical_uncorrected_map_readiness/reports/cc12_locale_raw_map_clear_source_readiness.json",
+            "bytes": 62518,
+            "sha256": "4aecdb1b5bb8d19ccebade24f18012aa4091be1e058969812a2a964190313d81",
+            "provenance": {
+              "commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+              "blob": "972a26cb6f72a9b083c848bf19bbffb9bcda6c52"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/CurrentDependencies/historical_uncorrected_map_readiness/reports/cc12_locale_raw_map_clear_source_readiness.json",
+            "bytes": 69671,
+            "sha256": "d0004443317a8180b7e0a2d0ea44a43f801646299b2be7926f7702b672eb900a",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_locale_raw_map_clear_source_readiness.json"
+          },
+          "current_exact": false,
+          "current_LF_equivalent": false
+        }
+      ]
+    },
+    {
+      "name": "map_native_primary",
+      "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+      "commit_pin": {
+        "entry": "retained/Git/map_native_primary/commit.txt",
+        "bytes": 306,
+        "sha256": "db163164d127efbac0c928c0f437a48d3754febf32fb8fb832a2b311009f03ae",
+        "provenance": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+          "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6",
+          "pin": {
+            "entry": "retained/Git/map_native_primary/docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1704,
+            "sha256": "243666bda0dbd18308654d295c184687987864103e62b38506edf783bc5397c2",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/map_native_primary/docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1704,
+            "sha256": "243666bda0dbd18308654d295c184687987864103e62b38506edf783bc5397c2",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_cleanup_primary_review.json",
+          "blob": "09c5c90158f2163b0dd9274aaa130701904ff559",
+          "pin": {
+            "entry": "retained/Git/map_native_primary/reports/cc12_locale_raw_map_cleanup_primary_review.json",
+            "bytes": 1585021,
+            "sha256": "2c03d6c75a7662616923a018fd437b1517fe3b7f6ab70195de056ebf29ee47aa",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "09c5c90158f2163b0dd9274aaa130701904ff559"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/map_native_primary/reports/cc12_locale_raw_map_cleanup_primary_review.json",
+            "bytes": 1585021,
+            "sha256": "2c03d6c75a7662616923a018fd437b1517fe3b7f6ab70195de056ebf29ee47aa",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "09c5c90158f2163b0dd9274aaa130701904ff559"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "node_helper_primary",
+      "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+      "commit_pin": {
+        "entry": "retained/Git/node_helper_primary/commit.txt",
+        "bytes": 531,
+        "sha256": "2fc4d3598095795d19df754f65999f333e184d130e3dcd62654c741d7614b4af",
+        "provenance": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+          "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d",
+          "pin": {
+            "entry": "retained/Git/node_helper_primary/docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+            "bytes": 2921,
+            "sha256": "a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23",
+            "provenance": {
+              "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+              "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_helper_primary/docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+            "bytes": 2921,
+            "sha256": "a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23",
+            "provenance": {
+              "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+              "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_map_node_payload_primary.json",
+          "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483",
+          "pin": {
+            "entry": "retained/Git/node_helper_primary/reports/cc12_locale_map_node_payload_primary.json",
+            "bytes": 35030,
+            "sha256": "68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e",
+            "provenance": {
+              "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+              "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_helper_primary/reports/cc12_locale_map_node_payload_primary.json",
+            "bytes": 35030,
+            "sha256": "68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e",
+            "provenance": {
+              "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+              "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    }
+  ],
+  "prior_proof_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_raw_map_clear_source_readiness\\evidence.zip",
+      "bytes": 14611721,
+      "sha256": "b99da35346305292591123560620e6ad6c2c334ed046f880493cb64603dca7e0",
+      "not_nested_in_bundle": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_raw_map_clear_source_readiness\\layout_correction\\correction.zip",
+      "bytes": 62029,
+      "sha256": "353f0570034dd260be300990537eca80b36e5df5a04fdea0e53e8b5628904cfc",
+      "not_nested_in_bundle": true
+    }
+  ],
+  "Source_qualification": {
+    "current_Git_exact": 4215,
+    "tracked_include_src": 4208,
+    "selected_inputs": 3354,
+    "unchanged_selected_from_previous_worker_build": 3350,
+    "changed_selected": [
+      "include/bsp/native_game_container_lifetime.hpp",
+      "include/bsp/native_game_lifetime.hpp",
+      "src/native_game_container_lifetime.cpp",
+      "src/native_game_lifetime.cpp"
+    ],
+    "current_worker_artifacts_metadata_only": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73971158,
+        "sha256": "35122d8b9ae7679852b0e18f8fef1aec889b53f915fcb76de288d4ef6819cd9c",
+        "prior_worker_build_exact": true,
+        "metadata_only": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "2c0c82ac75342cc64ff6b83dd899cc7e1f2c067e75164e546d5b0178277fa0dd",
+        "prior_worker_build_exact": true,
+        "metadata_only": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "5d21f22d78657efe38573bc23e992202b2ef4fbaa5d68b87d5c4133a3f674e6c",
+        "prior_worker_build_exact": true,
+        "metadata_only": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2453,
+        "sha256": "5850b755b4738c8af580bc87aeb773e8d3785bd022b06c4a00727b0a2d28cb3c",
+        "prior_worker_build_exact": true,
+        "metadata_only": true
+      }
+    ],
+    "qualification": "Current Source after canonical-game-free merge, no new build. Earlier compiled worker objects/artifacts are not compilation of the four changed files.",
+    "current_source_unchanged_at_publication": true
+  },
+  "query_transcripts": [
+    {
+      "entry": "retained/Transcripts/00736090_assembly.txt",
+      "bytes": 1101,
+      "sha256": "e84629d5e75979213c7e0ca9eeb1acc6083187438997bbc05b65c23969e1c18c",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/00736090_bytes.txt",
+      "bytes": 511,
+      "sha256": "f10da765edc2b46ca263e873da5ef6f74f3558bba1c0027bdf6c07bbb29e2cf2",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/00736090_decompile.txt",
+      "bytes": 828,
+      "sha256": "58851442c5294a6a7f1072e1b0c12e47fee1d656b2839761566c97f53af49032",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/0073c220_assembly.txt",
+      "bytes": 283,
+      "sha256": "67db12baa4345da9394bdbae9657adf24a7f169a2839f6c61efbc5637107277b",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/0073c220_bytes.txt",
+      "bytes": 154,
+      "sha256": "957b407fe7d2f326494dfd246a69692cf43bb3dd6f9da186bc7cf9d7ad25748c",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/0073c220_decompile.txt",
+      "bytes": 202,
+      "sha256": "967776617542812af9e75e4258d7fae6771e3ba3c08bb569c409b7fdfcfbdf84",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/candidate_proto.txt",
+      "bytes": 1244,
+      "sha256": "7c68d277c3a83f9b2434beca000a18b4c0d809d44302e57436dd3c67c45482ed",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/candidate_typed_flow.json",
+      "bytes": 14528,
+      "sha256": "d568ba2d5af4b3ac508641aa35f9910947a693a1badca13dc9475236abd405a1",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e1768c_bytes.txt",
+      "bytes": 276,
+      "sha256": "8e222d6f9f319d74919878ab5cedc10380e1d284b21070f6f1fb60c8e47fefdd",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e1768c_xrefs.txt",
+      "bytes": 171,
+      "sha256": "e8447bb6a597dc5691a1e65016cfe14a4dc408254c09d966fad97881c74fc71b",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e17698_xrefs.txt",
+      "bytes": 90,
+      "sha256": "b5c39a79ce21168271bf5562dbaaadac1b79b258066606c740b591b2fec9e75c",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e176b0_xrefs.txt",
+      "bytes": 102,
+      "sha256": "e9954af63c7761a14f2d0aff6fa499768f490cc339a48cdadf96a9e08de781fa",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e176b4_xrefs.txt",
+      "bytes": 45,
+      "sha256": "3657d5bdba0e822035504aa0457f14b8fc7ea70f8d55d8e0f73f7d93c75862b1",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/e176c0_xrefs.txt",
+      "bytes": 91,
+      "sha256": "fc53304d66e59c7b7e5375914edc02c5948d49bfc4ea3a2608bdd818b6ec4fce",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/owner_candidate_proto.txt",
+      "bytes": 256,
+      "sha256": "c692f9f59943dd8f9bfc2668b32ee8104636f2b2808c12ec46fb28f47e22c06a",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/owner_sites_instruction_context.json",
+      "bytes": 319,
+      "sha256": "70f79431fec584cffa83c8279aefcd3200d413eab15e28d1271f087de97aeb68",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    },
+    {
+      "entry": "retained/Transcripts/owner_sites_typed_flow.json",
+      "bytes": 12354,
+      "sha256": "cc982c118d3c0bb35a1ce6ea8df61461f8b3e9aab33462b941752e0258cf45f1",
+      "provenance": "fresh read-only bsp.py typed query; existing bsp project/program verified by Client"
+    }
+  ],
+  "portable_evidence": {
+    "entry": "evidence.zip",
+    "bytes": 19095714,
+    "sha256": "8826ac783963cd349f802c0ee9e561aef0f04e4cf052c75d2ccff53a0a5c00a0",
+    "payload_files": 4278,
+    "payload_bytes": 61588816
+  },
+  "portable_review": {
+    "status": "PASS",
+    "guard": {
+      "ZIP_only": true,
+      "read_only": true,
+      "external_read_denied": true,
+      "process_network_dynamic_loading_directory_access_denied": true
+    },
+    "review": {
+      "status": "PASS",
+      "Source_current_Git_exact": 4215,
+      "selected3354_unchanged": 3350,
+      "selected3354_changed": [
+        "include/bsp/native_game_container_lifetime.hpp",
+        "include/bsp/native_game_lifetime.hpp",
+        "src/native_game_container_lifetime.cpp",
+        "src/native_game_lifetime.cpp"
+      ],
+      "current_Source_not_rebuilt": true,
+      "prior_corrected_dependency_preserved": true,
+      "fresh_complete_code_bytes": 137,
+      "fresh_initial_data_bytes": 56,
+      "reused_prior_Native_bytes": 409,
+      "original_PE_bytes": 12223752,
+      "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "all_selected_disk_ranges_exact": true,
+      "provider_decode": [
+        {
+          "address": 7561360,
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": 7561361,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561362,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7561363,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561364,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 7561366,
+          "bytes": "8d7e0c",
+          "mnemonic": "lea",
+          "operands": "edi, [esi + 0xc]"
+        },
+        {
+          "address": 7561369,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561370,
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]"
+        },
+        {
+          "address": 7561376,
+          "bytes": "83471801",
+          "mnemonic": "add",
+          "operands": "dword ptr [edi + 0x18], 1"
+        },
+        {
+          "address": 7561380,
+          "bytes": "8b442414",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": 7561384,
+          "bytes": "8b5818",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [eax + 0x18]"
+        },
+        {
+          "address": 7561387,
+          "bytes": "8b4e28",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": 7561390,
+          "bytes": "8b0c99",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx + ebx*4]"
+        },
+        {
+          "address": 7561393,
+          "bytes": "2bc1",
+          "mnemonic": "sub",
+          "operands": "eax, ecx"
+        },
+        {
+          "address": 7561395,
+          "bytes": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": 7561397,
+          "bytes": "b893244992",
+          "mnemonic": "mov",
+          "operands": "eax, 0x92492493"
+        },
+        {
+          "address": 7561402,
+          "bytes": "f7ed",
+          "mnemonic": "imul",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561404,
+          "bytes": "03d5",
+          "mnemonic": "add",
+          "operands": "edx, ebp"
+        },
+        {
+          "address": 7561406,
+          "bytes": "c1fa04",
+          "mnemonic": "sar",
+          "operands": "edx, 4"
+        },
+        {
+          "address": 7561409,
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7561411,
+          "bytes": "c1e81f",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f"
+        },
+        {
+          "address": 7561414,
+          "bytes": "03c2",
+          "mnemonic": "add",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7561416,
+          "bytes": "0fb79100780000",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x7800]"
+        },
+        {
+          "address": 7561423,
+          "bytes": "6689845100700000",
+          "mnemonic": "mov",
+          "operands": "word ptr [ecx + edx*2 + 0x7000], ax"
+        },
+        {
+          "address": 7561431,
+          "bytes": "6683810078000001",
+          "mnemonic": "add",
+          "operands": "word ptr [ecx + 0x7800], 1"
+        },
+        {
+          "address": 7561439,
+          "bytes": "3b5e34",
+          "mnemonic": "cmp",
+          "operands": "ebx, dword ptr [esi + 0x34]"
+        },
+        {
+          "address": 7561442,
+          "bytes": "7303",
+          "mnemonic": "jae",
+          "operands": "0x7360e7"
+        },
+        {
+          "address": 7561444,
+          "bytes": "895e34",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], ebx"
+        },
+        {
+          "address": 7561447,
+          "bytes": "834718ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [edi + 0x18], -1"
+        },
+        {
+          "address": 7561451,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7561452,
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]"
+        },
+        {
+          "address": 7561458,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 7561459,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 7561460,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": 7561461,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": 7561462,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "wrapper_decode": [
+        {
+          "address": 7586336,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7586337,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 7586339,
+          "bytes": "e8b8baffff",
+          "mnemonic": "call",
+          "operands": "0x737ce0"
+        },
+        {
+          "address": 7586344,
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": 7586349,
+          "bytes": "740b",
+          "mnemonic": "je",
+          "operands": "0x73c23a"
+        },
+        {
+          "address": 7586351,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7586352,
+          "bytes": "b98c76e100",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xe1768c"
+        },
+        {
+          "address": 7586357,
+          "bytes": "e8569effff",
+          "mnemonic": "call",
+          "operands": "0x736090"
+        },
+        {
+          "address": 7586362,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": 7586364,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 7586365,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "stored_body_assembly_complete": true,
+      "owner_base_proved": "00E1768C",
+      "field_addresses": [
+        "00E17698",
+        "00E176B0",
+        "00E176B4",
+        "00E176C0"
+      ],
+      "owner_sites": "two exact MOV instructions, no function_at/containing or body ranges; no body expansion",
+      "inline_map_import_identity_difference_verified": true,
+      "Source_symbol_search": [],
+      "Native_mutation_or_runtime": false
+    }
+  },
+  "physical_copy_review": {
+    "status": "PASS",
+    "guard": {
+      "ZIP_only": true,
+      "read_only": true,
+      "external_read_denied": true,
+      "process_network_dynamic_loading_directory_access_denied": true
+    },
+    "same_result": true,
+    "same_zip_bytes": true
+  },
+  "restrictions": {
+    "Cpp_edits": false,
+    "new_build": false,
+    "new_tests": false,
+    "GPR_mutations": false,
+    "ledger_edits": false,
+    "original_file_writes": false,
+    "OS_changes": false,
+    "runtime": false
+  }
+}

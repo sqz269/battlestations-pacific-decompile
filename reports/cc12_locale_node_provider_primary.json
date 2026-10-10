@@ -1,0 +1,103 @@
+{
+  "schema": "bsp.cc12.owner-readiness-primary.v1",
+  "status": "accepted_readiness_evidence_no_activation",
+  "worker_commit": "a99112910571bcc1b314e902887c354ef58afc8b",
+  "primary_review": {
+    "path": "local/cc12_owner_readiness_primary/Root_locale_review.json",
+    "bytes": 2303,
+    "sha256": "83b0f9b56f38d7bd8afd23f0ab5433f328110889f1e350d2739a2386a79d3349"
+  },
+  "worker_report": {
+    "path": "local/cc12_owner_readiness_primary/locale/report.json",
+    "bytes": 56519,
+    "sha256": "bb3acc1af4dda5a29d0d8c77a96432e2e484dc6c9f76a06e423b1a52edcf24e8"
+  },
+  "worker_document": {
+    "path": "local/cc12_owner_readiness_primary/locale/document.md",
+    "bytes": 10216,
+    "sha256": "d51ed0845b0a62759521bb672d6662e3554b2ed6acc0c26d2ba991bb5994dbb8"
+  },
+  "guarded_replay": {
+    "path": "local\\cc12_owner_readiness_primary\\locale\\Root_portable_replay.json",
+    "bytes": 8018,
+    "sha256": "2ec351bfb5cf30957ec50ced354139272abc89daac7ab3077ae03492ad79f47f"
+  },
+  "actual_git": {
+    "frozen_revision": "1232117fcb9ba549faa23a7bdb809297a8ea3a31",
+    "actual_committed_blobs": 4215,
+    "current_root_git": "295b982af240a0e9e57a69531ce66c90e60a9134",
+    "current_source_differences": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "current_build_credit": false,
+    "actual_committed_dependency_blobs": 8
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "game_runs": 0,
+    "OS_changes": 0,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "root_source_vs_accepted_particle_epoch": "No tracked Source/CMake changes. The Root295b982af build remains a separately accepted epoch; no new artifact result is claimed for these readiness packets.",
+    "root_metadata_batches": 6,
+    "root_saved_annotation_mutations": 4,
+    "root_save_operations": 1,
+    "root_refreshed_export_functions": 3,
+    "body_listing_flow_prototype_repairs": 0
+  },
+  "decision": {
+    "provider_Native_contract_closed": true,
+    "scalar_wrapper_Native_contract_closed": true,
+    "actual_static_base_proved": "00E1768C from MOV ECX immediate at0073C230, not inferred by subtracting section offsets",
+    "existing_Source_provider_identified": false,
+    "owner_initialization_lifetime_closed": false,
+    "raw_map_Cpp_composition_GO": false,
+    "application_GO": false,
+    "qualification": "This packet authorizes and performs Native readiness only. A future dormant provider implementation may use the now-established raw contract under an explicit already-initialized actual-owner precondition, but it would not establish a canonical Source binding or the owner's lifecycle. No C++ is supplied or activated here."
+  },
+  "fresh_scope": {
+    "complete_function_bodies": [
+      {
+        "entry": "00736090",
+        "end_inclusive": "007360F8",
+        "bytes": 105,
+        "instructions": 36
+      },
+      {
+        "entry": "0073C220",
+        "end_inclusive": "0073C23F",
+        "bytes": 32,
+        "instructions": 11
+      }
+    ],
+    "initial_data": {
+      "entry": "00E1768C",
+      "bytes": 56,
+      "value": "all zero in Ghidra and the file-backed .data range of the original image"
+    },
+    "fresh_raw_bytes": 193,
+    "fresh_complete_code_bytes": 137,
+    "fresh_initial_data_bytes": 56,
+    "reused_prior_bytes": 409,
+    "typed_query_commands": 17,
+    "owner_sites": "00CC8D30 and00CD9410: size/prototype checks, complete typed listing/function metadata and exact one-instruction context only; no body-sized byte reads or inferred routine boundaries",
+    "GPR": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe verified by bsp.py Client before queries; retained typed captures before/after use modification67",
+    "mutations": "None: no C++, ledger, annotation, function/body/listing/prototype/flow repair, build, tests, probes, game or OS changes."
+  },
+  "annotation": {
+    "path": "local/cc12_owner_readiness_primary/Root_annotation_review.json",
+    "bytes": 3287,
+    "sha256": "0dfe441527891c496bda3d846b21ff91ebeeacfdd73bfe2c987058d1a883b9cd"
+  },
+  "root_contract_review": {
+    "provider": "Complete105B/36 instructions: ECX pool, stacked slot, RET4. Post-Enter current slot/table reads; signed wrapped displacement/28 toward0, low16 index; current count/depth RMWs, unsigned minimum, current Leave target.",
+    "wrapper": "Complete32B/11: payload call precedes flags-bit0 test, optional provider call with literal E1768C, EAX original node bits, RET4. No local rollback.",
+    "owner": "Base E1768C is literal-proven; section+C/depth+24/table+28/min+34 roles. Initial zero56B do not prove initialized owner.",
+    "unresolved_sites": "CC8D30/CD9410 each exact MOV ECX,E1768C, no function_at/containing/body. Old packet stops there; separately authorized later instruction windows remain a new packet.",
+    "equivalence_limit": "Map caches Enter target once at entry while provider reloads per call. Both reload Leave. Factoring assumes stable imports; native fault/SEH/register/stack parity is not established.",
+    "proof": "Fresh137 code+56 initial-data bytes and reused409 Native bytes match original disk ranges. Whole PE copy verifies original hash only, not whole GPR image identity."
+  }
+}

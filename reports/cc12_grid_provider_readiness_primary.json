@@ -1,0 +1,88 @@
+{
+  "schema": "bsp.cc12.grid-provider-readiness-primary.v1",
+  "status": "two_default_method_correction_ready_table_owner_unready",
+  "worker_commit": "364be1a352f20c58b02c3ced50bd06d03d8036c5",
+  "primary_review": {
+    "path": "local/cc12_grid_provider_readiness_primary/Root_game_review.json",
+    "bytes": 25029,
+    "sha256": "36f0d34550c476036f7d99485ed5bb835a0a19cc5fa5519d9fe845d906c916c8"
+  },
+  "worker_report": {
+    "path": "local/cc12_grid_provider_readiness_primary/game/report.json",
+    "bytes": 37817,
+    "sha256": "fd291c487c410e2f60d84747047d463a60433c30c27ae63eda42c880a29ce9dc"
+  },
+  "worker_document": {
+    "path": "local/cc12_grid_provider_readiness_primary/game/document.md",
+    "bytes": 13977,
+    "sha256": "0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7"
+  },
+  "guarded_replay": {
+    "path": "local\\cc12_grid_provider_readiness_primary\\game\\Root_portable_replay.json",
+    "bytes": 410,
+    "sha256": "9af0eb1638848e2b92699e972f8f3412d193bf519e925992398dbff2499c46be"
+  },
+  "actual_git": {
+    "frozen_revision": "317d42c18c2675ec59c63a431a1a0bd6f339ed6a",
+    "actual_committed_blobs": 4208,
+    "current_root_git": "829ad3945398ac57eb0b259112010533afc0fd8c",
+    "current_source_differences": [],
+    "current_build_credit": false,
+    "actual_dependency_and_support_blobs": 42,
+    "actual_blob_occurrences_total": 4250
+  },
+  "finite_evidence": {
+    "pins": 79,
+    "payload_bytes": 175291006,
+    "Source_files": 4208,
+    "read_only_test_search_inputs": 8,
+    "accepted_dependency_blobs": 24,
+    "Source_epochs": 5,
+    "complete_queries": 18,
+    "excerpts": 20
+  },
+  "decision": {
+    "ready_for_separate_implementation": true,
+    "changed_default_methods": [
+      "NativeGameGridCpuCalls::allocate_00bf55be",
+      "NativeGameGridCpuCalls::free_00bf65ac"
+    ],
+    "allocate_body": "return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});",
+    "free_body": "singleton_lifetime_free(allocation);",
+    "preserved_method": "NativeGameGridCpuCalls::free_00bf6989 -> std::free(allocation)",
+    "direct_include": "bsp/singleton_lifetime.hpp",
+    "header_changes": "Contract comments only; unchanged virtual signatures and exception specifications.",
+    "zero_bytes": "Forward unchanged into canonical malloc/_callnewh policy; no zero normalization or skip.",
+    "foreign_domains": "Pair internal allocation with reached BF6989; pair outer allocation with reached CPU BF65AC. Current virtual overrides remain in control.",
+    "callable_grid_table_ready": false,
+    "construction_or_activation_admitted": false
+  },
+  "callable_table_obligations": [
+    "Actual readable current primary table with genuine Win32 __thiscall slot0(void*,uint32_t)->void*.",
+    "Table/code lifetime and actual grid-to-retained-NativeGameGridContext ownership; CPU service vptr and numeric00CFD484 do not satisfy this.",
+    "Explicit scalar adapter forwards receiver and flags to real context-bound helper; direct three-argument helper pointer has the wrong call shape.",
+    "Evidence-backed installation and destruction-state schedule accounts for constructor/destructor numeric stamps, interrupted cleanup and flag-zero destruction.",
+    "No receiver read after flag-one deletion; context/table/services and callback state survive until retirement finishes; no fabricated table, registry, publication or activation."
+  ],
+  "accepted_correction": {
+    "methods": [
+      "NativeGameGridCpuCalls::allocate_00bf55be",
+      "NativeGameGridCpuCalls::free_00bf65ac"
+    ],
+    "allocation": "singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes})",
+    "outer_free": "singleton_lifetime_free(allocation)",
+    "preserve": "BF6989 std::free, virtual signatures/overrides, sizes, six calls, current field reads, late zeroing, flags-bit0, partial failure state and all tables/publications.",
+    "zero_size": "Forward unchanged; canonical malloc/_callnewh retry/throw policy. No global-operator-new/Native-CRT equivalence claim.",
+    "foreign_domains": "Internal overrides must pair with reached BF6989; outer overrides must pair with reached CPU BF65AC. Both pairs independently valid; no interchange assumption.",
+    "construction_GO": false,
+    "activation_GO": false
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "original_runs": 0
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "bsp.cc12.owner-readiness-primary.v1",
+  "status": "accepted_readiness_evidence_no_activation",
+  "worker_commit": "6a80adb7ff76a3dbd3440666d19a776fc1f7dc42",
+  "primary_review": {
+    "path": "local/cc12_owner_readiness_primary/Root_game_review.json",
+    "bytes": 17381,
+    "sha256": "e11db8ba7ad00d784a92b3523269f3a9324dfb5bcd5208cd025d6ae9a55f8f15"
+  },
+  "worker_report": {
+    "path": "local/cc12_owner_readiness_primary/game/report.json",
+    "bytes": 26104,
+    "sha256": "548cd1fcb1ea89dc7d4f120aa2dae827861dead372167b19bc0e9f354430f27f"
+  },
+  "worker_document": {
+    "path": "local/cc12_owner_readiness_primary/game/document.md",
+    "bytes": 14206,
+    "sha256": "df7d691b95868ec6c3b5952224fa788d7fef4c38c6d3864e91d773989a8887e5"
+  },
+  "guarded_replay": {
+    "path": "local\\cc12_owner_readiness_primary\\game\\Root_portable_replay.json",
+    "bytes": 389,
+    "sha256": "17828f9f805e373bc3c24cb67ba20a4448117577a3310da77ff56c8ab55a003f"
+  },
+  "actual_git": {
+    "frozen_revision": "62ce95b08110543322924dd7451df0d60be670ec",
+    "actual_committed_blobs": 4208,
+    "current_root_git": "295b982af240a0e9e57a69531ce66c90e60a9134",
+    "current_source_differences": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "current_build_credit": false,
+    "actual_dependency_and_support_blobs": 28,
+    "actual_blob_occurrences_total": 4236
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "game_runs": 0,
+    "OS_changes": 0,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "root_source_vs_accepted_particle_epoch": "No tracked Source/CMake changes. The Root295b982af build remains a separately accepted epoch; no new artifact result is claimed for these readiness packets."
+  },
+  "decision": {
+    "current_game_cell": "Borrow GameNativeSettingsProcess::game_00e188a8, the same retained cell already used by its profile context.",
+    "no_cpp_go": true,
+    "missing": [
+      "genuine Application+14 owner",
+      "genuine duplicate-name00E1AE78 owner",
+      "grid allocation/free pairs",
+      "genuine callable grid table and its lifetime",
+      "complete configuration/Lua/VFS/sound service composition",
+      "actual miscellaneous publication/class-header/Lua-header/embedded-flag owners",
+      "same-runtime queue producer and consumer contracts",
+      "failure retention and pre-drain retirement placement"
+    ],
+    "next_packet": "Bounded Source grid provider allocation/table-readiness review; no speculative implementation or startup activation. Later establish genuine application/name/publication owners before any dormant game owner."
+  },
+  "retained_proof": {
+    "finite_pins": 56,
+    "total_payload_bytes": 143600188,
+    "Source_files": 4208,
+    "accepted_dependency_blobs": 18,
+    "actual_blob_occurrences": 4236,
+    "Source_epochs": 4,
+    "complete_lexical_queries": 19,
+    "checked_excerpts": 39
+  },
+  "root_contract_review": {
+    "actual_current_game_cell": "Borrow GameNativeSettingsProcess::Impl::game through game_00e188a8(); its profile already borrows the exact same reference.",
+    "publication_schedule": "runtime.construct completes before Application+14 publication; name cleanup precedes frame live. Non-null current game alone is not admission.",
+    "grid_internal_pair": "CPU allocate BF55BE uses operator new; six nonnull arrays are released through BF6989 std::free, followed by zeroing all six fields. Matching is unproved.",
+    "grid_outer_pair": "Game outer84h uses canonical allocation; flags-bit0 grid scalar delete reaches independent CPU BF65AC operator delete. Matching is unproved.",
+    "grid_tables": "Constructor and destructor stamp numeric CFD484; current dispatcher requires actual callable Source table and receiver. Existing GameGridGraph supplies contexts only.",
+    "attachment": "Finite search finds attach_native_game only declaration and definition; this is lexical scope evidence, not a universal semantic-absence proof.",
+    "remaining": "Genuine Application+14/name and other reached cleanup/publication owners plus lifetime/diagnostic retirement remain unresolved."
+  }
+}
