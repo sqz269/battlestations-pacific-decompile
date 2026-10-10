@@ -123,3 +123,9 @@ packet; the partial instruction before the call is outside this local proposal.
 
 There were no C++/CMake/ledger/provider/configuration edits, GPR mutations,
 POST/script endpoints, restart, builds, tests, probes, links, or runtime execution.
+
+## Primary review
+
+The primary integrator replayed all 101 report-pin occurrences, the ten complete current counter-context Source files and their baseline Git blobs, all 26 typed raw responses at historical modification epoch 10, and all five physical-query raw HTTP hashes. The current original PE whole-image hash still matches, and the same 15-byte prefix reproduces the four complete instructions in its 14-byte suffix; the leading tail byte was compared but never decoded. All 65 archive payloads, 66 ZIP entries, and CRCs passed. No new live Ghidra query or Native semantic window was needed.
+
+A separate ordinary C++ fragment may cover CD867A through CD868D: call the genuine shared counter getter once, capture its old current-next word, retain the volatile wrapping increment, then retain the volatile old-value publication into the caller-supplied current 0109042C cell. The counter word and target may alias; the later store must then restore the old value. This admission supplies no whole initializer, guard, owner storage, CRT order, Native ABI, backing, startup, or gameplay claim.
