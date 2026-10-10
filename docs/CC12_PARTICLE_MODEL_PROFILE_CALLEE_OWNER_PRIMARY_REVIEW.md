@@ -1,0 +1,9 @@
+# Particle profile lifetime: primary acceptance
+
+Root accepted worker `01de2fdbc5006b34b59c04f36508ede34e157c16` as readiness evidence. Publication remains held. Both particle profile hooks are noexcept; binding the existing companion and canonical actual-owner registry can allocate or throw. The publication hook precedes the AF74A0 constructor try state. Existing admission credits are not consumed by the particle companion's ordinary bind.
+
+The next prerequisite is persistent application preparation before AF74A0, with the same actual slot, scene, generated lifetime runtime and canonical registry. Derived publication must become nonallocating and nonthrowing after the derived table is live. Premature binding against unconstructed native reference fields and a second scene or reference owner do not establish this contract.
+
+Failure retirement follows member/base destruction and removes host metadata only. The outer AF62F0 return remains exactly once; no successful derived destruction or second pool return belongs in the failed-profile hook. Successful destruction returns physical storage before metadata disposal, so borrowed services and slot reuse must remain controlled through retirement. The 188h base model pool and the particle's 2DCh payload use different slot-ID offsets.
+
+Root copied23 outer files/4420 ZIP entries, ran the copied guarded replay, and checked4214 actual Git/current Source paths,3352 epoch inputs/four artifacts, all80 actual App objects, fifteen complete selected objects and1988 Core indices. The selected readset3356, query4207 and582 compiler-dependency paths are separate scopes;27 complete function sections are retained. No C++, new state/domain, build/test/runtime, Native query, Ghidra write, Original ABI or application activation is added. Evidence: `reports/cc12_particle_model_profile_callee_owner_primary_review.json`; independent proof: `local/cc12_particle_model_profile_callee_owner_primary/`.
