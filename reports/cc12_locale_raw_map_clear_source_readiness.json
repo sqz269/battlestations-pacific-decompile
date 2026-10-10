@@ -1,0 +1,1613 @@
+{
+  "schema": "cc12.locale_raw_map_source_readiness.design.v1",
+  "decision": {
+    "status": "readiness complete; exact node-slot return provider and borrowed owner binding remain open",
+    "Cpp_GO": false,
+    "application_GO": false,
+    "payload_helper": "00737CE0 normalized Source is available; pending at the immutable worker freeze, subsequently accepted by Root 3caaeec9a as a separately retained dependency",
+    "missing_dependency": "No current exact Source service identified for the distinct E17698 section, E176B0 depth, E176B4 current table cell, E176C0 unsigned minimum and 1Ch node geometry. No actual canonical owner binding for those fields is established.",
+    "not_a_substitute": "Neither semantic LocaleTables ownership nor NativeStringRawPoolContext nor another slot allocator supplies this node-slot service. No placeholder provider, guessed owner base, new global or private allocation domain is proposed."
+  },
+  "scope": {
+    "address": "0073C240",
+    "original_ABI": "ECX is raw bucket base; plain RET, no stack arguments. EBX/EBP/ESI/EDI preserved. EAX is incidental, not a semantic success result.",
+    "prior_complete_map": "228 bytes 0073C240..0073C323, 64 raw instructions including skipped 3-byte alignment at 0073C26D; stored listing body225 bytes/63 instructions from the accepted dependency",
+    "prior_complete_node_and_EH": "119-byte 00737CE0 and 62 bytes across selector/action/FuncInfo/unwind-map dependencies, all reused",
+    "0073C220": "Offline graph only: no retained body, export or reconstruction. Its listed callees 00736090 and 00737CE0 cannot establish order, ABI, flags or slot-return semantics.",
+    "00736090": "Offline graph-only candidate for a separately admitted provider investigation. No body or identity with the inline 73C240 return is claimed.",
+    "fresh_Native_queries_bytes": 0,
+    "new_Cpp_build_tests_runtime": false
+  },
+  "layout": {
+    "raw_map": "At an already proved locale receiver+14h, but the proposed helper takes the actual bucket base directly. DWORD heads at map+4*i for i=0..FFFh; count DWORD at map+4000h. Require readable/writable4004h extent.",
+    "node": "1Ch slot: narrow header+0 (pointer+0,length+4), wide header+8 (pointer+8,length+C), prev+10, next+14, allocator block index+18. Map clear neither reads nor writes prev. Payload helper never clears either header.",
+    "node_pool": "Actual fixed critical section E17698; depth DWORD E176B0; current table pointer cell E176B4; unsigned earliest available block index DWORD E176C0. Do not infer an enclosing owner base from these offsets.",
+    "block": "Table entry at current_table+4*current_node_block_index. Data slot stride1Ch. WORD free indices at selected_block+7000h; WORD current count at selected_block+7800h. Offsets geometrically accommodate1024 indices before the count; this is not proof of allocation size, initialization or capacity.",
+    "string_context": "Borrow the same canonical01090AA8 pool publication,01090AA4 live small-return gate and01090AA0 manager publication cells through existing NativeStringRawPoolContext. GameNativeStringProcess owns those process-lifetime cells and GameVfsHost exposes its raw context; this proves no E17698 node owner."
+  },
+  "ordered_contract": [
+    "Retain the original map address. Iterate4096 bucket indices in ascending order, loading each current head only when reached. Native uses signed JL against1000h; normalized uint32_t traversal0..FFFh is equivalent because this induction never overflows.",
+    "For each nonnull current node, capture its DWORD next at+14 BEFORE calling the accepted payload helper. Pass the original actual node and the same raw string context. Do not pre-read allocator index/table/slab/count before payload cleanup.",
+    "The payload helper performs wide cleanup on node+8, with current narrow cleanup of the original node on a covered escaping getter exception; disarm before normal narrow cleanup at node+0. Each nonnull header captures pointer and wrapped requested size before its own getter. No pool caching, copied header, header reset or alias deduplication.",
+    "Only after payload normal return, EnterCriticalSection on the fixed node section. Increment current depth DWORD modulo2^32. THEN load current node+18 block index and current E176B4 table cell, then the selected current table entry.",
+    "Compute wrapped32 address(node)-address(block), interpret its bits as signed32, divide by28 with truncation toward zero, keep low16. This is the retained92492493 signed-IMUL/add/SAR/sign correction. Valid admitted slots have a nonnegative aligned displacement; use unsigned address arithmetic rather than C++ subtraction of unrelated pointers.",
+    "Read current unsigned16 free count. Write low16 slot index at block+7000h+2*captured_count. Then increment CURRENT block+7800h count modulo2^16, preserving the distinct read after the free-index write. Compare the saved post-payload block index to CURRENT E176C0 with unsigned JAE semantics and lower only when smaller.",
+    "Decrement current depth modulo2^32 and LeaveCriticalSection. Continue from the pre-payload saved-next pointer, not a reread next field. The current map body adds no local unwind/lock guard.",
+    "After all4096 chains return normally, zero exactly4000h bucket bytes, then write zero to map+4000h count. No progressive unlink/head clear/count decrement occurs in this body."
+  ],
+  "callback_identity": {
+    "honored": "Provider-induced changes to current node+18, table cell/table entry, free count, minimum or future unvisited bucket heads are observed at their specified later reads, provided ownership remains coherent.",
+    "not_reloaded": "Current node's next is saved before cleanup; mutating its +14 later does not redirect this traversal. The map receiver and original current node remain fixed for their respective operations.",
+    "final_effect": "Final zeroing also removes callback changes to bucket heads. Inserting into an already visited bucket is not automatically visited and can be discarded by final zeroing; that is not an ownership-safe arbitrary insertion contract.",
+    "import_identity_limit": "Native caches EnterCriticalSection IAT CE2218 once at entry in EBP and reloads LeaveCriticalSection IAT CE2210 per return. A future normalized Source helper may use ordinary stable Win32 providers only with IAT rebinding/hooking explicitly outside its domain; do not claim dynamic import identity parity."
+  },
+  "failure_and_lifetime": {
+    "payload_failure": "If payload cleanup escapes, this node has not entered the node pool return; its headers/providers and previous node returns may already have side effects. Covered wide-getter escape attempts current narrow cleanup; a second C++ exception during unwind terminates. Native arbitrary fault/double-failure parity is excluded.",
+    "slot_return_failure": "No local guard, catch or rollback is present around Enter/depth/metadata/Leave. A failure after Enter can retain a held section, changed depth or partially changed metadata. Do not add an unlock guard, turn it noexcept, translate failures or claim recovery without a separately justified contract.",
+    "final_clear_failure": "Final clears happen only after traversal. If bucket zeroing fails, count zero has not been reached. Native access-violation/SEH/read-fault timing is outside ordinary C++ equivalence; invalid C++ reads are not a supported exceptional path.",
+    "admission": "Keep map4004h, original node/header storage, saved-next nodes, canonical string cells and actual initialized node section/cells/table/selected blocks alive and correctly aligned through each specified read/call/unwind. Require finite acyclic unique chains and individually allocated unrecycled1Ch slots with coherent callback-selected block identities.",
+    "aliasing": "Use suitable byte/memcpy or established Win32 raw access methods, not an invented C++ Node class. Require payloads not to cause duplicate returns, distinct valid map/node/pool metadata storage, available free-index capacity and metadata operations that do not overlap the count or live slots. Preserve Source helper no-dedup behavior. Arbitrary aliasing, invalid pointers and concurrent/reentrant map clear are not supported.",
+    "overflow": "Retain DWORD address/depth/requested-size and WORD count/slot truncation where established. Admission requires valid table index scaling, address extents and capacity; no new range/overflow guards or saturating arithmetic. Under admitted free_count<1024 the free-index write cannot alias count; count1024 would hit +7800, demonstrating why current-count increment must not be replaced by captured_count+1.",
+    "synchronization": "Node-pool section covers only the return metadata operations. It does not protect earlier payload cleanup, chain traversal or map heads. Caller must exclude unsafe reentry and concurrent ownership mutation. No strong guarantee, idempotent retry, recovery, native EH/SEH ABI or gameplay claim."
+  },
+  "smallest_future_normalized_helper": {
+    "shape": "Void operation taking actual raw bucket base, NativeStringRawPoolContext&, and a proved borrowed node-slot context/service tied to the actual initialized E17698/E176B0/E176B4/E176C0 authority. No public context/type is created in this packet.",
+    "algorithm": "uint32_t bucket loop; current head DWORD; per-node save next, invoke existing payload helper, exact slot return, advance saved next; final4000h zero then count zero. No LocaleTables/vector/std::string substitute and no caller activation.",
+    "minimum_missing_proof": "Actual node-slot service with post-payload and post-Enter field reloads,1Ch/7000h/7800h geometry, wrapping widths, unsigned minimum and no invented cleanup; actual initialized owner/section/cell lifetime and canonical identity supplying its borrowed context.",
+    "next_bounded_packet": "Independently admit exact node-slot provider/owner readiness. Use retained73C240 inline return as the required contract. If Native work is authorized, size-check and inspect graph candidate00736090 first; compare its complete normal body with inline73C27A..73C2DC and close its real owner provenance under a separate lease. 0073C220 needs its own complete body before any wrapper/flags claim. Stop at unresolved owner or exception gates; do not activate locale/map/application.",
+    "separate_gates": "Map constructor/insertion/lookup, node allocation and owner startup/teardown, derived locale destructor EH/range contracts, owning locale lifetime, loader/text consumers, original binary ABI and application/game validation remain separate."
+  },
+  "owned_files": [
+    "docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+    "reports/cc12_locale_raw_map_clear_source_readiness.json"
+  ],
+  "capture_head": "937c26f50f590fe8df9b151fefddb269451e68e0",
+  "Source_qualification": {
+    "worker_epoch": "Source3354-node-payload-helper worker build",
+    "selected_inputs": 3354,
+    "all_tracked_include_src": 4208,
+    "supplemental_inputs": 861,
+    "all_retained_current_Git_exact": 4215,
+    "source_unchanged_at_publication": true,
+    "prior_worker_compiled_inputs_exact": 3354,
+    "prior_worker_artifact_identity_only": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73971158,
+        "sha256": "35122d8b9ae7679852b0e18f8fef1aec889b53f915fcb76de288d4ef6819cd9c",
+        "exact_prior_worker_build": true,
+        "retained_in_this_bundle": false
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "2c0c82ac75342cc64ff6b83dd899cc7e1f2c067e75164e546d5b0178277fa0dd",
+        "exact_prior_worker_build": true,
+        "retained_in_this_bundle": false
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "5d21f22d78657efe38573bc23e992202b2ef4fbaa5d68b87d5c4133a3f674e6c",
+        "exact_prior_worker_build": true,
+        "retained_in_this_bundle": false
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2453,
+        "sha256": "5850b755b4738c8af580bc87aeb773e8d3785bd022b06c4a00727b0a2d28cb3c",
+        "exact_prior_worker_build": true,
+        "retained_in_this_bundle": false
+      }
+    ],
+    "whole_COFF": [
+      {
+        "stem": "native_locale_map_node_lifetime",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_locale_map_node_lifetime.obj",
+          "header_offset": 34217310,
+          "payload_offset": 34217370,
+          "bytes": 2941,
+          "sha256": "10de030de5f8bbd247255a873a2730ff76908df8b1d4f15d949816924468e4a5"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_locale_map_node_lifetime.obj",
+          "bytes": 2941,
+          "sha256": "10de030de5f8bbd247255a873a2730ff76908df8b1d4f15d949816924468e4a5",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_wide_string",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_wide_string.obj",
+          "header_offset": 25756930,
+          "payload_offset": 25756990,
+          "bytes": 3221,
+          "sha256": "d4356163c736c1de91f160ffe313dfad0f8d83bf7af94e4dc2040abcec60dd24"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_wide_string.obj",
+          "bytes": 3221,
+          "sha256": "d4356163c736c1de91f160ffe313dfad0f8d83bf7af94e4dc2040abcec60dd24",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_string",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_string.obj",
+          "header_offset": 26893952,
+          "payload_offset": 26894012,
+          "bytes": 18822,
+          "sha256": "8555efe6660a6d8572f31c19089bc2413dc5ade207496cb8c12b6ae25db6237b"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_string.obj",
+          "bytes": 18822,
+          "sha256": "8555efe6660a6d8572f31c19089bc2413dc5ade207496cb8c12b6ae25db6237b",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "locale_tables",
+        "member": {
+          "name": "bsp_core.dir\\Release\\locale_tables.obj",
+          "header_offset": 40964888,
+          "payload_offset": 40964948,
+          "bytes": 208769,
+          "sha256": "2fd7c8d9a5ea70943ba4c88a4a3f4f4a66b5398d94d0e149f24cb050aa03925e"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/locale_tables.obj",
+          "bytes": 208769,
+          "sha256": "2fd7c8d9a5ea70943ba4c88a4a3f4f4a66b5398d94d0e149f24cb050aa03925e",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_physical_provider_pool",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_physical_provider_pool.obj",
+          "header_offset": 57961748,
+          "payload_offset": 57961808,
+          "bytes": 3539,
+          "sha256": "d0647f767ee8ecf16daf3d56ba6f61333945d6798bdef80e69d39aab3416b7d4"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_physical_provider_pool.obj",
+          "bytes": 3539,
+          "sha256": "d0647f767ee8ecf16daf3d56ba6f61333945d6798bdef80e69d39aab3416b7d4",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_particle_model_pool_allocate",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_particle_model_pool_allocate.obj",
+          "header_offset": 31348272,
+          "payload_offset": 31348332,
+          "bytes": 5084,
+          "sha256": "f80bb1c17ef1b048ac95c936990e6f05dba6e93bc5707f78a39ad6335f8aab9f"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_particle_model_pool_allocate.obj",
+          "bytes": 5084,
+          "sha256": "f80bb1c17ef1b048ac95c936990e6f05dba6e93bc5707f78a39ad6335f8aab9f",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_node_pool_allocation",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_node_pool_allocation.obj",
+          "header_offset": 32421698,
+          "payload_offset": 32421758,
+          "bytes": 5041,
+          "sha256": "c473a43a5e7adefab3c5ca470244402eeed538fff2b0cd84edf634aff2075d7d"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_node_pool_allocation.obj",
+          "bytes": 5041,
+          "sha256": "c473a43a5e7adefab3c5ca470244402eeed538fff2b0cd84edf634aff2075d7d",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      },
+      {
+        "stem": "native_enum_node_pool",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_enum_node_pool.obj",
+          "header_offset": 59728890,
+          "payload_offset": 59728950,
+          "bytes": 9651,
+          "sha256": "7c4a3e5747a9707af3587cc465f8eb703471f0d95cdc256b5f178c39930475ff"
+        },
+        "pin": {
+          "entry": "retained/PriorCOFF/native_enum_node_pool.obj",
+          "bytes": 9651,
+          "sha256": "7c4a3e5747a9707af3587cc465f8eb703471f0d95cdc256b5f178c39930475ff",
+          "provenance": "whole object reused from existing worker node-helper build; no new compilation"
+        }
+      }
+    ],
+    "Root_later_epoch": "Source3354-locale-node-payload",
+    "Root_later_manifest": {
+      "entry": "retained/LaterRoot/Source3354_locale_node_payload_frozen.json",
+      "bytes": 1250346,
+      "sha256": "5da8b6199aa294d5a2ebe76282e42f58d5f9ca63b2c61e51b4d847af62897f9e",
+      "provenance": "later accepted Root epoch, separate from original worker freeze"
+    },
+    "Root_later_worker_exact": 3348,
+    "Root_later_worker_LF_equivalent": 3354,
+    "Root_artifacts_metadata_only": true,
+    "Root_recompiled_in_this_packet": false
+  },
+  "whole_committed_dependencies": [
+    {
+      "name": "map_worker",
+      "commit": "cf42da5cd133bc1e13465e4275e083f97a510968",
+      "commit_pin": {
+        "entry": "retained/Git/map_worker/commit.txt",
+        "bytes": 530,
+        "sha256": "53c77c75e6371dff47eef2a87a780b6e5f973a27388066b0eabe5866cf5a60b8",
+        "provenance": "cf42da5cd133bc1e13465e4275e083f97a510968"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEANUP_READINESS.md",
+          "blob": "68cb8f11ec7e672702c2c6b67c56b96e5bdcc706",
+          "pin": {
+            "entry": "retained/Git/map_worker/docs/CC12_LOCALE_RAW_MAP_CLEANUP_READINESS.md",
+            "bytes": 9767,
+            "sha256": "f40c8022610b9dcf1a88e64d3966b56002f464097a24741fe13ae38193cacff7",
+            "provenance": {
+              "commit": "cf42da5cd133bc1e13465e4275e083f97a510968",
+              "blob": "68cb8f11ec7e672702c2c6b67c56b96e5bdcc706"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/map_worker/docs/CC12_LOCALE_RAW_MAP_CLEANUP_READINESS.md",
+            "bytes": 9767,
+            "sha256": "f40c8022610b9dcf1a88e64d3966b56002f464097a24741fe13ae38193cacff7",
+            "provenance": {
+              "commit": "cf42da5cd133bc1e13465e4275e083f97a510968",
+              "blob": "68cb8f11ec7e672702c2c6b67c56b96e5bdcc706"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_cleanup_readiness.json",
+          "blob": "c9f237657a2d38d1b46d75f4f69d334c00ad6e74",
+          "pin": {
+            "entry": "retained/Git/map_worker/reports/cc12_locale_raw_map_cleanup_readiness.json",
+            "bytes": 41413,
+            "sha256": "d5ddd10c659a02c2eb9fdd902ac61365b4d2b1dd176a90d7a0f6bc5f9d45adb9",
+            "provenance": {
+              "commit": "cf42da5cd133bc1e13465e4275e083f97a510968",
+              "blob": "c9f237657a2d38d1b46d75f4f69d334c00ad6e74"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/CurrentDependencies/reports/cc12_locale_raw_map_cleanup_readiness.json",
+            "bytes": 42692,
+            "sha256": "8427593a355127b6b08f9befdce0df7b9e272f39a1721e8a9c259d8a113f5168",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_locale_raw_map_cleanup_readiness.json"
+          },
+          "current_exact": false,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "map_primary",
+      "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+      "commit_pin": {
+        "entry": "retained/Git/map_primary/commit.txt",
+        "bytes": 306,
+        "sha256": "db163164d127efbac0c928c0f437a48d3754febf32fb8fb832a2b311009f03ae",
+        "provenance": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+          "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6",
+          "pin": {
+            "entry": "retained/Git/map_primary/docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1704,
+            "sha256": "243666bda0dbd18308654d295c184687987864103e62b38506edf783bc5397c2",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/map_primary/docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1704,
+            "sha256": "243666bda0dbd18308654d295c184687987864103e62b38506edf783bc5397c2",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_cleanup_primary_review.json",
+          "blob": "09c5c90158f2163b0dd9274aaa130701904ff559",
+          "pin": {
+            "entry": "retained/Git/map_primary/reports/cc12_locale_raw_map_cleanup_primary_review.json",
+            "bytes": 1585021,
+            "sha256": "2c03d6c75a7662616923a018fd437b1517fe3b7f6ab70195de056ebf29ee47aa",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "09c5c90158f2163b0dd9274aaa130701904ff559"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/map_primary/reports/cc12_locale_raw_map_cleanup_primary_review.json",
+            "bytes": 1585021,
+            "sha256": "2c03d6c75a7662616923a018fd437b1517fe3b7f6ab70195de056ebf29ee47aa",
+            "provenance": {
+              "commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+              "blob": "09c5c90158f2163b0dd9274aaa130701904ff559"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "node_worker",
+      "commit": "0457dc59c18b9d87ebdc785c420097e9bd3ef1f3",
+      "commit_pin": {
+        "entry": "retained/Git/node_worker/commit.txt",
+        "bytes": 836,
+        "sha256": "acd1d6eed1b667ed4680f9354166feae18ec1ab2989ffd8046b9bb304370fc94",
+        "provenance": "0457dc59c18b9d87ebdc785c420097e9bd3ef1f3"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+          "blob": "363315c45f3daa6dd842758f79a26ebbb383f210",
+          "pin": {
+            "entry": "retained/Git/node_worker/docs/CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+            "bytes": 8734,
+            "sha256": "2e09908bde856652b01ef4e121d72f294d77d56779a0605b54cad6beb8ea456d",
+            "provenance": {
+              "commit": "0457dc59c18b9d87ebdc785c420097e9bd3ef1f3",
+              "blob": "363315c45f3daa6dd842758f79a26ebbb383f210"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_worker/docs/CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+            "bytes": 8734,
+            "sha256": "2e09908bde856652b01ef4e121d72f294d77d56779a0605b54cad6beb8ea456d",
+            "provenance": {
+              "commit": "0457dc59c18b9d87ebdc785c420097e9bd3ef1f3",
+              "blob": "363315c45f3daa6dd842758f79a26ebbb383f210"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_map_raw_node_payload_helper.json",
+          "blob": "5814376d1fe677c02af5c6b28d6aa2b255716818",
+          "pin": {
+            "entry": "retained/Git/node_worker/reports/cc12_locale_map_raw_node_payload_helper.json",
+            "bytes": 53623,
+            "sha256": "b9c810cd83d1e051ec676fac49e25b9b96c68cf37a5a661277f11b3fedba8541",
+            "provenance": {
+              "commit": "0457dc59c18b9d87ebdc785c420097e9bd3ef1f3",
+              "blob": "5814376d1fe677c02af5c6b28d6aa2b255716818"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/CurrentDependencies/reports/cc12_locale_map_raw_node_payload_helper.json",
+            "bytes": 55248,
+            "sha256": "293a0fd44531fe621a020414f7d27a23ad379dbc8ca1083aa31641394f463a78",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_locale_map_raw_node_payload_helper.json"
+          },
+          "current_exact": false,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "node_owner_primary",
+      "commit": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab",
+      "commit_pin": {
+        "entry": "retained/Git/node_owner_primary/commit.txt",
+        "bytes": 306,
+        "sha256": "9f0405014125cbc8283cde766ad15d5f962a90fa3032bbcc6ad7984ac15ad21d",
+        "provenance": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+          "blob": "71752740497efbfa961acd44086465cd8815c6a5",
+          "pin": {
+            "entry": "retained/Git/node_owner_primary/docs/CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+            "bytes": 1695,
+            "sha256": "b5475e9c3381e20463716ee3eda00b8f68801d2e929d5b17fa65856582ee418c",
+            "provenance": {
+              "commit": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab",
+              "blob": "71752740497efbfa961acd44086465cd8815c6a5"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_owner_primary/docs/CC12_LOCALE_MAP_NODE_OWNER_PRIMARY_REVIEW.md",
+            "bytes": 1695,
+            "sha256": "b5475e9c3381e20463716ee3eda00b8f68801d2e929d5b17fa65856582ee418c",
+            "provenance": {
+              "commit": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab",
+              "blob": "71752740497efbfa961acd44086465cd8815c6a5"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_map_node_owner_primary_review.json",
+          "blob": "85d2e195c660f65d53e18050b28bab09e26f8468",
+          "pin": {
+            "entry": "retained/Git/node_owner_primary/reports/cc12_locale_map_node_owner_primary_review.json",
+            "bytes": 1581660,
+            "sha256": "54b3dcc997a61a94f499d2cff5237d8819ef9ae84d4016fdf303b681be02f511",
+            "provenance": {
+              "commit": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab",
+              "blob": "85d2e195c660f65d53e18050b28bab09e26f8468"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_owner_primary/reports/cc12_locale_map_node_owner_primary_review.json",
+            "bytes": 1581660,
+            "sha256": "54b3dcc997a61a94f499d2cff5237d8819ef9ae84d4016fdf303b681be02f511",
+            "provenance": {
+              "commit": "f1bc40d1d0088e9ac4e511ec499b294e7f4f6dab",
+              "blob": "85d2e195c660f65d53e18050b28bab09e26f8468"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "node_EH_primary",
+      "commit": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae",
+      "commit_pin": {
+        "entry": "retained/Git/node_EH_primary/commit.txt",
+        "bytes": 325,
+        "sha256": "86ca627a584642347b77cf30e26281f4619495736bc78a863499dc4a61dc8ffd",
+        "provenance": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+          "blob": "59669f97f39b44743f6bdfb99d40c0112cb43c56",
+          "pin": {
+            "entry": "retained/Git/node_EH_primary/docs/CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1804,
+            "sha256": "2b512f5ddb0c60325d7706caddbe3ab15f46ba770b00068b936dfc4af9bdb87d",
+            "provenance": {
+              "commit": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae",
+              "blob": "59669f97f39b44743f6bdfb99d40c0112cb43c56"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_EH_primary/docs/CC12_LOCALE_MAP_NODE_CLEANUP_PRIMARY_REVIEW.md",
+            "bytes": 1804,
+            "sha256": "2b512f5ddb0c60325d7706caddbe3ab15f46ba770b00068b936dfc4af9bdb87d",
+            "provenance": {
+              "commit": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae",
+              "blob": "59669f97f39b44743f6bdfb99d40c0112cb43c56"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_map_node_cleanup_primary_review.json",
+          "blob": "c0f6f6b764de2456ec6f25a2b2ad9eed9167ec6f",
+          "pin": {
+            "entry": "retained/Git/node_EH_primary/reports/cc12_locale_map_node_cleanup_primary_review.json",
+            "bytes": 1589127,
+            "sha256": "c5e90664e6796bf61df17745a9a1dbeab1bce54f0005684f94b7dd8d0da9b00d",
+            "provenance": {
+              "commit": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae",
+              "blob": "c0f6f6b764de2456ec6f25a2b2ad9eed9167ec6f"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_EH_primary/reports/cc12_locale_map_node_cleanup_primary_review.json",
+            "bytes": 1589127,
+            "sha256": "c5e90664e6796bf61df17745a9a1dbeab1bce54f0005684f94b7dd8d0da9b00d",
+            "provenance": {
+              "commit": "ee48bf2ecaf95e0af38197ab135ea01d2ec996ae",
+              "blob": "c0f6f6b764de2456ec6f25a2b2ad9eed9167ec6f"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    },
+    {
+      "name": "node_readiness_primary",
+      "commit": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3",
+      "commit_pin": {
+        "entry": "retained/Git/node_readiness_primary/commit.txt",
+        "bytes": 316,
+        "sha256": "57b67d465208e214278632fddbf5794da2125ee7c23fc4a325a725586370985c",
+        "provenance": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3"
+      },
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_RAW_NODE_HELPER_PRIMARY_REVIEW.md",
+          "blob": "60b836c3e8ceb39298db1049ad0c135a7a1c9e08",
+          "pin": {
+            "entry": "retained/Git/node_readiness_primary/docs/CC12_LOCALE_MAP_RAW_NODE_HELPER_PRIMARY_REVIEW.md",
+            "bytes": 1930,
+            "sha256": "111e3c295cdee59f5d6070b72331fc5c85ce7a5be24bb97c3a257f95a26a9036",
+            "provenance": {
+              "commit": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3",
+              "blob": "60b836c3e8ceb39298db1049ad0c135a7a1c9e08"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_readiness_primary/docs/CC12_LOCALE_MAP_RAW_NODE_HELPER_PRIMARY_REVIEW.md",
+            "bytes": 1930,
+            "sha256": "111e3c295cdee59f5d6070b72331fc5c85ce7a5be24bb97c3a257f95a26a9036",
+            "provenance": {
+              "commit": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3",
+              "blob": "60b836c3e8ceb39298db1049ad0c135a7a1c9e08"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        },
+        {
+          "path": "reports/cc12_locale_map_raw_node_helper_primary_review.json",
+          "blob": "2a6a9c2d6911483d1dc4cf36da5a42632934afc4",
+          "pin": {
+            "entry": "retained/Git/node_readiness_primary/reports/cc12_locale_map_raw_node_helper_primary_review.json",
+            "bytes": 24141,
+            "sha256": "ef816c994aa15ff01b5f7bf4dd3f65181329857cecfea8d16568700dd43fc370",
+            "provenance": {
+              "commit": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3",
+              "blob": "2a6a9c2d6911483d1dc4cf36da5a42632934afc4"
+            }
+          },
+          "current_pin": {
+            "entry": "retained/Git/node_readiness_primary/reports/cc12_locale_map_raw_node_helper_primary_review.json",
+            "bytes": 24141,
+            "sha256": "ef816c994aa15ff01b5f7bf4dd3f65181329857cecfea8d16568700dd43fc370",
+            "provenance": {
+              "commit": "cf3f1dc18302d430b4f78e7decc0872ec27db1a3",
+              "blob": "2a6a9c2d6911483d1dc4cf36da5a42632934afc4"
+            }
+          },
+          "current_exact": true,
+          "current_LF_equivalent": true
+        }
+      ]
+    }
+  ],
+  "later_Root_acceptance": {
+    "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+    "commit_pin": {
+      "entry": "retained/LaterRoot/commit.txt",
+      "bytes": 531,
+      "sha256": "2fc4d3598095795d19df754f65999f333e184d130e3dcd62654c741d7614b4af",
+      "provenance": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5"
+    },
+    "files": [
+      {
+        "path": "docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+        "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d",
+        "pin": {
+          "entry": "retained/LaterRoot/Git/docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+          "bytes": 2921,
+          "sha256": "a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23",
+          "provenance": {
+            "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+            "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d"
+          }
+        },
+        "Root_current_pin": {
+          "entry": "retained/LaterRoot/Current/docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+          "bytes": 2934,
+          "sha256": "8679d2e7dd9333ca37a292406687297e145a9a0f79aae7514a996f84c493b431",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md"
+        },
+        "Root_current_exact": false,
+        "Root_current_LF_equivalent": true
+      },
+      {
+        "path": "reports/cc12_locale_map_node_payload_primary.json",
+        "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483",
+        "pin": {
+          "entry": "retained/LaterRoot/Git/reports/cc12_locale_map_node_payload_primary.json",
+          "bytes": 35030,
+          "sha256": "68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e",
+          "provenance": {
+            "commit": "3caaeec9a171fb79ec0acde08cfa2fa97fa53ff5",
+            "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483"
+          }
+        },
+        "Root_current_pin": {
+          "entry": "retained/LaterRoot/Current/reports/cc12_locale_map_node_payload_primary.json",
+          "bytes": 36193,
+          "sha256": "827ddb51a6d54073e8357c2acb9dc0bc00842de95b08180aab58e6d5613fe7a4",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_locale_map_node_payload_primary.json"
+        },
+        "Root_current_exact": false,
+        "Root_current_LF_equivalent": true
+      }
+    ],
+    "qualification": "Later Root acceptance is retained independently; it does not rewrite the original pending-worker capture, add a build, or prove Root output object identity from the worker objects."
+  },
+  "reused_Native": [
+    {
+      "address": 7586368,
+      "pin": {
+        "entry": "retained/PriorNative/0073c240_228.bin",
+        "bytes": 228,
+        "sha256": "744732c51b30bb8c7b5cd02771c8bbf68817e4a8146177b82d15784a18d87b35",
+        "provenance": {
+          "dependency": "cc12_locale_raw_map_cleanup_readiness",
+          "original_pin": {
+            "entry": "retained/Native/0073c240_228.bin",
+            "bytes": 228,
+            "sha256": "744732c51b30bb8c7b5cd02771c8bbf68817e4a8146177b82d15784a18d87b35",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 7586368,
+              "length": 228,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 7568608,
+      "pin": {
+        "entry": "retained/PriorNative/00737ce0_119.bin",
+        "bytes": 119,
+        "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+        "provenance": {
+          "dependency": "cc12_locale_map_node_owner_readiness",
+          "original_pin": {
+            "entry": "retained/Native/00737ce0_119.bin",
+            "bytes": 119,
+            "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 7568608,
+              "length": 119,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 13132392,
+      "pin": {
+        "entry": "retained/PriorNative/00c86268_10.bin",
+        "bytes": 10,
+        "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+        "provenance": {
+          "dependency": "cc12_locale_map_node_cleanup_readiness",
+          "original_pin": {
+            "entry": "retained/Native/00c86268_10.bin",
+            "bytes": 10,
+            "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 13132392,
+              "length": 10,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 14374972,
+      "pin": {
+        "entry": "retained/PriorNative/00db583c_36.bin",
+        "bytes": 36,
+        "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+        "provenance": {
+          "dependency": "cc12_locale_map_node_cleanup_readiness",
+          "original_pin": {
+            "entry": "retained/Native/00db583c_36.bin",
+            "bytes": 36,
+            "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 14374972,
+              "length": 36,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 14374964,
+      "pin": {
+        "entry": "retained/PriorNative/00db5834_8.bin",
+        "bytes": 8,
+        "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+        "provenance": {
+          "dependency": "cc12_locale_map_node_cleanup_readiness",
+          "original_pin": {
+            "entry": "retained/Native/00db5834_8.bin",
+            "bytes": 8,
+            "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 14374964,
+              "length": 8,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    },
+    {
+      "address": 13132384,
+      "pin": {
+        "entry": "retained/PriorNative/00c86260_8.bin",
+        "bytes": 8,
+        "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+        "provenance": {
+          "dependency": "cc12_locale_map_node_cleanup_readiness",
+          "original_pin": {
+            "entry": "retained/Native/00c86260_8.bin",
+            "bytes": 8,
+            "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+            "provenance": {
+              "tool": "bsp.py ghidra bytes",
+              "address": 13132384,
+              "length": 8,
+              "verification": "Client.verify before every typed call",
+              "disk_exact": true
+            }
+          }
+        }
+      },
+      "fresh": false
+    }
+  ],
+  "graph_only": [
+    {
+      "address": "0073c220",
+      "pin": {
+        "entry": "retained/Graph/0073c220.txt",
+        "bytes": 291,
+        "sha256": "9d0e7a7e8a56e69b544ca2d7bfc06181a752212a840c3115133977670064b453",
+        "provenance": "offline candidate index only; no retained body or live Native query"
+      }
+    },
+    {
+      "address": "00736090",
+      "pin": {
+        "entry": "retained/Graph/00736090.txt",
+        "bytes": 291,
+        "sha256": "c8974150dc3e9c5f3fad5949e2667e1a0828bb8678880e88c49bc2b88a0eb1ff",
+        "provenance": "offline candidate index only; no retained body or live Native query"
+      }
+    }
+  ],
+  "portable_evidence": {
+    "entry": "evidence.zip",
+    "bytes": 14611721,
+    "sha256": "b99da35346305292591123560620e6ad6c2c334ed046f880493cb64603dca7e0",
+    "payload_files": 4278,
+    "payload_bytes": 57243969
+  },
+  "portable_review": {
+    "status": "PASS",
+    "guard": {
+      "ZIP_only": true,
+      "read_only": true,
+      "external_read_denied": true,
+      "process_network_dynamic_loading_directory_access_denied": true
+    },
+    "review": {
+      "status": "PASS",
+      "source3354_exact_prior_worker_build": 3354,
+      "all_tracked_include_src": 4208,
+      "total_source_and_Git_exact": 4215,
+      "supplemental_inputs_outside_selected_epoch": 861,
+      "whole_dependencies": 6,
+      "reused_Native_bytes": 409,
+      "fresh_Native_bytes": 0,
+      "retained_map_decode": [
+        {
+          "address": 7586368,
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": 7586371,
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": 7586372,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": 7586373,
+          "bytes": "8b2d1822ce00",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [0xce2218]"
+        },
+        {
+          "address": 7586379,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 7586380,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7586381,
+          "bytes": "8bf9",
+          "mnemonic": "mov",
+          "operands": "edi, ecx"
+        },
+        {
+          "address": 7586383,
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": 7586385,
+          "bytes": "897c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], edi"
+        },
+        {
+          "address": 7586389,
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": 7586393,
+          "bytes": "8da42400000000",
+          "mnemonic": "lea",
+          "operands": "esp, [esp]"
+        },
+        {
+          "address": 7586400,
+          "bytes": "8b3487",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + eax*4]"
+        },
+        {
+          "address": 7586403,
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": 7586405,
+          "bytes": "0f8485000000",
+          "mnemonic": "je",
+          "operands": "0x73c2f0"
+        },
+        {
+          "address": 7586411,
+          "bytes": "eb03",
+          "mnemonic": "jmp",
+          "operands": "0x73c270"
+        },
+        {
+          "address": 7586413,
+          "bytes": "8d4900",
+          "mnemonic": "lea",
+          "operands": "ecx, [ecx]"
+        },
+        {
+          "address": 7586416,
+          "bytes": "8b5e14",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esi + 0x14]"
+        },
+        {
+          "address": 7586419,
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": 7586421,
+          "bytes": "e866baffff",
+          "mnemonic": "call",
+          "operands": "0x737ce0"
+        },
+        {
+          "address": 7586426,
+          "bytes": "689876e100",
+          "mnemonic": "push",
+          "operands": "0xe17698"
+        },
+        {
+          "address": 7586431,
+          "bytes": "ffd5",
+          "mnemonic": "call",
+          "operands": "ebp"
+        },
+        {
+          "address": 7586433,
+          "bytes": "8305b076e10001",
+          "mnemonic": "add",
+          "operands": "dword ptr [0xe176b0], 1"
+        },
+        {
+          "address": 7586440,
+          "bytes": "8b7e18",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 0x18]"
+        },
+        {
+          "address": 7586443,
+          "bytes": "a1b476e100",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0xe176b4]"
+        },
+        {
+          "address": 7586448,
+          "bytes": "8b0cb8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax + edi*4]"
+        },
+        {
+          "address": 7586451,
+          "bytes": "2bf1",
+          "mnemonic": "sub",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 7586453,
+          "bytes": "b893244992",
+          "mnemonic": "mov",
+          "operands": "eax, 0x92492493"
+        },
+        {
+          "address": 7586458,
+          "bytes": "f7ee",
+          "mnemonic": "imul",
+          "operands": "esi"
+        },
+        {
+          "address": 7586460,
+          "bytes": "03d6",
+          "mnemonic": "add",
+          "operands": "edx, esi"
+        },
+        {
+          "address": 7586462,
+          "bytes": "c1fa04",
+          "mnemonic": "sar",
+          "operands": "edx, 4"
+        },
+        {
+          "address": 7586465,
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7586467,
+          "bytes": "c1e81f",
+          "mnemonic": "shr",
+          "operands": "eax, 0x1f"
+        },
+        {
+          "address": 7586470,
+          "bytes": "03c2",
+          "mnemonic": "add",
+          "operands": "eax, edx"
+        },
+        {
+          "address": 7586472,
+          "bytes": "0fb79100780000",
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [ecx + 0x7800]"
+        },
+        {
+          "address": 7586479,
+          "bytes": "6689845100700000",
+          "mnemonic": "mov",
+          "operands": "word ptr [ecx + edx*2 + 0x7000], ax"
+        },
+        {
+          "address": 7586487,
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": 7586492,
+          "bytes": "66018100780000",
+          "mnemonic": "add",
+          "operands": "word ptr [ecx + 0x7800], ax"
+        },
+        {
+          "address": 7586499,
+          "bytes": "3b3dc076e100",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [0xe176c0]"
+        },
+        {
+          "address": 7586505,
+          "bytes": "7306",
+          "mnemonic": "jae",
+          "operands": "0x73c2d1"
+        },
+        {
+          "address": 7586507,
+          "bytes": "893dc076e100",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0xe176c0], edi"
+        },
+        {
+          "address": 7586513,
+          "bytes": "2905b076e100",
+          "mnemonic": "sub",
+          "operands": "dword ptr [0xe176b0], eax"
+        },
+        {
+          "address": 7586519,
+          "bytes": "689876e100",
+          "mnemonic": "push",
+          "operands": "0xe17698"
+        },
+        {
+          "address": 7586524,
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]"
+        },
+        {
+          "address": 7586530,
+          "bytes": "85db",
+          "mnemonic": "test",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": 7586532,
+          "bytes": "8bf3",
+          "mnemonic": "mov",
+          "operands": "esi, ebx"
+        },
+        {
+          "address": 7586534,
+          "bytes": "7588",
+          "mnemonic": "jne",
+          "operands": "0x73c270"
+        },
+        {
+          "address": 7586536,
+          "bytes": "8b7c2414",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": 7586540,
+          "bytes": "8b442410",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": 7586544,
+          "bytes": "83c001",
+          "mnemonic": "add",
+          "operands": "eax, 1"
+        },
+        {
+          "address": 7586547,
+          "bytes": "3d00100000",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x1000"
+        },
+        {
+          "address": 7586552,
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": 7586556,
+          "bytes": "0f8c5effffff",
+          "mnemonic": "jl",
+          "operands": "0x73c260"
+        },
+        {
+          "address": 7586562,
+          "bytes": "6800400000",
+          "mnemonic": "push",
+          "operands": "0x4000"
+        },
+        {
+          "address": 7586567,
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": 7586569,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 7586570,
+          "bytes": "e8e1b64b00",
+          "mnemonic": "call",
+          "operands": "0xbf79f0"
+        },
+        {
+          "address": 7586575,
+          "bytes": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": 7586578,
+          "bytes": "c7870040000000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 0x4000], 0"
+        },
+        {
+          "address": 7586588,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 7586589,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 7586590,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": 7586591,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": 7586592,
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": 7586595,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "retained_node_instructions": 38,
+      "graph_73C220": "no retained body; cannot establish a provider contract",
+      "Source_searches": {
+        "fixed_pool_cells": [],
+        "node_free_stack_count_constants": [
+          {
+            "path": "src/native_crt_sbh_allocation.cpp",
+            "line": 162,
+            "text": "    const Word last_page = requested + 0x7000u;"
+          }
+        ],
+        "unreconstructed_graph_helpers": []
+      },
+      "provider_comparisons": [
+        {
+          "path": "src/native_physical_provider_pool.cpp",
+          "function": "return_native_physical_provider_slot_00bf2fc0",
+          "required_tokens": [
+            "word(slot, 0x38)",
+            "/ 0x3c",
+            "0x1e0",
+            "0x1f0"
+          ]
+        },
+        {
+          "path": "src/native_particle_model_pool_allocate.cpp",
+          "function": "return_native_particle_model_slot_00af60b0",
+          "required_tokens": [
+            "word(slot, 0x2dc)",
+            "/ 0x2e0",
+            "0x5c00",
+            "0x5c40"
+          ]
+        },
+        {
+          "path": "src/native_node_pool_allocation.cpp",
+          "function": "return_native_node_pool_slot_00b6e490",
+          "required_tokens": [
+            "word(slot, 0x174)",
+            "/ 0x178",
+            "0x2f00",
+            "0x2f40"
+          ]
+        },
+        {
+          "path": "src/native_enum_node_pool.cpp",
+          "function": "return_native_enum_node_0043b0a0",
+          "required_tokens": [
+            "word(slot, 0x10)",
+            "/ 20",
+            "0x500",
+            "0x580"
+          ]
+        }
+      ],
+      "whole_COFF": [
+        {
+          "stem": "native_locale_map_node_lifetime",
+          "bytes": 2941,
+          "sections": 10,
+          "symbols": 24
+        },
+        {
+          "stem": "native_wide_string",
+          "bytes": 3221,
+          "sections": 12,
+          "symbols": 26
+        },
+        {
+          "stem": "native_string",
+          "bytes": 18822,
+          "sections": 88,
+          "symbols": 190
+        },
+        {
+          "stem": "locale_tables",
+          "bytes": 208769,
+          "sections": 786,
+          "symbols": 1660
+        },
+        {
+          "stem": "native_physical_provider_pool",
+          "bytes": 3539,
+          "sections": 12,
+          "symbols": 29
+        },
+        {
+          "stem": "native_particle_model_pool_allocate",
+          "bytes": 5084,
+          "sections": 16,
+          "symbols": 37
+        },
+        {
+          "stem": "native_node_pool_allocation",
+          "bytes": 5041,
+          "sections": 16,
+          "symbols": 37
+        },
+        {
+          "stem": "native_enum_node_pool",
+          "bytes": 9651,
+          "sections": 25,
+          "symbols": 62
+        }
+      ],
+      "node_helper_complete_normal": {
+        "index": 6,
+        "name": ".text$mn",
+        "declared_size": 103,
+        "raw_pointer": 1107,
+        "payload_bytes": 103,
+        "bytes": 103,
+        "sha256": "3afbf6cba345a8f39b6517e7811f6abe5299979f5b4324c2d8e39552399f4b80",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?destroy_native_locale_map_node_payload_00737ce0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 23,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 68,
+            "type": 20,
+            "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 79,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          }
+        ],
+        "decode": [
+          {
+            "address": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "address": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "address": 3,
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": 5,
+            "bytes": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "address": 10,
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": 16,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 17,
+            "bytes": "83ec0c",
+            "mnemonic": "sub",
+            "operands": "esp, 0xc"
+          },
+          {
+            "address": 20,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 21,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "address": 22,
+            "bytes": "a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [0]"
+          },
+          {
+            "address": 27,
+            "bytes": "33c5",
+            "mnemonic": "xor",
+            "operands": "eax, ebp"
+          },
+          {
+            "address": 29,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 30,
+            "bytes": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "address": 33,
+            "bytes": "64a300000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], eax"
+          },
+          {
+            "address": 39,
+            "bytes": "8b7d08",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [ebp + 8]"
+          },
+          {
+            "address": 42,
+            "bytes": "8b750c",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 0xc]"
+          },
+          {
+            "address": 45,
+            "bytes": "897de8",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x18], edi"
+          },
+          {
+            "address": 48,
+            "bytes": "8975ec",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x14], esi"
+          },
+          {
+            "address": 51,
+            "bytes": "c645f001",
+            "mnemonic": "mov",
+            "operands": "byte ptr [ebp - 0x10], 1"
+          },
+          {
+            "address": 55,
+            "bytes": "8d4708",
+            "mnemonic": "lea",
+            "operands": "eax, [edi + 8]"
+          },
+          {
+            "address": 58,
+            "bytes": "c745fc00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], 0"
+          },
+          {
+            "address": 65,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 66,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 67,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x48"
+          },
+          {
+            "address": 72,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 73,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "address": 74,
+            "bytes": "c645f000",
+            "mnemonic": "mov",
+            "operands": "byte ptr [ebp - 0x10], 0"
+          },
+          {
+            "address": 78,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x53"
+          },
+          {
+            "address": 83,
+            "bytes": "83c410",
+            "mnemonic": "add",
+            "operands": "esp, 0x10"
+          },
+          {
+            "address": 86,
+            "bytes": "8b4df4",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0xc]"
+          },
+          {
+            "address": 89,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": 96,
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "address": 97,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "address": 98,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": 99,
+            "bytes": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "address": 101,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "address": 102,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      "build_and_runtime_executed": false
+    }
+  },
+  "physical_copy_review": {
+    "status": "PASS",
+    "guard": {
+      "ZIP_only": true,
+      "read_only": true,
+      "external_read_denied": true,
+      "process_network_dynamic_loading_directory_access_denied": true
+    },
+    "same_result": true,
+    "same_zip_bytes": true
+  },
+  "limitations": [
+    "No new C++ or compiled helper",
+    "No new build, CTest, fixture, probe, native executable or reconstructed runtime execution",
+    "No Native/Ghidra query or mutation, original installation read/write or OS change",
+    "No ledger edits or main integration in this worker",
+    "No blanket semantic absence proof from text searches; finite census and fixed incompatible providers are the evidence",
+    "Current Root artifact bytes are not retained or compared here; separately accepted Root report and frozen Source epoch are dependencies"
+  ]
+}
