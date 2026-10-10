@@ -253,3 +253,10 @@ The exact four-tool route and prepared independent inspector retain one original
 Fresh review01 completed all four genuine native calls and all three event/timing auxiliaries with zero exits. The complete original orchestration retains 84 actual tool turns. A separate same-machine QPC observation after the fourth terminal recorded an upper bound of 344.2190603 seconds on the same original 600-second clock. The prior expired prepare clock was not reused.
 
 The actual Root_text_selection_candidate.json is typed v2, Source-credit zero and Root-unaccepted. Complete Root review of the independent expected projection, raw owned-job and natural records, inventories and deadlines is still pending, followed by the prepared independent actual-runtime inspector. These terminal and output observations grant no fixture advancement, later phase, ABI compatibility or game validation.
+
+
+## 2026-10-10 ninth probe role design acceptance
+
+Complete Root design review passed 43,739 predicates with 697 equal current books and consumed the whole independent design, supplemental transport and closure reviews. The design binds the ninth probe Source role through the existing copy loop while preserving 121 payload filenames, ENTRY/STAGED 4/4, interpreted selected-code 8/13 and all 215 assembler plus 164 adopter predicates.
+
+Root accepts inert Source authoring within that causal design. Four new input grammars, exact fresh Source variants and complete Source acceptance are required before a new scope can be assembled or adopted. No implementation Source, fresh namespace, profile, plan, adoption, startup or runtime control is selected by this design acceptance. All unresolved conditions remain recorded verbatim; Source credit and qualification remain zero.
