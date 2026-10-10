@@ -1,0 +1,229 @@
+{
+  "schema": "bsp.cc12.application-unwind-actions-primary.v1",
+  "status": "exact_action_operands_and_conditional_frame_requirements_accepted_actual_frame_and_cleanup_unproved",
+  "worker_commit": "c080ca141fa88bf0fabb62eb3d36de166460f350",
+  "worker_report": {
+    "path": "local/cc12_application_unwind_actions_primary/worker_report.json",
+    "bytes": 159199,
+    "sha256": "22466d517f4334a720702a79b8a833d08eb415be30ead9182b75690e7b39a2b3"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_unwind_actions_primary/worker_document.md",
+    "bytes": 7506,
+    "sha256": "63a5c23030e87f57d957927a1409c8f55d0e367eb121932c19737077f3815442"
+  },
+  "copied_finite_pins": 525,
+  "copied_bytes": 428833920,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_unwind_actions_primary/Root_guarded_replay.json",
+    "bytes": 637,
+    "sha256": "be799ed2b2ad57887c94a0da4900119277f688d52646eb3cbaf6b2d4776d4e1d"
+  },
+  "actual_frozen_Git_occurrences": 8476,
+  "actual_closed_Source_paths": 4210,
+  "prior_map_433_pins_byte_identical": true,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_code_bytes": 16,
+    "fresh_data_bytes": 0,
+    "GPR_worker_epoch": 92,
+    "exact_hex": [
+      "8b4de8e9f8b174ff",
+      "8d4dece9a0ac74ff"
+    ],
+    "decoded": [
+      {
+        "address": "00cc7230",
+        "bytes": "8b4de8",
+        "text": "mov ecx, dword ptr [ebp - 0x18]"
+      },
+      {
+        "address": "00cc7233",
+        "bytes": "e9f8b174ff",
+        "text": "jmp 0x412430"
+      },
+      {
+        "address": "00cc7238",
+        "bytes": "8d4dec",
+        "text": "lea ecx, [ebp - 0x14]"
+      },
+      {
+        "address": "00cc723b",
+        "bytes": "e9a0ac74ff",
+        "text": "jmp 0x411ee0"
+      }
+    ],
+    "typed_instructions": [
+      {
+        "address": "00cc7230",
+        "length": 3,
+        "body_start": "00cc7230",
+        "body_end_inclusive": "00cc7237",
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "saved_override": "NONE"
+      },
+      {
+        "address": "00cc7233",
+        "length": 5,
+        "body_start": "00cc7230",
+        "body_end_inclusive": "00cc7237",
+        "default_flow": "UNCONDITIONAL_JUMP",
+        "effective_flow": "CALL_TERMINATOR",
+        "saved_override": "CALL_RETURN"
+      },
+      {
+        "address": "00cc7238",
+        "length": 3,
+        "body_start": "00cc7238",
+        "body_end_inclusive": "00cc723f",
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "saved_override": "NONE"
+      },
+      {
+        "address": "00cc723b",
+        "length": 5,
+        "body_start": "00cc7238",
+        "body_end_inclusive": "00cc723f",
+        "default_flow": "UNCONDITIONAL_JUMP",
+        "effective_flow": "CALL_TERMINATOR",
+        "saved_override": "CALL_RETURN"
+      }
+    ],
+    "constructor_epoch": 79,
+    "constructor_has_no_EBP_operand": true,
+    "conditional_frame_requirements": {
+      "action0": "ECX = DWORD[EBP-0x18]; matching the receiver store at ESP_R+8 requires EBP=ESP_R+0x20.",
+      "action1": "ECX = EBP-0x14; matching the guard record at ESP_G+0x0c requires EBP=ESP_G+0x20.",
+      "common_frame": "Only if ESP_R=ESP_G=S does one EBP=S+0x20 satisfy both. At the first receiver store S=constructor-entry-ESP-0x20. Actual action EBP/FH3 binding and later callee stack balance are not proved here."
+    },
+    "machine_transfer": {
+      "form": "JMP rel32, no CALL or RET within either hull",
+      "targets": [
+        "00412430",
+        "00411ee0"
+      ],
+      "stack_effect_before_target": 0,
+      "return_address_push": false,
+      "flags_modified": false,
+      "EBP_modified": false,
+      "ECX_overwritten": true,
+      "target_return_or_cleanup_proved": false
+    },
+    "callee_and_descriptor_suffix_and_handler_bytes_read": 0,
+    "Native_execution": false
+  },
+  "contract": {
+    "action0": "At CC7230, MOV ECX,DWORD[EBP-0x18] performs a four-byte memory load; JMP rel32 at CC7233 transfers to 00412430.",
+    "action1": "At CC7238, LEA ECX,[EBP-0x14] forms an address without dereferencing it; JMP rel32 at CC723B transfers to 00411EE0.",
+    "machine": "Each independently complete eight-byte hull contains exactly two instructions. The JMP pushes no return address, makes no stack adjustment, changes no flags, and contains no RET. Callee cleanup or return effects remain unknown.",
+    "listing": "Both terminal instructions have default UNCONDITIONAL_JUMP and saved CALL_RETURN overrides producing effective CALL_TERMINATOR. This does not change the underlying E9 instruction into a machine CALL or prove a return.",
+    "frame": "To match the pinned receiver store ESP_R+8 and guard record ESP_G+0x0c, the actions require EBP=ESP_R+0x20 and EBP=ESP_G+0x20 respectively. A common frame interpretation additionally requires ESP_R=ESP_G. The constructor has no EBP operand; actual incoming funclet EBP and FH3 invocation remain unproved.",
+    "identity": "The conditional receiver identity is the original saved constructor receiver; the conditional guard identity is the address of a two-DWORD record, not its profile value or captured-section pointer. Current publication and selected registration argument remain distinct.",
+    "custody": "Retain raw storage, actual +14 member reference, authority cells, borrowed services, original receiver/current publication/registration argument/captured section and escaped records. No reset, unregister, free, retry, destructor policy or raw owner activation is admitted."
+  },
+  "decision": {
+    "Cpp_GO": false,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "exceptional_cleanup_GO": false,
+    "normal_retirement_GO": false,
+    "E1AE78_separate": true,
+    "next_packet": "cc12_application_singleton_unwind_targets_metadata_readiness",
+    "proposed_next_scope": {
+      "single_packet": true,
+      "read_only": true,
+      "metadata_only": true,
+      "encoded_targets": [
+        "00412430",
+        "00411EE0"
+      ],
+      "admission": "Independently claim each exact target address, verify project/program and refresh prototype plus complete typed ownership/listing metadata. Preserve missing, ambiguous, shared, discontinuous, changed or larger ownership as explicit evidence. Do not infer bounds from names or neighboring addresses.",
+      "maximum_fresh_code_bytes": 0,
+      "maximum_fresh_data_bytes": 0,
+      "no_target_body_instruction_text_or_decompilation": true,
+      "subsequent_bodies_require_a_new_finite_proposal": true,
+      "no_descriptor_suffix_BF6B43_other_funclet_or_runtime_reads": true,
+      "no_listing_flow_prototype_or_noreturn_repairs": true
+    }
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": "Two complete typed metadata captures, old comment journal and two refreshed admitted-function exports.",
+    "GPR_writes": "Two locked evidence-comment appends plus save; no renames or analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0,
+    "Root_additional_body_admission": 0
+  },
+  "limits": [
+    "MOV loads a receiver pointer; LEA forms the guard record address. Neither proves target cleanup.",
+    "Both E9 instructions remain machine JMPs with saved CALL_RETURN overrides; no stack adjustment or return-address push.",
+    "Constructor epoch79 has no EBP operand. EBP=ESP_R+20h and EBP=ESP_G+20h are necessary conditional relations, not actual FH3 frame evidence.",
+    "Prior snapshot epochs and later Source/build proof retain separate provenance; no activation or runtime credit.",
+    "Indexed snapshot callee summaries, including a BF6B43 edge at CC7238, are not machine-opcode or fresh body evidence."
+  ],
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_application_unwind_actions_primary/Root_metadata_before.json",
+      "bytes": 27328,
+      "sha256": "2160b4ec2394b71c33e6251d8e0802159041f1321e76105079db416b4e9708c3"
+    },
+    "after": {
+      "path": "local/cc12_application_unwind_actions_primary/Root_metadata_after.json",
+      "bytes": 27328,
+      "sha256": "d7bc8cb3050ee1a33a6c91ea5e8f8fee9f7a51d62fe9932b9c505c5fda0a0b71"
+    },
+    "GPR_before": 92,
+    "GPR_after": 95,
+    "comments_added": 2,
+    "renames": 0,
+    "correct_EH_names_and_old_comments_and_ledger_evidence_preserved": true,
+    "complete_metadata_equal_except_modification": true,
+    "Native_body_listing_flow_no_return_prototype_unchanged": true,
+    "journal": {
+      "path": "local/cc12_application_unwind_actions_primary/Root_comment_journal.json",
+      "bytes": 2845,
+      "sha256": "b53b3c7d6a49505086f0a27ee37b9781d8a86da98177fa716be0f082fdf329fa"
+    },
+    "save_result": {
+      "path": "local/cc12_application_unwind_actions_primary/Root_save_result.json",
+      "bytes": 107,
+      "sha256": "10080395266cbd7fbad176d6d133364cd579170aeccba8133b563c31c12dce7a"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7230/assembly.txt",
+        "bytes": 69,
+        "sha256": "fb75afb7d3607fd993d9106404e1b4551e3f55d1e47dacbbbe5274700fb5e159"
+      },
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7230/decompiled.c",
+        "bytes": 1300,
+        "sha256": "c8dd9d095c6cbfbe6807bea1832ee120f0084e113e8653c97384e0a1db40e8ec"
+      },
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7230/metadata.json",
+        "bytes": 262,
+        "sha256": "8dd2976d358eff8e0556d7aa05048457fecb9baa8b29073cbfde9848c4dcd135"
+      },
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7238/assembly.txt",
+        "bytes": 59,
+        "sha256": "4fbe01936106a73a26657f4bee15d9e6467384c4d66a69a01738798b4e15bcbf"
+      },
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7238/decompiled.c",
+        "bytes": 1327,
+        "sha256": "c3ac42ddfe1384bd8aac7cbab9f6254963045616b1b982dd840a3c3aba65cc90"
+      },
+      {
+        "path": "local/cc12_application_unwind_actions_primary/refreshed_exports/00cc7238/metadata.json",
+        "bytes": 262,
+        "sha256": "d0d5511c9144ca4a1d855c18199b40796a5e64f5086e7e42c4c0da2e9dedbdf8"
+      }
+    ]
+  }
+}
