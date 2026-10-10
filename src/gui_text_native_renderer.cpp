@@ -78,4 +78,23 @@ void* create_gui_text_native_index_current60(void* renderer, std::uint32_t count
     register_stream(s, a);
     return a.creator;
 }
+
+void* create_native_vertex_from_captured_renderer_5c(void* renderer,
+    std::uint32_t captured_entry, std::uint32_t first, std::uint32_t bytes,
+    void* descriptor, NativeStreamCloneServices& s, NativeStreamCloneAcquired& a) {
+    require(renderer && *static_cast<const volatile std::uint32_t*>(renderer) == 0x00d5f0a8u,
+        "Captured vertex factory requires the supplied actual D5F0A8 renderer");
+    require(captured_entry == 0x00b287c0u && s.vertices.actual_renderer_profile_00d5f0a8,
+        "Captured vertex factory requires the saved B287C0 entry and actual profile view");
+    require(&s.geometry.actual_owners() == &s.vertices.actual_owners,
+        "Captured vertex factory requires the same canonical owner domain");
+    begin_stream(a, true);
+    (void)create_native_registered_vertex_stream_00b287c0(renderer, first, bytes,
+        descriptor, s.vertices, &a.creator);
+    if (!a.creator) throw std::bad_alloc();
+    a.phase = NativeStreamClonePhase::registration;
+    s.geometry.register_stream_clone_creator(a, s);
+    a.phase = NativeStreamClonePhase::complete;
+    return a.creator;
+}
 } // namespace bsp

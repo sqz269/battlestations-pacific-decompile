@@ -1,0 +1,111 @@
+{
+  "schema": "bsp.cc12.particle-saved-renderer-primary.v1",
+  "status": "dormant_saved_renderer_Source_composition_fresh_Win32_build_and_static_review_PASS",
+  "worker_commit": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_saved_renderer_primary\\worker_report.json",
+    "bytes": 4198894,
+    "sha256": "12ae434f7bb56a038e8d902da5f4b928f6ab52a262adbeb2ef987cb55473487a"
+  },
+  "Root_worker_review": {
+    "path": "local/cc12_particle_saved_renderer_primary/Root_worker_review.json",
+    "bytes": 1898,
+    "sha256": "854142ccff949fee9afa3d39409c7ec1e03357b9becefa5835c2024b4d42e7a9"
+  },
+  "Root_before": {
+    "path": "local/cc12_particle_saved_renderer_primary/Root_before.json",
+    "bytes": 5089746,
+    "sha256": "23eb520e76d28ba58d51e23a2b427ac79e1128a27afeb641f39975b2ec305528"
+  },
+  "Root_after": {
+    "path": "local/cc12_particle_saved_renderer_primary/Root_after.json",
+    "bytes": 5085464,
+    "sha256": "e5502cb6f203e3d751ee81ea223966b0991d3829d2ae56eb56d7e16ac1a79bde"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_particle_saved_renderer_primary/Root_compiled_review.json",
+    "bytes": 104064,
+    "sha256": "d57631cf1a2efbba8a48af043e9932013ba1a636c981788447af04dccb6f28db"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_particle_saved_renderer_primary/Source3356_saved_renderer_Root_frozen.json",
+    "bytes": 1251131,
+    "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "actual_Root_Git": 4217,
+    "worker_closed_Source": 4228,
+    "worker_frozen_Git_occurrences": 4253,
+    "worker_staged_Git_occurrences": 4253,
+    "worker_staged_trees": 10,
+    "Root_Source_changes": [
+      "include/bsp/gui_text_native_renderer.hpp",
+      "src/gui_text_native_renderer.cpp"
+    ],
+    "new_files": []
+  },
+  "Root_build": {
+    "receipt": {
+      "path": "local/cc12_particle_saved_renderer_primary/Root_after_build_receipt.json",
+      "bytes": 874,
+      "sha256": "72efde587ecc1207cb14755f7bcf3b29d3eb8219c8aa7ce052946e67c708aafb"
+    },
+    "log": {
+      "path": "local/cc12_particle_saved_renderer_primary/Root_after_build.log",
+      "bytes": 6351,
+      "sha256": "8e1c784e5d16f10a959991cfb75075ac0cdd6e7b5d7623a961a30c388885ded9"
+    },
+    "normal_scripts_build_ps1": true,
+    "MSVC_Win32": true,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0,
+    "baseline": "Exact accepted Source3356 particle-hook-adapter artifact pins reused, with complete Core1990/App80 retained before any helper edit. No new baseline build claimed."
+  },
+  "contract": {
+    "interface": "Explicit C++ renderer, captured entry, first, bytes, descriptor, real services and persistent acquired frame.",
+    "guards": "Supplied D5F0A8 header, saved B287C0 token, nonnull actual profile view, identical canonical registry and fresh frame. These checks do not authenticate object provenance or copied layouts.",
+    "forwarding": "Calls existing B287C0 with the saved renderer/first/bytes/descriptor and &acquired.creator; no current +5C or current renderer reload.",
+    "schedule": "Existing fresh-frame entry, Native factory, null-creator bad_alloc, registration phase, canonical stream admission, complete phase, return same creator.",
+    "partial_effects": "Creator publication precedes late renderer append; canonical companion publication precedes binding. Exceptions preserve entered phase and effects. No catch, retry, cleanup, new custody or extra Native retain.",
+    "obligations": "Actual raw object/profile extents, physical/device/pool/canonical domain identity and persistent services/frame/callback lifetime remain required."
+  },
+  "compiled": {
+    "old_code_sections_exact": 174356,
+    "added_sections": 1,
+    "added_bytes": 229,
+    "added_instructions": 74,
+    "direct_relocations": 13,
+    "complete_physical_indices": 184,
+    "selected_TUs_per_phase": 92,
+    "header_consumers_per_phase": 89,
+    "whole_changed_objects": 89,
+    "whole_changed_App_objects": 3,
+    "old_App_code_exact": true,
+    "unique_helper_positive_definitions": 1,
+    "Root_worker_positive_function_bijections": 4,
+    "complete_GUI_TU_payloads_and_relocations_match_worker_under_finite_positive_definition_bijection": true,
+    "no_all_section_Core_App_helper_references": true,
+    "Game_map_helper_symbols": 0,
+    "Game_text_exact": true,
+    "whole_image_equality_claimed": false,
+    "artifact_comparison": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_saved_renderer_primary\\Root_artifact_comparison.json",
+      "bytes": 4825,
+      "sha256": "de1ac21c7d57cad5ba71d3e45a56d1ff243163a2247017be4bf391fc3cdf117e"
+    }
+  },
+  "scope": {
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "Native_execution": 0,
+    "game_runs": 0
+  },
+  "remaining": [
+    "No particle delegate/application caller invokes this new helper.",
+    "Mesh/material/section preparation and persistent record/application custody remain separate incomplete contracts.",
+    "Original Native entry ABI/SEH, actual helper/device execution, quiescence, startup and gameplay remain unproved."
+  ]
+}
