@@ -1,0 +1,743 @@
+{
+  "schema": "cc12-damageable-class-hp-source-primary-review-v1",
+  "decision": "Accept registered ordinary borrowed raw HP numeric fragment; whole parent, Native ABI/FP traps/FH3, receiver runtime, startup and gameplay held.",
+  "accepted_worker_commit": "f228e89e0961881fd70dc29e76ecfa4c3cad2e83",
+  "worker_report_pin": {
+    "path": "reports/cc12_damageable_class_hp_fragment_source.json",
+    "bytes": 150046,
+    "sha256": "79dbf9a7d8205de2c75d43114ef2471104f1cbffcf04c6f8743bcf40f3275d6d",
+    "canonical_lf_sha256": "79dbf9a7d8205de2c75d43114ef2471104f1cbffcf04c6f8743bcf40f3275d6d"
+  },
+  "complete_indexed_COFF_receipt_pin": {
+    "path": "local/cc12_hp_fragment_Source_primary/complete_artifacts.json",
+    "bytes": 1647095,
+    "sha256": "683f8ed5afeba3e29204a2ff69cb256d8b8503b373f357dfe51242db30127a08",
+    "canonical_lf_sha256": "683f8ed5afeba3e29204a2ff69cb256d8b8503b373f357dfe51242db30127a08"
+  },
+  "document_pin": {
+    "path": "docs/CC12_DAMAGEABLE_CLASS_HP_SOURCE_PRIMARY_REVIEW.md",
+    "bytes": 3180,
+    "sha256": "e4b91d27a6d0a3fed56cc152cf39d2a0db6ff8dacdce8aab544c14efafc6f3fa",
+    "canonical_lf_sha256": "e4b91d27a6d0a3fed56cc152cf39d2a0db6ff8dacdce8aab544c14efafc6f3fa"
+  },
+  "selected_project_inputs": 589,
+  "selected_Core_whole_objects": 68,
+  "selected_App_whole_objects": 3,
+  "unique_positive_Core_definitions": 129,
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-10T00:06:41.031607+00:00",
+    "end_utc": "2026-10-10T00:06:58.738190+00:00",
+    "exit_code": 0
+  },
+  "existing_checks_passed": 3,
+  "new_tests": 0,
+  "fresh_whole_object_summaries": [
+    {
+      "stem": "lua_numeric",
+      "bytes": 3058,
+      "sha256": "e37ba1fe80d4c3ac423f47eda6d13ec6c5f7e5a55ce10641efd1e8a15dd2cd59",
+      "sections": 11,
+      "physical_symbols": 23,
+      "functions": 5,
+      "code_bytes": 211,
+      "instructions": 85,
+      "undecoded_tails": []
+    },
+    {
+      "stem": "native_damageable_class_hp_fragment",
+      "bytes": 4328,
+      "sha256": "3be196b8ab8049eb2eeebb5148797ad05947cb6c37a22251109a16509571dd04",
+      "sections": 15,
+      "physical_symbols": 37,
+      "functions": 6,
+      "code_bytes": 329,
+      "instructions": 106,
+      "undecoded_tails": []
+    },
+    {
+      "stem": "native_lua_objects",
+      "bytes": 27586,
+      "sha256": "590bf83cbb506633ea8b2e2050f59da68f014068916116b0d903644971c30ae2",
+      "sections": 118,
+      "physical_symbols": 264,
+      "functions": 66,
+      "code_bytes": 4240,
+      "instructions": 1581,
+      "undecoded_tails": []
+    }
+  ],
+  "prior_unchanged_Core_objects": 66,
+  "worker_pin_occurrences_verified_and_frozen": 32,
+  "retained_Source585_pins_verified": 589,
+  "Native_HP_gate": {
+    "parent_bytes": 3238,
+    "parent_instructions": 858,
+    "parent_sha256": "00d679920bd1b8f8653e9a0ab1de627f954cfadaf48b8bf0642676fde5162808",
+    "listing_gates": [
+      {
+        "representation": "saved_listing",
+        "retained_pin": {
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087ca80\\assembly.txt",
+          "retained_path": "local/cc12_hp_fragment_Source_primary/worker_support/001_assembly.txt",
+          "bytes": 25014,
+          "sha256": "38752fdd292f3ed8b60e0bd0914f64cee38c9e7a9beb25198fb5f20ba8df8a7d",
+          "reported_sha256": "38752fdd292f3ed8b60e0bd0914f64cee38c9e7a9beb25198fb5f20ba8df8a7d"
+        },
+        "all858_starts_match": true
+      },
+      {
+        "representation": "live_listing",
+        "retained_pin": {
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\local\\output\\ghidra-disasm-0087ca80-lines-900-165504.txt",
+          "retained_path": "local/cc12_hp_fragment_Source_primary/worker_support/002_ghidra-disasm-0087ca80-lines-900-165504.txt",
+          "bytes": 25872,
+          "sha256": "eaf2df589c75997e7b2b9a87d42426b57bc448abc697e1a573d730194705c76e",
+          "reported_sha256": "eaf2df589c75997e7b2b9a87d42426b57bc448abc697e1a573d730194705c76e"
+        },
+        "all858_starts_match": true
+      }
+    ],
+    "fragment_bytes": 66,
+    "fragment_instructions": 16,
+    "fragment_sha256": "ec3ce413e3f3d153b6d5fa8d3a3ad4b4924f76cc948b27e97bcbee0f227975be",
+    "fragment_hex": "685067ce008d542448528bcde889ab2e00d905083dce00518bc8d91c24c684240001000006e8a0962e008b7424408d4c2444d95e48c68424fc00000001e858aa2e00",
+    "new_child_data_or_handler_openings": 0
+  },
+  "normal_HP_compiled_review": {
+    "main_root": {
+      "symbol": "?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+      "symbol_index": 28,
+      "symbol_record_file_offset": 2547,
+      "section": 7,
+      "section_value": 0,
+      "physical_file_offset": 1428,
+      "bytes": 159,
+      "sha256": "500674cb1f473d02b2e197442b82a6eca175e8cde5b9e5c3e65484ce1c4a6393",
+      "instruction_count": 46,
+      "relocations": [
+        {
+          "record_file_offset": 1587,
+          "raw_record_hex": "06000000210000000600",
+          "offset": 6,
+          "type": 6,
+          "symbol_index": 33,
+          "symbol": "__ehhandler$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+          "symbol_record": {
+            "index": 33,
+            "record_file_offset": 2637,
+            "raw_record_hex": "00000000510200000d000000080020000300",
+            "name": "__ehhandler$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+            "value": 13,
+            "section": 8,
+            "type": 32,
+            "storage": 3,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1434,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 6
+        },
+        {
+          "record_file_offset": 1597,
+          "raw_record_hex": "16000000300000000600",
+          "offset": 22,
+          "type": 6,
+          "symbol_index": 48,
+          "symbol": "___security_cookie",
+          "symbol_record": {
+            "index": 48,
+            "record_file_offset": 2907,
+            "raw_record_hex": "000000002805000000000000000000000200",
+            "name": "___security_cookie",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1450,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 22
+        },
+        {
+          "record_file_offset": 1607,
+          "raw_record_hex": "340000002f0000000600",
+          "offset": 52,
+          "type": 6,
+          "symbol_index": 47,
+          "symbol": "??_C@_02MEIMKHMB@HP@",
+          "symbol_record": {
+            "index": 47,
+            "record_file_offset": 2889,
+            "raw_record_hex": "0000000013050000000000000e0000000200",
+            "name": "??_C@_02MEIMKHMB@HP@",
+            "value": 0,
+            "section": 14,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1480,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 52
+        },
+        {
+          "record_file_offset": 1617,
+          "raw_record_hex": "46000000190000001400",
+          "offset": 70,
+          "type": 20,
+          "symbol_index": 25,
+          "symbol": "?native_lua_get_by_name_protected@bsp@@YAPAUNativeLuaObjectStorage@1@AAU21@PAXPBD@Z",
+          "symbol_record": {
+            "index": 25,
+            "record_file_offset": 2493,
+            "raw_record_hex": "000000005b00000000000000000020000200",
+            "name": "?native_lua_get_by_name_protected@bsp@@YAPAUNativeLuaObjectStorage@1@AAU21@PAXPBD@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1498,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 70
+        },
+        {
+          "record_file_offset": 1627,
+          "raw_record_hex": "4f000000080000000600",
+          "offset": 79,
+          "type": 6,
+          "symbol_index": 8,
+          "symbol": "?original_hp_default@?A0x7d048cc5@bsp@@3MB",
+          "symbol_record": {
+            "index": 8,
+            "record_file_offset": 2187,
+            "raw_record_hex": "000000000400000000000000030000000300",
+            "name": "?original_hp_default@?A0x7d048cc5@bsp@@3MB",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1507,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 79
+        },
+        {
+          "record_file_offset": 1637,
+          "raw_record_hex": "6a0000001b0000001400",
+          "offset": 106,
+          "type": 20,
+          "symbol_index": 27,
+          "symbol": "?native_lua_number_or_00b66330@bsp@@YAMABUNativeLuaObjectStorage@1@M@Z",
+          "symbol_record": {
+            "index": 27,
+            "record_file_offset": 2529,
+            "raw_record_hex": "00000000fa00000000000000000020000200",
+            "name": "?native_lua_number_or_00b66330@bsp@@YAMABUNativeLuaObjectStorage@1@M@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1534,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 106
+        },
+        {
+          "record_file_offset": 1647,
+          "raw_record_hex": "880000001a0000001400",
+          "offset": 136,
+          "type": 20,
+          "symbol_index": 26,
+          "symbol": "?destroy_native_lua_object_00b67700@bsp@@YAXAAUNativeLuaObjectStorage@1@@Z",
+          "symbol_record": {
+            "index": 26,
+            "record_file_offset": 2511,
+            "raw_record_hex": "00000000af00000000000000000020000200",
+            "name": "?destroy_native_lua_object_00b67700@bsp@@YAXAAUNativeLuaObjectStorage@1@@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1564,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 136
+        }
+      ],
+      "decoded_bytes": 159,
+      "undecoded_tail_hex": "",
+      "complete_linear_decode": true
+    },
+    "project_REL32_calls": [
+      {
+        "call_offset": 69,
+        "relocation": {
+          "record_file_offset": 1617,
+          "raw_record_hex": "46000000190000001400",
+          "offset": 70,
+          "type": 20,
+          "symbol_index": 25,
+          "symbol": "?native_lua_get_by_name_protected@bsp@@YAPAUNativeLuaObjectStorage@1@AAU21@PAXPBD@Z",
+          "symbol_record": {
+            "index": 25,
+            "record_file_offset": 2493,
+            "raw_record_hex": "000000005b00000000000000000020000200",
+            "name": "?native_lua_get_by_name_protected@bsp@@YAPAUNativeLuaObjectStorage@1@AAU21@PAXPBD@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1498,
+          "operand_hex": "00000000",
+          "operand_u32": 0
+        },
+        "unique_genuine_Core_definition": {
+          "member": {
+            "name": "bsp_core.dir\\Release\\native_lua_objects.obj",
+            "header_offset": 58416138,
+            "payload_file_offset": 58416198,
+            "bytes": 27586,
+            "sha256": "590bf83cbb506633ea8b2e2050f59da68f014068916116b0d903644971c30ae2"
+          },
+          "definition": {
+            "name": "?native_lua_get_by_name_protected@bsp@@YAPAUNativeLuaObjectStorage@1@AAU21@PAXPBD@Z",
+            "symbol_index": 194,
+            "symbol_record_file_offset": 17731,
+            "section": 49,
+            "value": 0,
+            "type": 32
+          }
+        }
+      },
+      {
+        "call_offset": 105,
+        "relocation": {
+          "record_file_offset": 1637,
+          "raw_record_hex": "6a0000001b0000001400",
+          "offset": 106,
+          "type": 20,
+          "symbol_index": 27,
+          "symbol": "?native_lua_number_or_00b66330@bsp@@YAMABUNativeLuaObjectStorage@1@M@Z",
+          "symbol_record": {
+            "index": 27,
+            "record_file_offset": 2529,
+            "raw_record_hex": "00000000fa00000000000000000020000200",
+            "name": "?native_lua_number_or_00b66330@bsp@@YAMABUNativeLuaObjectStorage@1@M@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1534,
+          "operand_hex": "00000000",
+          "operand_u32": 0
+        },
+        "unique_genuine_Core_definition": {
+          "member": {
+            "name": "bsp_core.dir\\Release\\native_lua_objects.obj",
+            "header_offset": 58416138,
+            "payload_file_offset": 58416198,
+            "bytes": 27586,
+            "sha256": "590bf83cbb506633ea8b2e2050f59da68f014068916116b0d903644971c30ae2"
+          },
+          "definition": {
+            "name": "?native_lua_number_or_00b66330@bsp@@YAMABUNativeLuaObjectStorage@1@M@Z",
+            "symbol_index": 218,
+            "symbol_record_file_offset": 18163,
+            "section": 66,
+            "value": 0,
+            "type": 32
+          }
+        }
+      },
+      {
+        "call_offset": 135,
+        "relocation": {
+          "record_file_offset": 1647,
+          "raw_record_hex": "880000001a0000001400",
+          "offset": 136,
+          "type": 20,
+          "symbol_index": 26,
+          "symbol": "?destroy_native_lua_object_00b67700@bsp@@YAXAAUNativeLuaObjectStorage@1@@Z",
+          "symbol_record": {
+            "index": 26,
+            "record_file_offset": 2511,
+            "raw_record_hex": "00000000af00000000000000000020000200",
+            "name": "?destroy_native_lua_object_00b67700@bsp@@YAXAAUNativeLuaObjectStorage@1@@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1564,
+          "operand_hex": "00000000",
+          "operand_u32": 0
+        },
+        "unique_genuine_Core_definition": {
+          "member": {
+            "name": "bsp_core.dir\\Release\\native_lua_objects.obj",
+            "header_offset": 58416138,
+            "payload_file_offset": 58416198,
+            "bytes": 27586,
+            "sha256": "590bf83cbb506633ea8b2e2050f59da68f014068916116b0d903644971c30ae2"
+          },
+          "definition": {
+            "name": "?destroy_native_lua_object_00b67700@bsp@@YAXAAUNativeLuaObjectStorage@1@@Z",
+            "symbol_index": 200,
+            "symbol_record_file_offset": 17839,
+            "section": 38,
+            "value": 0,
+            "type": 32
+          }
+        }
+      }
+    ],
+    "ordered_default_store_state_offsets": [
+      77,
+      83,
+      98,
+      105,
+      110,
+      119,
+      122,
+      128,
+      135
+    ],
+    "all329_code_bytes_linear_decode": true,
+    "safe_handlers_physical_symbols": [
+      {
+        "index": 33,
+        "record_file_offset": 2637,
+        "raw_record_hex": "00000000510200000d000000080020000300",
+        "name": "__ehhandler$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+        "value": 13,
+        "section": 8,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      {
+        "index": 37,
+        "record_file_offset": 2709,
+        "raw_record_hex": "000000008103000000000000060020000300",
+        "name": "__ehhandler$??1HpCleanup@?A0x7d048cc5@bsp@@QAE@XZ",
+        "value": 0,
+        "section": 6,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      }
+    ],
+    "EH_sections": [
+      {
+        "section": 11,
+        "header_file_offset": 420,
+        "raw_header_hex": "2e737864617461000000000000000000080000000207000000000000000000000000000000023000",
+        "name": ".sxdata",
+        "bytes": 8,
+        "raw_file_offset": 1794,
+        "relocation_file_offset": 0,
+        "characteristics": "00300200",
+        "executable": false,
+        "writable": false,
+        "payload_hex": "2100000025000000",
+        "payload_sha256": "a7584ce9eae376c9cc4dd52ad13e956579c807e9a58838c2a1dd0fadd37af7f8",
+        "relocations": []
+      },
+      {
+        "section": 12,
+        "header_file_offset": 460,
+        "raw_header_hex": "2e786461746124780000000000000000340000000a0700003e070000000000000300000040103040",
+        "name": ".xdata$x",
+        "bytes": 52,
+        "raw_file_offset": 1802,
+        "relocation_file_offset": 1854,
+        "characteristics": "40301040",
+        "executable": false,
+        "writable": false,
+        "payload_hex": "ffffffff00000000ffffffff00000000220593190200000000000000000000000000000000000000000000000000000001000000",
+        "payload_sha256": "b6c38bb8b90ff50f2417de885ac8482cfa9141cef5146c67fe939adb5316228b",
+        "relocations": [
+          {
+            "record_file_offset": 1854,
+            "raw_record_hex": "04000000240000000600",
+            "offset": 4,
+            "type": 6,
+            "symbol_index": 36,
+            "symbol": "__unwindfunclet$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z$0",
+            "symbol_record": {
+              "index": 36,
+              "record_file_offset": 2691,
+              "raw_record_hex": "00000000e602000000000000080020000300",
+              "name": "__unwindfunclet$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z$0",
+              "value": 0,
+              "section": 8,
+              "type": 32,
+              "storage": 3,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 1806,
+            "operand_hex": "00000000",
+            "operand_u32": 0
+          },
+          {
+            "record_file_offset": 1864,
+            "raw_record_hex": "0c000000180000000600",
+            "offset": 12,
+            "type": 6,
+            "symbol_index": 24,
+            "symbol": "___std_terminate",
+            "symbol_record": {
+              "index": 24,
+              "record_file_offset": 2475,
+              "raw_record_hex": "000000004a00000000000000000020000200",
+              "name": "___std_terminate",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 1814,
+            "operand_hex": "00000000",
+            "operand_u32": 0
+          },
+          {
+            "record_file_offset": 1874,
+            "raw_record_hex": "18000000290000000600",
+            "offset": 24,
+            "type": 6,
+            "symbol_index": 41,
+            "symbol": "__unwindtable$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+            "symbol_record": {
+              "index": 41,
+              "record_file_offset": 2781,
+              "raw_record_hex": "0000000049040000000000000c0000000300",
+              "name": "__unwindtable$?read_native_damageable_class_hp_fragment_0087cc66@bsp@@YAXPAXAAUNativeLuaObjectStorage@1@AAUNativeDamageableClassHpFragmentScratch@1@@Z",
+              "value": 0,
+              "section": 12,
+              "type": 0,
+              "storage": 3,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 1826,
+            "operand_hex": "00000000",
+            "operand_u32": 0
+          }
+        ]
+      },
+      {
+        "section": 13,
+        "header_file_offset": 500,
+        "raw_header_hex": "2e786461746124780000000000000000240000005c07000000000000000000000000000040103040",
+        "name": ".xdata$x",
+        "bytes": 36,
+        "raw_file_offset": 1884,
+        "relocation_file_offset": 0,
+        "characteristics": "40301040",
+        "executable": false,
+        "writable": false,
+        "payload_hex": "220593190000000000000000000000000000000000000000000000000000000005000000",
+        "payload_sha256": "deefb3473c3645d1b0e64473dc4d9122bd804dbeee0601d27662e64da29238e5",
+        "relocations": []
+      }
+    ],
+    "actual_x87_narrowing_helper": {
+      "object": "lua_numeric",
+      "symbol": "?lua_number_float32_00b66270@bsp@@YAMN@Z",
+      "symbol_index": 26,
+      "symbol_record_file_offset": 2458,
+      "section": 7,
+      "section_value": 0,
+      "physical_file_offset": 1690,
+      "bytes": 17,
+      "sha256": "6ed976f17118c80253abc72ddf922e02ec71cbd762cfca439e9ac654f1242469",
+      "hex": "558bec51dd4508d95dfcd945fc8be55dc3",
+      "instruction_count": 9,
+      "relocations": [],
+      "decoded_bytes": 17,
+      "undecoded_tail_hex": "",
+      "complete_linear_decode": true,
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "offset": 1,
+          "bytes": "8bec",
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "offset": 3,
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "offset": 4,
+          "bytes": "dd4508",
+          "mnemonic": "fld",
+          "operands": "qword ptr [ebp + 8]"
+        },
+        {
+          "offset": 7,
+          "bytes": "d95dfc",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 10,
+          "bytes": "d945fc",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 13,
+          "bytes": "8be5",
+          "mnemonic": "mov",
+          "operands": "esp, ebp"
+        },
+        {
+          "offset": 15,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "offset": 16,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "held": "new ordinary C++ spills/EH, not Native register ABI, FH3, trap/SEH/longjmp/fault identity or receiver execution"
+  },
+  "GPR": {
+    "commands": [
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/pre_comments.txt",
+        "sha256": "3e5e406371e0763366c2429f7ef7985b8f84e2c390c17727288cbb56aa6cc3f7",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      },
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/ledger_hp.txt",
+        "sha256": "b7889b53dddde0841bfcbeb884882e6814b69ba0247148070875c62a917f568d",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      },
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/name_parent.txt",
+        "sha256": "b08b078f739b407261d125d0e6ecd0526a42b3fe0fe7e36c330bed89073cf5db",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      },
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/locked_annotation.txt",
+        "sha256": "ffe91af3d455412ba460ad7236a9e23011055cebaf721988960421080cc8a629",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      },
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/refresh_parent.txt",
+        "sha256": "3841c1914f95159563d5b0fa290eb02a8898c53e5fe3f1159073c3b89f6b7bcd",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      },
+      {
+        "log_path": "local/cc12_hp_fragment_Source_primary/post_comments.txt",
+        "sha256": "d59c8d11f69bc5e0633ddff3c533728129c0665f0ff088d01303a22d4c893e9e",
+        "exit_code": 0,
+        "qualification": "Original one-shot annotate script checks each command return code before continuing; only final capped-output JSON parsing failed after all commands returned."
+      }
+    ],
+    "preimage_exports": [
+      {
+        "path": "local/cc12_hp_fragment_Source_primary/pre_annotation_exports/assembly.txt",
+        "bytes": 25014,
+        "sha256": "38752fdd292f3ed8b60e0bd0914f64cee38c9e7a9beb25198fb5f20ba8df8a7d"
+      },
+      {
+        "path": "local/cc12_hp_fragment_Source_primary/pre_annotation_exports/decompiled.c",
+        "bytes": 20716,
+        "sha256": "0f1d636868cdc02235b60511ad52f0bd90d3b39e41918a27ab021dc13aab4b03"
+      },
+      {
+        "path": "local/cc12_hp_fragment_Source_primary/pre_annotation_exports/metadata.json",
+        "bytes": 280,
+        "sha256": "b1c726eccd3f4f4547347a0e09ddd05bcbcce5f7dc29fefa3f954fbf159aaad2"
+      }
+    ],
+    "old_comment_preserved_verbatim": true,
+    "name_retained": true,
+    "body_prototype_flow_changes": false,
+    "post_comments_full_pin": {
+      "path": "local/cc12_hp_fragment_Source_primary/post_comments_full.json",
+      "sha256": "0b79889ae0ef1480db948c20738f9b60fc7554b122404c4a2956f6208c88c9d6"
+    },
+    "prior_annotations_pin": {
+      "path": "local/cc12_hp_fragment_Source_primary/ghidra-annotations-20261010T001021Z.json",
+      "sha256": "a540ec141c6c0df2b8c3b7ea23d4ef32941b6559cc788a7243a4abab58ecdd2f"
+    },
+    "capped_output_parse_recovered_without_mutation_repeat": true
+  },
+  "installation_pin": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "canonical_lf_sha256": "fe1f47d46cc8d0a82ae098b0a6e184f4b0faeac6a671097f1ffa2a301eaf7256"
+  },
+  "new_runtime_execution": false,
+  "new_whole_original_functions": 0,
+  "credit": {
+    "ordinary_registered_HP_fragment": true,
+    "MSVC_Win32_build": true,
+    "complete_parent_Source": false,
+    "Native_ABI": false,
+    "FP_trap_fault_identity": false,
+    "Native_FH3": false,
+    "fixture_executed": false,
+    "receiver_wired": false,
+    "fragment_executed": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
