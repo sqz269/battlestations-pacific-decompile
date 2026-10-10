@@ -11,6 +11,7 @@ struct NativeProfileHintsOwnerContext;
 struct NativePlatformFocusOwnersContext;
 struct NativeGuiMediaFocusLifetimeContext;
 struct NativeParticleClockShutdownContext;
+struct NativeParticleModelManagerAccess;
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
@@ -233,6 +234,10 @@ struct NativeSingletonDeletionBindings {
     // constructors. Dispatch the popped receiver and full flags independently
     // of the current publication; a missing context fails closed.
     NativeAllocationStatsConstructorContext* allocation_stats{};
+    // D5D7EC/D5D7F8 delete the popped receiver with full flags, while the base
+    // independently observes CURRENT F8C274. Bind before any registration and
+    // retain the same actual manager/publication/data domain through drain.
+    NativeParticleModelManagerAccess* particle_manager{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -260,7 +265,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);
 static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_pending_registry_publication_00f878cc) == 184);
 static_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 192);
+static_assert(offsetof(NativeSingletonDeletionBindings, particle_manager) == 192);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 196);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

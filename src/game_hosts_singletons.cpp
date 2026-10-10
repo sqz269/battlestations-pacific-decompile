@@ -3,6 +3,7 @@
 #include "bsp/native_resource_registry_scalar_delete.hpp"
 #include "bsp/game_native_input_settings_process.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -42,6 +43,42 @@ SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
 }
 NativeAllocationStatsConstructorContext& GameSingletonHost::allocation_stats_context() noexcept {
     return allocation_stats_context_;
+}
+void GameSingletonHost::bind_particle_manager_domain(GameNativeReadOnlyData& data) {
+    auto& process = game_native_string_process();
+    auto& publication = process.particle_manager_00f8c274();
+    const auto* base_profile = static_cast<const volatile std::uint32_t*>(
+        data.data_at(0x00d5d7ecu, sizeof(std::uint32_t)));
+    const auto* derived_profile = static_cast<const volatile std::uint32_t*>(
+        data.data_at(0x00d5d7f8u, sizeof(std::uint32_t)));
+    const auto& one = *static_cast<const volatile std::uint32_t*>(
+        data.data_at(0x00d7a24cu, sizeof(std::uint32_t)));
+    if (*base_profile != 0x00af0870u || *derived_profile != 0x00af1080u)
+        throw std::logic_error("particle manager deletion profiles do not match the verified domain");
+    if (particle_manager_context_) {
+        auto& context = *particle_manager_context_;
+        if (&context.manager_00f8c274 != &publication ||
+            !context.lifetime_01090aa0.uses_actual_storage() ||
+            !context.lifetime_01090aa0.borrows_same_domain(manager_publication_01090aa0_) ||
+            &context.one_00d7a24c != &one || deletion_bindings_.particle_manager != &context)
+            throw std::logic_error("particle manager is already bound to another application domain");
+        return;
+    }
+    // These rejection checks do not prove the external valid/quiescent/no-prior-
+    // attempt precondition and do not inspect or repair an unknown registry.
+    if (publication != nullptr || deletion_bindings_.particle_manager != nullptr)
+        throw std::logic_error("particle manager deletion must bind before publication or registration");
+    if (!process.claim_particle_manager_domain())
+        throw std::logic_error("particle manager process domain was already claimed by a host");
+    // The raw Access constructor is noexcept, stores references only, and does
+    // not observe one. Inline emplace and pointer binding cannot allocate an owner.
+    particle_manager_context_.emplace(publication, manager_publication_01090aa0_, one);
+    deletion_bindings_.particle_manager = &*particle_manager_context_;
+}
+NativeParticleModelManagerAccess& GameSingletonHost::particle_manager_context() {
+    if (!particle_manager_context_ || deletion_bindings_.particle_manager != &*particle_manager_context_)
+        throw std::logic_error("particle manager context requires its retained deletion domain");
+    return *particle_manager_context_;
 }
 NativeWeakOwnerDomain& GameSingletonHost::weak_owners() {
     if (!weak_owners_) {

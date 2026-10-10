@@ -1,0 +1,1480 @@
+{
+  "schema": "bsp.cc12.particle_manager_dormant_owner_binding.v1",
+  "packet": "cc12_particle_manager_dormant_owner_binding",
+  "utc": "2026-10-10T15:35:22.576238+00:00",
+  "status": "six_file_dormant_Source_binding_implemented_normal_build_three_checks_and_guarded_portable_replay_pass",
+  "baseline": "d7a98030e1130d977b451de59d5eb06e4472f634",
+  "accepted_dependencies": [
+    "c3bb9306c0c53522dde90a7f81747742b5cf7217 raw lifetime access",
+    "d4b9b694 evidence-only BSS correction",
+    "3b0ae07e4 Root raw-access acceptance/Source3350 build",
+    "a8ae03e0ca38b8ffbdcad347acd9c0d49a7d4fe0 owner readiness",
+    "d7a98030e1130d977b451de59d5eb06e4472f634 owner primary acceptance"
+  ],
+  "owned_Source": [
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "before": {
+        "git_blob": "1ebdeafcc660eed22d450fb19ad4cc7adb215323",
+        "working_sha256": "59c8c4e90556887a9214409bdeb56e3373c464c147bac31476e22c1cd3b96d44",
+        "bytes": 2552,
+        "bundle_entry": "retained/accepted_before/include/bsp/game_native_string_process.hpp"
+      },
+      "after": {
+        "working_git_blob": "8c2571b1d1c30cf1f6426f56f1695432f33be929",
+        "working_sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace",
+        "bytes": 3108,
+        "bundle_entry": "retained/after/include/bsp/game_native_string_process.hpp"
+      }
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "before": {
+        "git_blob": "54f7c3e9823aef41427a1a61e7916a3587ef0e51",
+        "working_sha256": "3f7eec3865f115013a6b36638b36d1f8ab71acb7160d3bbf11e5edd85f6d6167",
+        "bytes": 715,
+        "bundle_entry": "retained/accepted_before/src/game_native_string_process.cpp"
+      },
+      "after": {
+        "working_git_blob": "3c2864507588939f95bf37414d1e5a0917a81da1",
+        "working_sha256": "ca2c2665dd5da2c3481fa6382520e60010c35919c86102d802e4d03c3eaf0b0a",
+        "bytes": 1060,
+        "bundle_entry": "retained/after/src/game_native_string_process.cpp"
+      }
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "before": {
+        "git_blob": "b4ac3980f6838774b8aeecee0c7e7370d4795496",
+        "working_sha256": "36cd637dab3bf82fca07178e45585c13d58ee074f68db2e532fe3743b21b9bbf",
+        "bytes": 8142,
+        "bundle_entry": "retained/accepted_before/include/bsp/game_hosts_singletons.hpp"
+      },
+      "after": {
+        "working_git_blob": "f8457dd344800d6335dd887aeac1565e989c8668",
+        "working_sha256": "b3ee9447cf553409d601560d65bb21c3cd11ddab68bfefe2050ae31540628cb3",
+        "bytes": 9372,
+        "bundle_entry": "retained/after/include/bsp/game_hosts_singletons.hpp"
+      }
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "before": {
+        "git_blob": "87f41dfd717921c6dd173adc679edd4cae87f298",
+        "working_sha256": "92a8f9d344e6038e6c0f116999109602a549df981de997689b8c2f4cd64036f7",
+        "bytes": 7171,
+        "bundle_entry": "retained/accepted_before/src/game_hosts_singletons.cpp"
+      },
+      "after": {
+        "working_git_blob": "f03f17bbb8a0633d8439b188fa9697bcdca06ce8",
+        "working_sha256": "0aa58574c6b127d2964d10147059794e2005c49d64a836960f04794cc81d2dc1",
+        "bytes": 9655,
+        "bundle_entry": "retained/after/src/game_hosts_singletons.cpp"
+      }
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "before": {
+        "git_blob": "def7649734ffd33012115934a412d97a3d945eca",
+        "working_sha256": "c39fa00855f547a1071fad957a9595cb316a3105cf661d783aaff9734f8077e6",
+        "bytes": 18509,
+        "bundle_entry": "retained/accepted_before/include/bsp/native_singleton_destruction.hpp"
+      },
+      "after": {
+        "working_git_blob": "c03cc33770985f9d7da3cf621ff4bd008430e407",
+        "working_sha256": "47b6f30606712b61b65e325ccac7ccf2d48345ba0217b6637fbaa32d52b83647",
+        "bytes": 18927,
+        "bundle_entry": "retained/after/include/bsp/native_singleton_destruction.hpp"
+      }
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "before": {
+        "git_blob": "be580965ce04749c21f032a771bad37b2ef5a981",
+        "working_sha256": "f4686cdc29e3f0168ae70583f5e531068f00992de4068d059f11ad8a109f9aa4",
+        "bytes": 26000,
+        "bundle_entry": "retained/accepted_before/src/native_singleton_destruction.cpp"
+      },
+      "after": {
+        "working_git_blob": "ea537797c77c1ab71d449c47e381ff2f3a7734cc",
+        "working_sha256": "99c7143f6de7aae8933b783c4e1f584ac50af697e401189abe64d18d0fbaaa13",
+        "bytes": 26650,
+        "bundle_entry": "retained/after/src/native_singleton_destruction.cpp"
+      }
+    }
+  ],
+  "implementation": {
+    "publication": "One appended permanent NativeParticleModelManagerStorage* volatile cell on GameNativeStringProcess; getter returns exact reference without fetching or constructing a particle owner.",
+    "admission_marker": "One permanent Source bool, separate from Native storage; first successful bind claims once, never resets. A newly disengaged/replacement host rejects after prior claim even with null publication or reused host address.",
+    "entry": "GameSingletonHost::bind_particle_manager_domain(GameNativeReadOnlyData&)",
+    "borrower": "GameSingletonHost::particle_manager_context() returns NativeParticleModelManagerAccess& only when optional and exact deletion pointer agree.",
+    "first_call_precondition": "Externally established valid, quiescent domain with no prior particle construction attempt. A null publication alone proves neither history nor absence of registry owners. No scan or repair is performed.",
+    "validation": "data_at checks mapped4-byte spans D5D7EC/D5D7F8/D7A24C; first profile DWORDs must be AF0870/AF1080. Third-word reference is retained without reading/caching its value.",
+    "exact_identity": "Engaged same-host repeat requires same typedF8C274 reference, actual SoundLifetimeAccess domain borrowing canonical01090AA0 cell, same liveD7A24C reference, same installed context pointer.",
+    "preparation": "All rejection checks precede claim; then noexcept raw Access construction through inline optional emplace and deletion pointer assignment. No manager getter/raw receiver/context heap allocation/publication/registration.",
+    "process_laziness": "Existing GameSingletonHost construction already obtains the canonical retained process; successful binder access does not create that container.",
+    "dispatch": "D5D7EC -> delete_native_particle_manager_base_00af0870; D5D7F8 -> delete_native_particle_model_manager_00af1080. Exact popped receiver and fullflags are forwarded independently of currentF8C274.",
+    "rejection": "Absent binding and unknown profile retain existing logic_error throw; no nullskip/current-publication equality guard/alternate receiver/free-current.",
+    "lifetime": "Inline optional address is stable: copying/moving explicitly deleted. Context lives through destructor shutdown body. Caller retains actual mappeddata/rawreceiver/arrays/section/SourceCRT and all callbacks until drain completes.",
+    "malformed_or_failed_graph": "Existing ordinary drain exceptions and partial-owner hazards remain. No context reset, claim reset, registry/publication repair, skip/retry/adoption or new caller containment is added.",
+    "production_activation": false,
+    "unrelated_model_lifetime_consumer_adaptation": false
+  },
+  "layouts": {
+    "target": "Release MSVC Win32 Source interfaces; not original binary layout",
+    "deletion_bindings": {
+      "before_bytes": 192,
+      "after_bytes": 196,
+      "new_context_offset": 192,
+      "existing_member_offsets_preserved": true,
+      "evidence": "Source static_asserts compiled by normal build; dispatcher context load [EBX+C0h]."
+    },
+    "process": {
+      "before_allocation_bytes": 56,
+      "after_allocation_bytes": 64,
+      "new_publication_offset": 56,
+      "new_claim_marker_offset": 60,
+      "evidence": "Compiled allocation pushes38h/40h; constructor stores; getterLEA+38h; claim leaf+3Ch."
+    },
+    "host": {
+      "before_allocation_bytes": 276,
+      "after_allocation_bytes": 300,
+      "optional_context_offset": 280,
+      "optional_engagement_byte_offset": 296,
+      "deletion_pointer_absolute_offset": 252,
+      "evidence": "Compiled make_unique allocation pushes114h/12Ch, binder optionalbase118h/engagement128h/deletionpointerFCh; later host members shift with embedded table growth."
+    },
+    "raw_particle_manager_bytes": 52,
+    "raw_Access_bytes": 16
+  },
+  "compiled_contract": {
+    "getter": {
+      "bytes": 4,
+      "hex": "8d4138c3",
+      "description": "LEA EAX,[ECX+38h];RET; no calls/owner effects"
+    },
+    "claim": {
+      "bytes": 16,
+      "description": "Reads byte+3Ch, false if alreadyclaimed; otherwise store1/returntrue; no calls or clear."
+    },
+    "binder": {
+      "bytes": 283,
+      "sha256": "54a77e44258a02cc39b9c6dbf415fa2b6cb4a6abe8ef55ce74d6b7d4dd5e9eae",
+      "all_relocations": [
+        {
+          "offset": 12,
+          "type": 20,
+          "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+        },
+        {
+          "offset": 22,
+          "type": 20,
+          "symbol": "?particle_manager_00f8c274@GameNativeStringProcess@game@bsp@@QAEACRAUNativeParticleModelManagerStorage@3@XZ"
+        },
+        {
+          "offset": 42,
+          "type": 20,
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "offset": 58,
+          "type": 20,
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "offset": 75,
+          "type": 20,
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "offset": 182,
+          "type": 20,
+          "symbol": "?claim_particle_manager_domain@GameNativeStringProcess@game@bsp@@QAE_NXZ"
+        },
+        {
+          "offset": 191,
+          "type": 6,
+          "symbol": "??_C@_0DO@PAALIKP@particle?5manager?5process?5domain?5@"
+        },
+        {
+          "offset": 218,
+          "type": 20,
+          "symbol": "??0NativeParticleModelManagerAccess@bsp@@QAE@ACRAUNativeParticleModelManagerStorage@1@ACRAXADI@Z"
+        },
+        {
+          "offset": 242,
+          "type": 6,
+          "symbol": "??_C@_0EH@DEMNFCJC@particle?5manager?5deletion?5must?5b@"
+        },
+        {
+          "offset": 249,
+          "type": 6,
+          "symbol": "??_C@_0EE@KOPNLEJP@particle?5manager?5deletion?5profil@"
+        },
+        {
+          "offset": 256,
+          "type": 6,
+          "symbol": "??_C@_0EA@PIELBMMH@particle?5manager?5is?5already?5boun@"
+        },
+        {
+          "offset": 264,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 269,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 278,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "live_reference": "D7A24C data_at result EAX moves toEDX then [EBP-0Ch]; idempotence compares that pointer and rawctor receives it by push. No [EDX] dereference. Successful calls are process accessor, typedcell accessor, three span checks, claim and raw noexcept Access ctor."
+    },
+    "deletion_dispatch": {
+      "section_bytes": 3545,
+      "code_and_padding_bytes": 3280,
+      "inline_table_bytes": 265,
+      "sha256": "23b8ef07ee59356048eead982ea9a30cd90551290e56fff857ba67055dfb9dc4",
+      "receiver": "ECX captured inEDI at+2A; bindingsEDX captured inEBX at+28.",
+      "base_call": "Context [EBX+C0h] checked then pusheax, push[EBP+0Ch], pushedi, relocation+741 -> AF0870 Source scalar.",
+      "derived_call": "Context [EBX+C0h] checked then pusheax, push[EBP+0Ch], pushedi, relocation+78C -> AF1080 Source scalar.",
+      "complete_section": "Complete bytes and inline jump/selector table labels/relocations retained. Code/padding decoded separately; table bytes not relabeled as instructions."
+    },
+    "existing_manager_implementation": "All27 complete function sections retain payload/label/relocation identities after anonymous-namespace compiler-hash normalization. Source body file unchanged.",
+    "whole_object_equality": "Not claimed across Root/worker paths. Complete objects and all sections retained; debug/rawplacement/timestamps and full nondebug identity reported separately.",
+    "bss": "All110 .bss sections checked; zero raw-file pointer produces empty payload, regardless of declared storage size.",
+    "complete_compiled_analysis": {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/compiled_analysis.json",
+      "bytes": 39778272,
+      "sha256": "e49e9854987c189288762c15899fa9507cb4d3dff76c7ae06fed21e57dd7b594"
+    }
+  },
+  "compiler_cohorts": [
+    {
+      "phase": "accepted_before",
+      "build_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "build_checkout_HEAD": "d3540c41bb7ab8bd436cbcf3d537c8e660908324",
+      "selected_Source": 819,
+      "CL_logs": 56,
+      "consumer_count": 29,
+      "owned_header_consumers": 26,
+      "Core_members": 15,
+      "consumers": [
+        {
+          "source_path": "src/game_native_input_settings_process.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_input_settings_process.obj",
+            "bytes": 11924,
+            "sha256": "d98ed4c2b820791ee726d95bc14b0795b43abe79a49b52b1cc4fc687bddd8b57",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_input_settings_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 4
+        },
+        {
+          "source_path": "src/game_native_settings_process.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_settings_process.obj",
+            "bytes": 67937,
+            "sha256": "7c45c041c76d36d9a233f15c00c9ecdb0e439ccf0cd1ec91d5b34666a3276284",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_settings_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 4
+        },
+        {
+          "source_path": "src/native_scene_property_bag_storage.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+            "bytes": 16148,
+            "sha256": "1239dab07161c3fb1f9404062d8bb3779b61bb58092845322b626cb293241e1f",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_bag_storage.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 3
+        },
+        {
+          "source_path": "src/game_native_resource_application.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_resource_application.obj",
+            "bytes": 91289,
+            "sha256": "52ec735d9680566170fe5ce6ad98c19d1bc5428b96c0dc10f92b8364f1b0a7d9",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_resource_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 6
+        },
+        {
+          "source_path": "src/game_native_vfs_runtime.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_vfs_runtime.obj",
+            "bytes": 217883,
+            "sha256": "b9ad4dbd85179c9be3d1f36cd9c1d167f250f64c5fe522cb55fd794ece8e05e7",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_vfs_runtime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 9
+        },
+        {
+          "source_path": "src/native_diagnostic_sink_lifetime.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+            "bytes": 12242,
+            "sha256": "f0e6c10ce24ae492dc2b732177d64845f9828dc5c109f9b5ce431e6afb815c58",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_diagnostic_sink_lifetime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 5
+        },
+        {
+          "source_path": "src/native_game_settings_owner.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_game_settings_owner.obj",
+            "bytes": 23993,
+            "sha256": "711aff2084f60159420e59f16bc515e6de7799a6ee1f24df57b813d7c680ed8d",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_game_settings_owner.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 6
+        },
+        {
+          "source_path": "src/native_particle_clock_shutdown.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj",
+            "bytes": 18516,
+            "sha256": "9cbdb7913823118f60227a152a68ddebc9d2c1dbddb1b7cdac57117468716900",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_particle_clock_shutdown.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 5
+        },
+        {
+          "source_path": "src/native_singleton_destruction.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+            "bytes": 26600,
+            "sha256": "0d33decd90bd351ebe42bcefd13d3c00bd97a2e28f750612091b729e8d9fc37a",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_singleton_destruction.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 11
+        },
+        {
+          "source_path": "src/native_vfs_owner_services.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_vfs_owner_services.obj",
+            "bytes": 3846,
+            "sha256": "869df69ad01ed3f88a711f242c50a6fe8497bc073879af00063a2bd2d722b132",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_vfs_owner_services.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 7
+        },
+        {
+          "source_path": "src/game_native_input_settings_application.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_input_settings_application.obj",
+            "bytes": 33591,
+            "sha256": "855460872028597ec349db0fdf21c506764303ce239f395706ae34db33f357fa",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_input_settings_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 8
+        },
+        {
+          "source_path": "src/game_native_settings_application.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/game_native_settings_application.obj",
+            "bytes": 154541,
+            "sha256": "1d2eba8bc16ec832d8310d0d0863a6bcb094d89364139f39ef57b413c086c1a3",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\game_native_settings_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 12
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_particle_model_construction.obj",
+            "bytes": 47738,
+            "sha256": "7e23fa670b10ae388f45bcc56bdd4c61172c2a7a6e4b8eac299d59aa3bfb3b5d",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_construction.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 2
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_particle_model_lifetime.obj",
+            "bytes": 43865,
+            "sha256": "5bda17d13e3e4e206dc8215e22ec0d3d906e52639c9b0c51fd373d061fc1d80c",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_lifetime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 2
+        },
+        {
+          "source_path": "src/native_particle_model_manager.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_core.dir/Release/native_particle_model_manager.obj",
+            "bytes": 14202,
+            "sha256": "4ba34dedd50dbb253d8ea4053c16e272cb4816d1efa3510f89e98ccf147a4d44",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_manager.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 2
+        },
+        {
+          "source_path": "src/game_native_entity_registry_process.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_entity_registry_process.obj",
+            "bytes": 7728,
+            "sha256": "9dcdd1e658110afb0b33f8ac1e235ad1aae5f3e3adfde246185b1b1e139e65eb",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_entity_registry_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 3
+        },
+        {
+          "source_path": "src/game_native_lua_globals.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+            "bytes": 15953,
+            "sha256": "eaaceaca4ca81580492dd22ae27bf4172c083c412fa73cf519af997b48c938ef",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_globals.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 4
+        },
+        {
+          "source_path": "src/game_native_shader_process.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+            "bytes": 21720,
+            "sha256": "c621848e08dcd3a827f8be16be8806e18488674932a5be16ac8ba4edb2685565",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_shader_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 5
+        },
+        {
+          "source_path": "src/game_native_string_process.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+            "bytes": 5290,
+            "sha256": "9f80e310fbde4c732c97420ac522aa478c1fb322494df6334a2e61d2805563d1",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_string_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 4
+        },
+        {
+          "source_path": "src/game_native_vertex_declarations.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+            "bytes": 17112,
+            "sha256": "976fbeae9ae3c751a606f31237e141f25a2037fe67367582837927c1ff7675a8",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_vertex_declarations.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 4
+        },
+        {
+          "source_path": "src/game_native_lua_services.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+            "bytes": 23144,
+            "sha256": "22e4ea82a784c1fc49c3b14252f5e890396c0f105cc81edf582151b32a42ac80",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_services.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 6
+        },
+        {
+          "source_path": "src/game_hosts.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_hosts.obj",
+            "bytes": 930098,
+            "sha256": "f370a50c8d7272d4025e655563dcf7bd1a26444115f4849e67fe20495ab17b0d",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_hosts.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 13
+        },
+        {
+          "source_path": "src/game_hosts_menu.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+            "bytes": 522493,
+            "sha256": "93fd9ee6e64016d80c62d063fe7aaf11ebbc3557a5d8744b451765934f42cc66",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_hosts_menu.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 7
+        },
+        {
+          "source_path": "src/game_hosts_singletons.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+            "bytes": 37265,
+            "sha256": "f754cb24734f38768797cf53ee3bfb8d102e8907442e13ff989fa03f3eb189e6",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_hosts_singletons.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 10
+        },
+        {
+          "source_path": "src/game_main.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_main.obj",
+            "bytes": 529327,
+            "sha256": "aa30fa020c6eebc6f2f3caf7f774185ef7962271d9ac6cca957649133118f858",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_main.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 11
+        },
+        {
+          "source_path": "src/game_native_renderer_application.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+            "bytes": 351728,
+            "sha256": "be8fcd700eedf52d990639c46f882e0c598cf8dcf54d7e4eb1b885ee7d2cdbfa",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 14
+        },
+        {
+          "source_path": "src/game_native_vfs_application.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+            "bytes": 52869,
+            "sha256": "f47bc0f512d7d0151086ed27bf0103dcdb7fcc7ab4ecce7dc63f9929d4799a80",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_native_vfs_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 12
+        },
+        {
+          "source_path": "src/game_observer_runtime.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+            "bytes": 15869,
+            "sha256": "c282be530871705a45a5b928ae824dde0cb4d1c2e17ddbb82d62f4286af99717",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.dir\\Release\\game_observer_runtime.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 5
+        },
+        {
+          "source_path": "tests/math_tests.cpp",
+          "object": {
+            "entry": "retained/accepted_before/build/win32/bsp_math_tests.dir/Release/math_tests.obj",
+            "bytes": 1586855,
+            "sha256": "2999acbb0b2b22bb7048813c848c08ffde9cbf2034094c1def5a54450f4657ad",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_math_tests.dir\\Release\\math_tests.obj"
+          },
+          "read_tlog": "build/win32/bsp_math_tests.dir/Release/bsp_math_tests.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        }
+      ],
+      "full_capture": {
+        "path": "local/cc12_particle_manager_dormant_owner_binding/accepted_before.json",
+        "bytes": 9778028,
+        "sha256": "d82c02c3c4e69c69b5b52667da877e220741d88ae0dacf3e124077b20e1fd66d"
+      },
+      "stable_reread": true
+    },
+    {
+      "phase": "after",
+      "build_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "build_checkout_HEAD": "d7a98030e1130d977b451de59d5eb06e4472f634",
+      "selected_Source": 819,
+      "CL_logs": 56,
+      "consumer_count": 29,
+      "owned_header_consumers": 26,
+      "Core_members": 15,
+      "consumers": [
+        {
+          "source_path": "src/native_singleton_destruction.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+            "bytes": 27165,
+            "sha256": "e72371e7dad7cb99cceeec4206c7eb4f2284fdaed0128aad69eb08f96815d187",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_singleton_destruction.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_diagnostic_sink_lifetime.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+            "bytes": 12246,
+            "sha256": "c108904199da32796acf91daf04657f0c0cff9455c266eadf7613d825f7d379c",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_diagnostic_sink_lifetime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_input_settings_application.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_input_settings_application.obj",
+            "bytes": 33599,
+            "sha256": "09be070f674524f539aa2c1fe15091af595ab85ae493b57116287212d56bb80d",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_input_settings_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_input_settings_process.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_input_settings_process.obj",
+            "bytes": 11932,
+            "sha256": "a79c37d58c7bc719b603b8f874d04b27e210b29da745b2320d53c0012e77eff2",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_input_settings_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_resource_application.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_resource_application.obj",
+            "bytes": 91293,
+            "sha256": "c26ce9e9b26f461dd8cd407a9cee9c932701b8dcc4b76979a27a04c577cdbb63",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_resource_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_vfs_runtime.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_vfs_runtime.obj",
+            "bytes": 217887,
+            "sha256": "5eb2cc11f1bd126a089ea08370606525fd743f5a020fd2b0a2d451a366bc7cbf",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_vfs_runtime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_game_settings_owner.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_game_settings_owner.obj",
+            "bytes": 24001,
+            "sha256": "ab05f26697ef7b8c02316922d88ce1d8b0faab19ed0e172c26ff744dc0f1c052",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_game_settings_owner.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_scene_property_bag_storage.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+            "bytes": 16152,
+            "sha256": "58a578f668ef4fe64dfdc6f41a88cb2b9cf357be7d3ab4eafa5c01e66fd5c832",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_bag_storage.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_settings_process.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_settings_process.obj",
+            "bytes": 67941,
+            "sha256": "7475a01cf401327f39e05cd105dfa9df70d80964a64fb6229693e80fafdb35ad",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_settings_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_settings_application.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/game_native_settings_application.obj",
+            "bytes": 154545,
+            "sha256": "008dae9b9181d98823fd831775f356850bfb02fcb3af5426239a3f9145a846fb",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\game_native_settings_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_vfs_owner_services.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_vfs_owner_services.obj",
+            "bytes": 3850,
+            "sha256": "03471dc1fb18fa4d1bedec227b1ddfab23e170dc664b5a396a49bd12834ee642",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_vfs_owner_services.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_particle_clock_shutdown.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj",
+            "bytes": 18524,
+            "sha256": "2037f2a5dfddbdac16f7483661924c50ef77150db85935be152d7e6693063c67",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_particle_clock_shutdown.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_particle_model_construction.obj",
+            "bytes": 47746,
+            "sha256": "7b26be4586ea0cfb57f12b9fe848926709944407461301c80a258c6d88c4f1a9",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_construction.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_particle_model_lifetime.obj",
+            "bytes": 43873,
+            "sha256": "d0cbd3c279368dd210d3adf9e60f37414ad46bca586631fac7ca1bf777af2262",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_lifetime.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/native_particle_model_manager.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_core.dir/Release/native_particle_model_manager.obj",
+            "bytes": 14206,
+            "sha256": "663e20434902cae78dcd8498566dea6cfefab84a9a6bf598070acc189b34d457",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_manager.obj"
+          },
+          "read_tlog": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+          "owned_headers": [],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_main.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_main.obj",
+            "bytes": 529331,
+            "sha256": "5724623d18626b516c241f0a94c68be627b05f9c7e96fbaeb4fd37d50b343910",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_main.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_hosts.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_hosts.obj",
+            "bytes": 930106,
+            "sha256": "a7d84d6151b5dcb38b5b02f080e33b3359e4649ad1c33605ba347d1529bb4ac2",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_hosts.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_hosts_menu.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+            "bytes": 522497,
+            "sha256": "9659e2d247e87a647a4d42531d9fc5dc3530ae872969f63fac169fc9d7661a95",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_hosts_menu.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_hosts_singletons.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+            "bytes": 47224,
+            "sha256": "d9f008f1f0f392024592ce2346840f1aec731e23f2fce86b7aa66cf631fce0a5",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_hosts_singletons.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_lua_services.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+            "bytes": 23148,
+            "sha256": "8114512333fc45ff29cafeaa5a7c5e5a1ee63c1c971dc89162adcd558f3a7d53",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_services.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_shader_process.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+            "bytes": 21728,
+            "sha256": "095a86fcb9b19ba47072afd9db0321f0722de09cc76c76ff8bd851816934401c",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_shader_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_string_process.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+            "bytes": 5945,
+            "sha256": "441045f39e5c47ab6ce880a554c85b890b8bab1e6312687b38c9692da8cfb1a3",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_string_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_lua_globals.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+            "bytes": 15957,
+            "sha256": "2b565f196ef9785b3a539478cfe2285707e83b53dcb3282a463e530f3ac57218",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_globals.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_vertex_declarations.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+            "bytes": 17116,
+            "sha256": "9c8e6928a021e7eec4dbec005e13e0126ede1410c89f7c4ef65d69f05452e40b",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_vertex_declarations.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_renderer_application.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+            "bytes": 351732,
+            "sha256": "b201a5497add7b071d09acf02c95e29dfed23c82d20ab02044a9b77c21d970b0",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_vfs_application.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+            "bytes": 52873,
+            "sha256": "673a0fe86809386dba8e34b886441025b3ccec03dd36b03999a9b8a923b43b4b",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_vfs_application.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_observer_runtime.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+            "bytes": 15873,
+            "sha256": "28c0780ee43d2119a0d128c91d83e271d8bfc248b3cc3ac78356f849c2a0876f",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_observer_runtime.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": true,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "src/game_native_entity_registry_process.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_game.dir/Release/game_native_entity_registry_process.obj",
+            "bytes": 7732,
+            "sha256": "bdef36d3297dd3882aa1f1da21616ebafd8f16f0571e179a5d92a033f1157501",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_game.dir\\Release\\game_native_entity_registry_process.obj"
+          },
+          "read_tlog": "build/win32/bsp_game.dir/Release/bsp_game.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/game_native_string_process.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        },
+        {
+          "source_path": "tests/math_tests.cpp",
+          "object": {
+            "entry": "retained/after/build/win32/bsp_math_tests.dir/Release/math_tests.obj",
+            "bytes": 1586864,
+            "sha256": "804bbc4e98575263288476a40f233037e8345bbe6cc40165ff6bec4b31f6fe6b",
+            "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\build\\win32\\bsp_math_tests.dir\\Release\\math_tests.obj"
+          },
+          "read_tlog": "build/win32/bsp_math_tests.dir/Release/bsp_math_tests.tlog/CL.read.1.tlog",
+          "owned_headers": [
+            "include/bsp/native_singleton_destruction.hpp"
+          ],
+          "support_header": false,
+          "qualifying_write_groups": 1
+        }
+      ],
+      "full_capture": {
+        "path": "local/cc12_particle_manager_dormant_owner_binding/after.json",
+        "bytes": 10534121,
+        "sha256": "0fd268ac3442d4c0c03959b5b8a114f59830ba8f0ef6e964c0a17b90e14e6e83"
+      },
+      "stable_reread": true
+    }
+  ],
+  "accepted_before_provenance": {
+    "build_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "Source3350_matched_inputs": 816,
+    "extra_selected_current_inputs": [
+      "cmake/lua.cmake",
+      "src/game_native_entity_registry_process.cpp",
+      "src/native_scene_property_bag_storage.cpp"
+    ],
+    "root_independent_before": {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/retained/dependencies/Root_before_cpp.json",
+      "bytes": 1745934,
+      "sha256": "d57fcdda8d50a309b05c65610f95e6c6e72b9c957f93de20bbafc2f638611bc6"
+    },
+    "Root_Source3350_manifest": {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/retained/dependencies/Source3350_frozen.json",
+      "bytes": 1248933,
+      "sha256": "05f50f3a5de9368619db8dc91a639711518ea56202e1c86da017cb263f49f8d3"
+    },
+    "rejected_historical": {
+      "receipt": "before.json",
+      "retained_directory": "retained/before/",
+      "reason": "Main checkout build/win32 was Oct8 historical output, not accepted integrator Source3350 build. Excluded from current cohort/code identity claims; local payloads preserved."
+    },
+    "extra_input_qualification": "These extra complete tracked Source/build files were retained directly at the fixed Git epoch; no Root3350 manifest match is claimed for them.",
+    "compilation_scope": "Recorded CL.read dependencies + CL.write qualifying groups + Cl.items object identity; all qualifying groups retained. Current Root vcxproj inputs and whole Core member matches support the before cohort. Fresh worker build log establishes after compile run."
+  },
+  "reused_Native_evidence": {
+    "fresh_queries": 0,
+    "Ghidra_mutations": 0,
+    "prior_project": "C:/Users/sqz269/bsp.gpr",
+    "prior_program": "/battlestationspacific.exe",
+    "prior_typed_modification": "49 unchanged",
+    "profiles": [
+      {
+        "address": "00D5D7EC",
+        "hex": "7008af00",
+        "slot0": "00AF0870"
+      },
+      {
+        "address": "00D5D7F8",
+        "hex": "8010af00",
+        "slot0": "00AF1080"
+      }
+    ],
+    "scalars": [
+      {
+        "address": "00AF0870",
+        "bytes": 30,
+        "sha256": "773dc337e08222af3ce3c023fe55fbabfa7812a35b0966a7f10c10e299a86422"
+      },
+      {
+        "address": "00AF1080",
+        "bytes": 30,
+        "sha256": "1af2ccdfa748592f0fd8e90c7c50a4581e1e78ed3444d34ec27781150773473a"
+      }
+    ],
+    "attribution": "Accepted prior owner review, full scalar exports/finite bytes and prior inert PE retained. No installed image reread or fresh live Native analysis.",
+    "complete_dependencies": {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/baseline_dependencies.json",
+      "bytes": 63538,
+      "sha256": "31f8587adfa2d97123f772bdaab18447263f8c0bcde7471cf1efd9697539bf5f"
+    }
+  },
+  "validation": {
+    "normal_build_invocations": 1,
+    "command": "./scripts/build.ps1",
+    "build_exit": 0,
+    "configuration": "Release MSVC Win32",
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_fixtures": 0,
+    "existing_math_seed_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+    "warning": "Unchanged existing spawn_request_id_matches duplicate definition LNK4006; normal build and checks pass.",
+    "execution_scope": "Only normal build and three existing checks. Existing Native differential test executes retained math seeds. No particle Native code, game, startup, new runtime probe, SDK/OS probe or installed game modification.",
+    "portable_replay": {
+      "schema": "bsp.cc12.particle_manager_dormant.replay.v1",
+      "status": "pass",
+      "mode": "ZIP-only artifact replay",
+      "payload_files": 3531,
+      "cohorts": [
+        {
+          "phase": "accepted_before",
+          "Source_files": 819,
+          "CL_logs": 56,
+          "whole_objects": 29,
+          "Core_members": 15,
+          "owned_header_consumers": 26
+        },
+        {
+          "phase": "after",
+          "Source_files": 819,
+          "CL_logs": 56,
+          "whole_objects": 29,
+          "Core_members": 15,
+          "owned_header_consumers": 26
+        }
+      ],
+      "changed_Source": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "include/bsp/game_native_string_process.hpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/game_hosts_singletons.cpp",
+        "src/game_native_string_process.cpp",
+        "src/native_singleton_destruction.cpp"
+      ],
+      "Source3350_matched": 816,
+      "complete_COFF_objects": 58,
+      "bss_sections_checked": 110,
+      "selected_complete_function_sections": 26,
+      "retained_Native_profiles": 2,
+      "retained_Native_scalars": 2,
+      "existing_checks": 3,
+      "no_game_or_particle_execution": true,
+      "qualification": "After imports/Capstone setup, only the named ZIP may be opened; no checkout/Git/Ghidra/compiler/SDK/network/subprocess/write. Historical Oct8 before capture excluded from current comparisons."
+    },
+    "physically_relocated_replay_identical": true,
+    "separate_live_Git": {
+      "schema": "bsp.cc12.particle_manager_dormant.Git_replay.v1",
+      "status": "pass",
+      "baseline": "d7a98030e1130d977b451de59d5eb06e4472f634",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "indexed_blobs": 819,
+      "working_files_checked": 819,
+      "existing_seed_checked": true,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "d7a98030e1130d977b451de59d5eb06e4472f634"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "031e2643e12cba0c5a24e13c82a2a175358c790e708b2420f75421d44f9ea5ce",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "d7a98030e1130d977b451de59d5eb06e4472f634"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 1253809,
+          "stdout_sha256": "64e6de0243ad03c7e1a363978b858fc409f90816841c148ba9d2fd48244d9717",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 5985452,
+          "stdout_sha256": "ae6e704a15314796c3c8acc751100409cc3dca0cefab78f2756f1199897b1640",
+          "stderr": ""
+        }
+      ],
+      "qualification": "Separate read-only live Git/Source check. No installation, compiler, runtime, Ghidra, SDK/OS probe or network."
+    },
+    "portable_guard": "After imports/Capstone setup, only named ZIP can open. No other reads, writes, subprocess, network or ctypes dynamic loading.",
+    "compiler_inputs": "All819 selected tracked Source/build inputs per phase retained completely. External compiler/SDK/build-dependency paths enumerated in captures, not claimed complete installation preimages."
+  },
+  "future_gate": "No startup activation. Separate two-file caller packet must establish early schedule, allocation/partial-construction free, initial unattempted phase, and approved four shutdown/exit containment guards before ordinary drain. Fresh host phase alone cannot prove process history; permanent claim enforces non-adoption.",
+  "limitations": [
+    "Ordinary Source behavior and compiled interfaces only; not Original registerABI/SEH/FH3 equivalence.",
+    "No particle constructor/destructor execution or game validation.",
+    "No arbitrary-registry readiness proof; first-bind valid/quiescent/no-prior-attempt precondition remains external.",
+    "Mapped readonly data must outlive borrowed context; pointer identity does not extend service lifetime.",
+    "Permanent Source admission is deliberately one-shot across hosts, not recovered Native process behavior.",
+    "Unrelated model/lifetime void-reference consumer adaptation remains separate."
+  ],
+  "replay_commands": [
+    "python local/cc12_particle_manager_dormant_owner_binding/portable_replay.py local/cc12_particle_manager_dormant_owner_binding/evidence.zip",
+    "python local/cc12_particle_manager_dormant_owner_binding/verify_git.py --check-working"
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/capture.py",
+      "bytes": 7853,
+      "sha256": "ebed7df2448d7c410feada9b1af41af6246298f691c41f4098b0c2ce59d8f1c0"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/retain_baseline.py",
+      "bytes": 3604,
+      "sha256": "90fa4403cebe169e200c2f661c4c83ce64ece8246ff8a83c555bb48c29da9585"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/coff_tools.py",
+      "bytes": 3429,
+      "sha256": "7b16bdce570d2843bde2372c6fbb5adf7c535b6cdc163a504f28697d38725d0b"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/analyze_coff.py",
+      "bytes": 5144,
+      "sha256": "2811a999136434fa976f548654e8a7bc08dafb4800c00c083eb31f92e1c9a25c"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/replay_body.py",
+      "bytes": 17443,
+      "sha256": "79abf5217caf3060cfcf2d3d921c7fe305541015867009c125a11fa86dac2c6f"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/portable_replay.py",
+      "bytes": 21040,
+      "sha256": "140a961b0f6e95d7b8396aa0dddeb067036185d0655eeb1ace2a00aec0116de1"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/verify_git.py",
+      "bytes": 2436,
+      "sha256": "5c3cba9c8039c3d8cc8992ba0a25b38779e3d199b13b32f45b026d9acd1974f2"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/package.py",
+      "bytes": 1732,
+      "sha256": "583ec2c5410c213d4a553b6dbc8f87f347060f58683769706489d8379aa2223e"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/publish.py",
+      "bytes": 13265,
+      "sha256": "2bed7e06606bd741e5fd8fd3bf0598b9ff75ca5d42a072f79c538614cf5a3a85"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/accepted_before.json",
+      "bytes": 9778028,
+      "sha256": "d82c02c3c4e69c69b5b52667da877e220741d88ae0dacf3e124077b20e1fd66d"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/after.json",
+      "bytes": 10534121,
+      "sha256": "0fd268ac3442d4c0c03959b5b8a114f59830ba8f0ef6e964c0a17b90e14e6e83"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/worker_preimages.json",
+      "bytes": 1862,
+      "sha256": "64e6c0fac5c5bfccee4a7309138a46f8cd2491942b89e818e4cd0b42e11b12cb"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/baseline_dependencies.json",
+      "bytes": 63538,
+      "sha256": "31f8587adfa2d97123f772bdaab18447263f8c0bcde7471cf1efd9697539bf5f"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/compiled_analysis.json",
+      "bytes": 39778272,
+      "sha256": "e49e9854987c189288762c15899fa9507cb4d3dff76c7ae06fed21e57dd7b594"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/bundle_receipt.json",
+      "bytes": 203,
+      "sha256": "8479a890d1538152a040c23ec9baf54f5c8cf22576572e6de6a3a73787f4dbb0"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/evidence.zip",
+      "bytes": 58396142,
+      "sha256": "d0ac492f8edca06002bef5465e65df83dd55c572391bf7835d9c1de18a55152d"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/portable_replay_result.json",
+      "bytes": 1337,
+      "sha256": "3ea8e7dc4d605ba09c8a8d5494aa54b4f92b3dd972a59310aad1a6900dd35521"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/relocated_replay_result.json",
+      "bytes": 1337,
+      "sha256": "3ea8e7dc4d605ba09c8a8d5494aa54b4f92b3dd972a59310aad1a6900dd35521"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/separate_git_result.json",
+      "bytes": 1354,
+      "sha256": "d7e99005114045d9ac4a108fb759c03c4eadc01fc0b148b1310d221c13ec63bf"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/build.log",
+      "bytes": 79177,
+      "sha256": "ad1c3eac22e75e6306c025237dd84b4861546c42d65eb2ecc7e86066477d90d0"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/build.exit.txt",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "local/cc12_particle_manager_dormant_owner_binding/Source.patch",
+      "bytes": 12544,
+      "sha256": "62cbe18b8e46192b00153e9204b999114f30564a9c2f38d4bff928ec723bf448"
+    }
+  ],
+  "review_document": {
+    "path": "docs/CC12_PARTICLE_MANAGER_DORMANT_OWNER_BINDING.md",
+    "bytes": 9701,
+    "sha256": "2b7a549d44040cfe2c937c825a920d50b9b47769f6611dd62f7722770b0c288a"
+  }
+}
