@@ -1,4 +1,5 @@
 #include "bsp/gameplay_point_binding.hpp"
+#include "bsp/native_ref_counted.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -14,6 +15,23 @@ template<class T> T& field(void* owner, std::size_t offset) noexcept {
     return *reinterpret_cast<T*>(static_cast<std::byte*>(owner) + offset);
 }
 } // namespace
+
+class GameplayDefinitionReferences::BoundZeroDeleteCalls final
+    : public NativeRefCountedDeleteCalls {
+public:
+    BoundZeroDeleteCalls(GameplayDefinitionReferences& domain,
+        GameplayEffectDefinition& raw) noexcept : domain_(domain), raw_(raw) {}
+    void delete_vslot04(void* actual_owner, std::uint32_t current_profile,
+        std::uint32_t flags) override {
+        if (actual_owner != raw_.native.data() || current_profile != 0x00d0da58u || flags != 1)
+            std::terminate();
+        domain_.require_slot(raw_, 1, 0x00871440u);
+        scalar_delete_gameplay_effect_definition_00871440(&raw_, flags, *domain_.raw_context_);
+    }
+private:
+    GameplayDefinitionReferences& domain_;
+    GameplayEffectDefinition& raw_;
+};
 
 NativeGameplayEffectDefinitionReference::NativeGameplayEffectDefinitionReference(
     GameplayEffectDefinition& raw, GameplayDefinitionReferences& owner) noexcept
@@ -62,6 +80,24 @@ GameplayEffectDefinition& GameplayDefinitionReferences::definition_for(
         if (reference.get() == &value) return reference->storage_;
     std::terminate();
 }
+NativeGameplayEffectDefinitionReference* GameplayDefinitionReferences::find_bound(
+    const GameplayEffectDefinition* raw) const noexcept {
+    if (!raw) return nullptr;
+    for (const auto& reference : references_)
+        if (&reference->storage_ == raw) return reference.get();
+    return nullptr;
+}
+void GameplayDefinitionReferences::dispatch_bound_definition_zero(
+    GameplayEffectDefinition& raw) noexcept {
+    if (!raw_context_domain_) std::terminate();
+    auto* const reference = find_bound(&raw);
+    if (!reference || raw.references_04().load(std::memory_order_relaxed) != 0)
+        std::terminate();
+    require_slot(raw, 0, 0x00bd30e0u);
+    BoundZeroDeleteCalls calls(*this, raw);
+    invoke_native_ref_counted_delete_00bd30e0(raw.native.data(), calls);
+    retire(*reference); // No raw-owner access after successful scalar free.
+}
 void GameplayDefinitionReferences::release_zero(
     NativeGameplayEffectDefinitionReference& reference) noexcept {
     auto& raw = reference.storage_;
@@ -72,6 +108,10 @@ void GameplayDefinitionReferences::release_zero(
         scalar_delete_gameplay_effect_definition_00871440(&raw, 1, *raw_context_);
     else
         scalar_delete_gameplay_effect_definition_00871440(&raw, 1, *typed_context_);
+    retire(reference);
+}
+void GameplayDefinitionReferences::retire(
+    NativeGameplayEffectDefinitionReference& reference) noexcept {
     for (auto it = references_.begin(); it != references_.end(); ++it) {
         if (it->get() == &reference) {
             references_.erase(it); // Deletes only the host companion, after native free.

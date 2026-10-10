@@ -48,6 +48,19 @@ public:
     // Reuses the canonical companion. Pure metadata allocation on first bind;
     // requires the native constructor already ran and a positive actual count.
     NativeGameplayEffectDefinitionReference& bind(GameplayEffectDefinition&);
+    // Borrow an existing canonical companion by exact raw address, or null.
+    // Does not read the raw owner/count, allocate, retain, bind or retire.
+    // The result expires when that companion's metadata is retired.
+    NativeGameplayEffectDefinitionReference* find_bound(
+        const GameplayEffectDefinition*) const noexcept;
+    // Explicit raw-domain terminal entry after one genuine actual1->0 release.
+    // Requires an existing binding, live count0 owner, current D0DA58/slot0
+    // BD30E0 and fresh current slot4=871440. Calls the genuine Source providers
+    // with flags1, then retires metadata only after successful scalar return.
+    // Invalid/unknown inputs or cleanup failure terminate. Providers must not
+    // throw; no concurrent/reentrant same-owner terminal or retry is admitted.
+    // Adds no decrement, binding, Native table or automatic raw-caller route.
+    void dispatch_bound_definition_zero(GameplayEffectDefinition&) noexcept;
     // Pure nonthrowing identity projection of a previously bound companion.
     // Unknown identity violates the native-binding precondition (terminates).
     GameplayEffectDefinition& definition_for(RenderCommandReference&) const noexcept;
@@ -55,7 +68,9 @@ public:
 private:
     friend class NativeGameplayEffectDefinitionReference;
     friend class GameplayPointConstruction;
+    class BoundZeroDeleteCalls;
     void release_zero(NativeGameplayEffectDefinitionReference&) noexcept;
+    void retire(NativeGameplayEffectDefinitionReference&) noexcept;
     void require_slot(GameplayEffectDefinition&, std::size_t index,
         std::uint32_t expected) const;
     NativeStringStorage& string_storage() const noexcept;
