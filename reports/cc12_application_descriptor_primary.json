@@ -1,0 +1,90 @@
+{
+  "schema": "bsp.cc12.application-descriptor-primary.v1",
+  "status": "raw_descriptor_prefix_and_qualified_compiler_layout_accepted_Cpp_owner_cleanup_activation_NO_GO",
+  "worker_commit": "ba578f0cf726c05d4db7df1ff86ce512aa64dd6a",
+  "worker_report": {
+    "path": "local/cc12_application_descriptor_primary/worker_report.json",
+    "bytes": 103839,
+    "sha256": "e8e33baf2fc1cb45b64ba613401c3956119730ca705112bc7bdf4f46f61b5d38"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_descriptor_primary/worker_document.md",
+    "bytes": 8333,
+    "sha256": "db02122a099225fe3d5b2fecb224d4ce9faa93aa7b3cb97bf6b59fb378875798"
+  },
+  "copied_finite_pins": 355,
+  "copied_bytes": 366039721,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_descriptor_primary/Root_guarded_replay.json",
+    "bytes": 556,
+    "sha256": "fd778563e1a07643630da07f32bfd101b1f58185ec0e298aaa3d5d67936d51d1"
+  },
+  "actual_frozen_Git_occurrences": 8460,
+  "exact_committed_report_and_document_read_via_Git": true,
+  "actual_closed_Source_paths": 4210,
+  "prior_handler_287_pins_byte_identical": true,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_data_bytes": 12,
+    "instruction_starts": 0,
+    "GPR_worker_epoch": 88,
+    "raw_DWORDs": [
+      "19930522",
+      "00000002",
+      "00E01CB4"
+    ],
+    "data_unit_bytes": 36,
+    "unread_data_unit_suffix_bytes": 24,
+    "derived_map_and_action_and_target_bytes_read": 0,
+    "Native_execution": false
+  },
+  "qualified_layout": {
+    "frozen_definition_version": "14.51.36231",
+    "original_compiler_or_runtime_identity_established": false,
+    "interpretation": "Conditional classic-x86 absolute layout: magic19930522, BBTflags0, signedmaxState2, candidateabsoluteUnwindMapE01CB4. Count meaning derives from retained definitions, not name alone.",
+    "current_installed_compiler_or_web_read": false,
+    "exact_four_definition_members_and_prior_capture_provenance_checked": true
+  },
+  "contract": {
+    "raw": "Read only E01CC4..E01CCF: DWORDs19930522,00000002,00E01CB4. Defined36-byte DataDB metadata does not authorize reading its remaining24 bytes.",
+    "mapping": "Typed data/no-instruction/no-function metadata, explicit-program read-only MCP segment listing, then exact12-byte CLI read. Prefix lies in .rdata; successful Ghidra read establishes saved-byte readability, not OS page protection.",
+    "qualified_layout": "Frozen MSVC14.51.36231 definitions: low29 magic19930522/EH_MAGIC_NUMBER3, high3 bbtFlags0, signed maxState2, conditional classic x86 absolute pUnwindMapE01CB4. Count meaning comes from retained definition semantics, not the field name alone.",
+    "uncertainty": "No original compiler/runtime identity, descriptor suffix, table entry, cleanup target, state transition, target ABI, actual FH3 invocation or retirement established.",
+    "retained_prior": "Handler epoch85 remains ten bytes with the saved CALL_RETURN override. Normal base epoch79 preserves original receiver/current publication/captured section. Raw owner,+14 reference, authority cells and borrowed services must outlive failure records; no invented reset/unregister/free/retry/destructor policy.",
+    "compiler_provenance": "Physical existing evidence.zip SHA verified locally; only four named definition members and opaque capture metadata copied. Portable replay verifies copied member hashes and compiler fields; it does not reopen or reconstruct the original zip or any installed headers."
+  },
+  "decision": {
+    "Cpp_GO": false,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "exceptional_cleanup_GO": false,
+    "normal_retirement_GO": false,
+    "next_packet": "cc12_application_singleton_unwind_map_readiness",
+    "proposed_next_scope": {
+      "candidate_address": "00E01CB4",
+      "mapping_and_listing_metadata_first": true,
+      "read_only": true,
+      "exact_data_range": "00E01CB4..00E01CC3",
+      "max_data_bytes": 16,
+      "derivation": "Qualified classic x86 absolute layout: signed maxState2 times two DWORDs per UnwindMapEntry. This is an unread candidate map, not a recovered action graph.",
+      "function_bodies": 0,
+      "remaining_descriptor_suffix": "Not included.",
+      "derived_cleanup_bodies_destructors_FH3_target": "Separate finite proposals required before reads"
+    },
+    "E1AE78_separate": true
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Existing36-byte DataDB extent does not admit or interpret its24 unread suffix bytes.",
+    "Mapping/readability in saved GPR is not live memory or OS page-protection proof.",
+    "No map entry, actual action graph, dispatcher frame/ABI, cleanup or owner retirement is established.",
+    "Source and prior Native79/85, worker88, later Root90 annotation epochs remain separate."
+  ]
+}
