@@ -3195,7 +3195,7 @@
         "actual_DATA_assembler_initial_session_id": 70049,
         "actual_DATA_assembler_terminal_observed": true,
         "fresh_future_targets_created": true,
-        "fresh_future_targets_creation_boundary": "D05 assembly and complete output/inert-plan joint acceptance closed; exactly one Source23 DATA adoption running. Original prepare04 clock and Dispatch absent.",
+        "fresh_future_targets_creation_boundary": "D05 output/inert-plan acceptance and exactly one Source23 DATA adoption closed. Complete adopted-output independent closure and fresh ordinary-host admission pending; original prepare04 clock and Dispatch absent.",
         "actual_DATA_assembler_terminal_chunk_id": "76f722",
         "actual_DATA_assembler_terminal_exit_code": 0,
         "actual_DATA_assembler_raw_tool_evidence": {
@@ -3262,14 +3262,66 @@
         },
         "actual_DATA_adopter_initial_chunk_id": "cdec77",
         "actual_DATA_adopter_initial_session_id": 11036,
-        "actual_DATA_adopter_terminal_observed": false,
-        "actual_DATA_adoption_complete": false,
+        "actual_DATA_adopter_terminal_observed": true,
+        "actual_DATA_adoption_complete": true,
         "actual_DATA_adopter_pending_genuine_tool_evidence": {
           "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_materialization_control04\\DATA_adopter_attempt01.pending_genuine_tools_DATA01.json",
           "bytes": 2909,
           "sha256": "f12e2b5cf83006b50b10650ec4555cc452dadefcbf021f89c7a61bb5935f406a"
         },
-        "Root_remaining": "Genuine adopted04 DATA terminal; complete adopted-output Root and independent peer closure; fresh ordinary-host environment/policy/guard-stream admission; separate exact actual prepare04 authority and four genuine original-QPC tool terminals."
+        "Root_remaining": "Complete adopted-output independent peer and Root formal closure; fresh ordinary-host environment/policy/guard-stream admission; separate exact actual prepare04 authority and four genuine original-QPC tool terminals.",
+        "actual_DATA_adopter_terminal_chunk_id": "b1411c",
+        "actual_DATA_adopter_terminal_exit_code": 0,
+        "actual_DATA_adopter_tool_turns": 5,
+        "actual_DATA_adopter_raw_tool_evidence": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_materialization_control04\\DATA_adopter_attempt01.raw_tool_evidence.json",
+          "bytes": 5566,
+          "sha256": "7eff74a0aa773bf2ff2c6c9ee2150fe0083df75f4458ffb571b655abba9eeca6"
+        },
+        "actual_final_adopted_Root_seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F4D03_adopter01\\type1011_f4_prepare04_adopted01\\Root_seal.json",
+          "bytes": 17688,
+          "sha256": "f4450a4a99566b5d4a2a5f4dbee8a77aa1cd2de66ed45954357d9ee9c35be2cf"
+        },
+        "Root_complete_adopted_generation_DATA_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_TEXT_review01\\Root_control04_complete_adopted_generation_DATA_review.json",
+          "bytes": 15334464,
+          "sha256": "a99843a3531590f92c5d3dcf5bfb643bb480c1353e86350a6ae9e1352092fc17"
+        },
+        "Root_adopted_current_union_pins_each_bookend": 27250,
+        "Root_adopted_tables": {
+          "D05_base": {
+            "pairs": 13588,
+            "scopes": 66,
+            "memberships": 30029,
+            "literal_membership_identity": true,
+            "complete_membership_identity": true
+          },
+          "old_unadopted_prepare": {
+            "pairs": 13594,
+            "scopes": 67,
+            "memberships": 30035,
+            "literal_membership_identity": true,
+            "complete_membership_identity": true
+          },
+          "adopted_prepare": {
+            "pairs": 13612,
+            "scopes": 69,
+            "memberships": 30065,
+            "literal_membership_identity": true,
+            "complete_membership_identity": true
+          }
+        },
+        "Root_adopted_contract_counts": {
+          "distinct_pins": 27250,
+          "sources": 3,
+          "contracts": 3,
+          "relocations": 6,
+          "control_copies": 5,
+          "event_templates": 2,
+          "immutable_families": 11
+        },
+        "complete_independent_adopted_output_peer_pending": true
       }
     }
   }
