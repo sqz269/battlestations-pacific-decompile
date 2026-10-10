@@ -60,6 +60,17 @@ public:
     void open();
     void close();
 
+    // Borrow only the original saved pointer when this exact scratch is live17.
+    // Rejection leaves output untouched; successful nullptr is a valid capture.
+    // Output must be a live, disjoint pointer object, not private owner storage.
+    // This proves no buffer lifetime or NUL termination: the caller keeps the
+    // original buffer/current bytes valid and the owner/bindings stable, without
+    // reentry. Never treat rejection as an empty category. No current S18 or
+    // saved-length read, text copy, ownership/state change, or provider call.
+    bool try_borrow_saved_category_data(
+        const NativeDamageableClassSectionMshFieldFragmentScratch& expected,
+        const char*& output) const noexcept;
+
 private:
     NativeDamageableClassSectionMshFieldFragmentScratch& scratch_;
     NativeStringRawPoolContext& strings_;
