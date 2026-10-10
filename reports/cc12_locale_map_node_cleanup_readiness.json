@@ -1,0 +1,1403 @@
+{
+  "schema": "cc12_locale_map_node_cleanup_readiness_v1",
+  "status": "bounded_node_cleanup_map_complete_runtime_frame_premise_external",
+  "baseline_head": "203d819652cc2b504148ed111dc60e1c2cf667cc",
+  "source_epoch": "Source3352-particle-model-typed-views",
+  "owned_files": [
+    "docs/CC12_LOCALE_MAP_NODE_CLEANUP_READINESS.md",
+    "reports/cc12_locale_map_node_cleanup_readiness.json"
+  ],
+  "scope": {
+    "selector": {
+      "address": "00C86268",
+      "bytes": 10,
+      "within32": true
+    },
+    "FuncInfo": {
+      "address": "00DB583C",
+      "bytes": 36
+    },
+    "unwind_map": {
+      "address": "00DB5834",
+      "bytes": 8
+    },
+    "state0_action": {
+      "address": "00C86260",
+      "bytes": 8,
+      "within32": true
+    },
+    "fresh_total_bytes": 62,
+    "reused_prior_node_bytes": 119,
+    "all_metadata_action_fresh_leases": true,
+    "target_provider_runtime_or_neighbor_expansion": false
+  },
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "imagebase": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "raw_pointer": 4096,
+          "raw_size": 9310208
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "raw_pointer": 9314304,
+          "raw_size": 1204224
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "raw_pointer": 10518528,
+          "raw_size": 65536
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "raw_pointer": 10584064,
+          "raw_size": 1634304
+        }
+      ]
+    },
+    "all_fresh_spans_disk_exact": true,
+    "spans": [
+      {
+        "address": 13132392,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c86268_10.bin",
+          "bytes": 10,
+          "sha256": "ddd6f799232b70749a3c130b59d15085233c792dd5242da84152faa4dbf6470c",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13132392,
+            "length": 10,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 13132392,
+            "bytes": "b83c58db00",
+            "mnemonic": "mov",
+            "operands": "eax, 0xdb583c"
+          },
+          {
+            "address": 13132397,
+            "bytes": "e9d108f7ff",
+            "mnemonic": "jmp",
+            "operands": "0xbf6b43"
+          }
+        ],
+        "partial_tail": null
+      },
+      {
+        "address": 14374972,
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db583c_36.bin",
+          "bytes": 36,
+          "sha256": "0fd00251d1a6a56b4f466a4804374630e780a4ee5e3bee1e831e0f5666140e41",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14374972,
+            "length": 36,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [],
+        "partial_tail": null
+      },
+      {
+        "address": 14374964,
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db5834_8.bin",
+          "bytes": 8,
+          "sha256": "45083a395b42c26fd813cc786e7292de37d5ef3474d4130fe4a2d10a54ed6f39",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14374964,
+            "length": 8,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [],
+        "partial_tail": null
+      },
+      {
+        "address": 13132384,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c86260_8.bin",
+          "bytes": 8,
+          "sha256": "7e60159bfdd128b849832697e686b8a1e9c5caea086b6d60ae628ce413b5cebe",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13132384,
+            "length": 8,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 13132384,
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": 13132387,
+            "bytes": "e9b87a79ff",
+            "mnemonic": "jmp",
+            "operands": "0x41dd20"
+          }
+        ],
+        "partial_tail": null
+      }
+    ],
+    "typed_flow": [
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c86268"
+        },
+        "modification_number_before": "59",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86268"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86268"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86268"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86268"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c8626d"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c8626d"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": null,
+        "function_containing_query": null,
+        "functions": [],
+        "direct_call_targets": [],
+        "modification_number_after": "59"
+      },
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c86260"
+        },
+        "modification_number_before": "59",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c86263"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c86263"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "00c86260"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "00c86260"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "name": "Unwind@00c86260",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "8",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00c86260"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00c86267"
+                  },
+                  "length": "8"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "59"
+      },
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c8626d"
+        },
+        "modification_number_before": "59",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c8626d"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c8626d"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c8626d"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c8626d"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6b43"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf6b43"
+            }
+          ]
+        },
+        "function_at_query": null,
+        "function_containing_query": null,
+        "functions": [],
+        "direct_call_targets": [
+          {
+            "address": {
+              "space": "ram",
+              "offset": "00bf6b43"
+            },
+            "default_target": true,
+            "effective_target": true,
+            "function_at_target": {
+              "entry": {
+                "space": "ram",
+                "offset": "00bf6b43"
+              },
+              "name": "FID_conflict:___CxxFrameHandler3",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null
+            }
+          }
+        ],
+        "modification_number_after": "59"
+      },
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c86263"
+        },
+        "modification_number_before": "59",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86263"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86263"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86263"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c86263"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd20"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "0041dd20"
+            }
+          ]
+        },
+        "function_at_query": null,
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "00c86260"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00c86260"
+            },
+            "name": "Unwind@00c86260",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "8",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00c86260"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00c86267"
+                  },
+                  "length": "8"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [
+          {
+            "address": {
+              "space": "ram",
+              "offset": "0041dd20"
+            },
+            "default_target": true,
+            "effective_target": true,
+            "function_at_target": {
+              "entry": {
+                "space": "ram",
+                "offset": "0041dd20"
+              },
+              "name": "BSP_NativeString_DestroyStorage",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null
+            }
+          }
+        ],
+        "modification_number_after": "59"
+      }
+    ],
+    "fresh_modification_number": "59",
+    "selector": [
+      {
+        "address": 13132392,
+        "bytes": "b83c58db00",
+        "mnemonic": "mov",
+        "operands": "eax, 0xdb583c"
+      },
+      {
+        "address": 13132397,
+        "bytes": "e9d108f7ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "action": [
+      {
+        "address": 13132384,
+        "bytes": "8b4df0",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": 13132387,
+        "bytes": "e9b87a79ff",
+        "mnemonic": "jmp",
+        "operands": "0x41dd20"
+      }
+    ],
+    "FuncInfo_DWORDs": [
+      429065506,
+      1,
+      14374964,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "unwind_map": {
+      "state": 0,
+      "previous": -1,
+      "action": "00C86260",
+      "target": "0041DD20"
+    },
+    "selector_stored_listing": "two defined instructions; no stored function body; no repair",
+    "action_body": {
+      "bytes": 8,
+      "instructions": 2,
+      "complete": true
+    },
+    "tail_flow": {
+      "addresses": [
+        "00C8626D",
+        "00C86263"
+      ],
+      "raw_default": "UNCONDITIONAL_JUMP",
+      "current_override": "CALL_RETURN",
+      "effective": "CALL_TERMINATOR",
+      "targets_unchanged": true,
+      "fallthrough": null,
+      "repair": false
+    },
+    "frame_relation": {
+      "entry_stack_symbol": "S",
+      "ESP_at_receiver_save": "S-14h",
+      "saved_receiver_address": "S-10h",
+      "action_load_address": "EBP-10h",
+      "required_runtime_rebase": "EBP=S",
+      "runtime_rebase_verified": false,
+      "registration_link_address": "S-0Ch",
+      "required_equivalent_rebase": "EBP=registration_link+0Ch"
+    },
+    "prior_node_dependency": {
+      "bytes": 119,
+      "sha256": "1f3b42a64fc05f9fbbb38d5ca83fa144b5a11571263fa1811aa60e77826a798a",
+      "fresh_read": false,
+      "worker_commit": "95d258abcd72c432e78f141bc5eae2470c0cff6a"
+    },
+    "state_schedule": "Nodewidestage state0; narrowpointerload beforestate-1; narrowproviders afterstate-1",
+    "expected_cleanup": {
+      "premise": "runtime EBP equalsNodeentryESP",
+      "receiver": "savedoriginalnode, no memberoffset",
+      "target": "0041DD20 rawnarrowheader destructor",
+      "header_reads": "currentnarrowpointer/currentlength atcleanup, eachcaptured beforecleanupgetter",
+      "null_behavior": "nullpointer skipslength/providers underexistinghelpercontract",
+      "wide_re_return": false,
+      "node_slot_return": false,
+      "map_clear": false,
+      "publication_repair": false,
+      "receiver_free": false
+    },
+    "unproved": [
+      "runtime EBP rebasing",
+      "exceptiondispatcher machinery",
+      "failure duringcleanup/doubleexception",
+      "Native EH/SEH ABI equivalence"
+    ]
+  },
+  "prior_code_dependency": {
+    "schema": "pin_dependency_v1",
+    "prior_worker_commit": "ca840ebc7ad2010ce00af8ad59f949af0d2a0ac1",
+    "accepted_on_main": "68cfbc7d5",
+    "prior_bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\evidence.zip",
+      "bytes": 43819024,
+      "sha256": "6462b203010cb44e7f5a23362d10eeac297c14466778ea06ad0dea750a03a903",
+      "payloads": 3522,
+      "payload_bytes": 280787882
+    },
+    "prior_epoch": "Source3352-particle-startup",
+    "current_epoch": "Source3352-particle-model-typed-views",
+    "current_unchanged_source_pins": [
+      {
+        "path": "include/bsp/gui_startup.hpp",
+        "bytes": 12017,
+        "sha256": "625f71034415a96315aff758371b9e52a07747e06455b51108e9893e3adc8bb9",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/gui_startup.cpp",
+        "bytes": 5432,
+        "sha256": "ef86036b6cc55c6ae4a9ad3a118933f83762510dc1e2ce3be612df6d3b0e76d4",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "bytes": 12775,
+        "sha256": "397bf3eb722ff71175b5e7011a569bf16efeeead5d3f132f3cfc4995fc22f058",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "bytes": 21946,
+        "sha256": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/locale_tables.hpp",
+        "bytes": 9471,
+        "sha256": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/locale_tables.cpp",
+        "bytes": 12433,
+        "sha256": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 126110,
+        "sha256": "6cc3e21931ee19e8aa6f7be92e995797b309bfd0a75f8767df7b475fc925bfbb",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 26650,
+        "sha256": "99c7143f6de7aae8933b783c4e1f584ac50af697e401189abe64d18d0fbaaa13",
+        "unchanged_from_constructor_epoch": true
+      }
+    ],
+    "dependency_only": true,
+    "previous_Native_constructor_base_evidence_replayed_here": false,
+    "recursive_Root_proof_tree_retained": false,
+    "accepted_contract": [
+      "exact4040h LocaleTableManagerImage",
+      "constructor Source is derivedfields only",
+      "nativebase uses two actual manager lookups andF8BC4Creload",
+      "capturedsection guard andno basecleanup publication repair",
+      "semanticapp locale4064h andrawloader/textconsumer work remain unresolved",
+      "00411EE0 actual section guard cleanup and00412430 generic root profile reset remain accepted constructor dependencies; their bodies are not freshly expanded",
+      "007365E0 base lifetime is the present fresh finite Native scope"
+    ],
+    "profile_lifetime": {
+      "worker_commit": "11e8d43fdd4e8279dc2694aad85abf74a823e3c9",
+      "Root_acceptance": "accepted, integrated and pushed on main20a408581",
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\evidence.zip",
+        "bytes": 42875668,
+        "sha256": "7e46c1147721b72c74a650dff3f8b8723d06772ec2d33beae518549d0ec550d4",
+        "payloads": 3495,
+        "payload_bytes": 275992344
+      },
+      "current_Source_same": true,
+      "Native_evidence_replayed_here": false,
+      "Root_broader_App_census_borrowed_here": false
+    },
+    "base_lifetime": {
+      "worker_commit": "90c7ba1a2",
+      "Root_acceptance": "pending at capture",
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_base_lifetime_readiness\\evidence.zip",
+        "bytes": 42857288,
+        "sha256": "0ae3d79e8153b512367feb2c9833f37ca9c0c5c9b5b3256db85600114c3c15dc",
+        "payloads": 3498,
+        "payload_bytes": 275711249
+      },
+      "current_Source_same": true,
+      "Native_evidence_replayed_here": false
+    },
+    "whole_report_dependencies": [
+      {
+        "entry": "retained/Dependencies/cc12_locale_startup_constructor_owner_readiness.json",
+        "bytes": 112016,
+        "sha256": "cfa46f6b9f4ec3fe09c6be6051e3cae355cf4fdb48313ff3e6baa8b6b8381260",
+        "dependency_only": true,
+        "recursive_proof_tree": false
+      },
+      {
+        "entry": "retained/Dependencies/cc12_locale_profile_lifetime_readiness.json",
+        "bytes": 87427,
+        "sha256": "a0ef42fc811cbf9337936eabe1339cbd35fed77a36a82f8bb56ba552d60e60f6",
+        "dependency_only": true,
+        "recursive_proof_tree": false
+      },
+      {
+        "entry": "retained/Dependencies/cc12_locale_base_lifetime_readiness.json",
+        "bytes": 36183,
+        "sha256": "fed11a4db7ed12c16d7f6682440c450c7b168e5004e1aa854c311c28b93079e6",
+        "dependency_only": true,
+        "recursive_proof_tree": false
+      },
+      {
+        "entry": "retained/Dependencies/cc12_locale_raw_map_cleanup_readiness.json",
+        "bytes": 42692,
+        "sha256": "8427593a355127b6b08f9befdce0df7b9e272f39a1721e8a9c259d8a113f5168",
+        "dependency_only": true,
+        "recursive_proof_tree": false
+      },
+      {
+        "entry": "retained/Dependencies/cc12_locale_map_node_owner_readiness.json",
+        "bytes": 42535,
+        "sha256": "c15d5c7284049ae877d72da06d74b9799bd66d90580340eaf832a458a7ffe19c",
+        "dependency_only": true,
+        "recursive_proof_tree": false
+      }
+    ],
+    "current_scope": "C86268 selector, directly referenced exactFuncInfo/map andstate0 action only; no targetprovider or runtimeEHbody expansion",
+    "raw_map": {
+      "worker_commit": "cf42da5cd133bc1e13465e4275e083f97a510968",
+      "Root_acceptance": "pending at capture",
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_raw_map_cleanup_readiness\\evidence.zip",
+        "bytes": 42896128,
+        "sha256": "a489397b4892e9ebc6ebccc6311c3e8ccef7aa0cd3d5b6880fe352085f5e82fc",
+        "payloads": 3494,
+        "payload_bytes": 275953220
+      },
+      "current_Source_same": true,
+      "Native_evidence_replayed_here": false
+    },
+    "Source_provider_dependencies": "Current Source definitions/interfaces and compiled artifacts only; no fresh Native qualification of pool/string/range providers",
+    "node_owner": {
+      "worker_commit": "95d258abcd72c432e78f141bc5eae2470c0cff6a",
+      "Root_acceptance": "pending at capture",
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_owner_readiness\\evidence.zip",
+        "bytes": 42908629,
+        "sha256": "82081a273e5380c79426622509c8542a68e4b6773d0ea3c446f70698aa789171",
+        "payloads": 3496,
+        "payload_bytes": 276040392
+      },
+      "current_Source_same": true,
+      "fresh_Native_evidence_here": false,
+      "reused_finite_Native_node_bytes": 119
+    },
+    "base_map_acceptance_qualification": {
+      "schema": "separate_whole_Git_acceptance_dependency_v1",
+      "main_head": "3129866ef489aadf9a2e90ddcfec228e6a3ecdbd",
+      "acceptance": [
+        {
+          "packet": "base",
+          "accepted_commit": "260638e2cdaaf43de2469267fe8b58a5c80526e6",
+          "ancestor_of_main_head": true
+        },
+        {
+          "packet": "raw_map",
+          "accepted_commit": "d5f24c14e99b5988ba2a4c75d13879c7667f1a93",
+          "ancestor_of_main_head": true
+        }
+      ],
+      "whole_files": [
+        {
+          "path": "docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md",
+          "entry": "whole_Git/docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md",
+          "git_blob": "cf94fde0662b9943a6f61ed64d403db000e5c19b",
+          "bytes": 1897,
+          "sha256": "a145e58bb46e2abac68e712744781bb9d5f20437c5fef131b1a1d5d3b692d5e8",
+          "main_head": "3129866ef489aadf9a2e90ddcfec228e6a3ecdbd"
+        },
+        {
+          "path": "reports/cc12_locale_base_lifetime_primary_review.json",
+          "entry": "whole_Git/reports/cc12_locale_base_lifetime_primary_review.json",
+          "git_blob": "4e646c886ba4d96f2b2705fe5ac3a027d90c508d",
+          "bytes": 1578740,
+          "sha256": "7d418431d2685a7a1b34063e167c0cb060a3294e7b0fc359a013fc3e8b85c3bf",
+          "main_head": "3129866ef489aadf9a2e90ddcfec228e6a3ecdbd"
+        },
+        {
+          "path": "docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+          "entry": "whole_Git/docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md",
+          "git_blob": "b3eb550ec7dce75e1b6f204ef9205ee737faf1a6",
+          "bytes": 1704,
+          "sha256": "243666bda0dbd18308654d295c184687987864103e62b38506edf783bc5397c2",
+          "main_head": "3129866ef489aadf9a2e90ddcfec228e6a3ecdbd"
+        },
+        {
+          "path": "reports/cc12_locale_raw_map_cleanup_primary_review.json",
+          "entry": "whole_Git/reports/cc12_locale_raw_map_cleanup_primary_review.json",
+          "git_blob": "09c5c90158f2163b0dd9274aaa130701904ff559",
+          "bytes": 1585021,
+          "sha256": "2c03d6c75a7662616923a018fd437b1517fe3b7f6ab70195de056ebf29ee47aa",
+          "main_head": "3129866ef489aadf9a2e90ddcfec228e6a3ecdbd"
+        }
+      ],
+      "Source_git_inputs": 3352,
+      "all_Source_Git_exact_to_original_capture": true,
+      "original_baseline": "41af5390c0b411d4e34701ab62c459a26a0889c3",
+      "original_bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_owner_readiness\\evidence.zip",
+        "bytes": 42908629,
+        "sha256": "82081a273e5380c79426622509c8542a68e4b6773d0ea3c446f70698aa789171",
+        "payloads": 3496,
+        "payload_bytes": 276040392
+      },
+      "immutable_original_capture_modified": false,
+      "current_Root_bytes_requalified_after_acceptance": false,
+      "borrowed_Root_proof_claims": false,
+      "recursive_Root_proof_tree": false,
+      "dependency_bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_owner_readiness\\acceptance_dependency.zip",
+        "bytes": 444553,
+        "sha256": "bc0c100d3fa11d3163cffa19d09ea538af935d4af2659e6f4d68885dde33c0ec",
+        "whole_files": 4
+      }
+    },
+    "base_map_status": "accepted after their immutable captures; whole Git qualifications retained separately; historical pending fields unchanged"
+  },
+  "Source": {
+    "epoch": "Source3352-particle-model-typed-views",
+    "selected_project_inputs": 3352,
+    "artifacts": 4,
+    "current_integrator_all3356_exact_at_capture": true,
+    "worker_exact": 3345,
+    "worker_LF_only_differences": [
+      "cmake/startup.cmake",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "Git_worker_exact": 3352,
+    "Git_Source_exact": 3345,
+    "Git_LF_equivalent": 3352,
+    "all_byte_cohorts_retained": true,
+    "artifact_pins": [
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_core.lib",
+        "bytes": 73965334,
+        "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+        "provenance": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73965334,
+          "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_core.lib"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+        "provenance": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5102592,
+          "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_game.exe"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+        "provenance": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7549530,
+          "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\bsp_game.map"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+        "provenance": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Testing\\Temporary\\LastTest.log"
+        }
+      }
+    ],
+    "Core_archive_entries": 1991,
+    "Core_COFF_indices": 1988,
+    "App_COFF_indices": 70,
+    "App_census_scope": "Frozen bsp_game target only; Root all80 current census separate andnotborrowed",
+    "all_full_indices_reparsed": true,
+    "address_named_node_symbol_mentions": [],
+    "symbol_observation_scope": "exact00737CE0name in frozenCore+bsp_game App only, contracts separatelyinspected",
+    "retained_whole_COFF_objects": 16,
+    "complete_selected_sections": [
+      {
+        "object": "native_string",
+        "prefix": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext",
+        "index": 56,
+        "name": ".text$mn",
+        "declared_size": 51,
+        "raw_pointer": 7116,
+        "payload_bytes": 51,
+        "bytes": 51,
+        "sha256": "281055a229e2b97300811e741f0b40d5e929c07513a58e27f641a8ef6e079c7d",
+        "relocations": [
+          {
+            "offset": 28,
+            "type": 20,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ],
+        "decoded_instructions": 26
+      },
+      {
+        "object": "native_string",
+        "prefix": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage",
+        "index": 57,
+        "name": ".text$mn",
+        "declared_size": 28,
+        "raw_pointer": 7187,
+        "payload_bytes": 28,
+        "bytes": 28,
+        "sha256": "97ed14325de3259cc221bfc28e3756028852ca58b9d66a2567cee928108f8f9a",
+        "relocations": [],
+        "decoded_instructions": 15
+      },
+      {
+        "object": "native_wide_string",
+        "prefix": "?destroy_native_wide_string_header_00436430",
+        "index": 9,
+        "name": ".text$mn",
+        "declared_size": 34,
+        "raw_pointer": 1366,
+        "payload_bytes": 34,
+        "bytes": 34,
+        "sha256": "5088989cf634cd2b072794b22c5e4cef8829939d0691dd50414af00f1c4a141a",
+        "relocations": [],
+        "decoded_instructions": 15
+      },
+      {
+        "object": "native_string_pool_storage",
+        "prefix": "?get_pool@ActualNativeStringPoolStorage",
+        "index": 16,
+        "name": ".text$mn",
+        "declared_size": 35,
+        "raw_pointer": 2872,
+        "payload_bytes": 35,
+        "bytes": 35,
+        "sha256": "3bd4c8df50b7a26cd420e83ef2850666a1af8429af20f63cab8ed024c1a3fb01",
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 20,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "offset": 27,
+            "type": 20,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z"
+          }
+        ],
+        "decoded_instructions": 13
+      },
+      {
+        "object": "global_config",
+        "prefix": "?destroy_global_config_name_range_00432050",
+        "index": 18,
+        "name": ".text$mn",
+        "declared_size": 41,
+        "raw_pointer": 3312,
+        "payload_bytes": 41,
+        "bytes": 41,
+        "sha256": "b45472212d910a1d59664dd559cffb754f87fcd437afb53d1f9c0f9a46055fb8",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          }
+        ],
+        "decoded_instructions": 22
+      },
+      {
+        "object": "game_native_string_process",
+        "prefix": "?game_native_string_process",
+        "index": 14,
+        "name": ".text$mn",
+        "declared_size": 234,
+        "raw_pointer": 2011,
+        "payload_bytes": 234,
+        "bytes": 234,
+        "sha256": "4abbf9ee3ca2acb073b7f6955ebcfbd94bc632d0fd28f8158dc9f5b804f20fb2",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+          },
+          {
+            "offset": 19,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 37,
+            "type": 6,
+            "symbol": "__tls_array"
+          },
+          {
+            "offset": 43,
+            "type": 6,
+            "symbol": "__tls_index"
+          },
+          {
+            "offset": 51,
+            "type": 6,
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "offset": 57,
+            "type": 11,
+            "symbol": "__Init_thread_epoch"
+          },
+          {
+            "offset": 64,
+            "type": 6,
+            "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+          },
+          {
+            "offset": 85,
+            "type": 6,
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "offset": 90,
+            "type": 20,
+            "symbol": "__Init_thread_header"
+          },
+          {
+            "offset": 99,
+            "type": 6,
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "offset": 116,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 169,
+            "type": 20,
+            "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+          },
+          {
+            "offset": 211,
+            "type": 6,
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "offset": 217,
+            "type": 6,
+            "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+          },
+          {
+            "offset": 222,
+            "type": 20,
+            "symbol": "__Init_thread_footer"
+          }
+        ],
+        "decoded_instructions": 64
+      },
+      {
+        "object": "game_hosts_vfs",
+        "prefix": "?raw_strings@GameVfsHost",
+        "index": 1396,
+        "name": ".text$mn",
+        "declared_size": 8,
+        "raw_pointer": 144404,
+        "payload_bytes": 8,
+        "bytes": 8,
+        "sha256": "e6cbc11ea1717ccfc4a60fb7449ae5fb91898f9e4a161e2c4d1473e383c7d957",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "?raw_strings@GameNativeVfsApplication@game@bsp@@QAEAAUNativeStringRawPoolContext@3@XZ"
+          }
+        ],
+        "decoded_instructions": 2
+      }
+    ],
+    "complete_selected_code_bytes": 431,
+    "expected_cleanup": "raw narrow0041DD20 oncapturedoriginalnode andcurrentheader throughcanonicalrawpoolcontext",
+    "existing_raw_narrow": "0041DD20 overload NativeStringRawPoolContext allowsgetterfailurepropagation",
+    "missing_exception_compatible_interfaces": [
+      "wide00436430 rawcontext overload",
+      "range00432050 rawcontext compatibility forderivedlocale owner"
+    ],
+    "canonical_context": {
+      "type": "NativeStringRawPoolContext",
+      "cells": [
+        "01090AA8 poolpublication",
+        "01090AA4 gate",
+        "01090AA0 rawmanagerpublication"
+      ],
+      "retained_owner": "GameNativeStringProcess",
+      "existing_borrow": "GameVfsHost::raw_strings"
+    },
+    "node_pool_distinct": "E17698/B4/C0 isseparatenode-slotpool, notpayloadAA8",
+    "raw_layout": "existing4040Image; nosemanticunique_ptr/stdstring substitution",
+    "Cpp_implemented": false
+  },
+  "next_frontier": {
+    "smallest_Source_candidate": "retainoriginalnode/context; armnarrowcleanup aroundpropagatingrawwidereturn; disarmatobservedboundary; existingrawnarrow normalreturn",
+    "expected_exception_cleanup": "callrawnarrowhelper oncapturednodecurrentheader thenpreserveoriginalfailure ifcleanupreturnsnormally",
+    "required_decisions": [
+      "Rootadmittedsemanticframecorrespondence",
+      "cleanupfailurepolicy anddomain",
+      "canonicalcontext lifetimes"
+    ],
+    "runtime_EBP_rebase_verified": false,
+    "complete_Native_EH_ABI_GO": false,
+    "application_activation_GO": false,
+    "Cpp_implemented": false,
+    "separate_gates": [
+      "mapnodepoolactualcontext",
+      "derivedlocaleEH/rangecontexts",
+      "rawloader/consumer/owner/profilebinding"
+    ]
+  },
+  "validation": {
+    "bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_cleanup_readiness\\evidence.zip",
+      "bytes": 43374913,
+      "sha256": "286c951f6bedb0ec9af287704b5e3b632c0a44c661f61663cc70a2773a5640f7",
+      "payloads": 3513,
+      "payload_bytes": 279291726
+    },
+    "portable_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_cleanup_readiness\\evidence.zip",
+      "payloads": 3513,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 7,
+      "Native_spans": 4,
+      "Native_retained_bytes": 62,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_cleanup_readiness\\physical_relocation\\evidence.zip",
+      "payloads": 3513,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 7,
+      "Native_spans": 4,
+      "Native_retained_bytes": 62,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_map_node_cleanup_readiness\\physical_relocation\\evidence.zip",
+      "bytes": 43374913,
+      "sha256": "286c951f6bedb0ec9af287704b5e3b632c0a44c661f61663cc70a2773a5640f7"
+    },
+    "readiness_only": true,
+    "Cpp_changes": false,
+    "new_build_or_CTest": false,
+    "Original_execution": false,
+    "fixture": false,
+    "ABI": false,
+    "startup_process": false,
+    "gameplay": false,
+    "Ghidra_mutation": false,
+    "recursive_Root_proof_tree": false,
+    "replay_live_state": false
+  }
+}
