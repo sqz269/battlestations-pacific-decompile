@@ -1,0 +1,9 @@
+# Game queue application owner: primary acceptance
+
+Root accepted worker `6348370331d59e6c15c468af29a9b6e2515cb8d8`. Production queue binding remains held: current startup owns projected application/game state, and the live menu owns a separate semantic vector-backed queue. The existing raw application frame can own the actual71A0h game allocation, but has no production instantiation or attachment in the frozen Source corpus. Startup still lacks the real application subsystem/publication composition.
+
+A future queue view must borrow the same live game's20 bytes at+5D8. Producers, pending/hold/state consumers and final cleanup must share that allocation and preserve accepted late-load/publication behavior. Cleared current-game publication does not imply released storage: raw queue cleanup occurs later and still needs its owner and providers. Map/block allocation and release require an explicit matching domain; existing operator-delete defaults and the canonical malloc/free service are not arbitrary substitutes.
+
+Root copied558 artifacts, ran the guarded replay and verified4255 actual Git blobs plus4206 current worker Source files. The complete-corpus audit has24 queries/4303 matches,483 selected files/890 quoted include edges,72 Source excerpts and13 document excerpts. Root's current4206 files match the frozen corpus in4204 cases; the two accepted wide changes are independently matched to their new frozen epoch and committed blobs. The frozen string-cleanup pending status is retained, with later5a237ee0f acceptance pinned separately.
+
+No C++, new private queue/header, Native query/decode, Ghidra mutation, build/test/runtime, Original ABI or game validation is added. Existing local failure/handler/SBO cleanup evidence retains its own runtime premises. Evidence: `reports/cc12_game_state_queue_application_owner_primary_review.json`; proof: `local/cc12_game_state_queue_application_owner_primary/`.
