@@ -62,4 +62,12 @@ void NativeDamageableClassSectionMshFieldFragment::close() {
             pool, saved_data_, size, strings_.actual_small_returns_disabled_01090aa4);
     }
 }
+
+bool NativeDamageableClassSectionMshFieldFragment::try_borrow_saved_category_data(
+    const NativeDamageableClassSectionMshFieldFragmentScratch& expected,
+    const char*& output) const noexcept {
+    if (state_ != 17 || &expected != &scratch_) return false;
+    output = static_cast<const char*>(saved_data_);
+    return true;
+}
 } // namespace bsp
