@@ -5949,6 +5949,117 @@
           "future_gate": null,
           "future_T0": null,
           "future_actual_counts": null
+        },
+        "review_phase_reader05_complete_Source_acceptance_and_actual_DATA_ordering_failure": {
+          "status": "STATIC_SOURCE_ACCEPTED_ACTUAL_DATA_FAILED_FILE_ENUMERATION_ORDER",
+          "Source_credit": 0,
+          "complete_static_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader05_complete_Source_peer_accepted_DATA01.json",
+            "bytes": 68045803,
+            "sha256": "9678c1fbcfbc6ef0451e81e74d6efb9441ca659b22b1743389329ba403a5e250"
+          },
+          "exact_additive_staging": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader05_exact_additive_Source_staging_DATA01.json",
+            "bytes": 2097,
+            "sha256": "e6e079d922be31692153a34169354f0a3a4903439edfa9d25c1a2a06e37337c0"
+          },
+          "Root_static_predicates": 67958,
+          "Root_static_current_equal_books": 1402,
+          "complete_original_Source04_AST_inverse": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader05_own_complete_Source04_AST_inverse_DATA01.json",
+            "bytes": 176085,
+            "sha256": "7e8f79a5351cf48a33f7ac4f08cdc5535f358833ec5c2d851537eaf0504fb250"
+          },
+          "complete_static_Source_acceptance_actual_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader05_complete_static_Source_acceptance_failed01_corrected02.actual_tools.DATA.json",
+            "bytes": 8574,
+            "sha256": "677cd3665bed0165fec70e78470867c80a133a053519fe058f27db7048ba7f2f"
+          },
+          "complete_actual_reader_failure_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader05_actual_isolated_DATA_execution_terminal_failure01.actual_tools.DATA.json",
+            "bytes": 12530,
+            "sha256": "f4f942f539bf56d2ff6f1cca3ac08256d3ccafc9ff45ad37db62cc3b98c075ea"
+          },
+          "complete_actual_ordering_diagnosis": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader05_actual_preflight_inventory_assertion_conjunct_diagnosis_DATA01.json",
+            "bytes": 1569,
+            "sha256": "261307ba4c19be7534f0609f79db3cbd475500821f86d15fbe91cb6098aa5104"
+          },
+          "actual_native_initial_chunk": "926684",
+          "actual_native_initial_session": 52384,
+          "actual_native_poll_chunk": "55a8f8",
+          "actual_native_terminal_chunk": "bf5fd8",
+          "actual_native_terminal_exit": 1,
+          "Root_DATA_reader_executed": true,
+          "complete_actual_file_rowmaps_equal": true,
+          "file_counts_each": 1482,
+          "member_counts_each": 1487,
+          "file_list_order_equal": false,
+          "all_other_preflight_conjuncts_true": true,
+          "exact_missing_extra_or_different_file_descriptors": 0,
+          "inert_Source06_canonical_full_row_comparison_status": "AUTHORING_PENDING_SEPARATE_INDEPENDENT_SOURCE_REVIEW",
+          "original_four_genuine_zero_terminals_preserved": true,
+          "original_clock_not_reset_or_replayed": true,
+          "Source04_Source05_and_prior_failures_preserved": true,
+          "all_success_outputs_and_actual_gate_absent": true,
+          "all_authority": false,
+          "original_fixture_Source_execution_authorized": false,
+          "fixture_advance": false,
+          "qualification": false,
+          "future_actual_success_Root_report": null,
+          "future_actual_success_counts": null,
+          "future_actual_inspection_gate": null
+        },
+        "ninth_probe_role_F6_D07_Source02_complete_independent_Source_acceptance": {
+          "status": "ACCEPTED_INERT_FULL_NINE_ROLE_SOURCE_ONLY",
+          "Source_credit": 0,
+          "Root_acceptance": true,
+          "complete_Root_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F6_D07_nine_role_Source02_complete_independent_Source_accepted_DATA01.json",
+            "bytes": 16138925,
+            "sha256": "9e75d579ddbc8fdddfa94f3587b61978ddc062c952b78b99bea183a7bcdbbc86"
+          },
+          "complete_original_native_acceptance_history": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_nine_role_Source02_complete_Source_acceptance_failed01_corrected02.actual_tools.DATA.json",
+            "bytes": 3831,
+            "sha256": "996f490502d670e939f9ce535e2489b91e42eae98aadd87c83ea82aa0251bb7a"
+          },
+          "Root_predicates": 30555,
+          "Root_current_equal_books": 914,
+          "complete_peer_predicates": 11126,
+          "complete_peer_predicate_groups": [
+            3215,
+            6122,
+            1789
+          ],
+          "peer_current_equal_books": 900,
+          "complete_selected_input_families": 5,
+          "this_single_mandatory_review_covers_all11_Source_and_controls": true,
+          "original_complete_HOLD_ordinal598729_preserved": true,
+          "candidate_helper_changes": "Exactly one line per assembler/adopter helper; per-report full Source/control coverage enforced.",
+          "all_nine_other_Source_bytes_unchanged": true,
+          "original215_164_baseline_clauses_preserved": true,
+          "whole_helper_need_counts": [
+            256,
+            207
+          ],
+          "old_new_full_Source_helper_need_counts_each": 35,
+          "all_authority": false,
+          "selected_Source_execution": false,
+          "staging_authority": false,
+          "DATA_adoption_authority": false,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false,
+          "future_assembly_plan": null,
+          "future_adopter_plan": null,
+          "future_adoption_authorization": null,
+          "future_profile": null,
+          "future_actual_phase": null,
+          "future_gate": null,
+          "future_T0": null,
+          "future_actual_counts": null
         }
       }
     }
