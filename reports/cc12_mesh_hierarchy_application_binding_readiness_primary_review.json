@@ -1,0 +1,659 @@
+{
+  "worker_commit": "9fae67299687219a4eeca4bec55633c77666e2ab",
+  "utc": "2026-10-10T05:03:54.261171+00:00",
+  "decision": "READY narrow explicit retained hierarchy-service Source API; full resource/cache/mesh/retirement/startup graph held",
+  "report_manifest_pins_replayed": 1194,
+  "unique_paths": 650,
+  "bundle_payload_files": 546,
+  "baseline_and_current_Source_context": [
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_SECTION_ITERATOR_ADVANCE_FRAGMENT_SOURCE_PRIMARY_REVIEW.md",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "68ceaf9b3eaa95b3ad5b8991b2cb59683ee2fa39",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "e28ab2d72b5b123ecee3ba5a9549a1e0317391df",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "b26d4e9f7ff00bec4864b153bedf1b35627b9cba",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "800167ed59b26dbbb9cc379c4c0a5132b597308c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_HIERARCHY_PARSER_BV.md",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "2d7c9cabea9eed6d703473ba2efcd4eb9f1aef69",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "dc65d3e8f87853a37c30bf06c8826f370a567da0",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_ROOT_OWNER_BS.md",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "74ff23a49ecf4981ce78f4b08cd62e36ad837741",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "kind": "current_Source",
+      "git_blob": "43db9809ba77d43c7a3f809708d89a11035bed44",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_particle_runtime.hpp",
+      "kind": "current_Source",
+      "git_blob": "5f8db2475fc61b00130d5d6f6baae68adfe99a20",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "kind": "current_Source",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_render_resource_providers.hpp",
+      "kind": "current_Source",
+      "git_blob": "52d1355d759cf5530dd1bb589754aa74c0026cf3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "kind": "current_Source",
+      "git_blob": "d852609c6accd7b258eaf04a6e73c31bc8e21a63",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_resource_application.hpp",
+      "kind": "current_Source",
+      "git_blob": "53bbb6d0fd75a5b46494690f3f389cb9c28aa32d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_resource_pools.hpp",
+      "kind": "current_Source",
+      "git_blob": "377e3f0a160f2a2c65f0c5290960b4542e9467be",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_shader_process.hpp",
+      "kind": "current_Source",
+      "git_blob": "0602f2f9bd25f60f1d147a71f879735a3b069f09",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "kind": "current_Source",
+      "git_blob": "ef427105a46b727be82f4486def8e951712d3ae0",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "kind": "current_Source",
+      "git_blob": "52d2a009f0404a611feba2abcc41dab751204af6",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "kind": "current_Source",
+      "git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "kind": "current_Source",
+      "git_blob": "21a0950349db25c464e2c7eaa058bcd90d0ea114",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_animation_channel_body_reader.hpp",
+      "kind": "current_Source",
+      "git_blob": "354e9ed427a2c53206e77df5ad85433d1135b569",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_animation_channels_resource_reader.hpp",
+      "kind": "current_Source",
+      "git_blob": "2a743bb862510f5d50c81298f0919196b5bdd07c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_animation_group_lifetime.hpp",
+      "kind": "current_Source",
+      "git_blob": "2409b8e5c0dbeed357cebe62c6056e116ea17dda",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_bone_resource_item_reader.hpp",
+      "kind": "current_Source",
+      "git_blob": "3843316ef1142fd4c2f169a2e56c631be60ac88c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "kind": "current_Source",
+      "git_blob": "e24dcfe436ac8deb9240050794eb6eefc3c4d3b7",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "kind": "current_Source",
+      "git_blob": "34df6ce0a243638edb7d89a3892cd137fa3fe881",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_mesh_subset_loading.hpp",
+      "kind": "current_Source",
+      "git_blob": "5fff9ae5c04fafa0bfe1a6a50947f35a37d4301f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_container_lifetime.hpp",
+      "kind": "current_Source",
+      "git_blob": "b9ac28213076835f1af129be958813c8e232dba6",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_extra_item_lifetime.hpp",
+      "kind": "current_Source",
+      "git_blob": "b63a1f70f34bdfec5a044199814b1db43ecf232e",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_extra_item_parsers.hpp",
+      "kind": "current_Source",
+      "git_blob": "c593a7d4ea118fece34b20d8d505359c6d22fc54",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_extra_item_profile.hpp",
+      "kind": "current_Source",
+      "git_blob": "907a3e4cd2b119c941b265b7f096a42d430e3eba",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_extra_parser_singletons.hpp",
+      "kind": "current_Source",
+      "git_blob": "8c920614160ce985d60bce649c0af905d15d750c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_extra_type_ids.hpp",
+      "kind": "current_Source",
+      "git_blob": "e41f1f9980b2ed5f65137bdaeefd7cb195b21f58",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_hierarchy_cleanup.hpp",
+      "kind": "current_Source",
+      "git_blob": "2bfb0877d17b1e27e63a930096913133669bc785",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_hierarchy_fields.hpp",
+      "kind": "current_Source",
+      "git_blob": "b5cbbc34e60fa22895d61a0cddcb0d7b039c2cba",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_hierarchy_parser.hpp",
+      "kind": "current_Source",
+      "git_blob": "a4d8db3c547666f73a80d778424f5df935820ea1",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_hierarchy_pool.hpp",
+      "kind": "current_Source",
+      "git_blob": "62824ba0859dc541cb9c9db04dafb2e9fea721fa",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_load_cache.hpp",
+      "kind": "current_Source",
+      "git_blob": "52b6275cd53b1efeeeb9848d18c0960239df6450",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_manager_lifetime.hpp",
+      "kind": "current_Source",
+      "git_blob": "68b88d844bc8d003202d2b368c54573175fb7550",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_node_traversal.hpp",
+      "kind": "current_Source",
+      "git_blob": "ba7c79e4bd745f9749d2c5af21cc29fa16a34cbe",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_pointer_array.hpp",
+      "kind": "current_Source",
+      "git_blob": "3ba0962ffec872473847e9d71ac188a23976ffc6",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_reader_references.hpp",
+      "kind": "current_Source",
+      "git_blob": "17bf41642a31e867559ba59d0d716c0d80a2e011",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_root_dispatch.hpp",
+      "kind": "current_Source",
+      "git_blob": "9fd480b682e4bed845a1958c41e4c627692923f1",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_root_owner.hpp",
+      "kind": "current_Source",
+      "git_blob": "13538e05148d1683035414b0e5d210df0970ea82",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_stream_reads.hpp",
+      "kind": "current_Source",
+      "git_blob": "e07f623b33671cc02635804f5f0a0bd1fcac9359",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_value_reads.hpp",
+      "kind": "current_Source",
+      "git_blob": "bacdc921b472daca05246fa66a150722be102c07",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "kind": "current_Source",
+      "git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_structured_node_destruction.hpp",
+      "kind": "current_Source",
+      "git_blob": "d50d557b20fc5115cfe7ff2f223a29273d9c2257",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "kind": "current_Source",
+      "git_blob": "4c8bdae5e23b4af895d0b3ab2eb6b45c0f393333",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "kind": "current_Source",
+      "git_blob": "4813123521d1860bdb08235c5de4f281124237e7",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/animation_channels_reader_r26.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "1d08b41a0eeb05fce924b6292efd2b4d02896c4f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_section_iterator_advance_fragment_source_primary_review.json",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "fdcac5c621b2222eef9ad61b08e819dae1cc47aa",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "54bd2902d54d56ad6c61627e705c5ed772e343ae",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "beba24f44c76139ee2d6f85e6c11ce153ab905e3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+      "kind": "unchanged_accepted_prior_context",
+      "git_blob": "3d87ea3b7a25b56dc3b98eceee5b449b7cc67f57",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_animation_group_lifetime_r28.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "051f990e765cf1da4fea710e993f2646c768102e",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_bone_resource_item_reader_r26.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "1e3ad6ee9af384b5de0fc6590748372e9868b201",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_extra_item_lifetime_r27.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "1231ada09888446f7c00ff41af9ecc1334edd44a",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_extra_item_parsers_r25.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "e332742d5921f5c09c60ca4e60891a558c7fa4d1",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_extra_item_profile.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "fe16bcaf043c4f4fe863fc8bd296f4e524340d37",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_extra_parser_singletons_r24.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "545f45cb767d8e75f38c15a3885772353912d5a6",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_hierarchy_parser_bv.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "165a210b22607b6f775078e4baa69c79b679991f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_root_owner_bs.json",
+      "kind": "already_retained_Native_report_or_document",
+      "git_blob": "8770a2ada0b4099fd0a47d62519add333c413b69",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "kind": "current_Source",
+      "git_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "kind": "current_Source",
+      "git_blob": "b9c96bb2b56562d8397023ca745d611676b26bdd",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "kind": "current_Source",
+      "git_blob": "68e5acd59f57e8ee5ef7751992fa0571e0f45127",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "kind": "current_Source",
+      "git_blob": "b8b6b112b484fd9edfb7b15c6513f953d079d40e",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_renderer_resources.inc",
+      "kind": "current_Source",
+      "git_blob": "96259b3e5268791d9ac9652b44350412d3721cc5",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_renderer_shaders.inc",
+      "kind": "current_Source",
+      "git_blob": "895165689083f691659cbecd38d978be90924cec",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "kind": "current_Source",
+      "git_blob": "b4683f86e7199d5788a73d4cdd5a5abaf22347e3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_resource_application.cpp",
+      "kind": "current_Source",
+      "git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_resource_pools.cpp",
+      "kind": "current_Source",
+      "git_blob": "079c24c5499dc4c6cce0ecb038ec37f825e385f1",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_shader_process.cpp",
+      "kind": "current_Source",
+      "git_blob": "5b582df08760fccd278fb6bcf14ad2d4eadb310c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "kind": "current_Source",
+      "git_blob": "fe5fe0149d1245748f3f223c9bb75a5cf820fe84",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "kind": "current_Source",
+      "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "kind": "current_Source",
+      "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "kind": "current_Source",
+      "git_blob": "b9afed61eb31f8188b6ffc2268ac327b9f98c6c0",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_animation_channel_body_reader.cpp",
+      "kind": "current_Source",
+      "git_blob": "1c6fb4166b8a5a7d04c96521c0bc36803a5e7deb",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_animation_channels_resource_reader.cpp",
+      "kind": "current_Source",
+      "git_blob": "2dc372473ae7eb8b7e1a2bdb9ced93a233552e19",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_animation_group_lifetime.cpp",
+      "kind": "current_Source",
+      "git_blob": "26a789c36cd0759e8df0e0887d24c9f7cd2fafe8",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_bone_resource_item_reader.cpp",
+      "kind": "current_Source",
+      "git_blob": "44bc656994d3193247a6f17ac733052ddc6fcc0f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_container_lifetime.cpp",
+      "kind": "current_Source",
+      "git_blob": "122f5a2e78dae0a58649f0a1d375d6c50adf33c8",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_extra_item_lifetime.cpp",
+      "kind": "current_Source",
+      "git_blob": "a36dc72c5cac110dcf878c2a44b7de7f38baf7b3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_extra_item_parsers.cpp",
+      "kind": "current_Source",
+      "git_blob": "4fce8732b387e3e0e11e0d0a875466763dc6b095",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_extra_item_profile.cpp",
+      "kind": "current_Source",
+      "git_blob": "32a5e44f7461a3e652ec0ef4ae72f3aeb60bce3a",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_extra_parser_singletons.cpp",
+      "kind": "current_Source",
+      "git_blob": "7f67848171ebdb40d76ac39a8b6ceeee8be2bc7f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_extra_type_ids.cpp",
+      "kind": "current_Source",
+      "git_blob": "c3aa3684e9e3e48dd752b0b947c0c5afe5e4c1b2",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_hierarchy_cleanup.cpp",
+      "kind": "current_Source",
+      "git_blob": "59edbdfdce5f03a1029f413af3b26fcc7b423952",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_hierarchy_fields.cpp",
+      "kind": "current_Source",
+      "git_blob": "fbd83698a28adf2bb139d945f5374f918b0eaf0d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_hierarchy_parser.cpp",
+      "kind": "current_Source",
+      "git_blob": "4e76bad254c1b08b27b1451fd1b52c9267517a23",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_hierarchy_pool.cpp",
+      "kind": "current_Source",
+      "git_blob": "d132ea17e18738c82966d447157ba5c7b4fc92eb",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_load_cache.cpp",
+      "kind": "current_Source",
+      "git_blob": "d6fc8abc02f911a6a3cc18be7dca751f76471088",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_manager_lifetime.cpp",
+      "kind": "current_Source",
+      "git_blob": "f64dacad8b81467da21499092d6168b1ddea574d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_node_traversal.cpp",
+      "kind": "current_Source",
+      "git_blob": "f7c03f7d75935e8b4630dc9d8aadbf041331dd4d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_parser_singletons.cpp",
+      "kind": "current_Source",
+      "git_blob": "50155dd35c4a916a83e2126523ccc2ed1524b1d9",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_pointer_array.cpp",
+      "kind": "current_Source",
+      "git_blob": "d83981a4061193f938d8f3ee41221e17908c4c5f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_reader_references.cpp",
+      "kind": "current_Source",
+      "git_blob": "3ed0b0b92795292c859ba68fac6379602cba3ee3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_root_owner.cpp",
+      "kind": "current_Source",
+      "git_blob": "6b1ecaeae44c2f68b38c2d5935b7d92ea4918656",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_stream_reads.cpp",
+      "kind": "current_Source",
+      "git_blob": "3c95f291f1fa40c0e43c5cb9d18492ffea601990",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_value_reads.cpp",
+      "kind": "current_Source",
+      "git_blob": "b95d5f1bf71d912f839da1ee3cc21f911063b21d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_structured_node_destruction.cpp",
+      "kind": "current_Source",
+      "git_blob": "1e190380b9bd75d8e6ec3eef2af9aa121b3a1def",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "kind": "current_Source",
+      "git_blob": "62fe8b31d3d38ae8f352549b091282e839807415",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "kind": "current_Source",
+      "git_blob": "2285ff2795cbe5242af23c6669fcb050629c863c",
+      "current_canonical_equal": true
+    }
+  ],
+  "baseline_Git_blobs": 102,
+  "Source_files": 82,
+  "context_files": 20,
+  "complete_receipts": 113,
+  "bounded_Source_reads_exactly_replayed": 79,
+  "non_authoritative_corrected_path_glob_failures": 6,
+  "retained_capture_records": 5,
+  "retained_capture_bytes_rehashed": 104,
+  "new_Native_byte_data_table_handler_credit": 0,
+  "current_Source636_and_fallback_owner_API_not_recredited": true,
+  "canonical_pool_root_counter_and_shared_empty_byte_preserved": true,
+  "actual_structured_node_release_terminal": "Existing NativeResourceRootDispatch over actualVFS and same raw strings; D68BB4/BD30E0/currentBE9FC0 cannot end in plainVFS",
+  "explicit_core_ready_host_borrow": "Only same GameVfsHost native_/resources_/raw string and mapped-data owners; no arbitrary runtime rebinding or temporary context references",
+  "new_native_startup_IO_parse_getter_cleanup_calls": 0,
+  "Cpp_CMake_ledger_GPR_build_test_probe_runtime_changes": 0,
+  "artifact_pins": [
+    {
+      "path": "local/cc12_mesh_hierarchy_readiness_primary/worker_pins.json",
+      "bytes": 524534,
+      "sha256": "f55a811028003e7f19106b2b3655c4bf4c9a7abcdff2723d1978a0ff2e516f00"
+    },
+    {
+      "path": "local/cc12_mesh_hierarchy_readiness_primary/worker_report_frozen.json",
+      "bytes": 266632,
+      "sha256": "0e966467a1dc7a1d89355407601971d4ac453502d542553722ac7006204d7777"
+    },
+    {
+      "path": "local/cc12_mesh_hierarchy_readiness_primary/bounded_receipts_replay.json",
+      "bytes": 48171,
+      "sha256": "8a7b4497b4b45618b201d3fbb5ef011f2bd6aab82904389cdd23ebc605358f40"
+    },
+    {
+      "path": "local/cc12_mesh_hierarchy_readiness_primary/proof.json",
+      "bytes": 22972,
+      "sha256": "acf56c01802203592324ea458792ecf4f797543e79369b88f0d0da332508e66d"
+    }
+  ]
+}
