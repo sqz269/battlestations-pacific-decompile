@@ -1,0 +1,1574 @@
+{
+  "schema": "cc12-damageable-class-section-row-begin-readiness-v1",
+  "packet": "cc12_damageable_class_section_row_begin_readiness",
+  "utc": "2026-10-10T01:25:55.410954+00:00",
+  "base_commit": "b34ebc6fbc9af74b28dfd22d665ce81d242d7168",
+  "decision": "Readiness only: exact native row-initialization/append and lifetime boundary established; genuine direct Source providers present; concrete row-reader composition and actual application bindings remain held.",
+  "owned_addresses": [
+    "0087ce00",
+    "0087ce0d",
+    "0087ce48"
+  ],
+  "owned_files": [
+    "docs/CC12_DAMAGEABLE_CLASS_SECTION_ROW_BEGIN_READINESS.md",
+    "reports/cc12_damageable_class_section_row_begin_readiness.json"
+  ],
+  "scope": {
+    "two_file_readiness_only": true,
+    "new_cpp_files": 0,
+    "new_whole_original_functions": 0,
+    "new_tests": 0,
+    "builds_run": 0,
+    "new_fixtures": 0,
+    "cmake_mutation": false,
+    "ledger_mutation": false,
+    "ghidra_mutation": false,
+    "new_live_ghidra_queries": false,
+    "native_child_data_handler_openings": false,
+    "no_game_files_written": true,
+    "not_authorized_in_packet": [
+      "Four-file row-loop Source expansion",
+      "CEBB onward row Lua fields",
+      "next iteration",
+      "new Native child/data/handler audit"
+    ]
+  },
+  "native_evidence_gate": {
+    "mode": "retained Native parent evidence only; no live Ghidra queries or new child/data/handler openings",
+    "parent": {
+      "address": "0087ca80",
+      "end_inclusive": "0087d725",
+      "byte_count": 3238,
+      "instruction_count": 858,
+      "sha256": "00d679920bd1b8f8653e9a0ab1de627f954cfadaf48b8bf0642676fde5162808",
+      "source_present": false,
+      "source_symbol": null,
+      "original_abi": "ECX actual descriptor; stack actual LuaObject* row; RET4; no result contract",
+      "status": "complete_body_field_abi_eh_callsite_audit_source_absent",
+      "direct_call_instruction_count": 131,
+      "direct_callee_count": 35,
+      "indirect_call_instruction_count": 17,
+      "saved_listing_direct_calls_match_installed_PE": true
+    },
+    "installed_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "parent_gate": {
+      "byte_count": 3238,
+      "instruction_count": 858,
+      "sha256": "00d679920bd1b8f8653e9a0ab1de627f954cfadaf48b8bf0642676fde5162808",
+      "all_saved_and_retained_live_starts_match": true
+    },
+    "saved_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087ca80\\assembly.txt",
+      "sha256": "38752fdd292f3ed8b60e0bd0914f64cee38c9e7a9beb25198fb5f20ba8df8a7d"
+    },
+    "retained_live_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\local\\output\\ghidra-disasm-0087ca80-lines-900-175926.txt",
+      "sha256": "eaf2df589c75997e7b2b9a87d42426b57bc448abc697e1a573d730194705c76e",
+      "from_packet": "cc12_damageable_class_section_iterator_setup_fragment"
+    },
+    "retained_iterator_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\local\\section_iterator_gate.json",
+      "sha256": "a7838ed2f3ca1f26e113502a6cd4d4c7287d96cea1c406abd103865919392d73"
+    },
+    "retained_parent_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\reports\\native_damageable_class_lua_orch4.json",
+      "sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e"
+    },
+    "regions": [
+      {
+        "label": "temporary_initialization",
+        "start": "0087ce00",
+        "end_inclusive": "0087ce2e",
+        "excluded_successor": "0087ce2f",
+        "byte_count": 47,
+        "instruction_count": 10,
+        "sha256": "4186cc9d15028387d1cd3c4f00f9b65eb6b1047b8a873cba3dba6bcbebb0f686",
+        "raw_hex": "6a3033db8d9424ac0000005352e8deab3700f30f1005b838ce0083c40cf30f118424d0000000f30f118424d4000000",
+        "instructions": [
+          {
+            "address": "0087ce00",
+            "bytes": "6a30",
+            "mnemonic": "push",
+            "operands": "0x30"
+          },
+          {
+            "address": "0087ce02",
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operands": "ebx, ebx"
+          },
+          {
+            "address": "0087ce04",
+            "bytes": "8d9424ac000000",
+            "mnemonic": "lea",
+            "operands": "edx, [esp + 0xac]"
+          },
+          {
+            "address": "0087ce0b",
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "address": "0087ce0c",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operands": "edx"
+          },
+          {
+            "address": "0087ce0d",
+            "bytes": "e8deab3700",
+            "mnemonic": "call",
+            "operands": "0xbf79f0"
+          },
+          {
+            "address": "0087ce12",
+            "bytes": "f30f1005b838ce00",
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [0xce38b8]"
+          },
+          {
+            "address": "0087ce1a",
+            "bytes": "83c40c",
+            "mnemonic": "add",
+            "operands": "esp, 0xc"
+          },
+          {
+            "address": "0087ce1d",
+            "bytes": "f30f118424d0000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd0], xmm0"
+          },
+          {
+            "address": "0087ce26",
+            "bytes": "f30f118424d4000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd4], xmm0"
+          }
+        ]
+      },
+      {
+        "label": "append_call_setup_and_call",
+        "start": "0087ce2f",
+        "end_inclusive": "0087ce4c",
+        "excluded_successor": "0087ce4d",
+        "byte_count": 30,
+        "instruction_count": 7,
+        "sha256": "42068626e15263718454c119e9f3aa99d2c4d4f24bfab728e04c62b0b2bd96cc",
+        "raw_hex": "8b7c24408d8424a800000083c718508bcfc68424000100000ee823faffff",
+        "instructions": [
+          {
+            "address": "0087ce2f",
+            "bytes": "8b7c2440",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0087ce33",
+            "bytes": "8d8424a8000000",
+            "mnemonic": "lea",
+            "operands": "eax, [esp + 0xa8]"
+          },
+          {
+            "address": "0087ce3a",
+            "bytes": "83c718",
+            "mnemonic": "add",
+            "operands": "edi, 0x18"
+          },
+          {
+            "address": "0087ce3d",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "0087ce3e",
+            "bytes": "8bcf",
+            "mnemonic": "mov",
+            "operands": "ecx, edi"
+          },
+          {
+            "address": "0087ce40",
+            "bytes": "c68424000100000e",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x100], 0xe"
+          },
+          {
+            "address": "0087ce48",
+            "bytes": "e823faffff",
+            "mnemonic": "call",
+            "operands": "0x87c870"
+          }
+        ]
+      },
+      {
+        "label": "minimal_initialization_and_append",
+        "start": "0087ce00",
+        "end_inclusive": "0087ce4c",
+        "excluded_successor": "0087ce4d",
+        "byte_count": 77,
+        "instruction_count": 17,
+        "sha256": "855a377ad32bae0e0193292ba4e3db2512b8b9041c2477d2912c0edaec40e266",
+        "raw_hex": "6a3033db8d9424ac0000005352e8deab3700f30f1005b838ce0083c40cf30f118424d0000000f30f118424d40000008b7c24408d8424a800000083c718508bcfc68424000100000ee823faffff",
+        "instructions": [
+          {
+            "address": "0087ce00",
+            "bytes": "6a30",
+            "mnemonic": "push",
+            "operands": "0x30"
+          },
+          {
+            "address": "0087ce02",
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operands": "ebx, ebx"
+          },
+          {
+            "address": "0087ce04",
+            "bytes": "8d9424ac000000",
+            "mnemonic": "lea",
+            "operands": "edx, [esp + 0xac]"
+          },
+          {
+            "address": "0087ce0b",
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "address": "0087ce0c",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operands": "edx"
+          },
+          {
+            "address": "0087ce0d",
+            "bytes": "e8deab3700",
+            "mnemonic": "call",
+            "operands": "0xbf79f0"
+          },
+          {
+            "address": "0087ce12",
+            "bytes": "f30f1005b838ce00",
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [0xce38b8]"
+          },
+          {
+            "address": "0087ce1a",
+            "bytes": "83c40c",
+            "mnemonic": "add",
+            "operands": "esp, 0xc"
+          },
+          {
+            "address": "0087ce1d",
+            "bytes": "f30f118424d0000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd0], xmm0"
+          },
+          {
+            "address": "0087ce26",
+            "bytes": "f30f118424d4000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd4], xmm0"
+          },
+          {
+            "address": "0087ce2f",
+            "bytes": "8b7c2440",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0087ce33",
+            "bytes": "8d8424a8000000",
+            "mnemonic": "lea",
+            "operands": "eax, [esp + 0xa8]"
+          },
+          {
+            "address": "0087ce3a",
+            "bytes": "83c718",
+            "mnemonic": "add",
+            "operands": "edi, 0x18"
+          },
+          {
+            "address": "0087ce3d",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "0087ce3e",
+            "bytes": "8bcf",
+            "mnemonic": "mov",
+            "operands": "ecx, edi"
+          },
+          {
+            "address": "0087ce40",
+            "bytes": "c68424000100000e",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x100], 0xe"
+          },
+          {
+            "address": "0087ce48",
+            "bytes": "e823faffff",
+            "mnemonic": "call",
+            "operands": "0x87c870"
+          }
+        ]
+      },
+      {
+        "label": "normal_temporary_cleanup",
+        "start": "0087ce4d",
+        "end_inclusive": "0087ce87",
+        "excluded_successor": "0087ce88",
+        "byte_count": 59,
+        "instruction_count": 15,
+        "sha256": "02d83f4e096a624ea164554201d560b5d7111434bcb16be4899719aa2e9e97fd",
+        "raw_hex": "8bb424cc0000003bf3c68424fc0000000dc78424a800000004dfd000741d8d4e0451ff152022ce0085c075088b168b028bceffd0899c24cc000000",
+        "instructions": [
+          {
+            "address": "0087ce4d",
+            "bytes": "8bb424cc000000",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [esp + 0xcc]"
+          },
+          {
+            "address": "0087ce54",
+            "bytes": "3bf3",
+            "mnemonic": "cmp",
+            "operands": "esi, ebx"
+          },
+          {
+            "address": "0087ce56",
+            "bytes": "c68424fc0000000d",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0xfc], 0xd"
+          },
+          {
+            "address": "0087ce5e",
+            "bytes": "c78424a800000004dfd000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xa8], 0xd0df04"
+          },
+          {
+            "address": "0087ce69",
+            "bytes": "741d",
+            "mnemonic": "je",
+            "operands": "0x87ce88"
+          },
+          {
+            "address": "0087ce6b",
+            "bytes": "8d4e04",
+            "mnemonic": "lea",
+            "operands": "ecx, [esi + 4]"
+          },
+          {
+            "address": "0087ce6e",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "0087ce6f",
+            "bytes": "ff152022ce00",
+            "mnemonic": "call",
+            "operands": "dword ptr [0xce2220]"
+          },
+          {
+            "address": "0087ce75",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "0087ce77",
+            "bytes": "7508",
+            "mnemonic": "jne",
+            "operands": "0x87ce81"
+          },
+          {
+            "address": "0087ce79",
+            "bytes": "8b16",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esi]"
+          },
+          {
+            "address": "0087ce7b",
+            "bytes": "8b02",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]"
+          },
+          {
+            "address": "0087ce7d",
+            "bytes": "8bce",
+            "mnemonic": "mov",
+            "operands": "ecx, esi"
+          },
+          {
+            "address": "0087ce7f",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "eax"
+          },
+          {
+            "address": "0087ce81",
+            "bytes": "899c24cc000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xcc], ebx"
+          }
+        ]
+      },
+      {
+        "label": "minimum_lifetime_closed_row_begin",
+        "start": "0087ce00",
+        "end_inclusive": "0087ce87",
+        "excluded_successor": "0087ce88",
+        "byte_count": 136,
+        "instruction_count": 32,
+        "sha256": "16c1a68b21959bb3c291bdfc3215e32f9b548345f1ff64e7b5bb25df42b917bd",
+        "raw_hex": "6a3033db8d9424ac0000005352e8deab3700f30f1005b838ce0083c40cf30f118424d0000000f30f118424d40000008b7c24408d8424a800000083c718508bcfc68424000100000ee823faffff8bb424cc0000003bf3c68424fc0000000dc78424a800000004dfd000741d8d4e0451ff152022ce0085c075088b168b028bceffd0899c24cc000000",
+        "instructions": [
+          {
+            "address": "0087ce00",
+            "bytes": "6a30",
+            "mnemonic": "push",
+            "operands": "0x30"
+          },
+          {
+            "address": "0087ce02",
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operands": "ebx, ebx"
+          },
+          {
+            "address": "0087ce04",
+            "bytes": "8d9424ac000000",
+            "mnemonic": "lea",
+            "operands": "edx, [esp + 0xac]"
+          },
+          {
+            "address": "0087ce0b",
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "address": "0087ce0c",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operands": "edx"
+          },
+          {
+            "address": "0087ce0d",
+            "bytes": "e8deab3700",
+            "mnemonic": "call",
+            "operands": "0xbf79f0"
+          },
+          {
+            "address": "0087ce12",
+            "bytes": "f30f1005b838ce00",
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [0xce38b8]"
+          },
+          {
+            "address": "0087ce1a",
+            "bytes": "83c40c",
+            "mnemonic": "add",
+            "operands": "esp, 0xc"
+          },
+          {
+            "address": "0087ce1d",
+            "bytes": "f30f118424d0000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd0], xmm0"
+          },
+          {
+            "address": "0087ce26",
+            "bytes": "f30f118424d4000000",
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0xd4], xmm0"
+          },
+          {
+            "address": "0087ce2f",
+            "bytes": "8b7c2440",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0087ce33",
+            "bytes": "8d8424a8000000",
+            "mnemonic": "lea",
+            "operands": "eax, [esp + 0xa8]"
+          },
+          {
+            "address": "0087ce3a",
+            "bytes": "83c718",
+            "mnemonic": "add",
+            "operands": "edi, 0x18"
+          },
+          {
+            "address": "0087ce3d",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "0087ce3e",
+            "bytes": "8bcf",
+            "mnemonic": "mov",
+            "operands": "ecx, edi"
+          },
+          {
+            "address": "0087ce40",
+            "bytes": "c68424000100000e",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x100], 0xe"
+          },
+          {
+            "address": "0087ce48",
+            "bytes": "e823faffff",
+            "mnemonic": "call",
+            "operands": "0x87c870"
+          },
+          {
+            "address": "0087ce4d",
+            "bytes": "8bb424cc000000",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [esp + 0xcc]"
+          },
+          {
+            "address": "0087ce54",
+            "bytes": "3bf3",
+            "mnemonic": "cmp",
+            "operands": "esi, ebx"
+          },
+          {
+            "address": "0087ce56",
+            "bytes": "c68424fc0000000d",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0xfc], 0xd"
+          },
+          {
+            "address": "0087ce5e",
+            "bytes": "c78424a800000004dfd000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xa8], 0xd0df04"
+          },
+          {
+            "address": "0087ce69",
+            "bytes": "741d",
+            "mnemonic": "je",
+            "operands": "0x87ce88"
+          },
+          {
+            "address": "0087ce6b",
+            "bytes": "8d4e04",
+            "mnemonic": "lea",
+            "operands": "ecx, [esi + 4]"
+          },
+          {
+            "address": "0087ce6e",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "0087ce6f",
+            "bytes": "ff152022ce00",
+            "mnemonic": "call",
+            "operands": "dword ptr [0xce2220]"
+          },
+          {
+            "address": "0087ce75",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "0087ce77",
+            "bytes": "7508",
+            "mnemonic": "jne",
+            "operands": "0x87ce81"
+          },
+          {
+            "address": "0087ce79",
+            "bytes": "8b16",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esi]"
+          },
+          {
+            "address": "0087ce7b",
+            "bytes": "8b02",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edx]"
+          },
+          {
+            "address": "0087ce7d",
+            "bytes": "8bce",
+            "mnemonic": "mov",
+            "operands": "ecx, esi"
+          },
+          {
+            "address": "0087ce7f",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "eax"
+          },
+          {
+            "address": "0087ce81",
+            "bytes": "899c24cc000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xcc], ebx"
+          }
+        ]
+      },
+      {
+        "label": "subsequent_current_back_row_selection",
+        "start": "0087ce88",
+        "end_inclusive": "0087ceba",
+        "excluded_successor": "0087cebb",
+        "byte_count": 51,
+        "instruction_count": 15,
+        "sha256": "0b5b7fb9484dc4c5b30ef97bcf62886907a7d10f11cc22455ecf15f0492442e0",
+        "raw_hex": "8b77083977047605e87e9837008d46d03b470889b424dc00000077053b47047305e86598370083c6d03b77087205e858983700",
+        "instructions": [
+          {
+            "address": "0087ce88",
+            "bytes": "8b7708",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [edi + 8]"
+          },
+          {
+            "address": "0087ce8b",
+            "bytes": "397704",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [edi + 4], esi"
+          },
+          {
+            "address": "0087ce8e",
+            "bytes": "7605",
+            "mnemonic": "jbe",
+            "operands": "0x87ce95"
+          },
+          {
+            "address": "0087ce90",
+            "bytes": "e87e983700",
+            "mnemonic": "call",
+            "operands": "0xbf6713"
+          },
+          {
+            "address": "0087ce95",
+            "bytes": "8d46d0",
+            "mnemonic": "lea",
+            "operands": "eax, [esi - 0x30]"
+          },
+          {
+            "address": "0087ce98",
+            "bytes": "3b4708",
+            "mnemonic": "cmp",
+            "operands": "eax, dword ptr [edi + 8]"
+          },
+          {
+            "address": "0087ce9b",
+            "bytes": "89b424dc000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xdc], esi"
+          },
+          {
+            "address": "0087cea2",
+            "bytes": "7705",
+            "mnemonic": "ja",
+            "operands": "0x87cea9"
+          },
+          {
+            "address": "0087cea4",
+            "bytes": "3b4704",
+            "mnemonic": "cmp",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "address": "0087cea7",
+            "bytes": "7305",
+            "mnemonic": "jae",
+            "operands": "0x87ceae"
+          },
+          {
+            "address": "0087cea9",
+            "bytes": "e865983700",
+            "mnemonic": "call",
+            "operands": "0xbf6713"
+          },
+          {
+            "address": "0087ceae",
+            "bytes": "83c6d0",
+            "mnemonic": "add",
+            "operands": "esi, -0x30"
+          },
+          {
+            "address": "0087ceb1",
+            "bytes": "3b7708",
+            "mnemonic": "cmp",
+            "operands": "esi, dword ptr [edi + 8]"
+          },
+          {
+            "address": "0087ceb4",
+            "bytes": "7205",
+            "mnemonic": "jb",
+            "operands": "0x87cebb"
+          },
+          {
+            "address": "0087ceb6",
+            "bytes": "e858983700",
+            "mnemonic": "call",
+            "operands": "0xbf6713"
+          }
+        ]
+      }
+    ],
+    "selected_retained_eh_states": [
+      {
+        "state": 11,
+        "parent": 10,
+        "action": "00c96976",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x80]"
+      },
+      {
+        "state": 12,
+        "parent": 11,
+        "action": "00c9697e",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 13,
+        "parent": 12,
+        "action": "00c96989",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 14,
+        "parent": 13,
+        "action": "00c96994",
+        "cleanup_target": "00878ef0",
+        "storage": "ecx, [ebp - 0x58]"
+      }
+    ],
+    "retained_float_constant": {
+      "location": "00ce38b8",
+      "bits": "00002041",
+      "type": "float32",
+      "value": 10.0
+    },
+    "retained_field_layout": [
+      {
+        "key": "Damage.Sections",
+        "descriptor_offset": "18",
+        "kind": "native_vector",
+        "stride": 48,
+        "mode": "append; native Lua iterator"
+      },
+      {
+        "key": "Damage.Sections[].MshCategory",
+        "row_offset": "04",
+        "kind": "category_index",
+        "store_site": "0087cf8e"
+      },
+      {
+        "key": "Damage.Sections[].Index",
+        "row_offset": "08",
+        "kind": "int32_from_float32_via_BF7420",
+        "store_site": "0087cf60"
+      },
+      {
+        "key": "Damage.Sections[].FireEfx",
+        "row_offset": "24",
+        "kind": "intrusive_effect_pointer",
+        "default_id": 0,
+        "fallback_name": "BigFire"
+      },
+      {
+        "key": "Damage.Sections[].FailureChance",
+        "row_offset": "28",
+        "kind": "float32",
+        "default_before_division": -100.0,
+        "x87_binary64_divisor": 100.0,
+        "store_site": "0087d139"
+      },
+      {
+        "key": "Damage.Sections[].FailureDamageThreshold",
+        "row_offset": "2c",
+        "kind": "float32",
+        "default": -1.0,
+        "store_site": "0087d16d"
+      }
+    ],
+    "new_native_child_data_handler_openings": false,
+    "new_live_ghidra_calls": false
+  },
+  "native_original_abi": {
+    "parent_entry": "0087ca80",
+    "parent_ecx": "actual descriptor",
+    "parent_stack": "actual Lua row",
+    "parent_ret": 4,
+    "stack_base": "S=ESP after E4h locals and four saved registers; actual descriptor saved at S+40h",
+    "prefix_memset_call": {
+      "site": "0087ce0d",
+      "target": "00bf79f0",
+      "cdecl_arguments": [
+        "S+A8h",
+        "0",
+        "30h"
+      ],
+      "caller_cleanup_bytes": 12
+    },
+    "prefix_append_call": {
+      "site": "0087ce48",
+      "target": "0087c870",
+      "ecx": "actual descriptor+18h",
+      "stack_source": "S+A8h",
+      "callee_ret_bytes": 4,
+      "semantic_return": null
+    },
+    "original_interface_exposed_by_this_packet": false
+  },
+  "actual_storage_contract": {
+    "record_bytes": 48,
+    "record_hex_bytes": "30h",
+    "record_range": "S+A8h..S+D7h",
+    "record_is_actual_raw_temporary_not_semantic_copy": true,
+    "vector_header": "actual descriptor+18h; 10h bytes",
+    "header_preserved_word": "header+0",
+    "header_fields": {
+      "begin": "header+4 = descriptor+1Ch",
+      "end": "header+8 = descriptor+20h",
+      "capacity_end": "header+Ch = descriptor+24h"
+    },
+    "live_disjoint_outer_storage": {
+      "iterator_key": "S+58h",
+      "iterator_value": "S+2Ch",
+      "Sections": "S+80h",
+      "Damage": "S+44h",
+      "Unique": "S+94h",
+      "stored_descriptor": "S+40h"
+    },
+    "initialization": [
+      {
+        "offset": "00h",
+        "bits": "00000000",
+        "role": "zero pre-append vptr; genuine construction/cleanup writes borrowed actual table"
+      },
+      {
+        "offsets": [
+          "04h",
+          "08h"
+        ],
+        "bits": "00000000",
+        "role": "later category/index words"
+      },
+      {
+        "offsets": [
+          "0Ch",
+          "10h",
+          "14h",
+          "18h",
+          "1Ch",
+          "20h"
+        ],
+        "bits": "00000000",
+        "role": "six float32 payload words"
+      },
+      {
+        "offset": "24h",
+        "bits": "00000000",
+        "role": "null intrusive effect-owner pointer"
+      },
+      {
+        "offsets": [
+          "28h",
+          "2Ch"
+        ],
+        "bits": "41200000",
+        "little_endian_bytes": "00002041",
+        "float32_value": 10.0
+      }
+    ],
+    "default_source": "Retained CE38B8 constant audit; no new constant-data opening. Later Lua failure defaults are not substituted."
+  },
+  "lifetime_contract": {
+    "entry_state": 13,
+    "entry_owner": "Successful caller-retained key/value pair; enclosing Sections/Damage/Unique owners remain live.",
+    "initialization_state": 13,
+    "arm_state14_at": "0087ce40, after zero/default initialization and before append call",
+    "state14_unwind": {
+      "parent": 13,
+      "action": "00c96994",
+      "provider": "00878ef0",
+      "storage": "EBP-58h = S+A8h",
+      "record_free": false,
+      "descriptor_vector_rollback": false
+    },
+    "prefix_successor": "0087ce4d with state14 still armed; a 77-byte Source prefix alone would require explicit lifetime handoff.",
+    "normal_cleanup_order": [
+      "CE4D captures temp+24h into ESI; CE54 compares the captured owner against zero.",
+      "CE56 lowers state14 to13 before CE5E writes actual D0DF04 to temp+0.",
+      "CE69 tests the earlier comparison. Null skips decrement, virtual call and handle-slot clear.",
+      "Nonnull: InterlockedDecrement on captured owner+4. Zero invokes captured owner current vptr/vslot0 with ECX=owner, no stacked flags.",
+      "Only after a returning callback or nonterminal decrement, CE81 clears the original temp+24 slot."
+    ],
+    "normal_callback_replaces_slot": "Replacement is overwritten by the final clear without a retain or release.",
+    "normal_callback_throws": "State13 already stored; do not retry temporary cleanup. Pair and outer owners retain their cleanup duties.",
+    "append_throws": "Retained state14 cleanup destroys temporary before pair/outer cleanup; vector owns its internal partial construction/allocation catch paths.",
+    "later_field_throws": "Completed append and prior descriptor writes remain; no transactional rollback is inferred.",
+    "minimum_closed_successor": "0087ce88 under state13; no current-row pointer has yet been derived.",
+    "source_guard_or_owner_implemented": false,
+    "native_FH3_SEH_longjmp_double_exception_identity": false
+  },
+  "provider_review": [
+    {
+      "entry": "00bf79f0",
+      "symbol": "fill_native_crt_bytes_00bf79f0",
+      "source": "src/native_crt_memset.cpp",
+      "header": "include/bsp/native_crt_memset.hpp",
+      "review": "Complete current naked Source instruction body inspected; retained three-body report pinned. No Native body reopened.",
+      "caller_contract": "Original cdecl(dst,0,30h), caller removes 12 bytes. New Source cdecl requires a fourth reference to actual stable canonical 0109EEA4; caller removes 16 bytes.",
+      "fixed_size_behavior": "Count 48 bypasses the feature-cell read and vector engine. DF=0; actual writable nonwrapping source-temporary extent must not overlap active provider frames or arguments.",
+      "held": [
+        "Actual application canonical-cell binding",
+        "Original three-argument ABI",
+        "Fault/PC identity"
+      ]
+    },
+    {
+      "entries": [
+        "0087c870",
+        "0087c2d0",
+        "0087b950"
+      ],
+      "symbol": "append_native_damageable_section_0087c870",
+      "source": "src/native_damageable_section_vector.cpp",
+      "header": "include/bsp/native_damageable_section_vector.hpp",
+      "review": "Complete current 14-entry vector Source inspected, including append, checked insertion, allocation/growth, helper bodies and C++ catch cleanup. Header/name alone was not used as evidence.",
+      "caller_contract": "Actual descriptor+18h 10h header and actual S+A8h 30h source record. Original ECX header, stacked source, RET4; no semantic return value.",
+      "access_contract": "Borrow stable actual D0DF04-equivalent table identity and actual returning invalid-parameter service/context through NativeDamageableSectionVectorAccess.",
+      "spare_capacity_schedule": "Construct record at captured end before publishing end+30h.",
+      "full_capacity_schedule": "Compose genuine checked insertion/growth with retained header reloads, wrapping32 arithmetic, observed catch boundaries and partial-write behavior.",
+      "real_source_dependencies_from_retained_report": [
+        "copy_construct_native_damageable_section_00878b40",
+        "fill_native_damageable_sections_008798f0",
+        "destroy_native_damageable_section_00878ef0",
+        "native_legacy_sbo_string_assign_counted_00408720",
+        "native_legacy_sbo_string_destroy_004072d0",
+        "NativeAliasListLengthError: genuine411700/411940/411780 payload owner",
+        "singleton_lifetime_allocate/free; SingletonLifetimeCallbacks.invalid_parameter"
+      ],
+      "dependency_review_limit": "Current direct vector/copy/fill/destructor and allocator bodies were inspected. Broader legacy-string and length-error dependency closure is inherited from pinned existing vector evidence and current source inventory; no new object/link/ABI closure is claimed.",
+      "held": [
+        "Actual application access binding",
+        "Concrete row-reader composition",
+        "Fresh compiled composition review",
+        "Original ABI/FH3"
+      ]
+    },
+    {
+      "entry": "008798f0",
+      "symbol": "fill_native_damageable_sections_008798f0",
+      "source": "src/native_damageable_section_fill.cpp",
+      "header": "include/bsp/native_damageable_section_fill.hpp",
+      "review": "Complete current Source construction loop and forward actual-current-vslot cleanup for completed prefix inspected.",
+      "caller_contract": "Borrow actual records and actual stable table; preserve construction/partial-prefix semantics.",
+      "held": [
+        "Original throw/FH3/SEH identity",
+        "Fresh row-reader execution"
+      ]
+    },
+    {
+      "entries": [
+        "00878b40",
+        "00878ef0",
+        "0041de40"
+      ],
+      "source": "src/native_damageable_section.cpp",
+      "header": "include/bsp/native_damageable_section.hpp",
+      "review": "Complete current actual-record copy/destructor/handle release bodies inspected: ordered x87 copies, actual table publication, actual interlocked refcounts and captured-owner current-vslot dispatch.",
+      "copy_contract": "Write actual table, two integer words and six ordered x87 floats; clear destination+24 before reading/retaining source+24; copy final two floats.",
+      "unwind_contract": "878EF0 writes table first, then 41DE40 captures/releases the current slot. This is the retained state14 cleanup provider.",
+      "normal_parent_mismatch": "Parent normal tail captures temp+24 before lowering state14 to13 and writing table. Calling 878EF0 wholesale changes that order. Calling slot-based41DE40 after the table store does not express the earlier capture.",
+      "held": [
+        "Explicit parent normal-tail composition",
+        "Actual table/owner bindings",
+        "Native cleanup fault and double-exception identity"
+      ]
+    },
+    {
+      "symbols": [
+        "singleton_lifetime_allocate",
+        "singleton_lifetime_free"
+      ],
+      "source": "src/singleton_lifetime.cpp",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "review": "Existing Source allocation/new-handler/free boundary inspected and retained. No new allocator or invalid handler introduced.",
+      "held": [
+        "Application services and original CRT/runtime identity"
+      ]
+    }
+  ],
+  "stale_availability_classification": {
+    "retained_parent_record": {
+      "entry": "0087c870",
+      "status": "source_absent_actual_30_byte_vector_append",
+      "source": null,
+      "sites": [
+        "0087ce48"
+      ]
+    },
+    "current_assessment": "Superseded for body availability by current complete 14-entry vector Source and its retained report. Concrete parent composition and actual bindings are still absent from this packet.",
+    "hex_width_correction": "30h is 48 bytes; the retained status label actual_30_byte_vector_append must not be interpreted as decimal30.",
+    "old_parent_report_edited": false
+  },
+  "back_row_selection_context_only": {
+    "start": "0087ce88",
+    "end_inclusive": "0087ceba",
+    "excluded_successor": "0087cebb",
+    "part_of_proposed_minimum_fragment": false,
+    "schedule": "Capture then-current header end only after temporary cleanup. Validate captured end/derived end-30h against selected current header reloads with potentially returning BF6713 callbacks; no universal refresh or retry is introduced. Store captured end at S+DCh; actual selected row is captured end-30h in ESI.",
+    "prohibited_shortcuts": [
+      "Append return value as row pointer",
+      "Cached pre-append row pointer",
+      "Replacing all captured values with refreshed header fields",
+      "Transactional vector/row rollback"
+    ]
+  },
+  "bounded_source_searches": {
+    "base_commit": "b34ebc6fbc9af74b28dfd22d665ce81d242d7168",
+    "scope": "Complete bounded rg outputs for exact provider names/addresses and declared files; no docs-directory or ledger bulk reads. Negative outcomes apply only to recorded paths/patterns.",
+    "queries": [
+      {
+        "label": "concrete_provider_addresses",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "--glob",
+          "*.cpp",
+          "--glob",
+          "*.hpp",
+          "bf79f0|native_memset|0087c870|00878ef0|008798f0",
+          "src",
+          "include"
+        ],
+        "return_code": 0,
+        "stdout_complete": "src\\native_crt_canonical_failure.cpp:122:        call fill_native_crt_bytes_00bf79f0\nsrc\\native_crt_memset.cpp:205:// Complete native entry 00BF79F0; exact contracts are documented in header.\nsrc\\native_crt_memset.cpp:206:__declspec(naked) void* __cdecl fill_native_crt_bytes_00bf79f0(\nsrc\\native_crt_memset.cpp:209:        // Native 00bf79f0\nsrc\\native_crt_watson_failure.cpp:261:        call fill_native_crt_bytes_00bf79f0\nsrc\\native_damageable_section_fill.cpp:19:void fill_native_damageable_sections_008798f0(void* first,\nsrc\\native_damageable_section_vector.cpp:158:    fill_native_damageable_sections_008798f0(first, count, source, actual_vtable);\nsrc\\native_damageable_section_vector.cpp:244:        try { destroy_native_damageable_section_00878ef0(temporary, actual_vtable); }\nsrc\\native_damageable_section_vector.cpp:277:void append_native_damageable_section_0087c870(void* header,\nsrc\\native_damageable_section_vector.cpp:283:        fill_native_damageable_sections_008798f0(end, 1, source, access.actual_vtable_00d0df04);\nsrc\\native_damageable_section.cpp:32:void destroy_native_damageable_section_00878ef0(void* section, Word actual_vtable) {\ninclude\\bsp\\lua_binding_ai.hpp:161:    // allocates 1A8h bytes (00BF55BE), zeroes them (00BF79F0), constructs with\ninclude\\bsp\\lua_binding_mission.hpp:43:// instance: `00898834 PUSH 0x1E4` into 00BF55BE, zeroed by 00BF79F0 at 0089884F,\ninclude\\bsp\\lua_binding_mission.hpp:195:    // 00898841 / 00BF55BE, 0089884F / 00BF79F0 and 0089886F / 00928630, plus the\ninclude\\bsp\\native_crt_memset.hpp:25:// Complete BF79F0 _memset behavior through a NEW four-argument cdecl interface.\ninclude\\bsp\\native_crt_memset.hpp:39:void* __cdecl fill_native_crt_bytes_00bf79f0(\ninclude\\bsp\\native_damageable_section.hpp:22:// Complete 00878EF0, native ECX actual30h record / RET. Write its stable actual\ninclude\\bsp\\native_damageable_section.hpp:25:void destroy_native_damageable_section_00878ef0(void* actual_section,\ninclude\\bsp\\native_damageable_section_fill.hpp:5:// Complete008798F0..0087998C[157]. Original ECX first, EDX unsigned count,\ninclude\\bsp\\native_damageable_section_fill.hpp:16:void fill_native_damageable_sections_008798f0(void* first,\ninclude\\bsp\\native_damageable_section_vector.hpp:46:void append_native_damageable_section_0087c870(void* header,\ninclude\\bsp\\unit_instance_layout.hpp:180:    // 006FE5BE: 00BF79F0 memset(block, 0, size).\ninclude\\bsp\\vehicle_class.hpp:226:    // 00BF55BE + 00BF79F0 for the two inlined branches, 00470B80 for the other\n",
+        "stderr_complete": "",
+        "match_lines": 23,
+        "truncated": false
+      },
+      {
+        "label": "vtable_access_bindings",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "--glob",
+          "*.cpp",
+          "--glob",
+          "*.hpp",
+          "NativeDamageableSectionVectorAccess|d0df04",
+          "src",
+          "include"
+        ],
+        "return_code": 0,
+        "stdout_complete": "src\\native_damageable_section_fill.cpp:20:    Word count, const void* source, Word actual_vtable_00d0df04) {\nsrc\\native_damageable_section_fill.cpp:29:                    pointer(current), source, actual_vtable_00d0df04);\nsrc\\native_damageable_section_vector.cpp:36:void invalid(const NativeDamageableSectionVectorAccess& access) {\nsrc\\native_damageable_section_vector.cpp:255:    const void* source, const NativeDamageableSectionVectorAccess& access) {\nsrc\\native_damageable_section_vector.cpp:267:        position, 1, source, access.actual_vtable_00d0df04);\nsrc\\native_damageable_section_vector.cpp:278:    const void* source, const NativeDamageableSectionVectorAccess& access) {\nsrc\\native_damageable_section_vector.cpp:283:        fill_native_damageable_sections_008798f0(end, 1, source, access.actual_vtable_00d0df04);\ninclude\\bsp\\native_damageable_section.hpp:8:// D0DF04 table identity, two integers, six ordered x87 float transfers; zero\ninclude\\bsp\\native_damageable_section.hpp:13:    const void* actual_source, std::uint32_t actual_vtable_00d0df04);\ninclude\\bsp\\native_damageable_section.hpp:23:// D0DF04 table identity, then perform the same handle release on record+24.\ninclude\\bsp\\native_damageable_section.hpp:26:    std::uint32_t actual_vtable_00d0df04);\ninclude\\bsp\\native_damageable_section_fill.hpp:7:// records with the real00878B40 source; borrows the actual D0DF04-equivalent\ninclude\\bsp\\native_damageable_section_fill.hpp:18:    std::uint32_t actual_vtable_00d0df04);\ninclude\\bsp\\native_damageable_section_vector.hpp:10:// the actual stable D0DF04-equivalent identity, not an invented replacement.\ninclude\\bsp\\native_damageable_section_vector.hpp:11:struct NativeDamageableSectionVectorAccess {\ninclude\\bsp\\native_damageable_section_vector.hpp:12:    const std::uint32_t actual_vtable_00d0df04;\ninclude\\bsp\\native_damageable_section_vector.hpp:45:    const void* source, const NativeDamageableSectionVectorAccess&);\ninclude\\bsp\\native_damageable_section_vector.hpp:47:    const void* source, const NativeDamageableSectionVectorAccess&);\n",
+        "stderr_complete": "",
+        "match_lines": 18,
+        "truncated": false
+      },
+      {
+        "label": "row_begin_composition",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "--glob",
+          "*.cpp",
+          "--glob",
+          "*.hpp",
+          "section_row_begin|append_native_damageable_section_0087c870\\(",
+          "src",
+          "include"
+        ],
+        "return_code": 0,
+        "stdout_complete": "src\\native_damageable_section_vector.cpp:277:void append_native_damageable_section_0087c870(void* header,\ninclude\\bsp\\native_damageable_section_vector.hpp:46:void append_native_damageable_section_0087c870(void* header,\n",
+        "stderr_complete": "",
+        "match_lines": 2,
+        "truncated": false
+      },
+      {
+        "label": "registered_translation_units",
+        "argv": [
+          "rg",
+          "-n",
+          "native_damageable_section(_vector|_fill)?\\.cpp|native_crt_memset\\.cpp|singleton_lifetime\\.cpp|native_alias_count_growth\\.cpp",
+          "CMakeLists.txt",
+          "cmake/startup.cmake"
+        ],
+        "return_code": 0,
+        "stdout_complete": "CMakeLists.txt:43:  src/legacy_crt_math.cpp src/singleton_lifetime.cpp src/particle_clock_lifetime.cpp)\nCMakeLists.txt:208:  src/native_alias_count_growth.cpp src/native_render_preparation_job_owner.cpp\ncmake/startup.cmake:177:cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_singleton_lifetime.cpp)\ncmake/startup.cmake:772:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_crt_memset.cpp)\ncmake/startup.cmake:794:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_damageable_section.cpp)\ncmake/startup.cmake:795:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_damageable_section_fill.cpp)\ncmake/startup.cmake:796:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_damageable_section_vector.cpp)\n",
+        "stderr_complete": "",
+        "match_lines": 7,
+        "truncated": false
+      },
+      {
+        "label": "normal_captured_owner_helper",
+        "argv": [
+          "rg",
+          "-n",
+          "release_captured_owner|release_native_ref_counted_handle_0041de40|destroy_native_damageable_section_00878ef0",
+          "src/native_damageable_section_vector.cpp",
+          "src/native_damageable_section.cpp",
+          "include/bsp/native_damageable_section.hpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "include/bsp/native_damageable_section.hpp:20:void release_native_ref_counted_handle_0041de40(void* actual_handle_slot);\ninclude/bsp/native_damageable_section.hpp:25:void destroy_native_damageable_section_00878ef0(void* actual_section,\nsrc/native_damageable_section.cpp:22:void release_native_ref_counted_handle_0041de40(void* slot) {\nsrc/native_damageable_section.cpp:32:void destroy_native_damageable_section_00878ef0(void* section, Word actual_vtable) {\nsrc/native_damageable_section.cpp:34:    release_native_ref_counted_handle_0041de40(at(section, 0x24));\nsrc/native_damageable_section_vector.cpp:32:void release_captured_owner(void* owner) {\nsrc/native_damageable_section_vector.cpp:76:        release_captured_owner(previous);\nsrc/native_damageable_section_vector.cpp:244:        try { destroy_native_damageable_section_00878ef0(temporary, actual_vtable); }\nsrc/native_damageable_section_vector.cpp:250:    release_captured_owner(field<void*>(temporary, 0x24));\n",
+        "stderr_complete": "",
+        "match_lines": 9,
+        "truncated": false
+      },
+      {
+        "label": "crt_real_word_binding",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "actual_feature_word_0109eea4|count>=256|actual stable canonical|fill_native_crt_bytes_00bf79f0",
+          "include/bsp/native_crt_memset.hpp",
+          "src/native_crt_memset.cpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "include/bsp/native_crt_memset.hpp:26:// Borrows the actual stable canonical 0109EEA4 cell; supplies no state owner.\ninclude/bsp/native_crt_memset.hpp:27:// Count zero bypasses fill and feature reads. Only low(fill)==0, count>=256\ninclude/bsp/native_crt_memset.hpp:39:void* __cdecl fill_native_crt_bytes_00bf79f0(\ninclude/bsp/native_crt_memset.hpp:41:    const volatile std::uint32_t& actual_feature_word_0109eea4);\nsrc/native_crt_memset.cpp:206:__declspec(naked) void* __cdecl fill_native_crt_bytes_00bf79f0(\n",
+        "stderr_complete": "",
+        "match_lines": 5,
+        "truncated": false
+      },
+      {
+        "label": "no_std_container_in_provider",
+        "argv": [
+          "rg",
+          "-n",
+          "std::vector|std::function|std::memcpy|memcpy\\(",
+          "src/native_damageable_section.cpp",
+          "src/native_damageable_section_fill.cpp",
+          "src/native_damageable_section_vector.cpp"
+        ],
+        "return_code": 1,
+        "stdout_complete": "",
+        "stderr_complete": "",
+        "match_lines": 0,
+        "truncated": false
+      }
+    ]
+  },
+  "search_conclusion": {
+    "actual_access_instantiation": "Recorded exact-name/address searches found access declaration/provider parameter uses without an instantiated DamageableClass row-reader binding.",
+    "scope_limit": "Only exact recorded paths/patterns, at recorded base commit. No assertion about arbitrary dynamic bindings or unsearched files.",
+    "cpp_containers": "No std::vector/std::function/memcpy match in the three specified section provider implementation files; complete source-body inspection supplies the provider behavior evidence."
+  },
+  "future_separately_owned_packet_gates": [
+    "Choose 77-byte prefix plus explicit state14 handoff or 136-byte lifetime-closed boundary; acquire corresponding ownership before Source changes.",
+    "Borrow actual descriptor+18h header and disjoint writable S+A8h 48-byte temporary inside retained state13 pair and enclosing Lua owners.",
+    "Supply actual stable table identity, canonical CRT feature-word alias and returning invalid-parameter service/context; no fake vtable, fabricated zero cell, no-op callback or copied container.",
+    "Compose earlier captured owner, state lowering, vptr publication, actual atomic decrement, current-vslot dispatch and conditional slot clear in observed normal order.",
+    "Use genuine 878EF0 only for its matching unwind contract; preserve no retry on a normal cleanup callback exception.",
+    "Compile and inspect concrete whole candidate object/provider closure, cleanup metadata and normal/error paths before any Source admission.",
+    "Keep subsequent CE88 back-row selection, CEBB field/loop continuation, original ABI/FH3/SEH/longjmp/fault identity, application receiver and runtime/gameplay held until separately established."
+  ],
+  "validation": {
+    "retained_parent_PE_saved_live_start_gate": "passed: 3238 bytes and all858 instruction starts; retained live listing only",
+    "bounded_region_decodes": "passed: exact six regions, every byte/instruction embedded above",
+    "bounded_source_search_capture": "passed: complete stdout/stderr/argv/return code for seven queries; one intentional no-match return1",
+    "current_source_inspection": "direct implementation bodies and contracts reviewed; current hashes pinned separately from retained historic validation",
+    "new_build_test_fixture_or_runtime_execution": false,
+    "retained_vector_validation_context": {
+      "strict_release_win32_build": {
+        "result": "passed",
+        "command": "./scripts/build.ps1",
+        "configuration": "Release",
+        "platform": "Win32",
+        "exit_code": 0,
+        "warnings": 0,
+        "errors": 0,
+        "log": "local/section-vector-build-unwind.log"
+      },
+      "existing_ctest": {
+        "result": "passed",
+        "tests": [
+          "reconstructed_math",
+          "tool_tests"
+        ],
+        "passed": 2,
+        "failed": 0,
+        "seconds": 4.25
+      },
+      "native_instruction_probe": {
+        "result": "passed",
+        "vector_scenarios": 8,
+        "cases": [
+          "empty_append",
+          "spare_append",
+          "growing_append",
+          "middle_reallocation",
+          "tail_shorter_than_count",
+          "tail_at_least_count",
+          "zero_count",
+          "checked_returning_invalid_owner"
+        ],
+        "comparison": [
+          "normalized_all_row_words",
+          "header+0",
+          "size",
+          "capacity",
+          "iterator_result",
+          "reference_counts",
+          "destructor_trace",
+          "invalid_callback_count",
+          "x87_status"
+        ],
+        "additional": [
+          "overlapping_assignment_original_vs_source",
+          "source_length_error28h_payload_and18byte_message"
+        ],
+        "boundary_relocations": [
+          "canonical allocate/free",
+          "returning invalid parameter",
+          "Interlocked IAT slots",
+          "actual row table identity"
+        ],
+        "native_throw_policy": "unexpected native throw/unsupported call aborts; original FH3 addresses retained and never invoked",
+        "command": "cmd /c local\\section_vector_probe_build.cmd; local\\section_vector_probe.exe",
+        "manifest": "/link /MANIFEST:EMBED",
+        "exit_code": 0,
+        "linked_library": "build/win32/Release/bsp_core.lib from this worktree strict build",
+        "stdout": "PASS original/source: 8 vector scenarios, overlapping assignment/x87, source length-error payload"
+      },
+      "source_unwind_second_exception": {
+        "result": "passed",
+        "command": "local/section_vector_probe.exe unwind",
+        "expected_terminate_exit": 73,
+        "actual_exit": 73,
+        "escaped_exception_exit": 74,
+        "fixture": "zero-starting owner refcount forces temporary zero-transition; length failure is original exception, owner deletion throws second",
+        "scope": "source C++ policy only, not native FH3 nor valid game owner proof"
+      }
+    },
+    "retained_vector_validation_credit_for_this_reader": false,
+    "primary_source603_context": {
+      "selected_project_inputs": 603,
+      "selected_Core_whole_objects": 75,
+      "selected_App_whole_objects": 3,
+      "unique_positive_Core_definitions": 151,
+      "existing_checks_passed": 3,
+      "new_tests": 0,
+      "new_whole_original_functions": 0,
+      "credit": {
+        "ordinary_registered_iterator_fragment": true,
+        "MSVC_Win32_build": true,
+        "genuine_providers": true,
+        "loop_Source": false,
+        "full_parent_Source": false,
+        "Native_ABI": false,
+        "FH3_SEH_longjmp_doubleexception_identity": false,
+        "fixture_or_fragment_execution": false,
+        "new_runtime": false,
+        "complete_startup": false,
+        "Present": false,
+        "gameplay": false
+      }
+    },
+    "source603_context_applies_to_this_unimplemented_fragment": false
+  },
+  "credit": {
+    "retained_exact_native_boundary_readiness": true,
+    "direct_current_source_provider_availability": true,
+    "new_reader_fragment_source": false,
+    "registered_source": false,
+    "fresh_compilation": false,
+    "fresh_fixture": false,
+    "full_parent_source": false,
+    "native_ABI": false,
+    "native_FH3": false,
+    "actual_application_receiver_and_service_bindings": false,
+    "runtime": false,
+    "startup": false,
+    "gameplay": false
+  },
+  "artifact_pins": [
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_SECTION_ROW_BEGIN_READINESS.md",
+      "bytes": 10734,
+      "sha256": "6c1c65ac470576e6d1d83f31f80023418fd3c56d237faedb40e8e8b06c0aec12"
+    },
+    {
+      "path": "src/native_crt_memset.cpp",
+      "bytes": 8332,
+      "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "tracked_blob_bytes": 8332,
+      "tracked_blob_sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_crt_memset.hpp",
+      "bytes": 2568,
+      "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "tracked_blob_bytes": 2568,
+      "tracked_blob_sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "docs/NATIVE_CRT_MEMSET_CL.md",
+      "bytes": 9133,
+      "sha256": "c5f8c1edc47c3700c69f70796d40cd48643e6f0e41f14453e261ed3a7a3e65cc",
+      "tracked_blob_bytes": 9133,
+      "tracked_blob_sha256": "c5f8c1edc47c3700c69f70796d40cd48643e6f0e41f14453e261ed3a7a3e65cc",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/native_crt_memset_cl.json",
+      "bytes": 77317,
+      "sha256": "25443234bc949b32c0f493ddf34602df11abd97d32ced1973c9aa4598bed03e0",
+      "tracked_blob_bytes": 77317,
+      "tracked_blob_sha256": "25443234bc949b32c0f493ddf34602df11abd97d32ced1973c9aa4598bed03e0",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_damageable_section_vector.cpp",
+      "bytes": 13482,
+      "sha256": "e3202147ce96f15887e4d0f5462a06471a9f507b940b0c9d61ce0d7a40e0e35d",
+      "tracked_blob_bytes": 13482,
+      "tracked_blob_sha256": "e3202147ce96f15887e4d0f5462a06471a9f507b940b0c9d61ce0d7a40e0e35d",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_damageable_section_vector.hpp",
+      "bytes": 2688,
+      "sha256": "25c178e0d072eb1944524edf4641b1b46bdef865f49a9c0fd65ff7b7317a514c",
+      "tracked_blob_bytes": 2688,
+      "tracked_blob_sha256": "25c178e0d072eb1944524edf4641b1b46bdef865f49a9c0fd65ff7b7317a514c",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "docs/NATIVE_DAMAGEABLE_SECTION_VECTOR_ORCH4.md",
+      "bytes": 9979,
+      "sha256": "a6fb275768093510133c40bd484f2545754b3b5d74c55d648c6a7eb995377898",
+      "tracked_blob_bytes": 9979,
+      "tracked_blob_sha256": "a6fb275768093510133c40bd484f2545754b3b5d74c55d648c6a7eb995377898",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/native_damageable_section_vector_orch4.json",
+      "bytes": 23070,
+      "sha256": "efcfae7ff7aed38348a28ce701ce148ae12066b47beefc6a16c2fb51dd3d11c8",
+      "tracked_blob_bytes": 23070,
+      "tracked_blob_sha256": "efcfae7ff7aed38348a28ce701ce148ae12066b47beefc6a16c2fb51dd3d11c8",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_damageable_section_fill.cpp",
+      "bytes": 1790,
+      "sha256": "d3f6a39bb8edd5b062c46ce6ea083451bd42cd68c86a520917998ecb274fe1e6",
+      "tracked_blob_bytes": 1790,
+      "tracked_blob_sha256": "d3f6a39bb8edd5b062c46ce6ea083451bd42cd68c86a520917998ecb274fe1e6",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_damageable_section_fill.hpp",
+      "bytes": 990,
+      "sha256": "e4e706c6dda5039c63139e14ef68c36ac6f4c1f6db0d89baadd27d373a9a9b5d",
+      "tracked_blob_bytes": 990,
+      "tracked_blob_sha256": "e4e706c6dda5039c63139e14ef68c36ac6f4c1f6db0d89baadd27d373a9a9b5d",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "docs/NATIVE_DAMAGEABLE_SECTION_FILL_ORCH4.md",
+      "bytes": 6368,
+      "sha256": "05e3dbc3499211853cd0955a4306316de333829424140695ff9cab03a8fd22d3",
+      "tracked_blob_bytes": 6368,
+      "tracked_blob_sha256": "05e3dbc3499211853cd0955a4306316de333829424140695ff9cab03a8fd22d3",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/native_damageable_section_fill_orch4.json",
+      "bytes": 8307,
+      "sha256": "6518649b8d81bb5e133ba3670c664b022cda013dc7ecbbd9ec37973451ee2cdb",
+      "tracked_blob_bytes": 8307,
+      "tracked_blob_sha256": "6518649b8d81bb5e133ba3670c664b022cda013dc7ecbbd9ec37973451ee2cdb",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_damageable_section.cpp",
+      "bytes": 2611,
+      "sha256": "ba7208b253dc9a3f8fd761bfc4e1ce9123f5a1dde0dce811f1c4f722be39b0c0",
+      "tracked_blob_bytes": 2611,
+      "tracked_blob_sha256": "ba7208b253dc9a3f8fd761bfc4e1ce9123f5a1dde0dce811f1c4f722be39b0c0",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_damageable_section.hpp",
+      "bytes": 1507,
+      "sha256": "dc918ea163e3b0665e3cb833722079da1569a6b5f6e1eec8c1ba46027b4df598",
+      "tracked_blob_bytes": 1507,
+      "tracked_blob_sha256": "dc918ea163e3b0665e3cb833722079da1569a6b5f6e1eec8c1ba46027b4df598",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "docs/NATIVE_DAMAGEABLE_SECTION_ORCH4.md",
+      "bytes": 5507,
+      "sha256": "0adaaf27bc8f3ab81baf147b437de594c787bab11bdaaf35146a6931a97dc493",
+      "tracked_blob_bytes": 5507,
+      "tracked_blob_sha256": "0adaaf27bc8f3ab81baf147b437de594c787bab11bdaaf35146a6931a97dc493",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/native_damageable_section_orch4.json",
+      "bytes": 7269,
+      "sha256": "10fc78ad1b17dc3892c5a0261e3c8b1eb78da8c2ae6a78acc28b62d4768ceef7",
+      "tracked_blob_bytes": 7269,
+      "tracked_blob_sha256": "10fc78ad1b17dc3892c5a0261e3c8b1eb78da8c2ae6a78acc28b62d4768ceef7",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "tracked_blob_bytes": 13257,
+      "tracked_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "tracked_blob_bytes": 4372,
+      "tracked_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "bytes": 2176,
+      "sha256": "ec726d08a66b67ff9785db70335046e7966c6194a0ca7d0f61e0ab645a2d2dcd",
+      "tracked_blob_bytes": 2176,
+      "tracked_blob_sha256": "ec726d08a66b67ff9785db70335046e7966c6194a0ca7d0f61e0ab645a2d2dcd",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "bytes": 1950,
+      "sha256": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5",
+      "tracked_blob_bytes": 1950,
+      "tracked_blob_sha256": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "tracked_blob_bytes": 7772,
+      "tracked_blob_sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "tracked_blob_bytes": 2115,
+      "tracked_blob_sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_damage_entry_fragment.hpp",
+      "bytes": 3101,
+      "sha256": "2417219fa6f7cef14430b58251f1edae40132fad9616536f195b94a9277fff60",
+      "tracked_blob_bytes": 3101,
+      "tracked_blob_sha256": "2417219fa6f7cef14430b58251f1edae40132fad9616536f195b94a9277fff60",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_damageable_class_damage_entry_fragment.cpp",
+      "bytes": 1534,
+      "sha256": "67cfa625b85730dd92731255eaf84d33d55ba0627451b4754d606dedcf445052",
+      "tracked_blob_bytes": 1534,
+      "tracked_blob_sha256": "67cfa625b85730dd92731255eaf84d33d55ba0627451b4754d606dedcf445052",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_section_iterator_setup_fragment.hpp",
+      "bytes": 3526,
+      "sha256": "a8c3c08fb6bc5902e995382485b3e5491987d592893efcc9318b499233e4f369",
+      "tracked_blob_bytes": 3526,
+      "tracked_blob_sha256": "a8c3c08fb6bc5902e995382485b3e5491987d592893efcc9318b499233e4f369",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "src/native_damageable_class_section_iterator_setup_fragment.cpp",
+      "bytes": 1581,
+      "sha256": "b343db4402d941f1802506bc8d6cdae90250ad03ac6809f93cee883e10956eae",
+      "tracked_blob_bytes": 1581,
+      "tracked_blob_sha256": "b343db4402d941f1802506bc8d6cdae90250ad03ac6809f93cee883e10956eae",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_section_iterator_setup_source.json",
+      "bytes": 171524,
+      "sha256": "0aa2245dc9f0074a07dbaa31c062af8b7461ae696fa1f928740d85a720f0d825",
+      "tracked_blob_bytes": 171524,
+      "tracked_blob_sha256": "0aa2245dc9f0074a07dbaa31c062af8b7461ae696fa1f928740d85a720f0d825",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/native_damageable_class_lua_orch4.json",
+      "bytes": 64046,
+      "sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e",
+      "tracked_blob_bytes": 64046,
+      "tracked_blob_sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e",
+      "working_bytes_equal_tracked_blob": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_section_iterator_setup_source_primary_review.json",
+      "bytes": 83659,
+      "sha256": "ea572f40ba60340405863cc8700b84c4919a75a4d1de9f6b35745d6cba344fc7",
+      "tracked_blob_bytes": 83659,
+      "tracked_blob_sha256": "ea572f40ba60340405863cc8700b84c4919a75a4d1de9f6b35745d6cba344fc7",
+      "working_bytes_equal_tracked_blob": true
+    }
+  ],
+  "local_evidence_pins": [
+    {
+      "path": "local/section_row_begin_audit.py",
+      "bytes": 5530,
+      "sha256": "c98840f34ff2c2ace790f333244b05db66ce366ada8acb3d9556c80fee9fc9ee"
+    },
+    {
+      "path": "local/section_row_begin_report_build.py",
+      "bytes": 19838,
+      "sha256": "a9013aae19c8c998150ebec98f6d82e12e9542fb2fa78483483ce72102939cf3"
+    },
+    {
+      "path": "local/section_row_begin_gate.json",
+      "bytes": 21934,
+      "sha256": "a6a3fed2659f3a6c15a126e65e9d5b28b0ffb0dce4adf6966d17e4fb08ec6c2a"
+    },
+    {
+      "path": "local/section_row_begin_searches.json",
+      "bytes": 10702,
+      "sha256": "50e078fa9111d619fc308b3cd18f198e22c77ee5c2945eff06857bfe49f6d8b5"
+    },
+    {
+      "path": "local/section_iterator_gate.json",
+      "bytes": 9162,
+      "sha256": "a7838ed2f3ca1f26e113502a6cd4d4c7287d96cea1c406abd103865919392d73"
+    }
+  ]
+}
