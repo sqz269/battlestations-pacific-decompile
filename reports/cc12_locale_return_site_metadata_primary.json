@@ -1,0 +1,215 @@
+{
+  "schema": "bsp.cc12.locale-return-site-metadata-primary.v1",
+  "status": "exact_unowned_one_byte_unit_metadata_accepted_opcode_unread",
+  "worker_commit": "bf819aae308ef8640f2c7c28707a7bc4eeb74b94",
+  "worker_report": {
+    "path": "local/cc12_locale_return_site_metadata_primary/worker_report.json",
+    "bytes": 37080,
+    "sha256": "9775d981367c11de2f82d9bc22bf73cc8f0fc59aba4ee22ab32b38e86a95a279"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_return_site_metadata_primary/worker_document.md",
+    "bytes": 4544,
+    "sha256": "1a9e7302b6b7f9928fb4222f1ece846b35cbc7808a6947a4d7530f890e38af86"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_return_site_metadata_primary/worker_evidence.zip",
+    "bytes": 163967198,
+    "sha256": "f881b73377f983ee217f7b2dcbdc26101b0d1195e47d47a47a3eff2cef6c205f"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_return_site_metadata_primary/Root_guarded_worker_replay.json",
+    "bytes": 14102,
+    "sha256": "fec7ee5bff20e3332f735fc0650dbfbf51e8daada7f9fd6a1d0cb690378bc9f0"
+  },
+  "actual_Git_blob_occurrences": 4270,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "current_Root_Source_closed_and_exact": true,
+  "fresh_Native_metadata": {
+    "adjacent_address_queries": 0,
+    "all_Native_captures_closed_before_packaging": true,
+    "comparison": {
+      "bytes": 237,
+      "path": "local/cc12_locale_initializer_return_site_metadata/Native_comparison.json",
+      "sha256": "7d7f44c859ad61c3472d10399e8c0fb75dcbfe594fa2da8d080e92dab7da970b"
+    },
+    "count_pair_byte_equal": true,
+    "decompilation_reads": 0,
+    "direct_call_target_records": [],
+    "evidence_files": [
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7727,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_before/exact_site_gate.json",
+        "sha256": "c509f08c38943276aed45d69bb79d9287025e4b1df16720aa80839e784f47d58"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7727,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_after/exact_site_gate.json",
+        "sha256": "4520041e7eefab8b1a28d769d30e5685f43ebf6f12b23d231561e44d160d0b9a"
+      }
+    ],
+    "exact_and_containing_unit_records": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      }
+    },
+    "exact_typed_raw_response_pairs_equal": 1,
+    "extra_target_queries": 0,
+    "fresh_Native_bytes": 0,
+    "function_at_query": null,
+    "function_containing_query": null,
+    "function_count_before_after": 64730,
+    "functions": [],
+    "identity_equal_before_after": true,
+    "image_base": "00400000",
+    "instruction_context_reads": 0,
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "instruction_text_reads": 0,
+    "language": "x86:LE:32:default",
+    "later_unit_queries": 0,
+    "lease_widened": false,
+    "measured_unit": {
+      "end_exclusive": "00CC8D45",
+      "end_inclusive": "00CC8D44",
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "length": 1,
+      "start": "00CC8D44"
+    },
+    "modification_number_before_after": 98,
+    "no_return_metadata": "Unavailable/not applicable: no exact/containing function or direct target record exists. No false no-return value is inferred and no separate target query was made.",
+    "only_queried_address": "00CC8D44",
+    "preceding_unit_refreshes": 0,
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr"
+  },
+  "prior_CALL_archives_byte_identical_to_Root_copies": true,
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation.",
+    "Full initializer entry continuation, actual registration operand/target, returned status and failure ordering.",
+    "Exact CE2754 table membership/dispatch, startup phase and actual invocation."
+  ],
+  "smallest_separately_gated_byte_proposal": {
+    "admission": "Proposal only. A separate Root packet must refresh identity, exact ownership/unit boundaries/length/default and effective flow before admitting the single byte and exact-site text.",
+    "basis": "Current exact-site metadata establishes a complete one-byte unit with matching exact/containing records and no stored function owner. No adjacent address is needed to describe this measured unit.",
+    "bytes": 1,
+    "end_exclusive": "00CC8D45",
+    "end_inclusive": "00CC8D44",
+    "excluded": "No CC8D45/adjacent instruction, BF6FF5 target/signature/IAT/CRT/OS, callback CD9410, FH3/handler/EH data, guessed initializer hull or Native/game execution.",
+    "start": "00CC8D44",
+    "stop": "Stop without bytes on unknown, changed or overlapping metadata; do not widen the scope or repair listing/flow."
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Unowned one-byte InstructionDB metadata supplies no opcode/operand/stack/register/flag effects.",
+    "The return-site label is only the preceding CALL encoded next address; no target actual return or return-instruction identity.",
+    "No owning/direct-target function exists; no-return metadata is unavailable, not false.",
+    "Prior CALL98/PUSH95/prefix92 remain distinct static snapshots with no execution/registration/completion credit.",
+    "CC8D45 and target/body/signature/IAT/CRT/OS/callback/FH3 remain unread; no Source owner or activation proof."
+  ],
+  "Root_committed_output_delivery": {
+    "copied_archive": {
+      "path": "local/cc12_locale_return_site_metadata_primary/delivery_git.zip",
+      "bytes": 289171,
+      "sha256": "a566490f3e7c232079f7f432a5d2e6748f971d51807a95707e769f52d7744c03"
+    },
+    "guarded_replay": {
+      "path": "local/cc12_locale_return_site_metadata_primary/Root_guarded_delivery_replay.json",
+      "bytes": 2345,
+      "sha256": "bb6b8528ac8bb3b2d62ad9789b05ec0dd7cf218fe4db9ffc21ed01e408dd0bfd"
+    },
+    "actual_Git_commit_tree_objects": 4,
+    "actual_output_blobs": 2,
+    "outputs_byte_identical_to_reviewed_worker_files": true
+  }
+}
