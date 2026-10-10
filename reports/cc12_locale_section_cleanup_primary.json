@@ -1,0 +1,553 @@
+{
+  "schema": "bsp.cc12.locale-section-cleanup-primary.v1",
+  "status": "native_cleanup_leaf_and_existing_source_reuse_candidate_accepted_complete_owner_unwind_activation_NO_GO",
+  "worker_commit": "03734602e960e8ea3b2c6c0bad31fd3dfa470d91",
+  "Root_worker_review": {
+    "path": "local/cc12_locale_section_cleanup_primary/Root_worker_review.json",
+    "bytes": 1557,
+    "sha256": "3824c4e236538a37f8855b30fa3f0a82f9ba4bb8c7b1643399e41792ea77c420"
+  },
+  "worker_report": {
+    "path": "local/cc12_locale_section_cleanup_primary/worker_report.json",
+    "bytes": 60673,
+    "sha256": "833994628e1c47b6136644c47f4b36c02ecbb0e3be7861c1bdcd58b71cd0553d"
+  },
+  "copied_bundle": {
+    "path": "local/cc12_locale_section_cleanup_primary/worker_evidence.zip",
+    "bytes": 60044589,
+    "sha256": "79b9712d3190b8e1b1d6a32543cede5f1b3296ca8b5460c5eaa47e8f5d2f6263"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_section_cleanup_primary/Root_guarded_worker_replay.json",
+    "bytes": 8707,
+    "sha256": "9b7b45b5ab510bade951c30e30c972328cb705d3f79274f5b1849e67ab06dacb"
+  },
+  "actual_frozen_Git_blob_occurrences": 4237,
+  "actual_commit_tree_objects": 13,
+  "actual_closed_Source_paths": 4217,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_bytes": 39,
+    "decoded_instructions": 16,
+    "normal_CFG_edges": 17,
+    "stored_bytes": 39,
+    "hull_bytes": 39,
+    "stored_range": "00402F70..00402F96",
+    "GPR_worker_epoch": 88,
+    "original_PE_equal": true,
+    "retained_PE_import_data_bytes": 104,
+    "prior_Native_bytes": 1379,
+    "installed_PE_reread": false
+  },
+  "normal_return_contract": {
+    "receiver": "Capture incoming ECX in ESI; actual section address is receiver itself",
+    "locale_receiver": "Prior C5EEA8 supplies pool+0Ch under required upstream frame",
+    "depth_address": "receiver+18h = locale pool+24h",
+    "depth_width": 32,
+    "depth_predicate": "signed positive",
+    "access_order": [
+      "Unconditional CURRENT DWORD read and signed compare",
+      "Only positive path saves EDI and captures Leave pointer from CE2210 once",
+      "Wrapping CURRENT DWORD ADD -1 before each Leave",
+      "Push captured receiver; CALL cached EDI",
+      "Reload CURRENT DWORD after normal Leave return; signed JG repeats",
+      "After loop or initial nonpositive branch, call CURRENT CE2214 with captured receiver",
+      "Restore saved registers and plain RET"
+    ],
+    "depth_update_atomic_lock_prefix": false,
+    "captured_initial_loop_count": false,
+    "normal_return_CFG_edges": 17,
+    "current_depth_can_differ_after_calls": true,
+    "initial_nonpositive": "Skip Leave pointer capture and loop, but still Delete",
+    "negative_depth_explicitly_cleared": false,
+    "depth_forced_zero": false,
+    "local_storage_free": false,
+    "local_section_bytes_clear": false,
+    "local_Enter": false,
+    "local_table_count_capacity_access": false,
+    "local_list_access": false,
+    "local_EH_or_rollback": false,
+    "predecrement_retained_if_Leave_does_not_return_normally": true,
+    "unread_OS_effects_proved": false
+  },
+  "ABI": {
+    "required_receiver_register": "ECX",
+    "stored_void_prototype_expresses_receiver": false,
+    "explicit_caller_stack_arguments": 0,
+    "import_argument": "One pushed receiver pointer",
+    "expected_import_stack_convention": "Callee removes one four-byte argument; required by balanced returning paths",
+    "local_saved_registers": "ESI always, EDI only on positive path",
+    "callee_preservation_required_while_in_use": [
+      "ESI",
+      "EDI"
+    ],
+    "local_untouched_registers": [
+      "EBX",
+      "EBP"
+    ],
+    "return_instruction": "RET without immediate",
+    "EAX_ECX_EDX_and_flags_after_Delete": "Unclassified target effects",
+    "meaningful_whole_function_return_value_established": false,
+    "original_binary_ABI_compatible": false
+  },
+  "import_route": {
+    "rva": "00A04AA4",
+    "size": 380,
+    "header": {
+      "raw_offset": 416,
+      "pin": {
+        "entry": "ImportData/import_directory_entry.bin",
+        "bytes": 8,
+        "sha256": "3b8f712cee5aa78e4ca81621a0e69ffd83bcfb63aeccabca71536e49030724a6"
+      },
+      "role": "PE32 import data-directory entry",
+      "provenance": "Retained PE optional header"
+    },
+    "imports": [
+      {
+        "cell": "00CE2210",
+        "module": "KERNEL32.dll",
+        "function": "LeaveCriticalSection",
+        "hint": 593,
+        "index": 105,
+        "descriptor_address": "00E04B58",
+        "lookup_cell": "00E04E30",
+        "hint_name_address": "00E05688",
+        "OriginalFirstThunk": "00A04C8C",
+        "FirstThunk": "008E206C",
+        "descriptor": {
+          "address": "00E04B58",
+          "raw_offset": 10505048,
+          "pin": {
+            "entry": "ImportData/00E04B58_20.bin",
+            "bytes": 20,
+            "sha256": "523ca79d6f4aca0cdcd074bab151f0c0fc95e000c56b7a3985a46cacae269117"
+          },
+          "role": "IMAGE_IMPORT_DESCRIPTOR",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "lookup": {
+          "address": "00E04E30",
+          "raw_offset": 10505776,
+          "pin": {
+            "entry": "ImportData/00E04E30_4.bin",
+            "bytes": 4,
+            "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+          },
+          "role": "Import lookup DWORD",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "iat": {
+          "address": "00CE2210",
+          "raw_offset": 9314832,
+          "pin": {
+            "entry": "ImportData/00CE2210_4.bin",
+            "bytes": 4,
+            "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+          },
+          "role": "Original on-disk IAT DWORD",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "dll_name": {
+          "address": "00E05BBE",
+          "raw_offset": 10509246,
+          "pin": {
+            "entry": "ImportData/00E05BBE_13.bin",
+            "bytes": 13,
+            "sha256": "f8efc1f27ef6c525f7fd20dcb8d65e8197e97410eced20db4d323dfbf230a2a4"
+          },
+          "role": "Imported DLL name",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "hint_name": {
+          "address": "00E05688",
+          "raw_offset": 10507912,
+          "pin": {
+            "entry": "ImportData/00E05688_23.bin",
+            "bytes": 23,
+            "sha256": "ea56160080e0571eebb0093335e17427b92ca001fbb465a805cb36f4e753a60a"
+          },
+          "role": "Hint and imported function name",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        }
+      },
+      {
+        "cell": "00CE2214",
+        "module": "KERNEL32.dll",
+        "function": "DeleteCriticalSection",
+        "hint": 129,
+        "index": 106,
+        "descriptor_address": "00E04B58",
+        "lookup_cell": "00E04E34",
+        "hint_name_address": "00E056A0",
+        "OriginalFirstThunk": "00A04C8C",
+        "FirstThunk": "008E206C",
+        "descriptor": {
+          "address": "00E04B58",
+          "raw_offset": 10505048,
+          "pin": {
+            "entry": "ImportData/00E04B58_20.bin",
+            "bytes": 20,
+            "sha256": "523ca79d6f4aca0cdcd074bab151f0c0fc95e000c56b7a3985a46cacae269117"
+          },
+          "role": "IMAGE_IMPORT_DESCRIPTOR",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "lookup": {
+          "address": "00E04E34",
+          "raw_offset": 10505780,
+          "pin": {
+            "entry": "ImportData/00E04E34_4.bin",
+            "bytes": 4,
+            "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e"
+          },
+          "role": "Import lookup DWORD",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "iat": {
+          "address": "00CE2214",
+          "raw_offset": 9314836,
+          "pin": {
+            "entry": "ImportData/00CE2214_4.bin",
+            "bytes": 4,
+            "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e"
+          },
+          "role": "Original on-disk IAT DWORD",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "dll_name": {
+          "address": "00E05BBE",
+          "raw_offset": 10509246,
+          "pin": {
+            "entry": "ImportData/00E05BBE_13.bin",
+            "bytes": 13,
+            "sha256": "f8efc1f27ef6c525f7fd20dcb8d65e8197e97410eced20db4d323dfbf230a2a4"
+          },
+          "role": "Imported DLL name",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        },
+        "hint_name": {
+          "address": "00E056A0",
+          "raw_offset": 10507936,
+          "pin": {
+            "entry": "ImportData/00E056A0_24.bin",
+            "bytes": 24,
+            "sha256": "363045d9e194bd3d27d5d1ad19b1168c4a36c2a183566f76ce1031ec68a37063"
+          },
+          "role": "Hint and imported function name",
+          "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+        }
+      }
+    ],
+    "unique_support": [
+      {
+        "address": "00E04B58",
+        "raw_offset": 10505048,
+        "pin": {
+          "entry": "ImportData/00E04B58_20.bin",
+          "bytes": 20,
+          "sha256": "523ca79d6f4aca0cdcd074bab151f0c0fc95e000c56b7a3985a46cacae269117"
+        },
+        "role": "IMAGE_IMPORT_DESCRIPTOR",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00E04E30",
+        "raw_offset": 10505776,
+        "pin": {
+          "entry": "ImportData/00E04E30_4.bin",
+          "bytes": 4,
+          "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+        },
+        "role": "Import lookup DWORD",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00CE2210",
+        "raw_offset": 9314832,
+        "pin": {
+          "entry": "ImportData/00CE2210_4.bin",
+          "bytes": 4,
+          "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+        },
+        "role": "Original on-disk IAT DWORD",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00E05BBE",
+        "raw_offset": 10509246,
+        "pin": {
+          "entry": "ImportData/00E05BBE_13.bin",
+          "bytes": 13,
+          "sha256": "f8efc1f27ef6c525f7fd20dcb8d65e8197e97410eced20db4d323dfbf230a2a4"
+        },
+        "role": "Imported DLL name",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00E05688",
+        "raw_offset": 10507912,
+        "pin": {
+          "entry": "ImportData/00E05688_23.bin",
+          "bytes": 23,
+          "sha256": "ea56160080e0571eebb0093335e17427b92ca001fbb465a805cb36f4e753a60a"
+        },
+        "role": "Hint and imported function name",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00E04E34",
+        "raw_offset": 10505780,
+        "pin": {
+          "entry": "ImportData/00E04E34_4.bin",
+          "bytes": 4,
+          "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e"
+        },
+        "role": "Import lookup DWORD",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00CE2214",
+        "raw_offset": 9314836,
+        "pin": {
+          "entry": "ImportData/00CE2214_4.bin",
+          "bytes": 4,
+          "sha256": "278e8370b6a13bb337e9035259a4770e33e6da21adc41bad67889717be311f9e"
+        },
+        "role": "Original on-disk IAT DWORD",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      },
+      {
+        "address": "00E056A0",
+        "raw_offset": 10507936,
+        "pin": {
+          "entry": "ImportData/00E056A0_24.bin",
+          "bytes": 24,
+          "sha256": "363045d9e194bd3d27d5d1ad19b1168c4a36c2a183566f76ce1031ec68a37063"
+        },
+        "role": "Hint and imported function name",
+        "provenance": "New static interpretation of existing retained original PE bytes; not a fresh GPR/installed-image read"
+      }
+    ],
+    "newly_interpreted_retained_PE_data_bytes": 104
+  },
+  "null_and_failed_prefix": {
+    "null_guard": false,
+    "null_receiver_first_access": "DWORD[0x18]",
+    "zero_or_negative_depth": "Delete is still attempted; not an initialization predicate",
+    "required_storage": "Actual initialized embedded section and valid current-thread recursive ownership",
+    "prior_constructor": {
+      "section_address_instruction": "00436274 LEA EDI,[ESI+0Ch]",
+      "state0_armed": "00436278 before Initialize call00436282",
+      "depth_initialized_zero": "00436288 after normal Initialize return",
+      "state2_armed": "004362A3 after zero depth and table-member initialization"
+    },
+    "declared_state0_row_selects_section_cleanup": false,
+    "declared_state2_chain_can_reach_section_action": true,
+    "allocation_failure_prefix": "If section initialized normally, depth remains0 and declared action invocation/frame are valid, this leaf skips Leave and deletes actual section",
+    "uninitialized_prefix_safety_proved": false,
+    "actual_failure_unwind_executed": false
+  },
+  "existing_Source_providers": {
+    "excerpts": [
+      {
+        "path": "src/native_renderer_parent_member_cleanup.cpp",
+        "start_line": 11,
+        "end_line": 21,
+        "blob": "a7ca7587dbe7dbfb16e0771091d141bb729b6c5d",
+        "label": "raw_word_accessors",
+        "pin": {
+          "entry": "SourceExcerpts/raw_word_accessors.txt",
+          "bytes": 427,
+          "sha256": "c3cfa44e861ad816469703dc15b1333b214ef014d3f8d750cd4b5a312e81f360"
+        }
+      },
+      {
+        "path": "src/native_renderer_parent_member_cleanup.cpp",
+        "start_line": 59,
+        "end_line": 69,
+        "blob": "a7ca7587dbe7dbfb16e0771091d141bb729b6c5d",
+        "label": "raw_section_provider",
+        "pin": {
+          "entry": "SourceExcerpts/raw_section_provider.txt",
+          "bytes": 440,
+          "sha256": "b82eee50db2f985d7d841556efc089adf07fb2f8d777d5b510977fa4613ce79b"
+        }
+      },
+      {
+        "path": "include/bsp/native_renderer_parent_member_cleanup.hpp",
+        "start_line": 27,
+        "end_line": 31,
+        "blob": "9d4e242310b1914e2765a3a4cc1f6fb18a1fd8b6",
+        "label": "raw_section_caller_contract",
+        "pin": {
+          "entry": "SourceExcerpts/raw_section_caller_contract.txt",
+          "bytes": 387,
+          "sha256": "cd1e468fe87120e27f9185b19ea777751487128f423be55f4b7c28054a2f8c7e"
+        }
+      },
+      {
+        "path": "src/directional_light_pool.cpp",
+        "start_line": 11,
+        "end_line": 20,
+        "blob": "578ca1e39356ef83ae1a3515106bcd31ac68d3f7",
+        "label": "directional_storage_layout_checks",
+        "pin": {
+          "entry": "SourceExcerpts/directional_storage_layout_checks.txt",
+          "bytes": 673,
+          "sha256": "70ea8566955b0e263296b0d7b0a315a18a8154340acadb0132dfdfa359e99e99"
+        }
+      },
+      {
+        "path": "src/directional_light_pool.cpp",
+        "start_line": 26,
+        "end_line": 28,
+        "blob": "578ca1e39356ef83ae1a3515106bcd31ac68d3f7",
+        "label": "directional_section_view",
+        "pin": {
+          "entry": "SourceExcerpts/directional_section_view.txt",
+          "bytes": 154,
+          "sha256": "bf4aba5ea9af5055cb9202564ef842432bcff0a0ee62f8d28e0178c48eda4954"
+        }
+      },
+      {
+        "path": "src/directional_light_pool.cpp",
+        "start_line": 203,
+        "end_line": 209,
+        "blob": "578ca1e39356ef83ae1a3515106bcd31ac68d3f7",
+        "label": "directional_private_provider",
+        "pin": {
+          "entry": "SourceExcerpts/directional_private_provider.txt",
+          "bytes": 250,
+          "sha256": "2f35740bce62c96a858a084270ee93b99da90b25b8b8b305261e8ffbb45e24c6"
+        }
+      },
+      {
+        "path": "include/bsp/directional_light_pool.hpp",
+        "start_line": 9,
+        "end_line": 20,
+        "blob": "96fb32fbdb5a4fba62bbfc963d449de8f425396b",
+        "label": "directional_storage_identity",
+        "pin": {
+          "entry": "SourceExcerpts/directional_storage_identity.txt",
+          "bytes": 529,
+          "sha256": "386ad6c072866688763f028fe8746c5c5ab531e061d208b919cd1c0245eda300"
+        }
+      },
+      {
+        "path": "include/bsp/directional_light_pool.hpp",
+        "start_line": 48,
+        "end_line": 53,
+        "blob": "96fb32fbdb5a4fba62bbfc963d449de8f425396b",
+        "label": "directional_private_declaration",
+        "pin": {
+          "entry": "SourceExcerpts/directional_private_declaration.txt",
+          "bytes": 233,
+          "sha256": "f2ffad0261a5fe3e8ab97f188485e14af196d77c7f44ceb0ab0b3803b2398f95"
+        }
+      }
+    ],
+    "generic": {
+      "symbol": "destroy_native_embedded_tracked_section_00402f70",
+      "declaration": "void __fastcall (void*)",
+      "path": "src/native_renderer_parent_member_cleanup.cpp",
+      "observed": [
+        "Volatile DWORD current reads",
+        "Signed positive test",
+        "Unsigned wrapping decrement before cached Leave",
+        "Current-depth reread then final Delete"
+      ],
+      "header_contract": "Actual embedded1Ch tracked section; caller owns corresponding recursive acquisitions on this thread; no storage free or negative-depth clearing",
+      "reuse_candidate": true,
+      "compiler_ABI_or_runtime_equivalence_proved": false
+    },
+    "directional": {
+      "symbol": "DirectionalLightPool::destroy_critical_section_00402f70",
+      "path": "src/directional_light_pool.cpp",
+      "observed": "Private noexcept typed depth drain before direct Leave calls and final Delete",
+      "storage_identity": "Actual directional pool01090154, not localeE1768C",
+      "normal_schedule_observed": true,
+      "exact_current_access_or_IAT_capture_equivalence_proved": false,
+      "locale_owner_identity_proved": false
+    },
+    "duplicate_leaf_CPP_needed": false
+  },
+  "next_finite_scope": {
+    "proposed_packet": "cc12_locale_pool_base_unlink_contract",
+    "address": "00403970",
+    "proposal_only": true,
+    "existing_name": "BSP_AllocatorListElement_UnlinkBase",
+    "existing_Source_provider": "AllocatorListDomain::unlink_base_element_00403970 in src/allocator_list.cpp",
+    "existing_provider_route_provenance": "Root handoff; not newly analyzed in this packet",
+    "objective": "Connect bounded native base unlink effects and actual list-domain ownership to locale action; reuse existing Source contract where valid",
+    "first_gate": "Root metadata/prototype/complete typed ownership; exact body/hull lease and explicit admission before reads",
+    "recommended_max_hull_bytes": 128,
+    "excluded": [
+      "Other native bodies",
+      "OS-import/free/FH3 implementation bodies",
+      "Handler and derived EH data",
+      "C++/CMake/build/test/runtime changes"
+    ],
+    "proposed_files": [
+      "docs/CC12_LOCALE_POOL_BASE_UNLINK_CONTRACT.md",
+      "reports/cc12_locale_pool_base_unlink_contract.json",
+      "local/cc12_locale_pool_base_unlink_contract"
+    ]
+  },
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_locale_section_cleanup_primary/Root_typed_before.json",
+      "bytes": 21878,
+      "sha256": "639c44cff09f63f84bce1236fbb25ad4aa460c037d6705602a801499a1e75eaf"
+    },
+    "after": {
+      "path": "local/cc12_locale_section_cleanup_primary/Root_typed_after.json",
+      "bytes": 21878,
+      "sha256": "54316b5bee188e0e65c43a80cfbfb48fb7ed169ea2283a70571071e197c95be8"
+    },
+    "GPR_before": 88,
+    "GPR_after": 90,
+    "comments_added": 1,
+    "renames": 0,
+    "existing_name_and_comments_and_ledger_evidence_preserved": true,
+    "complete_metadata_equal_except_modification": true,
+    "Native_body_listing_flow_no_return_prototype_unchanged": true,
+    "journal": {
+      "path": "local/cc12_locale_section_cleanup_primary/Root_comment_journal.json",
+      "bytes": 11068,
+      "sha256": "544df77f389244ce5124f4157da5f505b9b4d311fe977a86e5eb31a3e3ea0396"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_locale_section_cleanup_primary/refreshed_exports/assembly.txt",
+        "bytes": 435,
+        "sha256": "27ae50a5591368d889c95840efaaa388313167888feae3b2fd31e148ce449ab3"
+      },
+      {
+        "path": "local/cc12_locale_section_cleanup_primary/refreshed_exports/decompiled.c",
+        "bytes": 5037,
+        "sha256": "f9cce19b950d0b0980c0c0eceb5b6dc6021509df2574aff92018960fca4aa20d"
+      },
+      {
+        "path": "local/cc12_locale_section_cleanup_primary/refreshed_exports/metadata.json",
+        "bytes": 283,
+        "sha256": "7606b366f3d3b63d4a27958f1e1d1a003128253143e45acc169f47ccc482dc23"
+      }
+    ]
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_body_queries": 0,
+    "Root_metadata_captures": 2,
+    "GPR_writes": "One locked evidence-comment append plus project save; no renames or analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Win32 import normal returns and genuine initialized section/current-thread recursive ownership remain required.",
+    "Actual FH3 frame setup, failed uninitialized prefix, double-failure behavior and whole owning constructor remain unproved.",
+    "Existing generic and directional Source bodies retain their distinct domains and build/runtime provenance."
+  ]
+}
