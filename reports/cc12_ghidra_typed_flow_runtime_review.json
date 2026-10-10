@@ -1,0 +1,183 @@
+{
+  "schema": "cc12-typed-flow-runtime-review-v1",
+  "status": "reviewed minimal overlay deployed; corrected named getter capture runtime accepted; Native repair/ABI/gameplay held",
+  "operation_pin": {
+    "path": "local/cc12_typed_flow_rollout_primary/operation.json",
+    "bytes": 9738,
+    "sha256": "5b619a04dcd5fa3d4eda750317c9285ab773917a87d68651878e86295f0774dc"
+  },
+  "historical_first_rejected_capture_pin": {
+    "path": "local/cc12_typed_flow_rollout_primary/first_typed_capture.json",
+    "bytes": 24647,
+    "sha256": "6b746e0a885d171b6331ffd58ac97bf3e5690aafe41a1a61bb83103dca9e084e"
+  },
+  "accepted_corrected_fresh_capture_pin": {
+    "path": "local/cc12_typed_flow_rollout_primary/accepted_typed_capture.json",
+    "bytes": 24607,
+    "sha256": "fa2577f91e837dcbd47d828deb2d5a501d496a7446ef46db3b428c7b97583c3b"
+  },
+  "closed_backup_manifest_pin": {
+    "path": "local/cc12_typed_flow_rollout_primary/closed_backup/manifest.json",
+    "bytes": 11156,
+    "sha256": "5e4f285b0520b4c98330ec630727fb1ad9f4538bc2b6636f7153b5efd0ee48eb"
+  },
+  "closed_project_backup_files": 16,
+  "closed_project_backup_bytes": 460151125,
+  "installed_JAR_pin": {
+    "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\lib\\GhidraMCP-5.6.0.jar",
+    "bytes": 586003,
+    "sha256": "05e5d95e7bb08eae2079ea38fba4d36611498b48462ed1939dbcdc546a24205d"
+  },
+  "original_game_pin": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "graceful_close_and_same_project_direct_relaunch": true,
+  "forced_kill": false,
+  "project_state_injection": false,
+  "script_permission_change": false,
+  "analysis_or_flow_repair_requested": false,
+  "shared_write_and_launch_locks_held": true,
+  "worker_readers_paused": true,
+  "other_harness_reader_quiescence_attested": false,
+  "program_function_count_before_and_after": 64730,
+  "actual_runtime_GPR_marker_verified": "C:/Users/sqz269/bsp.gpr",
+  "actual_program_path": "/battlestationspacific.exe",
+  "raw_HTTP_schema1_complete_responses": 4,
+  "stable_modification_number": "3",
+  "parent_saved_name_and_entire_comment_preserved_after_reopen": true,
+  "reopened_comments_pin": {
+    "path": "local/cc12_typed_flow_rollout_primary/reopened_parent_comments_full.json",
+    "bytes": 23162,
+    "sha256": "b97e2d710de0651c95e5a1982cb61f43a4c12c5d02dc50b6e5b5d9e810b70cbc"
+  },
+  "loaded_class_CodeSource_or_bytecode_hash_attested": false,
+  "package_entry_review": "Only FunctionService.class changes; other102 entry hashes and extension metadata retained. Disk package hashes are distinct from exact loaded-class provenance.",
+  "atlas_wrapper_metadata": {
+    "query": "00AEEAD0",
+    "function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00aeead0"
+      },
+      "name": "CG_scalar_deleting_dtor_00aeead0",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "27",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00aeead0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00aeeae4"
+            },
+            "length": "21"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00aeeae8"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00aeeaed"
+            },
+            "length": "6"
+          }
+        ]
+      }
+    },
+    "call_at_AEEAE0": {
+      "flow_override": "CALL_RETURN",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "CALL_TERMINATOR",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": true
+      },
+      "default_fallthrough": null,
+      "effective_fallthrough": null,
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf65ac"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf65ac"
+        }
+      ]
+    },
+    "direct_callee": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bf65ac"
+      },
+      "name": "_free",
+      "no_return": false,
+      "is_thunk": true,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": {
+        "entry": {
+          "space": "ram",
+          "offset": "00bf9dc8"
+        },
+        "name": "_free",
+        "no_return": false,
+        "is_thunk": false
+      }
+    },
+    "gap_at_AEEAE5": {
+      "instruction_at": null,
+      "instruction_containing": null,
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00aeeae5"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.DataDB",
+        "kind": "data",
+        "defined": false
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00aeeae5"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.DataDB",
+        "kind": "data",
+        "defined": false
+      }
+    },
+    "gap_containing_function": null,
+    "decision": "Explicit current CALL_RETURN override observed; gap/current AddressSet mismatch is not attributed to a callee NoReturn flag. No repair performed; separate bounded atomic mutation route still required."
+  },
+  "new_whole_original_functions": 0,
+  "new_CPP_build_or_test_or_game_execution": 0,
+  "startup_gameplay_credit": false
+}
