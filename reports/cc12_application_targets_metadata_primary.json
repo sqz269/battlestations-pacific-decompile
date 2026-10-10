@@ -1,0 +1,118 @@
+{
+  "schema": "bsp.cc12.application-targets-metadata-primary.v1",
+  "status": "independent_stored_hulls_and_existing_Source_providers_accepted_target_semantics_and_actual_frame_unproved",
+  "worker_commit": "765bdcca21ed7ef17eebfebc218e0a59c210e3ea",
+  "worker_report": {
+    "path": "local/cc12_application_targets_metadata_primary/worker_report.json",
+    "bytes": 189355,
+    "sha256": "46f0693e1bce169070684b11aa61a686795cd64bbe2d20606435d601253d3de9"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_targets_metadata_primary/worker_document.md",
+    "bytes": 7303,
+    "sha256": "9a723fac4f9b6e154cbeb25f7802dd5180c1083ae70dd8c2cc5292cb720f2a3a"
+  },
+  "copied_finite_pins": 619,
+  "copied_bytes": 460819229,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_targets_metadata_primary/Root_guarded_replay.json",
+    "bytes": 673,
+    "sha256": "282b58d2410f9b646453b0f31174499ce8ffd36ae56bbe92ceed080ba33ee54b"
+  },
+  "actual_frozen_Git_occurrences": 8484,
+  "actual_closed_Source_paths": 4210,
+  "prior_actions_525_pins_byte_identical": true,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_code_bytes": 0,
+    "fresh_data_bytes": 0,
+    "fresh_instruction_texts": 0,
+    "GPR_worker_epoch": 95,
+    "targets": [
+      {
+        "address": "00412430",
+        "body_end_inclusive": "00412436",
+        "complete_contiguous_stored_bytes": 7,
+        "entry_instruction_length": 6,
+        "name": "BSP_SingletonBase_ResetProfile",
+        "prototype": "void __thiscall BSP_SingletonBase_ResetProfile(void * this)",
+        "no_return": false,
+        "is_thunk": false,
+        "entry_flow": "FALL_THROUGH",
+        "entry_override": "NONE",
+        "fresh_body_bytes_read": 0,
+        "terminal_instruction_not_inspected": true,
+        "saved_summary_instruction_count": 2,
+        "saved_summary_call_count": 0
+      },
+      {
+        "address": "00411ee0",
+        "body_end_inclusive": "00411ef8",
+        "complete_contiguous_stored_bytes": 25,
+        "entry_instruction_length": 3,
+        "name": "BSP_SystemSingletonGuard_Destroy",
+        "prototype": "undefined BSP_SystemSingletonGuard_Destroy(void)",
+        "no_return": false,
+        "is_thunk": false,
+        "entry_flow": "FALL_THROUGH",
+        "entry_override": "NONE",
+        "fresh_body_bytes_read": 0,
+        "terminal_instruction_not_inspected": true,
+        "saved_summary_instruction_count": 8,
+        "saved_summary_call_count": 0
+      }
+    ],
+    "stored_target_ranges_disjoint": true,
+    "global_shared_tail_exclusion_proved": false,
+    "terminal_or_tail_control_flow_proved": false,
+    "Native_execution": false
+  },
+  "existing_Source_providers": {
+    "reset": {
+      "path": "src/native_render_service_base.cpp",
+      "line": 51,
+      "behavior": "One volatile uint32 profile store CE3818 through supplied actual receiver.",
+      "argument": "void* actual_receiver",
+      "noexcept": true,
+      "build_source_listed": true,
+      "lexical_query_hits": 30
+    },
+    "guard": {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "line": 33,
+      "behavior": "Capture pointer at supplied guard+4; write CE37FC at guard+0; if nonnull decrement actual section+18 then call LeaveCriticalSection. Preserve guard+4.",
+      "argument": "void* actual_8byte_guard",
+      "noexcept": false,
+      "build_source_listed": true,
+      "lexical_query_hits": 61
+    },
+    "qualification": "Existing Source implementations and build-list membership only; no fresh Native semantic match, original ABI, actual Application composition, OS behavior or runtime check."
+  },
+  "next_admission": [
+    {
+      "start": "00412430",
+      "end_inclusive": "00412436",
+      "maximum_bytes": 7
+    },
+    {
+      "start": "00411ee0",
+      "end_inclusive": "00411ef8",
+      "maximum_bytes": 25
+    }
+  ],
+  "next_admission_total_bytes": 32,
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Complete stored hulls and entry metadata do not establish terminal instruction, cleanup or target return behavior.",
+    "Source providers and build membership are positive Source facts, without fresh Native semantic or ABI match.",
+    "Fresh ownership and entry/end/per-byte gates must precede exact seven- and twenty-five-byte body admission.",
+    "Actual FH3 EBP binding, invocation, callable Application owner/deletion profile and retirement remain unproved."
+  ]
+}
