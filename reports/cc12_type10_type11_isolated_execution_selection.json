@@ -6420,6 +6420,51 @@
           "phase_authority": false,
           "fixture_advance": false,
           "qualification": false
+        },
+        "review_phase_reader07_actual_DATA_full_dynamic_descriptor_shape_failure": {
+          "status": "ACTUAL_DATA_READER_FAILED_FULL_DESCRIPTOR_VERSUS_DIGEST_SHAPE_CHECK",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "complete_actual_native_failure": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_isolated_DATA_execution_terminal_failure01.actual_tools.DATA.json",
+            "bytes": 4721,
+            "sha256": "ef4622b12a297d18f5b91a3b592d08f4e0db7a5bda7b11e49507fcad5f8f6261"
+          },
+          "complete_current_ordinary_diagnosis": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_complete_dynamic_descriptor_shape_failure_diagnosis_DATA01.json",
+            "bytes": 165336,
+            "sha256": "7d99af12ef8ccda044070056556ebea74aa3310a8f99ad0f8c24a26a726171d0"
+          },
+          "complete_original_ordinary_diagnostic_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_dynamic_descriptor_shape_failure_diagnosis.actual_native_DATA01.json",
+            "bytes": 1406,
+            "sha256": "3cd7ea66664e04084fd98b9f85a78ab12293fae1984f6086b81c9bd272e539f7"
+          },
+          "actual_initial_chunk": "d0221d",
+          "actual_initial_session": 96968,
+          "actual_terminal_chunk": "0cb933",
+          "actual_terminal_exit_code": 1,
+          "failed_Source_line": 534,
+          "failed_predicate": "all_four_genuine_dynamic_pin_values",
+          "Root_ordinary_diagnosis_checks": 246,
+          "Root_ordinary_equal_books": 8,
+          "whole_original_four_descriptor_rows_equal_current_physical_pins": true,
+          "all_four_SHA_values_already_equal": true,
+          "historical_field_names_preserved": true,
+          "original_record_values_are_complete_path_bytes_sha256_descriptors": true,
+          "Source07_incorrect_expected_values_are_digest_strings": true,
+          "minimal_expected_full_descriptor_Source08_proposal_requested": true,
+          "original_four_native_zero_and_QPC_attempt_preserved": true,
+          "original_native_attempt_replayed": false,
+          "all_prior_failures_preserved": true,
+          "all_actual_success_exports_and_gate_absent": true,
+          "future_complete_actual_Root_review": null,
+          "future_actual_Root_counts": null,
+          "future_actual_independent_inspection_gate": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false
         }
       }
     }
