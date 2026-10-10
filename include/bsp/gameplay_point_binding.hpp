@@ -31,6 +31,9 @@ private:
 // One existing application's definition companion domain; no second cache or
 // native ownership. Context uses the actual shared singleton/strings/component
 // destruction bindings. The supplied table borrows CURRENT D0DA58 words0/1.
+// The explicitly selected typed or raw context, its manager/cells, string and
+// component providers, and actual table must outlive this domain and every
+// bound reference owner. A raw context installs no actual callable vtable.
 // All terminal releases of a bound definition must use this domain. Its raw
 // scalar870D00/871440 dependency includes the recovered three-state C++ cleanup;
 // intrusive terminal callbacks, including component terminals, must not throw.
@@ -38,6 +41,8 @@ private:
 class GameplayDefinitionReferences final {
 public:
     GameplayDefinitionReferences(GameplayEffectDefinitionContext&,
+        const volatile std::uint32_t* actual_table_00d0da58);
+    GameplayDefinitionReferences(NativeGameplayEffectDefinitionContext&,
         const volatile std::uint32_t* actual_table_00d0da58);
     ~GameplayDefinitionReferences(); // Requires all bound owners retired.
     // Reuses the canonical companion. Pure metadata allocation on first bind;
@@ -53,9 +58,14 @@ private:
     void release_zero(NativeGameplayEffectDefinitionReference&) noexcept;
     void require_slot(GameplayEffectDefinition&, std::size_t index,
         std::uint32_t expected) const;
-    GameplayEffectDefinitionContext& context_;
+    NativeStringStorage& string_storage() const noexcept;
+    union {
+        GameplayEffectDefinitionContext* typed_context_;
+        NativeGameplayEffectDefinitionContext* raw_context_;
+    };
     const volatile std::uint32_t* table_;
     std::vector<std::unique_ptr<NativeGameplayEffectDefinitionReference>> references_;
+    const bool raw_context_domain_;
 };
 
 struct GameplayPointComponentTable {
