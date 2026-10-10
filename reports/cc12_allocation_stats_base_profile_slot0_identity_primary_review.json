@@ -1,0 +1,481 @@
+{
+  "schema": 1,
+  "packet": "cc12_allocation_stats_slot0_primary",
+  "utc": "2026-10-10T06:11:22.883724+00:00",
+  "decision": "Accepted actual base-profile slot0 identity and complete physical scalar schedule; Source heapowner/lifecycle composition held.",
+  "worker_commit": "e5821c68b993926e9695c0d03d42f9d858ce0b00",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_allocation_stats_base_profile_slot0_identity_gate.json",
+    "bytes": 155209,
+    "sha256": "8708e6252cfa262a382b5fe3d23b2ef39a67f488ef3e2301508bcd68fdc06190"
+  },
+  "verified_report_pin_references": 306,
+  "verified_baseline_inputs": 54,
+  "baseline_current_comparison": [
+    {
+      "path": "config/target.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/APP_INIT_PLATFORM.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS_PRIMARY_REVIEW.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/entity_think_dispatch.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/game_hosts_script_orders.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/game_native_resource_application.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": false
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/native_resource_load_cache.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/platform_window.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_allocation_stats_lifecycle_body_gate.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_allocation_stats_raw_owner_retained_readiness.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_allocation_stats_raw_owner_retained_readiness_primary_review.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "reports/native_resource_load_cache_by.json",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/entity_think_dispatch.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_hosts_script_orders.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/game_native_resource_application.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": false
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/native_resource_load_cache.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/platform_window.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/coordination.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/ghidra_flow_repair.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    },
+    {
+      "path": "tools/workspace.py",
+      "baseline_verified": true,
+      "current_Root_equal_after_EOL": true
+    }
+  ],
+  "verified_bundle_payloads": 141,
+  "bundle_entries": 142,
+  "bundle": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\evidence_bundle.zip",
+    "bytes": 590304,
+    "sha256": "85b537659af11cff9cc48a83269fa6fde4e4c3454435165baea4622a23940e9f"
+  },
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_base_profile_slot0_identity_gate\\bundle_manifest.json",
+    "bytes": 27085,
+    "sha256": "eb763482861f6f1fd27c60ff2ac0f1de5408be05b271237ba539fd0b439e9a8a"
+  },
+  "actual_slot0": {
+    "utc": "2026-10-10T05:29:44.909974+00:00",
+    "start": "00d685e0",
+    "end_exclusive": "00d685e4",
+    "bytes": 4,
+    "original_live_equal": true,
+    "hex": "9028be00",
+    "sha256": "56c1ac916d0bd93899fdfa2e66a879f29384639b4812e9900c85b5bd7d11b59a",
+    "little_endian_u32": "00be2890"
+  },
+  "complete_physical_body": {
+    "start": "00be2890",
+    "end_exclusive": "00be28ae",
+    "bytes": 30,
+    "provenance": "offline concatenation of original 21+3+6 byte reads; no bounding 30B read",
+    "hex": "568bf1e858fffffff644240801740956e8073d010083c4048bc65ec20400",
+    "sha256": "cfd93685e7df21986cfd85360d44df518c5f47032a6383bc113c8ba6e8555872",
+    "instruction_count": 11,
+    "all_bytes_decoded": true,
+    "instructions": [
+      {
+        "address": "00be2890",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00be2891",
+        "bytes": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "00be2893",
+        "bytes": 5,
+        "hex": "e858ffffff",
+        "mnemonic": "call",
+        "operands": "0xbe27f0"
+      },
+      {
+        "address": "00be2898",
+        "bytes": 5,
+        "hex": "f644240801",
+        "mnemonic": "test",
+        "operands": "byte ptr [esp + 8], 1"
+      },
+      {
+        "address": "00be289d",
+        "bytes": 2,
+        "hex": "7409",
+        "mnemonic": "je",
+        "operands": "0xbe28a8"
+      },
+      {
+        "address": "00be289f",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00be28a0",
+        "bytes": 5,
+        "hex": "e8073d0100",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00be28a5",
+        "bytes": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "00be28a8",
+        "bytes": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "00be28aa",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00be28ab",
+        "bytes": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ]
+  },
+  "ordinary_schedule": [
+    "Capture ECX receiver in saved ESI; call actual BE27F0 first.",
+    "Only after destructor normal return test bit0 of actual caller flag at entryESP+4.",
+    "If clear skip free; if set push captured receiver, call BF65AC and consume argument with physical ADD ESP,4.",
+    "Set EAX to captured receiver, restore ESI, RET4; no post-free dereference or other flags-bit branch.",
+    "No failure cleanup, Source valid-alias contract or full original ABI/CRT equivalence inferred."
+  ],
+  "Native_scopes": {
+    "slot0_data_bytes": 4,
+    "PE_header_metadata_bytes": 256,
+    "saved_target_body_bytes": 27,
+    "separately_admitted_gap_bytes": 3,
+    "physical_target_body_bytes": 30,
+    "fresh_original_whole_image_integrity_bytes": 12223752,
+    "whole_image_hash_separate_from_semantic_credit": true,
+    "actual_memory_requests": [
+      [
+        "00d685e0",
+        4
+      ],
+      [
+        "00be2890",
+        21
+      ],
+      [
+        "00be28a8",
+        6
+      ],
+      [
+        "00be28a5",
+        3
+      ]
+    ],
+    "callee_handler_adjacent_table_windows": 0
+  },
+  "Ghidra": {
+    "before_modification": "21",
+    "after_modification": "24",
+    "provisional_name": "BSP_AllocationStats_BaseProfileScalarDelete",
+    "full_old_values": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_slot0_primary\\annotation_full_old_values.json",
+      "bytes": 1299,
+      "sha256": "0ff64f206fa5058d98896033132929c244941b832867f7c6529fb73ae959f170"
+    },
+    "old_comment_present": false,
+    "old_comment_preserved_if_present": true,
+    "listing_flow_body_prototype_unchanged_except_function_name": true,
+    "saved_27byte_split_body_and_CALL_RETURN_and_undefined_gap_preserved": true,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_slot0_primary\\typed_before.json",
+      "bytes": 23850,
+      "sha256": "6e7aa8bd83ee9d38cc7b3cf4aa50624202f7ffa91f305af347463765eefe0d6a"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_slot0_primary\\typed_after.json",
+      "bytes": 24000,
+      "sha256": "9c9c98d668e433b4028ff9471655e795135f8e9d032e3092637d2b803a015a83"
+    },
+    "saved_and_export_refreshed": true
+  },
+  "evidence_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_slot0_primary\\worker_replay.json",
+      "bytes": 193401,
+      "sha256": "3049815fdff1d2e2407c9819fe00709543275bdadc2a313a8940e4389699e219"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_slot0_primary\\annotation_applied.json",
+      "bytes": 286,
+      "sha256": "c7d09fd0b06c92fc692d3a934c5f1b6057fe2176e3bd9d3e9ef22e32925bed56"
+    }
+  ],
+  "current_Source718_frozen_pins_verified": 722,
+  "current_Source718_context_only": true,
+  "new_CPP_builds_tests_probes": 0,
+  "flow_or_body_repair": false,
+  "Source_wrapper_present": false,
+  "runtime_execution": false,
+  "held": [
+    "Actual three-word heapowner with genuine base/derived dispatch installed before publication/registration and retained through drain",
+    "Constructor/caller-allocation/FH3 frame normalization and destructor failure cleanup",
+    "Native ABI/FH3/SEH/fault/CRT identity",
+    "Actual application startup/cache composition and gameplay"
+  ]
+}
