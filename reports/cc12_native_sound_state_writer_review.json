@@ -1,0 +1,2606 @@
+{
+  "schema": "cc12-native-sound-state-writer-review-v1",
+  "packet": "cc12_native_sound_state_writer_review",
+  "receipt_utc": "2026-10-10T11:47:04.864897+00:00",
+  "status": "No new demonstrable persistent-byte zero writer or supported pre-sound selector established. Constructor=1 and ignored-token contract preserved; indirect/copy/timing frontiers remain.",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "reports/cc12_native_sound_state_writer_review.json"
+    ],
+    "initial_addresses": [
+      "00F88980",
+      "00F889A4",
+      "008D7710",
+      "008D8190",
+      "00CD2D80",
+      "0073D410"
+    ],
+    "Root_approved_finite_expansion": [
+      "008D79A0",
+      "008D6DC0",
+      "005F6030",
+      "005F65C0"
+    ],
+    "73D410_released_after_startup_position_freeze": true,
+    "remaining_owned_addresses": [
+      "00F88980",
+      "00F889A4",
+      "008D7710",
+      "008D8190",
+      "00CD2D80",
+      "008D79A0",
+      "008D6DC0",
+      "005F6030",
+      "005F65C0"
+    ],
+    "lease_release_method": "claim adds addresses rather than replacing them; released packet and immediately reclaimed remaining9 to release73D410 for Atlas.",
+    "GPR_Native_body_listing_prototype_flow_or_ledger_mutation": false,
+    "Source_build_new_tests_SDK_game_environment_changes": false,
+    "whole_original_PE_retained_only_for_hash_and_scoped_offline_replay": true,
+    "no_analysis_of_additional_bodies_from_complete_PE": true
+  },
+  "git": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+    "branch": "agent/cc12_fmod_startup_failure",
+    "source_preimage_commit": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+    "accepted_main_sync": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+    "main_ref_at_receipt": "06bb5f24d1290d8485d343e5d0c3aa4e5c2b0e4c",
+    "prior_NOSOUND_selection_commit": "ea268d7a72d8311b97529d674aef152a0884b165",
+    "prior_NOSOUND_receipt_unchanged": true
+  },
+  "complete_capture_pins": {
+    "direct_references_capture.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\direct_references_capture.json",
+      "bytes": 13516,
+      "sha256": "a6a452ea789a757c8e789f29d13c66424687a03905057e95e48c1d9f985b4195",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/a6a452ea789a757c_direct_references_capture.json"
+    },
+    "known_saved_windows_capture.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\known_saved_windows_capture.json",
+      "bytes": 17439,
+      "sha256": "5c8cc1b98b6b8d570a42e01e2f3f17ea2c52fe9d72f2618367dd8817fb295a27",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/5c8cc1b98b6b8d57_known_saved_windows_capture.json"
+    },
+    "ordinary_function_metadata_capture.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\ordinary_function_metadata_capture.json",
+      "bytes": 6069,
+      "sha256": "6ae5013435fa6eed19fd2373d8b890904495f006003250dc801dbbc1687dd4b8",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/6ae5013435fa6eed_ordinary_function_metadata_capture.json"
+    },
+    "source_evidence_capture.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\source_evidence_capture.json",
+      "bytes": 59622,
+      "sha256": "8f19a010dcfc59d8ae70169f0c87a082c92355aac6055ab6c3dc23707a7e8994",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8f19a010dcfc59d8_source_evidence_capture.json"
+    },
+    "startup_position_frozen.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\startup_position_frozen.json",
+      "bytes": 14375,
+      "sha256": "30dd3144b8ffaa84fb8ff723c353f79dc7faea2bee9dad4bd535541950436299",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/30dd3144b8ffaa84_startup_position_frozen.json"
+    },
+    "image_identity_capture.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\image_identity_capture.json",
+      "bytes": 6476,
+      "sha256": "aa5f2c4a09cc1672bf80f4ad0503e35d5b7aa04e0051361289b16706e35ed25c",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/aa5f2c4a09cc1672_image_identity_capture.json"
+    }
+  },
+  "readonly_local_capture_commands": [
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/capture_queries.py",
+        "local/cc12_native_sound_state_writer_review/direct_queries.json"
+      ],
+      "result_file": "direct_references_capture.json"
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/freeze_startup_position.py"
+      ],
+      "result_file": "startup_position_frozen.json",
+      "completed_before73D410_release": true
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/capture_queries.py",
+        "local/cc12_native_sound_state_writer_review/known_windows.json"
+      ],
+      "result_file": "known_saved_windows_capture.json",
+      "outer_stdout_redirection": "Out-File -Encoding utf8 local/cc12_native_sound_state_writer_review/known_saved_windows_summary.json"
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/capture_queries.py",
+        "local/cc12_native_sound_state_writer_review/ordinary_metadata.json"
+      ],
+      "result_file": "ordinary_function_metadata_capture.json"
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/freeze_source_evidence.py"
+      ],
+      "result_file": "source_evidence_capture.json"
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/freeze_image_identity.py"
+      ],
+      "result_file": "image_identity_capture.json"
+    },
+    {
+      "argv": [
+        "python",
+        "local/cc12_native_sound_state_writer_review/make_receipt.py"
+      ],
+      "qualification": "Offline receipt construction plus read-only Git queries; no live Ghidra or original-game calls."
+    }
+  ],
+  "typed_live_query_batches": [
+    {
+      "batch": "direct_references",
+      "project_file_configured": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "GPR_mutation": false,
+      "commands": [
+        {
+          "label": "settings_base_xrefs",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "xrefs",
+            "00F88980",
+            "--limit",
+            "80",
+            "--lines",
+            "100"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:24:55.422890+00:00",
+          "finish_utc": "2026-10-10T11:24:55.754424+00:00",
+          "exit_code": 0,
+          "stdout_text": "From 005f65eb in FUN_005f65c0 [DATA]\r\nFrom 005f5566 in BSP_OptionsScreen_BuildMainList [DATA]\r\nFrom 0043bc69 in BSP_MainMenu_BuildLocalizedDate [DATA]\r\nFrom 004dd69e in BSP_Game_OnInitOnce [DATA]\r\nFrom 004dfacd in BSP_Game_ConstructWorld [DATA]\r\nFrom 0055f9b8 in FUN_0055f9b0 [DATA]\r\nFrom 0058c8c6 in BSP_MainMenu_BuildMissionDetailPage [DATA]\r\nFrom 005f0ca1 in FUN_005f0b90 [DATA]\r\nFrom 005f0cb0 in FUN_005f0b90 [DATA]\r\nFrom 005f5ac3 in FUN_005f5ac0 [DATA]\r\nFrom 005f5f54 in BSP_OptionsScreen_ReturnToList [DATA]\r\nFrom 005f6619 in FUN_005f65c0 [DATA]\r\nFrom 005f6624 in FUN_005f65c0 [DATA]\r\nFrom 005f6e53 in FUN_005f65c0 [DATA]\r\nFrom 005f6eb7 in FUN_005f65c0 [DATA]\r\nFrom 0062d123 in FUN_0062c2c0 [DATA]\r\nFrom 0067ce8c in BSP_PressStartScreen_ApplySignIn [DATA]\r\nFrom 0067d4a0 in BSP_PressStartScreen_Update [DATA]\r\nFrom 0067d4aa in BSP_PressStartScreen_Update [DATA]\r\nFrom 0067d4b4 in BSP_PressStartScreen_Update [DATA]\r\nFrom 0067d4c1 in BSP_PressStartScreen_Update [DATA]\r\nFrom 0067d4cb in BSP_PressStartScreen_Update [DATA]\r\nFrom 0067d4fb in BSP_PressStartScreen_Update [DATA]\r\nFrom 0070493f in FUN_00704590 [DATA]\r\nFrom 00704bfb in FUN_00704590 [DATA]\r\nFrom 0070687e in FUN_00706760 [DATA]\r\nFrom 007068a5 in FUN_00706760 [DATA]\r\nFrom 00706951 in FUN_00706760 [DATA]\r\nFrom 00706b67 in FUN_00706760 [DATA]\r\nFrom 00706d94 in FUN_00706760 [DATA]\r\nFrom 0073baf9 in BSP_FontSystem_LoadDefinitions [DATA]\r\nFrom 0073daa0 in BSP_Application_Initialize [DATA]\r\nFrom 0073e05e in BSP_Application_Initialize [DATA]\r\nFrom 0073e47c in BSP_Application_Initialize [DATA]\r\nFrom 007fae97 in BSP_PlayerProfile_CommitContentState [DATA]\r\nFrom 007fdec7 in BSP_PlayerProfile_ResetToDefaults [DATA]\r\nFrom 007fdedd in BSP_PlayerProfile_ResetToDefaults [DATA]\r\nFrom 0055f9f7 [DATA]\r\nFrom 0055fa23 [DATA]\r\nFrom 005efd1e in FUN_005efcf0 [DATA]\r\nFrom 005f01d2 [DATA]\r\nFrom 005f01e1 [DATA]\r\nFrom 005f5bb1 [DATA]\r\nFrom 007fa6db in BSP_PlayerProfile_OnStorageWriteComplete [DATA]\r\nFrom 007ff0ae in BSP_PlayerProfile_CompleteRead [DATA]\r\nFrom 007ff0c2 in BSP_PlayerProfile_CompleteRead [DATA]\r\nFrom 008d6ba6 [DATA]\r\nFrom 008d79e8 in BSP_Settings_CompleteProfileRestore [DATA]\r\nFrom 005f5c3f in BSP_OptionsScreen_Enter [DATA]\r\nFrom 00775257 [DATA]\r\nFrom 00a41ef6 [DATA]\r\nFrom 00cd2d80 in BSP_GameSettings_InitializeStatic [DATA]\r\nFrom 00cdeec0 in BSP_GameSettings_DestroyStatic [DATA]\r\nFrom 004e0fde in BSP_Game_LoadMissionScene [DATA]\r\nFrom 004e1034 in BSP_Game_LoadMissionScene [DATA]\r\nFrom 004e10f2 in BSP_Game_LoadMissionScene [DATA]\r\nFrom 004e1332 in BSP_Game_LoadMissionScene [DATA]\r\nFrom 004e15e8 in BSP_Game_LoadMissionScene [DATA]\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_base_xrefs_stdout.txt",
+            "bytes": 2611,
+            "sha256": "00727487a8d874628a2ca0267b6b685964b4f9cd656a7fc40d3e6a86168905ec",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/00727487a8d87462_settings_base_xrefs_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_base_xrefs_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_settings_base_xrefs_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        },
+        {
+          "label": "sound_cell_xrefs",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "xrefs",
+            "00F889A4",
+            "--limit",
+            "20",
+            "--lines",
+            "30"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:24:55.759941+00:00",
+          "finish_utc": "2026-10-10T11:24:56.077665+00:00",
+          "exit_code": 0,
+          "stdout_text": "From 0073daee in BSP_Application_Initialize [READ]\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\sound_cell_xrefs_stdout.txt",
+            "bytes": 52,
+            "sha256": "85267a680092811dd3a71cd023f87f1f5bdce362b1e2f76a27a715bfd689ca0f",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/85267a680092811d_sound_cell_xrefs_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\sound_cell_xrefs_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_sound_cell_xrefs_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        },
+        {
+          "label": "settings_ctor_callers",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "callers",
+            "008D7710",
+            "--limit",
+            "20",
+            "--lines",
+            "30"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:24:56.086922+00:00",
+          "finish_utc": "2026-10-10T11:24:56.388999+00:00",
+          "exit_code": 0,
+          "stdout_text": "BSP_GameSettings_InitializeStatic @ 00cd2d80\r\nBSP_OptionsScreen_Construct @ 005f6030\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_ctor_callers_stdout.txt",
+            "bytes": 86,
+            "sha256": "8a555e5a3b40405a6d68e4b3a09e79b5cdb6ce8539a7a1bebfae43bbfac2841d",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8a555e5a3b40405a_settings_ctor_callers_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_ctor_callers_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_settings_ctor_callers_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        },
+        {
+          "label": "settings_static_initializer_xrefs",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "xrefs",
+            "00CD2D80",
+            "--limit",
+            "20",
+            "--lines",
+            "30"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:24:56.393599+00:00",
+          "finish_utc": "2026-10-10T11:24:56.728681+00:00",
+          "exit_code": 0,
+          "stdout_text": "From 00ce3054 [DATA]\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_static_initializer_xrefs_stdout.txt",
+            "bytes": 22,
+            "sha256": "7e9d7dbe57526878a35882ad30db346927eec98c79cd3bb9bf98aac4ed512739",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/7e9d7dbe57526878_settings_static_initializer_xrefs_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_static_initializer_xrefs_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_settings_static_initializer_xrefs_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        },
+        {
+          "label": "settings_loader_callers",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "callers",
+            "008D8190",
+            "--limit",
+            "20",
+            "--lines",
+            "30"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:24:56.733680+00:00",
+          "finish_utc": "2026-10-10T11:24:57.016739+00:00",
+          "exit_code": 0,
+          "stdout_text": "BSP_Application_Initialize @ 0073d410\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_loader_callers_stdout.txt",
+            "bytes": 39,
+            "sha256": "d10a61574e0ff6fe7fe5e584acf48f0f8981de250bd3a176118a6e1fe9c9774f",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/d10a61574e0ff6fe_settings_loader_callers_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_loader_callers_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_settings_loader_callers_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        }
+      ],
+      "implementation_and_config_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_bsp.py"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_ghidra_export.py"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_target.json"
+        }
+      ]
+    },
+    {
+      "batch": "ordinary_function_metadata",
+      "project_file_configured": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "GPR_mutation": false,
+      "commands": [
+        {
+          "label": "settings_known_original_signatures",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "proto",
+            "008D7710",
+            "008D8190",
+            "00CD2D80",
+            "008D79A0",
+            "008D6DC0",
+            "005F6030",
+            "005F65C0",
+            "--brief"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:33:40.321926+00:00",
+          "finish_utc": "2026-10-10T11:33:40.694504+00:00",
+          "exit_code": 0,
+          "stdout_text": "008d7710 BSP_GameSettings_Construct  undefined BSP_GameSettings_Construct(void)  body 008d7710 - 008d78cd\r\n008d8190 BSP_GameSettings_Load  undefined BSP_GameSettings_Load(void)  body 008d8190 - 008d88b8\r\n00cd2d80 BSP_GameSettings_InitializeStatic  undefined BSP_GameSettings_InitializeStatic(void)  body 00cd2d80 - 00cd2d95\r\n008d79a0 BSP_Settings_CompleteProfileRestore  undefined BSP_Settings_CompleteProfileRestore(void)  body 008d79a0 - 008d7a4e\r\n008d6dc0 BSP_Settings_ReadArchive  undefined BSP_Settings_ReadArchive(void)  body 008d6dc0 - 008d76b6\r\n005f6030 BSP_OptionsScreen_Construct  undefined BSP_OptionsScreen_Construct(void)  body 005f6030 - 005f60e8\r\n005f65c0 FUN_005f65c0  undefined FUN_005f65c0(void)  body 005f65c0 - 005f6ee0\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_known_original_signatures_stdout.txt",
+            "bytes": 741,
+            "sha256": "616f7c3e380aabf12882f7749f820bdfebec56eb515cb544ce1a35b2a5fef1a5",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/616f7c3e380aabf1_settings_known_original_signatures_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\settings_known_original_signatures_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_settings_known_original_signatures_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        },
+        {
+          "label": "options_commit_direct_callers",
+          "command": [
+            "python",
+            "tools/bsp.py",
+            "ghidra",
+            "callers",
+            "005F65C0",
+            "--limit",
+            "20",
+            "--lines",
+            "30"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+          "environment_override": {
+            "BSP_GHIDRA_AUTOSTART": "0"
+          },
+          "start_utc": "2026-10-10T11:33:40.699490+00:00",
+          "finish_utc": "2026-10-10T11:33:41.010974+00:00",
+          "exit_code": 0,
+          "stdout_text": "BSP_OptionsScreen_ActivateListRow @ 005f7c40\r\nBSP_OptionsScreen_HandleListEvent @ 005f8960\r\nBSP_OptionsScreen_Update @ 005f7310\r\nFUN_005f7050 @ 005f7050\r\n",
+          "stderr_text": "",
+          "stdout_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_commit_direct_callers_stdout.txt",
+            "bytes": 154,
+            "sha256": "c815060cacc55bf544eb29fd6c5e29bdfb2eb102e595a5d0d19ce02849657ab5",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c815060cacc55bf5_options_commit_direct_callers_stdout.txt"
+          },
+          "stderr_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_commit_direct_callers_stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_options_commit_direct_callers_stderr.txt"
+          },
+          "complete_spill_pins": [],
+          "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+        }
+      ],
+      "implementation_and_config_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_bsp.py"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_ghidra_export.py"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_target.json"
+        }
+      ]
+    }
+  ],
+  "saved_export_bounded_window_batch": {
+    "batch": "known_saved_windows",
+    "project_file_configured": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "GPR_mutation": false,
+    "commands": [
+      {
+        "label": "profile_completion_saved_pcode",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "008D79A0",
+          "--lines",
+          "65"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "start_utc": "2026-10-10T11:31:00.826776+00:00",
+        "finish_utc": "2026-10-10T11:31:00.965647+00:00",
+        "exit_code": 0,
+        "stdout_text": "008d79a0  BSP_Settings_CompleteProfileRestore  thunk=no  export=exports/bsp/functions/008d79a0\r\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\r\nledger name: BSP_Settings_CompleteProfileRestore - Hypothesis, not a recovered symbol. No arguments; RET. 008d79bf state zero gate; 008d79c6-008d79f5 globals/reader/008d6dc0; 008d79fa-008d7a24 free buffer then clear+30h then close owner then destroy reader; 008d7a29 clears global00f88958 before callback. False _free CALL_RETURN repaired by integrato\r\nreconstruction: function complete_profile_settings_restore_008d79a0 status=reconstructed_host_sequence_build_and_fixture_tested source=src/profile_commit.cpp\r\n--- exports/bsp/functions/008d79a0/decompiled.c ---\r\n/* [BSP reconstruction 008d79a0]\r\n   Hypothesis, not a recovered symbol. No arguments; RET. 008d79bf state zero gate;\r\n   008d79c6-008d79f5 globals/reader/008d6dc0; 008d79fa-008d7a24 free buffer then clear+30h then\r\n   close owner then destroy reader; 008d7a29 clears global00f88958 before callback. False _free\r\n   CALL_RETURN repaired by integrator; 10bytes restored, zero gaps;\r\n   reports/profile_settings_restore_flow_repair.json. Host projection src/profile_commit.cpp;\r\n   docs/PROFILE_COMMIT.md. */\r\nvoid BSP_Settings_CompleteProfileRestore(void)\r\n\r\n{\r\n  void *_Memory;\r\n  code *pcVar1;\r\n  int iVar2;\r\n  bool bVar3;\r\n  undefined1 auStack_40 [12];\r\n  undefined4 uStack_34;\r\n  void *local_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 local_4;\r\n  \r\n  iVar2 = DAT_0109cecc;\r\n  local_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00ca3248;\r\n  local_c = ExceptionList;\r\n  ExceptionList = &local_c;\r\n  if (*(int *)(DAT_0109cecc + 8) == 0) {\r\n    ExceptionList = &local_c;\r\n    BSP_LuaStateOwner_GetGlobals(auStack_40);\r\n    BSP_LuaReader_Construct();\r\n    local_4 = 0;\r\n    uStack_34 = 0x8d79fa;\r\n    BSP_Settings_ReadArchive();\r\n    _Memory = *(void **)(iVar2 + 0x30);\r\n    if (_Memory != (void *)0x0) {\r\n      uStack_34 = 0x8d7a07;\r\n      _free(_Memory);\r\n      *(undefined4 *)(iVar2 + 0x30) = 0;\r\n    }\r\n    BSP_LuaStateOwner_Close();\r\n    local_4 = 0xffffffff;\r\n    BSP_LuaReader_DestroyStackInstance();\r\n  }\r\n  pcVar1 = DAT_00f88958;\r\n  bVar3 = DAT_00f88958 != (code *)0x0;\r\n  DAT_00f88958 = (code *)0x0;\r\n  if (bVar3) {\r\n    (*pcVar1)();\r\n  }\r\n  ExceptionList = local_c;\r\n  return;\r\n}\r\n\r\ncallees (6): 00441a20 BSP_LuaReader_DestroyStackInstance, 004425c0 BSP_LuaReader_Construct, 008d6dc0 BSP_Settings_ReadArchive, 00b65e80 BSP_LuaStateOwner_Close, 00b67980 BSP_LuaStateOwner_GetGlobals, 00bf6989 _free\r\n",
+        "stderr_text": "",
+        "stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\profile_completion_saved_pcode_stdout.txt",
+          "bytes": 2630,
+          "sha256": "4f8fc851e8bedcc477d6420a98b50779036c2a5e6214d9791e3de958fbe326a2",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/4f8fc851e8bedcc4_profile_completion_saved_pcode_stdout.txt"
+        },
+        "stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\profile_completion_saved_pcode_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_profile_completion_saved_pcode_stderr.txt"
+        },
+        "complete_spill_pins": [],
+        "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+      },
+      {
+        "label": "profile_archive_saved_pcode_head",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "008D6DC0",
+          "--lines",
+          "46"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "start_utc": "2026-10-10T11:31:00.971370+00:00",
+        "finish_utc": "2026-10-10T11:31:01.119522+00:00",
+        "exit_code": 0,
+        "stdout_text": "008d6dc0  BSP_Settings_ReadArchive  thunk=no  export=exports/bsp/functions/008d6dc0\r\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\r\nledger name: BSP_Settings_ReadArchive - Hypothesis, not a recovered symbol. Defaults, compatibility publication, keyboard read/apply, optional ClanText string, numeric downloaded-content list and shader-model<0x200 shadow/film reset. ECX=settings, reader stack pointer, RET4. docs/PROFILE_READ_INTEGRATION.md. New C++ interface, not native \r\nreconstruction: function BSP_Settings_ReadArchive status=reconstructed_win32_build_and_real_lua_storage_fixture_checked source=src/settings_archive_reader.cpp\r\n--- exports/bsp/functions/008d6dc0/decompiled.c ---\r\n/* [BSP reconstruction 008d6dc0]\r\n   Hypothesis, not a recovered symbol. Defaults, compatibility publication, keyboard read/apply,\r\n   optional ClanText string, numeric downloaded-content list and shader-model<0x200 shadow/film\r\n   reset. ECX=settings, reader stack pointer, RET4. docs/PROFILE_READ_INTEGRATION.md. New C++\r\n   interface, not native ABI or gameplay validation. */\r\nvoid __thiscall BSP_Settings_ReadArchive(int param_1,int *param_2)\r\n\r\n{\r\n  char cVar1;\r\n  int iVar2;\r\n  char *pcVar3;\r\n  undefined4 uStack_2a8;\r\n  char *pcStack_2a4;\r\n  undefined4 uStack_2a0;\r\n  char **ppcStack_29c;\r\n  char *pcStack_298;\r\n  char **ppcStack_294;\r\n  undefined4 uStack_290;\r\n  char *pcStack_28c;\r\n  undefined1 *puStack_288;\r\n  char *pcStack_284;\r\n  undefined1 *puStack_280;\r\n  char *pcStack_27c;\r\n  undefined1 *puStack_278;\r\n  char *pcStack_274;\r\n  undefined1 *puStack_270;\r\n  void *pvStack_26c;\r\n  undefined1 *puStack_268;\r\n  undefined4 uStack_264;\r\n  undefined4 uStack_260;\r\n  char *pcStack_25c;\r\n  undefined4 uStack_258;\r\n  int iStack_254;\r\n  undefined1 *puStack_250;\r\n  undefined4 uStack_24c;\r\n  undefined4 uStack_248;\r\n  char *pcStack_244;\r\n  undefined4 uStack_240;\r\n  int iStack_23c;\r\n  undefined1 *puStack_238;\r\n  uint uStack_234;\r\n  undefined4 uStack_230;\r\n  char *pcStack_22c;\r\n  undefined4 uStack_228;\r\n  int iStack_224;\r\n  undefined1 *puStack_220;\r\n  undefined4 uStack_21c;\r\n  undefined4 uStack_218;\r\n  char *pcStack_214;\r\n  undefined4 uStack_210;\r\n  int iStack_20c;\r\n... 443 more lines of 489 (use --start 46 or --lines)\r\ncallees (7): 00419cc0 BSP_SizedStoragePool_GetSingleton, 00427110 BSP_NativeStringVector_Resize, 004cdc20 BSP_NativeStringVector_Append, 005547d0 BSP_InputSettings_GetSingleton, 006aba50 BSP_InputSettings_ReadKeyboardArchive, 008d44c0 BSP_Settings_SetXboxCompatibilityMode, 00bd1510 BSP_SizedStoragePool_ReturnBlock\r\n",
+        "stderr_text": "",
+        "stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\profile_archive_saved_pcode_head_stdout.txt",
+          "bytes": 2656,
+          "sha256": "d1efceedd6f5b146b680c965782d624412937defc7ddc760365352c3cc6e00e8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/d1efceedd6f5b146_profile_archive_saved_pcode_head_stdout.txt"
+        },
+        "stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\profile_archive_saved_pcode_head_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_profile_archive_saved_pcode_head_stderr.txt"
+        },
+        "complete_spill_pins": [],
+        "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+      },
+      {
+        "label": "options_ctor_saved_pcode_head",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F6030",
+          "--lines",
+          "38"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "start_utc": "2026-10-10T11:31:01.126027+00:00",
+        "finish_utc": "2026-10-10T11:31:01.262911+00:00",
+        "exit_code": 0,
+        "stdout_text": "005f6030  BSP_OptionsScreen_Construct  thunk=no  export=exports/bsp/functions/005f6030\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_Construct - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET, returns this in EAX. Constructed into options manager 00E198B8+40h by Init 006898C0, 270h bytes. Chains 004F7180, installs primary vtable 00CF3974 and seconda\r\n--- exports/bsp/functions/005f6030/decompiled.c ---\r\n\r\nundefined4 * __fastcall FUN_005f6030(undefined4 *param_1)\r\n\r\n{\r\n  void *pvVar1;\r\n  void *local_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 local_4;\r\n  \r\n  local_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00c761df;\r\n  local_c = ExceptionList;\r\n  ExceptionList = &local_c;\r\n  BSP_FrontEndScreen_Construct();\r\n  param_1[2] = &PTR_LAB_00ceb0fc;\r\n  param_1[3] = &PTR_LAB_00ceb110;\r\n  *param_1 = &PTR_LAB_00cf3974;\r\n  param_1[2] = &PTR_LAB_00cf3960;\r\n  param_1[3] = &PTR_LAB_00cf3940;\r\n  param_1[0x31] = 0;\r\n  param_1[0x33] = 0;\r\n  param_1[0x34] = 0;\r\n  param_1[0x35] = 0;\r\n  local_4._0_1_ = 2;\r\n  local_4._1_3_ = 0;\r\n  FUN_008d7710();\r\n  local_4 = CONCAT31(local_4._1_3_,3);\r\n  FUN_008d7710();\r\n  *(undefined1 *)(param_1 + 0x99) = 0;\r\n  *(undefined1 *)((int)param_1 + 0x265) = 0;\r\n  param_1[0x1c] = 10;\r\n  pvVar1 = _malloc(10);\r\n  param_1[0x9b] = pvVar1;\r\n  ExceptionList = local_c;\r\n  return param_1;\r\n}\r\n\r\ncallees (3): 004f7180 BSP_FrontEndScreen_Construct, 008d7710 BSP_GameSettings_Construct, 00bf9f1a _malloc\r\n",
+        "stderr_text": "",
+        "stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_ctor_saved_pcode_head_stdout.txt",
+          "bytes": 1645,
+          "sha256": "d6210da12b0a48afda7c131839a5d3e77e84a0e1696d6b9b15d5a86e11b8dfe8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/d6210da12b0a48af_options_ctor_saved_pcode_head_stdout.txt"
+        },
+        "stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_ctor_saved_pcode_head_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_options_ctor_saved_pcode_head_stderr.txt"
+        },
+        "complete_spill_pins": [],
+        "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+      },
+      {
+        "label": "options_commit_saved_pcode_head",
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F65C0",
+          "--lines",
+          "28"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "start_utc": "2026-10-10T11:31:01.268904+00:00",
+        "finish_utc": "2026-10-10T11:31:01.407476+00:00",
+        "exit_code": 0,
+        "stdout_text": "005f65c0  FUN_005f65c0  thunk=no  export=exports/bsp/functions/005f65c0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\n--- exports/bsp/functions/005f65c0/decompiled.c ---\r\n/* WARNING: Function: __alloca_probe replaced with injection: alloca_probe */\r\nvoid __fastcall FUN_005f65c0(int param_1)\r\n\r\n{\r\n  char cVar1;\r\n  size_t *psVar2;\r\n  bool bVar3;\r\n  size_t _Size;\r\n  void *_Dst;\r\n  int iStack_4cfc;\r\n  int iStack_4cf0;\r\n  size_t sStack_4ce4;\r\n  void *pvStack_4ce0;\r\n  undefined4 uStack_4cd8;\r\n  undefined4 uStack_4cd4;\r\n  undefined4 uStack_4cd0;\r\n  int iStack_4cc8;\r\n  int iStack_4cc0;\r\n  char acStack_4cac [104];\r\n  void *pvStack_4c44;\r\n  undefined4 uStack_4c40;\r\n  undefined4 uStack_4c3c;\r\n  void *pvStack_4c34;\r\n  undefined4 uStack_4c30;\r\n  undefined4 uStack_4c2c;\r\n  undefined4 uStack_10;\r\n  void *pvStack_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 uStack_4;\r\n... 239 more lines of 267 (use --start 28 or --lines)\r\ncallees (41): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd40 BSP_NativeString_Resize, 0041e870 BSP_NativeString_Assign, 004260b0 BSP_NativeString_FromInt, 004261a0 BSP_NativeString_Concat, 004263b0 BSP_NativeString_ConcatInt, 00427110 BSP_NativeStringVector_Resize, 004c12b0 BSP_GuiManager_GetOrCreate, 004c1710 BSP_MediaManager_GetOrCreate, 004d7f90 BSP_Game_RequestReturnToTitle, 005efdc0 FUN_005efdc0, 005effa0 FUN_005effa0 ...\r\n",
+        "stderr_text": "",
+        "stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_commit_saved_pcode_head_stdout.txt",
+          "bytes": 1466,
+          "sha256": "77e4b8cbfac585f05264cf5ebecf0eac26ffd8f20b1b5b174a2ae2410a023c76",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/77e4b8cbfac585f0_options_commit_saved_pcode_head_stdout.txt"
+        },
+        "stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\options_commit_saved_pcode_head_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_options_commit_saved_pcode_head_stderr.txt"
+        },
+        "complete_spill_pins": [],
+        "verification": "Every bsp.py ghidra command invokes client()/Client.verify() before the query. Live project_name=bsp, program_path=/battlestationspacific.exe, x86:LE:32:default, image_base00400000 must match frozen config. C:/Users/sqz269/bsp.gpr is the configured project file, not a separately exposed live bridge file path."
+      }
+    ],
+    "implementation_and_config_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_bsp.py"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_ghidra_export.py"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_target.json"
+      }
+    ]
+  },
+  "verification_qualification": "Typed queries use bsp.py client()/Client.verify() to check live project_namebsp, program_path/battlestationspacific.exe, languagex86:LE:32:default and imagebase00400000 against frozen config before each query. C:/Users/sqz269/bsp.gpr is the configured project file; bridge verify does not independently expose its full live path. No direct/inline bridge or GPR file reads.",
+  "complete_current_Source_Git_evidence": {
+    "observed_utc": "2026-10-10T11:39:58.822650+00:00",
+    "source_preimage_commit": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+    "prior_NOSOUND_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_native_nosound_selection_readiness.json",
+      "bytes": 90559,
+      "sha256": "67370e5d600a2afc5b99b3a1fb91235241ee168d6bd0c978c265f2e882a31a8b",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/67370e5d600a2afc_cc12_native_nosound_selection_readiness.json"
+    },
+    "complete_selected_current_Source_Git_rows": [
+      {
+        "path": "config/target.json",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_target.json"
+        },
+        "git_HEAD_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_git_config_target.json"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\366e5a64ac945473_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/366e5a64ac945473_366e5a64ac945473_target.json"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "config/fmod_ex_types.json",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\fmod_ex_types.json",
+          "bytes": 56459,
+          "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1a9166bbfe4bae22_fmod_ex_types.json"
+        },
+        "git_HEAD_blob": "df013f2f2e05011f027d3c39159b487d7632a22a",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_config_fmod_ex_types.json",
+          "bytes": 56459,
+          "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1a9166bbfe4bae22_git_config_fmod_ex_types.json"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\1a9166bbfe4bae22_fmod_ex_types.json",
+          "bytes": 56459,
+          "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1a9166bbfe4bae22_1a9166bbfe4bae22_fmod_ex_types.json"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_bsp.py"
+        },
+        "git_HEAD_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_git_tools_bsp.py"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\09de2b8916a4af98_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/09de2b8916a4af98_09de2b8916a4af98_bsp.py"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_ghidra_export.py"
+        },
+        "git_HEAD_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_git_tools_ghidra_export.py"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\0367957cab3518c6_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0367957cab3518c6_0367957cab3518c6_ghidra_export.py"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/27afca34c33faf0c_game_hosts.cpp"
+        },
+        "git_HEAD_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/27afca34c33faf0c_git_src_game_hosts.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\27afca34c33faf0c_game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/27afca34c33faf0c_27afca34c33faf0c_game_hosts.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_main.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/b896cda79427bbc3_game_main.cpp"
+        },
+        "git_HEAD_blob": "68e5acd59f57e8ee5ef7751992fa0571e0f45127",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/b896cda79427bbc3_git_src_game_main.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\b896cda79427bbc3_game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/b896cda79427bbc3_b896cda79427bbc3_game_main.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/winmain_startup.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\winmain_startup.cpp",
+          "bytes": 10209,
+          "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/521a73023c5d196b_winmain_startup.cpp"
+        },
+        "git_HEAD_blob": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_winmain_startup.cpp",
+          "bytes": 10209,
+          "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/521a73023c5d196b_git_src_winmain_startup.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\521a73023c5d196b_winmain_startup.cpp",
+          "bytes": 10209,
+          "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/521a73023c5d196b_521a73023c5d196b_winmain_startup.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/winmain_startup.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\winmain_startup.hpp",
+          "bytes": 9647,
+          "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44ed9f390e22fad4_winmain_startup.hpp"
+        },
+        "git_HEAD_blob": "d160879fdbb464e204afbc58f12df56f4cb36a4f",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_winmain_startup.hpp",
+          "bytes": 9647,
+          "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44ed9f390e22fad4_git_include_bsp_winmain_startup.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\44ed9f390e22fad4_winmain_startup.hpp",
+          "bytes": 9647,
+          "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44ed9f390e22fad4_44ed9f390e22fad4_winmain_startup.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_native_settings_process.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_process.cpp",
+          "bytes": 7791,
+          "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44a2cc3b1c94c4af_game_native_settings_process.cpp"
+        },
+        "git_HEAD_blob": "3fdec928d327e44bab7297a987591d43c7fd4d95",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_native_settings_process.cpp",
+          "bytes": 7791,
+          "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44a2cc3b1c94c4af_git_src_game_native_settings_process.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\44a2cc3b1c94c4af_game_native_settings_process.cpp",
+          "bytes": 7791,
+          "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/44a2cc3b1c94c4af_44a2cc3b1c94c4af_game_native_settings_process.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/game_native_settings_process.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_native_settings_process.hpp",
+          "bytes": 2203,
+          "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c39242f443a95a5a_game_native_settings_process.hpp"
+        },
+        "git_HEAD_blob": "c3af3aab298f334d35c33ac276eeab3a2a17e29e",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_game_native_settings_process.hpp",
+          "bytes": 2203,
+          "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c39242f443a95a5a_git_include_bsp_game_native_settings_process.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\c39242f443a95a5a_game_native_settings_process.hpp",
+          "bytes": 2203,
+          "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c39242f443a95a5a_c39242f443a95a5a_game_native_settings_process.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_native_settings_application.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_application.cpp",
+          "bytes": 11456,
+          "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/9a4bea22270c4b38_game_native_settings_application.cpp"
+        },
+        "git_HEAD_blob": "b0e9d483af92377ec2ac9e277b6e42a061f1b26e",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_native_settings_application.cpp",
+          "bytes": 11456,
+          "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/9a4bea22270c4b38_git_src_game_native_settings_application.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\9a4bea22270c4b38_game_native_settings_application.cpp",
+          "bytes": 11456,
+          "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/9a4bea22270c4b38_9a4bea22270c4b38_game_native_settings_application.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/native_game_settings_owner.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/251c0a349760dd21_native_game_settings_owner.cpp"
+        },
+        "git_HEAD_blob": "50c3a642be3204956ea8104b16e331005840d3c4",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/251c0a349760dd21_git_src_native_game_settings_owner.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\251c0a349760dd21_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/251c0a349760dd21_251c0a349760dd21_native_game_settings_owner.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_game_settings_owner.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3c9e009c65606e35_native_game_settings_owner.hpp"
+        },
+        "git_HEAD_blob": "554bc4169b4f8089ba57e2084b83a1ba7603cb6e",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\3c9e009c65606e35_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3c9e009c65606e35_3c9e009c65606e35_native_game_settings_owner.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/native_profile_settings.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_profile_settings.cpp",
+          "bytes": 3806,
+          "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fd7c280d5876ce58_native_profile_settings.cpp"
+        },
+        "git_HEAD_blob": "573763e98d818a02773abf950b300949b1a7641c",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_native_profile_settings.cpp",
+          "bytes": 3806,
+          "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fd7c280d5876ce58_git_src_native_profile_settings.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\fd7c280d5876ce58_native_profile_settings.cpp",
+          "bytes": 3806,
+          "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fd7c280d5876ce58_fd7c280d5876ce58_native_profile_settings.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_profile_settings.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_profile_settings.hpp",
+          "bytes": 2526,
+          "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2dd92ab3c7dc3367_native_profile_settings.hpp"
+        },
+        "git_HEAD_blob": "2801030191538c3b30797042591ea92c90c997c6",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_native_profile_settings.hpp",
+          "bytes": 2526,
+          "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2dd92ab3c7dc3367_git_include_bsp_native_profile_settings.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\2dd92ab3c7dc3367_native_profile_settings.hpp",
+          "bytes": 2526,
+          "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2dd92ab3c7dc3367_2dd92ab3c7dc3367_native_profile_settings.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/native_settings_loader.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_settings_loader.cpp",
+          "bytes": 15501,
+          "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/92cf2e1b496be7d8_native_settings_loader.cpp"
+        },
+        "git_HEAD_blob": "40415a4648da16ec16fe942e0cf46eef2725de09",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_native_settings_loader.cpp",
+          "bytes": 15501,
+          "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/92cf2e1b496be7d8_git_src_native_settings_loader.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\92cf2e1b496be7d8_native_settings_loader.cpp",
+          "bytes": 15501,
+          "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/92cf2e1b496be7d8_92cf2e1b496be7d8_native_settings_loader.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_settings_loader.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_settings_loader.hpp",
+          "bytes": 5567,
+          "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/29373ba8100bd449_native_settings_loader.hpp"
+        },
+        "git_HEAD_blob": "ef797a5b91bcfbcd88f8814a8aa34c00f7b340bc",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_native_settings_loader.hpp",
+          "bytes": 5567,
+          "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/29373ba8100bd449_git_include_bsp_native_settings_loader.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\29373ba8100bd449_native_settings_loader.hpp",
+          "bytes": 5567,
+          "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/29373ba8100bd449_29373ba8100bd449_native_settings_loader.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/native_scene_tokenizer.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_scene_tokenizer.cpp",
+          "bytes": 8452,
+          "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cacfe4c42a3c8a97_native_scene_tokenizer.cpp"
+        },
+        "git_HEAD_blob": "29f873ada44e78cdac15ba8ded23989616606bf7",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_native_scene_tokenizer.cpp",
+          "bytes": 8452,
+          "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cacfe4c42a3c8a97_git_src_native_scene_tokenizer.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\cacfe4c42a3c8a97_native_scene_tokenizer.cpp",
+          "bytes": 8452,
+          "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cacfe4c42a3c8a97_cacfe4c42a3c8a97_native_scene_tokenizer.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_scene_tokenizer.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_scene_tokenizer.hpp",
+          "bytes": 3563,
+          "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/040fb2c3a09a5323_native_scene_tokenizer.hpp"
+        },
+        "git_HEAD_blob": "82768fba8370723fdef66dd2501ae7a4f580bac3",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_native_scene_tokenizer.hpp",
+          "bytes": 3563,
+          "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/040fb2c3a09a5323_git_include_bsp_native_scene_tokenizer.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\040fb2c3a09a5323_native_scene_tokenizer.hpp",
+          "bytes": 3563,
+          "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/040fb2c3a09a5323_040fb2c3a09a5323_native_scene_tokenizer.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_settings.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fc9ab534f827975f_game_settings.cpp"
+        },
+        "git_HEAD_blob": "7c4a3f3ea41cf80dccee3057279e915bd8943f55",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fc9ab534f827975f_git_src_game_settings.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\fc9ab534f827975f_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/fc9ab534f827975f_fc9ab534f827975f_game_settings.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/game_settings.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8b1d37ce0ccdcde0_game_settings.hpp"
+        },
+        "git_HEAD_blob": "e63f7e85a951ee4df192f3354595fcbccff3132a",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\8b1d37ce0ccdcde0_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8b1d37ce0ccdcde0_8b1d37ce0ccdcde0_game_settings.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/settings_text.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_text.cpp",
+          "bytes": 3623,
+          "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc9068161d592740_settings_text.cpp"
+        },
+        "git_HEAD_blob": "ee82589863fc2921de4fc34eab236e19f4250051",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_settings_text.cpp",
+          "bytes": 3623,
+          "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc9068161d592740_git_src_settings_text.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\cc9068161d592740_settings_text.cpp",
+          "bytes": 3623,
+          "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc9068161d592740_cc9068161d592740_settings_text.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/settings_archive_reader.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_archive_reader.cpp",
+          "bytes": 4078,
+          "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc4aadb5f286801d_settings_archive_reader.cpp"
+        },
+        "git_HEAD_blob": "c651cedc36957b8d05785effd860a3a56bf5932b",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_settings_archive_reader.cpp",
+          "bytes": 4078,
+          "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc4aadb5f286801d_git_src_settings_archive_reader.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\cc4aadb5f286801d_settings_archive_reader.cpp",
+          "bytes": 4078,
+          "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/cc4aadb5f286801d_cc4aadb5f286801d_settings_archive_reader.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/settings_initial_state.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_initial_state.cpp",
+          "bytes": 1560,
+          "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/105ac7ca98f8a8d7_settings_initial_state.cpp"
+        },
+        "git_HEAD_blob": "eb07d2a5e264bb57fb9ef4298ab81fd6709ad89b",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_settings_initial_state.cpp",
+          "bytes": 1560,
+          "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/105ac7ca98f8a8d7_git_src_settings_initial_state.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\105ac7ca98f8a8d7_settings_initial_state.cpp",
+          "bytes": 1560,
+          "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/105ac7ca98f8a8d7_105ac7ca98f8a8d7_settings_initial_state.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/app_bootstrap.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\app_bootstrap.cpp",
+          "bytes": 17741,
+          "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/4e1f22c9509e25e2_app_bootstrap.cpp"
+        },
+        "git_HEAD_blob": "2e0acf0ce114599b652075a206cead77ad61f159",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_app_bootstrap.cpp",
+          "bytes": 17741,
+          "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/4e1f22c9509e25e2_git_src_app_bootstrap.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\4e1f22c9509e25e2_app_bootstrap.cpp",
+          "bytes": 17741,
+          "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/4e1f22c9509e25e2_4e1f22c9509e25e2_app_bootstrap.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/app_bootstrap.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\app_bootstrap.hpp",
+          "bytes": 13989,
+          "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1e57895243715aab_app_bootstrap.hpp"
+        },
+        "git_HEAD_blob": "4f8a0eedb9ef26acd73785004761c9bf320a1597",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_app_bootstrap.hpp",
+          "bytes": 13989,
+          "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1e57895243715aab_git_include_bsp_app_bootstrap.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\1e57895243715aab_app_bootstrap.hpp",
+          "bytes": 13989,
+          "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1e57895243715aab_1e57895243715aab_app_bootstrap.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/audio_online_startup.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\audio_online_startup.cpp",
+          "bytes": 17786,
+          "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e8c564464cc8ac90_audio_online_startup.cpp"
+        },
+        "git_HEAD_blob": "866b697a84c9f85aca5cca75ae10f238011e4287",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_audio_online_startup.cpp",
+          "bytes": 17786,
+          "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e8c564464cc8ac90_git_src_audio_online_startup.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\e8c564464cc8ac90_audio_online_startup.cpp",
+          "bytes": 17786,
+          "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e8c564464cc8ac90_e8c564464cc8ac90_audio_online_startup.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\audio_online_startup.hpp",
+          "bytes": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2856a03245c6a27a_audio_online_startup.hpp"
+        },
+        "git_HEAD_blob": "e1621061b3ed823c2c8dad9b37bb0521640b46f5",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_audio_online_startup.hpp",
+          "bytes": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2856a03245c6a27a_git_include_bsp_audio_online_startup.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\2856a03245c6a27a_audio_online_startup.hpp",
+          "bytes": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/2856a03245c6a27a_2856a03245c6a27a_audio_online_startup.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/sound_startup.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\sound_startup.cpp",
+          "bytes": 2221,
+          "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/836bbe877790db41_sound_startup.cpp"
+        },
+        "git_HEAD_blob": "21801a5d338081a3c31daf77014fd8753b6384a4",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_sound_startup.cpp",
+          "bytes": 2221,
+          "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/836bbe877790db41_git_src_sound_startup.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\836bbe877790db41_sound_startup.cpp",
+          "bytes": 2221,
+          "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/836bbe877790db41_836bbe877790db41_sound_startup.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/game_sound_runtime.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_sound_runtime.cpp",
+          "bytes": 20101,
+          "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/ccce5e3d933fcfb8_game_sound_runtime.cpp"
+        },
+        "git_HEAD_blob": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_game_sound_runtime.cpp",
+          "bytes": 20101,
+          "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/ccce5e3d933fcfb8_git_src_game_sound_runtime.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\ccce5e3d933fcfb8_game_sound_runtime.cpp",
+          "bytes": 20101,
+          "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/ccce5e3d933fcfb8_ccce5e3d933fcfb8_game_sound_runtime.cpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_sound_runtime.hpp",
+          "bytes": 5374,
+          "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/adc71df223c83c00_game_sound_runtime.hpp"
+        },
+        "git_HEAD_blob": "82568ef1384e93785a93eba2a220d5084bba348b",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_game_sound_runtime.hpp",
+          "bytes": 5374,
+          "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/adc71df223c83c00_git_include_bsp_game_sound_runtime.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true,
+        "prior_NOSOUND_working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\adc71df223c83c00_game_sound_runtime.hpp",
+          "bytes": 5374,
+          "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/adc71df223c83c00_adc71df223c83c00_game_sound_runtime.hpp"
+        },
+        "prior_NOSOUND_vs_current_LF_equal": true
+      },
+      {
+        "path": "src/profile_commit.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\profile_commit.cpp",
+          "bytes": 5501,
+          "sha256": "92855eb24dc535ea009e69e35584664d44721a43bed84b5f5cc0d31edfe2cc81",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/92855eb24dc535ea_profile_commit.cpp"
+        },
+        "git_HEAD_blob": "4b078087a5bb535eaaffde7ed7841888ffb3f683",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_profile_commit.cpp",
+          "bytes": 5501,
+          "sha256": "92855eb24dc535ea009e69e35584664d44721a43bed84b5f5cc0d31edfe2cc81",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/92855eb24dc535ea_git_src_profile_commit.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "src/profile_reset.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\profile_reset.cpp",
+          "bytes": 5875,
+          "sha256": "ed7c5154f07bd19c5ffaf122ed05def4fecae885e3efbf84937db5952ded6ac5",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/ed7c5154f07bd19c_profile_reset.cpp"
+        },
+        "git_HEAD_blob": "678c6ac28ceef0c6f9501ac7253d446680a610eb",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_profile_reset.cpp",
+          "bytes": 5875,
+          "sha256": "ed7c5154f07bd19c5ffaf122ed05def4fecae885e3efbf84937db5952ded6ac5",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/ed7c5154f07bd19c_git_src_profile_reset.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "src/profile_write.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\profile_write.cpp",
+          "bytes": 2787,
+          "sha256": "81797c7c4543b801066dd9ac0b192d5037c2a7d2a78c96babbd07214b04bdb5c",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/81797c7c4543b801_profile_write.cpp"
+        },
+        "git_HEAD_blob": "f971d12da0af1790587e9a8404df411bfc654e0b",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_profile_write.cpp",
+          "bytes": 2787,
+          "sha256": "81797c7c4543b801066dd9ac0b192d5037c2a7d2a78c96babbd07214b04bdb5c",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/81797c7c4543b801_git_src_profile_write.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "src/options_menu_screens.cpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3090a9d2bde1e7ec_options_menu_screens.cpp"
+        },
+        "git_HEAD_blob": "65354763489be4c850f1601694efa9a833261c44",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_src_options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3090a9d2bde1e7ec_git_src_options_menu_screens.cpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "include/bsp/options_menu_screens.hpp",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c63a55b98ee3cdff_options_menu_screens.hpp"
+        },
+        "git_HEAD_blob": "dfbefd762bcf33070446997c94268ea6588c69c8",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_include_bsp_options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/c63a55b98ee3cdff_git_include_bsp_options_menu_screens.hpp"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "docs/OPTIONS_MENU_SCREENS.md",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\OPTIONS_MENU_SCREENS.md",
+          "bytes": 29920,
+          "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/d01c8c84a07118bb_OPTIONS_MENU_SCREENS.md"
+        },
+        "git_HEAD_blob": "7210b6cf5ad015877b2dad69f7a18b4efabc28fa",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_docs_OPTIONS_MENU_SCREENS.md",
+          "bytes": 29920,
+          "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/d01c8c84a07118bb_git_docs_OPTIONS_MENU_SCREENS.md"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "docs/OPTIONS_SETTINGS_COMMIT.md",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\OPTIONS_SETTINGS_COMMIT.md",
+          "bytes": 24523,
+          "sha256": "71043750a961792fdc54cc1bbb553c34689767bafa562269309ed7acb748c2dc",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/71043750a961792f_OPTIONS_SETTINGS_COMMIT.md"
+        },
+        "git_HEAD_blob": "0a6256bf6f897dd3918eb133bba354aa3ba3a550",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_docs_OPTIONS_SETTINGS_COMMIT.md",
+          "bytes": 24523,
+          "sha256": "71043750a961792fdc54cc1bbb553c34689767bafa562269309ed7acb748c2dc",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/71043750a961792f_git_docs_OPTIONS_SETTINGS_COMMIT.md"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "docs/PROFILE_COMMIT.md",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\PROFILE_COMMIT.md",
+          "bytes": 6759,
+          "sha256": "6af37873f153839aa754d30ab8eec5a1f943cf9d5972829656ffae9c43affd49",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/6af37873f153839a_PROFILE_COMMIT.md"
+        },
+        "git_HEAD_blob": "433a13d32cbf154a7af850a87a64050d68e63776",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_docs_PROFILE_COMMIT.md",
+          "bytes": 6759,
+          "sha256": "6af37873f153839aa754d30ab8eec5a1f943cf9d5972829656ffae9c43affd49",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/6af37873f153839a_git_docs_PROFILE_COMMIT.md"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      },
+      {
+        "path": "docs/PROFILE_READ_INTEGRATION.md",
+        "working_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\PROFILE_READ_INTEGRATION.md",
+          "bytes": 5212,
+          "sha256": "caebf52a300655aea66ff61ba664575b3d7f23e507dc23e192297a06ec4d8d55",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/caebf52a300655ae_PROFILE_READ_INTEGRATION.md"
+        },
+        "git_HEAD_blob": "99d279858f5ba9f437b58fcd3469586b8ac6486b",
+        "git_LF_preimage_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\git_docs_PROFILE_READ_INTEGRATION.md",
+          "bytes": 5212,
+          "sha256": "caebf52a300655aea66ff61ba664575b3d7f23e507dc23e192297a06ec4d8d55",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/caebf52a300655ae_git_docs_PROFILE_READ_INTEGRATION.md"
+        },
+        "working_vs_git_LF_equal": true,
+        "working_raw_vs_git_raw_equal": true
+      }
+    ],
+    "complete_prior_to_current_LF_diff_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\accepted_NOSOUND_to_current_source_full_LF.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e3b0c44298fc1c14_accepted_NOSOUND_to_current_source_full_LF.diff"
+    }
+  },
+  "Native_original_PE_and_windows": {
+    "startup_position_frozen_before73D410_release": {
+      "observed_utc": "2026-10-10T11:29:04.882223+00:00",
+      "original_PE_identity": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "machine": 332,
+        "image_base": "00400000",
+        "coff_timestamp": 1245831434,
+        "headers_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\original_PE_headers.bin",
+          "bytes": 696,
+          "sha256": "f5ca968caf7e4a7bea8956f7825264c0649f7cf66b35916c24dc902396c21314",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/f5ca968caf7e4a7b_original_PE_headers.bin"
+        },
+        "sections": [
+          {
+            "name": ".text",
+            "virtual_size": 9306422,
+            "rva": 4096,
+            "raw_size": 9310208,
+            "raw_pointer": 4096
+          },
+          {
+            "name": ".rdata",
+            "virtual_size": 1202980,
+            "rva": 9314304,
+            "raw_size": 1204224,
+            "raw_pointer": 9314304
+          },
+          {
+            "name": ".data",
+            "virtual_size": 2719452,
+            "rva": 10518528,
+            "raw_size": 65536,
+            "raw_pointer": 10518528
+          },
+          {
+            "name": ".rsrc",
+            "virtual_size": 1630400,
+            "rva": 13238272,
+            "raw_size": 1634304,
+            "raw_pointer": 10584064
+          }
+        ]
+      },
+      "startup_read_position_frozen_before_address_release": [
+        {
+          "retained_contract_window": {
+            "entry": "0073d410",
+            "start": "0073d42f",
+            "end": "0073d433",
+            "listing_lines": [
+              {
+                "line": 11,
+                "text": "0073d42f: MOV ESI,ECX "
+              },
+              {
+                "line": 12,
+                "text": "0073d431: PUSH 0x10 "
+              },
+              {
+                "line": 13,
+                "text": "0073d433: XOR EDI,EDI "
+              }
+            ],
+            "window_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\0073d410_0073d42f_0073d433_window.txt",
+              "bytes": 67,
+              "sha256": "6d9e903dfad79459c1a101b8134149f14a40360ba13659092adfdce74c75a042",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\6d9e903dfad79459_0073d410_0073d42f_0073d433_window.txt"
+            },
+            "saved_export_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073d410\\assembly.txt",
+              "bytes": 33500,
+              "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\5fb8af108ad4f763_assembly.txt"
+            },
+            "saved_export_metadata_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073d410\\metadata.json",
+              "bytes": 273,
+              "sha256": "36674aee1cec936c3a99a317ec520b0de13e7b49eedf1bcbbaf6fff29f6a8ee3",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\36674aee1cec936c_metadata.json"
+            },
+            "provenance": "Existing shared saved export; inspected only this address window. No fresh body, byte export, disassembly repair or mutation."
+          },
+          "current_window_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\6d9e903dfad79459_0073d410_0073d42f_0073d433_window.txt",
+            "bytes": 67,
+            "sha256": "6d9e903dfad79459c1a101b8134149f14a40360ba13659092adfdce74c75a042",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/6d9e903dfad79459_6d9e903dfad79459_0073d410_0073d42f_0073d433_window.txt"
+          },
+          "original_PE_physical": {
+            "start_va": "0073d42f",
+            "end_exclusive_va": "0073d435",
+            "file_offset": 3396655,
+            "section": ".text",
+            "bytes": 6,
+            "hex": "8bf16a1033ff",
+            "physical_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\startup_0073d42f.bin",
+              "bytes": 6,
+              "sha256": "8cf846bbfca95b20390a53aa9d400f3e188403ce1d18374213b3632852b035ba",
+              "retained_path": "local/cc12_native_sound_state_writer_review/frozen/8cf846bbfca95b20_startup_0073d42f.bin"
+            }
+          }
+        },
+        {
+          "retained_contract_window": {
+            "entry": "0073d410",
+            "start": "0073da9e",
+            "end": "0073dafd",
+            "listing_lines": [
+              {
+                "line": 457,
+                "text": "0073daa0: MOV ECX,0xf88980 "
+              },
+              {
+                "line": 458,
+                "text": "0073daa5: CALL 0x008d8190 "
+              },
+              {
+                "line": 459,
+                "text": "0073daaa: CMP byte ptr [0x00e1ae81],0x0 "
+              },
+              {
+                "line": 460,
+                "text": "0073dab1: JZ 0x0073dac2 "
+              },
+              {
+                "line": 461,
+                "text": "0073dab3: MOV ECX,dword ptr [0x01090ab0] "
+              },
+              {
+                "line": 462,
+                "text": "0073dab9: MOV EDX,dword ptr [ECX] "
+              },
+              {
+                "line": 463,
+                "text": "0073dabb: MOV EAX,dword ptr [EDX + 0x24] "
+              },
+              {
+                "line": 464,
+                "text": "0073dabe: PUSH 0x32 "
+              },
+              {
+                "line": 465,
+                "text": "0073dac0: CALL EAX "
+              },
+              {
+                "line": 466,
+                "text": "0073dac2: MOV CL,byte ptr [0x00f88a0c] "
+              },
+              {
+                "line": 467,
+                "text": "0073dac8: PUSH 0x178 "
+              },
+              {
+                "line": 468,
+                "text": "0073dacd: MOV byte ptr [0x00f8d398],CL "
+              },
+              {
+                "line": 469,
+                "text": "0073dad3: CALL 0x00bf681b "
+              },
+              {
+                "line": 470,
+                "text": "0073dad8: ADD ESP,0x4 "
+              },
+              {
+                "line": 471,
+                "text": "0073dadb: MOV dword ptr [ESP + 0x10],EAX "
+              },
+              {
+                "line": 472,
+                "text": "0073dadf: CMP EAX,EDI "
+              },
+              {
+                "line": 473,
+                "text": "0073dae1: MOV dword ptr [ESP + 0x144],0x11 "
+              },
+              {
+                "line": 474,
+                "text": "0073daec: JZ 0x0073db02 "
+              },
+              {
+                "line": 475,
+                "text": "0073daee: CMP byte ptr [0x00f889a4],0x0 "
+              },
+              {
+                "line": 476,
+                "text": "0073daf5: PUSH EDI "
+              },
+              {
+                "line": 477,
+                "text": "0073daf6: SETZ DL "
+              },
+              {
+                "line": 478,
+                "text": "0073daf9: PUSH EDI "
+              },
+              {
+                "line": 479,
+                "text": "0073dafa: MOV ECX,EAX "
+              },
+              {
+                "line": 480,
+                "text": "0073dafc: PUSH EDX "
+              },
+              {
+                "line": 481,
+                "text": "0073dafd: CALL 0x00a88770 "
+              }
+            ],
+            "window_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\0073d410_0073da9e_0073dafd_window.txt",
+              "bytes": 737,
+              "sha256": "098e59780ad3bc1f375812543735fcd33e81b16c831933aaa58282a9eff1d888",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\098e59780ad3bc1f_0073d410_0073da9e_0073dafd_window.txt"
+            },
+            "saved_export_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073d410\\assembly.txt",
+              "bytes": 33500,
+              "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\5fb8af108ad4f763_assembly.txt"
+            },
+            "saved_export_metadata_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073d410\\metadata.json",
+              "bytes": 273,
+              "sha256": "36674aee1cec936c3a99a317ec520b0de13e7b49eedf1bcbbaf6fff29f6a8ee3",
+              "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\36674aee1cec936c_metadata.json"
+            },
+            "provenance": "Existing shared saved export; inspected only this address window. No fresh body, byte export, disassembly repair or mutation."
+          },
+          "current_window_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\098e59780ad3bc1f_0073d410_0073da9e_0073dafd_window.txt",
+            "bytes": 737,
+            "sha256": "098e59780ad3bc1f375812543735fcd33e81b16c831933aaa58282a9eff1d888",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/098e59780ad3bc1f_098e59780ad3bc1f_0073d410_0073da9e_0073dafd_window.txt"
+          },
+          "original_PE_physical": {
+            "start_va": "0073da9e",
+            "end_exclusive_va": "0073db02",
+            "file_offset": 3398302,
+            "section": ".text",
+            "bytes": 100,
+            "hex": "f6ffb98089f800e8e6a61900803d81aee10000740f8b0db00a09018b118b42246a32ffd08a0d0c8af8006878010000880d98d3f800e8438d4b0083c404894424103bc7c7842444010000110000007414803da489f80000570f94c2578bc852e86eac3400",
+            "physical_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\startup_0073da9e.bin",
+              "bytes": 100,
+              "sha256": "de0fb4d61856a70a60ef6f129453a9c354fdd1cb4fe78ef94bf0064b5d7e710b",
+              "retained_path": "local/cc12_native_sound_state_writer_review/frozen/de0fb4d61856a70a_startup_0073da9e.bin"
+            }
+          }
+        }
+      ],
+      "accepted_ctor_CRT_identity_checked": [
+        {
+          "accepted_contract": {
+            "entry": "008d7710",
+            "length": 446,
+            "body_sha256": "a63e05c7fd265d8498851852cdb42d37852675ba8055587bffd0afacb65ae5c9",
+            "selected_prior_instructions": [
+              {
+                "address": "008d7736",
+                "hex": "c6462401",
+                "text": "mov byte ptr [esi + 0x24], 1"
+              }
+            ],
+            "provenance": "Already admitted R157 tracked evidence; no new constructor/CRT body query."
+          },
+          "original_PE_physical": {
+            "start_va": "008d7710",
+            "end_exclusive_va": "008d78ce",
+            "file_offset": 5076752,
+            "section": ".text",
+            "bytes": 446,
+            "hex": "6aff68ea31ca0064a1000000005064892500000000515333db568bf157c706585dd100895e04c6462401885e38c7463c01000000885e49c6464a01885e4b885e4cbf02000000897e50889e94000000889e950000008974240c899e98000000899e9c000000899ea0000000895c2418899ea4000000899ea8000000899eac000000680c3ace008d8eb4000000c644241c01889eb0000000889eb1000000c686b200000001e8b770b4fff30f10050038ce000f57c9f30f114620f30f114628f30f11462cf30f114630f30f1005207dce00c6460801885e09897e0cc6461001c6464a01c686b200000001f30f118e80000000895e78c7461480020000c74618e0010000895e5c895e58c6466001f30f114e64897e68885e1d885e1c897e54c6868400000001889e85000000c6466c01895e70c6467401c6467c01c6868c00000001c6868d00000001c7869000000001000000c6461e01f30f114634c6868600000001c7868800000001000000885e42885e43c6464101885e40c64644018b0de8abf800c6442418023bcb741fe8606c16003bc775168b0de8abf800e8616c160084c074078bcee816cdffff8b4c24105f8bc65e5b64890d0000000083c410c3",
+            "physical_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\initializer_008d7710.bin",
+              "bytes": 446,
+              "sha256": "a63e05c7fd265d8498851852cdb42d37852675ba8055587bffd0afacb65ae5c9",
+              "retained_path": "local/cc12_native_sound_state_writer_review/frozen/a63e05c7fd265d84_initializer_008d7710.bin"
+            }
+          }
+        },
+        {
+          "accepted_contract": {
+            "entry": "00cd2d80",
+            "length": 22,
+            "body_sha256": "1f99bd5288799e10472ebc9cbd10af8f87681e74f33f122dd99dc25cb58481b8",
+            "selected_prior_instructions": [
+              {
+                "address": "00cd2d80",
+                "hex": "b98089f800",
+                "text": "mov ecx, 0xf88980"
+              },
+              {
+                "address": "00cd2d85",
+                "hex": "e88649c0ff",
+                "text": "call 0x8d7710"
+              },
+              {
+                "address": "00cd2d8a",
+                "hex": "68c0eecd00",
+                "text": "push 0xcdeec0"
+              },
+              {
+                "address": "00cd2d8f",
+                "hex": "e86142f2ff",
+                "text": "call 0xbf6ff5"
+              },
+              {
+                "address": "00cd2d94",
+                "hex": "59",
+                "text": "pop ecx"
+              },
+              {
+                "address": "00cd2d95",
+                "hex": "c3",
+                "text": "ret "
+              }
+            ],
+            "provenance": "Already admitted R157 tracked evidence; no new constructor/CRT body query."
+          },
+          "original_PE_physical": {
+            "start_va": "00cd2d80",
+            "end_exclusive_va": "00cd2d96",
+            "file_offset": 9252224,
+            "section": ".text",
+            "bytes": 22,
+            "hex": "b98089f800e88649c0ff68c0eecd00e86142f2ff59c3",
+            "physical_pin": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\initializer_00cd2d80.bin",
+              "bytes": 22,
+              "sha256": "1f99bd5288799e10472ebc9cbd10af8f87681e74f33f122dd99dc25cb58481b8",
+              "retained_path": "local/cc12_native_sound_state_writer_review/frozen/1f99bd5288799e10_initializer_00cd2d80.bin"
+            }
+          }
+        }
+      ],
+      "selection_read_position": "Actual current-global loader is called at73DAA5; the sound predicate readsF889A4 at73DAEE and calls the sound constructor at73DAFD. This is the accepted startup-read contract, not a new full startup/control-flow audit."
+    },
+    "complete_image_and_loader_window": {
+      "observed_utc": "2026-10-10T11:39:58.915648+00:00",
+      "complete_original_PE_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\original_PE_complete.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "retained_path": "local/cc12_native_sound_state_writer_review/frozen/b682a82c52f81f95_original_PE_complete.bin"
+      },
+      "qualification": "Complete file retained solely for byte-identity/offline window replay; no analysis of any additional Native bodies/data, no original game launch or mutation.",
+      "accepted_loader_keyword_window": {
+        "accepted_contract": {
+          "entry": "008d8190",
+          "start": "008d85b5",
+          "end": "008d8626",
+          "listing_lines": [
+            {
+              "line": 294,
+              "text": "008d85b5: LEA ECX,[ESP + 0x3c] "
+            },
+            {
+              "line": 295,
+              "text": "008d85b9: JZ 0x008d85cd "
+            },
+            {
+              "line": 296,
+              "text": "008d85bb: LEA EDX,[ESP + 0x13] "
+            },
+            {
+              "line": 297,
+              "text": "008d85bf: PUSH EDX "
+            },
+            {
+              "line": 298,
+              "text": "008d85c0: CALL 0x008d9ad0 "
+            },
+            {
+              "line": 299,
+              "text": "008d85c5: MOV dword ptr [ESI + 0x54],EAX "
+            },
+            {
+              "line": 300,
+              "text": "008d85c8: JMP 0x008d82a0 "
+            },
+            {
+              "line": 301,
+              "text": "008d85cd: PUSH 0xd15e88 "
+            },
+            {
+              "line": 302,
+              "text": "008d85d2: CALL 0x00467cc0 "
+            },
+            {
+              "line": 303,
+              "text": "008d85d7: TEST AL,AL "
+            },
+            {
+              "line": 304,
+              "text": "008d85d9: JNZ 0x008d82a0 "
+            },
+            {
+              "line": 305,
+              "text": "008d85df: PUSH 0xd15e7c "
+            },
+            {
+              "line": 306,
+              "text": "008d85e4: LEA ECX,[ESP + 0x40] "
+            },
+            {
+              "line": 307,
+              "text": "008d85e8: CALL 0x00467cc0 "
+            },
+            {
+              "line": 308,
+              "text": "008d85ed: TEST AL,AL "
+            },
+            {
+              "line": 309,
+              "text": "008d85ef: LEA ECX,[ESP + 0x3c] "
+            },
+            {
+              "line": 310,
+              "text": "008d85f3: JZ 0x008d860a "
+            },
+            {
+              "line": 311,
+              "text": "008d85f5: LEA EAX,[ESP + 0x13] "
+            },
+            {
+              "line": 312,
+              "text": "008d85f9: PUSH EAX "
+            },
+            {
+              "line": 313,
+              "text": "008d85fa: CALL 0x008d9a80 "
+            },
+            {
+              "line": 314,
+              "text": "008d85ff: MOV byte ptr [ESI + 0x94],AL "
+            },
+            {
+              "line": 315,
+              "text": "008d8605: JMP 0x008d82a0 "
+            },
+            {
+              "line": 316,
+              "text": "008d860a: CALL 0x008d8a70 "
+            },
+            {
+              "line": 317,
+              "text": "008d860f: PUSH EAX "
+            },
+            {
+              "line": 318,
+              "text": "008d8610: PUSH 0xd15e60 "
+            },
+            {
+              "line": 319,
+              "text": "008d8615: CALL 0x004254b0 "
+            },
+            {
+              "line": 320,
+              "text": "008d861a: ADD ESP,0x8 "
+            },
+            {
+              "line": 321,
+              "text": "008d861d: LEA ECX,[ESP + 0x3c] "
+            },
+            {
+              "line": 322,
+              "text": "008d8621: CALL 0x008d8960 "
+            },
+            {
+              "line": 323,
+              "text": "008d8626: JMP 0x008d82a0 "
+            }
+          ],
+          "window_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\008d8190_008d85b5_008d8626_window.txt",
+            "bytes": 819,
+            "sha256": "3ead899cddf91e5c753faafeda284823226c58da7911fcbfa971ecdd48187fd4",
+            "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\3ead899cddf91e5c_008d8190_008d85b5_008d8626_window.txt"
+          },
+          "saved_export_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d8190\\assembly.txt",
+            "bytes": 14578,
+            "sha256": "026d15454a8908b832705415915fe95c99cd054c84708a22e757c31e39bb7a60",
+            "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\026d15454a8908b8_assembly.txt"
+          },
+          "saved_export_metadata_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d8190\\metadata.json",
+            "bytes": 268,
+            "sha256": "e91cfd74e81410d0a4e26e1bfa29cf2692ac621a5a21be8ae3c620e6a0572ecf",
+            "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\e91cfd74e81410d0_metadata.json"
+          },
+          "provenance": "Existing shared saved export; inspected only this address window. No fresh body, byte export, disassembly repair or mutation."
+        },
+        "current_retained_listing_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_nosound_selection_readiness\\frozen\\3ead899cddf91e5c_008d8190_008d85b5_008d8626_window.txt",
+          "bytes": 819,
+          "sha256": "3ead899cddf91e5c753faafeda284823226c58da7911fcbfa971ecdd48187fd4",
+          "retained_path": "local/cc12_native_sound_state_writer_review/frozen/3ead899cddf91e5c_3ead899cddf91e5c_008d8190_008d85b5_008d8626_window.txt"
+        },
+        "original_PE_physical": {
+          "start_va": "008d85b5",
+          "end_exclusive_va": "008d862b",
+          "file_offset": 5080501,
+          "section": ".text",
+          "bytes": 118,
+          "hex": "8d4c243c74128d54241352e80b150000894654e9d3fcffff68885ed100e8e9f6b8ff84c00f85c1fcffff687c5ed1008d4c2440e8d3f6b8ff84c08d4c243c74158d44241350e881140000888694000000e996fcffffe8610400005068605ed100e896ceb4ff83c4088d4c243ce83a030000e975fcffff",
+          "physical_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\accepted_loader_keyword_window.bin",
+            "bytes": 118,
+            "sha256": "637e4fda3f41a7fce94714b0d5de46a38aca84cae2a4bc0d20e3313730937fdc",
+            "retained_path": "local/cc12_native_sound_state_writer_review/frozen/637e4fda3f41a7fc_accepted_loader_keyword_window.bin"
+          }
+        }
+      }
+    }
+  },
+  "direct_reference_evidence": {
+    "F88980_returned_reference_count": 58,
+    "F88980_query_limit": 80,
+    "F88980_references": [
+      {
+        "from": "005f65eb",
+        "function_label": "FUN_005f65c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f5566",
+        "function_label": "BSP_OptionsScreen_BuildMainList",
+        "kind": "DATA"
+      },
+      {
+        "from": "0043bc69",
+        "function_label": "BSP_MainMenu_BuildLocalizedDate",
+        "kind": "DATA"
+      },
+      {
+        "from": "004dd69e",
+        "function_label": "BSP_Game_OnInitOnce",
+        "kind": "DATA"
+      },
+      {
+        "from": "004dfacd",
+        "function_label": "BSP_Game_ConstructWorld",
+        "kind": "DATA"
+      },
+      {
+        "from": "0055f9b8",
+        "function_label": "FUN_0055f9b0",
+        "kind": "DATA"
+      },
+      {
+        "from": "0058c8c6",
+        "function_label": "BSP_MainMenu_BuildMissionDetailPage",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f0ca1",
+        "function_label": "FUN_005f0b90",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f0cb0",
+        "function_label": "FUN_005f0b90",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f5ac3",
+        "function_label": "FUN_005f5ac0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f5f54",
+        "function_label": "BSP_OptionsScreen_ReturnToList",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f6619",
+        "function_label": "FUN_005f65c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f6624",
+        "function_label": "FUN_005f65c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f6e53",
+        "function_label": "FUN_005f65c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f6eb7",
+        "function_label": "FUN_005f65c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "0062d123",
+        "function_label": "FUN_0062c2c0",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067ce8c",
+        "function_label": "BSP_PressStartScreen_ApplySignIn",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4a0",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4aa",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4b4",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4c1",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4cb",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0067d4fb",
+        "function_label": "BSP_PressStartScreen_Update",
+        "kind": "DATA"
+      },
+      {
+        "from": "0070493f",
+        "function_label": "FUN_00704590",
+        "kind": "DATA"
+      },
+      {
+        "from": "00704bfb",
+        "function_label": "FUN_00704590",
+        "kind": "DATA"
+      },
+      {
+        "from": "0070687e",
+        "function_label": "FUN_00706760",
+        "kind": "DATA"
+      },
+      {
+        "from": "007068a5",
+        "function_label": "FUN_00706760",
+        "kind": "DATA"
+      },
+      {
+        "from": "00706951",
+        "function_label": "FUN_00706760",
+        "kind": "DATA"
+      },
+      {
+        "from": "00706b67",
+        "function_label": "FUN_00706760",
+        "kind": "DATA"
+      },
+      {
+        "from": "00706d94",
+        "function_label": "FUN_00706760",
+        "kind": "DATA"
+      },
+      {
+        "from": "0073baf9",
+        "function_label": "BSP_FontSystem_LoadDefinitions",
+        "kind": "DATA"
+      },
+      {
+        "from": "0073daa0",
+        "function_label": "BSP_Application_Initialize",
+        "kind": "DATA"
+      },
+      {
+        "from": "0073e05e",
+        "function_label": "BSP_Application_Initialize",
+        "kind": "DATA"
+      },
+      {
+        "from": "0073e47c",
+        "function_label": "BSP_Application_Initialize",
+        "kind": "DATA"
+      },
+      {
+        "from": "007fae97",
+        "function_label": "BSP_PlayerProfile_CommitContentState",
+        "kind": "DATA"
+      },
+      {
+        "from": "007fdec7",
+        "function_label": "BSP_PlayerProfile_ResetToDefaults",
+        "kind": "DATA"
+      },
+      {
+        "from": "007fdedd",
+        "function_label": "BSP_PlayerProfile_ResetToDefaults",
+        "kind": "DATA"
+      },
+      {
+        "from": "0055f9f7",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "0055fa23",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "005efd1e",
+        "function_label": "FUN_005efcf0",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f01d2",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "005f01e1",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "005f5bb1",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "007fa6db",
+        "function_label": "BSP_PlayerProfile_OnStorageWriteComplete",
+        "kind": "DATA"
+      },
+      {
+        "from": "007ff0ae",
+        "function_label": "BSP_PlayerProfile_CompleteRead",
+        "kind": "DATA"
+      },
+      {
+        "from": "007ff0c2",
+        "function_label": "BSP_PlayerProfile_CompleteRead",
+        "kind": "DATA"
+      },
+      {
+        "from": "008d6ba6",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "008d79e8",
+        "function_label": "BSP_Settings_CompleteProfileRestore",
+        "kind": "DATA"
+      },
+      {
+        "from": "005f5c3f",
+        "function_label": "BSP_OptionsScreen_Enter",
+        "kind": "DATA"
+      },
+      {
+        "from": "00775257",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "00a41ef6",
+        "function_label": null,
+        "kind": "DATA"
+      },
+      {
+        "from": "00cd2d80",
+        "function_label": "BSP_GameSettings_InitializeStatic",
+        "kind": "DATA"
+      },
+      {
+        "from": "00cdeec0",
+        "function_label": "BSP_GameSettings_DestroyStatic",
+        "kind": "DATA"
+      },
+      {
+        "from": "004e0fde",
+        "function_label": "BSP_Game_LoadMissionScene",
+        "kind": "DATA"
+      },
+      {
+        "from": "004e1034",
+        "function_label": "BSP_Game_LoadMissionScene",
+        "kind": "DATA"
+      },
+      {
+        "from": "004e10f2",
+        "function_label": "BSP_Game_LoadMissionScene",
+        "kind": "DATA"
+      },
+      {
+        "from": "004e1332",
+        "function_label": "BSP_Game_LoadMissionScene",
+        "kind": "DATA"
+      },
+      {
+        "from": "004e15e8",
+        "function_label": "BSP_Game_LoadMissionScene",
+        "kind": "DATA"
+      }
+    ],
+    "F889A4_query_limit": 20,
+    "F889A4_returned_result": "From 0073daee in BSP_Application_Initialize [READ]\r\n",
+    "settings_constructor_direct_callers": "BSP_GameSettings_InitializeStatic @ 00cd2d80\r\nBSP_OptionsScreen_Construct @ 005f6030\r\n",
+    "CRT_initializer_xrefs": "From 00ce3054 [DATA]\r\n",
+    "settings_loader_direct_callers": "BSP_Application_Initialize @ 0073d410\r\n",
+    "options_reload_direct_callers": "BSP_OptionsScreen_ActivateListRow @ 005f7c40\r\nBSP_OptionsScreen_HandleListEvent @ 005f8960\r\nBSP_OptionsScreen_Update @ 005f7310\r\nFUN_005f7050 @ 005f7050\r\n",
+    "qualification": "These are exact returned direct references/callers, not exhaustive indirect/external writes. DATA references to the base do not establish a field store, copy direction or byte value."
+  },
+  "known_writer_and_read_order": {
+    "persistent_owner": "Static rawBCh objectF88980; persistent sound byteF889A4=base+24h.",
+    "demonstrated_writer": "008D7736 c6462401 MOV byte[ESI+24h],1, in admitted008D7710 constructor. CD2D80 passesECX=F88980 to the constructor and is referenced by CRT initializer cellCE3054.",
+    "writer_value": 1,
+    "sets_zero": false,
+    "startup_order_qualification": "The accepted CRT startup contract initializes this object before the application path. This packet rechecks direct constructor/CRT references and exact original-PE446B/22B identity, not the full CRT/startup CFG.",
+    "pre_sound_load_read": "Accepted positioning frozen before address release: actual-global load call73DAA5 precedes sound read73DAEE; SETZDL then pushedEDX low byte supplies disabled=!byte to constructor at73DAFD.",
+    "ordinary_ABI": "Accepted008D7710 ECX=self,EAX=self,RET;CD2D80 no native arguments/RET. The current stored Ghidra metadata signatures say undefined(void); they are preserved and not treated as recovered ABI.",
+    "new_zero_writer_demonstrated": false,
+    "new_pre73DAEE_supported_input_demonstrated": false
+  },
+  "input_and_provider_contracts": {
+    "options_text": {
+      "keyword_pointer": "00D15E88 SoundEnabled, confirmed by prior admitted metadata/docs",
+      "instructions": "008D85CD PUSHkeyword;008D85D2 CALL467CC0;008D85D7 TESTAL;008D85D9 JNZ008D82A0. No typed value call and no settings store on match.",
+      "keyword_helper": "Retained complete Source467CC0 peeks, compares case-insensitively, consumes only current keyword on match; not newly queried live.",
+      "numeric_token": "Following0/1 remains next token. Normal loop recognizes neither as a setting name, logs Options: unknown token and008D8621 consumes that one token. It is not silently accepted as a Boolean value.",
+      "examples": [
+        {
+          "text": "SoundEnabled 0",
+          "after_keyword": "numeric0 still current",
+          "result": "unknown-token diagnostic for0, no+24h store"
+        },
+        {
+          "text": "SoundEnabled 1",
+          "after_keyword": "numeric1 still current",
+          "result": "unknown-token diagnostic for1, no+24h store"
+        }
+      ],
+      "interpretation": "This is original Native behavior preserved by both current raw loader and prior projected parser, not evidence that the current Source forgot a recovered handler."
+    },
+    "genuine_NOSOUND_branch": {
+      "caller": "0073D410, settings loaded at0073DAA5 using ECX=F88980, then allocate0x178 sound receiver",
+      "predicate": "0073DAEE reads byteF889A4 (F88980+24h), compares to0;0073DAF6 SETZ DL",
+      "argument_stack": "PUSH EDI; SETZ DL; PUSH EDI; MOV ECX,EAX; PUSH EDX; CALL00A88770 at0073DAFD. EDI is zero from0073D433 and retained as callee-saved. Only DL is changed; pushed EDX upper24 bits remain its preimage. The callee reads only the low byte of the first stack dword.",
+      "ordinary_ABI": "ECX=self, three stack dwords: low-byte disabled, two ignored words; RET0Ch. The fresh saved Ghidra prototype models an unused EDX pseudo-parameter as __fastcall; no prototype/ABI repair was performed.",
+      "callee": "00A88798 compares first argument byte against zero; SETZ AL;00A887B1 stores AL at receiver+70h. Thus settings+24h0 => disabled1 => enabled0; any nonzero settings byte => disabled0 => enabled1.",
+      "output_selector": "When+70h is0,00A888FE does not skip: EBP1, EBX2, PUSH EBX/PUSH system, CALLsetOutput2 at00A88904. Both paths meet00A8891E and call EventSystem_Init(512,16,null,0) at00A88931. Resources and configuration are still genuine prerequisites.",
+      "credit": "Read-only existing instruction contract; no new compiled replacement or ABI proof."
+    },
+    "raw_Source_owner_loader_view": {
+      "constructor": "src/native_game_settings_owner.cpp constructs retained rawBCh storage and explicitly writes+24=1.",
+      "loader": "src/native_settings_loader.cpp k9/SoundEnabled exits the keyword arm without value-read/store.",
+      "read_view": "src/game_native_settings_application.cpp reads raw+24 into GameSettingsBlock audio.enabled_24; view is a compatibility projection, not a new default or persistent-byte setter."
+    },
+    "profile_Source": {
+      "restore_chain": "src/profile_reset.cpp CompleteRead -> restore_settings008D7A50 -> src/profile_commit.cpp completion008D79A0 -> read_settings_archive008D6DC0.",
+      "audio_fields_read_hex": [
+        "20",
+        "28",
+        "2C",
+        "30"
+      ],
+      "audio_sound_enable24_present": false,
+      "raw_profile_import": "Current complete src/native_profile_settings.cpp importer008D45D0 writes control40..43 and game difficulty6AC, not24; accepted Source/provider evidence, not a new Native importer-body review.",
+      "qualification": "Complete current archive Source is a semantic GameSettingsBlock/LuaReader projection. Bounded saved8D6DC0 head is not a new complete raw Native write/ABI audit; no raw profile-provider completeness or exhaustive absence follows."
+    },
+    "options_Source_and_existing_docs": {
+      "reload_role": "Current OptionsMenuHost::reload_from_settings() names005F65C0; accepted OPTIONS_MENU_SCREENS.md344..346 describes settings-to-screen reload on storage-read completion.",
+      "audio_UI": "Accepted docs/current Source audio page exposes master/music/speech/effect volumes, with no SoundEnabled row. This is not an exhaustive original selector audit.",
+      "constructor_saved_window": "005F6030 saved pseudocode calls008D7710 twice; it hides ECX receiver arguments. No new receiver/register/copy recovery is attempted.",
+      "runtime_apply": "src/game_settings.cpp apply_audio_settings008D5430 passes existingenabled_24 to a sound-runtime host; it is not a write to F889A4 or a pre-init NOSOUND selector."
+    },
+    "CLI": "No newly established original config/CLI selector. Accepted Native selection receipt and unchanged selected Source retain ignored SoundEnabled behavior; forcing a Source bool or adding a selector would be an intentional change, not demonstrated original reconstruction."
+  },
+  "timing_qualification": {
+    "demonstrated_persistent_writer_before_read": "Constructor writes1 along the accepted CRT path; it does not supply zero.",
+    "supported_zero_writer_before_read": null,
+    "supported_zero_writer_only_after_successful_startup": null,
+    "options_callback_timing": "Direct callers of005F65C0 are options update/list event helpers. This supplies runtime context, not a full proof that every original route occurs after73DAEE or after successful startup. Exact timing and copy direction/value remain a Native frontier.",
+    "profile_callback_timing": "Source expresses storage-read completion and conditional restore. No fresh full original reachability/async timing audit positions every callback relative to73DAEE. No zero store is demonstrated regardless of timing."
+  },
+  "remaining_frontiers": {
+    "Astra_options_copy": {
+      "address": "005F65C0",
+      "current_metadata_body_inclusive": [
+        "005F65C0",
+        "005F6EE0"
+      ],
+      "span_bytes": 2337,
+      "saved_pseudocode_lines": 267,
+      "exact_base_ref_sites": [
+        "005F65EB",
+        "005F6619",
+        "005F6624",
+        "005F6E53",
+        "005F6EB7"
+      ],
+      "gate": "Recover exact raw receiver/copy direction, covered fields/value provenance and ownership from the large saved body before labeling any persistent-byte write; preserve complex frame/unwind/register semantics. Existing Source/docs suggest global-to-screen reload, not an established writer.",
+      "related_owned_ctor": "005F6030 hides receivers in saved pseudocode; exact placement/alias evidence would be part of Astra review.",
+      "scope": "Read-only next analysis boundary only; no C++ provider or selector proposal."
+    },
+    "Native_profile_archive": "008D6DC0..008D76B6 saved body/ordinary receiver and indirect stores were not fully reviewed here. Semantic Source/accepted docs are distinguished from a new complete Native field-write audit.",
+    "other_base_users": "The58 returned F88980 DATA refs include further menu/profile/game receivers, unnamed and outside functions. They are retained without opening unleased bodies or assuming read-only behavior.",
+    "indirect_external": "No exhaustive pointer-alias, callback, DLL/external or original command-line consumer audit; no global absence assertion."
+  },
+  "validation": {
+    "complete_current_paths": 40,
+    "unchanged_selected_Source_since_accepted_NOSOUND": true,
+    "working_vsGit_LF_equal": true,
+    "constructor_CRT_original_PE_body_hashes_match_accepted": true,
+    "offline_replay_pending": false,
+    "offline_replay_pass": true
+  },
+  "local_script_and_spec_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\capture_support.py",
+      "bytes": 462,
+      "sha256": "a09ec63502e5b30e538c59a35ccb6cd716bd45526885639de62ac1a3a02f8d6b",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/a09ec63502e5b30e_capture_support.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\capture_queries.py",
+      "bytes": 2535,
+      "sha256": "34a30043adcd2ffcb86af377029c1cbce4f52ce5ff2479f34e55c35e38a8039a",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/34a30043adcd2ffc_capture_queries.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\direct_queries.json",
+      "bytes": 687,
+      "sha256": "940a01ff96d7d3557d061a8e3d24ef7b7157d1cb2e5e934380324895752491e4",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/940a01ff96d7d355_direct_queries.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\known_windows.json",
+      "bytes": 479,
+      "sha256": "b057f3987a4f8ef0384f98afe9c11d55d4d307e161d3e403f9d747f949b8ada4",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/b057f3987a4f8ef0_known_windows.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\ordinary_metadata.json",
+      "bytes": 384,
+      "sha256": "e4b33d343095b78138aaeaa4e7a18d1a71f4f0b30acce07ec73895b9421b09d0",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/e4b33d343095b781_ordinary_metadata.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\freeze_startup_position.py",
+      "bytes": 3111,
+      "sha256": "9a3ac13fe7241d5d78795490f3f2d253c9a3a2f1a712c8a371e3d2c31202c126",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/9a3ac13fe7241d5d_freeze_startup_position.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\freeze_source_evidence.py",
+      "bytes": 2501,
+      "sha256": "0986b6f3080af67ae7378301542adaceb3dd12b7701a4f01aba035112f423add",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/0986b6f3080af67a_freeze_source_evidence.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\freeze_image_identity.py",
+      "bytes": 1909,
+      "sha256": "f55ca77d28313c4327aea27906d97d47744c6e70a5c2c1b03169e535600e23e0",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/f55ca77d28313c43_freeze_image_identity.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\make_receipt.py",
+      "bytes": 12634,
+      "sha256": "19c6146008ea3e54c65c814c7823fb3535b3600e9a46c813c4694c031da5e480",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/19c6146008ea3e54_make_receipt.py"
+    }
+  ],
+  "credit": {
+    "readonly_original_reference_Source_saved_window_byte_identity_evidence": true,
+    "new_complete_Native_copy_or_zero_writer": 0,
+    "Source_implementation_compile_tests": 0,
+    "SDK_Init_startup_gameplay_ABI": 0,
+    "environment_mutation": 0,
+    "GPR_mutation": 0
+  },
+  "offline_replay": {
+    "command": "python local/cc12_native_sound_state_writer_review/replay_receipt.py reports/cc12_native_sound_state_writer_review.json",
+    "script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_sound_state_writer_review\\replay_receipt.py",
+      "bytes": 6738,
+      "sha256": "847ba46b961da09deb1e5957127a23bbed9aa3eda34cc8bfec05f0e8b4bc5d2b",
+      "retained_path": "local/cc12_native_sound_state_writer_review/frozen/847ba46b961da09d_replay_receipt.py"
+    },
+    "script_text": "\"\"\"Pure offline Source/Git/query/window/original-image replay; no live APIs.\"\"\"\nimport hashlib,json,pathlib,struct,sys\nroot=pathlib.Path(__file__).resolve().parent.parent.parent\npath=pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'reports/cc12_native_sound_state_writer_review.json'\nreceipt=json.loads(path.read_text());count=0;unique=set()\ndef walk(value):\n global count\n if isinstance(value,dict):\n  retained=value.get('retained_path','').replace('\\\\','/')\n  if retained.startswith('local/cc12_native_sound_state_writer_review/frozen/') and 'sha256' in value:\n   data=(root/retained).read_bytes();assert len(data)==value['bytes'] and hashlib.sha256(data).hexdigest()==value['sha256'],value\n   count+=1;unique.add(retained)\n  for v in value.values():walk(v)\n elif isinstance(value,list):\n  for v in value:walk(v)\nwalk(receipt)\ndef raw(pin):return (root/pin['retained_path']).read_bytes()\ndef load(pin):return json.loads(raw(pin))\nfor name,pin in receipt['complete_capture_pins'].items():\n value=load(pin)\n if name=='direct_references_capture.json':assert value==receipt['typed_live_query_batches'][0]\n if name=='ordinary_function_metadata_capture.json':assert value==receipt['typed_live_query_batches'][1]\n if name=='known_saved_windows_capture.json':assert value==receipt['saved_export_bounded_window_batch']\n if name=='source_evidence_capture.json':assert value==receipt['complete_current_Source_Git_evidence']\nfor batch in receipt['typed_live_query_batches']:\n assert batch['program']=='/battlestationspacific.exe' and not batch['GPR_mutation']\n cfg=next(p for p in batch['implementation_and_config_pins'] if p['path'].endswith('target.json'))\n cfg=load(cfg);assert cfg['project']=='bsp' and cfg['project_file']=='C:/Users/sqz269/bsp.gpr' and cfg['program_path']=='/battlestationspacific.exe'\n assert cfg['language']=='x86:LE:32:default' and cfg['image_base']=='00400000'\n bsp=raw(next(p for p in batch['implementation_and_config_pins'] if p['path'].endswith('bsp.py'))).decode()\n verify=raw(next(p for p in batch['implementation_and_config_pins'] if p['path'].endswith('ghidra_export.py'))).decode()\n assert 'c.verify()' in bsp and \"project['project_name'] != expected['project']\" in verify\n for q in batch['commands']:\n  assert q['exit_code']==0 and q['command'][2]=='ghidra' and q['environment_override']=={'BSP_GHIDRA_AUTOSTART':'0'}\n  assert raw(q['stdout_pin']).decode()==q['stdout_text'] and raw(q['stderr_pin']).decode()==q['stderr_text']\nsource=receipt['complete_current_Source_Git_evidence'];files={}\nfor row in source['complete_selected_current_Source_Git_rows']:\n work=raw(row['working_pin']);git=raw(row['git_LF_preimage_pin']);lf=lambda b:b.replace(b'\\r\\n',b'\\n')\n assert lf(work)==lf(git) and row['working_vs_git_LF_equal']\n assert hashlib.sha1(b'blob '+str(len(git)).encode()+b'\\0'+git).hexdigest()==row['git_HEAD_blob']\n if 'prior_NOSOUND_working_pin' in row:assert lf(work)==lf(raw(row['prior_NOSOUND_working_pin'])) and row['prior_NOSOUND_vs_current_LF_equal']\n files[row['path']]=work.decode()\nassert len(files)==40\nassert 'byte(p,0x24,1)' in files['src/native_game_settings_owner.cpp']\nassert 'if(k==9)break' in files['src/native_settings_loader.cpp']\nassert 'a.enabled_24=flag(p,0x24)' in files['src/game_native_settings_application.cpp']\nassert 'enabled_24' not in files['src/settings_archive_reader.cpp']\nassert 'reload_from_settings()' in files['include/bsp/options_menu_screens.hpp']\nassert 'sound_set_enabled(settings.audio.enabled_24)' in files['src/game_settings.cpp']\nnative=receipt['Native_original_PE_and_windows'];start=native['startup_position_frozen_before73D410_release'];image=native['complete_image_and_loader_window']\npe=raw(image['complete_original_PE_pin']);assert hashlib.sha256(pe).hexdigest()==start['original_PE_identity']['sha256']\nassert pe[:len(raw(start['original_PE_identity']['headers_pin']))]==raw(start['original_PE_identity']['headers_pin'])\nwindows=[w['original_PE_physical'] for w in start['startup_read_position_frozen_before_address_release']+start['accepted_ctor_CRT_identity_checked']]\nwindows.append(image['accepted_loader_keyword_window']['original_PE_physical'])\nfor w in windows:\n b=raw(w['physical_pin']);assert b==bytes.fromhex(w['hex'])==pe[w['file_offset']:w['file_offset']+w['bytes']]\n assert len(b)==int(w['end_exclusive_va'],16)-int(w['start_va'],16)\nctor=next(w for w in start['accepted_ctor_CRT_identity_checked'] if w['accepted_contract']['entry']=='008d7710')\nassert raw(ctor['original_PE_physical']['physical_pin'])[0x26:0x2a]==bytes.fromhex('c6462401')\nfor w in start['accepted_ctor_CRT_identity_checked']:assert w['original_PE_physical']['physical_pin']['sha256']==w['accepted_contract']['body_sha256']\nstartup=next(w['original_PE_physical'] for w in start['startup_read_position_frozen_before_address_release'] if w['original_PE_physical']['start_va']=='0073da9e')\ndef at(window,address,length):return raw(window['physical_pin'])[address-int(window['start_va'],16):address-int(window['start_va'],16)+length]\nassert at(startup,0x73daa0,5)==bytes.fromhex('b98089f800')\nassert at(startup,0x73daee,7)==bytes.fromhex('803da489f80000')\nassert at(startup,0x73daf6,3)==bytes.fromhex('0f94c2')\nfor address,target in [(0x73daa5,0x8d8190),(0x73dafd,0xa88770)]:\n call=at(startup,address,5);assert call[0]==0xe8 and address+5+struct.unpack('<i',call[1:])[0]==target\nloader=image['accepted_loader_keyword_window']['original_PE_physical'];assert at(loader,0x8d85cd,5)==bytes.fromhex('68885ed100')\nbranch=at(loader,0x8d85d9,6);assert branch[:2]==bytes.fromhex('0f85') and 0x8d85df+struct.unpack('<i',branch[2:])[0]==0x8d82a0\nrefs=receipt['direct_reference_evidence'];assert refs['F88980_returned_reference_count']==58 and len(refs['F88980_references'])==58\nassert refs['F889A4_returned_result'].strip()=='From 0073daee in BSP_Application_Initialize [READ]'\nassert receipt['known_writer_and_read_order']['writer_value']==1 and not receipt['known_writer_and_read_order']['new_zero_writer_demonstrated']\nassert not receipt['known_writer_and_read_order']['new_pre73DAEE_supported_input_demonstrated']\nassert receipt['scope']['73D410_released_after_startup_position_freeze'] and '0073D410' not in receipt['scope']['remaining_owned_addresses']\nprint(json.dumps({'result':'pass','scope':'Pure offline frozen Source/Git/query/window/original-PE byte replay; no Ghidra, original install, compiler, SDK, game or Windows audio calls',\n 'retained_pin_occurrences_verified':count,'unique_retained_files_verified':len(unique),'Source_Git_paths_replayed':40,\n 'direct_base_references_replayed':58,'original_PE_sha256':hashlib.sha256(pe).hexdigest(),'physical_windows_replayed':len(windows),\n 'known_constructor_value':1,'new_supported_zero_writer_or_selector':False},indent=2))\n",
+    "scope": "Pure offline frozen Source/Git/query/window/original-PE byte replay; no original install, Ghidra, compiler, SDK, game or Windows audio calls.",
+    "exit_code": 0,
+    "stdout_text": "{\n  \"result\": \"pass\",\n  \"scope\": \"Pure offline frozen Source/Git/query/window/original-PE byte replay; no Ghidra, original install, compiler, SDK, game or Windows audio calls\",\n  \"retained_pin_occurrences_verified\": 170,\n  \"unique_retained_files_verified\": 161,\n  \"Source_Git_paths_replayed\": 40,\n  \"direct_base_references_replayed\": 58,\n  \"original_PE_sha256\": \"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6\",\n  \"physical_windows_replayed\": 5,\n  \"known_constructor_value\": 1,\n  \"new_supported_zero_writer_or_selector\": false\n}\n",
+    "stderr_text": "",
+    "result": {
+      "result": "pass",
+      "scope": "Pure offline frozen Source/Git/query/window/original-PE byte replay; no Ghidra, original install, compiler, SDK, game or Windows audio calls",
+      "retained_pin_occurrences_verified": 170,
+      "unique_retained_files_verified": 161,
+      "Source_Git_paths_replayed": 40,
+      "direct_base_references_replayed": 58,
+      "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "physical_windows_replayed": 5,
+      "known_constructor_value": 1,
+      "new_supported_zero_writer_or_selector": false
+    }
+  }
+}
