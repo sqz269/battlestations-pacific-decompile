@@ -1,0 +1,7 @@
+# Game free defaults: primary decision
+
+Root accepted worker `486ece87414bda446f2d7beaa6deafb584932542`. A separately leased correction may route exactly the container and parent game lifetime free_00BF65AC defaults through the existing singleton_lifetime_free service, add the parent's direct include and document both declaration contracts. Canonical allocation already serves the relevant container/array/profile paths; the parent has its own shared override, so both defaults are required.
+
+The default admits null or raw storage from the same canonical Source allocation service. Other domains require matching reached release overrides. Preserve the virtual signatures, throwing overrides, explicit null calls/order and failure policies. Standalone array/embedded defaults, grid's existing operator-new/delete pair, physics/child domains and free_00BF6989 are outside the change. Current raw game/application ownership and production queue binding remain held.
+
+Root copied245 artifacts, ran the guarded replay, checked4236 actual Git blobs and4206 current Source files in both worktrees. The15-overlay corpus retains182 selected files/296 include edges,12 queries/2223 matches and all8 test files with no direct adapter uses. No new Native proof tree was opened. This decision adds no C++, build/test/runtime, Ghidra mutation, allocator/domain invention or native ABI/gameplay credit. Evidence: `reports/cc12_game_free_adapter_domain_primary_review.json`; proof: `local/cc12_game_free_adapter_domain_primary/`.
