@@ -5,6 +5,8 @@ namespace bsp {
 struct NativeGameContainerLifetimeCalls {
     virtual ~NativeGameContainerLifetimeCalls()=default;
     virtual void* allocate_00bf55be(std::uint32_t bytes);
+    // Default accepts null or storage from singleton_lifetime_allocate.
+    // Foreign domains must override every reached matching free boundary.
     virtual void free_00bf65ac(void*);
     virtual void free_00bf6989(void*);
     virtual std::int32_t interlocked_increment(volatile std::int32_t*);

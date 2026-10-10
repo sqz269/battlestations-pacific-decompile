@@ -1,4 +1,5 @@
 #include "bsp/native_game_lifetime.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/native_game_construction.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
@@ -131,7 +132,7 @@ void begin(NativeGameStorage& g,NativeGameLifetimeContext& x,NativeGameLifetimeO
 }
 }
 std::int32_t NativeGameLifetimeCalls::interlocked_decrement(volatile std::int32_t* p){return ::InterlockedDecrement(reinterpret_cast<volatile LONG*>(p));}
-void NativeGameLifetimeCalls::free_00bf65ac(void* p){::operator delete(p);}
+void NativeGameLifetimeCalls::free_00bf65ac(void* p){singleton_lifetime_free(p);}
 void NativeGameLifetimeCalls::free_00bf6989(void* p){std::free(p);}
 NativeGameLifetimeOperation::~NativeGameLifetimeOperation(){if(phase==Phase::running||phase==Phase::failed)std::terminate();}
 void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
