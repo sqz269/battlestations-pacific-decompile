@@ -675,6 +675,7 @@ private:
     const NativeFrameClockPublicationContext& require_frame_clock_context() const;
     void exit_if_frame_clock_failed() noexcept;
     void exit_if_allocation_stats_failed() noexcept;
+    void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
@@ -752,6 +753,13 @@ private:
         constructing, handed_over, failed
     };
     AllocationStatsPhase allocation_stats_phase_{AllocationStatsPhase::unattempted};
+    // Source caller state; the permanent process-domain claim belongs to the
+    // singleton binding. A fresh host phase cannot adopt an earlier graph.
+    enum class ParticleManagerPhase : std::uint8_t {
+        unattempted, allocating, allocation_failed, constructing,
+        failed, skipped, handed_over
+    };
+    ParticleManagerPhase particle_manager_phase_{ParticleManagerPhase::unattempted};
 };
 
 // Application binding for recovered create/size/close, control and text arms of
