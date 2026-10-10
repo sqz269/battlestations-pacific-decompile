@@ -671,9 +671,10 @@ public:
 private:
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
-    void ensure_frame_clock_0073d480();
+    void ensure_frame_clock_0073d480(bool publication_was_null);
     const NativeFrameClockPublicationContext& require_frame_clock_context() const;
     void exit_if_frame_clock_failed() noexcept;
+    void exit_if_allocation_stats_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
@@ -745,6 +746,12 @@ private:
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};
+    // Source caller ownership state; this is not the native FH3 state number.
+    enum class AllocationStatsPhase : std::uint8_t {
+        unattempted, allocating, allocation_failed, skipped,
+        constructing, handed_over, failed
+    };
+    AllocationStatsPhase allocation_stats_phase_{AllocationStatsPhase::unattempted};
 };
 
 // Application binding for recovered create/size/close, control and text arms of

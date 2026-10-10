@@ -1239,7 +1239,7 @@ struct GameStartupHost::ClockServices {
                 throw std::logic_error("application clock requires the verified D68D50 profile");
     }
 
-    void ensure() {
+    void ensure(bool publication_was_null) {
         if (phase == Phase::constructed) {
             try {
                 // A repeated local ensure skips allocation only for an admitted
@@ -1253,7 +1253,7 @@ struct GameStartupHost::ClockServices {
         }
         if (phase != Phase::unattempted)
             throw std::logic_error("application clock construction cannot be retried");
-        if (publication.actual_clock_01090ab0 != nullptr) {
+        if (!publication_was_null) {
             phase = Phase::failed; // ownership of this graph is not established
             throw std::logic_error("unexpected preexisting application clock publication");
         }
@@ -1288,7 +1288,7 @@ struct GameStartupHost::ClockServices {
     }
 };
 
-void GameStartupHost::ensure_frame_clock_0073d480() {
+void GameStartupHost::ensure_frame_clock_0073d480(bool publication_was_null) {
     if (!clock_services_) {
         if (!native_data_)
             throw std::logic_error("application clock requires retained original profile data");
@@ -1298,7 +1298,7 @@ void GameStartupHost::ensure_frame_clock_0073d480() {
         singletons_->native_deletion_bindings().frame_clock = &pending->lifetime;
         clock_services_ = std::move(pending);
     }
-    clock_services_->ensure();
+    clock_services_->ensure(publication_was_null);
 }
 
 const NativeFrameClockPublicationContext& GameStartupHost::require_frame_clock_context() const {
@@ -1319,6 +1319,22 @@ void GameStartupHost::exit_if_frame_clock_failed() noexcept {
     }
     // Conservative source policy. Do not run manager/host/CRT cleanup against
     // a potentially dangling publication; this is not native FH3 equivalence.
+    std::_Exit(1);
+}
+
+void GameStartupHost::exit_if_allocation_stats_failed() noexcept {
+    if (allocation_stats_phase_ != AllocationStatsPhase::failed &&
+        allocation_stats_phase_ != AllocationStatsPhase::constructing) return;
+    try {
+        log_.note("raw allocation stats construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit");
+        log_.close();
+    } catch (...) {
+        std::fputs("bsp_game: failed allocation stats construction requires process exit\n", stderr);
+        std::fflush(stderr);
+    }
+    // Conservative Source containment for publication/registration effects that
+    // survive the captured receiver's free. No host, manager or CRT cleanup.
+    // Native FH3/OS-fault delivery remains unproved.
     std::_Exit(1);
 }
 
@@ -1552,6 +1568,7 @@ GameStartupHost::~GameStartupHost() {
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
+    exit_if_allocation_stats_failed();
     delete loop_callbacks_;
     delete frame_host_;
     // The sprite bridge holds textures created on the device, so it goes before the
@@ -1665,6 +1682,7 @@ void GameStartupHost::exit_process(int code) {
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
+    exit_if_allocation_stats_failed();
     log_.implemented("StartupHost::exit_process", "008f82f0");
     std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.
 }
@@ -1818,11 +1836,39 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.implemented("Phase 0 capture_module_directory", "00439040");
     log_.notef("module directory %s", module_directory.c_str());
 
-    AllocationStatsState allocation_stats{};
-    construct_allocation_stats_00be2900(allocation_stats);
+    if (allocation_stats_phase_ != AllocationStatsPhase::unattempted)
+        throw std::logic_error("application allocation stats construction cannot be retried");
+    allocation_stats_phase_ = AllocationStatsPhase::allocating;
+    void* captured_stats = nullptr;
+    try {
+        captured_stats = singleton_lifetime_allocate({SingletonAllocationKind::object, 12, 12});
+    } catch (...) {
+        allocation_stats_phase_ = AllocationStatsPhase::allocation_failed;
+        throw; // No receiver returned and no constructor cleanup obligation.
+    }
+    bool clock_publication_was_null = false;
+    try {
+        if (captured_stats) {
+            allocation_stats_phase_ = AllocationStatsPhase::constructing;
+            construct_native_allocation_stats_00be2900(
+                captured_stats, singletons_->allocation_stats_context());
+        } else {
+            allocation_stats_phase_ = AllocationStatsPhase::skipped;
+        }
+        // 73D480 compares AB0 before 73D486 retires caller state 0. Carry
+        // this one volatile observation into the following clock decision.
+        // Ordinary C++ does not establish native hardware-fault/FH3 delivery.
+        clock_publication_was_null = clock_publication_01090ab0_ == nullptr;
+    } catch (...) {
+        allocation_stats_phase_ = AllocationStatsPhase::failed;
+        if (captured_stats) singleton_lifetime_free(captured_stats);
+        throw; // Preserve all callee publication and registration effects.
+    }
+    allocation_stats_phase_ = captured_stats ? AllocationStatsPhase::handed_over
+                                            : AllocationStatsPhase::skipped;
     log_.implemented("Phase 0 construct_allocation_stats", "00be2900");
 
-    ensure_frame_clock_0073d480();
+    ensure_frame_clock_0073d480(clock_publication_was_null);
     log_.implemented("Phase 0 ensure_actual_frame_clock", "0073d480");
 
     install_object_handle_resolvers_006ad0d0(object_resolvers_);
@@ -2321,6 +2367,7 @@ void GameStartupHost::application_shutdown() {
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
+    exit_if_allocation_stats_failed();
     // Native00737f30's full singleton teardown remains unbound. Retained C++
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
@@ -2421,6 +2468,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
+    exit_if_allocation_stats_failed();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
