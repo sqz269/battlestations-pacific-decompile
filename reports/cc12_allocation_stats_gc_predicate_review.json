@@ -1,0 +1,3653 @@
+{
+  "schema": "bsp.cc12.allocation_stats_gc_predicate.review.v1",
+  "packet": "cc12_allocation_stats_gc_predicate_review",
+  "utc": "2026-10-10T14:15:11.879705+00:00",
+  "worker_branch": "agent/cc12_options_sound_copy_abi",
+  "worker_precommit_HEAD": "c44c65ee91bceff4390a544a6d3f0a4148ed4183",
+  "assigned_accepted_Source": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+  "closeout_sync": {
+    "after_previous_review_accepted": true,
+    "post_sync_HEAD": "c44c65ee91bceff4390a544a6d3f0a4148ed4183",
+    "source_tree_equals_assigned_and_capture": true,
+    "source_tree_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+    "qualification": "Original assigned4c0e429c3/capture2929fe3 epochs retained; fast-forward only after previous review integration."
+  },
+  "decision": "EVIDENCE COMPLETE: exact derived D685F4+0C predicate is constant false; current Source false result matches its boolean boundary; no predicate/command activation and no C++ GO.",
+  "owned_outputs": [
+    "docs/CC12_ALLOCATION_STATS_GC_PREDICATE_REVIEW.md",
+    "reports/cc12_allocation_stats_gc_predicate_review.json"
+  ],
+  "lease_scope": {
+    "profile_packet": "cc12_allocation_stats_gc_predicate_review",
+    "profile_range_inclusive": [
+      "00D685F4",
+      "00D68603"
+    ],
+    "local_directory": "local/cc12_allocation_stats_gc_predicate_review",
+    "predicate_packet": "cc12_allocation_stats_gc_predicate_body",
+    "predicate_entry": "00BE2740",
+    "order": "Profile/data+output lease first; finite16-byte profile identified target; exact BE2740 lease before body/prototype queries. Both released after commit."
+  },
+  "original_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "typed_modification_number": "49",
+    "preserved_analysis": true
+  },
+  "Native_predicate": {
+    "profile": "00D685F4",
+    "slot_offset": "0C",
+    "slot_address": "00D68600",
+    "target": "00BE2740",
+    "original_profile_words": [
+      "00BE2930",
+      "00BE2700",
+      "00BE2720",
+      "00BE2740"
+    ],
+    "profile_extent_not_inferred": true,
+    "body": [
+      {
+        "address": "00BE2740",
+        "length": 2,
+        "hex": "32c0",
+        "instruction": "XOR AL,AL"
+      },
+      {
+        "address": "00BE2742",
+        "length": 1,
+        "hex": "c3",
+        "instruction": "RET"
+      }
+    ],
+    "body_bytes": 3,
+    "padding": {
+      "start": "00BE2743",
+      "last": "00BE274F",
+      "bytes": 13,
+      "byte": "CC",
+      "part_of_body": false
+    },
+    "actual_return": "AL=0; upper24 EAX bits are left unchanged, not proven zero.",
+    "original_call_contract": "Retained virtual caller supplies current [0109CEFC] in ECX, no stack arguments; leaf ignores ECX and returns with RET. Stored prototype unavailable.",
+    "receiver_reads": [],
+    "global_reads": [],
+    "memory_operand_reads": [],
+    "nested_calls": [],
+    "allocator_effects": [],
+    "Lua_effects": [],
+    "x87_or_SSE_instructions": [],
+    "pure_leaf_interpretation": "Unconditional false at observed AL boolean boundary; no threshold or allocation-pressure arithmetic.",
+    "caller_reads": [
+      "current publication [0109CEFC]",
+      "receiver vptr at+0",
+      "profile DWORD at+0C"
+    ],
+    "receiver_fields_4_and_8": "Constructor initializes them, but this leaf never reads them.",
+    "original_register_ABI_compatibility": "Not established by an ordinary Source bool API or this static review."
+  },
+  "Ghidra_saved_analysis": {
+    "function_at_query": null,
+    "function_containing_query": null,
+    "saved_complete_function_body_available": false,
+    "saved_prototype_available": false,
+    "proto_result": "No function found; signature unavailable, tool exit0 retained.",
+    "decompile_result": "No function starting at00be2740, exit1 retained.",
+    "function_disassembly_result": "No saved function, exit1 retained.",
+    "historical_candidate": "Frontend cached-index diagnostic proposes00be2720. This is not current typed containment and is not relabeled as a recovered function.",
+    "exact_listing": "Typed zero-context reads only00BE2740 and00BE2742; lengths2/1, ordinary fallthrough/terminal return, no flow override.",
+    "recovery": "Finite bytes and exact instructions prove closed3-byte reachable leaf without creating, renaming or repairing a saved function.",
+    "prior_epoch": "Earlier no-body/frontier/interior-candidate wording remains historical evidence; current typed null/null result is separate."
+  },
+  "Source_findings": {
+    "raw_publication_authority": "GameNativeStringProcess permanent void* volatile allocation_stats_0109cefc_ cell; accessor returns its reference.",
+    "retained_context": "GameSingletonHost borrows that exact cell and canonical manager publication in NativeAllocationStatsConstructorContext, also installed in deletion bindings.",
+    "startup": "Phase0 requests genuine12-byte receiver and conditionally calls construct_native_allocation_stats_00be2900 with retained context; normal success hands receiver to lifecycle. Failure/null/retry policies remain unchanged.",
+    "constructor": "Base stampsD685E0, performs locking/publication/registration; only after base success derived stampsD685F4 then+4=40000000,+8=0.",
+    "destructor": "Base stampsD685E0 then unregisters CURRENT publication and clears cell; deleting profiles free captured receiver forflags&1. Leaf performs none of those effects.",
+    "ordinary_leaf_readiness": "A constant-false Source leaf is behaviorally ready at the boolean boundary. Existing ScriptOrders returnfalse already supplies that result; adding a wrapper is not required by this review.",
+    "exact_raw_receiver_fields_for_leaf": [],
+    "current_adapters": "ScriptOrders returnsfalse with no raw stats observation; parallel Ready adapter returnsfalse plus Source unimplemented logging. No currentBE2740-named Source definition appears in complete corpus.",
+    "stale_comment": "ScriptOrders process-has-no-object comment is stale against accepted raw startup; unchanged in this exact two-file packet.",
+    "semantic_AllocationStatsState": "Separate projection; never admitted as a raw receiver, publication authority or source of threshold fields.",
+    "leaf_vs_dispatch": "Boolean-result match for D685F4 does not establish current publication/vptr observations, null/stale handling, lifecycle, partial states, reentrancy or other profile behavior.",
+    "Lua_owner": "Whole prior2929fe3 review retained separately: genuine mission owner has distinct lifecycle; cached machine_state_ trampoline argument proves neither root-state identity nor readiness.",
+    "callback": "Retained Native and current Source call schedule refill expired countdown, test gate, optionally runcollectgarbage, then splice/clear. ExactD685F4 gate skips only that explicit command.",
+    "no_activation": "No command call, VM creation, queue, fallback, GC threshold, owner replacement, stats publication or scheduling change."
+  },
+  "remaining_boundaries": [
+    "D685E0 and any other profile +0C targets are unqueried; do not generalize derived result.",
+    "Virtual caller performs object/profile reads even though leaf ignores receiver; valid lifetime and observed profile remain distinct.",
+    "Partial constructor/destructor profile transitions and failure/reentrancy are not proven safe by constantfalse.",
+    "Original complete-register ABI, compiler emission, startup, live state, runtime Lua and gameplay not tested.",
+    "Explicit EntityThink collectgarbage command is skipped for this profile; other Lua GC mechanisms remain outside scope.",
+    "System/SDK headers and transformed build Lua headers are not compilation preimages; no build is claimed."
+  ],
+  "freeze": {
+    "schema": "bsp.cc12.allocation_stats_gc_predicate.freeze.v1",
+    "utc": "2026-10-10T14:13:44.259549+00:00",
+    "accepted_source_commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+    "capture_worktree_HEAD": "2929fe387ab428d488a38baa847185a1f8246a33",
+    "previous_packet_HEAD": "2929fe387ab428d488a38baa847185a1f8246a33",
+    "assigned_source_tree_equals_capture_HEAD": true,
+    "source_corpus": {
+      "scope": "Complete tracked src/ and include/ at assigned accepted main4c0e429c3; complete working bytes separately retained and LF-compared.",
+      "files": 4206,
+      "git_tree": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8ff97655035e8c04_source_ls_tree_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      },
+      "git_archive": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2a0dc5c9486f507a_source_git.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "working_archive": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2a0dc5c9486f507a_source_working.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "manifest": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/c772aa9cc89fea34_source_manifest.json",
+        "bytes": 1628808,
+        "sha256": "c772aa9cc89fea343db0fd205e6a5493d472604122613f09739714a11ad05e88"
+      }
+    },
+    "additional_Source_Git": [
+      {
+        "source_path": "CMakeLists.txt",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/568fc615535bf822_git_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/568fc615535bf822_working_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/startup.cmake",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "6fa7a29dda1b965bcfa5ffc7f589c7ef3391a017",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/lua.cmake",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "c92cd290b5050de1b075928ad2aa04631e6a4da4",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/611a2f0613f21724_working_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/ghidra_typed_flow.py",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/97272278577d3d32_git_tools_ghidra_typed_flow.py",
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/97272278577d3d32_working_tools_ghidra_typed_flow.py",
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "config/target.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/366e5a64ac945473_git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/366e5a64ac945473_working_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "b1f8195ff719b3e8d784ca9b26b5d6c475315d75",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+          "bytes": 18155,
+          "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+          "bytes": 18155,
+          "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/entity_think_dispatch.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "a8336d63e1394fe935cbc532a886d151288d6d3c",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+          "bytes": 16415,
+          "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+          "bytes": 16415,
+          "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_resource_load_cache_by.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ab3c44102d7d13fbf7f30009d387bc0782935cec",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/18e103e99c7cc6d4_git_reports_native_resource_load_cache_by.json",
+          "bytes": 50674,
+          "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/18e103e99c7cc6d4_working_reports_native_resource_load_cache_by.json",
+          "bytes": 50674,
+          "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "3b9c1b0a5bccace5f51c6d92b388e5824f60ef0d",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/mission_lua_host.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "59f2fc7c0e66affd2feb56fd47540e14318ee198",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/038f566ab59dc67e_git_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/038f566ab59dc67e_working_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_raw_constructor_source.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "b1874877e61c4ae670fe9a9fd204261ac756bf22",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/071b3c8a8dfd98d6_git_reports_cc12_allocation_stats_raw_constructor_source.json",
+          "bytes": 964231,
+          "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/071b3c8a8dfd98d6_working_reports_cc12_allocation_stats_raw_constructor_source.json",
+          "bytes": 964231,
+          "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "07a4a2f4c98ec924ecdd36c5683669c03357f1bf",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/e47dafcec2c6a3ed_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+          "bytes": 8371,
+          "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/e47dafcec2c6a3ed_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+          "bytes": 8371,
+          "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "59a299755ced3af6d621151d8d889d779e150ecb",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/4d9e6f61d919a17a_git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+          "bytes": 3705583,
+          "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/4d9e6f61d919a17a_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+          "bytes": 3705583,
+          "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "18940616c3b89f343a4dd1e150d23befff02126d",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/427c9d35f93302bd_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3914,
+          "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/427c9d35f93302bd_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3914,
+          "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_raw_lifecycle_source.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "937c7cc7d1a6d0435047ca0f2203a1b612d93020",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/b5cbc97f0b93beba_git_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+          "bytes": 1525264,
+          "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/b5cbc97f0b93beba_working_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+          "bytes": 1525264,
+          "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ca14204f7d20b2d85fdc16c3376dd642ce158601",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8bec005f0300870b_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+          "bytes": 9374,
+          "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8bec005f0300870b_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+          "bytes": 9374,
+          "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "767265e3f9b952bc585b44144a2220ce67b116b1",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/23a4928ed7eaf80b_git_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+          "bytes": 3779952,
+          "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/23a4928ed7eaf80b_working_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+          "bytes": 3779952,
+          "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "9c3e48c17e185f86f4935fc1a18c4c791ad44697",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/e6c07aea2cbb05a5_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3878,
+          "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/e6c07aea2cbb05a5_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3878,
+          "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_process_cell_source.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "8b3b16de5208119bdde11f92f07ff4aecdc5853c",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8a3e29582a0db5dd_git_reports_cc12_allocation_stats_process_cell_source.json",
+          "bytes": 1332353,
+          "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/8a3e29582a0db5dd_working_reports_cc12_allocation_stats_process_cell_source.json",
+          "bytes": 1332353,
+          "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "c49e3a5588abe2f7829e6b2935d5f64a3fabe527",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/657edd12a865808d_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+          "bytes": 8656,
+          "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/657edd12a865808d_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+          "bytes": 8656,
+          "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_process_cell_source_primary_review.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "e48a65fc035a5ba0287dfccc7d83e3329af494d6",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/9e50547fdab391a3_git_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+          "bytes": 249159,
+          "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/9e50547fdab391a3_working_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+          "bytes": 249159,
+          "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "99171e7c2311e472d07767079774844ff8f7c07d",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/728a7e4dd4831770_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3309,
+          "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/728a7e4dd4831770_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3309,
+          "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_retained_host_binding_source.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ec5a0043060e2e3b8e0fa60d203f4a7c47fe497d",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/940ab4f56633de99_git_reports_cc12_allocation_stats_retained_host_binding_source.json",
+          "bytes": 2995465,
+          "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/940ab4f56633de99_working_reports_cc12_allocation_stats_retained_host_binding_source.json",
+          "bytes": 2995465,
+          "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "ec5fa892985e975f5938f9b484b05c7bfad1bd43",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/689915fd4f265cb9_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+          "bytes": 11157,
+          "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/689915fd4f265cb9_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+          "bytes": 11157,
+          "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "f5044536549ea82f84fdee2241ae972907098c47",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0b26a744a3dd5b48_git_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+          "bytes": 3499742,
+          "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0b26a744a3dd5b48_working_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+          "bytes": 3499742,
+          "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "136b381982b425b18daf6fa1f0cd2b20b7cdb252",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/ce42211b53f50bfa_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4218,
+          "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/ce42211b53f50bfa_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4218,
+          "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_startup_source.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "2a351a5d66635e74f2803a613a34fe840a4dfc0f",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/5e6fbf28a9f52ad9_git_reports_cc12_allocation_stats_startup_source.json",
+          "bytes": 4912288,
+          "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/5e6fbf28a9f52ad9_working_reports_cc12_allocation_stats_startup_source.json",
+          "bytes": 4912288,
+          "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "8631c0423d18d460e8169782afcfd53d6fa262f6",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/69ffaf5c2c09425f_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+          "bytes": 8971,
+          "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/69ffaf5c2c09425f_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+          "bytes": 8971,
+          "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_startup_source_primary_review.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "692b0fecebd72afd2dd1ced4352b58331810d954",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2822efd1d6f7f0b8_git_reports_cc12_allocation_stats_startup_source_primary_review.json",
+          "bytes": 11077508,
+          "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2822efd1d6f7f0b8_working_reports_cc12_allocation_stats_startup_source_primary_review.json",
+          "bytes": 11077508,
+          "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "1da6f50d738b17d94794562e980c36d52251babe",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2dc2693e7bb32eca_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3911,
+          "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2dc2693e7bb32eca_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 3911,
+          "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "8f0853f24b1f8494df800dd979ad7bcd56dee6c9",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/29a1c549a58f6de4_git_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+          "bytes": 137087,
+          "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/29a1c549a58f6de4_working_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+          "bytes": 137087,
+          "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "d2240890ee47afaacec728ade947a9cf677db970",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/ec73694426956ffc_git_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+          "bytes": 13677,
+          "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/ec73694426956ffc_working_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+          "bytes": 13677,
+          "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_process_cell_binding_readiness.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "248d8682e71d5a716ddbb03a89b6c0810819eee8",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/7876d8123a7c3315_git_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+          "bytes": 3156920,
+          "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/7876d8123a7c3315_working_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+          "bytes": 3156920,
+          "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "621dc27a3d048a331ea2359ccaf1df85673bf43b",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/a97f8fe9b81e2289_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+          "bytes": 12688,
+          "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/a97f8fe9b81e2289_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+          "bytes": 12688,
+          "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_allocation_stats_lifecycle_body_gate.json",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "22d9e4bd6d763ea38ae3bcf6a72456424652e770",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/4816e8afedf7407b_git_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+          "bytes": 33375,
+          "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/4816e8afedf7407b_working_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+          "bytes": 33375,
+          "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "git_blob": "3ae098a8daefb6654d2bbd10900b7cafa39c70b2",
+        "git": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/9051a84edd7ef671_git_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+          "bytes": 3913,
+          "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+        },
+        "working": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/9051a84edd7ef671_working_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+          "bytes": 3913,
+          "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+        },
+        "LF_equal": true
+      }
+    ],
+    "prior_reader_whole_reports": [
+      {
+        "source_path": "docs/CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+        "commit": "2929fe387ab428d488a38baa847185a1f8246a33",
+        "git_blob": "8ed62cd7d8c1904e745197e92f1dcecf7c05ec7c",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2372135299dfafe3_prior_docs_CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+          "bytes": 9211,
+          "sha256": "2372135299dfafe386b129d4fc8725163c0c590cf49b6d4c5b9186d80a23e53e"
+        }
+      },
+      {
+        "source_path": "reports/cc12_script_orders_lua_command_owner_binding_review.json",
+        "commit": "2929fe387ab428d488a38baa847185a1f8246a33",
+        "git_blob": "0dd0842577e0ddb096c68a4055c38af0fa26d8ed",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/d16c83b636f5c359_prior_reports_cc12_script_orders_lua_command_owner_binding_review.json",
+          "bytes": 98854,
+          "sha256": "d16c83b636f5c359bce80c38ce1bbaaca247759267f9dd382beee670a5af08f5"
+        }
+      }
+    ],
+    "source_queries": [
+      {
+        "label": "gc_gate_all",
+        "regex": "gc_gate_predicate_0109cefc_vtable0c",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 135,
+            "text": "    virtual bool gc_gate_predicate_0109cefc_vtable0c() = 0;"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 818,
+            "text": "    bool gc_gate_predicate_0109cefc_vtable0c() override;"
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 127,
+            "text": "        if (host.gc_gate_predicate_0109cefc_vtable0c()) { // 00929568, AL tested at 0092956A"
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 201,
+            "text": "    bool gc_gate_predicate_0109cefc_vtable0c() override {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4361,
+            "text": "bool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {"
+          }
+        ]
+      },
+      {
+        "label": "predicate_target_mentions",
+        "regex": "(?i)be2740",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": []
+      },
+      {
+        "label": "derived_profile_mentions",
+        "regex": "(?i)d685f4",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 25,
+            "text": "// receiver, RET. Only after base success write D685F4, DWORD 40000000 at +4"
+          },
+          {
+            "path": "include/bsp/native_singleton_destruction.hpp",
+            "line": 232,
+            "text": "    // D685E0/D685F4 require the same retained manager/statistics cells as their"
+          },
+          {
+            "path": "include/bsp/platform_window.hpp",
+            "line": 231,
+            "text": "    const void* vtable{};            // +0, native &PTR_FUN_00d685f4"
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 86,
+            "text": "    *static_cast<volatile Word*>(actual_receiver) = 0x00d685f4u;"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 290,
+            "text": "    case 0x00d685f4:"
+          }
+        ]
+      },
+      {
+        "label": "actual_stats_cell_mentions",
+        "regex": "(?i)allocation_stats_0109cefc|actual_allocation_stats_0109cefc",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_native_string_process.hpp",
+            "line": 18,
+            "text": "    void* volatile& allocation_stats_0109cefc() noexcept;"
+          },
+          {
+            "path": "include/bsp/game_native_string_process.hpp",
+            "line": 41,
+            "text": "    void* volatile allocation_stats_0109cefc_{};"
+          },
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 13,
+            "text": "    void* volatile& actual_allocation_stats_0109cefc;"
+          },
+          {
+            "path": "include/bsp/native_resource_load_cache.hpp",
+            "line": 24,
+            "text": "    void* volatile& actual_allocation_stats_0109cefc;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 24,
+            "text": "          game_native_string_process().allocation_stats_0109cefc()} {"
+          },
+          {
+            "path": "src/game_native_string_process.cpp",
+            "line": 8,
+            "text": "void* volatile& GameNativeStringProcess::allocation_stats_0109cefc() noexcept {"
+          },
+          {
+            "path": "src/game_native_string_process.cpp",
+            "line": 9,
+            "text": "    return allocation_stats_0109cefc_;"
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 69,
+            "text": "    context.actual_allocation_stats_0109cefc = actual_receiver;"
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 72,
+            "text": "    void* const current_stats = context.actual_allocation_stats_0109cefc;"
+          },
+          {
+            "path": "src/native_allocation_stats_lifecycle.cpp",
+            "line": 72,
+            "text": "    void* const current_stats = context.actual_allocation_stats_0109cefc;"
+          },
+          {
+            "path": "src/native_allocation_stats_lifecycle.cpp",
+            "line": 74,
+            "text": "    context.actual_allocation_stats_0109cefc = nullptr;"
+          },
+          {
+            "path": "src/native_resource_load_cache.cpp",
+            "line": 117,
+            "text": "        void* stats = context.actual_allocation_stats_0109cefc;"
+          },
+          {
+            "path": "src/native_resource_load_cache.cpp",
+            "line": 168,
+            "text": "        stats = context.actual_allocation_stats_0109cefc;"
+          }
+        ]
+      },
+      {
+        "label": "raw_stats_constructor_calls",
+        "regex": "construct_native_allocation_stats_(?:base_)?00be2",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 21,
+            "text": "void* construct_native_allocation_stats_base_00be2750("
+          },
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 27,
+            "text": "void* construct_native_allocation_stats_00be2900("
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1853,
+            "text": "            construct_native_allocation_stats_00be2900("
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 55,
+            "text": "void* construct_native_allocation_stats_base_00be2750("
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 83,
+            "text": "void* construct_native_allocation_stats_00be2900("
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 85,
+            "text": "    construct_native_allocation_stats_base_00be2750(actual_receiver, context);"
+          }
+        ]
+      },
+      {
+        "label": "stats_context_bindings",
+        "regex": "allocation_stats_context\\(|allocation_stats_context_|deletion_bindings_\\.allocation_stats",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 88,
+            "text": "    NativeAllocationStatsConstructorContext& allocation_stats_context() noexcept;"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 141,
+            "text": "    NativeAllocationStatsConstructorContext allocation_stats_context_;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1854,
+            "text": "                captured_stats, singletons_->allocation_stats_context());"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 23,
+            "text": "      allocation_stats_context_{manager_publication_01090aa0_,"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 31,
+            "text": "    deletion_bindings_.allocation_stats = &allocation_stats_context_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 43,
+            "text": "NativeAllocationStatsConstructorContext& GameSingletonHost::allocation_stats_context() noexcept {"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 44,
+            "text": "    return allocation_stats_context_;"
+          }
+        ]
+      },
+      {
+        "label": "semantic_stats_model",
+        "regex": "AllocationStatsState|construct_allocation_stats_00be2900",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 46,
+            "text": "// behavior are unproved. No current startup wiring, semantic AllocationStatsState"
+          },
+          {
+            "path": "include/bsp/platform_window.hpp",
+            "line": 230,
+            "text": "struct AllocationStatsState {"
+          },
+          {
+            "path": "include/bsp/platform_window.hpp",
+            "line": 235,
+            "text": "void construct_allocation_stats_00be2900(AllocationStatsState& state) noexcept;"
+          },
+          {
+            "path": "src/platform_window.cpp",
+            "line": 253,
+            "text": "void construct_allocation_stats_00be2900(AllocationStatsState& state) noexcept {"
+          }
+        ]
+      },
+      {
+        "label": "think_list_calls",
+        "regex": "run_entity_think_list_00929460",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 164,
+            "text": "EntityThinkRunSummary run_entity_think_list_00929460("
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 77,
+            "text": "EntityThinkRunSummary run_entity_think_list_00929460("
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 548,
+            "text": "    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5226,
+            "text": "    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,"
+          }
+        ]
+      },
+      {
+        "label": "command_calls",
+        "regex": "lua_run_string_006b8ad0",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 139,
+            "text": "    virtual void lua_run_string_006b8ad0(const char* chunk, int mode) = 0;"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 819,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override;"
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 128,
+            "text": "            host.lua_run_string_006b8ad0(kCollectGarbageChunk, kCollectGarbageRunMode);"
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 205,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4367,
+            "text": "void GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {"
+          }
+        ]
+      },
+      {
+        "label": "orders_construction",
+        "regex": "make_unique<GameScriptOrdersHost>|new GameScriptOrdersHost|GameScriptOrdersHost::GameScriptOrdersHost",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 2219,
+            "text": "            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 459,
+            "text": "GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)"
+          }
+        ]
+      },
+      {
+        "label": "cached_machine_writes",
+        "regex": "machine_state_\\s*=",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 3166,
+            "text": "    machine_state_ = state;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4493,
+            "text": "    if (machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4700,
+            "text": "    if (narrative_callback_2c_.empty() || machine_state_ == nullptr) {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4829,
+            "text": "    if (!kEntityDeadBound || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4920,
+            "text": "    if (pads == nullptr || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4982,
+            "text": "    if (!kMissionEndBound || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5323,
+            "text": "    if (machine_state_ == nullptr) return;"
+          }
+        ]
+      },
+      {
+        "label": "startup_phase_and_failure",
+        "regex": "allocation_stats_phase_|exit_if_allocation_stats_failed",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts.hpp",
+            "line": 677,
+            "text": "    void exit_if_allocation_stats_failed() noexcept;"
+          },
+          {
+            "path": "include/bsp/game_hosts.hpp",
+            "line": 754,
+            "text": "    AllocationStatsPhase allocation_stats_phase_{AllocationStatsPhase::unattempted};"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1325,
+            "text": "void GameStartupHost::exit_if_allocation_stats_failed() noexcept {"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1326,
+            "text": "    if (allocation_stats_phase_ != AllocationStatsPhase::failed &&"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1327,
+            "text": "        allocation_stats_phase_ != AllocationStatsPhase::constructing) return;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1571,
+            "text": "    exit_if_allocation_stats_failed();"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1685,
+            "text": "    exit_if_allocation_stats_failed();"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1839,
+            "text": "    if (allocation_stats_phase_ != AllocationStatsPhase::unattempted)"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1841,
+            "text": "    allocation_stats_phase_ = AllocationStatsPhase::allocating;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1846,
+            "text": "        allocation_stats_phase_ = AllocationStatsPhase::allocation_failed;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1852,
+            "text": "            allocation_stats_phase_ = AllocationStatsPhase::constructing;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1856,
+            "text": "            allocation_stats_phase_ = AllocationStatsPhase::skipped;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1863,
+            "text": "        allocation_stats_phase_ = AllocationStatsPhase::failed;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1867,
+            "text": "    allocation_stats_phase_ = captured_stats ? AllocationStatsPhase::handed_over"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2370,
+            "text": "    exit_if_allocation_stats_failed();"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2471,
+            "text": "    exit_if_allocation_stats_failed();"
+          }
+        ]
+      }
+    ],
+    "exact_excerpts": [
+      {
+        "label": "base_constructor",
+        "source_path": "src/native_allocation_stats_constructor.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 55,
+        "last_line": 81,
+        "text": "void* construct_native_allocation_stats_base_00be2750(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context) {\n    BaseCleanup base_cleanup{actual_receiver}; // Source state0 before profile.\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d685e0u;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    NativeGuard guard{0x00ce37fcu, section};\n    if (section) {\n        EnterCriticalSection(section);\n        depth(section) = depth(section) + 1u;\n    }\n    GuardCleanup guard_cleanup{guard}; // Source state1 after enter/increment.\n    context.actual_allocation_stats_0109cefc = actual_receiver;\n    void* const manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    void* const current_stats = context.actual_allocation_stats_0109cefc;\n    register_native_singleton_object_00bd0c30(manager, nullptr, current_stats);\n    if (section) {\n        depth(section) = depth(section) - 1u;\n        LeaveCriticalSection(section);\n    }\n    guard_cleanup.armed = false;\n    base_cleanup.armed = false;\n    return actual_receiver;\n}\n",
+        "utf8_sha256": "2914182e43e470fd0b50ab3306b1b71b21824f780ade05c369b63a1f4dd625b8"
+      },
+      {
+        "label": "derived_constructor",
+        "source_path": "src/native_allocation_stats_constructor.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 83,
+        "last_line": 93,
+        "text": "void* construct_native_allocation_stats_00be2900(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context) {\n    construct_native_allocation_stats_base_00be2750(actual_receiver, context);\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d685f4u;\n    *reinterpret_cast<volatile Word*>(static_cast<std::byte*>(actual_receiver) + 4)\n        = 0x40000000u;\n    *reinterpret_cast<volatile Word*>(static_cast<std::byte*>(actual_receiver) + 8)\n        = 0u;\n    return actual_receiver;\n}\n} // namespace bsp\n",
+        "utf8_sha256": "b6dfcec746749302550a2470b51beda952c284674d79a840797fc7cfcc57bbbb"
+      },
+      {
+        "label": "constructor_context_contract",
+        "source_path": "include/bsp/native_allocation_stats_constructor.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 9,
+        "last_line": 29,
+        "text": "// Borrow distinct actual publication cells. The bindings stay fixed throughout\n// the call; their volatile values are read at the native observation points.\nstruct NativeAllocationStatsConstructorContext {\n    void* volatile& actual_manager_01090aa0;\n    void* volatile& actual_allocation_stats_0109cefc;\n};\n\n// Complete BE2750[145]: native ECX receiver, no stack arguments, EAX original\n// receiver, RET. Arm base cleanup before D685E0; capture the first manager's\n// +10h section, enter/increment, then arm guard cleanup and publish. Resolve\n// the second manager before reloading CURRENT stats for BD0C30 registration.\n// Normal release uses the first captured section and stays armed through Leave.\nvoid* construct_native_allocation_stats_base_00be2750(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context);\n\n// Complete BE2900[32]: native ECX receiver, no stack arguments, EAX original\n// receiver, RET. Only after base success write D685F4, DWORD 40000000 at +4\n// and zero at +8. The 40000000 word is preserved as raw bits, not a float cast.\nvoid* construct_native_allocation_stats_00be2900(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context);\n\n",
+        "utf8_sha256": "c537c8d34b1a607d5656810f87eb81810f440b8204f50dd3d8e920b6e41b7788"
+      },
+      {
+        "label": "constructor_raw_lifetime",
+        "source_path": "include/bsp/native_allocation_stats_constructor.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 30,
+        "last_line": 48,
+        "text": "// The caller owns valid, four-byte-aligned writable 12-byte receiver storage\n// with valid uint32_t accesses at +0/+4/+8, and retains its lifetime. Receiver,\n// context and both publication cells are disjoint. Actual managers, their raw\n// vector fields, and captured section storage (Win32 section plus DWORD +18h)\n// remain valid through every provider call and required cleanup. No concurrent\n// conflicting accesses or provider-induced storage invalidation are supported.\n//\n// Source C++ escape before guard arming invokes genuine 00412430; after arming,\n// genuine 00411EE0 runs first, then 00412430. A second escaping C++ cleanup\n// exception terminates. Publication and completed registration effects remain:\n// no rollback, retry, unregister, global clear or receiver allocation/free.\n// The genuine manager getter retains its existing lazy manager creation policy.\n// Profile DWORDs retain original identity, not callable rebuilt virtual tables.\n//\n// These ordinary Source APIs add explicit context arguments; original register\n// ABI, private EH spills/FH3, hardware-fault cleanup, OS registration and cookie\n// behavior are unproved. No current startup wiring, semantic AllocationStatsState\n// replacement, virtual dispatch, actual owner/delete policy or gameplay proof.\n} // namespace bsp\n",
+        "utf8_sha256": "15b819b57bb606716a4fb1d503e18a9c59cbba5bb59adf900818c66620f64428"
+      },
+      {
+        "label": "base_destructor",
+        "source_path": "src/native_allocation_stats_lifecycle.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 55,
+        "last_line": 85,
+        "text": "\nvoid destroy_native_allocation_stats_base_00be27f0(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context) {\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d685e0u;\n    BaseCleanup base_cleanup{actual_receiver}; // Source state0 after profile.\n    void* const first_manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    NativeGuard guard{0x00ce37fcu, section};\n    if (section) {\n        EnterCriticalSection(section);\n        depth(section) = depth(section) + 1u;\n    }\n    GuardCleanup guard_cleanup{guard}; // Source state1 after enter/increment.\n    void* const manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    void* const current_stats = context.actual_allocation_stats_0109cefc;\n    unregister_native_singleton_object_00bcfca0(manager, nullptr, current_stats);\n    context.actual_allocation_stats_0109cefc = nullptr;\n    if (section) {\n        depth(section) = depth(section) - 1u;\n        LeaveCriticalSection(section);\n    }\n    destroy_native_generic_singleton_base_00412430(actual_receiver);\n    guard_cleanup.armed = false;\n    base_cleanup.armed = false;\n}\n\nvoid* delete_native_allocation_stats_base_00be2890(\n    void* actual_receiver, std::uint32_t flags,\n",
+        "utf8_sha256": "48f09d90c1c5fb1b156bceebfc4071101a944556e7f7bbde4f745a698b21b1e0"
+      },
+      {
+        "label": "deleting_destructors",
+        "source_path": "src/native_allocation_stats_lifecycle.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 84,
+        "last_line": 99,
+        "text": "void* delete_native_allocation_stats_base_00be2890(\n    void* actual_receiver, std::uint32_t flags,\n    NativeAllocationStatsConstructorContext& context) {\n    destroy_native_allocation_stats_base_00be27f0(actual_receiver, context);\n    if ((flags & 1u) != 0) singleton_lifetime_free(actual_receiver);\n    return actual_receiver;\n}\n\nvoid* delete_native_allocation_stats_00be2930(\n    void* actual_receiver, std::uint32_t flags,\n    NativeAllocationStatsConstructorContext& context) {\n    destroy_native_allocation_stats_base_00be27f0(actual_receiver, context);\n    if ((flags & 1u) != 0) singleton_lifetime_free(actual_receiver);\n    return actual_receiver;\n}\n} // namespace bsp\n",
+        "utf8_sha256": "098b525cc2bc9910f07cc637c786bac508520412bd7c4046f55d5cf113ae921c"
+      },
+      {
+        "label": "lifecycle_contract",
+        "source_path": "include/bsp/native_allocation_stats_lifecycle.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 24,
+        "last_line": 43,
+        "text": "void* delete_native_allocation_stats_00be2930(\n    void* actual_receiver, std::uint32_t flags,\n    NativeAllocationStatsConstructorContext& context);\n\n// Reuse the constructor's borrowed actual cells and raw-storage lifetime,\n// alignment, disjointness and manager/section validity contract. Destruction\n// does not change receiver +4/+8. The current publication may differ from the\n// receiver, and the two manager observations need not return the same pointer.\n// A deleting call requires receiver storage owned by singleton_lifetime_free.\n//\n// Source C++ escape before guard arming runs genuine 00412430; after arming,\n// genuine 00411EE0 receives the actual local eight-byte guard, then 00412430\n// runs if guard cleanup returns. A second escaping C++ cleanup exception\n// terminates. Completed unregister/clear effects remain. No retry, rollback,\n// failure-path publication clear, or receiver free occurs. The existing\n// manager getter retains its lazy manager allocation policy.\n//\n// These Source APIs add explicit context arguments. Native EH action/frame\n// evidence establishes a conditional schedule, not these APIs' original\n// register ABI, private spills, OS delivery, FH3, cookie or hardware-fault\n",
+        "utf8_sha256": "7ff707ecc749bf708b7b5e8bda18b1c60b6acd417cc623cb726d0594bf0ae9a0"
+      },
+      {
+        "label": "actual_process_cell_header",
+        "source_path": "include/bsp/game_native_string_process.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 5,
+        "last_line": 18,
+        "text": "\n// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    // Actual pending-registry publication shares this retained process lifetime.\n    // Accessing the cell does not construct or register a registry owner.\n    void* volatile& pending_registry_00f878cc() noexcept;\n    // Permanent allocation-statistics publication; cell access creates no owner.\n    void* volatile& allocation_stats_0109cefc() noexcept;\n",
+        "utf8_sha256": "7edf772acde6a945d9442e953e442a03b99f6d52d26cf8099e098cf88ffac83a"
+      },
+      {
+        "label": "actual_process_cell_storage",
+        "source_path": "include/bsp/game_native_string_process.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 29,
+        "last_line": 47,
+        "text": "    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n    // Append after every established authority; do not reuse another raw8 owner.\n    void* volatile pending_registry_00f878cc_{};\n    void* volatile allocation_stats_0109cefc_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();\n} // namespace bsp::game\n",
+        "utf8_sha256": "2882de9e4120b4d3864bb8a521439a429b740fa284c63ba1548661c3e24f1422"
+      },
+      {
+        "label": "actual_process_cell_body",
+        "source_path": "src/game_native_string_process.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 8,
+        "last_line": 10,
+        "text": "void* volatile& GameNativeStringProcess::allocation_stats_0109cefc() noexcept {\n    return allocation_stats_0109cefc_;\n}\n",
+        "utf8_sha256": "9a1db25a7816e69bac57a0e19b4a339635d943766b75af03ebce23d79361e1bc"
+      },
+      {
+        "label": "process_owner_retention",
+        "source_path": "src/game_native_string_process.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 20,
+        "last_line": 23,
+        "text": "GameNativeStringProcess& game_native_string_process() {\n    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n",
+        "utf8_sha256": "2291b113269fe10c2ace5b31030fd15d0e677e863ae396f4eb57b791d6f86dc3"
+      },
+      {
+        "label": "retained_host_binding",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 16,
+        "last_line": 31,
+        "text": "\nGameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()),\n      allocation_stats_context_{manager_publication_01090aa0_,\n          game_native_string_process().allocation_stats_0109cefc()} {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n    deletion_bindings_.allocation_stats = &allocation_stats_context_;\n",
+        "utf8_sha256": "dedcf6010d59c862972f0622c77071f965a2e52fb2b4a5c9bf3f6b125455c1e7"
+      },
+      {
+        "label": "host_context_accessor",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 33,
+        "last_line": 45,
+        "text": "\nGameSingletonHost::~GameSingletonHost() {\n    // Normal WinMain shutdown has already drained this owner. All publication\n    // cells and source bindings remain valid through this fallback call.\n    shutdown();\n}\n\nSoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {\n    return SoundLifetimeAccess(manager_publication_01090aa0_);\n}\nNativeAllocationStatsConstructorContext& GameSingletonHost::allocation_stats_context() noexcept {\n    return allocation_stats_context_;\n}\n",
+        "utf8_sha256": "91891b4a0c8e993c0b25e7d09f7616de005e7bba36b9306f2633ba462a10c3cf"
+      },
+      {
+        "label": "raw_startup_construction",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 1839,
+        "last_line": 1869,
+        "text": "    if (allocation_stats_phase_ != AllocationStatsPhase::unattempted)\n        throw std::logic_error(\"application allocation stats construction cannot be retried\");\n    allocation_stats_phase_ = AllocationStatsPhase::allocating;\n    void* captured_stats = nullptr;\n    try {\n        captured_stats = singleton_lifetime_allocate({SingletonAllocationKind::object, 12, 12});\n    } catch (...) {\n        allocation_stats_phase_ = AllocationStatsPhase::allocation_failed;\n        throw; // No receiver returned and no constructor cleanup obligation.\n    }\n    bool clock_publication_was_null = false;\n    try {\n        if (captured_stats) {\n            allocation_stats_phase_ = AllocationStatsPhase::constructing;\n            construct_native_allocation_stats_00be2900(\n                captured_stats, singletons_->allocation_stats_context());\n        } else {\n            allocation_stats_phase_ = AllocationStatsPhase::skipped;\n        }\n        // 73D480 compares AB0 before 73D486 retires caller state 0. Carry\n        // this one volatile observation into the following clock decision.\n        // Ordinary C++ does not establish native hardware-fault/FH3 delivery.\n        clock_publication_was_null = clock_publication_01090ab0_ == nullptr;\n    } catch (...) {\n        allocation_stats_phase_ = AllocationStatsPhase::failed;\n        if (captured_stats) singleton_lifetime_free(captured_stats);\n        throw; // Preserve all callee publication and registration effects.\n    }\n    allocation_stats_phase_ = captured_stats ? AllocationStatsPhase::handed_over\n                                            : AllocationStatsPhase::skipped;\n    log_.implemented(\"Phase 0 construct_allocation_stats\", \"00be2900\");\n",
+        "utf8_sha256": "cf60656b5aebaddc9dcae8f1e4dd72095d39a90cab19fd1b104a9057395b4b6e"
+      },
+      {
+        "label": "startup_failure_policy",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 1325,
+        "last_line": 1334,
+        "text": "void GameStartupHost::exit_if_allocation_stats_failed() noexcept {\n    if (allocation_stats_phase_ != AllocationStatsPhase::failed &&\n        allocation_stats_phase_ != AllocationStatsPhase::constructing) return;\n    try {\n        log_.note(\"raw allocation stats construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit\");\n        log_.close();\n    } catch (...) {\n        std::fputs(\"bsp_game: failed allocation stats construction requires process exit\\n\", stderr);\n        std::fflush(stderr);\n    }\n",
+        "utf8_sha256": "8a905477bf01ec8fd2650dbb1e26526a4b3bf6008adff2416a894838948c6045"
+      },
+      {
+        "label": "stats_profile_deletion_dispatch",
+        "source_path": "src/native_singleton_destruction.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 283,
+        "last_line": 297,
+        "text": "    case 0x00d685e0:\n        if (bindings.allocation_stats != nullptr) {\n            delete_native_allocation_stats_base_00be2890(\n                owner, flags, *bindings.allocation_stats);\n            return;\n        }\n        break;\n    case 0x00d685f4:\n        if (bindings.allocation_stats != nullptr) {\n            delete_native_allocation_stats_00be2930(\n                owner, flags, *bindings.allocation_stats);\n            return;\n        }\n        break;\n    case 0x00ce3818:\n",
+        "utf8_sha256": "73600f1acecd3f4991cb3beec1c4860aa44ddb8e8c6ba9c28353ee7589d57c49"
+      },
+      {
+        "label": "semantic_model_header",
+        "source_path": "include/bsp/platform_window.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 227,
+        "last_line": 235,
+        "text": "// 00be2900, __fastcall(ECX=this), returns this, RET. 0xc-byte singleton\n// published into DAT_0109cefc by base 00be2750. Read by the allocation report\n// 00be3fd0, which prints field +8 as \"Alloc at startup:%8dK\".\nstruct AllocationStatsState {\n    const void* vtable{};            // +0, native &PTR_FUN_00d685f4\n    std::uint32_t budget{};          // +4, native constant 0x40000000\n    std::uint32_t startup_allocated{}; // +8\n};\nvoid construct_allocation_stats_00be2900(AllocationStatsState& state) noexcept;\n",
+        "utf8_sha256": "96328e25da13378be812a375ac605bc92f2a6d6784ae57fec68ba7c774f604a0"
+      },
+      {
+        "label": "semantic_model_constructor",
+        "source_path": "src/platform_window.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 253,
+        "last_line": 258,
+        "text": "void construct_allocation_stats_00be2900(AllocationStatsState& state) noexcept {\n    // Base 00be2750 publishes the object into DAT_0109cefc first.\n    state.vtable = nullptr;\n    state.budget = 0x40000000u;\n    state.startup_allocated = 0;\n}\n",
+        "utf8_sha256": "3326bb06ab7dd0326a372c1fb532a20685780924db1bb3893e6d3d9d49be3aa8"
+      },
+      {
+        "label": "entity_think_gate_call",
+        "source_path": "src/entity_think_dispatch.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 121,
+        "last_line": 139,
+        "text": "\n    // 3. 00929542-0092958B. The refill and the collection happen after the walk, so\n    //    every untimed think of this call and the collection share one expiry.\n    if (script_countdown_expired(countdown)) {\n        summary.countdown_expired = true;\n        countdown = script_countdown_refilled(countdown);\n        if (host.gc_gate_predicate_0109cefc_vtable0c()) { // 00929568, AL tested at 0092956A\n            host.lua_run_string_006b8ad0(kCollectGarbageChunk, kCollectGarbageRunMode);\n            summary.garbage_collected = true;\n        }\n    }\n\n    // 4. 0092958D-009295A1: splice, then clear. A registration made during this call\n    //    first thinks on the next one.\n    summary.pending_spliced = pending.nodes.size();\n    host.splice_pending_into_live_00928380(live, pending);\n    host.clear_pending_00928330(pending);\n    return summary;\n}\n",
+        "utf8_sha256": "c359a4de1c9849634f5e40b0db34586a53623486f01f7d6802263b33f9695079"
+      },
+      {
+        "label": "entity_think_abi_contract",
+        "source_path": "include/bsp/entity_think_dispatch.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 132,
+        "last_line": 139,
+        "text": "\n    // 00929568, [0109CEFC]->vtable[+0Ch](), byte result tested at 0092956A. The\n    // predicate's body was not read, so this is named by slot and not by a verb.\n    virtual bool gc_gate_predicate_0109cefc_vtable0c() = 0;\n\n    // 00929588, BSP_LuaMachine_RunString(machine, \"collectgarbage()\", 0, 0, 2) on\n    // *(*(00E188A8)+1A08h)+4h, the mission Lua host's machine.\n    virtual void lua_run_string_006b8ad0(const char* chunk, int mode) = 0;\n",
+        "utf8_sha256": "193da8410498a8e7e3525d82a05312ae85c41e0c1fa5e114c46b49d2ba949ec3"
+      },
+      {
+        "label": "orders_false_gate",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 4360,
+        "last_line": 4369,
+        "text": "\nbool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {\n    // The predicate's body was not read by the packet that recovered the walk, and\n    // this process has no such object. A false answer only skips collectgarbage().\n    return false;\n}\n\nvoid GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {\n    static_cast<void>(chunk);\n    static_cast<void>(mode);\n",
+        "utf8_sha256": "7ea503f28990a859480c4cb61f1cccd039a70649211cabc0683bc60140c53b6e"
+      },
+      {
+        "label": "parallel_false_gate",
+        "source_path": "src/game_hosts_ready.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 201,
+        "last_line": 209,
+        "text": "    bool gc_gate_predicate_0109cefc_vtable0c() override {\n        log_.unimplemented(\"EntityThink::gc_gate_predicate\", \"0109cefc+vtable0c\");\n        return false;\n    }\n    void lua_run_string_006b8ad0(const char* chunk, int mode) override {\n        static_cast<void>(chunk);\n        static_cast<void>(mode);\n        log_.unimplemented(\"EntityThink::collect_garbage\", \"006b8ad0\");\n    }\n",
+        "utf8_sha256": "97c10a8ede2c7497d81ebf0afed3b83f68e5d2cf1f80c4062f76b862eeee044e"
+      },
+      {
+        "label": "orders_dispatch_cache",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 3154,
+        "last_line": 3167,
+        "text": "\nint GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,\n    int argument_count) {\n    const ScriptOrderBinding* binding = find_binding(binding_name);\n    if (binding == nullptr) return 0;\n    // CreateScript runs the named global inside its own body, and that global\n    // calls further bindings, so a dispatch can re-enter this function. The three\n    // per-call fields are saved and restored rather than cleared at the end.\n    lua_State* const outer_state = state_;\n    const int outer_argument_count = argument_count_;\n    GameScriptOrderRow* const outer_row = row_;\n    state_ = state;\n    machine_state_ = state;\n    argument_count_ = argument_count;\n",
+        "utf8_sha256": "365104ee7a3c7d5922fb401a29b25a68d2e4cc2fef23338eed0bd82beecfe59c"
+      },
+      {
+        "label": "frame_owns_orders_borrows_lua",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 215,
+        "last_line": 235,
+        "text": "\n    ~Impl() { release_units(); }\n\n    void release_units() noexcept {\n        // HUD persists across frames; Lua persists until after this frame dies.\n        // Release every outward borrow before destroying the canonical slots.\n        if (hud != nullptr && units != nullptr) hud->detach_world_2k();\n        lua.attach_script_orders(nullptr);\n        lua.attach_units_hooks(nullptr);\n        if (step_subsystems != nullptr) step_subsystems->attach_units(nullptr);\n        if (units != nullptr) units->set_ship_ai(nullptr);\n        ship_ai.reset();\n        script_orders.reset();\n        world_host.reset();\n        units.reset();\n    }\n\n    GameHostLog& log;\n    GameVfsHost& vfs;\n    GameMissionLuaHost& lua;\n    GameObserverRuntime* observer_runtime{nullptr};\n",
+        "utf8_sha256": "f2f0d3ce90f7164ebc62bd9f62626cfb2751fd46f615552b36a171b2a5c2dcf2"
+      },
+      {
+        "label": "frame_orders_construction",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 2216,
+        "last_line": 2237,
+        "text": "            // Milestone 2m: with the slots built, the eight binding bodies\n            // src/lua_binding_navigator.cpp reconstructs can run over the\n            // created instances instead of being counted as records.\n            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,\n                *host.units);\n            for (const GameSceneMarkerSeed& marker : markers) {\n                // Packet cc9_building_pad_model: the class id lets the pad model\n                // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).\n                host.script_orders->register_scene_marker(marker.id, marker.name,\n                    marker.position, marker.class_id);\n                host.units->register_scene_marker_frame(marker.id, marker.world);\n                if (!host.helm_orders.empty()) {\n                    Impl::HelmMarker named;\n                    named.name = marker.name;\n                    named.position[0] = marker.position[0];\n                    named.position[1] = marker.position[1];\n                    named.position[2] = marker.position[2];\n                    host.helm_markers.push_back(named);\n                }\n            }\n            host.lua.attach_script_orders(host.script_orders.get());\n            // Milestone 2n: the ship AI controller family at 00d21598 over the\n",
+        "utf8_sha256": "d3b703a283bd4043506c5406fd0d8323041c18440a6698d1c4296f052d909976"
+      },
+      {
+        "label": "outer_owner_member_order",
+        "source_path": "src/game_hosts_mission.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 383,
+        "last_line": 389,
+        "text": "    // Key by the actual scene path; the semantic side_blocks vector still\n    // lacks resolved Party/Race and must not imply a zero participant count.\n    std::map<std::string, std::int32_t> participant_scene_counts;\n    std::unique_ptr<GameMissionLuaHost> lua;\n    GameObserverRuntime* observer_runtime{nullptr};\n    std::unique_ptr<GameMissionFrameHost> frame_host;\n    GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost\n",
+        "utf8_sha256": "6fd684d1daccaa8fed423dd286254bbfefd934fb64cb603bfef79499331b6a54"
+      },
+      {
+        "label": "outer_owner_replacement",
+        "source_path": "src/game_hosts_mission.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 1741,
+        "last_line": 1752,
+        "text": "    // The previous frame and its children borrow the previous Lua owner.\n    // Destroy those borrowers before replacing that owner on a later load.\n    frame_host.reset();\n    lua = std::make_unique<GameMissionLuaHost>(log, vfs);\n    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,\n        profiler, language, hud);\n    if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);\n    // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;\n    // this process reaches its first mission here, so the machine is built now\n    // and kept for the rest of the run.\n    lua->start_machine_00884be0();\n    // Milestone 2g: game+2198h, the key the record commit writes under, and the\n",
+        "utf8_sha256": "7415ba7a517fa4cb9e910ec5c9811b2e8539deb89cca04baa2f12fb786d184c4"
+      },
+      {
+        "label": "machine_owns_state",
+        "source_path": "include/bsp/game_hosts_lua.hpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 1406,
+        "last_line": 1416,
+        "text": "    GameHostLog& log_;\n    GameVfsHost& vfs_;\n    // Declared before the adapter that borrows it: the adapter keeps a\n    // reference to this list for its whole life.\n    std::vector<std::string> content_suffixes_; // manager +48h/+4Ch, empty here\n    std::unique_ptr<bsp::VfsLocaleRuntime> resources_;\n    lua_State* state_{nullptr};\n    OpenScript script_;\n    std::string phase_;\n    // Packet cc9_stage_init_chunk_errors: the last luaL_loadbuffer / lua_pcall\n    // status and chunk name, so lua_tolstring_at_top reports an error only after\n",
+        "utf8_sha256": "cd7e19f2b50b19057cfcdce56245810cd7a576101a00ffc3229cbdbf65ecd29e"
+      },
+      {
+        "label": "machine_state_creation",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 7816,
+        "last_line": 7820,
+        "text": "void GameMissionLuaHost::create_state() {\n    state_ = luaL_newstate();\n    g_loadout_lua_state = state_;\n    log_.implemented(\"MissionLua::create_state\", \"006b8740\");\n}\n",
+        "utf8_sha256": "bd527b25025673f7541497fd115c36d4247c47c5e9abd17292e9f796ba3ea397"
+      },
+      {
+        "label": "machine_state_destruction",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 903,
+        "last_line": 919,
+        "text": "GameMissionLuaHost::~GameMissionLuaHost() {\n    if (g_exec_refusal_log == &log_) {\n        g_exec_refusal_log = nullptr;\n        bsp::g_lua_exec_refused_sink = nullptr;\n    }\n    if (g_class_arm_host == this) {\n        g_class_arm_host = nullptr;\n        script_orders_set_class_default_arm_reader(nullptr);\n        bsp::shipyard_set_create_unit(nullptr);\n    }\n    // The world walk holds a bare pointer to this host for the spawn drain.\n    bsp::set_spawn_queue_drain(nullptr);\n    if (state_ != nullptr) {\n        if (g_loadout_lua_state == state_) g_loadout_lua_state = nullptr;\n        lua_close(state_);\n        state_ = nullptr;\n    }\n",
+        "utf8_sha256": "df613d912b587fda2b45415559251a27c74304470340642661240da4b3a689fe"
+      },
+      {
+        "label": "prior_native_call_order",
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 119,
+        "last_line": 127,
+        "text": "     zeroed at `0092946F`/`00929536`, `JBE` skipping the call).\n3. After the walk, if `00F89A04 < 0`: refill it with `+= 3.0` and, when\n   `[0109CEFC]->vtable[+0Ch]()` returns a non-zero byte (`00929568 CALL EAX` /\n   `0092956A TEST AL,AL`), run `collectgarbage()` through\n   `BSP_LuaMachine_RunString(machine, \"collectgarbage()\", 0, 0, 2)` on\n   `*(*(00E188A8)+1A08h)+4h`, the mission Lua host's machine.\n4. Splice: `00928380(this = 00F89AB0, src = 00F89ABC)` appends a **new** live node for every\n   pending entity, then `00928330(this = 00F89ABC)` frees every pending node. A registration\n   made during step *n* therefore first thinks in step *n+1*, and a registration made during\n",
+        "utf8_sha256": "2a818c76e46d4c72f38581fe5d6b6ca6032588d8461e18f280f45f1438998341"
+      },
+      {
+        "label": "prior_native_gate_abi",
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 191,
+        "last_line": 196,
+        "text": "| `009294F5` | `00929150` | `run_entity_think_00929150` | entity | none | `RET` | untimed branch and `00F89A04 < 0` |\n| `0092952C` | `00BF65AC` | `free_think_node` | none | node | `__cdecl`, `ADD ESP,4` at `00929531` | entity ineligible |\n| `00929568` | `0109CEFC+vtable0Ch` | `gc_gate_predicate` | `[0109CEFC]` | none | byte in `AL` | `00F89A04 < 0` |\n| `00929588` | `006B8AD0` | `lua_run_string` | `*(*(00E188A8)+1A08h)+4h` | `\"collectgarbage()\", 0, 0, 2` | `RET 10h` | gate returned non-zero |\n| `00929597` | `00928380` | `splice_pending_into_live_00928380` | `00F89AB0` | `00F89ABC` | `RET 4` | always |\n| `009295A1` | `00928330` | `clear_pending_00928330` | `00F89ABC` | none | `RET` | always |\n",
+        "utf8_sha256": "4c5d240f59cb923a322b81fd046d51e1767b9759da5525e06a6f1903c632fefe"
+      },
+      {
+        "label": "historical_profile_identity",
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 36,
+        "last_line": 48,
+        "text": "The same listing installs handler `CC6A90` and changes native states from0 to1. Its handler/state-map/funclet cleanup evidence was not read or recovered here. A new Source implementation must establish the ordinary exception effects before claiming that a generic lock guard alone closes this constructor. The required destructor's publication-clear order, first/second manager captures, unregister argument and failure behavior remain unknown from the cached callee list alone.\n\nThe already-accepted `native_resource_load_cache_by.json` retains a 20-byte capture at `D685F4` with SHA-256 `4bf0902e7c6f450631022f5e37365b99efd2cb2fc47cef88a3f9072135ac9db5`:\n\n| Address/offset in that capture | Retained DWORD | Scope |\n| --- | --- | --- |\n| `D685F4 +0` | `BE2930` | Derived profile's scalar-deletion target; cached body export absent |\n| `D685F4 +4` | `BE2700` | Metric used by the load-cache; complete genuine Source exists |\n| `D685F4 +8` | `BE2720` | Historical allocation-report consumer; cached body export absent |\n| `D685F4 +C` | `BE2740` | Entity-think predicate slot; cached index has no function start here |\n| `D68604` / captured `+10` | `BE2AA0` | Contiguous fifth word, **not admitted as part of the allocation-stats table** |\n\nCapture width does not establish table extent. Cached `BE2AA0` metadata points to a PlatformBase unregister/free route, so this audit neither assigns it an allocation-stats virtual method nor expands the packet to that neighboring family. The base `D685E0` token is known from the constructor listing, but its actual profile entries are not established by the retained materials used here.\n",
+        "utf8_sha256": "97ef19fc1530a12f0d15e7aedd08da08da28e6f6d0c5b5a9035db3d4d372d626"
+      },
+      {
+        "label": "historical_gate_frontier",
+        "source_path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 72,
+        "last_line": 81,
+        "text": "| `D685E0` base profile / possible `BE2890` route | Base token retained; table entries not qualified. `BE2890` has metadata but no export. | Establish actual base slot0 and only then follow its actual target. `BE2890` is a candidate, not a proved profile binding. |\n| `BE2750` handler `CC6A90` and startup allocation-state cleanup | Normal listing retained; no new handler/data analysis allowed in this audit | Qualify required ordinary cleanup and publication ownership before wrapping with C++ exceptions or freeing an interrupted allocation. |\n| `BE2720` / `BE2740` | No exported `BE2720` body; `BE2740` is not a cached function start | Separate +8/report and +C/entity-think gates. They do not block a strictly scoped slot4 metric API once ownership is valid, and are not silently implemented. |\n\nThe smallest next useful packet is **bounded lifecycle evidence recovery**, not a new constant metric or cosmetic storage-only API. Candidate roots are `BE27F0` and `BE2930`, with the existing `BE2750/BE2900` normal evidence, the required `D685E0` deletion prefix, and only the constructor/caller cleanup evidence necessary to settle ownership on exceptions. Follow `BE2890` only if the actual base profile identifies it. Do not absorb neighboring PlatformBase code, arbitrary allocation reporting, entity-think traversal or the full load-cache graph. This is a proposed future scope; none of those new Native/data/handler reads were executed here.\n\nAfter that evidence closes, a separate Source packet can define an actual three-word stats storage/context, exact constructor/base/destructor/scalar-delete services, stable current-publication borrowing and retained same-manager deletion binding. The application owner should retain the publication/context and install genuine profile dispatch before any registration. It can then expose a narrow explicit construction/binding API; inserting its phase0 startup call and admitting actual cache consumers remain separate steps. The known `BE2700` adapter should be reused. No original binary ABI, FH3/SEH, CRT or full-game proof follows from that future ordinary Source API.\n\nCurrent entity-think adapters still return false through a documented semantic gap and do not read an actual stats object. That false answer is not a recovered `BE2740` implementation and is not used to close this audit's lifecycle or metric contract.\n\n",
+        "utf8_sha256": "d8f65a169d709fe5eb0a80068b6fb19a7f8671e37d68bd5c076d8933119c3db8"
+      },
+      {
+        "label": "historical_process_gate_frontier",
+        "source_path": "docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+        "first_line": 53,
+        "last_line": 59,
+        "text": "| `NativeResourceLoadCacheContext` / B80720 | Borrows a stats cell. A cache hit returns before stats reads. A miss reloads current stats/profile/slot4 twice and writes wrapping starting-minus-ending to current resource+40; no stats null gate or owner synthesis exists. |\n| Known metric adapter | Genuine BE2700 Source already returns its established 40000000 result. Unknown target values remain explicit other-provider calls. Do not replace this with a new constant callback. |\n| Profile table data | Cache code dereferences numeric profile+4 before dispatching the identity. The existing verified read-only data service and declared `D60000` application band cover the derived table. Retain that service through its consumers; this does not create callable Native vtables. No mapping or PE read was performed here. |\n| Particle/model paths | Raw particle resources and damageable class-model loading borrow an externally supplied cache context. `GameNativeParticleRuntime` retains that input and checks VFS and string/manager identities, but does not establish stats-cell identity or create an actual stats/cache owner. |\n| Phase0 semantic state | `run_initialize_phases` still uses a local `AllocationStatsState`. Its helper writes a null profile, budget and count; it does not perform raw publication/registration. |\n| Entity-think +C | Current adapters return false or record unimplemented through the abstract predicate. They do not read actual stats and are not recovered BE2740 behavior. |\n| Allocation report/+8 | Only descriptive BE3FD0/comment and semantic field initialization are present in the searched Source domain. No raw reporting implementation is established. |\n",
+        "utf8_sha256": "1206d39cfd01c72209ff53984dc61df52669939b266baddce3b12d9d0f78ea45"
+      }
+    ],
+    "prior_native_finite_records": {
+      "entity_think_steps": [
+        {
+          "step": 4,
+          "address": "00929568",
+          "native": "0109cefc+vtable0Ch",
+          "function": "00929460",
+          "name": "gc_gate_predicate",
+          "this": "[0109CEFC]",
+          "args": "none",
+          "ret": "byte in AL, tested at 0092956a",
+          "gate": "00F89A04 < 0; callee body not read, named by slot"
+        },
+        {
+          "step": 5,
+          "address": "00929588",
+          "native": "006b8ad0",
+          "function": "00929460",
+          "name": "lua_run_string",
+          "this": "*(*(00E188A8)+1A08h)+4h, the mission Lua machine",
+          "args": "\"collectgarbage()\" (00D19480), 0, 0, 2",
+          "ret": "RET 10h",
+          "gate": "gate predicate returned non-zero"
+        },
+        {
+          "step": 6,
+          "address": "00929597",
+          "native": "00928380",
+          "function": "00929460",
+          "name": "splice_pending_into_live",
+          "this": "00F89AB0",
+          "args": "00F89ABC",
+          "ret": "RET 4",
+          "gate": "always"
+        },
+        {
+          "step": 7,
+          "address": "009295a1",
+          "native": "00928330",
+          "function": "00929460",
+          "name": "clear_pending",
+          "this": "00F89ABC",
+          "args": "none",
+          "ret": "RET",
+          "gate": "always"
+        }
+      ],
+      "historical_derived_profile": {
+        "retained_report": "reports/native_resource_load_cache_by.json",
+        "address": "00d685f4",
+        "bytes": 20,
+        "hex": "3029be000027be002027be004027be00a02abe00",
+        "sha256": "4bf0902e7c6f450631022f5e37365b99efd2cb2fc47cef88a3f9072135ac9db5",
+        "retained_hex_rehashed_without_installed_image_read": true,
+        "qualified_slots": {
+          "+0": "00be2930",
+          "+4": "00be2700",
+          "+8": "00be2720",
+          "+c": "00be2740"
+        },
+        "neighbor_word": {
+          "address": "00d68604",
+          "target": "00be2aa0",
+          "admitted_as_stats_slot10": false
+        },
+        "capture_width_proves_table_extent": false
+      },
+      "qualification": "Whole accepted reports retained separately. No fresh caller, constructor, destructor, sibling +4/+8 metric or other-profile body queries; old frontier wording belongs to its old epoch."
+    },
+    "finite_Native": {
+      "binary_provenance": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "image": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/b682a82c52f81f95_original_image.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "image_base": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "virtual_bytes": 9306422,
+          "raw_bytes": 9310208,
+          "raw_offset": 4096
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "virtual_bytes": 1202980,
+          "raw_bytes": 1204224,
+          "raw_offset": 9314304
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "virtual_bytes": 2719452,
+          "raw_bytes": 65536,
+          "raw_offset": 10518528
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "virtual_bytes": 1630400,
+          "raw_bytes": 1634304,
+          "raw_offset": 10584064
+        }
+      ],
+      "profile": {
+        "address": "00D685F4",
+        "bytes": 16,
+        "file_offset": 9864692,
+        "section": ".rdata",
+        "hex": "3029be000027be002027be004027be00",
+        "words": [
+          "00BE2930",
+          "00BE2700",
+          "00BE2720",
+          "00BE2740"
+        ],
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2b4aec25df83fa83_profile_00d685f4_00d68603.bin",
+          "bytes": 16,
+          "sha256": "2b4aec25df83fa83ceff7bdacf2d7b6112a2e42b9ccaf2c2f5fa9b8908351713"
+        }
+      },
+      "interpreted_native_scope": "Only16-byte D685F4..D68603 profile; complete image retained inertly for exact mapping/replay, not execution or other function interpretation.",
+      "predicate": {
+        "entry": "00BE2740",
+        "last_body_byte": "00BE2742",
+        "exclusive_body_end": "00BE2743",
+        "section": ".text",
+        "file_offset": 8267584,
+        "body": {
+          "bytes": 3,
+          "hex": "32c0c3",
+          "pin": {
+            "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/01cb47d078b4841b_predicate_00be2740_00be2742.bin",
+            "bytes": 3,
+            "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0"
+          }
+        },
+        "padding": {
+          "address": "00BE2743",
+          "bytes": 13,
+          "hex": "cccccccccccccccccccccccccc",
+          "pin": {
+            "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0d0bb866505bc0e2_padding_00be2743_00be274f.bin",
+            "bytes": 13,
+            "sha256": "0d0bb866505bc0e2d4276fcdee1afdc8887662d04cce9e4bbb4c10fba6d0f1ce"
+          }
+        },
+        "finite_window": {
+          "address": "00BE2740",
+          "bytes": 16,
+          "hex": "32c0c3cccccccccccccccccccccccccc",
+          "pin": {
+            "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/9aa0858555b2f0dc_predicate_window_00be2740_00be274f.bin",
+            "bytes": 16,
+            "sha256": "9aa0858555b2f0dcfb2e62c18e238df28fbaf81f25346fcc428385196cd18139"
+          }
+        }
+      }
+    },
+    "typed_and_capture_artifacts": [
+      {
+        "name": "profile.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2da7c6a9946aac65_profile.json",
+          "bytes": 347,
+          "sha256": "2da7c6a9946aac657e7b929800dc2b97d4f108569e3569daa6cc52310a5625a0"
+        }
+      },
+      {
+        "name": "profile_capture.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/d27a329da91cfd67_profile_capture.json",
+          "bytes": 2249,
+          "sha256": "d27a329da91cfd67794dcd308dff35eaccb1b6d9df8b1ba19b1f89fb82852aea"
+        }
+      },
+      {
+        "name": "predicate_metadata.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/d9e974c8aeab3d36_predicate_metadata.json",
+          "bytes": 522,
+          "sha256": "d9e974c8aeab3d36bd4d12286790512c7c53c071dc729638ebcc6d41db466ba8"
+        }
+      },
+      {
+        "name": "predicate_metadata_capture.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/76649e33d56835a3_predicate_metadata_capture.json",
+          "bytes": 3444,
+          "sha256": "76649e33d56835a38a171138ffc05791da5d7e57f62d981b433e66854256348f"
+        }
+      },
+      {
+        "name": "typed_flow.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/1ebe476762f8f0bc_typed_flow.json",
+          "bytes": 7737,
+          "sha256": "1ebe476762f8f0bc0c182a36f4afe5dc541e423e59cf42ee96a8c78f05f3e4b0"
+        }
+      },
+      {
+        "name": "predicate_body.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/ba5a3fc04b15e9a4_predicate_body.json",
+          "bytes": 481,
+          "sha256": "ba5a3fc04b15e9a4ce2ce45351f4bb52aa0380c8f3fcbd1f9a3898e40a782d54"
+        }
+      },
+      {
+        "name": "predicate_body_capture.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/d3978b39bf56acad_predicate_body_capture.json",
+          "bytes": 937,
+          "sha256": "d3978b39bf56acad0da8c85b1b480362cfaffce2f4f39020b79a05247f00e143"
+        }
+      },
+      {
+        "name": "predicate_bytes.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/58b2fd931ada7a11_predicate_bytes.json",
+          "bytes": 355,
+          "sha256": "58b2fd931ada7a11d41910eb3ad015cf3e33225ca4c4d3a68c2159284084d673"
+        }
+      },
+      {
+        "name": "predicate_bytes_capture.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/efc2d75d146c998e_predicate_bytes_capture.json",
+          "bytes": 2571,
+          "sha256": "efc2d75d146c998e93e876d5e4d5da2ad2739ab94bda63660a5a00923dd215a8"
+        }
+      },
+      {
+        "name": "predicate_exact.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/06ec09f5c403f580_predicate_exact.json",
+          "bytes": 563,
+          "sha256": "06ec09f5c403f58028adb405eae65de7373f8cbbb345eff7e4a60d352e989f34"
+        }
+      },
+      {
+        "name": "predicate_exact_capture.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/69d98e3db9724a0b_predicate_exact_capture.json",
+          "bytes": 2739,
+          "sha256": "69d98e3db9724a0b8108e531ecd19338859cf8a333c4d7f6c85ef6d6c582e41e"
+        }
+      },
+      {
+        "name": "two_instructions.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/bb434a7c78576a6b_two_instructions.json",
+          "bytes": 273,
+          "sha256": "bb434a7c78576a6b117d010537a97e13803a1788852a7eb30c2b14de9d21bf5c"
+        }
+      },
+      {
+        "name": "two_instruction_flow.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/39c0cec495c6bf10_two_instruction_flow.json",
+          "bytes": 12182,
+          "sha256": "39c0cec495c6bf10d6c1fce60d8741b115608d69266fc6314767d20fde7d0c16"
+        }
+      },
+      {
+        "name": "profile_mapping.json",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/dab59d9cd45cdfdd_profile_mapping.json",
+          "bytes": 1695,
+          "sha256": "dab59d9cd45cdfdd1ed3e528a21050c07f0ed756eed0b3f34d3cf6412569cd20"
+        }
+      },
+      {
+        "name": "capture.py",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/a3a7e2f3944d42cb_capture.py",
+          "bytes": 1303,
+          "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+        }
+      },
+      {
+        "name": "map_profile.py",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/f5b1e463cb60c3ee_map_profile.py",
+          "bytes": 1886,
+          "sha256": "f5b1e463cb60c3ee8c4c728c280f955987d5316b394687d538581a2501c37d93"
+        }
+      }
+    ],
+    "include_closure": {
+      "closure": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/1af7bd37b6b8820a_include_closure.json",
+        "bytes": 380150,
+        "sha256": "1af7bd37b6b8820aa3ba498870232e7a08526571cf18caa600b91270e6faca22"
+      },
+      "configured_lua_archive": {
+        "capture_provenance_only": "C:\\Users\\sqz269\\.bsp\\deps\\lua-5.1.1.tar.gz",
+        "pin": {
+          "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+          "bytes": 207810,
+          "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+        },
+        "configured_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      },
+      "reviewed_roots": 19,
+      "project_files": 592,
+      "lua_header_count": 4
+    },
+    "capture_script": {
+      "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/f408e93e158f5e4e_freeze.py",
+      "bytes": 14175,
+      "sha256": "f408e93e158f5e4e6c4c6e048c120347cbe164dcbf81a5b441221b9f94b78111"
+    },
+    "git_capture_commands": [
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "3377032528c86c502023f110dd640821dcf02c979647728880f9121896cc44b9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5bfcfc659a0fbf139b20f1044920f4105f095f95803349b80edbf0a571efcb14",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "cat-file",
+          "--batch"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 35561128,
+        "stdout_sha256": "927b4899f77cc172b345cf9590aa0c1ed7dfc2361efd0ee6d5a8ed969f200884",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20149,
+        "stdout_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 202281,
+        "stdout_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2242,
+        "stdout_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 73311,
+        "stdout_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1371,
+        "stdout_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/ghidra_typed_flow.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20048,
+        "stdout_sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/ghidra_typed_flow.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "55557d668225635a9c30ed01fe6f80b2de7b9f84ac07078e946a7cdb5ed994d9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 455,
+        "stdout_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/ENTITY_THINK_DISPATCH.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 18155,
+        "stdout_sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/ENTITY_THINK_DISPATCH.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d96d6117156c257007e7b210c2c8bdc59acfb78bb577901fdc492d2aca210608",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/entity_think_dispatch.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 16415,
+        "stdout_sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/entity_think_dispatch.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5a2baa7cab8593b91c35dd800ac96cdc2d287324ab3b02ad8d715152a4b7e466",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/native_resource_load_cache_by.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 50674,
+        "stdout_sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/native_resource_load_cache_by.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d9aeca1c1ed36c21678f7cfd3d696ebe54b4ddcf8f5bc406768ae3822126fbc1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 26373,
+        "stdout_sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 69076,
+        "stdout_sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 964231,
+        "stdout_sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "eb227235d49bbe9273ee642146beaf85ad28c5fb15aba2018eae6aa74f321c5c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 8371,
+        "stdout_sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "afe734710bb89acae61064f37435f22bd76549ae5455508cba935aa6982f3afe",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3705583,
+        "stdout_sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "e9c7c28e8985e98742d82f7cfe48ddeab5f09ea4c9cd5b1edf5f340551c3bdbc",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3914,
+        "stdout_sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "74d37c38282c767b3b70a01c6d04e99bba8db415512d12dd10ff47863b78c8d0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1525264,
+        "stdout_sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6b1d0146dcbddbfb946044f8c8365e59c9e551ba528ceed151e2e4811a43d9f4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 9374,
+        "stdout_sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "bce02b3261a7b5a887e30b9530de8c794b54022870505b7a7776eb71ae3e6a05",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3779952,
+        "stdout_sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d7e5f035568bc7b02e34d39a1c7bc6f9485298b7ca5b86a957c339a326b97326",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3878,
+        "stdout_sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "c3c215a94db42090ca9f377ca532e22444bfda3e4fc38909dee24f7739724cbb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1332353,
+        "stdout_sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "e4daa02a64e1071b18e33b0c7b2205bc14042bc7d34f62aaa9c3c90208477982",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 8656,
+        "stdout_sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "57a720f2e463cfb60133df459d9a9564266dc9c6396da93e51f843a477c36eb3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 249159,
+        "stdout_sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "c69b7e7e06ee4464e253c3d404319f5e33ad3c409b2a8b34354262d12008ac87",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3309,
+        "stdout_sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "17039a2aae5596e1a9093cae0e45132fe5103513e6f028acb235675dbe8d5e85",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2995465,
+        "stdout_sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ed5482a633b9e177e43963a2c0316635a5ae4a5760a8898150df946d122184d6",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 11157,
+        "stdout_sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "3658185570b46a8ced9a697fb73dc647ea4f4b3dc6c4e701bd73fd09067094d0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3499742,
+        "stdout_sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6bbe1e432f3b5811bbe97b842439aacbb2d2a6bb8206998aacedc544d7c9450d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 4218,
+        "stdout_sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "1e36ad5ee63fd57b272c484dc6b3da6e1157c379ce1e194dcd27a21196d068a0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 4912288,
+        "stdout_sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ee35845b31d036b190cc3e4cbff1c06a15529256d3223f75563c207011cd8ea5",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 8971,
+        "stdout_sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5df58343f095543b3de30872708265ad294d930a9f98faaf597e22b9a1a0b733",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 11077508,
+        "stdout_sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "c762494e91146b59c2bdf4496af8d7333d30a2af0cb7e6bbb369df74d865ba14",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3911,
+        "stdout_sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "91e6303d85e3563a9f08ed7140b78113f212b0dd1f9b47541005732159403545",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_owner_retained_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 137087,
+        "stdout_sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_owner_retained_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d83b363ccc6efd9b22b8d3055ac758af12ebe49627aa34b3dfe116d7a902977c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 13677,
+        "stdout_sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "f02051fa45ec3400fb9f8b720cf13d1a569abc045cf8c597f22b3ef9fa397574",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_binding_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3156920,
+        "stdout_sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_binding_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "07acb55b107c7b8e9863a5be8c858911291367f4793c3587d91585f9739c2496",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 12688,
+        "stdout_sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "c4b566fee682fb2df0e3a2cdf431b3668aa6b27395e1f6a08d704d6827580b2d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_lifecycle_body_gate.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 33375,
+        "stdout_sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_lifecycle_body_gate.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "79b49afaa0eff9b78b50090420abe741b01a3b06e655887ff0b32c1fbbb6c979",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 3913,
+        "stdout_sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "9b1fcb3b36d006f5b69e166329cba032415a90683aea99786434c9e2e6013797",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "2929fe387ab428d488a38baa847185a1f8246a33:docs/CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 9211,
+        "stdout_sha256": "2372135299dfafe386b129d4fc8725163c0c590cf49b6d4c5b9186d80a23e53e",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "2929fe387ab428d488a38baa847185a1f8246a33:docs/CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6187aa33c04cef7f7e130d7d724c374044656f07cddc65bdb87d9624abf10c9d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "2929fe387ab428d488a38baa847185a1f8246a33:reports/cc12_script_orders_lua_command_owner_binding_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 98854,
+        "stdout_sha256": "d16c83b636f5c359bce80c38ce1bbaaca247759267f9dd382beee670a5af08f5",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "2929fe387ab428d488a38baa847185a1f8246a33:reports/cc12_script_orders_lua_command_owner_binding_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ddd00f1dc57064021aa3c2d4735d00b9773c5488765914922b4fb819333d697a",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "2929fe387ab428d488a38baa847185a1f8246a33",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      }
+    ],
+    "restrictions": "Only profile16 and predicate3 plus13 padding newly interpreted. Typed read-only metadata/listing preserved; function absence unrepaired. No Source/GPR/SDK change, Native/game/interpreter execution, build/tests or new fixture."
+  },
+  "checks": {
+    "artifact_only": {
+      "schema": "bsp.cc12.allocation_stats_gc_predicate.artifact_replay.v1",
+      "status": "pass",
+      "mode": "retained artifacts only with audit-enforced no external reads/writes/process/network",
+      "source_files": 4206,
+      "additional_Source_Git": 38,
+      "prior_whole_reports": 2,
+      "source_queries": [
+        {
+          "label": "gc_gate_all",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "predicate_target_mentions",
+          "hits": 0,
+          "files": []
+        },
+        {
+          "label": "derived_profile_mentions",
+          "hits": 5,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/native_singleton_destruction.hpp",
+            "include/bsp/platform_window.hpp",
+            "src/native_allocation_stats_constructor.cpp",
+            "src/native_singleton_destruction.cpp"
+          ]
+        },
+        {
+          "label": "actual_stats_cell_mentions",
+          "hits": 13,
+          "files": [
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/native_resource_load_cache.hpp",
+            "src/game_hosts_singletons.cpp",
+            "src/game_native_string_process.cpp",
+            "src/native_allocation_stats_constructor.cpp",
+            "src/native_allocation_stats_lifecycle.cpp",
+            "src/native_resource_load_cache.cpp"
+          ]
+        },
+        {
+          "label": "raw_stats_constructor_calls",
+          "hits": 6,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "src/game_hosts.cpp",
+            "src/native_allocation_stats_constructor.cpp"
+          ]
+        },
+        {
+          "label": "stats_context_bindings",
+          "hits": 7,
+          "files": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "src/game_hosts.cpp",
+            "src/game_hosts_singletons.cpp"
+          ]
+        },
+        {
+          "label": "semantic_stats_model",
+          "hits": 4,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/platform_window.hpp",
+            "src/platform_window.cpp"
+          ]
+        },
+        {
+          "label": "think_list_calls",
+          "hits": 4,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "command_calls",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "orders_construction",
+          "hits": 2,
+          "files": [
+            "src/game_hosts_mission_frame.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "cached_machine_writes",
+          "hits": 7,
+          "files": [
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "startup_phase_and_failure",
+          "hits": 16,
+          "files": [
+            "include/bsp/game_hosts.hpp",
+            "src/game_hosts.cpp"
+          ]
+        }
+      ],
+      "exact_excerpts": 35,
+      "source_anchors": 44,
+      "include_roots": 19,
+      "include_project_files": 592,
+      "include_edges": 1164,
+      "lua_headers": 4,
+      "new_native_profile_bytes": 16,
+      "predicate_body_bytes": 3,
+      "separate_padding_bytes": 13,
+      "predicate_instructions": 2,
+      "typed_command_receipts": 14,
+      "ghidra_modification_number": "49",
+      "saved_function_at_and_containing": null,
+      "source_leaf_result": "false; no receiver/global reads; AL-only original result; no gate or command activation",
+      "finite_native_mapping": "profile .rdata and predicate .text mapped from retained complete PE",
+      "retained_pin_occurrences": 106,
+      "unique_pin_paths": 106,
+      "opened_paths": [
+        "freeze_capture.json",
+        "frozen/010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+        "frozen/010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+        "frozen/01cb47d078b4841b_predicate_00be2740_00be2742.bin",
+        "frozen/038f566ab59dc67e_git_reports_mission_lua_host.json",
+        "frozen/038f566ab59dc67e_working_reports_mission_lua_host.json",
+        "frozen/06ec09f5c403f580_predicate_exact.json",
+        "frozen/071b3c8a8dfd98d6_git_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "frozen/071b3c8a8dfd98d6_working_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "frozen/09de2b8916a4af98_git_tools_bsp.py",
+        "frozen/09de2b8916a4af98_working_tools_bsp.py",
+        "frozen/0a69a11d3e176ceb_lua_archive_lua.h",
+        "frozen/0b26a744a3dd5b48_git_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "frozen/0b26a744a3dd5b48_working_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+        "frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+        "frozen/0d0bb866505bc0e2_padding_00be2743_00be274f.bin",
+        "frozen/18e103e99c7cc6d4_git_reports_native_resource_load_cache_by.json",
+        "frozen/18e103e99c7cc6d4_working_reports_native_resource_load_cache_by.json",
+        "frozen/1af7bd37b6b8820a_include_closure.json",
+        "frozen/1ebe476762f8f0bc_typed_flow.json",
+        "frozen/2372135299dfafe3_prior_docs_CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+        "frozen/23a4928ed7eaf80b_git_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "frozen/23a4928ed7eaf80b_working_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "frozen/2822efd1d6f7f0b8_git_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "frozen/2822efd1d6f7f0b8_working_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "frozen/29a1c549a58f6de4_git_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "frozen/29a1c549a58f6de4_working_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "frozen/2a0dc5c9486f507a_source_git.tar.gz",
+        "frozen/2a0dc5c9486f507a_source_working.tar.gz",
+        "frozen/2b4aec25df83fa83_profile_00d685f4_00d68603.bin",
+        "frozen/2da7c6a9946aac65_profile.json",
+        "frozen/2dc2693e7bb32eca_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/2dc2693e7bb32eca_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/366e5a64ac945473_git_config_target.json",
+        "frozen/366e5a64ac945473_working_config_target.json",
+        "frozen/39c0cec495c6bf10_two_instruction_flow.json",
+        "frozen/3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+        "frozen/3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+        "frozen/3f349201dea6df89_lua_archive_luaconf.h",
+        "frozen/427c9d35f93302bd_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/427c9d35f93302bd_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/4816e8afedf7407b_git_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "frozen/4816e8afedf7407b_working_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "frozen/4d9e6f61d919a17a_git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "frozen/4d9e6f61d919a17a_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "frozen/568fc615535bf822_git_CMakeLists.txt",
+        "frozen/568fc615535bf822_working_CMakeLists.txt",
+        "frozen/58b2fd931ada7a11_predicate_bytes.json",
+        "frozen/5a56da312e412dc8_lua_archive_lauxlib.h",
+        "frozen/5e6fbf28a9f52ad9_git_reports_cc12_allocation_stats_startup_source.json",
+        "frozen/5e6fbf28a9f52ad9_working_reports_cc12_allocation_stats_startup_source.json",
+        "frozen/611a2f0613f21724_git_tools_workspace.py",
+        "frozen/611a2f0613f21724_working_tools_workspace.py",
+        "frozen/657edd12a865808d_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "frozen/657edd12a865808d_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "frozen/689915fd4f265cb9_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "frozen/689915fd4f265cb9_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "frozen/69d98e3db9724a0b_predicate_exact_capture.json",
+        "frozen/69ffaf5c2c09425f_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "frozen/69ffaf5c2c09425f_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "frozen/728a7e4dd4831770_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/728a7e4dd4831770_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/76649e33d56835a3_predicate_metadata_capture.json",
+        "frozen/7876d8123a7c3315_git_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "frozen/7876d8123a7c3315_working_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+        "frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+        "frozen/8a3e29582a0db5dd_git_reports_cc12_allocation_stats_process_cell_source.json",
+        "frozen/8a3e29582a0db5dd_working_reports_cc12_allocation_stats_process_cell_source.json",
+        "frozen/8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+        "frozen/8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+        "frozen/8bec005f0300870b_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "frozen/8bec005f0300870b_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "frozen/8ff97655035e8c04_source_ls_tree_z.bin",
+        "frozen/9051a84edd7ef671_git_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "frozen/9051a84edd7ef671_working_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "frozen/940ab4f56633de99_git_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "frozen/940ab4f56633de99_working_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "frozen/97272278577d3d32_git_tools_ghidra_typed_flow.py",
+        "frozen/97272278577d3d32_working_tools_ghidra_typed_flow.py",
+        "frozen/9aa0858555b2f0dc_predicate_window_00be2740_00be274f.bin",
+        "frozen/9e50547fdab391a3_git_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "frozen/9e50547fdab391a3_working_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "frozen/a3a7e2f3944d42cb_capture.py",
+        "frozen/a97f8fe9b81e2289_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "frozen/a97f8fe9b81e2289_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "frozen/b00e231750624e31_lua_archive_lualib.h",
+        "frozen/b5cbc97f0b93beba_git_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "frozen/b5cbc97f0b93beba_working_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "frozen/b682a82c52f81f95_original_image.bin",
+        "frozen/ba5a3fc04b15e9a4_predicate_body.json",
+        "frozen/bb434a7c78576a6b_two_instructions.json",
+        "frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+        "frozen/c772aa9cc89fea34_source_manifest.json",
+        "frozen/ce42211b53f50bfa_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/ce42211b53f50bfa_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/d16c83b636f5c359_prior_reports_cc12_script_orders_lua_command_owner_binding_review.json",
+        "frozen/d27a329da91cfd67_profile_capture.json",
+        "frozen/d3978b39bf56acad_predicate_body_capture.json",
+        "frozen/d9e974c8aeab3d36_predicate_metadata.json",
+        "frozen/dab59d9cd45cdfdd_profile_mapping.json",
+        "frozen/e47dafcec2c6a3ed_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "frozen/e47dafcec2c6a3ed_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "frozen/e6c07aea2cbb05a5_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/e6c07aea2cbb05a5_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/ec73694426956ffc_git_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "frozen/ec73694426956ffc_working_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "frozen/efc2d75d146c998e_predicate_bytes_capture.json",
+        "frozen/f408e93e158f5e4e_freeze.py",
+        "frozen/f5b1e463cb60c3ee_map_profile.py"
+      ],
+      "qualification": "Artifact integrity, static Source facts and finite instruction evidence only. No compiled result, Native ABI compatibility, Lua execution, runtime/global dispatch readiness or gameplay proof."
+    },
+    "physically_copied_artifact_only_identical": true,
+    "separate_Git": {
+      "schema": "bsp.cc12.allocation_stats_gc_predicate.git_replay.v1",
+      "status": "pass",
+      "mode": "separate Git-object check with optional explicit working reads",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "baseline": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+      "blob_checks": 4246,
+      "working_files_checked": 4244,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "3377032528c86c502023f110dd640821dcf02c979647728880f9121896cc44b9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+            "--",
+            "src",
+            "include"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 382563,
+          "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:CMakeLists.txt"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/startup.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/lua.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/bsp.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/workspace.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/ghidra_typed_flow.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "55557d668225635a9c30ed01fe6f80b2de7b9f84ac07078e946a7cdb5ed994d9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:config/target.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/ENTITY_THINK_DISPATCH.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d96d6117156c257007e7b210c2c8bdc59acfb78bb577901fdc492d2aca210608",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/entity_think_dispatch.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5a2baa7cab8593b91c35dd800ac96cdc2d287324ab3b02ad8d715152a4b7e466",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/native_resource_load_cache_by.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d9aeca1c1ed36c21678f7cfd3d696ebe54b4ddcf8f5bc406768ae3822126fbc1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/MISSION_LUA_HOST.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/mission_lua_host.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "eb227235d49bbe9273ee642146beaf85ad28c5fb15aba2018eae6aa74f321c5c",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "afe734710bb89acae61064f37435f22bd76549ae5455508cba935aa6982f3afe",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "e9c7c28e8985e98742d82f7cfe48ddeab5f09ea4c9cd5b1edf5f340551c3bdbc",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "74d37c38282c767b3b70a01c6d04e99bba8db415512d12dd10ff47863b78c8d0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6b1d0146dcbddbfb946044f8c8365e59c9e551ba528ceed151e2e4811a43d9f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "bce02b3261a7b5a887e30b9530de8c794b54022870505b7a7776eb71ae3e6a05",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d7e5f035568bc7b02e34d39a1c7bc6f9485298b7ca5b86a957c339a326b97326",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c3c215a94db42090ca9f377ca532e22444bfda3e4fc38909dee24f7739724cbb",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "e4daa02a64e1071b18e33b0c7b2205bc14042bc7d34f62aaa9c3c90208477982",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "57a720f2e463cfb60133df459d9a9564266dc9c6396da93e51f843a477c36eb3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c69b7e7e06ee4464e253c3d404319f5e33ad3c409b2a8b34354262d12008ac87",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "17039a2aae5596e1a9093cae0e45132fe5103513e6f028acb235675dbe8d5e85",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ed5482a633b9e177e43963a2c0316635a5ae4a5760a8898150df946d122184d6",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "3658185570b46a8ced9a697fb73dc647ea4f4b3dc6c4e701bd73fd09067094d0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6bbe1e432f3b5811bbe97b842439aacbb2d2a6bb8206998aacedc544d7c9450d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1e36ad5ee63fd57b272c484dc6b3da6e1157c379ce1e194dcd27a21196d068a0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ee35845b31d036b190cc3e4cbff1c06a15529256d3223f75563c207011cd8ea5",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5df58343f095543b3de30872708265ad294d930a9f98faaf597e22b9a1a0b733",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c762494e91146b59c2bdf4496af8d7333d30a2af0cb7e6bbb369df74d865ba14",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "91e6303d85e3563a9f08ed7140b78113f212b0dd1f9b47541005732159403545",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_owner_retained_readiness.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d83b363ccc6efd9b22b8d3055ac758af12ebe49627aa34b3dfe116d7a902977c",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "f02051fa45ec3400fb9f8b720cf13d1a569abc045cf8c597f22b3ef9fa397574",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_binding_readiness.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "07acb55b107c7b8e9863a5be8c858911291367f4793c3587d91585f9739c2496",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c4b566fee682fb2df0e3a2cdf431b3668aa6b27395e1f6a08d704d6827580b2d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_lifecycle_body_gate.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "79b49afaa0eff9b78b50090420abe741b01a3b06e655887ff0b32c1fbbb6c979",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "9b1fcb3b36d006f5b69e166329cba032415a90683aea99786434c9e2e6013797",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "2929fe387ab428d488a38baa847185a1f8246a33:docs/CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6187aa33c04cef7f7e130d7d724c374044656f07cddc65bdb87d9624abf10c9d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "2929fe387ab428d488a38baa847185a1f8246a33:reports/cc12_script_orders_lua_command_owner_binding_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddd00f1dc57064021aa3c2d4735d00b9773c5488765914922b4fb819333d697a",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 73636835,
+          "stdout_sha256": "fd0b8ec5d4b619481c6c5fcb5c223607240d8bf4e447b10c3bae745e7c491446",
+          "stderr": ""
+        }
+      ],
+      "qualifications": "Read-only Git/Source check; not portable artifact-only mode. No installation, SDK, compiler, Native or game execution."
+    },
+    "current_read_only_scope": "Only output evidence scripts/files were written. No Source/GPR/SDK/OS configuration change; no Native/Original/Lua/game/compiler/build/test/new fixture execution."
+  },
+  "portable_validation": {
+    "command": "python local/cc12_allocation_stats_gc_predicate_review/replay.py",
+    "relocated_command": "python local/cc12_allocation_stats_gc_predicate_review/portable_replay_final/replay.py",
+    "separate_Git_command": "python local/cc12_allocation_stats_gc_predicate_review/verify_git.py --check-working",
+    "audit": "Packet-local read-only open; subprocess/network/dlopen/write denied; no live Source/Git/Ghidra/installation dependencies."
+  },
+  "document": {
+    "path": "docs/CC12_ALLOCATION_STATS_GC_PREDICATE_REVIEW.md",
+    "frozen": {
+      "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/2138506b4473c619_review_document.md",
+      "bytes": 9689,
+      "sha256": "2138506b4473c619ec73eb4754c6a97dca5156cc558df4e04642f4ff1777b1f2"
+    }
+  },
+  "evidence_files": [
+    {
+      "name": "freeze.py",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/f408e93e158f5e4e_freeze.py",
+        "bytes": 14175,
+        "sha256": "f408e93e158f5e4e6c4c6e048c120347cbe164dcbf81a5b441221b9f94b78111"
+      }
+    },
+    {
+      "name": "freeze_capture.json",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/0060f6712ec84992_freeze_capture.json",
+        "bytes": 132319,
+        "sha256": "0060f6712ec8499203529b080ef2718c12b2b1b5a8700db58cf6ab423d95137f"
+      }
+    },
+    {
+      "name": "replay.py",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/1d35c7d8be3d4b7e_replay.py",
+        "bytes": 14973,
+        "sha256": "1d35c7d8be3d4b7eaafe76920835849221ca020fd50c8cfb7d8b37df5fceb6ca"
+      }
+    },
+    {
+      "name": "replay_result.json",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/baac817c6fbcffd8_replay_result.json",
+        "bytes": 12989,
+        "sha256": "baac817c6fbcffd85fdd9aa1855a7868fec7f5cd94b06f2b4a294d2ad902b6a9"
+      }
+    },
+    {
+      "name": "verify_git.py",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/96a8bcc8795cd32c_verify_git.py",
+        "bytes": 3441,
+        "sha256": "96a8bcc8795cd32ca5f41abbdbac8d13fa9a8c69b442782f097d70da89d7a35f"
+      }
+    },
+    {
+      "name": "git_replay_result.json",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/b7b1dc3e75f6f6e7_git_replay_result.json",
+        "bytes": 15226,
+        "sha256": "b7b1dc3e75f6f6e70ca2a756cf0af5cec263d94fff2b990b2559832b75d42d43"
+      }
+    },
+    {
+      "name": "portable_relocation_result.json",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/baac817c6fbcffd8_portable_relocation_result.json",
+        "bytes": 12989,
+        "sha256": "baac817c6fbcffd85fdd9aa1855a7868fec7f5cd94b06f2b4a294d2ad902b6a9"
+      }
+    },
+    {
+      "name": "make_receipt.py",
+      "pin": {
+        "path": "local/cc12_allocation_stats_gc_predicate_review/frozen/86f420744ef2c91c_make_receipt.py",
+        "bytes": 9611,
+        "sha256": "86f420744ef2c91cba3d936c6a15610e830ce8521f995e8651c30f36f74f8014"
+      }
+    }
+  ]
+}
