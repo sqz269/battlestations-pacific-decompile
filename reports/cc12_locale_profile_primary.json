@@ -1,0 +1,220 @@
+{
+  "schema": "bsp.cc12.locale-profile-primary-review.v1",
+  "status": "accepted_normal_lifecycle_trim_and_bounded_unwind_data_provisional_annotations_saved",
+  "worker_commit": "3d9a6c29193f9ac09a8905a91c2b298eb5845b1f",
+  "copied_inputs": [
+    {
+      "path": "local/cc12_locale_profile_primary/evidence.zip",
+      "bytes": 22034395,
+      "sha256": "ea19aa762cd4de2c8dff8d0a2d09b989d7c4b9d1eec9c08f1ebb8aea3e1c4570"
+    },
+    {
+      "path": "local/cc12_locale_profile_primary/replay.py",
+      "bytes": 12967,
+      "sha256": "815bcb78b448d56f3961fd8964638fdf96536f51733d165b00a84d6402a1b6b1"
+    },
+    {
+      "path": "local/cc12_locale_profile_primary/guarded_replay.py",
+      "bytes": 1307,
+      "sha256": "999d6ac8b4580909d74efe9f03535ebf13f14c8d64de783bcc36eb12100ef2c8"
+    },
+    {
+      "path": "local/cc12_locale_profile_primary/worker_report.json",
+      "bytes": 68212,
+      "sha256": "1dc32daf72626c0e78b7e464ed6219d3dc146347968b7e35f49b6bc6b5909c49"
+    },
+    {
+      "path": "local/cc12_locale_profile_primary/worker_document.md",
+      "bytes": 10617,
+      "sha256": "990b44ed7a435cd0e88f0347867775d0bf679ed8f8d21fd2d0c2611fe0b85d7e"
+    }
+  ],
+  "guarded_replay": {
+    "path": "local/cc12_locale_profile_primary/Root_guarded_replay.json",
+    "bytes": 1717,
+    "sha256": "1257cdf834d82523d01a8a7158fe486844ee2eb7d64e0d46b54da184e2b6aba8"
+  },
+  "actual_frozen_Git_Source_blobs": 4215,
+  "actual_dependency_blobs": 12,
+  "current_Root_Source_differences": [
+    "include/bsp/native_game_grid.hpp",
+    "include/bsp/native_render_context.hpp",
+    "src/native_game_grid.cpp",
+    "src/native_render_context.cpp"
+  ],
+  "Root_HEAD": "b905aaef876cfcc706a78142e2d83131edfcdb2a",
+  "fresh_Native_bytes": 256,
+  "reused_prior_Native_bytes": 1079,
+  "typed_GPR_epoch": "72",
+  "profile": {
+    "cell": "00CE4120",
+    "target": "004360E0",
+    "stored_bytes": 95,
+    "hull_bytes": 160,
+    "linear_instructions": 57,
+    "reachable_instructions": 54,
+    "reachable_bytes": 149,
+    "unowned_continuation_bytes": 54,
+    "unreachable_alignment_bytes": 11,
+    "normal_flow_assumes_returning_free": true,
+    "Root_complete_decode_matches_worker": true
+  },
+  "handler": {
+    "window_address": "00C5EEBE",
+    "window_bytes": 32,
+    "decoded_prefix_bytes": 10,
+    "decoded_prefix": [
+      {
+        "address": 12971710,
+        "bytes": "b88856d800",
+        "mnemonic": "mov",
+        "operands": "eax, 0xd85688"
+      },
+      {
+        "address": 12971715,
+        "bytes": "e97b7cf9ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "function_at_and_containing": null,
+    "descriptor_address": "00D85688",
+    "descriptor_bytes": 36,
+    "descriptor_DWORDs": [
+      429065506,
+      3,
+      14177904,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "unwind_map_address": "00D85670",
+    "unwind_map_bytes": 24,
+    "rows": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00C5EEA0",
+        "action_body_read": false
+      },
+      {
+        "state": 1,
+        "to_state": 0,
+        "action": "00C5EEA8",
+        "action_body_read": false
+      },
+      {
+        "state": 2,
+        "to_state": 1,
+        "action": "00C5EEB3",
+        "action_body_read": false
+      }
+    ]
+  },
+  "decision": {
+    "Native_normal_profile_target_and_trim_established": true,
+    "FuncInfo_structure_and_rows_established": true,
+    "unwind_action_semantics_established": false,
+    "borrowed_initialized_node_recycling_helper_design_GO": true,
+    "canonical_owner_and_lifecycle_GO": false,
+    "raw_map_and_application_GO": false
+  },
+  "limits": [
+    "No stored function extent inferred for C5EEBE; 22 handler-window bytes beyond its terminal prefix are not decoded.",
+    "Existing body gaps, CALL_RETURN/CALL_TERMINATOR override and stored undefined(void) prototypes remain untouched.",
+    "Verified modern x86 FH3 structure layout is not proof of Original compiler version or runtime exception semantics.",
+    "Allocator-list source path in worker design should read allocator_list.hpp; allocator_registry.hpp does not exist and is not a helper dependency.",
+    "No C++, build, test, probe, Original Native body execution, ABI or gameplay result."
+  ],
+  "annotation": {
+    "before": {
+      "path": "local/cc12_locale_profile_primary/Root_before_typed.json",
+      "bytes": 29359,
+      "sha256": "db91fdf3b0e4404854f94f5284173e0b29ca768d0d2997f694f7ca76eec4a8eb"
+    },
+    "after": {
+      "path": "local/cc12_locale_profile_primary/Root_after_typed.json",
+      "bytes": 29558,
+      "sha256": "f2ebce4688a34c75eb81fecec3a2afd8bf935d3f2fe6551b2eb1650fd869c3a2"
+    },
+    "journal": {
+      "path": "local/ghidra-annotations-20261010T205538Z.json",
+      "bytes": 4252,
+      "sha256": "21ddce55eacab026e3e7274c0b2cd613e9136dc5391123110b6f1b86d1a45f92"
+    },
+    "GPR_modification_before": "72",
+    "GPR_modification_after": "79",
+    "renames": {
+      "FUN_00436230": "BSP_LocaleNodePool_Initialize",
+      "FUN_00435a50": "BSP_LocaleNodePool_Destroy",
+      "FUN_004360e0": "BSP_LocaleNodePool_TrimFullyFreeBlocks"
+    },
+    "prior_comments": "Empty at all three; prior names/empty annotation values retained in journal.",
+    "write_lock_taken": true,
+    "rename_mutations": 3,
+    "comment_mutations": 3,
+    "project_saves": 1,
+    "complete_typed_metadata_equal_except_names_and_modification_numbers": true,
+    "stored_prototypes": "undefined NAME(void), preserved; no register/stack normalization",
+    "body_listing_flow_prototype_no_return_repairs": 0,
+    "refreshed_exports": [
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00436230/assembly.txt",
+        "bytes": 2049,
+        "sha256": "bef614bec9c2c4a4073c801418e01dd772275f1b2c254b8ecf161181029c5c53"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00436230/decompiled.c",
+        "bytes": 2685,
+        "sha256": "4f3ca79ded8645ca3775d6a61391d3e1d12c18d5d492e6fcf0dbc0a888716314"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00436230/metadata.json",
+        "bytes": 311,
+        "sha256": "d91e82fb85bfcd2e3046ae852681299d172f99d14ac6d4e92e6d08bcc7a6cd4c"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00435a50/assembly.txt",
+        "bytes": 1391,
+        "sha256": "29e8c7378c2f878afb83e62348437367b5932683ceda29a34d81f3580f467dc1"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00435a50/decompiled.c",
+        "bytes": 1993,
+        "sha256": "c93e3ce54061a933e86f6dcf97394b281982101a7b3e6f464e1d710dda497b79"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/00435a50/metadata.json",
+        "bytes": 308,
+        "sha256": "46ee80560ee29954c0adce985839acaee81dda59ede584ff41d810e85c2b719f"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/004360e0/assembly.txt",
+        "bytes": 1048,
+        "sha256": "d98404043344bc236c5a51a417a176fc140ad1ddf47d0a5cfb7cd8f4d21f4834"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/004360e0/decompiled.c",
+        "bytes": 2025,
+        "sha256": "30997a41b340f8745d0d815a27e1bc642d39dfe6fc0efac0a2a5b4a624c7f743"
+      },
+      {
+        "path": "local/cc12_locale_profile_primary/refreshed_exports/004360e0/metadata.json",
+        "bytes": 320,
+        "sha256": "2b566ab432e48e7935a5da5e11e5c25e08ec452660ff7034259d3176c3bb23d1"
+      }
+    ]
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "Original_execution": 0,
+    "Root_added_code_windows": 0,
+    "Root_metadata_captures": 2,
+    "Root_stored_prototype_checks_before_after": true
+  }
+}
