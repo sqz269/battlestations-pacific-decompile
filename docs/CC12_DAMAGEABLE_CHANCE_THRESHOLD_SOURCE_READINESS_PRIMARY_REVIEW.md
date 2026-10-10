@@ -1,0 +1,7 @@
+# Chance and Threshold Source readiness: primary review
+
+Accepted readiness worker `c738ed339008142c73d008c634c3434a62d05e21` after independently replaying145 pin references,54 baseline blobs,44 complete Source snapshots and the full readonly verifier. It confirms the retained134-byte/31-instruction two-field scope and inherited genuine numeric providers. The readiness baseline predates Root's Msh actual-key correction; both changed Msh files are explicitly recorded. Msh Source is now accepted on main `1cc4e44d5`.
+
+The next bounded ordinary fragment must keep the same live Msh owner, actual current S2C table, fresh S6C slot and captured raw30h row. It must use the genuine lookup/exact-number-or/cleanup bodies and actual borrowed keys. Defaults precede inner states23/24. Chance retains the divided quotient in ST0 across lowering23→17 before raw FSTP+28. Threshold stores raw FSTP+2C under24 before lowering17. Actual Release code, providers and guard/EH emission gate candidate admission.
+
+No C++/SSE division, reciprocal, quotient spill/helper return, typed float alias, FP-mode reset, row reselection, rollback or retry is authorized. The production caller, whole parent, Native register/FH3/SEH/fault/longjmp/all-mode floating behavior, startup and gameplay remain held. No candidate Source or build credit is claimed by readiness. Full replay evidence is in the [primary report](../reports/cc12_damageable_chance_threshold_source_readiness_primary_review.json).
