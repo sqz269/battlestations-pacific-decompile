@@ -1,0 +1,311 @@
+{
+  "schema": "bsp.cc12.particle-resource-readiness-primary.v1",
+  "status": "saved_renderer_vertex_helper_Source_composition_GO_full_delegate_and_persistent_custodian_NO_GO",
+  "worker_commit": "731e625b72554941ebf9eb18f99d59d5812580e4",
+  "worker_report": {
+    "path": "local/cc12_particle_resource_readiness_primary/worker_report.json",
+    "bytes": 859496,
+    "sha256": "815fe89ef63ecaf6a9d3a726cbcb706fe42be49577dc5f5bee2468bb4c5e4c56"
+  },
+  "worker_document": {
+    "path": "local/cc12_particle_resource_readiness_primary/worker_document.md",
+    "bytes": 14487,
+    "sha256": "5abab550aaf1fe72ab2523e39291735f5b5cec6766763e9ba067fdc0531f9218"
+  },
+  "copied_ZIP": {
+    "path": "local/cc12_particle_resource_readiness_primary/evidence.zip",
+    "bytes": 16574642,
+    "sha256": "dffc2c0e9ed8007113e45871d03c51b794e0a8e2b3d630dc84b987f8fb57bf82"
+  },
+  "copied_helper": {
+    "path": "local/cc12_particle_resource_readiness_primary/portable_replay.py",
+    "bytes": 3950,
+    "sha256": "d300a97a22d8f3184b73fedef572dea6c6821cbc909cdc23d8054fb63cdf418f"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_particle_resource_readiness_primary/Root_guarded_replay.json",
+    "bytes": 3778,
+    "sha256": "b0a698e19d6cafb8cd39422884ed479e6c9b824fd7fa4d053c43a05a01d8e891"
+  },
+  "actual_frozen_Git_blobs": 4249,
+  "actual_closed_Source_paths": 4228,
+  "actual_commit_and_tree_objects": 11,
+  "Root_HEAD": "1c44e1c4e70818d5aa02a53d2427b46eee768dae",
+  "Root_Source_differences": [],
+  "Root_Source_added_paths": [],
+  "positive_providers": [
+    {
+      "operation": "bind_mesh",
+      "status": "positive Native companion; particle admission seam missing",
+      "providers": [
+        "NativeMeshReference",
+        "GuiNativeGeometryOwners mesh entry custody"
+      ],
+      "Native": [
+        "B73A10",
+        "B73D70",
+        "D62D60",
+        "BD30E0",
+        "B74280",
+        "0108FFF8"
+      ],
+      "contract": "Borrow same actual +04 without extra retain; stable real disposal callback; prepare exact identity before Native construction; Native physical terminal before metadata disposal.",
+      "missing": "Particle helper calls noexcept bind_mesh only after completed Native construction. Current GUI factory allocates another object and throwing metadata; no usable preconstruction exact-identity hook is exposed.",
+      "evidence": [
+        "mesh_section_material_hooks",
+        "mesh_environment",
+        "mesh_companion_contract",
+        "mesh_companion_full_methods",
+        "gui_geometry_owned_storage",
+        "gui_mesh_creation_admission",
+        "gui_mesh_retirement",
+        "registry_admission_contract"
+      ]
+    },
+    {
+      "operation": "bind_material",
+      "status": "positive Native companion; particle admission seam missing",
+      "providers": [
+        "NativeMaterialReference",
+        "GuiNativeMaterialAcquired",
+        "GuiNativeGeometryOwners material entry custody"
+      ],
+      "Native": [
+        "B18780",
+        "B18B60",
+        "D5E520",
+        "BD30E0",
+        "B194B0",
+        "00F8D3AC"
+      ],
+      "contract": "Same actual +04, real persistent callback and same canonical material domain. Native deletion/pool return precede retirement callback.",
+      "missing": "Postclone noexcept hook cannot call existing allocating/throwing GUI admission. Need persistent companion storage and exact-key prepared admission before clone entry.",
+      "evidence": [
+        "mesh_section_material_hooks",
+        "material_environment",
+        "material_companion_contract",
+        "material_companion_full_methods",
+        "gui_resource_acquired_frames",
+        "gui_material_admission",
+        "gui_section_material_retirement",
+        "registry_admission_contract"
+      ]
+    },
+    {
+      "operation": "bind_section",
+      "status": "positive Native companion; particle admission seam missing",
+      "providers": [
+        "NativeMeshSectionReference",
+        "GuiNativeGeometryOwners section entry custody"
+      ],
+      "Native": [
+        "533FA0",
+        "D63194",
+        "BD30E0",
+        "B86690",
+        "010901D4"
+      ],
+      "contract": "Same actual +04 and shared model/material/mesh/section owner domains; callback custody outlives physical terminal.",
+      "missing": "The whole Native section factory finishes before noexcept bind_section. Existing GUI section factory allocates another Native object and throwing metadata. No pre-Native identity/admission hook.",
+      "evidence": [
+        "mesh_section_material_hooks",
+        "section_environment",
+        "section_companion_contract",
+        "section_companion_full_methods",
+        "gui_section_creation_admission",
+        "gui_section_material_retirement",
+        "registry_admission_contract"
+      ]
+    },
+    {
+      "operation": "renderer_virtual5c",
+      "status": "narrow saved-renderer composition GO; helper not yet implemented",
+      "providers": [
+        "create_native_registered_vertex_stream_00b287c0",
+        "NativeStreamCloneServices",
+        "NativeStreamCloneAcquired",
+        "GuiNativeGeometryOwners::register_stream_clone_creator"
+      ],
+      "captured_arguments": [
+        "actual_renderer",
+        "captured_entry",
+        "first",
+        "bytes",
+        "actual_descriptor"
+      ],
+      "particle_values": [
+        "captured actual renderer",
+        "captured renderer +5C code token",
+        0,
+        4096,
+        "descriptor returned after capture"
+      ],
+      "contract": "Authenticate captured D5F0A8 receiver and B287C0 entry; forward exact remaining arguments to actual factory with acquired.creator publication; preserve existing canonical registration, current late +58 behavior and all partial effects on throw. No current +5C/global substitution.",
+      "existing_adapter_limitation": "create_gui_text_native_vertex_current5c validates a current slot by rereading profile +5C; cannot implement captured-entry dispatch directly.",
+      "evidence": [
+        "captured_renderer_call",
+        "vertex_factory_contract",
+        "logical_stream_completed_identity",
+        "logical_stream_registration",
+        "gui_current_renderer_recheck",
+        "generated_current_renderer_usage",
+        "stream_acquired_and_domain_contract",
+        "stream_interrupted_factory_contract",
+        "gui_stream_begin_and_register",
+        "gui_renderer_services_contract",
+        "gui_stream_domain_authentication"
+      ]
+    },
+    {
+      "operation": "call_00bd2f10",
+      "status": "complete actual range provider exists; caller access binding remains required",
+      "providers": [
+        "native_particle_random_range_00bd2f10",
+        "native_particle_random_state_range_00bd2e60",
+        "RandomThreads::state_00bd2ed0"
+      ],
+      "positive_callers": [
+        "src/native_particle_tracer_state.cpp:65-69",
+        "src/ship_ai_brain_producers.cpp:31-47"
+      ],
+      "contract": "Use access.random equal to supplied RandomThreads identity and same stream/minimum/maximum. Borrow current unsigned_correction_00ce3978 and unit_scale_00d63b80. Keep unsigned x87 correction, scale, intermediate binary32 spill, affine arithmetic and final rounding in existing provider.",
+      "missing": "Caller-owned matching NativeParticleUnitRandomAccess and live current constant bindings; no complete resource delegate or application accessor proved.",
+      "prohibited": [
+        "new RNG or seed/state",
+        "unit BD2F40 substitution",
+        "constant caching or recomputed range arithmetic"
+      ],
+      "evidence": [
+        "random_access_contract",
+        "random_range_contract",
+        "random_state_bridges",
+        "random_complete_state_range",
+        "random_complete_thread_range",
+        "random_threads_custody",
+        "random_existing_tracer_caller",
+        "random_existing_ai_caller"
+      ]
+    }
+  ],
+  "lifecycle_contract": [
+    {
+      "stage": "preconstruction",
+      "contract": "Prepare sole actual owner, scene/Generated association, exact-key registry entry and persistent prepared record before AF74A0. Adapter borrows prepared record and real delegate.",
+      "evidence": [
+        "model_preparation_contract",
+        "model_owner_preparation_and_base",
+        "record_contract",
+        "record_preparation",
+        "record_cancellation_and_publication",
+        "complete_adapter_header",
+        "complete_adapter_CPP"
+      ]
+    },
+    {
+      "stage": "published and acquired construction",
+      "contract": "Profile publication precedes acquired try block. Record, sole owner and borrowed services remain live through all entered Native/resource callbacks.",
+      "evidence": [
+        "preprofile_validation_and_publication",
+        "constructor_contract",
+        "construction_hooks_and_access"
+      ]
+    },
+    {
+      "stage": "acquired failure",
+      "contract": "Native emitter pointers/base unwind before failed-profile retirement; outer caller returns raw AF62F0 only after construction throws. No duplicate destruction or premature record disposal.",
+      "evidence": [
+        "late_native_failure",
+        "record_failed_retirement_and_disposal",
+        "event_raw_frontier_and_success_boundary"
+      ]
+    },
+    {
+      "stage": "success and later effect-construction failure",
+      "contract": "Successful model may outlive effect constructor; later effect exception supplies only effect-base unwind. A persistent factory custodian is not proved.",
+      "evidence": [
+        "event_callee_contract",
+        "event_raw_frontier_and_success_boundary",
+        "event_destructor"
+      ]
+    },
+    {
+      "stage": "physical retirement and callbacks",
+      "contract": "Actual Native pool return precedes Generated unbind and record callback; registry raw key then opaque; record retired only after unbinding. Persistent callbacks/services must survive.",
+      "evidence": [
+        "particle_admitted_reference",
+        "particle_physical_terminal",
+        "particle_metadata_retirement",
+        "generated_binding",
+        "registry_retirement_lookup"
+      ]
+    },
+    {
+      "stage": "later quiescent disposal",
+      "contract": "No active constructor/hook/terminal callback/resolved borrower before explicit disposal. retired(), lookup and mutex do not prove quiescence. No Source disposal caller or positive owned-record custodian found by named finite queries.",
+      "evidence": [
+        "record_contract",
+        "record_failed_retirement_and_disposal",
+        "renderer_registry_storage",
+        "renderer_registry_public_borrow",
+        "renderer_registry_getter",
+        "renderer_existing_drain"
+      ]
+    }
+  ],
+  "next_cpp": {
+    "packet": "cc12_particle_saved_renderer_vertex_composition",
+    "status": "bounded Source-composition GO only",
+    "owned_files": [
+      "include/bsp/gui_text_native_renderer.hpp",
+      "src/gui_text_native_renderer.cpp",
+      "docs/CC12_PARTICLE_SAVED_RENDERER_VERTEX_COMPOSITION.md",
+      "reports/cc12_particle_saved_renderer_vertex_composition.json",
+      "local/cc12_particle_saved_renderer_vertex_composition"
+    ],
+    "new_Native_addresses": [],
+    "proposed_API": "bsp::create_native_vertex_from_captured_renderer_5c(void* actual_renderer, std::uint32_t captured_entry, std::uint32_t first, std::uint32_t bytes, void* actual_descriptor, NativeStreamCloneServices&, NativeStreamCloneAcquired&) -> void*",
+    "contract": [
+      "Borrow caller-owned real services and a fresh persistent acquired frame; authenticate live D5F0A8 receiver, saved B287C0 target and actual profile view.",
+      "Reuse existing empty-frame guard and factory/registration/complete transitions. Forward exact saved renderer/first/bytes/descriptor into existing B287C0 with &acquired.creator; return same creator.",
+      "Use existing canonical geometry admission and domain checks. Preserve current null-result failure policy and every partial creator, renderer-array, companion and admission effect on throw.",
+      "No current +5C reload or replacement renderer, retry, catch/cleanup, extra Native retain, new owner/custody policy, registry or application caller. Preserve provider late current +58 behavior.",
+      "Helper cannot authenticate external model/material registry it is not passed; actual delegate still owes common AF74A0 domains and per-call fresh acquired storage. Existing real device-recreation boundary remains."
+    ],
+    "verification": [
+      "Fresh scripts/build.ps1 MSVC Win32",
+      "Existing reconstructed_math, native_math_differential, tool_tests checks",
+      "Complete affected Source and compiled forwarding/argument/positive-provider review, no +5C reload/new activation, relevant unchanged old-body/artifact cohort",
+      "Retained closed Source/Git and strict physically copied ZIP replay; no inherited readiness artifact credit"
+    ],
+    "no_new_tests": true,
+    "full_delegate_GO": false,
+    "persistent_model_custodian_GO": false
+  },
+  "decision": {
+    "full_resource_delegate": "NO-GO",
+    "persistent_model_custodian": "NO-GO",
+    "smallest_next_composition": "GO: saved-renderer vertex helper using existing acquired-frame contract",
+    "missing_admission": "Mesh/material/section exact-identity admission and stable callback/companion custody before Native construction; current hooks run afterward and are noexcept",
+    "missing_custody": "Persistent record/sole owner/services owner plus Native terminal/client callback drain and later explicit quiescent disposal"
+  },
+  "frozen_queries": 80,
+  "frozen_excerpts": 85,
+  "lexical_order_checks": 27,
+  "Root_3356_preimages_replayed": true,
+  "prior_adapter_4245_staged_Source_rows_replayed": true,
+  "scope": {
+    "Cpp_changes": 0,
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Finite lexical queries and order checks are not AST, dynamic reachability or compiled call-graph proof.",
+    "Three resource hooks lack exact-identity preconstruction admission and stable companion custody.",
+    "A persistent particle-model record custodian and later borrower quiescence remain unproved.",
+    "Authentication checks and real borrowed domain/lifetime obligations do not permit copied Native layout or replacement services.",
+    "Source-only replay follows no build artifacts and gives no compiled, ABI or runtime credit."
+  ]
+}
