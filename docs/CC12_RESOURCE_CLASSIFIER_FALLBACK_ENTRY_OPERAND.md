@@ -113,3 +113,7 @@ equivalence and consumer attachment remain held in this packet. Address
 preparation and delegation alone close none of those gates. No copied IDs,
 substitute storage or C++/CMake/ledger/config changes were made. There were
 zero builds, tests, probes, game runs or runtime/gameplay validation.
+
+## Primary review
+
+Root retained 119 pin occurrences and verified ten baseline/current files, all four complete typed raw responses at modification 5, and the exact ten original bytes/two instructions. The original JMP and separate saved CALL_RETURN override remain distinct. No live query, Ghidra mutation, Source/build/test or runtime credit was added. The separately owned delegate readiness audit supplies its own larger scope.
