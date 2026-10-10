@@ -25,7 +25,7 @@ output/ID, unconditionally gets the manager, then reads the full flag. The
 numeric getter still requires its own live bool conversion-mode object, which
 cannot alias that DWORD or be presented as Native DWORD-mode parity.
 
-The raw ten-byte manager owner/getter/destructor and application probe now
+The raw sixteen-byte manager owner/getter/destructor and application probe now
 exist, but the ID wrapper's lower API still uses a separate std::map projection.
 No compatible raw overload or callable rebuilt current slot-zero adapter was
 found. The prebound definition companion is not a raw adapter usable at zero;
