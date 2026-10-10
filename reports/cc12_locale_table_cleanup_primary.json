@@ -1,0 +1,258 @@
+{
+  "schema": "bsp.cc12.locale-table-cleanup-primary.v1",
+  "status": "bounded_native_nullable_table_backing_free_contract_accepted_owning_unwind_and_activation_NO_GO",
+  "worker_commit": "f2e60874b51768a44136acc34c112c0b89545a84",
+  "Root_worker_review": {
+    "path": "local/cc12_locale_table_cleanup_primary/Root_worker_review.json",
+    "bytes": 1531,
+    "sha256": "6559c9339509387bf483496094b63c10bc29d9bbdbcce296cb31b61b3a0918a5"
+  },
+  "worker_report": {
+    "path": "local/cc12_locale_table_cleanup_primary/worker_report.json",
+    "bytes": 36197,
+    "sha256": "55e271d657af2a119baf35d4a7a3154ebe9b9259193d49050c609b530fa2a76a"
+  },
+  "copied_bundle": {
+    "path": "local/cc12_locale_table_cleanup_primary/worker_evidence.zip",
+    "bytes": 47353512,
+    "sha256": "3074a46ab7bc051dc84d98f6f1b7dfa4d8f2d12badc05c4831eb3e66eff14a82"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_table_cleanup_primary/Root_guarded_worker_replay.json",
+    "bytes": 6891,
+    "sha256": "213ac7a007913c265a1424c5b8e300b89cdbafe37ec68610fb00ee417c5c19a6"
+  },
+  "actual_frozen_Git_blob_occurrences": 4233,
+  "actual_commit_tree_objects": 13,
+  "actual_closed_Source_paths": 4217,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_bytes": 14,
+    "decoded_instructions": 7,
+    "stored_bytes": 13,
+    "hull_bytes": 14,
+    "stored_ranges": [
+      "00435560..0043556B",
+      "0043556D"
+    ],
+    "GPR_worker_epoch": 83,
+    "original_PE_equal": true,
+    "installed_PE_reread": false
+  },
+  "contract": {
+    "receiver": "ECX = address of saved pool table member +28h, supplied by prior C5EEB3 action under required frame contract",
+    "current_pointer": "Read DWORD[ECX] once into EAX; preserve captured pointer through PUSH",
+    "null_path": "TEST zero -> branch43556D -> RET; no free, count/capacity access, object store or other cleanup",
+    "nonnull_path": "Push captured pointer; direct CALL BF6989; on normal returning-free convention execute POP ECX then plain RET",
+    "count_capacity_accesses": 0,
+    "pointer_or_count_capacity_writes": 0,
+    "slot_slab_payload_iteration": false,
+    "pointer_reload_after_free": false,
+    "pointer_clear": false,
+    "local_catch_or_rollback": false,
+    "local_EH_frame_or_state_store": false,
+    "local_section_operation": false,
+    "null_pointer_with_capacity32": "Same zero-pointer branch; no count/capacity access or reset; this closes the leaf behavior only",
+    "repeated_nonnull_cleanup_made_safe_by_reset": false,
+    "unread_callee_side_effects_included": false
+  },
+  "ABI": {
+    "stored_prototype": "undefined FUN_00435560(void)",
+    "stored_prototype_contains_required_ECX": false,
+    "explicit_caller_stack_arguments": 0,
+    "return_instruction": "RET (no immediate)",
+    "null_EAX": 0,
+    "null_ECX": "incoming receiver",
+    "null_flags": {
+      "ZF": 1,
+      "PF": 1,
+      "SF": 0,
+      "CF": 0,
+      "OF": 0,
+      "AF": "undefined"
+    },
+    "nonnull_stack": "One pushed free argument; returning-free POP ECX consumes it before RET",
+    "nonnull_ECX": "Value in the argument slot after free; ordinarily captured backing pointer, not receiver",
+    "nonnull_EAX_and_flags": "Unclassified free target result/flags; POP/RET do not change flags",
+    "local_untouched_registers": [
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ],
+    "whole_callee_register_preservation_verified": false,
+    "meaningful_whole_function_return_value_established": false,
+    "original_binary_ABI_compatible": false
+  },
+  "flow_gap": {
+    "address": "0043556C",
+    "bytes": "59",
+    "decoded": "POP ECX",
+    "stored_listing_absent": true,
+    "stored_function_absent": true,
+    "live_code_unit": "undefined data",
+    "normal_return_continuation": true,
+    "padding": false,
+    "out_of_hull": false,
+    "call_address": "00435567",
+    "stored_override": "CALL_RETURN",
+    "effective_flow": "CALL_TERMINATOR",
+    "effective_fallthrough": null,
+    "normal_external_call_return_assumption": true,
+    "repair": false
+  },
+  "native_free_route": {
+    "call_site": "00435567",
+    "direct_target": "00BF6989",
+    "stored_name": "_free",
+    "is_thunk": true,
+    "direct_thunk_target_from_metadata": "00BF65AC",
+    "direct_thunk_target_stored_name": "_free",
+    "both_no_return_false": true,
+    "metadata_thunk_query_recursive": false,
+    "free_thunk_bodies_read": false,
+    "prior_calls": {
+      "constructor": [
+        {
+          "address": "00436282",
+          "bytes": "ff150c22ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce220c]"
+        },
+        {
+          "address": "004362B2",
+          "bytes": "e807f37b00",
+          "mnemonic": "call",
+          "operands": "0xbf55be"
+        },
+        {
+          "address": "004362E4",
+          "bytes": "e8a0067c00",
+          "mnemonic": "call",
+          "operands": "0xbf6989"
+        }
+      ],
+      "destructor": [
+        {
+          "address": "00435A68",
+          "bytes": "e83f0b7c00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "00435A80",
+          "bytes": "e8040f7c00",
+          "mnemonic": "call",
+          "operands": "0xbf6989"
+        },
+        {
+          "address": "00435A9D",
+          "bytes": "ffd3",
+          "mnemonic": "call",
+          "operands": "ebx"
+        },
+        {
+          "address": "00435AA7",
+          "bytes": "ff151422ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2214]"
+        }
+      ]
+    },
+    "same_table_free_target_in_prior_constructor": "004362E4 -> 00BF6989",
+    "same_table_free_target_in_prior_destructor": "00435A80 -> 00BF6989",
+    "prior_slab_free_target": "00435A68 -> 00BF65AC",
+    "conclusion": "Exact native target routing established; complete free implementation and replacement Source allocation-domain mapping unproved",
+    "new_Source_allocator_or_domain": false
+  },
+  "failure_prefix": {
+    "source": "Prior retained constructor211-byte hull; no fresh constructor read",
+    "table_pointer": "pool+28h initialized0",
+    "count": "pool+2Ch initialized0",
+    "capacity": "pool+30h initialized0 then32 before allocation",
+    "state": "byte2 at4362A3 after state0 DWORD; before allocator4362B2",
+    "allocation_call": "004362B2 -> 00BF55BE",
+    "condition": "If backing pointer remains null at action invocation and dispatcher supplies the required frame",
+    "leaf_result": "Immediate RET from435560 without free/count/capacity access",
+    "actual_allocation_failure_or_unwind_executed": false
+  },
+  "next_finite_scope": {
+    "proposed_packet": "cc12_locale_pool_section_cleanup_contract",
+    "address": "00402F70",
+    "proposal_only": true,
+    "first_gate": "Root metadata/prototype/typed-flow; approve exact complete body/hull limit and lease before body reads",
+    "recommended_max_hull_bytes": 128,
+    "excluded": [
+      "403970 body",
+      "Free thunk bodies",
+      "OS import bodies",
+      "FH3 runtime frame dispatch",
+      "Other destructor bodies",
+      "Source implementation/activation"
+    ],
+    "proposed_files": [
+      "docs/CC12_LOCALE_POOL_SECTION_CLEANUP_CONTRACT.md",
+      "reports/cc12_locale_pool_section_cleanup_contract.json",
+      "local/cc12_locale_pool_section_cleanup_contract"
+    ]
+  },
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_locale_table_cleanup_primary/Root_typed_before.json",
+      "bytes": 24310,
+      "sha256": "32a39bc91dc0add210876e4652e2b808ed90ae49fa4c87adb608924e57b69218"
+    },
+    "after": {
+      "path": "local/cc12_locale_table_cleanup_primary/Root_typed_after.json",
+      "bytes": 24436,
+      "sha256": "3a678b966b61edc92d994fa89b9b3fbb8ba7a6228b47dfdc0f509a5b4b7c8fbd"
+    },
+    "GPR_before": 85,
+    "GPR_after": 88,
+    "comments_added": 1,
+    "renames": 1,
+    "descriptive_name": "BSP_TableBacking_FreeIfPresent",
+    "old_name": "FUN_00435560",
+    "old_comments_preserved": true,
+    "complete_metadata_equal_except_modification_and_expected_function_name": true,
+    "Native_body_listing_flow_no_return_prototype_unchanged": true,
+    "journal": {
+      "path": "local/cc12_locale_table_cleanup_primary/Root_annotation_journal.json",
+      "bytes": 1585,
+      "sha256": "9f4b7a5c965bcdf73a0c5a84127df4cb92d3687f85f991f5e8df666bd61127bd"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_locale_table_cleanup_primary/refreshed_exports/assembly.txt",
+        "bytes": 146,
+        "sha256": "df48f57b45f75fa132428be1d63009b3bc213655d81c380298427321554cddf4"
+      },
+      {
+        "path": "local/cc12_locale_table_cleanup_primary/refreshed_exports/decompiled.c",
+        "bytes": 1535,
+        "sha256": "cd459934573eb7155fef93720e4c6862a3f82dda5002cf03df2b129486c1a220"
+      },
+      {
+        "path": "local/cc12_locale_table_cleanup_primary/refreshed_exports/metadata.json",
+        "bytes": 312,
+        "sha256": "0fea719f99986165aab1a9dcf2117f00424f7de9770a8c21dccac86fb81f8fea"
+      }
+    ]
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_body_queries": 0,
+    "Root_metadata_captures": 2,
+    "GPR_writes": "One locked descriptive function-name and evidence-comment annotation plus save; no analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Free target bodies and actual exception dispatch/frame setup remain unread.",
+    "Normal free return is qualified; no idempotent member reset or full owner unwind is established.",
+    "Stored undefined(void), CALL_RETURN/effective CALL_TERMINATOR and unowned one-byte POP ECX retained.",
+    "Current Source and inherited Native/build evidence remain separate epochs."
+  ]
+}
