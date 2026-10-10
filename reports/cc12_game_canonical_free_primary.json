@@ -777,11 +777,43 @@
     "Only the container and composed parent free_00bf65ac defaults use singleton_lifetime_free; allocations already use the same canonical Source service.",
     "Null or same canonical Source allocation domain only. Foreign allocators require matching every reached free override.",
     "Virtual signatures and possible throwing overrides unchanged; no new noexcept, diagnostics, lifetime order or caller switch.",
-    "Standalone array/embedded defaults, grid private operator new/delete, BF6989, physics and child domains unchanged."
+    "Standalone array/embedded defaults, all three grid CPU allocator/free methods, BF6989, physics and child domains unchanged."
   ],
   "remaining": [
     "Actual game/Application owner and shared-runtime queue composition.",
     "Production activation and native CRT/free ABI compatibility or foreign-domain proofs.",
     "Startup/runtime/gameplay validation."
-  ]
+  ],
+  "grid_domain_qualification": {
+    "status": "Source spelling checked; cross-family allocator interchange unproved",
+    "internal_arrays": "allocate_00bf55be defaults to operator new; six-array cleanup uses free_00bf6989 default std::free.",
+    "outer_grid": "scalar delete uses CPU free_00bf65ac default operator delete; a parent canonical allocation is a distinct domain requirement.",
+    "no_matching_internal_pair_claim": true,
+    "no_cross_CRT_interchange_claim": true,
+    "actual_Source_evidence": [
+      {
+        "project_path": "src/native_game_grid.cpp",
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_grid_domain_qualification\\native_game_grid.cpp",
+          "bytes": 22618,
+          "sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d"
+        },
+        "Git_commit": "3c04845eb19624366aaf6b43211b9e17828166ba",
+        "Git_LF_exact": true
+      },
+      {
+        "project_path": "include/bsp/native_game_grid.hpp",
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_grid_domain_qualification\\native_game_grid.hpp",
+          "bytes": 5494,
+          "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+        },
+        "Git_commit": "3c04845eb19624366aaf6b43211b9e17828166ba",
+        "Git_LF_exact": true
+      }
+    ],
+    "Cplusplus_or_provider_changes": false,
+    "build_or_runtime_repeated": false,
+    "qualification": "The accepted two parent/container free corrections remain proven independently. Grid owner, callable tables and both internal/outer domain bindings remain separate activation gates."
+  }
 }
