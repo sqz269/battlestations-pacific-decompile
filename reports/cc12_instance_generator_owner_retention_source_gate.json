@@ -1,0 +1,920 @@
+{
+  "schema": 1,
+  "packet": "cc12_instance_generator_owner_retention_source_gate",
+  "created_utc": "2026-10-10T09:51:28.203673+00:00",
+  "baseline": "4427aecec9a59a9519791a5f6490bc34f76531ec",
+  "status": "readonly_Source_gate_complete_mutable_exposure_not_ready",
+  "exact_outputs": [
+    "docs/CC12_INSTANCE_GENERATOR_OWNER_RETENTION_SOURCE_GATE.md",
+    "reports/cc12_instance_generator_owner_retention_source_gate.json"
+  ],
+  "decision": "NOT_READY_FOR_MUTABLE_OWNERS_ESCAPE",
+  "smallest_next_gate": "Close M1 retained acquisition admission and M2 worker admission/acknowledgement while keeping all mutable Owners exposure absent. Only then can the finite 25-path common-context gate be implemented and reviewed as a single closed lifecycle contract.",
+  "candidate_context_borrow": "4427ae is metadata-only and remained pending Root acceptance at this packet start; no promotion to mutable use is inferred.",
+  "shared_existing_provider_opportunity": "Use genuine NativeInstanceGeneratorOwners, NativeMeshResourceCalls, NativeRendererDeviceRecreationContext, renderer destructor context and normal/worker frame contexts. The six retry families converge on the common recreation entry; there is no need for a substitute retry wrapper or per-leaf callback.",
+  "monotonic_order": [
+    "Retain the entire application/provider graph and genuine operation-record owner.",
+    "Close lifecycle admission and obtain valid acknowledgement of already admitted work.",
+    "Validate ready/same-domain state with no outstanding external borrowed views.",
+    "Set the generator-exposure obligation monotonically BEFORE returning any mutable reference.",
+    "Admit only records owned by that retained graph BEFORE first phase/raw/name/native effect.",
+    "Refuse all listed lifecycle transitions while the obligation is set; never infer discharge from complete, registry empty or entry-list empty."
+  ],
+  "missing_interfaces": [
+    {
+      "id": "M1_retained_acquisition_admission",
+      "exact_gap": "No public/owned admission interface makes a NativeInstanceGeneratorAcquired record part of the application-retained graph BEFORE direct attach/finalize/constructor work. NativeMeshResourceCalls already has real pre-entry root-frame ownership, but no application binding retains that service and no cross-entry membership validation closes the arbitrary-frame/context constructor paths.",
+      "required_evidence": "Show allocation/registration of each real record before first possible native effect; stable address and owner across exception unwinding; same graphics/layout/context identity; no implicit retire on complete or registry empty."
+    },
+    {
+      "id": "M2_worker_close_and_acknowledgement",
+      "exact_gap": "No interface atomically closes host/worker lifecycle admission and acknowledges already admitted callbacks/frames. The real B33BF0 stop helper can wait forever for a never-started worker; busy sampling does not serialize admission.",
+      "required_evidence": "Finite Source state machine and all write/admission sites for never-started/running/idle/in-flight/failure cases, and evidence the close operation cannot race a worker callback/raw frame. Current lexical absence of a start setter is not dynamic proof."
+    },
+    {
+      "id": "M3_shared_concrete_transition_hooks",
+      "exact_gap": "Recreation/reset/startup/presentation/frame/end/stop/destructor contexts have no common nonpermissive obligation/admission reference. Existing providers are genuine and share enough context to carry it, but the hooks do not exist.",
+      "required_evidence": "All 25 listed Source paths receive compatible concrete interfaces, constructor ordering retains the obligation state before context binding, every listed cut precedes first side effect, and no new default/callback shim hides a bypass."
+    },
+    {
+      "id": "M4_normal_return_and_teardown_contract",
+      "exact_gap": "Current _Exit stops provider/CRT destruction only by ending the process. It does not establish continued use or a safe normal return; a throw from inside BD0400 try invokes destructive storage cleanup.",
+      "required_evidence": "Explicit refusal/terminal policy at each gate before unwind obligations; operation frames already retained; no native replay/rollback, no returning fake success, no clearing the monotonic obligation. Normal shutdown after activation stays held until actual release/retirement is separately established."
+    }
+  ],
+  "mandatory_source_groups": [
+    {
+      "id": "application_admission",
+      "owner": "primary application/lifetime integrator",
+      "files": [
+        "include/bsp/game_native_renderer_application.hpp",
+        "src/game_native_renderer_application.cpp"
+      ],
+      "functions": [
+        "future mutable NativeInstanceGeneratorOwners exposure (currently absent)",
+        "GameNativeRendererApplication::Impl construction/destruction",
+        "requires_process_retention",
+        "begin_frame",
+        "end_frame",
+        "initialize_window_render_entry_cache",
+        "drain_singletons",
+        "after_native_drain"
+      ],
+      "change": "Own the genuine operation/obligation state for the entire provider graph; close admission and prove no in-flight lifecycle work, then latch monotonically BEFORE any mutable reference escapes. Never clear on empty registry, entries or phase. Check ready-only mutators before phase writes; refuse direct drain and Impl destruction before side effects."
+    },
+    {
+      "id": "retained_operation_admission",
+      "owner": "generator/mesh lifetime worker; coordinated interface review",
+      "files": [
+        "include/bsp/native_instance_generator_owner.hpp",
+        "src/native_instance_generator_owner.cpp",
+        "include/bsp/native_mesh_subset_loading.hpp",
+        "src/native_mesh_subset_loading.cpp"
+      ],
+      "functions": [
+        "NativeInstanceGeneratorOwners::Impl/context/register_generator/register_binding",
+        "construct_native_instance_generator_declarations_00b55b20",
+        "construct_native_generic_instance_generator_00b44fd0",
+        "construct_native_building_instance_generator_00b450d0",
+        "attach_native_material_instance_generator_00b451d0",
+        "finalize_native_mesh_section_generator_00b85610",
+        "NativeMeshResourceCalls::parse_item/acquisitions",
+        "read_native_mesh_subset_00b941d0/read_native_mesh_fields_00b944e0"
+      ],
+      "change": "Add an explicit retained-record admission contract using genuine NativeInstanceGeneratorOwners and the existing NativeMeshResourceCalls acquisition tree. Before the first phase/raw/name write, validate same domain and a stable application-retained record lifetime. Public context-based constructors and arbitrary caller frames must be rejected unless admitted; finalizer early-outs and successful publication do not retire the obligation. No borrowed raw-frame pointer or entries.empty() inference substitutes for ownership."
+    },
+    {
+      "id": "common_device_transition_cut",
+      "owner": "renderer device/lifetime worker",
+      "files": [
+        "include/bsp/native_renderer_device_recreation_actual.hpp",
+        "src/game_native_renderer_device.inc",
+        "src/game_native_renderer_lifetime.inc",
+        "src/native_renderer_device_recreation_actual.cpp",
+        "src/native_renderer_reset_process.cpp",
+        "src/native_renderer_presentation_mode.cpp",
+        "src/native_renderer_device_startup_actual.cpp"
+      ],
+      "functions": [
+        "NativeRendererDeviceRecreationContext",
+        "DeviceGraph::DeviceGraph",
+        "DestructionGraph::DestructionGraph",
+        "recreate_native_renderer_device_00b29670",
+        "process_native_renderer_device_reset_00b2abd0",
+        "change_native_renderer_presentation_mode_00b29e60",
+        "initialize_native_renderer_device_00b2aeb0"
+      ],
+      "change": "Borrow the same real application obligation/admission state through existing concrete contexts, with no default permissive callback. Check BEFORE optional guards, lifecycle locks, pending/presentation writes, release, Reset/CreateDevice or restore. Reset/presentation/startup have effects before B29670, so each needs an entry guard; every current retry then reaches the common B29670 guard."
+    },
+    {
+      "id": "raw_frame_and_pipeline_cut",
+      "owner": "renderer frame worker",
+      "files": [
+        "src/native_renderer_begin_frame.cpp",
+        "include/bsp/native_renderer_end_frame.hpp",
+        "src/native_renderer_end_frame.cpp",
+        "include/bsp/native_renderer_stop_pipeline.hpp",
+        "src/native_renderer_stop_pipeline.cpp",
+        "src/game_native_renderer_frame.inc"
+      ],
+      "functions": [
+        "begin_native_renderer_frame_00b2b200",
+        "NativeRendererEndFrameContext",
+        "end_native_renderer_frame_00b2d8e0 and B2F4A0/B2F4B0 wrappers",
+        "NativeRendererStopPipelineContext",
+        "clear_native_renderer_stop_pipeline_00b26920",
+        "stop_native_renderer_worker_mode_00b28a90",
+        "FrameGraph constructor/worker_finish"
+      ],
+      "change": "Carry the genuine shared admission identity through normal and worker frame contexts and the concrete stop pipeline; guard before frame flags, queue execution, binding/rewind/Present or stop waits. Raw inactive EndFrame must retain its context-null no-op contract. Default/save wrappers inherit the single raw EndFrame guard."
+    },
+    {
+      "id": "control_worker_admission",
+      "owner": "renderer control-worker specialist; primary owns protocol acceptance",
+      "files": [
+        "include/bsp/native_renderer_control_worker.hpp",
+        "src/native_renderer_control_worker.cpp"
+      ],
+      "functions": [
+        "NativeRendererControlWorkerContext",
+        "native_renderer_control_worker_thread_00b33c20",
+        "construct_native_renderer_control_worker_00b33da0",
+        "destroy_native_renderer_control_worker_00b33b50",
+        "begin_frame/end_frame local helpers"
+      ],
+      "change": "Supply a concrete admission-close/acknowledgement contract tied to the retained real worker, including never-started, running, already idle, in-flight callback/frame and failed/teardown cases. Prevent new callback/frame entry after close and account for earlier admitted work. Do not infer this from phase ready, sampled busy depth, volatile run==0 or an old auto-reset idle signal; do not unconditionally call B33BF0."
+    },
+    {
+      "id": "all_drain_entry_cut",
+      "owner": "primary singleton/application integrator",
+      "files": [
+        "include/bsp/native_renderer_destructor.hpp",
+        "src/native_renderer_destructor.cpp",
+        "src/game_hosts_singletons.cpp",
+        "src/native_singleton_destruction.cpp"
+      ],
+      "functions": [
+        "NativeRendererDestructorContext",
+        "destroy_native_renderer_00b32920 and scalar deleting wrappers",
+        "GameSingletonHost::shutdown/~GameSingletonHost",
+        "destroy_native_singleton_manager_00bd0400"
+      ],
+      "change": "Borrow the same obligation through the real renderer destructor context already installed as deletion_bindings.renderer_owner. Direct host shutdown must refuse BEFORE reading manager/null-manager VFS retirement. Raw BD0400 must refuse BEFORE its try/catch; B32920 must refuse before profile/lock/worker writes. These are additional required hooks; checking only the application drain method is insufficient."
+    }
+  ],
+  "mandatory_Source_files": [
+    "include/bsp/game_native_renderer_application.hpp",
+    "include/bsp/native_instance_generator_owner.hpp",
+    "include/bsp/native_mesh_subset_loading.hpp",
+    "include/bsp/native_renderer_control_worker.hpp",
+    "include/bsp/native_renderer_destructor.hpp",
+    "include/bsp/native_renderer_device_recreation_actual.hpp",
+    "include/bsp/native_renderer_end_frame.hpp",
+    "include/bsp/native_renderer_stop_pipeline.hpp",
+    "src/game_hosts_singletons.cpp",
+    "src/game_native_renderer_application.cpp",
+    "src/game_native_renderer_device.inc",
+    "src/game_native_renderer_frame.inc",
+    "src/game_native_renderer_lifetime.inc",
+    "src/native_instance_generator_owner.cpp",
+    "src/native_mesh_subset_loading.cpp",
+    "src/native_renderer_begin_frame.cpp",
+    "src/native_renderer_control_worker.cpp",
+    "src/native_renderer_destructor.cpp",
+    "src/native_renderer_device_recreation_actual.cpp",
+    "src/native_renderer_device_startup_actual.cpp",
+    "src/native_renderer_end_frame.cpp",
+    "src/native_renderer_presentation_mode.cpp",
+    "src/native_renderer_reset_process.cpp",
+    "src/native_renderer_stop_pipeline.cpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "finite_retry_paths": [
+    {
+      "family": "logical vertex",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "chain": [
+        "constructor eligible failure",
+        "context.actual_device_recreation.call_00b29670",
+        "ActualRecreation::call_00b29670",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    },
+    {
+      "family": "logical index",
+      "source": "src/native_logical_index_owner.cpp",
+      "chain": [
+        "constructor eligible failure",
+        "creation.actual_device_recreation.call_00b29670",
+        "ActualRecreation::call_00b29670",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    },
+    {
+      "family": "2D/cube/volume loading",
+      "source": "src/native_texture_loading_cache.cpp",
+      "chain": [
+        "eligible D3DX failure",
+        "loading.retry_device_00b29670",
+        "TextureLoadingGraph::retry",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    },
+    {
+      "family": "surface factory",
+      "source": "src/native_render_resources_surfaces.cpp",
+      "chain": [
+        "eligible COM failure",
+        "recreate helper with c.recreation",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    },
+    {
+      "family": "runtime 2D texture",
+      "source": "src/native_runtime_texture_creation.cpp",
+      "chain": [
+        "eligible COM failure",
+        "c.recreation",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    },
+    {
+      "family": "runtime volume texture",
+      "source": "src/native_runtime_volume_texture_creation.cpp",
+      "chain": [
+        "eligible COM failure",
+        "c.recreation",
+        "recreate_native_renderer_device_00b29670"
+      ]
+    }
+  ],
+  "already_dominated_paths_no_independent_change_required": [
+    {
+      "file": "src/game_hosts.cpp",
+      "functions": [
+        "GameDeviceHost::clear_and_present",
+        "GameStartupHost::exit_if_native_renderer_incomplete",
+        "~GameStartupHost",
+        "exit_process",
+        "application_shutdown",
+        "destroy_singleton_lifetime_manager"
+      ],
+      "reason": "Actual begin dominates overlay/capture; existing host retention checks precede teardown/CRT entry and will observe the new predicate if bound correctly. _Exit remains terminal."
+    },
+    {
+      "file": "src/game_main.cpp",
+      "functions": [
+        "WinMain normal/exceptional tail and host.reset",
+        "VFS-only qualification returns"
+      ],
+      "reason": "Renderer-owning paths reset StartupHost before normal return; VFS diagnostics use separate graphs. No earlier free of this renderer graph was found in those paths."
+    },
+    {
+      "files": [
+        "src/native_logical_vertex_owner.cpp",
+        "src/native_logical_index_owner.cpp",
+        "src/native_texture_loading_cache.cpp",
+        "src/native_render_resources_surfaces.cpp",
+        "src/native_runtime_texture_creation.cpp",
+        "src/native_runtime_volume_texture_creation.cpp",
+        "src/game_native_renderer_textures.inc"
+      ],
+      "reason": "Keep these real providers and their retry semantics. Prove each still forwards the SAME application recreation context; a central entry hook dominates the destructive retry without changing each leaf."
+    },
+    {
+      "files": [
+        "src/game_native_readonly_data.cpp",
+        "src/game_native_vfs_runtime.cpp",
+        "src/gui_native_geometry.cpp",
+        "src/gui_text_native_layout.cpp"
+      ],
+      "reason": "Retain actual owning graph and forbid drain before these destructors/retirement; local destructor empty checks are not an acquisition/quiescence policy."
+    }
+  ],
+  "negative_evidence_boundary": "All 4205 tracked Source files searched and frozen with Git blobs. This establishes current textual API/call-site inventory, not absence of computed raw writes, unmodeled Native callers or runtime races.",
+  "authorization_boundary": "Only two doc/report files may change. This packet performs no compiler/build/test, Native entry, Ghidra query/mutation or activation. Descriptive gate names are proposed Source contracts, not recovered Native symbols/ABI.",
+  "evidence_anchors": [
+    {
+      "id": "metadata_only_borrow",
+      "file": "src/game_native_renderer_application.cpp",
+      "first_line": 617,
+      "last_line": 659,
+      "whole_Source_sha256": "f1553cfcecc329e8eeb116e1995be9a37dcf8b2637c73c74b4e93c25f695c35d",
+      "excerpt_sha256": "53fc84853a5cee31db3ef89a44ce5faa21b38723395478a681fc495a4a61cf78",
+      "interpretation": "Current candidate returns only a stable const context under the serialized no-activation contract; it creates no Owners or monotonic escape latch."
+    },
+    {
+      "id": "current_acquired_and_owners_contract",
+      "file": "include/bsp/native_instance_generator_owner.hpp",
+      "first_line": 13,
+      "last_line": 66,
+      "whole_Source_sha256": "754068874234261e9badf38820bea9f1de9cc5d9393762f12c57740200fb4978",
+      "excerpt_sha256": "5ccb87bd26db4f9a12949f232a04ab99173a048f20edb7a2adb62a4d744cbf4d",
+      "interpretation": "Context publicly contains mutable references; acquisition record is caller-owned; Owners has registration/context methods but no record-admission or retention query."
+    },
+    {
+      "id": "pre_entry_constructor_acquisitions",
+      "file": "src/native_instance_generator_owner.cpp",
+      "first_line": 49,
+      "last_line": 109,
+      "whole_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "d1a5825cd6a26812be073108c9749bad75b22e73efdfe441d2068c7f5a54501c",
+      "interpretation": "Name, declaration, descriptor and layout work can precede generator Entry registration; several raw/name/base stores occur before any owner can see the operation."
+    },
+    {
+      "id": "registration_and_metadata_destructor",
+      "file": "src/native_instance_generator_owner.cpp",
+      "first_line": 146,
+      "last_line": 199,
+      "whole_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "16fafe59b12639e973e37302df31f25b39fb94274ac5a4d70dde6fddcd68599d",
+      "interpretation": "Entries are created only on completed creator admission, before bind. Failed bind can retain an unbound Entry. Empty entries do not establish the absence of earlier acquired frames."
+    },
+    {
+      "id": "attachment_and_finalizer",
+      "file": "src/native_instance_generator_owner.cpp",
+      "first_line": 201,
+      "last_line": 252,
+      "whole_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "6ab8cdf49a4ba50747d601faa19ad1101f03f803f65c5c269acef4d5c18d2232",
+      "interpretation": "Attachment sets attachment_started and may allocate/construct before register_generator; finalizer has two null early-outs. Complete may still publish a binding into the section."
+    },
+    {
+      "id": "subset_embedded_record",
+      "file": "include/bsp/native_mesh_subset_loading.hpp",
+      "first_line": 15,
+      "last_line": 42,
+      "whole_Source_sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7",
+      "excerpt_sha256": "beff2a52a3398a91b0da85af01b6c76ff86cc2f9b901f107c3ea5aecab009228",
+      "interpretation": "A genuine NativeMeshSubsetAcquired contains the generator frame and persistent texture-child frames; embedding alone does not retain its outer owner."
+    },
+    {
+      "id": "subset_admission",
+      "file": "src/native_mesh_subset_loading.cpp",
+      "first_line": 58,
+      "last_line": 83,
+      "whole_Source_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+      "excerpt_sha256": "949e58ae9da9ac141a8b4c4df5cf0ef1a3cf4f0d8cda4cae08157a13fc1d89f8",
+      "interpretation": "Domain and replay checks precede subset work, but no application retention admission is performed."
+    },
+    {
+      "id": "subset_publication_precedes_generator",
+      "file": "src/native_mesh_subset_loading.cpp",
+      "first_line": 159,
+      "last_line": 168,
+      "whole_Source_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+      "excerpt_sha256": "632afad67a5d4d58488d3032582762943415be2d38c36797c3f832559c48ac24",
+      "interpretation": "Section layout and mesh publication precede B85610; failure must retain the whole parent acquisition tree, not only generator companion entries."
+    },
+    {
+      "id": "nested_subset_frame",
+      "file": "src/native_mesh_subset_loading.cpp",
+      "first_line": 229,
+      "last_line": 247,
+      "whole_Source_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+      "excerpt_sha256": "e441bacc52db776ad739e44026afc75247cb726f2ffcbd8e078d71897daff7e2",
+      "interpretation": "The mesh-fields owner appends a persistent child before calling the subset reader."
+    },
+    {
+      "id": "genuine_parser_record_owner",
+      "file": "src/native_mesh_subset_loading.cpp",
+      "first_line": 400,
+      "last_line": 415,
+      "whole_Source_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+      "excerpt_sha256": "3c55668b117d59eb4d1d14a2d6a7f8a21aa6aec291124ac953f58f0aa545880f",
+      "interpretation": "NativeMeshResourceCalls pushes a unique_ptr<NativeMeshResourceAcquired> before parse entry; this is an existing genuine retention path if its containing service is itself retained."
+    },
+    {
+      "id": "application_destructor_and_graph_binding",
+      "file": "src/game_native_renderer_application.cpp",
+      "first_line": 436,
+      "last_line": 464,
+      "whole_Source_sha256": "f1553cfcecc329e8eeb116e1995be9a37dcf8b2637c73c74b4e93c25f695c35d",
+      "excerpt_sha256": "f70ba9b28a63c7a6c6e0d9c94555a4959417a9ad636f55b572aaf80d03641bf6",
+      "interpretation": "The native deletion table already points at the genuine renderer destructor context; Impl destructor checks phase then releases COM and members, with no generator obligation."
+    },
+    {
+      "id": "application_startup_order",
+      "file": "src/game_native_renderer_application.cpp",
+      "first_line": 661,
+      "last_line": 730,
+      "whole_Source_sha256": "f1553cfcecc329e8eeb116e1995be9a37dcf8b2637c73c74b4e93c25f695c35d",
+      "excerpt_sha256": "81bc021d6c8e16a4113d2185f2156a9e31f270d1fb306ca6f83c0fda4989beab",
+      "interpretation": "Construct/create/platform binding use once-only phases; initialize_window_render_entry_cache is a separate ready-state mutator and must be covered if Owners could escape before it."
+    },
+    {
+      "id": "application_frame_and_retention",
+      "file": "src/game_native_renderer_application.cpp",
+      "first_line": 741,
+      "last_line": 821,
+      "whole_Source_sha256": "f1553cfcecc329e8eeb116e1995be9a37dcf8b2637c73c74b4e93c25f695c35d",
+      "excerpt_sha256": "ad684bd6bdb955cabb775d54a3da48b59d0677d68ca5e581497f561d8b1effdd",
+      "interpretation": "begin_frame changes phase and enters Native frame without checking requires_process_retention; end_frame sets ready. Existing retention sees phase/shader/shadow/layout state only; drain checks before shutdown."
+    },
+    {
+      "id": "shared_recreation_context",
+      "file": "include/bsp/native_renderer_device_recreation_actual.hpp",
+      "first_line": 18,
+      "last_line": 49,
+      "whole_Source_sha256": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+      "excerpt_sha256": "80742f59e0b51a647413b0244bd8dace8d0b20841e8c2bbe6e2c1066fd667a81",
+      "interpretation": "One genuine context contains release/restore/layout/logical/texture providers, but no application-retention or admission field."
+    },
+    {
+      "id": "same_context_composition",
+      "file": "src/game_native_renderer_device.inc",
+      "first_line": 1,
+      "last_line": 61,
+      "whole_Source_sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+      "excerpt_sha256": "ff8d681688ccce17ccff17f387c2239fcb41553b7c00059dfe29b160aa80da27",
+      "interpretation": "DeviceGraph composes one recreation and reset context and binds ActualRecreation to it; it later unbinds and unloads D3DX."
+    },
+    {
+      "id": "logical_retry_adapter",
+      "file": "src/game_native_renderer_lifetime.inc",
+      "first_line": 1,
+      "last_line": 8,
+      "whole_Source_sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+      "excerpt_sha256": "8ff8d502b4bbb8dcaeee951b578032d319b41c32e651c209cb82387533d67eff",
+      "interpretation": "Both logical owner families use the concrete ActualRecreation adapter forwarding to the same full recreation provider."
+    },
+    {
+      "id": "texture_retry_adapter",
+      "file": "src/game_native_renderer_textures.inc",
+      "first_line": 22,
+      "last_line": 45,
+      "whole_Source_sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "excerpt_sha256": "f37e2f7f512ab6c77dc08700f2aed69e41fcf6596fde28663db01138c87adaa4",
+      "interpretation": "The real texture loading graph forwards retries through its DeviceGraph recreation context; replacing this with a callback wrapper is unnecessary."
+    },
+    {
+      "id": "raw_begin_frame",
+      "file": "src/native_renderer_begin_frame.cpp",
+      "first_line": 168,
+      "last_line": 185,
+      "whole_Source_sha256": "941cac2c7156a8e4a88455b35be66d8f872f7a9e9a30b134a93787ebd799e41e",
+      "excerpt_sha256": "b7d2ddfb090ebd1b263b51b7610f9412a02af3944ef9c9ff334cc3f6bfff7e6f",
+      "interpretation": "B2B200 writes frame-active/inhibit state before calling reset; guarding reset alone is late for raw frame admission."
+    },
+    {
+      "id": "end_frame_context",
+      "file": "include/bsp/native_renderer_end_frame.hpp",
+      "first_line": 58,
+      "last_line": 94,
+      "whole_Source_sha256": "ac66e74562a70ca51efa945c30073eb8095eeec9ea517721e146717efbecc2c9",
+      "excerpt_sha256": "4fdc85b7ffa4faa3546b21f4700fe9f5f5017b23a970297abcb95f4f920fd566",
+      "interpretation": "End-frame borrows real queue/binding/cache/device providers but currently has no shared lifecycle admission reference; worker_end is a copy of this domain."
+    },
+    {
+      "id": "raw_end_frame",
+      "file": "src/native_renderer_end_frame.cpp",
+      "first_line": 135,
+      "last_line": 242,
+      "whole_Source_sha256": "de21c0d472f2650b71aa5072e55c616029018f71c0c88de2da04a2fd04aa99c1",
+      "excerpt_sha256": "ca00d31b6b943278ae2b70add9847101c79b7ae5d864fe774c424fca424b884c",
+      "interpretation": "B2D8E0 mutates flags, executes queues, resets bindings, rewinds buffers and presents. Its inactive branch returns before dereferencing optional context; future guard placement must preserve that contract."
+    },
+    {
+      "id": "frame_graph_worker_alias",
+      "file": "src/game_native_renderer_frame.inc",
+      "first_line": 1,
+      "last_line": 45,
+      "whole_Source_sha256": "89450a2211c9e17aa5f590256347fabea9f4afe6ae16a9b58728652bb18ab21a",
+      "excerpt_sha256": "89450a2211c9e17aa5f590256347fabea9f4afe6ae16a9b58728652bb18ab21a",
+      "interpretation": "Application end and worker_end share provider references. The real worker_finish directly calls the raw default end-frame wrapper."
+    },
+    {
+      "id": "reset_entry",
+      "file": "src/native_renderer_reset_process.cpp",
+      "first_line": 233,
+      "last_line": 250,
+      "whole_Source_sha256": "7a09b6053f0296bfde5a129be98d6da523aa3f7045ddac851a325d61d6cb686d",
+      "excerpt_sha256": "66abb71e56abe893f054d14cebec37ca428547213e0b1b1c2d9f4933cd84d7d5",
+      "interpretation": "Raw reset enters optional guard and dispatches by thread identity; no application-retention check."
+    },
+    {
+      "id": "in_place_reset_and_fallback",
+      "file": "src/native_renderer_reset_process.cpp",
+      "first_line": 144,
+      "last_line": 220,
+      "whole_Source_sha256": "7a09b6053f0296bfde5a129be98d6da523aa3f7045ddac851a325d61d6cb686d",
+      "excerpt_sha256": "b49c18afec842177566add04c87ccfb6b939f71904b68b4ab29e92f1a9e74240",
+      "interpretation": "In-place release/Reset/restore never needs B29670 on success. A recreation-only gate misses this branch and earlier pending/lost writes."
+    },
+    {
+      "id": "recreation_entry",
+      "file": "src/native_renderer_device_recreation_actual.cpp",
+      "first_line": 225,
+      "last_line": 324,
+      "whole_Source_sha256": "83830b9520186fc9b7d864d1025d41d410493242a75798107970b199da2ee750",
+      "excerpt_sha256": "5ef7b642f8e33306d3210c7eff5f6ee81f921d5ae7e36f1420fecf4904e101d8",
+      "interpretation": "B29670 acquires guards/locks then unbinds/releases/restores actual resources, layouts, logical owners, texture records and COM device."
+    },
+    {
+      "id": "presentation_entry",
+      "file": "src/native_renderer_presentation_mode.cpp",
+      "first_line": 116,
+      "last_line": 174,
+      "whole_Source_sha256": "2628f60cfda70f1674cc19b48a22804d39c30de407492d3ca41b015a81ab320f",
+      "excerpt_sha256": "f10727ec770f71cbee78553a43e5a35688bb276d80d901e3f4b9110da231115a",
+      "interpretation": "B29E60 writes presentation parameters before conditional B29670 or pending publication; must guard before its first lock/write, including no-recreation branch."
+    },
+    {
+      "id": "raw_device_startup",
+      "file": "src/native_renderer_device_startup_actual.cpp",
+      "first_line": 156,
+      "last_line": 180,
+      "whole_Source_sha256": "d40202b0dabeeae324f3cdd84fcd5c9c6966f2472966f4a05669eb858747a8e7",
+      "excerpt_sha256": "ddb5297e4670a6b4e1d2b80404ab6c9548a449fb09530257f9e1ae21b8a65686",
+      "interpretation": "B2AEB0 clears/writes presentation fields immediately; high-level once-only phase checks do not protect direct raw-context calls."
+    },
+    {
+      "id": "logical_vertex_retry",
+      "file": "src/native_logical_vertex_owner.cpp",
+      "first_line": 301,
+      "last_line": 314,
+      "whole_Source_sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "excerpt_sha256": "ab5eb2ed97e7e75c8edcc68ceaf36c28fdedf34d899540a08e677ae439e5def1",
+      "interpretation": "Eligible buffer failure calls ActualRecreation after some constructor work; a shared recreation refusal must preserve the already-retained operation record."
+    },
+    {
+      "id": "logical_index_retry",
+      "file": "src/native_logical_index_owner.cpp",
+      "first_line": 181,
+      "last_line": 193,
+      "whole_Source_sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8",
+      "excerpt_sha256": "1ff98b7bbfc4d6c01bc7d7e5576a87afb1c5fb506a7751a08534579b81ae2a9f",
+      "interpretation": "Index creation converges on the same abstract recreation service, concretely bound to the application ActualRecreation adapter."
+    },
+    {
+      "id": "cube_volume_retry",
+      "file": "src/native_texture_loading_cache.cpp",
+      "first_line": 521,
+      "last_line": 532,
+      "whole_Source_sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "excerpt_sha256": "47695dce7f377c5ae3746705d3243355526bebbd2212d90fffa2c984ed4e37e8",
+      "interpretation": "Both loading families forward through the real loading retry callback into DeviceGraph recreation."
+    },
+    {
+      "id": "texture2d_retry",
+      "file": "src/native_texture_loading_cache.cpp",
+      "first_line": 633,
+      "last_line": 644,
+      "whole_Source_sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "excerpt_sha256": "09c97b968174d674867bcbf68801db67fc409ade13f86e4af8e1521a3d523f0f",
+      "interpretation": "The second attempt uses the same captured device after recreation; the gate must refuse before recreation, not fabricate a successful retry."
+    },
+    {
+      "id": "surface_retry",
+      "file": "src/native_render_resources_surfaces.cpp",
+      "first_line": 62,
+      "last_line": 71,
+      "whole_Source_sha256": "24aee52fa0cd5d1fccf6143d5a04ece86d7eafb49442bcdc657cf33d10997761",
+      "excerpt_sha256": "5bb6a4308347fbdbc64174a9397cc7d1af24dd32ad0bb5124c0b50a5b5a04b31",
+      "interpretation": "Surface factory reaches full recreation through its concrete borrowed context."
+    },
+    {
+      "id": "runtime_texture_retry",
+      "file": "src/native_runtime_texture_creation.cpp",
+      "first_line": 263,
+      "last_line": 274,
+      "whole_Source_sha256": "df1037d5f1f3d75e68976fc998ef59d6e559dd9731588f1bc00f36bd8622183a",
+      "excerpt_sha256": "4fa043fe731658815401fc7fb3a19afc65aabd9ec7ad2510ba04ec5adb4a5822",
+      "interpretation": "Runtime texture retry directly calls B29670 then reloads current device."
+    },
+    {
+      "id": "runtime_volume_retry",
+      "file": "src/native_runtime_volume_texture_creation.cpp",
+      "first_line": 143,
+      "last_line": 160,
+      "whole_Source_sha256": "b443edfd48f30178b7aa60de16ed98d9df41eccdae2cf7cc0d2e3e6c3192505a",
+      "excerpt_sha256": "2b62f1575303cb0daa79ea076bbfad9e8946a21ef3f6bdf6886a27cfdcbc88c5",
+      "interpretation": "Runtime volume retry directly calls B29670 with its captured renderer."
+    },
+    {
+      "id": "worker_context_contract",
+      "file": "include/bsp/native_renderer_control_worker.hpp",
+      "first_line": 38,
+      "last_line": 58,
+      "whole_Source_sha256": "2de24b2af336ebd7e7713bd1c4bc033935b468dff6ae619fd703177e34c51f36",
+      "excerpt_sha256": "d3b81da939e0b1f23c1766f76207508f597c484a6ceb2a6cb0efb85028bfa8ce",
+      "interpretation": "Immutable process binding retains the actual frame contexts through joins; no admission epoch, in-flight accounting or quiescence acknowledgement interface exists."
+    },
+    {
+      "id": "worker_frame_dispatch",
+      "file": "src/native_renderer_control_worker.cpp",
+      "first_line": 47,
+      "last_line": 66,
+      "whole_Source_sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+      "excerpt_sha256": "3fda042874eb1b914ab9097b93ef2114dac149d00112dda356e7c5c921749a29",
+      "interpretation": "Worker begin/end helpers bypass GameNativeRendererApplication; process context cannot rebind to a substitute graph."
+    },
+    {
+      "id": "worker_loop",
+      "file": "src/native_renderer_control_worker.cpp",
+      "first_line": 157,
+      "last_line": 187,
+      "whole_Source_sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+      "excerpt_sha256": "1a00f37f74ca0e3a95a9f4e7afa4b04e29bd0b3363a5471a6b7bda461941ce8c",
+      "interpretation": "Run loop can execute callback and frames after a sampled busy check. It does not acquire an admission lock spanning the final check and frame entry."
+    },
+    {
+      "id": "worker_construct_destroy",
+      "file": "src/native_renderer_control_worker.cpp",
+      "first_line": 189,
+      "last_line": 221,
+      "whole_Source_sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+      "excerpt_sha256": "032b715feb87b2e092341fe06e2fac5c3aca2183d26ef91b01e0692d361140ea",
+      "interpretation": "Constructor run=0 and unsignaled wake/idle events leave worker blocked at first wake. Destructor joins after shutdown/wake but cannot stop a run loop by itself."
+    },
+    {
+      "id": "stop_ack_helper",
+      "file": "src/native_renderer_stop_pipeline.cpp",
+      "first_line": 61,
+      "last_line": 72,
+      "whole_Source_sha256": "169e182a68df17af62d96c3bd865c4fce49cb8b36c1b95d8e299eb592e713392",
+      "excerpt_sha256": "fd68838077e6a81a495865964f10c9210c2ef126c34f8ae7d2d7667f2be08473",
+      "interpretation": "B33BF0 clears run and waits on idle without waking or distinguishing never-started from active worker; it is not an unconditional admission handshake."
+    },
+    {
+      "id": "pipeline_stop_entry",
+      "file": "src/native_renderer_stop_pipeline.cpp",
+      "first_line": 74,
+      "last_line": 112,
+      "whole_Source_sha256": "169e182a68df17af62d96c3bd865c4fce49cb8b36c1b95d8e299eb592e713392",
+      "excerpt_sha256": "81904094f9d9d9bfd92a9fd32d8dd9d45491a57aded36b6965dda91e357ae811",
+      "interpretation": "Pipeline helper clears real bindings/cache/device state; B28A90 also changes synchronization mode after a potentially indefinite stop wait."
+    },
+    {
+      "id": "explicit_stop_limit",
+      "file": "include/bsp/native_renderer_stop_pipeline.hpp",
+      "first_line": 1,
+      "last_line": 52,
+      "whole_Source_sha256": "2acbc73f5b1885e169110a551754244d8cc1419db4b2e7866405a31ca7a6813b",
+      "excerpt_sha256": "2acbc73f5b1885e169110a551754244d8cc1419db4b2e7866405a31ca7a6813b",
+      "interpretation": "Existing public contract explicitly records never-started-worker indefinite wait and unproved full lifecycle/concurrency."
+    },
+    {
+      "id": "queue_constructor_stop_edge",
+      "file": "src/native_render_queue_constructor.cpp",
+      "first_line": 62,
+      "last_line": 81,
+      "whole_Source_sha256": "d90694996abe427170c9b8943605a50127f4d708a8206c46338ae9da5fe36bef",
+      "excerpt_sha256": "3038bdb5fdc2229621c1f852d81ea6768544e36e4f5eca0ab5950b9d1b125c17",
+      "interpretation": "Queue constructor conditionally reaches B28A90 after earlier queue stores; it is a current internal caller, not a hypothetical new wrapper."
+    },
+    {
+      "id": "busy_is_sample_not_admission",
+      "file": "src/native_renderer_synchronization_actual.cpp",
+      "first_line": 75,
+      "last_line": 79,
+      "whole_Source_sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+      "excerpt_sha256": "b5c9d076924c5074baa8080b177f0dee65475cbed767dddda74640bddf62f120",
+      "interpretation": "Busy is a sampled signed depth > 0 test. It neither owns a lock nor prevents a subsequent entry race."
+    },
+    {
+      "id": "event_initial_state",
+      "file": "src/native_event_owner.cpp",
+      "first_line": 9,
+      "last_line": 20,
+      "whole_Source_sha256": "be104dd9cb118b99190ffc106368aa0d94add12db5c3e5300f949914eec98724",
+      "excerpt_sha256": "aeaab762bf84d08d536f8209deedb6c24616d0524cfcbb1c27ffb128492fecf1",
+      "interpretation": "Actual event constructor passes FALSE for initial state; worker requests manual_reset=0, producing unsignaled auto-reset wake/idle events."
+    },
+    {
+      "id": "direct_singleton_shutdown",
+      "file": "src/game_hosts_singletons.cpp",
+      "first_line": 119,
+      "last_line": 139,
+      "whole_Source_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "excerpt_sha256": "d2791be5714ab58d746e6485057b1e8cc661215753b82c4208c6ef9cd8f8f537",
+      "interpretation": "Even null-manager shutdown retires VFS. A direct shutdown gate must run before this branch, not only before renderer deletion."
+    },
+    {
+      "id": "singleton_fallback",
+      "file": "src/game_hosts_singletons.cpp",
+      "first_line": 31,
+      "last_line": 35,
+      "whole_Source_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "excerpt_sha256": "96a16b287c54d9e1defdb03e7faf4acca186713239de304ca44ce67c7443bfca",
+      "interpretation": "Host destructor directly calls shutdown; all fallback paths need the same early guard."
+    },
+    {
+      "id": "raw_manager_unwind",
+      "file": "src/native_singleton_destruction.cpp",
+      "first_line": 622,
+      "last_line": 632,
+      "whole_Source_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "excerpt_sha256": "7487be04f04298dcb8108e107e3df971630b841863ad97c98820a3643755c189",
+      "interpretation": "BD0400 catch clears manager storage. A refusal must occur before entering this try region, or a thrown guard could itself destroy retained bookkeeping."
+    },
+    {
+      "id": "renderer_dispatch",
+      "file": "src/native_singleton_destruction.cpp",
+      "first_line": 150,
+      "last_line": 156,
+      "whole_Source_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "excerpt_sha256": "e246478c11f091a60f7a7336a862f4e08deacdb26952e24105d3580a6537fa70",
+      "interpretation": "Existing renderer_owner points at the genuine renderer destructor context; it can carry a real borrowed obligation without a new generic callback registry."
+    },
+    {
+      "id": "raw_renderer_teardown",
+      "file": "src/native_renderer_destructor.cpp",
+      "first_line": 267,
+      "last_line": 300,
+      "whole_Source_sha256": "7e1d31c63d952b93a99429b1680e7a2798d8369f98a7f245876393f86546a5bb",
+      "excerpt_sha256": "7201cfdb2e4b147888979fd71c8c681c7d9ebf43b1ebf7099c5ce987d380d019",
+      "interpretation": "Renderer destructor drops lifecycle lock and control worker before bindings/cache/provider teardown; a guard belongs before the body/try, not after any partial teardown."
+    },
+    {
+      "id": "renderer_scalar_thunks",
+      "file": "src/native_renderer_destructor.cpp",
+      "first_line": 436,
+      "last_line": 447,
+      "whole_Source_sha256": "7e1d31c63d952b93a99429b1680e7a2798d8369f98a7f245876393f86546a5bb",
+      "excerpt_sha256": "45a29b5bb9a236f4a57a0039cb7c75d7d7de84a0b2de9267ecb95186ead19f13",
+      "interpretation": "Both deleting entrypoints converge on B32920 before freeing raw storage; a complete B32920 pre-entry refusal covers these wrappers."
+    },
+    {
+      "id": "host_exit_order",
+      "file": "src/game_hosts.cpp",
+      "first_line": 1531,
+      "last_line": 1601,
+      "whole_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "d33d7c8d768bed1b67b411162c27d80fb0ecc25f7f282901d1259e0e177f450b",
+      "interpretation": "Renderer retention is checked before frontend destruction, shared drain, VFS/Lua/provider retirement. The helper calls _Exit and does not return normally."
+    },
+    {
+      "id": "host_CRT_exit",
+      "file": "src/game_hosts.cpp",
+      "first_line": 1663,
+      "last_line": 1672,
+      "whole_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "9df40926bc4476da830bc454f0382a7ff9807ec9b942932aa39946d453ff79e0",
+      "interpretation": "exit_process checks renderer retention before std::exit/atexit callbacks."
+    },
+    {
+      "id": "application_shutdown_order",
+      "file": "src/game_hosts.cpp",
+      "first_line": 2319,
+      "last_line": 2329,
+      "whole_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "99f8552d9a501ebce870fa75e7bff099abb6113a9bbcf546e161083c52c642c4",
+      "interpretation": "Application shutdown checks renderer retention before frontend/device/diagnostic retirement."
+    },
+    {
+      "id": "manager_shutdown_order",
+      "file": "src/game_hosts.cpp",
+      "first_line": 2419,
+      "last_line": 2432,
+      "whole_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "7090a9c127a811d6322717cd2a6b52a5369075ccd72226b6218fe9d803a3c3cd",
+      "interpretation": "Normal manager shutdown checks renderer retention before renderer drain, then other owner retirement."
+    },
+    {
+      "id": "device_host_frame_path",
+      "file": "src/game_hosts.cpp",
+      "first_line": 977,
+      "last_line": 1020,
+      "whole_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "55ca20c33d9b201fe9a4fa726ac66840624541f2cf382a1266f64270c3d5a31a",
+      "interpretation": "Device host invokes application begin before overlay/capture/EndFrame; an application entry barrier dominates these existing draw/capture callbacks."
+    },
+    {
+      "id": "normal_main_exit",
+      "file": "src/game_main.cpp",
+      "first_line": 1201,
+      "last_line": 1251,
+      "whole_Source_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+      "excerpt_sha256": "6c371d4d64fdd7e8ab6d636c566d5d9f66d415d7411717e8e62f49b710c006f9",
+      "interpretation": "Normal return explicitly resets StartupHost before closing the log; exceptions in run_win_main also reach this reset. Earlier diagnostic returns do not create this renderer graph."
+    },
+    {
+      "id": "mapped_data_lifetime",
+      "file": "src/game_native_readonly_data.cpp",
+      "first_line": 133,
+      "last_line": 148,
+      "whole_Source_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "excerpt_sha256": "929be531faeeb842354b21643c95ead971faeff8f5833994d4d130bae924d8f0",
+      "interpretation": "Read-only mapping owner releases reservations on destruction; retaining the serial alone cannot keep this or VFS/graphics alive."
+    },
+    {
+      "id": "VFS_retirement",
+      "file": "src/game_native_vfs_runtime.cpp",
+      "first_line": 377,
+      "last_line": 402,
+      "whole_Source_sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+      "excerpt_sha256": "da8d0b0d80ad53dbbdfe8d757dd2ec7a2dd7c6d68c347607c8262d0353a4e536",
+      "interpretation": "VFS retirement clears bindings/publication. Gate must precede shared drain and the null-manager host branch."
+    }
+  ],
+  "Source_evidence": {
+    "status": "PASS",
+    "command": "python local/cc12_instance_generator_owner_retention_source_gate/review_evidence.py --preflight --verify-prior",
+    "observed_utc": "2026-10-10T09:51:28.203311+00:00",
+    "whole_Source_Git_files": 4209,
+    "Source_census_files": 4205,
+    "roots": 56,
+    "quoted_closure_files": 733,
+    "configuration_inclusive_files": 737,
+    "include_edges": 1528,
+    "Root_Source749_pins": 753,
+    "fullfile_anchors": 57,
+    "future_Source_paths": 25,
+    "retry_families": 6,
+    "prior_payloads_verified_unchanged": 3862,
+    "compiler_build_tests_Native_Ghidra_child_process_calls": false
+  },
+  "prior_bundle_preservation": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source",
+    "payloads": 3862,
+    "all_manifest_payloads_unchanged": true,
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\immutable_manifest.json",
+      "bytes": 808831,
+      "sha256": "368d6d1326838b6f4a5e54a9c1d784b64a7dcc569b2f20a3356860a3fd8f7996"
+    },
+    "ZIP": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\cc12_instance_generator_context_borrow_source.zip",
+      "bytes": 138729167,
+      "sha256": "12fa086ff31ae9667c0bfac0c5422e8506e9bcaa6327602f54a4455459d60fca"
+    },
+    "verification_utc": "2026-10-10T09:43:58.306663+00:00"
+  },
+  "Root_current_context": {
+    "received_utc": "2026-10-10T09:25:48.643295+00:00",
+    "reported_by": "parent /root explicit MESSAGE",
+    "main_commit_prefix": "7e33f2025",
+    "Root_Source819_receipt": {
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_effect_raw_id_Source_primary\\Source819_frozen.json",
+      "immutable_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_current_context\\Source819_frozen.json",
+        "bytes": 319275,
+        "sha256": "66e32913ce2ec422f5006d7ef3fc77336eb0bafb7179f203f6c976cbec5506ac"
+      }
+    },
+    "reported_counts": {
+      "inputs": 819,
+      "Core": 137,
+      "App": 5,
+      "definitions": 307,
+      "pins": 823
+    },
+    "reported_Source_changes": "Four unrelated raw-ID files; five application objects reported whole-byte identical to Source749.",
+    "comparison_boundary": "This receipt is frozen as separate later Root context only. Its 823 referenced artifacts are not claimed included by this packet. Worker baseline, Source749 pins, provider objects and candidate remain unchanged; no equality assertion against all current Root Source.",
+    "reported_GPR_context": "Append-only raw-ID comments at modification count 40; no body/flow/prototype/Native changes."
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\prepared.json",
+      "bytes": 415930,
+      "sha256": "7fdaa7ab6e75113b3e0156055e65a356943c36bdf772f026bed86c5adfb824eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\complete_Source_corpus.json",
+      "bytes": 3255630,
+      "sha256": "f801663a89642d0f46b8874140cddeee0148dc35aba8834a2b4583e173106107"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\Source_closure.json",
+      "bytes": 307904,
+      "sha256": "e1b37ec99dce836596dfd2a81c90823abd298e54fcf93bb0cd2eec95dbb97567"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\complete_current_use_search.json",
+      "bytes": 40200,
+      "sha256": "4ce16f350736bfab70b0032d71ece00b291cc7e1f8bcab142149251fe6e79796"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\source_gate_audit.json",
+      "bytes": 153485,
+      "sha256": "e5f2b3dac0adc64bc9c03376241eec6c101365f9170981932b5987b80cb13b5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\prepackage_replay_receipt.json",
+      "bytes": 600,
+      "sha256": "32bff4a593e1be7e73fd39458360f12ce08cec93ab6c211a8c1cde20179e3962"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate\\review_evidence.py",
+      "bytes": 5687,
+      "sha256": "6a53776d26b6f519b6bb62ecc0e2e4038fef75b536201bb304cc111c0aa4e1ba"
+    }
+  ],
+  "bundle": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_owner_retention_source_gate",
+    "archive_relative": "cc12_instance_generator_owner_retention_source_gate.zip",
+    "manifest_relative": "immutable_manifest.json",
+    "detached_receipt_relative": "bundle_receipt.json",
+    "read_only_replay": "python local/cc12_instance_generator_owner_retention_source_gate/review_evidence.py --verify-prior",
+    "final_replay_receipt_relative": "readonly_replay_receipt.json"
+  },
+  "claims_excluded": [
+    "No C++ or Native ABI implementation, compiler/build/test result from this packet.",
+    "No mutable Owners exposure, entered operation or activation authorization.",
+    "No registry-empty/entries-empty/complete-phase quiescence inference.",
+    "No const/copy capability fence, worker quiescence or safe normal return inferred from _Exit.",
+    "No replacement retention wrapper, retry callback or default permissive hook proposed.",
+    "No current-Root Source819 closure imported; earlier Source749 pins remain distinct."
+  ]
+}
