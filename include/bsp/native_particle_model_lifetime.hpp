@@ -81,6 +81,10 @@ class NativeParticleModelReference final : public GeneratedModelNodeLifetime,
 public:
     NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,
         NativeParticleModelCompanionDisposal);
+    // Existing live-owner/profile checks precede admitted host registration.
+    // Consumes the lifetime-binding credit without retaining it or native +04.
+    NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,
+        NativeParticleModelCompanionDisposal, GeneratedModelLifetimeRuntime::BindingAdmission&&);
     ~NativeParticleModelReference() override;
     NativeParticleModelReference(const NativeParticleModelReference&) = delete;
     NativeParticleModelReference& operator=(const NativeParticleModelReference&) = delete;
@@ -95,6 +99,8 @@ public:
     // Invokes disposal.retire, which must also handle this no-pool-return path.
     void retire_after_failed_construction() noexcept;
 private:
+    NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,
+        NativeParticleModelCompanionDisposal, GeneratedModelLifetimeRuntime::BindingAdmission*);
     enum class Phase { bound, destroying, retired };
     NativeModelOwner& owner_;
     NativeParticleModelLifetimeAccess& access_;

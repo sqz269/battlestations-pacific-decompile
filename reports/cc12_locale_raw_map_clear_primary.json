@@ -1,0 +1,106 @@
+{
+  "schema": "bsp.cc12.locale_raw_map.Primary_acceptance.v1",
+  "status": "accepted_Source_readiness_exact_node_slot_owner_gate_open",
+  "worker_closed_commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+  "historical_commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+  "retained_closed_Git_files": [
+    {
+      "path": "docs/CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+      "Git_commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+      "blob": "95b16915faf532da8787e001e2b91aa84d912f29",
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\closed_commit\\CC12_LOCALE_RAW_MAP_CLEAR_SOURCE_READINESS.md",
+        "bytes": 11158,
+        "sha256": "67a311d23079098f197537c72a04d24accd710303649de98f34cc0d433dab3dd"
+      }
+    },
+    {
+      "path": "reports/cc12_locale_raw_map_clear_source_readiness.json",
+      "Git_commit": "a2dd1792dc1d5e54c02519051f9b1042aeed8542",
+      "blob": "c846c5249dc63b2c9f0c560fc0334ae800b57cfc",
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\closed_commit\\cc12_locale_raw_map_clear_source_readiness.json",
+        "bytes": 67909,
+        "sha256": "e4e58639718358ef3e94c698aaa783570d364e9c42f387acf33cdfb5be697cc2"
+      }
+    }
+  ],
+  "copied_old_bundle": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\evidence.zip",
+    "bytes": 14611721,
+    "sha256": "b99da35346305292591123560620e6ad6c2c334ed046f880493cb64603dca7e0"
+  },
+  "copied_correction_bundle": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\correction.zip",
+    "bytes": 62029,
+    "sha256": "353f0570034dd260be300990537eca80b36e5df5a04fdea0e53e8b5628904cfc"
+  },
+  "copied_payload_counts": [
+    4278,
+    12
+  ],
+  "Root_old_replay": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\Root_old_review.json",
+    "bytes": 18803,
+    "sha256": "010a7eff46252098d09e5a4e352fdb04ecfe83593c790a1c07980cd50014e90d"
+  },
+  "Root_correction_replay": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\Root_correction_review.json",
+    "bytes": 1850,
+    "sha256": "e29cff27a24989530e85eb00c9bf1b3372e9aaacbfeb05b20c782b66a02673d5"
+  },
+  "corrected_layout": {
+    "narrow": {
+      "length": 0,
+      "pointer": 4
+    },
+    "wide": {
+      "length": 8,
+      "pointer": 12
+    }
+  },
+  "historical_wrong_layout_remains_explicit": true,
+  "old_passing_replay_did_not_assert_header_offsets": true,
+  "other_report_contracts_unchanged": true,
+  "readiness": {
+    "status": "readiness complete; exact node-slot return provider and borrowed owner binding remain open",
+    "Cpp_GO": false,
+    "application_GO": false,
+    "payload_helper": "00737CE0 normalized Source is available; pending at the immutable worker freeze, subsequently accepted by Root 3caaeec9a as a separately retained dependency",
+    "missing_dependency": "No current exact Source service identified for the distinct E17698 section, E176B0 depth, E176B4 current table cell, E176C0 unsigned minimum and 1Ch node geometry. No actual canonical owner binding for those fields is established.",
+    "not_a_substitute": "Neither semantic LocaleTables ownership nor NativeStringRawPoolContext nor another slot allocator supplies this node-slot service. No placeholder provider, guessed owner base, new global or private allocation domain is proposed."
+  },
+  "Native_scope": {
+    "address": "0073C240",
+    "original_ABI": "ECX is raw bucket base; plain RET, no stack arguments. EBX/EBP/ESI/EDI preserved. EAX is incidental, not a semantic success result.",
+    "prior_complete_map": "228 bytes 0073C240..0073C323, 64 raw instructions including skipped 3-byte alignment at 0073C26D; stored listing body225 bytes/63 instructions from the accepted dependency",
+    "prior_complete_node_and_EH": "119-byte 00737CE0 and 62 bytes across selector/action/FuncInfo/unwind-map dependencies, all reused",
+    "0073C220": "Offline graph only: no retained body, export or reconstruction. Its listed callees 00736090 and 00737CE0 cannot establish order, ABI, flags or slot-return semantics.",
+    "00736090": "Offline graph-only candidate for a separately admitted provider investigation. No body or identity with the inline 73C240 return is claimed.",
+    "fresh_Native_queries_bytes": 0,
+    "new_Cpp_build_tests_runtime": false
+  },
+  "future_helper": {
+    "shape": "Void operation taking actual raw bucket base, NativeStringRawPoolContext&, and a proved borrowed node-slot context/service tied to the actual initialized E17698/E176B0/E176B4/E176C0 authority. No public context/type is created in this packet.",
+    "algorithm": "uint32_t bucket loop; current head DWORD; per-node save next, invoke existing payload helper, exact slot return, advance saved next; final4000h zero then count zero. No LocaleTables/vector/std::string substitute and no caller activation.",
+    "minimum_missing_proof": "Actual node-slot service with post-payload and post-Enter field reloads,1Ch/7000h/7800h geometry, wrapping widths, unsigned minimum and no invented cleanup; actual initialized owner/section/cell lifetime and canonical identity supplying its borrowed context.",
+    "next_bounded_packet": "Independently admit exact node-slot provider/owner readiness. Use retained73C240 inline return as the required contract. If Native work is authorized, size-check and inspect graph candidate00736090 first; compare its complete normal body with inline73C27A..73C2DC and close its real owner provenance under a separate lease. 0073C220 needs its own complete body before any wrapper/flags claim. Stop at unresolved owner or exception gates; do not activate locale/map/application.",
+    "separate_gates": "Map constructor/insertion/lookup, node allocation and owner startup/teardown, derived locale destructor EH/range contracts, owning locale lifetime, loader/text consumers, original binary ABI and application/game validation remain separate."
+  },
+  "current_Root_note": "Current Root separately includes four accepted game-free Source changes. This worker freeze and later node-helper acceptance do not assert current Root artifact identity.",
+  "fresh_Root_Native_queries": 0,
+  "Cplusplus_build_or_runtime": false,
+  "Root_helpers": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\review.py",
+      "bytes": 3906,
+      "sha256": "46779bb727eacc8adbd747cf6220e5e35ff2300900bcf22ca14040973c4dd8f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_raw_map_clear_primary\\publish.py",
+      "bytes": 3042,
+      "sha256": "c71034f164860154cd574c67717d1c1346ccf5dc7e74e01b1658e9b8e8cc961b"
+    }
+  ],
+  "qualification": "Historical wrong report/design remains preserved with explicit supersession. Root reran both finite proofs; corrected offsets and all other unchanged contracts verified. No new Source helper, build, Native query, artifact-identity claim or activation."
+}

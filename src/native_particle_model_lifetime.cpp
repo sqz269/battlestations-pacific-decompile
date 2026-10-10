@@ -6,6 +6,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native particle model lifetime requires MSVC Win32.
@@ -127,6 +128,14 @@ void* delete_native_particle_model_00af7f40(
 
 NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,
     NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal)
+    : NativeParticleModelReference(owner, access, disposal, nullptr) {}
+NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,
+    NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal,
+    GeneratedModelLifetimeRuntime::BindingAdmission&& admission)
+    : NativeParticleModelReference(owner, access, disposal, &admission) {}
+NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,
+    NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal,
+    GeneratedModelLifetimeRuntime::BindingAdmission* admission)
     : RenderCommandReference(owner.storage.node.references_04), owner_(owner), access_(access),
       runtime_(owner.environment.nodes.attachments), disposal_(disposal) {
     if (owner.phase != NativeModelOwner::Phase::live || !access.actual_pool_00f8d2d0 ||
@@ -136,7 +145,8 @@ NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& own
         throw std::invalid_argument("particle reference requires the existing live derived model and actual bindings");
     require_slot(0, 0x00bd30e0);
     require_slot(4, 0x00af7f40);
-    runtime_.bind(*this);
+    if (admission) runtime_.bind(*this, std::move(*admission));
+    else runtime_.bind(*this);
     auto& binding = owner.node.scene_attachment;
     binding.is_type = is_type;
     binding.attach_scene = attach_scene;
