@@ -33,6 +33,48 @@ struct NativeRenderActualOwnerRegistry::Impl final {
     std::unordered_map<void*, RenderCommandReference*> entries;
 };
 
+NativeRenderActualOwnerRegistry::BindingAdmission::BindingAdmission(
+    NativeRenderActualOwnerRegistry& registry, void* identity,
+    RenderCommandReference** entry) noexcept
+    : registry_(&registry), identity_(identity), entry_(entry) {}
+
+NativeRenderActualOwnerRegistry::BindingAdmission::BindingAdmission(
+    BindingAdmission&& other) noexcept
+    : registry_(other.registry_), identity_(other.identity_), entry_(other.entry_) {
+    other.registry_ = nullptr;
+    other.identity_ = nullptr;
+    other.entry_ = nullptr;
+}
+
+NativeRenderActualOwnerRegistry::BindingAdmission&
+NativeRenderActualOwnerRegistry::BindingAdmission::operator=(BindingAdmission&& other) noexcept {
+    if (this != &other) {
+        cancel();
+        registry_ = other.registry_;
+        identity_ = other.identity_;
+        entry_ = other.entry_;
+        other.registry_ = nullptr;
+        other.identity_ = nullptr;
+        other.entry_ = nullptr;
+    }
+    return *this;
+}
+
+NativeRenderActualOwnerRegistry::BindingAdmission::~BindingAdmission() noexcept { cancel(); }
+
+void NativeRenderActualOwnerRegistry::BindingAdmission::cancel() noexcept {
+    if (!registry_) return;
+    auto& impl = *registry_->impl_;
+    const std::lock_guard<std::mutex> lock(impl.mutex);
+    const auto found = impl.entries.find(identity_);
+    if (found == impl.entries.end() || &found->second != entry_ || found->second != nullptr)
+        std::terminate();
+    impl.entries.erase(found);
+    registry_ = nullptr;
+    identity_ = nullptr;
+    entry_ = nullptr;
+}
+
 NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()
     : impl_(std::make_unique<Impl>()) {}
 
@@ -53,6 +95,38 @@ void NativeRenderActualOwnerRegistry::bind(void* identity,
     const std::lock_guard<std::mutex> lock(impl_->mutex);
     if (!impl_->entries.emplace(identity, &reference).second)
         throw std::logic_error("native owner identity already has a canonical companion");
+}
+
+NativeRenderActualOwnerRegistry::BindingAdmission
+NativeRenderActualOwnerRegistry::prepare_binding(void* identity) {
+    if (!identity || reinterpret_cast<std::uintptr_t>(identity) % alignof(std::uint32_t) != 0)
+        throw std::invalid_argument("native owner registry requires an aligned actual identity");
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    const auto inserted = impl_->entries.emplace(identity, static_cast<RenderCommandReference*>(nullptr));
+    if (!inserted.second)
+        throw std::logic_error("native owner identity already has a registry entry");
+    return BindingAdmission(*this, identity, &inserted.first->second);
+}
+
+void NativeRenderActualOwnerRegistry::publish(BindingAdmission&& admission,
+    RenderCommandReference& reference) {
+    if (admission.registry_ != this) std::terminate();
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    const auto found = impl_->entries.find(admission.identity_);
+    if (found == impl_->entries.end() || &found->second != admission.entry_ ||
+        found->second != nullptr)
+        std::terminate();
+    // Validate the capability before touching a Native count. No virtual call
+    // or Native construction/cleanup occurs under this short metadata lock.
+    auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+        static_cast<std::byte*>(admission.identity_) + 4));
+    if (&reference.reference_count != actual ||
+        actual->load(std::memory_order_relaxed) <= 0)
+        std::terminate();
+    *admission.entry_ = &reference;
+    admission.registry_ = nullptr;
+    admission.identity_ = nullptr;
+    admission.entry_ = nullptr;
 }
 
 void NativeRenderActualOwnerRegistry::unbind(void* identity,
