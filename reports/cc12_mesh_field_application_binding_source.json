@@ -1,0 +1,934 @@
+{
+  "schema": 1,
+  "packet": "cc12_mesh_field_application_binding_source",
+  "created_utc": "2026-10-10T07:08:11.169101+00:00",
+  "status": "bounded_Source_implemented_worker_build_and_complete_object_review_passed_pending_primary_integration",
+  "baseline_commit": "2c8f72791db2df19b9c219c5b826f2b45ce09e26",
+  "accepted_readiness_commit": "cfc0f392",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "owned_files": [
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "docs/CC12_MESH_FIELD_APPLICATION_BINDING_SOURCE.md",
+    "reports/cc12_mesh_field_application_binding_source.json"
+  ],
+  "lease_scope": "Four files only; no address, CMake, ledger or Ghidra mutation.",
+  "implementation": {
+    "public_api": "const GameNativeMeshFieldServices& GameNativeRendererApplication::borrow_mesh_field_services()",
+    "view": "Stable noncopyable references to buffers, metadata, textures and original mapped lighting constants.",
+    "owner": "Appended original GameVfsHost reference and optional unique_ptr<MeshFieldBinding>; metadata constructed once only.",
+    "six_accepted_contract_points": [
+      "Explicit no-argument stable noncopyable metadata borrow; no full NativeMeshLoadingContext or item-reference exposure.",
+      "Append original GameVfsHost reference and metadata owner after all existing Impl members.",
+      "Ready and existing process-retention gate before every original-host hierarchy borrow.",
+      "Fresh original VFS/raw-string/publication plus existing geometry/cache/renderer/synchronization/physical lifetime domain checks.",
+      "Qualify actual reached finite slots and original mapped lighting DWORD references; match existing renderer profile pointers.",
+      "Repeat every gate and all metadata/domain/member reference identity checks on later borrows."
+    ],
+    "qualified_mapped_profiles": [
+      {
+        "address": "00d5f0a8",
+        "bytes": 104,
+        "slots": {
+          "38": "00b317e0",
+          "5c": "00b287c0",
+          "60": "00b288b0",
+          "64": "00b319b0"
+        }
+      },
+      {
+        "address": "00d61d6c",
+        "bytes": 40,
+        "slots": {
+          "10": "00b49980",
+          "14": "00b49a80",
+          "24": "00b48ce0"
+        }
+      },
+      {
+        "address": "00d61de0",
+        "bytes": 48,
+        "slots": {
+          "0c": "00b49b60",
+          "10": "00b49c70",
+          "2c": "00b49b30"
+        }
+      },
+      {
+        "address": "00d7a24c",
+        "bytes": 4,
+        "bits": "3f800000",
+        "original_reference": true
+      },
+      {
+        "address": "00ce38b8",
+        "bytes": 4,
+        "bits": "41200000",
+        "original_reference": true
+      }
+    ],
+    "native_operations_introduced_or_invoked": 0
+  },
+  "physical_owner_evidence": {
+    "existing_member_rows": 52,
+    "all_existing_member_offsets_preserved": true,
+    "Impl_bytes_before": 9924,
+    "Impl_bytes_after": 9932,
+    "new_members": [
+      {
+        "offset": 9924,
+        "description": "mesh_field_vfs"
+      },
+      {
+        "offset": 9928,
+        "description": "?$unique_ptr@UMeshFieldBinding@?A0x0b4356fd@game@bsp@@U?$default_delete@UMeshFieldBinding@?A0x0b4356fd@game@bsp@@@std@@ mesh_fields"
+      }
+    ],
+    "binding_bytes": 92,
+    "public_view_bytes": 16,
+    "metadata_constructor_bytes": 135,
+    "metadata_constructor_call_count": 0,
+    "metadata_constructor_relocation_count": 0,
+    "borrow_bytes": 1468,
+    "phase_compare_offset": "0x0d",
+    "reject_branch_offsets": [
+      "0x14",
+      "0x21"
+    ],
+    "reject_destination": "0x599",
+    "retention_REL32_operand_offset": "0x1b",
+    "hierarchy_REL32_operand_offset": "0x2e",
+    "drain_factoring": {
+      "old_main_bytes": 299,
+      "new_main_bytes": 151,
+      "old_catch_bytes": 28,
+      "new_catch_bytes": 55,
+      "new_main_JNE_destination_section_relative": "0xb2",
+      "destination_catch_relative": "0x1b",
+      "retention_predicate_bytes": 123,
+      "predicate_complete_bytes_unchanged": true,
+      "whole_shared_section_retained": true,
+      "main_symbol_alone_is_not_whole_semantic_body": true
+    },
+    "constructor_EH": {
+      "old_bytes": 140,
+      "new_bytes": 148,
+      "old_unwind_states": 13,
+      "new_unwind_states": 14,
+      "new_funclet": "$13: C++ optional metadata unique_ptr only"
+    },
+    "sxdata": {
+      "entries": 48,
+      "same_ordered_physical_handler_targets_under_recorded_name_map": true,
+      "raw_physical_indices_retained": true
+    }
+  },
+  "compilation": {
+    "normal_worker_build": {
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\scripts\\build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+      "start_utc": "2026-10-10T06:47:07.668969+00:00",
+      "end_utc": "2026-10-10T06:47:53.908451+00:00",
+      "exit_code": 0,
+      "full_log": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\candidate_normal_build_01.log",
+      "bytes": 4435,
+      "sha256": "24cc9af8e3165d87a6c007bf25a965343f5a839f4a77cd0750dcd98a0f5c44f4"
+    },
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "seeded_third_check": "Not configured in worker because local/seed_reference.hpp is absent. Root explicitly owns integration check. No seed generated/copied.",
+    "existing_warning": "LNK4006 spawn_request_id_matches duplicate definition; second definition ignored.",
+    "fresh_diagnostic_objects": 10,
+    "successful_dumpbin_commands": 50,
+    "toolchain": "MSVC 14.51.36231 x86, actual Release project/tlog options retained",
+    "semantic_flags": [
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/MD",
+      "/fp:strict",
+      "/std:c++17"
+    ],
+    "diagnostics_added": [
+      "/Bv",
+      "/sourceDependencies",
+      "class layout reports"
+    ],
+    "baseline_initial_failure": "Copied baseline cpp quoted .inc dependency unavailable at original relative directory. Failed command/stdout/stderr retained; corrected only with frozen original source directory include.",
+    "all_compiler_dependencies_frozen": 752,
+    "normal_Source_objects_and_linked_executable_frozen": true,
+    "ad_hoc_executable_created": false
+  },
+  "coff_and_comparisons": {
+    "ordinary_Source_objects": 28,
+    "total_sections": 16216,
+    "total_physical_symbol_records": 50791,
+    "total_relocations": 26579,
+    "total_functions": 10214,
+    "complete_linear_decodes": 10214,
+    "undecoded_function_tails": 0,
+    "all_sections_code_noncode_EH_and_physical_AUX_records_retained": true,
+    "complete_function_comparison_summaries": [
+      {
+        "left": "baseline_game_native_renderer_application",
+        "right": "game_native_renderer_application",
+        "left_functions": 760,
+        "right_functions": 792,
+        "equal_code_and_mapped_edges": 747,
+        "changed_old": 13,
+        "new": 32,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_game_native_renderer_application",
+        "right": "baseline_game_native_renderer_application",
+        "left_functions": 760,
+        "right_functions": 760,
+        "equal_code_and_mapped_edges": 760,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_game_native_renderer_application",
+        "right": "game_native_renderer_application",
+        "left_functions": 792,
+        "right_functions": 792,
+        "equal_code_and_mapped_edges": 792,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_gui_native_geometry",
+        "right": "gui_native_geometry",
+        "left_functions": 700,
+        "right_functions": 700,
+        "equal_code_and_mapped_edges": 700,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_gui_native_geometry",
+        "right": "gui_native_geometry",
+        "left_functions": 700,
+        "right_functions": 700,
+        "equal_code_and_mapped_edges": 700,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_gui_text_native_renderer",
+        "right": "gui_text_native_renderer",
+        "left_functions": 23,
+        "right_functions": 23,
+        "equal_code_and_mapped_edges": 23,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_gui_text_native_renderer",
+        "right": "gui_text_native_renderer",
+        "left_functions": 23,
+        "right_functions": 23,
+        "equal_code_and_mapped_edges": 23,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_buffer_fields",
+        "right": "native_mesh_buffer_fields",
+        "left_functions": 32,
+        "right_functions": 32,
+        "equal_code_and_mapped_edges": 32,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_buffer_fields",
+        "right": "native_mesh_buffer_fields",
+        "left_functions": 32,
+        "right_functions": 32,
+        "equal_code_and_mapped_edges": 32,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_remaining_fields",
+        "right": "native_mesh_remaining_fields",
+        "left_functions": 24,
+        "right_functions": 24,
+        "equal_code_and_mapped_edges": 24,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_remaining_fields",
+        "right": "native_mesh_remaining_fields",
+        "left_functions": 24,
+        "right_functions": 24,
+        "equal_code_and_mapped_edges": 24,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_texture_field",
+        "right": "native_mesh_texture_field",
+        "left_functions": 28,
+        "right_functions": 28,
+        "equal_code_and_mapped_edges": 28,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_texture_field",
+        "right": "native_mesh_texture_field",
+        "left_functions": 28,
+        "right_functions": 28,
+        "equal_code_and_mapped_edges": 28,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_native_texture_loading_cache",
+        "right": "native_texture_loading_cache",
+        "left_functions": 304,
+        "right_functions": 304,
+        "equal_code_and_mapped_edges": 304,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 3
+      },
+      {
+        "left": "normal_worker_native_texture_loading_cache",
+        "right": "native_texture_loading_cache",
+        "left_functions": 304,
+        "right_functions": 304,
+        "equal_code_and_mapped_edges": 304,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_game_native_resource_application",
+        "right": "game_native_resource_application",
+        "left_functions": 177,
+        "right_functions": 177,
+        "equal_code_and_mapped_edges": 177,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 4
+      },
+      {
+        "left": "normal_worker_game_native_resource_application",
+        "right": "game_native_resource_application",
+        "left_functions": 177,
+        "right_functions": 177,
+        "equal_code_and_mapped_edges": 177,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      },
+      {
+        "left": "captured_Root_game_hosts_vfs",
+        "right": "game_hosts_vfs",
+        "left_functions": 1082,
+        "right_functions": 1082,
+        "equal_code_and_mapped_edges": 1082,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 19
+      },
+      {
+        "left": "normal_worker_game_hosts_vfs",
+        "right": "game_hosts_vfs",
+        "left_functions": 1082,
+        "right_functions": 1082,
+        "equal_code_and_mapped_edges": 1082,
+        "changed_old": 0,
+        "new": 0,
+        "generated_lambda_map_entries": 0
+      }
+    ],
+    "owner_changed_function_records": [
+      {
+        "left_symbol": "??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z",
+        "left_symbol_index": 2326,
+        "right_symbol": "??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z",
+        "right_symbol_index": 2414,
+        "left_bytes": 144,
+        "right_bytes": 144,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "??1GameNativeRendererApplication@game@bsp@@QAE@XZ",
+        "left_symbol_index": 2327,
+        "right_symbol": "??1GameNativeRendererApplication@game@bsp@@QAE@XZ",
+        "right_symbol_index": 2415,
+        "left_bytes": 30,
+        "right_bytes": 30,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "?drain_singletons@GameNativeRendererApplication@game@bsp@@QAEXXZ",
+        "left_symbol_index": 2363,
+        "right_symbol": "?drain_singletons@GameNativeRendererApplication@game@bsp@@QAEXXZ",
+        "right_symbol_index": 2452,
+        "left_bytes": 299,
+        "right_bytes": 151,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": false
+      },
+      {
+        "left_symbol": "??R?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeRendererApplication@game@bsp@@@Z",
+        "left_symbol_index": 2365,
+        "right_symbol": "??R?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeRendererApplication@game@bsp@@@Z",
+        "right_symbol_index": 2454,
+        "left_bytes": 37,
+        "right_bytes": 37,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "??1?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@std@@QAE@XZ",
+        "left_symbol_index": 2366,
+        "right_symbol": "??1?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@std@@QAE@XZ",
+        "right_symbol_index": 2455,
+        "left_bytes": 30,
+        "right_bytes": 30,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "??0Impl@GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameVfsHost@23@AAVGameNativeLuaServices@23@AAVGameNativeReadOnlyData@23@ADSAXPBX@Z",
+        "left_symbol_index": 2636,
+        "right_symbol": "??0Impl@GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameVfsHost@23@AAVGameNativeLuaServices@23@AAVGameNativeReadOnlyData@23@ADSAXPBX@Z",
+        "right_symbol_index": 2739,
+        "left_bytes": 3406,
+        "right_bytes": 3425,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": false
+      },
+      {
+        "left_symbol": "??1Impl@GameNativeRendererApplication@game@bsp@@QAE@XZ",
+        "left_symbol_index": 2638,
+        "right_symbol": "??1Impl@GameNativeRendererApplication@game@bsp@@QAE@XZ",
+        "right_symbol_index": 2741,
+        "left_bytes": 443,
+        "right_bytes": 464,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": false
+      },
+      {
+        "left_symbol": "??_GImpl@GameNativeRendererApplication@game@bsp@@QAEPAXI@Z",
+        "left_symbol_index": 2639,
+        "right_symbol": "??_GImpl@GameNativeRendererApplication@game@bsp@@QAEPAXI@Z",
+        "right_symbol_index": 2742,
+        "left_bytes": 38,
+        "right_bytes": 38,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "??$make_unique@UImpl@GameNativeRendererApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX@Z",
+        "left_symbol_index": 2641,
+        "right_symbol": "??$make_unique@UImpl@GameNativeRendererApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX@Z",
+        "right_symbol_index": 2745,
+        "left_bytes": 140,
+        "right_bytes": 140,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "__unwindfunclet$??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z$1",
+        "left_symbol_index": 2913,
+        "right_symbol": "__unwindfunclet$??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z$1",
+        "right_symbol_index": 3031,
+        "left_bytes": 23,
+        "right_bytes": 23,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "__catch$?drain_singletons@GameNativeRendererApplication@game@bsp@@QAEXXZ$0",
+        "left_symbol_index": 2961,
+        "right_symbol": "__catch$?drain_singletons@GameNativeRendererApplication@game@bsp@@QAEXXZ$0",
+        "right_symbol_index": 3080,
+        "left_bytes": 28,
+        "right_bytes": 55,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": false
+      },
+      {
+        "left_symbol": "__unwindfunclet$??0Impl@GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameVfsHost@23@AAVGameNativeLuaServices@23@AAVGameNativeReadOnlyData@23@ADSAXPBX@Z$12",
+        "left_symbol_index": 3047,
+        "right_symbol": "__unwindfunclet$??0Impl@GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameVfsHost@23@AAVGameNativeLuaServices@23@AAVGameNativeReadOnlyData@23@ADSAXPBX@Z$12",
+        "right_symbol_index": 3168,
+        "left_bytes": 19,
+        "right_bytes": 14,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      },
+      {
+        "left_symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeRendererApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX@Z$0",
+        "left_symbol_index": 3051,
+        "right_symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeRendererApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeRendererApplication@game@bsp@@U?$default_delete@UImpl@GameNativeRendererApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameVfsHost@34@AAVGameNativeLuaServices@34@AAVGameNativeReadOnlyData@34@ADSAXAAPBX@Z$0",
+        "right_symbol_index": 3173,
+        "left_bytes": 23,
+        "right_bytes": 23,
+        "exact_code_bytes_equal": false,
+        "relocations_equal_under_anchored_generated_name_mapping": true
+      }
+    ],
+    "owner_new_function_count": 32,
+    "owner_changed_categories": {
+      "allocation_sized_delete_constants_9924_to_9932": 8,
+      "Impl_constructor_and_destructor": 2,
+      "drain_main_and_catch_compiler_factoring": 2,
+      "old_constructor_funclet_trailing_padding_only": 1
+    },
+    "noncode_comparison_summaries": [
+      {
+        "left": "baseline_game_native_renderer_application",
+        "right": "game_native_renderer_application",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\baseline_game_native_renderer_application_to_game_native_renderer_application.noncode_EH_comparison.json",
+        "left_noncode_sections": 521,
+        "right_noncode_sections": 538,
+        "identical": 514,
+        "raw_RTTI_name_differences": 3,
+        "changed": 4,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 17
+      },
+      {
+        "left": "captured_Root_game_native_renderer_application",
+        "right": "baseline_game_native_renderer_application",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_game_native_renderer_application_to_baseline_game_native_renderer_application.noncode_EH_comparison.json",
+        "left_noncode_sections": 521,
+        "right_noncode_sections": 521,
+        "identical": 516,
+        "raw_RTTI_name_differences": 3,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_game_native_renderer_application",
+        "right": "game_native_renderer_application",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_game_native_renderer_application_to_game_native_renderer_application.noncode_EH_comparison.json",
+        "left_noncode_sections": 538,
+        "right_noncode_sections": 538,
+        "identical": 536,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_gui_native_geometry",
+        "right": "gui_native_geometry",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_gui_native_geometry_to_gui_native_geometry.noncode_EH_comparison.json",
+        "left_noncode_sections": 341,
+        "right_noncode_sections": 341,
+        "identical": 339,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_gui_native_geometry",
+        "right": "gui_native_geometry",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_gui_native_geometry_to_gui_native_geometry.noncode_EH_comparison.json",
+        "left_noncode_sections": 341,
+        "right_noncode_sections": 341,
+        "identical": 339,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_gui_text_native_renderer",
+        "right": "gui_text_native_renderer",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_gui_text_native_renderer_to_gui_text_native_renderer.noncode_EH_comparison.json",
+        "left_noncode_sections": 43,
+        "right_noncode_sections": 43,
+        "identical": 41,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_gui_text_native_renderer",
+        "right": "gui_text_native_renderer",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_gui_text_native_renderer_to_gui_text_native_renderer.noncode_EH_comparison.json",
+        "left_noncode_sections": 43,
+        "right_noncode_sections": 43,
+        "identical": 41,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_buffer_fields",
+        "right": "native_mesh_buffer_fields",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_native_mesh_buffer_fields_to_native_mesh_buffer_fields.noncode_EH_comparison.json",
+        "left_noncode_sections": 36,
+        "right_noncode_sections": 36,
+        "identical": 34,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_buffer_fields",
+        "right": "native_mesh_buffer_fields",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_native_mesh_buffer_fields_to_native_mesh_buffer_fields.noncode_EH_comparison.json",
+        "left_noncode_sections": 36,
+        "right_noncode_sections": 36,
+        "identical": 34,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_remaining_fields",
+        "right": "native_mesh_remaining_fields",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_native_mesh_remaining_fields_to_native_mesh_remaining_fields.noncode_EH_comparison.json",
+        "left_noncode_sections": 28,
+        "right_noncode_sections": 28,
+        "identical": 26,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_remaining_fields",
+        "right": "native_mesh_remaining_fields",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_native_mesh_remaining_fields_to_native_mesh_remaining_fields.noncode_EH_comparison.json",
+        "left_noncode_sections": 28,
+        "right_noncode_sections": 28,
+        "identical": 26,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_native_mesh_texture_field",
+        "right": "native_mesh_texture_field",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_native_mesh_texture_field_to_native_mesh_texture_field.noncode_EH_comparison.json",
+        "left_noncode_sections": 34,
+        "right_noncode_sections": 34,
+        "identical": 32,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_native_mesh_texture_field",
+        "right": "native_mesh_texture_field",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_native_mesh_texture_field_to_native_mesh_texture_field.noncode_EH_comparison.json",
+        "left_noncode_sections": 34,
+        "right_noncode_sections": 34,
+        "identical": 32,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_native_texture_loading_cache",
+        "right": "native_texture_loading_cache",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_native_texture_loading_cache_to_native_texture_loading_cache.noncode_EH_comparison.json",
+        "left_noncode_sections": 209,
+        "right_noncode_sections": 209,
+        "identical": 207,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_native_texture_loading_cache",
+        "right": "native_texture_loading_cache",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_native_texture_loading_cache_to_native_texture_loading_cache.noncode_EH_comparison.json",
+        "left_noncode_sections": 209,
+        "right_noncode_sections": 209,
+        "identical": 207,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_game_native_resource_application",
+        "right": "game_native_resource_application",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_game_native_resource_application_to_game_native_resource_application.noncode_EH_comparison.json",
+        "left_noncode_sections": 182,
+        "right_noncode_sections": 182,
+        "identical": 179,
+        "raw_RTTI_name_differences": 1,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_game_native_resource_application",
+        "right": "game_native_resource_application",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_game_native_resource_application_to_game_native_resource_application.noncode_EH_comparison.json",
+        "left_noncode_sections": 182,
+        "right_noncode_sections": 182,
+        "identical": 180,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "captured_Root_game_hosts_vfs",
+        "right": "game_hosts_vfs",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\captured_Root_game_hosts_vfs_to_game_hosts_vfs.noncode_EH_comparison.json",
+        "left_noncode_sections": 696,
+        "right_noncode_sections": 696,
+        "identical": 692,
+        "raw_RTTI_name_differences": 2,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      },
+      {
+        "left": "normal_worker_game_hosts_vfs",
+        "right": "game_hosts_vfs",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\normal_worker_game_hosts_vfs_to_game_hosts_vfs.noncode_EH_comparison.json",
+        "left_noncode_sections": 696,
+        "right_noncode_sections": 696,
+        "identical": 694,
+        "raw_RTTI_name_differences": 0,
+        "changed": 2,
+        "unmatched_left": 0,
+        "new_or_unmatched_right": 0
+      }
+    ],
+    "owner_noncode_changes": [
+      ".chks64 retained checksum bytes",
+      ".debug$S retained compiler debug bytes",
+      ".sxdata physical symbol index values explicitly resolved",
+      ".xdata$x constructor unwind state appended"
+    ],
+    "new_owner_noncode_sections": {
+      "debug_F": 11,
+      "error_strings": 6
+    },
+    "raw_RTTI_name_difference_records_across_comparisons": 9,
+    "normalization_limits": "Only explicit anonymous namespace names and anchored lambda bijections for symbol identity. No code or EH bytes masked; raw RTTI payload string differences remain explicit.",
+    "texture_unused_lambda_resolution": "Two remaining methods matched by sole unique complete class/method group; all code bytes and physical relocation offset/type/addend edges equal."
+  },
+  "full_Source_identity": {
+    "frozen_Root_context_records": 737,
+    "compiler_reported_tracked_dependencies": 431,
+    "unique_tracked_paths": 744,
+    "owned_candidate_records": 2,
+    "untracked_Root_artifact_records": 4,
+    "entire_file_comparisons": true,
+    "raw_hashes_Git_blob_ids_and_EOL_only_equality_recorded_separately": true
+  },
+  "admission_and_limits": {
+    "Source_implementation": true,
+    "Native_admission": false,
+    "Native_capture_or_call": false,
+    "fixture_execution": false,
+    "binary_ABI_equivalence": false,
+    "startup_gameplay_visual_validation": false,
+    "historical_unavailable_artifacts": "Held; fresh Source compilation is not a replacement Native capture.",
+    "excluded": [
+      "full NativeMeshLoadingContext",
+      "item references",
+      "parser",
+      "startup call",
+      "new native pool/provider",
+      "default material",
+      "compiler frame",
+      "serial retargeting",
+      "native payload cleanup or retirement"
+    ],
+    "consumer_lifetime": "Keep original VFS/renderer domains alive through all consumers; entered operations require persistent failure frames and native payload retirement before shared drain.",
+    "new_tests": 0,
+    "CMake_edits": 0,
+    "Ghidra_edits": 0,
+    "ledger_edits": 0
+  },
+  "evidence": {
+    "owned_Source_and_document": [
+      {
+        "relative": "include/bsp/game_native_renderer_application.hpp",
+        "current_at_capture": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\include\\bsp\\game_native_renderer_application.hpp",
+          "bytes": 9805,
+          "sha256": "ee7e5a12fae9004627011a93048259005c6ccb4f6f39a535f9af865bc3b50175"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\frozen\\final_owned\\include\\bsp\\game_native_renderer_application.hpp",
+          "bytes": 9805,
+          "sha256": "ee7e5a12fae9004627011a93048259005c6ccb4f6f39a535f9af865bc3b50175"
+        }
+      },
+      {
+        "relative": "src/game_native_renderer_application.cpp",
+        "current_at_capture": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\src\\game_native_renderer_application.cpp",
+          "bytes": 46719,
+          "sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\frozen\\final_owned\\src\\game_native_renderer_application.cpp",
+          "bytes": 46719,
+          "sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b"
+        }
+      },
+      {
+        "relative": "docs/CC12_MESH_FIELD_APPLICATION_BINDING_SOURCE.md",
+        "current_at_capture": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\docs\\CC12_MESH_FIELD_APPLICATION_BINDING_SOURCE.md",
+          "bytes": 9304,
+          "sha256": "864f5885ef986b290be6834c5e510c9017cb063762a40face0155b057568eab1"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\frozen\\final_owned_revision02\\docs\\CC12_MESH_FIELD_APPLICATION_BINDING_SOURCE.md",
+          "bytes": 9304,
+          "sha256": "864f5885ef986b290be6834c5e510c9017cb063762a40face0155b057568eab1"
+        }
+      }
+    ],
+    "key_records": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\prepared_evidence.json",
+        "bytes": 903685,
+        "sha256": "48acc74e249cc561ef763e1dbe88f5bfde6ace19104f2b56a1d514f48f9df468"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\candidate_normal_build_01.json",
+        "bytes": 674,
+        "sha256": "d8cf4550c192ca369e9b2fabfe099dbbaf5b656198a3ccffc00d73129bb76075"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\candidate_normal_build_01.log",
+        "bytes": 4435,
+        "sha256": "24cc9af8e3165d87a6c007bf25a965343f5a839f4a77cd0750dcd98a0f5c44f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\worker_normal_build_freeze.json",
+        "bytes": 15650,
+        "sha256": "f9fb16df13d647afdaf2808d5a93f3285aa3469bdbf3d1c9523383a62182f214"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\compile_receipts.json",
+        "bytes": 83066,
+        "sha256": "4f534243bb3f11bd38762ae80bc0c3c9d006139abbb90e70879d81d8f4d6f5de"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\baseline_include_correction.json",
+        "bytes": 1570,
+        "sha256": "78f317488091b27233eaf2089d7647f25527cf3679178e6912a09a16031c9a21"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\dependency_manifest.json",
+        "bytes": 576031,
+        "sha256": "530b220e8059e7746c395377c8eecb9459108263804423f3d41c68c83eea9ed9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\whole_object_inventory.json",
+        "bytes": 30120,
+        "sha256": "215f394ddebc9477aa30412abe7b350fed213e70c02d2ae32b089cdce803c373"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\complete_function_comparison.json",
+        "bytes": 4356017,
+        "sha256": "b2ca4bbe2ca8888e6ad4e58bf3b4e61ef622eb991f8d7b66d2d122da0208e04a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\noncode_EH_summary.json",
+        "bytes": 11155,
+        "sha256": "9b2915c29ba670f2fb7ccd1035c386c4e42eb63857924cc112de75b4028116ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\member_layout_review.json",
+        "bytes": 18023,
+        "sha256": "ec70878063b20a8c33e80f4d2ddf138bc4229ec563ae979fb1ca6f9b18b21cc6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\changed_functions_full_review.json",
+        "bytes": 959497,
+        "sha256": "8173f713e06c0298da605836702cc8137f08f0ee54f89e028541ed7702f66d57"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\mesh_binding_and_drain_edge_review.json",
+        "bytes": 217480,
+        "sha256": "26d8e79cc1e67dcc27453b559ee4de6956ec48c3afa58a21235ecfb355a2e6f7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\physical_sxdata_review.json",
+        "bytes": 59065,
+        "sha256": "fe2ede9bdd156b29d5cc09e356adbee8d2b5f9b37a2f265e9606fd974228fbfd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\constructor_EH_review.json",
+        "bytes": 44477,
+        "sha256": "96cc0e45843df6b8aa9b9e66995badf90cdf95e9602481232a2524bf8eaaa5a9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\full_Source_identity_audit.json",
+        "bytes": 1308544,
+        "sha256": "61d680b0a5ce70a6b3f681612c2a1a5680eeba16765b5090b2d2209ca16ea46f"
+      }
+    ],
+    "full_immutable_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\full_evidence_manifest_revision02.json",
+      "bytes": 805515,
+      "sha256": "872faddb153a72b18e5abafff37b61cfd5e96dcd2f8aaa59936de22fdfd01f89"
+    },
+    "immutable_payload_count": 1872,
+    "bundle_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\cc12_mesh_field_application_binding_source_revision02.zip",
+    "bundle_receipt_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\bundle_receipt_revision02.json",
+    "bundle_receipt_scope": "Detached post-report SHA-256 and full ZIP payload replay; outside its own archive to avoid cyclic self-pins."
+  },
+  "documentation_reference_correction": {
+    "change": "Readiness title is MESH_LOADING_APPLICATION_BINDING_READINESS; corrected single documentation reference.",
+    "Source_or_build_evidence_changed": false,
+    "first_freeze_preserved": true,
+    "previous_report_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_field_application_binding_source\\attempts\\initial_report.json",
+      "bytes": 44288,
+      "sha256": "6d95d5d285f935f7c85a47370f61f440a95c45d2ee37b2f7a46a5c95f2413805"
+    }
+  }
+}
