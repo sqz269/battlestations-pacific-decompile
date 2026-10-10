@@ -1,0 +1,4984 @@
+{
+  "schema": 1,
+  "status": "fresh_physical_and_typed_listing_evidence_Source_held_exact_body_and_flow_gate",
+  "source_baseline_commit": "f1155d165207566b3cf977304104902f007960a3",
+  "scope": [
+    "00aee4d0",
+    "00aee220",
+    "00aeead0"
+  ],
+  "utc": "2026-10-10T00:23:06.602047+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "project_verification": {
+    "mechanism": "Every live command uses bsp.py client() -> ghidra_export.Client.verify() checking project name, program path, language, image base; configured project_file is C:/Users/sqz269/bsp.gpr. No import, project switch, analysis repair, annotation or save.",
+    "before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4679,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64730,
+        "symbol_count": 145558,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4679,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64730,
+        "symbol_count": 145558,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "GPR_filesystem_path_runtime_attestation": "Config pin only; live typed identity reports project name and program, not an independently attested absolute .gpr filesystem path."
+  },
+  "target_config_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+    "bytes": 455,
+    "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+  },
+  "installed_PE_pin": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "predecessor_handoff_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_native_texture_atlas_item_handoff\\handoff.json",
+    "bytes": 7959,
+    "sha256": "aa3c21ecf080aa94f2fb8f61979cfa96617ee7a6e5f3b539b5f3330c9540a35d"
+  },
+  "physical_capture_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\physical_evidence.json",
+    "bytes": 151298,
+    "sha256": "c41ac199d84895f387e2a7b99a19a6a6fb52ca467a4cb44a3c80fab22a18ae48"
+  },
+  "capture_script_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\capture.py",
+    "bytes": 7015,
+    "sha256": "fb595aa2546ac664a2be6a146751e1840b50dc97f980e5ecd369f867d9b638e2"
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "working_bytes": 8771,
+      "working_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "working_bytes": 9121,
+      "working_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "working_bytes": 2805,
+      "working_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "git_blob_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "working_bytes": 5103,
+      "working_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "git_blob_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "working_bytes": 5969,
+      "working_sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "git_blob_sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "working_bytes": 18709,
+      "working_sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "git_blob_sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "docs/CC12_ATLAS_ACTUAL_PROVIDER_SOURCE_READINESS.md",
+      "working_bytes": 9920,
+      "working_sha256": "4ef6b4ad4d5f0ca2472d411ac43363bad052417d4f57b075063c3b0ef24038e2",
+      "git_blob_sha256": "4ef6b4ad4d5f0ca2472d411ac43363bad052417d4f57b075063c3b0ef24038e2",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "reports/cc12_atlas_actual_provider_source_readiness.json",
+      "working_bytes": 24026,
+      "working_sha256": "237d34fffd9741c638be5b4827bded6f8ec08fe33d9ee7593bfc28009f2577cd",
+      "git_blob_sha256": "237d34fffd9741c638be5b4827bded6f8ec08fe33d9ee7593bfc28009f2577cd",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "working_bytes": 72606,
+      "working_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "git_blob_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "working_bytes": 14411,
+      "working_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "git_blob_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "tools/ghidra_flow_properties.py",
+      "working_bytes": 9331,
+      "working_sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "git_blob_sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "working_git_blob_equal": true
+    },
+    {
+      "path": "tools/ghidra_flow_repair.py",
+      "working_bytes": 6756,
+      "working_sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "git_blob_sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "working_git_blob_equal": true
+    }
+  ],
+  "body_observations": [
+    {
+      "start": "00aee4d0",
+      "end_exclusive": "00aee619",
+      "length": 329,
+      "rva": "006ee4d0",
+      "file_offset": 7267536,
+      "section": ".text",
+      "hex": "6aff6873a6cb0064a100000000506489250000000083ec0c535556578bf933ed897c2410892f896f048d770c896c2424892e896e048b5c24343bfbc64424240174218b036a0150e824f892ff392b74138b0f8b53048b4704515250e85091100083c40c8b5c242c3bf374238b0b6a01518bcee8f9f792ff392b74138b168b43048b4e04525051e82591100083c40c6a016a018d4c241c896c241c896c2420e8cdf792ff8b5c24183bdd74168b54241483c2015268703ace0053e8f290100083c40c68ffffff7f8d442418508bcee84e9797ff85db8be874178b4c24146a0183c1015153e808b792ff8bc8e8512f0e0083fdff74378b1e6a01558bcee870f792ff8b063bd8731c8b56042bc35003d36a2052e80a9410008b44243c83c40c894708eb108b4c2430894f08eb078b5424308957088b4c241c8bc75f5e5d5b64890d0000000083c418c20c00",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_329_disk.bin",
+        "bytes": 329,
+        "sha256": "695d158a48b81b2755262c00b2dff829035a4704e4a4892f3e5dd55f473148cb"
+      },
+      "physical_instructions": [
+        {
+          "address": "00aee4d0",
+          "length": 2,
+          "hex": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00aee4d2",
+          "length": 5,
+          "hex": "6873a6cb00",
+          "mnemonic": "push",
+          "operands": "0xcba673"
+        },
+        {
+          "address": "00aee4d7",
+          "length": 6,
+          "hex": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00aee4dd",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee4de",
+          "length": 7,
+          "hex": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00aee4e5",
+          "length": 3,
+          "hex": "83ec0c",
+          "mnemonic": "sub",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00aee4e8",
+          "length": 1,
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00aee4e9",
+          "length": 1,
+          "hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00aee4ea",
+          "length": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00aee4eb",
+          "length": 1,
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00aee4ec",
+          "length": 2,
+          "hex": "8bf9",
+          "mnemonic": "mov",
+          "operands": "edi, ecx"
+        },
+        {
+          "address": "00aee4ee",
+          "length": 2,
+          "hex": "33ed",
+          "mnemonic": "xor",
+          "operands": "ebp, ebp"
+        },
+        {
+          "address": "00aee4f0",
+          "length": 4,
+          "hex": "897c2410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], edi"
+        },
+        {
+          "address": "00aee4f4",
+          "length": 2,
+          "hex": "892f",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi], ebp"
+        },
+        {
+          "address": "00aee4f6",
+          "length": 3,
+          "hex": "896f04",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 4], ebp"
+        },
+        {
+          "address": "00aee4f9",
+          "length": 3,
+          "hex": "8d770c",
+          "mnemonic": "lea",
+          "operands": "esi, [edi + 0xc]"
+        },
+        {
+          "address": "00aee4fc",
+          "length": 4,
+          "hex": "896c2424",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], ebp"
+        },
+        {
+          "address": "00aee500",
+          "length": 2,
+          "hex": "892e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], ebp"
+        },
+        {
+          "address": "00aee502",
+          "length": 3,
+          "hex": "896e04",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], ebp"
+        },
+        {
+          "address": "00aee505",
+          "length": 4,
+          "hex": "8b5c2434",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x34]"
+        },
+        {
+          "address": "00aee509",
+          "length": 2,
+          "hex": "3bfb",
+          "mnemonic": "cmp",
+          "operands": "edi, ebx"
+        },
+        {
+          "address": "00aee50b",
+          "length": 5,
+          "hex": "c644242401",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x24], 1"
+        },
+        {
+          "address": "00aee510",
+          "length": 2,
+          "hex": "7421",
+          "mnemonic": "je",
+          "operands": "0xaee533"
+        },
+        {
+          "address": "00aee512",
+          "length": 2,
+          "hex": "8b03",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx]"
+        },
+        {
+          "address": "00aee514",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee516",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee517",
+          "length": 5,
+          "hex": "e824f892ff",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "00aee51c",
+          "length": 2,
+          "hex": "392b",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebx], ebp"
+        },
+        {
+          "address": "00aee51e",
+          "length": 2,
+          "hex": "7413",
+          "mnemonic": "je",
+          "operands": "0xaee533"
+        },
+        {
+          "address": "00aee520",
+          "length": 2,
+          "hex": "8b0f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi]"
+        },
+        {
+          "address": "00aee522",
+          "length": 3,
+          "hex": "8b5304",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "00aee525",
+          "length": 3,
+          "hex": "8b4704",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00aee528",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee529",
+          "length": 1,
+          "hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00aee52a",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee52b",
+          "length": 5,
+          "hex": "e850911000",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "00aee530",
+          "length": 3,
+          "hex": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00aee533",
+          "length": 4,
+          "hex": "8b5c242c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x2c]"
+        },
+        {
+          "address": "00aee537",
+          "length": 2,
+          "hex": "3bf3",
+          "mnemonic": "cmp",
+          "operands": "esi, ebx"
+        },
+        {
+          "address": "00aee539",
+          "length": 2,
+          "hex": "7423",
+          "mnemonic": "je",
+          "operands": "0xaee55e"
+        },
+        {
+          "address": "00aee53b",
+          "length": 2,
+          "hex": "8b0b",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebx]"
+        },
+        {
+          "address": "00aee53d",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee53f",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee540",
+          "length": 2,
+          "hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00aee542",
+          "length": 5,
+          "hex": "e8f9f792ff",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "00aee547",
+          "length": 2,
+          "hex": "392b",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebx], ebp"
+        },
+        {
+          "address": "00aee549",
+          "length": 2,
+          "hex": "7413",
+          "mnemonic": "je",
+          "operands": "0xaee55e"
+        },
+        {
+          "address": "00aee54b",
+          "length": 2,
+          "hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00aee54d",
+          "length": 3,
+          "hex": "8b4304",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "00aee550",
+          "length": 3,
+          "hex": "8b4e04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "00aee553",
+          "length": 1,
+          "hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00aee554",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee555",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee556",
+          "length": 5,
+          "hex": "e825911000",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "00aee55b",
+          "length": 3,
+          "hex": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00aee55e",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee560",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee562",
+          "length": 4,
+          "hex": "8d4c241c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x1c]"
+        },
+        {
+          "address": "00aee566",
+          "length": 4,
+          "hex": "896c241c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x1c], ebp"
+        },
+        {
+          "address": "00aee56a",
+          "length": 4,
+          "hex": "896c2420",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], ebp"
+        },
+        {
+          "address": "00aee56e",
+          "length": 5,
+          "hex": "e8cdf792ff",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "00aee573",
+          "length": 4,
+          "hex": "8b5c2418",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x18]"
+        },
+        {
+          "address": "00aee577",
+          "length": 2,
+          "hex": "3bdd",
+          "mnemonic": "cmp",
+          "operands": "ebx, ebp"
+        },
+        {
+          "address": "00aee579",
+          "length": 2,
+          "hex": "7416",
+          "mnemonic": "je",
+          "operands": "0xaee591"
+        },
+        {
+          "address": "00aee57b",
+          "length": 4,
+          "hex": "8b542414",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00aee57f",
+          "length": 3,
+          "hex": "83c201",
+          "mnemonic": "add",
+          "operands": "edx, 1"
+        },
+        {
+          "address": "00aee582",
+          "length": 1,
+          "hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00aee583",
+          "length": 5,
+          "hex": "68703ace00",
+          "mnemonic": "push",
+          "operands": "0xce3a70"
+        },
+        {
+          "address": "00aee588",
+          "length": 1,
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00aee589",
+          "length": 5,
+          "hex": "e8f2901000",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "00aee58e",
+          "length": 3,
+          "hex": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00aee591",
+          "length": 5,
+          "hex": "68ffffff7f",
+          "mnemonic": "push",
+          "operands": "0x7fffffff"
+        },
+        {
+          "address": "00aee596",
+          "length": 4,
+          "hex": "8d442418",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x18]"
+        },
+        {
+          "address": "00aee59a",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee59b",
+          "length": 2,
+          "hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00aee59d",
+          "length": 5,
+          "hex": "e84e9797ff",
+          "mnemonic": "call",
+          "operands": "0x467cf0"
+        },
+        {
+          "address": "00aee5a2",
+          "length": 2,
+          "hex": "85db",
+          "mnemonic": "test",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "00aee5a4",
+          "length": 2,
+          "hex": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": "00aee5a6",
+          "length": 2,
+          "hex": "7417",
+          "mnemonic": "je",
+          "operands": "0xaee5bf"
+        },
+        {
+          "address": "00aee5a8",
+          "length": 4,
+          "hex": "8b4c2414",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00aee5ac",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee5ae",
+          "length": 3,
+          "hex": "83c101",
+          "mnemonic": "add",
+          "operands": "ecx, 1"
+        },
+        {
+          "address": "00aee5b1",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee5b2",
+          "length": 1,
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00aee5b3",
+          "length": 5,
+          "hex": "e808b792ff",
+          "mnemonic": "call",
+          "operands": "0x419cc0"
+        },
+        {
+          "address": "00aee5b8",
+          "length": 2,
+          "hex": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00aee5ba",
+          "length": 5,
+          "hex": "e8512f0e00",
+          "mnemonic": "call",
+          "operands": "0xbd1510"
+        },
+        {
+          "address": "00aee5bf",
+          "length": 3,
+          "hex": "83fdff",
+          "mnemonic": "cmp",
+          "operands": "ebp, -1"
+        },
+        {
+          "address": "00aee5c2",
+          "length": 2,
+          "hex": "7437",
+          "mnemonic": "je",
+          "operands": "0xaee5fb"
+        },
+        {
+          "address": "00aee5c4",
+          "length": 2,
+          "hex": "8b1e",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esi]"
+        },
+        {
+          "address": "00aee5c6",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee5c8",
+          "length": 1,
+          "hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00aee5c9",
+          "length": 2,
+          "hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00aee5cb",
+          "length": 5,
+          "hex": "e870f792ff",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "00aee5d0",
+          "length": 2,
+          "hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00aee5d2",
+          "length": 2,
+          "hex": "3bd8",
+          "mnemonic": "cmp",
+          "operands": "ebx, eax"
+        },
+        {
+          "address": "00aee5d4",
+          "length": 2,
+          "hex": "731c",
+          "mnemonic": "jae",
+          "operands": "0xaee5f2"
+        },
+        {
+          "address": "00aee5d6",
+          "length": 3,
+          "hex": "8b5604",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "00aee5d9",
+          "length": 2,
+          "hex": "2bc3",
+          "mnemonic": "sub",
+          "operands": "eax, ebx"
+        },
+        {
+          "address": "00aee5db",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee5dc",
+          "length": 2,
+          "hex": "03d3",
+          "mnemonic": "add",
+          "operands": "edx, ebx"
+        },
+        {
+          "address": "00aee5de",
+          "length": 2,
+          "hex": "6a20",
+          "mnemonic": "push",
+          "operands": "0x20"
+        },
+        {
+          "address": "00aee5e0",
+          "length": 1,
+          "hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00aee5e1",
+          "length": 5,
+          "hex": "e80a941000",
+          "mnemonic": "call",
+          "operands": "0xbf79f0"
+        },
+        {
+          "address": "00aee5e6",
+          "length": 4,
+          "hex": "8b44243c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x3c]"
+        },
+        {
+          "address": "00aee5ea",
+          "length": 3,
+          "hex": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00aee5ed",
+          "length": 3,
+          "hex": "894708",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 8], eax"
+        },
+        {
+          "address": "00aee5f0",
+          "length": 2,
+          "hex": "eb10",
+          "mnemonic": "jmp",
+          "operands": "0xaee602"
+        },
+        {
+          "address": "00aee5f2",
+          "length": 4,
+          "hex": "8b4c2430",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00aee5f6",
+          "length": 3,
+          "hex": "894f08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 8], ecx"
+        },
+        {
+          "address": "00aee5f9",
+          "length": 2,
+          "hex": "eb07",
+          "mnemonic": "jmp",
+          "operands": "0xaee602"
+        },
+        {
+          "address": "00aee5fb",
+          "length": 4,
+          "hex": "8b542430",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00aee5ff",
+          "length": 3,
+          "hex": "895708",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 8], edx"
+        },
+        {
+          "address": "00aee602",
+          "length": 4,
+          "hex": "8b4c241c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x1c]"
+        },
+        {
+          "address": "00aee606",
+          "length": 2,
+          "hex": "8bc7",
+          "mnemonic": "mov",
+          "operands": "eax, edi"
+        },
+        {
+          "address": "00aee608",
+          "length": 1,
+          "hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00aee609",
+          "length": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00aee60a",
+          "length": 1,
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00aee60b",
+          "length": 1,
+          "hex": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00aee60c",
+          "length": 7,
+          "hex": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00aee613",
+          "length": 3,
+          "hex": "83c418",
+          "mnemonic": "add",
+          "operands": "esp, 0x18"
+        },
+        {
+          "address": "00aee616",
+          "length": 3,
+          "hex": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "physical_start_count": 122,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "6aff6873a6cb0064a100000000506489250000000083ec0c535556578bf933ed897c2410892f896f048d770c896c2424892e896e048b5c24343bfbc64424240174218b036a0150e824f892ff392b74138b0f8b53048b4704515250e85091100083c40c8b5c242c3bf374238b0b6a01518bcee8f9f792ff392b74138b168b43048b4e04525051e82591100083c40c6a016a018d4c241c896c241c896c2420e8cdf792ff8b5c24183bdd74168b54241483c2015268703ace0053e8f290100083c40c68ffffff7f8d442418508bcee84e9797ff85db8be874178b4c24146a0183c1015153e808b792ff8bc8e8512f0e0083fdff74378b1e6a01558bcee870f792ff8b063bd8731c8b56042bc35003d36a2052e80a9410008b44243c83c40c894708eb108b4c2430894f08eb078b5424308957088b4c241c8bc75f5e5d5b64890d0000000083c418c20c00",
+      "live_sha256": "695d158a48b81b2755262c00b2dff829035a4704e4a4892f3e5dd55f473148cb",
+      "installed_PE_live_equality": true,
+      "saved_export_preimage": [
+        {
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aee4d0\\assembly.txt",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_saved_assembly.txt",
+          "bytes": 3405,
+          "sha256": "f5d24c1ac86f28c929184bcc3aa7fdf9428553ce27c4359233bdfe1297740baa"
+        },
+        {
+          "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aee4d0\\decompiled.c",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_saved_decompiled.c",
+          "bytes": 2471,
+          "sha256": "a897a0722e10700604d81ab6a628c85dc03991eb36fd7d4541f38b6470b45955"
+        }
+      ],
+      "typed_metadata_instruction_count": 122,
+      "live_listing_rows": [
+        "00aee4d0: PUSH -0x1",
+        "00aee4d2: PUSH 0xcba673",
+        "00aee4d7: MOV EAX,FS:[0x0]",
+        "00aee4dd: PUSH EAX",
+        "00aee4de: MOV dword ptr FS:[0x0],ESP",
+        "00aee4e5: SUB ESP,0xc",
+        "00aee4e8: PUSH EBX",
+        "00aee4e9: PUSH EBP",
+        "00aee4ea: PUSH ESI",
+        "00aee4eb: PUSH EDI",
+        "00aee4ec: MOV EDI,ECX",
+        "00aee4ee: XOR EBP,EBP",
+        "00aee4f0: MOV dword ptr [ESP + 0x10],EDI",
+        "00aee4f4: MOV dword ptr [EDI],EBP",
+        "00aee4f6: MOV dword ptr [EDI + 0x4],EBP",
+        "00aee4f9: LEA ESI,[EDI + 0xc]",
+        "00aee4fc: MOV dword ptr [ESP + 0x24],EBP",
+        "00aee500: MOV dword ptr [ESI],EBP",
+        "00aee502: MOV dword ptr [ESI + 0x4],EBP",
+        "00aee505: MOV EBX,dword ptr [ESP + 0x34]",
+        "00aee509: CMP EDI,EBX",
+        "00aee50b: MOV byte ptr [ESP + 0x24],0x1",
+        "00aee510: JZ 0x00aee533",
+        "00aee512: MOV EAX,dword ptr [EBX]",
+        "00aee514: PUSH 0x1",
+        "00aee516: PUSH EAX",
+        "00aee517: CALL 0x0041dd40",
+        "00aee51c: CMP dword ptr [EBX],EBP",
+        "00aee51e: JZ 0x00aee533",
+        "00aee520: MOV ECX,dword ptr [EDI]",
+        "00aee522: MOV EDX,dword ptr [EBX + 0x4]",
+        "00aee525: MOV EAX,dword ptr [EDI + 0x4]",
+        "00aee528: PUSH ECX",
+        "00aee529: PUSH EDX",
+        "00aee52a: PUSH EAX",
+        "00aee52b: CALL 0x00bf7680",
+        "00aee530: ADD ESP,0xc",
+        "00aee533: MOV EBX,dword ptr [ESP + 0x2c]",
+        "00aee537: CMP ESI,EBX",
+        "00aee539: JZ 0x00aee55e",
+        "00aee53b: MOV ECX,dword ptr [EBX]",
+        "00aee53d: PUSH 0x1",
+        "00aee53f: PUSH ECX",
+        "00aee540: MOV ECX,ESI",
+        "00aee542: CALL 0x0041dd40",
+        "00aee547: CMP dword ptr [EBX],EBP",
+        "00aee549: JZ 0x00aee55e",
+        "00aee54b: MOV EDX,dword ptr [ESI]",
+        "00aee54d: MOV EAX,dword ptr [EBX + 0x4]",
+        "00aee550: MOV ECX,dword ptr [ESI + 0x4]",
+        "00aee553: PUSH EDX",
+        "00aee554: PUSH EAX",
+        "00aee555: PUSH ECX",
+        "00aee556: CALL 0x00bf7680",
+        "00aee55b: ADD ESP,0xc",
+        "00aee55e: PUSH 0x1",
+        "00aee560: PUSH 0x1",
+        "00aee562: LEA ECX,[ESP + 0x1c]",
+        "00aee566: MOV dword ptr [ESP + 0x1c],EBP",
+        "00aee56a: MOV dword ptr [ESP + 0x20],EBP",
+        "00aee56e: CALL 0x0041dd40",
+        "00aee573: MOV EBX,dword ptr [ESP + 0x18]",
+        "00aee577: CMP EBX,EBP",
+        "00aee579: JZ 0x00aee591",
+        "00aee57b: MOV EDX,dword ptr [ESP + 0x14]",
+        "00aee57f: ADD EDX,0x1",
+        "00aee582: PUSH EDX",
+        "00aee583: PUSH 0xce3a70",
+        "00aee588: PUSH EBX",
+        "00aee589: CALL 0x00bf7680",
+        "00aee58e: ADD ESP,0xc",
+        "00aee591: PUSH 0x7fffffff",
+        "00aee596: LEA EAX,[ESP + 0x18]",
+        "00aee59a: PUSH EAX",
+        "00aee59b: MOV ECX,ESI",
+        "00aee59d: CALL 0x00467cf0",
+        "00aee5a2: TEST EBX,EBX",
+        "00aee5a4: MOV EBP,EAX",
+        "00aee5a6: JZ 0x00aee5bf",
+        "00aee5a8: MOV ECX,dword ptr [ESP + 0x14]",
+        "00aee5ac: PUSH 0x1",
+        "00aee5ae: ADD ECX,0x1",
+        "00aee5b1: PUSH ECX",
+        "00aee5b2: PUSH EBX",
+        "00aee5b3: CALL 0x00419cc0",
+        "00aee5b8: MOV ECX,EAX",
+        "00aee5ba: CALL 0x00bd1510",
+        "00aee5bf: CMP EBP,-0x1",
+        "00aee5c2: JZ 0x00aee5fb",
+        "00aee5c4: MOV EBX,dword ptr [ESI]",
+        "00aee5c6: PUSH 0x1",
+        "00aee5c8: PUSH EBP",
+        "00aee5c9: MOV ECX,ESI",
+        "00aee5cb: CALL 0x0041dd40",
+        "00aee5d0: MOV EAX,dword ptr [ESI]",
+        "00aee5d2: CMP EBX,EAX",
+        "00aee5d4: JNC 0x00aee5f2",
+        "00aee5d6: MOV EDX,dword ptr [ESI + 0x4]",
+        "00aee5d9: SUB EAX,EBX",
+        "00aee5db: PUSH EAX",
+        "00aee5dc: ADD EDX,EBX",
+        "00aee5de: PUSH 0x20",
+        "00aee5e0: PUSH EDX",
+        "00aee5e1: CALL 0x00bf79f0",
+        "00aee5e6: MOV EAX,dword ptr [ESP + 0x3c]",
+        "00aee5ea: ADD ESP,0xc",
+        "00aee5ed: MOV dword ptr [EDI + 0x8],EAX",
+        "00aee5f0: JMP 0x00aee602",
+        "00aee5f2: MOV ECX,dword ptr [ESP + 0x30]",
+        "00aee5f6: MOV dword ptr [EDI + 0x8],ECX",
+        "00aee5f9: JMP 0x00aee602",
+        "00aee5fb: MOV EDX,dword ptr [ESP + 0x30]",
+        "00aee5ff: MOV dword ptr [EDI + 0x8],EDX",
+        "00aee602: MOV ECX,dword ptr [ESP + 0x1c]",
+        "00aee606: MOV EAX,EDI",
+        "00aee608: POP EDI",
+        "00aee609: POP ESI",
+        "00aee60a: POP EBP",
+        "00aee60b: POP EBX",
+        "00aee60c: MOV dword ptr FS:[0x0],ECX",
+        "00aee613: ADD ESP,0x18",
+        "00aee616: RET 0xc"
+      ],
+      "live_listing_start_count": 122,
+      "physical_starts_missing_from_live_listing": [],
+      "saved_listing_starts": [
+        "00aee4d0",
+        "00aee4d2",
+        "00aee4d7",
+        "00aee4dd",
+        "00aee4de",
+        "00aee4e5",
+        "00aee4e8",
+        "00aee4e9",
+        "00aee4ea",
+        "00aee4eb",
+        "00aee4ec",
+        "00aee4ee",
+        "00aee4f0",
+        "00aee4f4",
+        "00aee4f6",
+        "00aee4f9",
+        "00aee4fc",
+        "00aee500",
+        "00aee502",
+        "00aee505",
+        "00aee509",
+        "00aee50b",
+        "00aee510",
+        "00aee512",
+        "00aee514",
+        "00aee516",
+        "00aee517",
+        "00aee51c",
+        "00aee51e",
+        "00aee520",
+        "00aee522",
+        "00aee525",
+        "00aee528",
+        "00aee529",
+        "00aee52a",
+        "00aee52b",
+        "00aee530",
+        "00aee533",
+        "00aee537",
+        "00aee539",
+        "00aee53b",
+        "00aee53d",
+        "00aee53f",
+        "00aee540",
+        "00aee542",
+        "00aee547",
+        "00aee549",
+        "00aee54b",
+        "00aee54d",
+        "00aee550",
+        "00aee553",
+        "00aee554",
+        "00aee555",
+        "00aee556",
+        "00aee55b",
+        "00aee55e",
+        "00aee560",
+        "00aee562",
+        "00aee566",
+        "00aee56a",
+        "00aee56e",
+        "00aee573",
+        "00aee577",
+        "00aee579",
+        "00aee57b",
+        "00aee57f",
+        "00aee582",
+        "00aee583",
+        "00aee588",
+        "00aee589",
+        "00aee58e",
+        "00aee591",
+        "00aee596",
+        "00aee59a",
+        "00aee59b",
+        "00aee59d",
+        "00aee5a2",
+        "00aee5a4",
+        "00aee5a6",
+        "00aee5a8",
+        "00aee5ac",
+        "00aee5ae",
+        "00aee5b1",
+        "00aee5b2",
+        "00aee5b3",
+        "00aee5b8",
+        "00aee5ba",
+        "00aee5bf",
+        "00aee5c2",
+        "00aee5c4",
+        "00aee5c6",
+        "00aee5c8",
+        "00aee5c9",
+        "00aee5cb",
+        "00aee5d0",
+        "00aee5d2",
+        "00aee5d4",
+        "00aee5d6",
+        "00aee5d9",
+        "00aee5db",
+        "00aee5dc",
+        "00aee5de",
+        "00aee5e0",
+        "00aee5e1",
+        "00aee5e6",
+        "00aee5ea",
+        "00aee5ed",
+        "00aee5f0",
+        "00aee5f2",
+        "00aee5f6",
+        "00aee5f9",
+        "00aee5fb",
+        "00aee5ff",
+        "00aee602",
+        "00aee606",
+        "00aee608",
+        "00aee609",
+        "00aee60a",
+        "00aee60b",
+        "00aee60c",
+        "00aee613",
+        "00aee616"
+      ],
+      "saved_live_start_equality": true,
+      "typed_context_responses": [
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_0.json",
+            "bytes": 5170,
+            "sha256": "b139c646371e3e6b90390e89ce514a4af418233c1e4bb9ad9b027815e1728e94"
+          },
+          "response": {
+            "00aee4d0": {
+              "address": "00aee4d0",
+              "instruction": "PUSH -0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4d2": {
+              "address": "00aee4d2",
+              "instruction": "PUSH 0xcba673",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4d7": {
+              "address": "00aee4d7",
+              "instruction": "MOV EAX,FS:[0x0]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4dd": {
+              "address": "00aee4dd",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4de": {
+              "address": "00aee4de",
+              "instruction": "MOV dword ptr FS:[0x0],ESP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4e5": {
+              "address": "00aee4e5",
+              "instruction": "SUB ESP,0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "SUB",
+              "patterns_detected": []
+            },
+            "00aee4e8": {
+              "address": "00aee4e8",
+              "instruction": "PUSH EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4e9": {
+              "address": "00aee4e9",
+              "instruction": "PUSH EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4ea": {
+              "address": "00aee4ea",
+              "instruction": "PUSH ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4eb": {
+              "address": "00aee4eb",
+              "instruction": "PUSH EDI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee4ec": {
+              "address": "00aee4ec",
+              "instruction": "MOV EDI,ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4ee": {
+              "address": "00aee4ee",
+              "instruction": "XOR EBP,EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "XOR",
+              "patterns_detected": []
+            },
+            "00aee4f0": {
+              "address": "00aee4f0",
+              "instruction": "MOV dword ptr [ESP + 0x10],EDI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4f4": {
+              "address": "00aee4f4",
+              "instruction": "MOV dword ptr [EDI],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4f6": {
+              "address": "00aee4f6",
+              "instruction": "MOV dword ptr [EDI + 0x4],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4f9": {
+              "address": "00aee4f9",
+              "instruction": "LEA ESI,[EDI + 0xc]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "LEA",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee4fc": {
+              "address": "00aee4fc",
+              "instruction": "MOV dword ptr [ESP + 0x24],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee500": {
+              "address": "00aee500",
+              "instruction": "MOV dword ptr [ESI],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee502": {
+              "address": "00aee502",
+              "instruction": "MOV dword ptr [ESI + 0x4],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee505": {
+              "address": "00aee505",
+              "instruction": "MOV EBX,dword ptr [ESP + 0x34]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee509": {
+              "address": "00aee509",
+              "instruction": "CMP EDI,EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee50b": {
+              "address": "00aee50b",
+              "instruction": "MOV byte ptr [ESP + 0x24],0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee510": {
+              "address": "00aee510",
+              "instruction": "JZ 0x00aee533",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee512": {
+              "address": "00aee512",
+              "instruction": "MOV EAX,dword ptr [EBX]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee514": {
+              "address": "00aee514",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee516": {
+              "address": "00aee516",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee517": {
+              "address": "00aee517",
+              "instruction": "CALL 0x0041dd40",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee51c": {
+              "address": "00aee51c",
+              "instruction": "CMP dword ptr [EBX],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee51e": {
+              "address": "00aee51e",
+              "instruction": "JZ 0x00aee533",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee520": {
+              "address": "00aee520",
+              "instruction": "MOV ECX,dword ptr [EDI]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee522": {
+              "address": "00aee522",
+              "instruction": "MOV EDX,dword ptr [EBX + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee525": {
+              "address": "00aee525",
+              "instruction": "MOV EAX,dword ptr [EDI + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            }
+          }
+        },
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_32.json",
+            "bytes": 5107,
+            "sha256": "3ef0612ae0a6d4c0515e8a6afb58ea4d5e030be9c3b0247544afa826018c6059"
+          },
+          "response": {
+            "00aee528": {
+              "address": "00aee528",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee529": {
+              "address": "00aee529",
+              "instruction": "PUSH EDX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee52a": {
+              "address": "00aee52a",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee52b": {
+              "address": "00aee52b",
+              "instruction": "CALL 0x00bf7680",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee530": {
+              "address": "00aee530",
+              "instruction": "ADD ESP,0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee533": {
+              "address": "00aee533",
+              "instruction": "MOV EBX,dword ptr [ESP + 0x2c]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee537": {
+              "address": "00aee537",
+              "instruction": "CMP ESI,EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee539": {
+              "address": "00aee539",
+              "instruction": "JZ 0x00aee55e",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee53b": {
+              "address": "00aee53b",
+              "instruction": "MOV ECX,dword ptr [EBX]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee53d": {
+              "address": "00aee53d",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee53f": {
+              "address": "00aee53f",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee540": {
+              "address": "00aee540",
+              "instruction": "MOV ECX,ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee542": {
+              "address": "00aee542",
+              "instruction": "CALL 0x0041dd40",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee547": {
+              "address": "00aee547",
+              "instruction": "CMP dword ptr [EBX],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee549": {
+              "address": "00aee549",
+              "instruction": "JZ 0x00aee55e",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee54b": {
+              "address": "00aee54b",
+              "instruction": "MOV EDX,dword ptr [ESI]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee54d": {
+              "address": "00aee54d",
+              "instruction": "MOV EAX,dword ptr [EBX + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee550": {
+              "address": "00aee550",
+              "instruction": "MOV ECX,dword ptr [ESI + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee553": {
+              "address": "00aee553",
+              "instruction": "PUSH EDX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee554": {
+              "address": "00aee554",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee555": {
+              "address": "00aee555",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee556": {
+              "address": "00aee556",
+              "instruction": "CALL 0x00bf7680",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee55b": {
+              "address": "00aee55b",
+              "instruction": "ADD ESP,0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee55e": {
+              "address": "00aee55e",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee560": {
+              "address": "00aee560",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee562": {
+              "address": "00aee562",
+              "instruction": "LEA ECX,[ESP + 0x1c]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "LEA",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee566": {
+              "address": "00aee566",
+              "instruction": "MOV dword ptr [ESP + 0x1c],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee56a": {
+              "address": "00aee56a",
+              "instruction": "MOV dword ptr [ESP + 0x20],EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee56e": {
+              "address": "00aee56e",
+              "instruction": "CALL 0x0041dd40",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee573": {
+              "address": "00aee573",
+              "instruction": "MOV EBX,dword ptr [ESP + 0x18]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee577": {
+              "address": "00aee577",
+              "instruction": "CMP EBX,EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee579": {
+              "address": "00aee579",
+              "instruction": "JZ 0x00aee591",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            }
+          }
+        },
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_64.json",
+            "bytes": 5027,
+            "sha256": "6017b03e00730142d5fc9f643115fbd31105f8822a62c21d874af836494ece64"
+          },
+          "response": {
+            "00aee57b": {
+              "address": "00aee57b",
+              "instruction": "MOV EDX,dword ptr [ESP + 0x14]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee57f": {
+              "address": "00aee57f",
+              "instruction": "ADD EDX,0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee582": {
+              "address": "00aee582",
+              "instruction": "PUSH EDX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee583": {
+              "address": "00aee583",
+              "instruction": "PUSH 0xce3a70",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee588": {
+              "address": "00aee588",
+              "instruction": "PUSH EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee589": {
+              "address": "00aee589",
+              "instruction": "CALL 0x00bf7680",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee58e": {
+              "address": "00aee58e",
+              "instruction": "ADD ESP,0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee591": {
+              "address": "00aee591",
+              "instruction": "PUSH 0x7fffffff",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee596": {
+              "address": "00aee596",
+              "instruction": "LEA EAX,[ESP + 0x18]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "LEA",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee59a": {
+              "address": "00aee59a",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee59b": {
+              "address": "00aee59b",
+              "instruction": "MOV ECX,ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee59d": {
+              "address": "00aee59d",
+              "instruction": "CALL 0x00467cf0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5a2": {
+              "address": "00aee5a2",
+              "instruction": "TEST EBX,EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "TEST",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee5a4": {
+              "address": "00aee5a4",
+              "instruction": "MOV EBP,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5a6": {
+              "address": "00aee5a6",
+              "instruction": "JZ 0x00aee5bf",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5a8": {
+              "address": "00aee5a8",
+              "instruction": "MOV ECX,dword ptr [ESP + 0x14]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5ac": {
+              "address": "00aee5ac",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5ae": {
+              "address": "00aee5ae",
+              "instruction": "ADD ECX,0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee5b1": {
+              "address": "00aee5b1",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5b2": {
+              "address": "00aee5b2",
+              "instruction": "PUSH EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5b3": {
+              "address": "00aee5b3",
+              "instruction": "CALL 0x00419cc0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5b8": {
+              "address": "00aee5b8",
+              "instruction": "MOV ECX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5ba": {
+              "address": "00aee5ba",
+              "instruction": "CALL 0x00bd1510",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5bf": {
+              "address": "00aee5bf",
+              "instruction": "CMP EBP,-0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee5c2": {
+              "address": "00aee5c2",
+              "instruction": "JZ 0x00aee5fb",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5c4": {
+              "address": "00aee5c4",
+              "instruction": "MOV EBX,dword ptr [ESI]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5c6": {
+              "address": "00aee5c6",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5c8": {
+              "address": "00aee5c8",
+              "instruction": "PUSH EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5c9": {
+              "address": "00aee5c9",
+              "instruction": "MOV ECX,ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5cb": {
+              "address": "00aee5cb",
+              "instruction": "CALL 0x0041dd40",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5d0": {
+              "address": "00aee5d0",
+              "instruction": "MOV EAX,dword ptr [ESI]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5d2": {
+              "address": "00aee5d2",
+              "instruction": "CMP EBX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CMP",
+              "patterns_detected": [
+                "comparison"
+              ]
+            }
+          }
+        },
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_96.json",
+            "bytes": 4125,
+            "sha256": "9ef59138818b5ee0afcdfe53678dabef7e1ac578dde9a9cb12c5f4ea11d4271e"
+          },
+          "response": {
+            "00aee5d4": {
+              "address": "00aee5d4",
+              "instruction": "JNC 0x00aee5f2",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JNC",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5d6": {
+              "address": "00aee5d6",
+              "instruction": "MOV EDX,dword ptr [ESI + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5d9": {
+              "address": "00aee5d9",
+              "instruction": "SUB EAX,EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "SUB",
+              "patterns_detected": []
+            },
+            "00aee5db": {
+              "address": "00aee5db",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5dc": {
+              "address": "00aee5dc",
+              "instruction": "ADD EDX,EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee5de": {
+              "address": "00aee5de",
+              "instruction": "PUSH 0x20",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5e0": {
+              "address": "00aee5e0",
+              "instruction": "PUSH EDX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee5e1": {
+              "address": "00aee5e1",
+              "instruction": "CALL 0x00bf79f0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5e6": {
+              "address": "00aee5e6",
+              "instruction": "MOV EAX,dword ptr [ESP + 0x3c]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5ea": {
+              "address": "00aee5ea",
+              "instruction": "ADD ESP,0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee5ed": {
+              "address": "00aee5ed",
+              "instruction": "MOV dword ptr [EDI + 0x8],EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5f0": {
+              "address": "00aee5f0",
+              "instruction": "JMP 0x00aee602",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JMP",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5f2": {
+              "address": "00aee5f2",
+              "instruction": "MOV ECX,dword ptr [ESP + 0x30]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5f6": {
+              "address": "00aee5f6",
+              "instruction": "MOV dword ptr [EDI + 0x8],ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5f9": {
+              "address": "00aee5f9",
+              "instruction": "JMP 0x00aee602",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JMP",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee5fb": {
+              "address": "00aee5fb",
+              "instruction": "MOV EDX,dword ptr [ESP + 0x30]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee5ff": {
+              "address": "00aee5ff",
+              "instruction": "MOV dword ptr [EDI + 0x8],EDX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee602": {
+              "address": "00aee602",
+              "instruction": "MOV ECX,dword ptr [ESP + 0x1c]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee606": {
+              "address": "00aee606",
+              "instruction": "MOV EAX,EDI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee608": {
+              "address": "00aee608",
+              "instruction": "POP EDI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee609": {
+              "address": "00aee609",
+              "instruction": "POP ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee60a": {
+              "address": "00aee60a",
+              "instruction": "POP EBP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee60b": {
+              "address": "00aee60b",
+              "instruction": "POP EBX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee60c": {
+              "address": "00aee60c",
+              "instruction": "MOV dword ptr FS:[0x0],ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee613": {
+              "address": "00aee613",
+              "instruction": "ADD ESP,0x18",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee616": {
+              "address": "00aee616",
+              "instruction": "RET 0xc",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "RET",
+              "patterns_detected": []
+            }
+          }
+        }
+      ],
+      "exact_Ghidra_AddressSet": null,
+      "whole_body_admitted": false,
+      "typed_context_errors": []
+    },
+    {
+      "start": "00aee220",
+      "end_exclusive": "00aee296",
+      "length": 118,
+      "rva": "006ee220",
+      "file_offset": 7266848,
+      "section": ".text",
+      "hex": "6aff6818a6cb0064a100000000506489250000000051568bf1897424048b461085c0c74424100000000074168b4e0c6a0183c1015150e865ba92ff8bc8e8ae320e008b460485c0c7442410ffffffff74158b366a0183c6015650e841ba92ff8bc8e88a320e008b4c24085e64890d0000000083c410c3",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_118_disk.bin",
+        "bytes": 118,
+        "sha256": "a28855af2d0a49038c5a845e0017819cd0425994295d5d33bb8d7d42d26383f3"
+      },
+      "physical_instructions": [
+        {
+          "address": "00aee220",
+          "length": 2,
+          "hex": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00aee222",
+          "length": 5,
+          "hex": "6818a6cb00",
+          "mnemonic": "push",
+          "operands": "0xcba618"
+        },
+        {
+          "address": "00aee227",
+          "length": 6,
+          "hex": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00aee22d",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee22e",
+          "length": 7,
+          "hex": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00aee235",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee236",
+          "length": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00aee237",
+          "length": 2,
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00aee239",
+          "length": 4,
+          "hex": "89742404",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 4], esi"
+        },
+        {
+          "address": "00aee23d",
+          "length": 3,
+          "hex": "8b4610",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x10]"
+        },
+        {
+          "address": "00aee240",
+          "length": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00aee242",
+          "length": 8,
+          "hex": "c744241000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0"
+        },
+        {
+          "address": "00aee24a",
+          "length": 2,
+          "hex": "7416",
+          "mnemonic": "je",
+          "operands": "0xaee262"
+        },
+        {
+          "address": "00aee24c",
+          "length": 3,
+          "hex": "8b4e0c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0xc]"
+        },
+        {
+          "address": "00aee24f",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee251",
+          "length": 3,
+          "hex": "83c101",
+          "mnemonic": "add",
+          "operands": "ecx, 1"
+        },
+        {
+          "address": "00aee254",
+          "length": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00aee255",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee256",
+          "length": 5,
+          "hex": "e865ba92ff",
+          "mnemonic": "call",
+          "operands": "0x419cc0"
+        },
+        {
+          "address": "00aee25b",
+          "length": 2,
+          "hex": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00aee25d",
+          "length": 5,
+          "hex": "e8ae320e00",
+          "mnemonic": "call",
+          "operands": "0xbd1510"
+        },
+        {
+          "address": "00aee262",
+          "length": 3,
+          "hex": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "00aee265",
+          "length": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00aee267",
+          "length": 8,
+          "hex": "c7442410ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0xffffffff"
+        },
+        {
+          "address": "00aee26f",
+          "length": 2,
+          "hex": "7415",
+          "mnemonic": "je",
+          "operands": "0xaee286"
+        },
+        {
+          "address": "00aee271",
+          "length": 2,
+          "hex": "8b36",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi]"
+        },
+        {
+          "address": "00aee273",
+          "length": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00aee275",
+          "length": 3,
+          "hex": "83c601",
+          "mnemonic": "add",
+          "operands": "esi, 1"
+        },
+        {
+          "address": "00aee278",
+          "length": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00aee279",
+          "length": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00aee27a",
+          "length": 5,
+          "hex": "e841ba92ff",
+          "mnemonic": "call",
+          "operands": "0x419cc0"
+        },
+        {
+          "address": "00aee27f",
+          "length": 2,
+          "hex": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00aee281",
+          "length": 5,
+          "hex": "e88a320e00",
+          "mnemonic": "call",
+          "operands": "0xbd1510"
+        },
+        {
+          "address": "00aee286",
+          "length": 4,
+          "hex": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00aee28a",
+          "length": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00aee28b",
+          "length": 7,
+          "hex": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00aee292",
+          "length": 3,
+          "hex": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "00aee295",
+          "length": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "physical_start_count": 38,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "6aff6818a6cb0064a100000000506489250000000051568bf1897424048b461085c0c74424100000000074168b4e0c6a0183c1015150e865ba92ff8bc8e8ae320e008b460485c0c7442410ffffffff74158b366a0183c6015650e841ba92ff8bc8e88a320e008b4c24085e64890d0000000083c410c3",
+      "live_sha256": "a28855af2d0a49038c5a845e0017819cd0425994295d5d33bb8d7d42d26383f3",
+      "installed_PE_live_equality": true,
+      "saved_export_preimage": [],
+      "typed_metadata_instruction_count": 38,
+      "live_listing_rows": [
+        "00aee220: PUSH -0x1",
+        "00aee222: PUSH 0xcba618",
+        "00aee227: MOV EAX,FS:[0x0]",
+        "00aee22d: PUSH EAX",
+        "00aee22e: MOV dword ptr FS:[0x0],ESP",
+        "00aee235: PUSH ECX",
+        "00aee236: PUSH ESI",
+        "00aee237: MOV ESI,ECX",
+        "00aee239: MOV dword ptr [ESP + 0x4],ESI",
+        "00aee23d: MOV EAX,dword ptr [ESI + 0x10]",
+        "00aee240: TEST EAX,EAX",
+        "00aee242: MOV dword ptr [ESP + 0x10],0x0",
+        "00aee24a: JZ 0x00aee262",
+        "00aee24c: MOV ECX,dword ptr [ESI + 0xc]",
+        "00aee24f: PUSH 0x1",
+        "00aee251: ADD ECX,0x1",
+        "00aee254: PUSH ECX",
+        "00aee255: PUSH EAX",
+        "00aee256: CALL 0x00419cc0",
+        "00aee25b: MOV ECX,EAX",
+        "00aee25d: CALL 0x00bd1510",
+        "00aee262: MOV EAX,dword ptr [ESI + 0x4]",
+        "00aee265: TEST EAX,EAX",
+        "00aee267: MOV dword ptr [ESP + 0x10],0xffffffff",
+        "00aee26f: JZ 0x00aee286",
+        "00aee271: MOV ESI,dword ptr [ESI]",
+        "00aee273: PUSH 0x1",
+        "00aee275: ADD ESI,0x1",
+        "00aee278: PUSH ESI",
+        "00aee279: PUSH EAX",
+        "00aee27a: CALL 0x00419cc0",
+        "00aee27f: MOV ECX,EAX",
+        "00aee281: CALL 0x00bd1510",
+        "00aee286: MOV ECX,dword ptr [ESP + 0x8]",
+        "00aee28a: POP ESI",
+        "00aee28b: MOV dword ptr FS:[0x0],ECX",
+        "00aee292: ADD ESP,0x10",
+        "00aee295: RET"
+      ],
+      "live_listing_start_count": 38,
+      "physical_starts_missing_from_live_listing": [],
+      "saved_listing_starts": null,
+      "saved_live_start_equality": null,
+      "typed_context_responses": [
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_0.json",
+            "bytes": 5105,
+            "sha256": "912ef43cf953a54155e775cae1a19f0664953776972e78e37617cdfe064935a0"
+          },
+          "response": {
+            "00aee220": {
+              "address": "00aee220",
+              "instruction": "PUSH -0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee222": {
+              "address": "00aee222",
+              "instruction": "PUSH 0xcba618",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee227": {
+              "address": "00aee227",
+              "instruction": "MOV EAX,FS:[0x0]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee22d": {
+              "address": "00aee22d",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee22e": {
+              "address": "00aee22e",
+              "instruction": "MOV dword ptr FS:[0x0],ESP",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee235": {
+              "address": "00aee235",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee236": {
+              "address": "00aee236",
+              "instruction": "PUSH ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee237": {
+              "address": "00aee237",
+              "instruction": "MOV ESI,ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee239": {
+              "address": "00aee239",
+              "instruction": "MOV dword ptr [ESP + 0x4],ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee23d": {
+              "address": "00aee23d",
+              "instruction": "MOV EAX,dword ptr [ESI + 0x10]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee240": {
+              "address": "00aee240",
+              "instruction": "TEST EAX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "TEST",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee242": {
+              "address": "00aee242",
+              "instruction": "MOV dword ptr [ESP + 0x10],0x0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee24a": {
+              "address": "00aee24a",
+              "instruction": "JZ 0x00aee262",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee24c": {
+              "address": "00aee24c",
+              "instruction": "MOV ECX,dword ptr [ESI + 0xc]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee24f": {
+              "address": "00aee24f",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee251": {
+              "address": "00aee251",
+              "instruction": "ADD ECX,0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee254": {
+              "address": "00aee254",
+              "instruction": "PUSH ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee255": {
+              "address": "00aee255",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee256": {
+              "address": "00aee256",
+              "instruction": "CALL 0x00419cc0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee25b": {
+              "address": "00aee25b",
+              "instruction": "MOV ECX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee25d": {
+              "address": "00aee25d",
+              "instruction": "CALL 0x00bd1510",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee262": {
+              "address": "00aee262",
+              "instruction": "MOV EAX,dword ptr [ESI + 0x4]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee265": {
+              "address": "00aee265",
+              "instruction": "TEST EAX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "TEST",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aee267": {
+              "address": "00aee267",
+              "instruction": "MOV dword ptr [ESP + 0x10],0xffffffff",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee26f": {
+              "address": "00aee26f",
+              "instruction": "JZ 0x00aee286",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee271": {
+              "address": "00aee271",
+              "instruction": "MOV ESI,dword ptr [ESI]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee273": {
+              "address": "00aee273",
+              "instruction": "PUSH 0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee275": {
+              "address": "00aee275",
+              "instruction": "ADD ESI,0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee278": {
+              "address": "00aee278",
+              "instruction": "PUSH ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee279": {
+              "address": "00aee279",
+              "instruction": "PUSH EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee27a": {
+              "address": "00aee27a",
+              "instruction": "CALL 0x00419cc0",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee27f": {
+              "address": "00aee27f",
+              "instruction": "MOV ECX,EAX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            }
+          }
+        },
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_32.json",
+            "bytes": 931,
+            "sha256": "df1e279cb895222cf3b2b0170da7795f1769cffb8aaab3111ed369cc78b653bc"
+          },
+          "response": {
+            "00aee281": {
+              "address": "00aee281",
+              "instruction": "CALL 0x00bd1510",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aee286": {
+              "address": "00aee286",
+              "instruction": "MOV ECX,dword ptr [ESP + 0x8]",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee28a": {
+              "address": "00aee28a",
+              "instruction": "POP ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aee28b": {
+              "address": "00aee28b",
+              "instruction": "MOV dword ptr FS:[0x0],ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aee292": {
+              "address": "00aee292",
+              "instruction": "ADD ESP,0x10",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "ADD",
+              "patterns_detected": []
+            },
+            "00aee295": {
+              "address": "00aee295",
+              "instruction": "RET",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "RET",
+              "patterns_detected": []
+            }
+          }
+        }
+      ],
+      "exact_Ghidra_AddressSet": null,
+      "whole_body_admitted": false,
+      "typed_context_errors": []
+    },
+    {
+      "start": "00aeead0",
+      "end_exclusive": "00aeeaee",
+      "length": 30,
+      "rva": "006eead0",
+      "file_offset": 7269072,
+      "section": ".text",
+      "hex": "568bf1e848f7fffff644240801740956e8c77a100083c4048bc65ec20400",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_30_disk.bin",
+        "bytes": 30,
+        "sha256": "426940cb982c1637d8218989a86adca93b93a220e0cc1abddfc1a166eb91027b"
+      },
+      "physical_instructions": [
+        {
+          "address": "00aeead0",
+          "length": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00aeead1",
+          "length": 2,
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00aeead3",
+          "length": 5,
+          "hex": "e848f7ffff",
+          "mnemonic": "call",
+          "operands": "0xaee220"
+        },
+        {
+          "address": "00aeead8",
+          "length": 5,
+          "hex": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00aeeadd",
+          "length": 2,
+          "hex": "7409",
+          "mnemonic": "je",
+          "operands": "0xaeeae8"
+        },
+        {
+          "address": "00aeeadf",
+          "length": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00aeeae0",
+          "length": 5,
+          "hex": "e8c77a1000",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "00aeeae5",
+          "length": 3,
+          "hex": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00aeeae8",
+          "length": 2,
+          "hex": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "00aeeaea",
+          "length": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00aeeaeb",
+          "length": 3,
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "physical_start_count": 11,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "568bf1e848f7fffff644240801740956e8c77a100083c4048bc65ec20400",
+      "live_sha256": "426940cb982c1637d8218989a86adca93b93a220e0cc1abddfc1a166eb91027b",
+      "installed_PE_live_equality": true,
+      "saved_export_preimage": [],
+      "typed_metadata_instruction_count": 10,
+      "live_listing_rows": [
+        "00aeead0: PUSH ESI",
+        "00aeead1: MOV ESI,ECX",
+        "00aeead3: CALL 0x00aee220",
+        "00aeead8: TEST byte ptr [ESP + 0x8],0x1",
+        "00aeeadd: JZ 0x00aeeae8",
+        "00aeeadf: PUSH ESI",
+        "00aeeae0: CALL 0x00bf65ac",
+        "00aeeae8: MOV EAX,ESI",
+        "00aeeaea: POP ESI",
+        "00aeeaeb: RET 0x4"
+      ],
+      "live_listing_start_count": 10,
+      "physical_starts_missing_from_live_listing": [
+        "00aeeae5"
+      ],
+      "saved_listing_starts": null,
+      "saved_live_start_equality": null,
+      "typed_context_responses": [
+        {
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_typed_starts_0.json",
+            "bytes": 1630,
+            "sha256": "a744a275c62d0c18bb29563241d335608a5500b2e14287b99af32a2d331fe705"
+          },
+          "response": {
+            "00aeead0": {
+              "address": "00aeead0",
+              "instruction": "PUSH ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aeead1": {
+              "address": "00aeead1",
+              "instruction": "MOV ESI,ECX",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aeead3": {
+              "address": "00aeead3",
+              "instruction": "CALL 0x00aee220",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aeead8": {
+              "address": "00aeead8",
+              "instruction": "TEST byte ptr [ESP + 0x8],0x1",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "TEST",
+              "patterns_detected": [
+                "comparison"
+              ]
+            },
+            "00aeeadd": {
+              "address": "00aeeadd",
+              "instruction": "JZ 0x00aeeae8",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "JZ",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aeeadf": {
+              "address": "00aeeadf",
+              "instruction": "PUSH ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "PUSH",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aeeae0": {
+              "address": "00aeeae0",
+              "instruction": "CALL 0x00bf65ac",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "CALL",
+              "patterns_detected": [
+                "control_flow"
+              ]
+            },
+            "00aeeae5": {
+              "address": "00aeeae5",
+              "error": "No instruction at address"
+            },
+            "00aeeae8": {
+              "address": "00aeeae8",
+              "instruction": "MOV EAX,ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "MOV",
+              "patterns_detected": [
+                "data_access"
+              ]
+            },
+            "00aeeaea": {
+              "address": "00aeeaea",
+              "instruction": "POP ESI",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "POP",
+              "patterns_detected": [
+                "stack_operation"
+              ]
+            },
+            "00aeeaeb": {
+              "address": "00aeeaeb",
+              "instruction": "RET 0x4",
+              "context_before": [],
+              "context_after": [],
+              "mnemonic": "RET",
+              "patterns_detected": []
+            }
+          }
+        }
+      ],
+      "exact_Ghidra_AddressSet": null,
+      "whole_body_admitted": false,
+      "typed_context_errors": [
+        {
+          "address": "00aeeae5",
+          "error": "No instruction at address"
+        }
+      ]
+    }
+  ],
+  "EH_observations": [
+    {
+      "start": "00cba673",
+      "end_exclusive": "00cba67d",
+      "length": 10,
+      "rva": "008ba673",
+      "file_offset": 9152115,
+      "section": ".text",
+      "hex": "b83423df00e9c6c4f3ff",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba673_10_disk.bin",
+        "bytes": 10,
+        "sha256": "48590a90e3fb1203f55cadc83dc916cf9bb7da7d2fb2850b9d754d548c4dbae1"
+      },
+      "physical_instructions": [
+        {
+          "address": "00cba673",
+          "length": 5,
+          "hex": "b83423df00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdf2334"
+        },
+        {
+          "address": "00cba678",
+          "length": 5,
+          "hex": "e9c6c4f3ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ],
+      "physical_start_count": 2,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "b83423df00e9c6c4f3ff",
+      "live_sha256": "48590a90e3fb1203f55cadc83dc916cf9bb7da7d2fb2850b9d754d548c4dbae1",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00cba618",
+      "end_exclusive": "00cba622",
+      "length": 10,
+      "rva": "008ba618",
+      "file_offset": 9152024,
+      "section": ".text",
+      "hex": "b8cc22df00e921c5f3ff",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba618_10_disk.bin",
+        "bytes": 10,
+        "sha256": "966fa78b7961594105428d067d4eb9d161725541010a266d6b0dc926055ad31d"
+      },
+      "physical_instructions": [
+        {
+          "address": "00cba618",
+          "length": 5,
+          "hex": "b8cc22df00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdf22cc"
+        },
+        {
+          "address": "00cba61d",
+          "length": 5,
+          "hex": "e921c5f3ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ],
+      "physical_start_count": 2,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "b8cc22df00e921c5f3ff",
+      "live_sha256": "966fa78b7961594105428d067d4eb9d161725541010a266d6b0dc926055ad31d",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00cba660",
+      "end_exclusive": "00cba668",
+      "length": 8,
+      "rva": "008ba660",
+      "file_offset": 9152096,
+      "section": ".text",
+      "hex": "8b4de8e9b83676ff",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba660_8_disk.bin",
+        "bytes": 8,
+        "sha256": "9f203cb6abf9c7057dfd155617b772bebfd1650f57a151cee4c3ac668b50802f"
+      },
+      "physical_instructions": [
+        {
+          "address": "00cba660",
+          "length": 3,
+          "hex": "8b4de8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00cba663",
+          "length": 5,
+          "hex": "e9b83676ff",
+          "mnemonic": "jmp",
+          "operands": "0x41dd20"
+        }
+      ],
+      "physical_start_count": 2,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "8b4de8e9b83676ff",
+      "live_sha256": "9f203cb6abf9c7057dfd155617b772bebfd1650f57a151cee4c3ac668b50802f",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00cba668",
+      "end_exclusive": "00cba673",
+      "length": 11,
+      "rva": "008ba668",
+      "file_offset": 9152104,
+      "section": ".text",
+      "hex": "8b4de883c10ce9ad3676ff",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba668_11_disk.bin",
+        "bytes": 11,
+        "sha256": "858632aba721357b12e50e32a420869e7a93a29fbdc91a1e58743a9a3e25298b"
+      },
+      "physical_instructions": [
+        {
+          "address": "00cba668",
+          "length": 3,
+          "hex": "8b4de8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00cba66b",
+          "length": 3,
+          "hex": "83c10c",
+          "mnemonic": "add",
+          "operands": "ecx, 0xc"
+        },
+        {
+          "address": "00cba66e",
+          "length": 5,
+          "hex": "e9ad3676ff",
+          "mnemonic": "jmp",
+          "operands": "0x41dd20"
+        }
+      ],
+      "physical_start_count": 3,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "8b4de883c10ce9ad3676ff",
+      "live_sha256": "858632aba721357b12e50e32a420869e7a93a29fbdc91a1e58743a9a3e25298b",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00cba610",
+      "end_exclusive": "00cba618",
+      "length": 8,
+      "rva": "008ba610",
+      "file_offset": 9152016,
+      "section": ".text",
+      "hex": "8b4df0e9083776ff",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba610_8_disk.bin",
+        "bytes": 8,
+        "sha256": "b91ef13f747d3cdb604b9f9634deb06d6d363ce032d04f5a070e63225ed47945"
+      },
+      "physical_instructions": [
+        {
+          "address": "00cba610",
+          "length": 3,
+          "hex": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00cba613",
+          "length": 5,
+          "hex": "e9083776ff",
+          "mnemonic": "jmp",
+          "operands": "0x41dd20"
+        }
+      ],
+      "physical_start_count": 2,
+      "contiguous_decode_covers_span": true,
+      "live_hex": "8b4df0e9083776ff",
+      "live_sha256": "b91ef13f747d3cdb604b9f9634deb06d6d363ce032d04f5a070e63225ed47945",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00df2334",
+      "end_exclusive": "00df2350",
+      "length": 28,
+      "rva": "009f2334",
+      "file_offset": 10429236,
+      "section": ".rdata",
+      "hex": "22059319020000002423df0000000000000000000000000000000000",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2334_28_disk.bin",
+        "bytes": 28,
+        "sha256": "eeb43c2a71775bb466a555c7d38b111d700f20d17d034fa4023062da78455162"
+      },
+      "live_hex": "22059319020000002423df0000000000000000000000000000000000",
+      "live_sha256": "eeb43c2a71775bb466a555c7d38b111d700f20d17d034fa4023062da78455162",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00df22cc",
+      "end_exclusive": "00df22e8",
+      "length": 28,
+      "rva": "009f22cc",
+      "file_offset": 10429132,
+      "section": ".rdata",
+      "hex": "2205931901000000c422df0000000000000000000000000000000000",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22cc_28_disk.bin",
+        "bytes": 28,
+        "sha256": "44749a7f66495244dd02633805841ede5f0a4ee2facc51c57656e082a74fb2a3"
+      },
+      "live_hex": "2205931901000000c422df0000000000000000000000000000000000",
+      "live_sha256": "44749a7f66495244dd02633805841ede5f0a4ee2facc51c57656e082a74fb2a3",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00df2324",
+      "end_exclusive": "00df2334",
+      "length": 16,
+      "rva": "009f2324",
+      "file_offset": 10429220,
+      "section": ".rdata",
+      "hex": "ffffffff60a6cb000000000068a6cb00",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2324_16_disk.bin",
+        "bytes": 16,
+        "sha256": "6cf958d1a5ff53a076a3d317040d008720e818113d2cd10133d5f808ce5f9d70"
+      },
+      "live_hex": "ffffffff60a6cb000000000068a6cb00",
+      "live_sha256": "6cf958d1a5ff53a076a3d317040d008720e818113d2cd10133d5f808ce5f9d70",
+      "installed_PE_live_equality": true
+    },
+    {
+      "start": "00df22c4",
+      "end_exclusive": "00df22cc",
+      "length": 8,
+      "rva": "009f22c4",
+      "file_offset": 10429124,
+      "section": ".rdata",
+      "hex": "ffffffff10a6cb00",
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22c4_8_disk.bin",
+        "bytes": 8,
+        "sha256": "f87fc87aac319405eed2035e30b45007992cedcec1859e743ad349e6538b1e99"
+      },
+      "live_hex": "ffffffff10a6cb00",
+      "live_sha256": "f87fc87aac319405eed2035e30b45007992cedcec1859e743ad349e6538b1e99",
+      "installed_PE_live_equality": true
+    }
+  ],
+  "complete_FuncInfo_and_dot_data": [
+    {
+      "label": "FuncInfo_ctor",
+      "start": "00df2334",
+      "end_exclusive": "00df2358",
+      "length": 36,
+      "hex": "22059319020000002423df00000000000000000000000000000000000000000001000000",
+      "installed_PE_live_equality": true,
+      "live_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2334_live_bytes36.txt",
+        "bytes": 183,
+        "sha256": "fc9f2280c2868bcf8d04b6b640438894bfb747c01a739f80741381dc454aae2d"
+      },
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2334_36_disk.bin",
+        "bytes": 36,
+        "sha256": "95d4e3beb14111e833dc1d6f3d9baa06e13de01f35ebd4fa171b2e7e06f1be0a"
+      },
+      "file_offset": 10429236,
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df2334",
+        "--length",
+        "36"
+      ],
+      "words": [
+        "19930522",
+        "00000002",
+        "00df2324",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "FuncInfo_fields": {
+        "magicNumber": "19930522",
+        "maxState": "00000002",
+        "pUnwindMap": "00df2324",
+        "nTryBlocks": "00000000",
+        "pTryBlockMap": "00000000",
+        "nIPMapEntries": "00000000",
+        "pIPtoStateMap": "00000000",
+        "pESTypeList": "00000000",
+        "EHFlags": "00000001"
+      }
+    },
+    {
+      "label": "FuncInfo_cleanup",
+      "start": "00df22cc",
+      "end_exclusive": "00df22f0",
+      "length": 36,
+      "hex": "2205931901000000c422df00000000000000000000000000000000000000000001000000",
+      "installed_PE_live_equality": true,
+      "live_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22cc_live_bytes36.txt",
+        "bytes": 183,
+        "sha256": "4aad305093456d259edc4a93346f2c72e87c617f5552c7102737306749fa4dba"
+      },
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22cc_36_disk.bin",
+        "bytes": 36,
+        "sha256": "362e0d4ad32c961e22cb64b7166f605df1cc56515f8165a2a1b96a4913e25ccf"
+      },
+      "file_offset": 10429132,
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df22cc",
+        "--length",
+        "36"
+      ],
+      "words": [
+        "19930522",
+        "00000001",
+        "00df22c4",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "FuncInfo_fields": {
+        "magicNumber": "19930522",
+        "maxState": "00000001",
+        "pUnwindMap": "00df22c4",
+        "nTryBlocks": "00000000",
+        "pTryBlockMap": "00000000",
+        "nIPMapEntries": "00000000",
+        "pIPtoStateMap": "00000000",
+        "pESTypeList": "00000000",
+        "EHFlags": "00000001"
+      }
+    },
+    {
+      "label": "dot_needle",
+      "start": "00ce3a70",
+      "end_exclusive": "00ce3a72",
+      "length": 2,
+      "hex": "2e00",
+      "installed_PE_live_equality": true,
+      "live_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00ce3a70_live_bytes2.txt",
+        "bytes": 21,
+        "sha256": "4fd2958f9272e176f92cb6f75187329d0965db596e277ba48939f402d8a17fa8"
+      },
+      "disk_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00ce3a70_2_disk.bin",
+        "bytes": 2,
+        "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce"
+      },
+      "file_offset": 9321072,
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ce3a70",
+        "--length",
+        "2"
+      ]
+    }
+  ],
+  "EH_typed_context": {
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\EH_typed_context.json",
+      "bytes": 1772,
+      "sha256": "ef017a18c07876f0b01604fa09755e6d60a0e8adb966defd958bb1749cb6e241"
+    },
+    "response": {
+      "00cba673": {
+        "address": "00cba673",
+        "instruction": "MOV EAX,0xdf2334",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cba678": {
+        "address": "00cba678",
+        "instruction": "JMP 0x00bf6b43",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "00cba618": {
+        "address": "00cba618",
+        "instruction": "MOV EAX,0xdf22cc",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cba61d": {
+        "address": "00cba61d",
+        "instruction": "JMP 0x00bf6b43",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "00cba660": {
+        "address": "00cba660",
+        "instruction": "MOV ECX,dword ptr [EBP + -0x18]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cba663": {
+        "address": "00cba663",
+        "instruction": "JMP 0x0041dd20",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "00cba668": {
+        "address": "00cba668",
+        "instruction": "MOV ECX,dword ptr [EBP + -0x18]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cba66b": {
+        "address": "00cba66b",
+        "instruction": "ADD ECX,0xc",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "ADD",
+        "patterns_detected": []
+      },
+      "00cba66e": {
+        "address": "00cba66e",
+        "instruction": "JMP 0x0041dd20",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "00cba610": {
+        "address": "00cba610",
+        "instruction": "MOV ECX,dword ptr [EBP + -0x10]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cba613": {
+        "address": "00cba613",
+        "instruction": "JMP 0x0041dd20",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    }
+  },
+  "flow_property_probe": {
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\flow_properties.json",
+      "bytes": 8040,
+      "sha256": "ba743747e35111898d6c903fcf30d8e05a5dc46ce9ae11054a038a49c191c417"
+    },
+    "http_status": 200,
+    "raw_response": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}",
+    "properties": null,
+    "exact_body_AddressSets_returned": false,
+    "exact_flow_override_fallthrough_callee_no_return_preimages_returned": false,
+    "mutation_fallback_attempted": false
+  },
+  "command_pins": [
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00aee4d0",
+        "--length",
+        "329"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_live_bytes.txt",
+        "bytes": 1589,
+        "sha256": "ab51457d59e22b63b21b9157199d3852c85d4c734b12495de796b7c73b1535c0"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00aee4d0",
+        "--lines",
+        "75"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_proto.txt",
+        "bytes": 1953,
+        "sha256": "5f0eecfd27a48e81f914a175fe0297e36899b39e96934e941beca4a008a6debe"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_proto.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00aee4d0",
+        "--start",
+        "0",
+        "--lines",
+        "66"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_disasm_0.txt",
+        "bytes": 2028,
+        "sha256": "abe97911b6638a98f7660283554854b8c6bb11d4d67c0703164e4ad04748a517"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_disasm_0.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00aee4d0",
+        "--start",
+        "66",
+        "--lines",
+        "60"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_disasm_66.txt",
+        "bytes": 1553,
+        "sha256": "afd6fc6a064241b216d0c2ed950cbd83380c8a68d1b51f4b376f022e5d79b717"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_disasm_66.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee4d0",
+        "00aee4d2",
+        "00aee4d7",
+        "00aee4dd",
+        "00aee4de",
+        "00aee4e5",
+        "00aee4e8",
+        "00aee4e9",
+        "00aee4ea",
+        "00aee4eb",
+        "00aee4ec",
+        "00aee4ee",
+        "00aee4f0",
+        "00aee4f4",
+        "00aee4f6",
+        "00aee4f9",
+        "00aee4fc",
+        "00aee500",
+        "00aee502",
+        "00aee505",
+        "00aee509",
+        "00aee50b",
+        "00aee510",
+        "00aee512",
+        "00aee514",
+        "00aee516",
+        "00aee517",
+        "00aee51c",
+        "00aee51e",
+        "00aee520",
+        "00aee522",
+        "00aee525",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee4d0_typed_starts_0.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_0_command.txt",
+        "bytes": 124,
+        "sha256": "d52c0bdf9c7d698a5784f7408f831f62b7e3a15534e6ae6b869f74cd2ff6ed73"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_0_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee528",
+        "00aee529",
+        "00aee52a",
+        "00aee52b",
+        "00aee530",
+        "00aee533",
+        "00aee537",
+        "00aee539",
+        "00aee53b",
+        "00aee53d",
+        "00aee53f",
+        "00aee540",
+        "00aee542",
+        "00aee547",
+        "00aee549",
+        "00aee54b",
+        "00aee54d",
+        "00aee550",
+        "00aee553",
+        "00aee554",
+        "00aee555",
+        "00aee556",
+        "00aee55b",
+        "00aee55e",
+        "00aee560",
+        "00aee562",
+        "00aee566",
+        "00aee56a",
+        "00aee56e",
+        "00aee573",
+        "00aee577",
+        "00aee579",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee4d0_typed_starts_32.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_32_command.txt",
+        "bytes": 125,
+        "sha256": "1a45ade5bc08d5df630c2974306e4d3a880ef4726491efb37c1b0d8181e9df4a"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_32_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee57b",
+        "00aee57f",
+        "00aee582",
+        "00aee583",
+        "00aee588",
+        "00aee589",
+        "00aee58e",
+        "00aee591",
+        "00aee596",
+        "00aee59a",
+        "00aee59b",
+        "00aee59d",
+        "00aee5a2",
+        "00aee5a4",
+        "00aee5a6",
+        "00aee5a8",
+        "00aee5ac",
+        "00aee5ae",
+        "00aee5b1",
+        "00aee5b2",
+        "00aee5b3",
+        "00aee5b8",
+        "00aee5ba",
+        "00aee5bf",
+        "00aee5c2",
+        "00aee5c4",
+        "00aee5c6",
+        "00aee5c8",
+        "00aee5c9",
+        "00aee5cb",
+        "00aee5d0",
+        "00aee5d2",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee4d0_typed_starts_64.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_64_command.txt",
+        "bytes": 125,
+        "sha256": "fc3cbd22db5a5718d3c5d59299ea2bbc17ba716771494259bdd90bb1debe5a8c"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_64_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee5d4",
+        "00aee5d6",
+        "00aee5d9",
+        "00aee5db",
+        "00aee5dc",
+        "00aee5de",
+        "00aee5e0",
+        "00aee5e1",
+        "00aee5e6",
+        "00aee5ea",
+        "00aee5ed",
+        "00aee5f0",
+        "00aee5f2",
+        "00aee5f6",
+        "00aee5f9",
+        "00aee5fb",
+        "00aee5ff",
+        "00aee602",
+        "00aee606",
+        "00aee608",
+        "00aee609",
+        "00aee60a",
+        "00aee60b",
+        "00aee60c",
+        "00aee613",
+        "00aee616",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee4d0_typed_starts_96.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_96_command.txt",
+        "bytes": 125,
+        "sha256": "ca68517f5cdc4d398aad848abe8d048b5593f5bb599dbe6cecc509cb391d8734"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee4d0_typed_starts_96_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00aee220",
+        "--length",
+        "118"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_live_bytes.txt",
+        "bytes": 576,
+        "sha256": "b114233b3ffaa7c8c47937eed54a22040f866724488eefe06406ca6e590d9f97"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00aee220",
+        "--lines",
+        "75"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_proto.txt",
+        "bytes": 1016,
+        "sha256": "79f06501ce31bf235af7dfb08e858058248b3b6a8d7cce517e55d5038353bd09"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_proto.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00aee220",
+        "--start",
+        "0",
+        "--lines",
+        "48"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_disasm_0.txt",
+        "bytes": 1079,
+        "sha256": "a0bea01659227553a271754e3970014b0b2609a3e83471fdb99b34139afdcb55"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_disasm_0.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee220",
+        "00aee222",
+        "00aee227",
+        "00aee22d",
+        "00aee22e",
+        "00aee235",
+        "00aee236",
+        "00aee237",
+        "00aee239",
+        "00aee23d",
+        "00aee240",
+        "00aee242",
+        "00aee24a",
+        "00aee24c",
+        "00aee24f",
+        "00aee251",
+        "00aee254",
+        "00aee255",
+        "00aee256",
+        "00aee25b",
+        "00aee25d",
+        "00aee262",
+        "00aee265",
+        "00aee267",
+        "00aee26f",
+        "00aee271",
+        "00aee273",
+        "00aee275",
+        "00aee278",
+        "00aee279",
+        "00aee27a",
+        "00aee27f",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee220_typed_starts_0.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_0_command.txt",
+        "bytes": 124,
+        "sha256": "c535acacdd56b65f887dde1a33143324615a9f810c9ac30b80c39edae09541fa"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_0_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aee281",
+        "00aee286",
+        "00aee28a",
+        "00aee28b",
+        "00aee292",
+        "00aee295",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aee220_typed_starts_32.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_32_command.txt",
+        "bytes": 124,
+        "sha256": "6ae53599451d6cef6e2b343d469281c4d7a10228707b06370a3f5c0484ea826b"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aee220_typed_starts_32_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00aeead0",
+        "--length",
+        "30"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_live_bytes.txt",
+        "bytes": 146,
+        "sha256": "9f9b2dc40c036d76fca8e5ba7ef82858b5731ef72f11ecb8f42744c31b135649"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00aeead0",
+        "--lines",
+        "75"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_proto.txt",
+        "bytes": 878,
+        "sha256": "09bf404601c2b2957ef17db9a93b0541deab97d3e919f92c84088e7bf8a5f22b"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_proto.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00aeead0",
+        "--start",
+        "0",
+        "--lines",
+        "24"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_disasm_0.txt",
+        "bytes": 254,
+        "sha256": "ff5e3cb6bf400433058c5094d55a4b63abab2c73e2368fdf5f19036994d1a2a9"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_disasm_0.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00aeead0",
+        "00aeead1",
+        "00aeead3",
+        "00aeead8",
+        "00aeeadd",
+        "00aeeadf",
+        "00aeeae0",
+        "00aeeae5",
+        "00aeeae8",
+        "00aeeaea",
+        "00aeeaeb",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/00aeead0_typed_starts_0.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_typed_starts_0_command.txt",
+        "bytes": 124,
+        "sha256": "475e28d0e9f68a74dbeeb67f502642dbde9882713d50473c6df6368b00b8bb70"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00aeead0_typed_starts_0_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cba673",
+        "--length",
+        "10"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba673_live_bytes.txt",
+        "bytes": 53,
+        "sha256": "f6ee7358b8505265798a139a7811b4dc1ef28fc7c7f257a9f0281eff7b3ce18c"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba673_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cba618",
+        "--length",
+        "10"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba618_live_bytes.txt",
+        "bytes": 53,
+        "sha256": "0332151f2055cc9a57345c2ef76cb3c3a1766bc23fa6c61c1dd2a8964b246b12"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba618_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cba660",
+        "--length",
+        "8"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba660_live_bytes.txt",
+        "bytes": 45,
+        "sha256": "7333fc074acfe87fbb5e3008391b390f3b7bca69e7d6590e7fd40ec38c5e1309"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba660_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cba668",
+        "--length",
+        "11"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba668_live_bytes.txt",
+        "bytes": 57,
+        "sha256": "bbcbcfcfa2218b7d0ec35fbec13fc9e4f83dba5ac2a03ca9de62373516c3f3ac"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba668_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cba610",
+        "--length",
+        "8"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba610_live_bytes.txt",
+        "bytes": 45,
+        "sha256": "e4dcafbe3a1db0d843e97c2ef26ba015d7413d71d83fbf70c755dd455f93164f"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00cba610_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df2334",
+        "--length",
+        "28"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2334_live_bytes.txt",
+        "bytes": 138,
+        "sha256": "7409e93850e6b72db40512726879f738c975a7e7fcbcd5ffe043776bc115adcc"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2334_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df22cc",
+        "--length",
+        "28"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22cc_live_bytes.txt",
+        "bytes": 138,
+        "sha256": "a60f9b937592ed83deef9ed2f9b7317c020be9c2b3e3a0dad98123c79642086a"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22cc_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df2324",
+        "--length",
+        "16"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2324_live_bytes.txt",
+        "bytes": 77,
+        "sha256": "c4069be2d9edd73d41e4f73190a29d3c6314e56309a6a9e2fd94ea93237ead04"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df2324_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df22c4",
+        "--length",
+        "8"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22c4_live_bytes.txt",
+        "bytes": 45,
+        "sha256": "5e069504b86ed1937eda438a75ee797e0d0dbd4be1152ee621167b30d1a3f50b"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\00df22c4_live_bytes.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00cba673",
+        "00cba678",
+        "00cba618",
+        "00cba61d",
+        "00cba660",
+        "00cba663",
+        "00cba668",
+        "00cba66b",
+        "00cba66e",
+        "00cba610",
+        "00cba613",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_atlas_item_listing/EH_typed_context.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\EH_typed_context_command.txt",
+        "bytes": 117,
+        "sha256": "1ac0c1688900a1a032ed2b60cf7324481134187761baea05d367ce6579bf989b"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\EH_typed_context_command.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "physical_contracts": {
+    "00aee4d0": {
+      "ABI": "ECX actual30h item; stack item-name header, borrowed logical texture, descriptor-name header; RET0Ch; EAX original item.",
+      "initialization": "Zero descriptor +0/+4, set EH state0, then zero name +C/+10 and set state1 before either copy. +8 and +14..2F are not initialized by these stores.",
+      "descriptor_copy": "Compare raw item and descriptor-source identities after zeroing; if distinct resize from source length with preserve=1. Recheck current source length, then copy current destination length from current source data to current destination data.",
+      "name_copy": "After descriptor copy, compare raw item+C and name-source identities; same current-header schedule. Descriptor/name/caller aliases are not converted to pre-snapshotted semantic strings.",
+      "dot_search": "Zero local8h needle, resize length1/preserve1, capture resulting data pointer in EBX, copy current length+1 bytes from CE3A70 (2E00 under ordinary resize result), call467CF0 on current item+C with limit7FFFFFFF. Existing reverse search excludes position0.",
+      "dot_return": "If captured EBX nonnull, read current local needle length+1 and call current419CC0 thenBD1510 with captured pointer, even if callbacks modified local data. Needle has no separate registered unwind state.",
+      "suffix_resize": "If search result !=-1, capture current name length, resize to search result with preserve1, then fill any current-length growth from captured old length with20h. Ordinary truncation shrinks; callback mutation can affect the current-length branch.",
+      "texture_publication": "Store borrowed stack logical-texture pointer at +8 only after all preceding operations return. No AddRef, Release, COM count, private cache or owner conversion.",
+      "untouched_tail": "No item stores at+14..2F in admitted physical span; actual storage preimages remain caller supplied.",
+      "EH_map": "FuncInfoDF2334 magic19930522/maxState2/unwindDF2324/no try blocks/no IP map/no ES list/EHFlags1. State1 actionCBA668 passes saved item+C to41DD20 then state0; state0 actionCBA660 passes saved item to41DD20 then-1.",
+      "failure_qualification": "After state1, an escaping ordinary call unwinds name then current descriptor; dot temporary is not separately registered. Header clearing or allocation rollback beyond child-provider behavior is not introduced. Native SEH/unwind runtime identity and faults while an unwind action fails are not executed or reconstructed here."
+    },
+    "00aee220": {
+      "ABI": "ECX actual item; RET; no semantic return.",
+      "normal_order": "Capture name pointer+10; set state0; if nonnull capture length+C+1 and return through current419CC0/BD1510. Then read CURRENT descriptor pointer+4; set state-1; if nonnull capture current length+0+1 and return through current getter/pool. Do not pre-capture descriptor across name return.",
+      "fields": "No header zeroing; preserve stale headers and callback modifications. No logical texture or tail access.",
+      "EH_map": "FuncInfoDF22CC magic19930522/maxState1/unwindDF22C4/no try blocks/no IP map/no ES list/EHFlags1. State0 actionCBA610 passes saved item descriptor to41DD20 then-1.",
+      "failure_qualification": "A name-return/getter exception at state0 schedules current descriptor destruction; descriptor-return/getter failure at state-1 has no additional local cleanup. No claimed Native unwind execution."
+    },
+    "00aeead0": {
+      "ABI": "ECX item; stack flags DWORD read by low-byte bit0 after cleanup; RET4. ESI retains owner identity. EAX=ESI on both returning paths, including after storage free.",
+      "normal_order": "CallAEE220; test late flags lowbyte bit0; if set push saved item and callBF65AC, physicalADD ESP,4 atAEEAE5; return saved item pointer.",
+      "physical_gap": "30B complete contiguous decode11 starts; exact typed API rejectsAEEAE5. Disk and live gap bytes83C404. Ghidra next listing start after callAEEAE0 isAEEAE8.",
+      "unknown_cause": "No returned exact flow override, fallthrough override, effective/default flow, callee no-return/thunk properties or function AddressSet. Never infer cause from gap or EAX return from decompiler extraout_EAX.",
+      "storage_boundary": "CRT storage disposal follows completed member cleanup; no Source delete-expression policy admitted and no invented COM release."
+    }
+  },
+  "existing_provider_contract": {
+    "usable_existing_Source": [
+      "resize_native_string_header_0041dd40(void*, NativeStringRawPoolContext&, uint32_t, bool)",
+      "destroy_native_string_header_0041dd20(void*, NativeStringRawPoolContext&)",
+      "reverse_find_native_string_header_00467cf0(const void*, const void*, uint32_t)"
+    ],
+    "raw_pool_cells": [
+      "actual_published_01090aa8",
+      "actual_small_returns_disabled_01090aa4",
+      "actual_manager_publication_01090aa0"
+    ],
+    "lifetime": "Borrow application canonical pool/manager/gate cells. Current raw getter runs before every allocation/return including large blocks and disabled small returns. Getter exceptions may escape. No new private domain or semantic noexcept storage adapter.",
+    "retained_boundaries": "Existing raw providers already define their Source/lifetime/overlap/zero-copy boundaries. This packet does not expand their Native ABI or game validation credit."
+  },
+  "holds": [
+    "Exact Ghidra function AddressSets unavailable for all three bodies. Matching span endpoints/counts do not prove membership or whole-body admission.",
+    "Exact flow/fallthrough/NoReturn preimages unavailable; read-only bridge script disabled. AEEAE5 has no typed instruction.",
+    "No attested bounded atomic repair route is present: existing ghidra_flow_repair --apply is disabled. Root owns every GPR mutation and must inspect exact preimages first.",
+    "Ctor/cleanup physical/EH evidence does not bypass the held whole/fragment admission gate or its deletion dependency.",
+    "No Source item provider emitted; no COFF/EH compiler comparison, Win32 build or fixture result exists for this packet."
+  ],
+  "Root_next_actions": [
+    "Provide an attested read-only property route for actual AddressSets and exact callAEEAE0, gapAEEAE5, wrapper andBF65AC current flow/NoReturn/thunk properties. Do not probe with mutating clear-flow dry-run.",
+    "After exact evidence identifies any required repair, use sole Root writer, write lock, preserved metadata/comment preimages and bounded transaction; do not infer an override from the gap alone.",
+    "Require post-state exact AddressSets,30B/11 wrapper starts includingAEEAE5, unchangedPE bytes and refreshed export before whole-body Source admission; alternatively explicitly review a separate justified fragment gate.",
+    "Only then implement the item provider through canonical raw strings, preserving aliases, stale/current headers, temporary pointer capture and unwind state; Root owns CMake/ledger/annotation integration."
+  ],
+  "excluded": [
+    "rawAEE620 parameters",
+    "rawAEEAF0 parser",
+    "AEF280 registration",
+    "735F90 array helper",
+    "F8C26C manager composition",
+    "new atlas startup wiring"
+  ],
+  "validation": {
+    "installed_PE_live_full_span_and_start_replay": true,
+    "EH_data_and_action_physical_replay": true,
+    "source_pin_Git_blob_replay": true,
+    "C++_changes": false,
+    "build": false,
+    "tests": false,
+    "COFF_or_compiler_EH": false,
+    "Native_ABI": false,
+    "runtime": false,
+    "gameplay": false,
+    "GPR_writes": false,
+    "annotation_or_ledger_or_CMake_changes": false,
+    "Source_admission": false
+  },
+  "primary_review": {
+    "decision": "Accept physical/EH/typed-gap evidence with whole Source/body/flow admission held; no C++ permitted by this receipt.",
+    "accepted_worker_commit": "612ae9dd88214165fe39649a321f967e6655eb07",
+    "worker_pin_occurrences_verified_and_retained": 88,
+    "installed_PE_span_replays": 15,
+    "proof_pin": {
+      "path": "local/cc12_atlas_item_evidence_primary/proof.json",
+      "sha256": "a24f479fe0d18727fe293b26df1bf4794a714cec083206d27523d317c5fdd0bd"
+    },
+    "document_pin": {
+      "path": "docs/NATIVE_TEXTURE_ATLAS_ITEM.md",
+      "sha256": "909816ad82f13854fbe8a2808f7bbc871c27dd28d54cd42b80dadbaa50b3584d"
+    },
+    "GPR_mutations": 0,
+    "Source_admitted": false,
+    "build_tests_runtime": false,
+    "fresh_Root_live_queries": 0
+  }
+}
