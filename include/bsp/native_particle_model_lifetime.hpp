@@ -40,7 +40,7 @@ void destroy_native_particle_model_arrays_00afd370(NativeParticleModelArraysStor
 struct NativeParticleModelLifetimeAccess {
     // SAME initialized F8D2D0 owner used for allocation; never model pool01090054.
     void* actual_pool_00f8d2d0;
-    void* const volatile& manager_00f8c274;
+    NativeParticleModelManagerStorage* const volatile& manager_00f8c274;
     volatile std::uint32_t& live_count_00f8d2c8;
     // Borrow current complete23-DWORD D5DA50 profile and canonical type words.
     const volatile std::uint32_t* vtable_00d5da50;
