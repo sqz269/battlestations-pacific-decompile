@@ -6365,6 +6365,61 @@
           "runtime_authority": false,
           "fixture_advance": false,
           "qualification": false
+        },
+        "review_phase_reader07_complete_Source_acceptance_and_exact_additive_staging": {
+          "status": "COMPLETE_STATIC_SOURCE_ACCEPTED_DATA_REVIEW_STARTED",
+          "Source_credit": 0,
+          "Root_acceptance": true,
+          "complete_Root_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader07_complete_Source_peer_accepted_DATA01.json",
+            "bytes": 589219978,
+            "sha256": "b2f1674ed346423b865d165afe091d43cc3d5dd27ce7adecfc0dea6df0d5a1ca"
+          },
+          "complete_Root_static_acceptance_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_complete_static_Source_acceptance_failed01_corrected02.actual_tools.DATA.json",
+            "bytes": 4795,
+            "sha256": "885d3c2ae8a30fc71f6e7d4fb5a63c7efa48e02edd11852935c5bc8f532aeda4"
+          },
+          "complete_exact_additive_staging": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader07_exact_additive_Source_staging_DATA01.json",
+            "bytes": 2157,
+            "sha256": "789982e89ceabfc61d61a5a9bcbd0547526a9c5bc0d712ced391532f3b9509e8"
+          },
+          "staged_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\review_F5_review01_complete_actual_runtime_DATA07.py",
+            "bytes": 75339,
+            "sha256": "5cc299bcb985a416a5ee1c26f2a0a77d6b7a5c9b83d51af8fb80f96da4a13d53"
+          },
+          "Root_static_predicates": 233171,
+          "Root_current_equal_books": 3014,
+          "complete_independent_Source_predicates": 582647,
+          "independent_current_equal_books": 2984,
+          "complete_independent_seal_predicates": 57004,
+          "complete_independent_readonly_verifier_predicates": 51309,
+          "exact11byte_builtin_tokenize_import_only": true,
+          "all188_need_ASTs_order_and_locations_unchanged": true,
+          "all11_function_ASTs_and_Source_unchanged": true,
+          "whole_raw_and_module_AST_inverse_exact": true,
+          "line404_assertion_unchanged": true,
+          "all_original_Source04_Source05_Source06_failures_retained": true,
+          "original_builtin_diagnosis_34_advertised_45_serialized_preserved": true,
+          "corrected_builtin_diagnosis46_complete_checks": true,
+          "Root_original_verifier_disposition_field_assumption_failure_retained": true,
+          "Root_DATA_reader_execution_authorized": true,
+          "original_fixture_Source_execution_authorized": false,
+          "actual_DATA_initial_native_chunk": "d0221d",
+          "actual_DATA_initial_native_session": 96968,
+          "original_four_native_zero_and_QPC_attempt_preserved": true,
+          "original_native_attempt_replayed": false,
+          "actual_runtime_success_or_failure_not_yet_recorded": true,
+          "future_complete_actual_DATA_terminal": null,
+          "future_complete_actual_Root_review": null,
+          "future_actual_Root_review_counts": null,
+          "future_actual_independent_inspection_gate": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false
         }
       }
     }
