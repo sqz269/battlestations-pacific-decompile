@@ -1,0 +1,3622 @@
+{
+  "schema": 1,
+  "packet": "cc12_particle_profile_admission_design_readiness",
+  "utc": "2026-10-10T19:09:22.699581+00:00",
+  "status": "source_only_design_ready_for_review_implementation_and_activation_held",
+  "conclusion": "Registry reserve alone is insufficient. Prepare an inactive entry in the SAME canonical registry, consume existing generated-lifetime admission in a particle constructor overload, and retain stable application record/companion storage through constructor frames and quiescent disposal.",
+  "worker_capture": "5a237ee0ff9b5116c2c54f88e2615807af91d670",
+  "Root_capture": "b7727f1286c325d3bb594d74bc4a22657cda2f9c",
+  "accepted_Cpp_commit": "99b170231e937da304703fe01221bcc8b8b8aef7",
+  "old_epoch": "Source3352-particle-model-typed-views",
+  "new_epoch": "Source3352-native-wide-raw-context",
+  "old_manifest_pin": {
+    "entry": "blobs/282eb48cbb50ac0aa1f7fcb1307afa13be243bcdbbdd398b9c12039716931bfb",
+    "bytes": 1259645,
+    "sha256": "282eb48cbb50ac0aa1f7fcb1307afa13be243bcdbbdd398b9c12039716931bfb"
+  },
+  "new_manifest_pin": {
+    "entry": "blobs/541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3",
+    "bytes": 1273066,
+    "sha256": "541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3"
+  },
+  "qualified_project_sources_each": 3352,
+  "old_epoch_current_Root_project_sources": 3350,
+  "Root_changes": [
+    "include/bsp/native_wide_string.hpp",
+    "src/native_wide_string.cpp"
+  ],
+  "Root_diff_patch": {
+    "entry": "blobs/6d4e47908ff6f0be048fba13a3e3c80462d95b55fe2ece3b15b99645f928eec1",
+    "bytes": 1872,
+    "sha256": "6d4e47908ff6f0be048fba13a3e3c80462d95b55fe2ece3b15b99645f928eec1"
+  },
+  "compiled_artifacts_captured": 0,
+  "manifest_build_artifact_declarations_not_checked": 4,
+  "Source_union_count": 4214,
+  "Source_query_corpus_each": 4207,
+  "worker_EOL_variants": [
+    "cmake/startup.cmake",
+    "include/bsp/sound_configuration.hpp",
+    "include/bsp/sound_startup.hpp",
+    "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+    "src/game_sound_runtime.cpp",
+    "src/sound_configuration.cpp",
+    "src/sound_startup.cpp"
+  ],
+  "cpp_root_entries": [
+    {
+      "path": "src",
+      "Root_start_oid": "fd6e29638a6b917859c329388e1c01e7fbb3f214",
+      "Root_end_oid": "fd6e29638a6b917859c329388e1c01e7fbb3f214",
+      "worker_oid": "f9136cdb8e217791d6267d06ae4ba4f7cbfbbdb2",
+      "accepted_oid": "f9136cdb8e217791d6267d06ae4ba4f7cbfbbdb2"
+    },
+    {
+      "path": "include",
+      "Root_start_oid": "35bb1360c3f6009ca2015d3633a89ecd813bc1fe",
+      "Root_end_oid": "35bb1360c3f6009ca2015d3633a89ecd813bc1fe",
+      "worker_oid": "23602f7c78ad2e3a6e47978c4c2c3438a8723b91",
+      "accepted_oid": "23602f7c78ad2e3a6e47978c4c2c3438a8723b91"
+    },
+    {
+      "path": "cmake",
+      "Root_start_oid": "098038a53c6a019ae6c7b29c6bfd2caf64619fbf",
+      "Root_end_oid": "098038a53c6a019ae6c7b29c6bfd2caf64619fbf",
+      "worker_oid": "098038a53c6a019ae6c7b29c6bfd2caf64619fbf",
+      "accepted_oid": "098038a53c6a019ae6c7b29c6bfd2caf64619fbf"
+    },
+    {
+      "path": "scripts",
+      "Root_start_oid": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+      "Root_end_oid": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+      "worker_oid": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+      "accepted_oid": "bf65e83d6945357deb40b7a440352ff3d2a7305e"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "Root_start_oid": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+      "Root_end_oid": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+      "worker_oid": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+      "accepted_oid": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+    }
+  ],
+  "accepted_whole_reports": [
+    {
+      "name": "profile",
+      "path": "reports/cc12_particle_model_profile_callee_owner_readiness.json",
+      "accepted_worker_commit": "01de2fdbc5006b34b59c04f36508ede34e157c16",
+      "git_blob": "5f52930051d335b4f927fd0620de9904a3d09a66",
+      "whole_report": {
+        "entry": "blobs/d5cd2f537dd2563ee9c8d2383d5d587b147dcdcf85a56aa20b0191d65c0ca76e",
+        "bytes": 516350,
+        "sha256": "d5cd2f537dd2563ee9c8d2383d5d587b147dcdcf85a56aa20b0191d65c0ca76e"
+      },
+      "git": {
+        "commit": "01de2fdbc5006b34b59c04f36508ede34e157c16",
+        "commit_pin": {
+          "entry": "blobs/962908edf6070258cc18ec3c653bbb8c2b10b998c883ce8ee4de80ece1b684a4",
+          "bytes": 668,
+          "sha256": "962908edf6070258cc18ec3c653bbb8c2b10b998c883ce8ee4de80ece1b684a4"
+        },
+        "trees": [
+          {
+            "directory": "",
+            "oid": "4e56665f960f638390970e513bc19f61fa40f85b",
+            "pin": {
+              "entry": "blobs/9dccbb4813fbadae97b1f696d70261944f284fecab2595157c08d5b58fb7e644",
+              "bytes": 563,
+              "sha256": "9dccbb4813fbadae97b1f696d70261944f284fecab2595157c08d5b58fb7e644"
+            }
+          },
+          {
+            "directory": "reports",
+            "oid": "050bbfaab62dd1a914f7018c562a45950fe3f698",
+            "pin": {
+              "entry": "blobs/a5e7877201832aa15cfc3ab499eaca69a5c788d76d003ed5b4715dc2280cd5c6",
+              "bytes": 339111,
+              "sha256": "a5e7877201832aa15cfc3ab499eaca69a5c788d76d003ed5b4715dc2280cd5c6"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "RNG",
+      "path": "reports/cc12_particle_model_constructor_callee_owner_readiness.json",
+      "accepted_worker_commit": "51d3206884e66faef62f25df3a19bbd69c5d5993",
+      "git_blob": "9bf4b4e386f1431eed93da517c3ec568b48adeac",
+      "whole_report": {
+        "entry": "blobs/76e42fd9faf61621b1a1a30fb47e25e348f75ac77f9a9346381803005bf2a1a0",
+        "bytes": 783022,
+        "sha256": "76e42fd9faf61621b1a1a30fb47e25e348f75ac77f9a9346381803005bf2a1a0"
+      },
+      "git": {
+        "commit": "51d3206884e66faef62f25df3a19bbd69c5d5993",
+        "commit_pin": {
+          "entry": "blobs/494b07d40a97d6d11574de804c1314df06da13de9c5c6094bf8fce25e8a0e0ce",
+          "bytes": 317,
+          "sha256": "494b07d40a97d6d11574de804c1314df06da13de9c5c6094bf8fce25e8a0e0ce"
+        },
+        "trees": [
+          {
+            "directory": "",
+            "oid": "58ef092427d958927cbc4c6dae5f5fe3869c62af",
+            "pin": {
+              "entry": "blobs/dd5b1e7524f5b35f521e4c94888043125160172f597f4da89d5e65cf66df961c",
+              "bytes": 563,
+              "sha256": "dd5b1e7524f5b35f521e4c94888043125160172f597f4da89d5e65cf66df961c"
+            }
+          },
+          {
+            "directory": "reports",
+            "oid": "f563d88e24c088f420d661ae6e4ee6bc3273ef6d",
+            "pin": {
+              "entry": "blobs/4775ea8919198f23f614c473dea6e7731d8e5fe0ae8331d8a203c9e19289883b",
+              "bytes": 337807,
+              "sha256": "4775ea8919198f23f614c473dea6e7731d8e5fe0ae8331d8a203c9e19289883b"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "renderer",
+      "path": "reports/cc12_particle_model_second_callee_owner_readiness.json",
+      "accepted_worker_commit": "d9a9e64736b69b0e77d374fb8dffee014b020b6e",
+      "git_blob": "591b933de7a5cc534d9f3061cf5e74677628e6c1",
+      "whole_report": {
+        "entry": "blobs/fa322bd755578516ef732cb7026c0a6f43ae3c807a44eca26ea5d4c9623553de",
+        "bytes": 1182598,
+        "sha256": "fa322bd755578516ef732cb7026c0a6f43ae3c807a44eca26ea5d4c9623553de"
+      },
+      "git": {
+        "commit": "d9a9e64736b69b0e77d374fb8dffee014b020b6e",
+        "commit_pin": {
+          "entry": "blobs/483ce067966b823a908059f607e42d8194fb8381f84332607d14b5ea3ab80cfa",
+          "bytes": 315,
+          "sha256": "483ce067966b823a908059f607e42d8194fb8381f84332607d14b5ea3ab80cfa"
+        },
+        "trees": [
+          {
+            "directory": "",
+            "oid": "103f591d32f26e9b0f00477ad0b6dc80840489aa",
+            "pin": {
+              "entry": "blobs/0546b6ca7df6eb7d575ebe6a2d2942b4aa112c14c7c3b2b81f1e419f8ec4f8c4",
+              "bytes": 563,
+              "sha256": "0546b6ca7df6eb7d575ebe6a2d2942b4aa112c14c7c3b2b81f1e419f8ec4f8c4"
+            }
+          },
+          {
+            "directory": "reports",
+            "oid": "30448ff00c4db04b9e30899d4bfe5bd83a3afb6e",
+            "pin": {
+              "entry": "blobs/bb9942a9289dc1f53b4294f6d172bf7a90c717d7e683896c69a3937634da301d",
+              "bytes": 338277,
+              "sha256": "bb9942a9289dc1f53b4294f6d172bf7a90c717d7e683896c69a3937634da301d"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "pool",
+      "path": "reports/cc12_particle_model_pool_borrow_readiness.json",
+      "accepted_worker_commit": "cbac550781e09b6d96a68c46895a24e429a8ad79",
+      "git_blob": "b80f2b6baadf9c41be6daa1057201db9c618e9b7",
+      "whole_report": {
+        "entry": "blobs/b71bd9f7f358de986dcff796a6035887064cdd853759556e6b19b2430cffa1a5",
+        "bytes": 200589,
+        "sha256": "b71bd9f7f358de986dcff796a6035887064cdd853759556e6b19b2430cffa1a5"
+      },
+      "git": {
+        "commit": "cbac550781e09b6d96a68c46895a24e429a8ad79",
+        "commit_pin": {
+          "entry": "blobs/cc61c59c3c006a1b2b7b70b5753dc2a6b7b6ad21fca35e65abdd24a707098fe1",
+          "bytes": 617,
+          "sha256": "cc61c59c3c006a1b2b7b70b5753dc2a6b7b6ad21fca35e65abdd24a707098fe1"
+        },
+        "trees": [
+          {
+            "directory": "",
+            "oid": "7d2199bd109282a33b83ba24c6d6eda09479bc62",
+            "pin": {
+              "entry": "blobs/78141d121a644b87d6f3235c9d246f43c07d7f5f12607e40c47eb734ca95e379",
+              "bytes": 563,
+              "sha256": "78141d121a644b87d6f3235c9d246f43c07d7f5f12607e40c47eb734ca95e379"
+            }
+          },
+          {
+            "directory": "reports",
+            "oid": "847580d1b83950b2625a11130702d0a5320f45be",
+            "pin": {
+              "entry": "blobs/7646c735ef72df7f4fca754e1407060a6b458d8fe04107902baf92c7c3c0a64b",
+              "bytes": 337342,
+              "sha256": "7646c735ef72df7f4fca754e1407060a6b458d8fe04107902baf92c7c3c0a64b"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "installed_SDK_headers": [
+    {
+      "name": "unordered_map",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\unordered_map",
+      "pin": {
+        "entry": "blobs/eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71",
+        "bytes": 42235,
+        "sha256": "eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "xhash",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xhash",
+      "pin": {
+        "entry": "blobs/ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d",
+        "bytes": 79540,
+        "sha256": "ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "list",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\list",
+      "pin": {
+        "entry": "blobs/8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b",
+        "bytes": 75439,
+        "sha256": "8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "xmemory",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmemory",
+      "pin": {
+        "entry": "blobs/0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38",
+        "bytes": 115075,
+        "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "mutex",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mutex",
+      "pin": {
+        "entry": "blobs/285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889",
+        "bytes": 26514,
+        "sha256": "285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "vector",
+      "installed_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vector",
+      "pin": {
+        "entry": "blobs/b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51",
+        "bytes": 169028,
+        "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    }
+  ],
+  "proposed_not_implemented_API": [
+    {
+      "component": "NativeRenderActualOwnerRegistry",
+      "proposed": "Move-only prepared-entry admission with prepare_binding, publish and cancel",
+      "preparation": "Insert an inactive null mapped entry in the SAME existing map; allocations and duplicate checks occur before native construction; no native storage read.",
+      "publication": "Validate exact token/identity and set the existing mapped pointer; no emplace, operator[], rehash, retain or replacement.",
+      "retirement": "Unused token cancels only its null entry; consumed token is inactive; existing exact unbind retires a published entry."
+    },
+    {
+      "component": "NativeParticleModelReference",
+      "proposed": "Constructor overload consuming GeneratedModelLifetimeRuntime::BindingAdmission&&",
+      "preparation": "Reserve stable disengaged optional/aligned storage; do not construct the interface or read native+04 early.",
+      "publication": "After live base/D5DA50 checks, consume the existing lifetime credit and install the same callbacks, then publish the canonical registry pointer in the hook.",
+      "retirement": "Existing success and failed-construction retirement providers remain authoritative."
+    },
+    {
+      "component": "Existing application owner",
+      "proposed": "Stable per-model record with borrowed environment/access/disposal, admissions, optional companion and retirement fact",
+      "preparation": "Allocate/link host record and prepare NativeModelOwner before AF74A0, retaining caller ownership across execution.",
+      "publication": "No allocation during handoff; one canonical companion over SAME native+04.",
+      "retirement": "Callback unbinds the saved actual identity and records retirement; reset dead/retired host views only after constructor/callback frames and all borrows are quiescent."
+    }
+  ],
+  "failure_contract": [
+    {
+      "point": "preparation rejected or abandoned",
+      "companion": "absent",
+      "host": "cancel unused tokens; destroy prepared views",
+      "native": "caller retains raw slot; no count read or native cleanup"
+    },
+    {
+      "point": "AF74A0 or B75030 pre-native validation rejection",
+      "companion": "absent",
+      "host": "preserve prepared phase and cancel unused tokens",
+      "native": "no invented base destruction; caller returns raw slot"
+    },
+    {
+      "point": "native base construction throws",
+      "companion": "absent",
+      "host": "existing base unwind sets DEAD; cancel unused tokens",
+      "native": "outer caller owns exactly one AF62F0 raw return"
+    },
+    {
+      "point": "valid admitted hook",
+      "companion": "bound in stable storage",
+      "host": "consume generated and canonical admissions",
+      "native": "no reference delta"
+    },
+    {
+      "point": "hook invariant or mutex failure",
+      "companion": "possibly partially published",
+      "host": "existing noexcept fatal boundary; no recovery claim",
+      "native": "do not invent rollback or successful continuation"
+    },
+    {
+      "point": "later AF74A0 throw",
+      "companion": "retired after real base unwind",
+      "host": "unbind generated and canonical metadata; record retirement; reset after quiescence",
+      "native": "no successful-derived count/manager rollback; outer AF62F0 exactly once"
+    },
+    {
+      "point": "AF74A0 success",
+      "companion": "bound and persistent",
+      "host": "already-owned record; no allocating handoff",
+      "native": "existing creator reference and later effect behavior unchanged"
+    },
+    {
+      "point": "zero reference",
+      "companion": "retired",
+      "host": "generated/canonical unbind, retirement notification, then quiescent host reset",
+      "native": "existing AF6C50 and actual particle-pool return occur first"
+    }
+  ],
+  "no_changes_required_for_valid_admission_consumption": [
+    "SceneAttachmentRuntime",
+    "GeneratedModelLifetimeRuntime",
+    "NativeModelOwner pre-native preparation",
+    "AF74A0 native ordering",
+    "actual particle pool allocation/return"
+  ],
+  "nonthrow_boundary": "Valid serialized admitted inputs only. Existing checked bind and mutex can reject invalid contracts; the profile hook is already noexcept, so invariant/lock failure is fatal rather than recoverable. No claim that noexcept alone prevents allocation or guarantees progress.",
+  "source_evidence": {
+    "schema": 1,
+    "queries": [
+      {
+        "id": "profile_hooks",
+        "pattern": "bind_particle_profile|retire_failed_particle_profile",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 83,
+            "text": "    virtual void bind_particle_profile(NativeModelOwner&) noexcept = 0;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 84,
+            "text": "    virtual void retire_failed_particle_profile(NativeModelOwner&) noexcept = 0;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 72,
+            "text": "// Construct from AF74A0's bind_particle_profile hook after D5DA50 is published,"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 93,
+            "text": "    // AF74A0's retire_failed_particle_profile hook calls this AFTER real base"
+          },
+          {
+            "path": "src/native_particle_model_construction.cpp",
+            "line": 233,
+            "text": "    access.callees.bind_particle_profile(base);"
+          },
+          {
+            "path": "src/native_particle_model_construction.cpp",
+            "line": 333,
+            "text": "        access.callees.retire_failed_particle_profile(base);"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 83,
+            "text": "    virtual void bind_particle_profile(NativeModelOwner&) noexcept = 0;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 84,
+            "text": "    virtual void retire_failed_particle_profile(NativeModelOwner&) noexcept = 0;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 72,
+            "text": "// Construct from AF74A0's bind_particle_profile hook after D5DA50 is published,"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 93,
+            "text": "    // AF74A0's retire_failed_particle_profile hook calls this AFTER real base"
+          },
+          {
+            "path": "src/native_particle_model_construction.cpp",
+            "line": 233,
+            "text": "    access.callees.bind_particle_profile(base);"
+          },
+          {
+            "path": "src/native_particle_model_construction.cpp",
+            "line": 333,
+            "text": "        access.callees.retire_failed_particle_profile(base);"
+          }
+        ]
+      },
+      {
+        "id": "profile_companion_constructor",
+        "pattern": "NativeParticleModelReference::NativeParticleModelReference",
+        "baseline_matches": [
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 128,
+            "text": "NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 128,
+            "text": "NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,"
+          }
+        ]
+      },
+      {
+        "id": "existing_camera_admitted_constructor",
+        "pattern": "NativeCameraReference::NativeCameraReference|lifetime_admission_",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 45,
+            "text": "        GeneratedModelLifetimeRuntime::BindingAdmission lifetime_admission_;"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 19,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 22,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 25,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 28,
+            "text": "    lifetime_admission_ = std::move(other.lifetime_admission_);"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 46,
+            "text": "    lifetime_admission_.cancel();"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 101,
+            "text": "    prepared.lifetime_admission_ = environment.nodes.attachments.reserve_binding();"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 110,
+            "text": "        !block_->viewport_registry_ || !scene_admission_ || !lifetime_admission_)"
+          },
+          {
+            "path": "src/native_cockpit_helper_construction.cpp",
+            "line": 137,
+            "text": "                std::move(attempt.lifetime_admission_));"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 45,
+            "text": "        GeneratedModelLifetimeRuntime::BindingAdmission lifetime_admission_;"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 19,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 22,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_camera_reference.cpp",
+            "line": 25,
+            "text": "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 28,
+            "text": "    lifetime_admission_ = std::move(other.lifetime_admission_);"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 46,
+            "text": "    lifetime_admission_.cancel();"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 101,
+            "text": "    prepared.lifetime_admission_ = environment.nodes.attachments.reserve_binding();"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 110,
+            "text": "        !block_->viewport_registry_ || !scene_admission_ || !lifetime_admission_)"
+          },
+          {
+            "path": "src/native_cockpit_helper_construction.cpp",
+            "line": 137,
+            "text": "                std::move(attempt.lifetime_admission_));"
+          }
+        ]
+      },
+      {
+        "id": "generated_admission",
+        "pattern": "GeneratedModelLifetimeRuntime::(?:reserve_binding|bind\\(|validate_binding|unbind)",
+        "baseline_matches": [
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 67,
+            "text": "void GeneratedModelLifetimeRuntime::reserve_binding_capacity() {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 73,
+            "text": "GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_binding() {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 89,
+            "text": "void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime& node) const {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 96,
+            "text": "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 102,
+            "text": "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 117,
+            "text": "void GeneratedModelLifetimeRuntime::unbind(GeneratedModelNodeLifetime& node) noexcept {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 155,
+            "text": "void GeneratedModelLifetimeRuntime::unbind_attachment(GeneratedModelAttachmentLinks& attachment) noexcept {"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 67,
+            "text": "void GeneratedModelLifetimeRuntime::reserve_binding_capacity() {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 73,
+            "text": "GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_binding() {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 89,
+            "text": "void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime& node) const {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 96,
+            "text": "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 102,
+            "text": "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 117,
+            "text": "void GeneratedModelLifetimeRuntime::unbind(GeneratedModelNodeLifetime& node) noexcept {"
+          },
+          {
+            "path": "src/generated_model_lifetime.cpp",
+            "line": 155,
+            "text": "void GeneratedModelLifetimeRuntime::unbind_attachment(GeneratedModelAttachmentLinks& attachment) noexcept {"
+          }
+        ]
+      },
+      {
+        "id": "canonical_registry",
+        "pattern": "NativeRenderActualOwnerRegistry::|entries.emplace\\(identity",
+        "baseline_matches": [
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 45,
+            "text": "   registration{owners,&owners,&NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 46,
+            "text": "       &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback},"
+          },
+          {
+            "path": "src/game_native_renderer_textures.inc",
+            "line": 33,
+            "text": "    {registry,&registry,&NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_renderer_textures.inc",
+            "line": 34,
+            "text": "     &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback}),"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 67,
+            "text": "              &NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 68,
+            "text": "              &NativeRenderActualOwnerRegistry::unbind_callback,"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 69,
+            "text": "              &NativeRenderActualOwnerRegistry::find_callback},"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 31,
+            "text": "struct NativeRenderActualOwnerRegistry::Impl final {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 36,
+            "text": "NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 39,
+            "text": "NativeRenderActualOwnerRegistry::~NativeRenderActualOwnerRegistry() {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 43,
+            "text": "void NativeRenderActualOwnerRegistry::bind(void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 54,
+            "text": "    if (!impl_->entries.emplace(identity, &reference).second)"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 58,
+            "text": "void NativeRenderActualOwnerRegistry::unbind(void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 67,
+            "text": "RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 73,
+            "text": "RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 80,
+            "text": "std::size_t NativeRenderActualOwnerRegistry::size() const {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 85,
+            "text": "bool NativeRenderActualOwnerRegistry::empty() const {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 89,
+            "text": "void NativeRenderActualOwnerRegistry::bind_callback(void* context, void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 95,
+            "text": "void NativeRenderActualOwnerRegistry::unbind_callback(void* context, void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 101,
+            "text": "RenderCommandReference* NativeRenderActualOwnerRegistry::find_callback("
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 45,
+            "text": "   registration{owners,&owners,&NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 46,
+            "text": "       &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback},"
+          },
+          {
+            "path": "src/game_native_renderer_textures.inc",
+            "line": 33,
+            "text": "    {registry,&registry,&NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_renderer_textures.inc",
+            "line": 34,
+            "text": "     &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback}),"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 67,
+            "text": "              &NativeRenderActualOwnerRegistry::bind_callback,"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 68,
+            "text": "              &NativeRenderActualOwnerRegistry::unbind_callback,"
+          },
+          {
+            "path": "src/game_native_texture_owner_services.cpp",
+            "line": 69,
+            "text": "              &NativeRenderActualOwnerRegistry::find_callback},"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 31,
+            "text": "struct NativeRenderActualOwnerRegistry::Impl final {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 36,
+            "text": "NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 39,
+            "text": "NativeRenderActualOwnerRegistry::~NativeRenderActualOwnerRegistry() {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 43,
+            "text": "void NativeRenderActualOwnerRegistry::bind(void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 54,
+            "text": "    if (!impl_->entries.emplace(identity, &reference).second)"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 58,
+            "text": "void NativeRenderActualOwnerRegistry::unbind(void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 67,
+            "text": "RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 73,
+            "text": "RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 80,
+            "text": "std::size_t NativeRenderActualOwnerRegistry::size() const {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 85,
+            "text": "bool NativeRenderActualOwnerRegistry::empty() const {"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 89,
+            "text": "void NativeRenderActualOwnerRegistry::bind_callback(void* context, void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 95,
+            "text": "void NativeRenderActualOwnerRegistry::unbind_callback(void* context, void* identity,"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "line": 101,
+            "text": "RenderCommandReference* NativeRenderActualOwnerRegistry::find_callback("
+          }
+        ]
+      },
+      {
+        "id": "registry_admission_absent",
+        "pattern": "NativeRenderActualOwnerRegistry::(?:prepare|publish|admit)|NativeRenderActualOwnerRegistry::BindingAdmission",
+        "baseline_matches": [],
+        "Root_matches": []
+      },
+      {
+        "id": "application_actual_owner_borrow",
+        "pattern": "NativeRenderActualOwnerRegistry owners|GameNativeRendererApplication::actual_owners|GeneratedModelLifetimeRuntime attachments",
+        "baseline_matches": [
+          {
+            "path": "src/d3d9_mesh_probe.cpp",
+            "line": 701,
+            "text": "        bsp::GeneratedModelLifetimeRuntime attachments(scenes);"
+          },
+          {
+            "path": "src/game_native_renderer_application.cpp",
+            "line": 341,
+            "text": "    NativeRenderActualOwnerRegistry owners;"
+          },
+          {
+            "path": "src/game_native_renderer_application.cpp",
+            "line": 550,
+            "text": "NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {"
+          },
+          {
+            "path": "src/game_native_renderer_lifetime.inc",
+            "line": 29,
+            "text": " GeneratedModelLifetimeRuntime attachments{scenes};"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "src/d3d9_mesh_probe.cpp",
+            "line": 701,
+            "text": "        bsp::GeneratedModelLifetimeRuntime attachments(scenes);"
+          },
+          {
+            "path": "src/game_native_renderer_application.cpp",
+            "line": 341,
+            "text": "    NativeRenderActualOwnerRegistry owners;"
+          },
+          {
+            "path": "src/game_native_renderer_application.cpp",
+            "line": 550,
+            "text": "NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {"
+          },
+          {
+            "path": "src/game_native_renderer_lifetime.inc",
+            "line": 29,
+            "text": " GeneratedModelLifetimeRuntime attachments{scenes};"
+          }
+        ]
+      },
+      {
+        "id": "model_environment",
+        "pattern": "NativeModelEnvironment",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/gui_widget_owner.hpp",
+            "line": 81,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_instance_geometry.hpp",
+            "line": 13,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_instance_geometry.hpp",
+            "line": 23,
+            "text": "    NativeModelOwner& (*prepare_model)(void*, void*, NativeModelEnvironment&);"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 27,
+            "text": "struct NativeModelEnvironment {"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 49,
+            "text": "    NativeModelOwner(void* actual_slot, std::size_t slot_bytes, NativeModelEnvironment&);"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 57,
+            "text": "    NativeModelEnvironment& environment;"
+          },
+          {
+            "path": "include/bsp/native_post_effect20_construction.hpp",
+            "line": 43,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_construction.hpp",
+            "line": 33,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 11,
+            "text": "struct NativeModelEnvironment;"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 27,
+            "text": "        const NativeModelEnvironment&, const NativeTracelineLifetimeAccess&,"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 28,
+            "text": "        const NativeModelEnvironment& actual_traceline_model_environment);"
+          },
+          {
+            "path": "src/native_model_owner.cpp",
+            "line": 51,
+            "text": "    NativeModelEnvironment& environment) {"
+          },
+          {
+            "path": "src/native_model_owner.cpp",
+            "line": 150,
+            "text": "NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access)"
+          },
+          {
+            "path": "src/native_scene_render_traversal.cpp",
+            "line": 23,
+            "text": "    const NativeModelEnvironment& model, const NativeTracelineLifetimeAccess& line,"
+          },
+          {
+            "path": "src/native_scene_render_traversal.cpp",
+            "line": 24,
+            "text": "    const NativeModelEnvironment& line_model)"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/gui_widget_owner.hpp",
+            "line": 81,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_instance_geometry.hpp",
+            "line": 13,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_instance_geometry.hpp",
+            "line": 23,
+            "text": "    NativeModelOwner& (*prepare_model)(void*, void*, NativeModelEnvironment&);"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 27,
+            "text": "struct NativeModelEnvironment {"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 49,
+            "text": "    NativeModelOwner(void* actual_slot, std::size_t slot_bytes, NativeModelEnvironment&);"
+          },
+          {
+            "path": "include/bsp/native_model_owner.hpp",
+            "line": 57,
+            "text": "    NativeModelEnvironment& environment;"
+          },
+          {
+            "path": "include/bsp/native_post_effect20_construction.hpp",
+            "line": 43,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_construction.hpp",
+            "line": 33,
+            "text": "    NativeModelEnvironment& models;"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 11,
+            "text": "struct NativeModelEnvironment;"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 27,
+            "text": "        const NativeModelEnvironment&, const NativeTracelineLifetimeAccess&,"
+          },
+          {
+            "path": "include/bsp/native_scene_render_traversal.hpp",
+            "line": 28,
+            "text": "        const NativeModelEnvironment& actual_traceline_model_environment);"
+          },
+          {
+            "path": "src/native_model_owner.cpp",
+            "line": 51,
+            "text": "    NativeModelEnvironment& environment) {"
+          },
+          {
+            "path": "src/native_model_owner.cpp",
+            "line": 150,
+            "text": "NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access)"
+          },
+          {
+            "path": "src/native_scene_render_traversal.cpp",
+            "line": 23,
+            "text": "    const NativeModelEnvironment& model, const NativeTracelineLifetimeAccess& line,"
+          },
+          {
+            "path": "src/native_scene_render_traversal.cpp",
+            "line": 24,
+            "text": "    const NativeModelEnvironment& line_model)"
+          }
+        ]
+      },
+      {
+        "id": "particle_lifetime_access",
+        "pattern": "NativeParticleModelLifetimeAccess",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 40,
+            "text": "struct NativeParticleModelLifetimeAccess {"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 56,
+            "text": "void destroy_native_particle_model_00af6c50(NativeModelOwner&, NativeParticleModelLifetimeAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 60,
+            "text": "    NativeModelOwner&, NativeParticleModelLifetimeAccess&, std::uint32_t flags);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 82,
+            "text": "    NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 100,
+            "text": "    NativeParticleModelLifetimeAccess& access_;"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 85,
+            "text": "    NativeModelOwner& base, NativeParticleModelLifetimeAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 121,
+            "text": "    NativeModelOwner& base, NativeParticleModelLifetimeAccess& access, std::uint32_t flags) {"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 129,
+            "text": "    NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal)"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 40,
+            "text": "struct NativeParticleModelLifetimeAccess {"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 56,
+            "text": "void destroy_native_particle_model_00af6c50(NativeModelOwner&, NativeParticleModelLifetimeAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 60,
+            "text": "    NativeModelOwner&, NativeParticleModelLifetimeAccess&, std::uint32_t flags);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 82,
+            "text": "    NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 100,
+            "text": "    NativeParticleModelLifetimeAccess& access_;"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 85,
+            "text": "    NativeModelOwner& base, NativeParticleModelLifetimeAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 121,
+            "text": "    NativeModelOwner& base, NativeParticleModelLifetimeAccess& access, std::uint32_t flags) {"
+          },
+          {
+            "path": "src/native_particle_model_lifetime.cpp",
+            "line": 129,
+            "text": "    NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal)"
+          }
+        ]
+      },
+      {
+        "id": "retirement_notification_pattern",
+        "pattern": "record_camera_retirement|camera_retired_ = true|reset_after_host_quiescence",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/native_bloom_initializer.hpp",
+            "line": 67,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_bright_pass_initializer.hpp",
+            "line": 40,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 63,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 71,
+            "text": "    static void record_camera_retirement(void*, NativeCameraReference&) noexcept;"
+          },
+          {
+            "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+            "line": 74,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+            "line": 124,
+            "text": "    static void record_camera_retirement(void*, NativeCameraReference&) noexcept;"
+          },
+          {
+            "path": "include/bsp/native_distortion_initializer.hpp",
+            "line": 77,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_luminance_owner.hpp",
+            "line": 57,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect20_construction.hpp",
+            "line": 125,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_construction.hpp",
+            "line": 114,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_dust_initializer.hpp",
+            "line": 52,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_render_pass_initializers.hpp",
+            "line": 73,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 82,
+            "text": "  acquired.cockpit.reset_after_host_quiescence();"
+          },
+          {
+            "path": "src/native_bloom_initializer.cpp",
+            "line": 173,
+            "text": "void NativeBloomInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_bright_pass_initializer.cpp",
+            "line": 65,
+            "text": "void NativeBrightPassInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 124,
+            "text": "void NativeCockpitConstructionBlock::record_camera_retirement(void* context,"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 133,
+            "text": "    block.camera_retired_ = true; // no companion reset, native read, release or free"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 136,
+            "text": "void NativeCockpitConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_cockpit_helper_construction.cpp",
+            "line": 136,
+            "text": "                    NativeCockpitConstructionBlock::record_camera_retirement},"
+          },
+          {
+            "path": "src/native_directional_shadow_construction_block.cpp",
+            "line": 152,
+            "text": "void NativeDirectionalShadowConstructionBlock::record_camera_retirement(void* context,"
+          },
+          {
+            "path": "src/native_directional_shadow_construction_block.cpp",
+            "line": 182,
+            "text": "void NativeDirectionalShadowConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_directional_shadow_owner_construction.cpp",
+            "line": 234,
+            "text": "                Block::record_camera_retirement},std::move(admission.lifetime_admissions_[index]));"
+          },
+          {
+            "path": "src/native_distortion_initializer.cpp",
+            "line": 168,
+            "text": "void NativeDistortionInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_luminance_owner.cpp",
+            "line": 142,
+            "text": "void NativeLuminanceInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect20_construction.cpp",
+            "line": 206,
+            "text": "void NativePostEffect20ConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect_construction.cpp",
+            "line": 204,
+            "text": "void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect_dust_initializer.cpp",
+            "line": 72,
+            "text": "void NativePostEffectDustBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_render_pass_initializers.cpp",
+            "line": 132,
+            "text": "void NativeRenderPassInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_renderer_debug_records40.cpp",
+            "line": 307,
+            "text": "    f.camera_retired_ = true;"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/native_bloom_initializer.hpp",
+            "line": 67,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_bright_pass_initializer.hpp",
+            "line": 40,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 63,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_cockpit_construction_block.hpp",
+            "line": 71,
+            "text": "    static void record_camera_retirement(void*, NativeCameraReference&) noexcept;"
+          },
+          {
+            "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+            "line": 74,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+            "line": 124,
+            "text": "    static void record_camera_retirement(void*, NativeCameraReference&) noexcept;"
+          },
+          {
+            "path": "include/bsp/native_distortion_initializer.hpp",
+            "line": 77,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_luminance_owner.hpp",
+            "line": 57,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect20_construction.hpp",
+            "line": 125,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_construction.hpp",
+            "line": 114,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_post_effect_dust_initializer.hpp",
+            "line": 52,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "include/bsp/native_render_pass_initializers.hpp",
+            "line": 73,
+            "text": "    void reset_after_host_quiescence() noexcept;"
+          },
+          {
+            "path": "src/game_native_renderer_resources.inc",
+            "line": 82,
+            "text": "  acquired.cockpit.reset_after_host_quiescence();"
+          },
+          {
+            "path": "src/native_bloom_initializer.cpp",
+            "line": 173,
+            "text": "void NativeBloomInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_bright_pass_initializer.cpp",
+            "line": 65,
+            "text": "void NativeBrightPassInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 124,
+            "text": "void NativeCockpitConstructionBlock::record_camera_retirement(void* context,"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 133,
+            "text": "    block.camera_retired_ = true; // no companion reset, native read, release or free"
+          },
+          {
+            "path": "src/native_cockpit_construction_block.cpp",
+            "line": 136,
+            "text": "void NativeCockpitConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_cockpit_helper_construction.cpp",
+            "line": 136,
+            "text": "                    NativeCockpitConstructionBlock::record_camera_retirement},"
+          },
+          {
+            "path": "src/native_directional_shadow_construction_block.cpp",
+            "line": 152,
+            "text": "void NativeDirectionalShadowConstructionBlock::record_camera_retirement(void* context,"
+          },
+          {
+            "path": "src/native_directional_shadow_construction_block.cpp",
+            "line": 182,
+            "text": "void NativeDirectionalShadowConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_directional_shadow_owner_construction.cpp",
+            "line": 234,
+            "text": "                Block::record_camera_retirement},std::move(admission.lifetime_admissions_[index]));"
+          },
+          {
+            "path": "src/native_distortion_initializer.cpp",
+            "line": 168,
+            "text": "void NativeDistortionInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_luminance_owner.cpp",
+            "line": 142,
+            "text": "void NativeLuminanceInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect20_construction.cpp",
+            "line": 206,
+            "text": "void NativePostEffect20ConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect_construction.cpp",
+            "line": 204,
+            "text": "void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_post_effect_dust_initializer.cpp",
+            "line": 72,
+            "text": "void NativePostEffectDustBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_render_pass_initializers.cpp",
+            "line": 132,
+            "text": "void NativeRenderPassInitializationBlock::reset_after_host_quiescence() noexcept {"
+          },
+          {
+            "path": "src/native_renderer_debug_records40.cpp",
+            "line": 307,
+            "text": "    f.camera_retired_ = true;"
+          }
+        ]
+      },
+      {
+        "id": "wide_helper_epoch_difference",
+        "pattern": "destroy_native_wide_string_header_00436430",
+        "baseline_matches": [
+          {
+            "path": "include/bsp/native_wide_string.hpp",
+            "line": 36,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 55,
+            "text": "        destroy_native_wide_string_header_00436430(&offline, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 56,
+            "text": "        destroy_native_wide_string_header_00436430(&signin, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 57,
+            "text": "        destroy_native_wide_string_header_00436430(&question, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 58,
+            "text": "        destroy_native_wide_string_header_00436430(&title, storage);"
+          },
+          {
+            "path": "src/native_wide_string.cpp",
+            "line": 90,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          }
+        ],
+        "Root_matches": [
+          {
+            "path": "include/bsp/native_wide_string.hpp",
+            "line": 36,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          },
+          {
+            "path": "include/bsp/native_wide_string.hpp",
+            "line": 42,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 55,
+            "text": "        destroy_native_wide_string_header_00436430(&offline, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 56,
+            "text": "        destroy_native_wide_string_header_00436430(&signin, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 57,
+            "text": "        destroy_native_wide_string_header_00436430(&question, storage);"
+          },
+          {
+            "path": "src/native_online_signin_ui.cpp",
+            "line": 58,
+            "text": "        destroy_native_wide_string_header_00436430(&title, storage);"
+          },
+          {
+            "path": "src/native_wide_string.cpp",
+            "line": 91,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          },
+          {
+            "path": "src/native_wide_string.cpp",
+            "line": 98,
+            "text": "void destroy_native_wide_string_header_00436430(void* actual_header,"
+          }
+        ]
+      }
+    ],
+    "Source_excerpts": [
+      {
+        "view": "baseline",
+        "id": "hooks",
+        "path": "include/bsp/native_particle_model_construction.hpp",
+        "start": 76,
+        "end": 99,
+        "lines": [
+          "class NativeParticleModelConstructionCallees {",
+          "public:",
+          "    virtual ~NativeParticleModelConstructionCallees() = default;",
+          "    // Nonthrowing HOST bookkeeping only: replace the SAME base.node callbacks",
+          "    // for actual D5DA50 and establish its real derived lifetime dispatch. Do not",
+          "    // create NativeModelReference (it deletes through the wrong188h pool).",
+          "    // After native base unwind, retire only the derived companion bookkeeping.",
+          "    virtual void bind_particle_profile(NativeModelOwner&) noexcept = 0;",
+          "    virtual void retire_failed_particle_profile(NativeModelOwner&) noexcept = 0;",
+          "    // Bind the already-constructed real owners to the SAME canonical lookup,",
+          "    // using NativeMesh/Material/MeshSectionReference, without an extra retain.",
+          "    virtual void bind_mesh(NativeMeshStorage&) noexcept = 0;",
+          "    virtual void bind_material(NativeMaterialStorage&) noexcept = 0;",
+          "    virtual void bind_section(NativeMeshSectionStorage&) noexcept = 0;",
+          "    // CURRENT virtual5C of the CAPTURED actual renderer/table. Return a real",
+          "    // owned registered stream; original stack(first=0, bytes=1000h, descriptor).",
+          "    virtual void* renderer_virtual5c(void* actual_renderer, std::uint32_t captured_entry,",
+          "        std::uint32_t first, std::uint32_t bytes, void* actual_descriptor) = 0;",
+          "    // Must use the supplied canonical primary RandomThreads state, including",
+          "    // BD2E60's x87 unsigned scaling and binary32 spill before affine range.",
+          "    virtual float call_00bd2f10(RandomThreads&, RandomStream, float minimum, float maximum) = 0;",
+          "",
+          "};",
+          ""
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "model_environment",
+        "path": "include/bsp/native_model_owner.hpp",
+        "start": 27,
+        "end": 62,
+        "lines": [
+          "struct NativeModelEnvironment {",
+          "    NativeModelPool& pool_01090054;",
+          "    NativeNodeDestructionRuntime& nodes;",
+          "    ModelTypeBootstrap& types;",
+          "    NativeRenderActualOwners& retained_owners;",
+          "    NativeModelConstants constants;",
+          "    // Actual current profile views, at least23 and22 DWORDs respectively.",
+          "    // Unknown owner/table entries have no constructed-type/default fallback.",
+          "    const volatile std::uint32_t* vtable_00d62de8;",
+          "    const volatile std::uint32_t* vtable_00d62c88;",
+          "    // Bind the SAME native string storage used by the actual object's other",
+          "    // names. Null retains the older semantic pool interface for existing users.",
+          "    // This borrowed binding must remain stable through node destruction.",
+          "    NativeStringStorage* actual_names = nullptr;",
+          "};",
+          "",
+          "class NativeModelOwner final {",
+          "public:",
+          "    // Prepare stable typed views over one unused actual pool slot and register",
+          "    // only the external scene association. Preserve all188h bytes. B75030 must",
+          "    // run before inspecting fields or acquiring references. No second native",
+          "    // transform, count, scene pointer, name or point-light array is created.",
+          "    NativeModelOwner(void* actual_slot, std::size_t slot_bytes, NativeModelEnvironment&);",
+          "    // Only an abandoned prepared owner is cleaned up implicitly. A live owner",
+          "    // must complete explicit native destruction before its companion is removed.",
+          "    ~NativeModelOwner();",
+          "    NativeModelOwner(const NativeModelOwner&) = delete;",
+          "    NativeModelOwner& operator=(const NativeModelOwner&) = delete;",
+          "    enum class Phase { prepared, constructing, live, dead };",
+          "    NativeModelStorageView storage;",
+          "    NativeModelEnvironment& environment;",
+          "    NativeNodeBinding node;",
+          "    Phase phase{Phase::prepared}; // host lifetime bookkeeping, not a native word",
+          "};",
+          "",
+          "// Original ECX raw slot, stack NativeString*, EAX same slot, RET4. Calls full"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "existing_prefix_preparation",
+        "path": "src/native_model_owner.cpp",
+        "start": 50,
+        "end": 63,
+        "lines": [
+          "NativeModelStorageView prepare_storage(void* slot, std::size_t bytes,",
+          "    NativeModelEnvironment& environment) {",
+          "    if (!slot || bytes < NativeModelPool::slot_bytes ||",
+          "        reinterpret_cast<std::uintptr_t>(slot) % alignof(NativeNodeStorage) ||",
+          "        !environment.vtable_00d62de8 || !environment.vtable_00d62c88)",
+          "        throw std::invalid_argument(\"model requires one aligned188h slot and actual model/node table views\");",
+          "    std::array<std::byte, 0x184> preimage;",
+          "    std::memcpy(preimage.data(), slot, preimage.size());",
+          "    auto& node = *::new (slot) NativeNodeStorage;",
+          "    auto& tail = *::new (static_cast<std::byte*>(slot) + 0x174) NativeModelTailStorage;",
+          "    std::memcpy(slot, preimage.data(), preimage.size());",
+          "    return {node, tail};",
+          "}",
+          "bool model_is_type(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding,"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "prepared_owner_and_abandonment",
+        "path": "src/native_model_owner.cpp",
+        "start": 150,
+        "end": 170,
+        "lines": [
+          "NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access)",
+          "    : storage(prepare_storage(slot, bytes, access)), environment(access),",
+          "      node(storage.node, NativeNodePreconstructionBinding{}, model_is_type, model_attach_scene, this) {",
+          "    node.scene_attachment.world_changed = model_world_changed;",
+          "    node.scene_attachment.remove_scene = model_remove_scene;",
+          "    try {",
+          "        access.nodes.scenes.bind(node.scene_attachment);",
+          "    } catch (...) {",
+          "        storage.model.~NativeModelTailStorage();",
+          "        storage.node.~NativeNodeStorage();",
+          "        throw;",
+          "    }",
+          "}",
+          "NativeModelOwner::~NativeModelOwner() {",
+          "    if (phase == Phase::prepared) {",
+          "        environment.nodes.scenes.forget_destroyed_binding(node.scene_attachment);",
+          "        storage.model.~NativeModelTailStorage();",
+          "        storage.node.~NativeNodeStorage();",
+          "    } else if (phase != Phase::dead) std::terminate();",
+          "}",
+          "void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeString& name) {"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "base_constructor_failure",
+        "path": "src/native_model_owner.cpp",
+        "start": 171,
+        "end": 208,
+        "lines": [
+          "    if (owner.phase != NativeModelOwner::Phase::prepared)",
+          "        throw std::logic_error(\"model constructor requires its unused prepared slot\");",
+          "    SizedStoragePool* name_pool = owner.environment.actual_names ? nullptr :",
+          "        &owner.environment.nodes.require_semantic_name_pool();",
+          "    owner.phase = NativeModelOwner::Phase::constructing;",
+          "    try {",
+          "        if (owner.environment.actual_names)",
+          "            construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,",
+          "                name, *owner.environment.actual_names);",
+          "        else",
+          "            construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,",
+          "                name, *name_pool);",
+          "    } catch (...) {",
+          "        end_tail(owner);",
+          "        throw;",
+          "    }",
+          "    const auto minimum = owner.environment.constants.minimum_00ce4adc;",
+          "    publish_model_phase(owner);",
+          "    auto& model = owner.storage.model;",
+          "    model.retained_174 = nullptr;",
+          "    word(model.scalar_178, minimum);",
+          "    word(model.scalar_17c, owner.environment.constants.maximum_00ce4970);",
+          "    const auto negative_zero = owner.environment.constants.negative_zero_00d7a208;",
+          "    model.geometry_180 = nullptr;",
+          "    auto& node = owner.storage.node;",
+          "    pose_word(node, 0x18, negative_zero);",
+          "    pose_word(node, 0x1c, negative_zero);",
+          "    pose_word(node, 0x20, negative_zero);",
+          "    pose_word(node, 0x24, 0); pose_word(node, 0x28, 0); pose_word(node, 0x2c, 0);",
+          "    pose_word(node, 0x08, 0); pose_word(node, 0x0c, 0); pose_word(node, 0x10, 0);",
+          "    pose_word(node, 0x14, 0);",
+          "    owner.phase = NativeModelOwner::Phase::live;",
+          "    return &owner.storage.node;",
+          "}",
+          "void* construct_native_model_00b75030(NativeModelOwner& owner, const void* actual_name_header,",
+          "    const NativeNodeRawConstants& constants) {",
+          "    if (owner.phase != NativeModelOwner::Phase::prepared)",
+          "        throw std::logic_error(\"model constructor requires its unused prepared slot\");"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "profile_hook_before_try",
+        "path": "src/native_particle_model_construction.cpp",
+        "start": 210,
+        "end": 240,
+        "lines": [
+          "",
+          "NativeNodeStorage* construct_native_particle_model_00af74a0(",
+          "    NativeModelOwner& base, void* variant, NativeParticleModelConstructionAccess& access) {",
+          "    if (!variant || base.phase != NativeModelOwner::Phase::prepared ||",
+          "        &base.environment.retained_owners != &access.materials.retained_owners ||",
+          "        &access.meshes.retained_owners != &access.materials.retained_owners ||",
+          "        &access.sections.retained_owners != &access.materials.retained_owners ||",
+          "        &access.materials.parameter_names != &access.parameters.parameter_names ||",
+          "        base.environment.actual_names != &access.parameters.parameter_names)",
+          "        throw std::invalid_argument(\"particle model requires a prepared actual slot and one canonical ownership domain\");",
+          "    auto& node = base.storage.node;",
+          "    auto& tail = *place_preserving<NativeParticleModelTailStorage>(",
+          "        reinterpret_cast<std::byte*>(&node) + 0x184);",
+          "    // The native producer places its actual NativeString at variant+08.",
+          "    const auto& name = *std::launder(reinterpret_cast<const NativeString*>(static_cast<std::byte*>(variant) + 8));",
+          "    construct_native_model_00b75030(base, name);",
+          "    node.vtable_00 = 0x00d5da50;",
+          "    tail.emitters_194 = {nullptr, 0, 0};",
+          "    bits(tail.scalar_1dc, access.one_00d7a24c);",
+          "    tail.active_1a4 = 1;",
+          "    tail.initialized_1a5 = 0;",
+          "    bits(tail.scalar_1e4, 0);",
+          "    tail.variant_18c = variant;",
+          "    access.callees.bind_particle_profile(base);",
+          "    try {",
+          "        prepare_native_particle_variant_00af40e0(variant, access.preparation);",
+          "        retain(variant);",
+          "        copy_identity(tail.point_matrix_298, access.one_00d7a24c);",
+          "        void* current_variant = tail.variant_18c;",
+          "        tail.flag_1b0 = load<std::uint8_t>(current_variant, 0x64);",
+          "        tail.flag_1b1 = load<std::uint8_t>(current_variant, 0x65);"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "derived_failure_cleanup",
+        "path": "src/native_particle_model_construction.cpp",
+        "start": 309,
+        "end": 338,
+        "lines": [
+          "        const auto one = access.one_00d7a24c;",
+          "        tail.arrays_190 = arrays;",
+          "        tail.words_1a8[0] = 0; tail.words_1a8[1] = 0;",
+          "        access.live_count_00f8d2c8 = access.live_count_00f8d2c8 + 1u;",
+          "        bits(tail.scalar_1d8, one);",
+          "        tail.flag_1d4 = 0;",
+          "        tail.words_1ec[0] = 0;",
+          "        bits(tail.scalar_1e8, one);",
+          "        tail.words_1ec[1] = 0; tail.words_1ec[2] = 0; tail.words_1ec[3] = 0;",
+          "        const float random_value = access.callees.call_00bd2f10(",
+          "            access.random, RandomStream::primary, 0.0f, float_bits(random_max));",
+          "        auto* child = reinterpret_cast<NativeNodeStorage*>(node.first_child_34);",
+          "        node.mask_48 = 0x1b;",
+          "        tail.random_1fc = truncate_low_word(random_value);",
+          "        while (child) {",
+          "            set_native_node_hierarchy_mask_007099c0(child, nullptr, 0x1b);",
+          "            child = reinterpret_cast<NativeNodeStorage*>(child->next_sibling_3c);",
+          "        }",
+          "        register_native_particle_model_00af0950(access.manager_00f8c274, &node);",
+          "    } catch (...) {",
+          "        try {",
+          "            destroy_native_particle_emitter_pointers_00af6b70(tail.emitters_194);",
+          "            destroy_native_model_00b750c0(base);",
+          "        } catch (...) { std::terminate(); }",
+          "        access.callees.retire_failed_particle_profile(base);",
+          "        throw;",
+          "    }",
+          "    return &node;",
+          "}",
+          "} // namespace bsp"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "actual_profile_contract",
+        "path": "include/bsp/native_particle_model_lifetime.hpp",
+        "start": 40,
+        "end": 103,
+        "lines": [
+          "struct NativeParticleModelLifetimeAccess {",
+          "    // SAME initialized F8D2D0 owner used for allocation; never model pool01090054.",
+          "    void* actual_pool_00f8d2d0;",
+          "    NativeParticleModelManagerStorage* const volatile& manager_00f8c274;",
+          "    volatile std::uint32_t& live_count_00f8d2c8;",
+          "    // Borrow current complete23-DWORD D5DA50 profile and canonical type words.",
+          "    const volatile std::uint32_t* vtable_00d5da50;",
+          "    const volatile NativeParticleModelTypeDescriptor& types_00f8d308;",
+          "};",
+          "",
+          "// Complete AF6C50..AF6D91 THROUGH REQUIRED existing canonical actual-owner",
+          "// bindings for every reached zero-reference emitter/variant/mesh. Uses exactly",
+          "// base.environment.retained_owners, its actual atomics, SAME node/model owner,",
+          "// hierarchy, scene and lifetime runtime. Missing actual bindings are errors.",
+          "// Ordinary sequence and two native unwind states are preserved; native SEH ABI",
+          "// is not reproduced. Arrays190 remains dangling; emitter data/capacity remain.",
+          "void destroy_native_particle_model_00af6c50(NativeModelOwner&, NativeParticleModelLifetimeAccess&);",
+          "// Complete AF7F40..AF7F5F: ECX model, stack flags, same EAX, RET4. Return2E0h",
+          "// slot to actual F8D2D0 iff flags bit0, after successful derived/base destruction.",
+          "void* delete_native_particle_model_00af7f40(",
+          "    NativeModelOwner&, NativeParticleModelLifetimeAccess&, std::uint32_t flags);",
+          "",
+          "class NativeParticleModelReference;",
+          "struct NativeParticleModelCompanionDisposal {",
+          "    void* context;",
+          "    // After physical return and runtime unbind: remove this SAME canonical",
+          "    // actual-owner binding and dispose companions if desired. No access follows.",
+          "    void (*retire)(void*, NativeParticleModelReference&) noexcept;",
+          "};",
+          "",
+          "// One companion over the existing NativeModelOwner, its node binding and sole",
+          "// native+04. No NativeModelReference, second owner domain, retain or storage.",
+          "// Construct from AF74A0's bind_particle_profile hook after D5DA50 is published,",
+          "// and register this object in the SAME NativeRenderActualOwners used by base.",
+          "// The constructor replaces callbacks on that existing node binding; it leaves",
+          "// its context, transforms and all native bytes unchanged. Bind/access lifetime",
+          "// must cover constructor callbacks and successful lifetime. Terminal providers",
+          "// are nonthrowing; the canonical actual emitter/variant implementations remain",
+          "// required and are not substituted by successful no-op releases.",
+          "class NativeParticleModelReference final : public GeneratedModelNodeLifetime,",
+          "    public RenderCommandReference {",
+          "public:",
+          "    NativeParticleModelReference(NativeModelOwner&, NativeParticleModelLifetimeAccess&,",
+          "        NativeParticleModelCompanionDisposal);",
+          "    ~NativeParticleModelReference() override;",
+          "    NativeParticleModelReference(const NativeParticleModelReference&) = delete;",
+          "    NativeParticleModelReference& operator=(const NativeParticleModelReference&) = delete;",
+          "    NativeModelOwner& model_owner() noexcept { return owner_; }",
+          "    CameraTransform& transform() noexcept override { return owner_.node.transform; }",
+          "    SceneNodeAttachment& scene_attachment() noexcept override { return owner_.node.scene_attachment; }",
+          "    void remove_scene_virtual54(SceneResource*, bool recurse) noexcept override;",
+          "    void release_model_virtual18_00b6f310() noexcept override;",
+          "    void release_zero_references() noexcept override;",
+          "    // AF74A0's retire_failed_particle_profile hook calls this AFTER real base",
+          "    // unwind. Unbind host bookkeeping only; caller still owns the raw slot.",
+          "    // Invokes disposal.retire, which must also handle this no-pool-return path.",
+          "    void retire_after_failed_construction() noexcept;",
+          "private:",
+          "    enum class Phase { bound, destroying, retired };",
+          "    NativeModelOwner& owner_;",
+          "    NativeParticleModelLifetimeAccess& access_;",
+          "    GeneratedModelLifetimeRuntime& runtime_;",
+          "    NativeParticleModelCompanionDisposal disposal_;",
+          "    Phase phase_{Phase::bound};"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "existing_particle_constructor",
+        "path": "src/native_particle_model_lifetime.cpp",
+        "start": 128,
+        "end": 165,
+        "lines": [
+          "NativeParticleModelReference::NativeParticleModelReference(NativeModelOwner& owner,",
+          "    NativeParticleModelLifetimeAccess& access, NativeParticleModelCompanionDisposal disposal)",
+          "    : RenderCommandReference(owner.storage.node.references_04), owner_(owner), access_(access),",
+          "      runtime_(owner.environment.nodes.attachments), disposal_(disposal) {",
+          "    if (owner.phase != NativeModelOwner::Phase::live || !access.actual_pool_00f8d2d0 ||",
+          "        !access.vtable_00d5da50 || !disposal.retire ||",
+          "        owner.storage.node.vtable_00 != 0x00d5da50 ||",
+          "        reference_count.load(std::memory_order_relaxed) <= 0)",
+          "        throw std::invalid_argument(\"particle reference requires the existing live derived model and actual bindings\");",
+          "    require_slot(0, 0x00bd30e0);",
+          "    require_slot(4, 0x00af7f40);",
+          "    runtime_.bind(*this);",
+          "    auto& binding = owner.node.scene_attachment;",
+          "    binding.is_type = is_type;",
+          "    binding.attach_scene = attach_scene;",
+          "    binding.remove_scene = remove_scene;",
+          "    binding.world_changed = world_changed;",
+          "}",
+          "NativeParticleModelReference::~NativeParticleModelReference() {",
+          "    if (phase_ != Phase::retired) std::terminate();",
+          "}",
+          "void NativeParticleModelReference::require_slot(std::uint32_t offset,",
+          "    std::uint32_t expected, bool allow_base) const noexcept {",
+          "    const volatile std::uint32_t* table = nullptr;",
+          "    const auto profile = owner_.storage.node.vtable_00;",
+          "    if (profile == 0x00d5da50) table = access_.vtable_00d5da50;",
+          "    else if (allow_base && profile == 0x00d62de8) table = owner_.environment.vtable_00d62de8;",
+          "    else if (allow_base && profile == 0x00d62c88) table = owner_.environment.vtable_00d62c88;",
+          "    if (!table || table[offset / 4] != expected) std::terminate();",
+          "}",
+          "NativeParticleModelReference& NativeParticleModelReference::from_binding(SceneNodeAttachment& binding) {",
+          "    // Context MUST remain NativeModelOwner: B750C0 reinstalls base callbacks.",
+          "    auto& owner = *static_cast<NativeModelOwner*>(binding.context);",
+          "    auto* result = dynamic_cast<NativeParticleModelReference*>(",
+          "        &owner.environment.nodes.attachments.resolve(owner.node.transform));",
+          "    if (!result) throw std::logic_error(\"particle profile requires its existing canonical node lifetime\");",
+          "    return *result;",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "success_failure_disposal",
+        "path": "src/native_particle_model_lifetime.cpp",
+        "start": 205,
+        "end": 234,
+        "lines": [
+          "void NativeParticleModelReference::release_model_virtual18_00b6f310() noexcept {",
+          "    if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::live) std::terminate();",
+          "    require_slot(0x18, 0x00b6f310);",
+          "    release_node_logical_00b6f310({runtime_, owner_.node.transform,",
+          "        owner_.storage.node.released_44, *this, {this, light_count, remove_light_backlink, shrink_lights}});",
+          "}",
+          "void NativeParticleModelReference::remove_scene_virtual54(SceneResource* scene, bool recurse) noexcept {",
+          "    if (phase_ == Phase::retired || owner_.phase == NativeModelOwner::Phase::dead) std::terminate();",
+          "    require_slot(0x54, 0x00b6ee10, true);",
+          "    remove_native_node_scene_00b6ee10(owner_.environment.nodes.scenes, owner_.node.scene_attachment, scene, recurse);",
+          "}",
+          "void NativeParticleModelReference::retire() noexcept {",
+          "    runtime_.unbind(*this);",
+          "    phase_ = Phase::retired;",
+          "    const auto disposal = disposal_;",
+          "    disposal.retire(disposal.context, *this);",
+          "}",
+          "void NativeParticleModelReference::release_zero_references() noexcept {",
+          "    if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::live) std::terminate();",
+          "    require_slot(0, 0x00bd30e0);",
+          "    require_slot(4, 0x00af7f40);",
+          "    phase_ = Phase::destroying;",
+          "    delete_native_particle_model_00af7f40(owner_, access_, 1);",
+          "    retire();",
+          "}",
+          "void NativeParticleModelReference::retire_after_failed_construction() noexcept {",
+          "    if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::dead) std::terminate();",
+          "    retire();",
+          "}",
+          "} // namespace bsp"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "generated_credit_contract",
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "start": 44,
+        "end": 99,
+        "lines": [
+          "// binding. Bindings and scene runtime must outlive their registered models.",
+          "class GeneratedModelLifetimeRuntime {",
+          "public:",
+          "    // Host registration credit only; runtime and tokens share one serialized",
+          "    // owning thread. Identity getters are stable, nonallocating leaf accessors.",
+          "    class BindingAdmission final {",
+          "    public:",
+          "        BindingAdmission() noexcept = default;",
+          "        BindingAdmission(const BindingAdmission&) = delete;",
+          "        BindingAdmission& operator=(const BindingAdmission&) = delete;",
+          "        BindingAdmission(BindingAdmission&&) noexcept;",
+          "        BindingAdmission& operator=(BindingAdmission&&) noexcept;",
+          "        ~BindingAdmission() noexcept;",
+          "        void cancel() noexcept;",
+          "        explicit operator bool() const noexcept { return runtime_ != nullptr; }",
+          "    private:",
+          "        friend class GeneratedModelLifetimeRuntime;",
+          "        explicit BindingAdmission(GeneratedModelLifetimeRuntime& runtime, bool attachment = false) noexcept",
+          "            : runtime_(&runtime), attachment_(attachment) {}",
+          "        GeneratedModelLifetimeRuntime* runtime_{};",
+          "        bool attachment_{};",
+          "    };",
+          "    explicit GeneratedModelLifetimeRuntime(SceneAttachmentRuntime& scenes) noexcept : scenes(scenes) {}",
+          "    GeneratedModelLifetimeRuntime(const GeneratedModelLifetimeRuntime&) = delete;",
+          "    GeneratedModelLifetimeRuntime& operator=(const GeneratedModelLifetimeRuntime&) = delete;",
+          "    GeneratedModelLifetimeRuntime(GeneratedModelLifetimeRuntime&&) = delete;",
+          "    GeneratedModelLifetimeRuntime& operator=(GeneratedModelLifetimeRuntime&&) = delete;",
+          "    ~GeneratedModelLifetimeRuntime() noexcept;",
+          "    [[nodiscard]] BindingAdmission reserve_binding();",
+          "    // Separate credit for the existing actual attachment array association.",
+          "    // Reentrant admissions preserve every outstanding credit on the same thread.",
+          "    [[nodiscard]] BindingAdmission reserve_attachment_binding();",
+          "    void bind(GeneratedModelNodeLifetime&);",
+          "    // Successful admission does not allocate and requires the exact canonical",
+          "    // scene attachment and a unique actual key. Failure leaves the token active.",
+          "    void bind(GeneratedModelNodeLifetime&, BindingAdmission&&);",
+          "    void unbind(GeneratedModelNodeLifetime&) noexcept;",
+          "    GeneratedModelNodeLifetime& resolve(CameraTransform&) const noexcept;",
+          "    // Association lookup only, using the same scene binding's actual Win32 key.",
+          "    // Returns null when absent; does not interpret a native-array context as a",
+          "    // particular C++ owner or create another node/identity registry.",
+          "    GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;",
+          "    void bind_attachment(GeneratedModelAttachmentLinks&);",
+          "    void bind_attachment(GeneratedModelAttachmentLinks&, BindingAdmission&&);",
+          "    void unbind_attachment(GeneratedModelAttachmentLinks&) noexcept;",
+          "    GeneratedModelAttachmentLinks& attachment(void* identity) const noexcept;",
+          "    SceneAttachmentRuntime& scenes;",
+          "private:",
+          "    void validate_binding(GeneratedModelNodeLifetime&) const;",
+          "    void reserve_binding_capacity();",
+          "    void validate_attachment_binding(GeneratedModelAttachmentLinks&) const;",
+          "    void reserve_attachment_binding_capacity();",
+          "    std::vector<GeneratedModelNodeLifetime*> nodes_;",
+          "    std::size_t pending_bindings_{}; // nodes_.size() + pending <= capacity",
+          "    std::vector<GeneratedModelAttachmentLinks*> attachments_;",
+          "    std::size_t pending_attachment_bindings_{};"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "generated_admission_consumption",
+        "path": "src/generated_model_lifetime.cpp",
+        "start": 64,
+        "end": 117,
+        "lines": [
+          "GeneratedModelLifetimeRuntime::~GeneratedModelLifetimeRuntime() noexcept {",
+          "    if (pending_bindings_ || pending_attachment_bindings_) std::terminate();",
+          "}",
+          "void GeneratedModelLifetimeRuntime::reserve_binding_capacity() {",
+          "    if (pending_bindings_ >= nodes_.max_size() - nodes_.size())",
+          "        throw std::length_error(\"generated model binding admission exceeds maximum size\");",
+          "    const auto required = nodes_.size() + pending_bindings_ + 1;",
+          "    if (required > nodes_.capacity()) nodes_.reserve(required);",
+          "}",
+          "GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_binding() {",
+          "    reserve_binding_capacity();",
+          "    ++pending_bindings_;",
+          "    return BindingAdmission(*this);",
+          "}",
+          "void GeneratedModelLifetimeRuntime::reserve_attachment_binding_capacity() {",
+          "    if (pending_attachment_bindings_ >= attachments_.max_size() - attachments_.size())",
+          "        throw std::length_error(\"attachment binding admission exceeds maximum size\");",
+          "    const auto required = attachments_.size() + pending_attachment_bindings_ + 1;",
+          "    if (required > attachments_.capacity()) attachments_.reserve(required);",
+          "}",
+          "GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_attachment_binding() {",
+          "    reserve_attachment_binding_capacity();",
+          "    ++pending_attachment_bindings_;",
+          "    return BindingAdmission(*this, true);",
+          "}",
+          "void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime& node) const {",
+          "    if (&node.scene_attachment().transform != &node.transform())",
+          "        throw std::invalid_argument(\"Generated model scene and hierarchy identities differ\");",
+          "    for (auto* existing : nodes_)",
+          "        if (&existing->transform() == &node.transform())",
+          "            throw std::invalid_argument(\"Duplicate generated model lifetime binding\");",
+          "}",
+          "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {",
+          "    validate_binding(node);",
+          "    // With no outstanding credits, preserve vector's ordinary growth policy.",
+          "    if (pending_bindings_ != 0) reserve_binding_capacity();",
+          "    nodes_.push_back(&node);",
+          "}",
+          "void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {",
+          "    if (admission.runtime_ != this || admission.attachment_)",
+          "        throw std::invalid_argument(\"generated model binding requires an active admission for this runtime\");",
+          "    validate_binding(node);",
+          "    auto& attachment = node.scene_attachment();",
+          "    if (&scenes.resolve_key(attachment.pointer_key) != &attachment)",
+          "        throw std::invalid_argument(\"generated model binding requires its canonical scene attachment\");",
+          "    for (auto* existing : nodes_)",
+          "        if (existing->scene_attachment().pointer_key == attachment.pointer_key)",
+          "            throw std::invalid_argument(\"Duplicate generated model lifetime actual key\");",
+          "    // An active credit proves size < capacity; no callbacks follow validation.",
+          "    nodes_.push_back(&node);",
+          "    --pending_bindings_;",
+          "    admission.runtime_ = nullptr;",
+          "}",
+          "void GeneratedModelLifetimeRuntime::unbind(GeneratedModelNodeLifetime& node) noexcept {"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "generated_metadata_retirement",
+        "path": "src/generated_model_lifetime.cpp",
+        "start": 117,
+        "end": 131,
+        "lines": [
+          "void GeneratedModelLifetimeRuntime::unbind(GeneratedModelNodeLifetime& node) noexcept {",
+          "    const auto found = std::find(nodes_.begin(), nodes_.end(), &node);",
+          "    if (found == nodes_.end()) std::terminate();",
+          "    nodes_.erase(found);",
+          "}",
+          "GeneratedModelNodeLifetime& GeneratedModelLifetimeRuntime::resolve(CameraTransform& node) const noexcept {",
+          "    for (auto* lifetime : nodes_)",
+          "        if (&lifetime->transform() == &node) return *lifetime;",
+          "    std::terminate();",
+          "}",
+          "GeneratedModelNodeLifetime* GeneratedModelLifetimeRuntime::find_actual_node(std::uint32_t key) const noexcept {",
+          "    for (auto* lifetime : nodes_)",
+          "        if (lifetime->scene_attachment().pointer_key == key) return lifetime;",
+          "    return nullptr;",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "registry_public_contract",
+        "path": "include/bsp/native_render_context.hpp",
+        "start": 29,
+        "end": 81,
+        "lines": [
+          "// Required canonical owner lookup, called ONLY after actual +04 reaches zero.",
+          "// Lookup must have no ownership/lifetime side effects. Its result borrows that",
+          "// exact atomic, and its nonthrowing terminal method dispatches the owner's",
+          "// CURRENT native virtual0 profile to the real destruction/pool-return path.",
+          "// Missing identities/profiles are errors, never a no-op fallback. The owner,",
+          "// atomic and canonical companion must survive until their terminal callback.",
+          "class NativeRenderActualOwners {",
+          "public:",
+          "    virtual ~NativeRenderActualOwners() = default;",
+          "    virtual RenderCommandReference& resolve_actual(void* raw_identity) = 0;",
+          "};",
+          "",
+          "// Application-owned canonical metadata for actual render-resource companions.",
+          "// Binding borrows both objects, validates that the companion uses raw+04, and",
+          "// performs no native write, retain or release. One live identity has exactly",
+          "// one companion; replacement is never implicit. All companions must unbind",
+          "// before this registry is destroyed. The registry serializes its metadata only",
+          "// and holds no lock across terminal dispatch; callers still provide the native",
+          "// resource/lifetime synchronization that keeps a resolved companion alive.",
+          "class NativeRenderActualOwnerRegistry final : public NativeRenderActualOwners {",
+          "public:",
+          "    NativeRenderActualOwnerRegistry();",
+          "    ~NativeRenderActualOwnerRegistry() override;",
+          "    NativeRenderActualOwnerRegistry(const NativeRenderActualOwnerRegistry&) = delete;",
+          "    NativeRenderActualOwnerRegistry& operator=(const NativeRenderActualOwnerRegistry&) = delete;",
+          "    NativeRenderActualOwnerRegistry(NativeRenderActualOwnerRegistry&&) = delete;",
+          "    NativeRenderActualOwnerRegistry& operator=(NativeRenderActualOwnerRegistry&&) = delete;",
+          "",
+          "    void bind(void* raw_identity, RenderCommandReference&);",
+          "    // Exact-match retirement for nonthrowing native terminal callbacks. A",
+          "    // missing/mismatched binding is a lifetime contract violation.",
+          "    void unbind(void* raw_identity, RenderCommandReference&) noexcept;",
+          "    RenderCommandReference* find(void* raw_identity);",
+          "    RenderCommandReference& resolve_actual(void* raw_identity) override;",
+          "    std::size_t size() const;",
+          "    bool empty() const;",
+          "",
+          "    // Function-pointer adapters for GuiNativeGeometryRegistration and every",
+          "    // other owner family that shares that same registration shape.",
+          "    static void bind_callback(void*, void* raw_identity, RenderCommandReference&);",
+          "    static void unbind_callback(void*, void* raw_identity,",
+          "        RenderCommandReference&) noexcept;",
+          "    static RenderCommandReference* find_callback(void*, void* raw_identity);",
+          "",
+          "private:",
+          "    struct Impl;",
+          "    std::unique_ptr<Impl> impl_;",
+          "};",
+          "",
+          "// Host helper shared by actual native owners. Nonnull, aligned, live atomic at",
+          "// raw+04 is a precondition. Decrement captured raw+04 first; resolve/validate the",
+          "// companion only on zero. No use of raw storage/companion after its callback.",
+          "void release_native_render_actual_owner(NativeRenderActualOwners&, void* raw_identity);"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "registry_storage_and_bind",
+        "path": "src/native_render_context.cpp",
+        "start": 31,
+        "end": 56,
+        "lines": [
+          "struct NativeRenderActualOwnerRegistry::Impl final {",
+          "    mutable std::mutex mutex;",
+          "    std::unordered_map<void*, RenderCommandReference*> entries;",
+          "};",
+          "",
+          "NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()",
+          "    : impl_(std::make_unique<Impl>()) {}",
+          "",
+          "NativeRenderActualOwnerRegistry::~NativeRenderActualOwnerRegistry() {",
+          "    if (!empty()) std::terminate();",
+          "}",
+          "",
+          "void NativeRenderActualOwnerRegistry::bind(void* identity,",
+          "    RenderCommandReference& reference) {",
+          "    if (!identity || reinterpret_cast<std::uintptr_t>(identity) % alignof(std::uint32_t) != 0)",
+          "        throw std::invalid_argument(\"native owner registry requires an aligned actual identity\");",
+          "    auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(",
+          "        static_cast<std::byte*>(identity) + 4));",
+          "    if (&reference.reference_count != actual ||",
+          "        actual->load(std::memory_order_relaxed) <= 0)",
+          "        throw std::invalid_argument(",
+          "            \"native owner registry companion must borrow the live actual +04 atomic\");",
+          "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+          "    if (!impl_->entries.emplace(identity, &reference).second)",
+          "        throw std::logic_error(\"native owner identity already has a canonical companion\");",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "registry_unbind_lookup",
+        "path": "src/native_render_context.cpp",
+        "start": 58,
+        "end": 89,
+        "lines": [
+          "void NativeRenderActualOwnerRegistry::unbind(void* identity,",
+          "    RenderCommandReference& reference) noexcept {",
+          "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+          "    const auto found = impl_->entries.find(identity);",
+          "    if (found == impl_->entries.end() || found->second != &reference)",
+          "        std::terminate();",
+          "    impl_->entries.erase(found);",
+          "}",
+          "",
+          "RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {",
+          "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+          "    const auto found = impl_->entries.find(identity);",
+          "    return found == impl_->entries.end() ? nullptr : found->second;",
+          "}",
+          "",
+          "RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {",
+          "    auto* const found = find(identity);",
+          "    if (!found)",
+          "        throw std::logic_error(\"actual render owner has no canonical companion\");",
+          "    return *found;",
+          "}",
+          "",
+          "std::size_t NativeRenderActualOwnerRegistry::size() const {",
+          "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+          "    return impl_->entries.size();",
+          "}",
+          "",
+          "bool NativeRenderActualOwnerRegistry::empty() const {",
+          "    return size() == 0;",
+          "}",
+          "",
+          "void NativeRenderActualOwnerRegistry::bind_callback(void* context, void* identity,"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "borrowed_reference_only",
+        "path": "include/bsp/render_command_queue.hpp",
+        "start": 11,
+        "end": 28,
+        "lines": [
+          "// Host intrusive interface, not a native vtable/layout overlay. Concrete native",
+          "// companions borrow the owner's actual count; diagnostic objects own a count",
+          "// initialized to one. A borrowed binding neither initializes nor retains its",
+          "// word and has no second live count. The terminal callback may dispose this",
+          "// interface and reenter the queue, but must not throw.",
+          "class RenderCommandReference {",
+          "private:",
+          "    std::optional<std::atomic<std::int32_t>> owned_reference_count_;",
+          "public:",
+          "    std::atomic<std::int32_t>& reference_count;",
+          "    virtual void release_zero_references() noexcept = 0;",
+          "    virtual ~RenderCommandReference() = default;",
+          "    RenderCommandReference() noexcept",
+          "        : owned_reference_count_(std::in_place, 1), reference_count(*owned_reference_count_) {}",
+          "    explicit RenderCommandReference(std::atomic<std::int32_t>& actual_count) noexcept",
+          "        : reference_count(actual_count) {}",
+          "    RenderCommandReference(const RenderCommandReference&) = delete;",
+          "    RenderCommandReference& operator=(const RenderCommandReference&) = delete;"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "camera_admitted_overload",
+        "path": "src/native_camera_reference.cpp",
+        "start": 19,
+        "end": 42,
+        "lines": [
+          "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,",
+          "    NativeCameraCompanionDisposal disposal)",
+          "    : NativeCameraReference(owner, disposal, nullptr) {}",
+          "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,",
+          "    NativeCameraCompanionDisposal disposal, GeneratedModelLifetimeRuntime::BindingAdmission&& admission)",
+          "    : NativeCameraReference(owner, disposal, &admission) {}",
+          "NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,",
+          "    NativeCameraCompanionDisposal disposal, GeneratedModelLifetimeRuntime::BindingAdmission* admission)",
+          "    : RenderCommandReference(owner.storage.node.references_04), owner_(owner),",
+          "      runtime_(owner.environment.nodes.attachments), disposal_(disposal) {",
+          "    if (owner.phase != NativeCameraOwner::Phase::live || !disposal.retire ||",
+          "        reference_count.load(std::memory_order_relaxed) <= 0)",
+          "        throw std::invalid_argument(\"camera reference requires a live native owner and explicit companion retirement\");",
+          "    require_camera_slot(owner, 0, 0x00bd30e0u);",
+          "    require_camera_slot(owner, 4, 0x00b71fe0u);",
+          "    // Uniqueness uses this same transform identity. This association adds no ref.",
+          "    if (admission) runtime_.bind(*this, std::move(*admission));",
+          "    else runtime_.bind(*this);",
+          "}",
+          "NativeCameraReference::~NativeCameraReference() {",
+          "    // Removing an outstanding interface would leave queued/child references",
+          "    // dangling. The terminal callback is the only successful retirement path.",
+          "    if (phase_ != Phase::retired) std::terminate();",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "camera_admitted_header",
+        "path": "include/bsp/native_camera_reference.hpp",
+        "start": 24,
+        "end": 32,
+        "lines": [
+          "class NativeCameraReference final : public GeneratedModelNodeLifetime,",
+          "    public RenderCommandReference {",
+          "public:",
+          "    NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal);",
+          "    // Existing live-owner/profile checks precede admitted host registration.",
+          "    // Consumes the lifetime-binding credit without retaining it or native +04.",
+          "    NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal,",
+          "        GeneratedModelLifetimeRuntime::BindingAdmission&&);",
+          "    ~NativeCameraReference() override;"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "stable_optional_storage",
+        "path": "include/bsp/native_cockpit_construction_block.hpp",
+        "start": 9,
+        "end": 15,
+        "lines": [
+          "",
+          "// Stable caller-owned host storage, not the actual 24h helper or a native owner.",
+          "// Prepare its persistent caller ownership before any native constructor event.",
+          "// Surviving cameras/viewports and inert semantic-view borrows outlive the attempt",
+          "// and may outlive the helper. No block operation adds a native retain or release.",
+          "class NativeCockpitConstructionBlock final {",
+          "public:"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "quiescence_storage_contract",
+        "path": "include/bsp/native_cockpit_construction_block.hpp",
+        "start": 49,
+        "end": 80,
+        "lines": [
+          "    NativeCockpitConstructionBlock() noexcept = default;",
+          "    ~NativeCockpitConstructionBlock() noexcept;",
+          "    NativeCockpitConstructionBlock(const NativeCockpitConstructionBlock&) = delete;",
+          "    NativeCockpitConstructionBlock& operator=(const NativeCockpitConstructionBlock&) = delete;",
+          "    NativeCockpitConstructionBlock(NativeCockpitConstructionBlock&&) = delete;",
+          "    NativeCockpitConstructionBlock& operator=(NativeCockpitConstructionBlock&&) = delete;",
+          "    // May grow node vectors; all four reservations precede native events.",
+          "    // Borrows the already-installed registry; never installs another domain.",
+          "    [[nodiscard]] Admission admit(NativeCameraEnvironment&,",
+          "        const NativeNodeRawConstants&, NativeViewportRegistry&);",
+          "    Phase phase() const noexcept { return phase_; }",
+          "    // Caller proves every semantic frame/cache/view borrow has ended. Requires",
+          "    // a settled attempt, absent/retired camera reference, absent/dead owner and",
+          "    // no live/reserved viewport record. This performs no native cleanup.",
+          "    void reset_after_host_quiescence() noexcept;",
+          "",
+          "private:",
+          "    friend void* construct_native_cockpit_helper_00b3c800(void*, std::size_t,",
+          "        const volatile std::uint32_t&, const volatile std::uint32_t&,",
+          "        const NativeCockpitViewportReleaseContext&, Admission&&);",
+          "    static void validate_environment(NativeCameraEnvironment&,",
+          "        const NativeNodeRawConstants&, NativeViewportRegistry&);",
+          "    static void record_camera_retirement(void*, NativeCameraReference&) noexcept;",
+          "    NativeViewportRegistry::Storage viewport_records_[2];",
+          "    std::optional<NativeCameraOwner> camera_owner_;",
+          "    std::optional<NativeCameraReference> camera_reference_;",
+          "    NativeViewportRegistry* viewport_registry_{};",
+          "    Phase phase_{Phase::idle};",
+          "    bool camera_retired_{};",
+          "};",
+          "",
+          "// Declaration only; the separate B3C800 body consumes the block's exact private"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "reservation_cancellation",
+        "path": "src/native_cockpit_construction_block.cpp",
+        "start": 34,
+        "end": 68,
+        "lines": [
+          "NativeCockpitConstructionBlock::Admission::~Admission() noexcept { cancel(); }",
+          "",
+          "void NativeCockpitConstructionBlock::Admission::cancel() noexcept {",
+          "    if (!block_) return;",
+          "    auto& block = *block_;",
+          "    const bool rollback = block.phase_ == Phase::preparing || block.phase_ == Phase::prepared;",
+          "    if ((!rollback && block.phase_ != Phase::executing) || !block.viewport_registry_)",
+          "        std::terminate();",
+          "    if (rollback && (block.camera_owner_ || block.camera_reference_ || block.camera_retired_))",
+          "        std::terminate();",
+          "",
+          "    scene_admission_.cancel();",
+          "    lifetime_admission_.cancel();",
+          "    viewport_admissions_[0].cancel();",
+          "    viewport_admissions_[1].cancel();",
+          "    if (rollback) {",
+          "        for (auto& record : block.viewport_records_) {",
+          "            const auto phase = record.phase();",
+          "            if (phase != NativeViewportRegistry::Phase::unused &&",
+          "                phase != NativeViewportRegistry::Phase::cancelled) std::terminate();",
+          "            // No view was exposed during preparation. This only unlinks host",
+          "            // records; it never destroys or releases an actual viewport.",
+          "            block.viewport_registry_->forget_quiescent(record);",
+          "        }",
+          "        block.viewport_registry_ = nullptr;",
+          "        block.phase_ = Phase::idle;",
+          "    } else {",
+          "        // Native EH and raw-allocation obligations belong to the constructor.",
+          "        // Published/retired records and companions remain in stable storage.",
+          "        block.phase_ = Phase::settled;",
+          "    }",
+          "    block_ = nullptr;",
+          "    camera_environment_ = nullptr;",
+          "    node_constants_ = nullptr;",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "before_native_admission",
+        "path": "src/native_cockpit_construction_block.cpp",
+        "start": 85,
+        "end": 104,
+        "lines": [
+          "}",
+          "",
+          "NativeCockpitConstructionBlock::Admission NativeCockpitConstructionBlock::admit(",
+          "    NativeCameraEnvironment& environment, const NativeNodeRawConstants& constants,",
+          "    NativeViewportRegistry& registry) {",
+          "    if (phase_ != Phase::idle || viewport_registry_ || camera_owner_ || camera_reference_ ||",
+          "        camera_retired_ || viewport_records_[0].phase() != NativeViewportRegistry::Phase::unused ||",
+          "        viewport_records_[1].phase() != NativeViewportRegistry::Phase::unused)",
+          "        throw std::logic_error(\"cockpit construction block requires idle quiescent storage\");",
+          "    phase_ = Phase::preparing;",
+          "    viewport_registry_ = &registry;",
+          "    Admission prepared(*this, environment, constants);",
+          "    // The local capability rolls back every acquired reservation if a later",
+          "    // validation/reserve/admit fails, before any native constructor event.",
+          "    validate_environment(environment, constants, registry);",
+          "    prepared.scene_admission_ = environment.nodes.scenes.reserve_binding();",
+          "    prepared.lifetime_admission_ = environment.nodes.attachments.reserve_binding();",
+          "    prepared.viewport_admissions_[0] = registry.admit(viewport_records_[0]);",
+          "    prepared.viewport_admissions_[1] = registry.admit(viewport_records_[1]);",
+          "    phase_ = Phase::prepared;"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "retirement_notification",
+        "path": "src/native_cockpit_construction_block.cpp",
+        "start": 124,
+        "end": 135,
+        "lines": [
+          "void NativeCockpitConstructionBlock::record_camera_retirement(void* context,",
+          "    NativeCameraReference& reference) noexcept {",
+          "    if (!context) std::terminate();",
+          "    auto& block = *static_cast<NativeCockpitConstructionBlock*>(context);",
+          "    if ((block.phase_ != Phase::executing && block.phase_ != Phase::settled) ||",
+          "        !block.camera_reference_ || &*block.camera_reference_ != &reference ||",
+          "        !block.camera_owner_ || &reference.camera_owner() != &*block.camera_owner_ ||",
+          "        block.camera_owner_->phase != NativeCameraOwner::Phase::dead || block.camera_retired_)",
+          "        std::terminate();",
+          "    block.camera_retired_ = true; // no companion reset, native read, release or free",
+          "}",
+          ""
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "quiescent_companion_reset",
+        "path": "src/native_cockpit_construction_block.cpp",
+        "start": 137,
+        "end": 165,
+        "lines": [
+          "    if (phase_ != Phase::settled || !viewport_registry_ ||",
+          "        (camera_reference_ && (!camera_owner_ || !camera_retired_)) ||",
+          "        (!camera_reference_ && camera_retired_) ||",
+          "        (camera_owner_ && camera_owner_->phase != NativeCameraOwner::Phase::dead))",
+          "        std::terminate();",
+          "    for (const auto& record : viewport_records_) {",
+          "        const auto phase = record.phase();",
+          "        if (phase != NativeViewportRegistry::Phase::unused &&",
+          "            phase != NativeViewportRegistry::Phase::cancelled &&",
+          "            phase != NativeViewportRegistry::Phase::retired) std::terminate();",
+          "    }",
+          "    // Caller has ended every semantic host-view/cache borrow. These destructors",
+          "    // touch only retired/dead companions, never their ended native backing.",
+          "    camera_reference_.reset();",
+          "    camera_owner_.reset();",
+          "    for (auto& record : viewport_records_) viewport_registry_->forget_quiescent(record);",
+          "    viewport_registry_ = nullptr;",
+          "    camera_retired_ = false;",
+          "    phase_ = Phase::idle;",
+          "}",
+          "",
+          "NativeCockpitConstructionBlock::~NativeCockpitConstructionBlock() noexcept {",
+          "    if (phase_ != Phase::idle || viewport_registry_ || camera_owner_ || camera_reference_ ||",
+          "        camera_retired_ || viewport_records_[0].phase() != NativeViewportRegistry::Phase::unused ||",
+          "        viewport_records_[1].phase() != NativeViewportRegistry::Phase::unused)",
+          "        std::terminate();",
+          "}",
+          "",
+          "} // namespace bsp"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "admitted_placement_example",
+        "path": "src/native_cockpit_helper_construction.cpp",
+        "start": 115,
+        "end": 139,
+        "lines": [
+          "    bool name_live = false; // native saved EBX bit0",
+          "    bool camera_completed = false; // HOST-only fact; not native EH state3",
+          "    try {",
+          "        raw_camera = allocate_native_camera_slot_00b71930(); // B3C84F",
+          "        state = NativeUnwindState::raw_camera;      // B3C85C",
+          "        void* camera_result = nullptr;",
+          "        if (raw_camera) {                           // B3C85A..B3C861",
+          "            construct_native_string_cstring_0041e870(local_name.data(),",
+          "                \"CockpitCamera\", name_pool);       // B3C86C, literal D6185C",
+          "            name_live = true;                      // B3C875/B3C882",
+          "            state = NativeUnwindState::name_and_raw_camera; // B3C87D",
+          "            block.camera_owner_.emplace(raw_camera, 0x45c, environment,",
+          "                std::move(attempt.scene_admission_));",
+          "            camera_result = construct_native_camera_00b71a80(*block.camera_owner_,",
+          "                local_name.data(), *attempt.node_constants_,",
+          "                std::move(attempt.viewport_admissions_[0])); // B3C886",
+          "            camera_completed = true;",
+          "            // Success-only host registration before B3C892. No native retain,",
+          "            // allocation, ambient token, or raw slot ownership transfer occurs.",
+          "            block.camera_reference_.emplace(*block.camera_owner_,",
+          "                NativeCameraCompanionDisposal{&block,",
+          "                    NativeCockpitConstructionBlock::record_camera_retirement},",
+          "                std::move(attempt.lifetime_admission_));",
+          "        }",
+          "        helper->camera_0c = static_cast<std::uint32_t>("
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "actual_scene_domain",
+        "path": "src/game_native_renderer_lifetime.inc",
+        "start": 9,
+        "end": 32,
+        "lines": [
+          "struct ActualSceneRuntime final : SceneAttachmentRuntime {",
+          " LightTypeBootstrap& types;",
+          " explicit ActualSceneRuntime(LightTypeBootstrap& value):SceneAttachmentRuntime(0,{0,0,0}),types(value){}",
+          " static bool node_type(SceneAttachmentRuntime& runtime,SceneNodeAttachment&,U token){",
+          "  return static_cast<ActualSceneRuntime&>(runtime).types.node_is_type_00b6f570(token);",
+          " }",
+          "};",
+          "struct DestructionGraph {",
+          " CanonicalProfiles profiles;",
+          " NativeRendererSynchronizationGlobals& sync=game_native_renderer_scalar_process().synchronization_0108d6dc();",
+          " D3D9SurfacePool& surface_pool=game_native_surface_pool_process().surface_pool_0108db00();",
+          " D3D9SurfacePool& volume_pool=game_native_graphics_pool_process().volume_texture_pool_0108dba8();",
+          " D3D9Texture2DPool& texture_pool=game_native_texture_pool_process().texture2d_pool_0108db38();",
+          " volatile U& texture_tracking=game_native_renderer_scalar_process().texture_tracking_counter_0108daf8();",
+          " volatile U next_vertex=0;",
+          " U& surface_tracking=game_native_renderer_scalar_process().surface_tracking_counter_0108dafc();",
+          " U& serial=game_native_renderer_scalar_process().logical_texture_serial_0108d6e8();",
+          " ActualRecreation recreation;",
+          " LightTypeBootstrap types;",
+          " ActualSceneRuntime scenes{types};",
+          " GeneratedModelLifetimeRuntime attachments{scenes};",
+          " NativeNodeDestructionRuntime nodes;",
+          " NativeSurfaceOwnerContext surface;",
+          " NativeRetainedMemoryOwnerContext& retained;"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "actual_registry_owner",
+        "path": "src/game_native_renderer_application.cpp",
+        "start": 338,
+        "end": 359,
+        "lines": [
+          "    NativeRendererLuaOwnerContext lua;",
+          "    NativeRendererControlWorkerContext control;",
+          "    const SingletonLifetimeCallbacks& validation;",
+          "    NativeRenderActualOwnerRegistry owners;",
+          "    NativeEffectRecordStorageContext records;",
+          "    NativeEffectRegistryDestructionContext effects;",
+          "    NativeRenderResourceAccountingTables accounting;",
+          "    NativeRendererCacheCleanupContext textures;",
+          "    ResourceLoadEventHost* volatile platform_events{};",
+          "    NativeVertexDeclarationLoadingContext declaration_loading;",
+          "    NativeVertexDeclarationCacheContext declaration_cache;",
+          "    NativeVertexDeclarationRegistryLifetimeContext declarations;",
+          "    // Explicit readable zero preimages for source-private COM output frames.",
+          "    // Native bodies still ignore HRESULTs and keep every original write/read.",
+          "    alignas(4) std::array<unsigned char,0x10> mode{};",
+          "    alignas(4) std::array<unsigned char,0x44c> identifier{};",
+          "    alignas(4) std::array<unsigned char,0x770> gather{};",
+          "    NativeRendererConstructorContext constructor;",
+          "    DestructionGraph graph;",
+          "    DeviceGraph devices;",
+          "    TextureLoadingGraph texture_loading;",
+          "    GameGridGraph game_grids;"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "existing_registry_borrow",
+        "path": "src/game_native_renderer_application.cpp",
+        "start": 550,
+        "end": 552,
+        "lines": [
+          "NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {",
+          "    return impl_->owners;",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "caller_raw_return",
+        "path": "src/registered_model_effect.cpp",
+        "start": 48,
+        "end": 68,
+        "lines": [
+          "        const auto count = field<std::uint32_t>(definition, 0x2c);",
+          "        const auto sample = runtime.random.next_00bd2fc0(RandomStream::primary);",
+          "        if (!count) throw std::invalid_argument(\"Native Particle variant count must be nonzero\");",
+          "        auto* const variants = field<void**>(definition, 0x28); //Reload AFTER random.",
+          "        void* const variant = variants[sample % count];",
+          "        void* const raw = runtime.callees.allocate_model_slot_00af6b60();",
+          "        NativeNodeStorage* model = nullptr;",
+          "        if (raw) {",
+          "            try { model = runtime.callees.construct_model_00af74a0(raw, variant); }",
+          "            catch (...) {",
+          "                runtime.callees.return_model_slot_00af62f0(raw); //State1 first.",
+          "                throw;",
+          "            }",
+          "        }",
+          "        effect.model_1c = model; //State0: no successful-model destructor in unwind.",
+          "        if (!model) throw std::invalid_argument(\"Native Particle model must be nonnull\");",
+          "        if (model->vtable_00 != 0x00d5da50 || !runtime.actual_model_table_00d5da50 ||",
+          "            runtime.actual_model_table_00d5da50[0x38 / 4] != 0x00b6db10)",
+          "            throw std::invalid_argument(\"Unbound current particle-model virtual38\");",
+          "        const CameraMatrix identity{1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f,",
+          "                                    0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f};"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "scene_preparation_admission",
+        "path": "src/scene_attachment.cpp",
+        "start": 293,
+        "end": 337,
+        "lines": [
+          "void SceneAttachmentRuntime::reserve_binding_capacity() {",
+          "    // Subtraction is safe for a live vector; the comparison also checks +1.",
+          "    if (pending_bindings_ >= bindings_.max_size() - bindings_.size())",
+          "        throw std::length_error(\"scene binding admission exceeds maximum size\");",
+          "    const auto required = bindings_.size() + pending_bindings_ + 1;",
+          "    if (required > bindings_.capacity()) bindings_.reserve(required);",
+          "}",
+          "SceneAttachmentRuntime::BindingAdmission SceneAttachmentRuntime::reserve_binding() {",
+          "    reserve_binding_capacity();",
+          "    ++pending_bindings_;",
+          "    return BindingAdmission(*this);",
+          "}",
+          "bool SceneAttachmentRuntime::validate_binding(SceneNodeAttachment& node) const {",
+          "    if (node.transform.raw_node_key_) {",
+          "        if (node.transform.raw_node_key_ != node.pointer_key ||",
+          "            (node.transform.hierarchy_runtime_ && node.transform.hierarchy_runtime_ != this))",
+          "            throw std::invalid_argument(\"raw node binding requires its actual key and one live runtime\");",
+          "    }",
+          "    for (const auto* binding : bindings_) {",
+          "        if (binding == &node) return true;",
+          "        if (&binding->transform == &node.transform || binding->pointer_key == node.pointer_key)",
+          "            throw std::invalid_argument(\"scene binding transform and pointer key must be unique\");",
+          "    }",
+          "    return false;",
+          "}",
+          "void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {",
+          "    if (validate_binding(node)) return;",
+          "    // With no outstanding credits, preserve vector's ordinary growth policy.",
+          "    if (pending_bindings_ != 0) reserve_binding_capacity();",
+          "    bindings_.push_back(&node);",
+          "    if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;",
+          "}",
+          "void SceneAttachmentRuntime::bind(SceneNodeAttachment& node, BindingAdmission&& admission) {",
+          "    if (admission.runtime_ != this)",
+          "        throw std::invalid_argument(\"scene binding requires an active admission for this runtime\");",
+          "    if (validate_binding(node)) {",
+          "        admission.cancel();",
+          "        return;",
+          "    }",
+          "    // An active credit proves size < capacity; pointer append cannot allocate.",
+          "    bindings_.push_back(&node);",
+          "    --pending_bindings_;",
+          "    admission.runtime_ = nullptr;",
+          "    if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;",
+          "}"
+        ]
+      },
+      {
+        "view": "baseline",
+        "id": "scene_forget",
+        "path": "src/scene_attachment.cpp",
+        "start": 338,
+        "end": 356,
+        "lines": [
+          "void SceneAttachmentRuntime::unbind(SceneNodeAttachment& node) {",
+          "    if (node.scene) throw std::logic_error(\"detach the scene node before unbinding it\");",
+          "    forget_destroyed_binding(node);",
+          "}",
+          "void SceneAttachmentRuntime::forget_destroyed_binding(SceneNodeAttachment& node) noexcept {",
+          "    // Companion identity only: raw backing may already be destroyed or protected.",
+          "    const auto found = std::find(bindings_.begin(), bindings_.end(), &node);",
+          "    if (found == bindings_.end()) return;",
+          "    if ((*found)->transform.hierarchy_runtime_ == this)",
+          "        (*found)->transform.hierarchy_runtime_ = nullptr;",
+          "    bindings_.erase(std::remove(bindings_.begin(), bindings_.end(), &node), bindings_.end());",
+          "}",
+          "SceneNodeAttachment& SceneAttachmentRuntime::resolve(CameraTransform& transform) const {",
+          "    for (auto* binding : bindings_) if (&binding->transform == &transform) return *binding;",
+          "    throw std::logic_error(\"scene hierarchy child has no live attachment binding\");",
+          "}",
+          "SceneNodeAttachment& SceneAttachmentRuntime::resolve_key(std::uint32_t key) const {",
+          "    for (auto* binding : bindings_) if (binding->pointer_key == key) return *binding;",
+          "    throw std::logic_error(\"native node key has no live attachment binding\");"
+        ]
+      }
+    ],
+    "installed_SDK_excerpts": [
+      {
+        "id": "actual_map_node_type",
+        "path": "unordered_map",
+        "start": 28,
+        "end": 40,
+        "lines": [
+          "    bool _Mfl> // true if multiple equivalent keys are permitted",
+          "class _Umap_traits : public _Tr { // traits required to make _Hash behave like a map",
+          "public:",
+          "    using key_type            = _Kty;",
+          "    using value_type          = pair<const _Kty, _Ty>;",
+          "    using _Mutable_value_type = pair<_Kty, _Ty>;",
+          "    using key_compare         = _Tr;",
+          "    using allocator_type      = _Alloc;",
+          "#if _HAS_CXX17",
+          "    using node_type = _Node_handle<_List_node<value_type, typename allocator_traits<_Alloc>::void_pointer>, _Alloc,",
+          "        _Node_handle_map_base, _Kty, _Ty>;",
+          "#endif // _HAS_CXX17",
+          ""
+        ]
+      },
+      {
+        "id": "actual_map_hash_base",
+        "path": "unordered_map",
+        "start": 55,
+        "end": 70,
+        "lines": [
+          "",
+          "_EXPORT_STD template <class _Kty, class _Ty, class _Hasher = hash<_Kty>, class _Keyeq = equal_to<_Kty>,",
+          "    class _Alloc = allocator<pair<const _Kty, _Ty>>>",
+          "class unordered_map : public _Hash<_Umap_traits<_Kty, _Ty, _Uhash_compare<_Kty, _Hasher, _Keyeq>, _Alloc, false>> {",
+          "    // hash table of {key, mapped} values, unique keys",
+          "public:",
+          "    static_assert(!_ENFORCE_MATCHING_ALLOCATORS || is_same_v<pair<const _Kty, _Ty>, typename _Alloc::value_type>,",
+          "        _MISMATCHED_ALLOCATOR_MESSAGE(\"unordered_map<Key, Value, Hasher, Eq, Allocator>\", \"pair<const Key, Value>\"));",
+          "    static_assert(is_object_v<_Kty>, \"The C++ Standard forbids containers of non-object types \"",
+          "                                     \"because of [container.requirements].\");",
+          "",
+          "private:",
+          "    using _Mytraits      = _Uhash_compare<_Kty, _Hasher, _Keyeq>;",
+          "    using _Mybase        = _Hash<_Umap_traits<_Kty, _Ty, _Mytraits, _Alloc, false>>;",
+          "    using _Alnode        = typename _Mybase::_Alnode;",
+          "    using _Alnode_traits = typename _Mybase::_Alnode_traits;"
+        ]
+      },
+      {
+        "id": "reserve_only_rehashes",
+        "path": "xhash",
+        "start": 846,
+        "end": 858,
+        "lines": [
+          "    void rehash(size_type _Buckets) { // rebuild table with at least _Buckets buckets",
+          "        // don't violate a.bucket_count() >= a.size() / a.max_load_factor() invariant:",
+          "        _Buckets = (_STD max) (_Min_load_factor_buckets(_List.size()), _Buckets);",
+          "        if (_Buckets <= _Maxidx) { // we already have enough buckets; nothing to do",
+          "            return;",
+          "        }",
+          "",
+          "        _Forced_rehash(_Buckets);",
+          "    }",
+          "",
+          "    void reserve(size_type _Maxcount) { // rebuild table with room for _Maxcount elements",
+          "        rehash(_Min_load_factor_buckets(_Maxcount));",
+          "    }"
+        ]
+      },
+      {
+        "id": "emplace_new_node",
+        "path": "xhash",
+        "start": 515,
+        "end": 565,
+        "lines": [
+          "    template <class... _Valtys>",
+          "    conditional_t<_Multi, iterator, pair<iterator, bool>> emplace(_Valtys&&... _Vals) {",
+          "        // try to insert value_type(_Vals...)",
+          "        using _In_place_key_extractor = typename _Traits::template _In_place_key_extractor<_Valtys...>;",
+          "        if constexpr (_Multi) {",
+          "            _Check_max_size();",
+          "            _List_node_emplace_op2<_Alnode> _Newnode(_List._Getal(), _STD forward<_Valtys>(_Vals)...);",
+          "            const auto& _Keyval = _Traits::_Kfn(_Newnode._Ptr->_Myval);",
+          "            const auto _Hashval = _Traitsobj(_Keyval);",
+          "            if (_Check_rehash_required_1()) {",
+          "                _Rehash_for_1();",
+          "            }",
+          "",
+          "            const auto _Target = _Find_last(_Keyval, _Hashval);",
+          "            return _List._Make_iter(_Insert_new_node_before(_Hashval, _Target._Insert_before, _Newnode._Release()));",
+          "        } else if constexpr (_In_place_key_extractor::_Extractable) {",
+          "            const auto& _Keyval = _In_place_key_extractor::_Extract(_Vals...);",
+          "            const auto _Hashval = _Traitsobj(_Keyval);",
+          "            auto _Target        = _Find_last(_Keyval, _Hashval);",
+          "            if (_Target._Duplicate) {",
+          "                return {_List._Make_iter(_Target._Duplicate), false};",
+          "            }",
+          "",
+          "            _Check_max_size();",
+          "            // invalidates _Keyval:",
+          "            _List_node_emplace_op2<_Alnode> _Newnode(_List._Getal(), _STD forward<_Valtys>(_Vals)...);",
+          "            if (_Check_rehash_required_1()) {",
+          "                _Rehash_for_1();",
+          "                _Target = _Find_last(_Traits::_Kfn(_Newnode._Ptr->_Myval), _Hashval);",
+          "            }",
+          "",
+          "            return {",
+          "                _List._Make_iter(_Insert_new_node_before(_Hashval, _Target._Insert_before, _Newnode._Release())), true};",
+          "        } else {",
+          "            _List_node_emplace_op2<_Alnode> _Newnode(_List._Getal(), _STD forward<_Valtys>(_Vals)...);",
+          "            const auto& _Keyval = _Traits::_Kfn(_Newnode._Ptr->_Myval);",
+          "            const auto _Hashval = _Traitsobj(_Keyval);",
+          "            auto _Target        = _Find_last(_Keyval, _Hashval);",
+          "            if (_Target._Duplicate) {",
+          "                return {_List._Make_iter(_Target._Duplicate), false};",
+          "            }",
+          "",
+          "            _Check_max_size();",
+          "            if (_Check_rehash_required_1()) {",
+          "                _Rehash_for_1();",
+          "                _Target = _Find_last(_Traits::_Kfn(_Newnode._Ptr->_Myval), _Hashval);",
+          "            }",
+          "",
+          "            return {",
+          "                _List._Make_iter(_Insert_new_node_before(_Hashval, _Target._Insert_before, _Newnode._Release())), true};",
+          "        }"
+        ]
+      },
+      {
+        "id": "try_emplace_new_node",
+        "path": "xhash",
+        "start": 619,
+        "end": 638,
+        "lines": [
+          "    template <class _Keyty, class... _Mappedty>",
+          "    pair<_Nodeptr, bool> _Try_emplace(_Keyty&& _Keyval_arg, _Mappedty&&... _Mapval) {",
+          "        const auto& _Keyval = _Keyval_arg;",
+          "        const auto _Hashval = _Traitsobj(_Keyval);",
+          "        auto _Target        = _Find_last(_Keyval, _Hashval);",
+          "        if (_Target._Duplicate) {",
+          "            return {_Target._Duplicate, false};",
+          "        }",
+          "",
+          "        _Check_max_size();",
+          "        _List_node_emplace_op2<_Alnode> _Newnode(_List._Getal(), piecewise_construct,",
+          "            _STD forward_as_tuple(_STD forward<_Keyty>(_Keyval_arg)),",
+          "            _STD forward_as_tuple(_STD forward<_Mappedty>(_Mapval)...));",
+          "        if (_Check_rehash_required_1()) {",
+          "            _Rehash_for_1();",
+          "            _Target = _Find_last(_Traits::_Kfn(_Newnode._Ptr->_Myval), _Hashval);",
+          "        }",
+          "",
+          "        return {_Insert_new_node_before(_Hashval, _Target._Insert_before, _Newnode._Release()), true};",
+          "    }"
+        ]
+      },
+      {
+        "id": "node_handle_insert_can_rehash",
+        "path": "xhash",
+        "start": 1451,
+        "end": 1488,
+        "lines": [
+          "    conditional_t<_Traits::_Multi, iterator, _Insert_return_type<iterator, node_type>> insert(node_type&& _Handle) {",
+          "        // insert the node (if any) held in _Handle",
+          "        if (_Handle.empty()) {",
+          "            if constexpr (_Traits::_Multi) {",
+          "                return end();",
+          "            } else {",
+          "                return {end(), false, _STD move(_Handle)};",
+          "            }",
+          "        }",
+          "",
+          "#if _ITERATOR_DEBUG_LEVEL == 2",
+          "        _STL_VERIFY(_List.get_allocator() == _Handle._Getal(), \"node handle allocator incompatible for insert\");",
+          "#endif // _ITERATOR_DEBUG_LEVEL == 2",
+          "",
+          "        const auto& _Keyval   = _Traits::_Kfn(_Handle._Getptr()->_Myval);",
+          "        const size_t _Hashval = _Traitsobj(_Keyval);",
+          "        auto _Target          = _Find_last(_Keyval, _Hashval);",
+          "        if constexpr (!_Traits::_Multi) {",
+          "            if (_Target._Duplicate) {",
+          "                return {_List._Make_iter(_Target._Duplicate), false, _STD move(_Handle)};",
+          "            }",
+          "        }",
+          "",
+          "        _Check_max_size();",
+          "        if (_Check_rehash_required_1()) {",
+          "            _Rehash_for_1();",
+          "            _Target = _Find_last(_Keyval, _Hashval);",
+          "        }",
+          "",
+          "        const auto _Released = _Handle._Release();",
+          "        _Destroy_in_place(_Released->_Next); // TRANSITION, ABI",
+          "        _Destroy_in_place(_Released->_Prev);",
+          "        const auto _Newnode = _Insert_new_node_before(_Hashval, _Target._Insert_before, _Released);",
+          "        if constexpr (_Traits::_Multi) {",
+          "            return _List._Make_iter(_Newnode);",
+          "        } else {",
+          "            return {_List._Make_iter(_Newnode), true, node_type{}};",
+          "        }"
+        ]
+      },
+      {
+        "id": "rehash_relinks_existing_list_nodes",
+        "path": "xhash",
+        "start": 1625,
+        "end": 1683,
+        "lines": [
+          "    void _Forced_rehash(size_type _Buckets) {",
+          "        // Force rehash of elements in _List, distrusting existing bucket assignments in _Vec.",
+          "        // Assumes _Buckets is greater than _Min_buckets, and that changing to that many buckets doesn't violate",
+          "        // load_factor() <= max_load_factor().",
+          "",
+          "        // Don't violate power of 2, fits in half the bucket vector invariant:",
+          "        // (we assume because vector must use single allocations; as a result, its max_size fits in a size_t)",
+          "        const unsigned long _Max_storage_buckets_log2 = _Floor_of_log_2(static_cast<size_t>(_Vec.max_size() >> 1));",
+          "        const auto _Max_storage_buckets               = static_cast<size_type>(1) << _Max_storage_buckets_log2;",
+          "        if (_Buckets > _Max_storage_buckets) {",
+          "            _Xlength_error(\"invalid hash bucket count\");",
+          "        }",
+          "",
+          "        // The above test also means that we won't perform a forbidden full shift when restoring the power of",
+          "        // 2 invariant",
+          "        // this round up to power of 2 in addition to the _Buckets > _Maxidx above means",
+          "        // we'll at least double in size (the next power of 2 above _Maxidx)",
+          "        _Buckets                       = static_cast<size_type>(1) << _Ceiling_of_log_2(static_cast<size_t>(_Buckets));",
+          "        const _Unchecked_iterator _End = _Unchecked_end();",
+          "",
+          "        _Vec._Assign_grow(_Buckets << 1, _End);",
+          "        _Mask   = _Buckets - 1;",
+          "        _Maxidx = _Buckets;",
+          "",
+          "        _Clear_guard<_Hash> _Guard{this};",
+          "",
+          "        _Unchecked_iterator _Inserted = _Unchecked_begin();",
+          "",
+          "        // Remember the next _Inserted value as splices will change _Inserted's position arbitrarily.",
+          "        for (_Unchecked_iterator _Next_inserted = _Inserted; _Inserted != _End; _Inserted = _Next_inserted) {",
+          "            ++_Next_inserted;",
+          "",
+          "            auto& _Inserted_key     = _Traits::_Kfn(*_Inserted);",
+          "            const size_type _Bucket = bucket(_Inserted_key);",
+          "",
+          "            // _Bucket_lo and _Bucket_hi are the *inclusive* range of elements in the bucket, or _Unchecked_end() if",
+          "            // the bucket is empty.",
+          "            _Unchecked_iterator& _Bucket_lo = _Vec._Mypair._Myval2._Myfirst[_Bucket << 1];",
+          "            _Unchecked_iterator& _Bucket_hi = _Vec._Mypair._Myval2._Myfirst[(_Bucket << 1) + 1];",
+          "",
+          "            if (_Bucket_lo == _End) {",
+          "                // The bucket was empty, set it to the inserted element.",
+          "                _Bucket_lo = _Inserted;",
+          "                _Bucket_hi = _Inserted;",
+          "                continue;",
+          "            }",
+          "",
+          "            // Search the bucket for the insertion location and move element if necessary.",
+          "            _Unchecked_const_iterator _Insert_before = _Bucket_hi;",
+          "            if (!_Traitsobj(_Inserted_key, _Traits::_Kfn(*_Insert_before))) {",
+          "                // The inserted element belongs at the end of the bucket; splice it there and set _Bucket_hi to the",
+          "                // new bucket inclusive end.",
+          "                ++_Insert_before;",
+          "                if (_Insert_before != _Inserted) { // avoid splice on element already in position",
+          "                    _Mylist::_Scary_val::_Unchecked_splice(_Insert_before._Ptr, _Inserted._Ptr, _Next_inserted._Ptr);",
+          "                }",
+          "",
+          "                _Bucket_hi = _Inserted;",
+          "                continue;"
+        ]
+      },
+      {
+        "id": "list_node_allocates",
+        "path": "list",
+        "start": 587,
+        "end": 603,
+        "lines": [
+          "template <class _Alnode>",
+          "struct _List_node_emplace_op2 : _Alloc_construct_ptr<_Alnode> {",
+          "    using _Alnode_traits = allocator_traits<_Alnode>;",
+          "    using pointer        = typename _Alnode_traits::pointer;",
+          "",
+          "    template <class... _Valtys>",
+          "    explicit _List_node_emplace_op2(_Alnode& _Al_, _Valtys&&... _Vals) : _Alloc_construct_ptr<_Alnode>(_Al_) {",
+          "        this->_Allocate();",
+          "        _Alnode_traits::construct(this->_Al, _STD addressof(this->_Ptr->_Myval), _STD forward<_Valtys>(_Vals)...);",
+          "    }",
+          "",
+          "    ~_List_node_emplace_op2() {",
+          "        if (this->_Ptr != pointer{}) {",
+          "            _Alnode_traits::destroy(this->_Al, _STD addressof(this->_Ptr->_Myval));",
+          "        }",
+          "    }",
+          ""
+        ]
+      },
+      {
+        "id": "allocator_allocates_one",
+        "path": "xmemory",
+        "start": 1166,
+        "end": 1188,
+        "lines": [
+          "template <class _Alloc>",
+          "struct _Alloc_construct_ptr { // pointer used to help construct 1 _Alloc::value_type without EH",
+          "    using pointer = _Alloc_ptr_t<_Alloc>;",
+          "    _Alloc& _Al;",
+          "    pointer _Ptr;",
+          "",
+          "    _CONSTEXPR20 explicit _Alloc_construct_ptr(_Alloc& _Al_) : _Al(_Al_), _Ptr(nullptr) {}",
+          "",
+          "    _NODISCARD _CONSTEXPR20 pointer _Release() noexcept { // disengage *this and return contained pointer",
+          "        return _STD exchange(_Ptr, nullptr);",
+          "    }",
+          "",
+          "    _CONSTEXPR20 void _Allocate() { // disengage *this, then allocate a new memory block",
+          "        _Ptr = nullptr; // if allocate throws, prevents double-free",
+          "        _Ptr = _Al.allocate(1);",
+          "    }",
+          "",
+          "    _CONSTEXPR20 ~_Alloc_construct_ptr() { // if this instance is engaged, deallocate storage",
+          "        if (_Ptr) {",
+          "            _Al.deallocate(_Ptr, 1);",
+          "        }",
+          "    }",
+          ""
+        ]
+      },
+      {
+        "id": "mutex_failure_boundary",
+        "path": "mutex",
+        "start": 33,
+        "end": 64,
+        "lines": [
+          "class _Mutex_base { // base class for all mutex types",
+          "public:",
+          "#ifdef _DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR",
+          "    _Mutex_base(int _Flags = 0) noexcept {",
+          "        _Mtx_init_in_situ(_Mymtx(), _Flags | _Mtx_try);",
+          "    }",
+          "#else // ^^^ defined(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR) / !defined(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR) vvv",
+          "    constexpr _Mutex_base(int _Flags = 0) noexcept {",
+          "        _Mtx_storage._Critical_section = {};",
+          "        _Mtx_storage._Thread_id        = -1;",
+          "        _Mtx_storage._Type             = _Flags | _Mtx_try;",
+          "        _Mtx_storage._Count            = 0;",
+          "    }",
+          "#endif // ^^^ !defined(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR) ^^^",
+          "",
+          "    _Mutex_base(const _Mutex_base&)            = delete;",
+          "    _Mutex_base& operator=(const _Mutex_base&) = delete;",
+          "",
+          "    void lock() {",
+          "        if (_Mtx_lock(_Mymtx()) != _Thrd_result::_Success) {",
+          "            // undefined behavior, only occurs for plain mutexes (N4950 [thread.mutex.requirements.mutex.general]/6)",
+          "            _STD _Throw_Cpp_error(_RESOURCE_DEADLOCK_WOULD_OCCUR);",
+          "        }",
+          "",
+          "        if (!_Verify_ownership_levels()) {",
+          "            // only occurs for recursive mutexes (N4950 [thread.mutex.recursive]/3)",
+          "            // POSIX specifies EAGAIN in the corresponding situation:",
+          "            // https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_mutex_lock.html",
+          "            _STD _Throw_Cpp_error(_RESOURCE_UNAVAILABLE_TRY_AGAIN);",
+          "        }",
+          "    }",
+          ""
+        ]
+      }
+    ],
+    "wide_epoch_complete_files": [
+      {
+        "path": "include/bsp/native_wide_string.hpp",
+        "baseline_complete_lines": [
+          "#pragma once",
+          "",
+          "#include \"bsp/native_string.hpp\"",
+          "",
+          "namespace bsp {",
+          "",
+          "// Operate on the caller's actual eight-byte Win32 header: uint32 length at +0,",
+          "// pointer to 16-bit code units at +4. No temporary string or allocator is held",
+          "// in the header. The caller supplies its existing NativeStringStorage owner;",
+          "// ActualNativeStringPoolStorage binds the actual native owner; PooledStringStorage",
+          "// is the earlier semantic pool projection.",
+          "// These C++ entry points do not reproduce the original calling conventions.",
+          "// Evidence, alias ordering and remaining boundaries: docs/NATIVE_WIDE_STRING.md.",
+          "",
+          "// Full 004C5E60, native thiscall(header, const char*), RET 4, EAX=header.",
+          "// Clear length, then pointer, before reading source. Resize with preserve=true;",
+          "// zero-extend each source byte through NUL into the captured destination.",
+          "// Fresh storage is expected: an existing buffer is abandoned without release.",
+          "// Source must be readable through NUL; no locale or encoding conversion occurs.",
+          "void* construct_native_wide_string_header_004c5e60(void* actual_header,",
+          "    const char* source, NativeStringStorage& storage);",
+          "",
+          "// Full 004C53E0, native thiscall(header, uint32 length, byte preserve), RET 8.",
+          "// Equal length does nothing. Zero length releases then clears pointer/length.",
+          "// Otherwise allocate 2*length+2 bytes, optionally memcpy 2*min(old,new) bytes,",
+          "// release the current old buffer, publish pointer/length, then store a WORD NUL.",
+          "// Header reads after storage callbacks use the actual current header. All size",
+          "// and address arithmetic wraps at 32 bits. No allocation-failure/overflow guard.",
+          "// Zero-byte memcpy is omitted under the same host policy as NativeString.",
+          "void resize_native_wide_string_header_004c53e0(void* actual_header,",
+          "    NativeStringStorage& storage, std::uint32_t length, bool preserve);",
+          "",
+          "// Full 00436430, native ECX=header (__fastcall), RET. Capture a nonnull buffer",
+          "// and current 2*length+2 byte size, then release. No header writes, even if the",
+          "// release callback changes it. A null pointer skips the length read entirely.",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringStorage& storage) noexcept;",
+          "",
+          "} // namespace bsp"
+        ],
+        "Root_complete_lines": [
+          "#pragma once",
+          "",
+          "#include \"bsp/native_string.hpp\"",
+          "",
+          "namespace bsp {",
+          "",
+          "// Operate on the caller's actual eight-byte Win32 header: uint32 length at +0,",
+          "// pointer to 16-bit code units at +4. No temporary string or allocator is held",
+          "// in the header. The caller supplies its existing NativeStringStorage owner;",
+          "// ActualNativeStringPoolStorage binds the actual native owner; PooledStringStorage",
+          "// is the earlier semantic pool projection.",
+          "// These C++ entry points do not reproduce the original calling conventions.",
+          "// Evidence, alias ordering and remaining boundaries: docs/NATIVE_WIDE_STRING.md.",
+          "",
+          "// Full 004C5E60, native thiscall(header, const char*), RET 4, EAX=header.",
+          "// Clear length, then pointer, before reading source. Resize with preserve=true;",
+          "// zero-extend each source byte through NUL into the captured destination.",
+          "// Fresh storage is expected: an existing buffer is abandoned without release.",
+          "// Source must be readable through NUL; no locale or encoding conversion occurs.",
+          "void* construct_native_wide_string_header_004c5e60(void* actual_header,",
+          "    const char* source, NativeStringStorage& storage);",
+          "",
+          "// Full 004C53E0, native thiscall(header, uint32 length, byte preserve), RET 8.",
+          "// Equal length does nothing. Zero length releases then clears pointer/length.",
+          "// Otherwise allocate 2*length+2 bytes, optionally memcpy 2*min(old,new) bytes,",
+          "// release the current old buffer, publish pointer/length, then store a WORD NUL.",
+          "// Header reads after storage callbacks use the actual current header. All size",
+          "// and address arithmetic wraps at 32 bits. No allocation-failure/overflow guard.",
+          "// Zero-byte memcpy is omitted under the same host policy as NativeString.",
+          "void resize_native_wide_string_header_004c53e0(void* actual_header,",
+          "    NativeStringStorage& storage, std::uint32_t length, bool preserve);",
+          "",
+          "// Full 00436430, native ECX=header (__fastcall), RET. Capture a nonnull buffer",
+          "// and current 2*length+2 byte size, then release. No header writes, even if the",
+          "// release callback changes it. A null pointer skips the length read entirely.",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringStorage& storage) noexcept;",
+          "",
+          "// Same header schedule through the actual raw pool/manager publications.",
+          "// Capture the buffer and wrapping byte size before 00419CC0, then return via",
+          "// 00BD1510. Getter exceptions propagate; no header field is cleared or reread.",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringRawPoolContext& context);",
+          "",
+          "} // namespace bsp"
+        ]
+      },
+      {
+        "path": "src/native_wide_string.cpp",
+        "baseline_complete_lines": [
+          "#include \"bsp/native_wide_string.hpp\"",
+          "",
+          "#include <cstring>",
+          "",
+          "namespace bsp {",
+          "namespace {",
+          "",
+          "static_assert(sizeof(std::uintptr_t) == 4);",
+          "static_assert(sizeof(std::uint16_t) == 2);",
+          "",
+          "template<class T> T read_header(const void* header, std::size_t offset) noexcept {",
+          "    T value;",
+          "    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));",
+          "    return value;",
+          "}",
+          "",
+          "template<class T> void write_header(void* header, std::size_t offset, T value) noexcept {",
+          "    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));",
+          "}",
+          "",
+          "} // namespace",
+          "",
+          "void resize_native_wide_string_header_004c53e0(void* actual_header,",
+          "    NativeStringStorage& storage, std::uint32_t length, bool preserve) {",
+          "    const auto initial_length = read_header<std::uint32_t>(actual_header, 0);",
+          "    if (length == initial_length) return; // 004c53ec: do not read the pointer.",
+          "",
+          "    if (length == 0) {",
+          "        auto* const old_data = read_header<char*>(actual_header, 4);",
+          "        if (old_data != nullptr) storage.release(old_data, initial_length * 2u + 2u);",
+          "        write_header<char*>(actual_header, 4, nullptr); // 004c5411",
+          "        write_header<std::uint32_t>(actual_header, 0, 0);",
+          "        return;",
+          "    }",
+          "",
+          "    const auto byte_length = length * 2u;",
+          "    char* const block = storage.allocate(byte_length + 2u); // 004c5436",
+          "    if (preserve) {",
+          "        // Allocation may have changed either actual header field. Native uses",
+          "        // the unsigned minimum before doubling, with no capacity field.",
+          "        const auto current_length = read_header<std::uint32_t>(actual_header, 0);",
+          "        const auto copy_length = length > current_length ? current_length : length;",
+          "        const auto* const source = read_header<char*>(actual_header, 4);",
+          "        const auto copy_bytes = copy_length * 2u;",
+          "        if (copy_bytes != 0) std::memcpy(block, source, copy_bytes);",
+          "    }",
+          "    // Reread after memcpy: the destination can alias the actual header.",
+          "    auto* const old_data = read_header<char*>(actual_header, 4); // 004c5462",
+          "    if (old_data != nullptr)",
+          "        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) * 2u + 2u);",
+          "    write_header<char*>(actual_header, 4, block); // 004c547f",
+          "    write_header<std::uint32_t>(actual_header, 0, length);",
+          "    const std::uint16_t terminator = 0;",
+          "    std::memcpy(reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(block) + byte_length),",
+          "        &terminator, sizeof(terminator)); // 004c5484: store after both header writes.",
+          "}",
+          "",
+          "void* construct_native_wide_string_header_004c5e60(void* actual_header,",
+          "    const char* source, NativeStringStorage& storage) {",
+          "    write_header<std::uint32_t>(actual_header, 0, 0); // 004c5e6a",
+          "    write_header<char*>(actual_header, 4, nullptr); // 004c5e70; no release.",
+          "",
+          "    const auto source_address = reinterpret_cast<std::uintptr_t>(source);",
+          "    auto scan = source_address;",
+          "    unsigned char byte;",
+          "    do {",
+          "        byte = *reinterpret_cast<const volatile unsigned char*>(scan);",
+          "        ++scan;",
+          "    } while (byte != 0); // 004c5e80: measure only after clearing the header.",
+          "    resize_native_wide_string_header_004c53e0(actual_header, storage,",
+          "        scan - (source_address + 1u), true);",
+          "",
+          "    auto* const data = read_header<char*>(actual_header, 4); // 004c5e95",
+          "    if (data != nullptr) {",
+          "        auto input = source_address;",
+          "        auto output = reinterpret_cast<std::uintptr_t>(data);",
+          "        do {",
+          "            // Streaming read/store preserves overlap with source or header;",
+          "            // neither strlen's result nor the header length bounds this loop.",
+          "            byte = *reinterpret_cast<const volatile unsigned char*>(input);",
+          "            const auto unit = static_cast<std::uint16_t>(byte);",
+          "            std::memcpy(reinterpret_cast<void*>(output), &unit, sizeof(unit));",
+          "            output += 2u;",
+          "            ++input;",
+          "        } while (byte != 0);",
+          "    }",
+          "    return actual_header;",
+          "}",
+          "",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringStorage& storage) noexcept {",
+          "    auto* const data = read_header<char*>(actual_header, 4);",
+          "    if (data != nullptr)",
+          "        storage.release(data, read_header<std::uint32_t>(actual_header, 0) * 2u + 2u);",
+          "}",
+          "",
+          "} // namespace bsp"
+        ],
+        "Root_complete_lines": [
+          "#include \"bsp/native_wide_string.hpp\"",
+          "#include \"bsp/native_string_pool_storage.hpp\"",
+          "",
+          "#include <cstring>",
+          "",
+          "namespace bsp {",
+          "namespace {",
+          "",
+          "static_assert(sizeof(std::uintptr_t) == 4);",
+          "static_assert(sizeof(std::uint16_t) == 2);",
+          "",
+          "template<class T> T read_header(const void* header, std::size_t offset) noexcept {",
+          "    T value;",
+          "    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));",
+          "    return value;",
+          "}",
+          "",
+          "template<class T> void write_header(void* header, std::size_t offset, T value) noexcept {",
+          "    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));",
+          "}",
+          "",
+          "} // namespace",
+          "",
+          "void resize_native_wide_string_header_004c53e0(void* actual_header,",
+          "    NativeStringStorage& storage, std::uint32_t length, bool preserve) {",
+          "    const auto initial_length = read_header<std::uint32_t>(actual_header, 0);",
+          "    if (length == initial_length) return; // 004c53ec: do not read the pointer.",
+          "",
+          "    if (length == 0) {",
+          "        auto* const old_data = read_header<char*>(actual_header, 4);",
+          "        if (old_data != nullptr) storage.release(old_data, initial_length * 2u + 2u);",
+          "        write_header<char*>(actual_header, 4, nullptr); // 004c5411",
+          "        write_header<std::uint32_t>(actual_header, 0, 0);",
+          "        return;",
+          "    }",
+          "",
+          "    const auto byte_length = length * 2u;",
+          "    char* const block = storage.allocate(byte_length + 2u); // 004c5436",
+          "    if (preserve) {",
+          "        // Allocation may have changed either actual header field. Native uses",
+          "        // the unsigned minimum before doubling, with no capacity field.",
+          "        const auto current_length = read_header<std::uint32_t>(actual_header, 0);",
+          "        const auto copy_length = length > current_length ? current_length : length;",
+          "        const auto* const source = read_header<char*>(actual_header, 4);",
+          "        const auto copy_bytes = copy_length * 2u;",
+          "        if (copy_bytes != 0) std::memcpy(block, source, copy_bytes);",
+          "    }",
+          "    // Reread after memcpy: the destination can alias the actual header.",
+          "    auto* const old_data = read_header<char*>(actual_header, 4); // 004c5462",
+          "    if (old_data != nullptr)",
+          "        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) * 2u + 2u);",
+          "    write_header<char*>(actual_header, 4, block); // 004c547f",
+          "    write_header<std::uint32_t>(actual_header, 0, length);",
+          "    const std::uint16_t terminator = 0;",
+          "    std::memcpy(reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(block) + byte_length),",
+          "        &terminator, sizeof(terminator)); // 004c5484: store after both header writes.",
+          "}",
+          "",
+          "void* construct_native_wide_string_header_004c5e60(void* actual_header,",
+          "    const char* source, NativeStringStorage& storage) {",
+          "    write_header<std::uint32_t>(actual_header, 0, 0); // 004c5e6a",
+          "    write_header<char*>(actual_header, 4, nullptr); // 004c5e70; no release.",
+          "",
+          "    const auto source_address = reinterpret_cast<std::uintptr_t>(source);",
+          "    auto scan = source_address;",
+          "    unsigned char byte;",
+          "    do {",
+          "        byte = *reinterpret_cast<const volatile unsigned char*>(scan);",
+          "        ++scan;",
+          "    } while (byte != 0); // 004c5e80: measure only after clearing the header.",
+          "    resize_native_wide_string_header_004c53e0(actual_header, storage,",
+          "        scan - (source_address + 1u), true);",
+          "",
+          "    auto* const data = read_header<char*>(actual_header, 4); // 004c5e95",
+          "    if (data != nullptr) {",
+          "        auto input = source_address;",
+          "        auto output = reinterpret_cast<std::uintptr_t>(data);",
+          "        do {",
+          "            // Streaming read/store preserves overlap with source or header;",
+          "            // neither strlen's result nor the header length bounds this loop.",
+          "            byte = *reinterpret_cast<const volatile unsigned char*>(input);",
+          "            const auto unit = static_cast<std::uint16_t>(byte);",
+          "            std::memcpy(reinterpret_cast<void*>(output), &unit, sizeof(unit));",
+          "            output += 2u;",
+          "            ++input;",
+          "        } while (byte != 0);",
+          "    }",
+          "    return actual_header;",
+          "}",
+          "",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringStorage& storage) noexcept {",
+          "    auto* const data = read_header<char*>(actual_header, 4);",
+          "    if (data != nullptr)",
+          "        storage.release(data, read_header<std::uint32_t>(actual_header, 0) * 2u + 2u);",
+          "}",
+          "",
+          "void destroy_native_wide_string_header_00436430(void* actual_header,",
+          "    NativeStringRawPoolContext& context) {",
+          "    auto* const data = read_header<char*>(actual_header, 4);",
+          "    if (data != nullptr) {",
+          "        const auto size = read_header<std::uint32_t>(actual_header, 0) * 2u + 2u;",
+          "        auto* const pool = native_string_pool_get_or_create_00419cc0(",
+          "            context.actual_published_01090aa8,",
+          "            context.actual_manager_publication_01090aa0);",
+          "        return_native_string_pool_00bd1510(pool, data, size,",
+          "            context.actual_small_returns_disabled_01090aa4);",
+          "    }",
+          "}",
+          "",
+          "} // namespace bsp"
+        ]
+      }
+    ],
+    "qualification": "Exact retained Source/SDK excerpts and whole-corpus queries. Source evidence for a proposed design, not execution or a proof of future implementation."
+  },
+  "portable_bundle": {
+    "payloads": 4270,
+    "ZIP": {
+      "entry": "evidence.zip",
+      "bytes": 15134683,
+      "sha256": "9399e64abd05777633c6843ac2ae3212a89d93089845a8c21b6d109355e9af5c"
+    },
+    "helper": {
+      "entry": "portable_replay.py",
+      "bytes": 8735,
+      "sha256": "19febd914af349b5d11d58e50c6e1d4fe6abaa44c2cfaef90212f9545de6b0e8"
+    }
+  },
+  "in_place_replay": {
+    "Root_changed_from_old_epoch": [
+      "include/bsp/native_wide_string.hpp",
+      "src/native_wide_string.cpp"
+    ],
+    "SDK_excerpts": 10,
+    "Source_excerpts": 32,
+    "Source_union": 4214,
+    "ZIP_payloads": 4270,
+    "baseline_and_Root_committed_blobs_each": 4214,
+    "boundary": "ZIP-only guarded Source/SDK evidence replay after imports. No external open/write/Git/compiler/subprocess/network/dlopen/Native execution. The proposed admission design is not implemented or executed.",
+    "checked_unique_pins": 4268,
+    "compiled_artifacts_captured": 0,
+    "declared_build_artifact_pins_not_checked": 4,
+    "installed_SDK_headers": 6,
+    "new_epoch_project_sources": 3352,
+    "old_epoch_project_sources": 3352,
+    "old_epoch_still_current_Root_project_sources": 3350,
+    "queries": 11,
+    "query_corpus_each": 4207,
+    "status": "pass",
+    "whole_accepted_reports": [
+      "profile",
+      "RNG",
+      "renderer",
+      "pool"
+    ],
+    "whole_wide_before_after_files": 2,
+    "worker_baseline_EOL_variants": 7
+  },
+  "physical_relocation_replay": {
+    "Root_changed_from_old_epoch": [
+      "include/bsp/native_wide_string.hpp",
+      "src/native_wide_string.cpp"
+    ],
+    "SDK_excerpts": 10,
+    "Source_excerpts": 32,
+    "Source_union": 4214,
+    "ZIP_payloads": 4270,
+    "baseline_and_Root_committed_blobs_each": 4214,
+    "boundary": "ZIP-only guarded Source/SDK evidence replay after imports. No external open/write/Git/compiler/subprocess/network/dlopen/Native execution. The proposed admission design is not implemented or executed.",
+    "checked_unique_pins": 4268,
+    "compiled_artifacts_captured": 0,
+    "declared_build_artifact_pins_not_checked": 4,
+    "installed_SDK_headers": 6,
+    "new_epoch_project_sources": 3352,
+    "old_epoch_project_sources": 3352,
+    "old_epoch_still_current_Root_project_sources": 3350,
+    "queries": 11,
+    "query_corpus_each": 4207,
+    "status": "pass",
+    "whole_accepted_reports": [
+      "profile",
+      "RNG",
+      "renderer",
+      "pool"
+    ],
+    "whole_wide_before_after_files": 2,
+    "worker_baseline_EOL_variants": 7
+  },
+  "separate_actual_Git_current_Source": {
+    "status": "pass",
+    "worker_capture": "5a237ee0ff9b5116c2c54f88e2615807af91d670",
+    "Root_capture": "b7727f1286c325d3bb594d74bc4a22657cda2f9c",
+    "actual_committed_baseline_blobs": 4214,
+    "actual_committed_Root_blobs": 4214,
+    "current_worker_files": 4214,
+    "current_Root_files": 4214,
+    "current_cpp_drift": {
+      "main": {
+        "commit": "f0fec19d83d73716b701d7fa301afbf51d480967",
+        "delta_from_Source3352": [
+          "include/bsp/native_wide_string.hpp",
+          "src/native_wide_string.cpp"
+        ]
+      },
+      "Root": {
+        "commit": "f0fec19d83d73716b701d7fa301afbf51d480967",
+        "delta_from_Source3352": [
+          "include/bsp/native_wide_string.hpp",
+          "src/native_wide_string.cpp"
+        ]
+      }
+    },
+    "whole_accepted_reports": [
+      {
+        "name": "profile",
+        "commit": "01de2fdbc5006b34b59c04f36508ede34e157c16",
+        "bytes": 516350,
+        "sha256": "d5cd2f537dd2563ee9c8d2383d5d587b147dcdcf85a56aa20b0191d65c0ca76e"
+      },
+      {
+        "name": "RNG",
+        "commit": "51d3206884e66faef62f25df3a19bbd69c5d5993",
+        "bytes": 783022,
+        "sha256": "76e42fd9faf61621b1a1a30fb47e25e348f75ac77f9a9346381803005bf2a1a0"
+      },
+      {
+        "name": "renderer",
+        "commit": "d9a9e64736b69b0e77d374fb8dffee014b020b6e",
+        "bytes": 1182598,
+        "sha256": "fa322bd755578516ef732cb7026c0a6f43ae3c807a44eca26ea5d4c9623553de"
+      },
+      {
+        "name": "pool",
+        "commit": "cbac550781e09b6d96a68c46895a24e429a8ad79",
+        "bytes": 200589,
+        "sha256": "b71bd9f7f358de986dcff796a6035887064cdd853759556e6b19b2430cffa1a5"
+      }
+    ],
+    "qualification": "Separate actual Git/current-file verification; Root has the two retained wide-helper changes. No claim of old whole-Root equality, build-artifact equality or new compiled credit."
+  },
+  "local_pins": [
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/capture.py",
+      "bytes": 8430,
+      "sha256": "f58559049ce553b739995916ebfc63fa322e5f843fc4d9be3a000f6d92c5609e"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/capture.json",
+      "bytes": 8099108,
+      "sha256": "c1dcde00308cda5b7dccaa228ed8ebd86d0a558e1077c2fe0da74083fb4137f6"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/capture_result.json",
+      "bytes": 451,
+      "sha256": "1ba68c2603d5493e1048a05f755efd0b30c4f227d00ae9351d1844c7fa4a0e33"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/source_evidence.py",
+      "bytes": 6440,
+      "sha256": "ab1863470d059550d57d215e176d85c6d693c859f1f1dda7cee0654857834af3"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/source_evidence.json",
+      "bytes": 144270,
+      "sha256": "9d8f9447e089ac22bcf55ebdbd979ee9385017458fce4db007c0df3ab980339f"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/portable_replay.py",
+      "bytes": 8735,
+      "sha256": "19febd914af349b5d11d58e50c6e1d4fe6abaa44c2cfaef90212f9545de6b0e8"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/package.py",
+      "bytes": 612,
+      "sha256": "225794fbecc287b1522bdf7fcdb093cc4ca0949532024539f6a7d1933c1bd552"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/bundle_receipt.json",
+      "bytes": 326,
+      "sha256": "33f41450a7f3d86b1340c9d296d9d80c44fc4fb7db800fb637d553d7f6d9d083"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/evidence.zip",
+      "bytes": 15134683,
+      "sha256": "9399e64abd05777633c6843ac2ae3212a89d93089845a8c21b6d109355e9af5c"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/in_place_result.json",
+      "bytes": 1016,
+      "sha256": "0707ac3eaec2e625f1cdfc561e68bab9a9fa209c554850dcf1c7fe7985e7fe1e"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/relocated_result.json",
+      "bytes": 1016,
+      "sha256": "0707ac3eaec2e625f1cdfc561e68bab9a9fa209c554850dcf1c7fe7985e7fe1e"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/verify_git.py",
+      "bytes": 2376,
+      "sha256": "5787ae623ef1b8446459bc6d908021f8bd9f0c6fdf2bbbdc4e77a7c6852e5dab"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/separate_git_result.json",
+      "bytes": 1830,
+      "sha256": "8e6a589bc93affe5df590a54492377b2899d662525c1588107ce60f69d629986"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/document_template.md",
+      "bytes": 16214,
+      "sha256": "4fa3660ed6cfd8411fd533d0a60e94f264266b85e72ed92aa200bcfcea9cb59d"
+    },
+    {
+      "path": "local/cc12_particle_profile_admission_design_readiness/publish.py",
+      "bytes": 8097,
+      "sha256": "ffae7a2bab155da9a6dd3b67e9accf9cd700fbed5acee26265d1943649ca31ad"
+    }
+  ],
+  "document_pin": {
+    "path": "docs/CC12_PARTICLE_PROFILE_ADMISSION_DESIGN_READINESS.md",
+    "bytes": 16996,
+    "sha256": "291e3bb18be6070c907dad7d698aaa4f1f40ef1914027b681e5aba1f25d4dc24"
+  },
+  "evidence_limits": [
+    "No C++ implementation or construction-callee activation",
+    "No compiler/build/test/runtime/Native/Ghidra work",
+    "No new native body or original register/SEH ABI verification",
+    "Only 3352 project-source pins per epoch are qualified; four build-artifact declarations are not materialized or verified",
+    "Installed SDK preimages are current captured bytes, not historical compiler-byte proof",
+    "Accepted reports are whole exact committed inputs; older referenced proof trees are not recursively followed",
+    "ZIP replay proves retained evidence and assertions, not correctness of a future unimplemented API",
+    "Separate actual Git/current-file checks name their observed commits and make no claim about later Root state"
+  ]
+}

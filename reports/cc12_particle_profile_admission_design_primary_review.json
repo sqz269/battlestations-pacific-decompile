@@ -1,0 +1,238 @@
+{
+  "schema": "bsp.cc12_particle_profile_admission_design.Primary.v1",
+  "status": "accepted_host_admission_design_production_profile_binding_held",
+  "worker_commit": "474fe23c40eeaa26a8f4536e089f38d42a31cf2c",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_profile_admission_design_primary\\worker_report.json",
+    "bytes": 176639,
+    "sha256": "f8160b9c5a7bb89ffc82b0f9da47735ca198d8f4cfb170646f7260186f44e7bf"
+  },
+  "Root_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_profile_admission_design_primary\\Root_review.json",
+    "bytes": 1322617,
+    "sha256": "5e653e83c1ee6a47e81b22b10141c20ebd49a58b59ca6a00992d9ba3c3e1538e"
+  },
+  "Root_helper": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_profile_admission_design_primary\\review.py",
+    "bytes": 4972,
+    "sha256": "6e8d1d92670af8073442e7440a1f21b3e04e46a22656532ee4077da1be7b4b1c"
+  },
+  "copied_bundle": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_profile_admission_design_primary\\outer\\evidence.zip",
+    "bytes": 15134683,
+    "sha256": "9399e64abd05777633c6843ac2ae3212a89d93089845a8c21b6d109355e9af5c"
+  },
+  "portable": {
+    "exit_code": 0,
+    "returned": {
+      "Root_changed_from_old_epoch": [
+        "include/bsp/native_wide_string.hpp",
+        "src/native_wide_string.cpp"
+      ],
+      "SDK_excerpts": 10,
+      "Source_excerpts": 32,
+      "Source_union": 4214,
+      "ZIP_payloads": 4270,
+      "baseline_and_Root_committed_blobs_each": 4214,
+      "boundary": "ZIP-only guarded Source/SDK evidence replay after imports. No external open/write/Git/compiler/subprocess/network/dlopen/Native execution. The proposed admission design is not implemented or executed.",
+      "checked_unique_pins": 4268,
+      "compiled_artifacts_captured": 0,
+      "declared_build_artifact_pins_not_checked": 4,
+      "installed_SDK_headers": 6,
+      "new_epoch_project_sources": 3352,
+      "old_epoch_project_sources": 3352,
+      "old_epoch_still_current_Root_project_sources": 3350,
+      "queries": 11,
+      "query_corpus_each": 4207,
+      "status": "pass",
+      "whole_accepted_reports": [
+        "profile",
+        "RNG",
+        "renderer",
+        "pool"
+      ],
+      "whole_wide_before_after_files": 2,
+      "worker_baseline_EOL_variants": 7
+    }
+  },
+  "scope": {
+    "copied_outer_files": 15,
+    "ZIP_payloads": 4270,
+    "actual_unique_Git_objects": 4250,
+    "current_Source_each": 4214,
+    "selected_project_sources_each": 3352,
+    "queries_corpus_each": 4207,
+    "installed_current_headers": 6,
+    "compiled_artifacts": 0
+  },
+  "actual_installed_headers": [
+    {
+      "name": "unordered_map",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\unordered_map",
+        "bytes": 42235,
+        "sha256": "eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71"
+      },
+      "retained": {
+        "entry": "blobs/eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71",
+        "bytes": 42235,
+        "sha256": "eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "xhash",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xhash",
+        "bytes": 79540,
+        "sha256": "ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d"
+      },
+      "retained": {
+        "entry": "blobs/ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d",
+        "bytes": 79540,
+        "sha256": "ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "list",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\list",
+        "bytes": 75439,
+        "sha256": "8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b"
+      },
+      "retained": {
+        "entry": "blobs/8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b",
+        "bytes": 75439,
+        "sha256": "8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "xmemory",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmemory",
+        "bytes": 115075,
+        "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38"
+      },
+      "retained": {
+        "entry": "blobs/0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38",
+        "bytes": 115075,
+        "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "mutex",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mutex",
+        "bytes": 26514,
+        "sha256": "285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889"
+      },
+      "retained": {
+        "entry": "blobs/285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889",
+        "bytes": 26514,
+        "sha256": "285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    },
+    {
+      "name": "vector",
+      "actual_current": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vector",
+        "bytes": 169028,
+        "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51"
+      },
+      "retained": {
+        "entry": "blobs/b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51",
+        "bytes": 169028,
+        "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51"
+      },
+      "qualification": "Current installed header bytes; prior tlogs name this toolset path but did not pin historical SDK preimages. No compiler invoked."
+    }
+  ],
+  "conclusion": "Registry reserve alone is insufficient. Prepare an inactive entry in the SAME canonical registry, consume existing generated-lifetime admission in a particle constructor overload, and retain stable application record/companion storage through constructor frames and quiescent disposal.",
+  "proposed_not_implemented_API": [
+    {
+      "component": "NativeRenderActualOwnerRegistry",
+      "proposed": "Move-only prepared-entry admission with prepare_binding, publish and cancel",
+      "preparation": "Insert an inactive null mapped entry in the SAME existing map; allocations and duplicate checks occur before native construction; no native storage read.",
+      "publication": "Validate exact token/identity and set the existing mapped pointer; no emplace, operator[], rehash, retain or replacement.",
+      "retirement": "Unused token cancels only its null entry; consumed token is inactive; existing exact unbind retires a published entry."
+    },
+    {
+      "component": "NativeParticleModelReference",
+      "proposed": "Constructor overload consuming GeneratedModelLifetimeRuntime::BindingAdmission&&",
+      "preparation": "Reserve stable disengaged optional/aligned storage; do not construct the interface or read native+04 early.",
+      "publication": "After live base/D5DA50 checks, consume the existing lifetime credit and install the same callbacks, then publish the canonical registry pointer in the hook.",
+      "retirement": "Existing success and failed-construction retirement providers remain authoritative."
+    },
+    {
+      "component": "Existing application owner",
+      "proposed": "Stable per-model record with borrowed environment/access/disposal, admissions, optional companion and retirement fact",
+      "preparation": "Allocate/link host record and prepare NativeModelOwner before AF74A0, retaining caller ownership across execution.",
+      "publication": "No allocation during handoff; one canonical companion over SAME native+04.",
+      "retirement": "Callback unbinds the saved actual identity and records retirement; reset dead/retired host views only after constructor/callback frames and all borrows are quiescent."
+    }
+  ],
+  "failure_contract": [
+    {
+      "point": "preparation rejected or abandoned",
+      "companion": "absent",
+      "host": "cancel unused tokens; destroy prepared views",
+      "native": "caller retains raw slot; no count read or native cleanup"
+    },
+    {
+      "point": "AF74A0 or B75030 pre-native validation rejection",
+      "companion": "absent",
+      "host": "preserve prepared phase and cancel unused tokens",
+      "native": "no invented base destruction; caller returns raw slot"
+    },
+    {
+      "point": "native base construction throws",
+      "companion": "absent",
+      "host": "existing base unwind sets DEAD; cancel unused tokens",
+      "native": "outer caller owns exactly one AF62F0 raw return"
+    },
+    {
+      "point": "valid admitted hook",
+      "companion": "bound in stable storage",
+      "host": "consume generated and canonical admissions",
+      "native": "no reference delta"
+    },
+    {
+      "point": "hook invariant or mutex failure",
+      "companion": "possibly partially published",
+      "host": "existing noexcept fatal boundary; no recovery claim",
+      "native": "do not invent rollback or successful continuation"
+    },
+    {
+      "point": "later AF74A0 throw",
+      "companion": "retired after real base unwind",
+      "host": "unbind generated and canonical metadata; record retirement; reset after quiescence",
+      "native": "no successful-derived count/manager rollback; outer AF62F0 exactly once"
+    },
+    {
+      "point": "AF74A0 success",
+      "companion": "bound and persistent",
+      "host": "already-owned record; no allocating handoff",
+      "native": "existing creator reference and later effect behavior unchanged"
+    },
+    {
+      "point": "zero reference",
+      "companion": "retired",
+      "host": "generated/canonical unbind, retirement notification, then quiescent host reset",
+      "native": "existing AF6C50 and actual particle-pool return occur first"
+    }
+  ],
+  "nonthrow_boundary": "Valid serialized admitted inputs only. Existing checked bind and mutex can reject invalid contracts; the profile hook is already noexcept, so invariant/lock failure is fatal rather than recoverable. No claim that noexcept alone prevents allocation or guarantees progress.",
+  "smallest_next_Source_implementation": "Add only an admission-consuming NativeParticleModelReference constructor path, following the existing camera overload. Preserve ordinary constructor, validation timing, same native count and callbacks. No registry, persistent record or application hook implementation in that packet.",
+  "remaining": [
+    "Prepared null entry capability in SAME actual-owner registry; bucket reserve alone leaves node allocation.",
+    "Persistent application record prepared before AF74A0, stable companion storage and nonallocating successful handoff.",
+    "Correct cancellation for abandoned/pre-base/failed-native construction; metadata-only failed retirement and exactly one outer raw return.",
+    "Companion reset only after real retirement/DEAD owner and constructor/terminal frame quiescence.",
+    "Renderer acquired-resource ownership and all remaining construction/environment services."
+  ],
+  "boundary": "Design/Source evidence only. Valid serialized admission/nonthrow claim retains invariant and mutex error fatal boundary. No native count access during registry preparation, extra retain/domain, broad rollback, compiled/new test/runtime, Ghidra mutation, Original ABI or application activation."
+}
