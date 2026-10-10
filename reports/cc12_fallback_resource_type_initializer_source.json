@@ -1,0 +1,640 @@
+{
+  "schema": 1,
+  "packet": "cc12_fallback_resource_type_initializer_source",
+  "created_utc": "2026-10-10T02:57:19.864465+00:00",
+  "baseline_commit": "dc35052f65c95cbce1f49f5e85053d1bb0806927",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "ordinary_unbound_Source_provider_compiled_full_COFF_retained_production_and_original_ABI_held",
+  "owned_tracked_files": [
+    "include/bsp/native_fallback_resource_type_initializer.hpp",
+    "src/native_fallback_resource_type_initializer.cpp",
+    "docs/CC12_FALLBACK_RESOURCE_TYPE_INITIALIZER_SOURCE.md",
+    "reports/cc12_fallback_resource_type_initializer_source.json"
+  ],
+  "leased_Native_semantic_anchor": "00B86A00",
+  "retained_Native_evidence": {
+    "readiness_doc": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\docs\\CC12_RESOURCE_CLASSIFIER_FALLBACK_DELEGATE_READINESS.md",
+      "bytes": 4212,
+      "sha256": "61b34ebd2359fbda8847c07ee82aa513ed8f0dbbe4f77d03a19f743f69611fa5"
+    },
+    "readiness_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\reports\\cc12_resource_classifier_fallback_delegate_readiness.json",
+      "bytes": 39931,
+      "sha256": "0975c0e2a64fc514e94cb75ba07b29f569f5076352d26ac6eab889c09eb55330"
+    },
+    "entry": "00B86A00",
+    "end_inclusive": "00B86A7C",
+    "body_bytes": 125,
+    "instructions": 31,
+    "original_interface": "ECX receiver, ESI preserved, no stack arguments, ordinary RET; original EH/fault ABI held.",
+    "use": "Accepted complete readiness only; no new Native recovery, byte/body read or live Ghidra query."
+  },
+  "interface": {
+    "context": "NativeFallbackResourceTypeInitializerContext",
+    "function": "initialize_native_fallback_resource_type_00b86a00",
+    "guard": "Borrow actual process byte0109020D, independent of receiver.",
+    "receiver": "Stable actual four-word [own, Scene, root, name] receiver; canonical startup0109021C.",
+    "name": "Exact numeric original token00D631F4, never dereferenced or replaced.",
+    "Scene": "Actual canonical01090210 storage, identical to genuine scene_types.storage().scene_01090210.",
+    "providers": [
+      "genuine NativeMeshResourceTypeIds",
+      "same retained TypeIdCounterLifetime and root domain"
+    ],
+    "caller_contracts": [
+      "correct disjoint actual storage",
+      "stable receiver and bindings through calls",
+      "canonical Scene identity",
+      "exact original name token",
+      "same retained counter/root domain",
+      "sufficient lifetimes"
+    ],
+    "runtime_validation_or_production_binding_added": false
+  },
+  "publication_order": [
+    "Nonzero guard: return without destination publication.",
+    "Zero guard: publish1, then receiver[3]=original token.",
+    "Call genuine Scene Source initializer on actual canonical Scene; it represents observed inline Native Scene schedule.",
+    "Load CURRENT Scene[0], then store receiver[1].",
+    "Load CURRENT Scene[1], then store receiver[2].",
+    "Call real counter.get_006fac20; load returned current next_id_04.",
+    "Store wrapping unsigned32 increment before receiver[0]=captured old ID."
+  ],
+  "failure_state": {
+    "sticky_guard": true,
+    "earlier_stores_survive_Source_dependency_exceptions": true,
+    "rollback_or_repair": false,
+    "original_exception_or_fault_ABI": "held"
+  },
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\include\\bsp\\native_fallback_resource_type_initializer.hpp",
+      "bytes": 1944,
+      "sha256": "fd458b91e2fd8930312409bd5fd19c40de95186f50f23b86561d22af564938d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\src\\native_fallback_resource_type_initializer.cpp",
+      "bytes": 1067,
+      "sha256": "39d76404789baacc2fb083c8af375aa01f5bf5960c75ad5c27648ebc3d1517db"
+    }
+  ],
+  "compile": {
+    "ordinary_strict_MSVC_Win32_objects": 3,
+    "compiler_version": "19.51.36244.0",
+    "toolset_directory": "14.51.36231",
+    "compiler_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "dumpbin_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "explicit_generated_settings": [
+      "/W4",
+      "/WX",
+      "/O2",
+      "/Ob2",
+      "/EHsc",
+      "/MD",
+      "/fp:strict",
+      "/std:c++17"
+    ],
+    "Oy_minus_qualification": "Observed in both captured Release provider commands; no explicit OmitFramePointers ClCompile property. This standalone audit reuses that recorded option, without claiming it is an explicit generated project property.",
+    "exact_flags_and_commands": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\compile_receipts.json",
+      "bytes": 28253,
+      "sha256": "d46b84cf956bf0b973e39ef6e361bb322f132cc70644bf0a31ba37db38ddc5c1"
+    },
+    "configuration_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\recorded_release_commands.json",
+      "bytes": 4588,
+      "sha256": "1b69171dd1044c3da7a6798f7f24a781c4f3455bf56ea387d13c3991c5f4f8cd"
+    },
+    "stderr_qualification": "Compiler stderr retains /Bv version/components, with no warning/error diagnostics. All15 dumpbin stderr files are empty.",
+    "fresh_normal_build_link_test_probe_execution": false
+  },
+  "COFF": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\selected_coff_receipt.json",
+      "bytes": 104054,
+      "sha256": "972306f249bf4cc5ca055ed023a72ef70070c3d22656f3855036b6ebea03e6f0"
+    },
+    "objects": [
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_fallback_resource_type_initializer.obj",
+          "bytes": 2738,
+          "sha256": "0317b680a8df142f1bc22960525ed745951802e741d54a046df5f8d0655e557b"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_fallback_resource_type_initializer.coff_inventory.json",
+          "bytes": 40320,
+          "sha256": "7a410f12a90359fe6986b275c303300fcc0637998ce2c851d3fad4c3d1d4660f"
+        },
+        "sections": 8,
+        "physical_symbol_records_including_auxiliary": 25,
+        "primary_symbol_records": 17,
+        "relocations": 2,
+        "functions": 2,
+        "complete_linear_decodes": 2,
+        "functions_with_undecoded_tail": []
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_mesh_subset_loading.obj",
+          "bytes": 235145,
+          "sha256": "d67e33ecfab7fe8e241766913e3c03065b25b963f5deb65e581002c38f461b01"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_mesh_subset_loading.coff_inventory.json",
+          "bytes": 5912454,
+          "sha256": "8a665425a558c6788a1ceade79c7fb88a860de527604c19175ba59fa66e076c8"
+        },
+        "sections": 762,
+        "physical_symbol_records_including_auxiliary": 2335,
+        "primary_symbol_records": 1561,
+        "relocations": 1011,
+        "functions": 469,
+        "complete_linear_decodes": 469,
+        "functions_with_undecoded_tail": []
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\light_type_bootstrap.obj",
+          "bytes": 7304,
+          "sha256": "5bd748b2a5c7419090edb4bc671e37a93adf3ddffa5c867e12efc59613e7ac3c"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\light_type_bootstrap.coff_inventory.json",
+          "bytes": 244247,
+          "sha256": "00cf70b3d73de7075b1942e54ab286f2def7b302621b118b07175acdd3bfffb1"
+        },
+        "sections": 28,
+        "physical_symbol_records_including_auxiliary": 91,
+        "primary_symbol_records": 63,
+        "relocations": 44,
+        "functions": 19,
+        "complete_linear_decodes": 19,
+        "functions_with_undecoded_tail": []
+      }
+    ],
+    "selected_positive_definitions": {
+      "candidate": {
+        "object_name": "native_fallback_resource_type_initializer",
+        "symbol_name": "?initialize_native_fallback_resource_type_00b86a00@bsp@@YAXABUNativeFallbackResourceTypeInitializerContext@1@@Z",
+        "positive_definition_symbol_index": 22,
+        "section": 7,
+        "bytes": 87,
+        "instructions": 33,
+        "complete_code_sha256": "310b0651d06a864e585178b65a02acb23921f9557bd7aa51f51ad764545840b9",
+        "complete_linear_decode": true
+      },
+      "Scene": {
+        "object_name": "native_mesh_subset_loading",
+        "symbol_name": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z",
+        "positive_definition_symbol_index": 1536,
+        "section": 549,
+        "bytes": 74,
+        "instructions": 30,
+        "complete_code_sha256": "2d7ae6e8f6d098cedceb419eade80c070fefbaf6edf974f49a97fb607d33d03b",
+        "complete_linear_decode": true
+      },
+      "counter": {
+        "object_name": "light_type_bootstrap",
+        "symbol_name": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+        "positive_definition_symbol_index": 60,
+        "section": 13,
+        "bytes": 205,
+        "instructions": 66,
+        "complete_code_sha256": "0ae5345c807d41de6d82f2abb8468285e8c526fd6d30e3a4d604fc4359c56591",
+        "complete_linear_decode": true
+      },
+      "root": {
+        "object_name": "light_type_bootstrap",
+        "symbol_name": "?initialize_root_00bea780@LightTypeBootstrap@bsp@@QAEXACURootTypeDescriptor@2@@Z",
+        "positive_definition_symbol_index": 63,
+        "section": 22,
+        "bytes": 38,
+        "instructions": 13,
+        "complete_code_sha256": "9ad55700d5cbfa8bee57aa4a5fe7a955424ea6c6a422f562a4afcd7ba76e57a4",
+        "complete_linear_decode": true
+      }
+    },
+    "all_physical_symbol_records_including_auxiliary": 2451,
+    "all_sections": 798,
+    "all_relocations": 1057,
+    "all_functions_and_complete_linear_decodes": 490,
+    "candidate_opcode_offsets": [
+      34,
+      65
+    ],
+    "candidate_REL32_operand_offsets": [
+      35,
+      66
+    ],
+    "candidate_direct_references": [
+      {
+        "role": "candidate",
+        "relocation": {
+          "record_file_offset": 1782,
+          "raw_record_hex": "23000000150000001400",
+          "offset": 35,
+          "type": 20,
+          "symbol_index": 21,
+          "symbol": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z",
+          "symbol_record": {
+            "index": 21,
+            "record_file_offset": 2244,
+            "raw_record_hex": "00000000e900000000000000000020000200",
+            "name": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1730,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 35
+        },
+        "positive_definitions": [
+          {
+            "object_name": "native_mesh_subset_loading",
+            "symbol_index": 1536,
+            "symbol_name": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z"
+          }
+        ],
+        "resolution": "unique positive definition"
+      },
+      {
+        "role": "candidate",
+        "relocation": {
+          "record_file_offset": 1792,
+          "raw_record_hex": "42000000140000001400",
+          "offset": 66,
+          "type": 20,
+          "symbol_index": 20,
+          "symbol": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+          "symbol_record": {
+            "index": 20,
+            "record_file_offset": 2226,
+            "raw_record_hex": "00000000a000000000000000000020000200",
+            "name": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 1761,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 66
+        },
+        "positive_definitions": [
+          {
+            "object_name": "light_type_bootstrap",
+            "symbol_index": 60,
+            "symbol_name": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ"
+          }
+        ],
+        "resolution": "unique positive definition"
+      }
+    ],
+    "selected_graphs": [
+      {
+        "object_name": "native_fallback_resource_type_initializer",
+        "pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_fallback_resource_type_initializer.selected_relocation_graph.json",
+          "bytes": 12147,
+          "sha256": "e762be13e354ddc33966f56d919a8f538bcb68c1909d21b603725b9a2cf5068e"
+        },
+        "root_indices": [
+          22
+        ],
+        "reached_sections": [
+          7
+        ],
+        "external_boundaries": {
+          "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z": [
+            {
+              "from_section": 7,
+              "relocation_record_file_offset": 1782,
+              "operand_file_offset": 1730,
+              "symbol_index": 21
+            }
+          ],
+          "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ": [
+            {
+              "from_section": 7,
+              "relocation_record_file_offset": 1792,
+              "operand_file_offset": 1761,
+              "symbol_index": 20
+            }
+          ]
+        }
+      },
+      {
+        "object_name": "native_mesh_subset_loading",
+        "pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\native_mesh_subset_loading.selected_relocation_graph.json",
+          "bytes": 11591,
+          "sha256": "22f210478c1cc8d63876e8395f3ba11ba5db345f5099f1afe2481c729958178d"
+        },
+        "root_indices": [
+          1536
+        ],
+        "reached_sections": [
+          549
+        ],
+        "external_boundaries": {
+          "?initialize_root_00bea780@LightTypeBootstrap@bsp@@QAEXACURootTypeDescriptor@2@@Z": [
+            {
+              "from_section": 549,
+              "relocation_record_file_offset": 56575,
+              "operand_file_offset": 56541,
+              "symbol_index": 1388
+            }
+          ],
+          "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ": [
+            {
+              "from_section": 549,
+              "relocation_record_file_offset": 56585,
+              "operand_file_offset": 56553,
+              "symbol_index": 1387
+            }
+          ]
+        }
+      },
+      {
+        "object_name": "light_type_bootstrap",
+        "pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\light_type_bootstrap.selected_relocation_graph.json",
+          "bytes": 113830,
+          "sha256": "6dfd6f221e25cebecdaf9c4fd510557c68e08e317e098144742c11f7efa5fa55"
+        },
+        "root_indices": [
+          60,
+          63
+        ],
+        "reached_sections": [
+          9,
+          10,
+          13,
+          14,
+          22,
+          26,
+          27
+        ],
+        "external_boundaries": {
+          "___security_cookie": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 1998,
+              "operand_file_offset": 1795,
+              "symbol_index": 88
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2488,
+              "operand_file_offset": 2294,
+              "symbol_index": 88
+            }
+          ],
+          "??0CapturedSoundLifetimeSection@bsp@@QAE@VSoundLifetimeAccess@1@@Z": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2008,
+              "operand_file_offset": 1835,
+              "symbol_index": 57
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2498,
+              "operand_file_offset": 2334,
+              "symbol_index": 57
+            }
+          ],
+          "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2018,
+              "operand_file_offset": 1880,
+              "symbol_index": 52
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2508,
+              "operand_file_offset": 2379,
+              "symbol_index": 52
+            }
+          ],
+          "?get_manager_00415350@SoundLifetimeAccess@bsp@@QBE?AVSoundLifetimeManagerView@2@XZ": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2028,
+              "operand_file_offset": 1922,
+              "symbol_index": 56
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2518,
+              "operand_file_offset": 2421,
+              "symbol_index": 56
+            }
+          ],
+          "?register_object@SoundLifetimeManagerView@bsp@@QAEXPAX@Z": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2038,
+              "operand_file_offset": 1936,
+              "symbol_index": 55
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2528,
+              "operand_file_offset": 2435,
+              "symbol_index": 55
+            }
+          ],
+          "??1CapturedSoundLifetimeSection@bsp@@QAE@XZ": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2048,
+              "operand_file_offset": 1944,
+              "symbol_index": 58
+            },
+            {
+              "from_section": 10,
+              "relocation_record_file_offset": 2120,
+              "operand_file_offset": 2072,
+              "symbol_index": 58
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2538,
+              "operand_file_offset": 2443,
+              "symbol_index": 58
+            },
+            {
+              "from_section": 14,
+              "relocation_record_file_offset": 2610,
+              "operand_file_offset": 2562,
+              "symbol_index": 58
+            }
+          ],
+          "@__security_check_cookie@4": [
+            {
+              "from_section": 9,
+              "relocation_record_file_offset": 2058,
+              "operand_file_offset": 1980,
+              "symbol_index": 72
+            },
+            {
+              "from_section": 10,
+              "relocation_record_file_offset": 2130,
+              "operand_file_offset": 2096,
+              "symbol_index": 72
+            },
+            {
+              "from_section": 10,
+              "relocation_record_file_offset": 2140,
+              "operand_file_offset": 2106,
+              "symbol_index": 72
+            },
+            {
+              "from_section": 13,
+              "relocation_record_file_offset": 2548,
+              "operand_file_offset": 2470,
+              "symbol_index": 72
+            },
+            {
+              "from_section": 14,
+              "relocation_record_file_offset": 2620,
+              "operand_file_offset": 2586,
+              "symbol_index": 72
+            },
+            {
+              "from_section": 14,
+              "relocation_record_file_offset": 2630,
+              "operand_file_offset": 2596,
+              "symbol_index": 72
+            }
+          ],
+          "___CxxFrameHandler3": [
+            {
+              "from_section": 10,
+              "relocation_record_file_offset": 2160,
+              "operand_file_offset": 2116,
+              "symbol_index": 73
+            },
+            {
+              "from_section": 14,
+              "relocation_record_file_offset": 2650,
+              "operand_file_offset": 2606,
+              "symbol_index": 73
+            }
+          ]
+        }
+      }
+    ],
+    "lower_external_boundaries": "Sound lifetime/allocator and CRT remain explicit external boundaries of three-object audit. Local EH helper resolved by exact index; no stubs or linking.",
+    "separate_candidate_compiler_helpers": [
+      {
+        "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+        "symbol_index": 19,
+        "bytes": 38,
+        "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147"
+      }
+    ]
+  },
+  "compiled_schedule_offsets": {
+    "Scene_own_load": 42,
+    "receiver_Scene_store": 47,
+    "Scene_root_load": 53,
+    "receiver_root_store": 59,
+    "counter_increment_store": 76,
+    "receiver_own_store": 82,
+    "scope": "New ordinary Source candidate function offsets, not original Native addresses."
+  },
+  "frozen_inputs": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\source_and_dependency_pins.json",
+      "bytes": 310079,
+      "sha256": "6aaa050fb098482f621f87f410ec4628a54526c245adcd8a5a6cd25079376c47"
+    },
+    "project_inputs": 114,
+    "new_Source_files": 2,
+    "baseline_project_blobs": 112,
+    "external_compiler_include_files": 236,
+    "reported_compiler_components": 7,
+    "scope": "All three complete translation units and every include in all three /sourceDependencies receipts, plus selected whole context/config files and every component reported by /Bv. This is not a complete OS DLL/runtime-loader or whole-application dependency claim.",
+    "canonical_lf_baseline_matches": 112
+  },
+  "document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\docs\\CC12_FALLBACK_RESOURCE_TYPE_INITIALIZER_SOURCE.md",
+    "bytes": 7533,
+    "sha256": "9b6ed131c233aadaf80196e901584b25076ed35ffac741956157e62c73572d3b"
+  },
+  "offline_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\offline_verification.json",
+    "bytes": 874,
+    "sha256": "a57991751c50e2420f5353b6e2dfa936da440588d528d3239e3af119087882f7"
+  },
+  "evidence_manifest_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\evidence_manifest.json",
+    "bytes": 248582,
+    "sha256": "2b8e07dd0646cd8425af34274c583bbbf67489b3bf044682f61e63294b3f24de"
+  },
+  "evidence_bundle_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_fallback_resource_type_initializer_source\\evidence_bundle.zip",
+    "bytes": 29402332,
+    "sha256": "ba5e5da5a69055faa47341bed96aa9cc505e47f7fa594ffea45dd631785d885a"
+  },
+  "bundle_payload_count": 558,
+  "bundle_total_members_including_manifest": 559,
+  "bundle_CRC_and_each_payload_SHA256_verified": true,
+  "remaining_gates": [
+    "Root CMake registration and full normal build",
+    "actual production fallback guard/descriptor backing and lifetime",
+    "actual application consumer wiring",
+    "other genuine loading/forwarding/deletion contracts",
+    "original CRT placement/order and numeric-ID ordering",
+    "original ECX/ESI/RET/EH/fault ABI",
+    "startup, fixture, Present, gameplay and runtime parity"
+  ],
+  "new_work_counts": {
+    "Source_files": 2,
+    "docs_reports": 2,
+    "ordinary_object_compilations": 3,
+    "Native_windows": 0,
+    "live_Ghidra_queries": 0,
+    "Ghidra_mutations": 0,
+    "provider_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "normal_builds": 0,
+    "links": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_actions": 0
+  }
+}
