@@ -129,3 +129,9 @@ handling CMake, ledger and annotations. No new C++ or tests were added, so no
 build was run. Compile, COFF/EH, fixture, original ABI, runtime and gameplay
 credit are all zero. Raw `AEE620`, `AEEAF0`, `AEF280`, `735F90`, manager ownership
 and atlas startup wiring remain separate named dependencies.
+
+Primary review independently replayed and retained all selected worker artifact
+pins and all 15 physical/data spans against the unchanged installed PE. The
+recorded live equality and typed listing gap remain pinned worker evidence, not
+new Root live queries. Exact AddressSet/flow holds and zero Source/build/runtime
+credit remain unchanged. The next work is an exact read-only typed property route.
