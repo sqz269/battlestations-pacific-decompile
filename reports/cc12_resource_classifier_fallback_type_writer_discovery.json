@@ -1,0 +1,911 @@
+{
+  "schema": 1,
+  "packet": "cc12_resource_classifier_fallback_type_writer_discovery",
+  "created_utc": "2026-10-10T02:27:22.730671+00:00",
+  "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "metadata_candidate_identified_writer_and_owner_publication_unestablished",
+  "owned_tracked_files": [
+    "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+    "reports/cc12_resource_classifier_fallback_type_writer_discovery.json"
+  ],
+  "leased_addresses": [
+    "0109021C",
+    "01090220",
+    "01090224",
+    "00B86950",
+    "00CD82C0"
+  ],
+  "decision": {
+    "confirmed_writer": null,
+    "selected_candidate": "00CD82C0",
+    "candidate_basis": "Exact DATA xref source to0109021C plus exact function ownership metadata; not a recorded WRITE.",
+    "production_classifier_attachment": "held",
+    "true_initializer_target": null,
+    "retained_backing_owner": null,
+    "CRT_position": null,
+    "guard": null,
+    "descriptor_name": null,
+    "descriptor_extent": null,
+    "counter": null,
+    "publication_lifetime": null
+  },
+  "runtime_identity": {
+    "path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": {
+      "space": "ram",
+      "offset": "00400000"
+    },
+    "default_address_space": "ram",
+    "project": {
+      "name": "bsp",
+      "location": "/C:/Users/sqz269/",
+      "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+    }
+  },
+  "stable_metadata_modification": "5",
+  "identity_qualification": "Every typed response independently includes actual absolute runtime GPR locator; xref responses do not and are bracketed by matching typed metadata at modification5. Client.verify ran before and after each typed batch.",
+  "typed_flow_batches": [
+    {
+      "capture": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch01_consumer_typed_flow.json",
+        "bytes": 8893,
+        "sha256": "d78054fc1ef04d0c96c99351127844d56ccf9a1eccaf93f40d4be402f1802828"
+      },
+      "command_receipt": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch01_consumer_typed_flow.command.json",
+        "bytes": 417,
+        "sha256": "0ea4e1701bf9877e7e689061c889126c8b53d962fe23ffa74cf7fe5f84be33d4"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch01_consumer_typed_flow.stdout.txt",
+        "bytes": 227,
+        "sha256": "79457bac39127612a3a2a974bb7e9ed8fdc91bd6e99fa5d2d4f3b01aa29d21e6"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch01_consumer_typed_flow.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "requested_addresses": [
+        "00B86950"
+      ],
+      "max_ranges": 16,
+      "modification_number": "5",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "responses": [
+        {
+          "address": "00B86950",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00B86950&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "raw_response_pin": {
+            "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch01_consumer_typed_flow_00b86950.raw.json",
+            "bytes": 2178,
+            "sha256": "06b8b6f59fb62417354bc5846092d7320500107d85e90589eb8415b346e3da83"
+          },
+          "raw_response_sha256": "06b8b6f59fb62417354bc5846092d7320500107d85e90589eb8415b346e3da83",
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "modification_number_before": "5",
+          "modification_number_after": "5"
+        }
+      ]
+    },
+    {
+      "capture": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow.json",
+        "bytes": 14660,
+        "sha256": "fa7d33760539965ae241a279306313bfafde8cffcf4cb7f0d807684a975d88af"
+      },
+      "command_receipt": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow.command.json",
+        "bytes": 501,
+        "sha256": "081038536e90a3464694838f0b80513c0ea864b4ce8f428bdd2c4a3090087c8a"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow.stdout.txt",
+        "bytes": 228,
+        "sha256": "eefe547744794d4f072fe366608875ea98be17697a4c422eea3c18ddabfb0b05"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "requested_addresses": [
+        "00B86950",
+        "00CD82C0"
+      ],
+      "max_ranges": 16,
+      "modification_number": "5",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "responses": [
+        {
+          "address": "00B86950",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00B86950&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "raw_response_pin": {
+            "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow_00b86950.raw.json",
+            "bytes": 2178,
+            "sha256": "06b8b6f59fb62417354bc5846092d7320500107d85e90589eb8415b346e3da83"
+          },
+          "raw_response_sha256": "06b8b6f59fb62417354bc5846092d7320500107d85e90589eb8415b346e3da83",
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "modification_number_before": "5",
+          "modification_number_after": "5"
+        },
+        {
+          "address": "00CD82C0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00CD82C0&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "raw_response_pin": {
+            "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/batch02_candidate_typed_flow_00cd82c0.raw.json",
+            "bytes": 2173,
+            "sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72"
+          },
+          "raw_response_sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72",
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "modification_number_before": "5",
+          "modification_number_after": "5"
+        }
+      ]
+    }
+  ],
+  "recorded_xrefs": [
+    {
+      "cell": "0109021C",
+      "request": {
+        "address": "0109021C",
+        "limit": 80,
+        "offset": 0,
+        "program": "/battlestationspacific.exe"
+      },
+      "mcp_capture": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/0109021c_xrefs.mcp.json",
+        "bytes": 970,
+        "sha256": "cd9a3ebf6fe67294d56b216b88073c665cab653a5a64d3d6977fe07e3b0528f6"
+      },
+      "exact_returned_text": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/0109021c_xrefs.response.txt",
+        "bytes": 278,
+        "sha256": "1240ae99d8e831f5987b62170de717530b94bf047ac3cd9a14dbf8a8340a955b"
+      },
+      "rows": [
+        {
+          "source_address": "00B86860",
+          "recorded_owner_name": "BSP_UnknownResourceItem_GetCurrentTypeToken",
+          "recorded_reference_kind": "READ"
+        },
+        {
+          "source_address": "00B86960",
+          "recorded_owner_name": "BSP_UnknownResourceItem_MatchesCurrentTypeToken",
+          "recorded_reference_kind": "READ"
+        },
+        {
+          "source_address": "00B86954",
+          "recorded_owner_name": "BSP_UnknownResourceItem_MatchesCurrentTypeToken",
+          "recorded_reference_kind": "DATA"
+        },
+        {
+          "source_address": "00CD82C0",
+          "recorded_owner_name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+          "recorded_reference_kind": "DATA"
+        }
+      ],
+      "returned_row_count": 4,
+      "request_limit": 80,
+      "pagination_requested": false,
+      "no_reference_text": null,
+      "qualification": "Recorded xrefs only; response supplies no runtime project locator or modification number; identity and modification are bracketed by typed-flow captures."
+    },
+    {
+      "cell": "01090220",
+      "request": {
+        "address": "01090220",
+        "limit": 80,
+        "offset": 0,
+        "program": "/battlestationspacific.exe"
+      },
+      "mcp_capture": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/01090220_xrefs.mcp.json",
+        "bytes": 550,
+        "sha256": "2f1da267549046296f7a57a72aab320362931e05e5a9c4d46307c9d199fe6c01"
+      },
+      "exact_returned_text": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/01090220_xrefs.response.txt",
+        "bytes": 71,
+        "sha256": "cc4de68e96a5226aa40602f1ae80a958a94efe201740d564c71f50224ae52d4c"
+      },
+      "rows": [
+        {
+          "source_address": "00B86960",
+          "recorded_owner_name": "BSP_UnknownResourceItem_MatchesCurrentTypeToken",
+          "recorded_reference_kind": "READ"
+        }
+      ],
+      "returned_row_count": 1,
+      "request_limit": 80,
+      "pagination_requested": false,
+      "no_reference_text": null,
+      "qualification": "Recorded xrefs only; response supplies no runtime project locator or modification number; identity and modification are bracketed by typed-flow captures."
+    },
+    {
+      "cell": "01090224",
+      "request": {
+        "address": "01090224",
+        "limit": 80,
+        "offset": 0,
+        "program": "/battlestationspacific.exe"
+      },
+      "mcp_capture": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/01090224_xrefs.mcp.json",
+        "bytes": 492,
+        "sha256": "fb66831e2d112f84e21ea787d34112c4d56766525c4e70038c1c4bee49d7c17f"
+      },
+      "exact_returned_text": {
+        "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/01090224_xrefs.response.txt",
+        "bytes": 42,
+        "sha256": "1baf716c7da3796a2aa1adc86f9b4bf7c903ea993997d29d53fa0d8f598b5489"
+      },
+      "rows": [],
+      "returned_row_count": 0,
+      "request_limit": 80,
+      "pagination_requested": false,
+      "no_reference_text": "No references found to address: 0x01090224",
+      "qualification": "Recorded xrefs only; response supplies no runtime project locator or modification number; identity and modification are bracketed by typed-flow captures."
+    }
+  ],
+  "typed_owner_metadata": {
+    "known_consumer": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "00b86950"
+      },
+      "modification_number_before": "5",
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00b86954"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00b86954"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "function_at_query": {
+        "space": "ram",
+        "offset": "00b86950"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00b86950"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "00b86950"
+          },
+          "name": "BSP_UnknownResourceItem_MatchesCurrentTypeToken",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "40",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00b86950"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00b86977"
+                },
+                "length": "40"
+              }
+            ]
+          }
+        }
+      ],
+      "direct_call_targets": [],
+      "modification_number_after": "5"
+    },
+    "selected_candidate": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "00cd82c0"
+      },
+      "modification_number_before": "5",
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd82c5"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd82c5"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "function_at_query": {
+        "space": "ram",
+        "offset": "00cd82c0"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00cd82c0"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "00cd82c0"
+          },
+          "name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "10",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00cd82c9"
+                },
+                "length": "10"
+              }
+            ]
+          }
+        }
+      ],
+      "direct_call_targets": [],
+      "modification_number_after": "5"
+    }
+  },
+  "source_context": {
+    "fallback_cells": [
+      "0109021C",
+      "01090220",
+      "01090224"
+    ],
+    "classifier": "NativeGameResourceClassificationContext borrows three current cells; capturedB86950 routes to existing matches_native_fallback_type_00b86950.",
+    "fallback_item_constructor": "Existing Source writes only item profile/refcount; it is not a demonstrated fallback-token storage owner or writer.",
+    "candidate_identifier_search": "No exact00CD82C0 or recorded owner-name occurrence in include/src; explicit bounded identifier search only.",
+    "cell_identifier_search": "Only classifier pointer declaration and use under include/src.",
+    "baseline_pins": [
+      {
+        "path": "config/target.json",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "canonical_lf_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "git_blob_oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/tools/bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "canonical_lf_sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "git_blob_oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/tools/ghidra_typed_flow.py",
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "include/bsp/native_game_resource_classification.hpp",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 2460,
+        "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74",
+        "canonical_lf_sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74",
+        "git_blob_oid": "150675e460e1d8aa2633e5ef0394a4e9c5cd87e1",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "src/native_game_resource_classification.cpp",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 2861,
+        "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65",
+        "canonical_lf_sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65",
+        "git_blob_oid": "1cc054e133ee4162c44d8106b601671fb6062b5e",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "include/bsp/native_resource_fallback_item.hpp",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 1564,
+        "sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178",
+        "canonical_lf_sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178",
+        "git_blob_oid": "36c80fa249d6fe5531f070d4274efdd05700fd72",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/include/bsp/native_resource_fallback_item.hpp",
+          "bytes": 1564,
+          "sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "src/native_resource_fallback_item.cpp",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 1101,
+        "sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136",
+        "canonical_lf_sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136",
+        "git_blob_oid": "ccf3fc14ddd2e805a050ed7edb62a4eebde5d7a6",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/src/native_resource_fallback_item.cpp",
+          "bytes": 1101,
+          "sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 13299,
+        "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda",
+        "canonical_lf_sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda",
+        "git_blob_oid": "2d89a943d124a4addb1deac6d1aa84e4acf8cc6d",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+          "bytes": 13299,
+          "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda"
+        },
+        "canonical_lf_matches_baseline": true
+      },
+      {
+        "path": "reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+        "baseline_commit": "8ab093935e70c6da1918861eebe0d03228cd9a2f",
+        "bytes": 83382,
+        "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce",
+        "canonical_lf_sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce",
+        "git_blob_oid": "8218596bd3813ecd270467d3bf916ffe164a13e0",
+        "snapshot": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/baseline/reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+          "bytes": 83382,
+          "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce"
+        },
+        "canonical_lf_matches_baseline": true
+      }
+    ],
+    "search_receipts": [
+      {
+        "name": "source_exact_cells",
+        "command_receipt": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_exact_cells.command.json",
+          "bytes": 405,
+          "sha256": "a55b9ad8801517955916c70040158e8420821cddbe7cd632fbad3c6532d7374b"
+        },
+        "stdout": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_exact_cells.stdout.txt",
+          "bytes": 295,
+          "sha256": "338d022135749f5c4af9ce45073a3c7dcd680f001187d96ca0919ffcdc7f0def"
+        },
+        "stderr": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_exact_cells.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0
+      },
+      {
+        "name": "source_candidate_entry",
+        "command_receipt": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_candidate_entry.command.json",
+          "bytes": 426,
+          "sha256": "fb3040c535cad181b8f6d86169a5ea7f7d6ac7f643e90bc33f66823c3d750941"
+        },
+        "stdout": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_candidate_entry.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_candidate_entry.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 1
+      },
+      {
+        "name": "source_constructor",
+        "command_receipt": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_constructor.command.json",
+          "bytes": 455,
+          "sha256": "6308704fc214c8b8f41cf4ed462488318d93f5ba4502abda94e4934ffd9b3937"
+        },
+        "stdout": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_constructor.stdout.txt",
+          "bytes": 381,
+          "sha256": "d3d9dade5faa9d4cd1834ac4d87b5f91f808109daa9f7fbbd985a8914936b212"
+        },
+        "stderr": {
+          "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/source_constructor.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0
+      }
+    ]
+  },
+  "next_evidence_gate": {
+    "suggested_packet": "cc12_resource_classifier_fallback_startup_candidate_instruction_evidence",
+    "owner_role": "Root/Astra listing and ABI evidence recovery",
+    "approval_status": "proposal only; not executed or authorized by this packet",
+    "address": "00CD82C0",
+    "length": 10,
+    "end_inclusive": "00CD82C9",
+    "basis": "Complete metadata-owned one-range candidate function extent.",
+    "purpose": "Decode DATA-referencing instruction and subsequent transfer if any to select actual writer or delegated initializer from evidence.",
+    "stricter_staged_alternative": {
+      "instruction_address": "00CD82C0",
+      "instruction_length": 5,
+      "next_metadata_query_address": "00CD82C5",
+      "later_extent_requires_review": true
+    },
+    "new_target_scope": "Any discovered target/data/handler requires explicit reviewed scope before reads.",
+    "implementation_admission": "Held until true writer, actual retained owner/publication and existing remaining classifier/loading/forwarding/deletion contracts are established."
+  },
+  "separation": {
+    "fallback_identity": "0109021C/01090220/01090224",
+    "distinct_scene_identity": "01090210",
+    "selected_mesh_ids_are_not_substitutes": true,
+    "recorded_DATA_is_not_WRITE": true,
+    "no_xref_is_not_no_indirect_access": true,
+    "direct_call_target_empty_scope": "queried instruction only; not entire function"
+  },
+  "evidence_manifest_pin": {
+    "path": "local/cc12_resource_classifier_fallback_type_writer_discovery/evidence_manifest.json",
+    "bytes": 16454,
+    "sha256": "ec67dd74e68a74d435fa458250232149db1eec8f18a200e9ab4a2bec8ca49ec9"
+  },
+  "document_pin": {
+    "path": "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+    "bytes": 7540,
+    "sha256": "fbb6669cd2a24df9430b1fe186d11390d87823dcfe6b5fa87f57b08e2c66be32"
+  },
+  "evidence_counts": {
+    "baseline_files": 10,
+    "typed_metadata_responses": 3,
+    "exact_cell_xref_requests": 3,
+    "returned_xref_rows": 5,
+    "recorded_READ_rows": 3,
+    "recorded_DATA_rows": 2,
+    "recorded_WRITE_rows": 0,
+    "complete_cli_search_receipts": 5,
+    "retained_manifest_files": 37
+  },
+  "new_work_counts": {
+    "Native_byte_windows": 0,
+    "Native_byte_comparisons": 0,
+    "Native_disassembly_reads": 0,
+    "Native_decompile_reads": 0,
+    "Native_data_or_table_reads": 0,
+    "Ghidra_mutations": 0,
+    "Ghidra_analysis_or_repair": 0,
+    "ledger_changes": 0,
+    "Source_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "runtime_actions": 0
+  },
+  "evidence_levels": {
+    "recorded_xrefs": "current read-only metadata capture",
+    "function_owner_and_extent": "current typed metadata accepted at modification5",
+    "Source_contract": "baseline-pinned current Source context",
+    "true_writer": "unestablished",
+    "original_ABI": "not established",
+    "startup_execution": "not established",
+    "CRT_completeness": "not established",
+    "gameplay_or_image_parity": "not established"
+  },
+  "static_evidence_verification": {
+    "baseline_canonical_lf_matches": 10,
+    "typed_raw_response_hashes_match": 3,
+    "typed_http200_and_validation_accepted": 3,
+    "full_runtime_locator_and_query_identity_match": true,
+    "stable_modification_number": "5",
+    "all_five_command_stderr_files_empty": true,
+    "source_candidate_search_exit1_is_legitimate_no_match": true
+  },
+  "primary_review": {
+    "worker_commit": "094e3dc4ead46d63d9a80bf09a6737cc047c2bd6",
+    "retained_pin_occurrences": 105,
+    "baseline_current_files_verified": 10,
+    "typed_raw_responses_replayed": 3,
+    "modification": 5,
+    "raw_xref_identity_HTTP_replayed": 0,
+    "Native_replay": null,
+    "bundle": null,
+    "proof_pin": {
+      "path": "local/cc12_fallback_metadata_primary/proof.json",
+      "bytes": 59377,
+      "sha256": "0099dad13d2219b2a7ba8594c9517d13b3b97773472f7e1a64ab4941f7c2ac28"
+    },
+    "updated_document_pin": {
+      "path": "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+      "bytes": 7988,
+      "sha256": "e14b9f9103d83ff62462b3240de1080aef07a56b1a0e6e17dcd99df53109130b"
+    },
+    "Root_live_queries_and_mutations": 0,
+    "Source625_is_later_context_not_this_packet_execution": true,
+    "pin_scopes": {
+      "tracked_report": 48,
+      "complete_manifest": 57
+    }
+  }
+}
