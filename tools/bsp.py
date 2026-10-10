@@ -764,6 +764,12 @@ def ghidra_cmd(args):
         ok = ghidra_launch.ensure(wait=args.wait, restart=args.restart, force_kill=args.force_kill,
                                   status_only=args.status, report=live)
         raise SystemExit(0 if ok else 1)
+    if sub == 'typed-flow':
+        import ghidra_typed_flow
+        typed_args = [*args.addresses, '--output', args.output, '--max-ranges', str(args.max_ranges)]
+        if args.config:
+            typed_args.extend(['--config', args.config])
+        raise SystemExit(ghidra_typed_flow.main(typed_args))
     c = client()
     db = connect(required=False)
     if sub == 'count':
@@ -1122,6 +1128,7 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   ghidra autostart [--remove]                        do that at every logon (Startup folder, no elevation)
       proto/flow/comments take several addresses; decompile/disasm take one plus --lines
       flow-properties <addresses> --output local/response.json reads exact flow flags; needs bridge script capability
+      typed-flow <addresses> --output local/response.json reads typed body/flow metadata; no script fallback
       instruction-context <addresses> [--context 0..64] [--output local/response.json] reads exact listing starts
       bytes <addr> --length N (NOT --limit)
 
@@ -1225,6 +1232,7 @@ def main():
     q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20); q.add_argument('--brief', action='store_true', help='one line per address: name, signature, body span')
     q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
     q = gs.add_parser('flow-properties', help='read exact current flow/no-return/thunk properties without analysis changes'); q.add_argument('addresses', nargs='+'); q.add_argument('--output', required=True); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
+    q = gs.add_parser('typed-flow', help='capture and validate exact typed body/flow metadata without scripts or mutation'); q.add_argument('addresses', nargs='+'); q.add_argument('--output', required=True); q.add_argument('--max-ranges', type=int, default=4096); q.add_argument('--config')
     q = gs.add_parser('instruction-context', help='read instructions at exact addresses plus bounded listing neighbors; does not infer function flow')
     q.add_argument('addresses', nargs='+', type=instruction_address); q.add_argument('--context', type=instruction_context_count, default=0)
     q.add_argument('--output'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80)

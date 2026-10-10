@@ -1,0 +1,1248 @@
+{
+  "schema": 1,
+  "status": "prepared_not_deployed",
+  "utc": "2026-10-10T01:00:38.809565+00:00",
+  "baseline_BSP_commit": "d32650275d5602e8f2896a4c2199d462e0cdaa32",
+  "plugin": {
+    "worktree": "J:\\tools\\ghidra-mcp-cc12-typed-flow",
+    "branch": "agent/bsp-typed-flow",
+    "base_commit": "0c0299d1588f17bdb457ff8591c98c0b5eae0a68",
+    "commit": "3d8f2fc1e8f17643ca1894af4da7aa0d1aed0dfc",
+    "status": []
+  },
+  "readiness_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\readiness_report.json",
+    "bytes": 38822,
+    "sha256": "74ea2c54e629375ce21cdf2d6ce18f64b35c4d0febfeea8f024a40a64b62f969",
+    "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_ghidra_typed_flow_source_readiness.json"
+  },
+  "holds": [
+    "No deployment or installed-file replacement",
+    "No Ghidra restart or shutdown",
+    "No script enablement, script call, config change, analysis, disassembly or decompiler call",
+    "No typed endpoint call against any loaded program",
+    "No GPR write or Native body/data/handler admission"
+  ],
+  "preserved_original_source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java",
+      "bytes": 165097,
+      "sha256": "6b12fae758291cf568faafddf463b3bf0df579f199f5d2fab0c1ba442d1af1bd",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\AnalysisService.java",
+      "bytes": 263021,
+      "sha256": "6f7945af917c39bf6eaac182c45eb8ac19a7eb06afda02ff4e840a5b3039c2c4",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\AnalysisService.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\AnnotationScanner.java",
+      "bytes": 20342,
+      "sha256": "13b504fe965fa376e3b1fa2b6271424f9583f62a3c6a18055634478d6f7852e6",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\AnnotationScanner.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\EndpointRegistry.java",
+      "bytes": 67620,
+      "sha256": "5da3b013dc097ade27b7cf2b2adf37f18a3cadd29038844ae1041c8f784b6fbf",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\EndpointRegistry.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\McpTool.java",
+      "bytes": 1174,
+      "sha256": "a8a27bc083b246126989a7810a4c900e55e5fe0befd5bcada9b9919de99c26f8",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\McpTool.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\Param.java",
+      "bytes": 2303,
+      "sha256": "23a811bdce282c89a06c35d6f2c31aa8165653e89bd33464715719b3b93046ed",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\Param.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\ThreadingStrategy.java",
+      "bytes": 4238,
+      "sha256": "e9a2095c247489c57361495aeec95fb062ca386f44acc59a3c40407d49e6c0a9",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\ThreadingStrategy.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\SwingThreadingStrategy.java",
+      "bytes": 3333,
+      "sha256": "f5a6777f327e245c9273c8a9c23ad79b50f6facda5eed210e7ede1fdc8f1bd32",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\SwingThreadingStrategy.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\DocumentationHashService.java",
+      "bytes": 57168,
+      "sha256": "762ce5863234c53bbc11ecfaac08f45e8a1b7510213bd50f1b588531f379ec28",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\DocumentationHashService.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "bytes": 109406,
+      "sha256": "75e6d419e38b7a15a045a6e847f13e26a5e9b346f353e5aeb493bc36820f3410",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\GhidraMCPPlugin.java",
+      "bytes": 185590,
+      "sha256": "f9bc1704fe92fa7253bf41f25d9db2d22b78faedf4c111bbf54c8c6c94fa9cbb",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\GhidraMCPPlugin.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\java\\com\\xebyte\\headless\\GhidraMCPHeadlessServer.java",
+      "bytes": 30517,
+      "sha256": "2fa2c4870bd2e88c3450e8757951ae7e3509851f28aa631c58062fe4cf7c6365",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\headless\\GhidraMCPHeadlessServer.java"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\bridge_mcp_ghidra.py",
+      "bytes": 70200,
+      "sha256": "b12137cef0d4307e5f16dabfa945d6c7d7e59da9df1cb94b6d2fb75cf08b49e3",
+      "source_path": "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\src\\main\\resources\\extension.properties",
+      "bytes": 352,
+      "sha256": "eb5072a1b10e1ca8e1c5a5499701d15dd463b26d34c3327189c44357fee33482",
+      "source_path": "J:\\tools\\ghidra-mcp\\src\\main\\resources\\extension.properties"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\pom.xml",
+      "bytes": 14499,
+      "sha256": "43727c7608af00bbdf60950dfa6bc00884884bc5535374d3931a6f63ee582597",
+      "source_path": "J:\\tools\\ghidra-mcp\\pom.xml"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\tests\\endpoints.json",
+      "bytes": 58482,
+      "sha256": "bd56bb42a556d06f089db210921895a304a279b881ee9784da2e543dbcb5eda9",
+      "source_path": "J:\\tools\\ghidra-mcp\\tests\\endpoints.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\AGENTS.md",
+      "bytes": 1974,
+      "sha256": "7e408b6bc3a9745945c98f516ccc00a0b84c82d33166bd453756027394aa7ee0",
+      "source_path": "J:\\tools\\ghidra-mcp\\AGENTS.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\CHANGELOG.md",
+      "bytes": 105336,
+      "sha256": "8961c7b58d7910d01b24c12fa9c3a5a3bd0abedbf21f0a32ff2af4b870d41891",
+      "source_path": "J:\\tools\\ghidra-mcp\\CHANGELOG.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_source\\tests\\unit\\test_mcp_tools.py",
+      "bytes": 12691,
+      "sha256": "db32fbccef76111096f7bc623ae5f1c068bf7c8ff3614b49bff0ca14879ea4bb",
+      "source_path": "J:\\tools\\ghidra-mcp\\tests\\unit\\test_mcp_tools.py"
+    }
+  ],
+  "original_checkout": {
+    "path": "J:\\tools\\ghidra-mcp",
+    "commit": "0c0299d1588f17bdb457ff8591c98c0b5eae0a68",
+    "status": [
+      " M CHANGELOG.md",
+      " M bridge_mcp_ghidra.py",
+      " M tests/unit/test_mcp_tools.py"
+    ],
+    "writes_performed": false,
+    "qualification": "All readiness source hashes replayed. Extra dirty changelog/test copies pin end state; their earlier contents were not independently hashed."
+  },
+  "plugin_sources": [
+    {
+      "git_path": "src/main/java/com/xebyte/core/FunctionService.java",
+      "before": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_baseline\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java",
+        "bytes": 162016,
+        "sha256": "97e7a7e97aa24681f3ba283465165f3b23a27202db7268acbc196fcb787e55e9"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_after\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java",
+        "bytes": 175991,
+        "sha256": "9f58fc0ed52cb99b352ef516badf307d69f09d38f6673889a690e481897766a4",
+        "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java"
+      },
+      "commit_blob_sha256": "cf38717e1cf8e16761abd5cbef94a6010592f19f08c38920f47c817e70d3bf19",
+      "LF_normalized_commit_equality": true
+    },
+    {
+      "git_path": "tests/endpoints.json",
+      "before": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_baseline\\tests\\endpoints.json",
+        "bytes": 56088,
+        "sha256": "a72ff520b4b92e2f97906651c7f9d88ad98d024f8e08e4f8158894172759e0a6"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_after\\tests\\endpoints.json",
+        "bytes": 58789,
+        "sha256": "84ad23d37d6276b3f68f9571e5b8b2048caf6bf2f6744718d122364677b8c840",
+        "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\tests\\endpoints.json"
+      },
+      "commit_blob_sha256": "1a60f3ca18608bbf1b0b460df9dacbc43b2f89b8efd0232161ee63e23b0d838f",
+      "LF_normalized_commit_equality": true
+    },
+    {
+      "git_path": "CHANGELOG.md",
+      "before": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_baseline\\CHANGELOG.md",
+        "bytes": 103413,
+        "sha256": "ec5f9b0c928ecd07f38c5a45d61771cfc17590b69ffcdae3c3d18a4fc4c6b01a"
+      },
+      "after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_after\\CHANGELOG.md",
+        "bytes": 105489,
+        "sha256": "18f06a8f0a5d1b28fefcdff1ee06c2e31eed2d0eb9a6f52a3878cc5c4cb18937",
+        "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\CHANGELOG.md"
+      },
+      "commit_blob_sha256": "3c6a43e4f313d73e9ce934f3fd5037a37349ccd95a034d3779f8ac366639fa8c",
+      "LF_normalized_commit_equality": true
+    }
+  ],
+  "plugin_diff": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\plugin_change.diff",
+    "bytes": 13822,
+    "sha256": "cb63bbd98c0b9a48796e568d38794a783a3a69915aa254e71d54e38b57836960"
+  },
+  "plugin_build_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\pom.xml",
+      "bytes": 14499,
+      "sha256": "43727c7608af00bbdf60950dfa6bc00884884bc5535374d3931a6f63ee582597",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\pom.xml"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\src\\assembly\\ghidra-extension.xml",
+      "bytes": 1841,
+      "sha256": "6ffe20b962c69789aab662b33c0b8061e8dc182dd0d80e18cda7795b64610350",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\assembly\\ghidra-extension.xml"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\src\\main\\resources\\extension.properties",
+      "bytes": 352,
+      "sha256": "eb5072a1b10e1ca8e1c5a5499701d15dd463b26d34c3327189c44357fee33482",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\resources\\extension.properties"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\src\\main\\resources\\Module.manifest",
+      "bytes": 83,
+      "sha256": "f5f22625a9f075b440aebb2cf23a57deb220bb5e4e5d6bc6391059a7d7036ece",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\resources\\Module.manifest"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\requirements.txt",
+      "bytes": 693,
+      "sha256": "6f2e19803d9aab2f0c545c789248410f773524d3745b2e6a6935598e2cf8a853",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\requirements.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\build_inputs\\requirements-test.txt",
+      "bytes": 546,
+      "sha256": "ff50fea6d219ecd3c163c8f4bdc0a78a5f30dac4d3e250bf578176744027b5b5",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\requirements-test.txt"
+    }
+  ],
+  "BSP_sources": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_after\\tools\\bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\bsp.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_after\\tools\\ghidra_typed_flow.py",
+      "bytes": 19757,
+      "sha256": "9fbb388a41bba11eeb6cf7d58a8bea39bf91847fe0f8afbe8112ce2d57cf5a2f",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_typed_flow.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_after\\tests\\test_ghidra_typed_flow.py",
+      "bytes": 10615,
+      "sha256": "469d827ce4deea75d313f8173d1692ae44c2cd9e5d37c1b248c27c8f62ad3240",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tests\\test_ghidra_typed_flow.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_after\\tools\\ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_export.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_after\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json"
+    }
+  ],
+  "BSP_original_dispatch": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\BSP_baseline\\tools\\bsp.py",
+    "bytes": 72606,
+    "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+  },
+  "rollback_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\extension.properties",
+      "bytes": 328,
+      "sha256": "dff8facacb38dbedae50e5998e8513c35c9bec80f716a6c9164cfb63437e99e5",
+      "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\extension.properties"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\lib\\GhidraMCP-5.6.0.jar",
+      "bytes": 581085,
+      "sha256": "3eb3999c930e844ddda1f74572b2d414cbacc645356593bf2cc44ccc038aad48",
+      "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\lib\\GhidraMCP-5.6.0.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\Module.manifest",
+      "bytes": 83,
+      "sha256": "f5f22625a9f075b440aebb2cf23a57deb220bb5e4e5d6bc6391059a7d7036ece",
+      "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\Module.manifest"
+    }
+  ],
+  "original_install_zip": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\original_install\\GhidraMCP-5.6.0.zip",
+    "bytes": 573064,
+    "sha256": "f0fbeacb13426fbe0240c6e53bfcdceeffde50e97408a8b5b6478135561c76a8",
+    "source_path": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Extensions\\Ghidra\\GhidraMCP-5.6.0.zip"
+  },
+  "new_JAR": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\new_package\\GhidraMCP-5.6.0.jar",
+    "bytes": 586004,
+    "sha256": "a1e473968541f7030c6efc36b19aae25b699726575523034da7349b046d7b907",
+    "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\GhidraMCP-5.6.0.jar"
+  },
+  "new_ZIP": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\new_package\\GhidraMCP-5.6.0.zip",
+    "bytes": 578036,
+    "sha256": "4d35ef651c6ac7a6b9bc425d2e5c03ec2816ec8a6c060114e797ca260a8f4b7e",
+    "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\GhidraMCP-5.6.0.zip"
+  },
+  "new_ZIP_members": [
+    {
+      "name": "GhidraMCP/Module.manifest",
+      "bytes": 83,
+      "sha256": "f5f22625a9f075b440aebb2cf23a57deb220bb5e4e5d6bc6391059a7d7036ece"
+    },
+    {
+      "name": "GhidraMCP/extension.properties",
+      "bytes": 328,
+      "sha256": "dff8facacb38dbedae50e5998e8513c35c9bec80f716a6c9164cfb63437e99e5"
+    },
+    {
+      "name": "GhidraMCP/lib/GhidraMCP-5.6.0.jar",
+      "bytes": 586004,
+      "sha256": "a1e473968541f7030c6efc36b19aae25b699726575523034da7349b046d7b907"
+    }
+  ],
+  "SDK_compile_JARs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Base-12.0.4.jar",
+      "bytes": 22817742,
+      "sha256": "79db8593ed333d660f44a46625b1dc5882812ee301eaaee0d5c0dc9b70da052d",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Base-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Debugger-api-12.0.4.jar",
+      "bytes": 162777,
+      "sha256": "3f75f254c2cbb2074fe0ae2d8ba34467b2d43e609893967c80f6d1d23d4132ba",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Debugger-api-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Debugger-rmi-trace-12.0.4.jar",
+      "bytes": 1268126,
+      "sha256": "a8a06adf1eb35eef1724eaea1a21326b4c9ae37e8868936b7d5c58814ff0053b",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Debugger-rmi-trace-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Decompiler-12.0.4.jar",
+      "bytes": 870599,
+      "sha256": "a6bba75e2b9ab2c311199bf7eaebcfffb8f28bb6caf62467ebbf83f510e28566",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Decompiler-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Docking-12.0.4.jar",
+      "bytes": 3145614,
+      "sha256": "8fc43db70d0d0bde2e40833d99b080d1b5a76688feee6bd07aefb29fba7feb70",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Docking-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Emulation-12.0.4.jar",
+      "bytes": 931817,
+      "sha256": "75aa715fd946e715744488b52edff63cb948a91c0c42e587a08cee503ba3faa8",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Emulation-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\FileSystem-12.0.4.jar",
+      "bytes": 254814,
+      "sha256": "5cb92144bee2177dbe97660068797ddfd5cfd7688162c591ae3b02cabcdf5c37",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\FileSystem-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Framework-TraceModeling-12.0.4.jar",
+      "bytes": 1310609,
+      "sha256": "14e706ef1324f4076f0572b0bac7020a6a48bf7db53ba2b90fb41830433cc471",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Framework-TraceModeling-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Generic-12.0.4.jar",
+      "bytes": 902818,
+      "sha256": "ee95099a6f33a273d1b6fd089e95713ccadd9dda0d490ccb4bf267de55c3f6a6",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Generic-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Gui-12.0.4.jar",
+      "bytes": 507200,
+      "sha256": "aa1581cc5bd46d5df79a5a3564cffa4ef3e5c8a0f33e74eb544dca98813948a2",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Gui-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Help-12.0.4.jar",
+      "bytes": 215666,
+      "sha256": "636f34e9fc81520bf0ea02f80f9212d0566e6d808c95c05e72c167db6fe8b127",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Help-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Project-12.0.4.jar",
+      "bytes": 1336646,
+      "sha256": "140049791bdb49bc05622fb90c5322c46e34b3ed02ead61823c9c5c157558a29",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Project-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\SoftwareModeling-12.0.4.jar",
+      "bytes": 4669290,
+      "sha256": "20a2e3d1c4c2a4350257295f956ac6b24fc363d4cb1fbae5c700d838a062b63a",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\SoftwareModeling-12.0.4.jar"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_compile_JARs\\Utility-12.0.4.jar",
+      "bytes": 155859,
+      "sha256": "aed6175eb6e2c71883a4026257ebfb6104e9a1db6398a60a959168735704c304",
+      "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\lib\\Utility-12.0.4.jar"
+    }
+  ],
+  "SDK_source_archives": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_sources\\Project-src.zip",
+      "bytes": 819530,
+      "sha256": "a788da26331c5f77b1fd22a74f39fe426c7706f9546cc3521094e325892cd0ac",
+      "source_path": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_sources\\SoftwareModeling-src.zip",
+      "bytes": 3380835,
+      "sha256": "7627007f4ba78077a3878c7329b79a04986bbd5461054c227ce104552b0ed2f6",
+      "source_path": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip"
+    }
+  ],
+  "SDK_getter_declarations": [
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Instruction.java",
+      "entry_sha256": "84c2dc99fba573d3ac6f97bbf9a00f90ca8e6335825334ac624c674e8d404e62",
+      "declaration_lines": [
+        {
+          "line": 132,
+          "text": "public int getDefaultFallThroughOffset();"
+        },
+        {
+          "line": 141,
+          "text": "public Address getDefaultFallThrough();"
+        },
+        {
+          "line": 149,
+          "text": "public Address getFallThrough();"
+        },
+        {
+          "line": 190,
+          "text": "public Address[] getFlows();"
+        },
+        {
+          "line": 202,
+          "text": "public Address[] getDefaultFlows();"
+        },
+        {
+          "line": 208,
+          "text": "public FlowType getFlowType();"
+        },
+        {
+          "line": 223,
+          "text": "public FlowOverride getFlowOverride();"
+        },
+        {
+          "line": 374,
+          "text": "public boolean isFallThroughOverridden();"
+        },
+        {
+          "line": 379,
+          "text": "public InstructionContext getInstructionContext();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\listing\\Instruction.java",
+        "bytes": 12767,
+        "sha256": "84c2dc99fba573d3ac6f97bbf9a00f90ca8e6335825334ac624c674e8d404e62"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Function.java",
+      "entry_sha256": "bdd9ec371c5eb83e0437e0df96db9d338392ef1dc69f71f24c9799a6bd0049a9",
+      "declaration_lines": [
+        {
+          "line": 599,
+          "text": "public boolean hasNoReturn();"
+        },
+        {
+          "line": 604,
+          "text": "* @param hasNoReturn true if this function does not return."
+        },
+        {
+          "line": 606,
+          "text": "public void setNoReturn(boolean hasNoReturn);"
+        },
+        {
+          "line": 664,
+          "text": "* @see #getThunkedFunction(boolean)"
+        },
+        {
+          "line": 666,
+          "text": "public boolean isThunk();"
+        },
+        {
+          "line": 675,
+          "text": "public Function getThunkedFunction(boolean recursive);"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\listing\\Function.java",
+        "bytes": 32135,
+        "sha256": "bdd9ec371c5eb83e0437e0df96db9d338392ef1dc69f71f24c9799a6bd0049a9"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/address/AddressSetView.java",
+      "entry_sha256": "bda27f394f384afa261448342106f934da191cfa3d5cf66783cd27cf49fdf46f",
+      "declaration_lines": [
+        {
+          "line": 84,
+          "text": "public int getNumAddressRanges();"
+        },
+        {
+          "line": 89,
+          "text": "public AddressRangeIterator getAddressRanges();"
+        },
+        {
+          "line": 98,
+          "text": "public AddressRangeIterator getAddressRanges(boolean forward);"
+        },
+        {
+          "line": 112,
+          "text": "public AddressRangeIterator getAddressRanges(Address start, boolean forward);"
+        },
+        {
+          "line": 122,
+          "text": "return Spliterators.spliterator(iterator(), getNumAddressRanges(),"
+        },
+        {
+          "line": 152,
+          "text": "return Spliterators.spliterator(iterator(forward), getNumAddressRanges(),"
+        },
+        {
+          "line": 189,
+          "text": "return Spliterators.spliterator(iterator(start, forward), getNumAddressRanges(),"
+        },
+        {
+          "line": 208,
+          "text": "public long getNumAddresses();"
+        },
+        {
+          "line": 351,
+          "text": "for (AddressRange range : getAddressRanges()) {"
+        },
+        {
+          "line": 376,
+          "text": "AddressRangeIterator addressRanges = set.getAddressRanges();"
+        },
+        {
+          "line": 404,
+          "text": "AddressRangeIterator addressRanges = set.getAddressRanges();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\address\\AddressSetView.java",
+        "bytes": 14237,
+        "sha256": "bda27f394f384afa261448342106f934da191cfa3d5cf66783cd27cf49fdf46f"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/address/AddressRange.java",
+      "entry_sha256": "caba08840fb126023f3e348df1f8bdcf7cd6b057a3cd203e413da2cf85480656",
+      "declaration_lines": [
+        {
+          "line": 36,
+          "text": "public long getLength();"
+        },
+        {
+          "line": 92,
+          "text": "public Address getMaxAddress();"
+        },
+        {
+          "line": 97,
+          "text": "public Address getMinAddress();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\address\\AddressRange.java",
+        "bytes": 3836,
+        "sha256": "caba08840fb126023f3e348df1f8bdcf7cd6b057a3cd203e413da2cf85480656"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/CodeUnit.java",
+      "entry_sha256": "a1b8961f4fb565e7a9d5803059c6ef32bb2e5af4c729511f7c972386b2bff37a",
+      "declaration_lines": [
+        {
+          "line": 121,
+          "text": "public Address getMinAddress();"
+        },
+        {
+          "line": 242,
+          "text": "public int getLength();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\listing\\CodeUnit.java",
+        "bytes": 14836,
+        "sha256": "a1b8961f4fb565e7a9d5803059c6ef32bb2e5af4c729511f7c972386b2bff37a"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip",
+      "entry": "ghidra/framework/model/DomainObject.java",
+      "entry_sha256": "7e14ce2ac30e09e674861e8491c7fe9a3153d471f8bd96084b528b82c311799e",
+      "declaration_lines": [
+        {
+          "line": 392,
+          "text": "public long getModificationNumber();"
+        },
+        {
+          "line": 521,
+          "text": "public TransactionInfo getCurrentTransactionInfo();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\framework\\model\\DomainObject.java",
+        "bytes": 22087,
+        "sha256": "7e14ce2ac30e09e674861e8491c7fe9a3153d471f8bd96084b528b82c311799e"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/lang/InstructionPrototype.java",
+      "entry_sha256": "b45639e5b21415080fefc0e981fafb9cf8957dbdebd2e0d151c3d79965417100",
+      "declaration_lines": [
+        {
+          "line": 118,
+          "text": "public FlowType getFlowType(InstructionContext context);"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\lang\\InstructionPrototype.java",
+        "bytes": 11554,
+        "sha256": "b45639e5b21415080fefc0e981fafb9cf8957dbdebd2e0d151c3d79965417100"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/symbol/RefType.java",
+      "entry_sha256": "861e91252e8709b0749f705029c64cfad044cc9dd933aa84e5c4ec64343f6b3b",
+      "declaration_lines": [
+        {
+          "line": 478,
+          "text": "return (isConditional() ? \"Branch\" : \"Jump\");"
+        },
+        {
+          "line": 611,
+          "text": "return !isConditional();"
+        },
+        {
+          "line": 618,
+          "text": "public boolean isConditional() {"
+        },
+        {
+          "line": 626,
+          "text": "public boolean isComputed() {"
+        },
+        {
+          "line": 634,
+          "text": "public boolean isTerminal() {"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\symbol\\RefType.java",
+        "bytes": 22302,
+        "sha256": "861e91252e8709b0749f705029c64cfad044cc9dd933aa84e5c4ec64343f6b3b"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip",
+      "entry": "ghidra/framework/model/DomainFile.java",
+      "entry_sha256": "73fac31d2099e7c7772eee70023971aee0ddce1e7765585a907039ecea6aa826",
+      "declaration_lines": [
+        {
+          "line": 166,
+          "text": "public ProjectLocator getProjectLocator();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\framework\\model\\DomainFile.java",
+        "bytes": 31622,
+        "sha256": "73fac31d2099e7c7772eee70023971aee0ddce1e7765585a907039ecea6aa826"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip",
+      "entry": "ghidra/framework/model/ProjectLocator.java",
+      "entry_sha256": "b1f953450063b9b540684c21898ff4e9ecc188a0309e3f1d8d5850ec5d8f656e",
+      "declaration_lines": [
+        {
+          "line": 168,
+          "text": "public String getName() {"
+        },
+        {
+          "line": 179,
+          "text": "public String getLocation() {"
+        },
+        {
+          "line": 193,
+          "text": "public File getMarkerFile() {"
+        },
+        {
+          "line": 248,
+          "text": "return file.isDirectory() && file.getName().endsWith(PROJECT_DIR_SUFFIX);"
+        },
+        {
+          "line": 255,
+          "text": "return getMarkerFile().isFile() && getProjectDir().isDirectory();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\framework\\model\\ProjectLocator.java",
+        "bytes": 7845,
+        "sha256": "b1f953450063b9b540684c21898ff4e9ecc188a0309e3f1d8d5850ec5d8f656e"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Listing.java",
+      "entry_sha256": "4b70158aeaf543e9fa3028cb79e28884bc38f18cf2c78fcbbcebe71fd07ab5c5",
+      "declaration_lines": [
+        {
+          "line": 54,
+          "text": "public CodeUnit getCodeUnitAt(Address addr);"
+        },
+        {
+          "line": 62,
+          "text": "public CodeUnit getCodeUnitContaining(Address addr);"
+        },
+        {
+          "line": 309,
+          "text": "public Instruction getInstructionAt(Address addr);"
+        },
+        {
+          "line": 320,
+          "text": "public Instruction getInstructionContaining(Address addr);"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\listing\\Listing.java",
+        "bytes": 40371,
+        "sha256": "4b70158aeaf543e9fa3028cb79e28884bc38f18cf2c78fcbbcebe71fd07ab5c5"
+      }
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Data.java",
+      "entry_sha256": "6c0d230c4f8df54d1b7aa99ddfdc1cbf48e09b5df1c264de2b8fe3776d8f4289",
+      "declaration_lines": [
+        {
+          "line": 93,
+          "text": "public boolean isDefined();"
+        }
+      ],
+      "frozen_entry": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\SDK_entries\\ghidra\\program\\model\\listing\\Data.java",
+        "bytes": 10188,
+        "sha256": "6c0d230c4f8df54d1b7aa99ddfdc1cbf48e09b5df1c264de2b8fe3776d8f4289"
+      }
+    }
+  ],
+  "validation_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\java_version.log",
+      "bytes": 203,
+      "sha256": "fdea1d356ac157583d7fcb51a055ccb8db9563605582e02705bc97f034f77af8",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\java_version.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\maven_package.log",
+      "bytes": 5113,
+      "sha256": "d1bbd9314e5dd457d6a2ff57862a190bb9963abaf20165da7ccc74f337b48574",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\maven_package.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\maven_version.log",
+      "bytes": 359,
+      "sha256": "c8a6e1239fc3a64aa08784d2bde652c5ae5e2ce001a469b0d52995ac78808b28",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\maven_version.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\plugin_unit_tests.log",
+      "bytes": 352,
+      "sha256": "05ee06c588958d033e46dd953307d0306044b16c38a24d478a9beacd0428d027",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\plugin_unit_tests.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\plugin_unit_tests_isolated.log",
+      "bytes": 2321,
+      "sha256": "b5deeabf9987d311df0eda34e3735c7361bc34d1068a1b09bb33d8014b5cd86b",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\plugin_unit_tests_isolated.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\plugin_unit_tests_launcher.log",
+      "bytes": 342,
+      "sha256": "dcf62b31973b83586fda4551d576139a61c09c348999178437db8401b6ba055d",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\plugin_unit_tests_launcher.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\typed_flow_tests.log",
+      "bytes": 1004,
+      "sha256": "1573e5fc25f3c152d66ea617ea354f87595d8d57e52ac4455a6ea9c770ce8361",
+      "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\typed_flow_tests.log"
+    }
+  ],
+  "plugin_junit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\validation\\plugin_junit.xml",
+    "bytes": 36157,
+    "sha256": "31422d11abfae8bbd87775ba32e809c643a936e910acfc3da36286002dfef00e",
+    "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\tests\\junit.xml"
+  },
+  "validation": {
+    "BSP_focused": "5 passed; mocked metadata/transport only",
+    "plugin_unit_suite": "294 passed, 1 skipped: dll_exports/ not found",
+    "plugin_unit_command": "uv run --no-project --with-requirements requirements.txt --with-requirements requirements-test.txt python -m pytest tests/unit/ -v --no-cov",
+    "test_only_server_environment": "GHIDRA_MCP_URL=http://127.0.0.1:9",
+    "earlier_test_launches": "Host Python pytest-cov absent; parser rejected --no-cov. Isolated uv environment passed without changing host packages.",
+    "build": "mvn -B clean package assembly:single -DskipTests: BUILD SUCCESS; Ghidra 12.0.4 SDK; Java 21.0.9",
+    "endpoint_runtime_executed": false,
+    "loaded_class_origin_attested": false,
+    "runtime_metadata_validated": false,
+    "Native_gate_advanced": false,
+    "reproducible_build": "Source commit and exact output hashes pinned; Maven timestamp makes bit-for-bit rebuild identity unclaimed."
+  },
+  "preparation_script": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\freeze.py",
+    "bytes": 9681,
+    "sha256": "0c9a8fedcf52933ad37382e229e3e337ef4d51a6b074c7f39dcdcc2e63e18bf6",
+    "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\freeze.py"
+  },
+  "package_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\jar_entry_comparison.json",
+    "bytes": 105823,
+    "sha256": "cc087d0bb1de417e32e2594d1786754f812d300f03160ac91d66091e5056ab50"
+  },
+  "overlay_JAR": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\GhidraMCP-5.6.0-typed-flow-overlay.jar",
+    "bytes": 586003,
+    "sha256": "05e5d95e7bb08eae2079ea38fba4d36611498b48462ed1939dbcdc546a24205d"
+  },
+  "package_comparison_summary": {
+    "installed_vs_pristine_base": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        "com/xebyte/version.properties"
+      ],
+      "unchanged": [
+        "META-INF/",
+        "META-INF/MANIFEST.MF",
+        "META-INF/maven/",
+        "META-INF/maven/com.xebyte/",
+        "META-INF/maven/com.xebyte/GhidraMCP/",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.properties",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.xml",
+        "Module.manifest",
+        "com/",
+        "com/xebyte/",
+        "com/xebyte/GhidraMCPPlugin$1.class",
+        "com/xebyte/GhidraMCPPlugin$2.class",
+        "com/xebyte/GhidraMCPPlugin$3.class",
+        "com/xebyte/GhidraMCPPlugin$4.class",
+        "com/xebyte/GhidraMCPPlugin$5.class",
+        "com/xebyte/GhidraMCPPlugin$6.class",
+        "com/xebyte/GhidraMCPPlugin.class",
+        "com/xebyte/VersionInfo.class",
+        "com/xebyte/core/",
+        "com/xebyte/core/AnalysisService$AnchorResolution.class",
+        "com/xebyte/core/AnalysisService$CompletenessScoreResult.class",
+        "com/xebyte/core/AnalysisService$DataflowChain.class",
+        "com/xebyte/core/AnalysisService$FunctionMetrics.class",
+        "com/xebyte/core/AnalysisService$ProgramNameCache.class",
+        "com/xebyte/core/AnalysisService.class",
+        "com/xebyte/core/AnnotationScanner$ParamBinding.class",
+        "com/xebyte/core/AnnotationScanner$ParamDescriptor.class",
+        "com/xebyte/core/AnnotationScanner$ToolDescriptor.class",
+        "com/xebyte/core/AnnotationScanner.class",
+        "com/xebyte/core/BinaryComparisonService$DiffEntry.class",
+        "com/xebyte/core/BinaryComparisonService$FunctionSignature.class",
+        "com/xebyte/core/BinaryComparisonService.class",
+        "com/xebyte/core/CommentService.class",
+        "com/xebyte/core/DataTypeService$FieldDefinition.class",
+        "com/xebyte/core/DataTypeService$FieldUsageInfo.class",
+        "com/xebyte/core/DataTypeService.class",
+        "com/xebyte/core/DebuggerService$1.class",
+        "com/xebyte/core/DebuggerService$TraceContext.class",
+        "com/xebyte/core/DebuggerService.class",
+        "com/xebyte/core/DocumentationHashService.class",
+        "com/xebyte/core/EmulationService.class",
+        "com/xebyte/core/EndpointDef$EndpointHandler.class",
+        "com/xebyte/core/EndpointDef$ParamDef.class",
+        "com/xebyte/core/EndpointDef.class",
+        "com/xebyte/core/EndpointRegistry.class",
+        "com/xebyte/core/FrontEndProgramProvider.class",
+        "com/xebyte/core/FunctionRef$Result.class",
+        "com/xebyte/core/FunctionRef.class",
+        "com/xebyte/core/FunctionService$PrototypeResult.class",
+        "com/xebyte/core/FunctionService.class",
+        "com/xebyte/core/GhidraMCPAuthInitializer.class",
+        "com/xebyte/core/GhidraMCPAuthenticator.class",
+        "com/xebyte/core/GuiProgramProvider.class",
+        "com/xebyte/core/HttpExchange.class",
+        "com/xebyte/core/JsonHelper.class",
+        "com/xebyte/core/ListingService$DataItemInfo.class",
+        "com/xebyte/core/ListingService.class",
+        "com/xebyte/core/MalwareSecurityService$ThreatPattern.class",
+        "com/xebyte/core/MalwareSecurityService.class",
+        "com/xebyte/core/McpTool.class",
+        "com/xebyte/core/McpToolGroup.class",
+        "com/xebyte/core/MultiToolProgramProvider.class",
+        "com/xebyte/core/NamingConventions$NameQualityResult.class",
+        "com/xebyte/core/NamingConventions$TokenizedName.class",
+        "com/xebyte/core/NamingConventions.class",
+        "com/xebyte/core/Param.class",
+        "com/xebyte/core/ParamSource.class",
+        "com/xebyte/core/ProgramProvider.class",
+        "com/xebyte/core/ProgramScriptService.class",
+        "com/xebyte/core/PromptPolicyService.class",
+        "com/xebyte/core/Response$Err.class",
+        "com/xebyte/core/Response$Ok.class",
+        "com/xebyte/core/Response$Text.class",
+        "com/xebyte/core/Response.class",
+        "com/xebyte/core/SecurityConfig.class",
+        "com/xebyte/core/ServerLifecycle$State.class",
+        "com/xebyte/core/ServerLifecycle.class",
+        "com/xebyte/core/ServerManager.class",
+        "com/xebyte/core/ServerTransport.class",
+        "com/xebyte/core/ServiceUtils$ProgramOrError.class",
+        "com/xebyte/core/ServiceUtils.class",
+        "com/xebyte/core/SunHttpExchangeAdapter.class",
+        "com/xebyte/core/SwingThreadingStrategy.class",
+        "com/xebyte/core/SymbolLabelService.class",
+        "com/xebyte/core/TcpTransport.class",
+        "com/xebyte/core/ThreadingStrategy.class",
+        "com/xebyte/core/UdsHttpExchange.class",
+        "com/xebyte/core/UdsHttpServer$Handler.class",
+        "com/xebyte/core/UdsHttpServer.class",
+        "com/xebyte/core/XrefCallGraphService.class",
+        "com/xebyte/headless/",
+        "com/xebyte/headless/DirectThreadingStrategy.class",
+        "com/xebyte/headless/GhidraMCPHeadlessServer.class",
+        "com/xebyte/headless/GhidraServerManager.class",
+        "com/xebyte/headless/HeadlessEndpointHandler.class",
+        "com/xebyte/headless/HeadlessManagementService.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalysisResult.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalyzerInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectFileInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider.class",
+        "extension.properties"
+      ]
+    },
+    "installed_vs_new_full": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        "com/xebyte/core/FunctionService$PrototypeResult.class",
+        "com/xebyte/core/FunctionService.class",
+        "com/xebyte/version.properties"
+      ],
+      "unchanged": [
+        "META-INF/",
+        "META-INF/MANIFEST.MF",
+        "META-INF/maven/",
+        "META-INF/maven/com.xebyte/",
+        "META-INF/maven/com.xebyte/GhidraMCP/",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.properties",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.xml",
+        "Module.manifest",
+        "com/",
+        "com/xebyte/",
+        "com/xebyte/GhidraMCPPlugin$1.class",
+        "com/xebyte/GhidraMCPPlugin$2.class",
+        "com/xebyte/GhidraMCPPlugin$3.class",
+        "com/xebyte/GhidraMCPPlugin$4.class",
+        "com/xebyte/GhidraMCPPlugin$5.class",
+        "com/xebyte/GhidraMCPPlugin$6.class",
+        "com/xebyte/GhidraMCPPlugin.class",
+        "com/xebyte/VersionInfo.class",
+        "com/xebyte/core/",
+        "com/xebyte/core/AnalysisService$AnchorResolution.class",
+        "com/xebyte/core/AnalysisService$CompletenessScoreResult.class",
+        "com/xebyte/core/AnalysisService$DataflowChain.class",
+        "com/xebyte/core/AnalysisService$FunctionMetrics.class",
+        "com/xebyte/core/AnalysisService$ProgramNameCache.class",
+        "com/xebyte/core/AnalysisService.class",
+        "com/xebyte/core/AnnotationScanner$ParamBinding.class",
+        "com/xebyte/core/AnnotationScanner$ParamDescriptor.class",
+        "com/xebyte/core/AnnotationScanner$ToolDescriptor.class",
+        "com/xebyte/core/AnnotationScanner.class",
+        "com/xebyte/core/BinaryComparisonService$DiffEntry.class",
+        "com/xebyte/core/BinaryComparisonService$FunctionSignature.class",
+        "com/xebyte/core/BinaryComparisonService.class",
+        "com/xebyte/core/CommentService.class",
+        "com/xebyte/core/DataTypeService$FieldDefinition.class",
+        "com/xebyte/core/DataTypeService$FieldUsageInfo.class",
+        "com/xebyte/core/DataTypeService.class",
+        "com/xebyte/core/DebuggerService$1.class",
+        "com/xebyte/core/DebuggerService$TraceContext.class",
+        "com/xebyte/core/DebuggerService.class",
+        "com/xebyte/core/DocumentationHashService.class",
+        "com/xebyte/core/EmulationService.class",
+        "com/xebyte/core/EndpointDef$EndpointHandler.class",
+        "com/xebyte/core/EndpointDef$ParamDef.class",
+        "com/xebyte/core/EndpointDef.class",
+        "com/xebyte/core/EndpointRegistry.class",
+        "com/xebyte/core/FrontEndProgramProvider.class",
+        "com/xebyte/core/FunctionRef$Result.class",
+        "com/xebyte/core/FunctionRef.class",
+        "com/xebyte/core/GhidraMCPAuthInitializer.class",
+        "com/xebyte/core/GhidraMCPAuthenticator.class",
+        "com/xebyte/core/GuiProgramProvider.class",
+        "com/xebyte/core/HttpExchange.class",
+        "com/xebyte/core/JsonHelper.class",
+        "com/xebyte/core/ListingService$DataItemInfo.class",
+        "com/xebyte/core/ListingService.class",
+        "com/xebyte/core/MalwareSecurityService$ThreatPattern.class",
+        "com/xebyte/core/MalwareSecurityService.class",
+        "com/xebyte/core/McpTool.class",
+        "com/xebyte/core/McpToolGroup.class",
+        "com/xebyte/core/MultiToolProgramProvider.class",
+        "com/xebyte/core/NamingConventions$NameQualityResult.class",
+        "com/xebyte/core/NamingConventions$TokenizedName.class",
+        "com/xebyte/core/NamingConventions.class",
+        "com/xebyte/core/Param.class",
+        "com/xebyte/core/ParamSource.class",
+        "com/xebyte/core/ProgramProvider.class",
+        "com/xebyte/core/ProgramScriptService.class",
+        "com/xebyte/core/PromptPolicyService.class",
+        "com/xebyte/core/Response$Err.class",
+        "com/xebyte/core/Response$Ok.class",
+        "com/xebyte/core/Response$Text.class",
+        "com/xebyte/core/Response.class",
+        "com/xebyte/core/SecurityConfig.class",
+        "com/xebyte/core/ServerLifecycle$State.class",
+        "com/xebyte/core/ServerLifecycle.class",
+        "com/xebyte/core/ServerManager.class",
+        "com/xebyte/core/ServerTransport.class",
+        "com/xebyte/core/ServiceUtils$ProgramOrError.class",
+        "com/xebyte/core/ServiceUtils.class",
+        "com/xebyte/core/SunHttpExchangeAdapter.class",
+        "com/xebyte/core/SwingThreadingStrategy.class",
+        "com/xebyte/core/SymbolLabelService.class",
+        "com/xebyte/core/TcpTransport.class",
+        "com/xebyte/core/ThreadingStrategy.class",
+        "com/xebyte/core/UdsHttpExchange.class",
+        "com/xebyte/core/UdsHttpServer$Handler.class",
+        "com/xebyte/core/UdsHttpServer.class",
+        "com/xebyte/core/XrefCallGraphService.class",
+        "com/xebyte/headless/",
+        "com/xebyte/headless/DirectThreadingStrategy.class",
+        "com/xebyte/headless/GhidraMCPHeadlessServer.class",
+        "com/xebyte/headless/GhidraServerManager.class",
+        "com/xebyte/headless/HeadlessEndpointHandler.class",
+        "com/xebyte/headless/HeadlessManagementService.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalysisResult.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalyzerInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectFileInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider.class",
+        "extension.properties"
+      ]
+    },
+    "installed_vs_overlay": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        "com/xebyte/core/FunctionService.class"
+      ],
+      "unchanged": [
+        "META-INF/",
+        "META-INF/MANIFEST.MF",
+        "META-INF/maven/",
+        "META-INF/maven/com.xebyte/",
+        "META-INF/maven/com.xebyte/GhidraMCP/",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.properties",
+        "META-INF/maven/com.xebyte/GhidraMCP/pom.xml",
+        "Module.manifest",
+        "com/",
+        "com/xebyte/",
+        "com/xebyte/GhidraMCPPlugin$1.class",
+        "com/xebyte/GhidraMCPPlugin$2.class",
+        "com/xebyte/GhidraMCPPlugin$3.class",
+        "com/xebyte/GhidraMCPPlugin$4.class",
+        "com/xebyte/GhidraMCPPlugin$5.class",
+        "com/xebyte/GhidraMCPPlugin$6.class",
+        "com/xebyte/GhidraMCPPlugin.class",
+        "com/xebyte/VersionInfo.class",
+        "com/xebyte/core/",
+        "com/xebyte/core/AnalysisService$AnchorResolution.class",
+        "com/xebyte/core/AnalysisService$CompletenessScoreResult.class",
+        "com/xebyte/core/AnalysisService$DataflowChain.class",
+        "com/xebyte/core/AnalysisService$FunctionMetrics.class",
+        "com/xebyte/core/AnalysisService$ProgramNameCache.class",
+        "com/xebyte/core/AnalysisService.class",
+        "com/xebyte/core/AnnotationScanner$ParamBinding.class",
+        "com/xebyte/core/AnnotationScanner$ParamDescriptor.class",
+        "com/xebyte/core/AnnotationScanner$ToolDescriptor.class",
+        "com/xebyte/core/AnnotationScanner.class",
+        "com/xebyte/core/BinaryComparisonService$DiffEntry.class",
+        "com/xebyte/core/BinaryComparisonService$FunctionSignature.class",
+        "com/xebyte/core/BinaryComparisonService.class",
+        "com/xebyte/core/CommentService.class",
+        "com/xebyte/core/DataTypeService$FieldDefinition.class",
+        "com/xebyte/core/DataTypeService$FieldUsageInfo.class",
+        "com/xebyte/core/DataTypeService.class",
+        "com/xebyte/core/DebuggerService$1.class",
+        "com/xebyte/core/DebuggerService$TraceContext.class",
+        "com/xebyte/core/DebuggerService.class",
+        "com/xebyte/core/DocumentationHashService.class",
+        "com/xebyte/core/EmulationService.class",
+        "com/xebyte/core/EndpointDef$EndpointHandler.class",
+        "com/xebyte/core/EndpointDef$ParamDef.class",
+        "com/xebyte/core/EndpointDef.class",
+        "com/xebyte/core/EndpointRegistry.class",
+        "com/xebyte/core/FrontEndProgramProvider.class",
+        "com/xebyte/core/FunctionRef$Result.class",
+        "com/xebyte/core/FunctionRef.class",
+        "com/xebyte/core/FunctionService$PrototypeResult.class",
+        "com/xebyte/core/GhidraMCPAuthInitializer.class",
+        "com/xebyte/core/GhidraMCPAuthenticator.class",
+        "com/xebyte/core/GuiProgramProvider.class",
+        "com/xebyte/core/HttpExchange.class",
+        "com/xebyte/core/JsonHelper.class",
+        "com/xebyte/core/ListingService$DataItemInfo.class",
+        "com/xebyte/core/ListingService.class",
+        "com/xebyte/core/MalwareSecurityService$ThreatPattern.class",
+        "com/xebyte/core/MalwareSecurityService.class",
+        "com/xebyte/core/McpTool.class",
+        "com/xebyte/core/McpToolGroup.class",
+        "com/xebyte/core/MultiToolProgramProvider.class",
+        "com/xebyte/core/NamingConventions$NameQualityResult.class",
+        "com/xebyte/core/NamingConventions$TokenizedName.class",
+        "com/xebyte/core/NamingConventions.class",
+        "com/xebyte/core/Param.class",
+        "com/xebyte/core/ParamSource.class",
+        "com/xebyte/core/ProgramProvider.class",
+        "com/xebyte/core/ProgramScriptService.class",
+        "com/xebyte/core/PromptPolicyService.class",
+        "com/xebyte/core/Response$Err.class",
+        "com/xebyte/core/Response$Ok.class",
+        "com/xebyte/core/Response$Text.class",
+        "com/xebyte/core/Response.class",
+        "com/xebyte/core/SecurityConfig.class",
+        "com/xebyte/core/ServerLifecycle$State.class",
+        "com/xebyte/core/ServerLifecycle.class",
+        "com/xebyte/core/ServerManager.class",
+        "com/xebyte/core/ServerTransport.class",
+        "com/xebyte/core/ServiceUtils$ProgramOrError.class",
+        "com/xebyte/core/ServiceUtils.class",
+        "com/xebyte/core/SunHttpExchangeAdapter.class",
+        "com/xebyte/core/SwingThreadingStrategy.class",
+        "com/xebyte/core/SymbolLabelService.class",
+        "com/xebyte/core/TcpTransport.class",
+        "com/xebyte/core/ThreadingStrategy.class",
+        "com/xebyte/core/UdsHttpExchange.class",
+        "com/xebyte/core/UdsHttpServer$Handler.class",
+        "com/xebyte/core/UdsHttpServer.class",
+        "com/xebyte/core/XrefCallGraphService.class",
+        "com/xebyte/headless/",
+        "com/xebyte/headless/DirectThreadingStrategy.class",
+        "com/xebyte/headless/GhidraMCPHeadlessServer.class",
+        "com/xebyte/headless/GhidraServerManager.class",
+        "com/xebyte/headless/HeadlessEndpointHandler.class",
+        "com/xebyte/headless/HeadlessManagementService.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalysisResult.class",
+        "com/xebyte/headless/HeadlessProgramProvider$AnalyzerInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectFileInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider$ProjectInfo.class",
+        "com/xebyte/headless/HeadlessProgramProvider.class",
+        "com/xebyte/version.properties",
+        "extension.properties"
+      ]
+    },
+    "signature_and_resource_qualification": {
+      "installed_signature_entries": [],
+      "jar_is_unsigned": true,
+      "overlay_replacements": [
+        "com/xebyte/core/FunctionService.class"
+      ],
+      "new_companion_classes_required": [],
+      "existing_companion_preserved": "com/xebyte/core/FunctionService$PrototypeResult.class",
+      "companion_evidence": "Only debug line-number metadata differs; javap -p -c -s is byte-identical. Existing companion retained.",
+      "installed_vs_pristine_evidence": "Every class and resource entry is byte-identical except com/xebyte/version.properties (generated build timestamp). No added or removed entries.",
+      "overlay_original_manifest_and_all_other_resources_preserved": true,
+      "zip_container_qualification": "JAR reserialized; original entry order, ZipInfo metadata and archive comment retained. Uncompressed entry hashes establish preservation; original compressed byte ranges are not asserted.",
+      "runtime_qualification": "No endpoint execution or loaded JVM class provenance attested. Full and overlay candidates are not installed."
+    }
+  },
+  "public_signature_check": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\public_signature_check.json",
+    "bytes": 325,
+    "sha256": "ea39821ff23c8d436edc86ee9df6e40a2273fe842afb876e71d9b10a978c6842"
+  },
+  "typed_flow_bytecode": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\typed_flow_methods_javap.txt",
+    "bytes": 51722,
+    "sha256": "e07a93702da99b2dea9036f813cb432bff0582bbdc3e1e7e5e84f6164cb3fcb5"
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GHIDRA_TYPED_FLOW_IMPLEMENTATION.md",
+    "bytes": 9198,
+    "sha256": "abc9538d9dcbcfca291db7e79b4556fcd998d4952655e69206320800a9fb8626"
+  },
+  "install_plan": {
+    "executed": false,
+    "decision_owner": "Root",
+    "candidate_choice_pending": true,
+    "installed_extension_root": "C:/Users/sqz269/AppData/Roaming/ghidra/ghidra_12.0.4_PUBLIC/Extensions/GhidraMCP",
+    "overlay_target_relative": "lib/GhidraMCP-5.6.0.jar",
+    "full_package_relative_files": [
+      "extension.properties",
+      "Module.manifest",
+      "lib/GhidraMCP-5.6.0.jar"
+    ],
+    "requirements": [
+      "Review exact candidate and all entry hashes",
+      "Root saves project and coordinates clean Ghidra exit; no force-kill",
+      "Recheck original installed hashes and take dated rollback copy",
+      "Copy selected frozen artifact only after process exit; verify installed output hashes",
+      "Root restarts same saved project/program and validates actual identity and loaded origin separately",
+      "Root authorizes bounded first capture and retains raw response; Native gates held",
+      "Rollback restores original three extension files after clean shutdown; never revert saved analysis"
+    ]
+  }
+}
