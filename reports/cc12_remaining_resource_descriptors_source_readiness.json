@@ -896,5 +896,25 @@
     "Native_ABI_compatible": false,
     "complete_Native_startup": false,
     "game_validated": false
+  },
+  "primary_review": {
+    "decision": "Accept bounded Source readiness; recover camera-resource 01090288 actual writer/body before any new initializer or backing.",
+    "worker_commit": "df39d0bb7",
+    "pin_occurrences_verified_and_retained": 73,
+    "current_Source_baseline_matches": 25,
+    "historical_context_baseline_matches": 6,
+    "complete_bounded_searches_replayed": 7,
+    "selected_paths_changed_since_baseline": [],
+    "receipt": {
+      "path": "local/cc12_remaining_descriptors_primary/pins.json",
+      "bytes": 39309,
+      "sha256": "9004da917de99b2fbaee272d10b049ca2137ef0abd71f37548b28a952145cded"
+    },
+    "document_pin": {
+      "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+      "bytes": 10333,
+      "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+    },
+    "Cpp_build_test_runtime_Native_or_Ghidra_changes": 0
   }
 }
