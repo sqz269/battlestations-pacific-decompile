@@ -124,3 +124,9 @@ combined with the already retained byte at `00CD8515`, after fresh typed
 boundary/identity verification and an exact new lease. This is an optional
 inspection proposal, not a function-entry claim or authorization. It was not
 performed and would not by itself establish initializer ownership.
+
+## Primary review
+
+Root retained 91 pin occurrences, verified ten baseline/current Source files, replayed all 24 typed raw responses at historical modification 5 and all five physical/identity HTTP hashes, and verified all 60 ZIP payload hashes. Root compared the exact 15 original bytes and decoded only the verified 14-byte suffix. The original whole-image hash also verifies currently. No live Ghidra query or mutation was added. Later parent annotations do not refresh these historical metadata captures.
+
+A separately owned ordinary Source publication fragment may cover the observed counter-call/increment suffix plus the previously verified six-byte store, exactly CD8516..CD8529 (20 bytes). It can borrow the genuine existing counter and actual current 01090344 word, preserve both volatile stores even if they alias, and supply no guard, initializer entry, owning function, backing or caller. This narrow interface would receive only ordinary Source credit; whole initializer, Native ABI/EH/fault and production/CRT gates remain held.
