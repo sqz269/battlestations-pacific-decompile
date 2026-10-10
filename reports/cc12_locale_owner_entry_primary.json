@@ -1,0 +1,178 @@
+{
+  "schema": "bsp.cc12.locale-owner-entry-primary.v1",
+  "status": "accepted_instruction_windows_only",
+  "closed_worker_commit": "9064d4d49d29c1457dc195f60cffa0ecba906fae",
+  "worker_report": {
+    "path": "local/cc12_locale_owner_entry_primary/worker_report.json",
+    "bytes": 21914,
+    "sha256": "d7dc67a08e51c26f88d2a06e77e525a1506e66c13df4e60048f4278e0cd18be8"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_owner_entry_primary/worker_document.md",
+    "bytes": 5941,
+    "sha256": "650e52bf975d39f47ec5f0d4f1fc68d8379a470f38ed052f16b818e36ab6fba9"
+  },
+  "copied_inputs": [
+    {
+      "path": "local/cc12_locale_owner_entry_primary/evidence.zip",
+      "bytes": 20021279,
+      "sha256": "248f62df344990503f2aecbacef21853ca1c1f9e29eaa39a078d3410c8931d2d"
+    },
+    {
+      "path": "local/cc12_locale_owner_entry_primary/replay.py",
+      "bytes": 7811,
+      "sha256": "af76faa79444c219c77a7de9b485c9f5edff007497b74306b4022c953559d861"
+    },
+    {
+      "path": "local/cc12_locale_owner_entry_primary/guarded_replay.py",
+      "bytes": 1307,
+      "sha256": "999d6ac8b4580909d74efe9f03535ebf13f14c8d64de783bcc36eb12100ef2c8"
+    },
+    {
+      "path": "local/cc12_locale_owner_entry_primary/worker_report.json",
+      "bytes": 21914,
+      "sha256": "d7dc67a08e51c26f88d2a06e77e525a1506e66c13df4e60048f4278e0cd18be8"
+    },
+    {
+      "path": "local/cc12_locale_owner_entry_primary/worker_document.md",
+      "bytes": 5941,
+      "sha256": "650e52bf975d39f47ec5f0d4f1fc68d8379a470f38ed052f16b818e36ab6fba9"
+    }
+  ],
+  "guarded_replay": {
+    "path": "local/cc12_locale_owner_entry_primary/Root_guarded_replay.json",
+    "bytes": 2465,
+    "sha256": "c2d3dc2f049ff0d88d22ff345b8b0d084fed03e11aaf3b799d5d662916a71fd4"
+  },
+  "fresh_window_bytes": 128,
+  "reused_prior_Native_bytes": 602,
+  "actual_frozen_Git_blobs": 4215,
+  "actual_dependency_blobs": 10,
+  "current_Root_source_inputs_exact": 4215,
+  "current_Root_HEAD": "026d1cf8f0cd06f7140ae559e7d669c5764fd5c2",
+  "typed_GPR_modification": "67 (retained old epoch; current primary annotations are72)",
+  "root_independent_prefix_decode": [
+    {
+      "address": "00CC8D30",
+      "bytes": 22,
+      "decode": [
+        {
+          "address": "00CC8D30",
+          "bytes": "b98c76e100",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xe1768c"
+        },
+        {
+          "address": "00CC8D35",
+          "bytes": "e8f6d476ff",
+          "mnemonic": "call",
+          "operands": "0x436230"
+        },
+        {
+          "address": "00CC8D3A",
+          "bytes": "681094cd00",
+          "mnemonic": "push",
+          "operands": "0xcd9410"
+        },
+        {
+          "address": "00CC8D3F",
+          "bytes": "e8b1e2f2ff",
+          "mnemonic": "call",
+          "operands": "0xbf6ff5"
+        },
+        {
+          "address": "00CC8D44",
+          "bytes": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00CC8D45",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "address": "00CD9410",
+      "bytes": 10,
+      "decode": [
+        {
+          "address": "00CD9410",
+          "bytes": "b98c76e100",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xe1768c"
+        },
+        {
+          "address": "00CD9415",
+          "bytes": "e936c675ff",
+          "mnemonic": "jmp",
+          "operands": "0x435a50"
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "address": "00436230",
+      "owned_bytes": 208,
+      "hull_bytes": 211,
+      "ranges": [
+        [
+          "00436230",
+          "004362E8",
+          185
+        ],
+        [
+          "004362EC",
+          "00436302",
+          23
+        ]
+      ]
+    },
+    {
+      "address": "00435A50",
+      "owned_bytes": 124,
+      "hull_bytes": 138,
+      "ranges": [
+        [
+          "00435A50",
+          "00435A6C",
+          29
+        ],
+        [
+          "00435A78",
+          "00435A84",
+          13
+        ],
+        [
+          "00435A88",
+          "00435AD9",
+          82
+        ]
+      ]
+    }
+  ],
+  "decision": {
+    "target_bodies_read": false,
+    "owner_lifecycle_established": false,
+    "Source_binding_established": false,
+    "raw_map_composition_GO": false,
+    "application_GO": false
+  },
+  "limits": [
+    "Both entry sites remain no function at/containing and have no established routine extent.",
+    "Call and tail-jump schedules are prefix-only; registration/atexit interpretation remains provisional.",
+    "Whole copied PE hash and selected ranges do not prove whole GPR image identity.",
+    "Current Source inputs match Root, but this packet makes no artifact, ABI or runtime claim."
+  ],
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_fresh_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  }
+}
