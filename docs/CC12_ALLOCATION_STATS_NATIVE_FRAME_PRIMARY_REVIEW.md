@@ -1,0 +1,9 @@
+# Allocation statistics Native frame primary review
+
+Accepted worker `a341563affed568531273400ca39ec60c6cff21b`. Root independently replays423 complete pins,76 exact baseline Git inputs,222ZIP payloads/223entries and448 original instruction bytes across four saved spans. All160 physical instructions match the retained decode. Typed epochs26/30 are distinct; correct library names, prototypes, flow overrides and saved AddressSets remain untouched.
+
+The complete54-byte CxxFrameHandler3 wrapper makes its own frame and forwards four incoming stack words, the incoming FuncInfo address and three zeros to the complete228-byte internal dispatcher. The observed unwind branch passes the second/fourth incoming words, descriptor and minusone to FrameUnwindToState. Its166saved bytes read current state and predecessor/action records, publish the predecessor before a nonnull action, and call CallSettingFrame with the action, registration argument and103h notification. This narrows the actual dependency without proving the parent funclet EBP coordinate.
+
+FrameUnwindToState excludes26bytes between its two saved spans. Its SEH prolog, cleanup descendants and that gap remain unopened. CallSettingFrame has metadata-only evidence for a complete76-byte saved body; no instruction bytes are admitted here. The allocation action's physical epilogue also remains unopened. Actual NativeEH, frame restoration and constructor/destructor failure/free semantics remain held; no generic or installed-source model closes them.
+
+This file-only review adds no Source owner, Ghidra mutation, build, test, ABI, startup or gameplay credit. Current Source differs from the old baseline only in accepted resource application metadata bindings. See [the primary report](../reports/cc12_allocation_stats_native_frame_primary_review.json) and [the worker gate](CC12_ALLOCATION_STATS_NATIVE_FRAME_GATE.md).
