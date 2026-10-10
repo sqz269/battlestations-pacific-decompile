@@ -747,5 +747,31 @@
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\capture.py",
     "bytes": 18800,
     "sha256": "e60e6e11401f0e7aa77cdf4619014758757be0827a098eb64194256a41d98997"
+  },
+  "primary_review": {
+    "decision": "Accept read-only typed getter endpoint/client scope for isolated preparation; exact Native properties and deployment remain unperformed.",
+    "worker_commit": "15f99a1739a649408d1bafaf8d3b5da34d50851b",
+    "artifact_pin_occurrences_replayed_and_retained": 33,
+    "SDK_entries_verified_and_retained": 8,
+    "BSP_baseline_and_current_matches": [
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "tools/ghidra_flow_properties.py",
+      "tools/ghidra_flow_repair.py",
+      "config/target.json",
+      "reports/native_texture_atlas_item_source.json",
+      "docs/NATIVE_TEXTURE_ATLAS_ITEM.md"
+    ],
+    "receipt": {
+      "path": "local/cc12_typed_flow_readiness_primary/pins.json",
+      "bytes": 18362,
+      "sha256": "031255c17f88177abc556024735deffe252958b79c64f10c68e0a488510049b1"
+    },
+    "document_pin": {
+      "path": "docs/CC12_GHIDRA_TYPED_FLOW_SOURCE_READINESS.md",
+      "bytes": 10749,
+      "sha256": "b1079e66b940bb89fc32f335fdbdd8fa53da67cde4c8df003769a254418ce879"
+    },
+    "new_plugin_or_BSP_code_build_install_Native_reads_or_GPR_changes": 0
   }
 }
