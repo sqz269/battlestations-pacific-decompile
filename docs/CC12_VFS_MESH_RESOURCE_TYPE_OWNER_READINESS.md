@@ -145,3 +145,13 @@ Preserve these existing bindings. There is no remaining Source dependency to fil
 within this owner packet and no reason to add another startup call or descriptor.
 Original full CRT execution, native ABI compatibility, application/runtime behavior,
 consumer attachment, gameplay and rendered parity remain separate unproved claims.
+
+Primary review independently froze every reported artifact occurrence and matched
+all24 selected baseline Git blobs against current Source/context. The actual
+retained VFS route passes the same owner_services.types() into common-root
+construction and mesh initialization; owned stable arrays back the borrowed
+descriptors. Seven complete bounded query receipts and the4,180-row Source
+inventory are retained. The owner gap is already Source-composed; add no
+duplicate descriptor or startup call. Production classifier attachment, original
+CRT execution/order, ABI and runtime/gameplay remain separately held. No new
+build, fixture, Native body query or reconstruction credit is added.

@@ -162,3 +162,11 @@ needed for readiness; no old test result is counted as fragment execution.
 The prior Root Source 603 review remains context: 603 inputs, 75 Core + 3 App whole
 objects, 151 positive Core definitions and three existing checks. Its frozen
 artifacts and the admitted iterator/entry fragments are unchanged.
+
+Primary review independently froze every reported artifact occurrence, matched all29
+selected tracked provider/context blobs against the worker baseline and current
+Source, and replayed all six complete region decodes against the unchanged original
+PE. All858 full-parent starts match the pinned saved and retained live listings.
+This accepts readiness for a separately owned136-byte lifetime-closed Source packet.
+No caller binding, new reconstruction, original ABI, runtime or gameplay credit
+is added. Normal captured-owner cleanup and unwind cleanup remain distinct.
