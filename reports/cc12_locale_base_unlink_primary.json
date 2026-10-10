@@ -1,0 +1,282 @@
+{
+  "schema": "bsp.cc12.locale-base-unlink-primary.v1",
+  "status": "native_shared_list_unlink_and_existing_domain_provider_accepted_canonical_owner_and_FH3_unproved",
+  "worker_commit": "bcef5843bfaec8a1990d6126b50b4a0e58716d46",
+  "Root_worker_review": {
+    "path": "local/cc12_locale_base_unlink_primary/Root_worker_review.json",
+    "bytes": 1717,
+    "sha256": "634fa7bf8db63a3632ecdd2cf3784f5e0d8e0fa2683e76f4d611e381043671d0"
+  },
+  "worker_report": {
+    "path": "local/cc12_locale_base_unlink_primary/worker_report.json",
+    "bytes": 81162,
+    "sha256": "3be03e5b4aa27b11551adb54674913382ac40be0aac41b11d791be9fc477beb5"
+  },
+  "copied_bundle": {
+    "path": "local/cc12_locale_base_unlink_primary/worker_evidence.zip",
+    "bytes": 72757861,
+    "sha256": "4e7a26caa16d436e0dcd443026702cc45b8da6facdb32788eed37be6d32456da"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_base_unlink_primary/Root_guarded_worker_replay.json",
+    "bytes": 10732,
+    "sha256": "5b41a326b8306a97d68f24ec4ca29d197bc22e6df60693857f07bfba88575b47"
+  },
+  "actual_frozen_Git_blob_occurrences": 4241,
+  "actual_commit_tree_objects": 13,
+  "actual_closed_Source_paths": 4217,
+  "Root_Source_differences": [
+    "include/bsp/native_particle_model_lifetime.hpp",
+    "src/native_particle_model_lifetime.cpp"
+  ],
+  "Native": {
+    "fresh_bytes": 43,
+    "decoded_instructions": 15,
+    "normal_CFG_edges": 16,
+    "stored_bytes": 43,
+    "hull_bytes": 43,
+    "stored_range": "00403970..0040399A",
+    "GPR_worker_epoch": 90,
+    "original_PE_equal": true,
+    "prior_Native_body_and_data_bytes": 1522,
+    "installed_PE_reread": false
+  },
+  "contract": {
+    "receiver": "Incoming ECX is actual list element / locale pool base",
+    "word_width": 32,
+    "fields": {
+      "table": "element+0",
+      "previous": "element+4",
+      "next": "element+8"
+    },
+    "base_table": "00D7A0C0",
+    "shared_head_cell": "00E188B4",
+    "schedule": [
+      "Capture previous from[ECX+4] in EAX and TEST",
+      "Stamp base table at[ECX] preserving branch flags",
+      "If captured previous nonnull, read CURRENT next into EDX and store captured previous+8",
+      "Else read CURRENT next and store fixed E188B4 without head read or membership test",
+      "Reload CURRENT next in EAX",
+      "If reloaded next nonnull, reload CURRENT previous in ECX and write captured successor+4",
+      "Plain RET"
+    ],
+    "current_head_reads": 0,
+    "head_write_condition": "Captured previous is null",
+    "predecessor_snapshot_before_table_stamp": true,
+    "successor_reread_after_first_repair": true,
+    "previous_reread_for_backlink": true,
+    "explicit_removed_link_clears": false,
+    "local_storage_free": false,
+    "local_calls": false,
+    "local_section_or_lock_access": false,
+    "local_table_payload_or_slab_cleanup": false,
+    "local_EH_or_rollback": false,
+    "serialization_supplied_by_caller": true,
+    "normal_CFG_edges": 16
+  },
+  "ABI": {
+    "stored_prototype": "undefined BSP_AllocatorListElement_UnlinkBase(void)",
+    "receiver_register": "ECX",
+    "stored_void_prototype_expresses_receiver": false,
+    "explicit_stack_arguments": 0,
+    "return_instruction": "RET without immediate",
+    "local_stack_adjustments": 0,
+    "EAX_on_return": "Final successor read; may be0",
+    "ECX_on_return": "Incoming receiver if final successor null; otherwise final CURRENT previous read",
+    "EDX_on_return": "First successor read when captured predecessor nonnull; otherwise entry EDX unchanged",
+    "preserved_registers": [
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ],
+    "final_arithmetic_flags": "From final TEST of successor: CF/OF0, ZF/SF/PF from successor bits, AF undefined",
+    "meaningful_API_return_value_established": false,
+    "Source_host_method_is_original_entry_ABI": false,
+    "compiled_ABI_replacement_proved": false
+  },
+  "null_and_failure_prefix": {
+    "null_receiver_guard": false,
+    "null_receiver_first_access": "DWORD[4]",
+    "null_predecessor": "Writes fixed E188B4 unconditionally",
+    "null_successor": "Skips final backlink write",
+    "head_equals_receiver_validation": false,
+    "required_membership": "Actual linked element and coherent actual list/domain; arbitrary zeroed storage is not sufficient",
+    "first_read_failure_precedes_table_stamp": true,
+    "later_store_failure_can_follow_prior_committed_stores": true,
+    "local_rollback": false,
+    "prior_constructor_publication": [
+      "Previous0",
+      "Next from E188B4",
+      "Former head previous updated when nonnull",
+      "E188B4 set to same incoming pool/list base",
+      "State0 armed afterward"
+    ],
+    "actual_failure_unwind_executed": false
+  },
+  "existing_Source_provider": {
+    "symbol": "AllocatorListDomain::unlink_base_element_00403970",
+    "implementation": "src/allocator_list.cpp",
+    "header": "include/bsp/allocator_list.hpp",
+    "excerpts": [
+      {
+        "path": "src/allocator_list.cpp",
+        "start_line": 6,
+        "end_line": 11,
+        "blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+        "label": "layout_and_domain_constructor",
+        "pin": {
+          "entry": "SourceExcerpts/layout_and_domain_constructor.txt",
+          "bytes": 351,
+          "sha256": "543e8047bc20bd6ca3ac4295d6fa6995093fbbfa19f08659f478ff1103de4597"
+        }
+      },
+      {
+        "path": "src/allocator_list.cpp",
+        "start_line": 32,
+        "end_line": 46,
+        "blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+        "label": "same_domain_prepend_and_unlink",
+        "pin": {
+          "entry": "SourceExcerpts/same_domain_prepend_and_unlink.txt",
+          "bytes": 654,
+          "sha256": "78aae50a4374f41f5d92e0e167de588ceee61872a7a1e12dfb863d2cb9d67343"
+        }
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "start_line": 7,
+        "end_line": 13,
+        "blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+        "label": "actual_element_words",
+        "pin": {
+          "entry": "SourceExcerpts/actual_element_words.txt",
+          "bytes": 297,
+          "sha256": "aaff3b11843a3900e6e904d5639485c965189aeb82319dab085ab85cf3ead75a"
+        }
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "start_line": 15,
+        "end_line": 29,
+        "blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+        "label": "explicit_binding_and_domain_constructor",
+        "pin": {
+          "entry": "SourceExcerpts/explicit_binding_and_domain_constructor.txt",
+          "bytes": 636,
+          "sha256": "ae06222d5400683a7d473ddbf3ae445309fec1620b15faa743a790fc8ac24972"
+        }
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "start_line": 44,
+        "end_line": 52,
+        "blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+        "label": "domain_reference_and_separate_bindings",
+        "pin": {
+          "entry": "SourceExcerpts/domain_reference_and_separate_bindings.txt",
+          "bytes": 394,
+          "sha256": "614a1dae1a6b7bb9a04da74f0e03357888cecf3d074fc1df721d12568bf2199b"
+        }
+      }
+    ],
+    "captured_predecessor_before_stamp": true,
+    "ordinary_current_link_schedule_reusable": true,
+    "compiled_load_count_fault_alias_concurrency_equivalence_proved": false,
+    "domain_constructor": "Explicit AllocatorListElement*&; stores shared head reference",
+    "domain_has_default_head_constructor": false,
+    "domain_copy_disabled": true,
+    "same_domain_prepend_and_unlink_use_same_reference": true,
+    "native_element_words_not_cpp_vptr": true,
+    "virtual0_binding_map": "Separate host map, explicitly not head; unlink does not access/unbind it",
+    "virtual0_interface": "Concrete recovered profile, owner context, invoke function; no default placeholder service supplied",
+    "actual_locale_domain_instance_verified": false,
+    "actual_shared_head_cell_identity_verified": false,
+    "actual_current_membership_verified": false,
+    "new_domain_head_context_or_services_created": false,
+    "duplicate_leaf_CPP_needed": false,
+    "Source_method_ABI": "Host domain this plus explicit element reference, distinct from original ECX-element ABI"
+  },
+  "next_finite_scope": {
+    "proposed_packet": "cc12_locale_canonical_pool_owner_provenance",
+    "addresses": [
+      "00E1768C",
+      "00436230"
+    ],
+    "proposal_only": true,
+    "first_gate": "Bounded metadata-only xrefs/callers to identify exact canonical initialization/publication sites; no automatic body expansion",
+    "query_result_limit": 8,
+    "complete_query_pagination_required_before_absence_claim": true,
+    "body_admission": "Separate Root proposal with exact function ownership and size gate after candidate sites are known",
+    "Source_goal": "Connect supplied actual storage/domain/services and existing lifecycle leaves; do not invent missing leaf C++",
+    "separate_FH3_frame_gate": "Reuse shared runtime evidence where available; actual EBP setup remains unproved",
+    "excluded": [
+      "Unadmitted caller bodies",
+      "OS-import/free/FH3 bodies",
+      "Handler or derived EH data",
+      "C++/CMake/build/test/runtime changes"
+    ],
+    "proposed_files": [
+      "docs/CC12_LOCALE_CANONICAL_POOL_OWNER_PROVENANCE.md",
+      "reports/cc12_locale_canonical_pool_owner_provenance.json",
+      "local/cc12_locale_canonical_pool_owner_provenance"
+    ]
+  },
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_locale_base_unlink_primary/Root_typed_before.json",
+      "bytes": 25907,
+      "sha256": "9f209b9febae934f331964de335454059b027ba08026218aa49a03dd6da28622"
+    },
+    "after": {
+      "path": "local/cc12_locale_base_unlink_primary/Root_typed_after.json",
+      "bytes": 25907,
+      "sha256": "bee72d404cccf3de8254912b20089487686860f6e5a8e3b443c91432e075816d"
+    },
+    "GPR_before": 90,
+    "GPR_after": 92,
+    "comments_added": 1,
+    "renames": 0,
+    "existing_name_and_comments_and_ledger_evidence_preserved": true,
+    "complete_metadata_equal_except_modification": true,
+    "Native_body_listing_flow_no_return_prototype_unchanged": true,
+    "journal": {
+      "path": "local/cc12_locale_base_unlink_primary/Root_comment_journal.json",
+      "bytes": 3778,
+      "sha256": "2d2a556c5a6b5f4e3b80fd64db246b9f60ed64ddf7a04c42fe0fd8f137930da6"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_locale_base_unlink_primary/refreshed_exports/assembly.txt",
+        "bytes": 498,
+        "sha256": "00f47373aac318c8dc740e3d28c6498ee200129f12f95eb6bfdba5f47c9585e3"
+      },
+      {
+        "path": "local/cc12_locale_base_unlink_primary/refreshed_exports/decompiled.c",
+        "bytes": 1224,
+        "sha256": "07342782848f1432b2485e2c09060553093f180890e150faa8e9d32ebfdb5de4"
+      },
+      {
+        "path": "local/cc12_locale_base_unlink_primary/refreshed_exports/metadata.json",
+        "bytes": 210,
+        "sha256": "d48f09f8b1e2a215925998a3f96718409eb26e4d9baeb610cca8ac3da470e660"
+      }
+    ]
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_body_queries": 0,
+    "Root_metadata_captures": 2,
+    "GPR_writes": "One locked evidence-comment append plus save; no rename or analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Root hook adapter changes in two lifetime Source files are separate from worker frozen Source/Native proof.",
+    "Actual shared-head identity, same canonical linked element and serialization are caller/domain obligations.",
+    "Ordinary C++ Source schedule is not proof of compiled load counts, hardware faults, arbitrary aliases or concurrency.",
+    "Actual FH3 frame, owner initialization/publication/lifetime and full activation remain unproved."
+  ]
+}
