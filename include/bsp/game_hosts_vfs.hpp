@@ -123,6 +123,12 @@ public:
     // retained runtime and is rejected after an interrupted native operation.
     NativeStringRawPoolContext& raw_strings() noexcept;
     GameNativeVfsRawServices borrow_raw_services();
+    // Explicit service binding after completed core startup and operability.
+    // Uses only this host's resource/VFS/string owners, mapped data and already
+    // initialized process hierarchy pool. No getter, I/O, parse or native
+    // cleanup runs here. Keep all borrowed contexts through the shared drain;
+    // later invocation/failure/retirement admission belongs to the caller.
+    const GameNativeHierarchyServices& borrow_hierarchy_services();
     // Original BE1890 over this same manager/factory/provider/lifetime graph.
     // The mount remains owned by the native manager until its normal drain.
     void* mount(const char* system_path,const char* virtual_path,

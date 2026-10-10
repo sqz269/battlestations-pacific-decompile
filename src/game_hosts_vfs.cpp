@@ -126,6 +126,12 @@ NativeStringRawPoolContext& GameVfsHost::raw_strings() noexcept {
 GameNativeVfsRawServices GameVfsHost::borrow_raw_services() {
     return active_runtime().borrow_raw_services();
 }
+const GameNativeHierarchyServices& GameVfsHost::borrow_hierarchy_services() {
+    if (!core_ready_)
+        throw std::logic_error("hierarchy services require completed VFS core startup");
+    const auto services = borrow_raw_services(); // Existing interrupted-operation gate.
+    return resources_->borrow_hierarchy_services(services.bindings, native_->raw_strings());
+}
 NativeVfsOwnerServices& GameVfsHost::native_owners() noexcept { return native_->owners(); }
 GameNativeTypeStorage& GameVfsHost::native_types() noexcept { return native_->types(); }
 
