@@ -6675,6 +6675,230 @@
           "future_materialization": null,
           "future_DATA_adoption": null,
           "future_phase_execution": null
+        },
+        "fresh_F6_prepare01_concrete_profiles_and_closed_assembly_plan": {
+          "status": "FRESH_F6_PROFILES_AND_CLOSED_INERT_ASSEMBLY_PLAN_CONSTRUCTED_COMPREHENSIVE_PEER_FINAL_HANDOFF_PENDING",
+          "Source_credit": 0,
+          "Root_profile_and_plan_construction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\Root_F6_prepare01_complete_profile_and_plan_construction_DATA01.json",
+            "bytes": 7537252,
+            "sha256": "6cc0cba42becfcb27451e1accc656408b42412bd07fc66536db2db491e1333a4"
+          },
+          "Root_construction_checks": 32773,
+          "Root_construction_equal_current_pins": 1262,
+          "actual_Root_constructor_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_profile_and_plan_construction.actual_native_DATA01.json",
+            "bytes": 2002,
+            "sha256": "7688d5af713a47bace5788177becdc02fe5ba9c7619fcc4995ba26ba8bcfca62"
+          },
+          "actual_Root_constructor_turns": [
+            {
+              "tool": "exec_command",
+              "arguments": {
+                "cmd": "$taskSource='J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\construct_F6_prepare01_profiles_and_closed_assembly_plan_DATA01.py'\n(Get-Item -LiteralPath $taskSource).IsReadOnly=$true\n& 'C:\\ProgramData\\miniconda3\\python.exe' -I -B -E -S $taskSource",
+                "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution",
+                "max_output_tokens": 1600,
+                "yield_time_ms": 1000
+              },
+              "result": {
+                "chunk_id": "8547da",
+                "wall_time_seconds": 4.83963,
+                "exit_code": 0,
+                "original_token_count": 260,
+                "output": "{\"review\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\Root_F6_prepare01_complete_profile_and_plan_construction_DATA01.json\", \"bytes\": 7537252, \"sha256\": \"6cc0cba42becfcb27451e1accc656408b42412bd07fc66536db2db491e1333a4\"}, \"checks\": 32773, \"pins\": 1262, \"assembly_plan\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_materialization_control01\\\\assembly_plan.F6_prepare01.selected.json\", \"bytes\": 1132469, \"sha256\": \"850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232\"}, \"adopter_draft\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\adoption_plan.F6_prepare01.inert_post_materialization_draft.json\", \"bytes\": 53770, \"sha256\": \"6775a458f71407f7f19587fc06aec651c1782cea57299b38635175784198b5d5\"}, \"profile_changes\": 11, \"Source_closure\": 1258, \"families\": 24, \"future_roots_absent\": true, \"helper_executed\": false}\r\n"
+              }
+            }
+          ],
+          "closed_assembly_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\assembly_plan.F6_prepare01.selected.json",
+            "bytes": 1132469,
+            "sha256": "850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232"
+          },
+          "inert_adopter_draft": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\adoption_plan.F6_prepare01.inert_post_materialization_draft.json",
+            "bytes": 53770,
+            "sha256": "6775a458f71407f7f19587fc06aec651c1782cea57299b38635175784198b5d5"
+          },
+          "adopter_draft_fields": 23,
+          "adopter_post_materialization_required_fields": [
+            "D03_base_seal",
+            "unadopted_Root_seal"
+          ],
+          "explicit_byte_copy_instruction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_selected_helper_byte_copy_instruction.DATA01.json",
+            "bytes": 1856,
+            "sha256": "109b9f2aa7bdb1d165b75e9da96ba603c38274026fce73e3fb4ea39632ad35f4"
+          },
+          "profiles": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\selected_private_profiles\\Python_roles.json",
+              "bytes": 2645,
+              "sha256": "5415c2d81ac0180311e13fe9b153553dc58b4e5a615ed8ff1c679055625e4812"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\selected_private_profiles\\external_role.json",
+              "bytes": 1179,
+              "sha256": "1d9ad8fe99c007918db3a362e62779c1b01e4695390ecdef474546d8c2e05e47"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\selected_private_profiles\\job_policy.json",
+              "bytes": 490,
+              "sha256": "b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796"
+            }
+          ],
+          "profile_leaf_changes": [
+            {
+              "role": "root_process",
+              "key": "BSP_EXPORTS_DIR",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select06\\frozen_native_exports",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select07\\frozen_native_exports"
+            },
+            {
+              "role": "root_process",
+              "key": "TEMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            },
+            {
+              "role": "root_process",
+              "key": "TMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            },
+            {
+              "role": "recipe_children",
+              "key": "BSP_EXPORTS_DIR",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select06\\frozen_native_exports",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select07\\frozen_native_exports"
+            },
+            {
+              "role": "recipe_children",
+              "key": "INCLUDE",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p5\\include;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\include;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt"
+            },
+            {
+              "role": "recipe_children",
+              "key": "TEMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            },
+            {
+              "role": "recipe_children",
+              "key": "TMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            },
+            {
+              "role": "external",
+              "key": "BSP_COORDINATION_DIR",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\coordination",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\coordination"
+            },
+            {
+              "role": "external",
+              "key": "BSP_EXPORTS_DIR",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select06\\frozen_native_exports",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select07\\frozen_native_exports"
+            },
+            {
+              "role": "external",
+              "key": "TEMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            },
+            {
+              "role": "external",
+              "key": "TMP",
+              "old": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe06\\temp",
+              "new": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\temp"
+            }
+          ],
+          "profile_counts": [
+            11,
+            13,
+            15
+          ],
+          "profile_value_change_count": 11,
+          "independent_actual_profile_native_advisory": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_prepare01_profiles_actual_native_advisory_20261010.json",
+            "bytes": 15155,
+            "sha256": "e81684207dc47228aacafbc0235f00ffc0a7b165ba6de7a060f5593ab8843045"
+          },
+          "independent_profile_checks": 92,
+          "independent_profile_named_bookends": 13,
+          "independent_profile_genuine_turns": [
+            {
+              "tool": "exec_command",
+              "arguments": {
+                "cmd": "$freshProfilesVerify = @'\nimport ast,json,hashlib,stat\nfrom pathlib import Path\nR=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution')\nH=Path('J:/PROG/battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT/local/type1011F6D07NineRoleAssemblerSourceTEXT02')\nB=R/'local/Root_F6_D07_TEXT_review01';C=R/'local/Root_F6_D07_materialization_control01'\noldDir=R/'local/type1011select06/selected_private_profiles';newDir=B/'selected_private_profiles'\nplanPath=C/'assembly_plan.F6_prepare01.selected.json';reportPath=B/'Root_F6_prepare01_complete_profile_and_plan_construction_DATA01.json'\nsourcePaths=[H/'Sources'/n for n in ['fresh_scope_nine_role_assembler.py.txt','fresh_scope_nine_role_adopter.py.txt','type1011_recipe.py.txt','dependency_bootstrap.py.txt']]\nprofilePaths=[d/n for d in [oldDir,newDir] for n in ['Python_roles.json','external_role.json','job_policy.json']]\nallPaths=profilePaths+[planPath,reportPath,C/'selected_assembler.py']+sourcePaths\nchecks=[]\ndef need(test,name):\n checks.append({'name':name,'passed':bool(test)});assert test,name\ndef pin(p):\n b=p.read_bytes();return {'path':str(p),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\nbefore=[pin(p) for p in allPaths]\nplan=json.loads(planPath.read_bytes());report=json.loads(reportPath.read_bytes())\nneed(before[6]['bytes']==1132469 and before[6]['sha256']=='850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232','exact selected plan pin')\nneed(before[7]['bytes']==7537252 and before[7]['sha256']=='6cc0cba42becfcb27451e1accc656408b42412bd07fc66536db2db491e1333a4','exact construction DATA pin')\noldPins={'Python_roles.json':(2645,'033f25345f0e11a1fed49a83d97142010741e459121ad12125e3c90203be096a'),'external_role.json':(1179,'ed44f551d45ae9c6131ec482014d6f32a476db9def7a35457a02de0077f95b7d'),'job_policy.json':(490,'b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796')}\nfor p in profilePaths[:3]:\n q=pin(p);need((q['bytes'],q['sha256'])==oldPins[p.name],'exact prior D06 '+p.name)\nfor p in profilePaths[3:]:\n q=pin(p);need(plan['profiles'][p.name]==q,'selected actual profile pin '+p.name)\n need(bool(p.stat().st_file_attributes & stat.FILE_ATTRIBUTE_READONLY),'profile readonly '+p.name)\n need(not bool(p.stat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT),'profile no reparse '+p.name)\noldRoles=json.loads((oldDir/'Python_roles.json').read_bytes());newRoles=json.loads((newDir/'Python_roles.json').read_bytes())\noldExt=json.loads((oldDir/'external_role.json').read_bytes());newExt=json.loads((newDir/'external_role.json').read_bytes())\nold={**oldRoles,'external':oldExt};new={**newRoles,'external':newExt}\nneed(set(oldRoles)==set(newRoles)=={'root_process','recipe_children'},'exact two Python role names')\nexpected={'root_process':{'BSP_EXPORTS_DIR','TEMP','TMP'},'recipe_children':{'BSP_EXPORTS_DIR','TEMP','TMP','INCLUDE'},'external':{'BSP_EXPORTS_DIR','TEMP','TMP','BSP_COORDINATION_DIR'}}\ndeltas={}\nfor role in old:\n need(set(old[role])==set(new[role]),'full key set unchanged '+role)\n need(all(isinstance(v,str) for v in new[role].values()),'all map values strings '+role)\n need(len(new[role])=={'root_process':11,'recipe_children':13,'external':15}[role],'exact count '+role)\n deltas[role]=sorted(k for k in old[role] if old[role][k]!=new[role][k])\n need(set(deltas[role])==expected[role],'exact changed keys '+role)\n for key,value in old[role].items():\n  replaced=value.replace('type1011select06','type1011select07').replace('type1011observe06','type1011observe07').replace('type1011p5','type1011p6')\n  need(new[role][key]==replaced,'exact permitted value delta '+role+'.'+key)\n need(new[role]['PATH']==old[role]['PATH'],'PATH byte string unchanged '+role)\n need(new[role]['BSP_EXPORTS_DIR']==str(R/'local/type1011select07/frozen_native_exports'),'fresh exports path '+role)\n need(new[role]['TEMP']==new[role]['TMP']==str(R/'local/type1011observe07/temp'),'fresh TEMP/TMP path '+role)\nneed(sum(len(x) for x in deltas.values())==11,'exact eleven leaf changes')\nneed(newExt['BSP_COORDINATION_DIR']==str(R/'local/type1011observe07/coordination'),'fresh external coordination')\nneed((oldDir/'job_policy.json').read_bytes()==(newDir/'job_policy.json').read_bytes(),'job policy whole raw byte equality')\nrecipeTree=ast.parse(sourcePaths[2].read_bytes());const={}\nfor n in recipeTree.body:\n if isinstance(n,ast.Assign):\n  for t in n.targets:\n   if isinstance(t,ast.Name) and t.id in {'BIN','VC','SDK','SDKVER'}:\n    v=n.value\n    const[t.id]=Path(ast.literal_eval(v.args[0])) if isinstance(v,ast.Call) and isinstance(v.func,ast.Name) and v.func.id=='Path' and len(v.args)==1 and not v.keywords else ast.literal_eval(v)\nneed(set(const)=={'BIN','VC','SDK','SDKVER'},'exact recipe literal construction constants')\nVC=const['VC'];SDK=const['SDK'];version=const['SDKVER']\ninc=[str(R/'local/type1011p6/include'),str(VC/'include')]+[str(SDK/'Include'/version/x) for x in ['ucrt','shared','um','winrt','cppwinrt']]\nlibs=[str(VC/'lib/x86'),str(SDK/'Lib'/version/'ucrt/x86'),str(SDK/'Lib'/version/'um/x86')]\nroot=newRoles['root_process'];child=newRoles['recipe_children']\nexpectedChild=dict(root,INCLUDE=';'.join(inc),LIB=';'.join(libs),PATH=str(const['BIN'])+';'+str(SDK/'bin'/version/'x86')+';'+root['PATH'],VSLANG='1033',PYTHONDONTWRITEBYTECODE='1',BSP_GHIDRA_AUTOSTART='0')\nneed(child==expectedChild,'exact whole recipe/bootstrap ENV formula')\nneed(child['INCLUDE'].split(';')[1:]==oldRoles['recipe_children']['INCLUDE'].split(';')[1:] and len(child['INCLUDE'].split(';'))==7,'six installed INCLUDE entries exact')\nneed(child['LIB']==oldRoles['recipe_children']['LIB'] and len(child['LIB'].split(';'))==3,'LIB3 exact')\nneed(str(const['BIN'])==plan['copied_BIN']['root'],'copied BIN root matches recipe constant')\nneed(len(plan['copied_BIN']['files'])==73 and len(plan['copied_BIN']['members'])==74,'copied BIN declared full73/74')\nneed(newExt['PATH'].endswith(';'+root['PATH']) and len(newExt['PATH'].split(';'))==5,'external existing single PS prefix preserved')\nneed((C/'selected_assembler.py').read_bytes()==sourcePaths[0].read_bytes(),'selected assembler whole bytes equal H2')\nassemblerTree=ast.parse(sourcePaths[0].read_bytes());build=next(n for n in assemblerTree.body if isinstance(n,ast.FunctionDef) and n.name=='build_phase')\ncwdExpr=[n.value for n in ast.walk(build) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Subscript) and isinstance(t.slice,ast.Constant) and t.slice.value=='working_directory' for t in n.targets)]\nif not cwdExpr:\n cwdExpr=[v for n in ast.walk(build) if isinstance(n,ast.Dict) for k,v in zip(n.keys,n.values) if isinstance(k,ast.Constant) and k.value=='working_directory']\nneed(len(cwdExpr)==1 and ast.unparse(cwdExpr[0])==\"str(ROOT if phase == 'prepare' else F4)\",'assembler prepare cwd automatically ROOT')\nneed(plan['phase']=='prepare' and plan['transition'] is None,'prepare phase transition contract')\nneed(all('working_directory' not in m for m in new.values()),'cwd is not an ENV key')\nneed(report['review_passed'] is True and report['DATA_checks_passed'] is True and report['blockers']==[],'construction DATA positive flags')\nneed(report['phase_authority'] is False and report['runtime_authority'] is False and report['DATA_adoption_authority'] is False,'construction authority false')\nafter=[pin(p) for p in allPaths];need(before==after,'all narrow named file bookends exact')\nprint(json.dumps({'verification_passed':True,'check_count':len(checks),'input_pin_count':len(before),'profile_pins':[pin(p) for p in profilePaths[3:]],'map_counts':{k:len(v) for k,v in new.items()},'changed_keys':deltas,'changed_leaf_count':11,'recipe_bootstrap_formula_exact':True,'all_PATH_unchanged':True,'INCLUDE_other_six_exact':True,'LIB3_exact':True,'job_policy_byte_exact':True,'profiles_readonly':True,'prepare_cwd':'Root checkout R, automatically derived','all_named_bookends_equal':True,'private_ENV_values_output':False,'selected_Source_execution':False,'Root_writes':False,'Source_credit':0},indent=2))\n'@\n& 'C:/ProgramData/miniconda3/python.exe' -I -B -E -S -c $freshProfilesVerify",
+                "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_job_peer",
+                "max_output_tokens": 1800
+              },
+              "result": {
+                "chunk_id": "11a811",
+                "wall_time_seconds": 1.8115725,
+                "exit_code": 0,
+                "original_token_count": 467,
+                "output": "{\r\n  \"verification_passed\": true,\r\n  \"check_count\": 92,\r\n  \"input_pin_count\": 13,\r\n  \"profile_pins\": [\r\n    {\r\n      \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\Python_roles.json\",\r\n      \"bytes\": 2645,\r\n      \"sha256\": \"5415c2d81ac0180311e13fe9b153553dc58b4e5a615ed8ff1c679055625e4812\"\r\n    },\r\n    {\r\n      \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\external_role.json\",\r\n      \"bytes\": 1179,\r\n      \"sha256\": \"1d9ad8fe99c007918db3a362e62779c1b01e4695390ecdef474546d8c2e05e47\"\r\n    },\r\n    {\r\n      \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\job_policy.json\",\r\n      \"bytes\": 490,\r\n      \"sha256\": \"b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796\"\r\n    }\r\n  ],\r\n  \"map_counts\": {\r\n    \"recipe_children\": 13,\r\n    \"root_process\": 11,\r\n    \"external\": 15\r\n  },\r\n  \"changed_keys\": {\r\n    \"recipe_children\": [\r\n      \"BSP_EXPORTS_DIR\",\r\n      \"INCLUDE\",\r\n      \"TEMP\",\r\n      \"TMP\"\r\n    ],\r\n    \"root_process\": [\r\n      \"BSP_EXPORTS_DIR\",\r\n      \"TEMP\",\r\n      \"TMP\"\r\n    ],\r\n    \"external\": [\r\n      \"BSP_COORDINATION_DIR\",\r\n      \"BSP_EXPORTS_DIR\",\r\n      \"TEMP\",\r\n      \"TMP\"\r\n    ]\r\n  },\r\n  \"changed_leaf_count\": 11,\r\n  \"recipe_bootstrap_formula_exact\": true,\r\n  \"all_PATH_unchanged\": true,\r\n  \"INCLUDE_other_six_exact\": true,\r\n  \"LIB3_exact\": true,\r\n  \"job_policy_byte_exact\": true,\r\n  \"profiles_readonly\": true,\r\n  \"prepare_cwd\": \"Root checkout R, automatically derived\",\r\n  \"all_named_bookends_equal\": true,\r\n  \"private_ENV_values_output\": false,\r\n  \"selected_Source_execution\": false,\r\n  \"Root_writes\": false,\r\n  \"Source_credit\": 0\r\n}\r\n"
+              }
+            },
+            {
+              "tool": "exec_command",
+              "arguments": {
+                "cmd": "$profileClosingCheck = @'\nimport ast,json,hashlib,stat\nfrom pathlib import Path\nR=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution');H=Path('J:/PROG/battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT/local/type1011F6D07NineRoleAssemblerSourceTEXT02/Sources');O=R/'local/type1011select06/selected_private_profiles';N=R/'local/Root_F6_D07_TEXT_review01/selected_private_profiles'\nexpected={'fresh_scope_nine_role_assembler.py.txt':'667f890f7111f5838ba70668d8835f5be017b00cc2873203d15a0ec0195be16c','fresh_scope_nine_role_adopter.py.txt':'a5286b8975e4762464bac6fdd927cce36ce83ecd2634e1686fc5e206d58dcfed','type1011_recipe.py.txt':'0eb5a41bb1c4f810414ce5ebdf78e8451d4a46c3abec700214d71ebbb968ebf4','dependency_bootstrap.py.txt':'e4c66b2ad7a8c4345133d01829a6eefc59b5b6ae09116c39be43c50e207c25cc'}\nP=[d/n for d in (O,N) for n in ('Python_roles.json','external_role.json','job_policy.json')]+[H/n for n in expected]\ndef pin(p):\n b=p.read_bytes();return {'path':str(p),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\nbefore=[pin(p) for p in P]\nfor p in P[6:]:assert pin(p)['sha256']==expected[p.name]\nfor p in P[3:6]:assert p.stat().st_file_attributes&stat.FILE_ATTRIBUTE_READONLY and not p.stat().st_file_attributes&stat.FILE_ATTRIBUTE_REPARSE_POINT\nold=json.loads(P[0].read_bytes());old['external']=json.loads(P[1].read_bytes());new=json.loads(P[3].read_bytes());new['external']=json.loads(P[4].read_bytes())\nchanges={r:[k for k in old[r] if old[r][k]!=new[r][k]] for r in old}\nfor r in old:\n assert set(old[r])==set(new[r]) and len(new[r])=={'root_process':11,'recipe_children':13,'external':15}[r]\n for k,v in old[r].items():assert new[r][k]==v.replace('type1011select06','type1011select07').replace('type1011observe06','type1011observe07').replace('type1011p5','type1011p6')\n assert old[r]['PATH']==new[r]['PATH']\nassert sum(map(len,changes.values()))==11 and P[2].read_bytes()==P[5].read_bytes()\nassert old['recipe_children']['LIB']==new['recipe_children']['LIB'] and old['recipe_children']['INCLUDE'].split(';')[1:]==new['recipe_children']['INCLUDE'].split(';')[1:]\nassert before==[pin(p) for p in P]\nprint(json.dumps({'closing_passed':True,'named_pins':len(P),'changed_values':11,'counts':{r:len(new[r]) for r in new},'current_profile_pins':before[3:6],'full_current_H2_source_pins_exact':True,'profiles_readonly':True,'bookends_equal':True,'selected_Source_execution':False,'Root_writes':False,'Source_credit':0},separators=(',',':')))\n'@\n& 'C:/ProgramData/miniconda3/python.exe' -I -B -E -S -c $profileClosingCheck",
+                "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_job_peer",
+                "max_output_tokens": 1200
+              },
+              "result": {
+                "chunk_id": "25a595",
+                "wall_time_seconds": 1.8606004999999999,
+                "exit_code": 0,
+                "original_token_count": 269,
+                "output": "{\"closing_passed\":true,\"named_pins\":10,\"changed_values\":11,\"counts\":{\"recipe_children\":13,\"root_process\":11,\"external\":15},\"current_profile_pins\":[{\"path\":\"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\Python_roles.json\",\"bytes\":2645,\"sha256\":\"5415c2d81ac0180311e13fe9b153553dc58b4e5a615ed8ff1c679055625e4812\"},{\"path\":\"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\external_role.json\",\"bytes\":1179,\"sha256\":\"1d9ad8fe99c007918db3a362e62779c1b01e4695390ecdef474546d8c2e05e47\"},{\"path\":\"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\\\local\\\\Root_F6_D07_TEXT_review01\\\\selected_private_profiles\\\\job_policy.json\",\"bytes\":490,\"sha256\":\"b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796\"}],\"full_current_H2_source_pins_exact\":true,\"profiles_readonly\":true,\"bookends_equal\":true,\"selected_Source_execution\":false,\"Root_writes\":false,\"Source_credit\":0}\r\n"
+              }
+            }
+          ],
+          "complete_Source_receipt_closure_pins": 1258,
+          "fresh_profile_input_pins": 3,
+          "additional_current_pins": 1261,
+          "immutable_families": 24,
+          "Source_roles": 9,
+          "legacy_graph_counts": [
+            13239,
+            58,
+            16380
+          ],
+          "copied_BIN_counts": [
+            73,
+            74
+          ],
+          "all_toolchain_package_native_and_Root_source_bindings_retained": true,
+          "prepare_working_directory": "Root checkout R derived by selected assembler",
+          "phase": "prepare",
+          "label": "type1011_f6_prepare01",
+          "transition": null,
+          "comprehensive_plan_peer_final_handoff": null,
+          "complete_Root_plan_peer_acceptance": null,
+          "separate_materialization_instruction": null,
+          "actual_materialization": null,
+          "actual_DATA_adoption": null,
+          "actual_fixture_execution": null,
+          "four_fresh_roots_absent": true,
+          "Root_SQLite_absent": true,
+          "original_capture_unchanged": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\review01_complete_original_genuine_native_orchestration_DATA01.json",
+            "bytes": 91946,
+            "sha256": "dcd181bbbb83dfd71d9a864fba52be4e98e86465b14e3b18d4c1ed22de96da2a"
+          },
+          "original_QPC_seconds": 344.2190603,
+          "original_capture_replayed": false,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "DATA_adoption_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false
         }
       }
     }
