@@ -89,4 +89,9 @@ GameNativeRendererScalarProcess::surface_tracking_counter_0108dafc() noexcept {
     return surface_tracking_counter_0108dafc_;
 }
 
+volatile std::uint32_t&
+GameNativeRendererScalarProcess::instance_generator_binding_serial_0108fd30() noexcept {
+    return instance_generator_binding_serial_0108fd30_;
+}
+
 } // namespace bsp::game
