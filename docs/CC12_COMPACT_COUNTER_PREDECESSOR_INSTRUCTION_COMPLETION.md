@@ -90,3 +90,9 @@ restart, further Native window, build, test, probe, link or runtime execution
 occurred. Owner/entry/extent, ECX provenance, destination role/layout/backing,
 guard/name/parents, complete initializer, callers/CRT, Native ABI/EH, startup,
 and game behavior remain held. No further Native scope is proposed here.
+
+## Primary review
+
+Root replayed all85 report-pin occurrences and18 baseline Git/current files, all three fresh strict typed responses at historical epoch10, the separately classified one historical fallthrough response, and five physical HTTP hashes. The current original PE whole hash matches and the same six-byte instruction reproduces MOV[01090434],ECX; its final byte agrees with the earlier retained tail. All52 archive payloads,53 ZIP entries and CRCs pass. No new live query or Native semantic window was opened.
+
+Only the local store is accepted. The target remains a one-byte undefined Ghidra data unit despite the instruction's four-byte access. ECX provenance, target role/extent, owner, initializer, ABI and startup remain held. Existing Compact Source stays unchanged; this review admits no Source extension or descriptor role.
