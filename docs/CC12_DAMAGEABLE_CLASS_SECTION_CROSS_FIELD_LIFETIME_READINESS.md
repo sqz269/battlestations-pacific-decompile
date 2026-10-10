@@ -197,9 +197,9 @@ The category provider uses the actual borrowed volatile table and current
 binding remain explicit. No fixed category enum or guessed table is introduced.
 
 The smallest concrete missing edge is `[CF96,CFB4)`, 30 bytes / 8 instructions:
-integer fallback setup through the return from `00870CD0`. Current src/include
-address-matched search finds only the historical dynamics-interface comment for
-that wrapper. It does find the genuine lower `008700E0` acquisition and existing
+integer fallback setup through the return from `00870CD0`. The recorded bounded src/include
+address-matched search found the historical dynamics-interface comment for
+that wrapper; wider current searches also find field metadata and other comments. It does find the genuine lower `008700E0` acquisition and existing
 `00871BA0` name wrapper. This is a bounded implementation lookup, not a claim
 that no arbitrarily named equivalent could exist.
 
@@ -247,3 +247,9 @@ Root Source632's 632 inputs, 87 Core / 3 App objects, 227 definitions and three
 existing checks are pinned context only. No C++, CMake, providers, ledgers, GPR,
 build, test or probe changed. Production composition, Native ABI/FH3/SEH/longjmp,
 fault identity and new startup/gameplay execution remain held.
+
+## Primary review
+
+Root replayed 106 current artifact/local/Lua pin occurrences, all 74 baseline Git blobs, all 32 complete embedded Source snapshots, and the four supplied Root evidence files and worker copies. The only current baseline difference is the already accepted Compact deferred CMake registration. The full parent buffer and 858 raw index entries pass integrity checks; only the authorized 788-byte cap was semantically decoded here. All 222 instructions, 19 branches, 38 calls and region hashes agree. The one strict typed raw response remains historical at modification10; no current Ghidra query or installed-image window was opened. Wider exact-address searches also find870CD0 in metadata strings and comments, which supply no wrapper body; the earlier bounded search is qualified accordingly.
+
+The741-byte/210-instruction field body remains held at the genuine effect-wrapper and binding frontier. Only the47-byte/12-instruction next-iteration tail is ready for a separate ordinary Source packet: borrow the successful existing live13 owner and same scratch after inner cleanup, call genuine protected next, then test the actual key with genuine is-unbound. It must keep completed releases/shifts on failure and leave the owner live on both normal exits. No early close, reopen, copied object, synthetic provider or whole-loop/Native ABI/startup/gameplay claim is admitted.
