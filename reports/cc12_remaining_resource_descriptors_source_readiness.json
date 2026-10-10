@@ -1,0 +1,900 @@
+{
+  "schema": "cc12-remaining-resource-descriptors-source-readiness-v1",
+  "packet": "cc12_remaining_resource_descriptors_source_readiness",
+  "created_utc": "2026-10-10T00:31:39.355696+00:00",
+  "baseline_commit": "ea35ae1c0808939072a6bbc3e8d6b3f9abac5303",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "Source_readiness_only_no_complete_initializer_identified_no_ready_Cpp_packet",
+  "owned_files": [
+    "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+    "reports/cc12_remaining_resource_descriptors_source_readiness.json"
+  ],
+  "families": [
+    {
+      "family": "compact",
+      "current_own_type_cell": "0109042C",
+      "current_Source_consumers": [
+        {
+          "file": "include/bsp/native_resource_instance_postprocess.hpp",
+          "original_labels": [
+            "00B78750",
+            "00B922C0"
+          ],
+          "meaning": "Existing header identifies the exact current cell for the typed range pair."
+        },
+        {
+          "file": "src/native_resource_postprocess_full.cpp",
+          "function": "postprocess_native_resource_instance_00b79bc0",
+          "meaning": "Passes the borrowed compact own-ID cell by address to get_native_mesh_binding_range_00b87ce0."
+        }
+      ],
+      "consumer_established_extent": "One current own-ID word; full descriptor layout is not established.",
+      "complete_initializer_identified_in_current_Source": false,
+      "owned_in_GameNativeTypeStorage": false,
+      "called_by_production_type_startup": false,
+      "known_original_initializer_entrypoint": null,
+      "known_guard_address": null,
+      "known_complete_descriptor_size": null,
+      "known_native_name_address": null,
+      "known_parent_initializer_chain": null,
+      "known_counter_consumption_count": null,
+      "known_CRT_entry_or_position": null,
+      "missing_contracts": [
+        "original writer/initializer entrypoint and complete ordinary body",
+        "actual guard and complete descriptor extent",
+        "native name word if present",
+        "actual parent descriptor and initializer chain",
+        "shared counter use, consumption count and exact store ordering",
+        "partial-failure behavior and repeat-call behavior",
+        "original caller or CRT-table placement"
+      ],
+      "readiness": "held_before_new_backing_or_startup_call",
+      "qualification": "Null fields mean unestablished by this bounded Source-only review. No original-image, live-Ghidra or Native body/data/handler discovery occurred."
+    },
+    {
+      "family": "camera resource",
+      "current_own_type_cell": "01090288",
+      "current_Source_consumers": [
+        {
+          "file": "src/native_camera_group_resource.cpp",
+          "function": "matches_native_camera_type_00b8aa30",
+          "meaning": "Delegates to complete three-current-word fallback predicate; no guard, initializer or nonzero filter."
+        },
+        {
+          "file": "include/bsp/native_camera_group_resource.hpp",
+          "interface": "NativeCameraGroupResourceCalls",
+          "meaning": "Borrows exactly the current three cells at 01090288; other parser/type targets require supplied complete providers."
+        },
+        {
+          "file": "include/bsp/native_resource_instance_postprocess.hpp",
+          "original_labels": [
+            "00B78990",
+            "00B8A1C0"
+          ],
+          "meaning": "Identifies current camera-resource typed range cell."
+        },
+        {
+          "file": "src/native_resource_postprocess_full.cpp",
+          "function": "camera_phase",
+          "meaning": "Passes the current camera own-ID word to the existing B87CE0 typed range service."
+        }
+      ],
+      "consumer_established_extent": "Three contiguous current predicate words plus an own-ID consumer; no proof of a fourth/name word or full descriptor extent.",
+      "complete_initializer_identified_in_current_Source": false,
+      "owned_in_GameNativeTypeStorage": false,
+      "called_by_production_type_startup": false,
+      "known_original_initializer_entrypoint": null,
+      "known_guard_address": null,
+      "known_complete_descriptor_size": null,
+      "known_native_name_address": null,
+      "known_parent_initializer_chain": null,
+      "known_counter_consumption_count": null,
+      "known_CRT_entry_or_position": null,
+      "missing_contracts": [
+        "original writer/initializer entrypoint and complete ordinary body",
+        "actual guard and complete descriptor extent",
+        "native name word if present",
+        "actual parent descriptor and initializer chain",
+        "shared counter use, consumption count and exact store ordering",
+        "partial-failure behavior and repeat-call behavior",
+        "original caller or CRT-table placement"
+      ],
+      "readiness": "held_before_new_backing_or_startup_call",
+      "qualification": "Null fields mean unestablished by this bounded Source-only review. No original-image, live-Ghidra or Native body/data/handler discovery occurred."
+    },
+    {
+      "family": "skin model",
+      "current_own_type_cell": "01090344",
+      "current_Source_consumers": [
+        {
+          "file": "src/native_resource_postprocess_full.cpp",
+          "function": "native_skin_model_type_00b8f920",
+          "meaning": "Complete current-cell getter; no initializer or repair."
+        },
+        {
+          "file": "src/native_resource_postprocess_full.cpp",
+          "functions": [
+            "make_compact",
+            "pose_phase"
+          ],
+          "meaning": "Read actual node profile/current table, sample current 01090344 token and dispatch actual slot-C predicate."
+        },
+        {
+          "file": "include/bsp/native_point_light_provider.hpp",
+          "interface": "NativePointLightPopulationRuntime",
+          "meaning": "Borrows current 01090344 word alongside distinct group/model/010903C8 cells."
+        },
+        {
+          "file": "src/native_point_light_provider.cpp",
+          "function": "populate_native_node_point_light_00b6ef20",
+          "meaning": "Uses current token through the actual binding type predicate."
+        }
+      ],
+      "consumer_established_extent": "One current own-ID word; no proof of the full descriptor or parent-ID count.",
+      "complete_initializer_identified_in_current_Source": false,
+      "owned_in_GameNativeTypeStorage": false,
+      "called_by_production_type_startup": false,
+      "known_original_initializer_entrypoint": null,
+      "known_guard_address": null,
+      "known_complete_descriptor_size": null,
+      "known_native_name_address": null,
+      "known_parent_initializer_chain": null,
+      "known_counter_consumption_count": null,
+      "known_CRT_entry_or_position": null,
+      "missing_contracts": [
+        "original writer/initializer entrypoint and complete ordinary body",
+        "actual guard and complete descriptor extent",
+        "native name word if present",
+        "actual parent descriptor and initializer chain",
+        "shared counter use, consumption count and exact store ordering",
+        "partial-failure behavior and repeat-call behavior",
+        "original caller or CRT-table placement"
+      ],
+      "readiness": "held_before_new_backing_or_startup_call",
+      "qualification": "Null fields mean unestablished by this bounded Source-only review. No original-image, live-Ghidra or Native body/data/handler discovery occurred."
+    }
+  ],
+  "distinct_existing_or_excluded_families": [
+    {
+      "cell": "0108FFA0",
+      "family": "camera object",
+      "guard": "0108FF9C",
+      "existing_providers": [
+        "00CD7D80",
+        "00B719E0"
+      ],
+      "Source_type": "CameraTypeBootstrap",
+      "not_a_provider_for": "camera resource 01090288"
+    },
+    {
+      "cell": "01090268",
+      "family": "animation resource",
+      "guard": "01090264",
+      "existing_provider": "00CD82F0",
+      "Source_type": "NativeResourceExtraTypeIds"
+    },
+    {
+      "cell": "01090278",
+      "family": "bone resource / existing postprocess skin-item selector",
+      "guard": "01090265",
+      "existing_provider": "00CD8340",
+      "Source_type": "NativeResourceExtraTypeIds",
+      "not_a_provider_for": "skin model 01090344"
+    },
+    {
+      "cell": "01090454",
+      "family": "retained skined-mesh resource",
+      "guard": "01090441",
+      "existing_provider": "00CD86F0",
+      "words": [
+        "own",
+        "mesh",
+        "scene",
+        "root",
+        "name"
+      ],
+      "not_a_provider_for": "skin model 01090344"
+    },
+    {
+      "cell": "01090370",
+      "family": "separately excluded skined-mesh family from packet scope",
+      "provider_identified_by_current_Source_search": false,
+      "qualification": "No original writer/layout/relationship inferred here."
+    },
+    {
+      "cell": "0109032C",
+      "family": "retained group object descriptor",
+      "guard": "010902E1",
+      "existing_provider": "00B8F590",
+      "not_a_provider_for": "GroupParams resource 010902E4 or any missing family"
+    },
+    {
+      "cell": "010902E4",
+      "family": "GroupParams resource three-word predicate view",
+      "qualification": "Separate from group object descriptor and outside this packet."
+    },
+    {
+      "cell": "010902F4",
+      "family": "group pool",
+      "qualification": "A pool is not descriptor storage."
+    },
+    {
+      "cell": "010902A0",
+      "family": "camera parser singleton pointer",
+      "qualification": "Owned by current GameNativeResourceApplication; not a type descriptor."
+    },
+    {
+      "cell": "0109043C",
+      "family": "skined-animation parser singleton pointer",
+      "qualification": "Owned by current GameNativeResourceApplication; not a compact descriptor."
+    }
+  ],
+  "actual_retained_owner_and_caller": {
+    "production_root": "GameVfsHost retains GameNativeVfsApplication and invokes initialize_core during its first-time phase.",
+    "owner": "GameNativeVfsApplication::Impl retains owner_services, GameNativeTypeStorage type_storage, and LightTypeBootstrap common_types.",
+    "construction": "common_types(owner_services.types(), type_storage.light_types())",
+    "startup": "type_storage.initialize_resource_types(owner_services.types(), common_types)",
+    "existing_public_borrows": [
+      "GameVfsHost::native_types() returns actual native_->types()",
+      "GameVfsHost::native_owners() returns actual native_->owners()"
+    ],
+    "future_startup_location": "Only after a genuine family provider is complete, add its exact backing/view to this retained storage and invoke the real provider through existing initialize_resource_types.",
+    "counter_identity": "Reuse the same TypeIdCounterLifetime owner and actual publication0109DB7C; no independent manager/counter, copied token values or arbitrary seeded IDs.",
+    "common_identity": "Existing require_common_bootstrap checks all eight common backing identities before family writes; same counter instance remains caller precondition.",
+    "current_counter_protocol": "Existing getter returns the first nonnull publication or performs the actual captured lifetime-section allocation/publication/registration sequence. Deletion clears publication without resetting descriptor guards or IDs.",
+    "failure_boundary": "Actual VFS attempt flag is set before resource-type startup; repeat startup is rejected. Missing providers own guard/store/exception behavior remains unknown and must not be inferred from existing families.",
+    "lifetimes": "Borrowed views and services refer to actual retained owner fields. Borrowers finish before owners are destroyed and initialization must not use the drained shared counter.",
+    "Source_order": "Existing represented family subsequence remains; group B8F590 is explicit Source insertion after animation/bone before mesh, not Native CRT-table proof.",
+    "missing_family_order": "No original caller/CRT entry/position established for any of these three families. A later Source insertion must be labeled accordingly and may shift subsequent numeric IDs according to its actual counter use.",
+    "existing_resource_application": "Retains actual resource manager and parser singleton/deletion contexts; those pointer publications are not missing type descriptor owners or graph/postprocess environments."
+  },
+  "consumer_environment_gates": {
+    "NativeResourcePostprocessContext": [
+      "Actual animation registry",
+      "Complete current table, is_type, destroy and finalize providers",
+      "Actual CRT services",
+      "All five exact current type cells: compact, track, skin item, camera resource, skin model"
+    ],
+    "NativeResourceGraphContext": [
+      "Complete factory/item/node operations",
+      "Actual node and group companions",
+      "Retained string, parenting and group-sphere domains",
+      "Complete postprocess and bone contexts",
+      "Same current model and group type cells"
+    ],
+    "NativeCameraGroupResourceCalls": [
+      "Actual read context",
+      "Exact GroupParams/camera-resource current three-cell views",
+      "Complete forwarded parser and type operations"
+    ],
+    "current_production_composition": "No production instance/derived provider is identifiable from full named context references and game* Source query in this audit. Descriptor startup alone would not compose those consumers.",
+    "query_qualification": "Searches cover current tracked include/bsp and src. No conclusion about every possible unnamed or indirect implementation is claimed."
+  },
+  "recommended_next_packet": {
+    "ready_Cpp_packet": null,
+    "selected_family": "camera resource 01090288",
+    "kind": "bounded original-writer/body discovery prerequisite",
+    "known_original_entrypoint": null,
+    "reason": "Its existing complete B8AA30 predicate provides an exact three-current-word consumer anchor while keeping compact and skin-model separate.",
+    "required_evidence_before_code": [
+      "Locate actual writer to01090288 and identify complete ordinary initializer/constructor/static wrapper bodies.",
+      "Establish actual guard, full target extent/name and parent chain without using address adjacency.",
+      "Establish exact same-owner counter calls, consumption and stores; reconstruct partial-state and repeat-call semantics from complete body evidence.",
+      "Review required support providers and original ABI; establish actual CRT/caller placement only if claiming Native order.",
+      "Only after complete provider review, add one genuine camera-resource backing/view and the real call through retained type startup."
+    ],
+    "not_performed_here": [
+      "Native body/data/handler or original-image opening",
+      "Ghidra query or mutation",
+      "Writer address or CRT-slot discovery",
+      "C++ initializer/storage/caller implementation"
+    ],
+    "other_families": "Compact0109042C and skin-model01090344 remain held at their own exact writer/body gates.",
+    "no_invented_candidates": "No guessed neighboring CD entry, guard address, descriptor extent, Native name, initializer body or parent chain."
+  },
+  "source_evidence": {
+    "schema": "cc12-remaining-resource-descriptors-source-search-v1",
+    "created_utc": "2026-10-10T00:29:25.079046+00:00",
+    "baseline_commit": "ea35ae1c0808939072a6bbc3e8d6b3f9abac5303",
+    "scope": "Current tracked Source under include/bsp and src, searched by exact cell addresses, known consumer names and candidate initializer names. Negative search is qualified to this Source; it does not discover an original writer or prove every unnamed implementation absent.",
+    "source_tree_inventory": {
+      "path": "local/cc12_remaining_resource_descriptors_source_readiness/tracked_source_tree.txt",
+      "bytes": 379017,
+      "sha256": "1c56ef4dc162383865177bf1049e8d757e36c4dfa4ee7f5ffd04f782efca4914"
+    },
+    "source_tree_inventory_rows": 4174,
+    "source_tree_inventory_kind": "Git mode/type/blob-ID/path records; not a compiler dependency or runtime closure.",
+    "tracked_Source_unchanged_against_baseline": true,
+    "untracked_nonignored_Source_files": 0,
+    "searches": [
+      {
+        "name": "exact_requested_cells",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "0109042c|01090288|01090344",
+          "include/bsp",
+          "src"
+        ],
+        "return_code": 0,
+        "matched_lines": 14,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/exact_requested_cells.txt",
+          "bytes": 1663,
+          "sha256": "171309051392d0ce728d8ba382e63d8f39c8e84e1a8f9dd1bba73c2251607d2c"
+        }
+      },
+      {
+        "name": "nearby_distinct_cells",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "01090370|01090454|0108ffa0|0109032c|010902e4|010902a0|0109043c",
+          "include/bsp",
+          "src"
+        ],
+        "return_code": 0,
+        "matched_lines": 48,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/nearby_distinct_cells.txt",
+          "bytes": 5432,
+          "sha256": "27aaaf22a9a1f0e6e27454c8f604aa669a8c40f07f5096a37b0d2b134cd27434"
+        }
+      },
+      {
+        "name": "candidate_initializer_names",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "Native[A-Za-z]*(Compact|Skin)[A-Za-z]*Type|initialize_[A-Za-z0-9_]*(compact[A-Za-z0-9_]*type|camera[A-Za-z0-9_]*resource|skin[A-Za-z0-9_]*model)|camera_resource_guard|compact_guard|skin_model_guard",
+          "include/bsp",
+          "src"
+        ],
+        "return_code": 1,
+        "matched_lines": 0,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/candidate_initializer_names.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "consumer_context_references",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeResourcePostprocessContext|NativeResourcePostprocessCalls|NativeCameraGroupResourceCalls|NativePointLightPopulationRuntime|NativeResourceGraphContext",
+          "include/bsp",
+          "src"
+        ],
+        "return_code": 0,
+        "matched_lines": 34,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/consumer_context_references.txt",
+          "bytes": 4315,
+          "sha256": "b78f3f0075c01ad5438e4a382174d4bd7e3cdda4c61f54615fd8c56b3141b41c"
+        }
+      },
+      {
+        "name": "production_game_consumer_context_references",
+        "argv": [
+          "rg",
+          "-n",
+          "NativeResourcePostprocessCalls|NativeResourcePostprocessContext|NativeResourceGraphContext|NativeCameraGroupResourceCalls|NativePointLightPopulationRuntime",
+          "include/bsp",
+          "src",
+          "--glob",
+          "game*"
+        ],
+        "return_code": 1,
+        "matched_lines": 0,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/production_game_consumer_context_references.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "storage_owner_and_existing_sequence",
+        "argv": [
+          "rg",
+          "-n",
+          "guard_|0109042|01090288|01090344|initialize_|group_types|model_types",
+          "include/bsp/game_native_type_storage.hpp",
+          "src/game_native_type_storage.cpp"
+        ],
+        "return_code": 0,
+        "matched_lines": 72,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/storage_owner_and_existing_sequence.txt",
+          "bytes": 6948,
+          "sha256": "38d96d69c402d7d82498b655b23cc35a127e3688bf8067f7f35f7199171aac40"
+        }
+      },
+      {
+        "name": "known_original_consumer_labels",
+        "argv": [
+          "rg",
+          "-n",
+          "-i",
+          "b922c0|b8a1c0|b8f920|b8aa30|01090370",
+          "include/bsp",
+          "src"
+        ],
+        "return_code": 0,
+        "matched_lines": 10,
+        "output": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/known_original_consumer_labels.txt",
+          "bytes": 1315,
+          "sha256": "8eb41892f8042dae705089509cba35e56f784390b0e2499546fc7e541ea53585"
+        }
+      }
+    ],
+    "current_Source": [
+      {
+        "original": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/camera_type_bootstrap.hpp",
+          "bytes": 1745,
+          "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/camera_type_bootstrap.hpp",
+          "bytes": 1745,
+          "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/camera_type_bootstrap.cpp",
+          "bytes": 2737,
+          "sha256": "06f3b76beda1a755ab42d30917474581ce0c4c64f95a2adfd9a1f4ecd55918bd"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/camera_type_bootstrap.cpp",
+          "bytes": 2737,
+          "sha256": "06f3b76beda1a755ab42d30917474581ce0c4c64f95a2adfd9a1f4ecd55918bd"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_extra_type_ids.hpp",
+          "bytes": 1590,
+          "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_resource_extra_type_ids.hpp",
+          "bytes": 1590,
+          "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_resource_extra_type_ids.cpp",
+          "bytes": 1259,
+          "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_resource_extra_type_ids.cpp",
+          "bytes": 1259,
+          "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_camera_group_resource.hpp",
+          "bytes": 4837,
+          "sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_camera_group_resource.hpp",
+          "bytes": 4837,
+          "sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_camera_group_resource.cpp",
+          "bytes": 10972,
+          "sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_camera_group_resource.cpp",
+          "bytes": 10972,
+          "sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_instance_postprocess.hpp",
+          "bytes": 2514,
+          "sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_resource_instance_postprocess.hpp",
+          "bytes": 2514,
+          "sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_graph_builder.hpp",
+          "bytes": 3890,
+          "sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_resource_graph_builder.hpp",
+          "bytes": 3890,
+          "sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_skin_model_bindings.hpp",
+          "bytes": 3119,
+          "sha256": "761a2bbb65997ae9630ebf40acf38104232298cf0da80ec79cdf07f0bd75879a"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/include/bsp/native_skin_model_bindings.hpp",
+          "bytes": 3119,
+          "sha256": "761a2bbb65997ae9630ebf40acf38104232298cf0da80ec79cdf07f0bd75879a"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_skin_model_bindings.cpp",
+          "bytes": 14610,
+          "sha256": "9b3ab96420e40bcf4f3a2c0452e7681d5841e2cc9eab118dfc362a052720df35"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_current_source/src/native_skin_model_bindings.cpp",
+          "bytes": 14610,
+          "sha256": "9b3ab96420e40bcf4f3a2c0452e7681d5841e2cc9eab118dfc362a052720df35"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      }
+    ],
+    "historical_context": [
+      {
+        "original": {
+          "path": "docs/CC12_GROUP_DESCRIPTOR_ARMOUR_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4067,
+          "sha256": "07e407be2598155afb2cab6fdfa8bc16a4b6cc6280b5c64cbeb55122df3636df"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/docs/CC12_GROUP_DESCRIPTOR_ARMOUR_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4067,
+          "sha256": "07e407be2598155afb2cab6fdfa8bc16a4b6cc6280b5c64cbeb55122df3636df"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "reports/cc12_group_descriptor_armour_source_primary_review.json",
+          "bytes": 44644,
+          "sha256": "c331ab7d7d4a3053b245371e55380dd0fa33877a3945cf96cce55f75a9f9b7c2"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/reports/cc12_group_descriptor_armour_source_primary_review.json",
+          "bytes": 44644,
+          "sha256": "c331ab7d7d4a3053b245371e55380dd0fa33877a3945cf96cce55f75a9f9b7c2"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "docs/CC12_GROUP_DESCRIPTOR_STARTUP_SOURCE.md",
+          "bytes": 7318,
+          "sha256": "fb480dbe4ee439e7cbf88486200dd69b303dd89971e19e9eb53d09349457bf2c"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/docs/CC12_GROUP_DESCRIPTOR_STARTUP_SOURCE.md",
+          "bytes": 7318,
+          "sha256": "fb480dbe4ee439e7cbf88486200dd69b303dd89971e19e9eb53d09349457bf2c"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "reports/cc12_group_descriptor_startup_source.json",
+          "bytes": 568635,
+          "sha256": "7f8beea5e8c579bd3a0c02af9c2d67ced349bc14604dcdd27069281b8395c090"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/reports/cc12_group_descriptor_startup_source.json",
+          "bytes": 568635,
+          "sha256": "7f8beea5e8c579bd3a0c02af9c2d67ced349bc14604dcdd27069281b8395c090"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "docs/CC12_MODEL_DESCRIPTOR_CONSUMER_BINDING_READINESS.md",
+          "bytes": 15116,
+          "sha256": "454d45442d7f6969fd8c978c70440b712214d09616c6d67108f27e66dc927853"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/docs/CC12_MODEL_DESCRIPTOR_CONSUMER_BINDING_READINESS.md",
+          "bytes": 15116,
+          "sha256": "454d45442d7f6969fd8c978c70440b712214d09616c6d67108f27e66dc927853"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "reports/cc12_model_descriptor_consumer_binding_readiness.json",
+          "bytes": 33337,
+          "sha256": "65a9b21c1cfef068a4c36d3abeb9781fa5dac1f349774671a7b0c903645cf8be"
+        },
+        "frozen": {
+          "path": "local/cc12_remaining_resource_descriptors_source_readiness/frozen_historical_context/reports/cc12_model_descriptor_consumer_binding_readiness.json",
+          "bytes": 33337,
+          "sha256": "65a9b21c1cfef068a4c36d3abeb9781fa5dac1f349774671a7b0c903645cf8be"
+        },
+        "matches_baseline_git_blob_after_CRLF_normalization": true
+      }
+    ],
+    "no_Native_original_image_exports_Ghidra_or_handler_opening": true,
+    "new_Cpp_edits": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_runtime_probes": 0,
+    "new_Native_function_reconstructions": 0
+  },
+  "source_receipt_pin": {
+    "path": "local/cc12_remaining_resource_descriptors_source_readiness/source_search_receipt.json",
+    "bytes": 22556,
+    "sha256": "e6dabf37ad54ae7ea8eb349ea3a481a045509a305be6e655a83384a524db052a"
+  },
+  "collector_pin": {
+    "path": "local/cc12_remaining_resource_descriptors_source_readiness/collect_source_readiness.py",
+    "bytes": 6764,
+    "sha256": "876215d2e496a75aaa08f794975561cae03658a75f591d4f64f21c14e6fad727"
+  },
+  "document_pin": {
+    "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+    "bytes": 9885,
+    "sha256": "894e31748db4e6bebdc040c40d7c95105a8fcbf698b012f5b518c1ece0abe48f"
+  },
+  "historical_evidence_boundary": {
+    "Source595_primary_review": "Current baseline records normal MSVC Win32 build and three configured CTests; these were not rerun in this packet.",
+    "Source595_run": "Primary review records actual VFS phase followed by pre-device/Present FMOD61/78/37. No descriptor-memory observation was performed; this is not an execution of the missing initializers.",
+    "worker_and_prior_reports": "Six historical files are frozen unchanged. Their earlier pins/builds/probes are not replayed or relabeled as fresh evidence here."
+  },
+  "new_work_counts": {
+    "tracked_document_files": 2,
+    "Cpp_edits": 0,
+    "descriptor_backings": 0,
+    "startup_calls": 0,
+    "consumer_compositions": 0,
+    "Native_function_reconstructions": 0,
+    "Native_body_reads": 0,
+    "Native_data_reads": 0,
+    "handler_reads": 0,
+    "Ghidra_reads_or_mutations": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "builds": 0,
+    "tests": 0,
+    "runtime_probes": 0
+  },
+  "evidence_levels": {
+    "current_Source_readiness_review": true,
+    "frozen_selected_Source_and_search_evidence": true,
+    "complete_initializer_available": false,
+    "new_startup_implementation": false,
+    "new_build_or_CTest_evidence": false,
+    "original_entrypoint_or_CRT_placement_discovered": false,
+    "descriptor_memory_observation": false,
+    "runtime_consumer_admission": false,
+    "Native_ABI_compatible": false,
+    "complete_Native_startup": false,
+    "game_validated": false
+  }
+}
