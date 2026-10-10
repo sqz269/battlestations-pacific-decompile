@@ -1,0 +1,9 @@
+# Application object evidence scope correction
+
+The particle startup/header receipts retained 70 application objects. Root independently reconciled the current `bsp_game.vcxproj`, `Cl.items.tlog` and Release object directory: all three contain 80 objects. The earlier `complete_App_objects` fields therefore describe a reviewed subset, not the entire application census. Their 70 before/after byte comparisons remain valid; the other ten receive no unchanged-byte credit. This also qualifies the locale review's reference to those application records.
+
+The ten missing before images are `game_native_entity_registry_process`, `game_native_game_application_frame`, `game_native_game_tables`, `game_native_player_profile_context`, `gameplay_loose_ends_2`, `hit_hull_segment`, `narrowphase_unit_part_shape`, `ship_sub_entity_list`, `unit_message_arms` and `unit_neighbour_fields` (all `.obj`). Their complete current bytes are captured alongside the other 70. Current project membership does not reconstruct their missing before bytes.
+
+The independent census confirms all 70 previously retained after objects still match their before images and current objects. The accepted Core/executable/map/test-log artifact pins remain exact. Complete Core archive and seven-consumer code comparison claims are unaffected. No rebuild, additional test or runtime run was needed for this metadata correction.
+
+The typed-view primary publication now states the subset explicitly. Original raw receipts stay immutable; this report controls interpretation of their historical field names. Evidence: `reports/cc12_particle_model_app_census_scope_correction.json`; Root receipt `local/cc12_particle_App_census_scope/Root_App_scope.json` is 69,560 bytes, SHA-256 `653c2f87a55e9d710232c049c27da1c55d9407bf05515722c125bbb28af5b341`.
