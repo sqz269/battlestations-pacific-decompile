@@ -75,6 +75,7 @@
 #include "bsp/native_mesh_buffer_fields.hpp"
 #include "bsp/native_mesh_remaining_fields.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
+#include "bsp/native_instance_generator_owner.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
@@ -379,6 +380,9 @@ struct GameNativeRendererApplication::Impl {
     // drops the binding before its providers; it performs no native cleanup.
     GameVfsHost& mesh_field_vfs;
     std::unique_ptr<MeshFieldBinding> mesh_fields;
+    // Plain metadata drops before its borrowed providers; no Native owner lives
+    // here. Appending preserves every earlier Impl member offset.
+    std::unique_ptr<NativeInstanceGeneratorContext> instance_generator_context;
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
@@ -612,6 +616,47 @@ const GameNativeMeshFieldServices& GameNativeRendererApplication::borrow_mesh_fi
     else
         p.mesh_fields->require_same_domain(hierarchy,p.profiles.data,mapped,graphics,cache,p.owners);
     return p.mesh_fields->services;
+}
+const NativeInstanceGeneratorContext& GameNativeRendererApplication::borrow_instance_generator_context() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !requires_process_retention(),
+        "instance generator metadata requires a ready renderer with completed acquisitions");
+    auto& graphics=p.game_grids.graphics;
+    require_gui_text_native_renderer_domain(graphics,p.renderer,p.vfs.strings,p.owners);
+    check(&graphics.declarations==&p.declaration_cache &&
+        &graphics.declarations.declarations==&p.declaration_loading &&
+        &graphics.streams==&p.game_grids.streams &&
+        &graphics.streams.geometry==&p.texture_loading.geometry &&
+        &graphics.streams.vertices==&p.graph.vertex,
+        "instance generator metadata requires the original graphics and layout providers");
+    const NativeInstanceGeneratorProfiles profiles{
+        static_cast<const volatile U*>(p.profiles.data.data_at(0x00d62190,8)),
+        static_cast<const volatile U*>(p.profiles.data.data_at(0x00d61bfc,8)),
+        static_cast<const volatile U*>(p.profiles.data.data_at(0x00d61c1c,8)),
+        static_cast<const volatile U*>(p.profiles.data.data_at(0x00d619f8,8))};
+    // These two-word mapped profiles are numeric selectors, never host calls.
+    check(profiles.base_00d62190[0]==0x00bd30e0 && profiles.base_00d62190[1]==0x00b55cb0 &&
+        profiles.generic_00d61bfc[0]==0x00bd30e0 && profiles.generic_00d61bfc[1]==0x00b450a0 &&
+        profiles.building_00d61c1c[0]==0x00bd30e0 && profiles.building_00d61c1c[1]==0x00b451a0 &&
+        profiles.binding_00d619f8[0]==0x00bd30e0 && profiles.binding_00d619f8[1]==0x00b417c0,
+        "instance generator mapped profiles differ from supported selectors");
+    const auto* generic=static_cast<const char*>(p.profiles.data.data_at(0x00d61c08,18));
+    const auto* building=static_cast<const char*>(p.profiles.data.data_at(0x00d61c28,42));
+    auto& serial=game_native_renderer_scalar_process().instance_generator_binding_serial_0108fd30();
+    if(!p.instance_generator_context)
+        p.instance_generator_context=std::make_unique<NativeInstanceGeneratorContext>(
+            NativeInstanceGeneratorContext{graphics,p.section_layouts,profiles,serial,generic,building});
+    const auto& context=*p.instance_generator_context;
+    check(&context.graphics==&graphics && &context.layouts==&p.section_layouts &&
+        &context.binding_serial_0108fd30==&serial &&
+        context.profiles.base_00d62190==profiles.base_00d62190 &&
+        context.profiles.generic_00d61bfc==profiles.generic_00d61bfc &&
+        context.profiles.building_00d61c1c==profiles.building_00d61c1c &&
+        context.profiles.binding_00d619f8==profiles.binding_00d619f8 &&
+        context.generic_declaration_00d61c08==generic &&
+        context.building_declaration_00d61c28==building,
+        "instance generator metadata cannot be rebound to another domain");
+    return context;
 }
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
