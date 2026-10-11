@@ -117,3 +117,33 @@ const void* get_system_camera_service_matrix_00b0d100(
     return reinterpret_cast<const void*>(reinterpret_cast<Word>(actual_service) + 0x1d8u);
 }
 } // namespace bsp
+
+namespace bsp {
+void* construct_native_application_singleton_base_00bea810(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    BaseCleanup base_cleanup{actual_receiver}; // Source state0 before profile.
+    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;
+    void* const first_manager = get_native_singleton_manager_00415350(
+        context.actual_manager_01090aa0);
+    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
+        static_cast<std::byte*>(first_manager) + 0x10);
+    NativeGuard guard{0x00ce37fcu, section};
+    if (section) {
+        EnterCriticalSection(section);
+        depth(section) = depth(section) + 1u;
+    }
+    GuardCleanup guard_cleanup{guard}; // Source state1 after Enter/depth.
+    context.actual_application_e1ae90 = actual_receiver;
+    void* const manager = get_native_singleton_manager_00415350(
+        context.actual_manager_01090aa0);
+    void* const current_application = context.actual_application_e1ae90;
+    register_native_singleton_object_00bd0c30(manager, nullptr, current_application);
+    if (section) {
+        depth(section) = depth(section) - 1u;
+        LeaveCriticalSection(section);
+    }
+    guard_cleanup.armed = false;
+    base_cleanup.armed = false;
+    return actual_receiver;
+}
+} // namespace bsp

@@ -44,3 +44,35 @@ const void* get_system_camera_service_matrix_00b0d100(
 // CRT exception identity and concurrent access are outside the proved domain.
 // No service initialization, full derived destruction or game validation claim.
 } // namespace bsp
+
+namespace bsp {
+// Dormant BEA810 singleton-base interface over borrowed actual Application
+// storage. Both bindings are fixed, distinct actual cells, disjoint from the
+// receiver, context and private guard. Their values remain live. The manager
+// authority must be the GameNativeStringProcess/GameSingletonHost domain.
+struct NativeApplicationSingletonBaseContext {
+    void* volatile& actual_manager_01090aa0;
+    void* volatile& actual_application_e1ae90;
+};
+
+// BEA810 singleton-base body: original ECX receiver, no stack arguments, EAX receiver,
+// RET. This explicit-context Source API is not the original binary ABI.
+// Caller retains stable aligned actual storage, valid uint32 access at +0 and
+// the enclosing 1Ch preimages/domains. No direct stores affect +04..+1B. Actual
+// manager results/vector, captured native section and its depth DWORD at +18
+// remain valid through providers/cleanup; no null-manager fallback, EH-stack
+// aliases, concurrent invalidation or SystemSingletonCriticalSection projection.
+// State0 precedes D68BC4; state1 follows Enter/current-depth increment and stays
+// armed through normal Leave. C++ escape uses genuine 411EE0 then 412430 only
+// if guard cleanup returns. A second escaping MSVC C++ cleanup exception takes
+// the existing termination boundary; original FH3/hardware faults are unproved.
+// Normal-Leave escape may decrement/Leave again, with no safe disposition claim.
+// Publish original receiver unconditionally; second getter precedes selecting
+// current E1AE90 for BD0C30 (including null). Return original receiver after
+// successful release. Publication/registration effects persist on failure:
+// no clear, restore, unregister, free, retry, retain or counter compensation.
+// This creates no owner, actual-cell producer, outer constructor/destructor,
+// callable profile, startup activation, +14 lifetime or E1AE78 retirement right.
+void* construct_native_application_singleton_base_00bea810(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context);
+} // namespace bsp
