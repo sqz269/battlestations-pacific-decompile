@@ -131,3 +131,93 @@ The rewards enter 0062C2C0 was not reconstructed: a recursive descent over the d
 
 The Ghidra-less slots listed above are now Ghidra functions and named; see the third-packet section
 of docs/CC13_FRONTEND_MENUS.md for the method and the table of kinds.
+
+## Support-manager info panel 0066B6C0 (cc13-frontend3, reconstructed, complete, build-tested)
+
+`support_manager_refresh_info_0066b6c0` in `src/ingame_gui.cpp`, Ghidra
+`BSP_HudSupportManager_RefreshInfoPanel`. `__thiscall`(screen), RET. Callers: 0066D020 (itself called
+by the enter 00674B80 and by 00675C40) and cc9's support-manager update 00675C40. Not a purchase-menu
+builder: it refreshes the panel that describes the entry under the cursor. Evidence: a full pass
+over the listing (1601 instructions); the pseudocode drops the hidden ECX arguments and garbles the
+bar arithmetic and the 0/1/2/3/8 mode test, so the reconstruction follows the listing. Call rows
+in `reports/cc13_ingame_gui.json` (167 rows, 0 failed).
+
+Common steps: the name goes to +170h (00ABBE50, localise 1) followed by 0065BBC0
+(`BSP_HudSupportManager_LayoutNameLabel`); the type icon +1CCh takes state `map[key]` from the
+icon map +42Ch keyed by the record's +70h string (checked form: 00614060 find + 00611C80 against the
+end +430h, else state 0; unchecked form: 006171B0 alone, which inserts a 0 entry); detail widgets
++F0h/+F4h are shown one or the other; the loadout icon +158h gets 00AB2690(3, texture, UV) from
+009552E0(loadout) on the class record -> +4 -> +8 -> +4 resolved by 00443490 (DL = 0) -> +74h ->
++34h (texture +7Ch, UV +90h..+9Ch; resolved twice natively), then slot +88h states 0 and 3, or
+state 0/1 by record flag 17h when there is no loadout.
+
+- Page 0 (+5Ch = 0): +70h = 0. With +34Ch nonzero, 0066A8A0 rebuilds list +3E0h, the selection
+  +2C4h is clamped to size - 1 (unsigned JB) and the node at it is shown: a live unit (byte +14h,
+  unit +18h; kind 6 shows its class icon and +F0h; otherwise kind 18h redirects to the owner +3D0h
+  for class, icon and loadout +C54h) or a class record (+08h; flag 6 shows +F0h, otherwise +F4h and
+  the loadout +0Ch). Then, with +1F4h nonzero, the unit at *(+304h)+8: kinds 45h/9 read the 58h-byte
+  hangar record +324h under +72Ch (kind 45h, queried again) or +1188h (record +4, loadout +10h, -1 =
+  none shows +F0h and returns); other units use 00846FD0(&out, +324h) (record +08h, loadout +0Ch,
+  flag 0Fh gates the detail; destroyed by 0065BB00).
+- Page 1: with +34Ch nonzero the type icon is 1 when the node at +350h/+354h has +08h set, else 0
+  when the unit at +3Ch of the front object of the node's list +0Ch is kind 9, else 1. The two
+  list copies (005AAAF0) and front() checks are debug-iterator noise and are not modelled.
+- Page 2 with +34Ch: 0065A2B0 syncs the cursors, 0065AB40 gives the catalog record (+3A4h); +164h
+  == 0 sets +2B0h and calls 00665F30; flag 6 picks +F0h. CP = 00946F00, cap = 00942130 (ECX =
+  *(00E188A8)+18ECh), cost = record+124h. In modes 0..3 and 8 with +66h clear, +1A8h shows
+  `ingame.sm_cp|.: <CVTTSS2SI(CP)> / |ingame.sm_cost|.: <cost>`; FILD/FSTP rounds the cost to float
+  and FCOMI/JB sends CP < cost (or NaN) to the unaffordable side: +180h (unless +2C1h) gets width
+  +1ACh * CP / cap and the others hide; otherwise +184h gets that width, +188h gets (CP - cost) *
+  +1ACh / cap, +180h hides. All heights are +188h's (00AA6740 +4). Other modes or +66h set show
+  `ingame.sm_support` with +184h at full width (two copies differing only in the EH state).
+- Page 2 without +34Ch, with +1F4h: unit kinds 45h/9 take 0065AE90 (+2A0h), kind 46h 0065AB40
+  (+3A4h), anything else returns; then name, checked icon and `ingame.sm_stock|.: <0065AC30>`.
+
+Host wiring: none, by instruction (00675C40 is cc9's). Wiring would mean 00675C40's host (and the
+0066D020 path) calling `support_manager_refresh_info_0066b6c0` through an adapter that exposes the
+screen offsets above; no edit was made on that path. The x87 bar widths are computed in double,
+which can differ from the extended-precision result in the last float bit in rare cases.
+Named alongside (provisional): 0065A2B0, 0065AB40, 0065AE90, 0065AC30, 0065BBC0, 0065BB00.
+## Rewards enter 0062C2C0 (cc13-frontend3, opening segment reconstructed, rest outlined)
+
+The body does not decompile and is far larger than the earlier estimate: the recursive descent
+that stopped at 0063158F missed jumps to 006316CB..00631BA3 and to the shared epilogue 00636D63;
+the function runs to the RET at 00636D78, about 10760 instructions (190 child lookups, 284
+string releases, 128 indirect calls). EBP = screen throughout; the EH state lives at
+[esp+E74h] relative to the post-prologue ESP.
+
+`rewards_screen_enter_award_queue_0062c2c0` in `src/ingame_gui.cpp` covers 0062C2C0..0062CA7B
+(build-tested, call rows in `reports/cc13_ingame_gui.json`, 213 rows, 0 failed):
+
+- Session slot +198h true: session slot +58h. +64h = 0.0, +258h = 0, +25Ch hidden, the award page
+  vectors +238h and +248h cleared (00625A50).
+- +18h = commit record (004B4750) +0Ch == 0.0f (UCOMISS/LAHF/TEST AH,44h/JP: ordered equality);
+  00594A70(game+6B4h, &game+2198h) is the mission record and 009052D0 its completed flag;
+  005C3870 is called and its answer kept at [esp+84h] for later pages; +28h and +30h copy
+  game+2198h; +19h = *(record) != 0; +24h, +25h, +27h, +1Ch, +1Dh cleared.
+- +3Ch set: the frame title is cleared (00518D60, ECX = EDX = 0) and the routine returns.
+- +18h set: straight to the page builders at 0062CA7B.
+- Otherwise: a page of kind 0 when the profile's "RANK" counter differs before and after
+  007FCD90(0). With game+1FE4h == 0: +24h = 007F93F0; when set, every key of the profile set
+  game+6CCh that is not in game+6C0h is offered to 00622360
+  (`BSP_RewardsScreen_CollectVehicleUnlocks`): its count (flag 1) pushes that many kind-1
+  pages, then the recording pass (flag 0) runs, both skipped for a count of 0. Then 007FB990,
+  +27h = 005C3DE0 (campaign advance), +30h = 00586150's mission id when advanced, and with +19h:
+  +25h = advanced and not completed, +1Ch = 005C3BE0(+28h) when not completed.
+- Every key of the commit record list +6Ch starting "RANK_SR" (00553C80) is offered to 00622360
+  in the same way.
+
+Outline of the rest (string anchors and calls in address order; not reconstructed):
+
+| Range | Content |
+|---|---|
+| 0062CA7B..0062CDDA | background/back icons, `debriefing_Clipbox`, `congrat1_Text` and `move_Group` placement, scroller range |
+| 0062CDDF..0062D43B | `rank_Icon` (00574050), `info_Group`: `time_value_Text` (004396F0, 0043CC20), `score_value_Text`, `medal_Icon`, a streamed debrief dialog (`sound/messages/`, `/streamed_dialogs/`, file store 004FC150/00BE80B0/00BE7CD0), second time text, list reset (00A9BEC0, 00A9AC40, 0062A0B0, 00625D10) |
+| 0062D464..0062E9A4 | multiplayer scoreboard: `FE.rewards_missioncompleted`/`missionfailed`, `FE.scoring_USN_wins`/`IJN_wins`, `END_Text`, `USA_Text`/`JAP_Text` rows (`rank_Text`, `name_Text` with `globals.newplayer`, `clan_Text`, `score_Text`, `flag_Icon`, `rank_Icon`) in three copies |
+| 0062EA00..00630143 | objectives: `FE.scoring_missionfailed`, side 005C27E0, `number_Text`, `primary_Text`, `^FE.rewards_completed`/`^FE.rewards_failed`, `primary_value_Text`, `primary_point_value_Text` (0061EC70, 0052ED20, 0057F010, 0061F340), hidden ones as `globals.obj_hid` |
+| 00630211..00635939 | scoring tables framed by `row_line`/`vline1..4`/`separator_line` boxes: `FE.scoring_playeract`, `FE.scoring_partyact` (00911CE0, 00593480, 0062C170, 0062BB60, 00625900, 00911C00; `FE.scoring_friendlyhit`), `FE.scoring_command` (+ `_type`/`_amount`), `FE.scoring_remaining` (00910500), `FE.scoring_suicide` (00910570), `FE.scoring_mapusage` (009064D0, `%d:%02d:%02d`/`%d:%02d`), `FE.scoring_badge`, `FE.scoring_missionspec`; value texts `done_by`/`done_to`/`damage`/`kills`/`total_value_Text` |
+| 006359F1..00635F61 | rank page: FE.playerrank table 00E08E00, "RANK" thresholds (0050FC30), 0090BF50 score, " / " text, two clamps (004155B0) |
+| 00635FC3..00636C33 | award pages: `award_Icon`, `award_title_Text`, `FE.scoring_unlockedunit|.: |`, `award_detail_Text`, `FE.scoring_unlock_text`, payload icons (00AA78F0), 0061EB80/0061E610/0061EBC0/006277C0, 0090C000/0050FC30/0050A210/00AB44B0, 00501FA0 |
+| 00636C69..00636D60 | 0062A970, frame title 00518D60, page 00622E30, help line 0054A0C0, a final +38h store |
+
+A successor should take these ranges one at a time with the same EH-anchored listing reading.
