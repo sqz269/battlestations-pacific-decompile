@@ -2524,4 +2524,116 @@ void session_browser_refresh_row_details_00577650(const SessionRowState& screen,
     }
 }
 
+// ---------------------------------------------------------------------------
+// Menu prompt Exit 00530970, HUD formation Enter 0053A4D0 / Exit 00536800 (cc13-menus6)
+// ---------------------------------------------------------------------------
+
+void menu_prompt_exit_00530970(MenuPromptExitState& screen, MenuPromptExitHost& host) {
+    host.widget_show_34(screen.panel_18, false);                         // 00530974..0053098A
+    host.widget_show_34(screen.panel_24, false);
+    // 0053098C..005309CD: any of the four managers with byte +3Ch set raises the command bar's +4.
+    bool any = false;
+    for (const auto which : {InterfaceManagerGlobal::FrontEnd, InterfaceManagerGlobal::Interface,
+             InterfaceManagerGlobal::Manager198b8, InterfaceManagerGlobal::Title}) {
+        if (host.manager_present(which) && host.manager_byte_3c(which)) {
+            any = true;
+            break;
+        }
+    }
+    if (any && host.command_bar_present_e1930c()) host.set_command_bar_byte_4();
+    screen.flag_288 = false;                                             // 005309D1..005309D7
+    screen.selection_284 = -1;
+}
+
+void hud_formation_enter_0053a4d0(HudFormationState& screen, HudFormationHost& host) {
+    if (host.group_owner_present_e188d8()) {
+        screen.group_138 = host.group_owner_284();                       // 0053A501..0053A509
+        if (screen.group_138 == 0) {
+            host.collapse_overlays_0068ab80(1, 1);                       // 0053A511..0053A532
+            return;
+        }
+        // 0053A533..0053A5E7: the leader's world x/z place the two markers (y from +18Ch/+188h).
+        const std::uintptr_t leader = host.group_leader_14(screen.group_138);
+        if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+        screen.leader_x_17c = host.unit_matrix_x_fc(leader);
+        if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+        screen.leader_z_180 = host.unit_matrix_z_104(leader);
+        host.widget_virtual_30(screen.marker_178, {screen.leader_x_17c, screen.marker_y_18c, screen.leader_z_180});
+        host.widget_virtual_30(screen.marker_174, {screen.leader_x_17c, screen.marker_y_188, screen.leader_z_180});
+        if (screen.group_138 != 0) {                                     // 0053A5E9, re-tested
+            host.award_tracker_0068e420();
+            host.hud_refresh_0054e610();
+            host.trigger_hint_00690fd0(kFormationHint, 0);               // 0053A612..0053A636
+            const std::int32_t count = host.group_member_count_4f8(screen.group_138);
+            for (std::int32_t i = 0; i < count; ++i) {                   // 0053A680..0053A89B
+                const std::uintptr_t member = host.group_member_at_0070d060(screen.group_138, i);
+                if (member == 0) continue;
+                host.register_observer_pair_00694a60(member);
+                host.add_member_marker_00538d60(0x110, member, 1.0F);
+                host.add_member_marker_00538d60(0x11C, member, 1.0F);
+                const std::uintptr_t row = host.clone_subtree_00aab4c0(screen.row_template_b0, 0);
+                const std::uintptr_t icon = host.find_child_00aa7e00(row, "icon_Icon");
+                host.widget_virtual_88(icon, host.icon_frame_00653200(host.unit_icon_key_538(member)), 0, 1.0F);
+                host.widget_show_34(icon, true);
+                host.list_append_row_00a9d750(screen.member_list_ac, row);
+                if (member == leader) host.list_select_row_00a9c740(screen.member_list_ac, icon);  // the icon, as pushed
+                // 0053A781..0053A885: one curve widget per member under +98h, kept in +128h.
+                const std::uintptr_t link = host.create_widget_00aa6640(kFormationLinkWidgetType, "");
+                host.widget_set_local_z_00aa7d40(link, kFormationLinkDepth);
+                host.widget_show_34(link, true);
+                host.curve_set_texture_00abdd80(link, host.link_texture_e08694());
+                host.widget_set_colour_50(link, kFormationLinkColour);
+                host.append_child_00aaa5a0(screen.link_parent_98, link);
+                screen.links_12c.push_back(link);                        // 005389D0
+            }
+        }
+    }
+    // 0053A8A1..0053A8C7: reached with whatever +138h holds when *(00E188D8) is null.
+    screen.leader_value_13c = host.unit_738_virtual_50(host.group_leader_14(screen.group_138));
+    screen.flag_7c = false;
+    screen.flag_7d = false;
+    host.screen_refresh_00533a30();
+}
+
+void hud_formation_exit_00536800(HudFormationState& screen, HudFormationHost& host) {
+    host.hud_refresh_0054e610();                                         // 00536809..0053681A
+    host.screen_refresh_00533a30();
+    // 00536826..00536914: +110h markers: unregister the screen's observer pair from a marker's
+    // registrar (+4), delete the marker (virtual +0), then the tree is cleared.
+    for (const std::uintptr_t marker : screen.markers_110) {
+        if (host.marker_registrar_4(marker) != 0) host.unregister_pair_006952a0(host.marker_registrar_4(marker));  // +4 read unguarded
+        if (marker != 0) host.delete_virtual_0(marker);
+    }
+    screen.markers_110.clear();
+    for (const std::uintptr_t marker : screen.markers_11c) {             // 00536917..005369C3
+        if (marker != 0) host.delete_virtual_0(marker);
+    }
+    screen.markers_11c.clear();
+    host.list_clear_rows_00a9bec0(screen.member_list_ac);                // 005369C6..005369CC
+    for (std::uintptr_t& link : screen.links_12c) {                      // 005369D1..00536A26
+        if (link != 0) {
+            host.delete_virtual_4(link);
+            link = 0;
+        }
+    }
+    screen.links_12c.clear();                                            // 00536A28..00536A73 (erase all)
+}
+void frame_stats_register_0053c740(FrameStatsState& screen, FrameStatsRegisterHost& host) {
+    host.register_front_end_screen_004f71d0();                          // 0053C763
+    screen.page_0c = host.load_page_00aa5840("_Fps");                    // 0053C768..0053C7B5
+    static constexpr std::array<std::array<std::string_view, 3>, 6> kGroups{{
+        {"PG_1p_Text", "PG_1_Text", "PG_1s_Text"}, {"PG_2p_Text", "PG_2_Text", "PG_2s_Text"},
+        {"PG_3p_Text", "PG_3_Text", "PG_3s_Text"}, {"PG_4p_Text", "PG_4_Text", "PG_4s_Text"},
+        {"PG_5p_Text", "PG_5_Text", "PG_5s_Text"}, {"PG_6p_Text", "PG_6_Text", "PG_6s_Text"}}};
+    for (std::size_t g = 0; g < kGroups.size(); ++g) {                   // 0053C7E0..0053CF98, +20h..+64h
+        for (std::size_t k = 0; k < 3; ++k) screen.groups_20[g][k] = host.find_child_00aa7e00(screen.page_0c, kGroups[g][k]);
+    }
+    screen.fps_10 = host.find_child_00aa7e00(screen.page_0c, "Fps_Text");           // 0053D008
+    screen.min_fps_18 = host.find_child_00aa7e00(screen.page_0c, "MinFps_Text");    // 0053D078
+    screen.max_fps_1c = host.find_child_00aa7e00(screen.page_0c, "MaxFps_Text");    // 0053D0E8
+    screen.warning_14 = host.find_child_00aa7e00(screen.page_0c, "Warning_Text");   // 0053D158
+    // 0053D180..0053D1D9: Fingerprint_Text is looked up and given the payload, not stored.
+    const std::string payload = host.fingerprint_payload_text();         // read before the lookup
+    host.text_set_localised_00abbe50(host.find_child_00aa7e00(screen.page_0c, "Fingerprint_Text"), payload, 1);
+}
 }  // namespace bsp

@@ -573,3 +573,34 @@ evidence listing 0052FFC0..005305F9 and 0052D9C0..0052DBB2.
   listing stores `lea eax,[edi+20h]` to the `push ecx` slot `[esp+10h]` at 0052DA3B and reloads it at
   0052DB84 for the read; every reader call is callee-cleaned, so the slot is intact. Align is read into
   item+20h; CreditsItem::align and the Enter's placement already assume this.
+
+## Menu prompt Exit, HUD formation Enter/Exit, frame stats Register (cc13-menus6)
+
+Reconstructed and build-tested (`menu_prompt_exit_00530970`, `hud_formation_enter_0053a4d0`,
+`hud_formation_exit_00536800`, `frame_stats_register_0053c740`); evidence the listings, read whole.
+
+- 00530970 (MenuPrompt Exit): hides +18h and +24h; if any of 00E198AC, 00E198B4, 00E198B8, 00E198C8
+  exists with byte +3Ch set and *(00E1930C) exists, *(00E1930C)+4 = 1; +288h = 0, +284h = -1.
+- 0053A4D0 (HudFormation Enter): *(00E188D8) null jumps straight to the tail (0053A8A1) with whatever
+  +138h holds. Otherwise +138h = *(00E188D8)+284h (null: 0068AB80(1, 1) on *(00E198C4) and return).
+  The leader (group+14h, pose refreshed by 00414DB0 when byte +C8h is clear, before each read)
+  gives +17Ch = matrix x (+FCh) and +180h = matrix z (+104h); +178h and +174h get position
+  (x, +18Ch, z) and (x, +188h, z) through virtual +30h. Then 0068E420, 0054E610, hint
+  `FORMATIONPERMANENT` (00690FD0(hint, 0)). For each member 0..group+4F8h-1 (0070D060, nulls
+  skipped): observer pair (00694A60, EDX = screen+64h), 00538D60 into map +110h and map +11Ch (scale
+  1.0), a clone of +B0h with `icon_Icon` set to frame 00653200(member+538h) and shown, appended to list
+  +ACh; for the leader 00A9C740 selects the icon widget (the value pushed is the icon, not the row);
+  a type-0Dh widget (00AA6640, empty name) at local z -1000 (00D7A240), shown, texture
+  *(00E08694), colour (0.5, 1, 0.5, 0.5), appended under +98h and pushed onto +128h (005389D0). Tail:
+  +13Ch = *(leader+738h) virtual +50h, +7Ch = +7Dh = 0, 00533A30.
+- 00536800 (HudFormation Exit): 0054E610, 00533A30; map +110h: each marker's +4 (read unguarded)
+  unregisters the screen pair (006952A0, EDX = screen+64h), the marker is deleted through virtual +0;
+  map +11Ch markers deleted; both trees freed (005356E0) and reset; list +ACh cleared; each +12Ch link
+  widget deleted through virtual +4 and nulled, then the vector is emptied.
+- 0053C740 (FrameStats Register): 004F71D0; page `_Fps` -> +0Ch; `PG_<n>p_Text`, `PG_<n>_Text`,
+  `PG_<n>s_Text` for n = 1..6 -> +20h..+64h; `Fps_Text` +10h, `MinFps_Text` +18h, `MaxFps_Text` +1Ch,
+  `Warning_Text` +14h; `Fingerprint_Text` is looked up after the payload (0053BC00 singleton, 00BE9620
+  returns singleton+4) and set through 00ABBE50(payload, 1); it is not stored.
+
+Uncertainty: 0054E610, 00533A30, 0068E420, 005A6AD0 and 00653200 are unexamined; the formation maps
+are modelled as value lists in key order.

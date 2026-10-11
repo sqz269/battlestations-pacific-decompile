@@ -1259,4 +1259,127 @@ struct TacticalLibraryNoseArtHost {
 // 005161C0: __thiscall(screen), RET. `selector_index` is screen+434h.
 void tactical_library_apply_nose_art_005161c0(std::uint32_t selector_index, TacticalLibraryNoseArtHost& host);
 
+// ---------------------------------------------------------------------------
+// Menu prompt Exit 00530970 and HUD formation Enter/Exit 0053A4D0 / 00536800 (packet cc13-menus6)
+// ---------------------------------------------------------------------------
+
+// The four manager globals the prompt exit tests (each byte +3Ch).
+enum class InterfaceManagerGlobal : std::int32_t { FrontEnd = 0, Interface = 1, Manager198b8 = 2, Title = 3 };  // 00E198AC, 00E198B4, 00E198B8, 00E198C8
+
+struct MenuPromptExitHost {
+    virtual ~MenuPromptExitHost() = default;
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual bool manager_present(InterfaceManagerGlobal which) = 0;
+    virtual bool manager_byte_3c(InterfaceManagerGlobal which) = 0;
+    virtual bool command_bar_present_e1930c() = 0;
+    virtual void set_command_bar_byte_4() = 0;               // *(00E1930C)+4 = 1
+};
+
+struct MenuPromptExitState {
+    std::uintptr_t panel_18{};      // +18h
+    std::uintptr_t panel_24{};      // +24h
+    bool flag_288{};                // +288h
+    std::int32_t selection_284{};   // +284h
+};
+
+// 00530970: slot +1Ch of vtable 00CED3C4, __thiscall(screen), RET.
+void menu_prompt_exit_00530970(MenuPromptExitState& screen, MenuPromptExitHost& host);
+
+inline constexpr std::string_view kFormationHint = "FORMATIONPERMANENT";   // 00CED9CC
+inline constexpr float kFormationLinkDepth = -1000.0F;                      // 00D7A240
+inline constexpr GuiColour kFormationLinkColour{0.5F, 1.0F, 0.5F, 0.5F};    // 00CE3800 / 00D7A24C
+inline constexpr std::int32_t kFormationLinkWidgetType = 0x0D;              // ECX of 00AA6640
+
+struct HudFormationState {
+    std::uintptr_t group_138{};                 // +138h, *(*(00E188D8)+284h)
+    std::uintptr_t link_parent_98{};            // +98h
+    std::uintptr_t member_list_ac{};            // +ACh
+    std::uintptr_t row_template_b0{};           // +B0h
+    std::uintptr_t marker_174{};                // +174h (virtual +30h position)
+    std::uintptr_t marker_178{};                // +178h
+    float leader_x_17c{};                       // +17Ch
+    float leader_z_180{};                       // +180h
+    float marker_y_188{};                       // +188h (for +174h)
+    float marker_y_18c{};                       // +18Ch (for +178h)
+    std::uint32_t leader_value_13c{};           // +13Ch
+    bool flag_7c{};
+    bool flag_7d{};
+    // std::map<member, 1A0h marker> pairs +110h and +11Ch (values in key order) and the link
+    // widgets vector +128h (begin +12Ch, end +130h).
+    std::vector<std::uintptr_t> markers_110;
+    std::vector<std::uintptr_t> markers_11c;
+    std::vector<std::uintptr_t> links_12c;
+};
+
+struct HudFormationHost {
+    virtual ~HudFormationHost() = default;
+    virtual bool group_owner_present_e188d8() = 0;
+    virtual std::uintptr_t group_owner_284() = 0;                       // *(00E188D8)+284h
+    virtual void collapse_overlays_0068ab80(std::int32_t a, std::int32_t b) = 0;  // ECX = *(00E198C4)
+    virtual std::uintptr_t group_leader_14(std::uintptr_t group) = 0;
+    virtual std::int32_t group_member_count_4f8(std::uintptr_t group) = 0;
+    virtual std::uintptr_t group_member_at_0070d060(std::uintptr_t group, std::int32_t index) = 0;
+    virtual bool unit_pose_fresh_c8(std::uintptr_t unit) = 0;           // byte +C8h
+    virtual void unit_refresh_pose_00414db0(std::uintptr_t unit) = 0;
+    virtual float unit_matrix_x_fc(std::uintptr_t unit) = 0;            // +CCh matrix +30h
+    virtual float unit_matrix_z_104(std::uintptr_t unit) = 0;           // +CCh matrix +38h
+    virtual std::int32_t unit_icon_key_538(std::uintptr_t unit) = 0;
+    virtual std::uint32_t unit_738_virtual_50(std::uintptr_t unit) = 0;  // *(unit+738h) vtable +50h
+    virtual void widget_virtual_30(std::uintptr_t widget, const std::array<float, 3>& position) = 0;
+    virtual void award_tracker_0068e420() = 0;                          // ECX = 004E1CA0()
+    virtual void hud_refresh_0054e610() = 0;                            // ECX = *(*(00E198C4)+A8h)
+    virtual void trigger_hint_00690fd0(std::string_view hint, std::int32_t arg) = 0;  // ECX = 004E1CA0()
+    virtual void register_observer_pair_00694a60(std::uintptr_t unit) = 0;    // EDX = screen+64h
+    virtual void unregister_pair_006952a0(std::uintptr_t registrar) = 0;      // EDX = screen+64h
+    // 00538D60(screen, map, member, 1.0f): map[member] = new 1A0h marker (005A6AD0).
+    virtual std::uintptr_t add_member_marker_00538d60(std::uint16_t map_offset, std::uintptr_t member, float scale) = 0;
+    virtual std::uintptr_t clone_subtree_00aab4c0(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;  // (name, 1)
+    virtual std::int32_t icon_frame_00653200(std::int32_t key) = 0;      // ECX = *(*(00E198C4)+BCh)
+    virtual void widget_virtual_88(std::uintptr_t widget, std::int32_t frame, std::int32_t arg, float value) = 0;
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual void list_append_row_00a9d750(std::uintptr_t list, std::uintptr_t row) = 0;   // (row, 0, 0)
+    virtual void list_select_row_00a9c740(std::uintptr_t list, std::uintptr_t row) = 0;
+    virtual void list_clear_rows_00a9bec0(std::uintptr_t list) = 0;
+    virtual std::uintptr_t create_widget_00aa6640(std::int32_t type, std::string_view name) = 0;  // (type, name, 0)
+    virtual void widget_set_local_z_00aa7d40(std::uintptr_t widget, float z) = 0;
+    virtual std::string link_texture_e08694() = 0;                       // char* global 00E08694
+    virtual void curve_set_texture_00abdd80(std::uintptr_t widget, const std::string& texture) = 0;
+    virtual void widget_set_colour_50(std::uintptr_t widget, const GuiColour& colour) = 0;
+    virtual void append_child_00aaa5a0(std::uintptr_t parent, std::uintptr_t child) = 0;   // (child, 0)
+    virtual void screen_refresh_00533a30() = 0;                          // ECX = screen
+    virtual std::uintptr_t marker_registrar_4(std::uintptr_t marker) = 0;   // marker+4
+    virtual void delete_virtual_0(std::uintptr_t object) = 0;            // vtable +0 (1)
+    virtual void delete_virtual_4(std::uintptr_t object) = 0;            // vtable +4 (1)
+};
+
+// 0053A4D0: slot +18h of vtable 00CED6FC, __thiscall(screen), RET; SEH 00C6C640.
+void hud_formation_enter_0053a4d0(HudFormationState& screen, HudFormationHost& host);
+// 00536800: slot +1Ch of vtable 00CED6FC, __thiscall(screen), RET; no SEH frame.
+void hud_formation_exit_00536800(HudFormationState& screen, HudFormationHost& host);
+
+// Frame stats Register 0053C740 (screen 57h, vtable 00CEDA10).
+struct FrameStatsState {
+    std::uintptr_t page_0c{};      // "_Fps"
+    std::uintptr_t fps_10{};       // Fps_Text
+    std::uintptr_t warning_14{};   // Warning_Text
+    std::uintptr_t min_fps_18{};   // MinFps_Text
+    std::uintptr_t max_fps_1c{};   // MaxFps_Text
+    // +20h..+64h: PG_<n>p_Text, PG_<n>_Text, PG_<n>s_Text for n = 1..6, in that order.
+    std::array<std::array<std::uintptr_t, 3>, 6> groups_20{};
+};
+
+struct FrameStatsRegisterHost {
+    virtual ~FrameStatsRegisterHost() = default;
+    virtual void register_front_end_screen_004f71d0() = 0;
+    virtual std::uintptr_t load_page_00aa5840(std::string_view name) = 0;     // (name, 1, 0)
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;  // (name, 1)
+    // 0053BC00 singleton, 00BE9620 returns singleton+4: the decoded payload (fingerprint_payload.hpp).
+    virtual std::string fingerprint_payload_text() = 0;
+    virtual void text_set_localised_00abbe50(std::uintptr_t text, const std::string& key, std::int32_t arg) = 0;
+};
+
+// 0053C740: slot +10h of vtable 00CEDA10, __thiscall(screen), RET; SEH 00C6C790.
+void frame_stats_register_0053c740(FrameStatsState& screen, FrameStatsRegisterHost& host);
+
 }  // namespace bsp
