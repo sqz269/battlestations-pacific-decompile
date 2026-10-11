@@ -1,0 +1,101 @@
+{
+  "schema": "cc12.crt-zero-arm-alias-models.v1",
+  "packet": "cc12_crt_zero_arm_alias_models_01",
+  "status": "INDEPENDENT_OFFLINE_PAPER_CANDIDATE_PENDING_PEER_REVIEW",
+  "frozen_commit": "605312f9ae9b71a80d4a9406c3234f0a2f08c113",
+  "Root_scope_qualification": {
+    "path": "local/cc12_crt_zero_arm_alias_models_01/inputs/Root_input_scope_qualification_01.json",
+    "schema": "cc12.crt-zero-arm-input-scope-qualification.v1",
+    "bytes": 2656,
+    "sha256": "9e93db1d2c3edfabd7c4615f847860d74d8e9292bde90d716e455c7cd0dff820",
+    "scope": "Exact qualification receipt alone; original Source_payloads_read:false is a no-Source-filepath-access claim, not an embedded-Source absence assertion."
+  },
+  "input_snapshot": {
+    "path": "local/cc12_crt_zero_arm_alias_models_01/input_snapshot.json",
+    "schema": "cc12.crt-zero-arm-alias-inputs.v1",
+    "bytes": 4520,
+    "sha256": "4022de1cbf86d4acf77d5a059dd0ed3f4f932c339bb098aa0f65e33e95cb73b1",
+    "scope": "Root receipt alone plus six selected canonical originals; no recursive history or transitive expansion."
+  },
+  "hypotheses": [
+    "Compatible first-provider return, zero EAX selected by the accepted TEST/JZ path, and ESP=S-4 before the zero-arm PUSH.",
+    "Ordinary legacy x86 with 32-bit operand/address sizes and SS.B=1; modulo-2^32 pointer arithmetic with each complete access separately valid.",
+    "Ordinary little-endian RAM; stable relevant descriptors, translations and backing identities; successful reads, writes, control-transfer checks and applicable reached instruction fetches.",
+    "No external or asynchronous intervening write; no extra control-protection effect; no self-modifying-code scenario that invalidates the accepted reached encodings.",
+    "Each ordinary four-byte store and read has four distinct byte positions; no atomicity, cross-thread store order, fault, MMIO or runtime mapping claim.",
+    "rho(L)=(phi(L)-CS.base) mod 2^32 denotes the conditional runtime CPU offset of saved listing label L; valid compatible code mapping is assumed, not observed."
+  ],
+  "stack_footprints": {
+    "definition": "F(x)[j]=backing(SS,x+j), j=0..3; word(M,F)=sum(256^j*M[F[j]])",
+    "S": "Entry ESP of the accepted BF66EF body",
+    "R": "F(S-12): EF3 return operand",
+    "L": "F(S-8): literal-two slot / later POP ECX source",
+    "B": "F(S-4): saved-EBP slot / later POP EBP source",
+    "C": "F(S): current caller return word at the final tail",
+    "A_k": "F(S+4*k), k=1..5: current outgoing five-word prefix"
+  },
+  "ordered_memory": {
+    "N": "Memory before the zero-arm PUSH 2, including all first-provider effects",
+    "t": "rho(00BF670C)",
+    "M0": "store(store(N,L,2),R,t), where store is the completed ordinary four-byte little-endian store",
+    "W": "{backing(DS,0x0109EEA8+i): i=0..3}",
+    "AND": "Read the complete four-byte operand, compute value AND zero, then write four zero bytes",
+    "M1": "M1[b]=0 if b belongs to W; otherwise M0[b]",
+    "prior_write_alias_qualification": "The last CALL store establishes R=t, but if stack footprints alias it may change the earlier literal, saved EBP, caller return or outgoing argument bytes. Their actual values remain in M0; offset inequality alone is not a proof of disjoint backing."
+  },
+  "exact_predicates": {
+    "P(F,v)": "For every j: if F[j] is in W then byte_j(v)=0; otherwise M0[F[j]]=byte_j(v). This is equivalent to word(M1,F)=v.",
+    "preserve_own_pre_AND_value": "word(M1,F)=word(M0,F) iff every overlapping pre-AND byte M0[F[j]] with F[j] in W was already zero.",
+    "intended_return": "P(R,t), together with normal RET checks and applicable continuation fetch, gives EIP=t and ESP=S-8.",
+    "ECX_two": "Conditional on that return and successful continuation, ECX=2 iff P(L,2). If word(M0,L)=2, only its low 02 byte must avoid the clear; high zero bytes may overlap harmlessly.",
+    "saved_EBP": "Conditional on the continuation, EBP equals desired earlier b iff P(B,b). Preserving M0's saved word does not prove restoration of original entry EBP unless earlier effects are also accounted for.",
+    "caller_return": "The tail's current caller return word equals c iff P(C,c).",
+    "outgoing_value": "The tail's current argument k equals a_k iff P(A_k,a_k).",
+    "outgoing_zero": "word(M1,A_k)=0 iff every byte of A_k outside W was zero in M0."
+  },
+  "conditional_continuation": {
+    "ESP": "S-8 after EF3 RET, S-4 after POP ECX, S after POP EBP",
+    "ECX": "word(M1,L)",
+    "EBP": "word(M1,B)",
+    "tail_EIP": "rho(00BF65BB), under the compatible direct-jump mapping and fetch conditions",
+    "EAX": "Retains conditioned zero-arm input zero through these local instructions; no return type or ABI follows",
+    "arithmetic_flags": "AND sets CF=OF=SF=0, ZF=PF=1 and undefined AF; RET, POP ECX, POP EBP and JMP preserve those arithmetic flags in this normal model",
+    "no_implicit_restore": "RET does not restore EBP; explicit POP EBP reads current memory."
+  },
+  "paper_countermodels": [
+    {
+      "id": "return_preserved_literal_changes",
+      "common_choice": "S=0x02001000; SS.base=CS.base=0; valid flat segments and ordinary distinct stack backing; identity code mapping only for this example; code/data separated; word(M0,R)=0x00BF670C, word(M0,L)=2, word(M0,B)=0x11223344",
+      "DS_base": "(S-8)-0x0109EEA8, with valid segment limits and stable identity linear-to-backing translation",
+      "alias": "W=L; W disjoint R and B",
+      "result": "Return reaches rho(00BF670C)=0x00BF670C. POP ECX reads zero; POP EBP reads 0x11223344; tail reaches rho(00BF65BB) at ESP=S."
+    },
+    {
+      "id": "return_preserved_saved_EBP_changes",
+      "common_choice": "Same explicit ordinary-memory, valid-fetch, stack and initial-word choices as the first model",
+      "DS_base": "(S-4)-0x0109EEA8, with valid segment limits and stable identity linear-to-backing translation",
+      "alias": "W=B; W disjoint R and L",
+      "result": "Return reaches rho(00BF670C)=0x00BF670C. POP ECX reads two; POP EBP reads zero; tail reaches rho(00BF65BB) at ESP=S."
+    }
+  ],
+  "initial_zero_boundary": {
+    "outer_relation": "For the accepted BF6713 wrapper, let U be its entry ESP; its child entry has S=U-24 and five initially zero words under the corresponding successful ordered-store conditions.",
+    "later_state": "First-provider and intervening local write effects are included in N and M0. Initial zeros are not immutable values or guaranteed tail arguments.",
+    "clear_limit": "A nonzero first-provider byte outside W survives. A nonzero byte inside W becomes zero. The AND cannot create a nonzero byte from zero and does not universally re-zero all five words.",
+    "final_target": "No final tail-target return, cleanup, preservation or ABI contract is inferred."
+  },
+  "evidence_boundary": {
+    "reasoning_inputs": "Bounded Native schedules and conditional joined memory/stack/code-mapping contract from the six fixed canonical inputs",
+    "Native_commands": 0,
+    "Ghidra_queries_or_mutations": 0,
+    "Source_files_or_census_queries": 0,
+    "decoder_or_simulation_or_test_executions": 0,
+    "Cxx_CMake_ledger_build_probe_changes": false,
+    "observed_CPU_ABI_or_runtime_claim": false,
+    "incidental_Source_section_prose_display": true,
+    "display_truncations": 2,
+    "incident_record": "local/cc12_crt_zero_arm_alias_models_01/inspection_incidents.json",
+    "incident_qualification": "Initial keyword output included embedded Source-boundary/policy prose; it was not used for this reasoning or current Source facts. Two truncated displays are retained as incidents. Missing required Native contract conditions were recovered in narrow pages; no conclusion depends on omitted output.",
+    "candidate_gate": "Candidate pinning and peer review do not recertify accepted captures or establish publication, runtime behavior, or ABI compatibility."
+  }
+}
