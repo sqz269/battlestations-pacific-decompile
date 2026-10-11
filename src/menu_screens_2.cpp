@@ -39,8 +39,10 @@ void session_browser_enter_0057a680(SessionBrowserState& screen, SessionBrowserH
     // 0057A761..0057A7CD: the game-type filter 00E086C0 picks one filter byte pair.
     const std::int32_t filter = host.game_type_filter_e086c0();
     if (filter != -1) {
-        screen.filter_10.fill(false);
-        screen.filter_19.fill(false);
+        for (std::size_t i = 0; i < 5; ++i) {                        // [EAX-9] and [EAX], EAX = +19h..+1Dh
+            screen.filter_bytes[i] = false;
+            screen.filter_bytes[kSessionBrowserEditFilterBase + i] = false;
+        }
         std::size_t pick = 5;
         if (filter == 7) pick = 3;
         else if (filter == 4) pick = 1;
@@ -48,8 +50,8 @@ void session_browser_enter_0057a680(SessionBrowserState& screen, SessionBrowserH
         else if (filter == 6) pick = 4;
         else if (filter <= 3) pick = 0;
         if (pick < 5) {
-            screen.filter_10[pick] = true;
-            screen.filter_19[pick] = true;
+            screen.filter_bytes[pick] = true;
+            screen.filter_bytes[kSessionBrowserEditFilterBase + pick] = true;
         }
     }
     host.widget_virtual(BW::Toggle3C, kToggle, 0);                   // 0057A7D0
@@ -113,11 +115,11 @@ void session_browser_set_page_0057a0f0(SessionBrowserState& screen, std::int32_t
             // 0057A1BE..0057A20F: the type mask from the filter bytes.
             request.refresh_target_e08702 = false;
             request.type_mask_e08730 = 0;
-            if (screen.filter_10[4]) request.type_mask_e08730 = 0x40;
-            if (screen.filter_10[0]) request.type_mask_e08730 |= 0x01;
-            if (screen.filter_10[1]) request.type_mask_e08730 |= 0x10;
-            if (screen.filter_10[3]) request.type_mask_e08730 |= 0x80;
-            if (screen.filter_10[2]) request.type_mask_e08730 |= 0x20;
+            if (screen.filter_bytes[4]) request.type_mask_e08730 = 0x40;
+            if (screen.filter_bytes[0]) request.type_mask_e08730 |= 0x01;
+            if (screen.filter_bytes[1]) request.type_mask_e08730 |= 0x10;
+            if (screen.filter_bytes[3]) request.type_mask_e08730 |= 0x80;
+            if (screen.filter_bytes[2]) request.type_mask_e08730 |= 0x20;
             host.session_start_search_88(request);                   // 0057A216
         } else {
             // 0057A354..0057A3E0: refresh around the selected record.
@@ -400,6 +402,110 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
         host.session_set_00076a7a0(screen.field_24);                 // 0057BD5D..0057BD76
         session_browser_set_page_0057a0f0(screen, 2, host);
     }
+}
+
+// 0056ED20, SEH 00C6ECD0. The selected row of +34h, its "setting_value_Text" child, 00ABAED0(text, 1).
+void session_browser_set_filter_value_text_0056ed20(std::string_view text, SessionBrowserFilterHost& host) {
+    const std::uintptr_t row = host.filter_list_selected_row_00425e50();            // 0056ED43
+    const std::uintptr_t label = host.find_child_00aa7e00(row, kSessionBrowserFilterValueText);  // 0056ED92
+    host.text_submit_00abaed0(label, text);                                          // 0056ED99
+}
+
+namespace {
+
+// Shared shape of 0056EE00 and 0056EFB0: rows 0..4 (and any negative index, the
+// signed JG 4 at 0056EE0F) and row 8 toggle a yes/no byte; rows 5..7 step a count
+// whose non-zero state is mirrored into the byte; a zero count reads "globals.no".
+void filter_value_step(SessionBrowserState& screen, SessionBrowserFilterHost& host, bool up) {
+    const std::int32_t row = host.filter_list_selected_index_00a9c920();  // 0056EE04..0056EE07
+    auto edit_byte = [&](std::int32_t index) -> bool& {
+        return screen.filter_bytes[static_cast<std::size_t>(static_cast<std::int32_t>(kSessionBrowserEditFilterBase) + index)];
+    };
+    if (row <= 4) {                                                  // 0056EE0C..0056EE35
+        bool& value = edit_byte(row);
+        value = !value;
+        host.set_game_type_filter_e086c0(-1);
+        session_browser_set_filter_value_text_0056ed20(value ? kSessionBrowserYes : kSessionBrowserNo, host);
+        return;
+    }
+    if (row == 8) {                                                  // 0056EF6B..0056EFA7
+        bool& value = edit_byte(8);
+        value = !value;
+        session_browser_set_filter_value_text_0056ed20(value ? kSessionBrowserYes : kSessionBrowserNo, host);
+        return;
+    }
+    if (row > 7) return;                                             // 0056EF6E JNZ: rows above 8 do nothing
+    std::int32_t& count = screen.edit_counts[static_cast<std::size_t>(row - 5)];
+    if (row == 7) {                                                  // 0..500 in steps of 100, wrapping
+        if (up) count = count < 500 ? count + 100 : 0;
+        else count = count == 0 ? 500 : count - 100;
+    } else {                                                         // rows 5 and 6: 0..7, wrapping
+        if (up) count = count == 7 ? 0 : count + 1;
+        else count = count == 0 ? 7 : count - 1;
+    }
+    bool& value = edit_byte(row);                                    // +1Eh, +1Fh, +20h
+    value = count != 0;
+    if (value) session_browser_set_filter_value_text_0056ed20(host.format_int_004260b0(count), host);
+    else session_browser_set_filter_value_text_0056ed20(kSessionBrowserNo, host);
+}
+
+}  // namespace
+
+void session_browser_filter_value_step_0056ee00(SessionBrowserState& screen, SessionBrowserFilterHost& host) {
+    filter_value_step(screen, host, false);
+}
+
+void session_browser_filter_value_step_0056efb0(SessionBrowserState& screen, SessionBrowserFilterHost& host) {
+    filter_value_step(screen, host, true);
+}
+
+// 0056E3E0. Each branch builds five (command, label, placement) triples for 0054B530 on
+// *(00E1930C); the triples below are in argument order (pushed last-to-first).
+bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& view,
+    std::array<MainMenuCommandArgument, 5>& arguments) {
+    if (view.filter_list_focused) {                                  // 0056E40E falls through
+        arguments = {{{0xA2, "globals.accept", 0}, {0xB3, "globals.navigate", 1}, {0xAF, "globals.change", 1},
+            {0xA3, "globals.cancel", 2}, {0x00, "", 1}}};            // 0056E414..0056E4AD
+        return true;
+    }
+    if (view.toggle_50) {                                            // 0056E55E..0056E601
+        arguments = {{{0xB3, "globals.navigate", 1}, {0xB2, "globals.scroll_menu", 1},
+            {0xA2, "FE.change_filter", 1}, {0xA7, "globals.refresh", 1}, {0xA3, "globals.back", 2}}};
+        return true;
+    }
+    if (!view.session_list_focused) {                                // 0056E6B5..0056E6BC
+        if (!view.toggle_51) return false;                           // 0056EBAC..0056EBB0
+        arguments = {{{0xB3, "globals.navigate", 1}, {0xB2, "globals.scroll_menu", 1}, {0x00, "", 1},
+            {0xA7, "globals.refresh", 1}, {0xA3, "globals.back", 2}}};  // 0056EBB6..0056EC4F
+        return true;
+    }
+    // 0056E6C8..0056E70C: online, a non-empty record vector and an in-range selection
+    // (unsigned compare against the count).
+    const bool selected = view.online && view.session_count != 0 && view.selection >= 0 &&
+        static_cast<std::size_t>(static_cast<std::uint32_t>(view.selection)) < view.session_count;
+    if (!selected) {
+        arguments = {{{0xB3, "globals.navigate", 1}, {0x00, "", 1}, {0xA7, "globals.refresh", 1},
+            {0xA3, "globals.back", 2}, {0x00, "", 1}}};              // 0056EA99..0056EB32
+        return true;
+    }
+    if (!view.signed_in) {                                           // 0056E71A..0056E728 -> 0056E8D0
+        if (view.byte_264) {
+            arguments = {{{0xB3, "globals.navigate", 1}, {0xA2, "globals.join", 1}, {0xA7, "globals.refresh", 1},
+                {0xA3, "globals.back", 2}, {0x00, "", 1}}};          // 0056E8E7..0056E972
+        } else {
+            arguments = {{{0xB3, "globals.navigate", 1}, {0x00, "", 1}, {0xA7, "globals.refresh", 1},
+                {0xA3, "globals.back", 2}, {0x00, "", 1}}};          // 0056E9AF..0056EA3A
+        }
+        return true;
+    }
+    if (view.byte_264) {
+        arguments = {{{0xB3, "globals.navigate", 1}, {0xA2, "globals.join", 1}, {0xA5, "globals.showgamercard", 1},
+            {0xA7, "globals.refresh", 1}, {0xA3, "globals.back", 2}}};  // 0056E735..0056E7D0
+    } else {
+        arguments = {{{0xB3, "globals.navigate", 1}, {0x00, "", 1}, {0xA5, "globals.showgamercard", 1},
+            {0xA7, "globals.refresh", 1}, {0xA3, "globals.back", 2}}};  // 0056E808..0056E898
+    }
+    return true;
 }
 
 // 0052E4B0, __thiscall(screen, float), RET 4. ESI = screen.

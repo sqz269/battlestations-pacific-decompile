@@ -99,6 +99,19 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
 - **0057AE50 JoinSelected** and **0057AEF0 OnListboxActivate** (reconstructed, build-tested): online
   only, a selected index inside the record vector, 0057A9C0(record, 0).
 
+- **0056EE00 FilterValueDown / 0056EFB0 FilterValueUp / 0056ED20 SetFilterValueText** (reconstructed,
+  build-tested): the selected row of the filter list +34h picks the edit byte +19h+row. Rows <= 4 (a
+  signed compare, so no selection, -1, toggles +18h) and row 8 toggle a yes/no byte; rows 0..4 also
+  clear 00E086C0. Rows 5 and 6 step +250h/+254h through 0..7 and row 7 steps +258h through 0..500 by
+  100, wrapping both ways; the row byte mirrors count != 0. The row's `setting_value_Text` child then
+  receives `globals.yes`, `globals.no` or the number (004260B0).
+- **0056E3E0 UpdateCommandBar** (reconstructed as a selector, build-tested): filter list focused ->
+  accept/navigate/change/cancel; +50h -> navigate/scroll_menu/`FE.change_filter`/refresh/back; result
+  list not focused -> nothing unless +51h (navigate/scroll_menu/refresh/back); a valid selected
+  session online adds `globals.join` (0A2h) when byte +264h is set and `globals.showgamercard`
+  (0A5h) when signed in; otherwise navigate/refresh/back. The C++ takes the inputs pre-read; the
+  original reads them in branch order and asks session +198h only on the selected-session path.
+
 ## Smaller reconstructions
 
 - **0052E4B0 Credits update**: the float argument is overwritten with game+21ECh. Back (4Bh) pushes
@@ -148,7 +161,7 @@ library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model p
 0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
 the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
 
-Call sites: `reports/cc13_menu_screens_2.json`, 142 rows, `tools/verify_report_calls.py`: 0 failed.
+Call sites: `reports/cc13_menu_screens_2.json`, 177 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 

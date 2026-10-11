@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -25,6 +26,7 @@ inline constexpr float kSessionBrowserJoinTimeout = 12.0F;       // 00CEECF4 -> 
 inline constexpr float kSessionBrowserJoinStepCap = 0.1F;        // 00D7A2F0
 inline constexpr std::uint32_t kSessionBrowserRecordBytes = 0xA0;  // (end - begin) / 0A0h
 inline constexpr std::int32_t kSessionBrowserJoinStatusReady = 0x217;  // 00A39750 result
+inline constexpr std::size_t kSessionBrowserEditFilterBase = 9;          // +19h - +10h
 
 // The screen's widget pointers that these routines dereference.
 enum class SessionBrowserWidget : std::uint16_t {
@@ -45,8 +47,11 @@ struct SessionBrowserState {
     bool base_byte_04{};             // +04h, base-screen byte; SetPage acts only with +04h and +05h set
     bool base_byte_05{};             // +05h
     std::uint32_t field_24{};        // +24h, argument of 0076A7A0
-    std::array<bool, 5> filter_10{};  // +10h..+14h: applied game-type filter bytes (of the nine +10h..+18h)
-    std::array<bool, 5> filter_19{};  // +19h..+1Dh: the edit copy (of +19h..+21h; 0056E360/0057A910 copy)
+    // +10h..+21h: nine applied filter bytes (+10h..+18h; 0..4 game types, 5..7 count filters, 8 a
+    // yes/no filter) followed by their nine-byte edit copy (+19h..+21h); 0056E360 copies applied to
+    // edit, 0057A910 edit to applied.
+    std::array<bool, 18> filter_bytes{};
+    std::array<std::int32_t, 3> edit_counts{};  // +250h, +254h (0..7), +258h (0..500 step 100)
     bool toggle_50{};                // +50h, pairs with widget +3Ch
     bool toggle_51{};                // +51h, pairs with widget +40h
     bool filters_shown_f0{};         // +F0h
@@ -175,6 +180,45 @@ void session_browser_join_selected_0057ae50(SessionBrowserState& screen, Session
 // The second stack argument is the event's listbox; the caller reports whether it is +30h.
 void session_browser_on_listbox_activate_0057aef0(SessionBrowserState& screen, bool event_list_is_session_list,
     SessionBrowserHost& host);
+
+// Filter-row value steps (0056EE00 on action 4Ch, 0056EFB0 on 4Dh) and their text setter 0056ED20.
+inline constexpr std::string_view kSessionBrowserFilterValueText = "setting_value_Text";  // 00CEEFDC
+inline constexpr std::string_view kSessionBrowserYes = "globals.yes";  // 00CED4F0
+inline constexpr std::string_view kSessionBrowserNo = "globals.no";    // 00CED4E4
+
+struct SessionBrowserFilterHost {
+    virtual ~SessionBrowserFilterHost() = default;
+    virtual std::int32_t filter_list_selected_index_00a9c920() = 0;   // list +34h
+    virtual std::uintptr_t filter_list_selected_row_00425e50() = 0;   // list +34h
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t widget, std::string_view name) = 0;  // (name, 1)
+    virtual void text_submit_00abaed0(std::uintptr_t text, std::string_view source) = 0;          // (source, 1)
+    virtual std::string format_int_004260b0(std::int32_t value) = 0;  // BSP_NativeString_FromInt
+    virtual void set_game_type_filter_e086c0(std::int32_t value) = 0;
+};
+
+// 0056ED20: __thiscall(screen, native string by value), RET 8.
+void session_browser_set_filter_value_text_0056ed20(std::string_view text, SessionBrowserFilterHost& host);
+// 0056EE00 (down) / 0056EFB0 (up): __thiscall(screen), RET.
+void session_browser_filter_value_step_0056ee00(SessionBrowserState& screen, SessionBrowserFilterHost& host);
+void session_browser_filter_value_step_0056efb0(SessionBrowserState& screen, SessionBrowserFilterHost& host);
+
+// 0056E3E0: per-frame command bar of the browser, __thiscall(screen), RET; SEH 00C6ECB0.
+// Inputs it reads besides the host: +50h, +51h and the byte +264h.
+struct SessionBrowserCommandBarView {
+    bool filter_list_focused{};      // *(+34h)+85h
+    bool session_list_focused{};     // *(+30h)+85h
+    bool toggle_50{};
+    bool toggle_51{};
+    bool byte_264{};                 // offers globals.join when set
+    bool online{};                   // *(00E188A8)+1FE4h != 0
+    std::size_t session_count{};     // 00566310 on +2A0h
+    std::int32_t selection{};        // 005661C0 on +30h
+    bool signed_in{};                // session client +198h (read only on the selected-session path)
+};
+
+// Returns false when the original returns without rebuilding (no list focused, +50h and +51h clear).
+bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& view,
+    std::array<MainMenuCommandArgument, 5>& arguments);
 
 // ---------------------------------------------------------------------------
 // Credits screen (constructor 0052FCE0, primary vtable 00CED200)
