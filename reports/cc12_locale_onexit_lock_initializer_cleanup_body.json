@@ -1,0 +1,736 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_lock_initializer_cleanup_body",
+  "status": "complete physical nine-byte saved-body evidence; external target behavior unresolved",
+  "frozen_HEAD": "d406c8fe6b2b20665cf8b354140e635db7ea1996",
+  "positive_predecessor": {
+    "accepted_entry": "00C11C18",
+    "accepted_entry_hex": "6A0A",
+    "body_before_this_packet": "One saved nine-address-unit owner range; remaining seven instruction bytes previously unread.",
+    "immediate_files": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "oid": "acabf543f0c3fec7c60fa0c35cef2d1782bab750",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "bytes": 3743,
+        "sha256": "258e6e464cfc9fc34aa2cdc5106ff7d6890c77879f3ea0e685c15e1d3232fce7"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "oid": "824da7acdbdf3595d4546218d1b1fb9dd2c47855",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "bytes": 22239,
+        "sha256": "fb894a7111e831760ca9313169cfcbe05335805b24f25392b33957e06639890c"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "oid": "efbf7e29f4eb3e4c05f596baf114c3aa0b05218e",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "bytes": 1874,
+        "sha256": "06e1d518ee3b836fc615a0b26151440f0165b473f03c3d9cb878bdf8dc9a2bd9"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "oid": "610ec410c0f59dc54358fcb7e0c48159eb44f205",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "bytes": 5356,
+        "sha256": "aae95d1cc54397845519166184c38ad0767a2e4b953925e295aaf8baf8eef2d1"
+      }
+    ]
+  },
+  "Root_listing_gate": {
+    "proof": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/Root_listing_gate.json",
+      "bytes": 7124,
+      "sha256": "93477cd22c35a48011595d990a6b1924c020b724140773b7fc872b528849591d"
+    },
+    "producer_retained_not_executed": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/Root_listing_gate.py",
+      "bytes": 4664,
+      "sha256": "3134adfb01dc4f2d6699f1873933a385b344adf9645d0469f676fd3d67becb84"
+    },
+    "admitted": [
+      "two exact 9-byte reads at C11C18",
+      "one context-zero sweep at C11C18/C11C1A/C11C1F/C11C20",
+      "one closing typed sweep over all nine address units and count"
+    ],
+    "not_admitted": [
+      "callee or provider body",
+      "data",
+      "adjacent code",
+      "prototype",
+      "decompile",
+      "automatic companion traversal"
+    ]
+  },
+  "typed_metadata": {
+    "captures": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/typed_a.raw.json",
+        "bytes": 45499,
+        "sha256": "a681cc0e4583e2147081e3fcf96c5e5d5c38e338a02b249afc8456c5bd54f3a8"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/typed_b.raw.json",
+        "bytes": 45499,
+        "sha256": "dcad2be764e150f1a763b64de134bb771be706413b442cf94f66dd51dbc39885"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/typed_closing.raw.json",
+        "bytes": 45499,
+        "sha256": "09968ab8a3b017aad236f4611ea29159ccae29034b748fd3f44b8747e51908cf"
+      }
+    ],
+    "projection": {
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "owner": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c11c18"
+        },
+        "name": "LIBCRT_LockInitializer_UnlockLock10_00c11c18",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "9",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11c18"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c20"
+              },
+              "length": "9"
+            }
+          ]
+        }
+      },
+      "units": [
+        {
+          "address": "00C11C18",
+          "length": 2,
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c1a"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c1a"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C11C1A",
+          "length": 5,
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c1f"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c1f"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c11b31"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c11b31"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11C1F",
+          "length": 1,
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c20"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c11c20"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C11C20",
+          "length": 1,
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        }
+      ],
+      "raw_payload_pins": [
+        {
+          "address": "00C11C18",
+          "bytes": 2175,
+          "sha256": "c9c7b6214f7f8fff9afa802e8de392a085a696322a12f0721af7f31ea6bb250a"
+        },
+        {
+          "address": "00C11C19",
+          "bytes": 1365,
+          "sha256": "4b17b90e05d99214e7ffdb56ee7a5473706e13fe2d1990d402720e663b23b505"
+        },
+        {
+          "address": "00C11C1A",
+          "bytes": 2495,
+          "sha256": "a7836b66218822f410c2f41c88ccf52b5485a458d14c74ec7eee2c0f7094783e"
+        },
+        {
+          "address": "00C11C1B",
+          "bytes": 1365,
+          "sha256": "72c355774d466d625f959f3c7ce2e828a137e72b1b2fe3dd60502da701aedbf9"
+        },
+        {
+          "address": "00C11C1C",
+          "bytes": 1365,
+          "sha256": "be8286a1390559a75fd48489c684ece6ca625d43fd88e8ac27fcaf09a9968cfb"
+        },
+        {
+          "address": "00C11C1D",
+          "bytes": 1365,
+          "sha256": "9dc9519ea6deda1331179eeb34ba7d46cde273487ab129008ab6867041c39f76"
+        },
+        {
+          "address": "00C11C1E",
+          "bytes": 1365,
+          "sha256": "bbbd93ede695c95427c98b5c19157a7d0c5309f0f8dfc6045685c5b8b2aea478"
+        },
+        {
+          "address": "00C11C1F",
+          "bytes": 2144,
+          "sha256": "95e7dbb2ade2ed69880ba9ee0b33d05a5e1409bc9bf9a71624e3dfc2c2f07ba9"
+        },
+        {
+          "address": "00C11C20",
+          "bytes": 2076,
+          "sha256": "400a5c7421d047d3af2f052dcc5d5368a976d537839debb1f6ed37b2cae71b36"
+        }
+      ],
+      "all_four_aliases_checked_at_each_address": true,
+      "automatic_target_objects": "entire values opaque"
+    },
+    "epoch": 98,
+    "four_count_bookends": [
+      64730,
+      64730,
+      64730,
+      64730
+    ],
+    "full_raw_payload_count": 27,
+    "all_sweeps_equal": true,
+    "all_four_aliases_per_address_verified": true,
+    "raw_HTTP_JSON_base64_digests_retained": true,
+    "entire_automatic_target_objects": "opaque"
+  },
+  "physical_body": {
+    "range": "00C11C18..00C11C20",
+    "byte_count": 9,
+    "hex": "6A0AE812FFFFFF59C3",
+    "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042",
+    "reads": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/body_bytes_a.stdout.bin",
+        "bytes": 49,
+        "sha256": "31a719a9a8ef4b5b785310aafceed501928b28c793429f26f5e5cdbcbd93695f"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/body_bytes_b.stdout.bin",
+        "bytes": 49,
+        "sha256": "31a719a9a8ef4b5b785310aafceed501928b28c793429f26f5e5cdbcbd93695f"
+      }
+    ],
+    "saved_text": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/body_text.raw.json",
+      "bytes": 604,
+      "sha256": "d7450e39e074d0f254a8f1d572423385190d9ff69af5fbbd217e3fe367c7b9cd"
+    },
+    "saved_text_values": [
+      "PUSH 0xa",
+      "CALL 0x00c11b31",
+      "POP ECX",
+      "RET"
+    ],
+    "independent_manual_units": [
+      {
+        "address": 12655640,
+        "opcode": 106,
+        "ModRM": null,
+        "relative_target": null,
+        "immediate_offset": 1,
+        "immediate_size": 1,
+        "operands": [
+          {
+            "type": "immediate",
+            "size": 4,
+            "value": 10
+          }
+        ],
+        "mnemonic": "push",
+        "size": 2,
+        "bytes": "6a0a"
+      },
+      {
+        "address": 12655642,
+        "opcode": 232,
+        "ModRM": null,
+        "relative_target": 12655409,
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "operands": [
+          {
+            "type": "immediate",
+            "size": 4,
+            "value": 12655409
+          }
+        ],
+        "mnemonic": "call",
+        "displacement": -238,
+        "size": 5,
+        "bytes": "e812ffffff"
+      },
+      {
+        "address": 12655647,
+        "opcode": 89,
+        "ModRM": null,
+        "relative_target": null,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": "register",
+            "size": 4,
+            "name": "ecx"
+          }
+        ],
+        "mnemonic": "pop",
+        "size": 1,
+        "bytes": "59"
+      },
+      {
+        "address": 12655648,
+        "opcode": 195,
+        "ModRM": null,
+        "relative_target": null,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [],
+        "mnemonic": "ret",
+        "size": 1,
+        "bytes": "c3"
+      }
+    ],
+    "decoder_source": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/manual_fragment.py",
+      "bytes": 1731,
+      "sha256": "d15f19b5a419501c62cbf17db879f66d262dbb02583e076194f290d7d03e14d8"
+    },
+    "actual_detailed_Capstone": {
+      "capture": {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/physical_decode.json",
+        "bytes": 3979,
+        "sha256": "c2d24eda5c4d57e276eab01917262964d588924de538dcd6feee1547c3e11508"
+      },
+      "producer": {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/capture_capstone.py",
+        "bytes": 3741,
+        "sha256": "3519d6eb5ed9e555940aeaaaa9cf14f325e8f06a7ef0b79618d9cefb6db1def1"
+      },
+      "version": "5.0.7",
+      "mode": "x86-32",
+      "all_four_operands_and_encoding_fields_agree_with_manual": true
+    },
+    "relative_call": {
+      "address": "00C11C1A",
+      "opcode": "E8",
+      "rel32_hex_little_endian": "12FFFFFF",
+      "rel32_signed": -238,
+      "physical_next_address": "00C11C1F",
+      "numeric_target": "00C11B31",
+      "ModRM": null,
+      "IAT_dereference": false,
+      "callee_or_target_cell_read": false
+    },
+    "saved_and_physical_flow": "All four units agree with saved default/effective flow; no overrides."
+  },
+  "conditional_contract": {
+    "assumptions": "Normal instruction completion under saved x86 default-32 decoding and a 32-bit stack model; faults, exceptions and non-return are not treated as successful returns.",
+    "entry_state": "Let S be ESP at C11C18; use registers, segment state and memory actually current at each instruction.",
+    "C11C18": "6A 0A sign-extends immediate 0A to 0000000A, sets ESP=S-4 modulo 2^32, and writes that value through current SS:[S-4]. It does not read a caller argument.",
+    "C11C1A": "E8 with signed rel32 -238 targets C11B31. It pushes physical next address 00C11C1F through current SS:[S-8], with ESP=S-8 before entering the target.",
+    "external_return_boundary": "If control returns at C11C1F, every returned general register, ESP, EBP, flag, segment and memory value is independently unknown. Let Q denote ESP then; no relation between Q and S is assumed.",
+    "C11C1F": "59 selects register ECX from the POP register opcode class. Read the dword from the memory and SS current at this instruction at Q into ECX, then set ESP=Q+4 modulo 2^32.",
+    "C11C20": "C3 reads its near return destination from the memory and SS current at this instruction at Q+4, then sets ESP=Q+8 modulo 2^32 on normal completion. The destination remains unknown.",
+    "flags": "The local PUSH, near CALL, POP ECX and RET do not modify arithmetic flags on normal completion; flags after an actual external return remain that unknown returned state.",
+    "alias_limit": "The external call may change stack contents and segment/register state. Later reads may alias earlier writes and observe their then-current contents; neither read is frozen to the pushed literal or an original caller return address.",
+    "not_inferred": [
+      "ECX equals 10",
+      "POP is argument cleanup",
+      "whole-function stack balance",
+      "restoration of entry ESP",
+      "return to a particular caller address",
+      "callee ABI or preserved registers",
+      "lock number or unlock effect",
+      "status or ownership result"
+    ]
+  },
+  "saved_function_metadata": {
+    "name": "LIBCRT_LockInitializer_UnlockLock10_00c11c18",
+    "no_return": false,
+    "is_thunk": false,
+    "complete_saved_range": "00C11C18..00C11C20",
+    "address_count": 9,
+    "name_role_ABI": "metadata only; no authenticated cleanup, unlock, locking, CRT, argument or return guarantee"
+  },
+  "provenance": {
+    "selected_positive_files": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "oid": "acabf543f0c3fec7c60fa0c35cef2d1782bab750",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "bytes": 3743,
+        "sha256": "258e6e464cfc9fc34aa2cdc5106ff7d6890c77879f3ea0e685c15e1d3232fce7"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "oid": "824da7acdbdf3595d4546218d1b1fb9dd2c47855",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "bytes": 22239,
+        "sha256": "fb894a7111e831760ca9313169cfcbe05335805b24f25392b33957e06639890c"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "oid": "efbf7e29f4eb3e4c05f596baf114c3aa0b05218e",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY_PRIMARY.md",
+        "bytes": 1874,
+        "sha256": "06e1d518ee3b836fc615a0b26151440f0165b473f03c3d9cb878bdf8dc9a2bd9"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "oid": "610ec410c0f59dc54358fcb7e0c48159eb44f205",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_entry_primary.json",
+        "bytes": 5356,
+        "sha256": "aae95d1cc54397845519166184c38ad0767a2e4b953925e295aaf8baf8eef2d1"
+      }
+    ],
+    "actual_frozen_Git_objects": [
+      {
+        "kind": "commit",
+        "oid": "d406c8fe6b2b20665cf8b354140e635db7ea1996",
+        "member": "objects/d406c8fe6b2b20665cf8b354140e635db7ea1996",
+        "bytes": 394,
+        "sha256": "48c3d917558bcf2cb1004130374dcf874c45903808239a26dbab27a3a5824cba"
+      },
+      {
+        "kind": "tree",
+        "oid": "c305083b08e73dd74d5e690a539bf2f0bff54a3f",
+        "member": "objects/c305083b08e73dd74d5e690a539bf2f0bff54a3f",
+        "bytes": 563,
+        "sha256": "1ab7bf853da6c0874e64b0eaa5ba168cd7a9a655872f9ce5d645c802a2a116c7"
+      },
+      {
+        "kind": "tree",
+        "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "member": "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      {
+        "kind": "tree",
+        "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+        "member": "objects/fa269934679ee43da523f7bf9c369e4e27d83531",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      {
+        "kind": "tree",
+        "oid": "e55876618f592a7998feac65e9176ce00d104135",
+        "member": "objects/e55876618f592a7998feac65e9176ce00d104135",
+        "bytes": 230853,
+        "sha256": "9b77e3a043324f710fffa0ad0413bef8753eb61c69f13666548275ccb9a2c4f9"
+      },
+      {
+        "kind": "tree",
+        "oid": "68e60bb9e832d5876b5d65433fab07e92b234c13",
+        "member": "objects/68e60bb9e832d5876b5d65433fab07e92b234c13",
+        "bytes": 355772,
+        "sha256": "b6bf2a3cc2b3621dc2ed270f9da9dbed067aa87102d65835e602e15cea4930d8"
+      }
+    ],
+    "finite_positive_files": 8,
+    "CLI_commands_with_complete_streams": 10,
+    "failed_Native_captures": 0,
+    "capture_schedule": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/capture_schedule.json",
+      "bytes": 367,
+      "sha256": "e1c0982ab16b26b0027786d5c31036a33e1fc72f727b8335bd73531c0cfb490a"
+    },
+    "producer_revision_records": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/git_producer_revision.json",
+        "bytes": 450,
+        "sha256": "88af3b81ea9646fec621bb0659d5152d5060da77c33a357a5a0de132576b6d6a"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/replay_revision.json",
+        "bytes": 1189,
+        "sha256": "82c461a5e0413bbe031937ac571b80136ad7f90ae8f9a2bab9de414969cc28f5"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/package_revision.json",
+        "bytes": 461,
+        "sha256": "c80c51dbc0bad55cce201ed103f964fcf994f12c72200c04c890519a4a6b6181"
+      }
+    ],
+    "preimages": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/preimages/cleanup_entry_capture_git.py",
+        "bytes": 3374,
+        "sha256": "af78b56c91dae6bcbe0348b0ff739f39412a6ea2b99d85b3183176638595e394"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/preimages/cleanup_entry_replay.py",
+        "bytes": 14111,
+        "sha256": "6512ccefc353b1947d9223b272b6968f66aa0378374cf64cff1a163c129fc6cf"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/preimages/cleanup_entry_guarded_replay.py",
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/preimages/cleanup_entry_package_proof.py",
+        "bytes": 4185,
+        "sha256": "e3113294b53343d2081a65cfd5f95a32fab142c0c20d87c93c43d2c77f86c009"
+      }
+    ],
+    "earlier_archives_traversed": 0
+  },
+  "core_archive": {
+    "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/core_v1.zip",
+    "bytes": 1142185,
+    "sha256": "1e958734366ccc067ea1256192a2d4806790679eecc0763fe91e400ec63b8d16"
+  },
+  "distinct_physical_copy": {
+    "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/core_v1_copy.zip",
+    "bytes": 1142185,
+    "sha256": "1e958734366ccc067ea1256192a2d4806790679eecc0763fe91e400ec63b8d16"
+  },
+  "offline_replay": {
+    "receipts": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/core_v1_original.guard.json",
+        "bytes": 14897,
+        "sha256": "ec2faccbc1a9e68c2c067870093a9847100c235019731fc27e40444133965510"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_body/core_v1_copy.guard.json",
+        "bytes": 14897,
+        "sha256": "ec2faccbc1a9e68c2c067870093a9847100c235019731fc27e40444133965510"
+      }
+    ],
+    "guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "helper_pins_verified_before_execution": [
+      {
+        "name": "replay.py",
+        "bytes": 17405,
+        "sha256": "d37935b7392333753ad28835193405216645b1d6205e9312e88a3602ce9671d0"
+      },
+      {
+        "name": "guarded_replay.py",
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    ],
+    "archive_members_verified": 81,
+    "status": "PASS"
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+      "reports/cc12_locale_onexit_lock_initializer_cleanup_body.json"
+    ],
+    "post_commit_archive": "local/cc12_locale_onexit_lock_initializer_cleanup_body/delivery_v1.zip",
+    "receipts": [
+      "local/cc12_locale_onexit_lock_initializer_cleanup_body/delivery_v1_original.guard.json",
+      "local/cc12_locale_onexit_lock_initializer_cleanup_body/delivery_v1_copy.guard.json"
+    ],
+    "closure": "Actual frozen/final commit and selected tree objects, selected physical/blob bytes and owned staged bytes; root/subtree comparison proves exactly two changed paths.",
+    "self_reference_boundary": "Delivery archive and receipts are generated after committing these outputs and handed off separately."
+  },
+  "Source_identity_only": {
+    "trees": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "worker frozen base and final revision identity only",
+    "current_or_future_Root_equality": "not claimed",
+    "census": "not performed",
+    "implementation_credit": false
+  },
+  "not_established": [
+    "external C11B31 behavior or ABI",
+    "cleanup or unlock behavior",
+    "lock-number or argument meaning",
+    "whole-function return, stack balance or status",
+    "CRT or provider identity",
+    "Source implementation",
+    "fresh build or test result",
+    "Original game/OS/audio behavior",
+    "startup or gameplay completion"
+  ],
+  "next_scope": "Closed at this exact nine-byte saved body. The numeric external target requires a separate Root scope decision."
+}
