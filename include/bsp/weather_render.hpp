@@ -14,6 +14,7 @@
 
 #include "bsp/random_threads.hpp"
 
+#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <vector>
@@ -292,5 +293,47 @@ Rgba sky_gradient_sample_00bbf440(const SkyGradient& strip, float t, bool wrap) 
 // c2 = strip +24h at the second coordinate (clamped), result = lerp(c1, c2, c1.a).
 Rgba sky_fog_colour_00bbf590(const SkyGradient& by_time, const SkyGradient& by_blend, float time_of_day,
                              float blend) noexcept;
+
+// ---------------------------------------------------------------------------
+// Particle cloud lighting (00BC3930, from 00BBE640 once per cloud instance for
+// light 0 and light 1). The puff records gain the fields the pass writes.
+
+struct CloudPuffShading {
+    float light[2]{};     // puff+20h[i], raw transmittance per light
+    float shade[2]{};     // puff+28h[i]
+    std::uint8_t alpha{}; // puff+30h, trunc(f * 255)
+    float sort_key{};     // puff+34h, distance from the sort eye
+};
+
+// The look-at and the row-vector transform the pass uses (00B63F10, 00B62D10),
+// and the CRT qsort (00BFC350) whose permutation for equal keys the pass inherits.
+class CloudLightView {
+public:
+    virtual ~CloudLightView() = default;
+    virtual void build_look_at(const Vec3& eye, const Vec3& target, const Vec3& up) = 0;
+    virtual Vec3 transform_point(const Vec3& p) = 0;  // (p, 1) * view; x and y are read
+    virtual void qsort(void* base, std::size_t count, std::size_t width,
+                       int (*compare)(const void*, const void*)) = 0;
+};
+
+// 00BC2FE0: qsort comparator, _ftol2(key(b) - key(a)): farthest first, keys
+// closer than 1.0 compare equal.
+int cloud_puff_compare_00bc2fe0(const void* a, const void* b) noexcept;
+
+// 00BC3430(class, toward*), RET 4: key = |eye - position| with eye =
+// normalize(toward) * bounding radius, then qsort of puffs and shading together.
+void cloud_sort_puffs_00bc3430(CloudClassGeometry& c, std::vector<CloudPuffShading>& shading,
+                               WeatherMath& math, CloudLightView& view, const Vec3& toward);
+
+// 00BC3730(index, density, view*), RET 0Ch: product over the puffs sorted before
+// `index` of clamp(screen distance / (size_j + size_i) + density, 0, 1).
+float cloud_puff_transmittance_00bc3730(const CloudClassGeometry& c, WeatherMath& math, CloudLightView& view,
+                                        std::uint32_t index, float density);
+
+// 00BC3930(light, dir*, density, blur, float* mean), RET 14h. Draws one
+// Uniform(primary, 0.6, 0.75) per puff for the alpha byte.
+void cloud_compute_lighting_00bc3930(CloudClassGeometry& c, std::vector<CloudPuffShading>& shading,
+                                     WeatherMath& math, CloudLightView& view, std::int32_t light,
+                                     const Vec3& dir, float density, float blur, float& mean);
 
 }  // namespace bsp::weather

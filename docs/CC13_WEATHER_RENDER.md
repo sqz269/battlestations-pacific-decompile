@@ -132,12 +132,23 @@ Puff accessors (`00BC7A70..00BC7B50`): position `+0Ch`, size `+1Ch`, two light t
 two shade terms `+28h[2]`, alpha byte `+30h` (`trunc(f*255)`), sort key `+34h`.
 
 `00BC3930` (light index, direction, density `01090908`, blur `01090904`, float* mean) is called by
-`00BBE640` once per instance for lights 0 and 1. It sorts the puffs along the light (`00BC3430`,
-qsort with `00BC2FE0`), builds a look-at from 1000 * direction, computes each puff's light term
-(`00BC3730`), draws one Uniform per puff for the alpha byte, smooths the terms over neighbours
-within `size * blur`, and writes a height gradient into the shade terms. Its body uses ECX puff
-pointers Ghidra lost; it is named, not reconstructed.
+`00BBE640` once per instance for lights 0 and 1 (reconstructed):
 
+1. Sort along `-dir` (`00BC3430`): eye = normalize(-dir) * bounding radius, key = |eye - puff|
+   (`+34h`), CRT `qsort` with `00BC2FE0` = `_ftol2(key(b) - key(a))`, so the farthest puff from
+   the eye comes first and keys within 1.0 compare equal (their order is whatever the CRT qsort
+   leaves).
+2. View = look-at from `1000 * dir` towards the origin; up is +Y, or +Z when `dir.y > 0.9`.
+3. For each puff in sorted order, `light[L]` = `00BC3730`: the product over the puffs before it
+   of `clamp(screen distance / (size_j + size_i) + density, 0, 1)`, distances taken in the x/y of
+   `(p, 1) * view` (`00B62D10`). `density` is therefore the minimum transmittance per occluder.
+   The mean of the terms goes to `*mean`; each puff also gets `alpha = trunc(Uniform(stream 0,
+   0.6, 0.75) * 255)`.
+4. `shade[L]` = the mean of `light[L]` over the puffs whose centre is within `size_i * blur`; the
+   puff itself counts twice (seed plus the distance-0 match).
+5. Lower-half darkening, on every call: `g = clamp(max(mid - y, 0) / half, 0, 1)` over the
+   bounds' y range, `shade[0] *= 1 - g`, `shade[1] = g`. Because it runs for both lights, the
+   final `shade[0]` carries `(1 - g)^2` and the smoothed `shade[1]` is overwritten by `g`.
 ## Cloud instance (`00BBE7D0`, `00BBE8B0`)
 
 Setters (called from the cloud scene-property pass `00477710`): scale `+1C8h` (`00BBE470`),
@@ -245,6 +256,10 @@ its consumption is frame-rate dependent while drops are on screen.
 | `00BBF280` | `sky_lerp_00bbf280` | whole |
 | `00BBF440` | `sky_gradient_sample_00bbf440` | whole |
 | `00BBF590` | `sky_fog_colour_00bbf590` | float colour before `004FB850` |
+| `00BC2FE0` | `cloud_puff_compare_00bc2fe0` | whole |
+| `00BC3430` | `cloud_sort_puffs_00bc3430` | whole; qsort via `CloudLightView` |
+| `00BC3730` | `cloud_puff_transmittance_00bc3730` | whole; transform via `CloudLightView` |
+| `00BC3930` | `cloud_compute_lighting_00bc3930` | whole; look-at via `CloudLightView` |
 
 Original ABI per function is in the ledger records. Uncertainty shared by all: x87 intermediates
 are evaluated in double and rounded at the native float spills; `fsin`/`fcos` are `std::sin`/
@@ -299,5 +314,6 @@ The weather link in this segment, `004BA870` `BSP_SceneRecord_ScatterClouds` (`C
   `00BC66B0`/`00BC6FA0` vertex fills, `00BC84A0`/`00BC9160` strand update and fill, `00BC2340`
   and `00BC2D50` water-drop geometry. The per-family vector helpers (`00BC4C50..00BC5300`,
   `00BC5A50..00BC5E70`, `00BC6C20..00BC7270`) are unnamed.
-- `00BC3930`/`00BC3730`/`00BC3430`/`00BC3580` cloud lighting: needs an assembly pass.
+- `00BC3580` (cloud sphere coverage query, sqrt against `radius * 00CEC160`) has no reference; not
+  analysed further.
 - `00BBE380` also calls `00BC33B0` (the class `+1A8h` model upload); both are unnamed.

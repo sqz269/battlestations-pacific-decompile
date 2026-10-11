@@ -546,4 +546,134 @@ Rgba sky_fog_colour_00bbf590(const SkyGradient& by_time, const SkyGradient& by_b
     return sky_lerp_00bbf280(c1, c2, c1.a);
 }
 
+// ---------------------------------------------------------------------------
+// Particle cloud lighting
+
+namespace {
+
+// The spill pattern shared by 00BC3430, 00BC3930 and 00BC3EF0: y^2 and x^2 each
+// stored to float, their sum kept on the x87 stack, z^2 stored, one final spill.
+inline float sum_sq_spilled(float x, float y, float z) noexcept {
+    return f32(static_cast<double>(f32(static_cast<double>(y) * y)) + f32(static_cast<double>(x) * x) +
+               f32(static_cast<double>(z) * z));
+}
+
+struct CloudSortEntry {
+    CloudPuffShading shading;  // first, so the comparator can read sort_key
+    CloudPuff puff;
+};
+
+}  // namespace
+
+int cloud_puff_compare_00bc2fe0(const void* a, const void* b) noexcept {
+    const double ka = static_cast<const CloudPuffShading*>(a)->sort_key;
+    const double kb = static_cast<const CloudPuffShading*>(b)->sort_key;
+    return static_cast<int>(kb - ka);  // _ftol2 truncation (00BF7420)
+}
+
+void cloud_sort_puffs_00bc3430(CloudClassGeometry& c, std::vector<CloudPuffShading>& shading,
+                               WeatherMath& math, CloudLightView& view, const Vec3& toward) {
+    const float len = math.length(toward);
+    const float inv = len > 0.0f ? f32(1.0 / static_cast<double>(len)) : 0.0f;
+    const float nx = f32(static_cast<double>(toward.x) * inv);
+    const float ny = f32(static_cast<double>(toward.y) * inv);
+    const float nz = f32(static_cast<double>(inv) * toward.z);
+    const float radius = c.bounding_radius;
+    const Vec3 eye{f32(static_cast<double>(nx) * radius), f32(static_cast<double>(ny) * radius),
+                   f32(static_cast<double>(radius) * nz)};
+    std::vector<CloudSortEntry> entries(c.puffs.size());
+    for (std::size_t i = 0; i < c.puffs.size(); ++i) {
+        const Vec3& p = c.puffs[i].position;
+        const float dx = f32(static_cast<double>(eye.x) - p.x);
+        const float dy = f32(static_cast<double>(eye.y) - p.y);
+        const float dz = f32(static_cast<double>(eye.z) - p.z);
+        shading[i].sort_key = math.sqrt(sum_sq_spilled(dx, dy, dz));  // 00BC7A90
+        entries[i] = {shading[i], c.puffs[i]};
+    }
+    view.qsort(entries.data(), entries.size(), sizeof(CloudSortEntry), cloud_puff_compare_00bc2fe0);
+    for (std::size_t i = 0; i < entries.size(); ++i) {
+        shading[i] = entries[i].shading;
+        c.puffs[i] = entries[i].puff;
+    }
+}
+
+float cloud_puff_transmittance_00bc3730(const CloudClassGeometry& c, WeatherMath& math, CloudLightView& view,
+                                        std::uint32_t index, float density) {
+    const Vec3 vi = view.transform_point(c.puffs[index].position);
+    const float ri = c.puffs[index].size;
+    float through = 1.0f;
+    for (std::uint32_t j = 0; j < index; ++j) {
+        const Vec3 vj = view.transform_point(c.puffs[j].position);
+        const float dx = f32(static_cast<double>(vi.x) - vj.x);
+        const float dy = f32(static_cast<double>(vi.y) - vj.y);
+        const float dist = math.sqrt(f32(static_cast<double>(f32(static_cast<double>(dy) * dy)) +
+                                         f32(static_cast<double>(dx) * dx)));
+        const float f = f32(static_cast<double>(dist) / (static_cast<double>(c.puffs[j].size) + ri) + density);
+        const float clamped = 0.0f > f ? 0.0f : (f > 1.0f ? 1.0f : f);
+        through = f32(static_cast<double>(clamped) * through);
+    }
+    return through;
+}
+
+void cloud_compute_lighting_00bc3930(CloudClassGeometry& c, std::vector<CloudPuffShading>& shading,
+                                     WeatherMath& math, CloudLightView& view, std::int32_t light,
+                                     const Vec3& dir, float density, float blur, float& mean) {
+    mean = 0.0f;
+    shading.resize(c.puffs.size());
+    cloud_sort_puffs_00bc3430(c, shading, math, view,
+                              {f32(-0.0 - dir.x), f32(-0.0 - dir.y), f32(-0.0 - dir.z)});
+
+    // 00BC3986..00BC3A19: look-at from 1000 * dir towards the origin; the up axis
+    // switches to +Z when the light is within about 26 degrees of vertical.
+    const float dot = f32(static_cast<double>(dir.x) * 0.0 + dir.y + 0.0 * static_cast<double>(dir.z));
+    const Vec3 up = dot > 0.8999999761581421 ? Vec3{0.0f, 0.0f, 1.0f} : Vec3{0.0f, 1.0f, 0.0f};
+    view.build_look_at({f32(static_cast<double>(dir.x) * 1000.0), f32(static_cast<double>(dir.y) * 1000.0),
+                        f32(1000.0 * static_cast<double>(dir.z))},
+                       {0.0f, 0.0f, 0.0f}, up);
+
+    const std::size_t n = c.puffs.size();
+    for (std::size_t i = 0; i < n; ++i) {
+        const float t = cloud_puff_transmittance_00bc3730(c, math, view, static_cast<std::uint32_t>(i), density);
+        mean = f32(static_cast<double>(mean) + t);
+        shading[i].light[light] = t;
+        // 00BC7B10: FISTP under a chop control word, low byte kept.
+        const float a = math.random_uniform(RandomStream::primary, 0.6f, 0.75f);
+        shading[i].alpha = static_cast<std::uint8_t>(static_cast<std::int32_t>(static_cast<double>(a) * 255.0));
+    }
+    mean = f32(static_cast<double>(mean) / static_cast<double>(static_cast<std::int32_t>(n)));
+
+    // 00BC3AD4..00BC3C70: blur over puffs within size_i * blur (the puff itself is
+    // counted twice: once as the seed, once at distance 0).
+    for (std::size_t i = 0; i < n; ++i) {
+        float sum = shading[i].light[light];
+        float count = 1.0f;
+        const Vec3 pi = c.puffs[i].position;
+        for (std::size_t j = 0; j < n; ++j) {
+            const Vec3 pj = c.puffs[j].position;
+            const float dist = math.sqrt(sum_sq_spilled(f32(static_cast<double>(pj.x) - pi.x),
+                                                        f32(static_cast<double>(pj.y) - pi.y),
+                                                        f32(static_cast<double>(pj.z) - pi.z)));
+            if (static_cast<double>(c.puffs[i].size) * blur > dist) {
+                sum = f32(static_cast<double>(shading[j].light[light]) + sum);
+                count = f32(static_cast<double>(count) + 1.0);
+            }
+        }
+        shading[i].shade[light] = f32(static_cast<double>(sum) / count);
+    }
+
+    // 00BC3C76..00BC3DCC: darken the lower half; runs on every call, so after the
+    // light-1 call shade[0] carries the factor twice and shade[1] holds only g.
+    const float lo = c.bounds_min.y;
+    const float half = f32((static_cast<double>(c.bounds_max.y) - lo) * 0.5);
+    const float mid = f32(static_cast<double>(lo) + half);
+    for (std::size_t i = 0; i < n; ++i) {
+        const float u = f32(static_cast<double>(c.puffs[i].position.y) - mid);
+        const float below = 0.0f > u ? f32(-0.0 - u) : -0.0f;
+        const float t = f32(static_cast<double>(below) / half);
+        const float g = 0.0f > t ? 0.0f : (t > 1.0f ? 1.0f : t);
+        shading[i].shade[0] = f32(static_cast<double>(shading[i].shade[0]) * (1.0 - g));
+        shading[i].shade[1] = g;
+    }
+}
+
 }  // namespace bsp::weather
