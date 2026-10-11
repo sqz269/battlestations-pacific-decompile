@@ -227,7 +227,42 @@ step uses for `finishscript` at 007912E0). 0078E630 `BSP_MovieKeyframe_Tick` (fr
 calls the modifier's slot `+14h`, then for a key in state 1 or 2 and `dt > 0` checks the event,
 fires it and deletes it (0078E540 with 0).
 
-## 8. Function table
+## 8. The path camera's update, 007972F0
+
+`docs/CAMERA_POSITION_MODES.md` reconstructs 007954A0 (the record mode dispatch) and 00794070
+(aim at a point) and leaves their caller, 007972F0, "outside this packet". It is
+`BSP_CameraPosition_UpdatePath` (ECX camera, RET; called from 007A5110 in segment 46). Camera
+fields: `+394h` position, `+3C4h` theta, `+3C8h` rho, `+464h` the sampled path, `+468h` the
+parameter, `+46Ch` its end, `+474h` the knot path, `+47Ch..+480h` the record pointer array,
+`+4D0h` an object whose `+34h` takes each record's `+44h`, `+4FCh` an accumulated shift.
+Record fields: `+14h` anchor entity, `+18h` point, `+3Ch` blend-in fraction, `+40h` blend-out
+start, `+44h` the `+4D0h` value, `+48h` mode.
+
+1. Nothing without the knot path (`+474h` null, 0079730A).
+2. `u` = the parameter's fraction of its segment (007B0610 index, 007B05E0 knot times; one
+   double chain, FSTP 0079736C).
+3. Every record becomes control point `i` (007AD180): its point, or with an anchor the point
+   through the anchor's world matrix whose translation is replaced by 00F8758C..00F87594 and
+   passed through 0085DAD0 (004142E0). Knots are re-derived (007AF150) when the path's byte
+   `+18h` is clear.
+4. The parameter moves to `t0 + (t1 - t0) * u` on the new knots; `+4FCh += new - old`
+   (007974D8..007974F0). So re-anchoring keeps the camera at the same place in its segment and
+   the shift is remembered.
+5. `+46Ch` = last knot time; the parameter is clamped to `end - 0.01` (double 00D7A358).
+6. 007B04C0 on the `+464h` path writes `+394h` and a direction; 00794070 aims at
+   `position + direction`.
+7. For the parameter's segment `s`, `v` = its fraction, `a` = record `s` `+40h`,
+   `b = 1 - record s+1 +3Ch`. Before `a`: `+4D0h`'s value from record `s` and, when either
+   record has a mode, 007954A0(s). After `b`: the same with `s+1`. Between: `e` = 0078FCF0 of
+   `(v-a)/(b-a)`, the value is `(1-e)*v_s + e*v_s+1`, and with modes 007954A0 runs for `s` then
+   `s+1`; each theta and rho pair is unwrapped (the larger of the two moves down by 2pi,
+   double 00CE3828, when they differ by more than pi, double 00CE3D28) and blended as
+   `(float)(a*(1-e)) + (float)(b*e)` (00797880..00797962).
+
+This is the second blend in the segment that the partition's `theta`/`rho` keywords point at:
+the modifiers blend authored curves, this blends the record modes' angles.
+
+## 9. Function table
 
 | address | name | status |
 | --- | --- | --- |
@@ -271,13 +306,14 @@ fires it and deletes it (0078E540 with 0).
 | 0078E540 | BSP_MovieKeyframe_SetEvent | named |
 | 0078E630 | BSP_MovieKeyframe_Tick | reconstructed |
 | 007A1F94 (fragment of 007A0EB0) | keyframe_event_parse_007a1f94 | reconstructed |
+| 007972F0 | BSP_CameraPosition_UpdatePath | reconstructed over a host |
 
 "Defined" means the function did not exist in Ghidra and was created by
 `tools/ghidra_define_function.py` (record kept in the worktree's `local/c1_defined_functions.json`): 007918B0 and
 00795EE0 lay inside the bodies Ghidra had given 00791360 and 00795D90, 0079CF80 inside 0079CBD0,
 00792710 after 007926F0.
 
-## 9. Status and uncertainty
+## 10. Status and uncertainty
 
 - **Reconstructed, build-tested.** Not ABI-compatible: curves are `std::vector`, entities and
   cameras are host handles, the Lua table is a value tree. No fixture or game run exercises the
@@ -293,4 +329,4 @@ fires it and deletes it (0078E540 with 0).
   argument (`camera_arg + 3B8h`).
 
 Call-site rows for `tools/verify_report_calls.py`: `reports/cc13_camera_controllers.json`
-(21 rows, 0 failed on 2026-10-11).
+(28 rows, 0 failed on 2026-10-11).

@@ -619,4 +619,97 @@ void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>
     event_ec.reset();
 }
 
+// ---------------------------------------------------------------------------
+// path camera, 007972F0
+
+namespace {
+constexpr double kPathEndMargin = 0.009999999776482582;  // 00D7A358 (double)
+constexpr double kPi = 3.1415927410125732;               // 00CE3D28 (double)
+constexpr double kTwoPi = 6.2831854820251465;            // 00CE3828 (double)
+
+// (t - knot[s]) / (knot[s+1] - knot[s]), the double chain stored once as float.
+float segment_fraction(PathCameraHost& h, float t, int s) {
+    const double d = static_cast<double>(t) - h.knot_time_007b05e0(s);
+    const double next = h.knot_time_007b05e0(s + 1);
+    return static_cast<float>(d / (next - h.knot_time_007b05e0(s)));
+}
+
+// 00797880..00797908: bring a pair within pi of each other by moving the
+// larger one down by 2*pi, rounded to float.
+void unwrap_pair(float& a, float& b) {
+    if (static_cast<double>(a) - b > kPi) a = static_cast<float>(a - kTwoPi);
+    else if (static_cast<double>(b) - a > kPi) b = static_cast<float>(b - kTwoPi);
+}
+}  // namespace
+
+// 007972F0. Re-anchors the control points, keeps the parameter at the same
+// fraction of its segment when the knots are re-derived (the move accumulates
+// in +4FCh), clamps it to 0.01 before the last knot, samples the +464h path
+// for the position and aims along its direction, then blends +4D0h's value and
+// the records' theta/rho across each record's blend window with 0078FCF0.
+void path_camera_update_007972f0(PathCamera& c, PathCameraHost& h) {
+    if (!c.has_knot_path_474) return;
+    const int seg = h.knot_segment_007b0610(c.parameter_468);
+    const float u = segment_fraction(h, c.parameter_468, seg);
+    for (std::size_t i = 0; i < c.records.size(); ++i) {
+        const PathCameraRecord& r = c.records[i];
+        const std::array<float, 3> p = r.anchor_14 == 0 ? r.point_18 : h.anchor_point(r.anchor_14, r.point_18);
+        h.set_control_point_007ad180(static_cast<int>(i), p);
+    }
+    if (!h.knots_valid_18()) h.derive_knots_007af150();
+    // 00797499..007974D4: t0 + (t1 - t0) * u with the knots just derived.
+    const double next = h.knot_time_007b05e0(seg + 1);
+    const double scaled = (next - h.knot_time_007b05e0(seg)) * u;
+    const float moved = static_cast<float>(h.knot_time_007b05e0(seg) + scaled);
+    c.parameter_shift_4fc = static_cast<float>((static_cast<double>(moved) - c.parameter_468) + c.parameter_shift_4fc);
+    c.parameter_468 = moved;
+
+    const int count = static_cast<int>(c.records.size());
+    const float end = h.knot_time_007b05e0(count - 1);
+    c.end_46c = end;
+    const float limit = static_cast<float>(end - kPathEndMargin);
+    const float t = limit > c.parameter_468 ? c.parameter_468 : limit;   // FCOMIP / JBE
+    c.parameter_468 = t;
+    std::array<float, 3> dir{};
+    h.sample_world_007b04c0(t, c.position_394, dir);
+    h.aim_at_point_00794070(c, {c.position_394[0] + dir[0], c.position_394[1] + dir[1],
+                                c.position_394[2] + dir[2]});
+
+    const int s = h.knot_segment_007b0610(t);
+    const auto rs = static_cast<std::size_t>(s);
+    const bool modes = c.records.at(rs).mode_48 != 0 || c.records.at(rs + 1).mode_48 != 0;
+    const float v = segment_fraction(h, t, s);
+    const float a = c.records.at(rs).blend_out_40;
+    const float b = 1.0f - c.records.at(rs + 1).blend_in_3c;               // FSTP
+    if (a > v) {
+        c.node_value_4d0_34 = c.records[rs].node_value_44;
+        if (modes) h.apply_record_mode_007954a0(c, s);
+        return;
+    }
+    if (v > b) {
+        c.node_value_4d0_34 = c.records[rs + 1].node_value_44;
+        if (modes) h.apply_record_mode_007954a0(c, s + 1);
+        return;
+    }
+    const float x = static_cast<float>((static_cast<double>(v) - a) / (static_cast<double>(b) - a));
+    const float e = modifier_ease(x);
+    const double one_minus_e = 1.0 - e;
+    c.node_value_4d0_34 = static_cast<float>(one_minus_e * c.records[rs].node_value_44 +
+                                             static_cast<double>(e) * c.records[rs + 1].node_value_44);
+    if (!modes) return;
+    h.apply_record_mode_007954a0(c, s);
+    float a0 = c.theta_3c4, a1 = c.rho_3c8;
+    h.apply_record_mode_007954a0(c, s + 1);
+    float b0 = c.theta_3c4, b1 = c.rho_3c8;
+    unwrap_pair(a0, b0);
+    unwrap_pair(a1, b1);
+    const float w = static_cast<float>(one_minus_e);
+    const float p0 = static_cast<float>(static_cast<double>(b0) * e);
+    const float p1 = static_cast<float>(static_cast<double>(b1) * e);
+    const float r0 = static_cast<float>(static_cast<double>(a0) * w);
+    const float r1 = static_cast<float>(static_cast<double>(a1) * w);
+    c.theta_3c4 = static_cast<float>(static_cast<double>(r0) + p0);
+    c.rho_3c8 = static_cast<float>(static_cast<double>(r1) + p1);
+}
+
 }  // namespace bsp::cc13cam

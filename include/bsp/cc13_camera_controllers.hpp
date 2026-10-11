@@ -314,4 +314,53 @@ void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host);
 void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
                             KeyframeEventHost& host);
 
+// ---------------------------------------------------------------------------
+// The path camera's per-frame parameter update, 007972F0 (ECX camera, RET; its
+// caller is 007A5110). docs/CAMERA_POSITION_MODES.md left it as "the caller";
+// the camera fields keep that doc's names (theta +3C4h, rho +3C8h).
+
+// One record of camera +47Ch..+480h (pointer array).
+struct PathCameraRecord {
+    std::size_t anchor_14{0};            // entity, 0 = world point
+    std::array<float, 3> point_18{};
+    float blend_in_3c{0.0f};
+    float blend_out_40{0.0f};
+    float node_value_44{0.0f};           // copied/blended into [camera+4D0h]+34h
+    std::uint32_t mode_48{0};            // 007954A0's kind; 0 = no mode
+};
+
+struct PathCamera {
+    bool has_knot_path_474{false};
+    std::array<float, 3> position_394{};
+    float theta_3c4{0.0f};
+    float rho_3c8{0.0f};
+    float parameter_468{0.0f};
+    float end_46c{0.0f};
+    float parameter_shift_4fc{0.0f};     // accumulates every re-timing of the parameter
+    float node_value_4d0_34{0.0f};
+    std::vector<PathCameraRecord> records;
+};
+
+struct PathCameraHost {
+    virtual ~PathCameraHost() = default;
+    // The +474h path: 007B0610 (one less than the first knot whose time is
+    // above t) and 007B05E0 (knot time, +18h of the knot record).
+    virtual int knot_segment_007b0610(float t) = 0;
+    virtual float knot_time_007b05e0(int index) = 0;
+    virtual void set_control_point_007ad180(int index, const std::array<float, 3>& p) = 0;
+    virtual bool knots_valid_18() = 0;                   // byte +18h of the +474h path
+    virtual void derive_knots_007af150() = 0;
+    // The anchor's world (+CCh after 00414DB0) with its translation replaced by
+    // 00F8758C..00F87594, passed through 0085DAD0, then 004142E0 on `local`.
+    virtual std::array<float, 3> anchor_point(std::size_t anchor, const std::array<float, 3>& local) = 0;
+    // 007B04C0 on the +464h path, flags 0: position into +394h, direction out.
+    virtual void sample_world_007b04c0(float t, std::array<float, 3>& position,
+                                       std::array<float, 3>& direction) = 0;
+    virtual void aim_at_point_00794070(PathCamera& camera, const std::array<float, 3>& point) = 0;
+    // 007954A0(index): writes camera theta +3C4h / rho +3C8h for the record's mode.
+    virtual void apply_record_mode_007954a0(PathCamera& camera, int index) = 0;
+};
+
+void path_camera_update_007972f0(PathCamera& camera, PathCameraHost& host);
+
 }  // namespace bsp::cc13cam
