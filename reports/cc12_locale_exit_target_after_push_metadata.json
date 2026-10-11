@@ -1,0 +1,816 @@
+{
+  "Native_scope": {
+    "Native_closed": true,
+    "Root_review_decision": "Retain target-site function label/flags raw, but quarantine the entire object from behavior, ABI, target ownership or successor admission. Accept the independently bounded BF6FF9 metadata and edge addresses only. No separate or follow-up query of the target.",
+    "capture_comparison": {
+      "Native_closed": true,
+      "adjacent_queries": 0,
+      "after_validation": {
+        "accepted": true,
+        "errors": [],
+        "state": "accepted"
+      },
+      "capture_order": [
+        "typed_before",
+        "count_before",
+        "count_after",
+        "typed_after"
+      ],
+      "count_bytes_equal": true,
+      "epoch_after": "98",
+      "epoch_before": "98",
+      "fresh_unique_code_bytes": 0,
+      "fresh_unique_data_bytes": 0,
+      "function_count_after": 64730,
+      "function_count_before": 64730,
+      "identity_bookends_equal": true,
+      "instruction_text_queries": 0,
+      "mutations": 0,
+      "prototype_queries": 0,
+      "queried_addresses": [
+        "BF6FF9"
+      ],
+      "target_queries": 0,
+      "typed_raw_response_equal": true
+    },
+    "closed": true,
+    "code_bytes": 0,
+    "data_bytes": 0,
+    "instruction_text_queries": 0,
+    "mutations": 0,
+    "previous_proto_scope": "Predecessor full prototype capture was not strictly entry-only; unsolicited fields stay raw, opaque and uncredited.",
+    "prototype_queries": 0,
+    "qualified_subset": "BF6FF9 exact/containing code-unit and containing-function metadata, default/effective flow/fallthrough/edge addresses only.",
+    "quarantine_semantic_ABI_ownership_successor_credit": false,
+    "quarantine_semantic_credit": false,
+    "quarantined_fields": [
+      "direct_call_targets[*].function_at_target"
+    ],
+    "raw_response_pins": {
+      "Native_after": {
+        "capture_bytes": 9596,
+        "capture_sha256": "764059c32aae18e5678011a05bebb20c63cd1c0f81623cae7b7924af1f078837",
+        "raw_response_sha256": "333c4a5af763a5f136adc8ba699f6194cc728a931122289e1fc5532f59c21958",
+        "requested_addresses": [
+          "BF6FF9"
+        ],
+        "validation": {
+          "accepted": true,
+          "errors": [],
+          "state": "accepted"
+        }
+      },
+      "Native_before": {
+        "capture_bytes": 9596,
+        "capture_sha256": "9f18b52cb027ef05e2d3e4ace83c4c03eb893ee2ddd7607652304da74deb3d28",
+        "raw_response_sha256": "333c4a5af763a5f136adc8ba699f6194cc728a931122289e1fc5532f59c21958",
+        "requested_addresses": [
+          "BF6FF9"
+        ],
+        "validation": {
+          "accepted": true,
+          "errors": [],
+          "state": "accepted"
+        }
+      }
+    },
+    "requested_addresses": [
+      "BF6FF9"
+    ],
+    "target_queries": 0,
+    "whole_capture_includes_target_site_metadata": true,
+    "whole_capture_strict_site_only": false
+  },
+  "archive": {
+    "bytes": 310139070,
+    "entries": 8612,
+    "path": "local/cc12_locale_exit_target_after_push_metadata/evidence.zip",
+    "sha256": "25fe84a41549404cd9551432fc242712fc98257110dcb97d00c6da0e93b59211"
+  },
+  "finite_proof": {
+    "Base_worker_provenance": {
+      "head": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+      "matching_current_Base_blobs": {
+        "include/bsp/native_render_service_base.hpp": "3b813c887fa8673d4b018ede337cfbf0f5d4281b",
+        "src/native_render_service_base.cpp": "3ffd8ad1846f3c8d77b84ba920a6d83893da0631"
+      },
+      "objects": [
+        {
+          "bytes": 728,
+          "entry": "BaseWorkerGit/commit/edc97a7f6aad6b4382d7000ef1c56790dec45761",
+          "kind": "commit",
+          "oid": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+          "sha256": "9e1d4be5dfd4a4ba3cb8424737a1e831736786cf16978215e9072b0d3e3b524f"
+        },
+        {
+          "bytes": 30,
+          "entry": "BaseWorkerGit/tree/27cd30bd74138f274554243d69b021f573a7bd86",
+          "kind": "tree",
+          "oid": "27cd30bd74138f274554243d69b021f573a7bd86",
+          "sha256": "475bb062783d4365cd9800d924b5dd391342e70311b6493dba36911dadb449c2"
+        },
+        {
+          "bytes": 120641,
+          "entry": "BaseWorkerGit/tree/2f79b2880e1e1f190fa9b915d40a952bbf04e863",
+          "kind": "tree",
+          "oid": "2f79b2880e1e1f190fa9b915d40a952bbf04e863",
+          "sha256": "74e595ea8fdd87b13e3b2c9ec69be3d482780fda1ba009875946bf93169ce3f4"
+        },
+        {
+          "bytes": 563,
+          "entry": "BaseWorkerGit/tree/b5df4a5b9089a7de15b293ddc112089a96ae7573",
+          "kind": "tree",
+          "oid": "b5df4a5b9089a7de15b293ddc112089a96ae7573",
+          "sha256": "54a6d571799858ab5298836a40c0e29ce8003d9a8fa8beafaff8dfad490bfb56"
+        },
+        {
+          "bytes": 119109,
+          "entry": "BaseWorkerGit/tree/cdeb9131f3a57ef76ea13c38049542d339e4e070",
+          "kind": "tree",
+          "oid": "cdeb9131f3a57ef76ea13c38049542d339e4e070",
+          "sha256": "488fdd8c0e5b8b5b5df7714d57624a2d1a6b490c855fc54bdddef382be132361"
+        }
+      ],
+      "qualification": "Only the two changed Base blobs are attributed to this worker epoch; whole worker Source is not equated to current Root Source.",
+      "root_tree": "b5df4a5b9089a7de15b293ddc112089a96ae7573",
+      "whole_worker_Source_equal_current": false,
+      "worker_Source_scope_oids": {
+        "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+        "include": "27cd30bd74138f274554243d69b021f573a7bd86",
+        "src": "2f79b2880e1e1f190fa9b915d40a952bbf04e863"
+      }
+    },
+    "EOL_and_build_policy": "Only CRLF pairs become LF for comparison, with all differing raw bytes/pins retained. Nine named/artifact pins stay opaque and unopened. No sound Source delta or historical build/runtime transfer.",
+    "Root_Base_manifest": {
+      "build_runtime_credit": false,
+      "bytes": 1267920,
+      "entry": "Root/Source3356_application_loop_base_Root_frozen.json",
+      "normalization": "CRLF pairs to LF only; all differing raw physical bytes retained",
+      "normalized_equal_closed_Source_paths": 3351,
+      "older_e89_and_d171_manifests": "Physically retained only at their original epochs inside accepted predecessor archives; no replacement/rebase.",
+      "opaque_named_input_and_artifact_pins": [
+        "reports/cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "scripts/build.ps1",
+        "tests/math_tests.cpp",
+        "build/win32/Release/bsp_core.lib",
+        "build/win32/Release/bsp_game.exe",
+        "build/win32/bsp_game.map",
+        "build/win32/Testing/Temporary/LastTest.log"
+      ],
+      "opaque_paths_read": false,
+      "raw_EOL_variants": [
+        {
+          "CRLF_pairs": 149,
+          "entry": "RootPhysicalSource/include/bsp/sound_configuration.hpp",
+          "normalized_bytes": 6844,
+          "normalized_git_oid": "6d2426030df6599109025bbac5f9b1fdc38c52d9",
+          "normalized_sha256": "89ad2c31804663917ed4e76ec3b3fcfa89f008b0a284b858832617be4e60afa1",
+          "path": "include/bsp/sound_configuration.hpp",
+          "raw_bytes": 6993,
+          "raw_sha256": "00cad7773dc92f8ab944d8079769d9f1e51347e4d0f2f3b97bf5eed0d9aad5ea"
+        },
+        {
+          "CRLF_pairs": 40,
+          "entry": "RootPhysicalSource/include/bsp/sound_startup.hpp",
+          "normalized_bytes": 2200,
+          "normalized_git_oid": "89c690e9df2b56c42d5bcb10adc83a97bf266657",
+          "normalized_sha256": "0dbc3e1d2c3bae88035a2e6e328bc0f2a1cceae89431dc6e04a01a493ec25c7c",
+          "path": "include/bsp/sound_startup.hpp",
+          "raw_bytes": 2240,
+          "raw_sha256": "5f5d682f9d6e793a16f9f132025a1b2d0b242ad1a64371ecf6fc5fcbb735a50c"
+        },
+        {
+          "CRLF_pairs": 383,
+          "entry": "RootPhysicalSource/src/game_sound_runtime.cpp",
+          "normalized_bytes": 20101,
+          "normalized_git_oid": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+          "normalized_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+          "path": "src/game_sound_runtime.cpp",
+          "raw_bytes": 20484,
+          "raw_sha256": "fd9efd3561f2d4d6f57e497f5ed13f19c9ad6d9daf34535d66fe79d06b627d56"
+        },
+        {
+          "CRLF_pairs": 382,
+          "entry": "RootPhysicalSource/src/sound_configuration.cpp",
+          "normalized_bytes": 17067,
+          "normalized_git_oid": "b9116987ebcf7884a3425f4744a9b2106ce05f43",
+          "normalized_sha256": "6976313f1026b79a0c605b68278ad697349da94c705614367f0b096dffd6ff85",
+          "path": "src/sound_configuration.cpp",
+          "raw_bytes": 17449,
+          "raw_sha256": "dcf9ca25d3d019352849a59c1891a26cb96477c059a8b8974e28db5c7f64b506"
+        },
+        {
+          "CRLF_pairs": 48,
+          "entry": "RootPhysicalSource/src/sound_startup.cpp",
+          "normalized_bytes": 2221,
+          "normalized_git_oid": "21801a5d338081a3c31daf77014fd8753b6384a4",
+          "normalized_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+          "path": "src/sound_startup.cpp",
+          "raw_bytes": 2269,
+          "raw_sha256": "bc4d830bf30d3173d59fd696850cb3e4d08e596d36ebbe8eff7543a850164aee"
+        }
+      ],
+      "raw_equal_closed_Source_paths": 3346,
+      "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+    },
+    "Source_delta": {
+      "Root_Base_to_current_same_Source": {
+        "head": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+        "identical_scope_object_ids": {
+          "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+          "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+          "include": "c75c7cfeed1028dcb11a9ceb1d6fc8601148e67c",
+          "src": "a62d3549c06d76f6342b17507a39dcd250c1ef4f"
+        },
+        "objects": [
+          {
+            "bytes": 663,
+            "entry": "SourceEpochGit/commit/3c3c469d85f9c6b3c85116991df346b95028bd74",
+            "kind": "commit",
+            "oid": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+            "sha256": "6bc1e66b52196a1562f4bf42dbfd3329d8a372bbf63f63d40e0ceb598086788d"
+          },
+          {
+            "bytes": 563,
+            "entry": "SourceEpochGit/tree/6a6638431590bd73c4f8a5b7bf1e7b1585fd1507",
+            "kind": "tree",
+            "oid": "6a6638431590bd73c4f8a5b7bf1e7b1585fd1507",
+            "sha256": "0dbd851087bd8eec408fd984e2e6a60001a6d5ace03909a2266b70798a77b3e0"
+          }
+        ],
+        "paths": 4217,
+        "root_tree": "6a6638431590bd73c4f8a5b7bf1e7b1585fd1507"
+      },
+      "changed_paths": [
+        {
+          "new_bytes": 5976,
+          "new_git_oid": "3b813c887fa8673d4b018ede337cfbf0f5d4281b",
+          "new_sha256": "61bc0da69ffaf5bdad65c25eb16a4017e0ced9748447085a89640ff1f2b1415c",
+          "old_bytes": 4418,
+          "old_git_oid": "0442ebf610c1c7eaa3332c12c0fcea477e218b13",
+          "old_sha256": "7965939f3472377db4345dac6f9cc822142e3573f8b83030af3dfa7e17178ecc",
+          "path": "include/bsp/native_render_service_base.hpp"
+        },
+        {
+          "new_bytes": 6365,
+          "new_git_oid": "3ffd8ad1846f3c8d77b84ba920a6d83893da0631",
+          "new_sha256": "6b6b323f1f2493e84a3d449c83cc0e1ee650e901dfd5cfdec5ce52dbbe32ac1c",
+          "old_bytes": 5882,
+          "old_git_oid": "b0ded28076a353b02be07b49087d846d0db45511",
+          "old_sha256": "3f5cc2e3c9810bbcd4720310b99d2d1d2222049a265481a0ab95446c2c53bde0",
+          "path": "src/native_render_service_base.cpp"
+        }
+      ],
+      "current_head": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+      "equal_paths": 4215,
+      "independently_accepted_Root_Base_commit": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+      "independently_accepted_worker_Base_commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+      "interpretation": "Exactly two independently accepted Base Source paths differ from prior febb. Root Base acceptance 3c3c and frozen c939 have identical closed Source objects. Worker edc is a separate Source epoch. No prior evidence rebase and no build/runtime transfer.",
+      "prior_head": "febb7a6be871e15092832d58ad68a5717e246f48"
+    },
+    "accepted_ledger_metadata_transition": {
+      "accepted_Root_commit": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+      "added_lines": 2,
+      "classification": "Accepted reconstruction metadata; not a C++/CMake Source change. Whole shard content was not read.",
+      "diff_bytes": 3295,
+      "diff_sha256": "fc98ef0b2e457ac7710475b6b1ba824105d17e4c3a8e2f1f27347990143b70e7",
+      "exact_added_line_pins": [
+        {
+          "bytes": 1400,
+          "sha256": "f8a1a4fbce41f0303c78908d7ce35235cb0356c19bdb8f8c9756fbb0e34da97c"
+        },
+        {
+          "bytes": 1664,
+          "sha256": "44a5460968e5be80d0d78ad3dcb81929dd7bafbd9257069b4f381f6a89e43afa"
+        }
+      ],
+      "new_blob": "ac5fc4a576e658f720d3a2432fefd13af36e1e48",
+      "new_commit": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+      "old_blob": "3cf5bbce1873dadf854b8e4a0863994e64670b48",
+      "old_commit": "8249586cd021271e14c3007234e1902282586571",
+      "path": "config/reconstruction/00be0000.jsonl",
+      "removed_lines": 0
+    },
+    "actual_Base_worker_provenance_objects": 5,
+    "actual_Git_blob_occurrences": 4294,
+    "actual_Root_Source_epoch_comparison_objects": 2,
+    "actual_frozen_commit_tree_objects": 11,
+    "actual_metadata_tree_objects": 2,
+    "all_824_to_c939_path_changes_replayed": [
+      "config/reconstruction/00be0000.jsonl",
+      "docs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md",
+      "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+      "docs/CC12_LOCALE_EXIT_TARGET_ENTRY_OPERAND_PRIMARY.md",
+      "docs/CC12_TYPE10_TYPE11_ISOLATED_EXECUTION_SELECTION.md",
+      "include/bsp/native_render_service_base.hpp",
+      "reports/cc12_application_loop_base_dormant_source.json",
+      "reports/cc12_application_loop_base_source_primary.json",
+      "reports/cc12_locale_exit_target_entry_operand_primary.json",
+      "reports/cc12_type10_type11_isolated_execution_selection.json",
+      "src/native_render_service_base.cpp"
+    ],
+    "bounded_excerpts": 3,
+    "closed_Source_paths": 4217,
+    "complete_queries": "Source_searches.json",
+    "current_selected_raw_equal_to_Git": 4294,
+    "dependency_set": "Same77 predecessor named dependencies, retained as actual frozen Git blobs; accepted predecessor own outputs are proved by its actual-output delivery ZIP.",
+    "excerpt_records": "Source_excerpts.json",
+    "historical_manifest_policy": "Older e89 raw-key and d171 Application manifests remain physically retained at their original epochs. No historical Source proof is replaced or rebased.",
+    "metadata_tree_proof": {
+      "limit": "Exact zero-context diff bytes and actual tree membership/old-new blob IDs; whole shard contents intentionally unread and unarchived.",
+      "objects": [
+        {
+          "bytes": 5917,
+          "entry": "MetadataGit/tree/51652ea21cd7149a97da194674a91bedd8348e93",
+          "kind": "tree",
+          "oid": "51652ea21cd7149a97da194674a91bedd8348e93",
+          "phase": "before",
+          "sha256": "9d8bb6b32544cf7ba5b1e23db0764fa61eaa23844f91a370058be71e32fa1fe6"
+        },
+        {
+          "bytes": 5917,
+          "entry": "MetadataGit/tree/a0c902b3c616da04891120e15c747762aff86e2d",
+          "kind": "tree",
+          "oid": "a0c902b3c616da04891120e15c747762aff86e2d",
+          "phase": "after",
+          "sha256": "0402ce33cc1643b9e97f05ffc2c652c7388e57878a88c4d6867e13144291bf97"
+        }
+      ]
+    },
+    "named_dependencies": 77,
+    "pre_merge_check": {
+      "Source_changed_paths": [
+        "include/bsp/native_render_service_base.hpp",
+        "src/native_render_service_base.cpp"
+      ],
+      "admitted_main": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+      "all_changed_paths": [
+        "config/reconstruction/00be0000.jsonl",
+        "docs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md",
+        "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+        "docs/CC12_LOCALE_EXIT_TARGET_ENTRY_OPERAND_PRIMARY.md",
+        "docs/CC12_TYPE10_TYPE11_ISOLATED_EXECUTION_SELECTION.md",
+        "include/bsp/native_render_service_base.hpp",
+        "reports/cc12_application_loop_base_dormant_source.json",
+        "reports/cc12_application_loop_base_source_primary.json",
+        "reports/cc12_locale_exit_target_entry_operand_primary.json",
+        "reports/cc12_type10_type11_isolated_execution_selection.json",
+        "src/native_render_service_base.cpp"
+      ],
+      "current_clean": true,
+      "metadata_changed_paths": [
+        "config/reconstruction/00be0000.jsonl",
+        "docs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md",
+        "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+        "docs/CC12_LOCALE_EXIT_TARGET_ENTRY_OPERAND_PRIMARY.md",
+        "docs/CC12_TYPE10_TYPE11_ISOLATED_EXECUTION_SELECTION.md",
+        "reports/cc12_application_loop_base_dormant_source.json",
+        "reports/cc12_application_loop_base_source_primary.json",
+        "reports/cc12_locale_exit_target_entry_operand_primary.json",
+        "reports/cc12_type10_type11_isolated_execution_selection.json"
+      ],
+      "method": "Exact immutable before/after commit comparison. Initial pre-merge Source assertion passed; stricter docs/reports-only remainder assertion failed on accepted reconstruction metadata shard. Main fast-forward succeeded; full fixed-commit classification now explicitly includes that shard.",
+      "numstat": "2\t0\tconfig/reconstruction/00be0000.jsonl\n39\t0\tdocs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md\n15\t0\tdocs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md\n9\t0\tdocs/CC12_LOCALE_EXIT_TARGET_ENTRY_OPERAND_PRIMARY.md\n6\t0\tdocs/CC12_TYPE10_TYPE11_ISOLATED_EXECUTION_SELECTION.md\n23\t0\tinclude/bsp/native_render_service_base.hpp\n3683\t0\treports/cc12_application_loop_base_dormant_source.json\n152\t0\treports/cc12_application_loop_base_source_primary.json\n87\t0\treports/cc12_locale_exit_target_entry_operand_primary.json\n466\t0\treports/cc12_type10_type11_isolated_execution_selection.json\n11\t0\tsrc/native_render_service_base.cpp",
+      "worker_before": "8249586cd021271e14c3007234e1902282586571"
+    },
+    "query_limit": "Zero after-push token matches is a finite textual result for this4217-path corpus, not a global proof of missing implementation. Other matches and excerpts can be comments or unrelated Source sites.",
+    "scope": [
+      "src/",
+      "include/",
+      "cmake/",
+      "CMakeLists.txt"
+    ],
+    "search_counts": {
+      "after_push_metadata_scope_tokens": 0,
+      "exit_target_entry_operand_scope_tokens": 20,
+      "exit_target_metadata_tokens": 120,
+      "exit_target_prototype_tokens": 52,
+      "head_storage_and_reference": 13,
+      "locale_authority_and_bookend_tokens": 3,
+      "locale_recycling_entry": 5,
+      "locale_storage_declaration_tokens": 3,
+      "post_pop_metadata_scope_tokens": 0,
+      "post_pop_operand_scope_tokens": 0,
+      "return_site_and_prior_call_tokens": 120,
+      "same_process_head_accessor": 23,
+      "string_service_context": 1033
+    }
+  },
+  "frozen_Source_HEAD": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+  "inherited_boundary": {
+    "CD9410_condition": "The prior POP needs BOTH returnedESP=S-4 and unchanged DWORD[SS:(S-4)]=CD9410 to yield ECX=CD9410. No current metadata discharges either hypothesis.",
+    "accepted_entry_instruction": {
+      "address": "BF6FF5",
+      "bytes_hex": "FF742404",
+      "context_after": [],
+      "context_before": [],
+      "encoding": {
+        "address_mode_bits": 32,
+        "default_segment": "SS for ESP base",
+        "disp8": "04, signed +4",
+        "modrm": "74: mod01, reg110 (/6), r/m100 (SIB)",
+        "opcode": "FF /6, PUSH r/m32 under decoded 32-bit mode",
+        "operand_width_bits": 32,
+        "prefixes": [],
+        "sib": "24: scale00, index100 (none), base100 (ESP)"
+      },
+      "end_inclusive": "BF6FF8",
+      "inference_limit": "Encoding/text agree on this one instruction; live execution, ABI compatibility and full function behavior are not established.",
+      "length": 4,
+      "returned_starts": [
+        "00bf6ff5"
+      ],
+      "text": "PUSH dword ptr [ESP + 0x4]"
+    },
+    "earlier_CALL_POP_RET": {
+      "CALL": "CC8D3F E8B1E2F2FF targets BF6FF5 and encodes CC8D44 as its next/return address; no actual target-return event follows from that encoding.",
+      "CD9410_hypotheses": "ECX=CD9410 requires BOTH returnedESP=S-4 AND an unchanged DWORD[SS:(S-4)]=CD9410. Plain return/zero argument cleanup alone does not establish stackword contents.",
+      "POP": "Accepted CC8D44 byte59. Conditional on ordinary successful decoded32-bit execution with entryESP=U and normal32-bit stack: ECX=DWORD[SS:U], ESP=U+4 modulo2^32, nextEIP=CC8D45; other GPRs/EFLAGS preserved from POP entry.",
+      "RET": "Accepted CC8D45 C3. Conditional on reaching this instruction and ordinary successful decoded32-bit near-return execution with entryESP=V and normal32-bit stack: EIP=DWORD[SS:V], ESP=V+4 modulo2^32; other GPRs/EFLAGS preserved from that unknown entry. C3 does not establish caller cleanup policy or a function signature.",
+      "name_and_no_return_limit": "_atexit and no_return=false are saved-database metadata. Neither proves CRT identity, library semantics, successful registration, return behavior, calling convention or cleanup.",
+      "post_callee_unknown": "Post-BF6FF5 ESP/GPRs/EFLAGS/stackword remain UNKNOWN. Earlier EAX=E1768C credit ends at BF6FF5 entry. No actual target return, callback registration, initializer completion, runtime reachability or concrete RET target is established."
+    },
+    "entry_PUSH_contract": {
+      "control_limits": "Next EIP BF6FF9 is a conditional encoded fallthrough. No byte/text/metadata query at BF6FF9 occurred. No following instruction, full callee result, return policy, registration or initializer completion is inferred.",
+      "entry_symbols": {
+        "K": "Unknown DWORD read from SS:((W+4) modulo 2^32) in M",
+        "M": "Unknown memory state on entry to BF6FF5",
+        "W": "Unknown ESP on entry to BF6FF5"
+      },
+      "failure_limits": "Faults, exceptional/abnormal execution, reachability and live runtime effects remain unproved.",
+      "precondition": "Control actually reaches BF6FF5 in the decoded ordinary x86 32-bit operand/address mode with a normal 32-bit stack, and this PUSH completes successfully. This is an architectural conditional, not an execution observation.",
+      "source_address_timing": "The ESP-based effective source address uses W before ESP is decremented. The instruction does not read its source using the decremented ESP.",
+      "successful_effects": {
+        "EAX_ECX_EDX_EBX_EBP_ESI_EDI": "Preserved relative to unknown BF6FF5 entry",
+        "EFLAGS": "Unmodified by this instruction",
+        "EIP": "BF6FF9",
+        "ESP": "(W-4) modulo 2^32",
+        "explicit_memory_effects": "One ordinary four-byte stack-relative source read and one four-byte stack write; no other explicit architectural memory store by this instruction.",
+        "source_read": "K = DWORD M[SS:((W+4) modulo 2^32)]",
+        "stack_write": "DWORD[SS:((W-4) modulo 2^32)] = K"
+      },
+      "unknown_entry_boundary": "BF6FF5 is independently admitted callee-entry state. ESP, EAX, other GPRs, EFLAGS and stack contents are unknown. No earlier EAX=E1768C or concrete stackword/return-slot credit is imported here.",
+      "value_limits": "K is not identified as CD9410, CC8D44, a valid function pointer, a callback, or any other concrete value. No stack data or operand pointer was fetched by the analysis."
+    },
+    "entry_state_limit": "The accepted PUSH remains conditional with unknown callee-entry W/K; earlier EAX=E1768C is not imported. No concrete callback, stackword or prior CALL/POP/RET entry symbol is equated with W/K.",
+    "no_new_transfer": "This metadata packet creates no additional architectural transfer contract for BF6FF9 and no post-callee state contract.",
+    "remaining_unknowns": "Full-callee ESP/GPRs/EFLAGS/stackword effects, actual return/registration, initializer completion, ABI compatibility and runtime reachability remain unknown."
+  },
+  "next_scope_requires_Root_admission": {
+    "automatic_permission": false,
+    "candidate": "Only if separately admitted: fresh BF6FF9 typed gate, then exact BF6FF9..BF6FFD inclusive5 code bytes plus context0 instruction text at BF6FF9.",
+    "excluded": [
+      "BF6FFE bytes/text or another site query",
+      "BF6FB9 target query or target ownership inference",
+      "remaining body",
+      "caller/prototype/signature/decompilation",
+      "IAT/data/stack or pointer dereference",
+      "GPR/flow/no-return/listing repairs"
+    ],
+    "reason": "The qualified exact unit metadata reports startBF6FF9/length5. No byte/mnemonic/operand has been read here.",
+    "unchanged_unknowns": "Full-callee state and actual return/registration/initializer completion remain unknown."
+  },
+  "observation_limits": {
+    "identity_and_epoch": "Actual modification98/function_count64730 observed before/after; full typed raw responses, four identity records and count bytes match. The inherited epoch was not assumed. This does not establish exclusive access or runtime behavior.",
+    "no_data_or_target_follow": "No IAT, stackword, callback, target memory or other pointer dereference occurred.",
+    "no_opcode_or_operand": "No instruction bytes, mnemonic or operands were requested or returned by this fresh metadata-only packet. UNCONDITIONAL_CALL is the current database flow class, not a newly decoded instruction.",
+    "owner_label": "_atexit and its owning body/no-return/thunk metadata are current database claims only; no authentic CRT behavior or signature/cleanup policy is inferred."
+  },
+  "packet": "cc12_locale_exit_target_after_push_metadata",
+  "qualified_BF6FF9_database_claims": {
+    "complete": true,
+    "direct_call_targets": [
+      {
+        "address": {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        },
+        "default_target": true,
+        "effective_target": true
+      }
+    ],
+    "function_at_query": null,
+    "function_containing_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "functions": [
+      {
+        "body": {
+          "address_count": "18",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00bf7006",
+                "space": "ram"
+              },
+              "length": "18",
+              "start": {
+                "offset": "00bf6ff5",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "_atexit",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    ],
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00bf6ffe",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "default_targets": [
+        {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        }
+      ],
+      "effective_fallthrough": {
+        "offset": "00bf6ffe",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "effective_targets": [
+        {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        }
+      ],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      }
+    },
+    "modification_number_after": "98",
+    "modification_number_before": "98",
+    "program": {
+      "default_address_space": "ram",
+      "image_base": {
+        "offset": "00400000",
+        "space": "ram"
+      },
+      "language": "x86:LE:32:default",
+      "path": "/battlestationspacific.exe",
+      "project": {
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr",
+        "name": "bsp"
+      }
+    },
+    "query_address": {
+      "offset": "00bf6ff9",
+      "space": "ram"
+    },
+    "schema": 1
+  },
+  "recursive_proof": {
+    "all24_predecessor_helpers": "Physically retained under PriorPhysical/Tools and archived under PriorHelpers, byte-equal to accepted predecessor archive and helper originals.",
+    "all_transitive_graphs": "All earlier ZIP and helper graphs recursively replayed; retained producer code never executes during replay.",
+    "core_original_and_physical_copy": "PASS",
+    "guard": "Physical helper pins are checked before imports execute. The audit is active before any helper code executes, helpers load from verified memory only, replay reads only its supplied ZIP and writes only its designated result, and external files/processes/network/native loads are denied.",
+    "helper_pins": [
+      {
+        "bytes": 2466,
+        "name": "call_delivery_replay.py",
+        "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+      },
+      {
+        "bytes": 12906,
+        "name": "call_replay.py",
+        "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+      },
+      {
+        "bytes": 2914,
+        "name": "delivery_verifier.py",
+        "sha256": "cfd5544bbfa2f46178c66ed4a00f47cf0b4586f6415c3429cab0c84dcd444626"
+      },
+      {
+        "bytes": 2895,
+        "name": "entry_operand_delivery_replay.py",
+        "sha256": "5bf2c653b06fb7aab7bcb5ac1a7f9f3b1add5eaa996b61bc32fb9b1358e94eba"
+      },
+      {
+        "bytes": 15018,
+        "name": "entry_operand_replay.py",
+        "sha256": "acdadd99adfd86aef5e522dbcda05f9d7be6582dc662fa7f9ee344ac0c45c9a7"
+      },
+      {
+        "bytes": 2881,
+        "name": "exit_metadata_delivery_replay.py",
+        "sha256": "776c0015d590f9bc481eaee59ed4d084c25db1c5ce6a54eda65d2aba7971bb5b"
+      },
+      {
+        "bytes": 11337,
+        "name": "exit_metadata_replay.py",
+        "sha256": "0e365b15191d65f5d740edde87e976c0f924f75dadfdef563c0294f8abda9770"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 2467,
+        "name": "metadata_delivery_replay.py",
+        "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+      },
+      {
+        "bytes": 9853,
+        "name": "metadata_replay.py",
+        "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+      },
+      {
+        "bytes": 2480,
+        "name": "operand_delivery_replay.py",
+        "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+      },
+      {
+        "bytes": 10585,
+        "name": "operand_replay.py",
+        "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+      },
+      {
+        "bytes": 2462,
+        "name": "post_metadata_delivery_replay.py",
+        "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+      },
+      {
+        "bytes": 12435,
+        "name": "post_metadata_replay.py",
+        "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+      },
+      {
+        "bytes": 2408,
+        "name": "post_pop_metadata_delivery_replay.py",
+        "sha256": "19afc228d031f2df2ee44dea72d2c0029638950238853c123600b95614978e87"
+      },
+      {
+        "bytes": 12097,
+        "name": "post_pop_metadata_replay.py",
+        "sha256": "022a113ea89a32f9e80a10aca6cb9df296c08c1d59d6f198797f2056db466665"
+      },
+      {
+        "bytes": 2668,
+        "name": "post_pop_operand_delivery_replay.py",
+        "sha256": "a7ffa62372070cc42f504a8b48ef55b596b92929287ff253ce53addf4edbc205"
+      },
+      {
+        "bytes": 15964,
+        "name": "post_pop_operand_replay.py",
+        "sha256": "cc5a8f5f70a642e6eb1ae7c90450ad123cca63f5f5643979505c319452dfac9b"
+      },
+      {
+        "bytes": 2465,
+        "name": "prefix_delivery_replay.py",
+        "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+      },
+      {
+        "bytes": 10761,
+        "name": "prefix_replay.py",
+        "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+      },
+      {
+        "bytes": 5817,
+        "name": "prior_replay.py",
+        "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+      },
+      {
+        "bytes": 2453,
+        "name": "return_metadata_delivery_replay.py",
+        "sha256": "977f708c138accaf6692198296378067f1478642401b092f3f2b73bbe72cddbd"
+      },
+      {
+        "bytes": 10363,
+        "name": "return_metadata_replay.py",
+        "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+      },
+      {
+        "bytes": 2563,
+        "name": "return_operand_delivery_replay.py",
+        "sha256": "8024b7026c805e2ddd5d1b439b5309fdbba69e23797bd6778aef45bd7a3f2fed"
+      },
+      {
+        "bytes": 13268,
+        "name": "return_operand_replay.py",
+        "sha256": "c47081e1a52c18656155650973251acfa2018b0817d5389135ae95a002da687a"
+      },
+      {
+        "bytes": 19458,
+        "name": "verifier.py",
+        "sha256": "6bf8528889b880404881e196f0ae91f245939743fd80649ff10540504e453bf1"
+      }
+    ],
+    "physical_helpers_required": 26,
+    "predecessor_commit": "8249586cd021271e14c3007234e1902282586571",
+    "predecessor_core": {
+      "bytes": 284915822,
+      "sha256": "2c5388ba9651c57307d03417d63fc5c6ed3d56cac376014882a6f66b32f91174"
+    },
+    "predecessor_delivery": {
+      "bytes": 660307,
+      "sha256": "0ef8d3eb77bbd5968d09a7e9474928d31f1b04b5f41eb8258bf43724f0435abd"
+    },
+    "replay_command": "python Tools/guarded_replay.py evidence.zip --output result.json"
+  },
+  "schema": "bsp.cc12.locale-exit-target-after-push-metadata-report.v1",
+  "scope_qualification": {
+    "Root_decision": "Accept only the independently bounded BF6FF9 metadata and edge addresses with this scope disclosure. Whole capture includes target-site metadata. No repeat or separate BF6FB9 query.",
+    "allowed_queries": "Two typed-flow BF6FF9 calls and two count calls. Each uses bsp.py identity verification; typed raw responses include exact saved GPR marker/program identity. No target-address query.",
+    "allowed_subset": "Exact/containing BF6FF9 code-unit metadata, its containing function metadata, and returned default/effective flow/fallthrough/target edge addresses only.",
+    "prior_oversupply": "Earlier prototype endpoint oversupply remains raw and opaque in predecessor archives. No fresh prototype/signature/body/text/byte query was issued.",
+    "quarantine_policy": "Entire target-site function label/flags object stays in retained raw responses. It is omitted from the qualified report and never credited for behavior, ABI, target ownership or successor admission.",
+    "quarantined_field": "direct_call_targets[*].function_at_target",
+    "target_edge_limit": "BF6FB9 is a database edge claim only; no encoded operand or actual transfer is proved. BF6FFE is fallthrough metadata only; actual return and continuation are unproved.",
+    "whole_capture_includes_target_site_metadata": true,
+    "whole_capture_strict_site_only": false
+  },
+  "validation_credit": {
+    "ABI_compatible": false,
+    "CMake_changes": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "actual_epoch": 98,
+    "actual_output_delivery": "Captured after immutable exact-two-output commit; its separate pin is externally reported to avoid circular self-hashing.",
+    "count_equal_pairs": 1,
+    "fresh_Native_bytes": 0,
+    "fresh_Native_data_bytes": 0,
+    "function_count": 64730,
+    "game_validated": false,
+    "prior_whole_proto_capture_strict_entry_only": false,
+    "qualified_BF6FF9_metadata_and_edge_addresses": true,
+    "target_site_behavior_ABI_ownership_successor_credit": false,
+    "test_probe_build_game_OS_audio_actions": 0,
+    "typed_raw_response_equal_pairs": 1,
+    "whole_capture_strict_entry_only": false
+  }
+}
