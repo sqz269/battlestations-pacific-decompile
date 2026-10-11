@@ -1,0 +1,933 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_dispatch_first_call_body_metadata",
+  "status": "Complete physical24-byte body and11 operands with CPU-qualified local continuation; provider/TLS/Original ABI/Source behavior unproved.",
+  "frozen_actual_Git_commit": "a17679bd230751433612cad526c84a1bcb065ebb",
+  "frozen_tree": "82ef11af95afc8ba968788dd65e52dfb5c00d20e",
+  "finite_actual_Git_inputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_ENTRY.md",
+      "blob": "091a5e30850559809c6192687ec6ec6ef368c045",
+      "length": 5737,
+      "sha256": "052fe15c528a8e0a7a4888f97592a9ab539c32a8ccb971a61eb04a6efe30c6a4"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_first_call_entry.json",
+      "blob": "bf1b0f518312fe0c7af9badff9afc5d89775eb7e",
+      "length": 18615,
+      "sha256": "9879cc1bda43ceca4cbe26a00f245566a4c9cbc4da0c48779b2d4bf459cc45f1"
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_ENTRY_PRIMARY.md",
+      "blob": "1328d440f4dcc4dad86b3c811302d96d9bdf8e5d",
+      "length": 2775,
+      "sha256": "5db2b7e30d8a8b662c99ef55692b3f0e71806272291f1e6dbb1a356a2aaf01f6"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_first_call_entry_primary.json",
+      "blob": "5876c1a2a626a1fd6b7ca9ede17402b83f4651d1",
+      "length": 9595,
+      "sha256": "c61cc668b27f3ee354e771c39d84513441f5d12b5caf3dd49ff58917c969254e"
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    }
+  ],
+  "source_tree_identity_only": {
+    "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+    "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+  },
+  "metadata": {
+    "start": "00C0522E",
+    "end_inclusive": "00C05245",
+    "owner_bytes": 24,
+    "units": 11,
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c0522e"
+      },
+      "name": "__getptd",
+      "no_return": false,
+      "is_thunk": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "24",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c0522e"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c05245"
+            },
+            "length": "24"
+          }
+        ]
+      }
+    },
+    "saved_label_or_types_authenticated": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "modification_number": "98",
+    "function_count": 64730,
+    "function_count_checkpoints": 6,
+    "Native_commands": 22,
+    "phase_one_Native_commands": 16,
+    "phase_two_Native_commands": 6,
+    "direct_raw_responses": 33,
+    "initial_original_raws": 22,
+    "closing_raws": 11,
+    "all_three_raw_bodies_equal_at_each_start": true,
+    "all_four_aliases_and_complete_owner_ranges_match": true,
+    "all_flow_overrides": "NONE",
+    "instruction_interior_end_neighbor_companion_or_target_queries": 0,
+    "derived_end_exclusive_not_queried": "00C05246",
+    "automatic_external_metadata_interpreted": false
+  },
+  "physical": {
+    "start": "00C0522E",
+    "end_inclusive": "00C05245",
+    "length": 24,
+    "instructions": 11,
+    "code_hex": "56e883ffffff8bf085f675086a10e8c867ffff598bc65ec3",
+    "code_sha256": "cde242ec079bf21854f59956d9ccd96cada3bce642173044e6c8c16fc11ee0f1",
+    "paired_exact_reads_equal": true,
+    "manual_detailed_Capstone_saved_text_and_typed_lengths_agree": true,
+    "Capstone_version": "5.0.7",
+    "call_count": 2,
+    "conditional_jumps": 1,
+    "encoded_return_site_addresses": [
+      "00C05234",
+      "00C05241"
+    ],
+    "numeric_call_targets": [
+      "00C051B7",
+      "00BFBA09"
+    ],
+    "internal_branch_target": "00C05242",
+    "body_gap_bytes": 0,
+    "external_target_bytes_or_data_cells_read": false
+  },
+  "instructions": [
+    {
+      "physical": {
+        "address": "00C0522E",
+        "length": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "56",
+            "value": 86
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "PUSH ESI",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C0522F",
+        "length": 5,
+        "hex": "e883ffffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12603831
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "e8",
+            "value": 232
+          },
+          {
+            "field": "signed_relative_displacement",
+            "offset": 1,
+            "length": 4,
+            "hex": "83ffffff",
+            "value": -125
+          }
+        ],
+        "transfer": {
+          "kind": "call",
+          "numeric_target": "00C051B7",
+          "encoded_next_address": "00C05234",
+          "signed_displacement": -125
+        }
+      },
+      "saved_text": "CALL 0x00c051b7",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05234",
+        "length": 2,
+        "hex": "8bf0",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          },
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "eax"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "8b",
+            "value": 139
+          },
+          {
+            "field": "ModRM",
+            "offset": 1,
+            "length": 1,
+            "hex": "f0",
+            "value": 240
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "MOV ESI,EAX",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05236",
+        "length": 2,
+        "hex": "85f6",
+        "mnemonic": "test",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          },
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "85",
+            "value": 133
+          },
+          {
+            "field": "ModRM",
+            "offset": 1,
+            "length": 1,
+            "hex": "f6",
+            "value": 246
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "TEST ESI,ESI",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05238",
+        "length": 2,
+        "hex": "7508",
+        "mnemonic": "jne",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12603970
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "75",
+            "value": 117
+          },
+          {
+            "field": "signed_relative_displacement",
+            "offset": 1,
+            "length": 1,
+            "hex": "08",
+            "value": 8
+          }
+        ],
+        "transfer": {
+          "kind": "conditional_jump",
+          "numeric_target": "00C05242",
+          "encoded_next_address": "00C0523A",
+          "signed_displacement": 8
+        }
+      },
+      "saved_text": "JNZ 0x00c05242",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "CONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": true,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": true,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C0523A",
+        "length": 2,
+        "hex": "6a10",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 16
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "6a",
+            "value": 106
+          },
+          {
+            "field": "signed_imm8",
+            "offset": 1,
+            "length": 1,
+            "hex": "10",
+            "value": 16
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "PUSH 0x10",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C0523C",
+        "length": 5,
+        "hex": "e8c867ffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12565001
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "e8",
+            "value": 232
+          },
+          {
+            "field": "signed_relative_displacement",
+            "offset": 1,
+            "length": 4,
+            "hex": "c867ffff",
+            "value": -38968
+          }
+        ],
+        "transfer": {
+          "kind": "call",
+          "numeric_target": "00BFBA09",
+          "encoded_next_address": "00C05241",
+          "signed_displacement": -38968
+        }
+      },
+      "saved_text": "CALL 0x00bfba09",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05241",
+        "length": 1,
+        "hex": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "ecx"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "59",
+            "value": 89
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "POP ECX",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05242",
+        "length": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "eax"
+          },
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "8b",
+            "value": 139
+          },
+          {
+            "field": "ModRM",
+            "offset": 1,
+            "length": 1,
+            "hex": "c6",
+            "value": 198
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "MOV EAX,ESI",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05244",
+        "length": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "register": "esi"
+          }
+        ],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "5e",
+            "value": 94
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "POP ESI",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "fallthrough_overridden": false
+      }
+    },
+    {
+      "physical": {
+        "address": "00C05245",
+        "length": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": [],
+        "encoding_fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "length": 1,
+            "hex": "c3",
+            "value": 195
+          }
+        ],
+        "transfer": null
+      },
+      "saved_text": "RET",
+      "saved_flow_flags": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "effective_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "fallthrough_overridden": false
+      }
+    }
+  ],
+  "cpu_contract": {
+    "scope": "Physical x86-32 operands and qualified local CPU contract only; no Source implementation, saved __getptd service identity, TLS behavior, original ABI, or runtime acceptance.",
+    "execution_qualification": "Each statement assumes the decoded instruction is reached and completes without a fault under the recorded x86-32 decoding model. Runtime segment descriptors and stack-address size were not queried or authenticated.",
+    "stack_qualification": "Every ESP equation below additionally assumes an actual 32-bit stack-address attribute for SS. If the live SS descriptor selects a 16-bit stack, these ESP equations are not asserted. The program's x86:LE:32 language alone does not authenticate live SS. Arithmetic in the qualified 32-bit equations wraps modulo 2^32.",
+    "memory_qualification": "Implicit stack loads and stores use SS. Every memory access samples the memory at that instruction's execution time; no earlier read or entry value is substituted across a possibly aliasing store or opaque call. No validity, disjointness, frame identity, or original caller restoration is established.",
+    "calls": [
+      {
+        "address": "00C0522F",
+        "hex": "e883ffffff",
+        "signed_rel32": -125,
+        "numeric_target": "00C051B7",
+        "encoded_return_site": "00C05234",
+        "boundary": "Physical E8; no service or provider identity is inferred. If control resumes at C05234, all returned registers, flags, memory, and ESP are unconstrained. Denote that return's EAX=A1 and ESP=Q1 only for the local continuation."
+      },
+      {
+        "address": "00C0523C",
+        "hex": "e8c867ffff",
+        "signed_rel32": -38968,
+        "numeric_target": "00BFBA09",
+        "encoded_return_site": "00C05241",
+        "boundary": "Physical E8; return is not established. If control resumes at C05241, all registers, flags, memory, and ESP are unconstrained again. Denote that return's ESI=R2, ESP=Q2, and arithmetic flags=F2. R2 is not assumed to preserve the zero value from before this call."
+      }
+    ],
+    "qualified_prefix": "For entry ESP=T and ESI=V, PUSH ESI writes V at SS:[T-4] and leaves ESP=T-4. The first E8 then writes return address C05234 at SS:[T-8] and transfers to C051B7 with ESP=T-8. These relations do not continue across the opaque callee.",
+    "local_branch": {
+      "after_first_return": "C05234 MOV ESI,EAX sets ESI=A1. C05236 TEST ESI,ESI tests that same 32-bit value. C05238 JNZ takes its edge to C05242 exactly when A1 is nonzero, assuming the sequence executes normally.",
+      "test_flags": "TEST clears CF and OF, sets SF from bit31, ZF from zero, and PF from even parity of the low byte of A1; AF is undefined. MOV and the conditional branch do not alter these arithmetic flags.",
+      "nonzero_edge": "With A1 nonzero, C05242 copies the still-local ESI=A1 into EAX. POP ESI at C05244 reads current SS:[Q1] and advances ESP to Q1+4; RET then reads next EIP from current SS:[Q1+4] and advances ESP to Q1+8. EAX remains A1, and these MOV/POP/RET instructions preserve the TEST arithmetic flags. The popped ESI and return target are not authenticated entry values.",
+      "zero_edge_before_second_call": "With A1 zero, PUSH imm8 0x10 at C0523A sign-extends 0x10 to the 32-bit value 16, writes it at SS:[Q1-4], and leaves ESP=Q1-4. The E8 at C0523C writes return address C05241 at SS:[Q1-8] and transfers to BFBA09. The push does not authenticate an argument type/count, service, or calling convention.",
+      "zero_edge_after_second_return": "If the second call resumes at C05241 with ESP=Q2 and ESI=R2, POP ECX reads current SS:[Q2] and leaves ESP=Q2+4. MOV EAX,ESI then sets EAX=R2. POP ESI reads current SS:[Q2+4] and leaves ESP=Q2+8. RET reads next EIP from current SS:[Q2+8] and leaves ESP=Q2+12. These instructions preserve returned arithmetic flags F2. Neither EAX=0 nor a relationship between Q2 and Q1/T is proved."
+    },
+    "preservation": "PUSH, POP, MOV, conditional JNZ, near CALL, and near RET do not themselves modify arithmetic flags. Opaque called code may modify all returned flags and registers. No callee-saved register convention is assumed.",
+    "saved_metadata_boundary": "All eleven saved flow overrides are NONE. Saved __getptd, _ptiddata, __cdecl, and any automatically returned EXTERNAL scalars remain metadata; no provider cell, import, TLS object, or external body was queried.",
+    "unproved": [
+      "live SS descriptor and stack-address attribute",
+      "callee return and preservation",
+      "callee/provider/service/TLS meaning",
+      "saved imported types and calling convention",
+      "original handler ABI",
+      "original caller return target or stack restoration",
+      "Source reconstruction",
+      "build, fixture, runtime, Original, audio, and gameplay equivalence"
+    ]
+  },
+  "Root_gate": {
+    "status": "Root full listing metadata gate PASS",
+    "original_manifest_members_checked": 92,
+    "distinct_original_metadata_preimages_retained": 92,
+    "actual_frozen_Git_objects_checked": 14,
+    "admission": "Paired exact24 bytes, context0 at11 established starts, closing same11 metadata/counts only."
+  },
+  "failures": {
+    "Native": 0,
+    "worker_local_parser": 1,
+    "Root_offline_gate": 1,
+    "phase_two_collection_or_decoder": 0,
+    "worker": "The first local parser wrongly required a two-key validation object. The accepted original first response also had state=accepted; corrected new producer resumed from that same unchanged response without a repeated Native query.",
+    "Root": {
+      "stage": "Root actual metadata gate execution",
+      "attempt": 1,
+      "returncode": 1,
+      "error": "KeyError: 'saved_analysis'",
+      "producer": {
+        "bytes": 7837,
+        "sha256": "80e0d5b9442ef790116205045bd6cc2e411759b7e9c269493d3c6ce0587965c0"
+      },
+      "cause": "Root used the preceding packet report schema rather than exact C0522E ENTRY schema.",
+      "effects": "Finite pin/Git review completed before schema access; no gate receipt, phase2 admission, Native query, evidence mutation or GPR operation occurred.",
+      "stream_record": "Complete stdout and stderr transcribed from direct tool result; transcript labels are retained, not originally redirected streams."
+    },
+    "retention": "Both failed producer bodies, failure records, and streams are retained. Root attempt01 stdout/stderr are labelled transcriptions from the direct tool result, not originally redirected streams."
+  },
+  "private_evidence_pins": {
+    "metadata_capture_manifest.json": {
+      "length": 16108,
+      "sha256": "72a2516da998878960bf4ce2c2ddbfa850f447e11cbcc2863110c759f77ee7bb"
+    },
+    "metadata_gate.json": {
+      "length": 32539,
+      "sha256": "b0a9dd26b54dfc3011db51f941080858aa157cf84f127059a899c8f293f9aa73"
+    },
+    "walk_index.json": {
+      "length": 33523,
+      "sha256": "0f564ba49a7b76a424ce9ffb25f19edac80db148b803c45ccf18b8c128cc5038"
+    },
+    "paired_index.json": {
+      "length": 30514,
+      "sha256": "856eed624cbb636a57e4da12d42c0a22b54fbc93311f86eb7979b2ce8acccc66"
+    },
+    "original_direct_raw_pins.json": {
+      "length": 4139,
+      "sha256": "dd95615e144061eb185c3996e2e0a1e4fb1307e653ba61548278ba814a5e2d8d"
+    },
+    "Root_gate_copy_manifest.json": {
+      "length": 18371,
+      "sha256": "370016f4cdd5caac55669ab28232820db335282eb6b7d932762c31b4bbdde32a"
+    },
+    "Root_gate/Root_listing_gate.py": {
+      "length": 8451,
+      "sha256": "903c8953d5326cb5b254f083344ab0173fd3aef2b431b0e3830bb366d1e035a8"
+    },
+    "Root_gate/Root_listing_gate.json": {
+      "length": 3502,
+      "sha256": "424459163fa4575829973037df1dae9bc69f00db409343ace1a6f1bc96b8a3e4"
+    },
+    "Root_gate/Root_listing_gate_attempt01.py": {
+      "length": 7837,
+      "sha256": "80e0d5b9442ef790116205045bd6cc2e411759b7e9c269493d3c6ce0587965c0"
+    },
+    "Root_gate/Root_listing_gate_attempt01.stdout": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_gate/Root_listing_gate_attempt01.stderr": {
+      "length": 443,
+      "sha256": "b755b2aab850fc730fabcda149167784df2f61fb0a4a73968aff2273a9648a0d"
+    },
+    "Root_gate/Root_listing_gate_failure.json": {
+      "length": 678,
+      "sha256": "c3b7ffadcf8bda8289b03c2d3b3600565c87c41dbae99bc99267d6f82cc5b9a7"
+    },
+    "Root_gate/Root_record_gate_failure.py": {
+      "length": 1329,
+      "sha256": "174d4540837a11cc83a05b9322cddb10d085d6d757648d21a9e42d77179bca94"
+    },
+    "phase1_failure.json": {
+      "length": 1233,
+      "sha256": "14a463d97cbda170fe8a5b7f0615b9d9658b9904d794376dc2add7611147282f"
+    },
+    "body_capture_index.json": {
+      "length": 30630,
+      "sha256": "ada2fe0e4bde2db2c23166d2128273878b5a06d3eb77fda273047a3012de37a1"
+    },
+    "collect_body.py": {
+      "length": 3784,
+      "sha256": "fc4c5635140f35a87fe6a4884442cf48fc3d63b8ab631e4443b611dd903f3d11"
+    },
+    "manual_decode.py": {
+      "length": 2311,
+      "sha256": "a4c843109619b81e33b08bf21c736c576b2aff2797f60ca7c3688357c4d6a220"
+    },
+    "decode_body.py": {
+      "length": 5384,
+      "sha256": "13736baf71412615f888c4a79377331184cd89f70249ab9576e607b836d9ede4"
+    },
+    "manual_decoded_body.json": {
+      "length": 5792,
+      "sha256": "7a035a3dcb3939216d949461a417c1645a5790ae42caa49d2232c6b81d48ea75"
+    },
+    "capstone_detailed_body.json": {
+      "length": 6036,
+      "sha256": "175c72c8a148ab051cd0859d17c61c25d68c86fc301c13303e2b3a11466a5d28"
+    },
+    "normalized_saved_text.json": {
+      "length": 2101,
+      "sha256": "2e147751e7e29a6d15b9cd74b7ebd71b8986794bf58f387d9189324386dbd0b6"
+    },
+    "decoded_body_summary.json": {
+      "length": 2738,
+      "sha256": "cb74264c45db8ee7072877e915fbe35cf0e91f7980ecd38bb97232b96f6e3446"
+    },
+    "cpu_contract.json": {
+      "length": 4692,
+      "sha256": "1a79f7bc384558b3bf3f4fe1f0dec41de4363223df7643770ebf5de631112e86"
+    },
+    "replay.py": {
+      "length": 25802,
+      "sha256": "8892815ec730e45712d7237880af9cbf9beafc303484fc5c4c921dcbb0f7c928"
+    },
+    "audit_replay.py": {
+      "length": 2332,
+      "sha256": "87cd76852d9c82c32748e87a60a960458cb8c5831a7ec3d2ac107b62196826b9"
+    },
+    "prepare_replay.py": {
+      "length": 20070,
+      "sha256": "cef8f24a1e6e0860e76110748a47d26826eca4bffcadacea19a25ccb316e5c57"
+    },
+    "report.py": {
+      "length": 12453,
+      "sha256": "3538835f6821530fee3f465b6999bbc81eaabd3591e2d8c644f4aaff8fd71265"
+    },
+    "seal.py": {
+      "length": 6519,
+      "sha256": "c1bca2e3d6cb91f4a7f119dabcd201bb70a1291bd9aac161a77754050412f350"
+    },
+    "body_preexecution_pins.json": {
+      "length": 282,
+      "sha256": "de1274cc575b01ead04d71fb614b6ce0bf929d3a8904418b56105be443323614"
+    },
+    "decoder_preexecution_pins.json": {
+      "length": 271,
+      "sha256": "8568a64429a8b297c06f3b71ec3bfbbdb135d721be8b3e3dc51b8ec9322308e3"
+    },
+    "prepare_replay_preexecution_pins.json": {
+      "length": 141,
+      "sha256": "93d1cedb0c14e29bb10555f81ad7a0f0300df19208e74bd7c742cc509cac5576"
+    },
+    "closure_preexecution_pins.json": {
+      "length": 654,
+      "sha256": "039324c713b0c7838bb0780dd3e16b85724b45e4aa204c595a2015ab01d3fa5f"
+    }
+  },
+  "boundaries": {
+    "GPR_mutations": 0,
+    "fresh_prototypes_or_decompiles": 0,
+    "callee_provider_data_or_indirect_cell_queries": 0,
+    "Source_edits": 0,
+    "builds": 0,
+    "new_tests": 0,
+    "execution_probes": 0,
+    "Original_OS_audio_runtime_or_game_execution": 0,
+    "live_SS_descriptor_or_stack_address_size_authenticated": false,
+    "qualification": "Every ESP equation requires an actual32-bit SS stack-address attribute; all returned registers, flags, memory, and stack values are opaque at each call boundary."
+  }
+}
