@@ -1,0 +1,502 @@
+{
+  "schema": 1,
+  "status": "PASS_BOUNDED_ENTRY_EVIDENCE_ONLY",
+  "frozen_commit": "40ba8f8bcfd8aa77e81699c63c48734ac7eb11d7",
+  "frozen_root_tree": "0cdc9bb917a3d6789d70009c123c8e9df0b94de0",
+  "source_subtree_identities_only": {
+    "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+    "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+  },
+  "owned_outputs": [
+    "docs/CC12_CRT_DISPATCH_FIRST_CALL_ENTRY.md",
+    "reports/cc12_crt_dispatch_first_call_entry.json"
+  ],
+  "finite_git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+      "git_blob": "6a70950b42b0a636709e1ea579ce240d39627166",
+      "length": 5076,
+      "sha256": "abd9e65b627bb2df549a85d069eff02feaf6083c8e0aca47a4832a35c14a28c5",
+      "retained_blob": "input_00_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "git_blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+      "length": 196696,
+      "sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+      "retained_blob": "input_01_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+      "git_blob": "d084d57a3ff8d79b9851e4a5c3d6353ce755873a",
+      "length": 2988,
+      "sha256": "ab577b2b02f3845c7465f056a46cb84056cf8dc979e069b3dbb838163a1814f4",
+      "retained_blob": "input_02_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+      "git_blob": "5a0a50da63d0892db965a23310d430a904374e26",
+      "length": 344054,
+      "sha256": "b405b8f281c1a5f42317593ff263a8f17581c81cf1e0605a155df60134d130e9",
+      "retained_blob": "input_03_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "retained_blob": "input_04_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "retained_blob": "input_05_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "retained_blob": "input_06_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "retained_blob": "input_07_blob.stdout.bin",
+      "working_file_equals_git_blob": true
+    }
+  ],
+  "actual_git_objects": [
+    {
+      "kind": "commit",
+      "object_id": "40ba8f8bcfd8aa77e81699c63c48734ac7eb11d7",
+      "member": "evidence/git_commit.stdout.bin",
+      "length": 319,
+      "sha256": "95b9aee745dfd9eb7882ee30dfb2d3f3a115d92c11feeaaf344ec570b8ced1f0"
+    },
+    {
+      "kind": "tree",
+      "object_id": "0cdc9bb917a3d6789d70009c123c8e9df0b94de0",
+      "member": "evidence/git_root_tree.stdout.bin",
+      "length": 563,
+      "sha256": "4696e5c14cf45bb0273890c7025e2d0fb81019767ca1227daffb868859cf165b"
+    },
+    {
+      "kind": "tree",
+      "object_id": "0a5ef32a7ac2a31d12b359a51ec7333f7a720ac3",
+      "member": "evidence/git_tree_docs.stdout.bin",
+      "length": 231557,
+      "sha256": "1780c13ec2d54813f2ff3bc5e7e323a2a598fd50a1aba64bddbd4d4d6465bb99"
+    },
+    {
+      "kind": "tree",
+      "object_id": "85614dced37e0ffea9743114f5b4489f1cc71557",
+      "member": "evidence/git_tree_reports.stdout.bin",
+      "length": 356492,
+      "sha256": "462ef4cbd598509f8af09a1df50353117e3cf374fb0492b2c10ddc1426a265b9"
+    },
+    {
+      "kind": "tree",
+      "object_id": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+      "member": "evidence/git_tree_config.stdout.bin",
+      "length": 368,
+      "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+    },
+    {
+      "kind": "tree",
+      "object_id": "fa269934679ee43da523f7bf9c369e4e27d83531",
+      "member": "evidence/git_tree_tools.stdout.bin",
+      "length": 2580,
+      "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+    }
+  ],
+  "Root_gate": {
+    "status": "independent Root exact-entry metadata gate PASS before admitted reads",
+    "preimages": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_call_entry_primary\\Root_entry_gate.py",
+        "retained": "Root_preimage_Root_entry_gate.py",
+        "length": 4008,
+        "sha256": "c123b02bdfa0d35207d2a43aca62da3a04eba5f6eef28238ca82a2dc190c5bb5"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_call_entry_primary\\Root_entry_gate.json",
+        "retained": "Root_preimage_Root_entry_gate.json",
+        "length": 827,
+        "sha256": "0e961afa7dd0838ea48fde69e1096dbe7869dc3c347a5855d0bc7e580f9efa65"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_call_entry_primary\\entry_metadata_a.json",
+        "retained": "Root_preimage_entry_metadata_a.json",
+        "length": 8813,
+        "sha256": "498cb2b174d216831b922555b686c60586e0aa6c31368ca2b9259ccc92160a3f"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_call_entry_primary\\entry_metadata_b.json",
+        "retained": "Root_preimage_entry_metadata_b.json",
+        "length": 8813,
+        "sha256": "5752393efeb8619dc28abbc8e9ffe37ce1d767d2e22e2fe3e879f3ab20ed278d"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_call_entry_primary\\Root_gate_adaptation.json",
+        "retained": "Root_preimage_Root_gate_adaptation.json",
+        "length": 275,
+        "sha256": "28a419322993c199b2ff24cd026c3deee1064800f8b836ffc7236a5ddc370781"
+      }
+    ],
+    "scope": "exact entry unit only; saved owner size is metadata, not body admission"
+  },
+  "project_identity": {
+    "project": "bsp",
+    "marker_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730
+  },
+  "typed_metadata": [
+    {
+      "file": "entry_metadata_a.json",
+      "length": 8813,
+      "sha256": "498cb2b174d216831b922555b686c60586e0aa6c31368ca2b9259ccc92160a3f",
+      "raw_length": 2141,
+      "raw_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "epoch": "98",
+      "counts": [
+        64730,
+        64730
+      ]
+    },
+    {
+      "file": "entry_metadata_b.json",
+      "length": 8813,
+      "sha256": "5752393efeb8619dc28abbc8e9ffe37ce1d767d2e22e2fe3e879f3ab20ed278d",
+      "raw_length": 2141,
+      "raw_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "epoch": "98",
+      "counts": [
+        64730,
+        64730
+      ]
+    },
+    {
+      "file": "closing_entry_metadata.json",
+      "length": 8813,
+      "sha256": "7c480ed5d5f023e72c639e994b14b6f2aac40d7a9a381d801a4619debd7d3b0e",
+      "raw_length": 2141,
+      "raw_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "epoch": "98",
+      "counts": [
+        64730,
+        64730
+      ]
+    }
+  ],
+  "saved_metadata": {
+    "entry": "00C0522E",
+    "aliases": [
+      "instruction_at",
+      "instruction_containing",
+      "code_unit_at",
+      "code_unit_containing"
+    ],
+    "all_aliases_class": "ghidra.program.database.code.InstructionDB",
+    "all_aliases_length": 1,
+    "function_at_equals_containing": "00C0522E",
+    "saved_library_name_preserved": "__getptd",
+    "saved_prototype_metadata": "_ptiddata __cdecl __getptd(void)",
+    "saved_name_service_or_ABI_authenticated": false,
+    "no_return": false,
+    "is_thunk": false,
+    "direct_thunk_target": null,
+    "thunk_target_recursive": false,
+    "complete_owner_ranges": [
+      {
+        "start": "00C0522E",
+        "end_inclusive": "00C05245",
+        "length": 24
+      }
+    ],
+    "flow_override": "NONE",
+    "default_flow": "FALL_THROUGH",
+    "effective_flow": "FALL_THROUGH",
+    "default_fallthrough": "00C0522F",
+    "effective_fallthrough": "00C0522F",
+    "fallthrough_overridden": false,
+    "default_targets": [],
+    "effective_targets": [],
+    "direct_call_targets": []
+  },
+  "entry_instruction": {
+    "address": "00C0522E",
+    "bytes_hex": "56",
+    "size": 1,
+    "mnemonic": "push",
+    "operand": "esi",
+    "operand_size": 4,
+    "next_address": "00C0522F"
+  },
+  "entry_byte_captures": [
+    {
+      "file": "entry_byte_a.stdout.bin",
+      "length": 17,
+      "sha256": "2855bc6d3fe6b204cadd9efb6570d48cc952d1602b4fb21eefd4908885cd40fd"
+    },
+    {
+      "file": "entry_byte_b.stdout.bin",
+      "length": 17,
+      "sha256": "2855bc6d3fe6b204cadd9efb6570d48cc952d1602b4fb21eefd4908885cd40fd"
+    }
+  ],
+  "entry_text": {
+    "file": "entry_context.json",
+    "length": 157,
+    "sha256": "3a3ce73c56ab7f7d0f00a6b5517f73cba07e06ac1e909211ed90acbf9804a771",
+    "context": 0,
+    "text": "PUSH ESI",
+    "neighbors_returned": 0
+  },
+  "proto": {
+    "complete_stdout": {
+      "file": "entry_proto.stdout.bin",
+      "length": 274,
+      "sha256": "18de60d2b36f83757a8e9de727836b69941ab9e16ce3f4dc59ffff4427cb70b4"
+    },
+    "interpreted_lines": 4,
+    "prefix_length": 121,
+    "prefix_sha256": "8b7b26d3f71edf91cc1043402d4dee0115bdf5c5e66e119ba456b95fd805b480",
+    "suffix_length": 153,
+    "suffix_sha256": "74bbb452025a87aa18e944bed14ee96abd5ab0c4d8bb488f1d677ef02a7f1eac",
+    "suffix_opaque": true
+  },
+  "manual_decode": {
+    "entry": {
+      "address": "00C0522E",
+      "bytes_hex": "56",
+      "size": 1,
+      "rule": "opcode 0x50 + rd; operand size 32 in the admitted x86:LE:32 default context",
+      "opcode_register": 6,
+      "mnemonic": "push",
+      "register": "esi",
+      "register_size": 4,
+      "next_address": "00C0522F",
+      "flags_modified": false
+    },
+    "caller": {
+      "source_selector": "reports/cc12_application_crt_dispatch_body_listing_metadata.json:instruction_operands.code_hex[6:11]",
+      "positive_complete_bytes": 228,
+      "positive_complete_sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+      "address": "00C07997",
+      "bytes_hex": "E8 92 D8 FF FF",
+      "size": 5,
+      "mnemonic": "call",
+      "signed_rel32": -10094,
+      "return_address": "00C0799C",
+      "numeric_target": "00C0522E",
+      "flags_modified": false
+    },
+    "scope": "Manual decode only these two units; no other positive-caller instructions decoded."
+  },
+  "actual_detailed_capstone": {
+    "result": {
+      "file": "capstone_decode.json",
+      "length": 3005,
+      "sha256": "49f84657ca060b5d987b124a7aac5dfa07d43f4801d7787a9bf75d5aaef6607c"
+    },
+    "version": "5.0.7",
+    "producer_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_first_call_entry\\local\\cc12_crt_dispatch_first_call_entry\\capstone_decode.py",
+        "length": 2940,
+        "sha256": "97d439b98051d19107f6ab06a8bd19d57615976c0679a230a81ba0272a8ae68d"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "length": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "length": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\x86.py",
+        "length": 2816,
+        "sha256": "08cbb0a02ff152bcf1fbd7c4f8850b3ade38c25b9f0a6a9b900a55ee75e87c67"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\x86_const.py",
+        "length": 45756,
+        "sha256": "83cf4550d9256f5f9b8e218b9b732e46d83ef602b463a01d6eeb778deb28e040"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+        "length": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      }
+    ],
+    "only_unit_sizes_decoded": [
+      1,
+      5
+    ],
+    "executed_during_pure_replay": false
+  },
+  "positive_caller": {
+    "input": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+    "actual_selector": "instruction_operands.code_hex",
+    "complete_positive_length": 228,
+    "complete_positive_sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+    "selected_offset": 6,
+    "selected_length": 5,
+    "site": "00C07997",
+    "bytes_hex": "E8 92 D8 FF FF",
+    "signed_rel32": -10094,
+    "return_address": "00C0799C",
+    "numeric_target_only": "00C0522E"
+  },
+  "current_stack_contract": {
+    "conditions": "Accepted caller prefix and normal completion of the retained near CALL and admitted PUSH in the admitted 32-bit context; valid stack accesses.",
+    "symbols": {
+      "S": "accepted dispatcher entry ESP",
+      "I": "accepted dispatcher entry ESI",
+      "H": "S-4"
+    },
+    "ESP_before_call": "S-0x10",
+    "ESP_at_entry": "S-0x14",
+    "call_write": "[S-0x14]=00C0799C",
+    "ESP_after_entry_unit": "S-0x18",
+    "entry_unit_write": "[S-0x18]=I",
+    "EBP_after_entry_unit": "H",
+    "ESI_after_entry_unit": "I",
+    "flags_for_entry_unit": "unchanged from incoming values; those values remain unknown",
+    "return_address_after_entry_unit": "[ESP+4]=00C0799C",
+    "later_return_contract_imported_unchanged": {
+      "ESP": "Q0",
+      "EBP": "F0",
+      "EAX": "P",
+      "memory": "M0",
+      "other_registers_flags_cleanup": "unknown"
+    },
+    "preservation_balance_or_original_ABI_inferred": false
+  },
+  "query_accounting": {
+    "typed_exact_entry": 3,
+    "exact_one_byte_reads": 2,
+    "context_zero_exact_entry": 1,
+    "prototype_exact_entry": 1,
+    "interpreted_prototype_lines": 4,
+    "count_queries": 3,
+    "Native_queries_all_through_pinned_bsp_CLI": true,
+    "command_stdout_stderr_records_complete": true
+  },
+  "scope_limits": {
+    "remaining_23_body_bytes_queried": false,
+    "fallthrough_address_queried": false,
+    "body_interiors_neighbors_providers_callees_queried": false,
+    "prototype_suffix_interpreted": false,
+    "Original_executable_or_prior_archive_read": false,
+    "source_content_or_census_read": false,
+    "new_ledger_or_Ghidra_annotation": false,
+    "future_service_or_return_semantics_recovered": false
+  },
+  "validation_credit": {
+    "Source_changes": false,
+    "Ghidra_mutations": false,
+    "build": false,
+    "tests": false,
+    "native_probe": false,
+    "native_execution": false,
+    "game_validation": false,
+    "ABI_compatibility": false,
+    "OriginalFH3_authentication": false,
+    "new_runtime_adapter_or_invocation": false
+  },
+  "closure": {
+    "bundle": "local/cc12_crt_dispatch_first_call_entry/evidence_bundle.zip",
+    "retained_failed_attempts": [
+      {
+        "attempt": 1,
+        "stage": "primary pure replay",
+        "failure": "strict guard denied lazy ZIP filename-codec import",
+        "resolution": "preload encodings.cp437 during declared bootstrap; no additional audit event admitted",
+        "archive": {
+          "file": "attempt01_evidence_bundle.zip",
+          "length": 449164,
+          "sha256": "1573909243bf7ae21ae228180c34f1615a6b15fcba804cc23e60bd9f18e6d821"
+        },
+        "guard_stdout": {
+          "file": "attempt01_guard_primary.stdout.bin",
+          "length": 342,
+          "sha256": "7b9e553478787984790716d0f68bfead5b256ba4241220d4c0ccc36ede6dca3b"
+        },
+        "guard_stderr": {
+          "file": "attempt01_guard_primary.stderr.bin",
+          "length": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "sealer_stdout": {
+          "file": "seal_attempt01.stdout.bin",
+          "length": 347,
+          "sha256": "a57a251dca8b660ba866f117f5c3fcbb1f55c0ff296661ea20ded031ae2430fd"
+        },
+        "sealer_stderr": {
+          "file": "seal_attempt01.stderr.bin",
+          "length": 994,
+          "sha256": "c579a5eb3fb7d935f5559667629fc97c03a5a0008aa0c2270887d2077bd247d4"
+        },
+        "preimages_retained": true,
+        "failed_archive_nested_contents_reopened": false
+      }
+    ],
+    "copied_bundle": "local/cc12_crt_dispatch_first_call_entry/independent_evidence_bundle.zip",
+    "receipts": [
+      "guard_receipt.json",
+      "independent_guard_receipt.json"
+    ],
+    "seal_summary": "local/cc12_crt_dispatch_first_call_entry/seal_summary.json",
+    "exact_finite_inputs": 8,
+    "exact_owned_outputs": 2,
+    "pure_helper": {
+      "file": "pure_replay.py",
+      "length": 14633,
+      "sha256": "14422ffd3bfa35a81d2426a2aeebb110cfeb61e097b0a301bb96e7404bf6cbe4"
+    },
+    "strict_guard": {
+      "file": "strict_guard.py",
+      "length": 4095,
+      "sha256": "3d736f563ac54742eea0ad7bd833c3a4d0abcfe82b599f0816afdf74532f875e"
+    },
+    "audit_scope": "After bootstrap imports and physical helper read/hash/compile: one ZIP read, one pinned helper exec, one exclusive receipt write; all other audit events denied.",
+    "replay_dependency": "ZIP bytes plus physically pinned pure helper; Capstone output is retained evidence, no Capstone load in replay",
+    "archive_and_receipt_pins_external_to_archive": true,
+    "OriginalFH3": "unauthenticated and unusable for invocation"
+  }
+}
