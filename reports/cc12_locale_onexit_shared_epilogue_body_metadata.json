@@ -1,0 +1,1254 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_shared_epilogue_body_metadata",
+  "status": "complete saved-body physical decode and instruction-time CPU contract; independent Root final review pending",
+  "base_commit": "c4a7bb35971fd8dcf397c54871fb0e0c2ccca943",
+  "scope": {
+    "entry": "00C07C45",
+    "end_inclusive": "00C07C58",
+    "stop_exclusive_not_queried": "00C07C59",
+    "bytes": 20,
+    "whole_units": 11,
+    "library_label_metadata_only": "__SEH_epilog4"
+  },
+  "Native_listing": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "typed_unit_payloads": 33,
+    "independent_initial_length_driven_walks": 2,
+    "known_unit_closing_walks": 1,
+    "all_four_instruction_aliases_verified": true,
+    "owner_body_complete_exact_range": true,
+    "partition": [
+      [
+        "00C07C45",
+        3
+      ],
+      [
+        "00C07C48",
+        7
+      ],
+      [
+        "00C07C4F",
+        1
+      ],
+      [
+        "00C07C50",
+        1
+      ],
+      [
+        "00C07C51",
+        1
+      ],
+      [
+        "00C07C52",
+        1
+      ],
+      [
+        "00C07C53",
+        1
+      ],
+      [
+        "00C07C54",
+        2
+      ],
+      [
+        "00C07C56",
+        1
+      ],
+      [
+        "00C07C57",
+        1
+      ],
+      [
+        "00C07C58",
+        1
+      ]
+    ],
+    "nonterminal_units": 10,
+    "nonterminal_flow": "FALL_THROUGH to next exact instruction",
+    "terminal_unit": "00C07C58",
+    "terminal_flow": "TERMINATOR with null fallthrough",
+    "overrides": "NONE",
+    "default_and_effective_targets": [],
+    "CLI_command_count": 42,
+    "CLI_breakdown": {
+      "typed_flow": 33,
+      "bytes": 2,
+      "context_zero_text": 1,
+      "count_bookends": 6
+    },
+    "Root_gate_initial_commands": 25,
+    "admitted_remaining_commands": 17
+  },
+  "Root_listing_gate": {
+    "producer": {
+      "bytes": 6087,
+      "sha256": "eeea94adbcd9d92d68b56bcf52b57feec0afcaccbdfb5ea2b136879ee38d3102"
+    },
+    "receipt": {
+      "bytes": 9480,
+      "sha256": "592416b3b863c066992db728e49021674b194289fb0c71c5f48110fad4e235a2"
+    },
+    "copied_artifacts": 109,
+    "copied_metadata_preimages": 102,
+    "executed_by_worker": false
+  },
+  "physical_decode": {
+    "hex": "8B4DF064890D00000000595F5F5E5B8BE55D51C3",
+    "raw_pin": {
+      "bytes": 20,
+      "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411"
+    },
+    "actual_decoder": "Capstone 5.0.7 detailed x86-32",
+    "independent_manual_decode_equal": true,
+    "capture": {
+      "bytes": 18493,
+      "sha256": "29b994ab775cdf651415147a1471b2978947068c252be8c6f7d2159b86eadab6"
+    },
+    "manual_rows": [
+      {
+        "address": "00C07C45",
+        "size": 3,
+        "bytes": "8B4DF0",
+        "physical_fields": {
+          "opcode_hex": "8B",
+          "mod": 1,
+          "reg": 1,
+          "rm": 5
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614725,
+          "bytes": "8b4df0",
+          "size": 3,
+          "mnemonic": "mov",
+          "op_str": "ecx, dword ptr [ebp - 0x10]",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            139,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 77,
+          "modrm_offset": 1,
+          "displacement": -16,
+          "displacement_offset": 2,
+          "displacement_size": 1,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ecx"
+            },
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment_override": null,
+                "base": "ebp",
+                "index": null,
+                "scale": 1,
+                "displacement": -16
+              }
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C48",
+        "size": 7,
+        "bytes": "64890D00000000",
+        "physical_fields": {
+          "opcode_hex": "89",
+          "mod": 0,
+          "reg": 1,
+          "rm": 5
+        },
+        "memory_segment": "fs",
+        "expected_detailed_decode": {
+          "address": 12614728,
+          "bytes": "64890d00000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "op_str": "dword ptr fs:[0], ecx",
+          "prefix": [
+            0,
+            100,
+            0,
+            0
+          ],
+          "opcode": [
+            137,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 13,
+          "modrm_offset": 2,
+          "displacement": 0,
+          "displacement_offset": 3,
+          "displacement_size": 4,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 3,
+              "size": 4,
+              "access": 2,
+              "memory": {
+                "segment_override": "fs",
+                "base": null,
+                "index": null,
+                "scale": 1,
+                "displacement": 0
+              }
+            },
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "ecx"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C4F",
+        "size": 1,
+        "bytes": "59",
+        "physical_fields": {
+          "opcode_hex": "59",
+          "encoded_register": 1
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614735,
+          "bytes": "59",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "ecx",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            89,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ecx"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C50",
+        "size": 1,
+        "bytes": "5F",
+        "physical_fields": {
+          "opcode_hex": "5F",
+          "encoded_register": 7
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614736,
+          "bytes": "5f",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "edi",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            95,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "edi"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C51",
+        "size": 1,
+        "bytes": "5F",
+        "physical_fields": {
+          "opcode_hex": "5F",
+          "encoded_register": 7
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614737,
+          "bytes": "5f",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "edi",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            95,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "edi"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C52",
+        "size": 1,
+        "bytes": "5E",
+        "physical_fields": {
+          "opcode_hex": "5E",
+          "encoded_register": 6
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614738,
+          "bytes": "5e",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "esi",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            94,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "esi"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C53",
+        "size": 1,
+        "bytes": "5B",
+        "physical_fields": {
+          "opcode_hex": "5B",
+          "encoded_register": 3
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614739,
+          "bytes": "5b",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "ebx",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            91,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebx"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C54",
+        "size": 2,
+        "bytes": "8BE5",
+        "physical_fields": {
+          "opcode_hex": "8B",
+          "mod": 3,
+          "reg": 4,
+          "rm": 5
+        },
+        "memory_segment": null,
+        "expected_detailed_decode": {
+          "address": 12614740,
+          "bytes": "8be5",
+          "size": 2,
+          "mnemonic": "mov",
+          "op_str": "esp, ebp",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            139,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 229,
+          "modrm_offset": 1,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "esp"
+            },
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "ebp"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C56",
+        "size": 1,
+        "bytes": "5D",
+        "physical_fields": {
+          "opcode_hex": "5D",
+          "encoded_register": 5
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614742,
+          "bytes": "5d",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "ebp",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            93,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebp"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C57",
+        "size": 1,
+        "bytes": "51",
+        "physical_fields": {
+          "opcode_hex": "51",
+          "encoded_register": 1
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614743,
+          "bytes": "51",
+          "size": 1,
+          "mnemonic": "push",
+          "op_str": "ecx",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            81,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "ecx"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C07C58",
+        "size": 1,
+        "bytes": "C3",
+        "physical_fields": {
+          "opcode_hex": "C3"
+        },
+        "memory_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12614744,
+          "bytes": "c3",
+          "size": 1,
+          "mnemonic": "ret",
+          "op_str": "",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            195,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": []
+        }
+      }
+    ],
+    "actual_detailed_Capstone": [
+      {
+        "address": 12614725,
+        "bytes": "8b4df0",
+        "size": 3,
+        "mnemonic": "mov",
+        "op_str": "ecx, dword ptr [ebp - 0x10]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 77,
+        "modrm_offset": 1,
+        "displacement": -16,
+        "displacement_offset": 2,
+        "displacement_size": 1,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ecx"
+          },
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -16
+            }
+          }
+        ]
+      },
+      {
+        "address": 12614728,
+        "bytes": "64890d00000000",
+        "size": 7,
+        "mnemonic": "mov",
+        "op_str": "dword ptr fs:[0], ecx",
+        "prefix": [
+          0,
+          100,
+          0,
+          0
+        ],
+        "opcode": [
+          137,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 13,
+        "modrm_offset": 2,
+        "displacement": 0,
+        "displacement_offset": 3,
+        "displacement_size": 4,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 2,
+            "memory": {
+              "segment_override": "fs",
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0
+            }
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ecx"
+          }
+        ]
+      },
+      {
+        "address": 12614735,
+        "bytes": "59",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "ecx",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          89,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ecx"
+          }
+        ]
+      },
+      {
+        "address": 12614736,
+        "bytes": "5f",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "edi",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          95,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "edi"
+          }
+        ]
+      },
+      {
+        "address": 12614737,
+        "bytes": "5f",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "edi",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          95,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "edi"
+          }
+        ]
+      },
+      {
+        "address": 12614738,
+        "bytes": "5e",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "esi",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          94,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "esi"
+          }
+        ]
+      },
+      {
+        "address": 12614739,
+        "bytes": "5b",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "ebx",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          91,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebx"
+          }
+        ]
+      },
+      {
+        "address": 12614740,
+        "bytes": "8be5",
+        "size": 2,
+        "mnemonic": "mov",
+        "op_str": "esp, ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 229,
+        "modrm_offset": 1,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "esp"
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12614742,
+        "bytes": "5d",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          93,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12614743,
+        "bytes": "51",
+        "size": 1,
+        "mnemonic": "push",
+        "op_str": "ecx",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          81,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ecx"
+          }
+        ]
+      },
+      {
+        "address": 12614744,
+        "bytes": "c3",
+        "size": 1,
+        "mnemonic": "ret",
+        "op_str": "",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": []
+      }
+    ],
+    "LEAVE_opcode_present": false,
+    "direct_or_indirect_CALL_instructions": 0,
+    "two_consecutive_POP_EDI_instructions": true
+  },
+  "CPU_contract": {
+    "symbols": {
+      "B": "entry EBP",
+      "S": "entry ESP",
+      "Read32": "current instruction-time little-endian 32-bit read after segment translation"
+    },
+    "assumptions": [
+      "x86 32-bit code, operand and stack-address sizes; the stack-address-size condition is explicit because the bytes do not capture a live SS descriptor.",
+      "The listed instructions execute in order and complete normally, with valid segment translations and memory accesses. Offsets and ESP arithmetic are modulo 2^32.",
+      "Every Read32 uses the memory at that instruction. No separation between FS and SS linear or underlying storage is assumed.",
+      "The simplified final return target X assumes ordinary sequential memory and no intervening mutation of SS:[B] after PUSH; otherwise the RET target is its own read Y."
+    ],
+    "ordered_steps": [
+      {
+        "address": "00C07C45",
+        "hex": "8B4DF0",
+        "instruction": "MOV ECX,[EBP-16]",
+        "effect": "L := current Read32(SS, B-16); ECX := L."
+      },
+      {
+        "address": "00C07C48",
+        "hex": "64890D00000000",
+        "instruction": "MOV FS:[0],ECX",
+        "effect": "Write32(FS, 0, L). This precedes every following stack read."
+      },
+      {
+        "address": "00C07C4F",
+        "hex": "59",
+        "instruction": "POP ECX",
+        "effect": "X := current Read32(SS, S); ECX := X; ESP := S+4."
+      },
+      {
+        "address": "00C07C50",
+        "hex": "5F",
+        "instruction": "POP EDI",
+        "effect": "D0 := current Read32(SS, S+4); EDI := D0; ESP := S+8."
+      },
+      {
+        "address": "00C07C51",
+        "hex": "5F",
+        "instruction": "POP EDI",
+        "effect": "D := current Read32(SS, S+8); EDI := D; ESP := S+12. The first EDI value is overwritten."
+      },
+      {
+        "address": "00C07C52",
+        "hex": "5E",
+        "instruction": "POP ESI",
+        "effect": "I := current Read32(SS, S+12); ESI := I; ESP := S+16."
+      },
+      {
+        "address": "00C07C53",
+        "hex": "5B",
+        "instruction": "POP EBX",
+        "effect": "K := current Read32(SS, S+16); EBX := K; ESP := S+20."
+      },
+      {
+        "address": "00C07C54",
+        "hex": "8BE5",
+        "instruction": "MOV ESP,EBP",
+        "effect": "ESP := B, where B is entry EBP, unchanged up to this instruction."
+      },
+      {
+        "address": "00C07C56",
+        "hex": "5D",
+        "instruction": "POP EBP",
+        "effect": "Bnew := current Read32(SS, B); EBP := Bnew; ESP := B+4."
+      },
+      {
+        "address": "00C07C57",
+        "hex": "51",
+        "instruction": "PUSH ECX",
+        "effect": "ESP := B; Write32(SS, B, X). This overwrites the memory just read into EBP."
+      },
+      {
+        "address": "00C07C58",
+        "hex": "C3",
+        "instruction": "RET",
+        "effect": "Y := current Read32(SS, B); ESP := B+4; EIP := Y. Under ordinary stable memory after the preceding PUSH, Y = X."
+      }
+    ],
+    "alias_and_order_conditions": [
+      "The FS:[0] store may overlap any later SS read, including the initial POP ECX source, saved-register sources and POP EBP source. Those values are post-store observations, not frozen entry-memory values.",
+      "Partial overlap is allowed. Segment selectors alone do not establish disjoint storage, and no live segment bases or page aliases were queried.",
+      "The final PUSH may overlap FS:[0]; consequently final FS:[0] is not unconditionally L. It follows the actual write order and overlap.",
+      "POP EBP observes SS:[B] before PUSH overwrites that location. ESP after POP EBP and RET is based on old B, not Bnew.",
+      "The first POP EDI remains a real stack read, with its own possible fault, even though the second POP EDI overwrites its register result."
+    ],
+    "normal_final_registers": {
+      "ECX": "X",
+      "EDI": "D",
+      "ESI": "I",
+      "EBX": "K",
+      "EBP": "Bnew",
+      "ESP": "B+4",
+      "EIP": "Y; equals X under the stated ordinary-memory condition"
+    },
+    "registers_and_flags_not_written": [
+      "EAX",
+      "EDX",
+      "EFLAGS",
+      "segment registers"
+    ],
+    "physical_calls": 0,
+    "no_unconditional_final_FS0_value": true
+  },
+  "finite_Git_proof": {
+    "selected_input_paths": [
+      "config/target.json",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "tools/ghidra_typed_flow.py",
+      "docs/CC12_LOCALE_ONEXIT_SHARED_EPILOGUE_ENTRY.md",
+      "reports/cc12_locale_onexit_shared_epilogue_entry.json",
+      "docs/CC12_LOCALE_ONEXIT_SHARED_EPILOGUE_ENTRY_PRIMARY.md",
+      "reports/cc12_locale_onexit_shared_epilogue_entry_primary.json"
+    ],
+    "selected_inputs": 8,
+    "actual_commit_and_tree_objects": 6,
+    "Source_tree_identity_only": {
+      "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+      "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+    },
+    "Source_contents_read": false,
+    "Source_census_performed": false,
+    "prior_proof_archives_read": false,
+    "current_Main_equality_claimed": false
+  },
+  "proof": {
+    "core_archive": {
+      "path": "local/cc12_locale_onexit_shared_epilogue_body_metadata/core_v1.zip",
+      "bytes": 1876057,
+      "sha256": "1c5abc4f4112e838fca52fb512960531bd6278edbcd1de9619eec0719dd4d1c9"
+    },
+    "copy_archive": {
+      "path": "local/cc12_locale_onexit_shared_epilogue_body_metadata/core_v1_copy.zip",
+      "bytes": 1876057,
+      "sha256": "1c5abc4f4112e838fca52fb512960531bd6278edbcd1de9619eec0719dd4d1c9"
+    },
+    "members_including_manifest": 323,
+    "original_and_copy_file_ids": [
+      281475006167004,
+      281475006167005
+    ],
+    "replay_producer": {
+      "bytes": 20464,
+      "sha256": "ea25d27b1589666e266774086ade3ce8ecd770798f5c8d777ca5f5773cc592b2"
+    },
+    "guard_producer": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "original_receipt": {
+      "bytes": 36656,
+      "sha256": "d08c1724d66c70c70b08621eb2b5467bbf76b6236070b8cb1de455a73b4fd6ab"
+    },
+    "copy_receipt": {
+      "bytes": 36656,
+      "sha256": "d08c1724d66c70c70b08621eb2b5467bbf76b6236070b8cb1de455a73b4fd6ab"
+    },
+    "first_attempt_original_and_copy_PASS": true,
+    "per_replay_audit": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "permitted_effects": "One supplied ZIP read, one exclusive receipt write and one precompiled pinned helper execution; all other audited effects denied.",
+    "producers_and_preimages_retained": true,
+    "delivery": "After committing exactly this doc/report pair, separate finite actual-Git delivery archives and strict original/copy receipts are produced locally."
+  },
+  "failures_and_revisions": {
+    "Root_offline_schema_inspection": {
+      "count": 1,
+      "kind": "AttributeError from treating the manifest members list as a mapping before gate generation",
+      "gate_execution_failures": 0,
+      "Native_queries": 0,
+      "retained": [
+        "Root_schema_inspection_failure.json",
+        "Root_schema_inspection_attempt01.py",
+        "Root_schema_inspection_attempt01.stdout",
+        "Root_schema_inspection_attempt01.stderr"
+      ]
+    },
+    "worker_local_process_setup": {
+      "count": 1,
+      "kind": "OS error 267 from a duplicated decompile component in the worktree path while listing Root artifact names",
+      "process_created": false,
+      "command_executed": false,
+      "Native_queries": 0,
+      "retained": "Worker_local_inspection_setup_failure.json"
+    },
+    "worker_Native_capture_failures": 0,
+    "worker_helper_execution_failures": 0,
+    "worker_guarded_core_replay_failures": 0,
+    "pre_execution_revision": "A Root stderr filename suffix was corrected before helper execution; the entire previous core fragment is retained as a physical preimage."
+  },
+  "limitations": [
+    "The saved library label __SEH_epilog4 is metadata; it establishes neither a recovered prototype nor a caller contract.",
+    "No claim that L is a valid prior exception-chain link, that FS:[0] has a particular OS role at runtime, or that the write restores an earlier value.",
+    "No accepted prologue state was imported and no inverse-prologue claim is made. Current ESP/EBP do not prove original caller frame, return-address identity, callee-save preservation or ABI compatibility.",
+    "Complete saved-body decoding does not prove FH3 behavior, Original execution, startup success, library equivalence, fault-path behavior or game behavior.",
+    "No C++ implementation, build, native probe, test, Original/game process, OS/audio operation, neighboring/data/callee/prototype/decompile query or GPR mutation was performed for this packet."
+  ],
+  "next_boundary": "Root independently reviews the complete body, CPU conditions and copied archive before accepting or advancing. No provider, caller-frame or ABI closure follows automatically."
+}
