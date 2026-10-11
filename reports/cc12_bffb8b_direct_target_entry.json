@@ -1,0 +1,757 @@
+{
+  "schema": "cc12.bffb8b-entry.v1",
+  "packet": "cc12_bffb8b_direct_target_entry",
+  "status": "BOUNDED_PHYSICAL_ENTRY_EVIDENCE",
+  "frozen_actual_Main_at_worktree_creation": "7fad03aeb7b64a6fe2ea67f0f3e955e66d92f3f4",
+  "frozen_tree": "24f66641b241f8c41ccab600714402dd004710db",
+  "observed_Main_during_freeze": "7fad03aeb7b64a6fe2ea67f0f3e955e66d92f3f4",
+  "actual_Git_inputs": [
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "f2ce52077b2093666b0f0f0b9ee73d376c64d47a",
+      "length": 10757,
+      "sha256": "c9042fb6ebc946661edafcfa8eed0002ec69debb0ff66d366e69845d8d8c0814",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "f2ce52077b2093666b0f0f0b9ee73d376c64d47a",
+      "index_stage": "0"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_body_metadata.json",
+      "blob": "cb6173f96d71c3ca5ecd8541570ea40881b3725b",
+      "length": 190522,
+      "sha256": "0c4df282716cfee0bbb39de88d6905e6e24c50d1595585c032bf7e33d9952a9f",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "cb6173f96d71c3ca5ecd8541570ea40881b3725b",
+      "index_stage": "0"
+    },
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "blob": "c74d96fbac6e8a8c358dcdff6088791b07926748",
+      "length": 4482,
+      "sha256": "12a776a9f8200320e68f32ec396a72a14741b92e7c90a074731ca4869a951cce",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "c74d96fbac6e8a8c358dcdff6088791b07926748",
+      "index_stage": "0"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_body_metadata_primary.json",
+      "blob": "e1f08ceae358c97c5c54a66f2b3d2961508a493b",
+      "length": 69339,
+      "sha256": "14aaaea8d4a5027daa37df3ebd3258a41e65abe3f184a2c95e308a69ca049b8a",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "e1f08ceae358c97c5c54a66f2b3d2961508a493b",
+      "index_stage": "0"
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "index_stage": "0"
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "index_stage": "0"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "index_stage": "0"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "index_stage": "0"
+    }
+  ],
+  "Source_subtree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "physical": {
+    "address": "00BFFB8B",
+    "length": 5,
+    "code_hex": "e827560000",
+    "code_sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54"
+  },
+  "saved_metadata": {
+    "query": {
+      "space": "ram",
+      "offset": "00bffb8b"
+    },
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bffb8b"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bffb8b"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bffb8b"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bffb8b"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "function_at_query": {
+      "space": "ram",
+      "offset": "00bffb8b"
+    },
+    "function_containing_query": {
+      "space": "ram",
+      "offset": "00bffb8b"
+    },
+    "actual_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bffb8b"
+      },
+      "name": "LIBCRT_unmatched_00bffb8b",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "19",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bffb8b"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bffb9d"
+            },
+            "length": "19"
+          }
+        ]
+      }
+    },
+    "instruction_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bffb90"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bffb90"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c051b7"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c051b7"
+        }
+      ]
+    },
+    "HTTP_method_provenance": "actual frozen producer explicit GET, no separate wire trace",
+    "actual_requested_URL": "http://127.0.0.1:8089/get_flow_metadata?address=00BFFB8B&program=battlestationspacific.exe&max_ranges=16",
+    "direct_original_response": {
+      "length": 2526,
+      "sha256": "bbb7c53734e58225c430a215fe8826d507d72e5beeffe71518337f8332fd528c"
+    },
+    "automatic_companion_objects_interpreted": false
+  },
+  "manual_instruction": {
+    "address": "00BFFB8B",
+    "hex": "e827560000",
+    "length": 5,
+    "prefixes": [],
+    "opcode": "E8",
+    "opcode_form": "CALL near rel32",
+    "operand_size_bits": 32,
+    "address_size_bits": 32,
+    "modrm": null,
+    "sib": null,
+    "displacement": null,
+    "immediate": {
+      "offset": 1,
+      "size": 4,
+      "hex": "27560000",
+      "little_endian_unsigned": 22055,
+      "signed_rel32": 22055
+    },
+    "default_segment": "SS for implicit stack write; no explicit memory operand",
+    "segment_override": null,
+    "explicit_operands": [
+      {
+        "kind": "relative_immediate",
+        "size": 4,
+        "access": "encoded control-transfer operand; no register or memory read",
+        "numeric_target": "00C051B7"
+      }
+    ],
+    "implicit_register_effects": {
+      "reads": [
+        "actual current ESP when current SS.B=1",
+        "next EIP for rel32 transfer"
+      ],
+      "writes": [
+        "actual current ESP when current SS.B=1",
+        "EIP numeric target"
+      ]
+    },
+    "stack_address_size": "Actual current SS descriptor B attribute, renewed at this CALL; code operand/address size does not establish it.",
+    "memory_effects": [
+      {
+        "access": "write",
+        "size": 4,
+        "segment": "actual current SS",
+        "offset_if_current_SS_B_1": "(actual current ESP-4) modulo 2^32",
+        "value": "00BFFB90"
+      }
+    ],
+    "transfer": {
+      "kind": "direct_near_call",
+      "signed_rel32": 22055,
+      "numeric_target": "00C051B7",
+      "encoded_return_site": "00BFFB90",
+      "destination_queried": false
+    },
+    "flags_effect": "EFLAGS unchanged by successful CALL instruction itself; no callee or return-state preservation is established.",
+    "local_success_effect": "For the selected 32-bit instruction decoding and renewed actual current SS.B=1, successful CALL decrements current ESP by four modulo 2^32, writes return offset 00BFFB90 through current SS and transfers EIP to numeric offset 00C051B7. Callee execution and any return remain opaque."
+  },
+  "cpu_contract": {
+    "decoding": "CS_ARCH_X86/CS_MODE_32: unprefixed E8 consumes signed little-endian rel32; no ModRM, SIB, explicit memory displacement or segment override.",
+    "transfer_arithmetic": "00BFFB8B + 5 = 00BFFB90; + signed 0x00005627 (22055) = 00C051B7 modulo 2^32.",
+    "renewed_stack_predicate": "Every implicit stack operation needs its own current SS.B=1 predicate for an ESP-based 32-bit stack formula. No earlier predicate, including at incoming C26B80, is inherited automatically.",
+    "local_call": "On successful normal completion under that renewed predicate, store dword 00BFFB90 to current SS:(current ESP-4 modulo 2^32), update ESP accordingly and enter numeric EIP 00C051B7. Ordinary registers apart from ESP and EFLAGS are unchanged by this CALL instruction itself.",
+    "opaque_boundary": "No callee body, provider, prototype, convention, return, nonreturn, service, memory validity or register/flags/segment/stack preservation is authenticated. If control later reaches BFFB90, all actual current state is unknown afresh.",
+    "aliasing": "Current DS/SS bases, limits, contents and aliases are unproved. The new stack write may alias other locations; no original return-slot integrity or whole-function register preservation follows.",
+    "saved_metadata": "The saved owner label LIBCRT_unmatched_00bffb8b and saved no-return/thunk flags are observations, not semantic authentication.",
+    "unqueried": [
+      "00BFFB90 and remaining 14 owner bytes",
+      "00C051B7 body/provider/prototype/cell",
+      "Source bodies",
+      "Original/game/audio/runtime"
+    ]
+  },
+  "physical_vs_saved_flow": {
+    "flow_override": "NONE",
+    "fallthrough_overridden": false,
+    "default_flow_matches_physical": true,
+    "effective_flow_matches_physical": true,
+    "default_targets_match_physical": true,
+    "effective_targets_match_physical": true,
+    "default_fallthrough_matches_encoded_return": true,
+    "effective_fallthrough_matches_encoded_return": true
+  },
+  "actual_Capstone": {
+    "version": "5.0.7",
+    "mode": "CS_ARCH_X86/CS_MODE_32",
+    "detail": true,
+    "all_fields_match_manual_written_before_actual_decoder": true,
+    "length": 1556,
+    "sha256": "49425e156d5725dcf82cf7c298c4d849b84f3a52adf9ab74c6befab4587de0ab"
+  },
+  "typed_original_raw_pins": [
+    {
+      "capture": "captures/entry_a.raw.json",
+      "address": "00BFFB8B",
+      "length": 2526,
+      "sha256": "bbb7c53734e58225c430a215fe8826d507d72e5beeffe71518337f8332fd528c"
+    },
+    {
+      "capture": "captures/entry_b.raw.json",
+      "address": "00BFFB8B",
+      "length": 2526,
+      "sha256": "bbb7c53734e58225c430a215fe8826d507d72e5beeffe71518337f8332fd528c"
+    },
+    {
+      "capture": "captures/entry_close.raw.json",
+      "address": "00BFFB8B",
+      "length": 2526,
+      "sha256": "bbb7c53734e58225c430a215fe8826d507d72e5beeffe71518337f8332fd528c"
+    }
+  ],
+  "all_three_typed_captures_equal": true,
+  "scope": {
+    "owned_address": "00BFFB8B",
+    "Root_admitted_bytes": 5,
+    "Root_admitted_context": 0,
+    "owner_bytes": 19,
+    "remaining_owner_bytes_unqueried": 14,
+    "Native_commands": 11,
+    "typed_captures": 3,
+    "function_count_checkpoints": 4,
+    "function_count": 64730,
+    "modification_number": 98,
+    "separate_CLI_observations": 22,
+    "physical_CLI_source_reads": 66,
+    "Root_artifact_copies": 63,
+    "Root_metadata_preimages": 55,
+    "GPR_writes": 0,
+    "new_tests": 0,
+    "builds": 0,
+    "Source_bodies_read": false,
+    "Original_game_audio_runtime_runs": 0,
+    "unqueried_return_site": "00BFFB90",
+    "unqueried_numeric_call_target": "00C051B7"
+  },
+  "strict_core_replays": {
+    "runs": [
+      {
+        "label": "core_retry",
+        "receipt": {
+          "length": 62832,
+          "sha256": "fcdb367a6a55115e469699f2abb9a3cfcf6578e08201487f54051cfe73e99f94"
+        },
+        "audit": {
+          "audit": "PASS",
+          "archive_reads": 1,
+          "exclusive_receipt_writes": 1,
+          "helper_executions": 1,
+          "denied": []
+        }
+      },
+      {
+        "label": "core_retry_copy",
+        "receipt": {
+          "length": 62832,
+          "sha256": "fcdb367a6a55115e469699f2abb9a3cfcf6578e08201487f54051cfe73e99f94"
+        },
+        "audit": {
+          "audit": "PASS",
+          "archive_reads": 1,
+          "exclusive_receipt_writes": 1,
+          "helper_executions": 1,
+          "denied": []
+        }
+      }
+    ],
+    "matching_receipts": {
+      "length": 62832,
+      "sha256": "fcdb367a6a55115e469699f2abb9a3cfcf6578e08201487f54051cfe73e99f94"
+    },
+    "one_archive_read_one_exact_helper_exec_one_exclusive_receipt": true,
+    "deny_all_other_audit_events": true,
+    "denied_array_asserted_empty": true
+  },
+  "failure_history": {
+    "worker_Native": 0,
+    "worker_capture_producer": 0,
+    "worker_decoder": 0,
+    "worker_pure_replay": 1,
+    "worker_original_pure_failure": {
+      "receipt": {
+        "status": "FAIL",
+        "helper_failure": {
+          "exception_type": "KeyError",
+          "message": "'7fad03aeb7b64a6fe2ea67f0f3e955e66d92f3f4:docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_BODY_METADATA.md'",
+          "traceback_line_numbers_outer_to_inner": [
+            46,
+            396,
+            119,
+            79
+          ],
+          "traceback_scope": "Line numbers only, without frame objects, source reads or formatted tracebacks under the guard."
+        },
+        "archive_reads": 1,
+        "exclusive_receipt_writes": 1,
+        "helper_executions": 1,
+        "denied": []
+      },
+      "reason": "Checker initially handled raw object IDs but not actual Root commit:path Git blob commands; corrected by resolving only approved input paths against the frozen actual snapshot.",
+      "original_archive": {
+        "length": 2310587,
+        "sha256": "4edd3144e38ec302583a00aceb843827b15047497a81c02636ca5c34df6e9115"
+      },
+      "original_helper": {
+        "length": 34428,
+        "sha256": "b239369a6f233ac6623769d9b0548fe17b8d3b324e515004fb0b7e1aab585d10"
+      },
+      "fresh_retry_namespace": "core_retry"
+    },
+    "worker_recovery_tool_schema_rejections": {
+      "scope": "Two private history lookup tool requests during context recovery; no subprocess, Native command or packet producer execution",
+      "events": [
+        {
+          "request": {
+            "agent_name": "/root/application_vector_retirement_handler_entry",
+            "query": "973075475",
+            "max_matches": 4,
+            "max_chars_per_item": 1000,
+            "recent_first": true
+          },
+          "response_text": "Unexpected argument. Use only fields defined in the tool schema."
+        },
+        {
+          "request": {
+            "query": "cc12_bffb8b_direct_target_entry",
+            "role": "user",
+            "max_matches": 4,
+            "recent_first": true
+          },
+          "response_text": "Unexpected argument. Use only fields defined in the tool schema."
+        }
+      ],
+      "record_kind": "Truthful transcription of conversation tool requests and rejection text; no invented original process streams or statuses",
+      "resolution": "Read the known prior task and bounded recent items successfully; no packet artifacts modified by the rejected calls",
+      "process_Native_producer_failures": 0
+    },
+    "worker_inspection_display_truncations": [
+      {
+        "scope": "Conversation-only prior manual-template inspection display; command succeeded, no Native or producer failure",
+        "command": "rg -n -C 5 'opcode == 0xE8|opcode == 232|call|EFLAGS|0xE8' 'J:/PROG/battlestations-pacific-decompile-cc12_crt_banner_first_direct_target_body_metadata/local/cc12_crt_banner_first_direct_target_body_metadata/manual_body.py'",
+        "command_exit_code": 0,
+        "display_original_tokens": 3092,
+        "display_cap_tokens": 1800,
+        "display_omitted_tokens": 1292,
+        "original_process_streams_retained": false,
+        "original_evidence": "Tool conversation output only; no invented separate process streams",
+        "resolution": "Bounded follow-up read of actual CALL branch and record schema before writing manual entry; fresh Capstone not yet executed"
+      },
+      {
+        "scope": "Conversation-only pure-checker template index display; command succeeded, no Native or producer failure",
+        "command": "rg -n '^    [a-zA-Z_].*=|^    def |^    if |^    for |^    #' 'J:/PROG/battlestations-pacific-decompile-cc12_crt_banner_first_direct_target_body_metadata/local/cc12_crt_banner_first_direct_target_body_metadata/replay_checker.py'",
+        "command_exit_code": 0,
+        "display_original_tokens": 2413,
+        "display_cap_tokens": 1950,
+        "display_omitted_tokens": 463,
+        "original_process_streams_retained": false,
+        "original_evidence": "Tool conversation output only; no invented separate process streams",
+        "resolution": "Read required Git, observation, command, final-output blocks in bounded follow-ups; no conclusion from truncated head"
+      }
+    ],
+    "Root_actual_gate": 0,
+    "Root_inspection_command": 0,
+    "Root_inspection_display_incident": {
+      "command": "@'\nfrom pathlib import Path\nimport json\np=Path('J:/PROG/battlestations-pacific-decompile-cc12_bffb8b_direct_target_entry/local/cc12_bffb8b_direct_target_entry')\nfor n in ['metadata_capture_manifest.json','metadata_gate.json','git/frozen.json','cli_observation_index.json']:\n d=json.loads((p/n).read_bytes());print(n,'keys',list(d))\n if n=='metadata_gate.json':print('positive',d['positive']);print('record keys',list(d['record']));print('commands',d.get('Native_commands'));print('count keys',list(d.get('counts',{})))\n if n=='metadata_capture_manifest.json':print('entries',len(d['entries']))\n if n=='git/frozen.json':print('files first',d['files'][0]);print('objects',len(d['objects']))\n if n=='cli_observation_index.json':print('first',d['observation_files'][0])\n'@ | python -",
+      "tool_exit": 0,
+      "output_budget": 1700,
+      "reported_original_tokens": 2774,
+      "reported_omitted_tokens": 1074,
+      "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr retained",
+      "cause": "Unbounded positive object included nested historical failure records",
+      "followup": "Selected scalar/filename schema reads and complete physical-file gate validation",
+      "Native_queries": 0,
+      "GPR_writes": 0
+    },
+    "prior_BODY": {
+      "worker_Native": 0,
+      "worker_capture_producer": 0,
+      "worker_decoder": 0,
+      "Root_actual_gate": 0,
+      "Root_inspection_command": 0,
+      "Root_shell_bootstrap_before_child": 1,
+      "Root_conversation_schema_display_truncations": 1,
+      "Root_bootstrap_history": {
+        "failures": 1,
+        "exact_command_transcription": "Root_bootstrap_attempt01_command.txt",
+        "tool_exit": 1,
+        "visible_combined_tool_output": "",
+        "original_separate_stdout_stderr_retained": false,
+        "cause": "Nested PowerShell here-string terminator in embedded command text",
+        "postfailure_file_inspection": "Only Root_listing_gate.py existed; no prepin, receipt or gate child execution occurred",
+        "corrected_execution": "Physical Python bootstrap; no nested here-string"
+      },
+      "Root_display_incident": {
+        "exact_command": "@'\nimport pathlib,json\np=pathlib.Path('local/cc12_crt_banner_first_direct_target_body_metadata')\nfor n in ['metadata_capture_manifest.json','metadata_gate.json','cli_observation_index.json']:\n a=json.loads((p/n).read_bytes());print(n,'type',type(a).__name__,'keys',list(a) if isinstance(a,dict) else len(a))\n if n=='metadata_capture_manifest.json':print({k:v for k,v in a.items() if k!='entries'})\n if n=='metadata_gate.json':print('small',{k:v for k,v in a.items() if k not in ['walks','records','units','complete_original_payloads']})\n if n=='cli_observation_index.json':print('first',next(iter(a.items())) if isinstance(a,dict) else a[0])\nprint('topfiles',[x.name for x in p.iterdir() if x.is_file()])\n'@ | python -",
+        "command_exit": 0,
+        "output_budget": 1600,
+        "reported_original_tokens": 1917,
+        "reported_omitted_tokens": 317,
+        "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr retained.",
+        "followup": "Bounded schema reads followed by complete physical-file validation.",
+        "Native_queries": 0
+      },
+      "prior_ENTRY_worker_history": {
+        "Native": 0,
+        "capture_producer": 0,
+        "actual_decoder": 0,
+        "strict_core_replay": 0,
+        "Root_gate": 0,
+        "Root_inspection": 0,
+        "worker_conversation_inspection_truncations": 3,
+        "retention": "Three display truncations remain in conversation and local inspection_history.json; no failed producer execution occurred."
+      },
+      "prior_ENTRY_PRIMARY_history": {
+        "Root_gate": 0,
+        "Root_inspection": 0,
+        "Root_final_review": 0,
+        "Root_strict": 0,
+        "worker": {
+          "Native": 0,
+          "capture_producer": 0,
+          "actual_decoder": 0,
+          "core_and_delivery_replay": 0,
+          "seal": 0,
+          "Root_gate_and_inspection": 0,
+          "conversation_display_truncations": 3
+        }
+      }
+    },
+    "prior_PRIMARY": {
+      "worker": {
+        "worker_Native": 0,
+        "worker_capture_producer": 0,
+        "worker_decoder": 0,
+        "Root_actual_gate": 0,
+        "Root_inspection_command": 0,
+        "Root_shell_bootstrap_before_child": 1,
+        "Root_conversation_schema_display_truncations": 1,
+        "Root_bootstrap_history": {
+          "failures": 1,
+          "exact_command_transcription": "Root_bootstrap_attempt01_command.txt",
+          "tool_exit": 1,
+          "visible_combined_tool_output": "",
+          "original_separate_stdout_stderr_retained": false,
+          "cause": "Nested PowerShell here-string terminator in embedded command text",
+          "postfailure_file_inspection": "Only Root_listing_gate.py existed; no prepin, receipt or gate child execution occurred",
+          "corrected_execution": "Physical Python bootstrap; no nested here-string"
+        },
+        "Root_display_incident": {
+          "exact_command": "@'\nimport pathlib,json\np=pathlib.Path('local/cc12_crt_banner_first_direct_target_body_metadata')\nfor n in ['metadata_capture_manifest.json','metadata_gate.json','cli_observation_index.json']:\n a=json.loads((p/n).read_bytes());print(n,'type',type(a).__name__,'keys',list(a) if isinstance(a,dict) else len(a))\n if n=='metadata_capture_manifest.json':print({k:v for k,v in a.items() if k!='entries'})\n if n=='metadata_gate.json':print('small',{k:v for k,v in a.items() if k not in ['walks','records','units','complete_original_payloads']})\n if n=='cli_observation_index.json':print('first',next(iter(a.items())) if isinstance(a,dict) else a[0])\nprint('topfiles',[x.name for x in p.iterdir() if x.is_file()])\n'@ | python -",
+          "command_exit": 0,
+          "output_budget": 1600,
+          "reported_original_tokens": 1917,
+          "reported_omitted_tokens": 317,
+          "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr retained.",
+          "followup": "Bounded schema reads followed by complete physical-file validation.",
+          "Native_queries": 0
+        },
+        "prior_ENTRY_worker_history": {
+          "Native": 0,
+          "capture_producer": 0,
+          "actual_decoder": 0,
+          "strict_core_replay": 0,
+          "Root_gate": 0,
+          "Root_inspection": 0,
+          "worker_conversation_inspection_truncations": 3,
+          "retention": "Three display truncations remain in conversation and local inspection_history.json; no failed producer execution occurred."
+        },
+        "prior_ENTRY_PRIMARY_history": {
+          "Root_gate": 0,
+          "Root_inspection": 0,
+          "Root_final_review": 0,
+          "Root_strict": 0,
+          "worker": {
+            "Native": 0,
+            "capture_producer": 0,
+            "actual_decoder": 0,
+            "core_and_delivery_replay": 0,
+            "seal": 0,
+            "Root_gate_and_inspection": 0,
+            "conversation_display_truncations": 3
+          }
+        }
+      },
+      "Root_gate": 0,
+      "Root_decoder": 0,
+      "Root_actual_final_review": 0,
+      "Root_strict": 0,
+      "Root_final_orchestration": 1,
+      "Root_final_display_truncations": 0,
+      "Root_derivation_record_annotation_corrections": 1,
+      "Root_derivation_record_annotation_correction": {
+        "original_file": "Root_decoder_derivation.json",
+        "original_length": 396,
+        "original_sha256": "357b82774b788002f7f271d7c1c0c4977161846198a86e3a1fca2959f797bd8d",
+        "incorrect_recorded_count": 16,
+        "actual_AST_call_count": 12,
+        "decoder_reexecuted": false,
+        "physical_field_results_unchanged": true
+      },
+      "Root_final_orchestration_record": {
+        "phase": "Full physical pure-helper inspection before final execution",
+        "failures": 1,
+        "kind": "functions.exec JavaScript parse failure before any nested tool call",
+        "reported_error": "SyntaxError: Unexpected token '}'",
+        "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr",
+        "command_exact": "const base=\"J:/PROG/battlestations-pacific-decompile-cc12_crt_banner_first_direct_target_body_metadata/local/cc12_crt_banner_first_direct_target_body_metadata/\";\nfor(const [a,b] of [[37800,42000],[42000,46200],[46200,50931]]) text(await tools.exec_command({cmd:`python -c 'from pathlib import Path; s=Path(\"${base}replay.py\").read_text(); print(s[${a}:${b}])'`,workdir:\"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_resume_integrator\",max_output_tokens:1900}));\n}",
+        "correction": "Removed the extra closing brace, then read all remaining physical helper bytes in bounded pieces",
+        "nested_shell_or_child_execution": false,
+        "Native_queries": 0
+      }
+    }
+  },
+  "evidence": {
+    "metadata_capture_manifest.json": {
+      "length": 12101,
+      "sha256": "98ecbbc7af25e6380a42c2c977f726f06a1cf0933aef9e0bd25e3aa86d71e2f8"
+    },
+    "entry_capture_manifest.json": {
+      "length": 19997,
+      "sha256": "6f38ce4db6f6f4d8841d3f3bd02f1497dc3d9a82fbc3c7fa48691ded539feef7"
+    },
+    "capture_entry_metadata.py": {
+      "length": 17814,
+      "sha256": "c41d1d88cd3cd460c7f6ce4ed749ca06d7ff57bd299bf63681d550440a06755b"
+    },
+    "capture_admitted_entry.py": {
+      "length": 5683,
+      "sha256": "072fefe1cdb0ef5afad537cdd8c9fbfbfa8c37655b38b4655791f3460e0eac4d"
+    },
+    "root_gate_copy_pins.json": {
+      "length": 10794,
+      "sha256": "639851196806c8de615cfb8a1b38bb722a3778159413348f7445a76ba46504bc"
+    },
+    "manual_entry.py": {
+      "length": 4716,
+      "sha256": "e3a4c0f95d0393800beb180e93531132865a61c611d8fedea60c24d2a45bb048"
+    },
+    "manual_fields_before_capstone.json": {
+      "length": 4869,
+      "sha256": "abfd9e93936c58df670d84af7f3bf95a2198f14b022aea363fd0a8e2ee372cab"
+    },
+    "decode_actual.py": {
+      "length": 4871,
+      "sha256": "fbd55bb236549b5ccbbb0789518db4eb502a9bdeaf96fe4f1eba27a6b2731fa9"
+    },
+    "actual_capstone.json": {
+      "length": 1556,
+      "sha256": "49425e156d5725dcf82cf7c298c4d849b84f3a52adf9ab74c6befab4587de0ab"
+    },
+    "decoder_preexecution_pins.json": {
+      "length": 410,
+      "sha256": "51394889650fe73c330f8f72b7ca7b55dbdd6ec91b1ed814f0d07cf8ee23a3db"
+    },
+    "decoder.command.json": {
+      "length": 1448,
+      "sha256": "5dcfcbbc0cfb6263c3e58e32cc6d9c7f2fabf18d1411642ba2ec580273e85c3c"
+    },
+    "replay.py": {
+      "length": 36482,
+      "sha256": "062b41e16794481469636f0a047c35ceebded865d33d25f5f603d9158b2ed8ca"
+    },
+    "replay_checker.py": {
+      "length": 31717,
+      "sha256": "a00fec3d699db4e87000f5265b93effefbbbc33355af1274aa28566b234313c6"
+    },
+    "audit_replay.py": {
+      "length": 2984,
+      "sha256": "1d20f2a2aca2843ad207303c32814ffe4be724538a620652b9b48ef6cfe3fbfb"
+    },
+    "run_replays.py": {
+      "length": 2695,
+      "sha256": "d651eef25100c7cd001defa5df6cbc6d247dc181bbae1ad9b4c971e135bba75b"
+    },
+    "replay_retry_preexecution_pins.json": {
+      "length": 1040,
+      "sha256": "17c104dd5ca80f89180efabb3ebbc43ca80b62e0bfd744bb0a61b6e4880a6600"
+    },
+    "core_retry_manifest.json": {
+      "length": 36465,
+      "sha256": "905cdd3088b7de4cdd3a92ff2ab3789240ae8743e08d521e16caba94f81c2fb0"
+    },
+    "core_retry.zip": {
+      "length": 6908513,
+      "sha256": "3f3cad8db7cc84b67fa641864c5b63b002c373ed8ab816eebab1c6f801d553b1"
+    },
+    "core_retry_distinct_copy.zip": {
+      "length": 6908513,
+      "sha256": "3f3cad8db7cc84b67fa641864c5b63b002c373ed8ab816eebab1c6f801d553b1"
+    },
+    "core_retry_receipt.json": {
+      "length": 62832,
+      "sha256": "fcdb367a6a55115e469699f2abb9a3cfcf6578e08201487f54051cfe73e99f94"
+    },
+    "core_retry_copy_receipt.json": {
+      "length": 62832,
+      "sha256": "fcdb367a6a55115e469699f2abb9a3cfcf6578e08201487f54051cfe73e99f94"
+    },
+    "recovery_inspection_events.json": {
+      "length": 943,
+      "sha256": "7edfce54d876b9eb07abd3d5e5b6871f96a13ffdcc346c7496e61f0514b4fbb2"
+    },
+    "inspection_display_incidents.json": {
+      "length": 1589,
+      "sha256": "784d9bb9394309a51fa583cbac31878f765c1d87fc8acd31059ea40a07864aa9"
+    }
+  },
+  "delivery_contract": "Final delivery seals actual commit/tree/blob objects for these exact two outputs and unchanged eight inputs, working/LF/index identities and Source subtree IDs only; both original and actual distinct-copy strict replays are retained outside the delivery ZIP.",
+  "not_established": [
+    "callee service or preservation",
+    "prototype/provider contract",
+    "completion/return/nonreturn",
+    "Source implementation",
+    "ABI compatibility",
+    "build/test/runtime/game equivalence"
+  ]
+}
