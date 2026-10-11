@@ -1,0 +1,922 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-handler-operand.v1",
+  "status": "bounded_operands_and_normal_instruction_local_effects_verified_no_Source_or_failure_policy_admission",
+  "worker_base_commit": "acc8f654cc5cab13313a4d39fb4fdc927dc53988",
+  "worker_base_tree": "a7b05705aaf12ea69139097184dd6ef7aa0a5040",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_OPERAND.md",
+    "reports/cc12_application_ordinary_retirement_failure_handler_operand.json"
+  ],
+  "native_scope": {
+    "interval_inclusive": [
+      "00CC7260",
+      "00CC7269"
+    ],
+    "explicit_queried_metadata_sites": [
+      "00CC7260",
+      "00CC7261",
+      "00CC7262",
+      "00CC7263",
+      "00CC7264",
+      "00CC7265",
+      "00CC7266",
+      "00CC7267",
+      "00CC7268",
+      "00CC7269"
+    ],
+    "required_initial_gate_before_operands": true,
+    "metadata_batches": 3,
+    "typed_responses": 30,
+    "actual_observations_per_byte": 3,
+    "code_bytes_read": 10,
+    "context_zero_instruction_starts": [
+      "00CC7260",
+      "00CC7265"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730,
+    "same_site_metadata_closed": true,
+    "other_queries": false
+  },
+  "actual_query_schedule": [
+    {
+      "label": "gate_count_before",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "utc": "2026-10-11T03:48:06.304834+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "initial_gate",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269",
+        "--output",
+        "local/cc12_application_ordinary_retirement_failure_handler_operand/initial_gate.json"
+      ],
+      "utc": "2026-10-11T03:48:06.696581+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "gate_count_after",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "utc": "2026-10-11T03:48:07.018971+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "operand_before",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269",
+        "--output",
+        "local/cc12_application_ordinary_retirement_failure_handler_operand/operand_before.json"
+      ],
+      "utc": "2026-10-11T03:48:31.924912+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "operand_count_before",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "utc": "2026-10-11T03:48:32.312670+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "code_bytes",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00CC7260",
+        "--length",
+        "10"
+      ],
+      "utc": "2026-10-11T03:48:32.627913+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "instruction_text",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00CC7260",
+        "00CC7265",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_application_ordinary_retirement_failure_handler_operand/instruction_text.json"
+      ],
+      "utc": "2026-10-11T03:48:32.947512+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "operand_after",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269",
+        "--output",
+        "local/cc12_application_ordinary_retirement_failure_handler_operand/operand_after.json"
+      ],
+      "utc": "2026-10-11T03:48:33.340837+00:00",
+      "returncode": 0
+    },
+    {
+      "label": "operand_count_after",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "utc": "2026-10-11T03:48:33.680572+00:00",
+      "returncode": 0
+    }
+  ],
+  "all_byte_gates": {
+    "initial": {
+      "status": "PASS",
+      "epoch": 98,
+      "count": 64730,
+      "exact_sites": [
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269"
+      ],
+      "coverage": [
+        {
+          "address": "00CC7260",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7261",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7262",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7263",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7264",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7265",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7266",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7267",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7268",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7269",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        }
+      ],
+      "automatic_target_objects": "opaque_quarantine"
+    },
+    "before_operands": {
+      "status": "PASS",
+      "epoch": 98,
+      "count": 64730,
+      "exact_sites": [
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269"
+      ],
+      "coverage": [
+        {
+          "address": "00CC7260",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7261",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7262",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7263",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7264",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7265",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7266",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7267",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7268",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7269",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        }
+      ],
+      "automatic_target_objects": "opaque_quarantine"
+    },
+    "after_operands": {
+      "status": "PASS",
+      "epoch": 98,
+      "count": 64730,
+      "exact_sites": [
+        "00CC7260",
+        "00CC7261",
+        "00CC7262",
+        "00CC7263",
+        "00CC7264",
+        "00CC7265",
+        "00CC7266",
+        "00CC7267",
+        "00CC7268",
+        "00CC7269"
+      ],
+      "coverage": [
+        {
+          "address": "00CC7260",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7261",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7262",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7263",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7264",
+          "unit_start": "00CC7260",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7265",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": true,
+          "flow_object": true,
+          "unowned": true
+        },
+        {
+          "address": "00CC7266",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7267",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7268",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        },
+        {
+          "address": "00CC7269",
+          "unit_start": "00CC7265",
+          "length": 5,
+          "instruction_at": false,
+          "flow_object": false,
+          "unowned": true
+        }
+      ],
+      "automatic_target_objects": "opaque_quarantine"
+    }
+  },
+  "automatic_target_object_quarantine": {
+    "complete_raw_responses_retained": true,
+    "entire_automatic_function_at_target_objects": "opaque and quarantined",
+    "target_fields_used_to_qualify_findings": [],
+    "complete_captures_strictly_site_only": false
+  },
+  "physical_code": {
+    "bytes_hex": "B8 F8 1C E0 00 E9 D9 F8 F2 FF",
+    "pin": {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/code_bytes.bin",
+      "bytes": 10,
+      "sha256": "01334072ffeeb75872fc5084480c0366d57af7a377c232e57feacafb385367d0"
+    },
+    "independent_decoder": {
+      "schema": "bsp.cc12.ordinary-retirement-handler-operand.decode.v1",
+      "decoder": "Capstone",
+      "version": "5.0.7",
+      "decoder_module": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "mode": "x86-32",
+      "input_bytes": 10,
+      "input_sha256": "01334072ffeeb75872fc5084480c0366d57af7a377c232e57feacafb385367d0",
+      "instructions": [
+        {
+          "address": "00CC7260",
+          "length": 5,
+          "bytes": "b8f81ce000",
+          "mnemonic": "mov",
+          "operands": "eax, 0xe01cf8",
+          "eflags": 0,
+          "operand_types": [
+            1,
+            2
+          ],
+          "immediates": [
+            14687480
+          ]
+        },
+        {
+          "address": "00CC7265",
+          "length": 5,
+          "bytes": "e9d9f8f2ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "eflags": 0,
+          "operand_types": [
+            2
+          ],
+          "immediates": [
+            12544835
+          ]
+        }
+      ],
+      "manual_decode": {
+        "first_opcode_hex": "B8",
+        "EAX_immediate": "00E01CF8",
+        "second_opcode_hex": "E9",
+        "signed_rel32": -853799,
+        "next_instruction_address": "00CC726A",
+        "computed_target": "00BF6B43"
+      },
+      "normal_instruction_local_effects": {
+        "EAX": "00E01CF8",
+        "instruction_pointer": "00CC7260 ->00CC7265 ->00BF6B43",
+        "ESP_delta": 0,
+        "return_address_push": false,
+        "EFLAGS_changed": false,
+        "data_memory_dereference": false
+      },
+      "limits": "Instruction-local normal execution only. No target/pointee query, stored-function ownership/complete extent, surrounding-stack protocol, FH3 authenticity, exception behavior or Source cleanup policy. Portable replay manually redecodes these ten bytes; it does not execute or import Capstone."
+    },
+    "instruction_text": {
+      "00cc7260": {
+        "address": "00cc7260",
+        "instruction": "MOV EAX,0xe01cf8",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00cc7265": {
+        "address": "00cc7265",
+        "instruction": "JMP 0x00bf6b43",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    },
+    "normal_instruction_local_effects": {
+      "EAX": "opaque 32-bit constant00E01CF8",
+      "EIP_sequence": [
+        "00CC7260",
+        "00CC7265",
+        "00BF6B43"
+      ],
+      "ESP_delta": 0,
+      "EFLAGS_changed": false,
+      "data_memory_dereference": false,
+      "return_address_push": false
+    },
+    "immediate_is_loaded_value_not_memory_read": true,
+    "CC726A_used_only_as_next_instruction_arithmetic": true,
+    "instruction_tag_data_access_is_not_dereference_evidence": true
+  },
+  "saved_flow_separate_from_opcode": {
+    "first": "NONE; default/effective FALL_THROUGH toCC7265; empty target arrays",
+    "second": "CALL_RETURN; default UNCONDITIONAL_JUMP; effective CALL_TERMINATOR; null default/effective fallthrough; no separate fallthrough override; address-only BF6B43",
+    "physical_second_opcode": "E9 direct relative JMP; no physical CALL or RET",
+    "repair_or_defect_inference": false
+  },
+  "inherited_ordinary_retirement_contract": {
+    "normal_body_bytes": 153,
+    "normal_instruction_count": 40,
+    "function": "00BEA8B0",
+    "local_handler_pointer": "00CC7260",
+    "state_schedule": "Initial-1; state0 after first receiver-table change; state1 after optional Enter/increment over captured sectionS.",
+    "failure_behavior": "Explicitly held by inherited audit; this packet adds exactly ten code bytes and instruction-local normal effects only.",
+    "historical_audit_function_count": 64729,
+    "fresh_metadata_count": 64730,
+    "old_Native_graph_replayed_or_rebased": false,
+    "fresh_BEA8B0_query": false,
+    "normal_audit_next_callee_suggestion_automatically_admitted": false
+  },
+  "unestablished_exception_behaviors": [
+    "exception unlock",
+    "publication rollback",
+    "final receiver-table write",
+    "outer free",
+    "guard destruction or unwind policy",
+    "FH3 or other handler identity",
+    "target behavior or ABI",
+    "Source failure policy"
+  ],
+  "implementation_boundary": {
+    "Source_implementation_admitted": false,
+    "owner_or_caller_admission": false,
+    "automatic_successor_query": false,
+    "new_owner_census": false,
+    "FH3_identity_or_authenticity": false,
+    "complete_handler_extent": false,
+    "immediate_pointee_type_or_meaning": false,
+    "target_identity_behavior_ABI": false,
+    "calling_convention_stack_frame_invocation": false,
+    "current_result": "Two instruction operands and normal instruction-local effects close. Faithful exceptional C++ behavior and selected cleanup policy remain unestablished."
+  },
+  "inherited_inputs": {
+    "qualified_contract_tool_paths": [
+      "docs/CC12_APPLICATION_FULL_SOURCE_PRIMARY.md",
+      "reports/cc12_application_full_source_primary.json",
+      "docs/CC12_APPLICATION_FULL_BORROWED_SHELL_PRIMARY.md",
+      "reports/cc12_application_full_borrowed_shell_primary.json",
+      "docs/WINMAIN_STARTUP.md",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "tools/ghidra_typed_flow.py",
+      "tools/workspace.py",
+      "config/target.json",
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_READINESS.md",
+      "reports/cc12_application_ordinary_retirement_readiness.json",
+      "docs/CC12_APPLICATION_WINMAIN_STORAGE_PROVENANCE_PRIMARY.md",
+      "reports/cc12_application_winmain_storage_provenance_primary.json",
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_METADATA_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_failure_handler_metadata_primary.json"
+    ],
+    "Root_admission_blobs": [
+      {
+        "path": "inherited/docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_METADATA_PRIMARY.md",
+        "bytes": 2272,
+        "sha256": "5795addbee2eefdef3520e3cc049c0ee0b8240f3f888521959746b908bb94dd6",
+        "source_path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_METADATA_PRIMARY.md",
+        "mode": "100644",
+        "git_blob": "316a7aa8c11794c129dffbde43c1cf3d04cf93e6"
+      },
+      {
+        "path": "inherited/reports/cc12_application_ordinary_retirement_failure_handler_metadata_primary.json",
+        "bytes": 10241,
+        "sha256": "da035092bfaf2f30e3a746522166f8372ad1171ea6a84801132670611879f032",
+        "source_path": "reports/cc12_application_ordinary_retirement_failure_handler_metadata_primary.json",
+        "mode": "100644",
+        "git_blob": "c770223fa4850905409753f6a3edcdc1c64068d0"
+      }
+    ],
+    "historical_Native_or_compiler_graphs_replayed": false,
+    "inherited_artifact_runtime_transfer": false
+  },
+  "Source_Git": {
+    "baseline": "acc8f654cc5cab13313a4d39fb4fdc927dc53988",
+    "current_Source_input_members": 4217,
+    "full_src_include": 4210,
+    "actual_Git_Source4217_unchanged": true,
+    "selected_Source3356_actual_Git_unchanged": 3356,
+    "selected_raw_equal": 3350,
+    "selected_CRLF_only_raw_different": 6,
+    "selected_LF_equal": 3356,
+    "raw_and_LF_epochs_distinct": true,
+    "all_frozen_actual_Git_members": 4233,
+    "frozen_git_receipt": {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/frozen_git_receipt.json",
+      "bytes": 1227,
+      "sha256": "0a833f08216c44c0eb36eda99ef7226912bbb247e973540d3e3ed678553703d5"
+    },
+    "semantic_Source_drift_claim": false
+  },
+  "seal": {
+    "schema": "bsp.cc12.ordinary-retirement-handler-operand.seal.v1",
+    "zip": {
+      "path": "evidence.zip",
+      "bytes": 14022918,
+      "sha256": "d6808854b6b5a47176a3692b0e6daa5c7cd6447b046eaf425706af854f21519a"
+    },
+    "helper": {
+      "path": "portable_replay.py",
+      "bytes": 12779,
+      "sha256": "a8914d022dc37e84153ddc04c8b1853c73eaca03038f8bbf725f2b6269de039b"
+    },
+    "manifest": {
+      "path": "manifest.json",
+      "bytes": 736300,
+      "sha256": "d5f6f6fb5dfac259a2850056e05f98680c8e6d65c64ae82e6cdc3fab8dbe9018"
+    },
+    "replays": [
+      {
+        "path": "original_replay.json",
+        "bytes": 2969,
+        "sha256": "25ea1aea73007e21ffe0bca12355a6227f7ae3168c59629293fe2e9c3b0d7548"
+      },
+      {
+        "path": "copy_replay.json",
+        "bytes": 3021,
+        "sha256": "bafdc40dc8eadc9d9905719b5cb8a22155789d0289b4d502948ab11f82f88d7e"
+      }
+    ],
+    "physical_copy_distinct": true,
+    "archive_payload_count": 4281,
+    "archive_entry_count": 4282,
+    "retained_payload_bytes": 47983857
+  },
+  "replay": {
+    "original": {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/original_replay.json",
+      "bytes": 2969,
+      "sha256": "25ea1aea73007e21ffe0bca12355a6227f7ae3168c59629293fe2e9c3b0d7548"
+    },
+    "distinct_physical_copy": {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/copy_replay.json",
+      "bytes": 3021,
+      "sha256": "bafdc40dc8eadc9d9905719b5cb8a22155789d0289b4d502948ab11f82f88d7e"
+    },
+    "equal_results": true,
+    "result": {
+      "schema": "bsp.cc12.ordinary-retirement-handler-operand.replay.v1",
+      "status": "PASS",
+      "zip_entries": 4282,
+      "checked_payloads": 4281,
+      "retained_payload_bytes": 47983857,
+      "successful_exact_Native_CLI_calls": 9,
+      "typed_responses": 30,
+      "actual_observations_per_byte": 3,
+      "epoch": 98,
+      "count": 64730,
+      "all_ten_bytes_unowned": true,
+      "interiors_per_gate": 8,
+      "physical_code_bytes": 10,
+      "physical_instructions": 2,
+      "opcodes": [
+        "B8",
+        "E9"
+      ],
+      "EAX_immediate": "00E01CF8",
+      "signed_rel32": -853799,
+      "jump_destination": "00BF6B43",
+      "normal_instruction_local_effects": {
+        "ESP_delta": 0,
+        "return_address_push": false,
+        "data_memory_dereference": false,
+        "EFLAGS_changed": false
+      },
+      "saved_CALL_RETURN_is_not_physical_CALL_or_RET": true,
+      "automatic_target_objects": "whole_objects_opaque_quarantine",
+      "Source4217_Git_equal": 4217,
+      "Source3356_raw_equal": 3350,
+      "Source3356_CRLF_only_variants": 6,
+      "Source3356_LF_equal": 3356,
+      "actual_frozen_Git_members": 4233,
+      "inherited_artifact_runtime_transfer": false,
+      "target_pointee_FH3_or_cleanup_credit": false,
+      "complete_handler_extent_or_successor_admission": false
+    },
+    "zip_and_helper_pinned_before_helper_execution": true,
+    "supplied_ZIP_read_once": true,
+    "post_pin_external_reads": 0,
+    "post_pin_writes": 0,
+    "post_pin_imports": 0,
+    "post_pin_process_network_dynamic_libraries": 0,
+    "Capstone_reexecuted": false
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/capture_native.py",
+      "bytes": 5837,
+      "sha256": "bcab07db4386d7d10b0f9ca70a13afe35666fef6fa1667576478633f34deeddd"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/decode_offline.py",
+      "bytes": 2399,
+      "sha256": "68481c829673a4de9e64e968a58eed35a4c9eb0acc3b88c12746a179c831de21"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/freeze_inputs.py",
+      "bytes": 3637,
+      "sha256": "6cb2290c2ffb5c580838bf61f5e1ba39c0057aacab65a42993457f0aa2b698e2"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/git_receipt.py",
+      "bytes": 3941,
+      "sha256": "087b292ebe4686e40bae674dae1f83537ba1bec5a05193d185f32f744f9a1e0e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/guard_replay.py",
+      "bytes": 1772,
+      "sha256": "8fffc0b3358eb27fbb66d458a1fd55f92598165d268d512035095f95270932ac"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/portable_replay.py",
+      "bytes": 12779,
+      "sha256": "a8914d022dc37e84153ddc04c8b1853c73eaca03038f8bbf725f2b6269de039b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/seal_packet.py",
+      "bytes": 3233,
+      "sha256": "fb2c66e1cdd8282d630e4ea5aeb1386deeaee34eefa331382978629d97fedfc3"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/initial_gate.json",
+      "bytes": 34700,
+      "sha256": "bc24ac4ba4d39bba28cf87f933ad6af8b6d56896fc3db4af1951e85f286ba492"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/operand_before.json",
+      "bytes": 34700,
+      "sha256": "6fe5cad73a5cfe807883318f2f4a60b57f8defeb97621a8c1c6d1acb936bbe0c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/operand_after.json",
+      "bytes": 34700,
+      "sha256": "0e02d8b600fefa1970de8490a4fe4c054e00386573572c4ade6677ef54b8e32d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/code_bytes.bin",
+      "bytes": 10,
+      "sha256": "01334072ffeeb75872fc5084480c0366d57af7a377c232e57feacafb385367d0"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/code_bytes.txt",
+      "bytes": 53,
+      "sha256": "0d9d7aa8daf7b148962f69c2c7aac8dd2a093e104e9b10e15bc75199628b7fa6"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/instruction_text.json",
+      "bytes": 318,
+      "sha256": "a81be30ec0878661ba2299c9a8c6dd21ed8b25c36111bf1fcf0f9219210ed027"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/offline_decode.json",
+      "bytes": 1696,
+      "sha256": "632d1d441f1e5eaa6931de98abe25f6b69efaacc4107b132b459cb91bb4ac783"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/scope_admission.json",
+      "bytes": 1840,
+      "sha256": "8f26e6add42d1eceba9d8703452d8c4113e23b04bd17d13d5d25ca7b120c21e5"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/frozen_git.json",
+      "bytes": 1416377,
+      "sha256": "8238621420ab30aa85e6ab735fd047e9e186ad536e4f14c0be53709d4a358399"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/frozen_git_receipt.json",
+      "bytes": 1227,
+      "sha256": "0a833f08216c44c0eb36eda99ef7226912bbb247e973540d3e3ed678553703d5"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/frozen_git_members.bin",
+      "bytes": 1295302,
+      "sha256": "3d6bbb6fe90e20e2a054b800a5b89e037d937f5fb618cdf0c56b0accd3300c6a"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/prior_metadata_frozen_git.json",
+      "bytes": 1414917,
+      "sha256": "7b9f378f16a200bd5be203aefe98649f33eed07249e40f49de6699e83297dbfc"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/prior_winmain_frozen_git.json",
+      "bytes": 2506216,
+      "sha256": "422a386d266932aeba07a12d8e7a6692ee9709c5d3a67fa79ffe0deb58c6863b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/manifest.json",
+      "bytes": 736300,
+      "sha256": "d5f6f6fb5dfac259a2850056e05f98680c8e6d65c64ae82e6cdc3fab8dbe9018"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand/seal_receipt.json",
+      "bytes": 1020,
+      "sha256": "37df2d81fdb283dd3bf41f1a585c10d1b22a9a4ec845bc2e3de2a68b2fbec6a4"
+    }
+  ],
+  "actual_staged_final_Git_closure": {
+    "staged_receipt": "local/cc12_application_ordinary_retirement_failure_handler_operand/staged_git_receipt.json",
+    "final_receipt": "local/cc12_application_ordinary_retirement_failure_handler_operand/final_git_receipt.json",
+    "delivery": "local/cc12_application_ordinary_retirement_failure_handler_operand/final_delivery.json",
+    "phase": "Actual index and final committed tree, independently pinned by post-commit delivery to avoid self-reference.",
+    "expected_unchanged_frozen_members": 4233,
+    "expected_exact_owned_outputs": 2,
+    "expected_actual_members_plus_outputs": 4235
+  },
+  "validation_limits": [
+    "No GPR mutation or listing/flow repair.",
+    "No targetBF6B43, immediate-pointee00E01CF8, neighbor, data, caller, stack or funclet query.",
+    "No FH3 authentication, complete handler extent, exception cleanup or Source failure policy inference.",
+    "No C++ source changes, tests, build, probe, process binding, OS/audio or game execution.",
+    "No inherited artifact or runtime evidence transfers.",
+    "The Root integrator reviews retained physical evidence before acceptance; no successor packet is implicitly admitted."
+  ]
+}
