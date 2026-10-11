@@ -1,0 +1,572 @@
+#include "bsp/cc13_camera_controllers.hpp"
+
+#include <cmath>
+#include <cstring>
+
+#include "bsp/native_bit_cursor_fields.hpp"
+#include "bsp/ship_ai_bearing_rating.hpp"
+
+// Evidence for every routine is in docs/CC13_CAMERA_CONTROLLERS.md. Names are
+// hypotheses. x87 sequences are written as double expressions with a float
+// cast at each native FSTP; the comments name the store.
+
+namespace bsp::cc13cam {
+namespace {
+
+constexpr double kDegToRad = 0.01745329238474369;   // 00D046D8 (double)
+constexpr float kGoAroundRadiusStart = 100.0f;      // 00CE3D08
+constexpr float kOne = 1.0f;                        // 00D7A24C
+constexpr float kHalf = 0.5f;                       // 00CE3800
+constexpr float kEntityRefMin = 10000.0f;           // 00CE3D64
+constexpr double kEntityRefBias = 9999.900390625;   // 00D04658 (double)
+constexpr double kLinkedForward = 200.0;            // 00CE4D70 (double)
+
+const ModifierLuaValue& nil_value() noexcept {
+    static const ModifierLuaValue nil{};
+    return nil;
+}
+
+// The curve shape both parsers use: a number is one key (0, v); anything else
+// non-nil is read as a table (0, t[1]), (t[2], t[3]), ... until t[2k] is nil.
+// `scale` applies to values only, after the float32 spill of GetNumber.
+void parse_curve(ModifierCurve& curve, const ModifierLuaValue& v, bool degrees) {
+    auto value = [&](const ModifierLuaValue& x) {
+        const float n = x.number_f32();
+        return degrees ? static_cast<float>(static_cast<double>(n) * kDegToRad) : n;
+    };
+    if (v.is_nil()) return;
+    if (v.kind == ModifierLuaValue::Kind::Number) {
+        curve.emplace_back(0.0f, value(v));
+        return;
+    }
+    curve.emplace_back(0.0f, value(v.at(1)));
+    for (int i = 2; !v.at(i).is_nil(); i += 2) {
+        curve.emplace_back(v.at(i).number_f32(), value(v.at(i + 1)));
+    }
+}
+
+// The linear-only interpolation 00791C90 uses for zoom and patterntime:
+// (1-f)*prev + next*f, f unclamped, stored once (007923A7 / 007924E7).
+float linear_curve(const ModifierCurve& curve, float t) noexcept {
+    const CurveSample s = sample_modifier_curve(curve, t, kOne);
+    const double f = s.fraction;
+    return static_cast<float>((1.0 - f) * s.prev_value + static_cast<double>(s.next_value) * f);
+}
+
+// Gamecamera curves resolve each key through a callback (00792500/00792610)
+// before blending; the scan itself is the same as sample_modifier_curve.
+template <class Resolve>
+CurveSample sample_resolved(const ModifierCurve& curve, float t, Resolve resolve) {
+    CurveSample s{};
+    float prev_time = 0.0f;
+    std::size_t i = 0;
+    for (; i < curve.size(); ++i) {
+        if (t < curve[i].first) break;
+        prev_time = curve[i].first;
+        s.prev_value = resolve(i);
+    }
+    if (i < curve.size()) {
+        s.fraction = static_cast<float>((static_cast<double>(t) - prev_time) /
+                                        (static_cast<double>(curve[i].first) - prev_time));
+        s.next_value = resolve(i);
+    }
+    return s;
+}
+
+std::uint32_t bits_of(float f) noexcept {
+    std::uint32_t u;
+    std::memcpy(&u, &f, sizeof u);
+    return u;
+}
+
+float float_of(std::uint32_t u) noexcept {
+    float f;
+    std::memcpy(&f, &u, sizeof f);
+    return f;
+}
+
+constexpr float kTimeScale = 256.0f;      // 00CF8B3C
+constexpr float kRadiusScale = 10000.0f;  // 00CE3D64
+constexpr float kAngleScale = 100.0f;     // 00CE3D08
+
+void write_weight(NativeBitCursor* c, float v, const NativeBitNumericContext& ctx) {
+    write_native_numeric_float_004295c0(c, bits_of(v), 0, 0, bits_of(1.0f), 8, ctx);
+}
+
+void read_weight(NativeBitCursor* c, float& v, const NativeBitNumericContext& ctx) {
+    std::uint32_t u = 0;
+    read_native_numeric_float_004293f0(c, &u, 0, 0, bits_of(1.0f), 8, ctx);
+    v = float_of(u);
+}
+
+void write_curve(NativeBitCursor* c, const ModifierCurve& curve, float scale,
+                 const NativeBitNumericContext& ctx) {
+    write_native_unsigned_dword_bits_00429070(c, static_cast<std::uint32_t>(curve.size()), 8);
+    for (const auto& [time, value] : curve) {
+        write_native_numeric_float_004295c0(c, bits_of(time), 0, 1, bits_of(kTimeScale), 0x12, ctx);
+        write_native_numeric_float_004295c0(c, bits_of(value), 0, 1, bits_of(scale), 0x12, ctx);
+    }
+}
+
+void read_curve(NativeBitCursor* c, ModifierCurve& curve, float scale,
+                const NativeBitNumericContext& ctx) {
+    std::uint32_t count = 0;
+    read_native_u32_bits_00428d10(c, &count, 8);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        std::uint32_t t = 0, v = 0;
+        read_native_numeric_float_004293f0(c, &t, 0, 1, bits_of(kTimeScale), 0x12, ctx);
+        read_native_numeric_float_004293f0(c, &v, 0, 1, bits_of(scale), 0x12, ctx);
+        curve.emplace_back(float_of(t), float_of(v));
+    }
+}
+
+}  // namespace
+
+const ModifierLuaValue& ModifierLuaValue::field(const char* name) const noexcept {
+    if (kind != Kind::Table) return nil_value();
+    for (const auto& [key, value] : fields) {
+        if (key == name) return value;
+    }
+    return nil_value();
+}
+
+const ModifierLuaValue& ModifierLuaValue::at(int lua_index) const noexcept {
+    if (kind != Kind::Table || lua_index < 1 || static_cast<std::size_t>(lua_index) > array.size()) {
+        return nil_value();
+    }
+    return array[static_cast<std::size_t>(lua_index) - 1];
+}
+
+float ModifierLuaValue::number_f32() const noexcept {
+    return kind == Kind::Number ? static_cast<float>(number) : 0.0f;
+}
+
+// 0078FCF0 and its inlined copies (00791DCC..00791E35 and the four others).
+float modifier_ease(float f) noexcept {
+    if (0.0f > f) return 0.0f;
+    if (f > kOne) return kOne;
+    if (kHalf > f) {
+        const float sq = f * f;             // FSTP after FMUL ST0
+        return sq + sq;
+    }
+    const float r = kOne - f;               // FSTP
+    const float sq = r * r;                 // FSTP
+    return static_cast<float>(1.0 - (static_cast<double>(sq) + sq));
+}
+
+// 00791CE2..00791DC6: the scan. prev starts at (0, start); a key with t < time
+// ends it; when nothing ends it the fraction and next value stay 0.
+CurveSample sample_modifier_curve(const ModifierCurve& curve, float t, float start_value) noexcept {
+    CurveSample s{start_value, 0.0f, 0.0f};
+    float prev_time = 0.0f;
+    std::size_t i = 0;
+    for (; i < curve.size(); ++i) {
+        if (t < curve[i].first) break;      // FCOMIP / JC
+        prev_time = curve[i].first;
+        s.prev_value = curve[i].second;
+    }
+    if (i < curve.size()) {
+        // FLD t, FLD prev, FSUBP, FSUBR key, FDIVP, FSTP (00791DA3).
+        s.fraction = static_cast<float>((static_cast<double>(t) - prev_time) /
+                                        (static_cast<double>(curve[i].first) - prev_time));
+        s.next_value = curve[i].second;
+    }
+    return s;
+}
+
+// 00791E39..00791E90: w = s*(1-L) + f*L (FSTP), value = w*next + prev*(1-w).
+float blend_modifier_curve(const CurveSample& s, float linear) noexcept {
+    const double L = linear;
+    const double ease = modifier_ease(s.fraction);
+    const float w = static_cast<float>(ease * (1.0 - L) + L * s.fraction);
+    return static_cast<float>(static_cast<double>(w) * s.next_value +
+                              static_cast<double>(s.prev_value) * (1.0 - w));
+}
+
+// ---------------------------------------------------------------------------
+// type 1, input orbit
+
+void orbit_input_construct_0078e790(OrbitInputModifier& m) noexcept {
+    m = OrbitInputModifier{};
+}
+
+namespace {
+// One axis of 007A0340: rate * dt * (1 - (1 - |a|)^2), signed by a. A NaN axis
+// takes the negative arm (COMISS / JC). Each arm is one x87 chain.
+double axis_delta(float a, float rate, float dt, bool& negative) noexcept {
+    negative = !(a >= 0.0f);
+    if (!negative) {
+        const double r = 1.0 - a;
+        return (1.0 - r * r) * dt * rate;
+    }
+    const double s = static_cast<double>(a) + 1.0;
+    return (1.0 - s * s) * dt * rate;
+}
+constexpr float kPitchMin = 0.01f;                     // 00D7A238
+constexpr double kPitchMaxD = 3.1315927505493164;      // 00D04D20 (double)
+constexpr float kPitchMax = 3.1315927505493164f;       // 00D04D1C
+}  // namespace
+
+// 007A0340. dt = time - last when last >= 0, else 0. Yaw and pitch move with
+// their axes; distance moves against its axis (a positive axis shortens it).
+// Pitch is clamped to [0.01, 3.13159]. With decks, the two button pairs step
+// the deck index through -1..count-1 (wrapping both ways); a deck sets the
+// owner to transform 3 (keepall) at the deck's position and up. Without one
+// the owner is transform 1 (keepy) at the origin plus the spherical offset.
+void orbit_input_step_007a0340(OrbitInputModifier& m, float time, const ModifierInput& in,
+                               OrbitInputHost& host) {
+    float dt = 0.0f;
+    if (m.last_time_20 >= 0.0f) dt = static_cast<float>(static_cast<double>(time) - m.last_time_20);
+    if (m.owner_4 == nullptr) return;
+    bool neg = false;
+    double d = axis_delta(in.yaw_axis_8, m.yaw_rate_c, dt, neg);
+    m.yaw_8 = static_cast<float>(neg ? m.yaw_8 - d : m.yaw_8 + d);
+    d = axis_delta(in.pitch_axis_c, m.pitch_rate_14, dt, neg);
+    m.pitch_10 = static_cast<float>(neg ? m.pitch_10 - d : m.pitch_10 + d);
+    if (kPitchMin > m.pitch_10) m.pitch_10 = kPitchMin;
+    else if (static_cast<double>(m.pitch_10) > kPitchMaxD) m.pitch_10 = kPitchMax;
+    d = axis_delta(in.distance_axis_18, m.distance_rate_1c, dt, neg);
+    m.distance_18 = static_cast<float>(neg ? m.distance_18 + d : m.distance_18 - d);
+
+    if (m.deck_count_28 > 0) {
+        if (in.next_b_5 && in.next_a_4) ++m.deck_index_24;
+        if (in.prev_b_7 && in.prev_a_6) --m.deck_index_24;
+        if (m.deck_index_24 < -1) m.deck_index_24 = m.deck_count_28 - 1;
+        else if (m.deck_index_24 >= m.deck_count_28) m.deck_index_24 = -1;
+    }
+    ModifierKeyframe& k = *m.owner_4;
+    if (m.deck_index_24 != -1) {
+        k.transform_2c = 3;
+        host.deck_row(k.parent_1c, m.deck_index_24, k.local_34, k.up_58);
+        m.last_time_20 = time;
+        return;
+    }
+    k.local_34 = {0.0f, 0.0f, 0.0f};
+    k.transform_2c = 1;
+    m.yaw_8 = ship_ai_firepower_wrap_angle_00605070(m.yaw_8);
+    m.pitch_10 = ship_ai_firepower_wrap_angle_00605070(m.pitch_10);
+    k.work_40 = k.local_34;
+    const float sp = static_cast<float>(std::sin(static_cast<double>(m.pitch_10)));
+    const float sy = static_cast<float>(std::sin(static_cast<double>(m.yaw_8)));
+    const float x = static_cast<float>(static_cast<double>(sy) * sp * m.distance_18);
+    const float cy = static_cast<float>(std::cos(static_cast<double>(m.yaw_8)));
+    const float z = static_cast<float>(static_cast<double>(cy) * sp * m.distance_18);
+    const float cp = static_cast<float>(std::cos(static_cast<double>(m.pitch_10)));
+    const float y = static_cast<float>(static_cast<double>(cp) * m.distance_18);
+    k.work_40[0] = static_cast<float>(static_cast<double>(k.work_40[0]) + x);
+    k.work_40[1] = static_cast<float>(static_cast<double>(k.work_40[1]) + y);
+    k.work_40[2] = static_cast<float>(static_cast<double>(z) + k.work_40[2]);
+    m.last_time_20 = time;
+}
+
+// 00791640. |d| is d when d > 0 (COMISS 0.0), else -0.0 - d (00D7A208).
+void orbit_input_track_tick_00791640(OrbitInputModifier& m) noexcept {
+    const float a = m.distance_18 > 0.0f ? m.distance_18 : -0.0f - m.distance_18;
+    const float r = static_cast<float>(static_cast<double>(a) * 1.399999976158142);   // 00D045F0, FSTP
+    if (5.0f > r) m.distance_rate_1c = 5.0f;                                           // 00CE3850
+    else m.distance_rate_1c = r > 300.0f ? 300.0f : r;                                 // 00CE3AE8
+}
+
+// 007916C0. d = pose row 3 - owner +34h (each FSTP); |d| from a float sum of
+// squares, 0 unless the sum exceeds 1e-10 (double 00CE3820). Below 1e-5
+// (00CE3C70) yaw and pitch are 0; otherwise pitch = acos(d.y/|d|) (0 above 1,
+// pi (00D7A264) below -1) and yaw = atan2(d.x/|d|, d.z/|d|). The deck count
+// is the parent's camera array size, 0 without a parent.
+void orbit_input_begin_007916c0(OrbitInputModifier& m, std::size_t camera, OrbitInputHost& host) {
+    ModifierKeyframe& k = *m.owner_4;
+    const std::array<float, 16> w = host.camera_pose_in_parent(camera, k.parent_1c);
+    const float x = static_cast<float>(static_cast<double>(w[12]) - k.local_34[0]);
+    const float y = static_cast<float>(static_cast<double>(w[13]) - k.local_34[1]);
+    const float z = static_cast<float>(static_cast<double>(w[14]) - k.local_34[2]);
+    const float sum = static_cast<float>((static_cast<double>(x) * x + static_cast<double>(y) * y) +
+                                         static_cast<double>(z) * z);
+    float len = 0.0f;
+    if (static_cast<double>(sum) > 1e-10) len = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    m.distance_18 = len;
+    if (1e-05 > static_cast<double>(len)) {
+        m.pitch_10 = 0.0f;
+        m.yaw_8 = 0.0f;
+    } else {
+        const float xn = static_cast<float>(static_cast<double>(x) / len);
+        const float yn = static_cast<float>(static_cast<double>(y) / len);
+        const float zn = static_cast<float>(static_cast<double>(z) / len);
+        if (yn > 1.0f) m.pitch_10 = 0.0f;
+        else if (-1.0f > yn) m.pitch_10 = 3.1415927410125732f;
+        else m.pitch_10 = static_cast<float>(std::acos(static_cast<double>(yn)));
+        m.yaw_8 = static_cast<float>(std::atan2(static_cast<double>(xn), static_cast<double>(zn)));
+    }
+    m.deck_count_28 = k.parent_1c != 0 ? host.deck_count(k.parent_1c) : 0;
+}
+
+// ---------------------------------------------------------------------------
+// goaround
+
+// 007A0650: all curves empty, the three linear weights 0.6 (00CE3D30).
+void goaround_construct_007a0650(GoAroundModifier& m) noexcept {
+    m = GoAroundModifier{};
+}
+
+// 007A3100. Keys in order: radius (+14h), theta (+24h, degrees), rho (+34h,
+// degrees), zoom (+44h), patterntime (+54h), then radiuslinearblend (+8h),
+// thetalinearblend (+Ch), rholinearblend (+10h) when they are numbers.
+void goaround_parse_007a3100(GoAroundModifier& m, const ModifierLuaValue& table) {
+    parse_curve(m.radius_14, table.field("radius"), false);
+    parse_curve(m.theta_24, table.field("theta"), true);
+    parse_curve(m.rho_34, table.field("rho"), true);
+    parse_curve(m.zoom_44, table.field("zoom"), false);
+    parse_curve(m.patterntime_54, table.field("patterntime"), false);
+    const ModifierLuaValue& rl = table.field("radiuslinearblend");
+    if (rl.kind == ModifierLuaValue::Kind::Number) m.radius_linear_8 = rl.number_f32();
+    const ModifierLuaValue& tl = table.field("thetalinearblend");
+    if (tl.kind == ModifierLuaValue::Kind::Number) m.theta_linear_c = tl.number_f32();
+    const ModifierLuaValue& pl = table.field("rholinearblend");
+    if (pl.kind == ModifierLuaValue::Kind::Number) m.rho_linear_10 = pl.number_f32();
+}
+
+// 00791C90. t = max(elapsed + offset, 0). Radius starts at 100, theta and rho
+// at 0. The owner's working position is its authored position plus the
+// spherical offset (rho the heading about Y, theta the elevation); zoom and
+// patterntime are written only when their curve has keys.
+void goaround_evaluate_00791c90(GoAroundModifier& m, float elapsed, float offset) noexcept {
+    float t = static_cast<float>(static_cast<double>(elapsed) + offset);   // 00791CA2
+    if (0.0f > t) t = 0.0f;
+    const float radius = blend_modifier_curve(
+        sample_modifier_curve(m.radius_14, t, kGoAroundRadiusStart), m.radius_linear_8);
+    const float theta = blend_modifier_curve(sample_modifier_curve(m.theta_24, t, 0.0f), m.theta_linear_c);
+    const float rho = blend_modifier_curve(sample_modifier_curve(m.rho_34, t, 0.0f), m.rho_linear_10);
+    ModifierKeyframe& k = *m.owner_4;
+    // 007921E6..00792262; FSIN/FCOS results are spilled to float.
+    const float sin_rho = static_cast<float>(std::sin(static_cast<double>(rho)));
+    const float cos_theta = static_cast<float>(std::cos(static_cast<double>(theta)));
+    k.work_40[0] = static_cast<float>(-static_cast<double>(sin_rho) * radius * cos_theta + k.local_34[0]);
+    const float cos_rho = static_cast<float>(std::cos(static_cast<double>(rho)));
+    k.work_40[2] = static_cast<float>(static_cast<double>(cos_rho) * radius * cos_theta + k.local_34[2]);
+    const float sin_theta = static_cast<float>(std::sin(static_cast<double>(theta)));
+    k.work_40[1] = static_cast<float>(static_cast<double>(sin_theta) * radius + k.local_34[1]);
+    if (!m.zoom_44.empty()) k.zoom_c8 = linear_curve(m.zoom_44, t);
+    if (!m.patterntime_54.empty()) k.smooth_d0 = linear_curve(m.patterntime_54, t);
+}
+
+// 007918B0 / 007A2690.
+void goaround_write_bits_007918b0(const GoAroundModifier& m, NativeBitCursor* c,
+                                  const NativeBitNumericContext& ctx) {
+    write_weight(c, m.radius_linear_8, ctx);
+    write_weight(c, m.rho_linear_10, ctx);
+    write_weight(c, m.theta_linear_c, ctx);
+    write_curve(c, m.radius_14, kRadiusScale, ctx);
+    write_curve(c, m.theta_24, kAngleScale, ctx);
+    write_curve(c, m.rho_34, kAngleScale, ctx);
+    write_curve(c, m.zoom_44, kAngleScale, ctx);
+    write_curve(c, m.patterntime_54, kAngleScale, ctx);
+}
+
+void goaround_read_bits_007a2690(GoAroundModifier& m, NativeBitCursor* c,
+                                 const NativeBitNumericContext& ctx) {
+    read_weight(c, m.radius_linear_8, ctx);
+    read_weight(c, m.rho_linear_10, ctx);
+    read_weight(c, m.theta_linear_c, ctx);
+    read_curve(c, m.radius_14, kRadiusScale, ctx);
+    read_curve(c, m.theta_24, kAngleScale, ctx);
+    read_curve(c, m.rho_34, kAngleScale, ctx);
+    read_curve(c, m.zoom_44, kAngleScale, ctx);
+    read_curve(c, m.patterntime_54, kAngleScale, ctx);
+}
+
+// ---------------------------------------------------------------------------
+// gamecamera / fpscamera
+
+// 00792710 / 007A2A80.
+void gamecamera_write_bits_00792710(const GameCameraModifier& m, NativeBitCursor* c,
+                                    const NativeBitNumericContext& ctx) {
+    write_weight(c, m.rho_linear_14, ctx);
+    write_weight(c, m.theta_linear_10, ctx);
+    write_curve(c, m.theta_18, kAngleScale, ctx);
+    write_curve(c, m.rho_28, kAngleScale, ctx);
+}
+
+void gamecamera_read_bits_007a2a80(GameCameraModifier& m, NativeBitCursor* c,
+                                   const NativeBitNumericContext& ctx) {
+    read_weight(c, m.rho_linear_14, ctx);
+    read_weight(c, m.theta_linear_10, ctx);
+    read_curve(c, m.theta_18, kAngleScale, ctx);
+    read_curve(c, m.rho_28, kAngleScale, ctx);
+}
+
+// 007A06D0(fps): empty curves, start time -1.0, both linear weights 0.8.
+void gamecamera_construct_007a06d0(GameCameraModifier& m, bool fps) noexcept {
+    m = GameCameraModifier{};
+    m.fps_78 = fps;
+}
+
+// 007A3B20. thetalinearblend (+10h) and rholinearblend (+14h) when numbers;
+// theta (else Vlook) into +18h and rho (else Hlook) into +28h; targetentity.Ptr
+// into the +38h observer. A table value {Ptr = entity} becomes the marker
+// count + 10000 and the entity is appended to +58h/+68h. A table value whose
+// Ptr is not userdata pushes whatever the stack slot last held (007A407F reads
+// [ESP+18h] unwritten on that path); this keeps the previous value pushed,
+// or 0 for the first key.
+void gamecamera_parse_007a3b20(GameCameraModifier& m, const ModifierLuaValue& table) {
+    const ModifierLuaValue& tl = table.field("thetalinearblend");
+    if (tl.kind == ModifierLuaValue::Kind::Number) m.theta_linear_10 = tl.number_f32();
+    const ModifierLuaValue& rl = table.field("rholinearblend");
+    if (rl.kind == ModifierLuaValue::Kind::Number) m.rho_linear_14 = rl.number_f32();
+
+    auto parse_angles = [](ModifierCurve& curve, int& count, std::vector<std::size_t>& entities,
+                           const ModifierLuaValue& v) {
+        if (v.is_nil()) return;
+        if (v.kind == ModifierLuaValue::Kind::Number) {
+            curve.emplace_back(0.0f, static_cast<float>(static_cast<double>(v.number_f32()) * kDegToRad));
+            return;
+        }
+        float carried = 0.0f;
+        for (int i = 0; i == 0 || !v.at(i).is_nil(); i += 2) {
+            const float time = i == 0 ? 0.0f : v.at(i).number_f32();
+            const ModifierLuaValue& x = v.at(i + 1);
+            if (x.kind == ModifierLuaValue::Kind::Table) {
+                const ModifierLuaValue& ptr = x.field("Ptr");
+                if (ptr.kind == ModifierLuaValue::Kind::Userdata) {
+                    // FILD count, FADD 10000.0, FSTP (007A3FF9..007A4006).
+                    carried = static_cast<float>(static_cast<double>(count) + kEntityRefBase);
+                    entities.push_back(ptr.userdata);
+                    ++count;
+                }
+            } else {
+                carried = static_cast<float>(static_cast<double>(x.number_f32()) * kDegToRad);
+            }
+            curve.emplace_back(time, carried);
+        }
+    };
+    const ModifierLuaValue* theta = &table.field("theta");
+    if (theta->is_nil()) theta = &table.field("Vlook");
+    parse_angles(m.theta_18, m.theta_entity_count_50, m.theta_entities_58, *theta);
+    const ModifierLuaValue* rho = &table.field("rho");
+    if (rho->is_nil()) rho = &table.field("Hlook");
+    parse_angles(m.rho_28, m.rho_entity_count_54, m.rho_entities_68, *rho);
+
+    const ModifierLuaValue& target = table.field("targetentity");
+    if (target.kind == ModifierLuaValue::Kind::Table) {
+        const ModifierLuaValue& ptr = target.field("Ptr");
+        if (ptr.kind == ModifierLuaValue::Kind::Userdata) m.target_4c = ptr.userdata;
+    }
+}
+
+namespace {
+// The shared head of 00792500/00792610: the stored value, or the entity it
+// marks. Returns 0 when the marker's index or entity is missing.
+template <class Angle>
+float resolve_key(const ModifierCurve& curve, const std::vector<std::size_t>& entities,
+                  std::size_t index, Angle angle) {
+    const float value = curve.at(index).second;
+    if (value < kEntityRefMin) return value;                  // COMISS / JC
+    // FSUB 9999.900390625, _ftol (00BF7420): truncation.
+    const auto slot = static_cast<std::uint32_t>(
+        static_cast<std::int64_t>(static_cast<double>(value) - kEntityRefBias));
+    if (slot >= entities.size() || entities[slot] == 0) return 0.0f;
+    return angle(entities[slot]);
+}
+}  // namespace
+
+// 00792500: theta toward an entity is -atan2(y, sqrt(x*x + z*z)) in the
+// parent's frame, the sum and the root each spilled to float.
+float gamecamera_theta_key_00792500(const GameCameraModifier& m, std::size_t index,
+                                    GameCameraModifierHost& host) {
+    return resolve_key(m.theta_18, m.theta_entities_58, index, [&](std::size_t e) {
+        const auto p = host.point_in_parent_frame(m.owner_4->parent_1c, e);
+        const float sum = static_cast<float>(static_cast<double>(p[0]) * p[0] + static_cast<double>(p[2]) * p[2]);
+        const float h = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+        const float a = static_cast<float>(std::atan2(static_cast<double>(p[1]), static_cast<double>(h)));
+        return -a;
+    });
+}
+
+// 00792610: rho toward an entity is atan2(x, z) in the parent's frame.
+float gamecamera_rho_key_00792610(const GameCameraModifier& m, std::size_t index,
+                                  GameCameraModifierHost& host) {
+    return resolve_key(m.rho_28, m.rho_entities_68, index, [&](std::size_t e) {
+        const auto p = host.point_in_parent_frame(m.owner_4->parent_1c, e);
+        return static_cast<float>(std::atan2(static_cast<double>(p[0]), static_cast<double>(p[2])));
+    });
+}
+
+// 00795EE0. +Ch holds the previous t, so dt = t - previous; nothing runs while
+// dt <= 0 and the previous t is then kept. With a camera the two angle curves
+// are blended (start value 0), routed to the camera by the parent's kind, the
+// camera is updated by dt and its matrix becomes the owner's pose; a linked
+// look-at key is put 200 units along the matrix's third row.
+void gamecamera_evaluate_00795ee0(GameCameraModifier& m, float elapsed, float offset,
+                                  GameCameraModifierHost& host) {
+    const float t = static_cast<float>(static_cast<double>(elapsed) + offset);     // 00795EF4
+    ModifierKeyframe& k = *m.owner_4;
+    k.field_cc = 0.0f;                                                            // 00795EFF
+    const float dt = static_cast<float>(static_cast<double>(t) - m.last_time_c);  // 00795F07
+    if (!(dt > 0.0f)) return;                                                     // JBE 007965C2
+    if (m.camera_8 != 0) {
+        float theta = blend_modifier_curve(
+            sample_resolved(m.theta_18, t, [&](std::size_t i) { return gamecamera_theta_key_00792500(m, i, host); }),
+            m.theta_linear_10);
+        float rho = blend_modifier_curve(
+            sample_resolved(m.rho_28, t, [&](std::size_t i) { return gamecamera_rho_key_00792610(m, i, host); }),
+            m.rho_linear_14);
+        const std::size_t parent = k.parent_1c;
+        if (!m.rho_28.empty() || !m.theta_18.empty() || m.target_4c != 0) {
+            if (host.is_kind(parent, kKind0F) || host.is_kind(parent, kKind18)) {
+                if (m.fps_78) {
+                    if (m.target_4c != 0) {                                       // 00796267
+                        const auto p = host.point_in_parent_cached_frame(parent, m.target_4c);
+                        rho = static_cast<float>(std::atan2(static_cast<double>(p[0]), static_cast<double>(p[2])));
+                        const float sum = static_cast<float>(static_cast<double>(p[0]) * p[0] +
+                                                             static_cast<double>(p[2]) * p[2]);
+                        const float h = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+                        theta = -static_cast<float>(std::atan2(static_cast<double>(p[1]), static_cast<double>(h)));
+                    }
+                    host.camera_set_angles_0042aa00(m.camera_8, rho, theta, true);
+                } else {
+                    host.camera_store_orbit_angles(m.camera_8, theta, rho);      // 0079634C
+                }
+            } else if (host.is_kind(parent, kKind06) && host.camera_3e8_is_zero(m.camera_8)) {
+                host.camera_store_free_angles(m.camera_8, rho, theta);           // 00796225
+            }
+        }
+        if (m.fps_78 && parent != 0 && host.is_kind(parent, kKind0F)) {
+            host.fps_attach_007c7800(parent, m.camera_8);                        // 0079639A
+        }
+        host.camera_update_dc(m.camera_8, dt);
+        const std::array<float, 16> w = host.camera_matrix_114(m.camera_8);
+        k.matrix_7c = w;
+        k.matrix_valid_bc = true;
+        k.work_40 = {w[12], w[13], w[14]};
+        k.work_up_64 = {w[4], w[5], w[6]};
+        if (k.linked_20 != nullptr) {                                            // 007964DF
+            ModifierKeyframe& l = *k.linked_20;
+            l.modifier_flag_25 = true;
+            l.up_58 = {w[4], w[5], w[6]};
+            for (int i = 0; i < 3; ++i) {
+                const float step = static_cast<float>(static_cast<double>(w[8 + i]) * kLinkedForward);
+                l.local_34[i] = static_cast<float>(static_cast<double>(step) + k.work_40[i]);
+            }
+            l.work_up_64 = l.up_58;
+            l.work_40 = l.local_34;
+        }
+    }
+    m.last_time_c = t;                                                            // 007965BD
+}
+
+// 0079CBD0: built once (+8h non-null skips) and only with a parent. Kind 18h
+// takes the entity's +3D0h first. The tests run in this order.
+GameCameraChoice gamecamera_choose_camera_0079cbd0(const GameCameraModifier& m,
+                                                   GameCameraModifierHost& host) {
+    GameCameraChoice c{};
+    if (m.camera_8 != 0 || m.owner_4 == nullptr || m.owner_4->parent_1c == 0) return c;
+    std::size_t e = m.owner_4->parent_1c;
+    if (host.is_kind(e, kKind18)) e = host.squadron_leader_3d0(e);
+    c.entity = e;
+    if (host.is_kind(e, kKind08)) c.cls = GameCameraClass::Kind08_00650830;
+    else if (host.is_kind(e, kKind06)) c.cls = GameCameraClass::Kind06_ShipCaptain_0064b650;
+    else if (host.is_kind(e, kKind0F)) c.cls = m.fps_78 ? GameCameraClass::Kind0F_Fps_006065d0
+                                                       : GameCameraClass::Kind0F_00605130;
+    else if (host.is_kind(e, kKind46)) c.cls = GameCameraClass::Kind46_0078e830;
+    else if (host.is_kind(e, kKind45)) c.cls = GameCameraClass::Kind45_005176f0;
+    return c;
+}
+
+}  // namespace bsp::cc13cam
