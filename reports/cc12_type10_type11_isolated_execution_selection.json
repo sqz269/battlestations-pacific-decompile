@@ -17230,6 +17230,101 @@
           "actual_execution_event": null,
           "actual_T0": null,
           "actual_F": null
+        },
+        "fresh_F7_Prepare_complete_original_awaited_tool_sequence_checkpoint": {
+          "status": "F7_PREPARE_ALL_SEVEN_ORIGINAL_TOOL_ROLES_COMPLETED_INDEPENDENT_OUTCOME_REVIEW_PENDING",
+          "author": "Root",
+          "Source_credit": 0,
+          "Root_joint_DATA_acceptance_issued": true,
+          "new_native_clock_started": true,
+          "complete_preclock_phase_authorization": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_Prepare_complete_exact_preclock_phase_authorization_DATA01.json",
+            "bytes": 80963,
+            "sha256": "8d1faf6c39411cd855efad61a98a59008f034f64bd3ea6752e29a8d8bf7c869e"
+          },
+          "complete_Root_adopted_union_DATA_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_complete_actual_adopted_union_preclock_Root_acceptance_DATA01.json",
+            "bytes": 96307,
+            "sha256": "e79e0b0135ad4283ef57c397d463f401763079d20e2d447288355b4a356d12d9"
+          },
+          "complete_Root_readiness_and_codec_DATA_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_complete_closed_readiness_and_codec_Root_acceptance_DATA01.json",
+            "bytes": 175955,
+            "sha256": "e1dbe287de9d4a4e461a55764fb45498533b3aed794e456c67df07159c1d46d0"
+          },
+          "complete_original_single_awaited_executor_observations": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_Prepare_complete_original_awaited_executor_observations_DATA01.json",
+            "bytes": 8035545,
+            "sha256": "5c2ac161ff8a60d98004ed8756ee4ad0d231db58a1e54aed3d39d54403d153a0"
+          },
+          "complete_actual_pins": {
+            "execution_raw_capture": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\type1011_f7_prepare01_raw_capture01\\execution.raw_capture.json",
+              "bytes": 10702,
+              "sha256": "d65355926200ba559e123f625d65e7648c16e8f6f60f2869aaf07223bb0d68c7"
+            },
+            "origin_context": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe08\\root_observer\\type1011_f7_prepare01\\origin_context.json",
+              "bytes": 6596,
+              "sha256": "142a32dcdfeaad457fc32be92ba11cc8cf6e8e569640311c8f4d10c7fd1a08b5"
+            },
+            "execution_event": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe08\\root_observer\\type1011_f7_prepare01\\execution_raw_API_event.json",
+              "bytes": 2095,
+              "sha256": "0541289c544de22e22c1cee73934905a73205b13968ceb7205437a04ec10eb7c"
+            },
+            "execution_witness": {
+              "bytes": 2617,
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe08\\root_observer\\type1011_f7_prepare01\\execution_tool_terminal.json",
+              "sha256": "5ff85a6a0f98845eb3872ee47125425bad78fdd085f30dae45fa7afed85d7a72"
+            },
+            "closing_raw_capture": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\type1011_f7_prepare01_raw_capture01\\closing.raw_capture.json",
+              "bytes": 9003,
+              "sha256": "e5729ebafc2920c22fd13d621cf7277e6f62c1213bf6b30058e06b9f7fc4b232"
+            },
+            "closing_event": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe08\\root_observer\\type1011_f7_prepare01\\closing_raw_API_event.json",
+              "bytes": 2107,
+              "sha256": "12f36cf38740813abf722d09ec295ec103b64b48eea3ba698135e7ae54b5f898"
+            },
+            "closing_recorder_raw_capture": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\type1011_f7_prepare01_raw_capture01\\closing_recorder.raw_capture.json",
+              "bytes": 4168,
+              "sha256": "60517f879cf4015e4959a176eed09158d7e3e928845185f35f203dfaa33bf1cb"
+            },
+            "after_fourth_QPC": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\type1011_f7_prepare01_after_fourth_QPC.DATA.json",
+              "bytes": 2497,
+              "sha256": "d8dfd56b5ee7617a0b147da8fa479cbe1ba32f4f71f17ccc516268c154105756"
+            }
+          },
+          "completed_original_roles": [
+            "execution",
+            "execution_event_writer",
+            "execution_recorder",
+            "closing",
+            "closing_event_writer",
+            "closing_recorder",
+            "external_fourth_QPC_observer"
+          ],
+          "native_tool_calls": 38,
+          "timeline_entries": 44,
+          "disclosed_DATA_support_chains": 3,
+          "original_dispatch_QPC_ticks": 11659828800895,
+          "original_QPC_frequency": 10000000,
+          "original_strict_600_deadline_ticks": 11665828800895,
+          "already_observed_fourth_terminal_upper_bound_QPC_ticks": 11663149363971,
+          "already_observed_fourth_terminal_upper_bound_seconds": 332.0563076,
+          "all_seven_roles_original_zero_terminals_received": true,
+          "complete_original_awaited_Source_returned": true,
+          "complete_raw_and_outcome_independent_review_pending": true,
+          "Root_phase_advance_authorized": false,
+          "fixture_qualification": false,
+          "runtime_authority": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "preserved_F6_failed_attempt_remains_separate": true
         }
       }
     }
