@@ -443,4 +443,324 @@ void control_slider_changed_0055d330(ControlSliderListenerHost& host) {
     if (delta != 0) host.adjust_0055ccc0(delta);
 }
 
+void control_binding_screen_update_00560430(ControlBindingUpdateState& screen,
+    ControlBindingUpdateHost& host) {
+    const float step = host.game_frame_seconds_21ec();  // 0056044B..00560460
+
+    // 00560469..0056049C: the hint timer runs down to exactly zero.
+    if (screen.hint_timer != 0.0f) {
+        screen.hint_timer -= step;
+        if (screen.hint_timer < 0.0f) screen.hint_timer = 0.0f;
+    }
+
+    // 005604A3..00560688: the Xbox keyboard that names a preset has finished.
+    if (screen.keyboard_pending && !host.overlapped_pending_is_io_pending()) {
+        screen.keyboard_pending = false;
+        if (host.xget_overlapped_result_00a4d42e() == 0) {
+            for (char16_t& c : screen.preset_name) {
+                if (c == 0) break;
+                host.filter_name_char_005ef500(c);
+            }
+            if (!host.directory_exists_0109ceec_8(kControlPresetDirectory)) {
+                host.make_directory_00bf94c6(kControlPresetDirectory);
+            }
+            const std::string path = host.format_preset_path_sprintf_s(screen.preset_name);
+            host.preset_writer_open_00bd5d60(path);
+            host.preset_writer_root_00bd6db0(kControlPresetRoot);
+            host.write_control_preset_006a5640();
+            host.preset_writer_close_00bd5860();
+        }
+    }
+
+    // 0056068D..00560706: while input keeps arriving the capture and setting
+    // pages wait for the hold time to run out; +195h skips one update.
+    const bool was_seen = screen.input_seen;
+    const bool seen = host.input_pending_00a90f90();
+    screen.input_hold -= step;
+    screen.input_seen = seen;
+    if (was_seen && screen.input_hold > 0.0f) {
+        if (screen.page == 3 && !screen.editing_setting) return;
+        if (screen.page == 2) return;
+    }
+    if (screen.skip_next_update) {
+        screen.skip_next_update = false;
+        return;
+    }
+
+    switch (screen.page) {
+    case 0:
+        // 00560715..00560780
+        if (host.action_004d92b0(kControlActionBack)) {
+            host.set_global_e19650(0);
+            host.push_interface_request_004cc460(0x0C, 0);
+            if (!host.x360comp_00f88a30()) host.input_action_configuration_00698a10();
+            screen.device_selection.fill(0);
+        } else {
+            host.page_widget_virtual_34(0);
+        }
+        return;
+    case 1:
+        if (host.action_004d92b0(kControlActionBack)) host.refresh_page_0055e3a0(0);
+        return;
+    case 2: {
+        // 005607B2..00560845: a moved slider is remembered.
+        ControlInputEvent event;
+        float value = 0.0f;
+        host.read_input_event_00a90530(event, value);
+        if (event.kind == 2 && host.input_event_name_0069e500(event) == kControlSliderEventName) {
+            screen.last_slider_value = value;
+        }
+        if (event.kind == 0 && !screen.editing_setting) {
+            if (event.code == kControlKeyDelete) {
+                // 0056086F..0056091C: Delete stores the unbound event.
+                const ControlBindingKey key = host.binding_key_00427ae0(screen.device_selection[0]);
+                ControlInputEvent unbound;
+                unbound.code = -1;
+                host.set_binding_006a9a40(key, screen.binding_slot, unbound, value);
+                host.binding_text_submit_00abaed0(host.binding_slot_text_006a9850(key, screen.binding_slot));
+                host.update_binding_row_text_0055c5a0();
+                screen.unsaved_changes = true;
+                return;
+            }
+            if (event.code == kControlKeyReturn) {
+                // 0056092E..0056094D: UCOMISS/LAHF/JP, so only an exact 0.0f
+                // timer starts the capture; otherwise the actions are skipped.
+                if (screen.hint_timer == 0.0f) {
+                    host.begin_edit_0055c3b0();
+                    host.refresh_page_0055e3a0(3);
+                    return;
+                }
+                break;
+            }
+        }
+        // 00560952..005609C9
+        if (host.action_004d92b0(kControlActionBack)) {
+            host.confirm_or_next_device_00560210();
+            return;
+        }
+        if (host.action_004d92b0(kControlActionLeft)) {
+            if (screen.editing_setting) {
+                host.adjust_setting_0055ccc0(-1);
+            } else {
+                screen.binding_slot = 0;
+                host.begin_edit_0055c3b0();
+            }
+        } else if (host.action_004d92b0(kControlActionRight)) {
+            if (screen.editing_setting) {
+                host.adjust_setting_0055ccc0(1);
+            } else {
+                screen.binding_slot = 1;
+                host.begin_edit_0055c3b0();
+            }
+        }
+        break;
+    }
+    case 3: {
+        // 00560A17..00560B79: capture the next input unless editing a value.
+        if (screen.editing_setting || !seen) return;
+        ControlInputEvent event;
+        float value = 0.0f;
+        host.read_input_event_00a90530(event, value);
+        if (event.kind == 2 && host.input_event_name_0069e500(event) == kControlSliderEventName) {
+            event.flag10 = true;
+            // 00560AA1..00560AB8: an unmoved slider is not a binding.
+            if (value == screen.last_slider_value) return;
+        }
+        // 00560ABE..00560AC9: key 1 (DirectInput Escape) leaves the binding as is.
+        if (!(event.kind == 0 && event.code == 1)) {
+            const ControlBindingKey key = host.binding_key_00427ae0(screen.device_selection[0]);
+            host.device_tree_index_0055c110(key);
+            host.set_binding_006a9a40(key, screen.binding_slot, event, value);
+            host.binding_text_submit_00abaed0(host.binding_slot_text_006a9850(key, screen.binding_slot));
+            screen.unsaved_changes = true;
+        }
+        host.refresh_page_0055e3a0(2);
+        host.update_binding_row_text_0055c5a0();
+        return;
+    }
+    case 4:
+        // 00560B80..00560BC5: the second 004D92B0 call is a fresh read.
+        if (!host.action_004d92b0(kControlActionBack) && !host.input_device_present_004ba6d0(2, 0)) return;
+        host.set_global_e19428(host.action_004d92b0(kControlActionBack));
+        host.dismiss_prompt_slot_00532a20(3);
+        host.refresh_page_0055e3a0(2);
+        return;
+    default:
+        return;
+    }
+
+    // 005609CE..00560A04, reached from page 2 only.
+    host.scroller_update_00683820();
+    if (screen.scroll_dragging || screen.scroll_target != 0) host.scroll_to_selection_0055cec0(0);
+    host.focus_00553b00(!screen.editing_setting);
+}
+
+void multi_mode_selector_enter_005ec5b0(MultiModeSelectorState& screen, MultiModeSelectorHost& host) {
+    using W = MultiModeWidget;
+    // 005EC5CE..005EC656: the frame title unless the interface query answers.
+    if (!host.interface_query_00687860()) {
+        host.set_frame_title_00518d60(host.skirmish_218c() ? kMultiSkirmishTitle : kMultiModeSelectorTitle);
+        host.set_frame_flag_00518b90(2);
+    }
+    const bool any_mode_allowed = host.global_e19610() == 2;  // 005EC65E..005EC66A
+
+    host.widget_virtual(W::ModeList20, 0x60, 0);
+    host.listbox_set_listener_00a9ac40(W::ModeList20, false);
+    host.listbox_clear_rows_00a9bec0();
+    // 005EC6F3..005EC763: six rows; +77h is set when the row is not usable.
+    for (std::size_t index = 0; index < kMultiModeLabels.size(); ++index) {
+        const MainMenuWidgetRef row = host.add_mode_row();
+        host.row_set_label_00abbe50(row, kMultiModeLabels[index]);
+        const bool enabled = !(index == 5 && !any_mode_allowed);
+        host.row_virtual_34(row, enabled);
+        host.row_set_byte_77(row, !(enabled && kMultiModeRowFlags[index] != 0));
+    }
+    // 005EC765..005EC789: the remembered mode is clamped to 0..4, or 0..5.
+    const std::int32_t last = any_mode_allowed ? 5 : 4;
+    const std::int32_t remembered = host.global_e19614();
+    host.set_global_e19614(remembered < 0 ? 0 : (remembered > last ? last : remembered));
+
+    host.listbox_call_00a9cf30(true, true);
+    if (screen.pending_selection != -1) {
+        host.listbox_select_index_00a9c7c0(W::ModeList20, screen.pending_selection);
+    } else {
+        host.listbox_select_first_selectable_00a9c310();
+    }
+    screen.pending_selection = -1;
+    host.listbox_set_listener_00a9ac40(W::ModeList20, true);
+    host.widget_virtual(W::ModeList20, 0x80, 1);
+    host.widget_virtual(W::ModeList20, 0x60, 1);
+    host.widget_virtual(W::Panel1C, 0x34, 0);
+    screen.option_list_active = false;
+    host.widget_virtual(W::OptionListA8, 0x60, 0);
+    host.widget_virtual(W::ModeList20, 0x60, 1);
+    host.listbox_set_widget_listener_00aa6bc0(W::ModeList20, true);
+    host.listbox_set_listener_00a9ac40(W::ModeList20, true);
+    host.listbox_set_widget_listener_00aa6bc0(W::OptionListA8, false);
+    host.listbox_set_listener_00a9ac40(W::OptionListA8, false);
+    host.input_owner_update_00a92c40(0.0f);
+    screen.field_e4 = 8;
+    screen.field_e8 = 0;
+    screen.field_ec = 0x13;
+    screen.field_f0 = 0;
+    screen.session_stage = 3;
+
+    // 005EC87B..005EC921: reopen on the option list (focus moves to +A8h).
+    if (host.restore_options_e08700()) {
+        host.open_options_005ec250();
+        host.widget_virtual(W::Panel1C, 0x34, 1);
+        screen.option_list_active = true;
+        host.widget_virtual(W::OptionListA8, 0x60, 1);
+        host.widget_virtual(W::ModeList20, 0x60, 0);
+        host.listbox_set_widget_listener_00aa6bc0(W::ModeList20, false);
+        host.listbox_set_listener_00a9ac40(W::ModeList20, false);
+        host.listbox_set_widget_listener_00aa6bc0(W::OptionListA8, true);
+        host.listbox_set_listener_00a9ac40(W::OptionListA8, true);
+        host.widget_virtual(W::OptionListA8, 0x34, 1);
+        host.set_byte_77(W::OptionListA8, false);
+        host.listbox_select_index_00a9c7c0(W::OptionListA8, 0);
+        host.layout_options_005ebdd0();
+        host.input_owner_update_00a92c40(0.0f);
+    }
+
+    // 005EC926..005EC970: refresh the QoS service lookup on a live session.
+    if (host.session_present_f8a2fc() && host.session_virtual(0x198, 0)) {
+        if (screen.qos_handle != 0) {
+            host.xnet_qos_release_00a4d45e(screen.qos_handle);
+            screen.qos_handle = 0;
+        }
+        if (host.xnet_qos_service_lookup_00a4d458(screen.qos_handle) == 0) host.xnet_get_opt_00a4d452();
+    }
+}
+
+void multi_mode_selector_update_005ecd80(MultiModeSelectorState& screen, float seconds,
+    MultiModeSelectorHost& host) {
+    using W = MultiModeWidget;
+    if (host.main_menu_child_blocked_60_4()) return;  // 005ECD9B..005ECDAE
+    // 005ECDB4..005ECDEC: back, unless the accept action fired in the same frame.
+    if (host.action_004d92b0(0x4B) && !host.action_004d92b0(0x4A)) {
+        host.back_005eca90();
+        return;
+    }
+    if (!screen.option_list_active) {
+        // 005ECDFF..005ECF7A
+        host.scroller_update_00683820();
+        const bool scrolls = host.scroller_has_range_96();
+        host.rebuild_command_bar_0054b530({{
+            {0xA2, "globals.select", 0},
+            {0xB3, "globals.navigate", 1},
+            {static_cast<std::uint8_t>(scrolls ? 0xB2 : 0x00), scrolls ? "globals.scroll_menu" : "", 1},
+            {0xA3, "globals.back", 2},
+            {0x00, "", 1},
+        }});
+        host.profile_hints_00427190(8);
+        return;
+    }
+
+    // 005ECF7F..005ECFCB: an empty selection in the idle stage reselects row 0.
+    if (host.option_list_selected_00a9c920() == -1 && screen.session_stage == 3) {
+        host.listbox_select_index_00a9c7c0(W::OptionListA8, 0);
+        host.widget_virtual(W::OptionListA8, 0x60, 1);
+        host.set_byte_77(W::OptionListA8, false);
+        host.widget_virtual(W::OptionListA8, 0x34, 1);
+    }
+    if (host.action_004d92b0(0x4C)) {
+        host.change_option_005ecba0(-1);
+    } else if (host.action_004d92b0(0x4D)) {
+        host.change_option_005ecba0(1);
+    } else if (host.action_004d92b0(0x4A)) {
+        host.open_options_005ec250();
+    }
+    if (screen.session_stage == 3) {
+        host.rebuild_command_bar_0054b530({{
+            {0xA2, "FE.create", 0},
+            {0xB3, "globals.navigate", 1},
+            {0xAF, "globals.change", 1},
+            {0xA3, "globals.back", 2},
+            {0x00, "", 1},
+        }});
+    }
+    // 005ED17E..005ED19B: stages 0..2 run the timer on the real argument.
+    const std::int32_t stage = screen.session_stage;
+    if (stage == 0 || stage == 1 || stage == 2) screen.session_timer -= seconds;
+    // 005ED1A1..005ED1B4: COMISS 0 with the timer, so only a negative timer.
+    if (stage == 1 && 0.0f > screen.session_timer) {
+        host.rebuild_command_bar_0054b530({{
+            {0x00, "", 0},
+            {0x00, "", 1},
+            {0x00, "", 1},
+            {0xA3, "globals.back", 2},
+            {0x00, "", 1},
+        }});
+    }
+    if (screen.session_stage == 0) host.poll_session_005eac60();
+    if (screen.session_stage == 1) {
+        if (host.session_virtual(0x180, 0)) {
+            screen.session_stage = 2;
+        } else {
+            // 005ED2D9..005ED32E: back cancels only once the timer has expired.
+            if (!host.action_004d92b0(0x4B)) return;
+            if (!(0.0f > screen.session_timer)) return;
+            host.cancel_session_00688c70();
+            host.session_virtual(0x170, 0);
+            host.session_set_mode_0076fad0(0);
+            screen.session_stage = 3;
+        }
+    }
+    if (screen.session_stage == 2) {
+        host.push_request_interface_logged_00688ad0(0x14);
+        screen.session_stage = 3;
+        return;
+    }
+    // 005ED36A..005ED415: +B0h and +B4h take the option list's height as Y.
+    const float y = host.option_list_height_f4();
+    for (const W follower : {W::FollowerB0, W::FollowerB4}) {
+        std::array<float, 3> position = host.widget_position_00aa6750(follower);
+        position[1] = y;
+        host.widget_set_position_00aa8240(follower, position);
+    }
+    host.layout_options_005ebdd0();
+    host.profile_hints_00427190(8);
+}
+
 } // namespace bsp

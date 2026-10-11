@@ -540,3 +540,52 @@ generic names), 00646170 (register-argument copy helper, `EAX = EDX` count).
 
 Not covered: the same scan outside these leases (00568930..00584000, 005C5600..005E09A0,
 00604A50..0061F000 and 0068xxxx, e.g. the overlay vtables' 0068A320/0068A400/0068A5D0 slots).
+
+## Reconstructed in the third packet
+
+| Address | C++ | Coverage |
+|---|---|---|
+| 00560430 | `control_binding_screen_update_00560430` | reconstructed, complete, build-tested |
+| 005EC5B0 | `multi_mode_selector_enter_005ec5b0` | reconstructed, complete, build-tested |
+| 005ECD80 | `multi_mode_selector_update_005ecd80` | reconstructed, complete, build-tested |
+
+Call sites: `reports/cc13_frontend_menus.json` (188 rows, `tools/verify_report_calls.py`: 0
+failed). Nothing was run in `bsp_game`.
+
+00560430 `BSP_ControlBindingScreen_Update`, `__thiscall`(screen, float seconds), RET 4. The listing
+holds EBX = 0, EBP = 2 and EDI = -1 across the body, which the pseudocode loses (the 004BA6D0(2, 0)
+device test, the "Slider" kind test against EBP, and the -1 event kind). Order of work:
+
+1. The seconds argument is replaced by `*(00E188A8)+21ECh`; the hint timer +10h runs down to 0.
+2. When the Xbox keyboard overlapped at +44h has left `ERROR_IO_PENDING` (3E5h) and
+   `XGetOverlappedResult` returns 0, every character of the wide name at +60h goes through
+   005EF500, `Presets` is created when *0109CEEC slot +8 says it is missing (00BF94C6), and
+   `Presets/%S.preset` is written: 00BD5D60 opens the writer, 00BD6DB0 writes the root
+   `CONTROL_PRESET`, 006A5640 (docs/CC13_SETTINGS_SAVEDATA.md) the preset, 00BD5860 closes it.
+3. +194h becomes 00A90F90 (input pending on *(00F8BBF4)) and +198h counts down; while input was
+   seen and the hold is positive, page 2 and page 3 (when not editing a value) wait. +195h skips
+   one update.
+4. Pages (+168h; meanings provisional): 0 back pushes interface request 0Ch, else slot +34h(0)
+   on *(+210h); 1 back refreshes page 0; 2 reads the raw event (00A90530): a "Slider" axis is
+   remembered at +24Ch, DirectInput Delete (D3h) stores the unbound event (kind -1, code -1),
+   Return (1Ch) starts the capture only when the hint timer is exactly 0, back confirms
+   (00560210), left/right pick binding slot 0/1 or adjust the edited value (0055CCC0); 3 binds the
+   next event unless it is Escape (key 1) or an unmoved slider, then returns to page 2; 4 waits
+   for back or a class-2 device, dismisses prompt slot 3 and returns to page 2.
+5. Page 2 ends with the scroller at +1A0h, 0055CEC0 while dragging, and 00553B00 with the binding
+   text widget (+190h) or null while editing.
+
+005EC5B0 (enter) builds six mode rows from the .data table 00E0898C (`globals.gamemode_escort`,
+`_siege`, `_competitive`, `_duel`, `_islandcapture`, `_any`); `_any` is disabled unless 00E19610 is
+2, and 00E19614 is clamped to 0..4 (0..5 when `_any` is allowed). With 00E08700 set it reopens on
+the option list (+A8h). On a live session it refreshes the QoS service lookup (+10h).
+
+005ECD80 (update): back without accept goes to 005ECA90; on the mode list it shows select /
+navigate / scroll_menu / back; on the option list left/right change the option (005ECBA0), accept
+opens it (005EC250), stage +F8h 3 shows `FE.create`; stages 0..2 run the +FCh timer, stage 1 waits
+for the session (slot +180h) or lets back cancel once the timer is negative (00688C70, session
+slot +170h(0), 0076FAD0(0)), stage 2 pushes interface request 14h. The two followers +B0h/+B4h take
+the option list's +F4h as Y; 00427190(8) on the profile-hints singleton ends both branches.
+
+Open: the multiplayer lobby enter/update (005E51D0, 005E5B30) and main-menu enter (005E8B20),
+each over 1000 instructions, were not reconstructed.

@@ -117,6 +117,72 @@ inline constexpr std::int32_t kDeviceClassIconUnknown = 7;
 
 std::int32_t device_class_icon_index_0065ea30(std::string_view name) noexcept;
 
+// ---------------------------------------------------------------------------
+// Rewards (FE_scoring) update, 0062B640
+// ---------------------------------------------------------------------------
+
+// 0062B640: slot +20h of vtable 00CF50CC, __thiscall(screen, float seconds),
+// RET 4. The argument is overwritten before use: the step is the game's frame
+// time *(00E188A8)+21ECh when it is below 0.03 (double 00CEB690), else 0.03
+// (float 00CE3DB8). Page numbers follow the order 00629D10 names the pages in
+// (1 multiplayer page, 4 rank page); that mapping is provisional.
+inline constexpr float kRewardsMaxStep = 0.03F;            // 00CE3DB8 / 00CEB690
+inline constexpr double kRewardsRankGrowRate = 0.25;      // 00D7A348
+inline constexpr float kRewardsRankAlphaMax = 1.0F;       // 00D7A24C
+inline constexpr float kRewardsArrowFlashSeconds = 0.1F;  // 00D7A2F0
+inline constexpr std::int32_t kRewardsActionLeave = 0x4A;
+inline constexpr std::int32_t kRewardsActionGamerCard = 0x4F;
+inline constexpr std::int32_t kRewardsActionPlayerReview = 0x50;
+inline constexpr std::int32_t kRewardsActionPagePrevious = 0x4C;
+inline constexpr std::int32_t kRewardsActionPageNext = 0x4D;
+
+struct RewardsScreenUpdateState {
+    std::uint8_t storage_slot{};            // +19h, passed to 007FA1B0
+    std::int32_t storage_flush_countdown{}; // +38h, -1 when idle
+    bool leaving{};                         // +3Ch
+    std::int32_t page{};                    // +58h
+    float arrow_flash{};                    // +64h, seconds left
+    bool rank_alpha_rising{};               // +218h
+    float rank_grow_target{};               // +21Ch, 0 when idle
+    bool input_locked{};                    // +258h
+};
+
+struct GuiSize2 {
+    float x;
+    float y;
+};
+
+enum class RewardsArrow : std::uint8_t { Previous, Next };  // widgets +5Ch, +60h
+
+struct RewardsScreenUpdateHost {
+    virtual ~RewardsScreenUpdateHost() = default;
+    virtual float game_frame_seconds_21ec() = 0;                  // *(00E188A8)+21ECh
+    // 007FA1B0 on *(00E188A8)+650h with the continuation 00BD53C0.
+    virtual void flush_storage_007fa1b0(std::uint8_t slot) = 0;
+    virtual bool action_004d92b0(std::int32_t action) = 0;        // ECX = *(00E188A8)
+    virtual void leave_0062b110() = 0;                            // ECX = screen
+    virtual bool gamer_card_available_0061d8b0() = 0;
+    virtual std::uint64_t shown_player_xuid_0061d710() = 0;       // EDX:EAX
+    virtual std::uint64_t local_player_xuid_00a3eb00() = 0;       // *(00F8ABE8)
+    virtual std::int32_t active_user_slot_00a3eac0() = 0;         // *(00F8ABE8), RET
+    virtual void show_gamer_card_00a4d440(std::int32_t user, std::uint64_t xuid) = 0;
+    virtual void show_player_review_00a4d470(std::int32_t user, std::uint64_t xuid) = 0;
+    virtual bool session_virtual_198() = 0;                       // *(00F8A2FC) slot +198h
+    // The rank widget *(screen+210h): 00AA6740 size, slots +58h set size,
+    // +54h colour (alpha at +0Ch), +4Ch set alpha.
+    virtual GuiSize2 rank_size_00aa6740() = 0;
+    virtual void rank_set_size_58(GuiSize2 size) = 0;
+    virtual float rank_alpha_54() = 0;
+    virtual void rank_set_alpha_4c(float alpha) = 0;
+    // 00683820(1) on the scrollers at +68h, +128h and +19Ch, in that order.
+    virtual void scroller_update_00683820(std::uint32_t offset) = 0;
+    virtual void change_page_00622e30(std::int32_t direction) = 0;
+    // Arrow widget slot +88h(state, 0, 1.0f).
+    virtual void arrow_set_state_88(RewardsArrow arrow, std::int32_t state) = 0;
+};
+
+void rewards_screen_update_0062b640(RewardsScreenUpdateState& screen, RewardsScreenUpdateHost& host);
+
 } // namespace bsp
 
 #endif

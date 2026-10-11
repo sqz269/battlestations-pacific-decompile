@@ -106,3 +106,28 @@ Named 35 (9 reconstructed, one partial). Open: the support-manager purchase menu
 (`ingame.sm_cost` / `sm_cp` / `sm_stock` / `sm_support`), the radial icon builders 0065D220,
 0065E870, 0065FBF0..00662210, 00665F30, 00666DC0, the rewards update/enter bodies, and the HUD
 marker icons 0063C110, 0063DEC0.
+
+## Rewards update 0062B640 (cc13-frontend2, reconstructed, complete, build-tested)
+
+`rewards_screen_update_0062b640` in `src/ingame_gui.cpp`; call rows in `reports/cc13_ingame_gui.json`
+(33 rows, 0 failed). `__thiscall`(screen, float seconds), RET 4; the seconds slot is overwritten
+with min(*(00E188A8)+21ECh, 0.03) (FCOMI against the double 00CEB690, fallback float 00CE3DB8).
+
+- +3Ch set, or action 4Ah: 0062B110 (cc9-cited; only called here) and return.
+- +38h counts a pending storage flush down; at 0 it calls 007FA1B0(+19h, 00BD53C0) on game+650h.
+- +258h set: return before any page work.
+- Page +58h == 1 (read as the multiplayer page): action 4Fh shows the gamer card, action 50h on a
+  live session (slot +198h) the player review for anyone but the local player (00A3EB00).
+- Page 4 (read as the rank page): the rank widget *(+210h) grows toward +21Ch by
+  target * step * 0.25 per frame and snaps to it, and its alpha bounces between 0 and 1 by one step
+  (004155B0 clamp).
+- The scrollers at +68h, +128h, +19Ch update; actions 4Ch/4Dh turn the page (00622E30(-1/+1)),
+  flash the arrow (+5Ch/+60h slot +88h(2, 0, 1.0f)) for 0.1 s (+64h), then reset both arrows.
+
+The rewards enter 0062C2C0 was not reconstructed: a recursive descent over the disk image reaches
+0063158F, about 5200 instructions with 746 calls, which is beyond this packet.
+
+## Slot functions defined by cc13-frontend2
+
+The Ghidra-less slots listed above are now Ghidra functions and named; see the third-packet section
+of docs/CC13_FRONTEND_MENUS.md for the method and the table of kinds.
