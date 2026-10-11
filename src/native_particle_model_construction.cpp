@@ -335,4 +335,23 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
     }
     return &node;
 }
+NativeMeshStorage* create_native_particle_prepared_mesh(NativeMeshEnvironment& meshes,
+    NativeMeshConstants constants, NativeRenderActualOwnerRegistry& registry,
+    NativeParticleMeshRawKeyPreparation& preparation) {
+    if (&meshes.retained_owners != &registry)
+        throw std::invalid_argument("particle mesh requires one canonical borrowed ownership domain");
+    void* const raw = meshes.pool_0108fff8.allocate_slot_00b73a10();
+    if (!raw) return nullptr;
+    NativeMeshPreparedRecord* record;
+    try {
+        record = &preparation.prepare_mesh_raw_key(raw, NativeMeshPool::slot_bytes, meshes, registry);
+    } catch (...) {
+        meshes.pool_0108fff8.return_slot_00b72da0(raw);
+        throw;
+    }
+    auto& mesh = record->construct_and_publish(constants);
+    if (&mesh != raw) std::terminate();
+    return &mesh;
+}
+
 } // namespace bsp
