@@ -14694,6 +14694,22 @@ camera is a different object, and it does run:
 - **No reference row reaches a `sunk` event.** That needs a mission ending on a dead ship or plane. The event arm is
   therefore build-tested only, unless a row reaches it.
 
+### 5fj.1 Pairs on `1115e208c` and the verdict
+
+**Setup.** OFF is the branch build (and its export `local\l49_C0`); ON is `local\l49_M1`
+(`--flip kMovieKeyframeModifierBound=true`). Launch form of 5fd. Logs are `local\l49_M<0|1>_<row>.log`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP10 3000 | 1 | `unsupported_key` 4 -> 2. One `gamecamera` modifier is now counted by name (`MovieKeyframe::gamecamera_modifier`, 1 call). `key_ticks_00797ed0` runs 2959 times. |
+| USN02 3000 | 1 | Fails at the same time with the same deaths (3). After the end, the OFF camera sits on the ally with `position == look-at` and `forward (0,0,1)`, a degenerate pose. ON orbits it at 30.6 m height, -0.2588 pitch (15 degrees), sweeping the heading. |
+| JM08 g10 orders, 24000 | 1 | Failed at 1062.11 s on both sides, deaths 171 = 171. After the end, OFF holds the same degenerate pose on the HQ, and ON orbits. The unit-pick, minimap and landscape-attach counters move with the camera (presentation). |
+
+- No row reached a keyframe event. `events_fired=0`, because no mission ended on a dead ship or plane. The event arm
+  stays build-tested.
+- **Verdict: ON.** The mechanism matches 5fj's predictions on every row: the modifier is parsed on the camera key,
+  the orbit replaces the degenerate pose, and gameplay is identical.
+
 ## 5fk. `SaveCheckpoint` / `LoadCheckpoint`, `kMissionCheckpointBound` (packet `cc9_lua49_checkpoint`, cc9-lua49, 2026-10-11)
 
 cc13 reconstructed the checkpoint save, load and archive writer (docs/CC13_PROFILE_SAVE.md;
