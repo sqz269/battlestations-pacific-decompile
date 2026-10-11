@@ -1,0 +1,1355 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_dispatch_second_direct_callee_entry",
+  "status": "worker_first_instruction_recorded_pending_Root_integration",
+  "address": "00C059A8",
+  "admitted_unit_length": 1,
+  "frozen_base": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+  "observed_main_at_freeze": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+  "main_advancement_permitted_after_freeze": true,
+  "positive_inputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA.md",
+      "member": "inputs/docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "00898d7e2fd41314c349109426762359cf394dd8",
+      "index_blob": "00898d7e2fd41314c349109426762359cf394dd8",
+      "working_raw": {
+        "bytes": 7850,
+        "sha256": "f8cb931898edd742807bd6fee9668f5d1be09f774b5eab8dbb55a41883020084"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 7850,
+      "sha256": "f8cb931898edd742807bd6fee9668f5d1be09f774b5eab8dbb55a41883020084"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata.json",
+      "member": "inputs/reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata.json",
+      "blob": "26514187a33f62057e4cfbee1d93bb704bccfbac",
+      "index_blob": "26514187a33f62057e4cfbee1d93bb704bccfbac",
+      "working_raw": {
+        "bytes": 46734,
+        "sha256": "db882517ee5a684f5edf9a9321db87d67ad8c8271a0ffd30a3813ae200bd650d"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 46734,
+      "sha256": "db882517ee5a684f5edf9a9321db87d67ad8c8271a0ffd30a3813ae200bd650d"
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "member": "inputs/docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "blob": "0890b0d1cf81cedbc9e136781240b10ce65c4bd1",
+      "index_blob": "0890b0d1cf81cedbc9e136781240b10ce65c4bd1",
+      "working_raw": {
+        "bytes": 2943,
+        "sha256": "ed0b9dee678259519e6a16988bd565b98ec80ca775a1e7d37835266669601c90"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 2943,
+      "sha256": "ed0b9dee678259519e6a16988bd565b98ec80ca775a1e7d37835266669601c90"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata_primary.json",
+      "member": "inputs/reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata_primary.json",
+      "blob": "b530cc4f34538eabd661c110be120f344fa50016",
+      "index_blob": "b530cc4f34538eabd661c110be120f344fa50016",
+      "working_raw": {
+        "bytes": 157847,
+        "sha256": "529a32b363f064bc84fe0ae9b117222e8d1a35a967e52cae684532fe1c7b18d7"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 157847,
+      "sha256": "529a32b363f064bc84fe0ae9b117222e8d1a35a967e52cae684532fe1c7b18d7"
+    },
+    {
+      "path": "config/target.json",
+      "member": "inputs/config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_raw": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "member": "inputs/tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_raw": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "member": "inputs/tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "index_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_raw": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "member": "inputs/tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_raw": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    }
+  ],
+  "actual_frozen_Git_object_count": 14,
+  "Source_subtrees_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_numeric_edge": {
+    "instruction_address": "00BFBA12",
+    "hex": "e8919f0000",
+    "signed_rel32": 40849,
+    "return_cursor": "00BFBA17",
+    "numeric_target": "00C059A8"
+  },
+  "Root_gate": {
+    "receipt": {
+      "bytes": 1797876,
+      "sha256": "64c0aed1518d7b7a1dedb49f970f97a274eb2c38f42ae31cb6b27d7ccf5a71de"
+    },
+    "actual_copied_artifacts": 170,
+    "actual_copied_preimages": 164,
+    "first_actual_gate_execution_passed": true,
+    "gate_failures": 0,
+    "inspection_failures": 0
+  },
+  "complete_original_metadata": {
+    "schema": 1,
+    "complete": true,
+    "program": {
+      "path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": {
+        "space": "ram",
+        "offset": "00400000"
+      },
+      "default_address_space": "ram",
+      "project": {
+        "name": "bsp",
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+      }
+    },
+    "query_address": {
+      "space": "ram",
+      "offset": "00c059a8"
+    },
+    "modification_number_before": "98",
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c059a8"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c059a8"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c059a8"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c059a8"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "instruction_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c059a9"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c059a9"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "function_at_query": {
+      "space": "ram",
+      "offset": "00c059a8"
+    },
+    "function_containing_query": {
+      "space": "ram",
+      "offset": "00c059a8"
+    },
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c059a8"
+        },
+        "name": "LIBCRT_unmatched_00c059a8",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 6,
+          "returned_range_count": 6,
+          "address_count": "399",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c059a8"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05a29"
+              },
+              "length": "130"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05a2d"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05a6d"
+              },
+              "length": "65"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05a71"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05ab0"
+              },
+              "length": "64"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05ab6"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05ad4"
+              },
+              "length": "31"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05ad8"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05af6"
+              },
+              "length": "31"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05afa"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05b47"
+              },
+              "length": "78"
+            }
+          ]
+        }
+      }
+    ],
+    "direct_call_targets": [],
+    "modification_number_after": "98"
+  },
+  "metadata_direct_pins": {
+    "typed_a": {
+      "bytes": 2720,
+      "sha256": "788606ddf5b30f4f4dc3bcf59c9e14ed34ec6c7fb4b408260c71b18ef8efd286"
+    },
+    "typed_b": {
+      "bytes": 2720,
+      "sha256": "788606ddf5b30f4f4dc3bcf59c9e14ed34ec6c7fb4b408260c71b18ef8efd286"
+    },
+    "typed_c": {
+      "bytes": 2720,
+      "sha256": "788606ddf5b30f4f4dc3bcf59c9e14ed34ec6c7fb4b408260c71b18ef8efd286"
+    }
+  },
+  "physical": {
+    "address": "00C059A8",
+    "byte_hex": "51",
+    "byte_pin": {
+      "bytes": 1,
+      "sha256": "4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260"
+    },
+    "paired_exact_bytes_equal": true,
+    "paired_context_zero_original_text_equal": true,
+    "text_pin": {
+      "bytes": 157,
+      "sha256": "a1b2121fbc9920c736ad079f22862aeaa62e44d8d437156b1b1a8a7bb73ed0cd"
+    },
+    "closing_metadata_equal_to_both_initial_payloads": true,
+    "total_Native_CLI_commands": 11,
+    "phase2_Native_CLI_commands": 7,
+    "Root_copied_artifacts": 170,
+    "Root_copied_preimages": 164
+  },
+  "exact_original_text": {
+    "00c059a8": {
+      "address": "00c059a8",
+      "instruction": "PUSH ECX",
+      "context_before": [],
+      "context_after": [],
+      "mnemonic": "PUSH",
+      "patterns_detected": [
+        "stack_operation"
+      ]
+    }
+  },
+  "actual_offline_Capstone_and_manual_decode": {
+    "capstone_version": "5.0.7",
+    "architecture": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "actual_module": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "bytes": 43729,
+      "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+    },
+    "actual_library": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+      "bytes": 7572480,
+      "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+    },
+    "input_pin": {
+      "bytes": 1,
+      "sha256": "4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260"
+    },
+    "actual_decode": {
+      "address": 12605864,
+      "size": 1,
+      "hex": "51",
+      "mnemonic": "push",
+      "op_str": "ecx",
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        81,
+        0,
+        0,
+        0
+      ],
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "modrm_offset": 0,
+      "disp_offset": 0,
+      "disp_size": 0,
+      "imm_offset": 0,
+      "imm_size": 0,
+      "eflags": 0,
+      "registers_read": [
+        "esp",
+        "ecx"
+      ],
+      "registers_written": [
+        "esp"
+      ],
+      "operands": [
+        {
+          "type": 1,
+          "register": "ecx",
+          "size": 4,
+          "access": 1
+        }
+      ]
+    },
+    "manual_decode": {
+      "opcode": 81,
+      "opcode_base": 80,
+      "low_three_bits": 1,
+      "register_table": [
+        "EAX",
+        "ECX",
+        "EDX",
+        "EBX",
+        "ESP",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "selected_register": "ECX",
+      "length": 1,
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": null,
+      "operand_bits": 32,
+      "next_cursor_arithmetic_only": "00C059A9",
+      "current_SS_32_bit_stack_effect": {
+        "prestate": "S = current ESP; C = current ECX; current SS, with 32-bit stack addressing",
+        "new_ESP": "(S - 4) modulo 2^32",
+        "store": "LE32(C) at current SS:new_ESP",
+        "ECX": "unchanged by this instruction",
+        "arithmetic_EFLAGS": "unchanged by this instruction",
+        "completion_condition": "Instruction completes normally; no runtime stack mapping or exception outcome established.",
+        "scope": "Current SS only; no cross-segment aliasing, earlier-call register preservation, parameter role, calling convention, or library identity inference."
+      }
+    },
+    "offline_only": true,
+    "Native_queries": 0
+  },
+  "Native_commands": {
+    "count_before": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "count_before.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "typed_a": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00C059A8",
+        "--output",
+        "local/cc12_crt_dispatch_second_direct_callee_entry/typed_a.raw.json"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 201,
+        "sha256": "0fd175811b88cf7d14a4afc7b4aa68451a32b855cd37e7eb878316f4d2a6ff9f"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "typed_a.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true,
+      "direct_metadata_HTTP_method": "GET",
+      "method_evidence": "Frozen existing fetch_raw uses Request(method=GET); response URL/status retained. Not a separate network trace."
+    },
+    "typed_b": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00C059A8",
+        "--output",
+        "local/cc12_crt_dispatch_second_direct_callee_entry/typed_b.raw.json"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 201,
+        "sha256": "92c2a0d5b4b94bc1ac6ed0f5e8c57387ab3a43145bf4f61932fe64a340c61c30"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "typed_b.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true,
+      "direct_metadata_HTTP_method": "GET",
+      "method_evidence": "Frozen existing fetch_raw uses Request(method=GET); response URL/status retained. Not a separate network trace."
+    },
+    "count_after": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "count_after.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "count_before_bytes": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "count_before_bytes.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "bytes_a": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00C059A8",
+        "--length",
+        "1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 17,
+        "sha256": "22dacbd33a9c88a0a1b42066b030538cce24ebe001d0c867a13c46cf708f21d3"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "bytes_a.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "bytes_b": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00C059A8",
+        "--length",
+        "1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 17,
+        "sha256": "22dacbd33a9c88a0a1b42066b030538cce24ebe001d0c867a13c46cf708f21d3"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "bytes_b.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "text_a": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00C059A8",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_crt_dispatch_second_direct_callee_entry/text_a.raw.json"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 131,
+        "sha256": "96ce9b410f17e6fda7c4046cc08d33131e2cda270a0fd8c3e2664e6bb8116e21"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "text_a.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "text_b": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "instruction-context",
+        "00C059A8",
+        "--context",
+        "0",
+        "--output",
+        "local/cc12_crt_dispatch_second_direct_callee_entry/text_b.raw.json"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 131,
+        "sha256": "59d87766a4d413c1d4240ec5613488a4e72ce88869078bcc9f90bf00c0870038"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "text_b.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    },
+    "typed_c": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00C059A8",
+        "--output",
+        "local/cc12_crt_dispatch_second_direct_callee_entry/typed_c.raw.json"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 201,
+        "sha256": "16be140f55f6dce224fe691da927020962a72ba7d2dbf5bec723558bfe46163b"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "typed_c.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true,
+      "direct_metadata_HTTP_method": "GET",
+      "method_evidence": "Frozen existing fetch_raw uses Request(method=GET); response URL/status retained. Not a separate network trace."
+    },
+    "count_after_bytes": {
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "returncode": 0,
+      "BSP_GHIDRA_AUTOSTART": "0",
+      "stdout": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "CLI_before": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_after": {
+        "tools/bsp.py": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "tools/ghidra_export.py": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "tools/ghidra_typed_flow.py": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        }
+      },
+      "CLI_before_file_written_before_subprocess": "count_after_bytes.CLI_before.json",
+      "all_three_physical_CLI_producers_unchanged": true
+    }
+  },
+  "all_three_existing_CLI_physical_pins_before_and_after_every_command": true,
+  "actual_Native_command_count": 11,
+  "Native_first_execution_failures": 0,
+  "metadata_GET_provenance": "Existing frozen GET producer plus original wrapper URL/status; not a separate network trace.",
+  "text_POST_provenance": "Existing frozen get_assembly_context read interface, exact address and context zero; original raw response retained.",
+  "owner_body_walked": false,
+  "remaining_owner_address_count_unqueried": 398,
+  "unqueried_next_cursor": "00C059A9",
+  "unqueried_owner_gaps": true,
+  "saved_owner_name_and_flags_not_authenticated_library_or_return_behavior": true,
+  "evidence_package": {
+    "members": 400,
+    "archive": {
+      "bytes": 6968747,
+      "sha256": "6d93a1e09a9c65e12a5d41e946fe48ac872198525c33cf7c43f82e1ef314e9b3"
+    },
+    "archive_file_ids": [
+      281475006418556,
+      281475006418557
+    ],
+    "manifest": {
+      "bytes": 64876,
+      "sha256": "5e8fdd79437fd725932787ebe144e089306337bfd196f4a98e43a7fb350dc19a"
+    },
+    "replay_helper": {
+      "bytes": 23052,
+      "sha256": "8d76c6914c136465e6c358cc63114a88fcdd4f4e9ac8adeaccf8a72d662f0b6c"
+    },
+    "guard": {
+      "bytes": 3325,
+      "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+    },
+    "package_postexecution_files": [
+      "local_evidence.result.json",
+      "local_evidence.stdout.bin",
+      "local_evidence.stderr.bin"
+    ],
+    "package_postexecution_note": "These original streams/results occur after ZIP creation and are retained separately for final delivery."
+  },
+  "strict_evidence_receipts": {
+    "strict_evidence_original.json": {
+      "guard_active_before_helper_execution": true,
+      "helper_pins_verified_before_execution": [
+        {
+          "name": "replay.py",
+          "bytes": 23052,
+          "sha256": "8d76c6914c136465e6c358cc63114a88fcdd4f4e9ac8adeaccf8a72d662f0b6c"
+        },
+        {
+          "name": "guarded_replay.py",
+          "bytes": 3325,
+          "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+        }
+      ],
+      "result": {
+        "mode": "evidence",
+        "members": 400,
+        "evidence": {
+          "base_commit": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+          "observed_main": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+          "physical_Git_objects": 14,
+          "positive_inputs": 8,
+          "Source_subtrees_identity_only": {
+            "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+            "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+          },
+          "Native_CLI_commands": 11,
+          "metadata_responses": 3,
+          "paired_byte_reads": 2,
+          "paired_context_zero_text_reads": 2,
+          "count_bookends": 4,
+          "saved_bytes_hex": "51",
+          "saved_bytes_pin": {
+            "bytes": 1,
+            "sha256": "4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260"
+          },
+          "instruction": "PUSH ECX",
+          "offline_actual_Capstone_version": "5.0.7",
+          "manual_current_SS_only": true,
+          "Root_artifacts": 170,
+          "Root_preimages": 164,
+          "Root_gate_failures": 0,
+          "Root_inspection_failures": 0,
+          "worker_failures": {
+            "Native": 0,
+            "admission_helper_before_Native": 1,
+            "inspection_shell": 1,
+            "inspection_tool_display_truncations": 1
+          },
+          "interpretation": "First instruction only. Remaining 398 owner bytes and gaps unqueried; no library identity, parameter role, return behavior, Original ABI or runtime authentication."
+        }
+      },
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 1,
+        "unexpected_denials": []
+      }
+    },
+    "strict_evidence_copy.json": {
+      "guard_active_before_helper_execution": true,
+      "helper_pins_verified_before_execution": [
+        {
+          "name": "replay.py",
+          "bytes": 23052,
+          "sha256": "8d76c6914c136465e6c358cc63114a88fcdd4f4e9ac8adeaccf8a72d662f0b6c"
+        },
+        {
+          "name": "guarded_replay.py",
+          "bytes": 3325,
+          "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+        }
+      ],
+      "result": {
+        "mode": "evidence",
+        "members": 400,
+        "evidence": {
+          "base_commit": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+          "observed_main": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+          "physical_Git_objects": 14,
+          "positive_inputs": 8,
+          "Source_subtrees_identity_only": {
+            "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+            "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+          },
+          "Native_CLI_commands": 11,
+          "metadata_responses": 3,
+          "paired_byte_reads": 2,
+          "paired_context_zero_text_reads": 2,
+          "count_bookends": 4,
+          "saved_bytes_hex": "51",
+          "saved_bytes_pin": {
+            "bytes": 1,
+            "sha256": "4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260"
+          },
+          "instruction": "PUSH ECX",
+          "offline_actual_Capstone_version": "5.0.7",
+          "manual_current_SS_only": true,
+          "Root_artifacts": 170,
+          "Root_preimages": 164,
+          "Root_gate_failures": 0,
+          "Root_inspection_failures": 0,
+          "worker_failures": {
+            "Native": 0,
+            "admission_helper_before_Native": 1,
+            "inspection_shell": 1,
+            "inspection_tool_display_truncations": 1
+          },
+          "interpretation": "First instruction only. Remaining 398 owner bytes and gaps unqueried; no library identity, parameter role, return behavior, Original ABI or runtime authentication."
+        }
+      },
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 1,
+        "unexpected_denials": []
+      }
+    }
+  },
+  "retained_private_pins": {
+    "frozen_inputs.json": {
+      "bytes": 41451,
+      "sha256": "b98dd2b9edf8b6cabe12ccbb5e14d2b2d1eb4d045d029173e8614000ed0b71e2"
+    },
+    "metadata_manifest.json": {
+      "bytes": 36410,
+      "sha256": "da1d168c2e4984d3ed0467abc3135db97e5be924933b5d36204410ffb9ad2669"
+    },
+    "admitted_bytes.json": {
+      "bytes": 566,
+      "sha256": "de240005dd5eb793d1d599a777da85d703d9cb17ec6e5cf8415ebb61bcc9c103"
+    },
+    "admitted_schedule.json": {
+      "bytes": 622,
+      "sha256": "ac779b3377bf426546e27e4681928246cda421ba6836af67cb5709a6f8e02946"
+    },
+    "offline_decode.json": {
+      "bytes": 2450,
+      "sha256": "df5f6a9b48db94559874b6fbabb37bae9acc802d1c4ce416b4dd2e748400a41f"
+    },
+    "Root_artifact_manifest.json": {
+      "bytes": 48306,
+      "sha256": "203c6932ebcfe03cd9ccd50e74c452e2f94b4aaedfedc9f18068c60901d22e1b"
+    },
+    "evidence_manifest.json": {
+      "bytes": 64876,
+      "sha256": "5e8fdd79437fd725932787ebe144e089306337bfd196f4a98e43a7fb350dc19a"
+    },
+    "evidence_package.json": {
+      "bytes": 859,
+      "sha256": "94799540ce02733fa5843526dee8691bd6630913378da1bd9beb2b7f1b75e206"
+    },
+    "replay.py": {
+      "bytes": 23052,
+      "sha256": "8d76c6914c136465e6c358cc63114a88fcdd4f4e9ac8adeaccf8a72d662f0b6c"
+    },
+    "guarded_replay.py": {
+      "bytes": 3325,
+      "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+    },
+    "phase2_inspection_incident.json": {
+      "bytes": 1003,
+      "sha256": "25c1a919a182880e4eb168dd5374701433cf768749edee01c3d95029fa3aa3ef"
+    },
+    "phase2_inspection_truncation.json": {
+      "bytes": 1079,
+      "sha256": "b4f88a863b84a1e24b75628dd0fbf749e834f5ab176304a1ca23ce9b0bc82b11"
+    },
+    "producer_preimages/capture_admitted_failed.py": {
+      "bytes": 6101,
+      "sha256": "2cd0dd26e21a0be4fda9a433b9cac273d236f5b008fa92170b82c1267132be46"
+    },
+    "local_admitted.invocation.json": {
+      "bytes": 690,
+      "sha256": "95210dc62a762ae4680770b03ce603066f609067a6606ac49a8dd248dd340575"
+    },
+    "local_admitted.result.json": {
+      "bytes": 302,
+      "sha256": "dd066216eb1707386bc3a903267601a03986025fa7cf1840045a9af748c5adb7"
+    },
+    "local_admitted.stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "local_admitted.stderr.bin": {
+      "bytes": 552,
+      "sha256": "ad735ace70e4483cca230c03f2ff2d4a4ebf36f8670d8ae9c4def33ebf5f0300"
+    },
+    "strict_evidence_original.json": {
+      "bytes": 1942,
+      "sha256": "02b19f5e0dd1ca88628a7730bc747db9abe19fa929934429ad645aa43ae11b5f"
+    },
+    "strict_evidence_copy.json": {
+      "bytes": 1942,
+      "sha256": "02b19f5e0dd1ca88628a7730bc747db9abe19fa929934429ad645aa43ae11b5f"
+    }
+  },
+  "worker_incidents_through_publication": {
+    "admission_helper_before_phase2_Native": 1,
+    "inspection_shell_exit_one": 1,
+    "inspection_tool_display_truncations": 1,
+    "strict_replay_failures": 0,
+    "failed_admission": {
+      "cause": "Root preimage dictionary was incorrectly treated as a list.",
+      "producer_preserved_before_correction": "producer_preimages/capture_admitted_failed.py",
+      "original_result": {
+        "returncode": 1,
+        "stdout": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "bytes": 552,
+          "sha256": "ad735ace70e4483cca230c03f2ff2d4a4ebf36f8670d8ae9c4def33ebf5f0300"
+        },
+        "producer_unchanged_after_execution": true
+      },
+      "original_streams_retained": true,
+      "corrected_unique_invocation": "local_admitted_corrected.invocation.json"
+    },
+    "inspection_error": {
+      "phase": "before any admitted phase2 Native queries",
+      "failed_tool": "exec_command",
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "exact_command": "Get-Content -LiteralPath tools/bsp.py | Select-Object -Skip 719 -First 83; rg -n -F \"--context\" tools/bsp.py",
+      "exit_code": 1,
+      "exact_error_text": "rg: error parsing flag --context: value is not a valid number: invalid digit found in string\n",
+      "cause": "The literal search pattern began with -- and lacked the rg option terminator.",
+      "original_output_provenance": "The tool retained combined output in the conversation: the successful 83-line Get-Content output followed by the exact rg error above. No separate original local stdout/stderr files were captured. This JSON is an incident record, not original process streams.",
+      "Native_queries": 0,
+      "file_mutations_in_failed_command": 0,
+      "correction": "Use rg -n -F -- \"--context\" tools/bsp.py after retaining this record."
+    },
+    "inspection_display_cap": {
+      "phase": "before evidence proof execution and public output creation",
+      "tool": "exec_command",
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_entry",
+      "exact_command": "Get-Content -LiteralPath local/cc12_crt_dispatch_second_direct_callee_entry/typed_a.direct.json; Get-Content -LiteralPath local/cc12_crt_dispatch_second_direct_callee_entry/commit_outputs.py | Select-Object -Skip 36 -First 65; Get-Content -LiteralPath local/cc12_crt_dispatch_second_direct_callee_entry/pack_delivery.py | Select-Object -First 70",
+      "exit_code": 0,
+      "max_output_tokens": 2000,
+      "reported_original_token_count": 2149,
+      "reported_truncated_tokens": 149,
+      "provenance": "Combined tool display was truncated in the commit_outputs.py middle. The original physical producer remains unchanged and will be read in smaller chunks before execution. No original separate local stdout/stderr files were captured. This record is not an original stream; displayed combined output remains in the conversation.",
+      "Native_queries": 0,
+      "mutations": 0
+    }
+  },
+  "document": {
+    "path": "docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_ENTRY.md",
+    "bytes": 7937,
+    "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+  },
+  "delivery_boundary": "Final Git objects, exact two output paths, final archive and distinct-copy strict receipts postdate this report and are separately pinned for Root.",
+  "not_performed": [
+    "00C059A9 or remaining owner body/gap queries",
+    "prototype queries",
+    "callee or provider or cell queries",
+    "Source content reads",
+    "Source implementation",
+    "Ghidra mutation",
+    "build",
+    "fixture",
+    "probe",
+    "Original execution",
+    "game or OS or audio runtime",
+    "library/service identity authentication",
+    "return-behavior or Original ABI authentication"
+  ]
+}
