@@ -1,0 +1,265 @@
+{
+  "schema": "bsp.cc12.locale-return-site-operand-primary.v1",
+  "status": "exact_POP_ECX_operand_accepted_conditional_effects_only",
+  "worker_commit": "1bf7cebc4b81185ca2ac2e9cadc176b3dcfd4a8d",
+  "worker_report": {
+    "path": "local/cc12_locale_return_site_operand_primary/worker_report.json",
+    "bytes": 39401,
+    "sha256": "df74b00d30a3cb81d4f133d6c837fccc5c2731eedc26bf2261fa17b925b28f5e"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_return_site_operand_primary/worker_document.md",
+    "bytes": 6645,
+    "sha256": "a740ab98e20a9338ff3e1712731746518e79aeb1fafdb7244c5c9020295eb9f7"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_return_site_operand_primary/worker_evidence.zip",
+    "bytes": 187586630,
+    "sha256": "6ccb66dad98a6e08dcfa1ea8ef10aa96523c0c46c7fc501741fce35885c2839e"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_return_site_operand_primary/Root_guarded_worker_replay.json",
+    "bytes": 19184,
+    "sha256": "1c0fe0b1864f2710536eb531b8afed0f40d8361ae4d572db47afef2e6d9bb6be"
+  },
+  "actual_Git_blob_occurrences": 4274,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "current_Root_Source_closed_and_exact": true,
+  "fresh_Native_metadata": {
+    "adjacent_address_queries": 0,
+    "admission_gate": {
+      "bytes": 1061,
+      "path": "local/cc12_locale_initializer_return_site_operand/Byte_admission_gate.json",
+      "sha256": "59b6f00e424554c077a8e7f4fb4c387ee9c55f71f63f2ad47940841f44383386"
+    },
+    "all_Native_captures_closed_before_packaging": true,
+    "capture_atomicity": "Finite read-only samples and explicit equal pairs; no database transaction, continuous stability or executed trace is claimed.",
+    "capture_order": "Typed gate before -> count before -> code before -> text before -> typed gate after -> code after -> text after -> count after. Every CLI Native command verifies project/program identity; typed records retain marker and epoch.",
+    "comparison": {
+      "bytes": 272,
+      "path": "local/cc12_locale_initializer_return_site_operand/Native_comparison.json",
+      "sha256": "9eac930e73eba57c7b22652d6a631e4afd29d9729494b80ab978226b0c059af7"
+    },
+    "decompilation_reads": 0,
+    "direct_call_target_records": [],
+    "evidence_files": [
+      {
+        "bytes": 17,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_before/code_bytes.txt",
+        "sha256": "7c7ad89728d09b0556f69392ceb9624ed90bb0abf11f9ca0514b5bde14c7895d"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 155,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_before/exact_instruction.json",
+        "sha256": "298df8f76d43ab4a58c66b1d294615512ab84c51839c50a32e0a50a180576efe"
+      },
+      {
+        "bytes": 7731,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_before/exact_site_gate.json",
+        "sha256": "87dfd0cccb08c67c28f490d6640d207d9aed0456aa159648a2bd8d95f9ccc160"
+      },
+      {
+        "bytes": 17,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_after/code_bytes.txt",
+        "sha256": "7c7ad89728d09b0556f69392ceb9624ed90bb0abf11f9ca0514b5bde14c7895d"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 155,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_after/exact_instruction.json",
+        "sha256": "298df8f76d43ab4a58c66b1d294615512ab84c51839c50a32e0a50a180576efe"
+      },
+      {
+        "bytes": 7731,
+        "path": "local/cc12_locale_initializer_return_site_operand/Native_after/exact_site_gate.json",
+        "sha256": "a62d80b543858dd42477ea6ba352eccf5ca8ef98d213740f8dc35c9f3a40b17a"
+      }
+    ],
+    "exact_and_containing_unit_records": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      }
+    },
+    "exact_count_code_text_pairs_equal": 3,
+    "exact_typed_raw_response_pairs_equal": 1,
+    "extra_target_queries": 0,
+    "function_at_query": null,
+    "function_containing_query": null,
+    "function_count_before_after": 64730,
+    "functions": [],
+    "identity_equal_before_after": true,
+    "image_base": "00400000",
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "language": "x86:LE:32:default",
+    "later_unit_queries": 0,
+    "lease_widened": false,
+    "measured_unit": {
+      "end_exclusive": "00CC8D45",
+      "end_inclusive": "00CC8D44",
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "length": 1,
+      "start": "00CC8D44"
+    },
+    "modification_number_before_after": 98,
+    "no_return_metadata": "Unavailable/not applicable; no exact/containing function or direct target exists. No false no-return value is inferred.",
+    "only_queried_address": "00CC8D44",
+    "preceding_unit_refreshes": 0,
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr"
+  },
+  "fresh_instruction": {
+    "address": "00CC8D44",
+    "bytes_hex": "59",
+    "classification": "One register POP; not RET, a function-return contract, or a target-body observation.",
+    "context_after": [],
+    "context_before": [],
+    "context_requested": 0,
+    "fresh_unique_code_bytes": 1,
+    "fresh_unique_data_bytes": 0,
+    "length": 1,
+    "operand": "ECX",
+    "operand_size_bits": 32,
+    "returned_instruction_starts": [
+      "00cc8d44"
+    ],
+    "text": "POP ECX"
+  },
+  "normal_architectural_contract": {
+    "entry_symbols": {
+      "Q": "Little-endian 32-bit value read from SS:U at this POP; unknown, no runtime stack data captured",
+      "U": "ESP on entry to this POP; unknown after the preceding callee"
+    },
+    "limitations": "Preserving the incoming EAX/flags does not identify their values. The read size is an instruction effect, not 4 bytes of captured data. Fault paths, abnormal control transfer and runtime reachability are unproved.",
+    "precondition": "Control actually reaches CC8D44 in the decoded x86 32-bit mode with a normal 32-bit stack, and the POP completes without fault. These conditions are hypotheses, not execution observations.",
+    "successful_effects": {
+      "EAX_EDX_EBX_EBP_ESI_EDI": "Preserved relative to this POP entry",
+      "ECX": "Q",
+      "EFLAGS": "Unmodified by this instruction",
+      "EIP": "00CC8D45",
+      "ESP": "(U + 4) modulo 2^32",
+      "memory": "One 4-byte stack read; no architectural memory store by this instruction"
+    }
+  },
+  "prior_conditional_composition": {
+    "after_BF6FF5": "All post-callee GPR/flags/ESP and stackword contents are unknown. Saved _atexit/nonthunk/no-return-false metadata does not supply execution, signature, parameter use, normal return, cleanup or registration proof.",
+    "epoch92": "Inherited prefix B9E1768C00; CALL436230. The separately accepted callee receiver-return/plain-RET contract conditionally gives EAX=E1768C after that initializer call and at the later BF6FF5 call entry, not after BF6FF5.",
+    "epoch95": "Inherited PUSH681094CD00 writes CD9410 and changes prefix-entry ESP=S to S-4 under successful normal transfer.",
+    "epoch98_prior_call": "Inherited E8B1E2F2FF at CC8D3F calls BF6FF5 and pushes encoded next address CC8D44. Under the earlier PUSH/CALL hypotheses, callee-entry ESP=S-8 and stack[entryESP+4]=CD9410.",
+    "hypothesis_only_example": "If BF6FF5 actually returns to CC8D44 with ESP=S-4 AND the DWORD at SS:(S-4) still equals CD9410, a successful POP ECX yields ESP=S and ECX=CD9410. Both added hypotheses are required. No callee behavior or unchanged stackword is established here.",
+    "site_name_limit": "Return site means only the prior CALL encoded next/return address. It is not proof of an actual target return.",
+    "snapshot_limit": "Epoch92 prefix, epoch95 PUSH, prior epoch98 CALL, prior epoch98 metadata and this fresh epoch98 operand capture remain distinct. Equal epoch values do not prove one invocation or execution."
+  },
+  "prior_metadata_archives_byte_identical_to_Root_copies": true,
+  "next_scope_proposal": {
+    "reason": "POP normal fallthrough is CC8D45; nothing at that site has been queried.",
+    "requires_separate_Root_admission": true,
+    "scope": "At most fresh identity plus exact typed metadata at unread fallthrough site CC8D45; no bytes, text, adjacent context, body or target expansion. Stop on changed/unknown/overlapping unit metadata."
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Successful POP sets ECX=DWORD[SS:U], ESP=U+4 and EIP=CC8D45; other GPRs and flags preserved only relative to unknown instruction entry.",
+    "After BF6FF5 returned ESP, GPRs, flags and stackword contents remain unknown. ECX=CD9410 requires both returned ESP and unchanged stackword hypotheses.",
+    "Earlier EAX=E1768C credit ends at callee entry. Distinct static snapshots are not an invocation or execution trace.",
+    "CC8D45 remains unread; no actual return, cleanup policy, registration, initializer completion, Source activation, runtime or ABI execution proof."
+  ],
+  "Root_committed_output_delivery": {
+    "copied_archive": {
+      "path": "local/cc12_locale_return_site_operand_primary/delivery_git.zip",
+      "bytes": 291538,
+      "sha256": "d27f047ade00f2e35058d2b3c045e82764f63652b2040c0ca1e00e7d8808df78"
+    },
+    "guarded_replay": {
+      "path": "local/cc12_locale_return_site_operand_primary/Root_guarded_delivery_replay.json",
+      "bytes": 2847,
+      "sha256": "2005444771f283d8bd656f745edcc0f5a0b618e7d95dc5b0170123a69d9d9ef2"
+    },
+    "actual_Git_commit_tree_objects": 4,
+    "actual_output_blobs": 2,
+    "outputs_byte_identical_to_reviewed_worker_files": true
+  }
+}
