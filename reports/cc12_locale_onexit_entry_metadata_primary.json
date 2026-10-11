@@ -1,0 +1,191 @@
+{
+  "schema": "bsp.cc12.locale-onexit-entry-metadata.Root.v1",
+  "status": "direct_saved_entry_metadata_and_prototype_accepted",
+  "worker_commit": "97b740054c11be8d7d9ebdddd7524301c97b91c6",
+  "proof_pins": [
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/evidence.zip",
+      "bytes": 393968,
+      "sha256": "0fcb5bcd0ddc0814de2371ef14adb64c5ef0351c6d6fff8491f019089926bc45"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/delivery_git.zip",
+      "bytes": 579413,
+      "sha256": "24e626a152a423be5fc6bbfcb143d56c792eea867dea3d6e4af82db044828be6"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/next_worker_handoff.json",
+      "bytes": 9618,
+      "sha256": "c514f42becede8034bc419e851ecf7ac2ce9ee145b0f2cb02455675667594389"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/copy_and_actual.py",
+      "bytes": 6516,
+      "sha256": "d696007581ed8aa9519a578de41e13cf429b01a6d29bce79994654f44c05d87e"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/Root_actual_review.json",
+      "bytes": 5968,
+      "sha256": "8c8cd17398514465bfd5580a4a40d2f5501980cc573c363c096b85198b0cff5a"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/Root_guard_runner.py",
+      "bytes": 2392,
+      "sha256": "6cb823be7f325083cf8a28f9ded094d65b404d9f836103177802d19f0b9b4cb3"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/Root_core_guard.json",
+      "bytes": 1208,
+      "sha256": "d6f7df35aeecabb6a496653a4634191ac67222d6a6f3b77d0e99fc9b9bd78605"
+    },
+    {
+      "path": "local/cc12_locale_onexit_entry_metadata_primary/Root_delivery_guard.json",
+      "bytes": 1165,
+      "sha256": "c133cea9211f24adc06c687dec3f349067c677043e80c7492deb01585f09ce7f"
+    }
+  ],
+  "Native": {
+    "epoch": 98,
+    "count": 64730,
+    "typed_raw_pair_equal": true,
+    "saved_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bf6fb9"
+      },
+      "name": "__onexit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "54",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf6fb9"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf6fee"
+            },
+            "length": "54"
+          }
+        ]
+      }
+    },
+    "entry_listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6fb9"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6fb9"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6fb9"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6fb9"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "entry_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bf6fbb"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bf6fbb"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "saved_prototype": "_onexit_t __cdecl __onexit(_onexit_t _Func)",
+    "entire_remaining_proto_output_opaque": true,
+    "code_data_or_instruction_text_bytes": 0
+  },
+  "actual_membership": {
+    "frozen_objects": 6,
+    "delivery_objects": 8,
+    "inputs": 9,
+    "outputs": 2,
+    "physical_helpers": 4,
+    "physically_retained_producers": 8,
+    "Source_tree_ids": {
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633",
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b"
+    },
+    "Source_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_LOCALE_EXIT_TAIL_OPERAND_PRIMARY.md",
+      "docs/CC12_LOCALE_EXIT_TARGET_AFTER_PUSH_OPERAND_PRIMARY.md",
+      "reports/cc12_locale_exit_tail_operand_primary.json",
+      "reports/cc12_locale_exit_target_after_push_operand_primary.json"
+    ],
+    "current_staged_final_output_bytes_equal": true
+  },
+  "strict_guard": {
+    "core_and_delivery": "PASS",
+    "single_ZIP_reads_only": true,
+    "no_post_preload_imports_or_external_effects": true
+  },
+  "entire_extra_proto_output_opaque": true,
+  "saved_name_and_prototype_not_CRT_status_callback_owner_or_ABI_authentication": true,
+  "next_admission": {
+    "packet": "cc12_locale_onexit_body_readiness",
+    "initial_scope": "Only fresh per-byte typed listing/function/body-ownership/default-effective-flow metadata at all54bytes BF6FB9..BF6FEE",
+    "required": "Return pinned actual gate/count/project/program closure to Root before any codebytes or instructiontexts",
+    "excluded": "No extra prototype, body decompile/disasm/opcodes/data, targets/callers/neighbor expansion, GPR repair/Source/runtime"
+  },
+  "overall_goal_complete": false
+}
