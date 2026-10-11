@@ -1,0 +1,11 @@
+# CC12 locale exit CALL operand: primary review
+
+Accepted worker `cef675f617f34d6714814021eefcf5a53e7fc57f` as a bounded static operand packet. Root physically copied both archives and all 28 helper files, passed both strict guarded replays, and independently checked 4,294 actual frozen blobs, 11 commit/tree objects, eight delivery objects and two outputs. All 4,217 closed Source paths remain equal to the accepted predecessor; Root has no Source delta. Detailed physical pins and receipts are in `reports/cc12_locale_exit_target_after_push_operand_primary.json`.
+
+The admitted five bytes at `BF6FF9..BF6FFD` are `E8 BB FF FF FF`. Root independently decodes rel32 as signed -69: `(BF6FF9 + 5 - 69) mod 2^32 = BF6FB9`. Its encoded return site is `BF6FFE`. Fresh typed/count/bytes/context-zero-text bookends remain epoch 98, count 64730. Qualified metadata contains only the queried instruction and containing `BF6FF5` owner, with unchanged default/effective CALL edge and fallthrough. The endpoint's entire target-site function object remains opaque and excluded from the qualified subset; the whole raw capture is not strictly site-only.
+
+Under ordinary reached 32-bit execution with a successful stack write and transfer, this CALL writes `BF6FFE` at `SS:(T-4)`, sets ESP to `T-4` and transfers to `BF6FB9`; T is unknown. With an explicitly consecutive normally executed prior PUSH, W and its pushed word K remain unknown and the two words are conditionally at W-8 and W-4. This does not establish target execution, CRT authenticity, registration, returned ESP, preserved memory, prior POP values, initialized canonical locale ownership, Source ABI, startup or gameplay.
+
+The worker disclosed one read-only Python process-status query while waiting. It changed no OS state, queried no game process, and supplies no Native, behavior, ABI or replay credit. Future packets must omit process-status diagnostics.
+
+Root separately admits only `cc12_locale_exit_after_call_metadata`: fresh exact-site `BF6FFE` typed metadata after the unchanged 98/64730 and accepted BF6FF9 gate. No code bytes, instruction text, neighbors, target/caller/prototype/data/stack queries, GPR mutations, C++ changes, tests, builds, probes or process actions are admitted. Target-site objects remain quarantined. The worker cannot select a successor automatically.
