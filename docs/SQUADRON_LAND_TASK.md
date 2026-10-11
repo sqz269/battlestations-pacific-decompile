@@ -14594,6 +14594,15 @@ turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
     Japanese Zuikaku strikers.
   - **The zero-gain dive is this installation's authored behaviour at difficulty 1.**
 
+**USNOS f7** (`s41_os_f7`, 60000 frames, `local\l49_main_osf7.log`) **gives no carrier strike to read on this
+main.**
+- The mission fails at 1554.69 s with `Game Over` on `HQ1`. The cause is Enterprise's death at 1553.34 s, with
+  `killer=DM1 killer_cat=3 killer_range=52` and no counted hits. Enterprise's first damage is at 1516.75 s.
+- The order file's class-331 strike on `Shima6` (`Enterprise_sqn27`) launches only at 1601.29 s, after the end.
+- l47's `D1` run of the same orders had no end. So the early loss is new on this main, and it is for the gunnery
+  and ships lanes to triage.
+- The run has no dive-bomb or torpedo task at all. Its 51 level bombers (Japanese `plane #n`) do release: 24 drops
+  each, misses of 3-17 m.
 ### Scripts (`local\`, prefix `l49_`, none for commit)
 
 | script | what it does |
