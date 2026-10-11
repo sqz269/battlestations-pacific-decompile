@@ -281,6 +281,44 @@ native stores, so they are not bit-exact.
 
 - Branch `agent/cc13-water1`. The lease was released at the end of the packet.
 - Next worker: the not-reconstructed list in section 8, starting with 00B9AE00 if exact grid parity
-  is wanted, or the seg 93 STL naming.
+  is wanted, or the seg 93 STL naming. AGENTS.md routes x87-heavy packets to a stronger model.
+
+**00B9AE00 BSP_OceanWaveField_ComputeProjectorMatrix**
+- `__thiscall(field, camera)`. The second argument is a camera node: it is tested at +5Ch bit 2 and
+  read at +1C8h/+1D8h (+72h/+76h dwords). The live decompile is about 500 lines.
+- Structure, from my skim. These are the steps of Johanson's projected-grid "getMinMax"; this has
+  not been verified against the listing.
+  1. Widen the FOV by [00CEC160] and build a perspective matrix with BSP_Matrix_BuildPerspective.
+  2. Invert the view-projection.
+  3. Transform the eight clip-cube corners at ±1.
+  4. Run 12 edges through 00B9A8A0, against planes at y = +[field+B8h] and -[field+B8h]. The
+     negated value is formed as `-0.0 - x` from 00D7A208.
+  5. Project the hits onto y = 0.
+  6. Clamp the projector's elevation using cos([00CEC400]), [00D7A358], [00CED5D8] and [00D7A308].
+  7. Build a look-at projector with up = (0,1,0) through BSP_Matrix_BuildLookAt.
+  8. Take the x/z min/max of the transformed points into the range matrix at field+174h.
+- 00B9CA00 consumes +174h. That function is already reconstructed.
+- Reconstruction risk: the many FSTP spills. Use `memory/sweep-huge-functions-with-eh-state-esp-anchors`
+  only if it will not decompile. It does decompile live.
+
+**00B9D7B0 BSP_OceanWaveField_RefreshGridTiles**
+- Vtable slot 0. It walks the tile grid at `[field+2B0h]` (w at +4h, h at +0h) against the 64×64
+  spectrum cells: index `(x & 3Fh) + (y & 3Fh)*40h` into `[field+BCh]`.
+- It compares against the thresholds +104h..+110h and calls 00B9A990 per quad.
+- It ends with vtable+0Ch, which is 00BA5030, the float16 upload.
+- Check x87 against the listing: the decompile shows `fVar15 = -0.0` resets.
+
+**00BA2FF0 BSP_OceanBeams_Update**
+- ECX = world+ACh. Its arguments are the camera and dt × [beam+30h] (Speed).
+- Three draws from `BSP_RandomState_NextU32` with ECX = 00E130C0, at 00BA3270, 00BA32BF and
+  00BA346E. Each converts the draw to [0,1) through `+[00CE3978]` and `*[00D63B80]`.
+- Respawn uses position = Tex parameters +50h/+54h. Lifetime uses +CCh, +D0h, +D4h and +D8h.
+- It samples 0078C890 at two points and the displacement 00BA2B50.
+- **RNG rule.** If the host ever wires this, keep the private state. Never route it to the 00BD2F10
+  streams.
+
+**Seg 93 STL helpers.** Before naming them, check `lease list` and the CC12 archive/VFS docs
+(NATIVE_VFS_*, MPKG, mpak packets). These helpers sit under cc12-reconstructed providers, so they
+are probably cc12 territory.
 - Helper scripts are in this tree's `local/wa1_*`. They are read-only PE censuses: `wa1_callers.py`,
   `wa1_ptrs.py`, `wa1_immref.py`, `wa1_dispstore.py`, `wa1_bounds.py`, `wa1_dis.py` and `wa1_vt.py`.
