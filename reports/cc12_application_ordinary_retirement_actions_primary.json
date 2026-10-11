@@ -1,0 +1,510 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-actions.Root.v1",
+  "status": "exact_action_operands_and_conditional_slot_contract_accepted",
+  "worker_commit": "4943832fda839d7dbdb7ca9adcf5b36db497241d",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/evidence.zip",
+      "bytes": 269485,
+      "sha256": "70c5256c27da90de894a39594d4dda26a7d8aa1b860ab510673c13a9bb9857a5"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/manifest.json",
+      "bytes": 14709,
+      "sha256": "329afa3e8ab18dec359c8d066b0cbe3b592cc0116a8450302951959bf6528043"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/seal.json",
+      "bytes": 6777,
+      "sha256": "5842f9e231802aacff0fe420d23fb4c1c736f5b95438a513e68acdcdf92fb716"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/portable_replay.py",
+      "bytes": 16201,
+      "sha256": "b4418cd991466283eda8e7d2104563235bd7b3cea1314ff543d4ac7f1f6210a7"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/guard_replay.py",
+      "bytes": 2182,
+      "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_guard_runner.py",
+      "bytes": 736,
+      "sha256": "ebb7109873e742e3da18f7bf83bd564cbd82e39b558b57e9222263edc7063d2e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_guard.json",
+      "bytes": 2411,
+      "sha256": "4eeffd1ce77af061d77c8a49d7ed1e04e5aa30c0e8cf57da81632c989434fc05"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_guard.stderr.txt",
+      "bytes": 426,
+      "sha256": "ab09337ec9bc8baa242837dceb918ca83909d0437bb6ff3350bf3a4f7c3d2a23"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/copy_and_actual.py",
+      "bytes": 4937,
+      "sha256": "85020058d0056d59ee3f9085a43cdab9a7c8603755ce427d25440b62f8ffceb2"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_actual_review.json",
+      "bytes": 11041,
+      "sha256": "1805d89b0e9dd116a584e8ed5de7413b64228097b9b3c11c4a0f6d0872dbbad9"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_initial_gate.json",
+      "bytes": 4544,
+      "sha256": "efcffdb417d4afdf3562ff095102442c2ac823f992825fcbac9228adf6bf784b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_coverage_gate.json",
+      "bytes": 4663,
+      "sha256": "ee3c7d03e6931f1271f16cb155a845c69b31b20bd73e8c478bae348e111d0043"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_operand_review.json",
+      "bytes": 1806,
+      "sha256": "47664780c172ede6e7d5640514c6b7f4fe1013b7370a571ebd6184949e7e75f8"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/Root_exact_code.bin",
+      "bytes": 16,
+      "sha256": "b2bf105dffd88edf0348c34ac683c6ea392ae566c4fc189c59a883b234c7d536"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/staged_git_receipt.json",
+      "bytes": 4365,
+      "sha256": "2e79bcc50daf430b21124e51f8a27bb2cdb492b4736dcf0fcd300352894fef5e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_actions_primary/final_git_receipt.json",
+      "bytes": 4219,
+      "sha256": "23d1a97b0dcf6de825a1310989b86161a16e5e1c93462c1510dc2521df14418f"
+    }
+  ],
+  "Native_initial_gate": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "actual_entry_sites": [
+      {
+        "address": "00CC7250",
+        "saved_function": {
+          "entry": {
+            "space": "ram",
+            "offset": "00cc7250"
+          },
+          "name": "Unwind@00cc7250",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "8",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00cc7250"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00cc7257"
+                },
+                "length": "8"
+              }
+            ]
+          }
+        },
+        "entry_unit": {
+          "address": {
+            "space": "ram",
+            "offset": "00cc7250"
+          },
+          "length": 3,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "entry_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00cc7253"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00cc7253"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00CC7258",
+        "saved_function": {
+          "entry": {
+            "space": "ram",
+            "offset": "00cc7258"
+          },
+          "name": "Unwind@00cc7258",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "8",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00cc7258"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00cc725f"
+                },
+                "length": "8"
+              }
+            ]
+          }
+        },
+        "entry_unit": {
+          "address": {
+            "space": "ram",
+            "offset": "00cc7258"
+          },
+          "length": 3,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "entry_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00cc725b"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00cc725b"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      }
+    ],
+    "first_gate_opcode_data_bytes": 0,
+    "next_admission": {
+      "metadata_scope": "Only typed per-byte listing/function/flow metadata at all16bytes CC7250..CC725F, covering saved8B bodies CC7250..57 andCC7258..5F",
+      "required": "Fresh98/64730 identity/count closure; return actual gate to Root before codebytes or texts",
+      "excluded": "No opcodes/data/proto/decompile/disasm/action-target following or GPR/Source/runtime action"
+    },
+    "Original_FH3_authentication_invocation_frame_ABI": false
+  },
+  "Native_coverage_gate": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "exact_sites": 16,
+    "owned_body_ranges": [
+      "00CC7250..00CC7257",
+      "00CC7258..00CC725F"
+    ],
+    "qualified_units": [
+      {
+        "start": "00CC7250",
+        "length": 3,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00cc7253"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00cc7253"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "start": "00CC7253",
+        "length": 5,
+        "saved_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00412430"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00412430"
+            }
+          ]
+        }
+      },
+      {
+        "start": "00CC7258",
+        "length": 3,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00cc725b"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00cc725b"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "start": "00CC725B",
+        "length": 5,
+        "saved_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00411ee0"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00411ee0"
+            }
+          ]
+        }
+      }
+    ],
+    "entire_automatic_target_function_objects_wholly_opaque": true,
+    "code_data_or_instruction_text_bytes": 0,
+    "next_admission": {
+      "code_scope": "Only exact16codebytes CC7250..CC725F, two exactreads with unchangedall16typed/count/project/program closure",
+      "text_scope": "Only4savedunitstarts CC7250,CC7253,CC7258,CC725B, context0texts",
+      "decode": "Manual and Capstone agreement; instruction-local EBP/ECX/ESP/flags effects only",
+      "excluded": "No targetfollowing, IAT/stack/data/proto/bodydecompile/disasm, GPRrepair/Source/runtime",
+      "Original_FH3_authentication_frame_binding_and_invocation": false
+    }
+  },
+  "Native_operand_review": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "exact_bytes": 16,
+    "exact_hex": "8b4de8e9d8b174ff8d4dece980ac74ff",
+    "instructions": [
+      {
+        "address": "00CC7250",
+        "length": 3,
+        "hex": "8b4de8",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x18]"
+      },
+      {
+        "address": "00CC7253",
+        "length": 5,
+        "hex": "e9d8b174ff",
+        "mnemonic": "jmp",
+        "operands": "0x412430"
+      },
+      {
+        "address": "00CC7258",
+        "length": 3,
+        "hex": "8d4dec",
+        "mnemonic": "lea",
+        "operands": "ecx, [ebp - 0x14]"
+      },
+      {
+        "address": "00CC725B",
+        "length": 5,
+        "hex": "e980ac74ff",
+        "mnemonic": "jmp",
+        "operands": "0x411ee0"
+      }
+    ],
+    "manual_Capstone_and_context0_texts_agree": true,
+    "physical_JMP_vs_saved_CALL_RETURN_distinct": true,
+    "instruction_local": {
+      "first": "CC7250 reads unqueried DWORD[EBP-18h] into ECX; then tail-JMP412430",
+      "second": "CC7258 forms ECX=EBP-14h modulo2^32 without operand read; then tail-JMP411EE0",
+      "ESP_EBP_EFLAGS_unchanged": true,
+      "no_CALL_return_address_push": true
+    },
+    "conditional_declared_state_path": [
+      1,
+      0,
+      -1
+    ],
+    "conditional_frame_bindings": {
+      "receiver": "EBP=ESP_R+20h if action MOV selects actual receiver spill stored atBEA8CC [ESP_R+8]",
+      "guard": "EBP=ESP_G+20h if action LEA selects local guard stored atBEA8E8 [ESP_G+C]",
+      "common": "Only if those store-time ESP values coincide, with valid slot contents and actual invocation; none inferred"
+    },
+    "entire_automatic_target_function_objects_wholly_opaque": true,
+    "stack_bytes_or_target_queries": 0,
+    "Original_FH3_authentication_actual_frame_invocation_ABI_runtime": false
+  },
+  "actual_membership": {
+    "objects": 4,
+    "inputs": 14,
+    "outputs": 2,
+    "helpers": 14,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_content_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_UNWIND_MAP_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_unwind_map_primary.json",
+      "docs/CC12_APPLICATION_TARGETS_BODY_PRIMARY.md",
+      "reports/cc12_application_targets_body_primary.json"
+    ],
+    "stage_final_tree_and_output_blobs_equal": true
+  },
+  "strict_guard": {
+    "supplied_ZIP_reads_only": true,
+    "no_post_preload_imports_or_external_effects": true,
+    "manual_decode_and_retained_Capstone_result_only": true
+  },
+  "conditional_contract": {
+    "receiver_action": "MOV ECX,[EBP-18h]; physical JMP00412430",
+    "guard_action": "LEA ECX,[EBP-14h]; physical JMP00411EE0",
+    "preserved_before_targets": [
+      "EBP",
+      "ESP",
+      "arithmetic flags"
+    ],
+    "receiver_slot": "EBP=ESP_R+20h and suitable saved contents",
+    "guard_slot": "EBP=ESP_G+20h",
+    "common_binding_requires": "ESP_R=ESP_G",
+    "actual_Original_FH3_frame_invocation_ABI_authority": false,
+    "entire_automatic_target_function_objects_opaque": true,
+    "previous_bounded_target_contract_only": true
+  },
+  "Source_admission": "Separate explicit-context dormant ordinary-retirement C++ policy using already accepted targets; Source C++ exceptions only, not Original FH3 cleanup or activation",
+  "overall_goal_complete": false
+}
