@@ -1,0 +1,176 @@
+{
+  "packet": "cc12_application_vector_retirement_descriptor_suffix_primary",
+  "status": "Root accepted finite numeric suffix evidence",
+  "private_directory": "local\\cc12_application_vector_retirement_descriptor_suffix_primary",
+  "worker_commit": "8277dfefbf93a66cbbb59d9ddd8d40a72361052b",
+  "pins": {
+    "Root_gate.py": {
+      "bytes": 3699,
+      "sha256": "96d841bcae49e0d152076875ac6f6af08a63bc96d6d2f1bb54b2e7fad9fa6d13"
+    },
+    "Root_gate.json": {
+      "bytes": 13135,
+      "sha256": "e00a750d1697b23af27c4bb03416b6608e6353ae20fd2ef515e3b48cd59eb9e2"
+    },
+    "Root_review.py": {
+      "bytes": 4526,
+      "sha256": "9fa439806587d983dd9dca581bc89a70da2751472a2d30c8e36dd74e52f8675b"
+    },
+    "Root_actual_review.json": {
+      "bytes": 3041,
+      "sha256": "e8c74378b03825839e20e21ddd485043317ff02e09e662c23ed673e20d7fc038"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2381,
+      "sha256": "32db16ea0936f01d22cd8ecacac0d9544e3d7119005487ef71e38c9efa9e706c"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 3148,
+      "sha256": "7b4bdbd2d0ae1914fbec73934c6f2aea8eb242518bfb3eed4bf501aead81d659"
+    },
+    "replay.py": {
+      "bytes": 21483,
+      "sha256": "4133fc7afe3671c1900c0fa9d5631892b564836566db5abc9225a0823019e57b"
+    },
+    "audit_replay.py": {
+      "bytes": 2322,
+      "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+    }
+  },
+  "actual_review": {
+    "status": "PASS",
+    "worker_commit": "8277dfefbf93a66cbbb59d9ddd8d40a72361052b",
+    "ZIP_sha256": "d105d50769c87bf98414ef865f9a88476c8eb77c24e75f0e375f9bce61342cbb",
+    "ZIP_entries": 81,
+    "actual_Git_objects": 20,
+    "finite_inputs": 8,
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_SUFFIX.md",
+        "blob": "7e088cd1c2e8f2d6d55a1aec8d06f3bbdefeb688",
+        "sha256": "34b510562fc533b0f9f8cf50c006f8a0be97e2de61601bbd7a40356b8a5c6d6f",
+        "length": 4205
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_descriptor_suffix.json",
+        "blob": "04bf065e44c6f9357468308e4b4632fa1f1125b6",
+        "sha256": "f09c01f1336b2add699becd50963575bad45cd13b955460b4dfb1318bfb94cc4",
+        "length": 20466
+      }
+    ],
+    "helper_pins": {
+      "admit.py": {
+        "bytes": 2614,
+        "sha256": "814a5ddbaff1c8d661150eb4c31ef8cfd5459432c50ecb92d58a35bd07954371"
+      },
+      "collect_gate.py": {
+        "bytes": 2509,
+        "sha256": "10e339d84ad20bac311f1a76804faccd662ee8922d0b9d7ba8c37bd397621d1e"
+      },
+      "seal_initial.py": {
+        "bytes": 6901,
+        "sha256": "37a1e7cd2d75e6476a12f3a21c5146cffe2812265b4fbefbbb384678b383f749"
+      },
+      "prepare_helpers.py": {
+        "bytes": 3176,
+        "sha256": "bb1f623b9e6abb56159560762ce3d542da40e22d45eb3f2aa73d48878068e401"
+      },
+      "collect.py": {
+        "bytes": 2628,
+        "sha256": "eeb6d0965a3661badf42caf82d015704ca62e905960361d8f9b80a1e12bd1d4a"
+      },
+      "gate.py": {
+        "bytes": 3546,
+        "sha256": "6a356f4d78ad12c1f0405d5c4e0bd9fcfdead9c3d93c73d39b01d47ce24829fc"
+      },
+      "Root_suffix_gate.py": {
+        "bytes": 3699,
+        "sha256": "96d841bcae49e0d152076875ac6f6af08a63bc96d6d2f1bb54b2e7fad9fa6d13"
+      },
+      "seal.py": {
+        "bytes": 6996,
+        "sha256": "22a95cfde1aa9ebe6a503046558161a61f73560a7d253a6f3c131766e63f275e"
+      },
+      "replay.py": {
+        "bytes": 21483,
+        "sha256": "4133fc7afe3671c1900c0fa9d5631892b564836566db5abc9225a0823019e57b"
+      },
+      "audit_replay.py": {
+        "bytes": 2322,
+        "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+      },
+      "report.py": {
+        "bytes": 14037,
+        "sha256": "665183be309ea5a031aa4397c1fd7d87421c804630306e45b6bf4ee281482033"
+      },
+      "decode_suffix.py": {
+        "bytes": 3722,
+        "sha256": "046d7f348c67790f47d23b355ce5fdb9534cb3e475605ccb134dd4bb6c57caee"
+      }
+    },
+    "fresh_suffix_hex": "000000000000000000000000000000000000000001000000",
+    "fresh_suffix_SHA256": "640e494dd31edb66b0748239aa90547d77e8ab37843b5bc8352a5f39e5296f06",
+    "unsigned_words": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "positive_prefix_words": [
+      429065506,
+      1,
+      14374832
+    ],
+    "combined_numeric_words": [
+      429065506,
+      1,
+      14374832,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "original_copy_equal_and_distinct": true,
+    "conditional_EH_layout_only": true,
+    "authenticated_field_roles": false,
+    "Original_FH3_authenticated": false,
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "strict_guard": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "Native": {
+    "DataDB_entry": "00DB57B8",
+    "defined_data_bytes": 36,
+    "fresh_suffix": "00DB57C4..00DB57DB",
+    "fresh_bytes": 24,
+    "fresh_words": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "raw_responses": 108,
+    "CLI_commands": 11,
+    "epoch": 98,
+    "function_count": 64730,
+    "prefix12_provenance": "prior immediate positive actualGit report, not fresh query"
+  },
+  "credit": {
+    "numeric_words": true,
+    "authenticated_layout_or_field_roles": false,
+    "Original_FH3_invocation_frame_receiver": false,
+    "Source_build_ABI_runtime_gameplay": false,
+    "Source_census_current_Root_equality": false
+  }
+}
