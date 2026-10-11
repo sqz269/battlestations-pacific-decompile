@@ -1,0 +1,332 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-unwind-map.Root.v1",
+  "status": "exact_sixteen_candidate_map_bytes_and_conditional_graph_accepted",
+  "worker_commit": "fea3ea0e8564c7c0c09a798b6d94a7983416f6bb",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/evidence.zip",
+      "bytes": 200790,
+      "sha256": "54630c3d5b2cf5086100da8a0501fc8362eaa6bbecab79b1140b61db7aade493"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/manifest.json",
+      "bytes": 11367,
+      "sha256": "3be7e96e95d7a6039b619676481c281de470831eb9e7ff4242e0dd81455eeeba"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/seal.json",
+      "bytes": 5287,
+      "sha256": "e5e92cbe6473d00311159bcef008ae18e2e54a0fa9af3b3670b38e427c1f561c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/portable_replay.py",
+      "bytes": 11950,
+      "sha256": "cd99c11c0e5f34790e9a0c10c42599be873ab78e2aea12c2df05eecb54d78b03"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/guard_replay.py",
+      "bytes": 2182,
+      "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_guard_runner.py",
+      "bytes": 736,
+      "sha256": "874fbf08c64c42fbd53ce17fcfb99f7f2fbcba4771209e44d726d2df0c56b4e0"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_guard.json",
+      "bytes": 1417,
+      "sha256": "d19bfaf4a4d0292cdea0ba20531cd283ba20d69673460b384c1dced98876f530"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_guard.stderr.txt",
+      "bytes": 429,
+      "sha256": "abd7e3f0dde0fa1f86f074c57c08200a5af679590324babb21cb774a3685ee31"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/copy_and_actual.py",
+      "bytes": 4917,
+      "sha256": "2f8aad5fc5da43fa91acb6d9ba1791d761709fe8d16c179edcf0728b2c78f089"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_actual_review.json",
+      "bytes": 9924,
+      "sha256": "bb2b4fc9da3aff745bb6fa99a79734aa458f70c9f05b894552fd5bf658c96d99"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_initial_gate.json",
+      "bytes": 4441,
+      "sha256": "571a0d69b9ce04c6c119fd83c0df8647ec883cf15345c1794a6239e97226f808"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_data_review.json",
+      "bytes": 1496,
+      "sha256": "872ab52f4365d7e8df87f93bfea15ed35272e6f29ce8f55f842621a7df80e54f"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/Root_exact_map.bin",
+      "bytes": 16,
+      "sha256": "fac6b1316f227a2a7427025f6f5cf1c12ab488733be6ec2ced2b1eb4e1da82d0"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/staged_git_receipt.json",
+      "bytes": 3890,
+      "sha256": "1cef27a1a9d29a30db6662a4db2f1f3e1efa0d898da45719658a4ee9d33db6be"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_primary/final_git_receipt.json",
+      "bytes": 3746,
+      "sha256": "f43f1bdabb32cff17fe0733ace81b510d25438826efa35c1deed2f214e5500cc"
+    }
+  ],
+  "Native_initial_gate": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "actual_typed_addresses": 16,
+    "qualified": [
+      {
+        "address": "00E01CE8",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": true,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CE9",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CEA",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CEB",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CEC",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CED",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CEE",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CEF",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF0",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF1",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF2",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF3",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF4",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF5",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF6",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF7",
+        "containing_data_start": "00E01CE8",
+        "containing_data_length": 16,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      }
+    ],
+    "listing_defined_data_coverage": true,
+    "explicit_memory_block_backing_or_type_proof": false,
+    "initial_instruction_text_queries": 0,
+    "first_gate_data_bytes": 0,
+    "next_admission": {
+      "exact_data_range": "00E01CE8..00E01CF7",
+      "bytes": 16,
+      "scope": "Only four little-endian DWORDraw values under fresh unchangedall16typed/count/identity bookends; successful exactread establishes these16memorybytes only",
+      "excluded": "No descriptor remainder, pointer/target/neighbor/body/proto/stack/funclet expansion, guessedformat/FH3/cleanup/authenticity/type/backing/Source/runtime action"
+    }
+  },
+  "Native_data_review": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "actual_typed_responses": 48,
+    "allthree_batches_raw_equal_per_byte": true,
+    "data_CLI_reads": 2,
+    "data_bytes_per_read": 16,
+    "raw_HTTP_read_memory_capture": false,
+    "exact_hex": "ffffffff5072cc00000000005872cc00",
+    "four_little_endian_raw_DWORDs": [
+      "FFFFFFFF",
+      "00CC7250",
+      "00000000",
+      "00CC7258"
+    ],
+    "containing_listing_defined_data_length": 16,
+    "descriptor_remainder_read": false,
+    "encoded_pointer_followed": false,
+    "explicit_memory_block_backing_type_format_FH3_cleanup_authenticity": false,
+    "instruction_text_queries": 0,
+    "Native_closed": true,
+    "pins": [
+      {
+        "path": "pre_data_gate.json",
+        "bytes": 40209,
+        "sha256": "b47d7996c735117b5b95ebea85a4eb8db1d85545c8f922b67e43d31d3b61aec1"
+      },
+      {
+        "path": "closing_gate.json",
+        "bytes": 40209,
+        "sha256": "a6e850a85a5e4cdc495c5483d7a6281deaa26112a987607181dd69fc32d10fe4"
+      },
+      {
+        "path": "data_primary.stdout.txt",
+        "bytes": 77,
+        "sha256": "92f8eece4561eef7d5081049bc30b5bd5ade7141365bb83f283b9aae3a31f6a8"
+      },
+      {
+        "path": "data_closing.stdout.txt",
+        "bytes": 77,
+        "sha256": "92f8eece4561eef7d5081049bc30b5bd5ade7141365bb83f283b9aae3a31f6a8"
+      },
+      {
+        "path": "data_schedule.json",
+        "bytes": 1711,
+        "sha256": "cbfc0f4bb01ced7091e8d6a7318539f49c8e4b117e673de512bc79a415f680ba"
+      }
+    ]
+  },
+  "actual_membership": {
+    "objects": 4,
+    "inputs": 12,
+    "outputs": 2,
+    "helpers": 12,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_content_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_DESCRIPTOR_PREFIX_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_descriptor_prefix_primary.json",
+      "docs/CC12_APPLICATION_DESCRIPTOR_PRIMARY.md",
+      "reports/cc12_application_descriptor_primary.json"
+    ],
+    "stage_final_tree_and_output_blobs_equal": true
+  },
+  "strict_guard": {
+    "single_ZIP_reads_only": true,
+    "no_post_preload_imports_or_external_effects": true
+  },
+  "qualified_conditional_comparison": {
+    "reference": "Existing CC12_APPLICATION_DESCRIPTOR_PRIMARY MSVC14.51.36231 classic-x86 absolute layout comparison only",
+    "entries": [
+      {
+        "index": 0,
+        "entry_address": "00E01CE8",
+        "candidate_toState": -1,
+        "candidate_action_address": "00CC7250"
+      },
+      {
+        "index": 1,
+        "entry_address": "00E01CF0",
+        "candidate_toState": 0,
+        "candidate_action_address": "00CC7258"
+      }
+    ],
+    "declared_state_path": [
+      1,
+      0,
+      -1
+    ],
+    "Original_compiler_runtime_FH3_authentication": false,
+    "actual_invocation_cleanup_or_frame_binding": false,
+    "older_definition_captures_opaque": true
+  },
+  "next_admission": {
+    "packet": "cc12_application_ordinary_retirement_action_entry_metadata",
+    "initial_scope": "Direct typed entry/listing/function/body-range/flow metadata at candidate action addresses CC7250 and CC7258 only",
+    "required": "Fresh98/64730 identity/count bookends; return pinned exact initial captures to Root before bytes/text or adjacent metadata",
+    "excluded": "No body/prototype/opcodes/data/action-target following, guessed complete funclet extent, GPR repair, Source census/C++/tests/build/runtime"
+  },
+  "overall_goal_complete": false
+}
