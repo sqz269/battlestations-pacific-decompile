@@ -1,0 +1,522 @@
+{
+  "schema": 1,
+  "status": "reviewed_Native_entry_only",
+  "address": "00C0522E",
+  "worker_commit": "fe0aa86e38c534c62517b39a761f08e9b49475c9",
+  "Native_epoch": 98,
+  "function_count": 64730,
+  "reviews": {
+    "Root_actual_review.json": {
+      "status": "PASS",
+      "worker_commit": "fe0aa86e38c534c62517b39a761f08e9b49475c9",
+      "frozen_base": "fac6dbb926cf6fde3cc43508dfc5f6e4f0873805",
+      "actual_frozen_Git_objects": [
+        {
+          "kind": "commit",
+          "oid": "fac6dbb926cf6fde3cc43508dfc5f6e4f0873805"
+        },
+        {
+          "kind": "tree",
+          "oid": "5d598643bc795c2a52accd71b49a061ced5a13fc"
+        },
+        {
+          "kind": "tree",
+          "oid": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+        },
+        {
+          "kind": "tree",
+          "oid": "09add3be594e63edcce6a16ec041ed965441e898"
+        },
+        {
+          "kind": "tree",
+          "oid": "2e962aaab09ac39410b3cecf80c395b199437abd"
+        },
+        {
+          "kind": "tree",
+          "oid": "39eadf2fbfa146998e35f5526d7b7a5a7b9c1c45"
+        },
+        {
+          "kind": "tree",
+          "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25"
+        },
+        {
+          "kind": "tree",
+          "oid": "fa269934679ee43da523f7bf9c369e4e27d83531"
+        }
+      ],
+      "actual_finite_inputs": [
+        {
+          "path": "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+          "git_blob": "af544287f2f59c76e4ecd550137823beb14cd944"
+        },
+        {
+          "path": "reports/cc12_application_crt_handler_body_primary.json",
+          "git_blob": "b1cf36a4be8d767949728c37f4b3c020e55b802c"
+        },
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_ENTRY_PRIMARY.md",
+          "git_blob": "ec7e1f622f3cb119bddcf2e984a8069d26589e4e"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_entry_primary.json",
+          "git_blob": "87930ab43dbb22544756f7538d9c8aa5ce5a8598"
+        },
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+          "git_blob": "6a70950b42b0a636709e1ea579ce240d39627166"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+          "git_blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4"
+        },
+        {
+          "path": "config/target.json",
+          "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+        },
+        {
+          "path": "tools/bsp.py",
+          "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c"
+        },
+        {
+          "path": "tools/ghidra_typed_flow.py",
+          "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619"
+        },
+        {
+          "path": "tools/ghidra_export.py",
+          "git_blob": "0056201883c1594d9267d2fcf4990385461f0857"
+        },
+        {
+          "path": "tools/branch_sync.py",
+          "git_blob": "f73dbc623c26495daff4c94da0e5b74388eb0cc2"
+        },
+        {
+          "path": "tools/coordination.py",
+          "git_blob": "c9b6a6788498b82373233afe3211002ed90ca4c1"
+        },
+        {
+          "path": "tools/ledger.py",
+          "git_blob": "1d037c9effea576092d60ce5b4d4783420a617f7"
+        },
+        {
+          "path": "tools/workspace.py",
+          "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604"
+        }
+      ],
+      "actual_outputs": [
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_ENTRY_METADATA.md",
+          "mode": "100644",
+          "git_blob": "1024c700a2a41d3c02047159cafdb6518108fb7b",
+          "bytes": 3372,
+          "sha256": "a2316535795502f2a89af8df2b1657a1a41cf8709205090bc12054c47a6a6773"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_first_call_entry_metadata.json",
+          "mode": "100644",
+          "git_blob": "a39ab3d0f88414f405bae1c1e75cb9cd637411a3",
+          "bytes": 17484,
+          "sha256": "71c0fcddfb4e0aaed6b9b4780d525742621e3f71a545e626382f98e70838abc8"
+        }
+      ],
+      "physical_helpers": [
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/capture_entry.py",
+          "bytes": 6050,
+          "sha256": "2ffe4d50d7f87164a5b071d4a6251ecd13dc84e992a792e6dc955f246f1aeaf4"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/portable_replay.py",
+          "bytes": 12452,
+          "sha256": "c0dab435cdea018e09b8b6fad4fa662ea185ff309b2d10484b5cd58b72e942cd"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/guard_replay.py",
+          "bytes": 2283,
+          "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/packet_tool.py",
+          "bytes": 16966,
+          "sha256": "159d1cb1052b5f1ef85a52db7e65c776b73478c30c5007f97d550dc34b07b0b1"
+        }
+      ],
+      "Root_CRLF_only_variants": [
+        "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+        "reports/cc12_application_crt_handler_body_primary.json",
+        "docs/CC12_APPLICATION_CRT_DISPATCH_ENTRY_PRIMARY.md",
+        "reports/cc12_application_crt_dispatch_entry_primary.json"
+      ],
+      "frozen_worker_Source_IDs": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Root_current_Source_IDs": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "current_Source_equality_claimed": false,
+      "new_Source_content_census": false,
+      "Original_FH3_ABI_activation_or_runtime_credit": false
+    },
+    "Root_initial_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "typed_captures": 2,
+      "raw_capture_bytes_equal": true,
+      "raw_gate_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c0522e"
+        },
+        "name": "__getptd",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "24",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c0522e"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05245"
+              },
+              "length": "24"
+            }
+          ]
+        }
+      },
+      "entry_listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c0522e"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c0522e"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c0522e"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c0522e"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "entry_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0522f"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0522f"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "saved_entry_prototype": "_ptiddata __cdecl __getptd(void)",
+      "automatic_proto_companion_summary_wholly_opaque": true,
+      "instruction_texts_or_code_data_bytes_read": 0,
+      "Original_SEH4_CRT_register_ABI_and_invocation_authenticated": false,
+      "next_admission": {
+        "scope": "Only direct typed listing/function/flow metadata for exact24savedbodyaddresses C0522E..C05245 under98/64730 closure",
+        "required": "Return raw perbyte coverage/units/flows to Root before any codebytes/text",
+        "excluded": "No proto repetition/decompile/disasm/opcodes/text/data/stack/targets/callers/GPRrepair/Source/runtime"
+      }
+    },
+    "Root_core_replay.json": {
+      "FH3_identity_or_runtime_invocation": false,
+      "Root_listing_gate_sha256": "70857fb4ceb4ef1634ac2fa9e31aa5a79c7fc997d81b5b2c0e136723bfa407c7",
+      "Source_content_census": false,
+      "body_continuation_bytes_read": 0,
+      "counts": {
+        "count_calls": 4,
+        "entry_byte_reads": 1,
+        "prototype_queries": 1,
+        "typed_response_count": 2
+      },
+      "data_or_stack_bytes_read": 0,
+      "entry_bytes": {
+        "address": "00C0522E",
+        "hex": "56",
+        "length": 1,
+        "limit": "Only the saved first instruction byte was read; no body continuation or return behavior was inspected.",
+        "manual_x86_interpretation": "PUSH ESI",
+        "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+        "stdout_sha256": "2855bc6d3fe6b204cadd9efb6570d48cc952d1602b4fb21eefd4908885cd40fd"
+      },
+      "epoch": 98,
+      "exact_helper_body_count": 4,
+      "frozen_head": "fac6dbb926cf6fde3cc43508dfc5f6e4f0873805",
+      "frozen_worker_Source_subtree_identities": {
+        "include": "09add3be594e63edcce6a16ec041ed965441e898",
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+      },
+      "function_count": 64730,
+      "git_object_count": 8,
+      "member_count": 62,
+      "metadata": {
+        "entry_flow": {
+          "default_fallthrough": {
+            "offset": "00c0522f",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00c0522f",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "entry_listing": {
+          "code_unit_at": {
+            "address": {
+              "offset": "00c0522e",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "code_unit_containing": {
+            "address": {
+              "offset": "00c0522e",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "instruction_at": {
+            "address": {
+              "offset": "00c0522e",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "instruction_containing": {
+            "address": {
+              "offset": "00c0522e",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          }
+        },
+        "saved_function": {
+          "body": {
+            "address_count": "24",
+            "complete": true,
+            "range_count": 1,
+            "ranges": [
+              {
+                "end_inclusive": {
+                  "offset": "00c05245",
+                  "space": "ram"
+                },
+                "length": "24",
+                "start": {
+                  "offset": "00c0522e",
+                  "space": "ram"
+                }
+              }
+            ],
+            "returned_range_count": 1
+          },
+          "direct_thunk_target": null,
+          "entry": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "is_thunk": false,
+          "name": "__getptd",
+          "no_return": false,
+          "thunk_target_recursive": false
+        }
+      },
+      "native_query_sites": [
+        "00C0522E"
+      ],
+      "numeric_target": "00C0522E",
+      "opaque_prototype_companion": {
+        "CLI_emitted_nonempty_lines_excluding_marker": 27,
+        "CLI_reported_omitted_lines": null,
+        "CLI_reported_total_lines": null,
+        "companion_field_values_credited": [],
+        "companion_text_bytes_in_stdout": 680,
+        "companion_text_sha256": "ddb5c71b9d642ce9595a9a86cac899219afe61c421ac66f08c4d198d3773e770",
+        "complete_companion_HTTP_response_retained": false,
+        "terminal_CLI_truncation_marker": null,
+        "whole_automatic_companion_opaque": true
+      },
+      "parent_call_site": "00C07997",
+      "prerequisite_input_count": 14,
+      "proto_stdout_sha256": "85077d696d82b889d20c12c0e56004e5b2904224f012338233652192284f9366",
+      "raw_gate_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+      "raw_gates_equal": true,
+      "returned_state_or_callee_ABI_authenticated": false,
+      "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+      "status": "PASS"
+    },
+    "Root_guard_receipt.json": {
+      "status": "PASS",
+      "only_supplied_ZIP_read": true,
+      "reads": 1,
+      "post_preload_imports": false,
+      "directory_process_network_dynamic_library_or_mutations": false
+    }
+  },
+  "qualified_entry_bytes": "56",
+  "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+  "next_admission": {
+    "scope": "Paired typed listing/function/flow metadata for exactly 24 saved-body addresses 00C0522E..00C05245",
+    "gate": "Return raw per-byte unit coverage and flows to Root before code/text operands",
+    "excluded": "No body bytes/text, data, stack, prototype repetition, decompile, disasm, targets, GPR/Source mutation or execution"
+  },
+  "proofs": {
+    "evidence.zip": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/evidence.zip",
+      "bytes": 522639,
+      "sha256": "f03fc87d4b2375018042a9ca261c5555f3c11b1d31833489077fe73817743df4"
+    },
+    "manifest.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/manifest.json",
+      "bytes": 10904,
+      "sha256": "e4c982c8157caa631212b8964e73c8ab668582f8cfa59943771d49170f02ee53"
+    },
+    "seal.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/seal.json",
+      "bytes": 7999,
+      "sha256": "8543775fb9805d8d79e1e080e0f8905a26f7faa41c53d1efd3834bb76c04b388"
+    },
+    "final_git_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/final_git_receipt.json",
+      "bytes": 4207,
+      "sha256": "c2e0d190fd7e11afeeb4be61051da3d9e8e663d357e3bf035da5b67bc06e5e24"
+    },
+    "staged_git_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/staged_git_receipt.json",
+      "bytes": 4347,
+      "sha256": "2d511da1eadf3b061f334700eaa53125c9adbf7df735595d0a7bea614e5ca003"
+    },
+    "Root_actual_review.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Root_actual_review.json",
+      "bytes": 5068,
+      "sha256": "a315003eaf4a7bcb133984d084f75f246384c1f17e191d698af82a98b9b91ab0"
+    },
+    "Root_initial_review.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Root_initial_review.json",
+      "bytes": 3323,
+      "sha256": "183123f0f5a3ab6a7cb289e1b5ce57e370c4f3cdd1578fb60f72caf5446cc66b"
+    },
+    "Root_core_replay.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Root_core_replay.json",
+      "bytes": 3717,
+      "sha256": "6c934b0890b423569f38731d3a81450b8ee6a270790db38c5fdabc1b5d8cd3bc"
+    },
+    "Root_guard_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Root_guard_receipt.json",
+      "bytes": 160,
+      "sha256": "677181b2cec1ad91e364b41c4990404a6426e43c705e8cc89b9f15fe1a232f70"
+    },
+    "Tools/capture_entry.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Tools/capture_entry.py",
+      "bytes": 6050,
+      "sha256": "2ffe4d50d7f87164a5b071d4a6251ecd13dc84e992a792e6dc955f246f1aeaf4"
+    },
+    "Tools/portable_replay.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Tools/portable_replay.py",
+      "bytes": 12452,
+      "sha256": "c0dab435cdea018e09b8b6fad4fa662ea185ff309b2d10484b5cd58b72e942cd"
+    },
+    "Tools/guard_replay.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Tools/guard_replay.py",
+      "bytes": 2283,
+      "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+    },
+    "Tools/packet_tool.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_primary/Tools/packet_tool.py",
+      "bytes": 16966,
+      "sha256": "159d1cb1052b5f1ef85a52db7e65c776b73478c30c5007f97d550dc34b07b0b1"
+    }
+  },
+  "qualification": "Saved name/prototype and entry instruction only. Entire automatic prototype companion opaque; no TLS behavior, returned EAX/EBP/ESP, callee ABI, original FH3 or runtime authentication"
+}
