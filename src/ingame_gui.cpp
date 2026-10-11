@@ -6,6 +6,7 @@
 #include "bsp/main_menu_mission_detail.hpp"
 #include "bsp/profile_checkpoint.hpp"
 
+#include <algorithm>
 #include <cstdio>
 #include <string>
 
@@ -227,6 +228,54 @@ bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, Reward
     return true;
 }
 
+std::vector<RewardsScoreRow> rewards_build_score_rows_0062a0b0(RewardsEnterHost& host) {
+    // 0062A0D4..0062A121: the old rows go (00625980); the game mode is read once.
+    std::vector<RewardsScoreRow> rows;
+    const std::int32_t mode = host.effective_game_mode_004bca50();
+    for (std::int32_t slot = 0; slot < 8; ++slot) {
+        // 0062A130..0062A15C: a null slot, a negative index, or an AI slot
+        // without its +0Ah byte is skipped.
+        RewardsPlayerSlot player;
+        if (!host.player_slot_18cc(slot, player)) continue;
+        if (player.index20 < 0) continue;
+        if (player.ai09 && !player.byte0a) continue;
+        // 0062A162..0062A1D4: a zeroed row is pushed (00627820), then filled in place.
+        RewardsScoreRow& row = rows.emplace_back();
+
+        // 0062A1D9..0062A2A9: badge count over the score record's key list.
+        std::int32_t badges = 0;
+        for (const std::string& key : host.player_score_keys_6c(slot)) {
+            if (host.badge_award_earned_0090c000(key)) ++badges;
+        }
+
+        // 0062A2AE..0062A4E2: an AI with a name of at most one character is
+        // named by its difficulty.
+        if (player.ai09 && player.name58.size() <= 1) {
+            row.name = std::string(kRewardsAiNameKeys[static_cast<std::size_t>(player.difficulty2c)]);
+        } else {
+            row.name = player.name58;
+        }
+        // 0062A4E5..0062A695
+        row.clan = player.ai09 ? std::string(kRewardsAiClan) : player.clan78;
+        // 0062A698..0062A935
+        row.id0 = player.id80;
+        row.id4 = player.id84;
+        row.ai5c = player.ai09;
+        row.side = player.side28;
+        row.score = host.player_score_1e0(slot);
+        row.game_mode34 = mode;
+        row.badges48 = badges;
+        row.rank = player.index20 == host.game_dword(0x18EC) ? host.profile_rank_byte_00574050() : player.rank90;
+    }
+    return rows;
+}
+
+void rewards_sort_score_rows_00625d10(std::vector<RewardsScoreRow>& rows) {
+    // 00623457/006234B1: CMP new+50h against the row before it, JG/JLE; a
+    // row moves up only past strictly lower scores.
+    std::stable_sort(rows.begin(), rows.end(),
+                     [](const RewardsScoreRow& a, const RewardsScoreRow& b) { return a.score > b.score; });
+}
 std::int32_t rewards_icon_state(std::int32_t value) noexcept {
     const std::int32_t state = value - 1 > 0 ? value - 1 : 0;
     return state & 0xFFFF;
@@ -322,11 +371,11 @@ void rewards_fill_scoreboard(RewardsEnterState&, RewardsEnterHost& host) {
     host.clear_row_human_flags_230();
     host.listbox_clear_rows_00a9bec0();
     host.listbox_set_listener_00a9ac40(false);
-    host.build_score_rows_0062a0b0();
-    host.sort_score_rows_00625d10();
+    std::vector<RewardsScoreRow>& rows = host.score_rows_220();
+    rows = rewards_build_score_rows_0062a0b0(host);
+    rewards_sort_score_rows_00625d10(rows);
 
     std::int32_t local_row = 0;  // [esp+9Ch]
-    const std::vector<RewardsScoreRow>& rows = host.score_rows_220();
     if (host.game_dword(0x614) == kRewardsGameModeNoSides) {
         // 0062D461..0062DB95: one table, every row in order.
         host.set_page_title_e196c0(1, record.won != 0 ? kRewardsMissionCompleted : kRewardsMissionFailed);
