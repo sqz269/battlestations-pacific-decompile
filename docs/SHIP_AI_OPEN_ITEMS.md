@@ -16022,3 +16022,28 @@ The work stopped at the lead's PAUSE after f17. Neither small edit was started; 
    - The player-side fix: delay or reroute the spotting units so Shimotsuke is sighted at least one
      refresh before the Blockade. Then primary 3 should be added.
 4. Since DisplayScores is ON (lua47), `Bases captured: N` lines track the capture progress in the log.
+
+## 207. `kCaptureStatePartyFromUnitBound` after the health-callback guard (cc9-ships42, 2026-10-11; 206.1 item 1)
+
+**The `00877B90` guard is already in.** cc11's `kUnitHealthCallbackGuardBound` (ON on main, `src/game_hosts_gunnery.cpp`,
+`docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md`) carries `00877B90`'s equal-health early return
+(`00877BAB..00877BC1`, `FUCOMIP; LAHF; TEST AH,44h; JNP`) to all five health-driven death endpoints, the direct hit
+(`Impl::apply_hit`) and the blast (`Impl::apply_gunless_blast_hit`) among them. It is a superset of the
+`applied != 0.0f` edit 206.1 item 1 proposed, so `kUnchangedHealthNoDeathBound` is not added. cc11's own pair ran f12
+with the capture switch ON on both sides (prior-party-0 neutralizations 45 -> 0).
+
+**Pair.** OFF is this branch's tip after the torpedo line (`f9fde7416` plus this doc commit); ON is the same commit
+exported with `kCaptureStatePartyFromUnitBound=true` (`local\s42_cp`). Launch form of reference AF (`local\s42_rows.ps1`,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05).
+
+**Predictions (OFF -> ON), written before any run.**
+- USNOS f12 (80000, `s41_os_f12.txt`): exactly one `command building capture: ... party 2 -> 0` resync for HQ2 (about
+  1703 s) and one for HQ1 (about 2386 s); no "neutralized (prior party=0)". The neutralization times (HQ2 1484.75 s,
+  HQ1 1885.30 s, CB2 2047.15 s) are equal on both sides. Gameplay moves after the first resync (exit 3), because the
+  refreshed gunnery side changes who the HQ shoots and who shoots it. With the switch OFF the state stays neutral, the
+  countdown keeps running on a party-0 HQ, and `Bases captured` reaches the same count by a different path, so deaths
+  may differ after 1703 s.
+- USN02 + `g32_ord_u2.txt` (16000, control with ordinary sinkings): gameplay identical (exit 0/1). No SetParty runs on
+  a capture building, so the loop body never fires.
+- **Flip rule.** ON if the resync count is one per SetParty and no prior-party-0 neutralization appears; the control
+  must not move. A spread in deaths after the resync with the mechanism matching may flip.
