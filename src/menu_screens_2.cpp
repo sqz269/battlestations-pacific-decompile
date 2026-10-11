@@ -2618,6 +2618,269 @@ void hud_formation_exit_00536800(HudFormationState& screen, HudFormationHost& ho
     }
     screen.links_12c.clear();                                            // 00536A28..00536A73 (erase all)
 }
+
+// ---------------------------------------------------------------------------
+// HUD formation Update 0053A8E0 (cc13-hud2). Evidence: the listing 0053A8E0..0053B9CA, read whole;
+// every x87 chain below follows the listing (double intermediates, float at each FSTP).
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// The sign-bit abs the update open-codes: FCOMIP against 0, then MOVSS or -0.0f (00D7A208) SUBSS.
+float formation_abs(float v) noexcept { return v > 0.0F ? v : -0.0F - v; }
+
+FormationMatrix formation_marker_scale() noexcept {
+    // 0053B06F..0053B11D and 0053B20D..0053B2D7: diag(0.5, 0.5, 0.5, 1).
+    FormationMatrix m{};
+    m[0] = m[5] = m[10] = kFormationMarkerScale;
+    m[15] = 1.0F;
+    return m;
+}
+
+// Map space from a record's negated slot offset (0053AB09..0053AB58, 0053ACE1..0053AD2A).
+FormationVec2 formation_slot_map(float r10, float r20, float extent_x, float extent_z) noexcept {
+    const float nx = -r10;                                               // FCHS, FSTP
+    const float nz = -r20;
+    const float u = static_cast<float>(static_cast<double>(nx) / extent_x + 0.5);
+    const float v = static_cast<float>(static_cast<double>(-nz) / extent_z + 0.5);
+    return {u, v};
+}
+
+}  // namespace
+
+void hud_formation_update_0053a8e0(HudFormationState& screen, HudFormationUpdateHost& host, float dt) {
+    screen.moved_this_frame_95 = false;                                  // 0053A905
+    if (!screen.active_4) return;                                        // 0053A8FF..0053A90C
+    if (host.action_pressed_004c43c0(kFormationActionMenu) && !host.game_byte_61f()) {
+        host.open_menu_00534c00();                                       // 0053A912..0053A933
+    }
+    if (host.active_hint_empty_0068e5b0()) host.trigger_hint_00690fd0(kFormationMapHint, 0);  // 0053A938..0053A999
+    if (!host.group_owner_present_e188d8()) return;                      // 0053A9C8..0053A9E1
+    const std::uintptr_t group = host.group_owner_284();                 // local [S+34h]
+    if (group == 0) return;
+
+    // 0053A9E7..0053AA55: the stick is "moving" when |b + a| exceeds 1e-4.
+    const float axis_a = host.input_axis_2994();
+    const float axis_b = host.input_axis_29c4();
+    const float sum = static_cast<float>(static_cast<double>(axis_b) + axis_a);
+    bool moving = static_cast<double>(formation_abs(sum)) > kFormationAxisDeadZone;
+    // 0053AA55..0053AAA1: reread and scale by 0.02 (a*c, then c*b).
+    float step_x = static_cast<float>(static_cast<double>(host.input_axis_2994()) * kFormationCursorStep);
+    float step_y = static_cast<float>(kFormationCursorStep * host.input_axis_29c4());
+    host.unit_order_icon_00534870();                                     // 0053AAA5
+
+    if (moving) {                                                        // 0053AAAA..0053AC1C
+        screen.flag_7c = true;
+        screen.flag_7d = true;
+        const FormationRecordView record = host.group_record_0070d070(screen.group_138, screen.selected_8c);
+        const std::uintptr_t leader = host.group_leader_14(screen.group_138);
+        if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+        if (record.unit_0 == leader) {                                   // 0053AAE5..0053AB06
+            step_x = 0.0F;
+            step_y = 0.0F;
+            moving = false;
+            screen.flag_7c = false;
+            screen.flag_7d = false;
+        }
+        const FormationVec2 slot = formation_slot_map(record.r10, record.r20, screen.map_extent_x_30,
+            screen.map_extent_z_34);
+        if (host.vec2_equal_00533d30(screen.last_slot_84, slot)) {       // 0053AB5C..0053AB88
+            screen.cursor_speed_80 = static_cast<float>(static_cast<double>(dt) * kFormationCursorAccel +
+                screen.cursor_speed_80);
+        } else {
+            screen.cursor_speed_80 = 1.0F;
+        }
+        if (screen.cursor_speed_80 > kFormationCursorSpeedCap) screen.cursor_speed_80 = kFormationCursorSpeedCap;
+        screen.last_slot_84 = slot;                                      // 0053ABAD..0053ABBD
+        const float k = screen.cursor_speed_80;
+        const float kx = static_cast<float>(static_cast<double>(k) * step_x);
+        const float ky = static_cast<float>(static_cast<double>(k) * step_y);
+        host.gui_set_cursor_00aa1fa0(static_cast<float>(static_cast<double>(kx) + slot[0]),
+            static_cast<float>(static_cast<double>(ky) + slot[1]));      // 0053ABEB..0053AC17
+    } else {                                                             // 0053AC1E..0053AC34
+        if (screen.flag_7d) {
+            screen.flag_7c = false;
+            screen.flag_7d = false;
+        }
+        screen.cursor_speed_80 = 1.0F;
+    }
+
+    // 0053AC3C..0053AD34: the promote action orders the leader to Leave and then follow the selected
+    // member (the two 0077D600 calls of this function), then puts the cursor on the old leader's slot.
+    if (screen.selected_8c >= 0) {
+        const std::uintptr_t member = host.group_member_at_0070d060(group, screen.selected_8c);
+        if (host.action_pressed_004c43c0(kFormationActionPromote)) {
+            const std::uintptr_t leader = host.group_leader_14(screen.group_138);
+            if (member != leader) {
+                host.entity_issue_command_0077d600(leader, kCommandLeave,
+                    host.command_target_from_entity_00465080(member, 0.0F), 1);   // 0053AC97
+                host.entity_issue_command_0077d600(leader, kCommandFollow,
+                    host.command_target_from_entity_00465080(member, 0.0F), 1);   // 0053ACB9
+                static_cast<void>(host.list_selected_index_00a9c920(screen.member_list_ac));  // result unused
+                const FormationRecordView record = host.group_record_0070d070(screen.group_138,
+                    host.group_index_of_member_0070d030(screen.group_138, leader));
+                const FormationVec2 slot = formation_slot_map(record.r10, record.r20,
+                    screen.map_extent_x_30, screen.map_extent_z_34);
+                host.gui_set_cursor_00aa1fa0(slot[0], slot[1]);
+            }
+        }
+    }
+
+    // 0053AD3D..0053AF53: dragging the selected slot to the cursor.
+    if (host.action_pressed_004c43c0(kFormationActionDrag)) {
+        host.drag_pressed_00535f50();
+    } else if (screen.flag_7c || moving) {
+        if (host.action_released_00535ee0(kFormationActionDrag)) {
+            screen.flag_7c = false;
+        } else {
+            const FormationVec2 cursor = host.gui_cursor_5c_60();
+            const float x = static_cast<float>((static_cast<double>(cursor[0]) - 0.5) * screen.map_extent_x_30);
+            const float y = static_cast<float>((static_cast<double>(cursor[1]) - 0.5) *
+                -static_cast<double>(screen.map_extent_z_34));
+            bool blocked = false;
+            const std::int32_t count = host.group_member_count_4f8(screen.group_138);
+            for (std::int32_t i = 0; i < count && !blocked; ++i) {      // 0053ADF0..0053AF1A
+                if (i == screen.selected_8c) continue;
+                const FormationRecordView other = host.group_record_0070d070(screen.group_138, i);
+                const float dx = static_cast<float>((0.0 - x) - other.r10);
+                const bool near_x = kFormationSlotGapX > formation_abs(dx);
+                const float dz = static_cast<float>((0.0 - y) - other.r20);
+                const bool near_z = kFormationSlotGapZ > formation_abs(dz);
+                if (near_x && near_z) {                                  // 0053AEBE..0053AEC4 -> 0053AF51
+                    blocked = true;
+                    break;
+                }
+                // 0053AECA..0053AF09: the radius test sits inside the loop and does not depend on i.
+                const float yy = static_cast<float>(static_cast<double>(y) * y);
+                const float xx = static_cast<float>(static_cast<double>(x) * x);
+                const float sq = static_cast<float>(static_cast<double>(yy) + xx);
+                const float dist = static_cast<float>(std::sqrt(static_cast<double>(sq)));  // 00BF7030
+                if (dist > screen.drag_radius_90) blocked = true;
+            }
+            if (!blocked) {                                              // 0053AF20..0053AF48
+                host.group_record_write_slot(screen.group_138, screen.selected_8c, -0.0F - x, -0.0F - y);
+                screen.moved_this_frame_95 = true;
+                screen.dirty_94 = true;
+            }
+        }
+    }
+
+    // 0053AF55..0053AFAF: once a drag frame passes without a move, replicate the formation.
+    if (screen.dirty_94 && !screen.moved_this_frame_95) {
+        if (screen.group_138 != 0) {
+            host.replicate_formation_0077a080_0077c880(screen.group_138, host.group_leader_14(screen.group_138));
+        }
+        screen.dirty_94 = false;
+    }
+
+    // 0053AFB6..0053B870: per member, place the unit marker (+11Ch map) and the slot marker (+110h map),
+    // colour both, and draw the member->slot curve.
+    const std::uintptr_t leader = host.group_leader_14(group);
+    if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+    const FormationMatrix leader_matrix = host.unit_matrix_cc(leader);   // [S+14h] = leader+CCh
+    const std::int32_t count = host.group_member_count_4f8(group);
+    const std::int32_t leader_index = host.group_index_of_member_0070d030(screen.group_138,
+        host.group_leader_14(screen.group_138));                         // 0053AFC9..0053AFEE
+    std::int32_t row = -1;
+    for (std::int32_t i = 0; i < count; ++i) {
+        const std::uintptr_t member = host.group_member_at_0070d060(group, i);
+        if (member == 0) continue;
+        ++row;
+        const std::uintptr_t unit_marker = host.map_subscript_00538910(0x11C, member);
+        const std::uintptr_t slot_marker = host.map_subscript_00538910(0x110, member);
+        if (!host.unit_pose_fresh_c8(member)) host.unit_refresh_pose_00414db0(member);
+        FormationMatrix world = host.matrix_multiply_00413920(host.unit_matrix_cc(member), formation_marker_scale());
+        if (!host.unit_pose_fresh_c8(member)) host.unit_refresh_pose_00414db0(member);
+        const FormationMatrix member_matrix = host.unit_matrix_cc(member);
+        world[12] = member_matrix[12];                                   // member+FCh
+        world[13] = static_cast<float>(static_cast<double>(screen.marker_height_190) - kFormationUnitMarkerDrop);
+        world[14] = member_matrix[14];                                   // member+104h
+        host.marker_node_set_transform_34(unit_marker, world);           // 0053B1AE..0053B1C1
+        host.marker_node_visibility_00b6da70(slot_marker, member == leader ? 0.0F : 1.0F, false);
+
+        const FormationRecordView record = host.group_member_record_0070d080(group, member);
+        const FormationVec3 offset{-0.0F - record.r10, 0.0F, -0.0F - record.r20};   // [S+B0h..B8h]
+        FormationMatrix slot = host.matrix_multiply_00413920(leader_matrix, formation_marker_scale());
+        const FormationVec3 slot_point = host.transform_project_point_00439820(offset, leader_matrix);
+        slot[12] = slot_point[0];
+        slot[13] = screen.marker_height_190;                             // 0053B355..0053B35D overwrite y
+        slot[14] = slot_point[2];
+        host.marker_node_set_transform_34(slot_marker, slot);            // 0053B366..0053B379
+
+        // 0053B37B..0053B48F: colours from the config table at 00432650()+108h.
+        const bool team0 = host.local_team_28() == 0;
+        GuiColour slot_colour{};
+        GuiColour unit_colour{};
+        if (screen.selected_8c == i && leader_index != i) {
+            slot_colour = host.formation_colour(0x50);
+            unit_colour = host.formation_colour(team0 ? 0x00 : 0x20);
+        } else {
+            const std::uint16_t offset_colour = team0 ? (leader_index == i ? 0x10 : 0x00)
+                                                      : (leader_index == i ? 0x30 : 0x20);
+            slot_colour = host.formation_colour(offset_colour);
+            unit_colour = slot_colour;
+        }
+        host.marker_write_diffuse_00b179f0(unit_marker, unit_colour);   // 0053B496..0053B4B6
+        host.marker_write_diffuse_00b179f0(slot_marker, slot_colour);   // 0053B4B9..0053B4E6
+
+        const std::uintptr_t link = row < static_cast<std::int32_t>(screen.links_12c.size())
+            ? screen.links_12c[static_cast<std::size_t>(row)] : 0;       // bounds-checked in the image (00BF6713)
+        if (member == leader) {                                          // 0053B82B..0053B85F
+            host.widget_show_34(link, false);
+            continue;
+        }
+        host.curve_clear_00abc920(link);                                 // 0053B521
+        if (!host.unit_pose_fresh_c8(member)) host.unit_refresh_pose_00414db0(member);
+        const FormationVec3 local = host.transform_affine_point_004142e0(host.unit_position_fc(member),
+            host.pose_derived_inverse_00414e10(leader));                 // 0053B53F..0053B556
+        // 0053B55B..0053B5BC.
+        const float u1 = static_cast<float>(static_cast<double>(local[0]) / screen.map_extent_x_30 + 0.5);
+        const float v1 = static_cast<float>(-static_cast<double>(local[2]) / screen.map_extent_z_34 + 0.5);
+        const float u2 = static_cast<float>(static_cast<double>(offset[0]) / screen.map_extent_x_30 + 0.5);
+        const float v2 = static_cast<float>(-static_cast<double>(offset[2]) / screen.map_extent_z_34 + 0.5);
+        GuiColour colour = host.widget_get_colour_54(link);              // [S+DCh..E8h]
+        host.widget_show_34(link, true);
+        host.curve_add_point_00abc970(link, {u1, v1}, kFormationLinkWidth);
+        host.curve_add_point_00abc970(link, {u2, v2}, kFormationLinkWidth);
+        // 0053B673..0053B731: fade the curve out when both ends nearly coincide.
+        const float adv = formation_abs(static_cast<float>(static_cast<double>(v1) - v2));
+        const float adu = formation_abs(static_cast<float>(static_cast<double>(u2) - u1));
+        const float span = adu > adv ? adu : adv;
+        const float target = kFormationLinkFadeLength > static_cast<double>(span) ? 0.0F : kFormationLinkAlphaOn;
+        colour[3] = host.step_towards_0042ac60(colour[3], target, dt);
+        const auto& rgb = (screen.flag_7c && screen.selected_8c == i) ? kFormationLinkSelectedRgb : kFormationLinkRgb;
+        host.widget_set_colour_50(link, {rgb[0], rgb[1], rgb[2], colour[3]});   // 0053B736..0053B804
+        host.curve_rebuild_00abca10(link);                               // 0053B824
+    }
+
+    // 0053B876..0053B8E6: a top-down camera over the leader, up = the leader's third matrix row.
+    const FormationVec3 eye{leader_matrix[12], kFormationCameraHeight, leader_matrix[14]};
+    const FormationVec3 target{leader_matrix[12], 0.0F, leader_matrix[14]};
+    const FormationVec3 up{leader_matrix[8], leader_matrix[9], leader_matrix[10]};
+    host.camera_set_view_00b71490(screen.camera_10, host.build_look_at_00b63f10(eye, target, up));
+
+    // 0053B8EB..0053B999.
+    if (host.action_pressed_004c43c0(kFormationActionPrev) && screen.mode_action_170 == kFormationModeIdle) {
+        screen.pending_16c = 0;
+        host.select_previous_00533920();
+        screen.mode_action_170 = kFormationActionPrev;
+        screen.hold_154 = 0.0F;
+        screen.hold_flag_158 = true;
+        screen.hold_15c = 0.0F;
+        screen.hold_flag_160 = true;
+    }
+    if (host.action_pressed_004c43c0(kFormationActionNext) && screen.mode_action_170 == kFormationModeIdle) {
+        screen.pending_16c = 0;
+        host.select_next_00533830();
+        screen.mode_action_170 = kFormationActionNext;
+        screen.hold_154 = 0.0F;
+        screen.hold_flag_158 = true;
+        screen.hold_15c = 0.0F;
+        screen.hold_flag_160 = true;
+    }
+    host.update_order_labels_00536a90(dt);                               // 0053B9A0..0053B9AD
+}
+
 void frame_stats_register_0053c740(FrameStatsState& screen, FrameStatsRegisterHost& host) {
     host.register_front_end_screen_004f71d0();                          // 0053C763
     screen.page_0c = host.load_page_00aa5840("_Fps");                    // 0053C768..0053C7B5

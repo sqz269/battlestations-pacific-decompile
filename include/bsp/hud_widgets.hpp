@@ -516,7 +516,42 @@ struct HudPowerupScreenState {
     float right_circle_23c[3]{};  // +23Ch..+244h: resolved position, x minus +234h
     float info_page_f4[3]{};      // +F4h..+FCh: the info page's resolved position
     std::vector<std::uint32_t> list_1a4;
+    // Fields of the enter/update/exit/carousel routines (cc13-hud2). Widget pointers below +100h
+    // (+28h..+34h, +48h..+94h, +B4h..+F0h) live in `widgets`.
+    float home_14[3]{};               // +14h: the support screen's +1C4h widget is placed here on enter
+    // The carousel at +100h (ECX of 00619C50): +0 slot 0..3, +4 selected entry, +10h owner, +1Ch vector.
+    std::int32_t carousel_slot_100{};
+    std::uint32_t carousel_selected_104{};
+    std::uintptr_t carousel_owner_110{};   // enter stores screen+8
+    std::vector<std::uintptr_t> carousel_entries_11c;
+    bool carousel_wrap_13c{};         // +13Ch: scroll direction for 006179D0
+    bool carousel_moved_13d{};        // +13Dh
+    bool carousel_scroll_13e{};       // +13Eh
+    bool carousel_scrolling_13f{};    // +13Fh: 006113A0 animates instead of reading input
+    std::vector<std::uintptr_t> entries_144;   // +144h: first list (entry; definition at entry+4)
+    std::vector<std::uintptr_t> entries_184;   // +184h: second list
+    std::vector<std::uintptr_t> tree_1b4;      // +1B4h tree (head +1B8h, size +1BCh)
+    std::vector<std::uintptr_t> tree_1cc;      // +1CCh tree (head +1D0h, size +1D4h)
+    bool fade_1e4{};                  // +1E4h: second-list fade running (0061AFF0)
+    bool flag_1e5{};
+    bool second_dir_1f8{};            // +1F8h: direction passed to 006191A0
+    bool flag_200{};                  // +200h: set by enter, cleared at the end of each update
+    std::int32_t count_204{};         // +204h: first-list size last laid out
+    float field_208{};
+    bool first_ready_20c{};           // +20Ch: 00611AE0 runs instead of the three tickers while set
+    float field_238{};                // +238h: tile_Icon group height
+    float right_circle_248[3]{};      // +248h..+250h
+    float label_width_254{};          // +254h: text_Text width / 960
 };
+
+// One team row of a powerup definition: definition + 0Ch + team*38h, team = player record +28h.
+struct HudPowerupTeamEntry {
+    std::uintptr_t text_source{};     // the row itself (00ABAED0 source)
+    std::uintptr_t icon_name_1c{};    // +1Ch
+    std::uintptr_t unit_class_20{};   // +20h: class with key +70h and texture +D4h
+};
+
+enum class HudSupportSound { UnitToUnit, LeftRight, Open, Close };  // 0065F6B0, 0065F800, 0065F950, 0065FAA0
 
 struct HudPowerupHost {
     virtual ~HudPowerupHost() = default;
@@ -531,6 +566,108 @@ struct HudPowerupHost {
 void hud_powerup_layout_00614600(HudPowerupScreenState& screen, HudPowerupHost& host);
 // 00614170, slot +10h, __thiscall(screen), RET.
 void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost& host);
+
+inline constexpr std::string_view kPowerupHintFirstUse = "PUM1STUSE";       // 00CF4E30
+inline constexpr std::string_view kPowerupHintPermanent = "PUMPERMANENT";   // 00CF4E20
+inline constexpr std::string_view kPowerupMessagePc = "ingame.pum_annoying_message_pc";      // 00CF4E68
+inline constexpr std::string_view kPowerupMessageXbox = "ingame.pum_annoying_message_xbox";  // 00CF4E44
+inline constexpr std::string_view kPowerupRadarSweep = "radar_sweep";       // 00CF4E14
+inline constexpr std::int32_t kPowerupActionPrev = 0x11A;
+inline constexpr std::int32_t kPowerupActionNext = 0x11B;
+inline constexpr std::int32_t kPowerupActionToSecond = 0x118;
+inline constexpr std::int32_t kPowerupActionToFirst = 0x119;
+inline constexpr std::array<float, 2> kPowerupHomeSize{0.2987F, 0.1984F};  // 00CF4E40, 00CF4E3C
+inline constexpr double kPowerupInfoOffsetEnter = 0.30000001192092896;      // 00CE3DC8
+inline constexpr double kPowerupInfoOffsetExitOn = 0.10000000149011612;     // 00D7A3A0
+inline constexpr double kPowerupInfoOffsetExitOff = 0.25;                   // 00D7A348
+inline constexpr double kPowerupLabelScale = 960.0;                         // 00CEC380
+inline constexpr double kPowerupLabelPad = 0.013000000268220901;            // 00CED090
+
+// Offsets read through *(00E198C4): +BCh the support-manager screen (slot 4Eh), +C0h this screen's
+// slot (4Fh, read through the global, not ECX), +C4h slot 50h, +C8h slot 51h, +A8h slot 49h.
+struct HudPowerupScreenHost : HudPowerupHost {
+    virtual std::uintptr_t screen_address() = 0;                            // ECX, for the +110h = screen+8 store
+    virtual std::uintptr_t support_widget(std::uint16_t offset) = 0;        // *(SM+offset)
+    virtual std::uintptr_t hud_c0_widget(std::uint16_t offset) = 0;         // *(*(*(00E198C4)+C0h)+offset)
+    virtual std::vector<std::uintptr_t> hud_c0_entries(std::uint16_t vector_offset) = 0;  // +144h or +184h
+    virtual std::uintptr_t hud_slot_widget(std::uint16_t slot_offset, std::uint16_t widget_offset) = 0;
+    virtual void set_resolved_position_00aa8240(std::uintptr_t widget, const float position[3]) = 0;
+    virtual std::array<float, 3> group_extent_00aa6740(std::uintptr_t widget) = 0;
+    virtual void widget_set_size_58(std::uintptr_t widget, const std::array<float, 2>& size) = 0;
+    virtual void widget_set_state_88(std::uintptr_t widget, std::int32_t state, std::int32_t arg, float alpha) = 0;
+    virtual void delete_virtual_4(std::uintptr_t object) = 0;              // vtable +4 (1)
+    virtual void play_support_sound(HudSupportSound sound) = 0;            // ECX = SM
+    // Support-manager screen routines called with ECX = SM (see docs/CC13_HUD_AND_WIDGETS.md, write table).
+    virtual void support_delete_slot_clones_00652a60() = 0;
+    virtual void support_rebind_slots_0065d220() = 0;
+    virtual void support_show_100_104(bool shown) = 0;                     // 00652B00 (1) / 00652B30 (0)
+    virtual void support_show_f8_fc(bool shown) = 0;                       // 00652AA0 (1) / 00652AD0 (0)
+    virtual bool support_refresh_0066ffa0() = 0;
+    // The SM's icon-state cache, int map at SM+42Ch keyed by unit class +70h.
+    virtual bool support_icon_map_contains_00614060(std::int32_t key) = 0;
+    virtual void support_icon_map_store_006171b0(std::int32_t key, std::uint32_t state) = 0;
+    virtual std::uint16_t support_icon_map_read_006171b0(std::int32_t key) = 0;
+    virtual void hud_refresh_0054e610() = 0;                               // ECX = HUD+A8h
+    virtual void slot51_00529060() = 0;
+    virtual void slot51_00529a30() = 0;
+    virtual void slot51_00528f70() = 0;
+    virtual void slot50_message_00682bd0(std::string_view key) = 0;        // ECX = HUD+C4h, string by value
+    virtual bool xbox_prompts_f88a30() = 0;
+    virtual void bind_support_widgets_00614320() = 0;                      // ECX = screen
+    virtual void rebuild_lists_0061b0f0() = 0;                             // ECX = screen
+    virtual void tree_erase_00615c90(std::uint16_t tree_offset) = 0;       // erase(root) of +1B4h / +1CCh
+    virtual bool action_pressed_004c43c0(std::int32_t action) = 0;
+    virtual bool input_owner_flag_b_or_10() = 0;                           // *(*(004BEC00()+4)+2FFCh) bytes +0Bh/+10h
+    virtual std::string active_hint_name_0068e5b0() = 0;
+    virtual bool hint_blocking_00690b00(const std::string& name) = 0;
+    virtual bool names_unequal_00449af0(const std::string& left, std::string_view right) = 0;  // case-insensitive
+    virtual bool hint_shown_0068e600(std::string_view name) = 0;
+    virtual void trigger_hint_00690fd0(std::string_view name, std::int32_t arg) = 0;
+    virtual bool page_busy_121(std::uintptr_t page) = 0;                   // byte +121h
+    virtual std::int32_t local_team_28() = 0;
+    virtual std::uintptr_t entry_definition_4(std::uintptr_t entry) = 0;
+    virtual std::int32_t definition_kind_8(std::uintptr_t definition) = 0;
+    virtual std::uint32_t definition_flags_88(std::uintptr_t definition) = 0;
+    virtual bool definition_name_is_00425850(std::uintptr_t definition, std::string_view name) = 0;
+    virtual HudPowerupTeamEntry team_entry(std::uintptr_t definition, std::int32_t team) = 0;
+    virtual std::int32_t class_key_70(std::uintptr_t unit_class) = 0;
+    virtual std::uintptr_t class_texture_d4(std::uintptr_t unit_class) = 0;
+    // 009552E0(name) on the class, then 00443490; the image resolves twice: texture at +74h+7Ch,
+    // UV quad at +74h+90h..+9Ch.
+    virtual std::uintptr_t resolve_icon_texture(std::uintptr_t unit_class, std::uintptr_t icon_name) = 0;
+    virtual std::array<float, 4> resolve_icon_uv(std::uintptr_t unit_class, std::uintptr_t icon_name) = 0;
+    virtual void set_state_texture_00ab2690(std::uintptr_t widget, std::int32_t state, std::uintptr_t texture,
+        const std::array<float, 4>& uv) = 0;
+    virtual std::uint32_t icon_add_state_00ab64c0(std::uintptr_t icon, std::uintptr_t texture,
+        const std::array<float, 4>& uv) = 0;
+    virtual void text_set_source_00abaed0(std::uintptr_t widget, std::uintptr_t source, bool flag) = 0;
+    virtual float text_width_114(std::uintptr_t widget) = 0;
+    // Screen helpers called from these routines (named in the ledger where known).
+    virtual void carousel_tick_00617470() = 0;                            // ECX = screen+100h
+    virtual void carousel_animate_006113a0(float dt) = 0;                 // ECX = screen+100h
+    virtual void carousel_start_scroll_006179d0() = 0;                    // ECX = screen+100h
+    virtual void carousel_refresh_label_00618980() = 0;                   // ECX = screen+100h
+    virtual void second_start_scroll_006191a0() = 0;
+    virtual void second_refresh_rows_00619ae0() = 0;
+    virtual void first_intro_00611ae0(float dt) = 0;
+    virtual void tick_00611770(float dt) = 0;
+    virtual void second_fade_0061aff0(float dt) = 0;
+    virtual void tick_00612b70(float dt) = 0;
+    // 008EB6E0 on *(00F88C30), the gameplay power-up manager: picks a target (008E45D0) and applies
+    // the power-up for player *(00E188A8)+18ECh (008EADA0). Called from Update with entries_144[sel].
+    virtual void powerup_use_008eb6e0(std::uintptr_t entry) = 0;
+};
+
+// 0061B850: slot +18h of vtable 00CF4DEC, __thiscall(screen), RET; SEH 00C77F88.
+void hud_powerup_enter_0061b850(HudPowerupScreenState& screen, HudPowerupScreenHost& host);
+// 006169F0: slot +1Ch, __thiscall(screen), RET; no SEH frame.
+void hud_powerup_exit_006169f0(HudPowerupScreenState& screen, HudPowerupScreenHost& host);
+// 0061BEA0: slot +20h, __thiscall(screen, float dt), RET 4; SEH 00C7803E.
+void hud_powerup_update_0061bea0(HudPowerupScreenState& screen, HudPowerupScreenHost& host, float dt);
+// 00619C50: __thiscall(carousel = screen+100h, float dt), RET 4. The state is the owning screen.
+void hud_powerup_carousel_update_00619c50(HudPowerupScreenState& screen, HudPowerupScreenHost& host, float dt);
+// 0061A6C0: __thiscall(screen), RET; the second list's counterpart of 00619C50.
+void hud_powerup_update_selection_0061a6c0(HudPowerupScreenState& screen, HudPowerupScreenHost& host);
 // ---------------------------------------------------------------------------
 // The plane-spawn camera, vtable 00CF4930 (3CCh bytes over base 00432750)
 // ---------------------------------------------------------------------------
