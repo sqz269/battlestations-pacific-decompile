@@ -298,3 +298,25 @@ named only; reconstructing them belongs with the water lane.
 - `tools/verify_report_calls.py reports/cc13_render3_calls.json`: 26 call rows, 0 failed.
 - Constants were read from the PE with `tools/pe_const_read.py`; RET sizes from the listings.
 - Not done: native differential fixtures, game runs. No new tests were added.
+
+## Handoff
+
+State at hand-off: both segments fully named (every Ghidra function in the two ranges has a
+ledger name and an applied Ghidra rename with evidence comment; seven Ghidra-less bodies were
+defined, see `reports/cc13_render3_defined.json`). Exports for all 256 touched addresses were
+refreshed.
+
+Next concrete steps, in value order:
+
+1. `00B529A0` old-film pass: reconstruct the dust record count and aspect math, and the
+   per-frame parameter flow from `00B156C0` (`params[3]` dust amount, the scratch/grain
+   values). No RNG call appears in its callees; confirm against the listing before wiring.
+2. `00B98BE0`/`00B99790` grid patch indices with edge stitching: self-contained index
+   generation, best owned by the water lane together with the FFT stages `00B94E90..00B952D0`.
+3. Flare draw path: `00B8C6B0/00B8C8A0/00B8CC90` quad writers and `00B8BDD0` billboard
+   frame; the helpers they call are reconstructed here.
+4. Settle `cSkined3dObject` vs `cMatrixIndexed3dObject` for vtables `D635F0`/`D63590`.
+5. Listing repair: the three pool trims (`00B8D660`, `00B90760`, `00B90A20`) lose their tail
+   after `CALL _free`; check the flow override before re-exporting them.
+6. `BSP_ShaderConstants_FindByName` and its definition table, so the `.mshd` constants reader
+   can run without a callback.
