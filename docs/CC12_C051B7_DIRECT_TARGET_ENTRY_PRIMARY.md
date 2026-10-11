@@ -1,0 +1,13 @@
+# C051B7 entry: independent Root review
+
+Worker commit `491eb69ff8f6a542e5c851822a6bf03d37779bd5` establishes exactly `56` / `PUSH ESI` at C051B7. Three original typed captures agree at function count 64730 / modification 98. The complete saved owner has two ranges, C051B7..C0521E and C05222..C0522D, totaling 116 bytes; only the admitted first byte was read. Saved names and flags are metadata, not authenticated function behavior.
+
+Root reviewed the complete initial paired originals and all four typed views, copied all 67 admitted artifacts before phase two, then independently saved manual physical fields before a fresh Capstone execution. The single actual instruction matches every retained field. The operation writes the current ESI value at current SS:ESP-4 under the renewed 32-bit stack contract and changes no flags; actual register values and stack address remain unknown. It establishes no frame, register preservation, original ABI, return behavior or library identity.
+
+Root's final review verified twenty actual Git objects, eight unchanged positive inputs, both output working/LF/index/committed identities, all 245 final archive-member pins and the 67 initial Root copies. A pinned physical archive copy passed its first Root strict replay: exactly one archive read, one exact helper execution and one exclusive receipt write, with every other audit event denied and an empty denial list. Root's receipt exactly matches both worker receipts.
+
+The core helper and manual proof passed first execution. A later public-output writer failed before either public write because an inherited evidence list named an obsolete local retry file. Its original producer, invocation and full stdout/stderr remain immutable. Root independently verified this separate history and the fresh writer retry; the helper's core-completion failure snapshot was not rewritten. Two worker display incidents, two Root tool-inspection errors and one Root display truncation are separately scoped and retained. There were no current Native, decoder, pure-replay, Root gate, final actual review or strict execution failures. Accepted earlier packet histories retain their original scopes.
+
+The remaining 115 owner bytes, gap C0521F..C05221, next instruction C051B8, end cursor C0522E and all provider, target, cell and prototype meanings remain unqueried. Source tree identities are unchanged. No new build, test, probe, runtime execution or GPR mutation occurred.
+
+See [the worker entry evidence](CC12_C051B7_DIRECT_TARGET_ENTRY.md) and `reports/cc12_c051b7_direct_target_entry_primary.json` for exact pins, current physical fields, failure scopes and private review receipts.
