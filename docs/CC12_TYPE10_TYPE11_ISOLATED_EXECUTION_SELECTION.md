@@ -441,3 +441,12 @@ The Source-only gate approved the pair with all 110,312 Source checks and 74 cur
 The compact DATA reconciliation is separately closed: W preserved its original 220,518 rows and six reader negatives, then completed 162,282 positive reconciliation rows. P independently consumed the full finite evidence with 60,473 positive rows, 56 current input pins and 1,534 serialized positive closing rows. Root consumed those complete rows, pins and original native tools. The graph metadata scan is attributed to W's preserved original scan; P and Root did not repeat the trace or graph-leaf hashes. This establishes the closed reconciliation evidence, with Source credit zero and no joint acceptance or runtime authority.
 
 The remaining producer-field audit precedes additive peer Source08 and Root Source04. Root04 will use a fresh HOLD_DATA02 filename and preserve the success output and all prior Sources, gates and failures. Their independent review and any subsequent actual retry remain pending. Ordinary startup, formal native Dispatch, the new native clock, selected recipe execution and fixture/ABI/game qualification remain unissued.
+
+
+### Root04 / peer08 closed Source staging checkpoint
+
+The corrected pair passed the Root Source-only staging gate (39,515 positive checks, 52 complete current pins; actual `004f5d/0`). Root consumed every gate row and both full physical books (`db52c8/0`). Peer08 changes the internal-native session selector to the actual producer field `actual_original_session_id`; Root04 changes only the retry HOLD destination to `HOLD_DATA02`. The original Root03/peer07 failure remains immutable.
+
+The first staging gate attempt (`043fe9/1`) expected qualification fields absent from the historical HOLD schema. Source03 checks the exact 14-key HOLD producer and the separate native qualification fields. Its focused independent review passed 37 checks and all 159 field accesses across 97 fields. The original Source01 HOLD, Source02 static PASS and actual Source02 gate failure remain separate evidence.
+
+The fresh actual retry input is frozen and independently reviewed before execution. This checkpoint records Source-only acceptance and staging; it does not issue joint DATA acceptance, ordinary startup, dispatch, a new native clock, runtime, fixture, ABI or game qualification.
