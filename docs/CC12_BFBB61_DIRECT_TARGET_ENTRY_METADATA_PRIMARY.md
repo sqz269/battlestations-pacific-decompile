@@ -1,0 +1,9 @@
+# BFBB61 first instruction: independent Root review
+
+Worker commit `55228de42032b8aea827e611ef5eb3014061254c` establishes only BFBB61..BFBB64, bytes `8B 44 24 04`. Three complete typed originals agree at count 64730 / modification 98. The incoming C04F11 CALL edge is independently bound to accepted BODY and PRIMARY evidence.
+
+The instruction loads EAX from four bytes through current SS at mod32(ESP+4). It uses a ModR/M byte, an ESP SIB with no index, and signed disp8 +4. ESP and EFLAGS remain unchanged on normal completion. This explicit memory address does not require SS.B=1; segment translation, accessibility, contents and aliases remain unknown. It does not establish an argument, caller frame, getter identity or original ABI. BFBB65 and the remaining 56 saved owner bytes remain unqueried.
+
+Root saved its manual fields before its first fresh Capstone comparison, which passed and matches every retained worker field. Its first final review verifies twenty actual Git objects, ten working/LF/index/committed files, all 611 member pins and all 218 initial Root copies. The copied archive passed the first strict replay with one ZIP read, one exact helper execution, one exclusive receipt write and no denied events; both worker receipts match except the two physical path fields.
+
+Root gate execution, decoding, final review and strict replay failures are zero. Two Root gate-phase inspection incidents and one display truncation, plus one worker display truncation, remain separately documented. Accepted C04EFB decoder-group correction and Root AND-producer failure retain their original scopes. Source identities are unchanged. No new build, test, probe, runtime execution or GPR mutation occurred. See [worker evidence](CC12_BFBB61_DIRECT_TARGET_ENTRY_METADATA.md) and `reports/cc12_bfbb61_direct_target_entry_metadata_primary.json` for exact fields, receipts and histories.
