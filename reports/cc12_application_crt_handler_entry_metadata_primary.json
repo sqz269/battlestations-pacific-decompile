@@ -1,0 +1,222 @@
+{
+  "schema": "bsp.cc12.crt-handler-entry-metadata.Root.v1",
+  "status": "direct_saved_entry_metadata_and_prototype_accepted",
+  "worker_commit": "104788ee82a76e5fcfd95c305f77d42210fe1f39",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/evidence.zip",
+      "bytes": 467624,
+      "sha256": "efa564b917bbf3efdb781a2b4002d7fdf180b3eddde0658328101ceaf68bedec"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/manifest.json",
+      "bytes": 9167,
+      "sha256": "b1850cc56f64c5c40df07f12709062e6990ba779ffd43f1e3c40fa8ab8ec1f27"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/seal.json",
+      "bytes": 6530,
+      "sha256": "38c899407f37c5bcfa917a6bdcd4d46aca7547823f5c2e9dfc5de6f2a40723f3"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/portable_replay.py",
+      "bytes": 8963,
+      "sha256": "b116c19471af6821dd6a29412cc160b3e2ef4024838211a06798aca50f8b297a"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/guard_replay.py",
+      "bytes": 2283,
+      "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/Root_guard_runner.py",
+      "bytes": 736,
+      "sha256": "d4b3d2f20058d489986d2bbc915ffb4db0bf561b1c05a47d2aaf323b80ebf355"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/Root_guard.json",
+      "bytes": 2573,
+      "sha256": "21121f7d0127a71a208cc379eb0d8585505247e067f317759fa599da1ac96e2e"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/Root_guard.stderr.txt",
+      "bytes": 433,
+      "sha256": "71c226fe31c2fcb266256708ed1b303d94d76e1a99c82a0656e4ae3d979d5500"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/copy_and_actual.py",
+      "bytes": 4646,
+      "sha256": "c7fbe8b0836767718c8f20216fd20b31ac7c7822d4bdd6eeb82a07c7e062d61a"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/Root_actual_review.json",
+      "bytes": 11182,
+      "sha256": "3207661571f6e218984b15cb69ffb107f1d7d9c06e193c8d2d76bcf8d5b4f1be"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/review_native.py",
+      "bytes": 4502,
+      "sha256": "809a9ebb5d90c019b92caff065278693c4b1c424f10172d81e0e5f0b38ab76f7"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/Root_Native_review.json",
+      "bytes": 3474,
+      "sha256": "e93ea9eb09d7c014846b242798e37d7830639befdd6c9ba9a6939e809a93be8e"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/staged_git_receipt.json",
+      "bytes": 3875,
+      "sha256": "e07a10ca623f69d70b070d30082616a971cb35a49311a9c0fda597feac091052"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_entry_metadata_primary/final_git_receipt.json",
+      "bytes": 3759,
+      "sha256": "f45c3b37224db48f307991b1bca41a6d53d9a34143f90824b53cc644307203f3"
+    }
+  ],
+  "Native_review": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "typed_captures": 2,
+    "raw_capture_bytes_equal": true,
+    "raw_gate_sha256": "96773efd36d47a3f7f3a59e20642e602c888187b6d23a6880fd5f9c03eba7214",
+    "saved_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bf6b43"
+      },
+      "name": "FID_conflict:___CxxFrameHandler3",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "54",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bf6b43"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bf6b78"
+            },
+            "length": "54"
+          }
+        ]
+      }
+    },
+    "entry_listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6b43"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6b43"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6b43"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6b43"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "entry_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bf6b44"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bf6b44"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "saved_entry_prototype": "undefined FID_conflict:___CxxFrameHandler3(void)",
+    "automatic_proto_companion_summary_wholly_opaque": true,
+    "instruction_texts_or_code_data_bytes_read": 0,
+    "Original_FH3_register_ABI_and_invocation_authenticated": false,
+    "next_admission": {
+      "packet": "cc12_application_crt_handler_body_listing_metadata",
+      "initial_scope": "Fresh typed listing/function/flow metadata only for every exact54addresses BF6B43..BF6B78, under98/64730 closure",
+      "required": "Return actual per-byte units/ownership/flows to Root before any exact code bytes or instruction texts",
+      "excluded": "No prototype repetition, body decompile/disasm/opcodes/data, target following, GPR repair, or Source/runtime action"
+    }
+  },
+  "actual_membership": {
+    "objects": 8,
+    "inputs": 12,
+    "outputs": 2,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_content_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_OPERAND_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_failure_handler_operand_primary.json",
+      "docs/CC12_APPLICATION_UNWIND_ACTIONS_PRIMARY.md"
+    ],
+    "physically_retained_helpers": 11,
+    "stage_final_tree_and_output_blobs_equal": true
+  },
+  "guard": {
+    "single_ZIP_reads_only": true,
+    "no_post_preload_imports_or_external_effects": true
+  },
+  "old_automatic_target_objects_wholly_opaque": true,
+  "saved_library_identity_is_not_FH3_or_register_ABI_authentication": true,
+  "Source_build_ABI_runtime_credit": false,
+  "overall_goal_complete": false
+}
