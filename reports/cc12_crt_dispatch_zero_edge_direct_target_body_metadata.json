@@ -1,0 +1,1677 @@
+{
+  "schema": "cc12.crt-dispatch-zero-edge-direct-target-body-metadata.v1",
+  "packet": "cc12_crt_dispatch_zero_edge_direct_target_body_metadata",
+  "status": "complete 36-byte saved body metadata and physical instruction evidence; no Source/ABI/runtime credit",
+  "frozen_actual_Git_commit": "8af0944e2d639e46a4eaaa0ff298328e69f89700",
+  "frozen_tree": "18b474aebddacec64f46651904935572261c61f0",
+  "finite_actual_Git_inputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_ENTRY.md",
+      "blob": "52d24478e5ecd3801e4f7631f2d5ec8e3aa02dd1",
+      "length": 5837,
+      "sha256": "b183108883e217c094dd0e2b1aead78d36e8a7fbaa6df33ad93093ecf0374612",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_entry.json",
+      "blob": "6710915f46a988cf2906426a7158dbd8254f7140",
+      "length": 16408,
+      "sha256": "2d9958858d8fa5476466f9f6207a8b4f37b4529db5e590f059c166f50bd8e73f",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "blob": "4167b0882f60d00d6c0450ef8dfb67d9bb0260e0",
+      "length": 4599,
+      "sha256": "28aa3f5410be6cef21009e4c55251af9d097cbe9d95a8ffc1cdc74ec2aa4dff9",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_entry_primary.json",
+      "blob": "849d1efebaace9a246361fdd65400aae0d4752b9",
+      "length": 57711,
+      "sha256": "bb7452f394e991d5aa1d46478c8a9f8e1123de6e72b975b587a183b398021f98",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "working_bytes_equal_Git_blob": true
+    }
+  ],
+  "source_tree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_commands": 29,
+    "count_checkpoints": 6,
+    "two_independent_length_driven_walks": true,
+    "whole_units": 9,
+    "four_InstructionDB_aliases_at_each_start": true,
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba09"
+      },
+      "name": "__amsg_exit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba09"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba2c"
+            },
+            "length": "36"
+          }
+        ]
+      }
+    },
+    "all_flow_overrides": "NONE",
+    "all_default_effective_flow_and_targets_equal": true,
+    "all_fallthrough_unoverridden": true,
+    "outside_BFBA2D_not_queried": true,
+    "original_typed_responses": [
+      {
+        "capture": "captures/walk_a_00BFBA09.raw.json",
+        "address": "00BFBA09",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA0E.raw.json",
+        "address": "00BFBA0E",
+        "length": 2113,
+        "sha256": "ca83073e6e6e5448a50bcb3ff92d6a736af6a9e641dac53e26bb784e886eb82f"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA12.raw.json",
+        "address": "00BFBA12",
+        "length": 2481,
+        "sha256": "f6b481150c49d9a407cebb0e925c688a095fa83482a70b2131ae78459c0ac3e8"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA17.raw.json",
+        "address": "00BFBA17",
+        "length": 2113,
+        "sha256": "7bc9e54f12fa08ea53668b9a1902a0b77991998653f9161c3cc6a44cf65f49bb"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA1D.raw.json",
+        "address": "00BFBA1D",
+        "length": 2489,
+        "sha256": "6da112540e81d2256dad4550c1d19b70e6c10aa876cbdb4eea3eeeb16fa422bb"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA22.raw.json",
+        "address": "00BFBA22",
+        "length": 2113,
+        "sha256": "f8f89823fb58ae042ba113b6bcf89d842b8b1039e864fd9bc9b9b97d41baaabc"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA27.raw.json",
+        "address": "00BFBA27",
+        "length": 2111,
+        "sha256": "2351111253d64b376c7f9166ad6d95a029e03ca906f6ac19b63688416ecdb37a"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA29.raw.json",
+        "address": "00BFBA29",
+        "length": 2113,
+        "sha256": "e2450dadeb802b27be1cbfd6b83edbf35a20b6acec78611d2b262475d102a1c2"
+      },
+      {
+        "capture": "captures/walk_a_00BFBA2C.raw.json",
+        "address": "00BFBA2C",
+        "length": 2045,
+        "sha256": "eaf1def617591846a9d0cb4a4ab14e1e3450239580048cd7659028e5e29a6252"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA09.raw.json",
+        "address": "00BFBA09",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA0E.raw.json",
+        "address": "00BFBA0E",
+        "length": 2113,
+        "sha256": "ca83073e6e6e5448a50bcb3ff92d6a736af6a9e641dac53e26bb784e886eb82f"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA12.raw.json",
+        "address": "00BFBA12",
+        "length": 2481,
+        "sha256": "f6b481150c49d9a407cebb0e925c688a095fa83482a70b2131ae78459c0ac3e8"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA17.raw.json",
+        "address": "00BFBA17",
+        "length": 2113,
+        "sha256": "7bc9e54f12fa08ea53668b9a1902a0b77991998653f9161c3cc6a44cf65f49bb"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA1D.raw.json",
+        "address": "00BFBA1D",
+        "length": 2489,
+        "sha256": "6da112540e81d2256dad4550c1d19b70e6c10aa876cbdb4eea3eeeb16fa422bb"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA22.raw.json",
+        "address": "00BFBA22",
+        "length": 2113,
+        "sha256": "f8f89823fb58ae042ba113b6bcf89d842b8b1039e864fd9bc9b9b97d41baaabc"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA27.raw.json",
+        "address": "00BFBA27",
+        "length": 2111,
+        "sha256": "2351111253d64b376c7f9166ad6d95a029e03ca906f6ac19b63688416ecdb37a"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA29.raw.json",
+        "address": "00BFBA29",
+        "length": 2113,
+        "sha256": "e2450dadeb802b27be1cbfd6b83edbf35a20b6acec78611d2b262475d102a1c2"
+      },
+      {
+        "capture": "captures/walk_b_00BFBA2C.raw.json",
+        "address": "00BFBA2C",
+        "length": 2045,
+        "sha256": "eaf1def617591846a9d0cb4a4ab14e1e3450239580048cd7659028e5e29a6252"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA09",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA0E",
+        "length": 2113,
+        "sha256": "ca83073e6e6e5448a50bcb3ff92d6a736af6a9e641dac53e26bb784e886eb82f"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA12",
+        "length": 2481,
+        "sha256": "f6b481150c49d9a407cebb0e925c688a095fa83482a70b2131ae78459c0ac3e8"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA17",
+        "length": 2113,
+        "sha256": "7bc9e54f12fa08ea53668b9a1902a0b77991998653f9161c3cc6a44cf65f49bb"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA1D",
+        "length": 2489,
+        "sha256": "6da112540e81d2256dad4550c1d19b70e6c10aa876cbdb4eea3eeeb16fa422bb"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA22",
+        "length": 2113,
+        "sha256": "f8f89823fb58ae042ba113b6bcf89d842b8b1039e864fd9bc9b9b97d41baaabc"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA27",
+        "length": 2111,
+        "sha256": "2351111253d64b376c7f9166ad6d95a029e03ca906f6ac19b63688416ecdb37a"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA29",
+        "length": 2113,
+        "sha256": "e2450dadeb802b27be1cbfd6b83edbf35a20b6acec78611d2b262475d102a1c2"
+      },
+      {
+        "capture": "captures/body_close.raw.json",
+        "address": "00BFBA2C",
+        "length": 2045,
+        "sha256": "eaf1def617591846a9d0cb4a4ab14e1e3450239580048cd7659028e5e29a6252"
+      }
+    ],
+    "HTTP_GET_provenance": "Explicit Request(method=GET) in frozen actual fetch_raw implementation and retained request URLs; no separate wire telemetry claim.",
+    "automatic_companion_objects_interpreted": false
+  },
+  "physical": {
+    "start": "00BFBA09",
+    "end_inclusive": "00BFBA2C",
+    "length": 36,
+    "code_hex": "e85aa10000ff742404e8919f0000ff358055e100e8bc95000068ff000000ffd083c40cc3",
+    "code_sha256": "bed75f9fd672a6ebd1392287ceb50aaec8eee6903ea335fdd8b387c14c044da1",
+    "whole_instructions": 9,
+    "paired_bytes_equal": true,
+    "paired_context0_text_equal": true,
+    "all_27_typed_responses_match_per_start": true,
+    "manual_saved_actual_Capstone_text_and_typed_units_agree": true,
+    "direct_calls": 3,
+    "register_indirect_calls": 1,
+    "encoded_absolute_cell": "00E15580",
+    "external_cell_or_target_queried": false
+  },
+  "manual_instructions": [
+    {
+      "address": "00BFBA09",
+      "hex": "e85aa10000",
+      "length": 5,
+      "opcode": "E8",
+      "prefixes": [],
+      "mnemonic": "call",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "encoded_hex": "5aa10000",
+        "unsigned_value": 41306,
+        "signed_value": 41306
+      },
+      "operands": [
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 12606312
+        }
+      ],
+      "transfer": {
+        "kind": "direct_near_call",
+        "signed_rel32": 41306,
+        "numeric_target": "00C05B68",
+        "encoded_return_site": "00BFBA0E"
+      },
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA09",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "hex": "e85aa10000",
+        "length": 5,
+        "mnemonic": "call",
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12606312
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA0E",
+      "hex": "ff742404",
+      "length": 4,
+      "opcode": "FF",
+      "prefixes": [],
+      "mnemonic": "push",
+      "modrm": {
+        "offset": 1,
+        "encoded": 116,
+        "mod": 1,
+        "reg_group": 6,
+        "rm": 4
+      },
+      "sib": {
+        "offset": 2,
+        "encoded": 36,
+        "scale_bits": 0,
+        "index_bits": 4,
+        "base_bits": 4,
+        "scale": 1,
+        "index": null,
+        "base": "esp"
+      },
+      "displacement": {
+        "offset": 3,
+        "size": 1,
+        "encoded_hex": "04",
+        "signed_value": 4,
+        "default_segment": "SS",
+        "EA_uses_pre_push_ESP": true
+      },
+      "immediate": null,
+      "operands": [
+        {
+          "size": 4,
+          "access": 1,
+          "type": "mem",
+          "segment": null,
+          "base": "esp",
+          "index": null,
+          "scale": 1,
+          "displacement": 4
+        }
+      ],
+      "transfer": null,
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA0E",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 116,
+        "sib": 36,
+        "disp_offset": 3,
+        "disp_size": 1,
+        "displacement": 4,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "hex": "ff742404",
+        "length": 4,
+        "mnemonic": "push",
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "mem",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 4
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA12",
+      "hex": "e8919f0000",
+      "length": 5,
+      "opcode": "E8",
+      "prefixes": [],
+      "mnemonic": "call",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "encoded_hex": "919f0000",
+        "unsigned_value": 40849,
+        "signed_value": 40849
+      },
+      "operands": [
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 12605864
+        }
+      ],
+      "transfer": {
+        "kind": "direct_near_call",
+        "signed_rel32": 40849,
+        "numeric_target": "00C059A8",
+        "encoded_return_site": "00BFBA17"
+      },
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA12",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "hex": "e8919f0000",
+        "length": 5,
+        "mnemonic": "call",
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12605864
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA17",
+      "hex": "ff358055e100",
+      "length": 6,
+      "opcode": "FF",
+      "prefixes": [],
+      "mnemonic": "push",
+      "modrm": {
+        "offset": 1,
+        "encoded": 53,
+        "mod": 0,
+        "reg_group": 6,
+        "rm": 5
+      },
+      "sib": null,
+      "displacement": {
+        "offset": 2,
+        "size": 4,
+        "encoded_hex": "8055e100",
+        "signed_value": 14767488,
+        "absolute_offset": "00E15580",
+        "default_segment": "DS",
+        "cell_value_queried": false
+      },
+      "immediate": null,
+      "operands": [
+        {
+          "size": 4,
+          "access": 1,
+          "type": "mem",
+          "segment": null,
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 14767488
+        }
+      ],
+      "transfer": null,
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA17",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 53,
+        "sib": 0,
+        "disp_offset": 2,
+        "disp_size": 4,
+        "displacement": 14767488,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "hex": "ff358055e100",
+        "length": 6,
+        "mnemonic": "push",
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "mem",
+            "segment": null,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 14767488
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA1D",
+      "hex": "e8bc950000",
+      "length": 5,
+      "opcode": "E8",
+      "prefixes": [],
+      "mnemonic": "call",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "encoded_hex": "bc950000",
+        "unsigned_value": 38332,
+        "signed_value": 38332
+      },
+      "operands": [
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 12603358
+        }
+      ],
+      "transfer": {
+        "kind": "direct_near_call",
+        "signed_rel32": 38332,
+        "numeric_target": "00C04FDE",
+        "encoded_return_site": "00BFBA22"
+      },
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA1D",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "hex": "e8bc950000",
+        "length": 5,
+        "mnemonic": "call",
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12603358
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA22",
+      "hex": "68ff000000",
+      "length": 5,
+      "opcode": "68",
+      "prefixes": [],
+      "mnemonic": "push",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "encoded_hex": "ff000000",
+        "unsigned_value": 255,
+        "signed_value": 255,
+        "operand_width": 4
+      },
+      "operands": [
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 255
+        }
+      ],
+      "transfer": null,
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA22",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "hex": "68ff000000",
+        "length": 5,
+        "mnemonic": "push",
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 255
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA27",
+      "hex": "ffd0",
+      "length": 2,
+      "opcode": "FF",
+      "prefixes": [],
+      "mnemonic": "call",
+      "modrm": {
+        "offset": 1,
+        "encoded": 208,
+        "mod": 3,
+        "reg_group": 2,
+        "rm": 0
+      },
+      "sib": null,
+      "displacement": null,
+      "immediate": null,
+      "operands": [
+        {
+          "size": 4,
+          "access": 1,
+          "type": "reg",
+          "register": "eax"
+        }
+      ],
+      "transfer": {
+        "kind": "register_indirect_near_call",
+        "runtime_target": "current EAX",
+        "numeric_target_authenticated": false,
+        "encoded_return_site": "00BFBA29"
+      },
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA27",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 208,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "hex": "ffd0",
+        "length": 2,
+        "mnemonic": "call",
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "reg",
+            "register": "eax"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA29",
+      "hex": "83c40c",
+      "length": 3,
+      "opcode": "83",
+      "prefixes": [],
+      "mnemonic": "add",
+      "modrm": {
+        "offset": 1,
+        "encoded": 196,
+        "mod": 3,
+        "reg_group": 0,
+        "rm": 4
+      },
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 2,
+        "size": 1,
+        "encoded_hex": "0c",
+        "unsigned_value": 12,
+        "signed_value": 12,
+        "sign_extended_to_operand_width": 4
+      },
+      "operands": [
+        {
+          "size": 4,
+          "access": 3,
+          "type": "reg",
+          "register": "esp"
+        },
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 12
+        }
+      ],
+      "transfer": null,
+      "eflags_modified_names": [
+        "X86_EFLAGS_MODIFY_AF",
+        "X86_EFLAGS_MODIFY_CF",
+        "X86_EFLAGS_MODIFY_OF",
+        "X86_EFLAGS_MODIFY_PF",
+        "X86_EFLAGS_MODIFY_SF",
+        "X86_EFLAGS_MODIFY_ZF"
+      ],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA29",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          131,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 196,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 2,
+        "imm_size": 1,
+        "hex": "83c40c",
+        "length": 3,
+        "mnemonic": "add",
+        "operands": [
+          {
+            "size": 4,
+            "access": 3,
+            "type": "reg",
+            "register": "esp"
+          },
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12
+          }
+        ]
+      }
+    },
+    {
+      "address": "00BFBA2C",
+      "hex": "c3",
+      "length": 1,
+      "opcode": "C3",
+      "prefixes": [],
+      "mnemonic": "ret",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": null,
+      "operands": [],
+      "transfer": {
+        "kind": "near_return",
+        "runtime_target": "current 32-bit value read from SS stack",
+        "numeric_target_authenticated": false
+      },
+      "eflags_modified_names": [],
+      "Capstone_comparison_fields": {
+        "address": "00BFBA2C",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "hex": "c3",
+        "length": 1,
+        "mnemonic": "ret",
+        "operands": []
+      }
+    }
+  ],
+  "actual_Capstone": {
+    "producer": {
+      "file": "decode_actual.py",
+      "length": 4900,
+      "sha256": "0c57b9146ad196e466e928c99638304219c03fe845d5df7ab4e3ee31abb90167"
+    },
+    "Capstone_python_version": "5.0.7",
+    "Capstone_engine_version": [
+      5,
+      0,
+      1280
+    ],
+    "architecture": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "runtime_Capstone_is_outside_pure_ZIP_replay": true,
+    "code_hex": "e85aa10000ff742404e8919f0000ff358055e100e8bc95000068ff000000ffd083c40cc3",
+    "code_sha256": "bed75f9fd672a6ebd1392287ceb50aaec8eee6903ea335fdd8b387c14c044da1",
+    "length": 36,
+    "instructions": [
+      {
+        "address": "00BFBA09",
+        "hex": "e85aa10000",
+        "length": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xc05b68",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12606312
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA0E",
+        "hex": "ff742404",
+        "length": 4,
+        "id": 609,
+        "mnemonic": "push",
+        "op_str": "dword ptr [esp + 4]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 116,
+        "sib": 36,
+        "disp_offset": 3,
+        "disp_size": 1,
+        "displacement": 4,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "mem",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 4
+          }
+        ],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA12",
+        "hex": "e8919f0000",
+        "length": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xc059a8",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12605864
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA17",
+        "hex": "ff358055e100",
+        "length": 6,
+        "id": 609,
+        "mnemonic": "push",
+        "op_str": "dword ptr [0xe15580]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 53,
+        "sib": 0,
+        "disp_offset": 2,
+        "disp_size": 4,
+        "displacement": 14767488,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "mem",
+            "segment": null,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 14767488
+          }
+        ],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA1D",
+        "hex": "e8bc950000",
+        "length": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xc04fde",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12603358
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA22",
+        "hex": "68ff000000",
+        "length": 5,
+        "id": 609,
+        "mnemonic": "push",
+        "op_str": "0xff",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 255
+          }
+        ],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA27",
+        "hex": "ffd0",
+        "length": 2,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "eax",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 208,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "operands": [
+          {
+            "size": 4,
+            "access": 1,
+            "type": "reg",
+            "register": "eax"
+          }
+        ],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eax"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      },
+      {
+        "address": "00BFBA29",
+        "hex": "83c40c",
+        "length": 3,
+        "id": 8,
+        "mnemonic": "add",
+        "op_str": "esp, 0xc",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          131,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 1,
+        "modrm": 196,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 2,
+        "imm_size": 1,
+        "operands": [
+          {
+            "size": 4,
+            "access": 3,
+            "type": "reg",
+            "register": "esp"
+          },
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 12
+          }
+        ],
+        "regs_read_implicit": [],
+        "regs_written_implicit": [
+          "eflags"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "eflags",
+          "esp"
+        ],
+        "groups": [],
+        "eflags": 63,
+        "eflags_names": [
+          "X86_EFLAGS_MODIFY_AF",
+          "X86_EFLAGS_MODIFY_CF",
+          "X86_EFLAGS_MODIFY_OF",
+          "X86_EFLAGS_MODIFY_PF",
+          "X86_EFLAGS_MODIFY_SF",
+          "X86_EFLAGS_MODIFY_ZF"
+        ]
+      },
+      {
+        "address": "00BFBA2C",
+        "hex": "c3",
+        "length": 1,
+        "id": 633,
+        "mnemonic": "ret",
+        "op_str": "",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 0,
+        "imm_size": 0,
+        "operands": [],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "ret",
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      }
+    ]
+  },
+  "cpu_contract": {
+    "execution": "Each claim is local physical x86-32 behavior if that instruction is reached and completes without fault. No live CPU state, segment descriptor, cell, provider, or callee body was queried.",
+    "stack_attributes": "Each implicit stack ESP equation requires SS to have a 32-bit stack-address attribute at that particular instruction. Program language x86:LE:32 does not prove current SS. After every opaque call, SS/DS and all segment state and attributes are unconstrained again. With a 16-bit SS stack-address attribute the stated implicit-stack ESP formulas are not asserted. Explicit ADD ESP,12 is 32-bit register arithmetic independent of the SS stack-address attribute.",
+    "current_memory_and_aliases": "Memory expressions use the current segment and memory at the named instruction execution time. A PUSH memory operand is read before its stack store, using the pre-decrement ESP for [ESP+4]. Potential aliasing does not justify reusing an earlier cell or entry-stack value. No memory validity, disjointness, frame identity, argument identity, or preservation is assumed.",
+    "opaque_return_rule": "All four callees are opaque and none is proved to return. At each conditional continuation, every register including EAX/ESI/EBP/ESP, flags, segments/descriptors and memory is newly unconstrained. Symbols Q1..Q4 name only ESP at that particular return; no relation to entry ESP or earlier Q is asserted.",
+    "entry_09": "For current entry ESP=T, E8 at BFBA09 writes BFBA0E to current SS:[T-4], sets ESP=T-4, and transfers to numeric C05B68. This local CALL preserves other general registers and arithmetic flags; the callee has no established preservation.",
+    "continuation_0E_12": "If control resumes at BFBA0E with ESP=Q1, read V1 as the current dword at SS:[Q1+4] using the pre-push ESP. PUSH stores V1 to current SS:[Q1-4] and leaves ESP=Q1-4. E8 at BFBA12 writes BFBA17 to SS:[Q1-8] and transfers to numeric C059A8 with ESP=Q1-8. V1 is not authenticated as the original caller argument.",
+    "continuation_17_1D": "If control resumes at BFBA17 with ESP=Q2, read V2 as the current dword at DS:[00E15580] before the PUSH stack store. PUSH writes V2 to current SS:[Q2-4] and leaves ESP=Q2-4. E8 at BFBA1D writes BFBA22 to SS:[Q2-8] and transfers to numeric C04FDE with ESP=Q2-8. The absolute cell address is encoded; its current contents, type and provider identity are unqueried.",
+    "continuation_22_27": "If control resumes at BFBA22 with ESP=Q3 and EAX=A3, PUSH imm32 writes the 32-bit value 255 to SS:[Q3-4] and leaves ESP=Q3-4. The encoding is 68 FF000000, not a sign-extended imm8 -1. CALL EAX at BFBA27 uses the current A3 as its unresolved runtime target, writes BFBA29 to SS:[Q3-8], and transfers with ESP=Q3-8. It is register-indirect, not an extra memory dereference. These local instructions preserve other general registers including EBP and arithmetic flags.",
+    "continuation_29_2C": "If control resumes at BFBA29 with ESP=Q4, ADD ESP,sign_extend(0x0C) sets R=(Q4+12) mod 2^32 and ESP=R; it performs no memory access and requires no SS stack-size assumption. It preserves other general registers and sets the arithmetic flags below. RET at BFBA2C then reads its unknown next EIP from current SS:[R] and, only with current SS stack-address size 32, leaves ESP=R+4 mod 2^32. RET preserves the ADD arithmetic flags. Neither the return target nor a restored original caller stack is authenticated.",
+    "ADD_flags": {
+      "CF": "Q4+12 > 0xFFFFFFFF",
+      "ZF": "R == 0",
+      "SF": "bit31(R)",
+      "PF": "even parity of low byte(R)",
+      "AF": "((Q4 xor 12 xor R) & 0x10) != 0",
+      "OF": "((~(Q4 xor 12) & (Q4 xor R)) & 0x80000000) != 0"
+    },
+    "accepted_caller_prefix": "The accepted ENTRY packet records a caller zero edge reaching BFBA09 with EAX=ESI=0 and ESP=T under that earlier local path and its stack qualification. Only the entry E8 preserves those values into C05B68 before that opaque callee executes. No zero value, prior stack slot, flags, segment attribute or other state is propagated through the first or any later opaque return.",
+    "scope": "No service named __amsg_exit, argument count/type, calling convention, provider, nonreturn, original ABI, Source implementation, game behavior or runtime equivalence is established."
+  },
+  "Root_gate": {
+    "status": "PASS first execution",
+    "admitted_bytes": 36,
+    "admitted_starts": 9,
+    "phase_one_preimages": 108,
+    "phase_one_postexecution_streams": 2,
+    "all_Root_files_copied": 115,
+    "producer": {
+      "length": 8764,
+      "sha256": "0d2a29b19d23836a0bd5ea75966e46bdeb138a0973aa606bf3c42e9741aee9af"
+    },
+    "receipt": {
+      "length": 53765,
+      "sha256": "6e76b121adbbc1591cbf4c7f1ade9715b7ab656720b56d294f3a9e08f8d444f6"
+    },
+    "admitted_operations": "Paired exact36B, paired context0 at nine exact starts, closing nine typed responses, count/identity bookends only."
+  },
+  "failures": {
+    "this_packet_worker_Native": 0,
+    "this_packet_worker_capture": 0,
+    "this_packet_decoder": 0,
+    "this_packet_Root_gate": 0,
+    "this_packet_core_replay": 0,
+    "first_execution_pass": true
+  },
+  "verification": {
+    "core_original_and_distinct_copy": "Both PASS first execution",
+    "each_strict_audit": {
+      "audit": "PASS",
+      "archive_reads": 1,
+      "exclusive_receipt_writes": 1,
+      "helper_executions": 1,
+      "denied": []
+    },
+    "core_archive_pin": {
+      "length": 1722914,
+      "sha256": "35fb1909e4ac7d21422bc6574ce7559dc697aeb27bd4cef26c16a20aec41c20e"
+    },
+    "pure_replay_design": "No Capstone import or construction; actual decoder output is retained data compared against independent physical fields. All archived producers are inert. Strong guard records every denied event and requires denied=[].",
+    "actual_decoder_provenance": "Pinned decode_actual.py executed before sealing, retaining original stdout/stderr and complete detailed Capstone5.0.7 output. No Capstone module is imported or constructed during pure ZIP replay.",
+    "denial_telemetry": "Guard records every rejected event, denies all unknown events, and asserts denied=[] after helper even if an exception were swallowed.",
+    "delivery_closure": "After this public commit, a separate finite delivery ZIP includes actual final commit/root/directory/blob objects and both output bytes; original/copy receipts verify exactly two changes, unchanged inputs/Source identities, and the same physical checks."
+  },
+  "private_evidence_directory": "local/cc12_crt_dispatch_zero_edge_direct_target_body_metadata/",
+  "private_evidence_pins": {
+    "capture_body_metadata.py": {
+      "length": 16075,
+      "sha256": "36d424b5ba34e9f808c321dad5908655dc24d5423f1604660ea86364e08c5418"
+    },
+    "phase1_preexecution_pins.json": {
+      "length": 142,
+      "sha256": "2a7f0bd677a2fb0274e3bfda35f02006713cf125000f8eacbfd6051f2d5c0c5c"
+    },
+    "capture_admitted_body.py": {
+      "length": 5613,
+      "sha256": "cc7bc8d5cd9347eeda8884799e1717a90067592f882fc55da9b241f7a4439f3b"
+    },
+    "phase2_preexecution_pins.json": {
+      "length": 141,
+      "sha256": "43ddbe68c649e889cf4ff6b1f8e306c975d240f0ff1fc846e07b42aa08343a79"
+    },
+    "metadata_capture_manifest.json": {
+      "length": 19338,
+      "sha256": "dd016f99618da3730cbc5bbd2cbf9503e35c8c2871ae16627cce52453debe12b"
+    },
+    "body_capture_manifest.json": {
+      "length": 26234,
+      "sha256": "fa290a541f545bd09a4f8f95df5acb6736bd0684252bedb8e5f99e3fce75a4be"
+    },
+    "http_method_evidence.json": {
+      "length": 691,
+      "sha256": "f3f06a77aaddc709c943294e11bec2f917b6b1cddfe4996498cc72dce35ef27e"
+    },
+    "root_gate_copy_pins.json": {
+      "length": 19495,
+      "sha256": "cb6d8b82098c0e512aa6fef3ca5cd391618c034d153eb2df0cdb15c544137398"
+    },
+    "root_gate/Root_listing_gate.py": {
+      "length": 8764,
+      "sha256": "0d2a29b19d23836a0bd5ea75966e46bdeb138a0973aa606bf3c42e9741aee9af"
+    },
+    "root_gate/Root_listing_gate.json": {
+      "length": 53765,
+      "sha256": "6e76b121adbbc1591cbf4c7f1ade9715b7ab656720b56d294f3a9e08f8d444f6"
+    },
+    "root_gate/Root_listing_gate.stdout": {
+      "length": 293,
+      "sha256": "d86dbc7a5a55f09193e7e45c9ab92516a800029416b41f7e794a9ad2933238ea"
+    },
+    "root_gate/Root_listing_gate.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "decode_actual.py": {
+      "length": 4900,
+      "sha256": "0c57b9146ad196e466e928c99638304219c03fe845d5df7ab4e3ee31abb90167"
+    },
+    "decoder_preexecution_pins.json": {
+      "length": 133,
+      "sha256": "5206688247879748dfc66cda2a1f94e4609d56bb15e9d06ba9d814ed9e3fdd4f"
+    },
+    "actual_capstone.json": {
+      "length": 9747,
+      "sha256": "6b33159913e7d03fe458386f27a3a9655dc13d93c34cf8db240e305ed17e246d"
+    },
+    "decode_actual.stdout": {
+      "length": 228,
+      "sha256": "b59ae5254e5ba486c3a031b0b9eecb8f91792ae4c69badf57297658f072ffd48"
+    },
+    "decode_actual.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "replay.py": {
+      "length": 32539,
+      "sha256": "872d1632f56cb804d864b9590fd1ca234443aebeed11810d61bfb70adc713e50"
+    },
+    "audit_replay.py": {
+      "length": 2385,
+      "sha256": "48220a6697b91b694ca34d39e5aa2539f3cef89619214333a21f035708c58bfa"
+    },
+    "prepare_core.py": {
+      "length": 1975,
+      "sha256": "d50b4040edbddd17349fbd4563fa7d373bd816b22a76726342f1314c2d86caf5"
+    },
+    "run_replays.py": {
+      "length": 2792,
+      "sha256": "ec4d495effd5d53d492b02992ca624bada86c1248dc4f98ea9148d02a4780a92"
+    },
+    "replay_preexecution_pins.json": {
+      "length": 513,
+      "sha256": "34157722427ad6943791f4ade92f3ad6e4011eb4eff0703d5cba5ae6dfc0e23f"
+    },
+    "seal_preexecution_pins.json": {
+      "length": 264,
+      "sha256": "13d4f8f9d969493483f85f69a524b49fbf7bf28f36b69b49396b68836a42e196"
+    },
+    "write_outputs.py": {
+      "length": 14222,
+      "sha256": "79fc42c98b266a324d7a19b2a28d169b792c60ca82079af5ce063a75335a2e7f"
+    },
+    "seal_delivery.py": {
+      "length": 6799,
+      "sha256": "25dbb9ee5c9ce6b299840082efed79591ecacbe4d093a5f3027dc6b1fda02685"
+    },
+    "core_manifest.json": {
+      "length": 44805,
+      "sha256": "067bce2079ac00985f7a709bc408ec17c7bb051609595844163bf47bfe8e3982"
+    },
+    "core_receipt.json": {
+      "length": 38880,
+      "sha256": "0e524d9aac96abcc9fd698b3fe15a643946076e2b44c4e29fec5849b23036fb2"
+    },
+    "core_copy_receipt.json": {
+      "length": 38880,
+      "sha256": "0e524d9aac96abcc9fd698b3fe15a643946076e2b44c4e29fec5849b23036fb2"
+    },
+    "core_audit.stdout": {
+      "length": 263,
+      "sha256": "240582d21d890773a122a1651e9c12445095a3cd6056eff8814f7278300057f1"
+    },
+    "core_copy_audit.stdout": {
+      "length": 263,
+      "sha256": "240582d21d890773a122a1651e9c12445095a3cd6056eff8814f7278300057f1"
+    },
+    "core_replays.json": {
+      "length": 640,
+      "sha256": "0a442e166445143b6b1ba1f39e491c918b7b07351a66d07dab4d8f9e31c2e555"
+    }
+  },
+  "boundaries": {
+    "new_body_bytes": 36,
+    "new_body_instruction_starts": 9,
+    "external_cell_reads": 0,
+    "target_or_neighbor_queries": 0,
+    "prototypes_or_decompilation": 0,
+    "segment_descriptor_queries": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "builds_tests_probes": 0,
+    "Original_ABI_or_game_runtime_acceptance": false,
+    "OS_audio_runtime_work": false,
+    "saved_name": "__amsg_exit is a saved label only; service, provider, nonreturn and original calling convention are unproved."
+  }
+}
