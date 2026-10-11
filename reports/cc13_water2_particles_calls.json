@@ -1,5 +1,5 @@
 {
-  "packet": "cc13_water2_particles",
+  "packet": "cc13_water2_particles, cc13_particles1",
   "doc": "docs/CC13_PARTICLE_EMITTERS.md",
   "call_sites": [
     {
@@ -106,6 +106,324 @@
       "native": "00419510",
       "function": "00b06b10",
       "note": "FollowDirection axis"
+    },
+    {
+      "address": "00b08285",
+      "native": "00affd20",
+      "function": "00b08210",
+      "note": "RotationSpeed integral (kind 1)"
+    },
+    {
+      "address": "00b082d8",
+      "native": "00affd20",
+      "function": "00b08210",
+      "note": "speed integral (kind 1)"
+    },
+    {
+      "address": "00b084f1",
+      "native": "00bf85b0",
+      "function": "00b08210",
+      "note": "floor(frame)"
+    },
+    {
+      "address": "00b08501",
+      "native": "00bf7420",
+      "function": "00b08210",
+      "note": "ftol"
+    },
+    {
+      "address": "00b08509",
+      "native": "00b06a90",
+      "function": "00b08210",
+      "note": "frame A"
+    },
+    {
+      "address": "00b08531",
+      "native": "00b06a90",
+      "function": "00b08210",
+      "note": "frame B"
+    },
+    {
+      "address": "00b08540",
+      "native": "00bf857a",
+      "function": "00b08210",
+      "note": "fmod(frame, 1)"
+    },
+    {
+      "address": "00b0987f",
+      "native": "00b0c8b0",
+      "function": "00b09510",
+      "note": "result popped"
+    },
+    {
+      "address": "00b09929",
+      "native": "00b6fcb0",
+      "function": "00b09510",
+      "note": "camera view, ECX=[[00F8C274]+1Ch]"
+    },
+    {
+      "address": "00b09956",
+      "native": "004142e0",
+      "function": "00b09510",
+      "note": "view-space position"
+    },
+    {
+      "address": "00b09b27",
+      "native": "00b6db70",
+      "function": "00b09510",
+      "note": "node world refresh"
+    },
+    {
+      "address": "00b09bdc",
+      "native": "004b62e0",
+      "function": "00b09510",
+      "note": "light base diffuse"
+    },
+    {
+      "address": "00b09c51",
+      "native": "00b06a90",
+      "function": "00b09510",
+      "note": "frame A"
+    },
+    {
+      "address": "00b09c7b",
+      "native": "00b06a90",
+      "function": "00b09510",
+      "note": "frame B"
+    },
+    {
+      "address": "00b09c8a",
+      "native": "00bf857a",
+      "function": "00b09510",
+      "note": "fmod(frame, 1)"
+    },
+    {
+      "address": "00b05fc7",
+      "native": "00419510",
+      "function": "00b05dd0",
+      "note": "normalise velocity (FollowDirection)"
+    },
+    {
+      "address": "00b06068",
+      "native": "00bf7030",
+      "function": "00b05dd0",
+      "note": "sqrt(L*L + W*W)"
+    },
+    {
+      "address": "00b07c1a",
+      "native": "00affa70",
+      "function": "00b07bf0",
+      "note": "Size curve (kind 1)"
+    },
+    {
+      "address": "00b0897a",
+      "native": "00affa70",
+      "function": "00b08950",
+      "note": "Size curve (kind 1)"
+    },
+    {
+      "address": "00af88c6",
+      "native": "00af8500",
+      "function": "00af85b0",
+      "note": "ECX = [state+30h], compose rotation"
+    },
+    {
+      "address": "00af858a",
+      "native": "00b64780",
+      "function": "00af8500",
+      "note": "Rz(angle)"
+    },
+    {
+      "address": "00af8597",
+      "native": "00413920",
+      "function": "00af8500",
+      "note": "M' * Rz"
+    },
+    {
+      "address": "00af859e",
+      "native": "00413920",
+      "function": "00af8500",
+      "note": "(M' * Rz) * M'"
+    },
+    {
+      "address": "00af82da",
+      "native": "00affa70",
+      "function": "00af82b0",
+      "note": "Size curve +84h (kind 1)"
+    },
+    {
+      "address": "00af73e9",
+      "native": "0051f6b0",
+      "function": "00af73a0",
+      "note": "ModelEffectOptions +5"
+    },
+    {
+      "address": "00af7405",
+      "native": "00b71530",
+      "function": "00af73a0",
+      "note": "classify world sphere"
+    },
+    {
+      "address": "00af742e",
+      "native": "00b732c0",
+      "function": "00af73a0",
+      "note": "mesh element 0"
+    },
+    {
+      "address": "00af7455",
+      "native": "00b72f80",
+      "function": "00af73a0",
+      "note": "render entries (1.0, 1365.0, 0)"
+    },
+    {
+      "address": "00af745a",
+      "native": "0051f520",
+      "function": "00af73a0",
+      "note": "show boundings +4"
+    },
+    {
+      "address": "00af4183",
+      "native": "00b70490",
+      "function": "00af4130",
+      "note": "camera view-projection"
+    },
+    {
+      "address": "00af4192",
+      "native": "007c1180",
+      "function": "00af4130",
+      "note": "transform sphere"
+    },
+    {
+      "address": "00af41cc",
+      "native": "00412e20",
+      "function": "00af4130",
+      "note": "tan(20 deg)"
+    },
+    {
+      "address": "00af41e7",
+      "native": "00419440",
+      "function": "00af4130",
+      "note": "length of the centre"
+    },
+    {
+      "address": "00af420a",
+      "native": "00412e20",
+      "function": "00af4130",
+      "note": "tan(fov/2)"
+    },
+    {
+      "address": "00af631d",
+      "native": "00b6db70",
+      "function": "00af6300",
+      "note": "refresh world"
+    },
+    {
+      "address": "00af6342",
+      "native": "00af4130",
+      "function": "00af6300",
+      "note": "ECX = model+18Ch"
+    },
+    {
+      "address": "00af6368",
+      "native": "00af6300",
+      "function": "00af6360",
+      "note": "LOD fade"
+    },
+    {
+      "address": "00aff7b4",
+      "native": "00afaa20",
+      "function": "00aff7a0",
+      "note": "ECX = emitter+0Ch"
+    },
+    {
+      "address": "00aff812",
+      "native": "00afaa20",
+      "function": "00aff7f0",
+      "note": "ECX = emitter+0Ch"
+    },
+    {
+      "address": "00aff859",
+      "native": "00b05550",
+      "function": "00aff7f0",
+      "note": "container geometry"
+    },
+    {
+      "address": "00afab50",
+      "native": "004155b0",
+      "function": "00afaa20",
+      "note": "clamp [0, 1]"
+    },
+    {
+      "address": "00af5ec1",
+      "native": "00aff7f0",
+      "function": "00af5e90",
+      "note": "per emitter"
+    },
+    {
+      "address": "00af5f07",
+      "native": "00aff7a0",
+      "function": "00af5ee0",
+      "note": "per emitter"
+    },
+    {
+      "address": "00af63c3",
+      "native": "00af6300",
+      "function": "00af63a0",
+      "note": "LOD fade"
+    },
+    {
+      "address": "00af642a",
+      "native": "00b73260",
+      "function": "00af63a0",
+      "note": "mesh A vertex stream"
+    },
+    {
+      "address": "00af64e4",
+      "native": "00b73260",
+      "function": "00af63a0",
+      "note": "mesh B vertex stream"
+    },
+    {
+      "address": "00af6513",
+      "native": "00b0d170",
+      "function": "00af63a0",
+      "note": "ECX = [00F8D39C], (model, mesh B)"
+    },
+    {
+      "address": "00af6579",
+      "native": "00b6db70",
+      "function": "00af63a0",
+      "note": "refresh world"
+    },
+    {
+      "address": "00af6584",
+      "native": "00b6fcb0",
+      "function": "00af63a0",
+      "note": "camera view"
+    },
+    {
+      "address": "00af6595",
+      "native": "00413920",
+      "function": "00af63a0",
+      "note": "world * view"
+    },
+    {
+      "address": "00af65e8",
+      "native": "00af5e90",
+      "function": "00af63a0",
+      "note": "emitter geometry"
+    },
+    {
+      "address": "00af671a",
+      "native": "00af0540",
+      "function": "00af63a0",
+      "note": "ECX = [00F8C274], used*4"
+    },
+    {
+      "address": "00af6731",
+      "native": "00b732c0",
+      "function": "00af63a0",
+      "note": "mesh A element 0"
     }
   ]
 }
