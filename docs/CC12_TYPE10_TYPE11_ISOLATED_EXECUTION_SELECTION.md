@@ -414,3 +414,12 @@ The accepted compact inspector Source03 actually ran once at 043158/1 and produc
 The missing field belongs to the actual DATA-adoption native capture; the separate authorization already contains allow_dispatch:false. Read-only diagnosis found 16 legacy native-capture field expectations, two legacy stdout names, command/capture conventions, and one absent authorization provenance field. The actual completed producer records remain unchanged. A distinct Source04 derivative is authorized for this bounded reader contract repair and must receive fresh independent and Root Source review before execution.
 
 Whole joint adopted-DATA acceptance, ordinary startup, formal Dispatch and a new native execution clock remain pending. Source credit stays zero; fixture, ABI and game qualification remain false. All earlier ordered JSON snapshots and document bytes are preserved.
+
+
+### Independent adopted DATA review and literal parser HOLD
+
+The primary adopted DATA graph has complete independent verification: 65 aggregated predicates / 1,188,641 invocations consume all 360,024 primary check rows / 8,107,154 invocations. The independent closure retains 34,819 full path/fstat metadata bookends, all 70 recorded scopes / 37,146 memberships and 27 immutable families. Root consumed the complete eight-member closure, original tool sessions and lossless evidence. No new graph leaf hashes or formula replay were introduced.
+
+The compact inspector Source04 has a closed 926-check / 22-book structural review and a 1,871-check / 39-book current closure. A subsequent exact DATA command scan caught a concrete preexecution HOLD: its single-dash token regex stops at offset 190 on the actual --plan flag. Source04 has never executed, and its Root gate writer remains unexecuted with no acceptance artifact. The narrow --? token repair covers the complete original 815-byte command and matches all 15 actual arguments without importing a candidate. The actual authorization has 28 fields.
+
+Source05 and the joint SOURCE03 / peer SOURCE05 derivatives are being authored and reviewed in the same worker streams. The immutable Source03 actual failure and Source04 preexecution HOLD remain preserved. Ordinary startup, complete joint DATA acceptance, formal native Dispatch and a new native clock remain pending. Source credit remains zero; fixture, ABI and game qualification remain false.
