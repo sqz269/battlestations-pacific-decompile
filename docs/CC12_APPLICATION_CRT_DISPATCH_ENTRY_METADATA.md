@@ -1,0 +1,15 @@
+# Application CRT dispatch entry metadata
+
+Direct metadata at `00C07991` is captured under unchanged modification **98** and **64,730** functions. The saved name is `___InternalCxxFrameHandler`; the saved prototype is `undefined ___InternalCxxFrameHandler(void)`. The name is preserved. Neither field authenticates FH3 or establishes an ABI.
+
+Both exact typed captures place a one-byte `InstructionDB` at and containing the queried entry. Function-at and function-containing both identify `00C07991`, with `no_return=false`, `is_thunk=false` and no thunk target. The saved function body has one complete range, `00C07991..00C07A74`, containing 228 addresses. This reports saved bounds; it does not audit instruction ownership throughout that range.
+
+Entry flow is default/effective `FALL_THROUGH` to `00C07992`, with override `NONE`, no overridden fallthrough and no default/effective targets. The two raw typed responses are byte-identical. Three count reads close unchanged. No code/data bytes, disassembly, decompilation, caller or target query was made.
+
+The `bsp.py ghidra proto` command also automatically requested a body-summary response from `get_function_signature`. That entire companion summary is opaque and quarantined; no field qualifies a body, target, register, stack or ABI finding. The complete emitted stdout is pinned, including the CLI marker that only 40 of the companion's 50 lines were emitted. The saved prototype prefix is complete; the full companion HTTP response was not retained, and the omitted lines were not re-queried. Typed metadata returned no automatic direct-call targets. Prior automatic target objects remain opaque without retrospective identity credit.
+
+The earlier action operands still require `EBP=storeESP+20h` under their conditional frame contract. This packet supplies no actual EH invocation, EAX/EBP binding, unwind action, cleanup behavior, return behavior or Application-owner authority. `undefined(void)` is saved analysis metadata, not proof of a no-argument ABI. The next body packet requires separate Root selection and bounded ownership gates.
+
+The narrow ZIP retains all four physical helper bodies, current query tools, immediate prerequisite documents/report, actual HEAD and `src`/`include` subtree identities, and the raw captures described above. Strict replay passes on the original and a distinct physical copy under a read-only one-ZIP audit guard that forbids post-preload imports, other opens, process/network/dynamic-library operations and filesystem mutation. Source identities qualify the frozen worker base and final tree only; equality to later Root Source integration is not claimed. Source contents are not recounted and old evidence is not recursively transferred. Separate actual staged/final Git receipts verify unchanged prerequisites and exactly these two outputs.
+
+No GPR change, C++ change, test, build, fixture, ABI or game-validation credit is added. See `reports/cc12_application_crt_dispatch_entry_metadata.json` and the pinned `local/cc12_application_crt_dispatch_entry_metadata/evidence.zip`.
