@@ -639,3 +639,13 @@ a register (template row, then 1 from 005E57E3) and restored before `MOV ESP,EBP
 - game+2164h set (+282h): *(00E19698)+4 = 1 and the list and +94h are hidden (slot +60h(0)).
 - `noseart_Group`/`New_5_Text` gets " " and the ellipsized `FE.multi_lobby_noseart` at width
   0.1333 (00ABB000).
+
+## Handoff update (cc13-frontend2, second turn)
+
+e54c3d03d adds the lobby enter 005E51D0. Still open: the lobby update 005E5B30 (1060
+instructions; first reading: returns while *(*(00E198AC)+60h)+4 is set; +271h polls 0076F400 for a
+pending leave; scroller ranges for +1B4h/+134h or, in skirmish, +128h/+B4h; +270h waits on session
+slot +180h; back (4Bh) with 005D5490 copies +284h.. into 00E1955C.. and game+2020h.., sets the game
+mode and scene record, then 005DA210; then actions 4Ch/4Dh/46h/47h/4Ah/124h dispatch on the
+focused widget +1Ch against +20h/+8Ch/+28h...), the multi main-menu enter 005E8B20 (1028), and the
+rewards enter 0062C2C0. The pseudocode of 005E5B30 is exported (`bsp.py show 005e5b30`).
