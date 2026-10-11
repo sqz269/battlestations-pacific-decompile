@@ -16300,3 +16300,22 @@ The whole `009ED6B0..009EF228` listing (`local\s42_9ed6b0.asm`, 1629 lines from 
   registers nor unregisters an observer (its only calls are the lock pair and the CRT range checks). So the `+A8h`
   records most likely have no Kill observer of their own. They leave only through `006C7680` (a live retire) and
   `006CC9F0` (`006CCD5A`).
+
+### 208.5 The `00980E50` baseline question is already settled: the image re-notifies every pass (cc9-ships42, 2026-10-11; a read)
+
+- LUA_BINDING_MISSION "Why LOMP06's seaplane listener was silent" (packet `cc9_recon_level_step_check`) read the image:
+  - `008073C0` resets every record at each pass start (`00807490` -> `00805BE0`), notifying `old -> 0`.
+  - `00805AF0` then notifies `0 -> new` when the pass publishes again (`00805B98..00805BD8`).
+  - A forced record keeps its level and does not cycle.
+- So a listener with `oldLevel {0,1} -> newLevel {2}` fires on the first pass after its registration for every
+  non-forced record identified at that pass, whatever happened before.
+- The host binds that: `kReconListenerResetCycleBound` is ON (`include/bsp/game_hosts_lua.hpp:180`), and the LOMP06 and
+  JM06 pairs back it. `dispatch_recon_listeners_00980e50` emits the `0 -> 2` pair each pass.
+- **For USNOS:** the "baseline starts at 0" reading and the "real transition" reading give the same answer, because
+  the image itself cycles through 0 on every pass. Both listeners register on one frame (208.2). Shimotsuke and
+  ToSpawnShima are both Allied-identified on the next pass (857.91 s), so both fire there. **No host gap, nothing to
+  bind.** The double sighting is image behaviour for this recon state.
+- **What could still stagger them.** ToSpawnShima would have to be unidentified on that first pass and identified at
+  least a fade later. That depends on which Allied sensor identifies each of them at 7.6-12 km (Portland1, at 7627 m
+  from Shimotsuke and 11919 m from ToSpawnShima, is the nearest surface unit). The pass's per-sensor ranges are not
+  traced here. Unless a sensor that sees only Shimotsuke can be placed, primary 3 is not recoverable by routing.
