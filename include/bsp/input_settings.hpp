@@ -101,11 +101,12 @@ struct DeviceSettings {
 // Mapped value of the case-insensitive InputNames map at settings+0x24 (N2C in
 // docs/INPUT_SETTINGS_TREE_CLUSTER.md: 20-byte value at node+0x14). 006a8ce4
 // writes table[1] to value+0x00 and 006a8d1f writes table[2] to value+0x0c. The
-// three untouched dwords keep their default-constructed value; the meaning of
-// both written fields is provisional.
+// three untouched dwords keep their default-constructed value. 0069E9E0
+// (0069EDBB..0069EDCC) matches value+0 against a binding's device class and
+// value+0Ch against its key code, which identifies the two fields.
 struct InputNameRecord {
-    std::int32_t primary{};    // value+0x00
-    std::int32_t secondary{};  // value+0x0c
+    std::int32_t device_type{};  // value+0x00
+    std::int32_t key{};          // value+0x0c
 };
 
 // One element of Conflicts.Groups[g]: a two-string table (006a8fa2, 006a9095)
