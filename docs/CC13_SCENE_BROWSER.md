@@ -226,3 +226,81 @@ helpers returning `BSP_ScenePropertyBag_Find(name)`; both are also called by
 (`006E9C50`, `004B1890`, `004AF930`, `004A7120`, `006D74B0`). The registries themselves are not
 cleared there, so a class read in one mission stays cached across a reset of its Lua table; whether
 another path clears them was not traced.
+
+## Segment 6: engine-movie actions `00465610..004663A0`
+
+The bottom of segment 6 holds the constructors of the engine-movie (in-engine cutscene) actions.
+Chain: `BSP_Game_BeginEngineMovie` (`004CCE50`) calls `00460B80`, which fills the action type
+table, a vector of 58h-byte records at `00E18550` (begin `00E18554`), and `004602C0`, the movie
+file parser (`ActionList`, `PointList`, `Entitypath`, `Animations`, `Movielen`, `AspectR`).
+Its action reader `0045E5E0` reads `Action`, `ActivateTime`, `Type`, `Num1..3`, `Enum`,
+`ReferPath`, `OffsetX/Y` and `Comment`, matches the action name against the table names
+(record +4, `_stricmp`) and passes the index to the factory `0045DE50`, a switch that allocates
+44h bytes (48h for type 20) and calls the type's constructor; the name is then copied to action+8.
+These callers are in segment 5 and were read, not renamed.
+
+`00460B80` pushes 32 records (`00460AD0` calls at `00460E37` .. `00464285`); the authored
+name of each is the string copied just before its push (`00460E08` `sSetTarget` ..
+`0046424C` `aHideEntity`). Record 4 is built from empty strings only and the factory has no
+case 4. Each record also carries parameter labels and option lists (`Destroy|Blown|Kill`,
+`OpenFire|HoldFire`, `All|AA_Flak|Artillery|Torpedo|DC`, `Surface|Periscope|Underwater|Maxdepth`,
+`JetEngineBig|RealGiantSmoke|GiantSmoke`, `CameraPos|LookAtPos|CameraAndLookAt`,
+`Binocular|Periscope|OFF`, ...), apparently for an editor. The lowercase prefix (`s`, `p`, `u`,
+`c`, `a`) reads as ship, plane, U-boat, camera, any; that is a hypothesis.
+
+Every constructor is `__thiscall(this, float activate time)`, `RET 4`, calls the base
+`BSP_MovieAction_ConstructBase` (`00465B60`) and stores its vtable. The base calls
+`BSP_MovieTimedItem_Construct` (`00465850`: +4 time, +8 name), writes the base vtable
+`00CE5498` {`_purecall`, `004656C0`}, and clears +14h, the strings at +18h and +2Ch, +20h..+28h
+and +34h..+3Ch. `cBlackOut` reads its `Time:` and `Alpha:` from +20h and +24h, so +20h..+28h are
+the three numeric parameters. Action vtables have two slots: slot 0 runs the action, slot 1 is
+the no-op `004656C0` except for `aParticleEffect`.
+
+| id | name | constructor | vtable | slot 0 (run) | slot 1 |
+| --- | --- | --- | --- | --- | --- |
+| 0 | `sSetTarget` | `00465C40` | `00CE54A4` | `004650F0` | `004656C0` |
+| 1 | `cSetParent` | `00465C70` | `00CE54AC` | `00464870` | `004656C0` |
+| 2 | `pEngineFailure` | `00465CD0` | `00CE54BC` | `00465D00` | `004656C0` |
+| 3 | `pForceRelease` | `00465DB0` | `00CE54D8` | `004648F0` | `004656C0` |
+| 5 | `cUnParent` | `00465CA0` | `00CE54B4` | `00464350` | `004656C0` |
+| 6 | `sForceDepthCharge` | `00465DE0` | `00CE54E0` | `00465180` | `004656C0` |
+| 7 | `pSetGunFire` | `00465E10` | `00CE54E8` | `00464910` | `004656C0` |
+| 8 | `uTogglePeriscope` | `00465E40` | `00CE54F0` | `004649B0` | `004656C0` |
+| 9 | `sForceArtilleryAngle` | `00465E70` | `00CE54F8` | `00464390` | `004656C0` |
+| 10 | `sForceArtilleryTarget` | `00465EA0` | `00CE5500` | `004643A0` BSP_FireTargetHolder_Apply | `004656C0` |
+| 11 | `uForceTorpedo` | `00465ED0` | `00CE5508` | `00465210` | `004656C0` |
+| 12 | `aSetGunFireEnabled` | `00465F00` | `00CE5510` | `00465290` | `004656C0` |
+| 13 | `aSetGunFireDisabled` | `00465F30` | `00CE5518` | `00465350` | `004656C0` |
+| 14 | `aSetGunFireTargetOnly` | `00465F60` | `00CE5520` | `00465410` | `004656C0` |
+| 15 | `aTurnGun` | `00465F90` | `00CE5528` | `00465450` | `004656C0` |
+| 16 | `uSetDepth` | `00465FC0` | `00CE5530` | `004654D0` BSP_EntityCommand_SetSubmarineDepth | `004656C0` |
+| 17 | `sForceAAFlak` | `00465FF0` | `00CE5538` | `00465570` | `004656C0` |
+| 18 | `cFOV` | `00466020` | `00CE5540` | `004643D0` | `004656C0` |
+| 19 | `cBlackOut` | `00466080` | `00CE5550` | `004660B0` | `004656C0` |
+| 20 | `aParticleEffect` | `00466170` | `00CE5558` | `004656D0` | `004661A0` |
+| 21 | `aDont_Move` | `004661C0` | `00CE5560` | `004649F0` | `004656C0` |
+| 22 | `cFOV_Now` | `00466050` | `00CE5548` | `004643E0` | `004656C0` |
+| 23 | `pSetGear` | `004661F0` | `00CE5568` | `00464A30` | `004656C0` |
+| 24 | `cCameraShake` | `00466220` | `00CE5570` | `00464AB0` | `004656C0` |
+| 25 | `cBinocular` | `00466250` | `00CE5578` | `00464C40` | `004656C0` |
+| 26 | `pTakeOffHack` | `00466280` | `00CE5580` | `00464D70` | `004656C0` |
+| 27 | `pWingTipEffect` | `004662B0` | `00CE5588` | `00464D80` | `004656C0` |
+| 28 | `sMoveToPoint` | `004662E0` | `00CE5590` | `00464DC0` | `004656C0` |
+| 29 | `cWideBlackBars` | `00466310` | `00CE5598` | `00464E00` | `004656C0` |
+| 30 | `sUseCatapult` | `00466340` | `00CE55A0` | `00464E50` | `004656C0` |
+| 31 | `aHideEntity` | `00466370` | `00CE55A8` | `00464EE0` | `004656C0` |
+
+Run bodies inside segment 6:
+
+- `00465D00` `pEngineFailure`: `[ESP+4]` = entity, `RET 4`; `entity->vtable[194h]("explosion_delayed")`
+  (`00465D58`). `docs/GUNNERY_OPEN_ITEMS.md` identifies that slot as the named death call
+  (`006D2210(name, 0)` for an airfield). The action's own parameters are not read.
+- `004660B0` `cBlackOut`: `BSP_HudNarrativeScreen_ArmBlackoutFade(+20h, +24h, "")`.
+- `004656D0` `aParticleEffect`: refreshes the entity pose, acquires the effect by name, creates
+  a point effect on the entity's matrix, pre-runs `BSP_Effect_UpdateChildren` in 0.1 s steps
+  (`00CE54A0`) up to `StartTime` (+20h) when positive, and keeps the effect at +44h;
+  `004661A0` (slot 1) releases +44h through `008673B0` and clears it.
+
+The other run bodies are in segment 5 (`00464350..004654D0`); two are already named
+(`BSP_FireTargetHolder_Apply`, `BSP_EntityCommand_SetSubmarineDepth`). Status: exported and
+named; nothing here is reconstructed.
