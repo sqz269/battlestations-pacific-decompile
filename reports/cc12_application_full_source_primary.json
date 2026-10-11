@@ -1,0 +1,584 @@
+{
+  "schema": "bsp.cc12.application-full-shell.Root-primary.v1",
+  "status": "dormant_borrowed_full_shell_fresh_Win32_static_review_PASS",
+  "worker_commit": "0b77ccca09b874c15a510d0369b2da1e42ebb1e8",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_full_source_primary/Root_guarded_worker_replay.json",
+      "bytes": 32717,
+      "sha256": "105e5d57a335ee424cbfc9f864bc72541ba16731847ea4ebcdf60b2e64127670"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_actual_worker_review.json",
+      "bytes": 2016705,
+      "sha256": "957669abdd8dfa1fc2359d8f86b4478dcfc0f3b4dba8aaff21662c262c804da5"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/worker_final_delivery.json",
+      "bytes": 5131,
+      "sha256": "c392df580c41d0325e410825f4ff1f6d8ffba312ae28eebe7b1e5d5204b1abfe"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/worker_committed_final_check.json",
+      "bytes": 3971,
+      "sha256": "5c81384cddcd1174167df7e4d8124c25afc78589c5e398445a9413962ebe86a0"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_before.json",
+      "bytes": 5082453,
+      "sha256": "688fd1cc40d350d29cc756450070fe01690eecfac599c8d91f099040f66a7573"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_before_initial_unselected.json",
+      "bytes": 5070071,
+      "sha256": "5987abfb6dafc4f9e96700519766b7bc7c841abea1c64f240ed69a5951de53b2"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_before_Core_App_8_tlogs.json",
+      "bytes": 5041828,
+      "sha256": "0666897e9680d6eedb60b75beaa84334f6e9d78326a10fc5f0fe2adcea848c1e"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_after.json",
+      "bytes": 5046100,
+      "sha256": "e9f0a9db6b163aeee9a75705ace7e5c09e86665dd0c6c21e37eac6dd1603e2b0"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_after_build_receipt.json",
+      "bytes": 882,
+      "sha256": "59aacf9deace99027a286ef0c8f4b59a2408228c420f126bbe57afe722fdf873"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_compiled_review.json",
+      "bytes": 59367,
+      "sha256": "20a9615c8b2a04883c6e6846fb2160d371bb6ef96b4f8d2208b95ae27f2a95d6"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_compiler_metadata_review.json",
+      "bytes": 23830,
+      "sha256": "3962182bf4e7dfff90e1a844ed52b782b54a6e5ae50437f9915f6f557ecf73b5"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_before_compiler_cohort.json",
+      "bytes": 61951,
+      "sha256": "2f889fd3bce12b79ca0db6fb262c2f989b02eaaaedecfe1e6c793caf274bd35b"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_after_compiler_cohort.json",
+      "bytes": 61815,
+      "sha256": "da9545f451bdcd978860ea1ec906aa172b6aef5d3a1d0cce69f4ae2d8cd1f0a0"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_extra_review.json",
+      "bytes": 382160,
+      "sha256": "399f23ae2192de85c8950c2b92c5eeaa5fc33b9fe31c63d644ed0fab03ba5873"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_extra_peer_graph.json",
+      "bytes": 9588612,
+      "sha256": "cc708dcd657f1fa28d38880b811b1663eae281c4c9e517e7d7c20362bb9c902f"
+    },
+    {
+      "path": "local/cc12_application_full_source_primary/Root_semantic_review.json",
+      "bytes": 8970,
+      "sha256": "8a7da30a6a57e812ca4ead6ecf1459d5f73d6e5715ef2e221e4d60b292db7d8d"
+    }
+  ],
+  "worker_ZIP": {
+    "path": "local/cc12_application_full_source_primary/worker_evidence.zip",
+    "bytes": 758285682,
+    "sha256": "42276412a00147d925010643f126de4270516a82810302c58fea079484b9f440"
+  },
+  "worker_helper": {
+    "path": "local/cc12_application_full_source_primary/worker_portable_replay.py",
+    "bytes": 9436,
+    "sha256": "8b4e0d8d0944c2af4b22323b148b30f0192c0ddc4dcd185446277cc82218abdd"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_application_full_source_primary/Source3356_application_full_shell_Root_frozen.json",
+    "bytes": 1251121,
+    "sha256": "27c1cc3c96925ebcb273bf5e5a194eb107eac90fa538e39b83e0cc04148f8783"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "Root_actual_selected_Git": 4217,
+    "worker_closed_Source": 4228,
+    "actual_frozen_blobs": 4253,
+    "actual_stage_blobs": 4253,
+    "actual_final_blobs": 4255,
+    "Root_before_equals_accepted_c491": true,
+    "current_root_source_changes": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ]
+  },
+  "Root_build": {
+    "schema": "bsp.cc12.application-full-shell.Root-build.v1",
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\scripts\\build.ps1"
+    ],
+    "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "UTC_start": "2026-10-11T02:43:55.231432+00:00",
+    "UTC_end": "2026-10-11T02:44:23.512259+00:00",
+    "exit_code": 0,
+    "normal_scripts_build_ps1": true,
+    "MSVC_Win32": true,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_full_source_primary\\Root_after_build.log",
+      "bytes": 3885,
+      "sha256": "f1d04447c8d8dbf19a93187b4fa9d379b8b2f2124facb2ebe51cf1335d8f55d3"
+    }
+  },
+  "Core": 1990,
+  "App": 80,
+  "code": {
+    "old_exact": 174401,
+    "added_bytes": 333,
+    "added_sections": [
+      38,
+      50,
+      245
+    ],
+    "old_changed": 0,
+    "old_removed": 0,
+    "whole_changed_objects": 17,
+    "complete_TU_indices": 40,
+    "header_consumers": 17
+  },
+  "compiler_data": {
+    "old_noncode_exact": 1041,
+    "old_vtables_exact": 27,
+    "added_sections": 3,
+    "changed_metadata_sections": 3,
+    "new_digit_tables": [
+      200,
+      400
+    ],
+    "positive_old_peer_counts": [
+      579,
+      976,
+      976
+    ],
+    "old_target_definitions_exact": 2531,
+    "old_target_references_exact": 67,
+    "new_wrapper_TU_target_references": 0,
+    "provider_EH_SEH_tables": 6,
+    "provider_table_bytes": 288,
+    "new_FH_actual_data_offset": 16,
+    "new_handler_actual_code_offset": 21,
+    "SXDATA_bytes": [
+      20,
+      24
+    ],
+    "CHKS64_bytes": [
+      224,
+      272
+    ],
+    "UUID_library_actual_physical_and_current_link_logs_retained": true
+  },
+  "semantics": {
+    "status": "PASS",
+    "old_header_and_entire_TU_prefix_exact": true,
+    "Source_child_call_once_same_context": true,
+    "Source_result_ignored": true,
+    "compiled_child_inlined": true,
+    "child_out_of_line_call": 0,
+    "captured_original_receiver": {
+      "argument_load": {
+        "offset": 40,
+        "bytes": 3,
+        "hex": "8b7508",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ebp + 8]"
+      },
+      "return_value_load": {
+        "offset": 175,
+        "bytes": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      "plain_Source_cdecl_RET": {
+        "offset": 244,
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    },
+    "genuine_provider_relocations": [
+      {
+        "offset": 6,
+        "type": 6,
+        "symbol": "__ehhandler$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+      },
+      {
+        "offset": 24,
+        "type": 6,
+        "symbol": "___security_cookie"
+      },
+      {
+        "offset": 69,
+        "type": 20,
+        "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+      },
+      {
+        "offset": 96,
+        "type": 6,
+        "symbol": "__imp__EnterCriticalSection@4"
+      },
+      {
+        "offset": 129,
+        "type": 20,
+        "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+      },
+      {
+        "offset": 147,
+        "type": 20,
+        "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z"
+      },
+      {
+        "offset": 165,
+        "type": 6,
+        "symbol": "__imp__LeaveCriticalSection@4"
+      }
+    ],
+    "child_section_conditional_branches": [
+      {
+        "offset": 91,
+        "bytes": 2,
+        "hex": "740e",
+        "mnemonic": "je",
+        "operands": "0x6b"
+      },
+      {
+        "offset": 153,
+        "bytes": 2,
+        "hex": "740e",
+        "mnemonic": "je",
+        "operands": "0xa9"
+      }
+    ],
+    "child_postnormal_stores": [
+      {
+        "offset": 169,
+        "bytes": 6,
+        "hex": "c706c88bd600",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xd68bc8"
+      },
+      {
+        "offset": 177,
+        "bytes": 4,
+        "hex": "c6460400",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 4], 0"
+      }
+    ],
+    "eight_new_outer_stores": [
+      {
+        "offset": 181,
+        "bytes": 6,
+        "hex": "c706b0eacf00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xcfeab0"
+      },
+      {
+        "offset": 187,
+        "bytes": 7,
+        "hex": "c7460800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0"
+      },
+      {
+        "offset": 194,
+        "bytes": 7,
+        "hex": "c7460c00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], 0"
+      },
+      {
+        "offset": 201,
+        "bytes": 7,
+        "hex": "c7461000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x10], 0"
+      },
+      {
+        "offset": 208,
+        "bytes": 7,
+        "hex": "c7461400000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], 0"
+      },
+      {
+        "offset": 215,
+        "bytes": 4,
+        "hex": "c6461900",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x19], 0"
+      },
+      {
+        "offset": 219,
+        "bytes": 4,
+        "hex": "c6461a00",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x1a], 0"
+      },
+      {
+        "offset": 223,
+        "bytes": 4,
+        "hex": "c6461801",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x18], 1"
+      }
+    ],
+    "pointer_zero_store_bytes": [
+      {
+        "offset": 187,
+        "bytes": 7,
+        "hex": "c7460800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0"
+      },
+      {
+        "offset": 208,
+        "bytes": 7,
+        "hex": "c7461400000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], 0"
+      }
+    ],
+    "cleanup_complete_decode": {
+      "phase": "after",
+      "object": "native_render_service_base.obj",
+      "identity": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$0",
+      "positive_labels": [
+        {
+          "name": ".text$x",
+          "value": 0,
+          "section": 13,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "name": "__ehhandler$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+          "value": 21,
+          "section": 13,
+          "type": 32,
+          "storage": 3
+        },
+        {
+          "name": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$0",
+          "value": 0,
+          "section": 13,
+          "type": 32,
+          "storage": 3
+        },
+        {
+          "name": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$1",
+          "value": 8,
+          "section": 13,
+          "type": 32,
+          "storage": 3
+        }
+      ],
+      "physical_section": 13,
+      "bytes": 50,
+      "hex": "8d4de4e9000000008d4ddce900000000cccccccccc90908b5424088d420c8b4ad833c8e800000000b800000000e900000000",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": 20,
+          "symbol": "??1BaseCleanup@?A0x02c0f4c0@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 12,
+          "type": 20,
+          "symbol": "??1GuardCleanup@?A0x02c0f4c0@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 36,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 41,
+          "type": 6,
+          "symbol": "__ehfuncinfo$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+        },
+        {
+          "offset": 46,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": 3,
+          "hex": "8d4de4",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x1c]"
+        },
+        {
+          "offset": 3,
+          "bytes": 5,
+          "hex": "e900000000",
+          "mnemonic": "jmp",
+          "operands": "8"
+        },
+        {
+          "offset": 8,
+          "bytes": 3,
+          "hex": "8d4ddc",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x24]"
+        },
+        {
+          "offset": 11,
+          "bytes": 5,
+          "hex": "e900000000",
+          "mnemonic": "jmp",
+          "operands": "0x10"
+        },
+        {
+          "offset": 16,
+          "bytes": 1,
+          "hex": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "offset": 17,
+          "bytes": 1,
+          "hex": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "offset": 18,
+          "bytes": 1,
+          "hex": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "offset": 19,
+          "bytes": 1,
+          "hex": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "offset": 20,
+          "bytes": 1,
+          "hex": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "offset": 21,
+          "bytes": 1,
+          "hex": "90",
+          "mnemonic": "nop",
+          "operands": ""
+        },
+        {
+          "offset": 22,
+          "bytes": 1,
+          "hex": "90",
+          "mnemonic": "nop",
+          "operands": ""
+        },
+        {
+          "offset": 23,
+          "bytes": 4,
+          "hex": "8b542408",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 8]"
+        },
+        {
+          "offset": 27,
+          "bytes": 3,
+          "hex": "8d420c",
+          "mnemonic": "lea",
+          "operands": "eax, [edx + 0xc]"
+        },
+        {
+          "offset": 30,
+          "bytes": 3,
+          "hex": "8b4ad8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edx - 0x28]"
+        },
+        {
+          "offset": 33,
+          "bytes": 2,
+          "hex": "33c8",
+          "mnemonic": "xor",
+          "operands": "ecx, eax"
+        },
+        {
+          "offset": 35,
+          "bytes": 5,
+          "hex": "e800000000",
+          "mnemonic": "call",
+          "operands": "0x28"
+        },
+        {
+          "offset": 40,
+          "bytes": 5,
+          "hex": "b800000000",
+          "mnemonic": "mov",
+          "operands": "eax, 0"
+        },
+        {
+          "offset": 45,
+          "bytes": 5,
+          "hex": "e900000000",
+          "mnemonic": "jmp",
+          "operands": "0x32"
+        }
+      ]
+    },
+    "exception_scope": "Ordinary current C++ valid-storage cleanup remains the genuine inherited Source behavior. Compiler state selector elision over nonthrowing poststores is not Original FH3, hardware/foreign fault, external ABI or runtime disposition proof.",
+    "no_owner_cell_producer_caller_activation_or_retirement": true
+  },
+  "boundaries": {
+    "storage_lifetimes_and_valid_preimages_are_external_prerequisites": true,
+    "new_outer_store_footprint_only": true,
+    "child_provider_effects_separate": true,
+    "child_calls": 1,
+    "child_inlined": true,
+    "out_of_line_child_calls": 0,
+    "pointer_null_actual_four_zero_bytes": true,
+    "no_caller_or_owner_or_cell_producer": true,
+    "no_allocation_new_layout_custody_activation_or_retirement": true,
+    "volatile_is_not_synchronization": true,
+    "ordinary_current_Cpp_valid_storage_cleanup_only": true,
+    "Original_FH3_hardware_foreign_external_ABI": false,
+    "flags1_CE3818_drain_free_hazard_retained": true,
+    "reset_not_retirement": true,
+    "superseded_header_evidence_preserved": true,
+    "old_unreplayed_ZIP_has_no_replay_or_acceptance_credit": true
+  },
+  "GPR_queries": 0,
+  "GPR_mutations": 0,
+  "Game_map_symbols": 0,
+  "Game_text_exact": true,
+  "original_ABI_compatible": false,
+  "fixture_tested": false,
+  "startup_validated": false,
+  "game_validated": false,
+  "next_scope": "No new caller or producer is activated. Further work must separately establish actual field lifetime/storage ownership, canonical cells, provider availability and escaped-reference/registry quiescence before a concrete Source producer or integration path is admitted."
+}
