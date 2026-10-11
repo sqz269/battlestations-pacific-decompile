@@ -1,0 +1,15 @@
+# CC12 locale after-CALL operand: conditional NEG EAX
+
+The exact admitted code bytes at BF6FFE..BF6FFF are `F7 D8`; context-zero text at BF6FFE is `NEG EAX`. F7 with ModRM D8 gives mod 3, opcode extension 3 and r/m 0: a 32-bit EAX register operand, with no prefix, immediate, displacement or explicit data-memory operand. No neighbor or target was queried.
+
+A fresh accepted BF6FFE typed gate passed before the byte/text requests. Typed, count, code and text bookends match, including project `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, epoch 98 and count 64730. Listing length remains two; the containing BF6FF5 `_atexit` owner is unchanged, non-thunk and no-return false. Default/effective FALL_THROUGH points to address-only BF7000, with no override or targets.
+
+Under normally reached execution, let R be the unknown incoming EAX value. The instruction writes `(0 - R) mod 2^32` to EAX and updates arithmetic flags. CF is set iff R is nonzero; OF is set iff R is 80000000h; the report records the remaining flag formulas. This instruction itself leaves ESP unchanged, but incoming post-callee ESP is unknown. No actual reach, callee return, call-result meaning or concrete EAX/ESP value follows. BF7000 is not selected or admitted as a successor.
+
+The prior PUSH source K and entry ESP W remain unknown. The earlier conditional PUSH/CALL slots supply no actual returned ESP, cleanup or preserved return word, and the old CC8D44 POP still needs returned ESP and an unchanged word. There is no registration, CRT authenticity, initialized canonical E1768C locale owner, actual Source ABI, startup or gameplay proof.
+
+Accepted predecessor `102283915398f7158581ea1f70d07e0b320a99a6`, both exact archives, all 30 predecessor helpers and nine pinned Root proof artifacts are physically retained. The current archive has 32 pinned helpers and passes original and copied recursive replays under the active one-supplied-ZIP guard; Producers are never run during replay. Inherited target-function objects remain entirely opaque. Fresh queries are site-only, while the complete inherited proof remains not strictly site-only.
+
+Current Source capture `bf8663140362f6eff1e3e25284d672ba92747c3e` contains 4217 closed Source paths, 4302 actual Git blobs, 85 named dependencies and 11 commit/tree objects. All Source paths equal the accepted f2030981 later epoch. The original frozen 575e7fd epoch remains intact: 4215 equal paths and only the previously accepted native_render_service_base.hpp/.cpp full-shell pair differ. Root's retained physical Source has 4212 raw-equal paths and five independently pinned CRLF-only variants, equal after that exact normalization. No predecessor evidence is rebased and no C++ build/runtime credit transfers.
+
+Only this document and `reports/cc12_locale_exit_after_call_operand.json` are committed. The report records exact pins, qualified metadata, conditional decode and boundaries; `local/cc12_locale_exit_after_call_operand/next_worker_handoff.json` records immutable delivery and replay details. No GPR mutation, C++ change, tests, build, Native probe executable or OS/process diagnostics were performed.
