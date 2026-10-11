@@ -1,0 +1,403 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-handler-operand.Root.v1",
+  "status": "exact_two_unit_operand_decode_accepted",
+  "worker_commit": "3b952d7b1a230ddcd247ed3e59d7d1409b7d189b",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/evidence.zip",
+      "bytes": 14022918,
+      "sha256": "d6808854b6b5a47176a3692b0e6daa5c7cd6447b046eaf425706af854f21519a"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/manifest.json",
+      "bytes": 736300,
+      "sha256": "d5f6f6fb5dfac259a2850056e05f98680c8e6d65c64ae82e6cdc3fab8dbe9018"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/portable_replay.py",
+      "bytes": 12779,
+      "sha256": "a8914d022dc37e84153ddc04c8b1853c73eaca03038f8bbf725f2b6269de039b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/guard_replay.py",
+      "bytes": 1772,
+      "sha256": "8fffc0b3358eb27fbb66d458a1fd55f92598165d268d512035095f95270932ac"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Root_copy_core.json",
+      "bytes": 2498,
+      "sha256": "bde19e47d4a8230c63b4646924fb8136a282506299fd8d724e7bd40698faca89"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Root_guard.json",
+      "bytes": 2179,
+      "sha256": "dfd92658e58a0a46141491e37df41a99a9b3583f17f42569e571af1a25e7af2d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Root_initial_gate.json",
+      "bytes": 4406,
+      "sha256": "b532bfdf10541b88e482134c87f10b04101054cc3dde15acbbaeb6cfd5b9ca39"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Root_operand_review.json",
+      "bytes": 1559,
+      "sha256": "0899db0ecd4899147e54108bf30541e56504179cb583816406d4e4e85d65aca1"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Root_actual_review.json",
+      "bytes": 7135,
+      "sha256": "afb36c26a5ca77b11c84386fd3a3c07b6ac082c1c2ca995590720fea4526c5a8"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/final_delivery.json",
+      "bytes": 4693,
+      "sha256": "01bc3221ca985332751756ae696cfed59678c016ce7efdd631a103b3da3c3319"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/staged_git_receipt.json",
+      "bytes": 1931,
+      "sha256": "56e629bebeb1227d2102b0c595d3b36193c7f5b7f20c473f034ec61bc25e431f"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/final_git_receipt.json",
+      "bytes": 1969,
+      "sha256": "31af2533478618370a22c3046bdff92b7f71baa091a2b069d3a000b7a6d73c83"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/staged_git_members.bin",
+      "bytes": 1254466,
+      "sha256": "2182948308bc4580ca8e25bfca666137f9d2af48768bd507db1571f3d820d8b4"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/final_git_members.bin",
+      "bytes": 1295551,
+      "sha256": "09a5fa11ca0373d9578419f0f1b50c31941b88e53937d713b81aa27112791d35"
+    }
+  ],
+  "physically_retained_helpers": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/capture_native.py",
+      "bytes": 5837,
+      "sha256": "bcab07db4386d7d10b0f9ca70a13afe35666fef6fa1667576478633f34deeddd"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/capture_tool_sources/tools/bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/capture_tool_sources/tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/capture_tool_sources/tools/ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/capture_tool_sources/tools/workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/decode_offline.py",
+      "bytes": 2399,
+      "sha256": "68481c829673a4de9e64e968a58eed35a4c9eb0acc3b88c12746a179c831de21"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/freeze_inputs.py",
+      "bytes": 3637,
+      "sha256": "6cb2290c2ffb5c580838bf61f5e1ba39c0057aacab65a42993457f0aa2b698e2"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/git_receipt.py",
+      "bytes": 3941,
+      "sha256": "087b292ebe4686e40bae674dae1f83537ba1bec5a05193d185f32f744f9a1e0e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/guard_replay.py",
+      "bytes": 1772,
+      "sha256": "8fffc0b3358eb27fbb66d458a1fd55f92598165d268d512035095f95270932ac"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/inherited_helpers/metadata_portable_replay.py",
+      "bytes": 10967,
+      "sha256": "7226ee34e4c9495257483757d723ebf335b65fc67f2a42d821177d304919fbaa"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/portable_replay.py",
+      "bytes": 12779,
+      "sha256": "a8914d022dc37e84153ddc04c8b1853c73eaca03038f8bbf725f2b6269de039b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_operand_primary/Tools/seal_packet.py",
+      "bytes": 3233,
+      "sha256": "fb2c66e1cdd8282d630e4ea5aeb1386deeaee34eefa331382978629d97fedfc3"
+    }
+  ],
+  "actual_membership": {
+    "frozen_final_dependencies": 4233,
+    "outputs": 2,
+    "unique_blobs": 4235,
+    "Source4217_current_Git_equal": true,
+    "prior3356_Git_LF_equal": true,
+    "prior_raw_CRLF_variants": 6,
+    "old_metadata_helper_physically_equal": true,
+    "inherited_graphs_not_replayed": true,
+    "no_rebase_artifact_runtime_transfer": true
+  },
+  "Native": {
+    "epoch": 98,
+    "count": 64730,
+    "actual_initial_gate": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "actual_typed_addresses": 10,
+      "units": [
+        5,
+        5
+      ],
+      "all_unowned": true,
+      "interior_at_instruction_and_flow_null": 8,
+      "qualified": [
+        {
+          "address": "00CC7260",
+          "unit_start": "00CC7260",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": true,
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00cc7265"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00cc7265"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7261",
+          "unit_start": "00CC7260",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7262",
+          "unit_start": "00CC7260",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7263",
+          "unit_start": "00CC7260",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7264",
+          "unit_start": "00CC7260",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7265",
+          "unit_start": "00CC7265",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": true,
+          "flow": {
+            "flow_override": "CALL_RETURN",
+            "default_flow": {
+              "name": "UNCONDITIONAL_JUMP",
+              "is_call": false,
+              "is_jump": true,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "CALL_TERMINATOR",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00bf6b43"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00bf6b43"
+              }
+            ]
+          },
+          "target_objects": "entirely opaque"
+        },
+        {
+          "address": "00CC7266",
+          "unit_start": "00CC7265",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7267",
+          "unit_start": "00CC7265",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7268",
+          "unit_start": "00CC7265",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        },
+        {
+          "address": "00CC7269",
+          "unit_start": "00CC7265",
+          "unit_length": 5,
+          "function_owner": null,
+          "instruction_start": false,
+          "flow": null,
+          "target_objects": "none"
+        }
+      ],
+      "entire_target_function_object_opaque": true,
+      "code_or_text_read": 0,
+      "initial_capture": {
+        "bytes": 34700,
+        "sha256": "bc24ac4ba4d39bba28cf87f933ad6af8b6d56896fc3db4af1951e85f286ba492"
+      }
+    },
+    "actual_operand": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "exact_code_bytes": 10,
+      "hex": "b8f81ce000e9d9f8f2ff",
+      "manual_immediate": 14687480,
+      "manual_signed_rel32": -853799,
+      "manual_destination": 12544835,
+      "decoded": [
+        {
+          "address": "00CC7260",
+          "length": 5,
+          "mnemonic": "mov",
+          "operands": "eax, 0xe01cf8"
+        },
+        {
+          "address": "00CC7265",
+          "length": 5,
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ],
+      "conditional_EAX": "00E01CF8",
+      "conditional_IP": "00BF6B43",
+      "instruction_local_ESP_EFLAGS_unchanged": true,
+      "return_address_push": false,
+      "data_dereference": false,
+      "immediate_pointee_and_target_behavior_unknown": true,
+      "saved_CALL_RETURN_separate_from_physical_E9": true,
+      "entire_automatic_target_object_opaque": true,
+      "full_handler_extent_or_FH3_or_cleanup_credit": false,
+      "pins": [
+        {
+          "path": "code_bytes.bin",
+          "bytes": 10,
+          "sha256": "01334072ffeeb75872fc5084480c0366d57af7a377c232e57feacafb385367d0"
+        },
+        {
+          "path": "instruction_text.json",
+          "bytes": 318,
+          "sha256": "a81be30ec0878661ba2299c9a8c6dd21ed8b25c36111bf1fcf0f9219210ed027"
+        },
+        {
+          "path": "operand_before.json",
+          "bytes": 34700,
+          "sha256": "6fe5cad73a5cfe807883318f2f4a60b57f8defeb97621a8c1c6d1acb936bbe0c"
+        },
+        {
+          "path": "operand_after.json",
+          "bytes": 34700,
+          "sha256": "0e02d8b600fefa1970de8490a4fe4c054e00386573572c4ade6677ef54b8e32d"
+        }
+      ]
+    },
+    "full_handler_extent": false,
+    "whole_capture_strict_site_only": false,
+    "entire_auto_target_function_object_opaque": true
+  },
+  "next_admission": {
+    "packet": "cc12_application_ordinary_retirement_descriptor_prefix_readiness",
+    "initial_scope": "Only typed listing/function/flow metadata for every exact12bytes E01CF8..E01D03 at the physical MOV immediate, with fresh98/64730 project/program/count/identity closure",
+    "required": "Record all exact at/containing data units and coverage, instructions/function/flow/targets without guessed schema; physically pinned actual captures to Root before any data read",
+    "conditional_data_scope": "Only separately explicit Root admission after actual listing coverage review may read exact12candidate data bytes, firstthree little-endian DWORDraw values; mapped-block/backing/type/content/FH3authenticity remain unresolved",
+    "excluded": [
+      "No remaining containing-unit bytes, encoded pointer/targetBF6B43/neighbor/caller/body/prototype/stack/funclet expansion",
+      "No guessed FuncInfo fields, cleanup policy or retirement authority",
+      "No GPR mutation/repair, C++/tests/build/probes/process/game/OS/audio action",
+      "Native-only proof: freeze actualHEAD/SourceGitIDs, no repeated Sourcecensus or content/artifact/runtime claim"
+    ]
+  },
+  "unknowns": [
+    "Immediatepointee layout/type/authenticity",
+    "BF6B43 target ABI/behavior and actual reach",
+    "Full handler extent, Original FH3/actions and failure/retirement policy",
+    "Actual Application owner/cells/lifetimes/quiescence, Source ABI/startup/game"
+  ],
+  "overall_goal_complete": false
+}
