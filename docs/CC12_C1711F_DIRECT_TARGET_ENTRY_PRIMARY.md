@@ -1,0 +1,17 @@
+# C1711F entry: primary review
+
+Accepted worker commit `c78072bef4f2e403e04e9def587081b3663ec966`, whose sole parent is actual frozen Main `5122687cac595819d4fb517b319e68a6a3b6cf3f`. The two evidence outputs establish only the six-byte entry at C1711F..C17124. The remaining seven saved-owner bytes, C17125 and source cell 0109E444 remain unqueried. Saved `___get_sigabrt` and return flags remain metadata.
+
+Root's initial physical metadata gate passed first execution and admitted one six-byte InstructionDB unit after reviewing both complete original typed replies. All 206 preimages and seven gate files were copied. Final review independently checked all 596 proof member pins, all 213 Root copies, twenty actual Git objects, the frozen parent and exact two-file diff, eight current positive inputs and two outputs, and all ten LF/index/committed identities. Source subtree identities remained unchanged. No prior proof ZIP was opened.
+
+Root manually split FF 35 44 E4 09 01: FF group /6, ModR/M mod00/reg110/rm101, no prefixes or SIB, absolute unsigned disp32 0109E444 at byte2, operand width32, default current DS. Root wrote all manual fields before importing Capstone; fresh detailed Capstone 5.0.7 and the worker output match exactly. The normal instruction effect reads the source dword before its own stack write. Under the renewed actual current SS.B=1 predicate, it decrements current ESP by four modulo 2^32 and writes that source value through current SS at the new offset. Normal completion leaves flags unchanged. No source value, linear address, DS/SS non-alias relation or preserved caller stack is established. The earlier incoming CALL can alias the later source read.
+
+Root read the complete 26342-byte pure helper and verified the unchanged, previously fully reviewed 2727-byte strict guard. Its first actual copied-ZIP replay passed with one ZIP read, one exact helper execution, one exclusive receipt write and `denied=[]`. The result and both worker receipts agree except their physical helper/archive paths; their content pins also agree.
+
+One Root post-replay comparison failed because it removed an `archive` key instead of the actual `supplied_zip` path field. The original runner, prepin, actual stdout/stderr and failure result remain intact. A separate corrected comparator passed after verifying the only differences were `helper.path` and `supplied_zip.path`, preserving every other field. No decoder, final review or strict replay was repeated. Root actual gate, decoder, final review and strict execution failures remain zero; post-replay comparison failures are one. Worker failures and Root display truncations are zero.
+
+Private artifacts are under `local/cc12_c1711f_direct_target_entry_primary/`; exact receipt and producer pins are in the report. The final physical receipt is 2894748 bytes, SHA-256 `be6b0ecd5182785bb2344c1bd2cbb91954c99a576fe1a7ff57dd9269806e0c7b`. The copied proof is 6808867 bytes, SHA-256 `881dfef63efafdc453d4ca2c485f02a46ed44d4e884491423e6b01858c106f58`.
+
+Source trees remain `src=dfb2ee135e7b642465d448dcc1616fd92686ad51`, `include=7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9`. This packet adds evidence only. No build, test, probe, Ghidra mutation or Original/game/audio/runtime execution occurred. ABI, library, provider and whole-function behavior remain unresolved.
+
+Machine-readable primary evidence: [report](../reports/cc12_c1711f_direct_target_entry_primary.json).
