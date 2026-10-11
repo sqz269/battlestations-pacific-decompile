@@ -141,11 +141,14 @@ pose code is x87 and was named, not reconstructed.
 
 ## The powerup manager (slot 4Fh)
 
-Named, not reconstructed: register 00614170, layout 00614600 (existing name; 16 widgets:
+Reconstructed and build-tested: register 00614170 (`hud_powerup_register_00614170`: 004F71D0, the
+layout, power_up_Group and `map_Group` hidden, +23Ch..+244h = `right_circle_Icon`'s resolved
+position with x minus +234h, +F4h..+FCh = the info page's, then counters and the +1A4h vector
+cleared) and layout 00614600 (`hud_powerup_layout_00614600`, the `kHudPowerupBindings` table; 16 widgets:
 `New_Group` +B4h under `GUI_powerups_info` +B0h with `text_Text` +D4h, `left/right/empty_circle_Icon`
 +E0h/+E4h/+E8h, `tile_Icon` +ECh, `icon_Icon` +F0h; `center_Group` -> `power_up_Group` +B8h under
 `GUI_support_full` +24h with `color_Icon` +C0h, `radar_Icon` +BCh, `sipp_Icon` +C4h, `szub_Icon`
-+C8h, `plane_Icon` +CCh, `command_Icon` +D0h), enter 0061B850, exit 006169F0, update 0061BEA0,
++C8h, `plane_Icon` +CCh, `command_Icon` +D0h). Named, not reconstructed: enter 0061B850, exit 006169F0, update 0061BEA0,
 collect 00619170, constructor 0061A480, destructor body 00618EA0 and the helpers listed in the
 ledger rows (carousel at +100h, `STL_StringMapCI_*`). The screen drives the support-manager
 screen's widgets (`*(00E198C4)+BCh`) and its own (`+C0h`), and the PUM hints through the award
@@ -245,3 +248,37 @@ chain copied from 00F8BC88, the id from 006FAC20's counter) have no Ghidra funct
 or absolute reference: 00AC9F70/00ACA030 (`cGuiGrid`), 00ACC650/00ACC6F0 (`cGuiModel`),
 00ACD890/00ACDAE0 (`cGuiSound`), 00ACEA20/00ACEA70 (`cGuiClipBox`), 00AD0780/00AD07D0
 (`cGuiFrameBox`). They were left undefined.
+
+## Handoff (cc13-hud1, 2026-10-11)
+
+State on `agent/cc13-hud1`: 161 ledger names (76 in segment 25 and the plane-spawn range, 85 in
+segment 79), 27 functions defined in Ghidra (`reports/cc13_hud1_defined.json`), 38 reconstruction
+records in `src/hud_widgets.cpp` / `include/bsp/hud_widgets.hpp`, all build-tested only;
+`reports/cc13_hud1.json` has 261 host_steps rows and `tools/verify_report_calls.py` reports 0
+failures. Nothing was run in `bsp_game`; none of this is wired into a game host. No gameplay
+RNG is drawn anywhere here.
+
+Tools in this worktree's `local/` (copy them, the tree is temporary): `h1_survey.py` (segment
+table with sizes, callers and strings), `h1_vtstores.py` (vtable stores per function),
+`h1_refs.py` (rdata/text dword search), `h1_binds.py` (page/widget binding extractor: literal,
+lookup parent, destination field), `h1_show.py` (compact decompile view from the shared exports),
+`h1_callsum.py` (callee/caller summary), `h1_names25.py`, `h1_names79.py`, `h1_funcs25.py`,
+`h1_funcs79.py` (the ledger batches), plus the copied `h1_*` helpers from cc13-frontend2 and
+`h1_rw_*` from cc13-rewards1.
+
+Open, in order of value:
+
+1. The powerup-manager enter 0061B850, update 0061BEA0, exit 006169F0 and the two carousel
+   updates 00619C50 (ECX = screen+100h) / 0061A6C0. They drive the support-manager screen's
+   widgets (`*(00E198C4)+BCh`, cc9's support-manager lane reads the same object, so ask cc9
+   before wiring) and the PUM hints through the award tracker. 0061B0F0 rebuilds the lists from
+   `BSP_PowerUpManager_CollectActive`.
+2. The plane-spawn camera (vtable 00CF4930; 0060CB60, 0060CC90, 0060CD50) is x87 pose code; it
+   overlaps the camera lane (check cc13-camera1 before taking it).
+3. Segment 79's Grid cell containers (00ACA730..00ACB9B0, tree/vector instantiations around the
+   column records), the Model loader trio 00ACCCF0/00ACCB90/00ACC8A0, and the AnimIcon update
+   00AD3040 (x87 frame stepping against the clock at *(01090AB0)+14h).
+4. 006113A0..00614170: shared tree/list node routines with callers in several screens; name them
+   once their owners are known.
+5. Unreferenced Ghidra-less code is listed in the two "Unreferenced" sections above; it was left
+   undefined on purpose.

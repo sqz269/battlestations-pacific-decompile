@@ -518,4 +518,59 @@ void gui_sound_bind_resources_00acddb0(GuiSoundWidgetState& sound, GuiSoundWidge
     }
     sound.sound_class_f4 = host.find_sound_class_00a7acf0(sound.category_100);
 }
+namespace {
+
+std::uintptr_t& powerup_widget(HudPowerupScreenState& screen, std::uint16_t field) {
+    return screen.widgets.at(field / 4);
+}
+
+std::uintptr_t powerup_parent(HudPowerupScreenState& screen, std::uint16_t field) {
+    if (field == 0x24) {
+        return screen.support_page_24;
+    }
+    if (field == 0xB0) {
+        return screen.info_page_b0;
+    }
+    return powerup_widget(screen, field);
+}
+
+}  // namespace
+
+void hud_powerup_layout_00614600(HudPowerupScreenState& screen, HudPowerupHost& host) {
+    screen.support_page_24 = host.load_page_00aa5840(kHudPowerupSupportPage);
+    screen.info_page_b0 = host.load_page_00aa5840(kHudPowerupInfoPage);
+    std::uintptr_t previous = 0;
+    for (const HudPowerupBinding& row : kHudPowerupBindings) {
+        const std::uintptr_t parent =
+            row.parent_field == 0 ? previous : powerup_parent(screen, row.parent_field);
+        previous = host.find_child_00aa7e00(parent, row.name);
+        if (row.field != 0) {
+            powerup_widget(screen, row.field) = previous;
+        }
+    }
+}
+
+void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost& host) {
+    host.front_end_register_004f71d0();
+    hud_powerup_layout_00614600(screen, host);  // vtable +14h
+    host.set_visible(powerup_widget(screen, 0xB8), false);
+    host.set_visible(host.find_child_00aa7e00(screen.support_page_24, "map_Group"), false);
+    float position[3]{};
+    host.get_resolved_position(powerup_widget(screen, 0xE4), position);
+    screen.right_circle_23c[1] = position[1];
+    screen.right_circle_23c[2] = position[2];
+    screen.right_circle_23c[0] = position[0] - screen.field_234;  // x87 fsub, stored as float
+    host.get_resolved_position(screen.info_page_b0, screen.info_page_f4);
+    screen.mode_20 = 0;
+    screen.field_228 = 0;
+    screen.list_1a4.clear();  // 004685A0 erase(begin, end)
+    screen.field_1f0 = 0;
+    screen.field_1ec = 0;
+    screen.field_1f4 = 0;
+    screen.flag_1f9 = false;
+    screen.flag_22c = false;
+    screen.field_1fc = 0.0f;
+    screen.field_1e8 = 0.0f;
+    screen.field_230 = 0.0f;
+}
 }  // namespace bsp

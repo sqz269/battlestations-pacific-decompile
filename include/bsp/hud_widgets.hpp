@@ -466,6 +466,71 @@ void gui_sound_set_visible_00acdf10(GuiSoundWidgetState& sound, bool visible, Gu
 bool gui_sound_update_should_hide_00acd2c0(const GuiSoundWidgetState& sound, GuiSoundWidgetHost& host);
 // The tail of 00ACDDB0 (+18h) after the two string reads.
 void gui_sound_bind_resources_00acddb0(GuiSoundWidgetState& sound, GuiSoundWidgetHost& host);
+// ---------------------------------------------------------------------------
+// The powerup-manager screen, HUD slot 4Fh (manager +C0h), vtable 00CF4DEC
+// ---------------------------------------------------------------------------
+
+// 00614600 (layout, existing name BSP_HudPowerupManagerScreen_LoadLayout):
+// two pages, then sixteen children. Parent field 0 means "the previous row's
+// result" (center_Group is only held in EBX, never stored).
+struct HudPowerupBinding {
+    std::uint16_t field;         // screen+N that receives the widget (0: not stored)
+    std::uint16_t parent_field;  // screen+N searched, or 0 for the previous row
+    std::string_view name;
+};
+inline constexpr std::string_view kHudPowerupSupportPage = "GUI_support_full";   // -> +24h
+inline constexpr std::string_view kHudPowerupInfoPage = "GUI_powerups_info";     // -> +B0h
+inline constexpr std::array<HudPowerupBinding, 15> kHudPowerupBindings{{
+    {0xB4, 0xB0, "New_Group"},
+    {0xD4, 0xB4, "text_Text"},
+    {0xE0, 0xB4, "left_circle_Icon"},
+    {0xE4, 0xB4, "right_circle_Icon"},
+    {0xE8, 0xB4, "empty_circle_Icon"},
+    {0xEC, 0xB4, "tile_Icon"},
+    {0xF0, 0xB4, "icon_Icon"},
+    {0x00, 0x24, "center_Group"},
+    {0xB8, 0x00, "power_up_Group"},
+    {0xC0, 0xB8, "color_Icon"},
+    {0xBC, 0xB8, "radar_Icon"},
+    {0xC4, 0xB8, "sipp_Icon"},
+    {0xC8, 0xB8, "szub_Icon"},
+    {0xCC, 0xB8, "plane_Icon"},
+    {0xD0, 0xB8, "command_Icon"},
+}};
+
+struct HudPowerupScreenState {
+    std::uintptr_t support_page_24{};
+    std::uintptr_t info_page_b0{};
+    std::array<std::uintptr_t, 0x100 / 4> widgets{};  // indexed by field / 4 for +B4h..+F0h
+    int mode_20{};
+    int field_228{};
+    float field_1e8{};
+    int field_1ec{};
+    int field_1f0{};
+    int field_1f4{};
+    bool flag_1f9{};
+    float field_1fc{};
+    bool flag_22c{};
+    float field_230{};
+    float field_234{};
+    float right_circle_23c[3]{};  // +23Ch..+244h: resolved position, x minus +234h
+    float info_page_f4[3]{};      // +F4h..+FCh: the info page's resolved position
+    std::vector<std::uint32_t> list_1a4;
+};
+
+struct HudPowerupHost {
+    virtual ~HudPowerupHost() = default;
+    virtual void front_end_register_004f71d0() = 0;
+    virtual std::uintptr_t load_page_00aa5840(std::string_view name) = 0;
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;
+    virtual void set_visible(std::uintptr_t widget, bool visible) = 0;
+    virtual void get_resolved_position(std::uintptr_t widget, float out[3]) = 0;  // 00AA6750
+};
+
+// 00614600, slot +14h, __thiscall(screen), RET.
+void hud_powerup_layout_00614600(HudPowerupScreenState& screen, HudPowerupHost& host);
+// 00614170, slot +10h, __thiscall(screen), RET.
+void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost& host);
 }  // namespace bsp
 
 #endif  // BSP_HUD_WIDGETS_HPP
