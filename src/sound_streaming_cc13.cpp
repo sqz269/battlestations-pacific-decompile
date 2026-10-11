@@ -1,0 +1,328 @@
+#include "bsp/sound_streaming_cc13.hpp"
+
+#include "bsp/sound_dialog_logical.hpp"
+
+#include <cstdio>
+#include <cstring>
+
+// Segment 74 sound routines. Evidence and ABIs: docs/CC13_SOUND_STREAMING.md.
+
+namespace bsp::cc13_audio {
+namespace {
+
+template<class T> T read(const void* object, std::size_t offset) noexcept {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(object) + offset, sizeof value);
+    return value;
+}
+template<class T> void write(void* object, std::size_t offset, T value) noexcept {
+    std::memcpy(static_cast<unsigned char*>(object) + offset, &value, sizeof value);
+}
+void* at(void* object, std::size_t offset) noexcept {
+    return static_cast<unsigned char*>(object) + offset;
+}
+const void* at(const void* object, std::size_t offset) noexcept {
+    return static_cast<const unsigned char*>(object) + offset;
+}
+
+// An FLD m32 / FSTP m32 pair is exact except that a signalling NaN is quieted.
+void x87_copy_float(void* destination, std::size_t to, const void* source, std::size_t from) noexcept {
+    auto bits = read<std::uint32_t>(source, from);
+    if ((bits & 0x7f800000u) == 0x7f800000u && (bits & 0x007fffffu) != 0u) bits |= 0x00400000u;
+    write(destination, to, bits);
+}
+
+void report_memory(FmodResult result, SoundSampleApplyHost& host) {
+    if (static_cast<std::uint32_t>(result) == 0x2bu) host.on_out_of_sound_memory("Out of sounjd memory:");
+}
+
+SoundClassDescriptor& descriptor_at(SoundClassOwnership& classes, std::int32_t index) noexcept {
+    // Native reads [table + index*4] and dereferences it without a null test.
+    return *static_cast<SoundClassDescriptor*>(classes.manager().classes_98[static_cast<std::size_t>(index)]);
+}
+
+struct TemporaryName {
+    NativeStringStorage& strings;
+    NativeString value;
+    TemporaryName(NativeStringStorage& storage, const char* text) : strings(storage) {
+        value.assign_0041e870(strings, text);
+    }
+    ~TemporaryName() { destroy_native_string_header_0041dd20(&value, strings); }
+    TemporaryName(const TemporaryName&) = delete;
+    TemporaryName& operator=(const TemporaryName&) = delete;
+};
+
+const char* native_text(const void* actual_header) noexcept {
+    // Native strings: +00 length, +04 data; null data reads the shared 00F8BBEE byte.
+    const auto* data = read<const char*>(actual_header, 4);
+    return data ? data : "";
+}
+
+} // namespace
+
+void set_sound_class_duck_levels_00a7ac70(SoundClassOwnership& classes,
+    std::uint32_t mask, float level) noexcept
+{
+    auto& slots = classes.manager().classes_98;
+    std::uint32_t ordinal = 0;
+    for (SoundClassLevel* slot : slots) {
+        const std::uint32_t bit = sound_class_bit(ordinal);
+        if ((mask & bit) != 0u) {
+            auto& descriptor = *static_cast<SoundClassDescriptor*>(slot);
+            // FUCOMIP + LAHF/TEST AH,44h/JNP: only an ordered equal compare
+            // clears the pending bit; otherwise the new level is stored.
+            if (descriptor.secondary_level_14 == level) mask ^= bit;
+            else descriptor.secondary_level_14 = level;
+        }
+        ++ordinal;
+    }
+    if (mask != 0u) dirty_sound_classes_00a7a3f0(classes.manager(), mask);
+}
+
+void push_pop_sound_speech_duck_00a7d120(SoundClassOwnership& classes,
+    std::int32_t& duck_depth_16c, bool push, SoundLevelNameHost& names,
+    NativeStringStorage& strings)
+{
+    float level;
+    if (push) {
+        const std::int32_t previous = duck_depth_16c;
+        duck_depth_16c = static_cast<std::int32_t>(static_cast<std::uint32_t>(previous) + 1u);
+        if (previous != 0) return;
+        level = 0.5f; // 00CE3800
+    } else {
+        duck_depth_16c = static_cast<std::int32_t>(static_cast<std::uint32_t>(duck_depth_16c) - 1u);
+        if (duck_depth_16c != 0) return;
+        level = 1.0f; // immediate 3F800000h
+    }
+    const TemporaryName warnings(strings, "Warnings");
+    const TemporaryName speech(strings, "GUITestSpeech");
+    const TemporaryName music(strings, "GUIMusic");
+    const auto& manager = classes.manager();
+    // Native lookup order: GUITestSpeech, Warnings, GUIMusic. -(1<<n) is the
+    // native OR -1 / SHL form; a miss (-1) shifts by 31.
+    const auto speech_index = static_cast<std::uint32_t>(find_sound_class_00a7acf0(manager, speech.value, names));
+    const auto warnings_index = static_cast<std::uint32_t>(find_sound_class_00a7acf0(manager, warnings.value, names));
+    const auto music_index = static_cast<std::uint32_t>(find_sound_class_00a7acf0(manager, music.value, names));
+    const std::uint32_t mask = (0xffffffffu << (speech_index & 31u)) - sound_class_bit(warnings_index)
+        - sound_class_bit(music_index) + 0xffffu;
+    set_sound_class_duck_levels_00a7ac70(classes, mask, level);
+}
+
+void set_sound_class_paused_00a7f890(SoundClassOwnership& classes,
+    std::int32_t index, std::uint8_t paused)
+{
+    const auto count = [&] { return static_cast<std::int32_t>(classes.manager().classes_98.size()); };
+    if (index >= count()) classes.resize_00a7c2c0(index + 1);
+    if (descriptor_at(classes, index).flags_0c == paused) return;
+    if (index >= count()) classes.resize_00a7c2c0(index + 1);
+    descriptor_at(classes, index).flags_0c = paused;
+}
+
+void set_sound_listener_environment_00a7b710(SoundConfigurationState& state,
+    const char* name, SoundLevelNameHost& names)
+{
+    const std::int32_t found = find_sound_listener_00a7ae00(state, name, names);
+    if (state.current_listener_10c == found) return;
+    state.previous_listener_110 = state.current_listener_10c;
+    state.current_listener_10c = found;
+    select_sound_listener_00a7ae80(state, name, names);
+}
+
+void add_sound_class_00a7d9d0(SoundClassOwnership& classes,
+    SoundClassDescriptor* by_value_reference)
+{
+    by_value_reference->class_index_08 = static_cast<std::uint32_t>(classes.manager().classes_98.size());
+    classes.append_retained(*by_value_reference);
+    by_value_reference->release(); // parameter destructor, EH state -1
+}
+
+void set_sound_stream_paused_00a85c40(void* stream, std::uint8_t paused) noexcept
+{
+    if (paused == read<std::uint8_t>(stream, 8)) return;
+    // ADD EAX,-1 / CMP EAX,1 / JA: unsigned state-1 <= 1.
+    if (read<std::uint32_t>(stream, 0x20) - 1u > 1u) return;
+    write(stream, 8, paused);
+}
+
+void select_sound_stream_row_00a86710(void* stream, const void* actual_name_header) noexcept
+{
+    void* const table = read<void*>(stream, 0x3c);
+    const std::int32_t selected = find_sound_dialog_record_00a865f0(table, actual_name_header);
+    auto* row = static_cast<unsigned char*>(read<void*>(stream, 0x48));
+    // The row count is reread from table+0Ch on every iteration.
+    for (std::int32_t index = 0; index < read<std::int32_t>(table, 0xc); ++index, row += 12) {
+        const bool chosen = index == selected;
+        write(row, 0, chosen ? 1.0f : 0.0f);
+        const double target = chosen ? 1.0 : 0.0;
+        // FSUB/FDIV by the double 3.0 at 00D7A2B0, rounded once by FSTP m32.
+        const float quotient = static_cast<float>((static_cast<double>(read<float>(row, 4)) - target) / 3.0);
+        // FCOMIP ST0,0 / JBE: unordered or <= 0 takes the -0.0f - x branch.
+        write(row, 8, quotient > 0.0f ? quotient : -0.0f - quotient);
+    }
+}
+
+std::int32_t draw_sound_stream_debug_00a869b0(void* stream, std::int32_t x,
+    std::int32_t y, SoundStreamDebugHost& host)
+{
+    static const char* const kStates[] = {"STOP", "STARTING", "PLAY", "OVER"}; // 00E12F00
+    static const char* const kLayouts[] = {"undef", "mono", "stereo", "5.1"}; // 00E12F10
+    if (read<std::int32_t>(stream, 0x20) != 2) return y;
+    std::uint32_t ms = 0;
+    if (static_cast<std::uint32_t>(host.channel_get_position_ms(read<void*>(stream, 0x44), &ms)) == 0x2bu)
+        host.on_out_of_sound_memory("Out of sounjd memory:");
+    const std::uint32_t saved = read<std::uint32_t>(stream, 0x18);
+    const std::uint32_t position = saved > ms ? saved : ms; // CMP / JA, unsigned
+    const float seconds = static_cast<float>(static_cast<double>(position) / 1000.0);
+    char line[512];
+    std::snprintf(line, sizeof line, "%s st:%s pos:%.2f", native_text(at(stream, 0x2c)),
+        kStates[read<std::int32_t>(stream, 0x20)], static_cast<double>(seconds));
+    host.draw_text(static_cast<float>(x), static_cast<float>(y), line);
+    y += 12;
+    const std::int32_t rows = read<std::int32_t>(stream, 0x4c);
+    const float row_x = static_cast<float>(x + 32);
+    for (std::int32_t index = 0; index < rows; ++index) {
+        const void* record = static_cast<const unsigned char*>(read<void*>(read<void*>(stream, 0x3c), 8))
+            + static_cast<std::uint32_t>(index) * 0x14u;
+        const void* level = static_cast<const unsigned char*>(read<void*>(stream, 0x48))
+            + static_cast<std::uint32_t>(index) * 12u;
+        // Native indexes 00E12F10 without a bound; layouts beyond 3 read later data.
+        std::snprintf(line, sizeof line, "%s(%s) vol:%.2f", native_text(record),
+            kLayouts[read<std::int32_t>(record, 0x10)], static_cast<double>(read<float>(level, 4)));
+        host.draw_text(row_x, static_cast<float>(y), line);
+        y += 12;
+    }
+    return y;
+}
+
+void* copy_sound_sample_descriptor_00a82ae0(void* destination, const void* source,
+    SoundSampleApplyHost& host)
+{
+    write(destination, 0, read<std::uint32_t>(source, 0));
+    for (std::size_t offset : {std::size_t{4}, std::size_t{8}, std::size_t{0xc}, std::size_t{0x10}})
+        x87_copy_float(destination, offset, source, offset);
+    for (std::size_t offset = 0x14; offset <= 0x16; ++offset)
+        write(destination, offset, read<std::uint8_t>(source, offset));
+    x87_copy_float(destination, 0x18, source, 0x18);
+    x87_copy_float(destination, 0x1c, source, 0x1c);
+    for (std::size_t offset = 0x20; offset <= 0x22; ++offset)
+        write(destination, offset, read<std::uint8_t>(source, offset));
+    write(destination, 0x24, read<std::uint32_t>(source, 0x24));
+    write(destination, 0x28, read<std::uint32_t>(source, 0x28));
+    for (std::size_t offset : {std::size_t{0x2c}, std::size_t{0x30}, std::size_t{0x34}})
+        x87_copy_float(destination, offset, source, offset);
+    write(destination, 0x38, read<std::uint8_t>(source, 0x38));
+    host.assign_parameters(at(destination, 0x3c), at(source, 0x3c));
+    return destination;
+}
+
+std::string format_sound_sample_definition_00a83120(const void* sample,
+    SoundSampleApplyHost& host)
+{
+    std::string text = read<std::int32_t>(sample, 8) == 1 ? "3D" : "2D"; // 00D5B0F0 / 00D5B0EC
+    text += "\nVol ";
+    text += host.format_float(read<float>(sample, 0xc));
+    text += "\nPitch ";
+    text += host.format_float(read<float>(sample, 0x10));
+    text += read<std::uint8_t>(sample, 0x1d) ? "\nLoop" : "";
+    text += "\nMinDistance ";
+    text += host.format_float(read<float>(sample, 0x14));
+    text += "\nMaxDistance ";
+    text += host.format_float(read<float>(sample, 0x18));
+    text += "\nDecompress ";
+    text += host.format_int(read<std::uint8_t>(sample, 0x1c));
+    text += read<std::uint8_t>(sample, 0x40) ? "\nAmbient" : "";
+    text += read<std::uint8_t>(sample, 0x28) ? "\nLinear" : "";
+    text += "\nFreqRndHz ";
+    text += host.format_float(read<float>(sample, 0x38));
+    text += "\nVolRnd ";
+    text += host.format_float(read<float>(sample, 0x3c));
+    if (read<std::uint8_t>(sample, 0x1e)) {
+        text += "\nLoopPointsMillisec ";
+        text += host.format_float(read<float>(sample, 0x20));
+        text += " "; // 00CE3A90
+        text += host.format_float(read<float>(sample, 0x24));
+    }
+    return text;
+}
+
+void apply_sound_sample_settings_00a83120(void* sample, const void* descriptor,
+    SoundSampleApplyHost& host)
+{
+    copy_sound_sample_descriptor_00a82ae0(at(sample, 8), descriptor, host);
+    auto sound = [&] { return read<void*>(read<void*>(sample, 0x78), 0x10); }; // reloaded per call
+    report_memory(host.sound_set_3d_min_max_distance(sound(), read<float>(sample, 0x14),
+        read<float>(sample, 0x18)), host);
+    report_memory(host.sound_set_variations(sound(), read<float>(sample, 0x38),
+        read<float>(sample, 0x3c), 0.0f), host);
+    std::uint32_t mode = 0; // native local is not pre-initialized
+    report_memory(host.sound_get_mode(sound(), &mode), host);
+    mode = read<std::uint8_t>(sample, 0x28) ? (mode & 0xffefffffu) | 0x200000u
+                                            : (mode & 0xffdfffffu) | 0x100000u;
+    mode = read<std::uint8_t>(sample, 0x1c) ? (mode & 0xfffffdffu) | 0x100u
+                                            : (mode & 0xfffffeffu) | 0x200u;
+    report_memory(host.sound_set_mode(sound(), mode), host);
+    const char* name = read<const char*>(sample, 0x54);
+    // strstr(name, ".def") and then match - data != -1, which a hit always satisfies.
+    if (name == nullptr || std::strstr(name, ".def") == nullptr) return;
+    void* file = host.open_definition_file(at(sample, 0x50), 0x35);
+    if (file == nullptr) return;
+    host.write_and_delete_definition_file(file, format_sound_sample_definition_00a83120(sample, host));
+}
+
+void* sound_instance_default_handle_00a7be50() noexcept { return nullptr; }
+
+float sound_instance_default_audibility_00a7be60() noexcept { return 1.0f; }
+
+void* sound_instance_default_parameter_00a7bea0(void* out16, const void*) noexcept
+{
+    write<std::uint32_t>(out16, 0, 0u);
+    write(out16, 4, 0.0f);
+    write(out16, 8, 0.0f);
+    write<std::uint32_t>(out16, 0xc, 0u);
+    return out16;
+}
+
+void* sound_instance_default_vector_00a7bed0(void* out12) noexcept
+{
+    write(out12, 0, 0.0f);
+    write(out12, 4, 0.0f);
+    write(out12, 8, 0.0f);
+    return out12;
+}
+
+bool sound_event_is_completed_00a89210(void* instance, SoundEventHost& host)
+{
+    if (read<std::uint8_t>(instance, 0x15) != 0) return true;
+    void* const event = read<void*>(instance, 0x54);
+    if (event == nullptr) return false;
+    std::uint32_t state = 0;
+    host.event_get_state(event, &state); // result ignored
+    return ((~(state >> 3)) & 1u) != 0u;
+}
+
+void update_sound_event_00a89600(void* instance, float dt, SoundEventHost& host)
+{
+    if (read<std::uint8_t>(instance, 0x15) != 0) return;
+    host.advance_fade(instance, dt);
+    const float delay = read<float>(instance, 0x3c);
+    if (delay > 0.0f) { // COMISS / JBE against 0.0f at 00D7A218
+        const float remaining = delay - dt;
+        write(instance, 0x3c, remaining);
+        // FLDZ / FCOMIP / JB: only 0 < remaining keeps the hold; NaN clears nothing.
+        if (!(0.0f < remaining) && !(remaining != remaining)) write<std::uint8_t>(instance, 0x38, 0);
+    }
+    if (read<void*>(instance, 0x54) == nullptr) host.create_and_start(instance);
+    write(instance, 0x18, read<std::int32_t>(instance, 0x18) + 1);
+    if (read<std::uint8_t>(instance, 0x14) != 0) {
+        host.event_set_pitch(read<void*>(instance, 0x54), read<float>(instance, 0x20) - 1.0f, 0);
+        host.event_set_volume(read<void*>(instance, 0x54), host.mixed_volume(instance));
+        write<std::uint8_t>(instance, 0x14, 0);
+    }
+    host.update_parameters(instance);
+    const bool paused = read<std::uint8_t>(instance, 0x1c) != 0
+        || read<std::uint8_t>(read<void*>(instance, 0x44), 0xc) != 0;
+    const auto hold = read<std::uint8_t>(instance, 0x38);
+    host.event_set_paused(read<void*>(instance, 0x54), static_cast<std::uint8_t>(hold | (paused ? 1 : 0)));
+}
+
+} // namespace bsp::cc13_audio
