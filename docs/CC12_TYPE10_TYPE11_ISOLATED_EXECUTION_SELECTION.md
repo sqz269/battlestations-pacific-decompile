@@ -482,3 +482,12 @@ The authorized Native Dispatch and execution recorder closed with genuine exit z
 The original clock started at QPC 11478351103388 with frequency 10000000; it was not reset or reused. The execution recorder completion was pinned at 469.6381242 seconds, leaving less than 130.3618758 seconds for Closing and final recording. The eight retained observer files do not serialize Closing's entry QPC or last verifier stage. Nine final observer files are absent. Current worker inspection found the recorded parent and guard PIDs and their direct children absent, which does not prove the original Closing cleanup sequence.
 
 The four Native products remain preserved and writable (attributes 32). Their existence and hashes are forensic evidence only. Native DATA acceptance, Native-to-build transition, compiler execution, target launch, fixture, ABI and game qualification remain unavailable. The selected verifier's repeated full inventories are under bounded Source review. Retry needs fresh exclusive product slots and a fresh reviewed phase/startup/formal chain; a new label alone cannot replay this attempt. This additive HOLD checkpoint preserves all prior ordered JSON and the documentation prefix.
+
+
+### Fresh F7 Source acceptance and inert Prepare plans (2026-10-11)
+
+Root accepted all nine fixture Sources, both namespace helpers and the three standalone runtime Sources. The namespace reviews contain 5,582 Source predicates and 4,279 closure predicates; the final Root check verified 87 current whole-file pins. The runtime Source reviews contain 2,810 predicates and preserve the successful outer path, original QPC limits and recorder bytes. The changes reduce repeated Closing hashing and retain PID/handle evidence during failed-only cleanup; no runtime timing or cleanup result is claimed.
+
+Actual constructor `0ba905/0` created fresh inert Prepare plans and profiles: all 24 inherited immutable families remain, four complete families were added, and exactly 11 profile fields changed while PATH and Job policy remained unchanged. The complete constructor report passed 73,220 checks with 1,308 pins; independent review `676c62/0` passed 244,093 checks with 1,318 pins. The constructor copied the reviewed helpers but did not execute the materializer, adopter or fixture.
+
+The prior F6 Native01 hold and original deadline remain recorded. Fresh F7 Prepare, Review and Native results are still required. No new clock, DATA adoption, fixture qualification, ABI compatibility or game validation is granted by this Source checkpoint.
