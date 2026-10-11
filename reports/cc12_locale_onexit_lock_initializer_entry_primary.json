@@ -1,0 +1,115 @@
+{
+  "status": "Root_REVIEWED_EXACT_NATIVE_ENTRY",
+  "worker_commit": "15b074baffb890d308c7d8ea6383d79219f8bf50",
+  "entry": "00C11B5E",
+  "Root_checks": {
+    "status": "PASS",
+    "worker_commit": "15b074baffb890d308c7d8ea6383d79219f8bf50",
+    "archives": {
+      "core_v1.zip": {
+        "bytes": 1060974,
+        "sha256": "08de75ca0d6b387d66e14276277c775b6089cb934d95bc4073b45ed0678370ba"
+      },
+      "delivery_v1.zip": {
+        "bytes": 2083212,
+        "sha256": "0ba7b2e42cd94e49f84f89319e757c33a1862da0476064454bd3c4ddfe94c781"
+      }
+    },
+    "actual_Git_objects": 10,
+    "input_files": 9,
+    "outputs": 2,
+    "actual_Capstone": {
+      "version": "5.0.7",
+      "address": "00C11B5E",
+      "size": 2,
+      "bytes": "6A0C",
+      "mnemonic": "push",
+      "imm32": 12
+    },
+    "scope": "Exact two-byte entry only; three saved ranges metadata only; four prototype prefix lines and opaque suffix.",
+    "current_Root_Source_equality": false,
+    "Source_census": false
+  },
+  "guards": [
+    {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    }
+  ],
+  "pins": [
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/core_v1.zip",
+      "bytes": 1060974,
+      "sha256": "08de75ca0d6b387d66e14276277c775b6089cb934d95bc4073b45ed0678370ba"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/delivery_v1.zip",
+      "bytes": 2083212,
+      "sha256": "0ba7b2e42cd94e49f84f89319e757c33a1862da0476064454bd3c4ddfe94c781"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/Root_review.py",
+      "bytes": 4013,
+      "sha256": "a616b260edba970f216628b291b565526d03fb1c0db4ccbe0a783ca43124be5e"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/Root_actual_review.json",
+      "bytes": 788,
+      "sha256": "03d7450cd66b832f9eb3a3c4f6151c606f4792d67efd19d54a0f2d549f958cb4"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/replay.py",
+      "bytes": 12963,
+      "sha256": "533dc894ab596b3e09d2c3527ae886cc85577d14ee0f5eeb9e25813514decc30"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/guarded_replay.py",
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/core_v1_Root_guard.json",
+      "bytes": 5792,
+      "sha256": "1bc2587883626d6bc52e18f8b39a10e52a7b46739f83bfdb320e2a5e7063e584"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/delivery_v1_Root_guard.json",
+      "bytes": 1458,
+      "sha256": "0f822d96bed6f75de98f73e5b1e6dbf1f59ef74761fe377b90314d9318ff07d5"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/Root_entry_gate.py",
+      "bytes": 3220,
+      "sha256": "43358dcafee1cba23e20195ea2a5020edbb4bb45da81bd15371c115bb4e052ca"
+    },
+    {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry_primary/Root_entry_gate.json",
+      "bytes": 8972,
+      "sha256": "e36606d961420ec7c463b41196856a3fa3cae64f22ef09d13fdf6431f1fb6ec1"
+    }
+  ],
+  "qualifications": [
+    "Exact6A0C yields signed immediate12 under saved32-bit decoding; entryESP=S normal PUSH yields ESP=S-4 and SS[S-4]=12.",
+    "Complete three-range168B ownership metadata is not a contiguous186B body admission; both gaps and all continuation remain unread.",
+    "Only four prototype prefix lines used. Initial six-line preview incidentally displayed companion opening brace and name line; suffix retained opaque and not adopted.",
+    "Saved name, placeholder type and function-at metadata authenticate no routine semantics, argument meaning or original ABI.",
+    "Actual finite Git objects and immediate paths verified; no Source content census or current Root Source equality."
+  ],
+  "credit": {
+    "static_Native_entry": true,
+    "Source": false,
+    "build": false,
+    "fixture": false,
+    "original_ABI": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
