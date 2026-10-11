@@ -275,3 +275,179 @@ the two listener slots. Still open, in order:
 4. Credits enter 0052EE30, tactical library enter 00511F40 / update 005162B0, the free camera
    (0053DD90, 00540390; the camera conventions are in docs/CC13_CAMERA_CONTROLLERS.md, only cc9's
    hud_movie_camera.cpp is off-limits).
+## Session browser join path, rows and layout (cc13-menus5, 2026-10-11)
+
+Reconstructed and build-tested in `src/menu_screens_2.cpp` (none ran in `bsp_game`; the multiplayer
+session layer is reconstructed only, not wired). Call sites are in `reports/cc13_menu_screens_2.json`.
+
+| Address | Name (hypothesis) | ABI | Evidence |
+|---|---|---|---|
+| 0057A9C0 | JoinSession | `__thiscall(screen, record, arg)`, RET 8; arg never read | asm 0057A9C0..0057AC09; EDI = 2 from 0057AA92 is both the network mode and the SetPage argument at 0057ABEC |
+| 0057AC10 | FinishJoin | `__thiscall(screen)`, RET | asm; the tree clear is the inlined `_Tidy` loop (0057AE10..0057AE2C: 11 bytes at 0057AE23 Ghidra left undisassembled because `_free` is marked no-return; bytes `83 C4 04 80 7E 11 00 8B EE 74 E2`) |
+| 00574100 | BSP_SessionRecord_IsJoinable | `__thiscall(record)`, SEH 00C6F1B9 | decompile + asm: the two 00574050 calls take ECX = game+650h (the profile, "RANK" 00CEF15C) |
+| 00568490 | BSP_SessionRecord_HasRequiredContent | `__thiscall(record)` | decompile (two mask subsets) |
+| 00568CE0 | BSP_SessionSearchResult_CopyConstruct | `__thiscall(dst, src)`, RET 4 | decompile; vtable 00CEED04 |
+| 00A39B80 | BSP_NetworkClient_Connect | `__thiscall(client)` | string "cNetworkClient::Connect() --> XSessionCreate"; pSessionInfo = client+8A4h |
+| 007701F0 | BSP_Session_SelectListedServer | `__thiscall(game+1EF0h, index)`, RET 4 | decompile; provisional |
+| 006878D0 | BSP_InterfaceManager_RequestCount | `__thiscall(mgr)` | decompile (vector +5Ch size) |
+| 00576D20 | UpdateSelectedRow (was BuildRowsDefault) | `__thiscall(screen)`, SEH 00C6F43B | asm 00576D20..0057763D |
+| 005789C0 | BuildRows | `__thiscall(screen, sort key)`, RET 4, SEH 00C6F5C0 | asm 005789C0..00579972 |
+| 0056A870 | BSP_SessionRecord_LessBySortKey | `__thiscall(key*, a, b)`, RET 8 | decompile (jump table) |
+| 00576BE0 | RecordPassesFilters | `__thiscall(screen, record)`, RET 4 | decompile + x87 asm 00576CD2..00576D17 |
+| 00578320 | BSP_SessionBrowserRow_SetConnectionIcons | `__fastcall(group, value)`, SEH 00C6F4A8 | asm; JG at 0057837E hides the icon |
+| 0056BDA0 | BindLayout | `__thiscall(screen)`, slot +14h of 00CEF134 | asm; 17 listener calls (screen+0Ch, 0) |
+
+Findings:
+
+- The 3Ch-byte block JoinSession writes at `*(game+207Ch)+96Ch` is the client's `XSESSION_INFO`
+  (client = +C8h, so +8A4h, the pointer 00A39B80 hands to `XSessionCreate`): session id +96Ch, XNADDR
+  +974h..+997h (REP MOVSD of 9 dwords), key exchange key +998h..+9A7h. The source object (00568CE0)
+  keeps them at +04h, +1Ch and +0Ch.
+- Record layout additions (0A0h bytes): +08h wide session name (`std::wstring`, buffer +0Ch, capacity
+  +20h), +24h open slots (> 0), +28h players, +2Ch max players, +30h (filter byte +17h, upper bound
+  screen+24Ch), +34h (sort key 4), +38h connection value (ping icons), +48h/+49h rank range, +4Ch 14
+  lobby option indices (+54h = game mode, kind 2), +88h/+8Ch required content masks, +90h/+94h ratio.
+- `screen+278h` is a `std::set` of record keys (record+00h) already tried; FinishJoin inserts before
+  joining and clears it when no candidate is left. The poll 0057B530 clears the same set through
+  0056A090 (the host hook `clear_search_list_0056a090`).
+- 00576D20 is not a row builder: with exactly one client result it replaces the stored record with the
+  same session id (insert before + erase, leaving the 0A0h temporary from `operator new` unfreed in
+  the listing) and rewrites only row +26Ch; otherwise it greys that row (0.5, 0.5, 0.5, 1).
+- Row colours: joinable (249/255, 219/255, 0.6, 1) from 00CEF16C/00CEF168/00CE3D30; locked
+  (1, 0, 0, 1) static 00E19498.
+- Sort: `+2B0h` key, reverse flags 00E1947C[key] toggled when the same key is chosen again, header
+  icons +2B4h/+2B8h/+2BCh/+2C0h for keys 0/1/5/4 get state 3 (reversed) or 2 through widget +88h.
+- BuildRows reads the list's selected-row name and `_stricmp`s it per row, but the result is discarded
+  (00579817..00579835); only the +26Ch row name picks the new +26Ch.
+- BindLayout widget map: +2Ch filters page, +28h browser page, +EC menu_line_Group, +34h
+  Settings_Listbox, +128h servers_fix_Group, +38h servers_FrameBox, +4Ch noserver_Text, +84h
+  servers_Clipbox, +30h servers_Listbox, +E8h listbox1_Group (row template), +88h slider_pos_Group,
+  +118h slider_Group, +78h slider_FrameBox, +7Ch ScrollUp_Icon, +80h ScrollDown_Icon, +90h back_Icon
+  height, +8Ch clip height, +120h settings_Group, +40h settings_FrameBox, +48h setting_Clipbox, +124h
+  setting_template_Group, +A4h rank_Icon, +94h setting_Text, +98h setting_var_Text, +D0h
+  game_mode_var_Text, +A0h map_Icon, +9Ch tilt_Icon, +B8h/+B0h/+B4h settings scroll frame/down/up,
+  +114h filters_Group, +44h setting_Clipbox, +FCh textbox_Group, +100h moving_Group, +F4h/+F8h filter
+  row templates, +BCh/+A8h/+ACh filter scroll frame/down/up, +3Ch New_FrameBox. Scrollers: +1E4h
+  (content +30h), +188h (content +124h), +12Ch (content +100h).
+
+Uncertainty: the record fields +30h, +34h, +90h/+94h and the registry +B8h/+BCh have no semantic
+anchor; 007701F0's server list is unexamined beyond the copy; the x87 ratio in 00576BE0 is modelled
+in double (the original keeps an 80-bit intermediate); `std::sort` stands in for the introsort
+00574A50, which agrees except for the order of equal keys.
+
+## Credits Enter (cc13-menus5)
+
+`credits_enter_0052ee30` (slot +18h of vtable 00CED200, `__thiscall(screen)`, frame 89Ch, SEH
+00C6BD92), reconstructed and build-tested; evidence is the listing 0052EE30..0052F90D, read whole.
+
+- Music: creates the manager's +54h stream when it is null (operator new 54h, 00A877D0 with a copy of
+  manager+48h), stops +50h, starts +54h with the string at 00E18E64 and fades it in; then
+  00AA33A0(1) on the GUI manager, title `FE.main_credits`, command bar (A3h, `globals.back`, 2).
+- Item rows (24h bytes, 0052D9C0): +00h Type (default 1), +04h Text, +0Ch Color (default white),
+  +1Ch Offset, +20h Align (default 2). Types: 0 category clone (+10h), 1 person clone (+14h), 2 the
+  `<Text>_Icon` child of +1Ch cloned, 3 blank line (height 1/36), 4 vertical gap (y += Offset, height
+  -0.0 - RowSpace), 5 indent +48h = Offset, 6 same line (+48h = previous width + indent, y = row y).
+- Person texts containing `%` are widened and passed as a format to vswprintf (0052D1E0) with 2122h;
+  this installation's Credits.lua uses it twice, in `"WBIE LOGO, WB SHIELD: %c & (c) Warner Bros.
+  Entertainment Inc."`, so `%c` becomes the TRADE MARK SIGN.
+- Placement: x by Align from the +18h frame (00AA6750 origin, 00AA6740 size): left + indent, right
+  (origin + width - item width - indent), centre (origin + width/2 - item width/2); other Align
+  values leave x at 0.05 (00CE7638). Position (x + Offset, y, -100). Text width = widget+114h / 960.
+  Row step y += RowSpace + height. Screen +40h is StartY and +44h RowSpace (the constructor's 0.5
+  and 1/72 are defaults that Register overrides from Credits.lua, not re-read here).
+- After the loop +38h = y (the update's scroll limit), frame +18h vtable +70h, +20h = 0.
+
+Uncertainty: 004C5E60's narrow-to-wide rule was not traced (modelled as byte zero-extension); the
+`%` formatter models only `%c` and `%%`; +18h is named "frame" by use only (Register binds
+`clipbox_Clipbox` and `moving_Group`; which lands at +18h was not checked).
+
+## Tactical library Enter (cc13-menus5)
+
+`tactical_library_enter_00511f40` (slot +18h of vtable 00CEB9B4, `__thiscall(screen)`, 11488 bytes,
+SEH 00C6A616), reconstructed and build-tested. Ghidra decompiles it but warns "unable to track
+spacebase fully" and drops ten blocks as unreachable, and most widget calls lose their ECX; the
+reconstruction follows the listing (`m5_dis.py` 00511F40..00514BD6), using the pseudocode only for the
+order of the per-kind calls and the five-triple command-bar argument lists, whose string pushes were
+matched in the listing.
+
+- Kinds (+94h) from jump table 00514BD8: 0 personal achievements (template +4F4h), 1 power-ups
+  (+4F8h), 2 units and weapons (+4ECh), 3 movies (+4F0h), 4 naval academy (+500h), 5 order of battle
+  (+4ECh), 6 unlocks (+4ECh, help line only, no frame title), 7 none, 8 nose art (+504h). Each case sets
+  `FE.taclib_<kind>_title` through 00518D60 (ECX = -1, EDX = 0, title slot 0), `FE.taclib_<kind>_help`
+  through 0054A0C0, runs its list builder and rebuilds the command bar.
+- A pending entry (+9Ch non-null, +A0h != 2, kind != 7) switches to kind 6 with 0050E3C0 when +A4h is
+  set, else kind 5 with 0050EF80. Kind 4 first runs `luaLoadControlFunctionNames()` (0 = success; the
+  two Hungarian diagnostics say "executed / could not execute ... in GIAchievements") and marks the
+  academy records (vector +404h, 6Ch bytes, byte +44h): all when there is no entry, otherwise only the
+  entry's ids (*(entry+8Ch) vector, index lookup 004FAAC0); +3C0h becomes the last marked record's
+  +40h and is handed to 00511BF0.
+- Carousel: three clones of the kind's template at +508h/+50Ch/+510h, scales (0.5, 0.5), (1, 1),
+  (0.5, 0.5) through widget +48h, x = centre - 0.46, centre, centre + 0.46 (+43Ch = 0.46 from
+  00CEBE7C, +440h = the centre clone's local x); per-panel lookups pic_BG_Icon (+580h stride 0Ch),
+  icon_big_BG_Icon (+57Ch), icon_big_BG2_Icon (+584h, non-recursive), keret_Framebox (+5A0h..), and per
+  kind lock_Icon (0), video_Movie plus a pic_BG_Icon clone (4), pic_Hide_Icon (3).
+- The data list per kind for 0050D900(list, screen+444h): 0 +3D4h, 1 +3E4h, 2/5/6 +3F4h, 3 +3C4h, 4
+  +404h, 8 +414h. Kind 8 then runs 004FC8C0, kind 6 004FBE90(1). +5B4h = -1 on every exit.
+
+Uncertainty: the list builders (005012F0, 00500E90, 00500860, 00500450, 005010C0, 00506660, 005001A0,
+00500640) are named from their single call sites only; 00502480 (HDR_, ReflectionCubeMap) is the 3D
+preview setup shared with the front-end preview and Register; 00B33AC0 (ECX = *(00F8D394), arg 1) is
+unexamined. The Update 005162B0 was decompiled but not reconstructed (register-dependent loop bodies,
+`unaff_ESI`/`unaff_EDI`, x87 row placement); see the handoff.
+
+## HUD free camera Enter and Update (cc13-menus5)
+
+`free_camera_enter_0053dd90` and `free_camera_update_00540390` (vtable 00CEDCA8 slots +18h and +20h),
+reconstructed and build-tested; read from the listings 0053DD90..0053DF3B and 00540390..00540AE7 (every
+x87 sequence and register argument checked there). They reuse `unit_step_towards_0042ac60`
+(`unit_motion.hpp`) and `wrapped_angle_add_00438aa0` (`unit_rudder.hpp`); 0042D2E0 is the existing
+`extract_camera_matrix_angles_0042d2e0` (outputs X, Y, Z = EDX, then the two stack pointers).
+
+- Enter: mover +24h created once (operator new 900, memset, 00432750; 00923870(mover, 0, game+19CCh,
+  identity); 00694A60 with EDX = screen+8). Source pose: the saved matrix 00E192B0 once when byte
+  00E192A9 is set (cleared), otherwise `*(game+19FCh)+F0h` after 00B6DB70 when that node's +5Ch bit 1 is
+  clear. 004134F0 copies it into mover+74h; angles to +54h/+58h/+5Ch; mover +C8h/+10Ch cleared and
+  0042ED50 run on its child chain (+48h, next +44h); 004BC410 installs it; +38h..+48h = 0.
+- Update (RET 4): returns unless +04h and +24h. Axes from the input owner (004BEC00()+4): forward
+  +1164h x 200, strafe +1194h x 100, vertical +11C4h x 100, yaw +11F4h x 1.7453 (100 deg), pitch +1224h
+  x 1.7453, roll +1344h x 0.7854 (45 deg). Each of the first five drives a smoothed field (+38h, +3Ch,
+  +40h, +44h, +48h): opposite sign -> 0, smaller magnitude -> taken, larger -> 0042AC60 by
+  dt x scale x +34h. Velocity = +38h x row2 (+ECh) + +3Ch x row0 (+CCh) + +40h x row1 (+DCh) of the
+  mover world matrix; mover+A4h += dt x velocity. Angles re-read from mover+74h; control +1260h steps
+  X toward 0, control +1290h steps X, Y, Z toward 0 (pi/2 per s); otherwise X += +48h x dt (wrapped,
+  clamped to +-1.5533 = 89 deg), Y += +44h x dt, Z += raw roll x dt. 00467050(X, Y, Z) on mover+74h.
+  Action 61h (004C43C0) calls 0053D230 with the world translation (it forwards it to the object at
+  00E188D8: vtable +5Ch(6), then +118h(position)). Then 0042ED50, 004329D0(dt), +64h = +20h and the
+  burst container 0053F2D0(dt, mover+CCh) at +64h. With no player units (game+1970h == 0) it calls
+  the printf-style debug sink 004C7070(game, 750.0, 10.0, "NO MORE PLAYER UNITS") every update.
+
+Uncertainty: the axis roles are named from the motion they drive (pitch is the clamped X angle); the
+vectors are summed in float as stored by the original but the x87 products carry extended precision
+before each store (a double-rounding difference is possible in rare cases); 0053D230's target object
+(00E188D8) and the burst container are not examined.
+
+## Handoff (cc13-menus5, 2026-10-11)
+
+Commits on agent/cc13-menus5: 849e54ee8 (browser join, rows, layout), fc41dd662 (credits Enter),
+b9d599c39 (tactical library Enter) and the free-camera commit after them; menus4's e2779b1d4 was merged
+first. 9 functions newly reconstructed and build-tested here plus 5 helper reconstructions (00568490,
+00574100, 0056A870, 00576BE0, 00578320), 30 names, 613 call rows, 0 failed; none ran in `bsp_game`.
+Helper scripts in the worktree's `local/` with the `m5_` prefix: `m5_dc.py` (uncapped, noise-filtered
+live decompile), `m5_bind.py` (one line per find/load/vcall from an `m5_dis.py` listing),
+`m5_rows.py` (adds host_steps rows for direct calls), `m5_names*.py`.
+
+Open, in order of value:
+
+1. Tactical library Update 005162B0 (4048 bytes): decompiles, but the order-of-battle (kind 5, vector
+   +460h, 2Ch records) and unlocks (kind 6, vector +470h) row loops lose ESI/EDI and position rows with
+   x87 through 00AA8240; read the listing. Kind 3 stops a playing movie on action 4Bh and restarts the
+   menu stream 00E18D78; kind 7 runs 00514FB0 on 4Bh; +5B4h counts down and then launches the selected mission (BSP_MainMenu_PlaySelectedMission, game+6ACh/+6B0h = the list selection).
+2. Session browser RefreshRowDetails 00577650 (3280 bytes; map name from registry +34h via
+   FE.unknown_mapname, the settings rows 00569FF0, `_atol` over a 00E198AC+5Ch+24h list) and the
+   uncalled 00579980 (row-builder sibling); PrepareEnter 00570300, selection changed 005787E0,
+   0056D660 (filter value refresh, ERROR!), 0056B610.
+3. Credits Register 0052FFC0 (Credits.lua, StartY/RowSpace/Speed, which of clipbox_Clipbox and
+   moving_Group lands at +18h/+1Ch) and ReadItemStyle's `Align` read, which the pseudocode shows
+   writing through a null pointer (check the listing).
+4. HUD screens from menus4's list: formation Enter/Exit/Update (0053A4D0, 00536800, 0053A8E0), frame
+   stats Register 0053C740, menu-prompt Exit 00530970.

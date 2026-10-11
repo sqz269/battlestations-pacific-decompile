@@ -2,6 +2,11 @@
 // Evidence: docs/CC13_MENU_SCREENS_2.md.
 
 #include "bsp/menu_screens_2.hpp"
+#include "bsp/unit_motion.hpp"
+#include "bsp/unit_rudder.hpp"
+
+#include <algorithm>
+#include <cmath>
 
 namespace bsp {
 
@@ -802,6 +807,570 @@ bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& vi
     return true;
 }
 
+namespace {
+
+// 00436630 BSP_NativeString_ConstructFromWideLowBytes: keeps the low byte of each UTF-16 unit.
+std::string narrow_low_bytes(const std::wstring& text) {
+    std::string out;
+    out.reserve(text.size());
+    for (const wchar_t c : text) out.push_back(static_cast<char>(c & 0xFF));
+    return out;
+}
+
+// 00425850 BSP_NativeString_EqualsCStringInsensitive delegates to the CRT _stricmp (C locale).
+bool equals_ascii_insensitive(const std::string& a, const std::string& b) noexcept {
+    if (a.size() != b.size()) return false;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        const auto lower = [](char c) { return (c >= 'A' && c <= 'Z') ? static_cast<char>(c - 'A' + 'a') : c; };
+        if (lower(a[i]) != lower(b[i])) return false;
+    }
+    return true;
+}
+
+}  // namespace
+
+// 00568490, __thiscall(record), RET. Every bit the record requires must be set in the game's
+// two mask words.
+bool session_record_content_allowed_00568490(const SessionJoinRecord& record, SessionJoinHost& host) {
+    return (host.content_mask_728() & record.required_mask_88) == record.required_mask_88
+        && (host.content_mask_72c() & record.required_mask_8c) == record.required_mask_8c;
+}
+
+// 00574100, __thiscall(record), RET; SEH frame 00C6F1B9 (the temporary narrow name). ESI = record.
+bool session_record_joinable_00574100(const SessionJoinRecord& record, SessionJoinHost& host) {
+    // 00574117..0057417C: a session named after the selected user's own name is refused.
+    if (host.has_selected_user()
+        && equals_ascii_insensitive(narrow_low_bytes(record.name_08), host.selected_username())) {
+        return false;
+    }
+    // 005741C1..00574213: a free slot, the content masks, and the profile rank inside [+48h, +49h].
+    if (!(record.players_28 < record.max_players_2c)) return false;  // JNC on the unsigned compare
+    if (record.open_slots_24 <= 0) return false;                     // JLE
+    if (!session_record_content_allowed_00568490(record, host)) return false;
+    if (host.profile_rank_00574050() < record.rank_min_48) return false;
+    return host.profile_rank_00574050() <= record.rank_max_49;      // the rank is read twice
+}
+
+SessionInfoBlock session_info_from_search_result(const SessionSearchResultView& result) {
+    // 0057AAC9..0057AB23 after 00568CE0: object +04h/+08h -> +96Ch/+970h, +0Ch..+18h -> +998h..+9A4h,
+    // +1Ch..+3Fh (REP MOVSD, 9 dwords) -> +974h..+997h.
+    SessionInfoBlock block;
+    block.session_id = result.session_id_04;
+    block.host_address = result.host_address_1c;
+    block.key_exchange_key = result.key_0c;
+    return block;
+}
+
+// 0057A9C0, __thiscall(screen, record, arg), RET 8; SEH frame 00C6F6E1. EBP = record, EDI = 2.
+void session_browser_join_session_0057a9c0(SessionBrowserState& screen, const SessionJoinRecord& record,
+    SessionJoinHost& host) {
+    host.copy_stored_lobby_options_005d49e0(record.lobby_options_4c);       // 0057A9E9, ECX = record+4Ch
+    host.lua_set_global_string("sessionname", narrow_low_bytes(record.name_08));  // 0057A9F1..0057AA77
+    host.session_cancel_8c();                                               // 0057AA7C..0057AA8A
+    if (host.network_mode_1fe4() != kSessionJoinNetworkMode) {              // 0057AA92..0057AAA6
+        host.session_set_mode_0076fad0(kSessionJoinNetworkMode);
+    }
+    if (record.kind_04 == kSessionRecordKindOnline) {                       // 0057AAB1..0057AAB6
+        host.client_session_info_96c() = session_info_from_search_result(record.result);  // 0057AABC..0057AB23
+        host.network_client_connect_00a39b80();                             // 0057AB29, XSessionCreate
+        if (host.client_mode_9c() != kSessionClientModeJoining) {           // 0057AB2E..0057AB47
+            host.set_client_mode_9c(kSessionClientModeJoining);
+        }
+        host.set_page_0057a0f0(2);                                          // 0057AB51..0057AB55
+        screen.join_elapsed = 0.0F;                                         // +284h
+        screen.field_24 = record.key_00;                                    // +24h = *record
+        return;
+    }
+    host.select_listed_server_007701f0(record.kind_04);                     // 0057AB70..0057AB7A, MOVSX
+    const std::int32_t mode = host.client_mode_9c();
+    if (mode == kSessionClientModeJoined || mode == kSessionClientModeJoining || host.search_flag_e08700()) {
+        host.set_page_0057a0f0(2);                                          // 0057ABE8..0057ABED (EDI = 2)
+        return;
+    }
+    host.session_set_mode_0076fad0(0);                                      // 0057ABA4..0057ABDC
+    host.pop_request_interface_006881f0();
+    host.push_request_interface_logged_00688ad0(kRequestJoinFailed);
+    host.error_screen_show_005d2e70(kErrorScreenJoinFailed);
+    screen.page = 0;                                                        // +28Ch
+}
+
+// 0057AC10, __thiscall(screen), RET; EBX = screen, EDI = the result index, [ESP+10h] its byte
+// offset. The tried set at +278h is std::set<std::uint32_t> (find 0056B850, insert 00571FD0,
+// subtree erase 0056A090); the clear at 0057ADF3..0057AE43 is the inlined _Tidy loop.
+void session_browser_finish_join_0057ac10(SessionBrowserState& screen, SessionJoinState& join,
+    SessionJoinHost& host) {
+    if (screen.join_cancel_requested) {                                     // 0057AC1F..0057AC4E
+        screen.join_cancel_requested = false;
+        host.session_cancel_8c();
+        host.session_set_mode_0076fad0(0);
+        host.pop_request_interface_006881f0();
+    }
+    // 0057AC61..0057AD37: the client's +94h vector is fetched afresh for every index.
+    for (std::size_t i = 0; i < host.client_results_94().size(); ++i) {
+        const SessionJoinRecord& record = host.client_results_94()[i];
+        auto& tried = join.tried_keys_278;
+        const auto at = std::lower_bound(tried.begin(), tried.end(), record.key_00);
+        if (at != tried.end() && *at == record.key_00) continue;            // 0057AD12..0057AD19, find != end
+        if (!session_record_joinable_00574100(record, host)) continue;      // 0057AD1B..0057AD24
+        host.set_join_retry_timer_e08760(kSessionJoinRetryTimerReset);      // 0057AD3E..0057AD56
+        tried.insert(at, record.key_00);                                    // 0057AD62, 00571FD0
+        session_browser_join_session_0057a9c0(screen, record, host);        // 0057AD67..0057AD6C, arg 0
+        return;
+    }
+    host.set_join_retry_timer_e08760(kSessionJoinRetryTimerReset);          // 0057AD79..0057AD87
+    if (host.request_count_006878d0() > 0) host.pop_request_interface_006881f0();  // 0057AD8F..0057AD9E
+    host.set_global_e19610(1);                                              // 0057ADAB
+    host.push_request_interface_logged_00688ad0(kRequestNoSessionFound);    // 0057ADA9..0057ADB5
+    host.set_game_byte_2059(host.client_byte_4d());                         // 0057ADBA..0057ADD1
+    screen.page = 0;                                                        // +28Ch
+    screen.poll_timer = kSessionBrowserPollSeconds;                         // +270h = 00CEECEC (2.5)
+    screen.field_274 = -1;
+    join.tried_keys_278.clear();                                            // 0057ADF3..0057AE43
+}
+
+// 00576D20, __thiscall(screen), SEH frame 00C6F43B; ESI = screen, EBP = screen+2A0h until
+// 00576F5C, then the mode_Text widget. The Connection_Group lookup's result is discarded on
+// both paths.
+void session_browser_update_selected_row_00576d20(SessionRowState& screen, SessionRowHost& host) {
+    const bool listing = host.network_mode_1fe4() != 0 && !screen.records_2a0.empty();  // 00576D3E..00576D84
+    if (listing) {
+        if (screen.selected_row_26c == 0) return;                           // 00576D8A -> 0057763D
+        if (host.client_results_94().size() == 1) {                         // 00576D97..00576DCB
+            const SessionJoinRecord result = host.client_results_94()[0];   // 00576DD1..00576DE5, 00566370(0)
+            // 00576DF5..00576E65: the first record whose search result has the same session id
+            // (result +04h/+08h) is replaced by a fresh 0A0h copy (00571E50 + 00571EA0, insert
+            // 00574BA0 before it, erase 00573220 after it). No match leaves the vector alone.
+            for (auto& record : screen.records_2a0) {
+                if (record.result.session_id_04 == result.result.session_id_04) {
+                    record = result;
+                    break;
+                }
+            }
+            const std::uintptr_t row = screen.selected_row_26c;
+            const std::uintptr_t server = host.find_child_00aa7e00(row, "server_Text");    // 00576EE1
+            const std::uintptr_t mode = host.find_child_00aa7e00(row, "mode_Text");        // 00576F33
+            const std::uintptr_t players = host.find_child_00aa7e00(row, "players_Text");  // 00576F81
+            host.find_child_00aa7e00(row, "Connection_Group");                             // 00576FD0
+            host.text_set_00abaed0(server, narrow_low_bytes(result.name_08));              // 0057701B..0057704A
+            host.text_set_ellipsized_00abb000(mode,                                        // 00577072..005770C2
+                host.lobby_option_text(kLobbyOptionGameMode, result.lobby_options_4c[2]), -1.0F);
+            host.text_set_00abaed0(players,                                                // 005770EA..00577145
+                std::to_string(result.players_28) + "/" + std::to_string(result.max_players_2c));
+            // 005771D8..00577204: the inlined 00568490 test on the result.
+            const bool allowed = (host.content_mask_728() & result.required_mask_88) == result.required_mask_88
+                && (host.content_mask_72c() & result.required_mask_8c) == result.required_mask_8c;
+            const GuiColour& colour = allowed ? kSessionRowJoinable : kSessionRowLocked;  // 0057720A / 005772F4
+            host.widget_set_colour_50(server, colour);
+            host.widget_set_colour_50(mode, colour);
+            host.widget_set_colour_50(players, colour);
+            return;
+        }
+    }
+    // 005773D6..0057763D: no row, or exactly one client result, returns; otherwise the row greys.
+    if (screen.selected_row_26c == 0) return;
+    if (host.client_results_94().size() == 1) return;
+    const std::uintptr_t row = screen.selected_row_26c;
+    const std::uintptr_t server = host.find_child_00aa7e00(row, "server_Text");
+    const std::uintptr_t mode = host.find_child_00aa7e00(row, "mode_Text");
+    const std::uintptr_t players = host.find_child_00aa7e00(row, "players_Text");
+    host.find_child_00aa7e00(row, "Connection_Group");
+    host.widget_set_colour_50(server, kSessionRowIdle);
+    host.widget_set_colour_50(mode, kSessionRowIdle);
+    host.widget_set_colour_50(players, kSessionRowIdle);
+}
+
+// 0056BDA0, __thiscall(screen), RET; ESI = screen, EDI = screen+0Ch for the listener calls
+// (17 calls of 00AA6BC0, each (screen+0Ch, 0)). Every lookup passes the recursive flag 1.
+void session_browser_bind_layout_0056bda0(SessionBrowserLayout& layout, SessionBrowserLayoutHost& host) {
+    auto& w = layout.widgets;
+    w.clear();
+    const auto bind = [&](std::uint16_t parent, std::string_view name, std::uint16_t offset) {
+        const std::uintptr_t widget = host.find_child_00aa7e00(layout.at(parent), name);
+        w.emplace_back(offset, widget);
+        return widget;
+    };
+    const auto bind_listened = [&](std::uint16_t parent, std::string_view name, std::uint16_t offset) {
+        host.set_listener_00aa6bc0(bind(parent, name, offset));
+    };
+    w.emplace_back(0x2C, host.load_page_00aa5840("FE_serverbrowser_filters"));  // 0056BDC2..0056BE11
+    bind(0x2C, "cucc_Group", kBindLocalCucc);                                  // 0056BE3A..0056BE84
+    host.widget_show_34(layout.at(0x2C), false);                              // 0056BEA9..0056BEB2
+    bind(kBindLocalCucc, "menu_line_Group", 0xEC);                             // 0056BED9
+    bind(kBindLocalCucc, "Settings_Listbox", 0x34);                            // 0056BF4B
+    w.emplace_back(0x28, host.load_page_00aa5840("FE_serverbrowser"));          // 0056BFBA..0056BFDF
+    host.widget_show_34(layout.at(0x28), false);                              // 0056C013
+    bind(0x28, "servers_fix_Group", 0x128);                                    // 0056C03A
+    bind(0x128, "servers_FrameBox", 0x38);
+    bind(0x128, "noserver_Text", 0x4C);
+    bind(0x128, "realation_server_Icon", 0x2B4);                               // sort headers, keys 0, 1, 5, 4
+    bind(0x128, "realation_mode_Icon", 0x2B8);
+    bind(0x128, "realation_player_Icon", 0x2BC);
+    bind(0x128, "realation_connect_Icon", 0x2C0);
+    for (const std::uint16_t icon : std::array<std::uint16_t, 4>{0x2B4, 0x2B8, 0x2BC, 0x2C0}) {             // 0056C346..0056C378
+        host.set_listener_00aa6bc0(layout.at(icon));
+    }
+    bind(0x28, "servers_Clipbox", 0x84);                                       // 0056C3A2
+    const std::uintptr_t list = bind(0x84, "servers_Listbox", 0x30);           // 0056C416
+    host.list_configure_00a9ceb0(list, kSessionListRowSpan, 0);                // 0056C463..0056C471
+    host.list_set_pads_128(list, kSessionListPad128, 0.0F, kSessionListPad130, 0.0F);  // 0056C476..0056C4A7
+    host.list_set_byte_149(list, false);                                       // 0056C4BA
+    host.widget_show_34(bind(0x30, "listbox1_Group", 0xE8), false);            // 0056C4DD..0056C537, row template
+    bind(0x28, "slider_pos_Group", 0x88);                                      // 0056C55E
+    bind(0x88, "slider_Group", 0x118);
+    bind_listened(0x118, "slider_FrameBox", 0x78);                             // 0056C647..0056C69A
+    layout.slider_back_height_90 =                                             // 0056C6C4..0056C6FE
+        host.group_height_00aa6740(host.find_child_00aa7e00(layout.at(0x118), "back_Icon"));
+    // 0056C748..0056C8EF: ScrollUp_Icon / ScrollDown_Icon are searched inside a fresh
+    // slider_pos_Group lookup each time.
+    bind(0x28, "slider_pos_Group", kBindLocalSliderPos);
+    bind_listened(kBindLocalSliderPos, "ScrollUp_Icon", 0x7C);
+    bind(0x28, "slider_pos_Group", kBindLocalSliderPos);
+    w.emplace_back(0x80, host.find_child_00aa7e00(w.back().second, "ScrollDown_Icon"));
+    host.set_listener_00aa6bc0(layout.at(0x80));
+    host.scroller_attach_content_00683790(0x1E4, list);                        // 0056C8F4..0056C900
+    layout.clip_height_8c = host.group_height_00aa6740(layout.at(0x84));      // 0056C905..0056C919
+    // 0056C91F..0056C94F: extent = +90h - height(+78h) (x87, stored to float before the call).
+    host.scroller_attach_scroll_bar_00683380(0x1E4, layout.at(0x78),
+        static_cast<float>(static_cast<double>(layout.slider_back_height_90) - host.group_height_00aa6740(layout.at(0x78))),
+        layout.at(0x7C), layout.at(0x80));
+    bind(0x28, "settings_Group", 0x120);                                       // 0056C979
+    bind_listened(0x120, "settings_FrameBox", 0x40);
+    bind(0x120, "setting_Clipbox", 0x48);
+    bind(0x48, "setting_template_Group", 0x124);
+    bind(0x124, "rank_Icon", 0xA4);
+    bind(0x124, "setting_Text", 0x94);
+    bind(0x124, "setting_var_Text", 0x98);
+    bind(0x120, "game_mode_var_Text", 0xD0);
+    bind(0x120, "map_Icon", 0xA0);
+    bind(0x120, "tilt_Icon", 0x9C);
+    for (const std::uint16_t hidden : std::array<std::uint16_t, 3>{0xA4, 0x94, 0x98}) host.widget_show_34(layout.at(hidden), false);  // 0056CDFD..0056CE19
+    bind_listened(0x120, "slider_FrameBox", 0xB8);                             // 0056CE63
+    bind_listened(0x120, "scroll_down2_Icon", 0xB0);
+    bind_listened(0x120, "scroll_up2_Icon", 0xB4);
+    host.scroller_attach_content_00683790(0x188, layout.at(0x124));            // 0056CFA7..0056CFB6
+    {  // 0056CFBD..0056D053: back height first, then the frame's.
+        const float back = host.group_height_00aa6740(host.find_child_00aa7e00(layout.at(0x120), "scroll_back2_Icon"));
+        const float frame = host.group_height_00aa6740(layout.at(0xB8));
+        host.scroller_attach_scroll_bar_00683380(0x188, layout.at(0xB8), back - frame, layout.at(0xB4), layout.at(0xB0));
+    }
+    host.set_listener_00aa6bc0(layout.at(0x120));                              // 0056D07B..0056D086
+    bind(0x28, "filters_Group", 0x114);                                        // 0056D0D0
+    bind(0x114, "setting_Clipbox", 0x44);
+    bind(0x44, "textbox_Group", 0xFC);
+    bind(0x44, "moving_Group", 0x100);
+    host.widget_show_34(bind(0xFC, "setting_template_Group", 0xF4), false);
+    host.widget_show_34(bind(0xFC, "setting_template_next_line_Group", 0xF8), false);
+    bind_listened(0x114, "scroll_slider2_FrameBox", 0xBC);                     // 0056D3A7
+    bind_listened(0x114, "scroll_down2_Icon", 0xA8);
+    bind_listened(0x114, "scroll_up2_Icon", 0xAC);
+    host.scroller_attach_content_00683790(0x12C, layout.at(0x100));            // 0056D4EB..0056D4FA
+    {  // 0056D547..0056D597
+        const float back = host.group_height_00aa6740(host.find_child_00aa7e00(layout.at(0x114), "scroll_back2_Icon"));
+        const float frame = host.group_height_00aa6740(layout.at(0xBC));
+        host.scroller_attach_scroll_bar_00683380(0x12C, layout.at(0xBC), back - frame, layout.at(0xAC), layout.at(0xA8));
+    }
+    host.set_listener_00aa6bc0(layout.at(0x114));                              // 0056D5BF..0056D5CA
+    bind_listened(0x114, "New_FrameBox", 0x3C);                                // 0056D617..0056D647
+}
+
+namespace {
+
+// _wcsicmp in the C locale: ASCII letters fold, every other unit compares by value.
+int wcsicmp_c_locale(const std::wstring& a, const std::wstring& b) noexcept {
+    const auto lower = [](wchar_t c) { return (c >= L'A' && c <= L'Z') ? static_cast<wchar_t>(c - L'A' + L'a') : c; };
+    const std::size_t n = std::min(a.size(), b.size());
+    for (std::size_t i = 0; i < n; ++i) {
+        const wchar_t x = lower(a[i]);
+        const wchar_t y = lower(b[i]);
+        if (x != y) return x < y ? -1 : 1;
+    }
+    return a.size() == b.size() ? 0 : (a.size() < b.size() ? -1 : 1);
+}
+
+}  // namespace
+
+// 0056A870, __thiscall(ECX = the key functor, a, b), RET 8; a jump table on *ECX.
+bool session_record_less_0056a870(SessionSortKey key, const SessionJoinRecord& a, const SessionJoinRecord& b) {
+    switch (key) {
+    case SessionSortKey::Name: return wcsicmp_c_locale(a.name_08, b.name_08) < 0;
+    case SessionSortKey::GameMode: return a.lobby_options_4c[2] < b.lobby_options_4c[2];  // +54h, unsigned
+    case SessionSortKey::MaxPlayers: return b.max_players_2c < a.max_players_2c;
+    case SessionSortKey::FreeSlots: return b.max_players_2c - b.players_28 < a.max_players_2c - a.players_28;
+    case SessionSortKey::Field34: return b.field_34 < a.field_34;
+    case SessionSortKey::Fullness:
+        return b.max_players_2c * 16U + b.players_28 < a.max_players_2c * 16U + a.players_28;
+    default: return false;
+    }
+}
+
+// 00576BE0, __thiscall(screen, record), RET 4. ESI = record.
+bool session_record_passes_filters_00576be0(const SessionBrowserState& filters, const SessionRowState& screen,
+    const SessionJoinRecord& record, SessionRowHost& host) {
+    const auto& applied = filters.filter_bytes;  // +10h..+18h
+    const std::int32_t mode = static_cast<std::int32_t>(record.lobby_options_4c[2]);  // +54h
+    const std::int32_t wanted = host.game_type_filter_e086c0();
+    bool type_matches = false;
+    switch (mode) {
+    case 5: if (!applied[2]) return false; type_matches = wanted == 5; break;
+    case 6: if (!applied[4]) return false; type_matches = wanted == 6; break;
+    case 7: if (!applied[3]) return false; type_matches = wanted == 7; break;
+    case 4: if (!applied[1]) return false; type_matches = wanted == 4; break;
+    default:
+        if (mode > 3) return false;                       // signed: negative modes join 0..3
+        if (!applied[0]) return false;
+        type_matches = wanted < 4;                        // signed, so -1 passes here too
+        break;
+    }
+    if (!type_matches && wanted != -1) return false;
+    // 00576C7A..: the three count filters (unsigned compares).
+    if (applied[5] && record.max_players_2c < screen.applied_counts_244[0]) return false;
+    if (applied[6] && record.max_players_2c - record.players_28 < screen.applied_counts_244[1]) return false;
+    if (applied[7] && screen.applied_counts_244[2] < record.field_30) return false;
+    // 00576CB0..00576D17: x87 ratio +94h / +90h (each unsigned, the 2^32 fix-up at 00CE3978),
+    // compared with registry+BCh; JA rejects. Double stands in for the 80-bit intermediate.
+    if (applied[8] && host.ratio_minimum_b8() < record.ratio_den_90) {
+        const double ratio = static_cast<double>(record.ratio_num_94) / static_cast<double>(record.ratio_den_90);
+        if (ratio > static_cast<double>(host.ratio_maximum_bc())) return false;
+    }
+    return true;
+}
+
+// 00578320, __fastcall(ECX = group, EDX = connection value), RET; SEH frame 00C6F4A8. EDI = group,
+// EBP walks the name table 00E08738..00E0874C (ping_1_Icon..ping_5_Icon, 00CEF1EC..00CEF21C).
+void session_row_set_connection_icons_00578320(std::uintptr_t group, std::int32_t connection,
+    SessionRowHost& host) {
+    static constexpr std::array<std::string_view, 5> kIcons{
+        "ping_1_Icon", "ping_2_Icon", "ping_3_Icon", "ping_4_Icon", "ping_5_Icon"};
+    std::int32_t shown = 0;                                          // [ESP+14h]
+    for (std::size_t i = 0; i < kIcons.size(); ++i) {               // 00578364..00578498
+        const bool show = !(host.ping_threshold_90(i) > connection);  // CMP [thr], value; JG hides
+        host.widget_show_34(host.find_child_00aa7e00(group, kIcons[i]), show);
+        if (show) ++shown;
+    }
+    // 0057849E..005784B5: fewer than two bars -> state 2, fewer than four -> 1, else 0.
+    const std::int32_t state = shown < 2 ? 2 : (shown < 4 ? 1 : 0);
+    for (const std::string_view icon : kIcons) {                     // 005784BA..0057855D
+        host.widget_set_state_88(host.find_child_00aa7e00(group, icon), state, 0, 1.0F);
+    }
+}
+
+// 005789C0, __thiscall(screen, sort key), RET 4; EDI/[ESP+10h] = screen. The name the row +26Ch
+// showed before the rebuild picks the new +26Ch; the list's selected-row name is also read and
+// compared (00579817..0057982D) but the result is discarded.
+void session_browser_build_rows_005789c0(const SessionBrowserState& filters, SessionRowState& screen,
+    SessionSortReverseFlags& reverse, std::int32_t sort_key, SessionRowHost& host) {
+    if (host.widget_byte_85(screen.filter_panel_2c)) return;            // 005789DE..005789ED
+    if (sort_key != static_cast<std::int32_t>(SessionSortKey::KeepCurrent)) {  // 005789FB..00578A1E
+        if (screen.sort_key_2b0 == sort_key) {
+            reverse[static_cast<std::size_t>(sort_key)] = !reverse[static_cast<std::size_t>(sort_key)];
+        } else {
+            screen.sort_key_2b0 = sort_key;
+        }
+    }
+    for (const std::uintptr_t icon : screen.sort_icons_2b4) host.widget_set_state_88(icon, 0, 0, 1.0F);  // 00578A24..00578A8A
+    // 00578A8C..00578B33: the active key's header shows 3 when reversed, else 2; keys 2 and 3
+    // have no header.
+    static constexpr std::array<std::pair<std::int32_t, std::size_t>, 4> kHeaders{{{0, 0}, {1, 1}, {5, 2}, {4, 3}}};
+    for (const auto& [key, icon] : kHeaders) {
+        if (screen.sort_key_2b0 != key) continue;
+        host.widget_set_state_88(screen.sort_icons_2b4[icon], reverse[static_cast<std::size_t>(key)] ? 3 : 2, 0, 1.0F);
+        break;
+    }
+    std::string previous_row_name;                                       // [ESP+24h]
+    if (screen.selected_row_26c != 0) {                                 // 00578B64..00578BFD
+        previous_row_name = host.widget_text_f4(host.find_child_00aa7e00(screen.selected_row_26c, "server_Text"));
+    }
+    std::string list_selection_name;                                     // [ESP+2Ch]
+    if (const std::uintptr_t row = host.list_selected_row_00425e50(screen.session_list_30); row != 0) {
+        list_selection_name = host.widget_text_f4(host.find_child_00aa7e00(row, "server_Text"));
+    }
+    host.list_set_listener_00a9ac40(screen.session_list_30, false);     // 00578C93..00578CA0
+    host.list_clear_rows_00a9bec0(screen.session_list_30);
+    if (sort_key == static_cast<std::int32_t>(SessionSortKey::KeepCurrent)) {  // 00578CA5..00578DBC
+        screen.results_290 = host.client_results_94();                   // clear 00573C90, push 00575150, copy 00571EA0
+    }
+    screen.records_2a0.clear();                                          // 00578DC1..00578DFA, 00573490
+    for (const SessionJoinRecord& record : screen.results_290) {        // 00578E20..00578E81
+        if (session_record_passes_filters_00576be0(filters, screen, record, host)) screen.records_2a0.push_back(record);
+    }
+    // 00578E83..00578ECB: std::sort (introsort 00574A50, insertion 005738C0, threshold 32) with
+    // the key functor; ties keep no particular order, so std::sort stands in for it.
+    const auto key = static_cast<SessionSortKey>(screen.sort_key_2b0);
+    std::sort(screen.records_2a0.begin(), screen.records_2a0.end(),
+        [key](const SessionJoinRecord& a, const SessionJoinRecord& b) { return session_record_less_0056a870(key, a, b); });
+    if (reverse[static_cast<std::size_t>(screen.sort_key_2b0)]) {       // 00578ED0..00578FA5, swaps 005725A0
+        std::reverse(screen.records_2a0.begin(), screen.records_2a0.end());
+    }
+    screen.selected_row_26c = 0;                                         // 00578FB0
+    for (const SessionJoinRecord& record : screen.records_2a0) {        // 00578FBC..00579865
+        const std::uintptr_t row = host.clone_subtree_00aab4c0(screen.row_template_e8, 0);  // 0057900F..00579024
+        host.widget_set_floats_30(row, -0.008333334F, 0.0F);            // +30h = 00CEF228, +34h = 0
+        const std::uintptr_t server = host.find_child_00aa7e00(row, "server_Text");
+        const std::uintptr_t mode = host.find_child_00aa7e00(row, "mode_Text");
+        const std::uintptr_t players = host.find_child_00aa7e00(row, "players_Text");
+        const std::uintptr_t connection = host.find_child_00aa7e00(row, "Connection_Group");
+        const std::string name = narrow_low_bytes(record.name_08);
+        host.text_set_00abaed0(server, name);                            // 0057921A..00579278
+        host.text_set_ellipsized_00abb000(mode,                          // 005792A4..0057933E
+            host.lobby_option_text(kLobbyOptionGameMode, record.lobby_options_4c[2]), -1.0F);
+        host.text_set_00abaed0(players,                                  // 00579370..00579400
+            std::to_string(record.players_28) + "/" + std::to_string(record.max_players_2c));
+        session_row_set_connection_icons_00578320(connection, record.connection_38, host);  // 005794A8..005794B2
+        const bool allowed = (host.content_mask_728() & record.required_mask_88) == record.required_mask_88
+            && (host.content_mask_72c() & record.required_mask_8c) == record.required_mask_8c;
+        const GuiColour& colour = allowed ? kSessionRowJoinable : kSessionRowLocked;  // 005794B7..005796D2
+        host.widget_set_colour_50(server, colour);
+        host.widget_set_colour_50(mode, colour);
+        host.widget_set_colour_50(players, colour);
+        host.list_append_row_00a9d750(screen.session_list_30, row);      // 005796D4..005796E0
+        host.widget_set_byte_77(row, false);                             // 005796E5
+        // 005796E9..005797B1: equal lengths and _stricmp == 0 (two empty names match).
+        if (previous_row_name.size() == name.size() && equals_ascii_insensitive(previous_row_name, name)) {
+            screen.selected_row_26c = row;
+        }
+        (void)list_selection_name;                                       // 005797B7..00579835, result unused
+    }
+    host.widget_virtual_80(screen.session_list_30, 1);                   // 0057986A..00579877
+    host.list_set_listener_00a9ac40(screen.session_list_30, true);       // 00579879..00579880
+    host.widget_focus_60(screen.session_list_30, host.widget_byte_85(screen.session_list_30));  // 00579885..0057989C
+    host.refresh_row_details_00577650();                                 // 0057989E..005798A0
+    const std::int32_t rows = host.list_row_count_104(screen.session_list_30);
+    const float row_height = rows != 0                                   // 005798A5..005798C4
+        ? host.group_height_00aa6740(host.list_row_at_00a9be00(screen.session_list_30, 0)) : 0.0F;
+    host.scroller_attach_content_00683790(0);                            // 005798C7..005798D6
+    // 005798DB..00579904: FILD count, FMUL height, FSUB +8Ch, rounded to float through a store.
+    host.scroller_set_scroll_range_006834a0(static_cast<float>(static_cast<double>(rows) * row_height
+        - screen.viewport_height_8c));
+}
+
+namespace {
+
+// 004C5E60 widens byte by byte (provisional: the byte-to-unit rule was not traced), then
+// 0052D1E0 = vswprintf(buffer, text, 0x2122). Only the directives this installation's
+// Credits.lua uses are modelled: %c takes the argument, %% emits '%'; any other directive is
+// copied unchanged.
+std::wstring credits_format_percent(const std::string& text) {
+    std::wstring out;
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        const wchar_t c = static_cast<wchar_t>(static_cast<unsigned char>(text[i]));
+        if (c == L'%' && i + 1 < text.size() && (text[i + 1] == 'c' || text[i + 1] == 'C')) {
+            out.push_back(kCreditsPercentArgument);
+            ++i;
+        } else if (c == L'%' && i + 1 < text.size() && text[i + 1] == '%') {
+            out.push_back(L'%');
+            ++i;
+        } else {
+            out.push_back(c);
+        }
+    }
+    return out;
+}
+
+}  // namespace
+
+// 0052EE30, __thiscall(screen), RET; EDI = screen, EBP = the item index, ESI = screen+4Ch,
+// [ESP+1Ch] the item byte offset. Locals: x [ESP+28h], y [ESP+30h], width [ESP+38h], next
+// indent [ESP+40h], row y [ESP+44h], height [ESP+14h], text-clone flag [ESP+13h], image [ESP+20h].
+void credits_enter_0052ee30(CreditsLayoutState& screen, CreditsEnterHost& host) {
+    if (!host.stream54_exists()) host.stream54_construct_00a877d0();    // 0052EE51..0052EECE
+    host.stream50_request_stop_00a86f40();                               // 0052EED6..0052EEDF
+    host.stream54_start_00a867b0(host.stream_name_e18e64());             // 0052EEE4..0052EF41
+    host.stream54_request_fade_in_00a85c20();                            // 0052EF6C..0052EF75
+    host.gui_pause_movie_pages_00aa33a0(1);                              // 0052EF7A..0052EF83
+    host.set_frame_title_005189b0("FE.main_credits");                    // 0052EF88..0052EFCA
+    host.rebuild_command_bar_0054b530(back_only_command_bar());          // 0052EFF5..0052F14B
+    host.widget_set_local_y_00aa78f0(screen.moving_group_1c, 0.0F);      // 0052F211..0052F21A
+    screen.scroll_y_34 = 0.0F;                                           // 0052F229
+    screen.indent_48 = 0.0F;                                             // 0052F22E
+    float y = screen.start_y_40;
+    float width = 0.0F;
+    float next_indent = 0.0F;
+    float row_y = 0.0F;
+    float x = 0.0F;
+    for (const CreditsItem& item : screen.items_4c) {                    // 0052F252..0052F8D6
+        bool text_clone = false;
+        std::uintptr_t image = 0;
+        std::uintptr_t clone = 0;
+        float height = 0.0F;
+        bool placed = false;
+        switch (item.type) {                                             // jump table 0052F910
+        case CreditsItemType::Category:                                  // 0052F2CB
+            clone = host.clone_subtree_00aab4c0(screen.category_template_10, screen.moving_group_1c);
+            host.text_set_00abaed0(clone, item.text);
+            text_clone = true;
+            placed = clone != 0;
+            break;
+        case CreditsItemType::Person:                                    // 0052F326..0052F47B
+            clone = host.clone_subtree_00aab4c0(screen.person_template_14, screen.moving_group_1c);
+            if (!item.text.empty() && item.text.find('%') != std::string::npos) {
+                host.text_set_utf16_00ab6ab0(clone, credits_format_percent(item.text));
+            } else {
+                host.text_set_00abaed0(clone, item.text);
+            }
+            text_clone = true;
+            placed = clone != 0;
+            break;
+        case CreditsItemType::Image:                                     // 0052F480..0052F54D
+            // 0052F4D8..0052F4EE: the clone's parent argument (+1Ch) is pushed before the lookup.
+            image = host.clone_subtree_00aab4c0(
+                host.find_child_00aa7e00(screen.moving_group_1c, item.text + "_Icon"), screen.moving_group_1c);
+            placed = image != 0;
+            break;
+        case CreditsItemType::BlankLine: height = kCreditsBlankLineHeight; break;  // 0052F5D2
+        case CreditsItemType::VerticalGap:                                // 0052F5E5..0052F630
+            height = -0.0F - screen.row_space_44;
+            y = y + item.offset;
+            break;
+        case CreditsItemType::SetIndent: screen.indent_48 = item.offset; break;    // 0052F635..0052F668
+        case CreditsItemType::SameLine:                                   // 0052F66D..0052F684
+            screen.indent_48 = next_indent;
+            y = row_y;
+            break;
+        default: break;                                                   // JA 0052F89B
+        }
+        if (placed) {
+            x = kCreditsStaleX;                                          // 0052F558..0052F560
+            const std::uintptr_t widget = text_clone ? clone : image;
+            host.widget_show_34(widget, true);                           // 0052F566..0052F575 / 0052F689..0052F692
+            host.widget_set_colour_50(widget, item.colour);
+            if (text_clone) {                                            // 0052F5B2..0052F5C9
+                width = static_cast<float>(host.text_pixel_width_114(widget) / kCreditsTextPixels);
+                height = host.text_normalized_height_00ab6bd0(widget);
+            } else {                                                     // 0052F6D5..0052F6F6
+                const auto size = host.group_size_00aa6740(widget);
+                width = size[0];
+                height = size[1];
+            }
+            // 0052F725..0052F7B6: x87, each result rounded to float at 0052F7B6.
+            switch (item.align) {
+            case 0: x = static_cast<float>(static_cast<double>(host.group_origin_x_00aa6750(screen.frame_18)) + screen.indent_48); break;
+            case 1: {
+                const double left = host.group_origin_x_00aa6750(screen.frame_18);
+                x = static_cast<float>(host.group_size_00aa6740(screen.frame_18)[0] + left - width - screen.indent_48);
+                break;
+            }
+            case 2: {
+                const double left = host.group_origin_x_00aa6750(screen.frame_18);
+                x = static_cast<float>(host.group_size_00aa6740(screen.frame_18)[0] * 0.5 + left - width * 0.5);
+                break;
+            }
+            default: break;
+            }
+            // 0052F7C4..0052F885: position (x + Offset, y, -100).
+            host.set_resolved_position_00aa8240(widget, {static_cast<float>(item.offset + static_cast<double>(x)), y,
+                kCreditsItemDepth});
+            screen.widgets_24.push_back(widget);                         // 0052F88F..0052F896, 0052ED20
+        }
+        // 0052F89B..0052F8D2: next indent, row y and the row step (x87, stored to float).
+        next_indent = static_cast<float>(static_cast<double>(width) + screen.indent_48);
+        row_y = static_cast<float>(static_cast<double>(y) - screen.row_space_44);
+        y = static_cast<float>(static_cast<double>(y) + screen.row_space_44 + height);
+    }
+    screen.content_height_38 = y;                                         // 0052F8DB..0052F8E4
+    host.widget_virtual_70(screen.frame_18);                              // 0052F8E1..0052F8EE
+    screen.speed_offset_20 = 0.0F;                                        // 0052F8F0..0052F8FA
+}
+
 // 0052E150, EDI = screen, EBP = index.
 void credits_exit_0052e150(std::vector<std::uintptr_t>& items, CreditsExitHost& host) {
     host.stream54_request_stop_00a86f40();                           // 0052E172..0052E175
@@ -1061,6 +1630,375 @@ void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, Tacti
         return;
     }
     tactical_library_leave_00515bc0(screen, host);                   // 00515FEF
+}
+
+// 0053DD90, __thiscall(screen), RET; ESI = screen, EBX = 0.
+void free_camera_enter_0053dd90(FreeCameraState& screen, FreeCameraHost& host) {
+    if (screen.mover_24 == 0) {                                          // 0053DDAE..0053DE80
+        screen.mover_24 = host.create_mover_00432750();
+        FreeCameraMatrix identity{};
+        identity[0] = identity[5] = identity[10] = identity[15] = 1.0F;  // 0053DE03..0053DE5D
+        host.mover_place_00923870(screen.mover_24, 0, identity);
+        host.observer_register_pair_00694a60(screen.mover_24);
+    }
+    // 0053DE85..0053DEC0: a pose saved by an earlier screen wins once, else the player camera.
+    const FreeCameraMatrix source = host.take_saved_pose_e192a9() ? host.saved_pose_e192b0()
+                                                                  : host.player_camera_world_19fc();
+    host.mover_set_matrix_74_004134f0(screen.mover_24, source);
+    screen.angles_54 = host.mover_angles_0042d2e0(screen.mover_24);      // 0053DEC5..0053DED6
+    host.mover_invalidate_pose_tree(screen.mover_24);                    // 0053DEDB..0053DEFD
+    host.game_set_camera_mover_004bc410(screen.mover_24);                // 0053DEFF..0053DF09
+    screen.speed_forward_38 = 0.0F;                                      // 0053DF0E..0053DF2A
+    screen.speed_strafe_3c = 0.0F;
+    screen.speed_vertical_40 = 0.0F;
+    screen.rate_yaw_44 = 0.0F;
+    screen.rate_pitch_48 = 0.0F;
+}
+
+namespace {
+
+// One smoothed channel (00540472..005404FE and four copies): opposite signs stop at once, a smaller
+// magnitude is taken at once, a larger one is approached by dt * scale * +34h per update. The
+// product and both magnitudes are compared in x87 after float stores; the step is rounded to float
+// before the call.
+void free_camera_smooth(float& value, float target, double scale, float seconds, float acceleration) {
+    if (value * target < 0.0F) {                                         // FCOMIP; JB
+        value = 0.0F;
+        return;
+    }
+    if (std::fabs(target) <= std::fabs(value)) {                         // AND 7FFFFFFFh; FCOMIP; JBE
+        value = target;
+        return;
+    }
+    const float step = static_cast<float>(static_cast<double>(seconds) * scale * acceleration);
+    value = unit_step_towards_0042ac60(value, target, step);
+}
+
+}  // namespace
+
+// 00540390, __thiscall(screen, float seconds), RET 4; ESI = screen. Locals: [ESP+18h] forward
+// input, later angle Y; [ESP+14h] strafe input, later angle Z; [ESP+10h] vertical input, later
+// angle X; [ESP+20h]/[ESP+24h] yaw/pitch inputs; [ESP+2Ch] roll input.
+void free_camera_update_00540390(FreeCameraState& screen, float seconds, FreeCameraHost& host) {
+    if (!screen.active_04 || screen.mover_24 == 0) return;              // 00540398..005403A7
+    if (!host.game_has_player_units_1970()) {                            // 005403AD..005403D7
+        host.show_message_004c7070(kFreeCameraNoUnitsMessageA, kFreeCameraNoUnitsMessageB, kFreeCameraNoUnitsText);
+    }
+    // 005403DF..0054046E: each axis times its double scale, stored to float.
+    const float forward = static_cast<float>(host.input_axis(FreeCameraAxis::Forward) * kFreeCameraForwardScale);
+    const float strafe = static_cast<float>(host.input_axis(FreeCameraAxis::Strafe) * kFreeCameraStrafeScale);
+    const float vertical = static_cast<float>(host.input_axis(FreeCameraAxis::Vertical) * kFreeCameraStrafeScale);
+    const float yaw = static_cast<float>(host.input_axis(FreeCameraAxis::Yaw) * kFreeCameraTurnScale);
+    const float pitch = static_cast<float>(host.input_axis(FreeCameraAxis::Pitch) * kFreeCameraTurnScale);
+    const float roll = static_cast<float>(host.input_axis(FreeCameraAxis::Roll) * kFreeCameraRollScale);
+    free_camera_smooth(screen.speed_forward_38, forward, kFreeCameraForwardScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.speed_strafe_3c, strafe, kFreeCameraStrafeScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.speed_vertical_40, vertical, kFreeCameraStrafeScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.rate_yaw_44, yaw, kFreeCameraTurnScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.rate_pitch_48, pitch, kFreeCameraTurnScale, seconds, screen.acceleration_34);
+    // 00540748..005408B4: velocity = forward * row2 + strafe * row0 + vertical * row1 of the
+    // mover's world matrix (+ECh, +CCh, +DCh), every product and sum stored to float; then
+    // position += dt * velocity.
+    const auto rows = host.mover_world_rows_cc(screen.mover_24);
+    std::array<float, 3> velocity{};
+    for (std::size_t i = 0; i < 3; ++i) {
+        const float up = screen.speed_vertical_40 * rows[3 + i];
+        const float side = screen.speed_strafe_3c * rows[i];
+        const float ahead = screen.speed_forward_38 * rows[6 + i];
+        const float sum = ahead + side;
+        velocity[i] = sum + up;
+    }
+    auto& position = host.mover_position_a4(screen.mover_24);
+    for (std::size_t i = 0; i < 3; ++i) position[i] = position[i] + seconds * velocity[i];
+    std::array<float, 3> angles = host.mover_angles_0042d2e0(screen.mover_24);  // 005408B7..005408C7
+    float& angle_x = angles[0];
+    float& angle_y = angles[1];
+    float& angle_z = angles[2];
+    // 005408CC..00540991: the two reset controls step the angles toward 0 at pi/2 per second.
+    bool resetting = false;
+    if (host.input_control_active(kFreeCameraResetPitchControl)) {
+        angle_x = unit_step_towards_0042ac60(angle_x, 0.0F, static_cast<float>(seconds * kFreeCameraResetRate));
+        resetting = true;
+    }
+    if (host.input_control_active(kFreeCameraResetAllControl)) {
+        const float step = static_cast<float>(seconds * kFreeCameraResetRate);
+        angle_x = unit_step_towards_0042ac60(angle_x, 0.0F, step);
+        angle_y = unit_step_towards_0042ac60(angle_y, 0.0F, step);
+        angle_z = unit_step_towards_0042ac60(angle_z, 0.0F, step);
+    } else if (!resetting) {                                             // 00540996..00540A3C
+        angle_x = wrapped_angle_add_00438aa0(angle_x, screen.rate_pitch_48 * seconds);
+        if (angle_x > kFreeCameraPitchLimit) {                           // FCOMIP; JBE skips
+            angle_x = kFreeCameraPitchLimit;
+        } else if (-kFreeCameraPitchLimit > angle_x) {                   // COMISS; JBE skips
+            angle_x = -kFreeCameraPitchLimit;
+        }
+        angle_y = wrapped_angle_add_00438aa0(angle_y, screen.rate_yaw_44 * seconds);
+        angle_z = wrapped_angle_add_00438aa0(angle_z, roll * seconds);   // the raw roll input, unsmoothed
+    }
+    host.mover_set_rotation_00467050(screen.mover_24, angle_x, angle_y, angle_z);  // 00540A40..00540A60
+    if (host.action_pressed_004c43c0(kFreeCameraMarkAction)) {           // 00540A65..00540A92
+        host.mark_position_0053d230(host.mover_world_translation_fc(screen.mover_24));
+    }
+    host.mover_invalidate_subtree_0042ed50(screen.mover_24);             // 00540A97..00540A9A
+    host.mover_apply_shake_and_publish_004329d0(screen.mover_24, seconds);  // 00540A9F..00540AAA
+    screen.burst_64 = screen.field_20;                                   // 00540AAF..00540AB8
+    host.burst_update_0053f2d0(seconds);                                 // 00540ABA..00540ADB
+}
+
+namespace {
+
+using TlKind = TacticalLibraryKind;
+using CommandBar = std::array<MainMenuCommandArgument, 5>;
+
+// The four-plus-back bars of the kind pages (decompiled argument lists, string pushes confirmed in
+// the listing).
+constexpr CommandBar kTlBarScrollNavigate{{{0, "", 1}, {0xB2, "globals.scroll_menu", 0},
+    {0xB3, "globals.navigate", 1}, {0xA3, "globals.back", 2}, {0, "", 1}}};
+
+}  // namespace
+
+// 00511F40, __thiscall(screen), RET; ESI = screen, EBX = 5 until 00512547, [ESP+24h] the panel
+// template the kind picks. Sections: 00511F65..005125D4 common setup, jump table 00514BD8 on +94h
+// (0..8, above 8 -> 00513808), 0051380C..005145E2 the three-panel carousel, 005145E2..00514BD6 the
+// list selection and frame layout.
+void tactical_library_enter_00511f40(TacticalLibraryEnterState& screen, TacticalLibraryEnterHost& host) {
+    host.singleton_f8d394_00b33ac0(1);                                   // 00511F6D..00511F75
+    host.reset_004f8fa0();                                               // 00511F7A..00511F7C
+    screen.show_side_arrows_560 = true;                                  // 00511F87
+    screen.selected_value_3c0 = 0;                                       // 00511F8E
+    for (const std::uintptr_t widget : screen.hidden_128) host.widget_show_34(widget, false);  // +12Ch, +128h, +130h
+    if (screen.kind_94 == TlKind::NavalAcademy) {                        // 00511FB8..00511FED
+        host.diagnostic_004254b0(host.lua_run_string_006b8ad0(kTacticalLibraryControlNamesLua)
+            ? "luaLoadControlFunctionNames() lua parancs vegrehajtva a a GIAchievements-ben."
+            : "Nem sikerult vegrehajtani a luaLoadControlFunctionNames() lua parancsot a GIAchievements-ben.");
+    }
+    // 00511FF5..00512041: an entry to open switches to kind 6 (+A4h set) or 5.
+    if (screen.kind_94 != TlKind::None && screen.entry_arg_a0 != 2 && screen.entry_9c != 0) {
+        if (screen.entry_unlocks_a4) {
+            screen.kind_94 = TlKind::Unlocks;
+            host.open_entry_unlocks_0050e3c0(screen.entry_9c, screen.entry_arg_a0);
+        } else {
+            screen.kind_94 = TlKind::OrderOfBattle;
+            host.open_entry_order_of_battle_0050ef80(screen.entry_9c, screen.entry_arg_a0);
+        }
+    }
+    host.widget_show_34(screen.list_bc, false);                          // 00512046..00512060
+    host.widget_show_34(screen.list_c0, false);
+    screen.list_b8 = screen.kind_94 == TlKind::OrderOfBattle ? screen.list_bc : screen.list_c0;  // 00512062..0051207E
+    screen.item_group_ac = host.find_child_00aa7e00(screen.list_b8, "Item_Group", true);        // 00512084..005120D0
+    host.widget_show_34(screen.item_group_ac, false);
+    screen.main_text_b0 = host.find_child_00aa7e00(screen.list_frame_c4, "MainListbox_Text", true);  // 0051210F..0051215D
+    host.widget_show_34(screen.main_text_b0, false);
+    if (screen.kind_94 != TlKind::None) {                                // 00512197..005121D9
+        host.list_set_pads_12c(screen.list_b8, 0.0F,
+            screen.kind_94 == TlKind::OrderOfBattle ? kTacticalLibraryListPad130Oob : kTacticalLibraryListPad130,
+            kTacticalLibraryListPad134);
+    }
+    host.list_clear_rows_00a9bec0(screen.list_b8);                       // 005121E1..005121F9
+    host.widget_virtual_60(screen.list_b8, 1);
+    screen.item_group_ac = host.find_child_00aa7e00(screen.list_b8, "Item_Group", true);  // 005121FD..0051224B
+    host.list_set_listener_00a9ac40(screen.list_b8);                     // 00512277..00512281
+    host.widget_virtual_60(screen.list_b8, 1);
+    host.list_select_index_00a9c7c0(screen.list_b8, 0);                  // 00512295..0051229C
+    host.widget_virtual_80(screen.list_b8, 1);
+    host.widget_show_34(screen.list_frame_c4, false);                    // 005122B3..005122D1
+    host.widget_set_byte_77(screen.list_frame_c4, true);
+    host.widget_set_byte_77(screen.list_b8, false);
+    host.widget_show_34(screen.list_b8, true);                           // 005122D5..005122E2
+    if (screen.kind_94 == TlKind::OrderOfBattle) {                       // 005122E4..005122F5
+        host.show_order_of_battle_page_004fff20();
+    } else if (screen.kind_94 != TlKind::None) {                         // 005122FA..005123A2
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.select", 0}, {0, "", 1}, {0, "", 1}, {0, "", 1},
+            {0xA3, "globals.back", 2}}});
+    }
+    for (const std::uintptr_t widget : screen.templates_4ec) host.widget_show_34(widget, false);  // 00512468..005124C0
+    for (std::size_t i = 0; i < kTacticalLibraryRowPairs; ++i) {         // 005124C2..00512543
+        screen.rows_1d8[i] = host.clone_subtree_00aab4c0(screen.row_template_56c, 0);
+        screen.rows_278[i] = host.clone_subtree_00aab4c0(screen.row_template_570, 0);
+        host.widget_show_34(screen.rows_1d8[i], false);
+        host.widget_show_34(screen.rows_278[i], false);
+        host.widget_set_dword_e0(screen.rows_1d8[i], 1);
+        host.widget_set_dword_e0(screen.rows_278[i], 1);
+        host.set_listener_00aa6bc0(screen.rows_1d8[i], true);
+        host.set_listener_00aa6bc0(screen.rows_278[i], true);
+    }
+    host.widget_show_34(host.find_child_00aa7e00(screen.info_parent_4dc, "INFO_box_Group", true), true);  // 00512545..005125A0
+
+    std::uintptr_t panel_template = 0;                                   // [ESP+24h]
+    const auto& t = screen.templates_4ec;                                // +4ECh, +4F0h, +4F4h, +4F8h, +500h, +504h
+    switch (screen.kind_94) {
+    case TlKind::PersonalAchievements:                                   // 00512853
+        host.prepare_achievements_00509de0();
+        panel_template = t[2];
+        host.frame_select_00518d60("FE.taclib_personalachievements_title");
+        host.set_help_line_0054a0c0("FE.taclib_personalachievements_help");
+        host.build_achievements_list_005012f0();
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    case TlKind::PowerUps:                                               // 00512F1F
+        panel_template = t[3];
+        host.frame_select_00518d60("FE.taclib_powerups_title");
+        host.set_help_line_0054a0c0("FE.taclib_powerups_help");
+        host.build_power_up_list_00500e90();
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    case TlKind::UnitsWeapons:                                           // 0051316A
+        panel_template = t[0];
+        host.frame_select_00518d60("FE.taclib_unitsweapons_title");
+        host.set_help_line_0054a0c0("FE.taclib_unitsweapons_help");
+        host.build_units_weapons_list_00500860();
+        host.preview_setup_00502480();
+        host.rebuild_command_bar_0054b530({{{0, "", 0}, {0xA7, "globals.3dview", 1}, {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1}, {0xA3, "globals.back", 2}}});
+        break;
+    case TlKind::Movies:                                                 // 005125E1
+        host.prepare_movies_004fac50();
+        panel_template = t[1];
+        host.frame_select_00518d60("FE.taclib_movies_title");
+        host.set_help_line_0054a0c0("FE.taclib_movies_help");
+        host.build_movie_list_00500450();
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.playmovie", 0}, {0, "", 1}, {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1}, {0xA3, "globals.back", 2}}});
+        break;
+    case TlKind::NavalAcademy: {                                         // 00512ABA
+        panel_template = t[4];
+        host.frame_select_00518d60("FE.taclib_navalacademy_title");
+        host.set_help_line_0054a0c0("FE.taclib_navalacademy_help");
+        const std::size_t count = host.academy_record_count();
+        if (screen.entry_9c == 0) {                                      // 00512B79 -> 00512EAD
+            for (std::size_t i = 0; i < count; ++i) host.academy_set_marked_44(i, true);
+        } else {                                                         // 00512B85..00512C85
+            for (std::size_t i = 0; i < count; ++i) host.academy_set_marked_44(i, false);
+            std::uint32_t last = 0;
+            for (const std::uint32_t id : host.entry_ids_8c(screen.entry_9c)) {
+                const std::size_t index = host.academy_find_004faac0(id);
+                host.academy_set_marked_44(index, true);
+                last = host.academy_value_40(index);
+            }
+            screen.selected_value_3c0 = last;
+        }
+        host.build_academy_list_005010c0();                              // 00512C8D..00512C8F
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    }
+    case TlKind::OrderOfBattle:                                          // 005133CE
+        panel_template = t[0];
+        screen.show_side_arrows_560 = false;
+        host.frame_select_00518d60("FE.taclib_orderofbattle_title");
+        host.set_help_line_0054a0c0("FE.taclib_orderofbattle_help");
+        host.build_order_of_battle_list_00506660();
+        host.vehicle_class_registry_004356f0();
+        host.preview_setup_00502480();
+        host.show_order_of_battle_page_004fff20();
+        break;
+    case TlKind::Unlocks:                                                // 005134BA, no frame title
+        host.prepare_unlocks_005021e0();
+        panel_template = t[0];
+        screen.show_side_arrows_560 = false;
+        host.set_help_line_0054a0c0("FE.taclib_unlocks_help");
+        host.build_unlocks_list_005001a0();
+        host.preview_setup_00502480();
+        host.show_unlocks_page_004ffd00();
+        break;
+    case TlKind::NoseArt:                                                // 00513547
+        panel_template = t[5];
+        host.frame_select_00518d60("FE.taclib_noseart_title");
+        host.set_help_line_0054a0c0("FE.taclib_noseart_help");
+        host.build_nose_art_list_00500640();
+        host.widget_show_34(host.find_child_00aa7e00(screen.info_parent_4dc, "INFO_box_Group", true), false);
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.select", 0}, {0, "", 1}, {0xB3, "globals.navigate", 1},
+            {0, "", 1}, {0xA3, "globals.cancel", 2}}});
+        break;
+    case TlKind::None:                                                   // 00513801
+        screen.show_side_arrows_560 = false;
+        break;
+    default: break;                                                      // 00513808
+    }
+    if (!screen.show_side_arrows_560) {                                  // 0051380C..00513847
+        for (const std::uintptr_t arrow : screen.arrows_574) {
+            host.widget_show_34(arrow, false);
+            host.set_listener_00aa6bc0(arrow, false);
+        }
+    }
+    if (panel_template != 0) {                                           // 0051384C..005145DF
+        for (std::uintptr_t& panel : screen.panels_508) panel = host.clone_subtree_00aab4c0(panel_template, 0);
+        for (const std::uintptr_t panel : screen.panels_508) host.widget_show_34(panel, true);
+        host.widget_set_scale_48(screen.panels_508[0], kTacticalLibrarySidePanelScale, kTacticalLibrarySidePanelScale);
+        host.widget_set_scale_48(screen.panels_508[1], 1.0F, 1.0F);
+        host.widget_set_scale_48(screen.panels_508[2], kTacticalLibrarySidePanelScale, kTacticalLibrarySidePanelScale);
+        screen.panel_spacing_43c = kTacticalLibraryPanelSpacing;         // 00513921..00513957
+        screen.centre_x_440 = host.widget_local_x_00aa67f0(screen.panels_508[1]);
+        host.widget_set_local_x_00aa78d0(screen.panels_508[0],           // x87, rounded through a float store
+            static_cast<float>(static_cast<double>(screen.centre_x_440) - screen.panel_spacing_43c));
+        host.widget_set_local_x_00aa78d0(screen.panels_508[1], screen.centre_x_440);
+        host.widget_set_local_x_00aa78d0(screen.panels_508[2],
+            static_cast<float>(static_cast<double>(screen.centre_x_440) + screen.panel_spacing_43c));
+        for (std::size_t i = 0; i < 3; ++i) {                            // 005139A7..00513DD2
+            screen.pic_bg_580[i] = host.find_child_00aa7e00(screen.panels_508[i], "pic_BG_Icon", true);
+        }
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.big_bg_57c[i] = host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG_Icon", true);
+        }
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.big_bg2_584[i] = host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG2_Icon", false);
+        }
+        if (host.find_child_00aa7e00(screen.panels_508[0], "keret_Framebox", false) != 0) {  // 00513E28..00514024
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.frames_5a0[i] = host.find_child_00aa7e00(screen.panels_508[i], "keret_Framebox", true);
+                host.widget_show_34(screen.frames_5a0[i], true);
+            }
+        }
+        screen.lock_540 = {};                                             // 0051402E..0051404C
+        screen.hide_54c = {};
+        if (screen.kind_94 == TlKind::PersonalAchievements) {            // 0051407D..0051419B
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.lock_540[i] = host.find_child_00aa7e00(screen.panels_508[i], "lock_Icon", true);
+            }
+        } else if (screen.kind_94 == TlKind::NavalAcademy) {             // 005141F0..005144C6
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.video_51c[i] = host.find_child_00aa7e00(screen.panels_508[i], "video_Movie", true);
+                host.widget_set_byte_f4(screen.video_51c[i], false);
+                screen.video_pic_528[i] = host.clone_subtree_00aab4c0(
+                    host.find_child_00aa7e00(screen.panels_508[i], "pic_BG_Icon", true), 0);
+            }
+        } else if (screen.kind_94 == TlKind::Movies) {                   // 005144DA..005145B1
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.hide_54c[i] = host.find_child_00aa7e00(screen.panels_508[i], "pic_Hide_Icon", true);
+            }
+        }
+    }
+    // 005145E2..00514668: the kind's data list (+3C4h..+414h, 10h apart) into the selection +444h.
+    switch (screen.kind_94) {
+    case TlKind::PersonalAchievements: host.select_list_entry_0050d900(0x3D4); break;
+    case TlKind::PowerUps: host.select_list_entry_0050d900(0x3E4); break;
+    case TlKind::UnitsWeapons:
+    case TlKind::OrderOfBattle:
+    case TlKind::Unlocks: host.select_list_entry_0050d900(0x3F4); break;
+    case TlKind::Movies: host.select_list_entry_0050d900(0x3C4); break;
+    case TlKind::NavalAcademy: host.select_list_entry_0050d900(0x404); break;
+    case TlKind::NoseArt: host.select_list_entry_0050d900(0x414); break;
+    default: break;
+    }
+    host.show_selection_00511bf0(screen.selected_value_3c0);             // 0051466D..0051467D
+    if (screen.kind_94 == TlKind::NoseArt) {                             // 00514682..0051469F
+        host.nose_art_refresh_004fc8c0();
+    } else if (screen.kind_94 == TlKind::Unlocks) {
+        host.unlocks_refresh_004fbe90(1);
+    }
+    // 005146A4..00514BAF: each keret frame takes its own size and sits on its panel's
+    // icon_big_BG_Icon origin, one unit nearer (z + 1.0 from 00D7A210).
+    if (screen.panels_508[0] != 0 && host.find_child_00aa7e00(screen.panels_508[0], "keret_Framebox", false) != 0) {
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.frames_5a0[i] = host.find_child_00aa7e00(screen.panels_508[i], "keret_Framebox", true);
+            host.widget_set_size_58(screen.frames_5a0[i], host.group_size_00aa6740(screen.frames_5a0[i]));
+            const auto origin = host.group_origin_00aa6750(
+                host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG_Icon", false));
+            host.set_resolved_position_00aa8240(screen.frames_5a0[i], {static_cast<float>(origin[0] + 0.0),
+                static_cast<float>(0.0 + origin[1]), static_cast<float>(origin[2] + 1.0)});
+            host.widget_show_34(screen.frames_5a0[i], true);
+        }
+    }
+    screen.field_5b4 = -1.0F;                                            // 00514BB1..00514BC0
 }
 
 }  // namespace bsp
