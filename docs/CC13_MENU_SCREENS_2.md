@@ -112,7 +112,23 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   (0A5h) when signed in; otherwise navigate/refresh/back. The C++ takes the inputs pre-read; the
   original reads them in branch order and asks session +198h only on the selected-session path.
 
+- **0057AF20 HandleGuiEvent** (reconstructed, build-tested): `__thiscall`(screen+0Ch, event), RET 4.
+  Command buttons (event kind 3, command byte at *(event+F0h), default *(00E194B0)): 0A2h applies an
+  open filter edit, opens the filter panel when +50h is set, or joins the selected session; 0A3h
+  cancels an open filter edit or leaves the results (00568CB0); 0A7h refreshes (SetPage 0); 0A5h shows
+  the gamer card when the list is focused and the user signed in. Other widgets: +40h/+3Ch select the
+  toggle pair, the column headers +2B4h/+2B8h/+2BCh/+2C0h rebuild the rows with sort key 0/1/5/4,
+  +BCh/+A8h/+ACh drive the +12Ch scroller (thumb, auto-scroll 2/1 at 0.002), +B8h/+B0h/+B4h the +188h
+  scroller, +78h/+80h/+7Ch the result scroller +1E4h (after 0056AAD0, and they restart the refresh
+  countdown), and with the filter panel open the row arrows `scroll_right_Icon`/`scroll_left_Icon`
+  select their row (00A9C8F0 with event+D8h) and step it up/down. Non-returning paths end by
+  highlighting the widget: kind 6 -> virtual +88h(2, 0, 1.0), kind 12h -> virtual +84h(2).
+
 ## Smaller reconstructions
+
+- **0052E150 Credits exit**: stops the credits stream (*(00E198AC)+54h, 00A86F40), restarts the menu
+  stream (+50h) with the .data name 00E18E64 and fades it in, 00AA33A0(0) on the GUI manager, and
+  deletes and nulls every item of the +28h pointer vector (virtual +4(1)).
 
 - **0052E4B0 Credits update**: the float argument is overwritten with game+21ECh. Back (4Bh) pushes
   interface request (1, 0) on *(00E198AC). 46h/47h step the speed offset +20h by (double)0.1F, 4Ch
@@ -161,7 +177,7 @@ library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model p
 0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
 the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
 
-Call sites: `reports/cc13_menu_screens_2.json`, 177 rows, `tools/verify_report_calls.py`: 0 failed.
+Call sites: `reports/cc13_menu_screens_2.json`, 213 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 

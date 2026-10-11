@@ -459,6 +459,135 @@ void session_browser_filter_value_step_0056efb0(SessionBrowserState& screen, Ses
     filter_value_step(screen, host, true);
 }
 
+namespace {
+
+// The "select toggle 3Ch" block shared by 0057B0E6.. (+3Ch), +BCh, +A8h and +ACh.
+void browser_select_toggle_3c(SessionBrowserState& screen, SessionBrowserHost& host) {
+    screen.toggle_51 = false;
+    host.widget_virtual(BW::Toggle40, kToggle, 0);
+    host.widget_virtual(BW::Toggle3C, kToggle, 1);
+    screen.toggle_50 = true;
+    host.widget_virtual(BW::SessionList30, kFocus, 0);
+}
+
+}  // namespace
+
+// 0057AF20, ESI = screen+0Ch, EDI = event. Paths that end in a tail JMP or RET 4 skip
+// the closing kind test at 0057B24B; the others fall into it.
+void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, SessionBrowserHost& host,
+    SessionBrowserEventHost& event) {
+    if (event.event_kind_5c() == kGuiEventCommandButton) {           // 0057AF26..0057AF34
+        const std::uint8_t command = event.event_command();          // re-read per test in the original
+        if (command == 0xA2) {                                       // 0057AF49
+            if (host.widget_open_38(BW::FilterPanel2C)) {            // 0057AF52..0057AF92
+                host.apply_filter_edit_0057a910();
+                host.widget_virtual(BW::FilterPanel2C, kShow, 0);
+                host.widget_virtual(BW::FilterPanel2C, kFocus, 0);
+                host.widget_virtual(BW::FilterList34, kFocus, 0);
+                return;
+            }
+            if (screen.toggle_50 && !host.widget_open_38(BW::FilterPanel2C)) {  // 0057AF94..0057AFF2
+                host.begin_filter_edit_0056e360();
+                host.widget_virtual(BW::FilterPanel2C, kShow, 1);
+                host.widget_virtual(BW::FilterPanel2C, kFocus, 1);
+                host.widget_virtual(BW::FilterList34, kFocus, 1);
+                host.widget_virtual(BW::EmptyText4C, kShow, 0);
+                host.widget_virtual(BW::SessionList30, kShow, 1);
+                return;
+            }
+            session_browser_join_selected_0057ae50(screen, host);    // 0057AFF4
+            return;
+        }
+        if (command == 0xA3) {                                       // back
+            if (host.widget_open_38(BW::FilterPanel2C)) {
+                host.begin_filter_edit_0056e360();
+                host.widget_virtual(BW::FilterPanel2C, kShow, 0);
+                host.widget_virtual(BW::FilterPanel2C, kFocus, 0);
+                host.widget_virtual(BW::FilterList34, kFocus, 0);
+                return;
+            }
+            host.back_from_results_00568cb0();
+            return;
+        }
+        if (command == 0xA7) {                                       // refresh
+            session_browser_set_page_0057a0f0(screen, 0, host);
+            return;
+        }
+        if (command != 0xA5) return;                                 // 0057B084..0057B096
+        if (!host.widget_byte_85(BW::SessionList30)) return;         // 0057B09C..0057B0A6
+        if (!event.session_signed_in_198()) return;                  // 0057B0AC..0057B0BE
+        const std::uint64_t xuid = host.selected_player_xuid_00568d40();  // 0057B0CD
+        const std::uint32_t user = host.signed_in_user_00a3eac0();   // 0057B0D6
+        host.show_gamer_card_00a4d440(user, xuid);                   // 0057B0DC
+        return;
+    }
+
+    if (event.event_is(0x40)) {                                      // 0057B0E6..0057B13D
+        if (screen.toggle_51 || host.widget_byte_85(BW::FilterPanel2C)) return;
+        host.widget_virtual(BW::Toggle40, kToggle, 1);
+        screen.toggle_50 = false;
+        screen.toggle_51 = true;
+        host.widget_virtual(BW::Toggle3C, kToggle, 0);
+        host.widget_virtual(BW::SessionList30, kFocus, 0);           // tail JMP
+        return;
+    }
+    if (event.event_is(0x3C)) {                                      // 0057B13F..0057B196
+        if (screen.toggle_50 || host.widget_byte_85(BW::FilterPanel2C)) return;
+        browser_select_toggle_3c(screen, host);                      // ends in a tail JMP
+        return;
+    }
+    // 0057B198..0057B1F2: four column headers rebuild the rows with a sort key.
+    if (event.event_is(0x2B4)) { host.build_rows_005789c0(0); return; }
+    if (event.event_is(0x2B8)) { host.build_rows_005789c0(1); return; }
+    if (event.event_is(0x2BC)) { host.build_rows_005789c0(5); return; }
+    if (event.event_is(0x2C0)) { host.build_rows_005789c0(4); return; }
+
+    if (event.event_is(0xBC)) {                                      // 0057B1F4..0057B246
+        if (!screen.toggle_50 && !host.widget_byte_85(BW::FilterPanel2C)) browser_select_toggle_3c(screen, host);
+        event.scroller_begin_thumb_drag_00683a40(0x12C);
+    } else if (event.event_is(0xA8)) {                               // 0057B278..0057B2D8
+        if (!screen.toggle_50 && !host.widget_byte_85(BW::FilterPanel2C)) browser_select_toggle_3c(screen, host);
+        event.scroller_set_auto_scroll_00683300(0x12C, 2, kSessionBrowserAutoScrollStep, 1);
+    } else if (event.event_is(0xAC)) {                               // 0057B2E2..0057B342
+        if (!screen.toggle_50 && !host.widget_byte_85(BW::FilterPanel2C)) browser_select_toggle_3c(screen, host);
+        event.scroller_set_auto_scroll_00683300(0x12C, 1, kSessionBrowserAutoScrollStep, 1);
+    } else if (event.event_is(0xB8)) {                               // 0057B34C..0057B354 -> 0057B246
+        event.scroller_begin_thumb_drag_00683a40(0x188);
+    } else if (event.event_is(0xB0)) {                               // 0057B35F..0057B37B
+        event.scroller_set_auto_scroll_00683300(0x188, 2, kSessionBrowserAutoScrollStep, 1);
+    } else if (event.event_is(0xB4)) {                               // 0057B385..0057B3A1
+        event.scroller_set_auto_scroll_00683300(0x188, 1, kSessionBrowserAutoScrollStep, 1);
+    } else if (event.event_is(0x78) || event.event_is(0x80) || event.event_is(0x7C)) {
+        // 0057B3AB..0057B486: the result-list scroller, which also restarts the refresh countdown.
+        const bool thumb = event.event_is(0x78);
+        const std::int32_t direction = event.event_is(0x80) ? 2 : 1;
+        if (host.widget_byte_85(BW::FilterPanel2C)) return;
+        host.list_left_0056aad0();
+        if (!host.widget_byte_85(BW::SessionList30)) return;
+        if (thumb) event.scroller_begin_thumb_drag_00683a40(0x1E4);
+        else event.scroller_set_auto_scroll_00683300(0x1E4, direction, kSessionBrowserAutoScrollStep, 1);
+        screen.refresh_timer = kSessionBrowserRefreshSeconds;        // 0057B3E3..0057B3EB
+    } else {
+        // 0057B48B..0057B504: the filter panel's row arrows select the row, then step it.
+        if (!host.widget_open_38(BW::FilterPanel2C)) return;
+        if (event.event_name_equals(kSessionBrowserArrowRight)) {
+            event.filter_list_select_00a9c8f0(event.event_row_d8());
+            host.filter_right_0056efb0();
+            return;
+        }
+        if (!event.event_name_equals(kSessionBrowserArrowLeft)) return;
+        event.filter_list_select_00a9c8f0(event.event_row_d8());
+        host.filter_left_0056ee00();
+        return;
+    }
+    // 0057B24B..0057B51F: highlight the pressed widget by its kind.
+    if (event.event_kind_5c() == 6) {
+        event.event_virtual_88(2, 0, 1.0F);
+    } else if (event.event_kind_5c() == 0x12) {
+        event.event_virtual_84(2);
+    }
+}
+
 // 0056E3E0. Each branch builds five (command, label, placement) triples for 0054B530 on
 // *(00E1930C); the triples below are in argument order (pushed last-to-first).
 bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& view,
@@ -506,6 +635,22 @@ bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& vi
             {0xA7, "globals.refresh", 1}, {0xA3, "globals.back", 2}}};  // 0056E808..0056E898
     }
     return true;
+}
+
+// 0052E150, EDI = screen, EBP = index.
+void credits_exit_0052e150(std::vector<std::uintptr_t>& items, CreditsExitHost& host) {
+    host.stream54_request_stop_00a86f40();                           // 0052E172..0052E175
+    const std::string name = host.menu_music_name_e18e64();          // 0052E17A..0052E1C4 strlen + copy
+    host.stream50_start_00a867b0(name);                              // 0052E1C7..0052E1DC
+    host.stream50_request_fade_in_00a85c20();                        // 0052E208..0052E211
+    host.gui_pause_movie_pages_00aa33a0(0);                          // 0052E216..0052E21F
+    // 0052E226..0052E26D: the bound is re-read every pass; 00BF6713 guards the index.
+    for (std::size_t i = 0; i < items.size(); ++i) {
+        if (items[i] != 0) {
+            host.item_scalar_delete(items[i]);
+            items[i] = 0;
+        }
+    }
 }
 
 // 0052E4B0, __thiscall(screen, float), RET 4. ESI = screen.

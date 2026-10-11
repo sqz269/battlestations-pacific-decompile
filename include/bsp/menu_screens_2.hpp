@@ -150,7 +150,7 @@ struct SessionBrowserHost {
     virtual void begin_filter_edit_0056e360() = 0;
     virtual void apply_filter_edit_0057a910() = 0;
     virtual void build_rows_default_00576d20() = 0;
-    virtual void build_rows_005789c0(std::int32_t count) = 0;
+    virtual void build_rows_005789c0(std::int32_t sort_key) = 0;
     virtual void refresh_rows_00577650() = 0;
     virtual void select_first_0056aa70() = 0;              // arg = list +30h
     virtual void reset_search_0056ac40() = 0;              // ECX = screen+278h
@@ -202,6 +202,32 @@ void session_browser_set_filter_value_text_0056ed20(std::string_view text, Sessi
 void session_browser_filter_value_step_0056ee00(SessionBrowserState& screen, SessionBrowserFilterHost& host);
 void session_browser_filter_value_step_0056efb0(SessionBrowserState& screen, SessionBrowserFilterHost& host);
 
+// 0057AF20: HandleGuiEvent, slot +04h of the widget listener 00CEF100 (ECX = screen+0Ch),
+// stack (event widget), RET 4. Screen offsets below are the pointers the event is compared with.
+inline constexpr float kSessionBrowserAutoScrollStep = 0.002F;  // 00CE779C
+inline constexpr std::int32_t kGuiEventCommandButton = 3;       // event virtual +5Ch
+inline constexpr std::string_view kSessionBrowserArrowRight = "scroll_right_Icon";  // 00CEF0D0
+inline constexpr std::string_view kSessionBrowserArrowLeft = "scroll_left_Icon";    // 00CEF0BC
+
+struct SessionBrowserEventHost {
+    virtual ~SessionBrowserEventHost() = default;
+    virtual std::int32_t event_kind_5c() = 0;                 // event virtual +5Ch (read again at the tail)
+    virtual std::uint8_t event_command() = 0;                 // *(event+F0h), or *(00E194B0) when null
+    virtual bool event_is(std::uint16_t screen_offset) = 0;   // event == *(screen+offset)
+    virtual bool event_name_equals(std::string_view name) = 0;  // event virtual +28h, 00425850
+    virtual std::int32_t event_row_d8() = 0;                  // event+D8h
+    virtual void event_virtual_88(std::int32_t a, std::int32_t b, float value) = 0;
+    virtual void event_virtual_84(std::int32_t state) = 0;
+    virtual void filter_list_select_00a9c8f0(std::int32_t row) = 0;  // ECX = list +34h
+    virtual void scroller_begin_thumb_drag_00683a40(std::uint16_t scroller_offset) = 0;  // screen+offset
+    virtual void scroller_set_auto_scroll_00683300(std::uint16_t scroller_offset, std::int32_t direction,
+        float step, std::int32_t arg) = 0;
+    virtual bool session_signed_in_198() = 0;
+};
+
+void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, SessionBrowserHost& host,
+    SessionBrowserEventHost& event);
+
 // 0056E3E0: per-frame command bar of the browser, __thiscall(screen), RET; SEH 00C6ECB0.
 // Inputs it reads besides the host: +50h, +51h and the byte +264h.
 struct SessionBrowserCommandBarView {
@@ -246,6 +272,21 @@ struct CreditsHost {
     virtual void push_interface_request_004cc460(std::int32_t a, std::int32_t b) = 0;  // ECX = *(00E198AC)
     virtual void widget_set_local_y_00aa78f0(float y) = 0;        // ECX = +1Ch
 };
+
+struct CreditsExitHost {
+    virtual ~CreditsExitHost() = default;
+    // Front-end manager *(00E198AC): +54h the credits stream, +50h the menu stream.
+    virtual void stream54_request_stop_00a86f40() = 0;
+    virtual void stream50_start_00a867b0(std::string_view name) = 0;
+    virtual void stream50_request_fade_in_00a85c20() = 0;
+    virtual std::string menu_music_name_e18e64() = 0;    // .data string 00E18E64
+    virtual void gui_pause_movie_pages_00aa33a0(std::int32_t arg) = 0;  // ECX = 004C12B0()
+    virtual void item_scalar_delete(std::uintptr_t item) = 0;           // item virtual +4(1)
+};
+
+// 0052E150: slot +1Ch of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BC48.
+// `items` is the pointer vector +28h..+2Ch; entries are deleted and nulled in place.
+void credits_exit_0052e150(std::vector<std::uintptr_t>& items, CreditsExitHost& host);
 
 // 0052E4B0: slot +20h of vtable 00CED200, __thiscall(screen, float seconds), RET 4. The
 // argument is overwritten with *(00E188A8)+21ECh before use, so `seconds` is unused.
