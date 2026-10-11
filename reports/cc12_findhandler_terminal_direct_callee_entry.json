@@ -1,0 +1,647 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_terminal_direct_callee_entry",
+  "status": "bounded_exact_entry_physical_decode_documented",
+  "frozen_commit": "890ec4360efbff598b6cd923b0eabbd0c6140cb9",
+  "finite_Git_inputs": [
+    {
+      "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_BODY_METADATA.md",
+      "git_blob": "12e2342dd93cb79b4aab6f5faa60609282ba34a2",
+      "working_payload": "captures/input_0.working_raw",
+      "working_file": {
+        "size": 10974,
+        "sha256": "1e1cd27015327c89425090f6c86a4a36c6efb4885e18aaea3e08a14b581ccd32"
+      },
+      "working_LF": {
+        "size": 10974,
+        "sha256": "1e1cd27015327c89425090f6c86a4a36c6efb4885e18aaea3e08a14b581ccd32"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "12e2342dd93cb79b4aab6f5faa60609282ba34a2"
+    },
+    {
+      "path": "reports/cc12_findhandler_outbound_jump_target_body_metadata.json",
+      "git_blob": "508ebcacf7b53ca240156b35c2dc70159ab2861f",
+      "working_payload": "captures/input_1.working_raw",
+      "working_file": {
+        "size": 94258,
+        "sha256": "324e6137bb63df5fe3c4c3d168561aa610231049c1b6accddf20ffb4adacec59"
+      },
+      "working_LF": {
+        "size": 94258,
+        "sha256": "324e6137bb63df5fe3c4c3d168561aa610231049c1b6accddf20ffb4adacec59"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "508ebcacf7b53ca240156b35c2dc70159ab2861f"
+    },
+    {
+      "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_BODY_METADATA_PRIMARY.md",
+      "git_blob": "1a1398f20ad5aa93b46c34a8bb9a8bb3e5544e19",
+      "working_payload": "captures/input_2.working_raw",
+      "working_file": {
+        "size": 3485,
+        "sha256": "4f4e8fdb8067628326a29fc421d03b97da346db01084b66a7ed612c60f18d612"
+      },
+      "working_LF": {
+        "size": 3485,
+        "sha256": "4f4e8fdb8067628326a29fc421d03b97da346db01084b66a7ed612c60f18d612"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "1a1398f20ad5aa93b46c34a8bb9a8bb3e5544e19"
+    },
+    {
+      "path": "reports/cc12_findhandler_outbound_jump_target_body_metadata_primary.json",
+      "git_blob": "6d240bfa6732499dcc4cb13c510d24e7f3a8bb06",
+      "working_payload": "captures/input_3.working_raw",
+      "working_file": {
+        "size": 16966,
+        "sha256": "a517a860133982140ff1d7e42c3cdb3ba294f467aaef53ac2bf641212a745628"
+      },
+      "working_LF": {
+        "size": 16966,
+        "sha256": "a517a860133982140ff1d7e42c3cdb3ba294f467aaef53ac2bf641212a745628"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "6d240bfa6732499dcc4cb13c510d24e7f3a8bb06"
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_payload": "captures/input_4.working_raw",
+      "working_file": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_payload": "captures/input_5.working_raw",
+      "working_file": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_payload": "captures/input_6.working_raw",
+      "working_file": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "0056201883c1594d9267d2fcf4990385461f0857"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_payload": "captures/input_7.working_raw",
+      "working_file": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true,
+      "index_mode": "100644",
+      "index_stage": 0,
+      "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619"
+    }
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_edge": {
+    "address": "00C07AA3",
+    "length": 5,
+    "hex": "e83ad3ffff",
+    "mode": "x86-32 interpretation; live segment attributes unestablished",
+    "prefixes": [],
+    "modrm": null,
+    "sib": null,
+    "fields": [
+      {
+        "field": "opcode",
+        "offset": 0,
+        "size": 1,
+        "hex": "e8",
+        "value": 232
+      },
+      {
+        "field": "relative_displacement",
+        "offset": 1,
+        "size": 4,
+        "hex": "3ad3ffff",
+        "value": -11462
+      }
+    ],
+    "mnemonic": "call",
+    "operands": [
+      {
+        "kind": "imm",
+        "size": 4,
+        "value": 12602850
+      }
+    ],
+    "transfer": {
+      "kind": "call",
+      "signed_displacement": -11462,
+      "numeric_target": "00C04DE2",
+      "next_address": "00C07AA8",
+      "encoded_return_address": "00C07AA8"
+    },
+    "numeric_next_address": "00C07AA8"
+  },
+  "metadata": {
+    "requested": "00C04DE2",
+    "unit": {
+      "address": {
+        "space": "ram",
+        "offset": "00c04de2"
+      },
+      "length": 1,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "defined": null
+    },
+    "all_four_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04de2"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04de2"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04de2"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c04de2"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "complete_saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c04de2"
+      },
+      "name": "_abort",
+      "no_return": true,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "243",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c04de2"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c04ed4"
+            },
+            "length": "243"
+          }
+        ]
+      }
+    },
+    "saved_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c04de3"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c04de3"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "direct_call_targets": [],
+    "raw": {
+      "size": 2140,
+      "sha256": "99d565916bf42ce4b43bcc14e2aa287065ffb2366804eeaed849b94ab0ae89e5"
+    },
+    "paired_raws_equal": true,
+    "next_cursor_numeric_only_unqueried": "00C04DE3",
+    "bytes_text_proto_neighbors_body_targets_cells_queried": false
+  },
+  "Root_gate": {
+    "status": "PASS",
+    "admitted_first_unit": {
+      "address": "00C04DE2",
+      "length": 1
+    },
+    "paired_raw_pin": {
+      "size": 2140,
+      "sha256": "99d565916bf42ce4b43bcc14e2aa287065ffb2366804eeaed849b94ab0ae89e5"
+    },
+    "Native_commands_reviewed": 4,
+    "original_HTTP_responses": 16,
+    "function_count": 64730,
+    "epoch": 98,
+    "Root_gate_failures": 0,
+    "Root_preliminary_inspection_failures": 1,
+    "inspection_limit": "Guessed metadata_manifest.json was absent; the actual metadata_capture_manifest.json was located using rg. The exact original combined tool traceback remains in the conversation; no separate original local stdout/stderr is claimed. Gate checks all actual inputs, with no conclusion from the failed display.",
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "saved_abort_name_no_return_not_authenticated": true,
+    "unread_owner_bytes": 242,
+    "unqueried_next_cursor": "00C04DE3"
+  },
+  "Native": {
+    "commands": 11,
+    "phase1": 4,
+    "phase2": 7,
+    "HTTP_responses": 39,
+    "endpoint_counts": {
+      "list_project_files": 14,
+      "get_current_program_info": 14,
+      "get_function_count": 4,
+      "get_flow_metadata": 3,
+      "read_memory": 2,
+      "get_assembly_context": 2
+    },
+    "CLI_three_files_pinned_before_and_after_each": true,
+    "function_count": 64730,
+    "epoch": 98,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "physical": {
+    "physical": {
+      "address": "00C04DE2",
+      "length": 1,
+      "hex": "55",
+      "mode": "x86-32 interpretation; live segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 85,
+      "opcode_base": 80,
+      "opcode_register_index": 5,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode_plus_register",
+          "offset": 0,
+          "size": 1,
+          "hex": "55",
+          "value": 85
+        }
+      ],
+      "displacement": null,
+      "immediate": null,
+      "relative_displacement": null,
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ebp"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "eflags": 0,
+      "eflag_effects": [],
+      "regs_read": [
+        "esp",
+        "ebp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_stack_segment": "ss",
+      "transfer": null,
+      "numeric_next_address_unqueried": "00C04DE3"
+    },
+    "paired_bytes_equal": true,
+    "paired_context_equal": true,
+    "byte_pin": {
+      "size": 1,
+      "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+    },
+    "saved_text": {
+      "address": "00c04de2",
+      "instruction": "PUSH EBP",
+      "context_before": [],
+      "context_after": [],
+      "mnemonic": "PUSH",
+      "patterns_detected": [
+        "stack_operation"
+      ]
+    },
+    "actual_Capstone_agrees": true,
+    "next_cursor_queried": false,
+    "other_owner_bytes_queried": false
+  },
+  "actual_detailed_Capstone": {
+    "version": "5.0.7",
+    "arch": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "instruction": {
+      "address": "00C04DE2",
+      "size": 1,
+      "hex": "55",
+      "mnemonic": "push",
+      "op_str": "ebp",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ebp"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        85,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp",
+        "ebp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "eflags": 0,
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ]
+    }
+  },
+  "local_CPU_contract": {
+    "physical": "The admitted unprefixed byte55 is 50+rd with rd=5: PUSH EBP under the saved x86-32 interpretation. There is no ModRM, SIB, displacement, immediate, relative field, explicit memory operand, or transfer target in this unit.",
+    "entry_state": "Only the accepted prior E8 at C07AA3 supplies the positive numeric edge to C04DE2 and encoded return cursor C07AA8. No calling convention, service, callee preservation, frame layout, argument meaning, or stack cleanup follows from that edge. All earlier opaque-call return states remain unconstrained.",
+    "stack_effect": "At the PUSH itself let B be instruction-time EBP and S be instruction-time ESP. Only under a newly imposed actual instruction-time SS.B=1 condition and successful normal execution does new ESP=(S-4) mod2^32 and the dword write occur through current SS at that new offset with value B. The source register is read before the implicit stack update/write. EBP is unchanged. No flat segment, mapping, writable stack, or successful access is established.",
+    "other_state": "Successful PUSH preserves arithmetic EFLAGS and other GPR values, including EBP; its visible memory effect is the ordered dword stack write. Exact current SS selector/hidden attributes and memory are used, with no assumption that an earlier opaque callee preserved them. A possible fault or exception route is not reconstructed.",
+    "incoming_composition": "For the accepted E8 immediately followed by this PUSH, if normal control transfer reaches this entry without intervening state changes and the actual stack is 32-bit for both instructions, let S0 denote ESP just before E8. E8 writes numeric C07AA8 through its current SS at S0-4 and entry PUSH writes the entry-time EBP through current SS at S0-8 (all offsets modulo2^32). This conditional local ordering proves neither stack ownership nor return behavior, and it does not license inheriting SS attributes across any opaque call.",
+    "alias_limit": "The single push uses current memory. No disjointness from other memory cells, buffers, or previously written data is established. The optional two-instruction composition assumes the same uninterrupted normal near-transfer state; it does not assert pointer provenance or a larger frame.",
+    "continuation": "The numeric next cursor and saved fallthrough C04DE3 are unqueried. The remaining242 saved owner bytes are unexamined. PUSH alone does not establish an EBP frame: no subsequent instruction is admitted.",
+    "saved_metadata": "Saved owner name_abort, no_return=true, and extentC04DE2..C04ED4 are retained analysis metadata. They do not authenticate a CRT library identity, abort service, host effect, nonreturn, or an Original ABI. Entry default/effective flow is FALL_THROUGH with overrideNONE."
+  },
+  "failures": {
+    "worker_offline_inspection": 1,
+    "Root_offline_inspection": 1,
+    "Root_gate": 0,
+    "worker_Native": 0,
+    "worker_decoder": 0,
+    "worker_inspection_history": {
+      "worker_offline_inspection_failures": 1,
+      "failure": "An inline Python expression listing Root JSON keys had an unmatched parenthesis and raised SyntaxError before execution. The preceding PowerShell file listing completed.",
+      "correction": "Removed the single unmatched parenthesis and listed only JSON top-level keys; no Native call was involved.",
+      "tool_output_copy": "worker_inspection_tool_output.txt",
+      "provenance": "A transcription of the received combined exec tool output; original combined output remains in the conversation. The inline inspection was not separately redirected to local stdout/stderr, and no original separate local streams are claimed.",
+      "Native_or_GPR_effects": 0,
+      "collector_Native_failures": 0
+    },
+    "Root_inspection_limit": "Guessed metadata_manifest.json was absent; the actual metadata_capture_manifest.json was located using rg. The exact original combined tool traceback remains in the conversation; no separate original local stdout/stderr is claimed. Gate checks all actual inputs, with no conclusion from the failed display.",
+    "upstream_BODY_PRIMARY_failure_counts_retained_in_positive_input": {
+      "Root_metadata_gate": 0,
+      "Root_metadata_inspection": 1,
+      "Root_metadata_truncation": 1,
+      "Root_final_preliminary_truncations": 2,
+      "Root_final_actual_Git_archive_manual": 0,
+      "Root_strict_replay": 0,
+      "worker_Main_race_before_Native": 1,
+      "worker_strict_invocations": 2,
+      "worker_Native_decoder": 0,
+      "failed_first_denial_telemetry_available": false
+    },
+    "upstream_negative_artifacts": "The accepted BODY reports retain their prior worker failed-replay/Main-race and Root inspection histories. Those public Git blobs are preserved byte-for-byte; no upstream ZIP or negative archive was opened or used as a positive input.",
+    "strict_replay_delivery": "Actual first process streams and exclusive receipts beside the proof copies establish replay outcome; no replay success is inferred from report generation."
+  },
+  "evidence_pins": {
+    "finite_git.json": {
+      "size": 10540,
+      "sha256": "bb1b9e5223bf097afcd396e4e5cf6799b9576a50f355aa2bc036d94c49e4492f"
+    },
+    "positive_edge.json": {
+      "size": 794,
+      "sha256": "8bf284507872c4f31d2a37829f04d3477317884f8d89f952225a76a2db2f4899"
+    },
+    "metadata_capture_manifest.json": {
+      "size": 92231,
+      "sha256": "0bcab93fb7bb8aa2dadd4adea11f88e9802baeb3e21b95c62824b900c95dc2b0"
+    },
+    "entry_metadata.json": {
+      "size": 2918,
+      "sha256": "69905cad7b4b047ea4b454c4095e6f735625163e352721f901c6f69bf2e050ea"
+    },
+    "Root_gate_copy_manifest.json": {
+      "size": 38973,
+      "sha256": "ef96af3ebe4dc35a1b611b51462c0968ec0c8dca03ddc58a31f88faa32b093d6"
+    },
+    "Root_gate/Root_listing_gate.py": {
+      "size": 8463,
+      "sha256": "fa8cde3c1a90655510ea7004de3b1e9dbc0ac8cbaff7149c6a53c82c44a5103f"
+    },
+    "Root_gate/Root_listing_gate.json": {
+      "size": 1505438,
+      "sha256": "22da168cd62bd7a79b40baac67291c5fd9a63590512f836884fa417ddc1f486e"
+    },
+    "Root_gate/Root_gate_preexecution.json": {
+      "size": 104,
+      "sha256": "aa3788a173a3f5d59356ac7a945101ca778120444907bcab352b475b57275725"
+    },
+    "entry_capture_manifest.json": {
+      "size": 41013,
+      "sha256": "ee9ef7a36d0b85b7a72495715ca7b375d1fed99177edd180065e12d05af4bd43"
+    },
+    "physical_decode.json": {
+      "size": 1440,
+      "sha256": "de2ae9d452c7466ca3cd7067bdd4bbc209a4ff6a3f9c92529752ab429d4a0491"
+    },
+    "capstone_detail.json": {
+      "size": 862,
+      "sha256": "7193aae5d914fbe848ae39ad16dd97a63aa78d8f2985719dd95828d8015eba9e"
+    },
+    "physical_fields.py": {
+      "size": 1193,
+      "sha256": "ad8be9447795a5ac48a57a147caee2d746fe6bf06359a3142569cd95161b2b76"
+    },
+    "decode_entry.py": {
+      "size": 4335,
+      "sha256": "fa5de6320a00c73e56cfc281f72659f0864b1f55e7e2ea3b772ef1a4b447d856"
+    },
+    "replay.py": {
+      "size": 20555,
+      "sha256": "7ef790cfb7d50946fbd9d32ee95146fad4327b6a1bbb50a80fdcfa5c017221c5"
+    },
+    "audit_replay.py": {
+      "size": 2727,
+      "sha256": "bdb93a8fc36e01313d9e56785e304e182a575fa95e0c0a27f942fcc3664a5521"
+    },
+    "package_final.py": {
+      "size": 6069,
+      "sha256": "8fba8ed536a78d846a38df4e3d86827589e24303889659608505f253d9218f35"
+    },
+    "run_replays.py": {
+      "size": 1669,
+      "sha256": "7729c798aa734e9ad16fb624301bcb28201edc0c0946f0c6bdf3a711a7c84cf5"
+    },
+    "final_producers_before_execution.json": {
+      "size": 1277,
+      "sha256": "ed7646dd475d1776a1c145b4b90a6a2bb50fdd5bffdfd617445f4ed2a3ca6074"
+    },
+    "metadata_first.command.json": {
+      "size": 891,
+      "sha256": "cc1c112a6faae56efd27a0d0f0e9844ede7176ba50634e79221abd327e00f135"
+    },
+    "entry_first.command.json": {
+      "size": 879,
+      "sha256": "81f397d42226cbb05c03df273372be9026f4ef76f1ec4e97bd4da447c0b91ead"
+    },
+    "decoder_first.command.json": {
+      "size": 881,
+      "sha256": "a27c5ea808008f0351fe26d162c856dfb9f4a605e7b77f3a59d5f62bd348593e"
+    },
+    "worker_inspection_history.json": {
+      "size": 741,
+      "sha256": "3736e3b538e57617ddd991487d1d6dd5d4bca8229038cea22607986a63a3f425"
+    },
+    "worker_inspection_tool_output.txt": {
+      "size": 912,
+      "sha256": "47e8bfb8e1db242b7d25af57df51ed57da54da083a0569a951a354aadacd320d"
+    }
+  },
+  "proof_delivery": {
+    "directory": "local/cc12_findhandler_terminal_direct_callee_entry",
+    "archives": [
+      "proof.zip",
+      "proof.copy.zip"
+    ],
+    "finite_actual_Git_objects": 20,
+    "positive_input_blobs": 8,
+    "owned_outputs": 2,
+    "Root_original_preimages": 227,
+    "Root_gate_artifacts": 233,
+    "strong_audit": "exactly one supplied ZIP read, one exact precompiled reviewed local helper execution, one exclusive receipt write; every other audit event denied and denied[] asserted empty",
+    "Capstone_under_hook": false,
+    "archive_contained_code_execution": false,
+    "earlier_archive_traversal": false
+  },
+  "validation_boundary": {
+    "Source_changes": false,
+    "Source_census": false,
+    "GPR_writes": 0,
+    "build": false,
+    "tests": false,
+    "native_probe": false,
+    "Original_execution": false,
+    "game_validation": false,
+    "ABI_compatibility": false,
+    "OS_or_audio_runtime_credit": false,
+    "provider_cell_target_proto_queries": false,
+    "next_cursor_query": false,
+    "other_owner_bytes_query": false
+  },
+  "next_scope": "No further unit is admitted. A saved owner body walk requires a separate metadata-first gate; its remaining242 bytes and C04DE3 are not promoted by this entry packet."
+}
