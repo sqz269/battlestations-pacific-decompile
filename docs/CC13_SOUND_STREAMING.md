@@ -44,6 +44,7 @@ append fragment 00A80EBA), `sound_configuration` (00A7AE00, 00A7AE80), `sound_di
 | 00A89210 | `sound_event_is_completed_00a89210` | complete | listing 00A89210-00A89244 |
 | 00A89600 | `update_sound_event_00a89600` | complete | listing 00A89600-00A896CE |
 | 00A8AC90 | `project_shadow_point_00a8ac90` | complete | listing 00A8AC90-00A8AD1E (x87) |
+| 00A8B860 | `intersect_lines_2d_00a8b860` | complete; aliasing order kept | listing 00A8B860-00A8B925 mapped per x87 instruction |
 | 00A8EA20 | `submit_shadow_cascades_00a8ea20` | complete normal path; allocation-failure path not modelled | listing 00A8EA20-00A8ECA0 |
 | 00A92050 | `any_input_binding_forces_unit_scale_00a92050` | complete | decompile + listing |
 | 00A92910 | `input_actions_share_binding_00a92910` | complete | decompile 00A92910-00A929A4 |
@@ -143,9 +144,14 @@ appends it to the shadow queue (00B1EB80, immediate 0) and submits it as a shado
 
 Not reconstructed, named only: the cascade fitter 00A8BD20 (2007h bytes of x87), the single-view
 fitter 00A8AEB0 and its two callers 00A8E180 (from 00B3C960) and 00A8E860 (ground-ortho interface
-view), the unreferenced 00A8ECB0 (an older fit-and-submit path that uses 00A8AC90) and 00A8B930,
-and the 2D line intersection 00A8B860. These are the next shadow packet; they need listing-level
-x87 work.
+view), and the unreferenced 00A8ECB0 (an older fit-and-submit path that uses 00A8AC90) and
+00A8B930 (the only caller of the reconstructed line intersection 00A8B860). These are the next
+shadow packet; they need listing-level x87 work.
+
+00A8B860 keeps two native details: 1/det is rounded to float and stored to both output words
+before the inputs are reread, and the y term rereads its inputs and `out[1]` after `out[0]` is
+written, so an output that aliases an input gives the native result. The cross terms
+`p0.x*p1.y - p0.y*p1.x` and `q0.x*q1.y - q1.x*q0.y` are the only other float spills.
 
 ### Input binding queries (00A92050, 00A92910)
 

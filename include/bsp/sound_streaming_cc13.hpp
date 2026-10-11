@@ -212,6 +212,17 @@ void update_sound_event_00a89600(void* instance, float dt, SoundEventHost& host)
 // Caller 00A8ECB0.
 void project_shadow_point_00a8ac90(float* inout_xyz, const void* actual_matrix_float16);
 
+// 00A8B860, ECX out float2, EDX p0, stack p1, q0, q1, RET 0Ch. Intersection of
+// line p0-p1 with line q0-q1: inv = 1/det rounded to float and stored to out[1]
+// and out[0] first; the two cross terms are rounded to float; every other
+// intermediate stays on the x87 stack (53-bit, reproduced with double, where
+// no float-derived product or difference can overflow or go subnormal). The
+// y term rereads q0.y, q1.y, p0.y, p1.y and out[1] after out[0] is stored, so
+// aliasing out with an input behaves as native. No zero-determinant guard.
+// Caller 00A8B930 (unreferenced).
+void intersect_lines_2d_00a8b860(float* out, const float* p0, const float* p1,
+    const float* q0, const float* q1) noexcept;
+
 class ShadowCascadeSubmitHost {
 public:
     virtual ~ShadowCascadeSubmitHost() = default;
