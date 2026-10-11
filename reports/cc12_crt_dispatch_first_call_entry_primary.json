@@ -1,0 +1,262 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_dispatch_first_call_entry_primary",
+  "worker_commit": "1704172766c4927c2535b76a5e6f8ea3328e6dd9",
+  "worker_frozen_commit": "40ba8f8bcfd8aa77e81699c63c48734ac7eb11d7",
+  "Root_actual_finite_Git_archive_review": {
+    "status": "PASS",
+    "frozen_commit": "40ba8f8bcfd8aa77e81699c63c48734ac7eb11d7",
+    "worker_commit": "1704172766c4927c2535b76a5e6f8ea3328e6dd9",
+    "actual_final_payloads": {
+      "commit": {
+        "oid": "1704172766c4927c2535b76a5e6f8ea3328e6dd9",
+        "sha256": "e42e975501d1540006e7ae861d61989c39766ce00f1f36f58e146b78491b42c8",
+        "bytes": 649
+      },
+      "tree": {
+        "oid": "c75e267e3399019df389fa45323376f1e31169c3",
+        "sha256": "bb102981e66691a3d7fb0c768410fd7a27b7f6c676ea8d780adefad531884ef5",
+        "bytes": 563
+      }
+    },
+    "archive_sha256": "f6d71f3419265ca734054fbeb316b676e4dfb7d3ff7571ae2ffd569eba0aa161",
+    "entries": 142,
+    "actual_frozen_Git_objects": 6,
+    "finite_inputs": [
+      {
+        "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+        "git_blob": "6a70950b42b0a636709e1ea579ce240d39627166",
+        "length": 5076,
+        "sha256": "abd9e65b627bb2df549a85d069eff02feaf6083c8e0aca47a4832a35c14a28c5",
+        "retained_blob": "input_00_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+        "git_blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+        "length": 196696,
+        "sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+        "retained_blob": "input_01_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+        "git_blob": "d084d57a3ff8d79b9851e4a5c3d6353ce755873a",
+        "length": 2988,
+        "sha256": "ab577b2b02f3845c7465f056a46cb84056cf8dc979e069b3dbb838163a1814f4",
+        "retained_blob": "input_02_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+        "git_blob": "5a0a50da63d0892db965a23310d430a904374e26",
+        "length": 344054,
+        "sha256": "b405b8f281c1a5f42317593ff263a8f17581c81cf1e0605a155df60134d130e9",
+        "retained_blob": "input_03_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "config/target.json",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "retained_blob": "input_04_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "retained_blob": "input_05_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "retained_blob": "input_06_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "retained_blob": "input_07_blob.stdout.bin",
+        "working_file_equals_git_blob": true
+      }
+    ],
+    "actual_outputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_ENTRY.md",
+        "blob": "091a5e30850559809c6192687ec6ec6ef368c045",
+        "bytes": 5737,
+        "sha256": "052fe15c528a8e0a7a4888f97592a9ab539c32a8ccb971a61eb04a6efe30c6a4"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_entry.json",
+        "blob": "bf1b0f518312fe0c7af9badff9afc5d89775eb7e",
+        "bytes": 18615,
+        "sha256": "9879cc1bda43ceca4cbe26a00f245566a4c9cbc4da0c48779b2d4bf459cc45f1"
+      }
+    ],
+    "physical_distinct_worker_copy_ids": [
+      281475006165183,
+      281475006165188
+    ],
+    "Root_preimages_match": true,
+    "worker_failed_guard_attempts": 1,
+    "failed_current_packet_ZIP_retained_as_opaque_blob": {
+      "bytes": 449164,
+      "sha256": "1573909243bf7ae21ae228180c34f1615a6b15fcba804cc23e60bd9f18e6d821",
+      "inner_archive_opened": false
+    },
+    "Root_review_failures": 0,
+    "Source_boundary": "Frozen subtree identities only; no current Source equality or Source census."
+  },
+  "Root_physical_manual_and_Capstone": {
+    "status": "PASS",
+    "entry_hex": "56",
+    "manual_register_index": 6,
+    "actual_detailed_Capstone_version": "5.0.7",
+    "positive_prefix_hex": "558bec535657",
+    "positive_call_hex": "e892d8ffff",
+    "signed_rel32": -10094,
+    "target": "00C0522E",
+    "return_address": "00C0799C",
+    "physical_prefix": [
+      {
+        "address": "00C07991",
+        "hex": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "address": "00C07992",
+        "hex": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "address": "00C07994",
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00C07995",
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00C07996",
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00C07997",
+        "hex": "e892d8ffff",
+        "mnemonic": "call",
+        "operands": "0xc0522e"
+      }
+    ],
+    "conditional_stack": "If prefix and CALL/PUSH complete normally: dispatcher entry ESP=S/ESI=I; prefix EBP=H=S-4 and before CALL ESP=S-0x10; callee entry ESP=S-0x14; one PUSH stores current I at SS:[S-0x18], ESP=S-0x18, EBP H and flags unchanged.",
+    "unknown_eventual_return": "Q0/F0/P/M0 and other registers/flags/cleanup remain unknown; no frame, TLS/service, remaining23-byte body, Original ABI or runtime credit."
+  },
+  "Root_pins": {
+    "Root_entry_gate.py": {
+      "bytes": 4008,
+      "sha256": "c123b02bdfa0d35207d2a43aca62da3a04eba5f6eef28238ca82a2dc190c5bb5"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 827,
+      "sha256": "0e961afa7dd0838ea48fde69e1096dbe7869dc3c347a5855d0bc7e580f9efa65"
+    },
+    "Root_actual_review.py": {
+      "bytes": 4322,
+      "sha256": "4b895ee17bee49dff0fba582290c38fba4a26e1e81647197c7b4ea8b171f5cd1"
+    },
+    "Root_actual_review.json": {
+      "bytes": 4467,
+      "sha256": "5e20c0d805817bcb965a36a22d4ea25eefb2145574bb2a299faa1d87865e7fa6"
+    },
+    "Root_final_commit.bin": {
+      "bytes": 649,
+      "sha256": "e42e975501d1540006e7ae861d61989c39766ce00f1f36f58e146b78491b42c8"
+    },
+    "Root_final_tree.bin": {
+      "bytes": 563,
+      "sha256": "bb102981e66691a3d7fb0c768410fd7a27b7f6c676ea8d780adefad531884ef5"
+    },
+    "Root_native_decode.py": {
+      "bytes": 2236,
+      "sha256": "51b4b731244c9f807f5ae32b9ff192c42d0b19417775b4493fde60473ed1f4cb"
+    },
+    "Root_native_decode.json": {
+      "bytes": 1465,
+      "sha256": "ff7567387dd3dab425e3ea4d98f383578f9fd4f26012145acb6192121790fbc4"
+    },
+    "Root_review_proof.zip": {
+      "bytes": 894604,
+      "sha256": "f6d71f3419265ca734054fbeb316b676e4dfb7d3ff7571ae2ffd569eba0aa161"
+    },
+    "Root_strict_replay.json": {
+      "bytes": 1558,
+      "sha256": "971fff005b3f688b7055959559cc0f1603ac4fce40501f8b028a9b52560fe4d5"
+    },
+    "pure_replay.py": {
+      "bytes": 14633,
+      "sha256": "14422ffd3bfa35a81d2426a2aeebb110cfeb61e097b0a301bb96e7404bf6cbe4"
+    },
+    "strict_guard.py": {
+      "bytes": 4095,
+      "sha256": "3d736f563ac54742eea0ad7bd833c3a4d0abcfe82b599f0816afdf74532f875e"
+    }
+  },
+  "whole_helpers_reviewed": {
+    "pure_replay.py": {
+      "bytes": 14633,
+      "sha256": "14422ffd3bfa35a81d2426a2aeebb110cfeb61e097b0a301bb96e7404bf6cbe4"
+    },
+    "strict_guard.py": {
+      "bytes": 4095,
+      "sha256": "3d736f563ac54742eea0ad7bd833c3a4d0abcfe82b599f0816afdf74532f875e"
+    }
+  },
+  "Root_strict_audit": {
+    "helper_exec": 1,
+    "receipt_write": 1,
+    "zip_read": 1
+  },
+  "no_other_Root_audit_events": true,
+  "saved_owner_metadata_only": {
+    "name": "__getptd",
+    "range": "00C0522E..00C05245",
+    "saved_bytes": 24,
+    "entry_bytes_read": 1,
+    "remaining23B_unread": true,
+    "saved_signature_type_and_ABI_authenticated": false,
+    "epoch": 98,
+    "function_count": 64730
+  },
+  "failure_disclosure": {
+    "worker_failed_guard_attempts": 1,
+    "reason": "Denied lazy ZIP filename codec import; failed current-packet ZIP and helpers/report/streams retained; cp437 preloaded before audit without weakening policy.",
+    "worker_Native_failures": 0,
+    "Root_gate_review_decoder_replay_failures": 0
+  },
+  "credit": {
+    "exact_native_entry": true,
+    "complete_body": false,
+    "Source_reconstructed": false,
+    "Original_ABI_FH3": false,
+    "named_TLS_or_CRT_service_behavior": false,
+    "runtime": false,
+    "GPRmutation_build_test_probe_runs": false
+  },
+  "Source_boundary": "Frozen revision tree IDs only; no current Source equality or absence census. Root checked final actual commit/tree separately, because ZIP was sealed before commit."
+}
