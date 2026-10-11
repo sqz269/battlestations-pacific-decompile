@@ -367,3 +367,32 @@ ledger row).
 copy constructor. 005C89B0 pushes (154h, 2, 005C4BE0, 005C4D40) at 005C8A52..005C8A5E for the
 record's two blocks at +B8h/+20Ch; 005C81F0 references 005C51F0 (005C85F1) and 005C4D40.
 Named only.
+
+## Handoff
+
+State on agent/cc13-frontend1: 36 segment-20 functions named in the ledger and Ghidra (raw untagged
+`FUN_` in 005805A0..005C5600 went from 557 to 522), 15 reconstructed in
+`src/frontend_menus.cpp` (005BD420 partial), build-tested with `scripts/build.ps1`.
+`reports/cc13_frontend_menus.json`: 71 call rows, 0 failed. Nothing was run in `bsp_game`.
+
+What the remaining raw functions are, by band:
+
+- 00580E40..00583D80, 0058B5D0..0058F480, 00590A90..00594860: mostly STL instantiations (tree
+  iterators, vector reserve/insert, `_Xlen` throwers) and EH helpers for the mission score record
+  and objective-row containers. Tagging them as STL is the cheap next step; none carries a string.
+- 0059C000..005A3BF0: helpers of the GUI_map update path (005ADDA0, 005B2D70, 005B45C0), which
+  cc12's GlobalConfig audits touch. Read 005B45C0 (undefined update slot) before these.
+- 005BD050..005C0BD0: minimap icon-map STL and capture-icon helpers called from 005C0F20.
+- 005C2C50..005C5470: mission-tree STL (map/tree iterators, 434h allocators) and the side-block
+  lifetime named above.
+
+Open questions:
+
+1. The undefined functions listed under "Functions Ghidra lacks" (00590D80, 00590E40, 00590E50,
+   00588460, 0058EE40, 005861A0, 005A8EE0, 005A8EF0, 005B45C0, 005C06B0, 005C0800) need defining
+   before they can be named.
+2. `FE.main_uacp` (0058CE30): which list producer fills 00E194E4 (00581080 has six callers) and
+   whether anything reaches the unreferenced prompt.
+3. What record +68h means to 005C4080 (the third `date` component per the schema).
+4. Whether the odd screen vectors +80h..+100h of the main menu hold the flag icons (0058D9E0
+   does not write them).
