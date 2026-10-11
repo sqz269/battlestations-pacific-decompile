@@ -36,6 +36,24 @@ This was reported to the lead (for cc9) as soon as it was found. It is reconstru
 `ocean_wave_scale_00ba0b32` but **not wired**. `ocean_wave_field.*` and `world_ocean.*` are
 untouched.
 
+**Same object: the writer and the gameplay reader load the same pointer.** The chain is
+game = `[00E188A8]`, world = `[game+19F0h]`, ocean = `[world+0A8h]`. 0078DB03 in the world
+constructor is the only store to world+A8h.
+- **Writer.** 0068A0D0 loads EAX = `[00E188A8]` and then ECX = `[EAX+19F0h]` (0068A0E6). It calls
+  0078CFF0 (0068A0EC), which sets EDI = ECX (0078CFF8). Then 0078D18B loads ECX = `[EDI+0A8h]` and
+  00BA0090 sets ESI = ECX (00BA00B7), stores `[ESI+24h]` at 00BA0B93. The time argument is
+  `[00F876A4]` (0068A0D5).
+- **Gameplay reader.** 0078CF20 is called with ECX = `[[00E188A8]+19F0h]`. One example is 00487C24
+  then 00487C2D; the rel32 census finds the same two-load pattern at every caller whose load is
+  visible, more than 40 sites. 0078CF20 sets ESI = ECX (0078CF2F) and loads ECX = `[ESI+0A8h]`
+  (0078CF35). It calls 0078C890 (0078CF3E), which sets ESI = ECX (0078C894) and at 0078C92D does
+  `FMUL [ESI+24h]` on the 00B960C0 grid sample. 0078CF43 reloads `[ESI+0A8h]` for the coverage mask
+  00B9CF50.
+- **Second reader.** 0078D1B0 (BisectWaterCrossing) does the same: 0078D294
+  `MOV ECX,[ESI+0A8h]`, then 0078D2A8 `CALL 0078C890`.
+
+So 0078C890 multiplies by the same field+24h that 00BA0B93 writes.
+
 Two related render-side readers exist. Neither is a gameplay reader:
 - **00BA2B50 BSP_OceanWaveField_SampleHorizontalDisplacement** returns the choppy (dx, dz) pair from
   00B962E0/00B96450 at `frac(k·x), frac(k·z)`. It applies no amplitude. Its only caller is the beam
@@ -220,23 +238,39 @@ native stores, so they are not bit-exact.
 
 ## 7. Ghidra
 
-- Defined 23 functions with `tools/ghidra_define_function.py` (`reports/cc13_water1_defined.json`).
+- Defined 27 functions with `tools/ghidra_define_function.py` (`reports/cc13_water1_defined.json`).
   Each start had INT3 or RET padding before it and a vtable or call reference.
-- Named 181 functions through the ledger and `ghidra_annotate.py`. The previous values are in
+- Named 195 functions (181, then 14 cloud accessors) through the ledger and `ghidra_annotate.py`. The previous values are in
   `local/ghidra-annotations-20261011T211248Z.json`, which is ignored by git.
 - Call-site rows are in `reports/cc13_water1_calls.json`. `verify_report_calls.py` checked 17 rows
   with 0 failures.
-- 00BBCCB0..00BBCE60 are cloud-manager accessors, called from BSP_CloudInstance_* and
-  BSP_Game_ConstructWorld. They were left unnamed for cc13-weather1. 00BBCCB0 and 00BBCCD0 were
-  defined.
+- **Cloud-manager accessors (closed at the lead's request).** The layout is from cc13-weather1.
+  - 00BBCCB0 GetVector50 and 00BBCCD0 GetVector44.
+  - 00BBCD30/00BBCD70/00BBCDB0 GetColour60/70/80. BSP_CloudInstance_Update reads them at
+    00BBEF21, 00BBF08B and 00BBEEF3.
+  - 00BBCD50/00BBCD90/00BBCDE0 SetColour60/70/80 and 00BBCE30 Set94. Their callers are in
+    BSP_Game_ConstructWorld.
+  - 00BBCE60 SetWindEnabled (byte +99h).
+- **Uncovered code at 00BBE308..00BBE37F.** This starts with INT3 padding after
+  BSP_CloudInstance_AcceptsRuntimeTypeToken (00BBE2E0..00BBE307). It holds four functions, now
+  defined:
+  - 00BBE310 ShowReturnFalse: SetVisibilityFactor(1.0, 0), AL = 0, RET 4.
+  - 00BBE330 GetOwner184.
+  - 00BBE340 GetManagerVector50: ECX = `[[this+184h]+14h]` through 00BC3030, then 00BBCCB0.
+  - 00BBE360 GetManagerVector44: the same through 00BBCCD0.
+
+  The two call sites 00BBE353 and 00BBE373 are inside 00BBE340 and 00BBE360. My first scan had
+  attributed them to the type-token function. The rel32, pointer and immediate censuses find no
+  reference to any of the four, so they are not reachable in this image.
 
 ## 8. Open items
 
 - **Amplitude (cc9).** Model the amplitude store in the host's 0078C890 path: amplitude = HeightScale
   after the first render frame. This also needs the spectrum's per-frame step (vtable+8/+18h,
   segment 91) and the authored Waves keys.
-- **00BA0090 time argument.** It is `0.1 * [ESP+18h]` of 0078CFF0. 00B9E3F0 stores it as a start
-  time, so it looks like an absolute clock. Its producer in 0068A0D0 has not been traced.
+- **00BA0090 time argument.** It is `0.1 * [00F876A4]`, which 0068A0D0 loads at 0068A0D5. 00B9E3F0
+  stores it as a start time, so it looks like an absolute clock. The writer of 00F876A4 has not been
+  traced.
 - **Not reconstructed.** 00B9AE00 (the projector matrix), 00B9D7B0 (the grid tiles), 00BA2FF0 (the
   beams) and the large resource builders are large x87 or D3D bodies.
 - **Seg 93.** The mpak/mpkg/msar STL instantiations 00BB3DB0..00BBBED0 that are still FUN_ were
