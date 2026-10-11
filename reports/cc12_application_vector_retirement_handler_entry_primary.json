@@ -1,0 +1,434 @@
+{
+  "packet": "cc12_application_vector_retirement_handler_entry_primary",
+  "status": "Root_reviewed_entry_evidence_only",
+  "worker_commit": "9a935791fc384a0bdc797659c7b17c31c23eb0cb",
+  "Root_actual_finite_review": {
+    "status": "PASS",
+    "worker_commit": "9a935791fc384a0bdc797659c7b17c31c23eb0cb",
+    "frozen_base": "184cf9919a6432c80de99b51a8345635ad2a4e94",
+    "archive_sha256": "61d3ea2033080dd167d9903221208c5428c65ae6e331744ce30754a026b207d4",
+    "archive_bytes": 1844232,
+    "entries": 67,
+    "actual_Git_objects": {
+      "960c98913d6979c37dfb83d18672749bcc5c125c": "tree",
+      "184cf9919a6432c80de99b51a8345635ad2a4e94": "commit",
+      "5c48f48b9ba19ecca5d972dc03c8aba27a03f90f": "tree",
+      "b4775a2efb1851e2957bf7c8b83038d4e8142846": "blob",
+      "2eb46c92f4f638ee077a17c98d49b90e0f661c25": "tree",
+      "d0b01202081f849da0c7f5659b72cb1b6367851d": "blob",
+      "a6a35c975a83e6a2d972c1d3c06a50d738555474": "blob",
+      "0766130775b1ea1c2c12d11a764a0bf330c6635f": "blob",
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+      "a46b97705f35162ba70bfbd4909788d11bb188b4": "blob",
+      "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+      "ba90f058569106f62c72dc9f9d72de205772fc7c": "blob",
+      "0056201883c1594d9267d2fcf4990385461f0857": "blob",
+      "4f73269e25719493aefe1d7f0111b8bbb6b62619": "blob",
+      "2b21f7cae011e268b9788e297ef780edc970f7e1": "tree",
+      "66721a7009599e89dd8f91b7710823934ae53048": "tree",
+      "74effc0855f4df46c8567a38871af3ea3ac1ba27": "tree",
+      "6bcabe7856aad4ff7f76ced8b932c7a4dfb68c1d": "blob",
+      "4e21210b65eb5823a1d0fd716ebfaa1216c75a0b": "blob",
+      "9a935791fc384a0bdc797659c7b17c31c23eb0cb": "commit"
+    },
+    "actual_finite_inputs": [
+      {
+        "path": "docs/CC12_APPLICATION_BASE_RETIREMENT_READINESS.md",
+        "blob": "b4775a2efb1851e2957bf7c8b83038d4e8142846",
+        "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+        "length": 7796
+      },
+      {
+        "path": "reports/cc12_application_base_retirement_readiness.json",
+        "blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "length": 34569
+      },
+      {
+        "path": "docs/CC12_APPLICATION_DERIVED_RETIREMENT_SOURCE_PRIMARY.md",
+        "blob": "a6a35c975a83e6a2d972c1d3c06a50d738555474",
+        "sha256": "f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3",
+        "length": 2149
+      },
+      {
+        "path": "reports/cc12_application_derived_retirement_source_primary.json",
+        "blob": "0766130775b1ea1c2c12d11a764a0bf330c6635f",
+        "sha256": "d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c",
+        "length": 10360
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "length": 455
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "length": 73311
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "length": 14411
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "length": 20048
+      }
+    ],
+    "actual_owned_outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY.md",
+        "blob": "6bcabe7856aad4ff7f76ced8b932c7a4dfb68c1d",
+        "sha256": "92013ea62a09da4ab90d287cfe188e212b20a13aa78f76a02eb994ef1d7b513f",
+        "length": 3821
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_handler_entry.json",
+        "blob": "4e21210b65eb5823a1d0fd716ebfaa1216c75a0b",
+        "sha256": "dcd849f5407320fdb115b39262e34c7c31e694dbdb92060af4b46f0ba740f3f0",
+        "length": 10030
+      }
+    ],
+    "physical_helpers": [
+      {
+        "path": "collect.py",
+        "bytes": 2298,
+        "sha256": "77bf889f9dffe72a4e6281b82fc524123a763793a873970ef7df23d93231874d"
+      },
+      {
+        "path": "summarize.py",
+        "bytes": 1006,
+        "sha256": "a05489a92b032869c57fc07f8e6c8f89b5be01d4e5743360787f077d583dc034"
+      },
+      {
+        "path": "seal.py",
+        "bytes": 7034,
+        "sha256": "3fbfdbc8a69bf606c2ad4934df23a73261bc60788c4ee0cb514f2b3da8641b49"
+      },
+      {
+        "path": "replay.py",
+        "bytes": 12115,
+        "sha256": "4dd5fc5b9688899b15c2931270a46b2fba8298047cf3c3d537c7b9908ac5bf92"
+      },
+      {
+        "path": "audit_replay.py",
+        "bytes": 2322,
+        "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+      },
+      {
+        "path": "report.py",
+        "bytes": 11936,
+        "sha256": "16a8120ff03db211c92727c885981268913e9fd8134249a64e5f5da6604ebd20"
+      }
+    ],
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_DERIVED_RETIREMENT_SOURCE_PRIMARY.md",
+      "reports/cc12_application_derived_retirement_source_primary.json"
+    ],
+    "frozen_worker_Source_IDs": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "current_Source_equality_claimed": false,
+    "Root_native_review": {
+      "paired_and_closing_raw_sha256": "1d8828c8435ba6816facb988be049c4b8aa5ca818449a353a987a15161cf0b8b",
+      "metadata": [
+        {
+          "query": {
+            "space": "ram",
+            "offset": "00c86208"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "functions": [],
+          "flow_flags": {
+            "flow_override": "NONE",
+            "fallthrough_overridden": false,
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            }
+          }
+        },
+        {
+          "query": {
+            "space": "ram",
+            "offset": "00c86208"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "functions": [],
+          "flow_flags": {
+            "flow_override": "NONE",
+            "fallthrough_overridden": false,
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            }
+          }
+        },
+        {
+          "query": {
+            "space": "ram",
+            "offset": "00c86208"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c86208"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "functions": [],
+          "flow_flags": {
+            "flow_override": "NONE",
+            "fallthrough_overridden": false,
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            }
+          }
+        }
+      ],
+      "entry_hex": "b8b857db00",
+      "entry_sha256": "2d47015699b22273a3fc9edde9e4870b2739603a34aef58417a01066704a9f0b",
+      "manual_opcode_immediate": true,
+      "actual_capstone_version": "5.0.7",
+      "actual_capstone_decode": "mov eax, 0xdb57b8",
+      "prototype_negative_result": "No function found for 00c86208\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00c86208'})",
+      "initial_raw_and_helper_preimage_unavailable_excluded": true,
+      "parent_push_verified": true,
+      "successor_candidate": "00C8620D",
+      "successor_admitted": false,
+      "immediate_opaque": true
+    },
+    "Source_change": false,
+    "new_tests_or_probes": false,
+    "Ghidra_mutation": false,
+    "Original_FH3_ABI_activation_runtime_or_gameplay_credit": false
+  },
+  "Root_strict_guard": {
+    "status": "PASS",
+    "packet": "cc12_application_vector_retirement_handler_entry",
+    "zip_sha256": "61d3ea2033080dd167d9903221208c5428c65ae6e331744ce30754a026b207d4",
+    "entries": 67,
+    "final_commit": "9a935791fc384a0bdc797659c7b17c31c23eb0cb",
+    "frozen_commit": "184cf9919a6432c80de99b51a8345635ad2a4e94",
+    "staged_and_final_tree": "2b21f7cae011e268b9788e297ef780edc970f7e1",
+    "owned_outputs": [
+      "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY.md",
+      "reports/cc12_application_vector_retirement_handler_entry.json"
+    ],
+    "typed_raw_sha256": "1d8828c8435ba6816facb988be049c4b8aa5ca818449a353a987a15161cf0b8b",
+    "entry_hex": "b8b857db00",
+    "saved_function_absent": true,
+    "first_raw_unavailable": true,
+    "boundary": "Finite supplied-byte/Git-object replay; no body continuation, Source census, Native execution or Original/FH3/ABI/runtime credit.",
+    "Root_strict_audit": {
+      "state": {
+        "reads": 1,
+        "writes": 1,
+        "exec": 1
+      },
+      "only_supplied_ZIP_read_and_declared_receipt_write": true,
+      "post_bootstrap_import_directory_process_network_or_other_mutations": false
+    }
+  },
+  "pins": [
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/proof.zip",
+      "bytes": 1844232,
+      "sha256": "61d3ea2033080dd167d9903221208c5428c65ae6e331744ce30754a026b207d4"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/handoff.json",
+      "bytes": 1324,
+      "sha256": "810afc5c312b9915583c67f989d8d506d88c8d17006382d2b6c3316c05feba92"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/Root_actual_review.json",
+      "bytes": 12415,
+      "sha256": "27d51334bc427748b6125ad6e6d82f374313bc75b27606d31ff2c3b84b74c461"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/Root_guard_receipt.json",
+      "bytes": 1122,
+      "sha256": "68145ebdea0ab7468f12ed1e75a63e124b55833d10fac76e79436db09c76e663"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/root_review.py",
+      "bytes": 6543,
+      "sha256": "d8b68717ae15c79a0af6704529d01a58d78bf9a8d823a9da8a829ef76f6678a7"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/Root_guard_runner.py",
+      "bytes": 1856,
+      "sha256": "ff6aab507a93d319ad7602348ce3906d50e42720e93e407c76fae9c09f4e24bf"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_handler_entry_primary/publish_review.py",
+      "bytes": 4409,
+      "sha256": "f5c3bdfd1be74d8d19353a2aa7bcab633051f9e3329db536df1e9a98d67d7d96"
+    }
+  ],
+  "pure_helper_review": "Full replay.py and audit_replay.py inspected; only replay.py executed under Root strict audit. Six physical producer/replay helper bodies pinned; producers not executed by Root.",
+  "capture_limitation": "Initial raw response and collector preimage are unavailable and excluded; three corrected captures agree.",
+  "boundary": "C86208 complete5B InstructionDB only. Unowned listing remains unowned. Immediate DB57B8 and automatic companion/target objects opaque. No continuation or descriptor traversal, Source/build/test/probe/GPR changes, Original FH3, ABI, ownership, activation, runtime or gameplay credit."
+}
