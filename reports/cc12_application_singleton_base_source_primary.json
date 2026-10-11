@@ -1,0 +1,157 @@
+{
+  "schema": "bsp.cc12.application-singleton-base-source-primary.v1",
+  "status": "dormant_Application_singleton_base_fresh_Win32_and_static_review_PASS",
+  "worker_commit": "770c31f60f4d9876fe7df02f37eecb41ea5366b8",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\worker_report.json",
+    "bytes": 42630,
+    "sha256": "7329ef4fcdc8e712be8c776019b1710babbf80e56411e132830c53130a16efae"
+  },
+  "Root_worker_review": {
+    "path": "local/cc12_application_singleton_source_primary/Root_worker_review.json",
+    "bytes": 2518,
+    "sha256": "8e7921cd7e79a24f86948ecd74f1177a5721d9db90d7fb66bd6c30e8d67f0174"
+  },
+  "Root_before": {
+    "path": "local/cc12_application_singleton_source_primary/Root_before.json",
+    "bytes": 5126025,
+    "sha256": "3b74adc14c07a330b11244441a50367b0e6e1a84c632ef654e85b7daab12fbfc"
+  },
+  "preserved_initial_saved_renderer_baseline": {
+    "path": "local/cc12_application_singleton_source_primary/Root_before_saved_renderer_initial.json",
+    "bytes": 5076423,
+    "sha256": "4dba230fa235ebed5afed5795c528609cca042462c8dd61caa6ccf6168900290"
+  },
+  "Root_after": {
+    "path": "local/cc12_application_singleton_source_primary/Root_after.json",
+    "bytes": 5084492,
+    "sha256": "d611e443ba03f912d44fc9b2b816e3617f93c87cc7bb6f84543366949f871f6d"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_application_singleton_source_primary/Root_compiled_review.json",
+    "bytes": 45745,
+    "sha256": "740c6e3bf9edfef1e8d5c2ee749443b25b19d8633a178554a2385990b018360d"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_application_singleton_source_primary/Source3356_application_singleton_base_Root_frozen.json",
+    "bytes": 1267925,
+    "sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "actual_Root_Git": 4217,
+    "worker_closed_Source": 4228,
+    "worker_frozen_Git_occurrences": 4237,
+    "worker_staged_Git_occurrences": 4237,
+    "worker_staged_trees": 11,
+    "worker_baseline": "Saved-renderer Source3356; Root independently qualifies intervening accepted mesh pair.",
+    "Root_baseline": "Accepted Source3356 mesh record; original saved-renderer Root before receipt/data preserved, recaptured before Application merge.",
+    "Root_Source_changes": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "new_files": []
+  },
+  "Root_build": {
+    "receipt": {
+      "path": "local/cc12_application_singleton_source_primary/Root_after_build_receipt.json",
+      "bytes": 891,
+      "sha256": "03858c5a4155483babde24824c29e484b8602f95bfaccbc21b82574f73d6500d"
+    },
+    "log": {
+      "path": "local/cc12_application_singleton_source_primary/Root_after_build.log",
+      "bytes": 3885,
+      "sha256": "59bc9ce0ec776a74a2e0106846ad2ebb312d929af7d7f1791c80cad2cee49d09"
+    },
+    "normal_scripts_build_ps1": true,
+    "MSVC_Win32": true,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0
+  },
+  "contract": {
+    "storage": "Caller supplies original aligned actual receiver storage/enclosing1Ch and fixed distinct actual manager/Application cells, shared real process/host manager authority, retained raw manager/vector/captured section/depth lifetimes. No allocation/provenance/owner created.",
+    "schedule": "Source state0 before D68BC4 -> genuine415350 capture raw manager+10 section -> exact8B CE37FC guard -> optional actualEnter/currentdepthincrement -> state1 -> unconditional original E1AE90 publication -> secondgetter -> currentpublication selected for genuineBD0C30 includingnull -> capturedsection currentdepth decrement/actualLeave -> disarm -> originalreceiver return.",
+    "exceptions": "Beforestate1 genuine412430; afterstate1 genuine411EE0(actualguard), then412430 onlyifguardcleanupreturns; second escaping MSVCC++ cleanup terminates. State1 stays through normalLeave, so an escaping Leave can decrement/Leave again with no safe disposition credit.",
+    "compiler_qualification": "Source BaseCleanup arm precedes profile store. /EHsc EH state0 selector appears after non-C++-throwing store and before firstprovider; ordinary C++ domain only, no hardware/FH3 equivalence.",
+    "partial_effects": "Publication/registration survives escape; no clear/restore/unregister/free/retry/extra retain/countercompensation. CE3818 failed-base reset is not a retirement/raw-return token: the positive current-profile flags1 manager drain can reach deallocation. Actual storage/owner lifetime must account for escaped entries."
+  },
+  "compiled": {
+    "old_code_sections_exact": 174395,
+    "added_sections": 2,
+    "added_bytes": 239,
+    "complete_physical_indices": 40,
+    "selected_TUs_per_phase": 20,
+    "header_consumers_per_phase": 17,
+    "whole_changed_objects": 17,
+    "whole_changed_App_objects": 1,
+    "unique_constructor_positive_definitions": 1,
+    "Root_worker_positive_function_bijections": 5,
+    "Root_worker_positive_private_SEH_metadata_bijections": 1,
+    "positively_identified_EH_tables_equal_worker": [
+      {
+        "Root_positive_label": {
+          "name": "__sehtable$?unwind_guard@?A0x02c0f4c0@bsp@@YAXAAUNativeGuard@12@@Z",
+          "value": 0,
+          "section": 24,
+          "type": 0,
+          "storage": 3
+        },
+        "worker_positive_labels": [
+          {
+            "name": ".xdata$x",
+            "value": 0,
+            "section": 24,
+            "type": 0,
+            "storage": 3
+          },
+          {
+            "name": "__sehtable$?unwind_guard@?A0x6744bbec@bsp@@YAXAAUNativeGuard@12@@Z",
+            "value": 0,
+            "section": 24,
+            "type": 0,
+            "storage": 3
+          }
+        ],
+        "bytes": 28,
+        "hex": "feffffff00000000d0ffffff00000000feffffff0000000000000000",
+        "ordered_symbolic_relocations": [
+          {
+            "offset": 20,
+            "type": 6,
+            "symbol": "$LN5"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "$LN6"
+          }
+        ]
+      }
+    ],
+    "complete_provider_TU_code_and_symbolic_relocations_equal_worker_under_finite_positive_bijection": true,
+    "no_direct_Core_App_entry_callers": true,
+    "EH_metadata_references_confined_to_provider_module": true,
+    "Game_map_constructor_symbols": 0,
+    "Game_text_exact": true,
+    "whole_image_equality_claimed": false,
+    "artifact_comparison": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\Root_artifact_comparison.json",
+      "bytes": 4825,
+      "sha256": "714cf6dad131311434d236a79c2805f3191213d55abc2541dfc432c1de6f6201"
+    }
+  },
+  "historical_provider_scope": "Preserve accepted generic reset reconstructed/build/fixture evidence and guard strict Win32/original-byte FH3 fixture record with their own bridges/domain qualifications; no transfer to Application frame.",
+  "scope": {
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "Native_execution": 0,
+    "game_runs": 0
+  },
+  "remaining": [
+    "Actual Application raw owner/E1AE90 producer and canonical storage provenance remain unproved.",
+    "BEA970/737970 shell Source composition, callable profiles, +14 domain and independent E1AE78 custody remain separate boundaries.",
+    "No startup/factory caller, qualified destruction/retirement, original Native ABI/FH3 or helper/runtime/gameplay execution GO."
+  ]
+}
