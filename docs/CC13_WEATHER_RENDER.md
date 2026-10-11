@@ -32,8 +32,29 @@ clean).
 
 The frame arithmetic the ocean document reconstructed is still the arithmetic of `00BBD310`;
 only the object identity is wrong. `00BBE8B0` is renamed `BSP_CloudInstance_Update` (old name
-recorded by `ghidra_annotate`). `00BBD310`/`00BBDDD0` and the two files were not touched: they
-sit outside this packet's lease (segment 93). The lead was told.
+recorded by `ghidra_annotate`). With the lead's approval (lease `cc13_weather1_cloudmgr`, `00BBCF60-00BBDEC0`) the segment-93 tail
+was renamed too: `00BBDDD0` `BSP_Atmosphere_UpdateClouds`, `00BBD310`
+`BSP_CloudManager_UpdateFrameAndInstances`, plus `00BBCFE0` SetEnabled (`+98h`, own node and the
+registered nodes at `+9Ch/+A0h`), `00BBD470` RegisterNode, `00BBD6C0` CreateCloudClass, `00BBD770`
+CreateInstance (factory `[010909B0]` vtable+04, instances at `+18h/+1Ch/+20h`), `00BBD910`
+ReleaseInstance, `00BBDA50` Construct (A8h), `00BBD950` DestructBody, and the atmosphere accessors
+`00BBDD30..00BBDDF0`. `docs/GAME_WORLD_OCEAN.md` carries an appended dated note and
+`src/world_ocean.cpp` comment-only notes; no C++ identifier changed (gameplay headers include
+`world_ocean.hpp`).
+
+What stays ocean or is unrelated: nothing in `world_ocean.*` computes a water surface or height.
+The header's vector kernels (`OceanVec3`, `length_00419440`, `normalize_00419510`,
+`cross_004f9b30`) are generic and are what the buoyancy, hull-contact, hydro-force and unit headers
+use; `advance_effect_sample_00867d00`, the session/mission counters and the start latch are effect
+and mission state. Only `OceanFrame`/`OceanState`, `ocean_orthonormalize_00bbd310` and the
+`shore_wave_scroll*_00bbec06` pair describe the cloud manager. The real shore-wave and caustics
+texture sources (`00BBC740..00BBC900`) are separate and untouched.
+
+Gameplay readers: a scan of all 40 literal `game+19E8h` loads and the 13 callers of `00BBDDF0`
+found none in buoyancy, ship motion, torpedo or depth-charge code (callers: segment-6 cloud scene
+class, `BSP_CloudClass_ReadLua`, the cloud entity property pass, ConstructWorld, the weather effect
+setup `00865900`, DestroyWorld, options and settings). A pointer cached elsewhere would escape this
+scan; none was found.
 
 ## Lightning storm (`00BC0510`, `00BC0D40`)
 
@@ -185,9 +206,11 @@ manager (`00BBDA50`, A8h). Accessors `00BBDD30` (+20h), `00BBDD40` (+28h), `00BB
 
 The setters `00BBDE10` (+20h) and `00BBDE50` (+28h) recompute the fog colour with
 `00BBF590` on the sky box and pass it to the fog receiver (`00B84C40`); `00BBDE90` sets the wind
-from a vector. These and `00BBDE00` lie in `00BBDDF0..00BBDEC0`, between segment 93 and 94, where
-Ghidra has only the 3-byte `TRIV_body_00bbddf0`; they are documented here, not defined or renamed
-(outside this lease).
+from a vector; `00BBDD80` returns direction * speed and `00BBDE00` forwards to the cloud manager
+(`00BBCE60`). None of these five has any code or data reference in this build (no call, no
+vtable slot: the atmosphere vtable `00D64518` has only the two destructor slots), so they were
+left undefined. Consequently `00BBF590`, whose only callers are `00BBDE2F`/`00BBDE6F`, is
+unreachable too: the fog-colour strips below are reconstructed but dead in this executable.
 
 Sky box (`00BBF8A0`, 130h): `sky\skybox.mmod`; three layers of 54h bytes from `+34h`, each with
 four texel taps `cOffset0..3` (0, 1/w, 1/h, both) and `cTextureSize` from the layer texture
@@ -334,12 +357,11 @@ reconstructed in `src/weather_render.cpp` (build-tested, no fixtures). Segment 9
 
 Next steps, in value order:
 
-1. Integrator: apply the cloud-manager correction to `docs/GAME_WORLD_OCEAN.md`,
-   `src/world_ocean.cpp`, `docs/GAME_WORLD_CONSTRUCT.md` / `world_construct.cpp` ("ocean owner" is
-   the atmosphere `00BBDFF0`; `ocean_set_scalar` are `BSP_SkyBox_SetRotationDegrees` and
-   `BSP_SkyBox_SetLuminance`) and rename `00BBD310`/`00BBDDD0` (segment 93, not leased here).
-2. Define and name the atmosphere methods in `00BBDDF0..00BBDEC0` (`00BBDE00`, `00BBDE10`,
-   `00BBDE50`, `00BBDE90`); Ghidra currently has a 3-byte `TRIV_body_00bbddf0` there.
+1. Optional: a comment note in `docs/GAME_WORLD_CONSTRUCT.md` / `world_construct.cpp` ("ocean
+   owner" is the atmosphere `00BBDFF0`; `ocean_set_scalar` are `BSP_SkyBox_SetRotationDegrees` and
+   `BSP_SkyBox_SetLuminance`). The ocean doc and `world_ocean.cpp` notes are done.
+2. The cloud-manager getters below `00BBCF60` (`00BBCD30..00BBCE70`: colours, wind source, wind
+   flag) are still unnamed.
 3. Reconstruct `00BC2340` (water-drop quads, layout above) and `00BC4D20` (cloud puff cull/sort
    per frame); both need the renderer vertex-stream types.
 4. `00BC84A0` lightning strand bursts: an assembly pass and a host for the strand vectors; it
