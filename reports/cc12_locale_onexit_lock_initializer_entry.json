@@ -1,0 +1,520 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_lock_initializer_entry",
+  "status": "bounded exact-entry Native evidence; continuation scope closed",
+  "frozen_HEAD": "1ae0e1952c64b645f71fe112d5706413c4888f68",
+  "positive_predecessor": {
+    "physical_source": "00C11C35",
+    "opcode": "E8",
+    "numeric_target": "00C11B5E",
+    "meaning": "accepted numeric direct-call edge only; arguments and external returned state unknown",
+    "immediate_files": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "oid": "607310d04c45c6748a6eaee6de5ad7a4f3fd48a8",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "bytes": 5677,
+        "sha256": "456aef1a21c5a45cf9e6a6dd05905f26703df7b7d8c7ffd650682d191e03d64a"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_body.json",
+        "oid": "849d35d6b6f397d43aabba09dfbfc0f75370686e",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_body.json",
+        "bytes": 46960,
+        "sha256": "a87c17fa4c353cc0e99f99af3bc6638c620bf9a0fa7323c1c13cd37d007ea744"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "oid": "1bac4b80d2f060ceca77eec073f165fc2c2bf41d",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "bytes": 2799,
+        "sha256": "da3626511333ec562373412a322d794d34fc04a52f99039d6345d4a004fb9dd4"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_body_primary.json",
+        "oid": "c88f51309740ea68c0009dec61ea6da2dca963d4",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_body_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_body_primary.json",
+        "bytes": 28217,
+        "sha256": "5f78f899998538a8e4799e7568209fe36ab43fc0912a57488f17cecc5b5e5888"
+      }
+    ]
+  },
+  "Root_entry_gate": {
+    "proof": {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry/Root_entry_gate.json",
+      "bytes": 8972,
+      "sha256": "e36606d961420ec7c463b41196856a3fa3cae64f22ef09d13fdf6431f1fb6ec1"
+    },
+    "producer_retained_not_executed": {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry/Root_entry_gate.py",
+      "bytes": 3220,
+      "sha256": "43358dcafee1cba23e20195ea2a5020edbb4bb45da81bd15371c115bb4e052ca"
+    },
+    "admitted": [
+      "two exact 2-byte entry reads",
+      "one exact context-zero saved-text read",
+      "saved prototype prefix metadata"
+    ],
+    "not_admitted": [
+      "continuation",
+      "three saved body ranges beyond entry",
+      "gaps",
+      "callees",
+      "data",
+      "automatic companions"
+    ]
+  },
+  "typed_metadata": {
+    "captures": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/typed_entry_a.raw.json",
+        "bytes": 9428,
+        "sha256": "3d1b219d3ecf79d62a6446eaca3a31837e53c6584922d7b76476a693047e8745"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/typed_entry_b.raw.json",
+        "bytes": 9428,
+        "sha256": "c4ebd506bd1d21a0da0fa6de25a29c54c41d96989839e1edd837fe9f3eefebb1"
+      }
+    ],
+    "projection": {
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11b5e"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11b5e"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11b5e"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11b5e"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b60"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b60"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "owner": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c11b5e"
+        },
+        "name": "LIBCRT_unmatched_00c11b5e",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 3,
+          "returned_range_count": 3,
+          "address_count": "168",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11b5e"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11be6"
+              },
+              "length": "137"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11bf8"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c01"
+              },
+              "length": "10"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11c03"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c17"
+              },
+              "length": "21"
+            }
+          ]
+        }
+      },
+      "raw_payload_pin": {
+        "bytes": 2384,
+        "sha256": "0e4369e25ef6d44ef629e75312a7dcce2d65efb4369bf701321e0338aed15efe"
+      },
+      "opaque": "entire automatic direct_call_targets value"
+    },
+    "epoch": 98,
+    "count_before_after_metadata_after_entry": [
+      64730,
+      64730,
+      64730
+    ],
+    "all_four_aliases_verified": true,
+    "payloads_equal": true,
+    "raw_HTTP_JSON_base64_digests_retained": true
+  },
+  "entry_code": {
+    "address": "00C11B5E",
+    "whole_unit_bytes": 2,
+    "hex": "6A0C",
+    "sha256": "ac7110edcd8aa5e33d8203ef02f5e65591a308f24050afc2cb9aab99b660c772",
+    "reads": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/entry_bytes_a.stdout.bin",
+        "bytes": 21,
+        "sha256": "28390c2d94f95f4d3720fffe6030b8e06ecab0acb7450e2b6121cf2c8aef4a04"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/entry_bytes_b.stdout.bin",
+        "bytes": 21,
+        "sha256": "28390c2d94f95f4d3720fffe6030b8e06ecab0acb7450e2b6121cf2c8aef4a04"
+      }
+    ],
+    "context_zero_saved_text": {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry/entry_text.raw.json",
+      "bytes": 157,
+      "sha256": "7113fde58e11805ca40869d9a3e5664400553a1274ac3e635e22caebce92d85d"
+    },
+    "saved_instruction": "PUSH 0xc",
+    "independent_physical_decode": {
+      "opcode": "6A",
+      "encoding": "PUSH imm8 sign-extended to default operand width",
+      "immediate_byte": "0C",
+      "immediate_signed": 12,
+      "under_saved_default32": "PUSH 0000000Ch",
+      "ModRM": "none",
+      "relative_target": "none"
+    },
+    "conditional_machine_effect": {
+      "assumptions": "normal completion under saved default-32 decode and a 32-bit stack model",
+      "ESP_before": "S",
+      "ESP_after": "S-4 modulo 2^32",
+      "write": "current SS:[S-4] := 0000000Ch",
+      "caller_argument_read": false,
+      "continuation_numeric_only": "00C11B60",
+      "continuation_read": false,
+      "meaning_of_constant_or_stack_slot": "unknown"
+    }
+  },
+  "saved_function_metadata_limits": {
+    "name": "LIBCRT_unmatched_00c11b5e",
+    "prefix": [
+      "Function: LIBCRT_unmatched_00c11b5e at 00c11b5e",
+      "Signature: undefined LIBCRT_unmatched_00c11b5e(void)",
+      "Entry: 00c11b5e",
+      "Body: 00c11b5e - 00c11c17"
+    ],
+    "no_return_false_is_metadata_only": true,
+    "three_complete_ranges_total": 168,
+    "bounding_envelope_is_not_contiguous_body": true,
+    "initializer_locking_provider_CRT_identity": "not established",
+    "actual_ABI": "not established"
+  },
+  "prototype_capture": {
+    "stream": {
+      "path": "local/cc12_locale_onexit_lock_initializer_entry/prototype.stdout.bin",
+      "bytes": 1260,
+      "sha256": "8f81f07858809b8dbc28e6dd773e356c344cb16cc33fbb17f997f948ad4470cc"
+    },
+    "interpreted_prefix_lines": 4,
+    "opaque_delivered_suffix_pin": {
+      "bytes": 1113,
+      "sha256": "5a832ce84808edba6ffe4435a3fec93c94f1408b60256d5a16dc4a2ca3c90bc2"
+    },
+    "opaque_suffix_parsed": false,
+    "incidental_display": "A six-line bounded preview displayed four prefix lines plus the companion opening brace and name-field line. No companion field was adopted, parsed or followed.",
+    "whole_automatic_companion_status": "opaque; no semantic claims from any of its fields"
+  },
+  "provenance": {
+    "selected_positive_files": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "tools/workspace.py",
+        "oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "blob_member": "blobs/tools/workspace.py",
+        "physical_member": "physical/tools/workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "oid": "607310d04c45c6748a6eaee6de5ad7a4f3fd48a8",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+        "bytes": 5677,
+        "sha256": "456aef1a21c5a45cf9e6a6dd05905f26703df7b7d8c7ffd650682d191e03d64a"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_body.json",
+        "oid": "849d35d6b6f397d43aabba09dfbfc0f75370686e",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_body.json",
+        "bytes": 46960,
+        "sha256": "a87c17fa4c353cc0e99f99af3bc6638c620bf9a0fa7323c1c13cd37d007ea744"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "oid": "1bac4b80d2f060ceca77eec073f165fc2c2bf41d",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_BODY_PRIMARY.md",
+        "bytes": 2799,
+        "sha256": "da3626511333ec562373412a322d794d34fc04a52f99039d6345d4a004fb9dd4"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_body_primary.json",
+        "oid": "c88f51309740ea68c0009dec61ea6da2dca963d4",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_body_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_body_primary.json",
+        "bytes": 28217,
+        "sha256": "5f78f899998538a8e4799e7568209fe36ab43fc0912a57488f17cecc5b5e5888"
+      }
+    ],
+    "actual_frozen_Git_objects": [
+      {
+        "kind": "commit",
+        "oid": "1ae0e1952c64b645f71fe112d5706413c4888f68",
+        "member": "objects/1ae0e1952c64b645f71fe112d5706413c4888f68",
+        "bytes": 510,
+        "sha256": "8c0bf02392defa2786c67a166388f55eeda4235ce9cf4cc0706c8aca25fc5725"
+      },
+      {
+        "kind": "tree",
+        "oid": "0ed2534e254c31e680d69f1c163af7b7900c90a6",
+        "member": "objects/0ed2534e254c31e680d69f1c163af7b7900c90a6",
+        "bytes": 563,
+        "sha256": "7cdbf079be3d5b23badb52017e1bc6b08eb810ec0c8df6503239c58deae9d5a9"
+      },
+      {
+        "kind": "tree",
+        "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "member": "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      {
+        "kind": "tree",
+        "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+        "member": "objects/fa269934679ee43da523f7bf9c369e4e27d83531",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      {
+        "kind": "tree",
+        "oid": "1e7fe33d98599f1b72b046c5588a1b7263b6a260",
+        "member": "objects/1e7fe33d98599f1b72b046c5588a1b7263b6a260",
+        "bytes": 229367,
+        "sha256": "24622f22d9582bd4619a70e1700ef9cd00f88469cfa95bae97241294a4c06813"
+      },
+      {
+        "kind": "tree",
+        "oid": "f938112e07623c983ae39b2c8b1e49e17d5a4e85",
+        "member": "objects/f938112e07623c983ae39b2c8b1e49e17d5a4e85",
+        "bytes": 354250,
+        "sha256": "a5263e3de578ea255068a85d81e5bafdf6ffc79404d572b888fce8923560da86"
+      }
+    ],
+    "finite_positive_files": 9,
+    "CLI_commands_with_complete_streams": 9,
+    "failed_or_interrupted_Native_captures": 0,
+    "earlier_archives_or_frameworks_traversed": 0,
+    "worker_producers_in_core": 4,
+    "additional_Root_gate_producer_retained": true
+  },
+  "core_archive": {
+    "path": "local/cc12_locale_onexit_lock_initializer_entry/core_v1.zip",
+    "bytes": 1060974,
+    "sha256": "08de75ca0d6b387d66e14276277c775b6089cb934d95bc4073b45ed0678370ba"
+  },
+  "distinct_physical_copy": {
+    "path": "local/cc12_locale_onexit_lock_initializer_entry/core_v1_copy.zip",
+    "bytes": 1060974,
+    "sha256": "08de75ca0d6b387d66e14276277c775b6089cb934d95bc4073b45ed0678370ba"
+  },
+  "offline_replay": {
+    "receipts": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/core_v1_original.guard.json",
+        "bytes": 5792,
+        "sha256": "1bc2587883626d6bc52e18f8b39a10e52a7b46739f83bfdb320e2a5e7063e584"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_entry/core_v1_copy.guard.json",
+        "bytes": 5792,
+        "sha256": "1bc2587883626d6bc52e18f8b39a10e52a7b46739f83bfdb320e2a5e7063e584"
+      }
+    ],
+    "guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "helper_pins_verified_before_execution": [
+      {
+        "name": "replay.py",
+        "bytes": 12963,
+        "sha256": "533dc894ab596b3e09d2c3527ae886cc85577d14ee0f5eeb9e25813514decc30"
+      },
+      {
+        "name": "guarded_replay.py",
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    ],
+    "archive_members_verified": 63,
+    "status": "PASS"
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_ENTRY.md",
+      "reports/cc12_locale_onexit_lock_initializer_entry.json"
+    ],
+    "post_commit_archive": "local/cc12_locale_onexit_lock_initializer_entry/delivery_v1.zip",
+    "receipts": [
+      "local/cc12_locale_onexit_lock_initializer_entry/delivery_v1_original.guard.json",
+      "local/cc12_locale_onexit_lock_initializer_entry/delivery_v1_copy.guard.json"
+    ],
+    "closure": "Actual frozen/final commit and selected tree objects, selected physical/blob bytes and owned staged bytes; root/subtree comparisons prove exactly two changed paths.",
+    "self_reference_boundary": "Delivery archive and receipts are generated after committing these outputs and are handed off separately."
+  },
+  "Source_identity_only": {
+    "trees": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "worker frozen base and final revision identity only",
+    "current_or_future_Root_equality": "not claimed",
+    "census": "not performed",
+    "implementation_credit": false
+  },
+  "not_established": [
+    "meaning of initializer packet label",
+    "argument meaning or access",
+    "locking or provider behavior",
+    "actual CRT identity",
+    "external returned registers, ESP, EBP, flags or memory",
+    "whole-function return or cleanup",
+    "ABI",
+    "status",
+    "ownership",
+    "exception or unwind contract",
+    "Source/build/test/probe result",
+    "Original game/OS/audio behavior",
+    "startup/gameplay completion"
+  ],
+  "next_scope": "Closed at the exact entry. Any continuation, body range, gap, callee or data work requires a separate Root scope decision."
+}
