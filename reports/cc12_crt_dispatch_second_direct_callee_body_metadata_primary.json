@@ -1,0 +1,954 @@
+{
+  "schema": "cc12.c059a8-body.primary.v1",
+  "status": "ACCEPTED_BOUNDED_PHYSICAL_EVIDENCE",
+  "worker_commit": "083f114cd8b225fb23aa36d9c0a161cb072fdc19",
+  "frozen_actual_Main": "dea25e8d8b07300efb6db6ba04088d1b7f8f3964",
+  "ranges": [
+    {
+      "range_index": 1,
+      "start": "00C059A8",
+      "end_inclusive": "00C05A29",
+      "length": 130,
+      "whole_units": 44,
+      "first_unit": "00C059A8",
+      "last_unit": "00C05A25",
+      "last_unit_length": 5,
+      "stopped_at_end_plus_one_without_query": "00C05A2A"
+    },
+    {
+      "range_index": 2,
+      "start": "00C05A2D",
+      "end_inclusive": "00C05A6D",
+      "length": 65,
+      "whole_units": 22,
+      "first_unit": "00C05A2D",
+      "last_unit": "00C05A69",
+      "last_unit_length": 5,
+      "stopped_at_end_plus_one_without_query": "00C05A6E"
+    },
+    {
+      "range_index": 3,
+      "start": "00C05A71",
+      "end_inclusive": "00C05AB0",
+      "length": 64,
+      "whole_units": 27,
+      "first_unit": "00C05A71",
+      "last_unit": "00C05AAC",
+      "last_unit_length": 5,
+      "stopped_at_end_plus_one_without_query": "00C05AB1"
+    },
+    {
+      "range_index": 4,
+      "start": "00C05AB6",
+      "end_inclusive": "00C05AD4",
+      "length": 31,
+      "whole_units": 14,
+      "first_unit": "00C05AB6",
+      "last_unit": "00C05AD0",
+      "last_unit_length": 5,
+      "stopped_at_end_plus_one_without_query": "00C05AD5"
+    },
+    {
+      "range_index": 5,
+      "start": "00C05AD8",
+      "end_inclusive": "00C05AF6",
+      "length": 31,
+      "whole_units": 13,
+      "first_unit": "00C05AD8",
+      "last_unit": "00C05AF2",
+      "last_unit_length": 5,
+      "stopped_at_end_plus_one_without_query": "00C05AF7"
+    },
+    {
+      "range_index": 6,
+      "start": "00C05AFA",
+      "end_inclusive": "00C05B47",
+      "length": 78,
+      "whole_units": 30,
+      "first_unit": "00C05AFA",
+      "last_unit": "00C05B47",
+      "last_unit_length": 1,
+      "stopped_at_end_plus_one_without_query": "00C05B48"
+    }
+  ],
+  "total_bytes": 399,
+  "whole_instructions": 150,
+  "Root_independent_manual_written_before_Capstone_import": true,
+  "Root_fresh_Capstone": {
+    "status": "PASS",
+    "manual_count": 150,
+    "actual_count": 150,
+    "total_bytes": 399,
+    "Capstone_version": "5.0.7",
+    "manual_physical_write_before_Capstone_import": true,
+    "differences": []
+  },
+  "all_worker_recorded_fields_match_Root_fresh_actual": true,
+  "Native": {
+    "commands": 470,
+    "typed_originals": 450,
+    "typed_three_passes_equal": true,
+    "three_CLI_physical_before_after_each": 470,
+    "function_count": 64730,
+    "modification_number": 98
+  },
+  "twenty_actual_Git_objects": {
+    "dea25e8d8b07300efb6db6ba04088d1b7f8f3964": {
+      "type": "commit",
+      "member": "git_objects/dea25e8d8b07300efb6db6ba04088d1b7f8f3964.commit",
+      "bytes": 402,
+      "sha256": "60127504d317d82b698843bbe24a4f6f0f9abdad67d32714d5babe015e67117d"
+    },
+    "a3b58e60c8688f9acf26d62e3c004e54e157500b": {
+      "type": "tree",
+      "member": "git_objects/a3b58e60c8688f9acf26d62e3c004e54e157500b.tree",
+      "bytes": 563,
+      "sha256": "abc86f0a2552b4102bb6f990fd193977cf6cb85f8d7d40b899415601cc5e9faa"
+    },
+    "f057250ae6826e8f846f6fc43994fbf110e23b18": {
+      "type": "tree",
+      "member": "git_objects/f057250ae6826e8f846f6fc43994fbf110e23b18.tree",
+      "bytes": 235181,
+      "sha256": "933a3688537d1c48c6694bfc9f76bf4829b36db50e8b9082c60447b2bf393a52"
+    },
+    "76e53068f763e489cccf947337844f3e9ce87756": {
+      "type": "blob",
+      "member": "git_objects/76e53068f763e489cccf947337844f3e9ce87756.blob",
+      "bytes": 7937,
+      "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+    },
+    "11a06986e2c40feb9c475b62a614baf56d9c801e": {
+      "type": "tree",
+      "member": "git_objects/11a06986e2c40feb9c475b62a614baf56d9c801e.tree",
+      "bytes": 360204,
+      "sha256": "d197ec6a85e43354bdbfbcf9d50ca82872b482fa0491289a06e60c7cf6fa5cae"
+    },
+    "c18b16266f8fa7ed89b22f083a776c2022362ca3": {
+      "type": "blob",
+      "member": "git_objects/c18b16266f8fa7ed89b22f083a776c2022362ca3.blob",
+      "bytes": 47705,
+      "sha256": "06554e34c704ef2c20b612a08777982c592d88cd801f04a7c6cfedb6022ea1d3"
+    },
+    "3c887252148f613d96107607c1fa4539722027e2": {
+      "type": "blob",
+      "member": "git_objects/3c887252148f613d96107607c1fa4539722027e2.blob",
+      "bytes": 2861,
+      "sha256": "ea1593f7bb5c0fe1f1fda29fa7099d43fc2415b86785a86223c169880bf3984e"
+    },
+    "aba11fa95b31d6884c4328393318f270850fcdfc": {
+      "type": "blob",
+      "member": "git_objects/aba11fa95b31d6884c4328393318f270850fcdfc.blob",
+      "bytes": 6117,
+      "sha256": "6a7138d4def0e7f44a71c26b2024de8953e56040ab3c7decceb5e4c04d063540"
+    },
+    "5d44e3241c6faffb49d6d830faa92fba468aaf25": {
+      "type": "tree",
+      "member": "git_objects/5d44e3241c6faffb49d6d830faa92fba468aaf25.tree",
+      "bytes": 368,
+      "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+    },
+    "a46b97705f35162ba70bfbd4909788d11bb188b4": {
+      "type": "blob",
+      "member": "git_objects/a46b97705f35162ba70bfbd4909788d11bb188b4.blob",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "fa269934679ee43da523f7bf9c369e4e27d83531": {
+      "type": "tree",
+      "member": "git_objects/fa269934679ee43da523f7bf9c369e4e27d83531.tree",
+      "bytes": 2580,
+      "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+    },
+    "ba90f058569106f62c72dc9f9d72de205772fc7c": {
+      "type": "blob",
+      "member": "git_objects/ba90f058569106f62c72dc9f9d72de205772fc7c.blob",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    "0056201883c1594d9267d2fcf4990385461f0857": {
+      "type": "blob",
+      "member": "git_objects/0056201883c1594d9267d2fcf4990385461f0857.blob",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    "4f73269e25719493aefe1d7f0111b8bbb6b62619": {
+      "type": "blob",
+      "member": "git_objects/4f73269e25719493aefe1d7f0111b8bbb6b62619.blob",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    "083f114cd8b225fb23aa36d9c0a161cb072fdc19": {
+      "type": "commit",
+      "member": "delivery_git_objects/083f114cd8b225fb23aa36d9c0a161cb072fdc19.commit",
+      "bytes": 637,
+      "sha256": "8bc37f9fea125137f0f46da35c7463a328d4e787987b0305db5585ff81d34e83"
+    },
+    "5a0e3bb6f9be22299fcb7f7a01549b95678a9239": {
+      "type": "tree",
+      "member": "delivery_git_objects/5a0e3bb6f9be22299fcb7f7a01549b95678a9239.tree",
+      "bytes": 563,
+      "sha256": "7d386d7d3268fef3029d6e92564a27cc015bd79e53f019b0b69322b18a679cb8"
+    },
+    "f2b9a814873c6dd4fdb5497d393d19e3e315a5a2": {
+      "type": "tree",
+      "member": "delivery_git_objects/f2b9a814873c6dd4fdb5497d393d19e3e315a5a2.tree",
+      "bytes": 235264,
+      "sha256": "220ca75ec9a4f753124c13a4ef52367e536377f2324763578bfca7fdda2fd8aa"
+    },
+    "29d7a43fe27efd5256621ce10fbd574feb44b4bf": {
+      "type": "tree",
+      "member": "delivery_git_objects/29d7a43fe27efd5256621ce10fbd574feb44b4bf.tree",
+      "bytes": 360289,
+      "sha256": "5ff67e76999ddbdc95ce42c74845aa01110109605c8af6c2756e8e3b9f2d5aec"
+    },
+    "616cfcb41b924cd2877a454b9a341cbf39c4c409": {
+      "type": "blob",
+      "member": "delivery_git_objects/616cfcb41b924cd2877a454b9a341cbf39c4c409.blob",
+      "bytes": 16884,
+      "sha256": "0a5e526e30e31f72715a1da901cd947011fd601d27b7e5f9e9bea8622bba643e"
+    },
+    "e4930437161e38701a4cddfaf8963b3f0aa92d9d": {
+      "type": "blob",
+      "member": "delivery_git_objects/e4930437161e38701a4cddfaf8963b3f0aa92d9d.blob",
+      "bytes": 777621,
+      "sha256": "267930c2efc60716fc812ae9dcda6a21d4dff8c5bfa08ceaa13adff498e11e66"
+    }
+  },
+  "ten_current_working_LF_index_identities": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_ENTRY.md",
+      "blob": "76e53068f763e489cccf947337844f3e9ce87756",
+      "working_physical": {
+        "bytes": 7937,
+        "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+      },
+      "LF_blob": {
+        "bytes": 7937,
+        "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+      }
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_second_direct_callee_entry.json",
+      "blob": "c18b16266f8fa7ed89b22f083a776c2022362ca3",
+      "working_physical": {
+        "bytes": 47705,
+        "sha256": "06554e34c704ef2c20b612a08777982c592d88cd801f04a7c6cfedb6022ea1d3"
+      },
+      "LF_blob": {
+        "bytes": 47705,
+        "sha256": "06554e34c704ef2c20b612a08777982c592d88cd801f04a7c6cfedb6022ea1d3"
+      }
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_ENTRY_PRIMARY.md",
+      "blob": "3c887252148f613d96107607c1fa4539722027e2",
+      "working_physical": {
+        "bytes": 2861,
+        "sha256": "ea1593f7bb5c0fe1f1fda29fa7099d43fc2415b86785a86223c169880bf3984e"
+      },
+      "LF_blob": {
+        "bytes": 2861,
+        "sha256": "ea1593f7bb5c0fe1f1fda29fa7099d43fc2415b86785a86223c169880bf3984e"
+      }
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_second_direct_callee_entry_primary.json",
+      "blob": "aba11fa95b31d6884c4328393318f270850fcdfc",
+      "working_physical": {
+        "bytes": 6117,
+        "sha256": "6a7138d4def0e7f44a71c26b2024de8953e56040ab3c7decceb5e4c04d063540"
+      },
+      "LF_blob": {
+        "bytes": 6117,
+        "sha256": "6a7138d4def0e7f44a71c26b2024de8953e56040ab3c7decceb5e4c04d063540"
+      }
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_physical": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "LF_blob": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_physical": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "LF_blob": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_physical": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "LF_blob": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_physical": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "LF_blob": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_BODY_METADATA.md",
+      "blob": "616cfcb41b924cd2877a454b9a341cbf39c4c409",
+      "working_physical": {
+        "bytes": 16884,
+        "sha256": "0a5e526e30e31f72715a1da901cd947011fd601d27b7e5f9e9bea8622bba643e"
+      },
+      "LF_blob": {
+        "bytes": 16884,
+        "sha256": "0a5e526e30e31f72715a1da901cd947011fd601d27b7e5f9e9bea8622bba643e"
+      }
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_second_direct_callee_body_metadata.json",
+      "blob": "e4930437161e38701a4cddfaf8963b3f0aa92d9d",
+      "working_physical": {
+        "bytes": 777621,
+        "sha256": "267930c2efc60716fc812ae9dcda6a21d4dff8c5bfa08ceaa13adff498e11e66"
+      },
+      "LF_blob": {
+        "bytes": 777621,
+        "sha256": "267930c2efc60716fc812ae9dcda6a21d4dff8c5bfa08ceaa13adff498e11e66"
+      }
+    }
+  ],
+  "all_5082_member_pins_verified": true,
+  "Root_artifacts": 1984,
+  "Root_preimages": 1975,
+  "strict_audit": {
+    "archive_reads": 1,
+    "result_writes": 1,
+    "helper_execs": 1,
+    "unexpected_denials": []
+  },
+  "Root_first_strict_execution_PASS": true,
+  "Root_strict_receipt_equals_both_worker": true,
+  "complete_physical_helper_and_guard_reviewed": true,
+  "saved_metadata_differences": [
+    {
+      "address": "00C05A25",
+      "instruction_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00bf65bb"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf65bb"
+            },
+            "name": "__invoke_watson",
+            "no_return": true,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05A41",
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05a47"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05a47"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000166"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "EXTERNAL",
+            "offset": "00000166"
+          },
+          "default_target": false,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "EXTERNAL",
+              "offset": "00000166"
+            },
+            "name": "GetModuleFileNameA",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05A69",
+      "instruction_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00bf65bb"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf65bb"
+            },
+            "name": "__invoke_watson",
+            "no_return": true,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05AAC",
+      "instruction_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00bf65bb"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf65bb"
+            },
+            "name": "__invoke_watson",
+            "no_return": true,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05AD0",
+      "instruction_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00bf65bb"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf65bb"
+            },
+            "name": "__invoke_watson",
+            "no_return": true,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05AF2",
+      "instruction_flow": {
+        "flow_override": "CALL_RETURN",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CALL_TERMINATOR",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf65bb"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00bf65bb"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf65bb"
+            },
+            "name": "__invoke_watson",
+            "no_return": true,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05B11",
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b17"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b17"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000100"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "EXTERNAL",
+            "offset": "00000100"
+          },
+          "default_target": false,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "EXTERNAL",
+              "offset": "00000100"
+            },
+            "name": "GetStdHandle",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    {
+      "address": "00C05B3C",
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b42"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b42"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000179"
+          }
+        ]
+      },
+      "automatic_target_metadata": [
+        {
+          "address": {
+            "space": "EXTERNAL",
+            "offset": "00000179"
+          },
+          "default_target": false,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "EXTERNAL",
+              "offset": "00000179"
+            },
+            "name": "WriteFile",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    }
+  ],
+  "opaque_CALLs": 19,
+  "direct_CALLs": 16,
+  "computed_CALLs": 3,
+  "computed_operand_cells_unqueried": [
+    "00CE2244",
+    "00CE20AC",
+    "00CE2290"
+  ],
+  "current_state_contract": "Each implicit stack instruction renews actual current SS.B=1 and normal completion before currentESP +/-4 modulo2^32. Every opaque return leaves all actual register/flag/segment/stack/memory state unknown. LEA only computes offsets. Memory PUSH/CALL source precedes own stack write; earlier stores and DS/SS aliases may affect later reads. No frame, argument, preserved value or provider interpretation.",
+  "unqueried_range_next_cursors": [
+    "00C05A2A",
+    "00C05A6E",
+    "00C05AB1",
+    "00C05AD5",
+    "00C05AF7",
+    "00C05B48"
+  ],
+  "unqueried_gaps": [
+    "00C05A2A-00C05A2C",
+    "00C05A6E-00C05A70",
+    "00C05AB1-00C05AB5",
+    "00C05AD5-00C05AD7",
+    "00C05AF7-00C05AF9"
+  ],
+  "artifact_pins": {
+    "Root_actual_final_review.py": {
+      "bytes": 7626,
+      "sha256": "b5d896d4175a027b07d040a5c4fab51db17fb4ca1a21e2a909baf579ae9f06b8"
+    },
+    "Root_actual_final_review.json": {
+      "bytes": 5479456,
+      "sha256": "4b7e9dbe419f59b301034f1fdd477bde40b98f0c717203ed1bd178172e8c1aa6"
+    },
+    "Root_independent_decode.py": {
+      "bytes": 4079,
+      "sha256": "82fd41c896217e99804105d97cc096ac35cac76abee5ee1a73f689108d035948"
+    },
+    "Root_cpu_fields.py": {
+      "bytes": 7025,
+      "sha256": "dd8f49a450f6918009712de865b8c18c7bd9bd77cc2d66485e27443675a89ec2"
+    },
+    "Root_decoder_derivation.json": {
+      "bytes": 3381,
+      "sha256": "fcf4eefb5ab5663a84a5459c10cc8d16942502367bdc72b483771d769e5b083d"
+    },
+    "Root_own_manual.json": {
+      "bytes": 213299,
+      "sha256": "fa18652f94750a83279aca419bb53061a9751dacb857f1e78384428163717781"
+    },
+    "Root_fresh_Capstone.json": {
+      "bytes": 156611,
+      "sha256": "96f75c3aa44c3a3957183cdf880f20d76d0a309cb33758ce7005ad1703c13127"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 18380,
+      "sha256": "50240e261c367987ed6352f9cb44f12639d04b1e3ff215b07f464122fd7816a1"
+    },
+    "Root_strict.execution.json": {
+      "bytes": 892,
+      "sha256": "2be520d133aedda20d51c99fa72f4ea8f99fdfe81e0c7a8aca6d21da3b49d476"
+    },
+    "Root_final_inspection_incidents.json": {
+      "bytes": 2402,
+      "sha256": "159da4787d235354052fb1739b45bd6ea93d11f9466ed80efdfa708c42fab6d6"
+    },
+    "Root_worker_originals/delivery.zip": {
+      "bytes": 28875289,
+      "sha256": "dda0f033da54b5198039e57632eaea7cf00b0c47b419ec14e49b61d4b0706d29"
+    },
+    "Root_worker_originals/replay.py": {
+      "bytes": 37007,
+      "sha256": "73575a2ba55e5ec367ba251350c7c8c2e637a59119189ec23f848d5b25e5b166"
+    },
+    "Root_worker_originals/guarded_replay.py": {
+      "bytes": 3325,
+      "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+    }
+  },
+  "failures": {
+    "worker_Native": 0,
+    "worker_helpers": 0,
+    "worker_strict": 0,
+    "worker_display_truncations": 2,
+    "Root_gate": 0,
+    "Root_decoder": 0,
+    "Root_final_review": 0,
+    "Root_strict": 0,
+    "Root_inspection_commands": 1,
+    "Root_display_truncations": 2,
+    "Root_final_inspection_record": {
+      "original_stream_provenance": "Combined tool conversation output only; no separately retained original local stdout/stderr",
+      "Root_final_inspection_command_failures": 1,
+      "Root_final_inspection_display_truncations": 1,
+      "incidents": [
+        {
+          "command": "python -c 'import json;from pathlib import Path;p=Path(\"J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_body_metadata/local/cc12_crt_dispatch_second_direct_callee_body_metadata\");\nfor n in [\"delivery_package.json\",\"delivery_manifest.json\",\"delivery_git.json\",\"offline_decode.json\"]:\n d=json.loads((p/n).read_bytes());print(n,\"keys\",list(d));\n if n==\"delivery_git.json\": print(\"object first\",next(iter(d.get(\"git_objects\",{}).items()),None));print(\"file first\",d.get(\"files\",[])[:1])\n if n==\"offline_decode.json\": print(\"row first\",d[\"rows\"][0]);\nprint(\"dump files\",[x.name for x in p.iterdir() if x.is_file() and any(q in x.name for q in [\"bytes_a_r\",\"walk_a\",\"strict_delivery\"])])'",
+          "tool_exit": 0,
+          "output_budget": 1700,
+          "reported_original_tokens": 8666,
+          "reported_omitted_tokens": 6966,
+          "cause": "Overbroad top-level filename selection included hundreds of walk files",
+          "followup": "Bounded selected fields and counts; full physical artifact and finite Git validation"
+        },
+        {
+          "command": "rg -n 'sys.argv|verified_helper|pins|scope|archive|guard|compile|exec\\(|read_bytes' J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_body_metadata/local/cc12_crt_dispatch_second_direct_callee_body_metadata/audit_replay.py",
+          "tool_exit": 1,
+          "visible_error": "rg: J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_body_metadata/local/cc12_crt_dispatch_second_direct_callee_body_metadata/audit_replay.py: IO error for operation on J:/PROG/battlestations-pacific-decompile-cc12_crt_dispatch_second_direct_callee_body_metadata/local/cc12_crt_dispatch_second_direct_callee_body_metadata/audit_replay.py: The system cannot find the file specified. (os error 2)",
+          "cause": "Assumed guard filename; actual file is guarded_replay.py",
+          "followup": "Finite guard filename discovery followed by complete physical guard read and hash verification"
+        }
+      ],
+      "Native_queries": 0,
+      "GPR_writes": 0,
+      "actual_decoder_or_replay_reexecuted": false
+    }
+  },
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "Source_contents_read": false,
+  "Source_changes": false,
+  "GPR_writes": 0,
+  "builds": 0,
+  "new_tests": 0,
+  "probes": 0,
+  "Original_game_audio_runtime_runs": 0,
+  "unproved": [
+    "target body/services",
+    "data values/providers",
+    "prototype/calling convention",
+    "return/preservation",
+    "ABI/game/runtime equivalence"
+  ]
+}
