@@ -176,3 +176,26 @@ namespace bsp {
 void retire_native_application_base_00bea990(
     void* actual_receiver, NativeApplicationSingletonBaseContext& context);
 } // namespace bsp
+
+namespace bsp {
+
+struct NativeApplicationPointerVectorStorage;
+struct NativeApplicationPointerVectorAllocation;
+
+// Dormant explicit-context reconstruction of 007379A0 (93 bytes, 28 instructions).
+// Borrow actual already-live 0Ch rows at actual_receiver+08; no overlay creates
+// their lifetime. The same genuine allocation provider and all receiver, row,
+// fixed-cell, manager, section and provider domains must remain valid through
+// normal retirement and C++ cleanup. Signed/live resize(0) is not a universal clear.
+// Reload current row data after resize, array-free that data, then retire the
+// same receiver through BEA990. No outer free, field reset or element retirement.
+// Escaping C++ resize/free invokes BEA990 under the existing cleanup termination
+// policy. Original FH3/frame, hardware/foreign exceptions and ECX/tail-transfer
+// ABI are not authenticated by this C++ interface. No owner or activation.
+void retire_native_application_007379a0(
+    void* actual_receiver,
+    NativeApplicationPointerVectorStorage& actual_rows,
+    const NativeApplicationPointerVectorAllocation& allocation,
+    NativeApplicationSingletonBaseContext& context);
+
+} // namespace bsp
