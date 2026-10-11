@@ -81,10 +81,132 @@ Reconstructed as `foliage_bake_vertex_00ae41c0` and `foliage_bake_indices_00ae41
   `seaweed.mshd` / `coral.mshd`.
 - `00AE5070` `BSP_TreeGroupInstance_Construct`, `00AE1E10` `BSP_BushGroupType_Construct`.
 
-## Handoff
+## Foliage quadtree loaders: `00AE0F10` and `00AE5550` (cc13-render2)
 
-Open, in order of value: the quadtree builders `00AE0F10`, `00AE5550` and `00AE37F0`
-(recursive, garbled stack frames, need the listing); the TreeGroup render path
-(`00AE5160`); the "Terrain Visibility Group" builders `00ADD3F0`/`00ADE0E0` (mentioned in
-`docs/NATIVE_NODE_RAW_CONSTRUCTION.md`); `00ADC930` (2048 bytes); the shadow helpers
-`00AE0F10..00AE1C80` around the named `BSP_Shadow_*` vectors.
+Both loaders are recursive and read their tree from the stream that the group initialiser
+receives as argument 1 (`00AE2450`, `00AE5870`). They call two slots on that stream. Each
+slot is `__thiscall` with a single stack argument that is always 0 (`PUSH EBP` or
+`PUSH EBX` with the register already zeroed):
+- `+38h` returns a dword in `EAX`;
+- `+44h` returns a float on `ST0`.
+
+These meanings come from the return registers and from how the values are used. The stream
+class itself is not identified. The pseudocode for both loaders is unreliable, so the
+reading below comes from the listing. The x87 tails were checked against raw bytes
+(`DC CA`, `DE EA` at `00AE0FFA`; `DC C9`, `DE C2` at `00AE5628`). Capstone's text for these
+forms is easy to misread.
+
+`00AE0F10` builds the bush node, 38h bytes. It is called by `00AE2450` at `00AE2ACF` and
+walked by `00AE1A10`. ABI: `__thiscall(ECX = new node, reader, centre*, half*, y_offset)`,
+`RET 10h`, returns `ECX`. The caller passes the group's world Y (`[node+124h]` after a
+conditional `BSP_Transform_RefreshWorldMatrix`) as `y_offset`, and passes half extents
+computed with the 0.5 at `00D7A280`.
+- The record starts with `dword leaf` and then `dword +2Ch` (first vertex).
+- An internal node (`leaf == 0`) then has four `{dword present, child record}` entries.
+  Each present child adds 1 to `+34h`. The child's half extent is half the parent's. The
+  child's centre is offset from the parent's in x and z in the order (-,-), (+,-), (+,+),
+  (-,+). Its y is `y - h`, `0.0` (`XORPS`), `y + h`, `0.0`.
+- Every node, leaf or internal, ends with the tail from `00AE0FAE`: `dword +30h`
+  (vertex end), then `float y0` and `float y1`. Each float has `y_offset` added and is
+  rounded to float. The node gets `centre.y = (y0 + y1) * 0.5` and `half.y = (y1 - y0) * 0.5`.
+  So the y value the parent passed in, including the odd `0.0`, is never observable.
+- A leaf stores `FFFFFFFFh` at `+18h` and nulls `+1Ch..+28h`. An internal node leaves `+18h`
+  unwritten.
+
+`00AE5550` builds the foliage cell node, 58h bytes. It is called by `00AE5870`. `00AE47E0`
+culls it through `00AE2FE0`, and `00AE37F0` draws it. ABI: `__thiscall(ECX = new node,
+reader, rect*)`, `RET 8`. The rect is `x0, z0, x1, z1` at `+00h..+0Ch`.
+- On entry the loader zeroes `+14h..+1Ch` (a vector), `+24h` and `+54h`.
+- The record starts with `dword leaf` and then `dword +48h`.
+- An internal node splits at `mx = x0 + (x1 - x0) * 0.5` and `mz = z0 + (z1 - z0) * 0.5`;
+  the difference stays on the x87 stack. The four children are `(x0,z0,mx,mz)`,
+  `(mx,z0,x1,mz)`, `(mx,mz,x1,z1)` and `(x0,mz,mx,z1)`. Each present child adds 1 to `+24h`.
+- Every node ends with `dword +4Ch`, then `float +40h` and `float +44h`. `+48h..+4Ch` is the
+  instance range `00AE47E0` draws, and `+40h/+44h` is the y range that `00AE2FE0` tests.
+- A leaf never writes `+2Ch..+38h`. The cull reads those slots only when `+24h` is set.
+
+Reconstructed as `bush_quad_node_read_00ae0f10` and `foliage_quad_node_read_00ae5550`,
+with the stream behind the `FoliageQuadReader` interface. A failed `operator_new` leaves the
+native slot null without consuming the child's record; the C++ does not reproduce that path.
+
+## Foliage quadtree debug draw: `00AE4040` -> `00AE37F0` (named only)
+
+`00AE4040` is `MOV EAX,[ECX]; MOV ECX,[ECX+10h]; PUSH EAX; CALL 00AE37F0`. It passes the
+group's root node `+10h` and the group's model. Its only caller is `00AD72A0`.
+
+`00AE37F0` (`__thiscall(node, model)`, `RET 4`) reads the model's transform through
+vtable `+40h` and takes the world x and z from `+120h` and `+128h`. It draws with the
+renderer slot `+B4h` (`[00F8D394]`). That slot is `00B290D0` (vtable `00D5F0A8 + B4h`), which
+reserves a 16-byte record through `BSP_RendererRecords16_Reserve`. Each call passes two
+points and two colours.
+- A leaf with an empty vector at `+14h` draws the rect at y = 0 in white.
+- Any other node draws the box from `+40h` to `+44h`. The colour is `FFFF0000h` (A, R) when
+  byte `+28h` is set and `FF00FFFFh` otherwise.
+- The draw then recurses into `+2Ch..+38h` when `+24h` is set, and makes one call per element
+  of the `+14h` vector. That call was not traced.
+
+This is debug visualisation, so it is named only.
+
+## TreeGroup type: `00AE5160` (named only)
+
+The handoff called `00AE5160` the "TreeGroup render" function. It is not a render routine.
+It is the TreeGroup type constructor, the counterpart of `00AE1E10`. Its only caller is
+`00AD7030`, and it takes a model name. What it sets:
+- `+38h` is the name, as a NativeString.
+- `+00h` is the resource loaded through `BSP_NativeResourceManager_LoadDefaultFactory`.
+- `+04h` is that resource's vtable `+8` call with `(0, 1.0f)`.
+- `+20h..+24h` is the element range, from `00B732B0` when one exists and otherwise
+  `0..count-1`.
+- `+30h` is the texture name and `+28h` is the effect name. Both come from the first element.
+- `+0Ch` and `+10h` are the sums of the elements' `+10h` and `+18h`. These are likely vertex
+  and index counts.
+- `+14h` is the bounds' `+10h - +04h` (the y extent).
+- `+18h = -1e10` (`00CE4ADC`, `D01502F9`) and `+1Ch = 1e10` (`00CE4970`).
+- `+40h` is the material from `BSP_Material_CreateForEffectName`, with texture slot 0 set
+  from the renderer's `+64h` load of the texture name.
+- `+44h = 0`.
+
+## Terrain Visibility Group builders: `00ADD3F0`, `00ADE0E0`, `00ADC930`
+
+All three have no direct callers (`callers (0)`; they are presumably virtual). All three
+build one node named `Terrain Visibility Group` (`BSP_Node_Construct`). Under it they build
+patches of 33x33 vertices (`00AEDAC0(21h, 21h)`, a 38h object, attached by `00ADF8B0`).
+Each patch's local box comes from `00ADA600` after dividing by the node's world matrix
+diagonal (`+F0h`, `+104h`, `+118h`).
+
+`00ADD3F0` is the heightmap form: `__thiscall`, seven arguments, `RET 1Ch`. Frame:
+`0Ch + 8Ch + 10h`, so the arguments start at `[ESP+ACh]`. Argument 3 is the name copied to
+`+54h`. Arguments 4..7 are `h_base`, `h_top`, `s_low`, `s_high`.
+- It loads an 8-bit image (`00BEFCB0`) and flips its rows (`00ADD4D0..00ADD5A8`).
+- It walks 32x32-cell patches. For each patch it calls `[00F8C218]` vtable `+4` with
+  `(group, col >> 5, row >> 5)`.
+- For each of the 33x33 samples it calls the patch's vtable `+1Ch` with `(h, x, z)`.
+
+The sample kernel is `00ADD755..00ADD82A`, reconstructed as `terrain_heightmap_patch_00add3f0`.
+Two findings in it:
+1. The scale is `(h_top - h_base) / (s_high - s_low)`, but `s_low` is not subtracted from
+   the sample. The mapping lands on `h_base..h_top` only when `s_low = 0`.
+2. The second accumulator is stored as `max(h, running minimum)`. That is always `h`, so
+   after the loop it holds the height of vertex (32, 32). `00ADD8E6` divides it by the
+   world y scale and uses it as the patch box top. The box therefore under-covers any patch
+   whose last vertex is not its highest. Whether this matters in game depends on the
+   culling user of that box, which was not traced.
+
+`00ADE0E0` is the flat form (`__thiscall(group, name)`). It builds 4x4 patches; this is read from the pseudocode (`00ADACF0(4)`, a loop bound of 4) and was not checked against the listing. Each patch
+gets two 33x33 grids: the second one is attached by `00ADF920`. Every sample is written as
+height 0, and the same min and "max" pair gives a box of y 0..0.
+
+`00ADC930` (`__thiscall(group, source)`) takes its size from the source's vtable `+20h`,
+in units of 32 cells. It builds 44h-byte patches of two kinds: vtables `00D5D2DC`
+(`00AED9A0`) and `00D5D314` (`00ADAF50`). The pseudocode compares patch positions with `size - 20h`, which looks like an edge test; that reading was not checked against the listing. Named only.
+
+## Handoff (cc13-render2, 2026-10-11)
+
+Done here: `00AE0F10`, `00AE5550` and the `00ADD3F0` kernel are reconstructed and
+build-tested. `00AE37F0`, `00AE4040`, `00AE5160`, `00ADD3F0`, `00ADE0E0` and `00ADC930` are
+named. Open:
+- Which of the three builders each terrain type uses, which needs their vtables.
+- `00ADC930`'s patch-kind choice and edge test.
+- Whether the patch box top (finding 2 above) reaches a culling decision.
+- The `BSP_Shadow_*` helpers that cc13-render1 listed. `00AE0F10` in that range turned out to be the bush loader.
+- The terrain segment line test stays cc9's (`SCENE_CONTENTS_HOSTS` section 10).
