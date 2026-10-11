@@ -1,0 +1,4009 @@
+{
+  "schema": "bsp.cc12.application-crt-handler-body-operands.v1",
+  "status": "qualified_54_byte_body_and_instruction_local_stack_transfers_verified_Native_only",
+  "worker_base_commit": "3627c822b49bb7d9cbc09f238e6adb8dc572fe1b",
+  "worker_base_tree": "6c8050cb97415808785a413790f9a08b94250f38",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_HANDLER_BODY_LISTING_METADATA.md",
+    "reports/cc12_application_crt_handler_body_listing_metadata.json"
+  ],
+  "admission": {
+    "initial": "Root direct-entry primary admitted only the 54-address typed listing gate.",
+    "operand": "Root_listing_gate.json explicitly admitted two exact54-byte reads and 27 context-zero texts after independent per-byte review.",
+    "Root_receipt_initial_count_limit": "The Root listing receipt did not itself repeat count-stream review; all six actual worker count streams are retained and checked by replay."
+  },
+  "native_scope": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "interval_inclusive": [
+      "00BF6B43",
+      "00BF6B78"
+    ],
+    "unique_typed_query_sites": 54,
+    "typed_batches": 4,
+    "typed_responses": 216,
+    "count_queries": 6,
+    "epoch": 98,
+    "function_count": 64730,
+    "all_four_metadata_batches_equal": true,
+    "code_read_count": 2,
+    "code_bytes_per_read": 54,
+    "instruction_text_starts": 27,
+    "context_neighbors": 0,
+    "decompile_disasm_prototype_or_target_queries": 0
+  },
+  "per_byte_listing_and_flow": {
+    "opaque_automatic_target_objects": 1,
+    "per_byte": [
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B43",
+        "query": "00BF6B43",
+        "raw_sha256": "96773efd36d47a3f7f3a59e20642e602c888187b6d23a6880fd5f9c03eba7214"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B44",
+        "query": "00BF6B44",
+        "raw_sha256": "e44d5b38a355c6d7b455a03523b0d009220246906922dca3985b1416e303c216"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B44",
+        "query": "00BF6B45",
+        "raw_sha256": "8fcacd2a2ad41af465c997fb6a569bb9c7234e0d7c7ed77eac3d75a22856f442"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B46",
+        "query": "00BF6B46",
+        "raw_sha256": "77d869d21bf31114b75ec36d88e17a72598a1793b7edeefd55b967f6ca117781"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B46",
+        "query": "00BF6B47",
+        "raw_sha256": "2d5c5da3609ea7bf36f7a8fde11daa59ba5662431999cfcc2319ecb11c9e20b5"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B46",
+        "query": "00BF6B48",
+        "raw_sha256": "4cd053d72724c9d4e66e1d725a72959d858bb95896c9bbc5c025c93d09b18f9c"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B49",
+        "query": "00BF6B49",
+        "raw_sha256": "da3b3b8b82719af1388a6c348074fc496c24c8975b675413f7b6f0913bee1ef4"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B4A",
+        "query": "00BF6B4A",
+        "raw_sha256": "4624ada75bccb3234a5d0d70daa65411557e2b899f409a21a5430a0ddcb350b6"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B4B",
+        "query": "00BF6B4B",
+        "raw_sha256": "d9a260aba1a9783f656c6959cb277793932356503eb0c3e11392261460d5bb34"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B4C",
+        "query": "00BF6B4C",
+        "raw_sha256": "39ca501ac5b33f1fd6285f6b30ba3d68db829d967be848350f14b15ee4abede2"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B4D",
+        "query": "00BF6B4D",
+        "raw_sha256": "2bfafeaa504c1e6920cd3bb435985ba55f6b39f7ad178f553aeb40b8cc2e6188"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B4D",
+        "query": "00BF6B4E",
+        "raw_sha256": "58788908062d33d441c464fd7f1e768df1cb24407001576e3c90c8eec4295f12"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B4D",
+        "query": "00BF6B4F",
+        "raw_sha256": "dfe43d83ccb5be0133569304fd5c0ba22cda9eca8ebe0c78011f5c6c625c9c1a"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B50",
+        "query": "00BF6B50",
+        "raw_sha256": "db0822fcffae12353df9a848bdeaa4a91e4a96655f55bf8eebdf97f90cbf5636"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B50",
+        "query": "00BF6B51",
+        "raw_sha256": "f972ec8dae0c813f1cf29c394c70c3710e6373dad0a23b614ed121f3ba8f2d20"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B52",
+        "query": "00BF6B52",
+        "raw_sha256": "748f8ec09ca23e81e63dc971ba0fee8b1681dd3ccebf039502a28f38559e4a55"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B53",
+        "query": "00BF6B53",
+        "raw_sha256": "32380809e79af54a80e04f3789c084fd4ead24f400dfff9a889e36289c4965a2"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B54",
+        "query": "00BF6B54",
+        "raw_sha256": "6de2128d55767c9ec55c6903430e99ae7746d3827f2b1b66de7c4266c0ffd7f7"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B55",
+        "query": "00BF6B55",
+        "raw_sha256": "1972afefdbb556117c3b7ca2e55b935e7d9176cb2868d3bb877d7e6c54360ca9"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B55",
+        "query": "00BF6B56",
+        "raw_sha256": "010bf22a554edbddd0ab6004da4b24c6d7087447be899dfc266d04bead312427"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B55",
+        "query": "00BF6B57",
+        "raw_sha256": "c8df2a2d34568fc1259cec99d8d0114367bdebd671c84f40ac1d72247def429f"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B58",
+        "query": "00BF6B58",
+        "raw_sha256": "27b542e036c440eed7aa64e913067226e6b9ee6c62603b988fdbde46e59605d4"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B58",
+        "query": "00BF6B59",
+        "raw_sha256": "d3a832a4cad4165c40f3347a75834466e8e3c340aa86927af749b8ff7f981325"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B58",
+        "query": "00BF6B5A",
+        "raw_sha256": "1b25eceef3c9cbdc0ef02de2bfe11dcaffeb8a6d6a7978ab5587b0edbac5959c"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5B",
+        "query": "00BF6B5B",
+        "raw_sha256": "25d0f63a14b044f8fb5f8d2de763fac353de62e8d4b7900d2eb77907359c270c"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5B",
+        "query": "00BF6B5C",
+        "raw_sha256": "6bb5fa9d6ce53d5878555e131212bea1f49f3554e70343158fb0029ade62e83b"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5B",
+        "query": "00BF6B5D",
+        "raw_sha256": "a7002c3a82713431d79669c2b991e620e5560f743ee2a798e9571937a2eecbe9"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5E",
+        "query": "00BF6B5E",
+        "raw_sha256": "ed577bc2638d0adb0bb817c9dbbe5f729ba1b135661a4acfb32ef660e580808a"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5E",
+        "query": "00BF6B5F",
+        "raw_sha256": "4527f8f4aa50b3b97e16422c354a440d90a22e54ac573ae1cad1b05b4bf70a77"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B5E",
+        "query": "00BF6B60",
+        "raw_sha256": "147326d2bcdb948aec323ed010ef29ac965c9a18764602a557ba9ec286509622"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B61",
+        "query": "00BF6B61",
+        "raw_sha256": "040659ac81a3d0a26b766ab9f7ff21261d201fe071d58162119a7cebac7d8f9b"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B61",
+        "query": "00BF6B62",
+        "raw_sha256": "705aa2dee68ae1543185fab6a8208578e1af9acae7898f9765610acdc4182b5e"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B61",
+        "query": "00BF6B63",
+        "raw_sha256": "2ac7cf01aa36422c024c5f6d44ef83934558d6691a39ff6f8b294a9a3f3b7f17"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 5,
+        "instruction_start": "00BF6B64",
+        "query": "00BF6B64",
+        "raw_sha256": "3687096ace57a395b9c3fcc2f06076a11ceba02e1585890e7402efb81f41e7b4"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 5,
+        "instruction_start": "00BF6B64",
+        "query": "00BF6B65",
+        "raw_sha256": "b8383e2d25ae465873ae774c9c864b9e99102dab997657a900043800454e0369"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 5,
+        "instruction_start": "00BF6B64",
+        "query": "00BF6B66",
+        "raw_sha256": "c5f8025666edc8bc42f49676267a550c64a8cdaec61bbe12aec8598524193083"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 5,
+        "instruction_start": "00BF6B64",
+        "query": "00BF6B67",
+        "raw_sha256": "7e56673849c88a643b340c868656cd90346a136b6ea8d21fb8e09f2ab9b5d289"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 5,
+        "instruction_start": "00BF6B64",
+        "query": "00BF6B68",
+        "raw_sha256": "94ff734781545d0d8321a7e2aed4fbf7a38c1d79185f71451af01147bab2d7a7"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B69",
+        "query": "00BF6B69",
+        "raw_sha256": "b92a5acaf089a23a54e6c4e067f8a74f9f9d8fbbd6fb93458ef89c2fe3a2582a"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B69",
+        "query": "00BF6B6A",
+        "raw_sha256": "264386add0cfcf27495dd951895e58fa42790e526d5f203ea260f3be4aa189d1"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B69",
+        "query": "00BF6B6B",
+        "raw_sha256": "0aca62eac681721e60e3268a623a54a95176d6926fa12de95779e10b09657457"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B6C",
+        "query": "00BF6B6C",
+        "raw_sha256": "eff5f565881bb59f997a781de2b3ce2f9d852f4e74cc1cb08640ddf5f14f8e15"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B6C",
+        "query": "00BF6B6D",
+        "raw_sha256": "863ef287948289fb7a851d815fe1ffbf149ee4b2d5484b0fcd5ca6de8cc714d0"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B6C",
+        "query": "00BF6B6E",
+        "raw_sha256": "5df11a4b385f26d3f9f03710b770eb74fc9038b0da6b7dadcf6964ffac8a303e"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B6F",
+        "query": "00BF6B6F",
+        "raw_sha256": "64f521b0b7c6f4d0b7b69f58528f1295b99f2cce61f23bb7cc0c8ecf628fd5d8"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B70",
+        "query": "00BF6B70",
+        "raw_sha256": "41f07cc040e9031c444160f6273f197477e11f005ddc2c7d8d4b09ae3da4c347"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B71",
+        "query": "00BF6B71",
+        "raw_sha256": "23904871d28db0f2bf186594941f6a021bfff5f84043a98fed9dfa78a24d21f0"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B72",
+        "query": "00BF6B72",
+        "raw_sha256": "840c5d0b8cf7e9339dfd9f863c1be5351abfbf26060a22b90ddb4986d5219cb3"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B72",
+        "query": "00BF6B73",
+        "raw_sha256": "dc9b2506dc8679a50a942fa7b715630d7b7180c34d9fac27afec3a87b66841c2"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 3,
+        "instruction_start": "00BF6B72",
+        "query": "00BF6B74",
+        "raw_sha256": "666e3934588694751d2e129f78848457fdad61321d3f86d49e7e274337d6ab82"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B75",
+        "query": "00BF6B75",
+        "raw_sha256": "478834d8b5d54d1dd7047efb2dd0597210ad15893372620c65f34eb6d5a20777"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 2,
+        "instruction_start": "00BF6B75",
+        "query": "00BF6B76",
+        "raw_sha256": "3564802fa74cfd230db5cdc8ad6a6329ae6b140b65fbd10d79d7cc73fabbdd65"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B77",
+        "query": "00BF6B77",
+        "raw_sha256": "d6a6ab9783760dbb21011cc0aa494d8e23312a44b870f9300765133f54f5abcb"
+      },
+      {
+        "function_owner": "00BF6B43",
+        "instruction_length": 1,
+        "instruction_start": "00BF6B78",
+        "query": "00BF6B78",
+        "raw_sha256": "05794c5b301e165caa618ccda6b025378ae39e6046b99b06804ec5d3fbff3331"
+      }
+    ],
+    "saved_function": {
+      "body": {
+        "address_count": "54",
+        "complete": true,
+        "range_count": 1,
+        "ranges": [
+          {
+            "end_inclusive": {
+              "offset": "00bf6b78",
+              "space": "ram"
+            },
+            "length": "54",
+            "start": {
+              "offset": "00bf6b43",
+              "space": "ram"
+            }
+          }
+        ],
+        "returned_range_count": 1
+      },
+      "direct_thunk_target": null,
+      "entry": {
+        "offset": "00bf6b43",
+        "space": "ram"
+      },
+      "is_thunk": false,
+      "name": "FID_conflict:___CxxFrameHandler3",
+      "no_return": false,
+      "thunk_target_recursive": false
+    },
+    "units": [
+      {
+        "end_inclusive": "00BF6B43",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b44",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b44",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B43"
+      },
+      {
+        "end_inclusive": "00BF6B45",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b46",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b46",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 2,
+        "start": "00BF6B44"
+      },
+      {
+        "end_inclusive": "00BF6B48",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b49",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b49",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B46"
+      },
+      {
+        "end_inclusive": "00BF6B49",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b4a",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b4a",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B49"
+      },
+      {
+        "end_inclusive": "00BF6B4A",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b4b",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b4b",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B4A"
+      },
+      {
+        "end_inclusive": "00BF6B4B",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b4c",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b4c",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B4B"
+      },
+      {
+        "end_inclusive": "00BF6B4C",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b4d",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b4d",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B4C"
+      },
+      {
+        "end_inclusive": "00BF6B4F",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b50",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b50",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B4D"
+      },
+      {
+        "end_inclusive": "00BF6B51",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b52",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b52",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 2,
+        "start": "00BF6B50"
+      },
+      {
+        "end_inclusive": "00BF6B52",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b53",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b53",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B52"
+      },
+      {
+        "end_inclusive": "00BF6B53",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b54",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b54",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B53"
+      },
+      {
+        "end_inclusive": "00BF6B54",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b55",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b55",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B54"
+      },
+      {
+        "end_inclusive": "00BF6B57",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b58",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b58",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B55"
+      },
+      {
+        "end_inclusive": "00BF6B5A",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b5b",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b5b",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B58"
+      },
+      {
+        "end_inclusive": "00BF6B5D",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b5e",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b5e",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B5B"
+      },
+      {
+        "end_inclusive": "00BF6B60",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b61",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b61",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B5E"
+      },
+      {
+        "end_inclusive": "00BF6B63",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b64",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b64",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B61"
+      },
+      {
+        "end_inclusive": "00BF6B68",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b69",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": true,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "UNCONDITIONAL_CALL"
+          },
+          "default_targets": [
+            {
+              "offset": "00c07991",
+              "space": "ram"
+            }
+          ],
+          "effective_fallthrough": {
+            "offset": "00bf6b69",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": true,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "UNCONDITIONAL_CALL"
+          },
+          "effective_targets": [
+            {
+              "offset": "00c07991",
+              "space": "ram"
+            }
+          ],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 5,
+        "start": "00BF6B64"
+      },
+      {
+        "end_inclusive": "00BF6B6B",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b6c",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b6c",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B69"
+      },
+      {
+        "end_inclusive": "00BF6B6E",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b6f",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b6f",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B6C"
+      },
+      {
+        "end_inclusive": "00BF6B6F",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b70",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b70",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B6F"
+      },
+      {
+        "end_inclusive": "00BF6B70",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b71",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b71",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B70"
+      },
+      {
+        "end_inclusive": "00BF6B71",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b72",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b72",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B71"
+      },
+      {
+        "end_inclusive": "00BF6B74",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b75",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b75",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 3,
+        "start": "00BF6B72"
+      },
+      {
+        "end_inclusive": "00BF6B76",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b77",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b77",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 2,
+        "start": "00BF6B75"
+      },
+      {
+        "end_inclusive": "00BF6B77",
+        "flow": {
+          "default_fallthrough": {
+            "offset": "00bf6b78",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00bf6b78",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B77"
+      },
+      {
+        "end_inclusive": "00BF6B78",
+        "flow": {
+          "default_fallthrough": null,
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": true,
+            "name": "TERMINATOR"
+          },
+          "default_targets": [],
+          "effective_fallthrough": null,
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": true,
+            "name": "TERMINATOR"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "length": 1,
+        "start": "00BF6B78"
+      }
+    ]
+  },
+  "exact_body": {
+    "call_site": "00BF6B64",
+    "capstone_execution": {
+      "base_address": "00BF6B43",
+      "binding_version": "5.0.7",
+      "code_sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+      "library_version": [
+        5,
+        0,
+        1280
+      ],
+      "mode": "CS_ARCH_X86 / CS_MODE_32",
+      "tool_pins": [
+        {
+          "bytes": 43729,
+          "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+          "role": "python_binding",
+          "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+        },
+        {
+          "bytes": 7572480,
+          "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+          "role": "native_decoder_library",
+          "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+        }
+      ]
+    },
+    "code_bytes_per_read": 54,
+    "code_hex": "55 8B EC 83 EC 08 53 56 57 FC 89 45 FC 33 C0 50 50 50 FF 75 FC FF 75 14 FF 75 10 FF 75 0C FF 75 08 E8 28 0E 01 00 83 C4 20 89 45 F8 5F 5E 5B 8B 45 F8 8B E5 5D C3",
+    "code_read_count": 2,
+    "code_reads_equal": true,
+    "code_sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+    "context_neighbors_returned": 0,
+    "encoded_call_target_address": "00C07991",
+    "encoded_return_address": "00BF6B69",
+    "instruction_count": 27,
+    "manual_capstone_saved_texts_agree": true,
+    "manual_instructions": [
+      {
+        "address": "00BF6B43",
+        "bytes_hex": "55",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B44",
+        "bytes_hex": "8B EC",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          }
+        ],
+        "size": 2
+      },
+      {
+        "address": "00BF6B46",
+        "bytes_hex": "83 EC 08",
+        "mnemonic": "sub",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          },
+          {
+            "kind": "immediate",
+            "size": 4,
+            "value": 8
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B49",
+        "bytes_hex": "53",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "ebx",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B4A",
+        "bytes_hex": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "esi",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B4B",
+        "bytes_hex": "57",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "edi",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B4C",
+        "bytes_hex": "FC",
+        "mnemonic": "cld",
+        "operands": [],
+        "size": 1
+      },
+      {
+        "address": "00BF6B4D",
+        "bytes_hex": "89 45 FC",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": -4,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B50",
+        "bytes_hex": "33 C0",
+        "mnemonic": "xor",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 2
+      },
+      {
+        "address": "00BF6B52",
+        "bytes_hex": "50",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B53",
+        "bytes_hex": "50",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B54",
+        "bytes_hex": "50",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B55",
+        "bytes_hex": "FF 75 FC",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": -4,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B58",
+        "bytes_hex": "FF 75 14",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": 20,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B5B",
+        "bytes_hex": "FF 75 10",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": 16,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B5E",
+        "bytes_hex": "FF 75 0C",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": 12,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B61",
+        "bytes_hex": "FF 75 08",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": 8,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B64",
+        "bytes_hex": "E8 28 0E 01 00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "kind": "immediate",
+            "size": 4,
+            "value": 12614033
+          }
+        ],
+        "size": 5
+      },
+      {
+        "address": "00BF6B69",
+        "bytes_hex": "83 C4 20",
+        "mnemonic": "add",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          },
+          {
+            "kind": "immediate",
+            "size": 4,
+            "value": 32
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B6C",
+        "bytes_hex": "89 45 F8",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "base": "ebp",
+            "displacement": -8,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B6F",
+        "bytes_hex": "5F",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "edi",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B70",
+        "bytes_hex": "5E",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "esi",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B71",
+        "bytes_hex": "5B",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "ebx",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B72",
+        "bytes_hex": "8B 45 F8",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "base": "ebp",
+            "displacement": -8,
+            "index": null,
+            "kind": "memory",
+            "scale": 1,
+            "segment": null,
+            "size": 4
+          }
+        ],
+        "size": 3
+      },
+      {
+        "address": "00BF6B75",
+        "bytes_hex": "8B E5",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "size": 2
+      },
+      {
+        "address": "00BF6B77",
+        "bytes_hex": "5D",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "size": 1
+      },
+      {
+        "address": "00BF6B78",
+        "bytes_hex": "C3",
+        "mnemonic": "ret",
+        "operands": [],
+        "size": 1
+      }
+    ],
+    "replay_limit": "Replay redoes the independent manual decode and checks the retained Capstone result; Capstone is not loaded under the pure guard.",
+    "status": "PASS",
+    "target_followed": false
+  },
+  "instruction_local_contract": {
+    "execution_model": "Sequential, nonfaulting 32-bit instruction-local execution; no asynchronous stack modification. These are symbolic assumptions, not runtime observations.",
+    "incoming_symbols": {
+      "S": "ESP at BF6B43 entry",
+      "B": "EBP at entry",
+      "D": "EAX at entry, an opaque word",
+      "X": "EBX at entry",
+      "I": "ESI at entry",
+      "J": "EDI at entry",
+      "W0": "incoming DWORD [S], not authenticated as an actual return address",
+      "W1_W2_W3_W4": "incoming DWORDs [S+4], [S+8], [S+0Ch], [S+10h]",
+      "H": "wrapper-local EBP = S-4",
+      "T": "encoded call target entry ESP = S-3Ch"
+    },
+    "local_frame_before_call": {
+      "EBP": "H = S-4",
+      "ESP_before_CALL": "S-38h",
+      "EAX": "0",
+      "direction_flag": "0",
+      "saved_words": {
+        "[S-4]": "B",
+        "[S-8]": "D",
+        "[S-10h]": "X",
+        "[S-14h]": "I",
+        "[S-18h]": "J"
+      },
+      "local_result_slot": "[S-0Ch] is reserved but not initialized before the external call",
+      "unchanged_incoming_registers_before_call": [
+        "EBX",
+        "ESI",
+        "EDI",
+        "ECX",
+        "EDX"
+      ],
+      "D_dereferenced_by_this_body": false
+    },
+    "physical_call": {
+      "site": "00BF6B64",
+      "next_address": "00BF6B69",
+      "relative_displacement": "00010E28",
+      "encoded_target": "00C07991",
+      "target_entry_ESP": "T = S-3Ch",
+      "target_entry_EBP": "H = S-4",
+      "target_entry_EAX": "0",
+      "target_entry_stack": [
+        {
+          "offset": "00h",
+          "word": "00BF6B69 (encoded return address)"
+        },
+        {
+          "offset": "04h",
+          "word": "W1"
+        },
+        {
+          "offset": "08h",
+          "word": "W2"
+        },
+        {
+          "offset": "0Ch",
+          "word": "W3"
+        },
+        {
+          "offset": "10h",
+          "word": "W4"
+        },
+        {
+          "offset": "14h",
+          "word": "D"
+        },
+        {
+          "offset": "18h",
+          "word": "0"
+        },
+        {
+          "offset": "1Ch",
+          "word": "0"
+        },
+        {
+          "offset": "20h",
+          "word": "0"
+        }
+      ],
+      "argument_names_or_calling_convention_recovered": false
+    },
+    "unconstrained_external_return": {
+      "condition": "Control reaches BF6B69; no guarantee that this happens.",
+      "symbols": {
+        "Q": "returned ESP",
+        "F": "returned EBP",
+        "A": "returned EAX",
+        "M1": "memory after the local write [F-8] = A at BF6B6C"
+      },
+      "ordered_effects": [
+        "ESP = Q+20h",
+        "[F-8] = A",
+        "EDI = M1[Q+20h]; ESI = M1[Q+24h]; EBX = M1[Q+28h]",
+        "EAX = M1[F-8] = A",
+        "ESP = F",
+        "EBP = M1[F]",
+        "RET takes EIP = M1[F+4] and leaves ESP = F+8"
+      ],
+      "alias_note": "All post-store reads refer to M1; external values Q and F may make local stores alias later reads."
+    },
+    "conditional_matching_return": {
+      "additional_assumptions": [
+        "The external call reaches BF6B69 with Q=S-38h and F=S-4.",
+        "Saved B/X/I/J words and incoming [S]=W0 retain their entry values."
+      ],
+      "result": "Then the local epilogue restores EBP=B, EBX=X, ESI=I, EDI=J, carries A to EAX, returns through W0 and leaves ESP=S+4.",
+      "proof_limit": "This conditional algebra is not proof that the external target preserves these words, returns, or obeys any particular ABI."
+    },
+    "original_frame_binding": {
+      "prior_action_precondition": "EBP = storeESP+20h",
+      "new_fact": "This body creates its own EBP=S-4 and forwards four unknown stack words plus D.",
+      "unknown": "No relation between S, the original constructor store-time ESP, or an actually invoked action EBP is established."
+    }
+  },
+  "automatic_target_objects": {
+    "count_per_typed_batch": 1,
+    "total_occurrences": 4,
+    "entire_objects_wholly_opaque": true,
+    "fields_used_to_qualify_findings": [],
+    "encoded_target_address_is_only_site_flow_and_opcode_evidence": "00C07991"
+  },
+  "preserved_uncertainties": [
+    "FID_conflict:___CxxFrameHandler3 remains saved metadata, not FH3 or compiler authentication.",
+    "The previous undefined(void) prototype was not queried again and supplies no ABI authority.",
+    "No exception-record, dispatcher-context, establisher-frame, state, map or descriptor-field semantics are assigned to the forwarded words.",
+    "No original EH invocation, action EBP binding, unwind action, target cleanup, actual external return or Application-owner authority is established."
+  ],
+  "source_identity_only": {
+    "HEAD": "3627c822b49bb7d9cbc09f238e6adb8dc572fe1b",
+    "root_tree": "6c8050cb97415808785a413790f9a08b94250f38",
+    "subtrees": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "prerequisite_input_blobs": 11,
+    "Source_content_census": false,
+    "old_Source_artifact_build_runtime_credit_transfer": false
+  },
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/evidence.zip",
+      "bytes": 518294,
+      "sha256": "b2844fab4ed6bdbb4bbb12a582cfe6b1a49a21d08aa5bf51f3344dd83c969a43"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/distinct_copy/evidence.zip",
+      "bytes": 518294,
+      "sha256": "b2844fab4ed6bdbb4bbb12a582cfe6b1a49a21d08aa5bf51f3344dd83c969a43"
+    },
+    "physical_copy_distinct": true,
+    "manifest": {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/manifest.json",
+      "bytes": 13219,
+      "sha256": "c4b16f273136eaaa3587e5818aad707d6cfc08d4ad9a509aab4213121106259b"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/capture_listing_metadata.py",
+        "bytes": 2258,
+        "sha256": "9531f2107f9aa0579684bce7aa7eb4c5178fb2c13ade36c0dd21a78d500f8613"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/metadata_parser.py",
+        "bytes": 7160,
+        "sha256": "3eae61e44069d2e565bca43387e49a33c4e4eb1b261db8946a1233034c38768f"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/capture_body_operands.py",
+        "bytes": 3143,
+        "sha256": "81bbb7b65b2315c1e019bbd3caebc9f71d625ca6b71c72cef4e71a7f007ff523"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/body_parser.py",
+        "bytes": 6003,
+        "sha256": "540f164b0c733648351d3450060f5a905d64dc68b3327d2bc298248f6748e849"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/capture_capstone.py",
+        "bytes": 2665,
+        "sha256": "55c1236b7d9f525a5902c71b51ab626985e18120a1703034dc3970d77a8e5bea"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/portable_replay.py",
+        "bytes": 7382,
+        "sha256": "56018467707ccd5050c6ab427647fa886d6f98d1f5217f531376bfb4d99ad075"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/guard_replay.py",
+        "bytes": 2283,
+        "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/packet_tool.py",
+        "bytes": 10896,
+        "sha256": "11af696dcea7a929d83a55346412c1cd6a477bd7f07b48f456d3ec2895b5b7ea"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/report_content.py",
+        "bytes": 12526,
+        "sha256": "327ec01b1e80a70a7e98b2aa5e2bcb6c17628fde0fd6031caae70fb68b4f633f"
+      }
+    ],
+    "replay_equal": true,
+    "replay_result": {
+      "FH3_original_frame_invocation_or_target_behavior_authenticated": false,
+      "Source_content_census": false,
+      "Source_subtree_identities": {
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633",
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b"
+      },
+      "all_four_metadata_batches_equal": true,
+      "automatic_target_object_fields_credited": [],
+      "automatic_target_objects_per_batch": 1,
+      "body": {
+        "call_site": "00BF6B64",
+        "capstone_execution": {
+          "base_address": "00BF6B43",
+          "binding_version": "5.0.7",
+          "code_sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+          "library_version": [
+            5,
+            0,
+            1280
+          ],
+          "mode": "CS_ARCH_X86 / CS_MODE_32",
+          "tool_pins": [
+            {
+              "bytes": 43729,
+              "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+              "role": "python_binding",
+              "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+            },
+            {
+              "bytes": 7572480,
+              "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+              "role": "native_decoder_library",
+              "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+            }
+          ]
+        },
+        "code_bytes_per_read": 54,
+        "code_hex": "55 8B EC 83 EC 08 53 56 57 FC 89 45 FC 33 C0 50 50 50 FF 75 FC FF 75 14 FF 75 10 FF 75 0C FF 75 08 E8 28 0E 01 00 83 C4 20 89 45 F8 5F 5E 5B 8B 45 F8 8B E5 5D C3",
+        "code_read_count": 2,
+        "code_reads_equal": true,
+        "code_sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+        "context_neighbors_returned": 0,
+        "encoded_call_target_address": "00C07991",
+        "encoded_return_address": "00BF6B69",
+        "instruction_count": 27,
+        "manual_capstone_saved_texts_agree": true,
+        "manual_instructions": [
+          {
+            "address": "00BF6B43",
+            "bytes_hex": "55",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ebp",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B44",
+            "bytes_hex": "8B EC",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ebp",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "esp",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00BF6B46",
+            "bytes_hex": "83 EC 08",
+            "mnemonic": "sub",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esp",
+                "size": 4
+              },
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 8
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B49",
+            "bytes_hex": "53",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ebx",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B4A",
+            "bytes_hex": "56",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B4B",
+            "bytes_hex": "57",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "edi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B4C",
+            "bytes_hex": "FC",
+            "mnemonic": "cld",
+            "operands": [],
+            "size": 1
+          },
+          {
+            "address": "00BF6B4D",
+            "bytes_hex": "89 45 FC",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": -4,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B50",
+            "bytes_hex": "33 C0",
+            "mnemonic": "xor",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00BF6B52",
+            "bytes_hex": "50",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B53",
+            "bytes_hex": "50",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B54",
+            "bytes_hex": "50",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B55",
+            "bytes_hex": "FF 75 FC",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": -4,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B58",
+            "bytes_hex": "FF 75 14",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": 20,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B5B",
+            "bytes_hex": "FF 75 10",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": 16,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B5E",
+            "bytes_hex": "FF 75 0C",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": 12,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B61",
+            "bytes_hex": "FF 75 08",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": 8,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B64",
+            "bytes_hex": "E8 28 0E 01 00",
+            "mnemonic": "call",
+            "operands": [
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 12614033
+              }
+            ],
+            "size": 5
+          },
+          {
+            "address": "00BF6B69",
+            "bytes_hex": "83 C4 20",
+            "mnemonic": "add",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esp",
+                "size": 4
+              },
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 32
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B6C",
+            "bytes_hex": "89 45 F8",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "base": "ebp",
+                "displacement": -8,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B6F",
+            "bytes_hex": "5F",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "edi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B70",
+            "bytes_hex": "5E",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B71",
+            "bytes_hex": "5B",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ebx",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B72",
+            "bytes_hex": "8B 45 F8",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              },
+              {
+                "base": "ebp",
+                "displacement": -8,
+                "index": null,
+                "kind": "memory",
+                "scale": 1,
+                "segment": null,
+                "size": 4
+              }
+            ],
+            "size": 3
+          },
+          {
+            "address": "00BF6B75",
+            "bytes_hex": "8B E5",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esp",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "ebp",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00BF6B77",
+            "bytes_hex": "5D",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ebp",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00BF6B78",
+            "bytes_hex": "C3",
+            "mnemonic": "ret",
+            "operands": [],
+            "size": 1
+          }
+        ],
+        "replay_limit": "Replay redoes the independent manual decode and checks the retained Capstone result; Capstone is not loaded under the pure guard.",
+        "status": "PASS",
+        "target_followed": false
+      },
+      "count_reads": 6,
+      "epoch": 98,
+      "frozen_head": "3627c822b49bb7d9cbc09f238e6adb8dc572fe1b",
+      "function_count": 64730,
+      "member_count": 77,
+      "metadata": {
+        "opaque_automatic_target_objects": 1,
+        "per_byte": [
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B43",
+            "query": "00BF6B43",
+            "raw_sha256": "96773efd36d47a3f7f3a59e20642e602c888187b6d23a6880fd5f9c03eba7214"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B44",
+            "query": "00BF6B44",
+            "raw_sha256": "e44d5b38a355c6d7b455a03523b0d009220246906922dca3985b1416e303c216"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B44",
+            "query": "00BF6B45",
+            "raw_sha256": "8fcacd2a2ad41af465c997fb6a569bb9c7234e0d7c7ed77eac3d75a22856f442"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B46",
+            "query": "00BF6B46",
+            "raw_sha256": "77d869d21bf31114b75ec36d88e17a72598a1793b7edeefd55b967f6ca117781"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B46",
+            "query": "00BF6B47",
+            "raw_sha256": "2d5c5da3609ea7bf36f7a8fde11daa59ba5662431999cfcc2319ecb11c9e20b5"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B46",
+            "query": "00BF6B48",
+            "raw_sha256": "4cd053d72724c9d4e66e1d725a72959d858bb95896c9bbc5c025c93d09b18f9c"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B49",
+            "query": "00BF6B49",
+            "raw_sha256": "da3b3b8b82719af1388a6c348074fc496c24c8975b675413f7b6f0913bee1ef4"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B4A",
+            "query": "00BF6B4A",
+            "raw_sha256": "4624ada75bccb3234a5d0d70daa65411557e2b899f409a21a5430a0ddcb350b6"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B4B",
+            "query": "00BF6B4B",
+            "raw_sha256": "d9a260aba1a9783f656c6959cb277793932356503eb0c3e11392261460d5bb34"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B4C",
+            "query": "00BF6B4C",
+            "raw_sha256": "39ca501ac5b33f1fd6285f6b30ba3d68db829d967be848350f14b15ee4abede2"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B4D",
+            "query": "00BF6B4D",
+            "raw_sha256": "2bfafeaa504c1e6920cd3bb435985ba55f6b39f7ad178f553aeb40b8cc2e6188"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B4D",
+            "query": "00BF6B4E",
+            "raw_sha256": "58788908062d33d441c464fd7f1e768df1cb24407001576e3c90c8eec4295f12"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B4D",
+            "query": "00BF6B4F",
+            "raw_sha256": "dfe43d83ccb5be0133569304fd5c0ba22cda9eca8ebe0c78011f5c6c625c9c1a"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B50",
+            "query": "00BF6B50",
+            "raw_sha256": "db0822fcffae12353df9a848bdeaa4a91e4a96655f55bf8eebdf97f90cbf5636"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B50",
+            "query": "00BF6B51",
+            "raw_sha256": "f972ec8dae0c813f1cf29c394c70c3710e6373dad0a23b614ed121f3ba8f2d20"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B52",
+            "query": "00BF6B52",
+            "raw_sha256": "748f8ec09ca23e81e63dc971ba0fee8b1681dd3ccebf039502a28f38559e4a55"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B53",
+            "query": "00BF6B53",
+            "raw_sha256": "32380809e79af54a80e04f3789c084fd4ead24f400dfff9a889e36289c4965a2"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B54",
+            "query": "00BF6B54",
+            "raw_sha256": "6de2128d55767c9ec55c6903430e99ae7746d3827f2b1b66de7c4266c0ffd7f7"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B55",
+            "query": "00BF6B55",
+            "raw_sha256": "1972afefdbb556117c3b7ca2e55b935e7d9176cb2868d3bb877d7e6c54360ca9"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B55",
+            "query": "00BF6B56",
+            "raw_sha256": "010bf22a554edbddd0ab6004da4b24c6d7087447be899dfc266d04bead312427"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B55",
+            "query": "00BF6B57",
+            "raw_sha256": "c8df2a2d34568fc1259cec99d8d0114367bdebd671c84f40ac1d72247def429f"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B58",
+            "query": "00BF6B58",
+            "raw_sha256": "27b542e036c440eed7aa64e913067226e6b9ee6c62603b988fdbde46e59605d4"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B58",
+            "query": "00BF6B59",
+            "raw_sha256": "d3a832a4cad4165c40f3347a75834466e8e3c340aa86927af749b8ff7f981325"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B58",
+            "query": "00BF6B5A",
+            "raw_sha256": "1b25eceef3c9cbdc0ef02de2bfe11dcaffeb8a6d6a7978ab5587b0edbac5959c"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5B",
+            "query": "00BF6B5B",
+            "raw_sha256": "25d0f63a14b044f8fb5f8d2de763fac353de62e8d4b7900d2eb77907359c270c"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5B",
+            "query": "00BF6B5C",
+            "raw_sha256": "6bb5fa9d6ce53d5878555e131212bea1f49f3554e70343158fb0029ade62e83b"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5B",
+            "query": "00BF6B5D",
+            "raw_sha256": "a7002c3a82713431d79669c2b991e620e5560f743ee2a798e9571937a2eecbe9"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5E",
+            "query": "00BF6B5E",
+            "raw_sha256": "ed577bc2638d0adb0bb817c9dbbe5f729ba1b135661a4acfb32ef660e580808a"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5E",
+            "query": "00BF6B5F",
+            "raw_sha256": "4527f8f4aa50b3b97e16422c354a440d90a22e54ac573ae1cad1b05b4bf70a77"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B5E",
+            "query": "00BF6B60",
+            "raw_sha256": "147326d2bcdb948aec323ed010ef29ac965c9a18764602a557ba9ec286509622"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B61",
+            "query": "00BF6B61",
+            "raw_sha256": "040659ac81a3d0a26b766ab9f7ff21261d201fe071d58162119a7cebac7d8f9b"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B61",
+            "query": "00BF6B62",
+            "raw_sha256": "705aa2dee68ae1543185fab6a8208578e1af9acae7898f9765610acdc4182b5e"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B61",
+            "query": "00BF6B63",
+            "raw_sha256": "2ac7cf01aa36422c024c5f6d44ef83934558d6691a39ff6f8b294a9a3f3b7f17"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 5,
+            "instruction_start": "00BF6B64",
+            "query": "00BF6B64",
+            "raw_sha256": "3687096ace57a395b9c3fcc2f06076a11ceba02e1585890e7402efb81f41e7b4"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 5,
+            "instruction_start": "00BF6B64",
+            "query": "00BF6B65",
+            "raw_sha256": "b8383e2d25ae465873ae774c9c864b9e99102dab997657a900043800454e0369"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 5,
+            "instruction_start": "00BF6B64",
+            "query": "00BF6B66",
+            "raw_sha256": "c5f8025666edc8bc42f49676267a550c64a8cdaec61bbe12aec8598524193083"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 5,
+            "instruction_start": "00BF6B64",
+            "query": "00BF6B67",
+            "raw_sha256": "7e56673849c88a643b340c868656cd90346a136b6ea8d21fb8e09f2ab9b5d289"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 5,
+            "instruction_start": "00BF6B64",
+            "query": "00BF6B68",
+            "raw_sha256": "94ff734781545d0d8321a7e2aed4fbf7a38c1d79185f71451af01147bab2d7a7"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B69",
+            "query": "00BF6B69",
+            "raw_sha256": "b92a5acaf089a23a54e6c4e067f8a74f9f9d8fbbd6fb93458ef89c2fe3a2582a"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B69",
+            "query": "00BF6B6A",
+            "raw_sha256": "264386add0cfcf27495dd951895e58fa42790e526d5f203ea260f3be4aa189d1"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B69",
+            "query": "00BF6B6B",
+            "raw_sha256": "0aca62eac681721e60e3268a623a54a95176d6926fa12de95779e10b09657457"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B6C",
+            "query": "00BF6B6C",
+            "raw_sha256": "eff5f565881bb59f997a781de2b3ce2f9d852f4e74cc1cb08640ddf5f14f8e15"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B6C",
+            "query": "00BF6B6D",
+            "raw_sha256": "863ef287948289fb7a851d815fe1ffbf149ee4b2d5484b0fcd5ca6de8cc714d0"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B6C",
+            "query": "00BF6B6E",
+            "raw_sha256": "5df11a4b385f26d3f9f03710b770eb74fc9038b0da6b7dadcf6964ffac8a303e"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B6F",
+            "query": "00BF6B6F",
+            "raw_sha256": "64f521b0b7c6f4d0b7b69f58528f1295b99f2cce61f23bb7cc0c8ecf628fd5d8"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B70",
+            "query": "00BF6B70",
+            "raw_sha256": "41f07cc040e9031c444160f6273f197477e11f005ddc2c7d8d4b09ae3da4c347"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B71",
+            "query": "00BF6B71",
+            "raw_sha256": "23904871d28db0f2bf186594941f6a021bfff5f84043a98fed9dfa78a24d21f0"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B72",
+            "query": "00BF6B72",
+            "raw_sha256": "840c5d0b8cf7e9339dfd9f863c1be5351abfbf26060a22b90ddb4986d5219cb3"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B72",
+            "query": "00BF6B73",
+            "raw_sha256": "dc9b2506dc8679a50a942fa7b715630d7b7180c34d9fac27afec3a87b66841c2"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 3,
+            "instruction_start": "00BF6B72",
+            "query": "00BF6B74",
+            "raw_sha256": "666e3934588694751d2e129f78848457fdad61321d3f86d49e7e274337d6ab82"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B75",
+            "query": "00BF6B75",
+            "raw_sha256": "478834d8b5d54d1dd7047efb2dd0597210ad15893372620c65f34eb6d5a20777"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 2,
+            "instruction_start": "00BF6B75",
+            "query": "00BF6B76",
+            "raw_sha256": "3564802fa74cfd230db5cdc8ad6a6329ae6b140b65fbd10d79d7cc73fabbdd65"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B77",
+            "query": "00BF6B77",
+            "raw_sha256": "d6a6ab9783760dbb21011cc0aa494d8e23312a44b870f9300765133f54f5abcb"
+          },
+          {
+            "function_owner": "00BF6B43",
+            "instruction_length": 1,
+            "instruction_start": "00BF6B78",
+            "query": "00BF6B78",
+            "raw_sha256": "05794c5b301e165caa618ccda6b025378ae39e6046b99b06804ec5d3fbff3331"
+          }
+        ],
+        "saved_function": {
+          "body": {
+            "address_count": "54",
+            "complete": true,
+            "range_count": 1,
+            "ranges": [
+              {
+                "end_inclusive": {
+                  "offset": "00bf6b78",
+                  "space": "ram"
+                },
+                "length": "54",
+                "start": {
+                  "offset": "00bf6b43",
+                  "space": "ram"
+                }
+              }
+            ],
+            "returned_range_count": 1
+          },
+          "direct_thunk_target": null,
+          "entry": {
+            "offset": "00bf6b43",
+            "space": "ram"
+          },
+          "is_thunk": false,
+          "name": "FID_conflict:___CxxFrameHandler3",
+          "no_return": false,
+          "thunk_target_recursive": false
+        },
+        "units": [
+          {
+            "end_inclusive": "00BF6B43",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b44",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b44",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B43"
+          },
+          {
+            "end_inclusive": "00BF6B45",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b46",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b46",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00BF6B44"
+          },
+          {
+            "end_inclusive": "00BF6B48",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b49",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b49",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B46"
+          },
+          {
+            "end_inclusive": "00BF6B49",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b4a",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b4a",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B49"
+          },
+          {
+            "end_inclusive": "00BF6B4A",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b4b",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b4b",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B4A"
+          },
+          {
+            "end_inclusive": "00BF6B4B",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b4c",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b4c",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B4B"
+          },
+          {
+            "end_inclusive": "00BF6B4C",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b4d",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b4d",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B4C"
+          },
+          {
+            "end_inclusive": "00BF6B4F",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b50",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b50",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B4D"
+          },
+          {
+            "end_inclusive": "00BF6B51",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b52",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b52",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00BF6B50"
+          },
+          {
+            "end_inclusive": "00BF6B52",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b53",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b53",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B52"
+          },
+          {
+            "end_inclusive": "00BF6B53",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b54",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b54",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B53"
+          },
+          {
+            "end_inclusive": "00BF6B54",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b55",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b55",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B54"
+          },
+          {
+            "end_inclusive": "00BF6B57",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b58",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b58",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B55"
+          },
+          {
+            "end_inclusive": "00BF6B5A",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b5b",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b5b",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B58"
+          },
+          {
+            "end_inclusive": "00BF6B5D",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b5e",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b5e",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B5B"
+          },
+          {
+            "end_inclusive": "00BF6B60",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b61",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b61",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B5E"
+          },
+          {
+            "end_inclusive": "00BF6B63",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b64",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b64",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B61"
+          },
+          {
+            "end_inclusive": "00BF6B68",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b69",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "default_targets": [
+                {
+                  "offset": "00c07991",
+                  "space": "ram"
+                }
+              ],
+              "effective_fallthrough": {
+                "offset": "00bf6b69",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "effective_targets": [
+                {
+                  "offset": "00c07991",
+                  "space": "ram"
+                }
+              ],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 5,
+            "start": "00BF6B64"
+          },
+          {
+            "end_inclusive": "00BF6B6B",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b6c",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b6c",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B69"
+          },
+          {
+            "end_inclusive": "00BF6B6E",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b6f",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b6f",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B6C"
+          },
+          {
+            "end_inclusive": "00BF6B6F",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b70",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b70",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B6F"
+          },
+          {
+            "end_inclusive": "00BF6B70",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b71",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b71",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B70"
+          },
+          {
+            "end_inclusive": "00BF6B71",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b72",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b72",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B71"
+          },
+          {
+            "end_inclusive": "00BF6B74",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b75",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b75",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 3,
+            "start": "00BF6B72"
+          },
+          {
+            "end_inclusive": "00BF6B76",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b77",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b77",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00BF6B75"
+          },
+          {
+            "end_inclusive": "00BF6B77",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00bf6b78",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00bf6b78",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B77"
+          },
+          {
+            "end_inclusive": "00BF6B78",
+            "flow": {
+              "default_fallthrough": null,
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": true,
+                "name": "TERMINATOR"
+              },
+              "default_targets": [],
+              "effective_fallthrough": null,
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": true,
+                "name": "TERMINATOR"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00BF6B78"
+          }
+        ]
+      },
+      "prerequisite_input_count": 11,
+      "status": "PASS",
+      "typed_batch_count": 4,
+      "typed_response_count": 216
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/original_replay.json",
+        "bytes": 33943,
+        "sha256": "04c1867e5a3b7887d67227a464e6f75cec8aa476e26436d4bfba7b6681c285f3"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/original_guard.json",
+        "bytes": 449,
+        "sha256": "63bf17b450f83fbf54dc4385d5e630adc0319be178fe30731a6d432a54b74260"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/original_command.json",
+        "bytes": 571,
+        "sha256": "91ea9a0df7089f1cc02e31c61908c07c66f6c5108b266a66e6d9109af6e587ad"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/distinct_copy_replay.json",
+        "bytes": 33943,
+        "sha256": "04c1867e5a3b7887d67227a464e6f75cec8aa476e26436d4bfba7b6681c285f3"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/distinct_copy_guard.json",
+        "bytes": 464,
+        "sha256": "28690efd16d7430a57f62a7baeafbf4de586abcd363394d441ce18dc5c02cbf7"
+      },
+      {
+        "path": "local/cc12_application_crt_handler_body_listing_metadata/distinct_copy_command.json",
+        "bytes": 586,
+        "sha256": "b7fe81c07c2dad9a0ed6f6d02a635f8076532a6e29b10522ef73782322bfec3f"
+      }
+    ]
+  },
+  "actual_staged_final_git_closure": {
+    "staged": "local/cc12_application_crt_handler_body_listing_metadata/staged_git_receipt.json",
+    "final": "local/cc12_application_crt_handler_body_listing_metadata/final_git_receipt.json",
+    "exact_owned_outputs": 2,
+    "note": "External receipts check the actual index/final tree and output blobs without self-reference."
+  },
+  "exclusions": [
+    "No target C07991 query or automatic target-object inspection.",
+    "No decompile/disasm, prototype repetition, caller, data, stack-content, IAT or descriptor read.",
+    "No GPR mutation, annotation, repair, analysis or export.",
+    "No C++, tests, build, probe, process binding, OS, audio or game action.",
+    "No Source-content census or inherited archive recursion."
+  ],
+  "next_gate": "Any target or actual frame/invocation investigation needs a separate bounded Root packet.",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/frozen_git.json",
+      "bytes": 8466,
+      "sha256": "b1343291cc1f3b05792faf4a7b2a611a8a761acbbebd58f3582a797daf7ac7a9"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/manifest.json",
+      "bytes": 13219,
+      "sha256": "c4b16f273136eaaa3587e5818aad707d6cfc08d4ad9a509aab4213121106259b"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/seal.json",
+      "bytes": 59331,
+      "sha256": "0db5037c0ad7f2eed09a0e6ab0b84fcdd283cf07c65b93e7b3f10cc1147447f1"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/Root_listing_gate.json",
+      "bytes": 25516,
+      "sha256": "d0245e3afd2e1eebf87c452620af5beffd7afabdb3e4ff615e5fec64de2e1131"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/listing_before.json",
+      "bytes": 258143,
+      "sha256": "36018664970f02f9ffd11c44f94fdee0211b1e510a0b9350e428537ee3ac459b"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/listing_after.json",
+      "bytes": 258143,
+      "sha256": "e119564022e1bb9130760adb58962fe7294694ea4b33998bb266dd33a39439e3"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/operand_before.json",
+      "bytes": 258143,
+      "sha256": "f25e96e46ebd8261e37d48804efcc2142da03369c385ca24b82a953a1f9c4f3e"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/operand_after.json",
+      "bytes": 258143,
+      "sha256": "35aa52351164b1200d88edba9a738839f57ace0c9fa1941fc90de96734d616b2"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/query_schedule.json",
+      "bytes": 5424,
+      "sha256": "e2972d1065e8b7f60bc0c0934fda844092a7ee0f1d4f04f3950c974498069972"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/operand_schedule.json",
+      "bytes": 8176,
+      "sha256": "0ec490005b0d6e534f11b9e7e14b567d088b7961d1be32e33272ca1e8ef59456"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/instruction_text.json",
+      "bytes": 4259,
+      "sha256": "ccc506b52f64746566234575477ffd066b8135da8a89500dc71ff2830e5e7843"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_listing_metadata/capstone_decode.json",
+      "bytes": 8995,
+      "sha256": "7e771bd21afe6fd5e3a5a713166a98429338fe323dd5a93a9db0bba28ee43640"
+    }
+  ]
+}
