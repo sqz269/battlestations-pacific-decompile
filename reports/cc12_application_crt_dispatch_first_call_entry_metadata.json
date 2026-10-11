@@ -1,0 +1,431 @@
+{
+  "schema": "bsp.cc12.dispatch-first-call-entry-metadata.v1",
+  "status": "PASS_BOUNDED_ENTRY_METADATA_ONLY",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_ENTRY_METADATA.md",
+    "reports/cc12_application_crt_dispatch_first_call_entry_metadata.json"
+  ],
+  "frozen_worker_HEAD": "fac6dbb926cf6fde3cc43508dfc5f6e4f0873805",
+  "frozen_worker_root_tree": "5d598643bc795c2a52accd71b49a061ced5a13fc",
+  "frozen_worker_Source_subtree_identities": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "Source_identity_scope": "Frozen worker base/final commit identities only; no future Root Main equality claim and no Source content census.",
+  "prerequisite_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+      "mode": "100644",
+      "git_blob": "af544287f2f59c76e4ecd550137823beb14cd944",
+      "member": "working/docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+      "git_member": "git_blobs/af544287f2f59c76e4ecd550137823beb14cd944.bin",
+      "working_bytes": 2021,
+      "working_sha256": "4ebd3afd0b453db0d7b74c869d9e3915c1355484cc015826db487d689ed0c984",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "reports/cc12_application_crt_handler_body_primary.json",
+      "mode": "100644",
+      "git_blob": "b1cf36a4be8d767949728c37f4b3c020e55b802c",
+      "member": "working/reports/cc12_application_crt_handler_body_primary.json",
+      "git_member": "git_blobs/b1cf36a4be8d767949728c37f4b3c020e55b802c.bin",
+      "working_bytes": 10155,
+      "working_sha256": "e80fa2a9c031ab65212591e2ef70d3008df101ebd4b873c3fe25bc92dcdff373",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_ENTRY_PRIMARY.md",
+      "mode": "100644",
+      "git_blob": "ec7e1f622f3cb119bddcf2e984a8069d26589e4e",
+      "member": "working/docs/CC12_APPLICATION_CRT_DISPATCH_ENTRY_PRIMARY.md",
+      "git_member": "git_blobs/ec7e1f622f3cb119bddcf2e984a8069d26589e4e.bin",
+      "working_bytes": 1630,
+      "working_sha256": "7fd4d2e9340dfe2b50ea6e6308565ddc628b61e7e284f6e6bffbea8543a5fc43",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_entry_primary.json",
+      "mode": "100644",
+      "git_blob": "87930ab43dbb22544756f7538d9c8aa5ce5a8598",
+      "member": "working/reports/cc12_application_crt_dispatch_entry_primary.json",
+      "git_member": "git_blobs/87930ab43dbb22544756f7538d9c8aa5ce5a8598.bin",
+      "working_bytes": 7370,
+      "working_sha256": "9205906aab9d2af5bafa706c70183bd16807c7ea837e0e82938e2fa93843e413",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+      "mode": "100644",
+      "git_blob": "6a70950b42b0a636709e1ea579ce240d39627166",
+      "member": "working/docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+      "git_member": "git_blobs/6a70950b42b0a636709e1ea579ce240d39627166.bin",
+      "working_bytes": 5076,
+      "working_sha256": "abd9e65b627bb2df549a85d069eff02feaf6083c8e0aca47a4832a35c14a28c5",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "mode": "100644",
+      "git_blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+      "member": "working/reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "git_member": "git_blobs/bc3a2cf54d6ab32237d15555602420f69c96a0d4.bin",
+      "working_bytes": 196696,
+      "working_sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "config/target.json",
+      "mode": "100644",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "member": "working/config/target.json",
+      "git_member": "git_blobs/a46b97705f35162ba70bfbd4909788d11bb188b4.bin",
+      "working_bytes": 455,
+      "working_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "mode": "100644",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "member": "working/tools/bsp.py",
+      "git_member": "git_blobs/ba90f058569106f62c72dc9f9d72de205772fc7c.bin",
+      "working_bytes": 73311,
+      "working_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "mode": "100644",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "member": "working/tools/ghidra_typed_flow.py",
+      "git_member": "git_blobs/4f73269e25719493aefe1d7f0111b8bbb6b62619.bin",
+      "working_bytes": 20048,
+      "working_sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "mode": "100644",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "member": "working/tools/ghidra_export.py",
+      "git_member": "git_blobs/0056201883c1594d9267d2fcf4990385461f0857.bin",
+      "working_bytes": 14411,
+      "working_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/branch_sync.py",
+      "mode": "100644",
+      "git_blob": "f73dbc623c26495daff4c94da0e5b74388eb0cc2",
+      "member": "working/tools/branch_sync.py",
+      "git_member": "git_blobs/f73dbc623c26495daff4c94da0e5b74388eb0cc2.bin",
+      "working_bytes": 3532,
+      "working_sha256": "274a868ce73e272fbfaae77affba83f50cf57b213e37d87ae3cbd2fee09eb149",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/coordination.py",
+      "mode": "100644",
+      "git_blob": "c9b6a6788498b82373233afe3211002ed90ca4c1",
+      "member": "working/tools/coordination.py",
+      "git_member": "git_blobs/c9b6a6788498b82373233afe3211002ed90ca4c1.bin",
+      "working_bytes": 17283,
+      "working_sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ledger.py",
+      "mode": "100644",
+      "git_blob": "1d037c9effea576092d60ce5b4d4783420a617f7",
+      "member": "working/tools/ledger.py",
+      "git_member": "git_blobs/1d037c9effea576092d60ce5b4d4783420a617f7.bin",
+      "working_bytes": 7610,
+      "working_sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/workspace.py",
+      "mode": "100644",
+      "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+      "member": "working/tools/workspace.py",
+      "git_member": "git_blobs/ba99df2b6e5bd7cd8bd910934b83340fcf857604.bin",
+      "working_bytes": 1371,
+      "working_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+      "working_matches_Git_exactly": true
+    }
+  ],
+  "prerequisite_scope": "Finite immediate entry/body evidence and accepted handler-call contract; the inherited full-body delivery remains immutable while Root acceptance is separate.",
+  "Root_listing_gate": {
+    "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/Root_listing_gate.json",
+    "bytes": 81630,
+    "sha256": "70857fb4ceb4ef1634ac2fa9e31aa5a79c7fc997d81b5b2c0e136723bfa407c7"
+  },
+  "native": {
+    "FH3_identity_or_runtime_invocation": false,
+    "Root_listing_gate_sha256": "70857fb4ceb4ef1634ac2fa9e31aa5a79c7fc997d81b5b2c0e136723bfa407c7",
+    "Source_content_census": false,
+    "body_continuation_bytes_read": 0,
+    "counts": {
+      "count_calls": 4,
+      "entry_byte_reads": 1,
+      "prototype_queries": 1,
+      "typed_response_count": 2
+    },
+    "data_or_stack_bytes_read": 0,
+    "entry_bytes": {
+      "address": "00C0522E",
+      "hex": "56",
+      "length": 1,
+      "limit": "Only the saved first instruction byte was read; no body continuation or return behavior was inspected.",
+      "manual_x86_interpretation": "PUSH ESI",
+      "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+      "stdout_sha256": "2855bc6d3fe6b204cadd9efb6570d48cc952d1602b4fb21eefd4908885cd40fd"
+    },
+    "epoch": 98,
+    "exact_helper_body_count": 4,
+    "frozen_head": "fac6dbb926cf6fde3cc43508dfc5f6e4f0873805",
+    "frozen_worker_Source_subtree_identities": {
+      "include": "09add3be594e63edcce6a16ec041ed965441e898",
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+    },
+    "function_count": 64730,
+    "git_object_count": 8,
+    "member_count": 62,
+    "metadata": {
+      "entry_flow": {
+        "default_fallthrough": {
+          "offset": "00c0522f",
+          "space": "ram"
+        },
+        "default_flow": {
+          "is_call": false,
+          "is_computed": false,
+          "is_conditional": false,
+          "is_jump": false,
+          "is_terminal": false,
+          "name": "FALL_THROUGH"
+        },
+        "default_targets": [],
+        "effective_fallthrough": {
+          "offset": "00c0522f",
+          "space": "ram"
+        },
+        "effective_flow": {
+          "is_call": false,
+          "is_computed": false,
+          "is_conditional": false,
+          "is_jump": false,
+          "is_terminal": false,
+          "name": "FALL_THROUGH"
+        },
+        "effective_targets": [],
+        "fallthrough_overridden": false,
+        "flow_override": "NONE"
+      },
+      "entry_listing": {
+        "code_unit_at": {
+          "address": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "code_unit_containing": {
+          "address": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "instruction_at": {
+          "address": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "instruction_containing": {
+          "address": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        }
+      },
+      "saved_function": {
+        "body": {
+          "address_count": "24",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00c05245",
+                "space": "ram"
+              },
+              "length": "24",
+              "start": {
+                "offset": "00c0522e",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00c0522e",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "__getptd",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    },
+    "native_query_sites": [
+      "00C0522E"
+    ],
+    "numeric_target": "00C0522E",
+    "opaque_prototype_companion": {
+      "CLI_emitted_nonempty_lines_excluding_marker": 27,
+      "CLI_reported_omitted_lines": null,
+      "CLI_reported_total_lines": null,
+      "companion_field_values_credited": [],
+      "companion_text_bytes_in_stdout": 680,
+      "companion_text_sha256": "ddb5c71b9d642ce9595a9a86cac899219afe61c421ac66f08c4d198d3773e770",
+      "complete_companion_HTTP_response_retained": false,
+      "terminal_CLI_truncation_marker": null,
+      "whole_automatic_companion_opaque": true
+    },
+    "parent_call_site": "00C07997",
+    "prerequisite_input_count": 14,
+    "proto_stdout_sha256": "85077d696d82b889d20c12c0e56004e5b2904224f012338233652192284f9366",
+    "raw_gate_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794",
+    "raw_gates_equal": true,
+    "returned_state_or_callee_ABI_authenticated": false,
+    "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+    "status": "PASS"
+  },
+  "conditional_local_contract": {
+    "selection": "The accepted Root listing gate identifies the physical parent call site 00C07997 and its numeric target 00C0522E. This packet queries only that target entry.",
+    "saved_function_name": "__getptd",
+    "saved_prototype": "_ptiddata __cdecl __getptd(void)",
+    "saved_name_and_prototype_are_analysis_metadata_only": true,
+    "entry_instruction": "Byte 56 is x86 PUSH ESI. If that instruction completes normally from entry ESP=T and ESI=U, it writes U to DWORD[T-4], changes ESP to T-4 and continues at C0522F; its effect alone supplies no eventual return state.",
+    "parent_return_symbols_remain_unknown": [
+      "Q0=returned ESP",
+      "F0=returned EBP",
+      "P=returned EAX",
+      "all other registers",
+      "flags",
+      "memory",
+      "stack cleanup"
+    ],
+    "unresolved": [
+      "Actual target return value or thread-state/TLS semantics",
+      "Actual callee calling convention or preservation contract",
+      "Parent EBP/frame/data origins across the call",
+      "Original FH3 or compiler-handler identity",
+      "Runtime dereference validity, invocation and game behavior"
+    ],
+    "next_gate": "The 24-address saved body is a metadata extent only. No body continuation bytes, instruction texts, callers, callees, xrefs, stack or data queries are admitted without a separate explicit Root packet.",
+    "Ghidra_or_Source_mutation": false,
+    "runtime_execution": false
+  },
+  "offline_evidence": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/evidence.zip",
+      "bytes": 522639,
+      "sha256": "f03fc87d4b2375018042a9ca261c5555f3c11b1d31833489077fe73817743df4"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/distinct_copy/evidence.zip",
+      "bytes": 522639,
+      "sha256": "f03fc87d4b2375018042a9ca261c5555f3c11b1d31833489077fe73817743df4"
+    },
+    "physical_copy_distinct": true,
+    "manifest": {
+      "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/manifest.json",
+      "bytes": 10904,
+      "sha256": "e4c982c8157caa631212b8964e73c8ab668582f8cfa59943771d49170f02ee53"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/capture_entry.py",
+        "bytes": 6050,
+        "sha256": "2ffe4d50d7f87164a5b071d4a6251ecd13dc84e992a792e6dc955f246f1aeaf4"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/portable_replay.py",
+        "bytes": 12452,
+        "sha256": "c0dab435cdea018e09b8b6fad4fa662ea185ff309b2d10484b5cd58b72e942cd"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/guard_replay.py",
+        "bytes": 2283,
+        "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/packet_tool.py",
+        "bytes": 16966,
+        "sha256": "159d1cb1052b5f1ef85a52db7e65c776b73478c30c5007f97d550dc34b07b0b1"
+      }
+    ],
+    "replay_equal": true,
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/original_replay.json",
+        "bytes": 3717,
+        "sha256": "6c934b0890b423569f38731d3a81450b8ee6a270790db38c5fdabc1b5d8cd3bc"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/original_guard.json",
+        "bytes": 454,
+        "sha256": "14dfefcd516b4b17425d31492c9bcd0da4098bb8a3e054bc90f01cacc1c466cd"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/original_command.json",
+        "bytes": 581,
+        "sha256": "040ea9f55e80ff19f98a3469e41b78783c189ca9dba1492fccd5a7754ce486bd"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/distinct_copy_replay.json",
+        "bytes": 3717,
+        "sha256": "6c934b0890b423569f38731d3a81450b8ee6a270790db38c5fdabc1b5d8cd3bc"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/distinct_copy_guard.json",
+        "bytes": 469,
+        "sha256": "2d1474bc2bb718c726c86dcbe8e99f0a338f64d4a55af71a9e53c45ef4b2dd02"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_first_call_entry_metadata/distinct_copy_command.json",
+        "bytes": 596,
+        "sha256": "6009aa1e8085e850c97de517709333e94679efee1673e42708318e587726b9ab"
+      }
+    ]
+  },
+  "validation_limits": {
+    "new_Source_implementation": false,
+    "build_or_tests_required_for_metadata_only_changes": false,
+    "ABI_compatibility": false,
+    "native_execution": false,
+    "game_validation": false,
+    "body_analysis_admitted": false,
+    "OriginalFH3_authenticated": false
+  }
+}
