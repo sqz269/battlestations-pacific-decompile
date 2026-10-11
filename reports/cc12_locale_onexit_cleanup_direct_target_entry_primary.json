@@ -1,0 +1,1354 @@
+{
+  "packet": "cc12_locale_onexit_cleanup_direct_target_entry_primary",
+  "status": "independently_reviewed_exact_entry_and_saved_metadata",
+  "worker_commit": "05176046c85af85273719bbb247f81e788bbcf87",
+  "worker_parent": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+  "worker_tree": "4ca5ac7914c9732d9c0045b9e6b7fe29143e80e3",
+  "Root_merge_commit": "742f1750ec258c2a82cb510c0b555d3adb085c69",
+  "Root_prior_metadata_gate": {
+    "status": "Root exact entry metadata gate PASS",
+    "address": "00C11B31",
+    "length": 1,
+    "original_direct_raws": 2,
+    "direct_raw_bytes": 2141,
+    "direct_raw_sha256": "239c6b3fae250eda1a9be90791149f65f8b137fec18eab80ff64ec830fb63472",
+    "all4aliases_exact_InstructionDB": true,
+    "complete_saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c11b31"
+      },
+      "name": "__unlock",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "21",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": "21"
+          }
+        ]
+      }
+    },
+    "flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b32"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b32"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "frozen_actual_Git": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+    "finite_selected_Git_inputs": 8,
+    "actual_Git_object_records": 6,
+    "metadata_members_verified": 33,
+    "frozen_positive_preimages_copied": 23,
+    "Native_commands": 4,
+    "positive_complete9B_C11C18_numeric_E8_target_verified": true,
+    "epoch": 98,
+    "count": 64730,
+    "Root_gate_execution_failures": 0,
+    "worker_offline_validator_failure_disclosed": 1,
+    "fresh_Root_Native_queries": 0,
+    "phase2_admission": "paired exact1B C11B31/context0 exactentry/closing exactentry/counts only; no proto, body or otherqueries",
+    "no_Source_Original_ABI_service_or_runtime_credit": true
+  },
+  "Root_actual_Git_and_archives_review": {
+    "status": "PASS",
+    "worker_commit": "05176046c85af85273719bbb247f81e788bbcf87",
+    "worker_parent": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+    "worker_tree": "4ca5ac7914c9732d9c0045b9e6b7fe29143e80e3",
+    "archives": {
+      "core": {
+        "file": "core_v1.zip",
+        "distinct_copy": "core_v1_copy.zip",
+        "pin": {
+          "bytes": 2114515,
+          "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+        },
+        "members": 152
+      },
+      "delivery": {
+        "file": "delivery_v1.zip",
+        "distinct_copy": "delivery_v1_copy.zip",
+        "pin": {
+          "bytes": 2050090,
+          "sha256": "8c311cc2e044185e975ef246e24f9e9a02b7d43366aa46b93c0ba4ec9015d922"
+        },
+        "members": 84
+      }
+    },
+    "actual10distinct_Git_objects_18_phase_records": {
+      "022395d820ddaf58360b6c551b7d7657417e6a2b": "commit",
+      "0d294278864cfc8894b339b2bef2a0db4e6f9a63": "tree",
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+      "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+      "67660f48ea805f31fa35c3e7ac73aa327bbf0023": "tree",
+      "df7d16e269a7438d90df4c82947d28af1eac4d29": "tree",
+      "05176046c85af85273719bbb247f81e788bbcf87": "commit",
+      "4ca5ac7914c9732d9c0045b9e6b7fe29143e80e3": "tree",
+      "eaf390462266cf029d4e7d1b4803d2c92bea523d": "tree",
+      "09e74e7af0cd7592e0127643baea7763bbdf8f31": "tree"
+    },
+    "frozen8positive_inputs": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "oid": "5369a339a80b06005d898f5c059f60fb21d0026e",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "bytes": 4347,
+        "sha256": "f0d2fb60b60805688cc1a50e2b8bebdd71d50fe92643e97f9a6447cbbefeb185"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "oid": "5e43471cf4a33caa5e914f2155553e2ed675971c",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "bytes": 27705,
+        "sha256": "e68a6a20f7641cd831b90325e469aa86ef1e9666534986859a1cbf1d7c927224"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY_PRIMARY.md",
+        "oid": "c0f820cd78fa308c2a5fe000f8bac33231953f8f",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY_PRIMARY.md",
+        "bytes": 2228,
+        "sha256": "36076a06bfa5dc5494453e71885e354d40502eb82002e04dd76c510694bebd00"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json",
+        "oid": "fac811f0b66463347fef79269347c5086b6d2754",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json",
+        "bytes": 5649,
+        "sha256": "10021d437071703f24785522159bfe539ace374e0c2cbe7aa5435fff3ba8df76"
+      }
+    ],
+    "frozen_Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "actual2outputs": {
+      "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md": {
+        "blob": "14507d4101f0e47158da44e3648cef3a1643a8ff",
+        "bytes": 7380,
+        "sha256": "3e2c42fc9415a5c0c7333aadc9479481de9bf83cee1eb5f7c0955d90e64215f2"
+      },
+      "reports/cc12_locale_onexit_cleanup_direct_target_entry.json": {
+        "blob": "60e67837e72812c15abb6fe767e10804c92edee6",
+        "bytes": 24890,
+        "sha256": "61b2c76d64a482bd31a4b7c1f9fec05546047757b644e444c65f30e359ca0627"
+      }
+    },
+    "all59Root_artifacts_and_preimages_equal": true,
+    "helper_pins": {
+      "replay.py": [
+        19119,
+        "df80c3a219215ce374f3079f372aa2b6878eecb55d8d86a62e5e08641ce79cb6"
+      ],
+      "guarded_replay.py": [
+        3097,
+        "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      ]
+    },
+    "Root_fresh_Native_queries": 0,
+    "executed_evidence_helpers": 0
+  },
+  "Root_core_strict_replay": {
+    "status": "PASS",
+    "guard_active_before_helper_exec": true,
+    "denies_every_other_audit_event": true,
+    "helper_result": {
+      "status": "PASS",
+      "phase": "core",
+      "base": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+      "source_identity_only": {
+        "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+        "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+      },
+      "metadata": {
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b32"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b32"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2141,
+          "sha256": "239c6b3fae250eda1a9be90791149f65f8b137fec18eab80ff64ec830fb63472"
+        },
+        "opaque": "entire automatic direct_call_targets value"
+      },
+      "typed_payloads": 3,
+      "whole_entry_bytes": 1,
+      "entry_hex": "55",
+      "entry_pin": {
+        "bytes": 1,
+        "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+      },
+      "remaining_saved_body_bytes_unread": 20,
+      "positive_caller_bytes": 9,
+      "positive_caller_hex": "6A0AE812FFFFFF59C3",
+      "positive_caller_pin": {
+        "bytes": 9,
+        "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042"
+      },
+      "manual": {
+        "entry": [
+          {
+            "address": "00C11B31",
+            "bytes": "55",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "55",
+              "ModRM_present": false,
+              "encoded_register": 5
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655409,
+              "bytes": "55",
+              "size": 1,
+              "mnemonic": "push",
+              "op_str": "ebp",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                85,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 1,
+                  "register": "ebp"
+                }
+              ]
+            }
+          }
+        ],
+        "positive_caller": [
+          {
+            "address": "00C11C18",
+            "bytes": "6A0A",
+            "size": 2,
+            "physical_fields": {
+              "opcode_hex": "6A",
+              "ModRM_present": false,
+              "encoded_imm8": 10,
+              "signed_imm8": 10,
+              "pushed_imm32": 10
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655640,
+              "bytes": "6a0a",
+              "size": 2,
+              "mnemonic": "push",
+              "op_str": "0xa",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                106,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 1,
+              "immediate_size": 1,
+              "operands": [
+                {
+                  "type": 2,
+                  "size": 4,
+                  "access": 0,
+                  "immediate": 10
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C1A",
+            "bytes": "E812FFFFFF",
+            "size": 5,
+            "physical_fields": {
+              "opcode_hex": "E8",
+              "ModRM_present": false,
+              "encoded_rel32_little_endian": "12FFFFFF",
+              "signed_rel32": -238,
+              "physical_next": 12655647,
+              "numeric_target": 12655409
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655642,
+              "bytes": "e812ffffff",
+              "size": 5,
+              "mnemonic": "call",
+              "op_str": "0xc11b31",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                232,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 1,
+              "immediate_size": 4,
+              "operands": [
+                {
+                  "type": 2,
+                  "size": 4,
+                  "access": 0,
+                  "immediate": 12655409
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C1F",
+            "bytes": "59",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "59",
+              "ModRM_present": false,
+              "encoded_register": 1
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655647,
+              "bytes": "59",
+              "size": 1,
+              "mnemonic": "pop",
+              "op_str": "ecx",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                89,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 2,
+                  "register": "ecx"
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C20",
+            "bytes": "C3",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "C3",
+              "ModRM_present": false
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655648,
+              "bytes": "c3",
+              "size": 1,
+              "mnemonic": "ret",
+              "op_str": "",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                195,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": []
+            }
+          }
+        ]
+      },
+      "actual_Capstone": {
+        "decoder": "Capstone",
+        "version": "5.0.7",
+        "mode": "x86-32",
+        "positive_caller_source": [
+          {
+            "path": "frozen/blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+            "bytes": 27705,
+            "sha256": "e68a6a20f7641cd831b90325e469aa86ef1e9666534986859a1cbf1d7c927224"
+          },
+          {
+            "path": "frozen/blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json",
+            "bytes": 5649,
+            "sha256": "10021d437071703f24785522159bfe539ace374e0c2cbe7aa5435fff3ba8df76"
+          }
+        ],
+        "fresh_Native_caller_query": false,
+        "decodes": {
+          "entry": {
+            "input": {
+              "bytes": 1,
+              "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+            },
+            "hex": "55",
+            "manual": [
+              {
+                "address": "00C11B31",
+                "bytes": "55",
+                "size": 1,
+                "physical_fields": {
+                  "opcode_hex": "55",
+                  "ModRM_present": false,
+                  "encoded_register": 5
+                },
+                "implicit_memory_segment": "ss",
+                "expected_detailed_decode": {
+                  "address": 12655409,
+                  "bytes": "55",
+                  "size": 1,
+                  "mnemonic": "push",
+                  "op_str": "ebp",
+                  "prefix": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "opcode": [
+                    85,
+                    0,
+                    0,
+                    0
+                  ],
+                  "address_size": 4,
+                  "modrm": 0,
+                  "modrm_offset": 0,
+                  "displacement": 0,
+                  "displacement_offset": 0,
+                  "displacement_size": 0,
+                  "immediate_offset": 0,
+                  "immediate_size": 0,
+                  "operands": [
+                    {
+                      "type": 1,
+                      "size": 4,
+                      "access": 1,
+                      "register": "ebp"
+                    }
+                  ]
+                }
+              }
+            ],
+            "actual_detailed_Capstone": [
+              {
+                "address": 12655409,
+                "bytes": "55",
+                "size": 1,
+                "mnemonic": "push",
+                "op_str": "ebp",
+                "prefix": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "opcode": [
+                  85,
+                  0,
+                  0,
+                  0
+                ],
+                "address_size": 4,
+                "modrm": 0,
+                "modrm_offset": 0,
+                "displacement": 0,
+                "displacement_offset": 0,
+                "displacement_size": 0,
+                "immediate_offset": 0,
+                "immediate_size": 0,
+                "operands": [
+                  {
+                    "type": 1,
+                    "size": 4,
+                    "access": 1,
+                    "register": "ebp"
+                  }
+                ]
+              }
+            ],
+            "agreement": true
+          },
+          "positive_caller": {
+            "input": {
+              "bytes": 9,
+              "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042"
+            },
+            "hex": "6A0AE812FFFFFF59C3",
+            "manual": [
+              {
+                "address": "00C11C18",
+                "bytes": "6A0A",
+                "size": 2,
+                "physical_fields": {
+                  "opcode_hex": "6A",
+                  "ModRM_present": false,
+                  "encoded_imm8": 10,
+                  "signed_imm8": 10,
+                  "pushed_imm32": 10
+                },
+                "implicit_memory_segment": "ss",
+                "expected_detailed_decode": {
+                  "address": 12655640,
+                  "bytes": "6a0a",
+                  "size": 2,
+                  "mnemonic": "push",
+                  "op_str": "0xa",
+                  "prefix": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "opcode": [
+                    106,
+                    0,
+                    0,
+                    0
+                  ],
+                  "address_size": 4,
+                  "modrm": 0,
+                  "modrm_offset": 0,
+                  "displacement": 0,
+                  "displacement_offset": 0,
+                  "displacement_size": 0,
+                  "immediate_offset": 1,
+                  "immediate_size": 1,
+                  "operands": [
+                    {
+                      "type": 2,
+                      "size": 4,
+                      "access": 0,
+                      "immediate": 10
+                    }
+                  ]
+                }
+              },
+              {
+                "address": "00C11C1A",
+                "bytes": "E812FFFFFF",
+                "size": 5,
+                "physical_fields": {
+                  "opcode_hex": "E8",
+                  "ModRM_present": false,
+                  "encoded_rel32_little_endian": "12FFFFFF",
+                  "signed_rel32": -238,
+                  "physical_next": 12655647,
+                  "numeric_target": 12655409
+                },
+                "implicit_memory_segment": "ss",
+                "expected_detailed_decode": {
+                  "address": 12655642,
+                  "bytes": "e812ffffff",
+                  "size": 5,
+                  "mnemonic": "call",
+                  "op_str": "0xc11b31",
+                  "prefix": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "opcode": [
+                    232,
+                    0,
+                    0,
+                    0
+                  ],
+                  "address_size": 4,
+                  "modrm": 0,
+                  "modrm_offset": 0,
+                  "displacement": 0,
+                  "displacement_offset": 0,
+                  "displacement_size": 0,
+                  "immediate_offset": 1,
+                  "immediate_size": 4,
+                  "operands": [
+                    {
+                      "type": 2,
+                      "size": 4,
+                      "access": 0,
+                      "immediate": 12655409
+                    }
+                  ]
+                }
+              },
+              {
+                "address": "00C11C1F",
+                "bytes": "59",
+                "size": 1,
+                "physical_fields": {
+                  "opcode_hex": "59",
+                  "ModRM_present": false,
+                  "encoded_register": 1
+                },
+                "implicit_memory_segment": "ss",
+                "expected_detailed_decode": {
+                  "address": 12655647,
+                  "bytes": "59",
+                  "size": 1,
+                  "mnemonic": "pop",
+                  "op_str": "ecx",
+                  "prefix": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "opcode": [
+                    89,
+                    0,
+                    0,
+                    0
+                  ],
+                  "address_size": 4,
+                  "modrm": 0,
+                  "modrm_offset": 0,
+                  "displacement": 0,
+                  "displacement_offset": 0,
+                  "displacement_size": 0,
+                  "immediate_offset": 0,
+                  "immediate_size": 0,
+                  "operands": [
+                    {
+                      "type": 1,
+                      "size": 4,
+                      "access": 2,
+                      "register": "ecx"
+                    }
+                  ]
+                }
+              },
+              {
+                "address": "00C11C20",
+                "bytes": "C3",
+                "size": 1,
+                "physical_fields": {
+                  "opcode_hex": "C3",
+                  "ModRM_present": false
+                },
+                "implicit_memory_segment": "ss",
+                "expected_detailed_decode": {
+                  "address": 12655648,
+                  "bytes": "c3",
+                  "size": 1,
+                  "mnemonic": "ret",
+                  "op_str": "",
+                  "prefix": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "opcode": [
+                    195,
+                    0,
+                    0,
+                    0
+                  ],
+                  "address_size": 4,
+                  "modrm": 0,
+                  "modrm_offset": 0,
+                  "displacement": 0,
+                  "displacement_offset": 0,
+                  "displacement_size": 0,
+                  "immediate_offset": 0,
+                  "immediate_size": 0,
+                  "operands": []
+                }
+              }
+            ],
+            "actual_detailed_Capstone": [
+              {
+                "address": 12655640,
+                "bytes": "6a0a",
+                "size": 2,
+                "mnemonic": "push",
+                "op_str": "0xa",
+                "prefix": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "opcode": [
+                  106,
+                  0,
+                  0,
+                  0
+                ],
+                "address_size": 4,
+                "modrm": 0,
+                "modrm_offset": 0,
+                "displacement": 0,
+                "displacement_offset": 0,
+                "displacement_size": 0,
+                "immediate_offset": 1,
+                "immediate_size": 1,
+                "operands": [
+                  {
+                    "type": 2,
+                    "size": 4,
+                    "access": 0,
+                    "immediate": 10
+                  }
+                ]
+              },
+              {
+                "address": 12655642,
+                "bytes": "e812ffffff",
+                "size": 5,
+                "mnemonic": "call",
+                "op_str": "0xc11b31",
+                "prefix": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "opcode": [
+                  232,
+                  0,
+                  0,
+                  0
+                ],
+                "address_size": 4,
+                "modrm": 0,
+                "modrm_offset": 0,
+                "displacement": 0,
+                "displacement_offset": 0,
+                "displacement_size": 0,
+                "immediate_offset": 1,
+                "immediate_size": 4,
+                "operands": [
+                  {
+                    "type": 2,
+                    "size": 4,
+                    "access": 0,
+                    "immediate": 12655409
+                  }
+                ]
+              },
+              {
+                "address": 12655647,
+                "bytes": "59",
+                "size": 1,
+                "mnemonic": "pop",
+                "op_str": "ecx",
+                "prefix": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "opcode": [
+                  89,
+                  0,
+                  0,
+                  0
+                ],
+                "address_size": 4,
+                "modrm": 0,
+                "modrm_offset": 0,
+                "displacement": 0,
+                "displacement_offset": 0,
+                "displacement_size": 0,
+                "immediate_offset": 0,
+                "immediate_size": 0,
+                "operands": [
+                  {
+                    "type": 1,
+                    "size": 4,
+                    "access": 2,
+                    "register": "ecx"
+                  }
+                ]
+              },
+              {
+                "address": 12655648,
+                "bytes": "c3",
+                "size": 1,
+                "mnemonic": "ret",
+                "op_str": "",
+                "prefix": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "opcode": [
+                  195,
+                  0,
+                  0,
+                  0
+                ],
+                "address_size": 4,
+                "modrm": 0,
+                "modrm_offset": 0,
+                "displacement": 0,
+                "displacement_offset": 0,
+                "displacement_size": 0,
+                "immediate_offset": 0,
+                "immediate_size": 0,
+                "operands": []
+              }
+            ],
+            "agreement": true
+          }
+        }
+      },
+      "saved_text": "PUSH EBP",
+      "CLI_commands": 10,
+      "actual_frozen_Git_objects": 6,
+      "finite_positive_inputs": 8,
+      "Root_copied_artifacts": 59,
+      "Root_metadata_preimages": 33,
+      "Root_frozen_Git_preimages": 23,
+      "worker_offline_validation_failures": 1,
+      "Native_capture_failures": 0,
+      "Root_gate_execution_failures": 0,
+      "unlock_and_Original_ABI_meaning": "unproved; only current EBP pushed via current SS under actual 32-bit stack-address size",
+      "archive": {
+        "bytes": 2114515,
+        "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+      },
+      "archive_members_verified": 151
+    },
+    "audit": {
+      "ZIP_reads": 1,
+      "helper_execs": 1,
+      "exclusive_receipt_writes": 1,
+      "denied": []
+    }
+  },
+  "Root_delivery_strict_replay": {
+    "status": "PASS",
+    "guard_active_before_helper_exec": true,
+    "denies_every_other_audit_event": true,
+    "helper_result": {
+      "status": "PASS",
+      "phase": "delivery",
+      "base": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+      "head": "05176046c85af85273719bbb247f81e788bbcf87",
+      "changed_paths": [
+        "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+        "reports/cc12_locale_onexit_cleanup_direct_target_entry.json"
+      ],
+      "positive_files_unchanged": 8,
+      "current_staged_committed_equal": [
+        "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+        "reports/cc12_locale_onexit_cleanup_direct_target_entry.json"
+      ],
+      "source_identity_only": {
+        "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+        "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+      },
+      "Git_object_records": 12,
+      "distinct_actual_Git_objects": 10,
+      "archive": {
+        "bytes": 2050090,
+        "sha256": "8c311cc2e044185e975ef246e24f9e9a02b7d43366aa46b93c0ba4ec9015d922"
+      },
+      "archive_members_verified": 83
+    },
+    "audit": {
+      "ZIP_reads": 1,
+      "helper_execs": 1,
+      "exclusive_receipt_writes": 1,
+      "denied": []
+    }
+  },
+  "Root_independent_manual_and_actual_detailed_Capstone": {
+    "status": "PASS",
+    "Root_own_manual_fields": {
+      "entry_opcode_class": "50+r",
+      "encoded_register": 5,
+      "register": "EBP",
+      "entry_length": 1,
+      "caller_PUSH_signed_imm8": 10,
+      "caller_CALL_signed_rel32": -238,
+      "encoded_return": "00C11C1F",
+      "numeric_target": "00C11B31",
+      "caller_suffix": "59 POP ECX; C3 RET"
+    },
+    "Root_actual_detailed_Capstone": [
+      {
+        "address": "00C11B31",
+        "hex": "55",
+        "length": 1,
+        "mnemonic": "push",
+        "operand": "ebp",
+        "imm_offset": 0,
+        "imm_size": 0,
+        "modrm_offset": 0,
+        "displacement_size": 0,
+        "address_size": 4,
+        "eflags": 0
+      },
+      {
+        "address": "00C11C18",
+        "hex": "6a0a",
+        "length": 2,
+        "mnemonic": "push",
+        "operand": "0xa",
+        "imm_offset": 1,
+        "imm_size": 1,
+        "modrm_offset": 0,
+        "displacement_size": 0,
+        "address_size": 4,
+        "eflags": 0
+      },
+      {
+        "address": "00C11C1A",
+        "hex": "e812ffffff",
+        "length": 5,
+        "mnemonic": "call",
+        "operand": "0xc11b31",
+        "imm_offset": 1,
+        "imm_size": 4,
+        "modrm_offset": 0,
+        "displacement_size": 0,
+        "address_size": 4,
+        "eflags": 0
+      },
+      {
+        "address": "00C11C1F",
+        "hex": "59",
+        "length": 1,
+        "mnemonic": "pop",
+        "operand": "ecx",
+        "imm_offset": 0,
+        "imm_size": 0,
+        "modrm_offset": 0,
+        "displacement_size": 0,
+        "address_size": 4,
+        "eflags": 0
+      },
+      {
+        "address": "00C11C20",
+        "hex": "c3",
+        "length": 1,
+        "mnemonic": "ret",
+        "operand": "",
+        "imm_offset": 0,
+        "imm_size": 0,
+        "modrm_offset": 0,
+        "displacement_size": 0,
+        "address_size": 4,
+        "eflags": 0
+      }
+    ],
+    "Capstone_version": "5.0.7",
+    "manual_Capstone_agreement": true,
+    "CPU_qualifications": {
+      "actual32bit_SS_stack_address_size_required_at_each_instruction": true,
+      "live_SS_descriptors_authenticated": false,
+      "entry": "currentP=ESP,currentB=EBP; ESP=P-4; currentSS[P-4]=B; other general registers and flags unchanged; no new EBP frame established",
+      "consecutive_caller_PUSH_CALL_entry_PUSH": "current callerS -> PUSH10 SS[S-4], CALL encodedreturn SS[S-8], reached entry PUSH currentEBP SS[S-12]; faults/alias mutation excluded only for this composition",
+      "after_opaque_return": "all returned registers including ESP, EBP, flags, segments and memory unconstrained; actual32bitSS condition must hold again. Current returnedQ -> POP ECX readsSS[Q], RET readsSS[Q+4], finalESP Q+8; no established relation to earlierS or literal10"
+    },
+    "remaining20body_bytes_and_C11B32_not_read": true,
+    "Original_ABI_or_unlock_semantics_authenticated": false,
+    "Root_fresh_Native_queries": 0
+  },
+  "physical_private_artifact_pins": {
+    "Root_entry_gate.py": {
+      "bytes": 7059,
+      "sha256": "999ca1cf4754032a94b189a71c2884cd3289e35fb26104550ff4b736541ba36f"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 2357,
+      "sha256": "64059759d4f2d9a580fde81bad52a6e5c1c67fe709f03d6561771a2679895203"
+    },
+    "Root_actual_review.py": {
+      "bytes": 4725,
+      "sha256": "0258232b3b7b4a0fd9bdd9c2d55466485e37e64267922a917b563b0a81c98bae"
+    },
+    "Root_actual_review.json": {
+      "bytes": 5626,
+      "sha256": "f5e783a3539f17dd2266fc97196577e8a15ece66c6a3175b59b6ad94af916596"
+    },
+    "Root_actual_review.stdout": {
+      "bytes": 482,
+      "sha256": "fd85771d845240d5e6502fc630da32c9352cc1c9aa2b4a1af5d396c8acb1a336"
+    },
+    "Root_actual_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_replay_attempt01.py": {
+      "bytes": 1733,
+      "sha256": "46a819728ed32bd6a86a6176fbfaa6bd2d9be4ee5b5431298d3b8332be9b49de"
+    },
+    "Root_strict_replay_attempt01.failure.json": {
+      "bytes": 488,
+      "sha256": "e599d0614f74ff9dc71640d6d307a879727d73d986e7e6234b8a0be5d8946abe"
+    },
+    "Root_core_strict.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_core_strict.stderr": {
+      "bytes": 753,
+      "sha256": "4c43b26e3de83f8fad67272df41d38853c9912ef01f51d457d59f71fa07fec5c"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 1746,
+      "sha256": "8c6c6b3ea9f12db513a1027be13e5a71241f35decd025e3d316fef076b989bcd"
+    },
+    "Root_core_strict_replay.json": {
+      "bytes": 24015,
+      "sha256": "ad1537e20bcf410e33319ee67f144c876d0e15fa82e4bd1d2d13f21e3905e87c"
+    },
+    "Root_delivery_strict_replay.json": {
+      "bytes": 1208,
+      "sha256": "fb4f2f51d725c7b93e77916a6edd03ffee7bb604b07df2212e8d4dcd30360412"
+    },
+    "Root_core_strict_attempt02.stdout": {
+      "bytes": 128,
+      "sha256": "ed819bbaf00ae88d46f1d5460ff77730f867d5e4f40ec49fe1002bd511b2e835"
+    },
+    "Root_core_strict_attempt02.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_delivery_strict_attempt02.stdout": {
+      "bytes": 132,
+      "sha256": "8e7d041453e337b974b97ea73e547222ab58a215c329e321824bff5ecfc59fb6"
+    },
+    "Root_delivery_strict_attempt02.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_native_decode.py": {
+      "bytes": 3840,
+      "sha256": "4637ab0d512c8fd5888e6965d9ad00ebc973918f97c9dc21a6c63a59614b87e2"
+    },
+    "Root_native_decode.json": {
+      "bytes": 2852,
+      "sha256": "c288a42793239160884f438fe3549691a4992e36b69166e422ebc55e882398a4"
+    },
+    "Root_native_decode.stdout": {
+      "bytes": 67,
+      "sha256": "fd181a1071244eec84227262fedd83b2feaa35c5d50eb06c937cb09cabaa9f63"
+    },
+    "Root_native_decode.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "replay.py": {
+      "bytes": 19119,
+      "sha256": "df80c3a219215ce374f3079f372aa2b6878eecb55d8d86a62e5e08641ce79cb6"
+    },
+    "guarded_replay.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "core_v1.zip": {
+      "bytes": 2114515,
+      "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+    },
+    "core_v1_copy.zip": {
+      "bytes": 2114515,
+      "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+    },
+    "delivery_v1.zip": {
+      "bytes": 2050090,
+      "sha256": "8c311cc2e044185e975ef246e24f9e9a02b7d43366aa46b93c0ba4ec9015d922"
+    },
+    "delivery_v1_copy.zip": {
+      "bytes": 2050090,
+      "sha256": "8c311cc2e044185e975ef246e24f9e9a02b7d43366aa46b93c0ba4ec9015d922"
+    },
+    "worker_physical_decode.json": {
+      "bytes": 10564,
+      "sha256": "9c95be93a6fcee0fba9ff1140bb02153aaddc47531e5ffcd0d2732fe541f51b0"
+    },
+    "worker_metadata_validation_attempt01.failure.json": {
+      "bytes": 2336,
+      "sha256": "e382e26c25569c1221989cd8f7442418720253925a071043a30942e2f6fc3def"
+    }
+  },
+  "failure_accounting": {
+    "worker_offline_metadata_validator_failures": 1,
+    "worker_retained_reason": "Broad body size replacement accidentally changed HTTP200 predicate to210; corrected using same saved raw inputs; no Native or GPR effects. Original combined tool traceback retained with stated separate-stream limit.",
+    "worker_Native_capture_or_guard_failures": 0,
+    "Root_prior_metadata_gate_failures": 0,
+    "Root_actual_Git_archive_review_failures": 0,
+    "Root_strict_guard_failures": 1,
+    "Root_strict_guard_failure": {
+      "phase": "core",
+      "status": "failed_before_archive_read",
+      "reason": "Root guard incorrectly used os.O_ACCMODE, absent on this Windows Python. AttributeError during first open; unraisablehook also denied.",
+      "helper_executions": 0,
+      "ZIP_reads": 0,
+      "receipt_writes": 0,
+      "GPR_or_Native_effects": 0,
+      "exact_producer_preimage": "Root_strict_replay_attempt01.py",
+      "original_complete_streams": [
+        "Root_core_strict.stdout",
+        "Root_core_strict.stderr"
+      ]
+    },
+    "Root_corrected_core_and_delivery_replays": "PASS; each 1 archive read / 1 reviewed helper execution / 1 exclusive receipt write; no other allowed audit events or denials",
+    "Root_manual_and_Capstone_failures": 0
+  },
+  "limits": {
+    "Source_changes": 0,
+    "new_builds": 0,
+    "new_tests_or_probes": 0,
+    "Original_game_OS_audio_runtime_runs": 0,
+    "GPR_mutations": 0,
+    "Root_fresh_Native_queries": 0,
+    "remaining20bytes_unread": true,
+    "C11B32_not_queried": true,
+    "prototype_not_queried": true,
+    "unlock_semantics_or_Original_ABI_authenticated": false,
+    "whole_owner_reconstructed": false
+  }
+}
