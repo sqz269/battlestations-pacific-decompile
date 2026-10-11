@@ -247,7 +247,7 @@ docs/MISSION_TREE_LUA_READER.md), [esp+9Ch] the local player's scoreboard row.
 | 00635FA3..00636C33 | reconstructed | award pages, when game+1EE3h or +19h: 00E08C8D = 0061EB80 (profile+BCh pending awards non-empty) or +248h non-empty or record+1DCh > 0; entries are clones of +18Ch under +188h at the running local position (start: +18Ch's), each with `award_Icon`, `award_title_Text`, `award_detail_Text` placed 1/144 below the title text (00AA78F0), shown, sized to max(icon height, text height) + 1/72 (FCOMI against the float-rounded text height), position += height + 1/144. Sources in order: +248h (10h elements: 004FB150 icon by id +4, title "FE.scoring_unlockedunit|.: |" + unit +8, detail "FE.scoring_unlock_text"); the profile's pending awards game+70Ch (1Ch elements: icon by name +10h through 004FC070 when id +18h is 0, title +0, detail +8), cleared by 006277C0; with record+1DCh > 0 every key of record+6Ch that 0090C000 accepts, its award record (0050FC30 on *(00E19900)+10h, copied by 0050A210, freed by 00501FA0): texture +14h through 00AB44B0(0, "" + texture, (0, 0, 1, 1)) and the icon shown, or the icon hidden, title +0, detail +0Ch. Scroller +19Ch range = position - +184h height + 1/144 |
 | 00636C38..00636D78 | reconstructed | tail: with +258h and pages queued, listbox +D4h slot +60h(0) and 0062A970; +1Dh = more than one of 00E08C88..00E08C8D set; frame title "" (00518D60), 00622E30(0), help line "" (0054A0C0 on *(00E1930C)); +38h = +18h ? -1 : 3 |
 
-Ghidra has no instructions at 006316A3..006316C6 and 00632A5C..00632A7F (the L3 iterator steps of the two damage tables, reached only after 00593180): their call rows (0057F4A0 at 006316B5 and 00632A6E) are left out of the report; a listing repair is needed before the body can be re-exported whole.
+Listing repair (cc13-rewards1, record `reports/cc13_rewards1_listing_repair.json`): the `_free` calls at 0063169B and 00632A54 (the kills-map copy release in the two damage tables) carried a CALL_RETURN flow override (effective CALL_TERMINATOR; `_free` itself is not no-return), so Ghidra had no instructions at 006316A0..006316CA and 00632A59..00632A83, the fall-through that steps the L3 iterator (0057F4A0) and jumps back to the loop head (00630E15 / 00632126). Both ranges were disassembled after a byte check against the disk image, both overrides cleared to NONE, and 0062C2C0 re-created from its instructions (name and plate kept; the signature was the default). The two 0057F4A0 rows are back in the report.
 
 Uncertain: the meaning of +10h (the voice gate), record+1E4h, row+5Ch (an AI slot is a guess);
 the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
@@ -271,8 +271,6 @@ ABI-compatible (host-interface projection), not game-validated; no host wiring.
 
 ### Handoff (cc13-rewards1)
 
-The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) a Ghidra listing
-repair for 006316A3..006316C6 and 00632A5C..00632A7F (then re-add the two 0057F4A0 rows and
-re-export the body); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
+The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
 (3) the bodies of 0062A0B0, the 00625D10 predicate and the score-table formulas; (4) host wiring
 of `RewardsEnterHost` (none exists).
