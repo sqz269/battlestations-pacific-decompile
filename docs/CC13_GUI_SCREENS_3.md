@@ -216,7 +216,7 @@ all. The reconstruction is not wired; nothing here changes game behaviour.
 Names: `0068E450 BSP_AwardTracker_FindHintDefinition`, `0068E4C0 BSP_AwardTracker_FindCooldown`,
 `0068F030 BSP_AwardTracker_LoadHintDefinitions` (provisional), and the corrected evidence of
 `0068EA70 BSP_AwardTracker_TouchRecentHint` (the argument is a by-value NativeString, not a kind
-and a pointer). Uncertain: the meaning of +50h; `005FFB20` on the active name is a mapped-value
+and a pointer). Uncertain at first: the meaning of +50h (resolved in the third turn: the OTHER-group flag); `005FFB20` on the active name is a mapped-value
 lookup that would insert a default definition, which the reconstruction treats as "not critical,
 no +50h".
 
@@ -256,6 +256,57 @@ traced.
 x87: only the timer `FLD/FADD/FSTP` in Update; the look-at and inverse are the existing camera
 routines and run host-side. No RNG is drawn.
 
+## Hint tracker helpers and the hint loader (third turn, reconstructed, build-tested)
+
+All in `src/gui_screens_3.cpp`, listings read whole. None is wired.
+
+**Lua bindings.** The HintSystem binding table at 00E0B7F0 pairs `ShowHint` 008D1F50,
+`ShowHintForced` 008D2190, `AddStoredHint` 008D24F0, `RemoveStoredHint` 008D2340, `HideHint`
+0088CEC0 and `IsHintActive` 008D2850 (the wrappers themselves are in segment 56, not leased, not
+renamed). The two stored-hint wrappers call into the tracker:
+
+- `00690B20 BSP_AwardTracker_AddStoredHint` (Lua AddStoredHint): a known hint with storingrule
+  `unique` is marked in the profile (`007FAE20` on game+650h), with `missionunique` appended to
+  the list +48h, in both cases only when `0068E600` says it has not been shown.
+- `00690C30 BSP_AwardTracker_RemoveStoredHint` (Lua RemoveStoredHint): only for a shown hint;
+  resets +18h (last unit class) to 13h when it equals the player unit's class, then unmarks the
+  profile (`007FAE60`) when the profile holds it, else removes it from +48h with
+  `0068EE00 BSP_AwardTracker_DropMissionSeenHint` (rebuilds the list without case-insensitive
+  matches).
+
+**History maps.** `00690CA0 BSP_AwardTracker_ClearNewHintHistory` empties +7Ch and is called
+only by the pause screen's Register (00602280), so +7Ch reads as "hints new since the pause
+menu was last opened". `00690CD0 BSP_AwardTracker_RebuildHintHistory` empties +94h and refills it
+from the profile's shown-hint list `*(game+65Ch)`: every name whose definition is not
+missionspecific goes under its Type (no `AAAAAA` prefix, nothing into +7Ch). Ghidra shows a
+`return` after the new-key arm; the listing jumps back to the loop head (00690F92).
+
+What the gameplay host stub `flush_award_tracker` (`src/game_hosts_mission.cpp`, caller
+`005922F0` play-selected-mission at 00592314) stands for: 00690CD0 is that rebuild, not a flush.
+It touches only the history map and reads the profile; it does not show, queue or store hints.
+The file is cc9's and was not edited.
+
+**Loader.** `006921B0 BSP_AwardTracker_ReloadHintTables` empties +7Ch, runs
+`Scripts/datatables/HintSystemMessages.lua`, empties the definition map +30h, and loads
+`HintSystemMessages.SYSTEM.{Weapon, Unit, Gameplay}` with the flag 0 and
+`HintSystemMessages.OTHER.{Single, Multi}` with the flag 1 through `0068F030
+BSP_AwardTracker_LoadHintDefinitions`, then rebuilds +94h and clears +60h, +1Ch, +24h, +04h,
+setting +18h = 13h. So the definition's +50h byte is **"OTHER-group hint"**: TriggerHint queues a
+forced OTHER hint behind an active OTHER hint and drops a SYSTEM hint while an OTHER hint is
+active (see the TriggerHint section).
+
+0068F030 (`__thiscall(tracker, LuaObject table by value, char other)`, RET 18h) reads per entry:
+`id` (no nil test), the ten string fields (nil gives ""), `critical`, `storingrule` (default
+`repeatable`), `cooldowntime`, `duration` (default 12), `Type` (default
+`hints.gameplay_general_hint`), `hidden`, `missionspecific` (which then forces Type to
+`hints.missionhint`; the inlined assign compares against EBP = 11h set at 0068FAEF), and
+`TitleDescList`, then assigns `map+30h[id]`. Two native quirks are recorded in the source:
+`cooldowntime` is stored only when present and the default constructor `005FD650` does not
+clear +120h, so an entry without it inherits the previous entry's value (the first entry an
+uninitialised stack word); and TitleDescList rows are written with no bound, so a ninth element
+would overwrite +114h onward. The reconstruction carries the cooldown across entries and stops
+the rows at eight.
+
 ## Handoff (cc13-gui5, 2026-10-11)
 
 Commits on agent/cc13-gui5: 10c567ae9 (hints screen reconstruction, 31 definitions, 35 names) and
@@ -293,3 +344,10 @@ Ledger: 13 more names (4 tracker, 8 idle camera, 1 corrected), 5 more function r
    `flush_award_tracker` stub in `src/game_hosts_mission.cpp`).
 3. The filler of the idle-camera shot vectors 00E19328/00E193A8 (probably mission load).
 4. Items 3 to 5 of the first handoff still stand.
+## Handoff update (cc13-gui5, third turn, 2026-10-11)
+
+Done this turn: the tracker helpers 00690B20, 00690C30, 0068EE00, 00690CA0, 00690CD0 and the
+loader 0068F030 with its reload 006921B0 (7 functions, build-tested, not wired). The +50h byte
+is resolved. Still open: the HintSystem Lua wrappers in segment 56 (008D1F50, 008D2190, 008D24F0,
+008D2340, 0088CEC0, 008D2850; mission-script visible, so cc9 should decide on them), the
+idle-camera shot filler, and items 3 to 5 of the first handoff.

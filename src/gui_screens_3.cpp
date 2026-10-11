@@ -5,6 +5,7 @@
 
 #include "bsp/gui_screens_3.hpp"
 
+#include <algorithm>
 #include <cctype>
 
 namespace bsp {
@@ -561,6 +562,141 @@ void idle_camera_update_00550410(IdleCameraState& screen, IdleCameraHost& host, 
                               {0.0F, 1.0F, 0.0F});
     host.camera_set_world_004134f0(screen.camera_1c, host.invert_affine_00b63b30(view));
     host.invalidate_subtree_0042ed50(screen.camera_1c);
+}
+
+// 00690B20..00690C29. A known hint is stored under its rule unless it was already shown.
+void hint_tracker_add_stored_00690b20(HintStoreHost& host, const std::string& name) {
+    const HintDefinition* def = host.find_definition_0068e450(name);  // 00690B5A
+    if (def == nullptr) return;
+    if (equals_insensitive(def->storing_rule, kHintRuleUnique) && !host.has_been_shown_0068e600(name)) {
+        host.profile_mark_seen_007fae20(name);                        // 00690BC9
+    } else if (equals_insensitive(def->storing_rule, kHintRuleMissionUnique) && !host.has_been_shown_0068e600(name)) {
+        host.mission_seen_push_back_48(name);                         // 00690BF5
+    }
+}
+
+// 00690C30..00690C99. Forget a shown hint: reset the unit-class tracker when it holds the
+// player unit's class, then drop the name from the profile or else from the mission list.
+void hint_tracker_remove_stored_00690c30(HintStoreState& tracker, HintStoreHost& host, const std::string& name) {
+    if (!host.has_been_shown_0068e600(name)) return;
+    if (host.player_unit_present_e188d8() && tracker.last_unit_class_18 == host.player_unit_class_170()) {
+        tracker.last_unit_class_18 = kHintUnitClassReset;  // 00690C5C
+    }
+    if (host.profile_has_seen_007f8e00(name)) {
+        host.profile_unmark_007fae60(name);                // 00690C86
+    } else {
+        hint_tracker_drop_mission_seen_0068ee00(host, name);  // 00690C92
+    }
+}
+
+// 0068EE00..0068F02B. Copies every entry that differs from the name (case-insensitive; an empty
+// entry differs from a non-empty name) into a fresh list and swaps it into +48h.
+void hint_tracker_drop_mission_seen_0068ee00(HintStoreHost& host, const std::string& name) {
+    std::vector<std::string>& seen = host.mission_seen_48();
+    std::vector<std::string> kept;
+    for (const std::string& entry : seen) {
+        if (!equals_insensitive(entry, name)) kept.push_back(entry);
+    }
+    seen.swap(kept);
+}
+
+// 00690CA0..00690CCF: empties the history map +7Ch (the names new since the pause screen).
+void hint_tracker_clear_new_history_00690ca0(HintStoreHost& host) { host.history7c_clear_00690ca0(); }
+
+// 00690CD0..00690FA9. Rebuilds the history map +94h from the profile's shown-hint list: every
+// name whose definition is not missionspecific (+116h) is appended under its Type. No AAAAAA
+// prefix and no +7Ch entry here, unlike 00690FD0. Ghidra shows a return after the new-key arm;
+// the listing continues the loop (00690F92 JMP 00690D40).
+void hint_tracker_rebuild_history_00690cd0(HintStoreHost& host) {
+    host.history94_clear();
+    for (const std::string& name : host.profile_shown_names_65c()) {
+        const HintDefinition* def = host.find_definition_0068e450(name);  // 005FFB20
+        if (def == nullptr || def->mission_specific) continue;
+        if (!host.history94_has_key(def->type)) {
+            host.history94_assign_single(def->type, name);   // 00690E40..00690F2E
+        } else {
+            host.history94_push_back(def->type, name);
+        }
+    }
+}
+
+namespace {
+
+std::string hint_string_or_empty(HintLuaEntry& e, std::string_view key) { return e.is_nil(key) ? std::string() : e.string(key); }
+
+}  // namespace
+
+// 0068F030..00690AF6, read from the listing (`local/g5_fields.py` summary). One stack definition
+// at +98h is default-constructed per entry (005FD650 clears the strings only), filled, then
+// assigned to map[id] (005FFB20 + 005FDD90). The initial map find on the id (0068F136) is kept
+// in a slot and never used.
+// cooldowntime is read only when present and 005FD650 does not clear +120h, so a missing key
+// keeps the previous entry's value (an uninitialised stack word for the first entry); `carry`
+// reproduces that across calls of this function only.
+// TitleDescList rows are written in iteration order with no bound (0069090F loop): a ninth
+// element would overwrite +114h onwards. The reconstruction stops at eight and says so here.
+void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category, HintDefinition& carry) {
+    while (HintLuaEntry* e = host.next_entry()) {
+        const std::string id = e->id();                                 // 0068F0CE
+        HintDefinition def;
+        def.cooldown_time = carry.cooldown_time;                        // stale +120h
+        def.title = hint_string_or_empty(*e, "Title");                  // 0068F1EB (nil -> 00CE3A0C "")
+        def.description = hint_string_or_empty(*e, "Description");
+        def.lua_command = hint_string_or_empty(*e, "LuaCommand");
+        def.allied_title = hint_string_or_empty(*e, "AlliedTitle");
+        def.allied_lua_command = hint_string_or_empty(*e, "AlliedLuaCommand");
+        def.allied_description = hint_string_or_empty(*e, "AlliedDescription");
+        def.japanese_title = hint_string_or_empty(*e, "JapaneseTitle");
+        def.japanese_lua_command = hint_string_or_empty(*e, "JapaneseLuaCommand");
+        def.japanese_description = hint_string_or_empty(*e, "JapaneseDescription");
+        def.critical = e->is_nil("critical") ? false : e->boolean("critical");  // 0068FDCB
+        def.loader_flag_50 = other_category;                            // 0068FE65..0068FE7A
+        def.storing_rule = e->is_nil("storingrule") ? std::string(kHintDefaultRule) : e->string("storingrule");
+        if (!e->is_nil("cooldowntime")) def.cooldown_time = e->integer("cooldowntime");  // 0068FFCE
+        def.duration = e->is_nil("duration") ? kHintDefaultDuration : e->integer("duration");  // 00690067
+        def.type = e->is_nil("Type") ? std::string(kHintDefaultType) : e->string("Type");      // 00690104
+        def.hidden = e->is_nil("hidden") ? false : e->boolean("hidden");                         // 0069025F
+        def.mission_specific = e->is_nil("missionspecific") ? false : e->boolean("missionspecific");
+        if (def.mission_specific) def.type = std::string(kHintMissionType);  // 00690393..00690408
+        if (!e->is_nil("TitleDescList")) {                                    // 00690410
+            const std::size_t n = std::min(e->row_count(), kHintTitleDescRows);
+            for (std::size_t i = 0; i < n; ++i) {
+                HintTitleDescRow& row = def.title_desc_list[i];
+                row.title = e->row_is_nil(i, "Title") ? std::string() : e->row_string(i, "Title");
+                row.description = e->row_is_nil(i, "Description") ? std::string() : e->row_string(i, "Description");
+                row.lua_command = e->row_is_nil(i, "LuaCommand") ? std::string() : e->row_string(i, "LuaCommand");
+            }
+        } else {
+            def.title_desc_list.fill(HintTitleDescRow{});                     // 00690944..00690982
+        }
+        host.store_definition_005fdd90(id, def);                              // 00690A1A..00690A21
+        carry.cooldown_time = def.cooldown_time;
+    }
+}
+
+// 006921B0..00692578. Reload of the hint tables; the three SYSTEM groups are general hints,
+// the two OTHER groups are loaded with the +50h flag set.
+void hint_tracker_reload_006921b0(HintReloadState& tracker, HintReloadHost& host) {
+    host.history7c_clear();
+    host.run_script_with_overrides(kHintScript);
+    host.definitions_clear_004d7370();
+    host.select_table("SYSTEM", "Weapon");
+    host.load_selected_0068f030(false);    // 0069233A
+    host.select_table("SYSTEM", "Unit");
+    host.load_selected_0068f030(false);    // 0069238A
+    host.select_table("SYSTEM", "Gameplay");
+    host.load_selected_0068f030(false);    // 006923DA
+    host.select_table("OTHER", "Single");
+    host.load_selected_0068f030(true);     // 00692460
+    host.select_table("OTHER", "Multi");
+    host.load_selected_0068f030(true);     // 006924B1
+    host.rebuild_history_00690cd0();
+    tracker.active_60.clear();             // 006924C8..006924DE
+    tracker.last_unit_class_18 = kHintUnitClassReset;
+    tracker.last_timed_1c.clear();
+    tracker.last_timed_seconds_24 = 0.0F;
+    tracker.force_next_04 = false;
+    host.close_script();
 }
 
 }  // namespace bsp
