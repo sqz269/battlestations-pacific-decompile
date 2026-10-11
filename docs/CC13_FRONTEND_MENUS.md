@@ -589,3 +589,29 @@ the option list's +F4h as Y; 00427190(8) on the profile-hints singleton ends bot
 
 Open: the multiplayer lobby enter/update (005E51D0, 005E5B30) and main-menu enter (005E8B20),
 each over 1000 instructions, were not reconstructed.
+
+## Handoff (cc13-frontend2)
+
+Commits on agent/cc13-frontend2: 029b56338 (178 slot functions defined, 166 named), 50834b32a
+(00560430, 005EC5B0, 005ECD80, 0062B640 reconstructed), plus the origin/main merges and this
+handoff. Build: `scripts/build.ps1` passes. Reports: `reports/cc13_frontend_menus.json` 188 rows
+and `reports/cc13_ingame_gui.json` 33 rows, 0 failed. Nothing was run in `bsp_game`.
+
+Tools left in the worktree's `local/` (copy them, the tree is temporary): `f2_extent.py` (function
+extent by recursive descent over the disk image, follows `JMP [reg*4+table]`), `f2_scan.py`
+(vtable code pointers with no function), `f2_slots.py` (vtable/slot/body table for the defined
+set), `f2_dis.py` (capstone listing with names and strings), `f2_rows.py` (report rows from a
+listing), `f2_names1.py` (the naming rules used here).
+
+Open, in order of value:
+
+1. The multiplayer lobby enter 005E51D0 (676 instructions; EBX = 0 and EBP = 1 in registers per
+   docs/MAIN_MENU_COMMAND_OWNER.md and docs/GUI_TEXT_ELLIPSIS.md; eight player rows laid out with
+   x87 at 00D7A258 steps) and update 005E5B30 (1060), and the multi main-menu enter 005E8B20 (1028).
+2. The support-manager purchase menu 0066B6C0 (1601 instructions; `ingame.sm_cp`, `sm_stock`,
+   `sm_cost`, `sm_support`). Not cited by any cc9 doc, but its callers are 0066D020 and cc9's
+   support-manager update 00675C40, so ask cc9 before reconstructing.
+3. The rewards enter 0062C2C0 (about 5200 instructions).
+4. The same undefined-slot scan outside these leases: 00568930..00584000, 005C5600..005E09A0,
+   00604A50..0061F000 and the 0068xxxx overlay slots (0068A320, 0068A400, 0068A5D0, ...).
+5. The twelve defined-but-unnamed functions listed in the third-packet section.
