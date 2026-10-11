@@ -1,0 +1,15 @@
+# CC12 locale exit after-CALL site: typed metadata
+
+Fresh unchanged BF6FF9 metadata/count gates passed before and after the exact BF6FFE capture, with project `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, epoch 98 and count 64730 unchanged. Both BF6FFE raw captures are equal. No code bytes, instruction text, target/neighbor/caller/prototype/data/stack queries or GPR changes were used.
+
+At BF6FFE the listing has a two-byte instruction, no function entry at the query, and containing owner BF6FF5 `_atexit`, with no-return false and non-thunk metadata unchanged. Default and effective flow are `FALL_THROUGH`; both fallthrough addresses are BF7000, override is `NONE`, and direct target arrays are empty. These fields establish listing/flow metadata only. The instruction mnemonic, operands and effects remain unknown. BF7000 is an address-only field, with no successor selection or admission.
+
+The BF6FF9 gate endpoint again supplied a target-site function object. Each entire object is preserved in raw evidence but excluded from every qualified subset and remains opaque. The whole Native capture is therefore not strictly site-only, although the BF6FFE response has no target objects.
+
+Predecessor `cef675f617f34d6714814021eefcf5a53e7fc57f`, its exact core/delivery archives and all 28 helpers were physically copied, pinned before execution and recursively replayed under the active one-supplied-ZIP guard. The current package has 30 pinned helpers and separately passes original and copied guarded core replays. Producers are retained as provenance and never run during replay.
+
+The frozen Source epoch is Main `575e7fd047615c30cf324369e84bd3630fd35c7e`: all 4217 closed Source paths remain equal to the predecessor. The package contains 4298 actual Git blobs, 81 named dependencies and 11 frozen commit/tree objects. Later Main `f2030981871a23a7f24413d672c661f83d49ce76` has the same 4217 closed Source paths: 4215 equal paths and changes only to `include/bsp/native_render_service_base.hpp` and `src/native_render_service_base.cpp`. Its actual commit/tree and changed blob objects are retained and replayed separately, without rebasing this packet or transferring C++ credit. The sibling delivery package records actual staging and final commit membership for precisely this document and the report.
+
+The inherited CALL evidence remains conditional: BF6FF9 writes BF6FFE only under normally reached execution; the prior PUSH source K and entry ESP W are unknown. No target return, returned ESP, preserved stack word, cleanup, registration, CRT authenticity, canonical E1768C initialized owner, Source ABI, startup or gameplay is established. The earlier CC8D44 POP still needs returned ESP and an unchanged word. No C++, CMake, tests, builds, probes, game or OS/process diagnostics were performed.
+
+Exact pins, qualified fields, guard receipts and boundaries: `reports/cc12_locale_exit_after_call_metadata.json`; immutable delivery details: `local/cc12_locale_exit_after_call_metadata/next_worker_handoff.json`.
