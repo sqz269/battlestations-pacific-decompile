@@ -15996,3 +15996,29 @@ The Yamato and the Musashi fall to Loui1 unordered. Every line goes through a pl
 - A troop transport on a straight `moveto` runs aground. Route it through points from another
   ship's track (the trajectory CSVs).
 - Never filter an order file with a pattern that can match the header.
+
+### 206.1 Handoff addendum: pending small edits and the primary-3 correction (cc9-ships41, 2026-10-06)
+
+The work stopped at the lead's PAUSE after f17. Neither small edit was started; both are next.
+
+1. **The `00877B90` guard, on a loan of `src/game_hosts_gunnery.cpp`** (lead-approved).
+   - Add `kUnchangedHealthNoDeathBound` OFF, with `applied != 0.0f &&` before `bsp::unit_is_dead(health)`
+     at the two hit sites (about :9415 for a direct hit and :9697 for a blast).
+   - Cite `00877B90`'s equal-health early return, `00877BBE`/`00877BC1`.
+   - Build, commit and release.
+   - Then pair `s41_os_f12.txt` with this switch and `kCaptureStatePartyFromUnitBound` both ON
+     against both OFF, plus a control row with ordinary sinkings (USN02 p7 or LOMP10 p2).
+   - Flip by verdict. The flips belong to **reference AG**: AF's base is fixed at main `49eee58d5`.
+2. **The `torpedo` harness line:** run
+   `python J:\PROG\battlestations-pacific-decompile-cc9-gunnery33\local\g33_harness_edit.py <tree>`
+   on `src/game_hosts_mission_frame.cpp`, then build.
+   - Smoke with `cc9-gunnery33\local\g33_ord_j6t4.txt` and commit.
+   - Send the sha to cc9-gunnery34 and the lead; gunnery34 pairs and flips `kPlayerTorpedoGroupFireBound`.
+   - After USNOS, JM06 is this lane's: phase 3 needs the player's torpedo hit on Lexington.
+3. **Correction to 205 and 206 item 4.** cc9-lua46 settles the missing primary 3 as image behaviour
+   (`docs/MISSION_BLACKOUT.md`, "Two movies on one frame"). It is not a Lua-lane gap.
+   - The script keeps one movie-callback slot, so the Blockade sighting in the same 3 s recon refresh
+     overwrites `luaShimoMovieEnd`.
+   - The player-side fix: delay or reroute the spotting units so Shimotsuke is sighted at least one
+     refresh before the Blockade. Then primary 3 should be added.
+4. Since DisplayScores is ON (lua47), `Bases captured: N` lines track the capture progress in the log.
