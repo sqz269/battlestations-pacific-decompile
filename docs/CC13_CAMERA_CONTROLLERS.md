@@ -350,7 +350,7 @@ The look modes of the path camera call these (00794B50, 00795180, 0079D870, 0079
   argument (`camera_arg + 3B8h`).
 
 Call-site rows for `tools/verify_report_calls.py`: `reports/cc13_camera_controllers.json`
-(29 rows, 0 failed on 2026-10-11).
+(34 rows, 0 failed on 2026-10-11).
 
 ## 12. Handoff
 
@@ -374,3 +374,62 @@ Left in segment 45, in rough order of value:
    four argument words; an unknown name leaves the id unwritten.
 5. Destructors 0079DB90/0079DC40 and the remaining STL instantiations (about 120 of the 218
    `FUN_` in the range are vector/list/tree helpers, already tagged by the partition).
+
+## 13. MovCam, the scripted movie camera (packet `cc13_camera_open_seg46`)
+
+The "look modes and editor helpers called from 007A9xxx" of section 12 belong to one class: the
+camera behind the `luaMW_MovCam_*` bindings (008B2CC0..008BFA70). It is not an editor: the
+strings near its vtable ("CAMERA EDITOR", "Camera Pos #%d:", "BlendTime : %.2f", "MOVING BY
+MODIFIER") are its debug overlay. Constructor 0079F480 (base 00432750, the camera mover; built
+by 005CC000), vtables 00D04B58 (`+0`), 00D04B3C (`+10h`), 00D04B34 (`+24h`) and 00D04B1C
+(`+170h`, the step sub-object). The 7 KB at 007A91A0..007AADAC that Ghidra had no function for
+is slot `+8h` of 00D04B1C (`.rdata` 00D04B24), now defined as `BSP_MovCam_Step`. The calls at
+007A956C..007AAD91 that section 12 listed are its body.
+
+**Modes** (`+384h`, written by the setters, which then call 007A6910 `SetTarget` and 007A5110
+`EnterMode`):
+
+| value | setter | binding |
+| --- | --- | --- |
+| 1 | 007A6B40 (`+388h` sub-mode from two bytes) | `HandMode_Targeted` |
+| 2 | 007A6B90, 007A8180 | `HandMode_Deck`, `PickSnittDeckPosition` |
+| 3 | 007A6BC0 (arrival callback `+49Ch`/`+4ACh`) | `HandMode_Overview` |
+| 4 | 007A6CD0, 007A6E60, 007A7070, 007A7F30 | `RefPos`, `RefPos_Polar`, `RefPos_Radius`, `TompiModeWeak` |
+| 6 | 007A7DE0 | `ViktorMode` |
+| 7 | 007A8100 | `TompiMode` |
+| 8 | 007998C0 | `SetPosRotZoom` |
+
+`PathWalk` (007A7200) and its point property setter (007A74F0) fill the `+47Ch` records that
+section 8's 007972F0 walks. `SetSecondaryTarget` 0079D870, `SetZoom` 0078E480 and
+`AddInterpolator` 0079F6D0 (records built by 007900B0) complete the API. The `Set/Reset
+SpeedLimits/AccelTime/DeviationFactor/OverviewHeight` bindings make no call into 0078D880..007B2D80 (a Capstone pass over their first 600h bytes);
+they write the `[+4D0h]` limit block directly.
+
+**Motion** (reconstructed). `[camera+4D0h]`: `+34h` top speed, `+38h` top turn rate, `+4Ch`
+acceleration, `+50h` turn acceleration (both per 0.05 s, 00D0DE84), `+54h` target-lead scale.
+- 00794B80 `SteerPosition` and 00794D60 `SteerAngles`: the wanted velocity is the direction
+  scaled to `top * min(|d|, max) / max`; the change from the current per-step motion
+  (`+3A0h - +3B8h`, or `+3CCh - +3DCh` for the angles) is limited to `accel * 0.05`, scaled by
+  `min(|change| / (accel*0.05), 1)` (squared on request) and added to `+3ACh` / `+3D4h`.
+  00793730 / 00793800 do the scaling (zero below 1e-6).
+- 00794D60 with a target, and 00794F70, arm a follow cone: `+3E4h` target, `+3E8h` tolerance,
+  `+3ECh` growth 0.875. 00795180 `FollowTarget` grows the cone by `(growth-1)` per 0.05 s of
+  `+4F8h`; below 0.001 it aims straight at the target (00794130); when the target drifts out
+  (00794910's delta) the angles move by the excess, otherwise the cone shrinks to the drift.
+- 00790540 keeps the camera 2.0 above the ground (00903860).
+- 00793AC0 resolves a reference point (`+14h` entity, `+18h` point, `+24h` radius): with a
+  radius, radius along anchor->viewer (`[world+1ED4h]` or 00F87574); otherwise the point, in
+  the entity frame (level variant: translation replaced by 00F8758C..00F87594, then 0085DAD0).
+  The path records share this layout, which is why 007972F0 anchors them the same way.
+
+**Named, not reconstructed:** 007A91A0 (the step), 007A5110 (`EnterMode`), the mode setters
+(Lua glue, observers and callback strings), 007943D0 (velocity clamp and integrate), 00794F70
+(braking turn), 00795300 (look basis), 007A01F0 (deck position), 007901D0 (apply
+interpolators), 00793CD0, 0079DA90 / 0079D960 (arrival callbacks), 0079F9E0 (the
+`mov.cam.pos.` dump through 007996C0, log `moviecamera.log`), the modifier destructors
+0079DB90 / 0079DC40.
+
+New source: `CameraRef`, `camera_ref_resolve_00793ac0`, `MovCamFollow` /
+`movcam_follow_00795180`, `MovCamInterpolator` / `movcam_interpolator_init_007900b0`,
+`scale_to_length_00793730` / `_00793800`, `movcam_steer_00794b80`, `movcam_turn_00794d60`,
+`movcam_keep_above_ground_00790540`, and the `MovCamMode` values. Build-tested only.

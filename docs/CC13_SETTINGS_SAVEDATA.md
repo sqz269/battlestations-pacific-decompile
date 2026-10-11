@@ -324,8 +324,8 @@ names applied to Ghidra with plate comments, report rows verified by
 
 Open, in priority order:
 
-1. `006AD8D0`'s dumpers `0043C530` (table) and `0043C1C0` (value) in segment 2: needed to say what
-   the printed save text looks like. Read-only so far.
+1. Resolved: `0043C530`, `0043C1C0` and the emitter `006AD8D0` are reconstructed in
+   `src/lua_text_dump.cpp`; see `docs/CC13_PROFILE_SAVE.md`.
 2. `006AFB00` argument flow (register inputs in pseudocode) and the unnamed load body
    `006AF8B0..006AFAF1` (header fields read through `00BD6830`).
 3. The hidden adapters `006AD4D0`, `006AD530`, `006AD560` and the twins `00951820`/`00951940`

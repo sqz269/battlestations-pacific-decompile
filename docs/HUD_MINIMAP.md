@@ -198,3 +198,12 @@ other address in this doc has a Ghidra function body; `bsp.py ghidra proto --bri
 range for each, and every call site this doc cites was checked with
 `python tools/verify_report_calls.py reports/hud_minimap.json`. The one hole the packet found is
 on the markers side and is recorded in docs/HUD_MARKERS_RUNTIME.md.
+
+## Correction (2026-10-11, cc13-frontend1)
+
+The widget row "+6Ch..+7Ch | the six groups' `item_ship_Icon`" is wrong. 005BE240 binds five
+templates, all under `minimap_units_white_Group`: `item_ship_Icon` +6Ch (005BE397),
+`item_plane_Icon` +70h (005BE406), `item_sub_Icon` +74h (005BE475), `item_building_Icon` +78h
+(005BE4E4), `item_marker_Icon` +7Ch (005BE553). From each colour group it reads only
+`item_ship_Icon`'s 16-byte colour: white +D0h, red +80h, blue +90h, grey +C0h, yellow +A0h,
+silver +B0h. The icon-entry constructor 005BD590 uses them; see docs/CC13_FRONTEND_MENUS.md.

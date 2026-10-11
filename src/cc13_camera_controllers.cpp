@@ -1,5 +1,6 @@
 #include "bsp/cc13_camera_controllers.hpp"
 
+#include <cctype>
 #include <cmath>
 #include <cstring>
 
@@ -763,6 +764,159 @@ std::array<float, 2> camera_aim_delta_00794910(const AimCameraView& c, const Aim
         }
     }
     return camera_direction_delta_00794750(c.forward_94, d);
+}
+
+// ---------------------------------------------------------------------------
+// MovCam
+
+std::array<float, 3> camera_ref_resolve_00793ac0(const CameraRef& ref, bool level, CameraRefHost& host) {
+    if (ref.radius_24 > 0.0f) {                                           // COMISS 0.0 / JBE
+        const std::array<float, 3> c = ref.entity_14 != 0 ? host.entity_position_fc(ref.entity_14) : ref.point_18;
+        const std::array<float, 3> v = host.viewer_position();
+        const std::array<float, 3> d = host.normalize_00419510({v[0] - c[0], v[1] - c[1], v[2] - c[2]});
+        std::array<float, 3> out{};
+        for (int i = 0; i < 3; ++i) {
+            const float step = d[i] * ref.radius_24;                       // FSTP
+            out[i] = step + c[i];                                          // FSTP
+        }
+        return out;
+    }
+    if (ref.entity_14 == 0) return ref.point_18;
+    return host.entity_transform(ref.entity_14, ref.point_18, level);
+}
+
+void movcam_follow_00795180(MovCamFollow& c, float dt, MovCamFollowHost& host) {
+    // FLD k, FSUB 1, FMUL dt, FDIV 0.05f, FADD 1, FMUL base, FSTP (007951A6).
+    const double grow = (static_cast<double>(c.growth_3ec) - 1.0) * dt / static_cast<double>(0.05f) + 1.0;
+    const float tol = static_cast<float>(grow * c.base_4f8);
+    c.tolerance_3e8 = tol;
+    if (0.001f > tol) {
+        host.aim_at_target_00794130(c.target_3e4);
+        return;
+    }
+    const std::array<float, 2> d = host.aim_delta_00794910(c.target_3e4);
+    const std::array<float, 2> v{-d[0], -d[1]};
+    const float sum = static_cast<float>(static_cast<double>(v[1]) * v[1] + static_cast<double>(v[0]) * v[0]);
+    const float len = static_cast<double>(sum) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(sum))) : 0.0f;
+    if (len > c.tolerance_3e8) {
+        const float r = host.reciprocal_length_00419260(v);
+        const float u0 = r * v[0];
+        const float u1 = r * v[1];
+        const float excess = len - c.tolerance_3e8;
+        c.theta_3c4 = c.theta_3c4 + u0 * excess;
+        c.rho_3c8 = (excess * u1) + c.rho_3c8;
+        return;
+    }
+    c.base_4f8 = len;
+    c.tolerance_3e8 = len;
+}
+
+namespace {
+bool iequals(const std::string& a, const char* b) {
+    std::size_t i = 0;
+    for (; i < a.size() && b[i] != 0; ++i) {
+        const auto x = static_cast<unsigned char>(a[i]);
+        const auto y = static_cast<unsigned char>(b[i]);
+        if (std::tolower(x) != std::tolower(y)) return false;
+    }
+    return i == a.size() && b[i] == 0;
+}
+}  // namespace
+
+void movcam_interpolator_init_007900b0(MovCamInterpolator& r, const std::string& name,
+                                       const std::array<std::uint32_t, 4>& args) {
+    static const char* const kNames[] = {"turnHInput", "turnVInput", "walkHInput", "walkVInput",
+                                         "zoomInput", "moveSpeed", "rotSpeed", "zoom"};
+    for (std::uint32_t i = 0; i < 8; ++i) {
+        if (iequals(name, kNames[i])) {
+            r.id_0 = i + 1;
+            break;
+        }
+    }
+    r.args_4 = args;
+    r.field_14 = 0;
+}
+
+namespace {
+// (x*x + y*y) + z*z, stored float; sqrt only above 1e-10 (00CE3820).
+float length_by_squares(const std::array<float, 3>& v) noexcept {
+    const float sum = static_cast<float>((static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]) +
+                                         static_cast<double>(v[2]) * v[2]);
+    return static_cast<double>(sum) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(sum))) : 0.0f;
+}
+}  // namespace
+
+std::array<float, 3> scale_to_length_00793730(const std::array<float, 3>& v, float length) noexcept {
+    const float len = length_by_squares(v);
+    if (9.999999974752427e-07f > std::fabs(len)) return {0.0f, 0.0f, 0.0f};    // 00D7A288
+    const float s = static_cast<float>(static_cast<double>(length) / len);       // FSTP 007937D6
+    return {v[0] * s, s * v[1], s * v[2]};
+}
+
+void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const std::array<float, 3>& dir,
+                           float max, bool square) noexcept {
+    const float len = length_by_squares(dir);
+    const float clamped = len > max ? max : len;
+    const float want_len = static_cast<float>(static_cast<double>(limits.top_speed_34) / max * clamped);
+    const std::array<float, 3> want = scale_to_length_00793730(dir, want_len);
+    std::array<float, 3> diff{};
+    for (int i = 0; i < 3; ++i) {
+        const float cur = m.position_3a0[i] - m.previous_3b8[i];                // FSTP
+        diff[i] = want[i] - cur;                                                // FSTP
+    }
+    const float accel = limits.accel_4c * 0.05f;                                // 00D0DE84, FSTP
+    float f = static_cast<float>(static_cast<double>(length_by_squares(diff)) / accel);  // FSTP
+    if (f > 1.0f) f = 1.0f;
+    if (square) f = f * f;
+    const std::array<float, 3> step = scale_to_length_00793730(diff, limits.accel_4c * f);
+    for (int i = 0; i < 3; ++i) m.velocity_3ac[i] = m.velocity_3ac[i] + step[i];
+}
+
+void movcam_keep_above_ground_00790540(std::array<float, 3>& p, bool has_ground, float ground) noexcept {
+    if (!has_ground) return;
+    const float floor = static_cast<float>(static_cast<double>(ground) + 2.0);    // double 00D7A308
+    if (!(p[1] > floor)) p[1] = floor;
+}
+
+namespace {
+float length2_by_squares(const std::array<float, 2>& v) noexcept {
+    const float sum = static_cast<float>(static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]);
+    return static_cast<double>(sum) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(sum))) : 0.0f;
+}
+}  // namespace
+
+std::array<float, 2> scale_to_length_00793800(const std::array<float, 2>& v, float length) noexcept {
+    const float len = length2_by_squares(v);
+    if (9.999999974752427e-07f > std::fabs(len)) return {0.0f, 0.0f};
+    const float s = static_cast<float>(static_cast<double>(length) / len);
+    return {v[0] * s, s * v[1]};
+}
+
+void movcam_turn_00794d60(MovCamTurn& t, const MovCamTurnLimits& limits, const std::array<float, 2>& d,
+                          float max, bool square, std::size_t target, float length_00414c60_of_d) noexcept {
+    const float len = length2_by_squares(d);
+    const float clamped = len > max ? max : len;
+    const float want_len = static_cast<float>(static_cast<double>(limits.top_rate_38) / max * clamped);
+    const std::array<float, 2> want = scale_to_length_00793800(d, want_len);
+    std::array<float, 2> diff{};
+    for (int i = 0; i < 2; ++i) {
+        const float cur = t.angles_3cc[i] - t.previous_3dc[i];
+        diff[i] = want[i] - cur;
+    }
+    const float accel = 0.05f * limits.accel_50;
+    float f = static_cast<float>(static_cast<double>(length2_by_squares(diff)) / accel);
+    if (f > 1.0f) f = 1.0f;
+    if (square) f = f * f;
+    if (target != 0) {
+        const float l = length_00414c60_of_d;
+        if (t.target_3e4 == 0) t.tolerance_3e8 = l;
+        else t.tolerance_3e8 = l > t.tolerance_3e8 ? t.tolerance_3e8 : l;
+        t.growth_3ec = 0.875f;
+        t.target_3e4 = target;
+    }
+    const std::array<float, 2> step = scale_to_length_00793800(diff, f * limits.accel_50);
+    t.rate_3d4[0] = t.rate_3d4[0] + step[0];
+    t.rate_3d4[1] = step[1] + t.rate_3d4[1];
 }
 
 }  // namespace bsp::cc13cam
