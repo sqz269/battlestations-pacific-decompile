@@ -147,6 +147,79 @@ void rewards_screen_update_0062b640(RewardsScreenUpdateState& screen, RewardsScr
 
 namespace {
 
+// 0062C790..0062C812 / 0062C9A0..0062CA38: one unlock page per counted row,
+// then the recording pass (skipped when the count is 0).
+void rewards_queue_unlocks(RewardsEnterState& screen, RewardsEnterHost& host, std::string_view key) {
+    const std::int32_t count = host.vehicle_unlocks_00622360(key, true);
+    if (count == 0) return;
+    for (std::int32_t i = 0; i < count; ++i) screen.pages238.push_back(RewardsAwardPage::Unlock);
+    host.vehicle_unlocks_00622360(key, false);
+}
+
+} // namespace
+
+bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, RewardsEnterHost& host) {
+    // 0062C2EF..0062C3AD
+    if (host.session_present_f8a2fc() && host.session_virtual_198()) host.session_virtual_58();
+    screen.field64 = 0.0f;
+    screen.input_locked258 = false;
+    host.widget_25c_show(false);
+    screen.pages238.clear();
+    host.clear_pages_248_00625a50();
+
+    // 0062C3B2..0062C4B2: LAHF/TEST AH,44h/JP, so only an ordered 0.0 counts.
+    screen.score_zero18 = host.commit_record_float_0c_004b4750() == 0.0f;
+    host.mission_record_00594a70();
+    host.selected_mission_005c3870();
+    const bool commit_present = host.commit_record_head_nonzero_004b4750();
+    const bool completed = host.mission_completed_009052d0();
+    screen.mission28 = host.game_mission_2198();
+    screen.mission30 = host.game_mission_2198();
+    screen.commit_present19 = commit_present;
+    screen.unlocks_pending24 = false;
+    screen.advanced_unfinished25 = false;
+    screen.advanced27 = false;
+    screen.group_completed1c = false;
+    screen.field1d = false;
+
+    if (screen.skip3c) {
+        host.set_frame_title_00518d60("");
+        return false;
+    }
+    if (screen.score_zero18) return true;
+
+    // 0062C53F..0062C684: a rank change (007FCD90(0) between two reads).
+    const std::int32_t rank_before = host.profile_counter_005097d0(kRewardsRankCounter);
+    host.profile_update_007fcd90(0);
+    if (rank_before != host.profile_counter_005097d0(kRewardsRankCounter)) {
+        screen.pages238.push_back(RewardsAwardPage::RankChange);
+    }
+
+    if (host.game_dword(0x1FE4) == 0) {
+        // 0062C69A..0062C847
+        screen.unlocks_pending24 = host.profile_007f93f0();
+        if (screen.unlocks_pending24) {
+            for (const std::string& key : host.pending_unlock_keys_6cc()) rewards_queue_unlocks(screen, host, key);
+        }
+        // 0062C84C..0062C905
+        host.profile_flush_pending_unlocks_007fb990();
+        screen.advanced27 = host.advance_campaign_selection_005c3de0();
+        if (screen.advanced27) screen.mission30 = host.profile_mission_id_00586150();
+        if (screen.commit_present19) {
+            screen.advanced_unfinished25 = screen.advanced27 && !completed;
+            if (!completed && host.group_completed_005c3be0(screen.mission28)) screen.group_completed1c = true;
+        }
+    }
+
+    // 0062C90B..0062CA76: service-rank awards in the commit record.
+    for (const std::string& key : host.commit_record_keys_6c()) {
+        if (host.has_prefix_00553c80(key, kRewardsServiceRankPrefix)) rewards_queue_unlocks(screen, host, key);
+    }
+    return true;
+}
+
+namespace {
+
 using SW = SupportInfoWidget;
 
 // CVTTSS2SI: out-of-range and NaN give the integer-indefinite INT_MIN.

@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bsp {
 
@@ -182,6 +183,71 @@ struct RewardsScreenUpdateHost {
 };
 
 void rewards_screen_update_0062b640(RewardsScreenUpdateState& screen, RewardsScreenUpdateHost& host);
+
+// ---------------------------------------------------------------------------
+// Rewards enter, opening segment (0062C2C0..0062CA7B)
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kRewardsRankCounter = "RANK";        // 00CEF15C
+inline constexpr std::string_view kRewardsServiceRankPrefix = "RANK_SR";  // 00CF5678
+
+// Kind byte of a 10h-byte award page pushed onto +238h by 006278D0 (its
+// string is empty here): 0 = rank change, 1 = one unlocked vehicle class.
+enum class RewardsAwardPage : std::uint8_t { RankChange = 0, Unlock = 1 };
+
+struct RewardsEnterState {
+    float field64{};                       // +64h, cleared
+    bool input_locked258{};                // +258h, cleared
+    bool score_zero18{};                   // +18h: commit record +0Ch == 0.0f (UCOMISS, ordered)
+    bool commit_present19{};               // +19h: *(commit record) != 0
+    bool group_completed1c{};              // +1Ch
+    bool field1d{};                        // +1Dh, cleared
+    bool unlocks_pending24{};              // +24h: 007F93F0 on the profile
+    bool advanced_unfinished25{};          // +25h
+    bool advanced27{};                     // +27h: 005C3DE0 advanced the campaign
+    bool skip3c{};                         // +3Ch: title cleared and return
+    std::string mission28;                 // +28h, copy of game+2198h
+    std::string mission30;                 // +30h, copy of game+2198h, then the profile's +68h id
+    std::vector<RewardsAwardPage> pages238;  // +238h (cleared by 00625A50)
+};
+
+struct RewardsEnterHost {
+    virtual ~RewardsEnterHost() = default;
+    virtual bool session_present_f8a2fc() = 0;
+    virtual bool session_virtual_198() = 0;
+    virtual void session_virtual_58() = 0;
+    virtual void widget_25c_show(bool show) = 0;                  // slot +34h
+    virtual void clear_pages_248_00625a50() = 0;                  // +238h is cleared through the state
+    virtual float commit_record_float_0c_004b4750() = 0;          // ECX = *(00E188A8)
+    virtual bool commit_record_head_nonzero_004b4750() = 0;
+    virtual void mission_record_00594a70() = 0;                   // game+6B4h, &game+2198h
+    virtual void selected_mission_005c3870() = 0;                 // *(00E198AC)+5Ch
+    virtual bool mission_completed_009052d0() = 0;                // ECX = the 00594A70 record
+    virtual std::string game_mission_2198() = 0;
+    virtual void set_frame_title_00518d60(std::string_view title) = 0;  // ECX = EDX = 0, stack 0
+    virtual std::int32_t profile_counter_005097d0(std::string_view name) = 0;  // ECX = game+650h
+    virtual void profile_update_007fcd90(std::int32_t arg) = 0;
+    virtual std::int32_t game_dword(std::uint32_t offset) = 0;
+    virtual bool profile_007f93f0() = 0;
+    // Keys (node +0Ch) of the profile set at game+6CCh not present in the set
+    // at game+6C0h (004C7F10 find against the end +6C4h), in iteration order.
+    virtual std::vector<std::string> pending_unlock_keys_6cc() = 0;
+    // 00622360(key, count): VehicleClass rows with Unlock == true whose UnlockID
+    // contains key; count = 1 only counts, count = 0 also records them.
+    virtual std::int32_t vehicle_unlocks_00622360(std::string_view key, bool count_only) = 0;
+    virtual void profile_flush_pending_unlocks_007fb990() = 0;
+    virtual bool advance_campaign_selection_005c3de0() = 0;       // *(00E198AC)+5Ch
+    virtual std::string profile_mission_id_00586150() = 0;
+    virtual bool group_completed_005c3be0(const std::string& mission) = 0;
+    virtual std::vector<std::string> commit_record_keys_6c() = 0;  // list +6Ch, node +0Ch
+    virtual bool has_prefix_00553c80(std::string_view key, std::string_view prefix) = 0;  // (prefix, 0)
+};
+
+// 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. Partial:
+// the state reset, the early return on +3Ch and the award-page queue up to
+// 0062CA7B; the page builders that follow (to 00636D79) are not reconstructed.
+// Returns false where the native routine returns (+3Ch).
+bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, RewardsEnterHost& host);
 
 // ---------------------------------------------------------------------------
 // Support-manager info panel refresh (0066B6C0)

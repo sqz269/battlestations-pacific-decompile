@@ -178,3 +178,46 @@ Host wiring: none, by instruction (00675C40 is cc9's). Wiring would mean 00675C4
 screen offsets above; no edit was made on that path. The x87 bar widths are computed in double,
 which can differ from the extended-precision result in the last float bit in rare cases.
 Named alongside (provisional): 0065A2B0, 0065AB40, 0065AE90, 0065AC30, 0065BBC0, 0065BB00.
+## Rewards enter 0062C2C0 (cc13-frontend3, opening segment reconstructed, rest outlined)
+
+The body does not decompile and is far larger than the earlier estimate: the recursive descent
+that stopped at 0063158F missed jumps to 006316CB..00631BA3 and to the shared epilogue 00636D63;
+the function runs to the RET at 00636D78, about 10760 instructions (190 child lookups, 284
+string releases, 128 indirect calls). EBP = screen throughout; the EH state lives at
+[esp+E74h] relative to the post-prologue ESP.
+
+`rewards_screen_enter_award_queue_0062c2c0` in `src/ingame_gui.cpp` covers 0062C2C0..0062CA7B
+(build-tested, call rows in `reports/cc13_ingame_gui.json`, 213 rows, 0 failed):
+
+- Session slot +198h true: session slot +58h. +64h = 0.0, +258h = 0, +25Ch hidden, the award page
+  vectors +238h and +248h cleared (00625A50).
+- +18h = commit record (004B4750) +0Ch == 0.0f (UCOMISS/LAHF/TEST AH,44h/JP: ordered equality);
+  00594A70(game+6B4h, &game+2198h) is the mission record and 009052D0 its completed flag;
+  005C3870 is called and its answer kept at [esp+84h] for later pages; +28h and +30h copy
+  game+2198h; +19h = *(record) != 0; +24h, +25h, +27h, +1Ch, +1Dh cleared.
+- +3Ch set: the frame title is cleared (00518D60, ECX = EDX = 0) and the routine returns.
+- +18h set: straight to the page builders at 0062CA7B.
+- Otherwise: a page of kind 0 when the profile's "RANK" counter differs before and after
+  007FCD90(0). With game+1FE4h == 0: +24h = 007F93F0; when set, every key of the profile set
+  game+6CCh that is not in game+6C0h is offered to 00622360
+  (`BSP_RewardsScreen_CollectVehicleUnlocks`): its count (flag 1) pushes that many kind-1
+  pages, then the recording pass (flag 0) runs, both skipped for a count of 0. Then 007FB990,
+  +27h = 005C3DE0 (campaign advance), +30h = 00586150's mission id when advanced, and with +19h:
+  +25h = advanced and not completed, +1Ch = 005C3BE0(+28h) when not completed.
+- Every key of the commit record list +6Ch starting "RANK_SR" (00553C80) is offered to 00622360
+  in the same way.
+
+Outline of the rest (string anchors and calls in address order; not reconstructed):
+
+| Range | Content |
+|---|---|
+| 0062CA7B..0062CDDA | background/back icons, `debriefing_Clipbox`, `congrat1_Text` and `move_Group` placement, scroller range |
+| 0062CDDF..0062D43B | `rank_Icon` (00574050), `info_Group`: `time_value_Text` (004396F0, 0043CC20), `score_value_Text`, `medal_Icon`, a streamed debrief dialog (`sound/messages/`, `/streamed_dialogs/`, file store 004FC150/00BE80B0/00BE7CD0), second time text, list reset (00A9BEC0, 00A9AC40, 0062A0B0, 00625D10) |
+| 0062D464..0062E9A4 | multiplayer scoreboard: `FE.rewards_missioncompleted`/`missionfailed`, `FE.scoring_USN_wins`/`IJN_wins`, `END_Text`, `USA_Text`/`JAP_Text` rows (`rank_Text`, `name_Text` with `globals.newplayer`, `clan_Text`, `score_Text`, `flag_Icon`, `rank_Icon`) in three copies |
+| 0062EA00..00630143 | objectives: `FE.scoring_missionfailed`, side 005C27E0, `number_Text`, `primary_Text`, `^FE.rewards_completed`/`^FE.rewards_failed`, `primary_value_Text`, `primary_point_value_Text` (0061EC70, 0052ED20, 0057F010, 0061F340), hidden ones as `globals.obj_hid` |
+| 00630211..00635939 | scoring tables framed by `row_line`/`vline1..4`/`separator_line` boxes: `FE.scoring_playeract`, `FE.scoring_partyact` (00911CE0, 00593480, 0062C170, 0062BB60, 00625900, 00911C00; `FE.scoring_friendlyhit`), `FE.scoring_command` (+ `_type`/`_amount`), `FE.scoring_remaining` (00910500), `FE.scoring_suicide` (00910570), `FE.scoring_mapusage` (009064D0, `%d:%02d:%02d`/`%d:%02d`), `FE.scoring_badge`, `FE.scoring_missionspec`; value texts `done_by`/`done_to`/`damage`/`kills`/`total_value_Text` |
+| 006359F1..00635F61 | rank page: FE.playerrank table 00E08E00, "RANK" thresholds (0050FC30), 0090BF50 score, " / " text, two clamps (004155B0) |
+| 00635FC3..00636C33 | award pages: `award_Icon`, `award_title_Text`, `FE.scoring_unlockedunit|.: |`, `award_detail_Text`, `FE.scoring_unlock_text`, payload icons (00AA78F0), 0061EB80/0061E610/0061EBC0/006277C0, 0090C000/0050FC30/0050A210/00AB44B0, 00501FA0 |
+| 00636C69..00636D60 | 0062A970, frame title 00518D60, page 00622E30, help line 0054A0C0, a final +38h store |
+
+A successor should take these ranges one at a time with the same EH-anchored listing reading.
