@@ -157,3 +157,91 @@ the ledger name overrides the tag.
 No rel32 or absolute reference anywhere in the image (`local/h1_xref.py`), so these were left
 undefined: 0060C810, 0060CA70, 0060CA90 (plane-spawn area), 0060D730, 0060DC90, 0060DCD0 (checked
 iterator helpers of the row vector), 0060F4E0, 00611360, 00611370, 00611380, 00611390.
+
+## Segment 79: the Grid, Model, Sound, ClipBox, FrameBox and AnimIcon types
+
+The type ids come from the loader table in docs/GUI_LAYOUT_LOADER.md: each `00AA6560` case stub
+calls a per-class pool allocator (`MOV ECX,pool; JMP allocate`) and then the copy constructor with
+the class prototype as the source. Five of those allocators carried the tag
+`cg_static_dtor_stub`; they are pool stubs like FrameBox's `00AD0280` and were renamed.
+
+| Type | Id | Vtable | Pool (vtable, global) | Stub / allocate | Prototype ctor / copy ctor |
+| --- | --- | --- | --- | --- | --- |
+| Grid | 8 | 00D5CE60 | 00D5CE08, 00F8C050 | 00AC9EA0 / 00AC9C10 | 00ACB0A0 / 00ACB3F0 |
+| Model | 9 | 00D5CF38 | 00D5CEF0, 00F8C09C | 00ACC490 / 00ACC350 | 00ACC740 / 00ACCF70 |
+| AnimIcon | 12 | 00D5BCE0 (Icon-derived) | 00D5D1DC, 00F8C1D4 | 00AD3960 / 00AD3820 | (00AA1C60, seg 76) |
+| Sound | 14 | 00D5CFD0 | 00D5CFBC, 00F8C0EC | 00ACD7F0 / 00ACD6B0 | 00ACDB30 / 00ACDBA0 |
+| ClipBox | 16 | 00D5D058 | 00D5D0D4, 00F8C13C | 00ACEA10 / 00ACE8D0 | docs/GUI_CLIP_BOX.md |
+| FrameBox | 18 | 00D5D130 | 00D5D0FC, 00F8C188 | 00AD0280 / 00AD0050 | docs/GUI_FRAMEBOX_WIDGET.md |
+
+The pools are `Mit::allocator_list_elem` objects linked on 00E188B4 with a critical section, an
+array of chunks and a first-free index; each chunk holds sixteen (eight for Model) blocks with a
+16-bit free stack at the chunk tail. Pool constructor, destructor, free and trim (vtable slot 0)
+were named for all six by the Win32 calls they make (InitializeCriticalSection,
+DeleteCriticalSection, Enter/LeaveCriticalSection) and by their stores of the pool vtable.
+
+A naive vtable walk overruns into the next table: Model's 33 slots end where the Sound pool
+vtable 00D5CFBC begins (so "Model +84h" is the pool trim 00ACD610), and ClipBox's +7Ch is its
+pool trim 00ACE830.
+
+### Properties
+
+Property visitors pass each key and each (kind, pointer) as 8-byte pairs. Kinds seen: 0 string,
+2 float, 3 bool, 5 vec3, 6 vec2. A reader's +0Ch takes a default, +10h does not; a describer
+writes through +0Ch and, except where noted, only after `00BD5680` says the value differs from
+the default. The C++ carries one table per type (`kGuiGridProperties`, `kGuiModelProperties`,
+`kGuiSoundProperties`, `kGuiAnimIconProperties`) and the shared drivers `gui_read_properties` /
+`gui_describe_properties`.
+
+| Type | Key | Kind | Field | Default |
+| --- | --- | --- | --- | --- |
+| Grid | `CellSize` | vec2 | +104h | none (+10h read); describer always writes |
+| Model | `ModelName` | string | +10Ch | none |
+| Model | `ModelTextureOverride` | string | +114h | `""` |
+| Model | `ScaleVector` | vec3 | +F4h | (1,1,1) |
+| Model | `RotationEuler` | vec3 | +100h | (0,0,0) |
+| Sound | `SoundEfx` / `Category` | string | +F8h / +100h | none; describer always writes (00F8C134 for null) |
+| AnimIcon | `FPS` | float | +138h | 30.0 (00CE38C8) |
+| AnimIcon | `PlaybyDefault` / `Loop` / `Forward` | bool | +140h / +141h / +142h | 1 |
+
+### Reconstructed
+
+| Address | Name | ABI | Status |
+| --- | --- | --- | --- |
+| 00ACA0B0 | `BSP_GuiGrid_ConstructedHook` (+74h) | thiscall, RET | reconstructed, build-tested |
+| 00ACA170 | `BSP_GuiGrid_LoadedHook` (+78h) | thiscall, RET | reconstructed, build-tested |
+| 00ACA290 | `BSP_GuiGrid_LayoutCells` (+84h) | thiscall, RET | reconstructed, build-tested |
+| 00ACA540 | `BSP_GuiGrid_SyncScrollbars` (+7Ch) | thiscall, RET | reconstructed, build-tested |
+| 00ACB140 | `BSP_GuiGrid_IsKindOf` (+0Ch) | thiscall(id), RET 4 | reconstructed, build-tested |
+| 00AC9900 / 00AC9950 | Grid read / describe (+18h/+1Ch) | thiscall(visitor), RET 4 | reconstructed (table), build-tested |
+| 00ACDDB0 / 00ACD800 | Sound read / describe | thiscall(visitor), RET 4 | reconstructed (table + binding tail), build-tested |
+| 00ACDF10 | `BSP_GuiSound_SetVisible` (+34h) | thiscall(bool), RET 4 | reconstructed, build-tested |
+| 00ACD2C0 | `BSP_GuiSound_Update` (+40h) | thiscall(float), RET 4 | reconstructed, build-tested |
+| 00AD3430 / 00AD3550 | AnimIcon read / describe | thiscall(visitor), RET 4 | reconstructed (table), build-tested |
+| 00AD2E00 / 00AD2E10 / 00AD2E20 | AnimIcon `SetForward` / `SetLoop` / `SetFps` (+A8h/+ACh/+B0h) | thiscall(arg), RET 4 | reconstructed, build-tested |
+
+Grid fields: +20h/+24h size, +ECh column vector (14h-byte records: width +0h, cell widget vector
++4h..+10h), +104h/+108h `CellSize`, +10Ch a byte the prototype sets to 1, +110h/+114h scroll
+offsets, +118h `Visual_Group`, +11Ch/+120h content size. The layout restarts y at 0 for each
+column, so +120h holds the last column's height, not the tallest; the scrollbar maxima are
+content minus widget size, and the scrollbar values are `-0.0 - offset`.
+
+Sound fields: +ECh the sample (refcounted), +F0h the tracked sound, +F4h the class, +F8h/+100h the
+two strings. Showing a Sound with no live sound creates one of type `Normal`; hiding stops and
+releases it; the update hides the widget once the sound reports finished.
+
+### Defined in Ghidra
+
+26 vtable targets had no function and were defined from disk extents (`local/h1_extent.py`,
+recursive descent, every one followed by INT3 padding or the next function):
+00AC9900, 00AC9950, 00ACA170, 00ACB140, 00ACBCD0, 00ACBCE0, 00ACC780, 00ACD0D0, 00ACD0E0,
+00ACDB70, 00ACDF10, 00ACE080, 00ACE090, 00ACE0C0, 00ACEAE0, 00ACEAF0, 00ACEB00, 00AD26A0,
+00AD2720, 00AD2A80, 00AD2DF0, 00AD2E00, 00AD2E10, 00AD2E20, 00AD3040, 00AD3A20.
+
+### Unreferenced in segment 79
+
+Per class two type-info registration helpers (guard byte, class-name pointer at +0Ch, the base
+chain copied from 00F8BC88, the id from 006FAC20's counter) have no Ghidra function and no rel32
+or absolute reference: 00AC9F70/00ACA030 (`cGuiGrid`), 00ACC650/00ACC6F0 (`cGuiModel`),
+00ACD890/00ACDAE0 (`cGuiSound`), 00ACEA20/00ACEA70 (`cGuiClipBox`), 00AD0780/00AD07D0
+(`cGuiFrameBox`). They were left undefined.

@@ -294,6 +294,178 @@ void plane_spawn_update_0060c830(PlaneSpawnScreenState& screen, PlaneSpawnHost& 
 // Slot +28h, 0060CA20: __thiscall(screen), id in EAX, RET.
 std::uint32_t plane_spawn_target_id_0060ca20(const PlaneSpawnTargetView& plane) noexcept;
 inline constexpr float kPlaneSpawnTargetUnset = 0.0f;  // 00D7A218 (ucomiss, NaN counts as set)
+// ---------------------------------------------------------------------------
+// Segment 79 widget types: Grid (8), Model (9), AnimIcon (12), Sound (14)
+// ---------------------------------------------------------------------------
+//
+// Property visitors (the reader/describer object passed to vtable +18h/+1Ch):
+// +0Ch with six stack dwords reads with a default, +10h with four reads
+// without one; a describer's +0Ch takes four dwords and is only called when
+// 00BD5680 says the value differs from the default (except where noted).
+// Each (kind, pointer) and (0, key) pair is passed as an 8-byte value.
+
+enum class GuiPropertyKind : std::uint8_t {
+    String = 0,
+    Float = 2,
+    Bool = 3,
+    Vec3 = 5,
+    Vec2 = 6,
+};
+
+struct GuiPropertySpec {
+    std::string_view key;
+    GuiPropertyKind kind;
+    std::uint16_t field;          // widget+N
+    bool reads_with_default;      // visitor +0Ch (true) or +10h (false)
+    std::array<float, 3> default_value;  // bools use [0] != 0; strings ignore it
+};
+
+// Grid (vtable 00D5CE60, 124h bytes, pool 00F8C050): +18h 00AC9900 reads
+// through +10h, +1Ch 00AC9950 always describes.
+inline constexpr std::array<GuiPropertySpec, 1> kGuiGridProperties{{
+    {"CellSize", GuiPropertyKind::Vec2, 0x104, false, {0, 0, 0}}}};
+// Model (vtable 00D5CF38, 11Ch bytes): +18h 00ACCE20 then 00ACCCF0(+10Ch, +114h).
+inline constexpr std::array<GuiPropertySpec, 4> kGuiModelProperties{{
+    {"ModelName", GuiPropertyKind::String, 0x10C, false, {0, 0, 0}},
+    {"ModelTextureOverride", GuiPropertyKind::String, 0x114, true, {0, 0, 0}},  // default "" (00CE3A0C)
+    {"ScaleVector", GuiPropertyKind::Vec3, 0xF4, true, {1, 1, 1}},
+    {"RotationEuler", GuiPropertyKind::Vec3, 0x100, true, {0, 0, 0}}}};
+// Sound (vtable 00D5CFD0, 108h bytes): +18h 00ACDDB0, +1Ch 00ACD800 (always
+// describes, empty C string 00F8C134 for a null buffer).
+inline constexpr std::array<GuiPropertySpec, 2> kGuiSoundProperties{{
+    {"SoundEfx", GuiPropertyKind::String, 0xF8, false, {0, 0, 0}},
+    {"Category", GuiPropertyKind::String, 0x100, false, {0, 0, 0}}}};
+// AnimIcon (vtable 00D5BCE0 over the Icon class, 144h bytes): +18h 00AD3430
+// after BSP_GuiIcon_ReadProperties, +1Ch 00AD3550 describes non-defaults.
+inline constexpr std::array<GuiPropertySpec, 4> kGuiAnimIconProperties{{
+    {"FPS", GuiPropertyKind::Float, 0x138, true, {30.0f, 0, 0}},  // 00CE38C8
+    {"PlaybyDefault", GuiPropertyKind::Bool, 0x140, true, {1, 0, 0}},
+    {"Loop", GuiPropertyKind::Bool, 0x141, true, {1, 0, 0}},
+    {"Forward", GuiPropertyKind::Bool, 0x142, true, {1, 0, 0}}}};
+
+struct GuiPropertyVisitor {
+    virtual ~GuiPropertyVisitor() = default;
+    virtual void base_properties() = 0;   // 00AAA710 / 00AAA700 / the Icon reader or describer
+    virtual void read(const GuiPropertySpec& spec) = 0;               // visitor +10h
+    virtual void read_with_default(const GuiPropertySpec& spec) = 0;  // visitor +0Ch, six dwords
+    virtual void describe(const GuiPropertySpec& spec) = 0;           // describer +0Ch, four dwords
+    virtual bool equals_default_00bd5680(const GuiPropertySpec& spec) = 0;
+};
+
+// The shared reader/describer shape of 00AC9900, 00AC9950, 00ACCE20 (first
+// half), 00ACDDB0 (first half), 00ACD800, 00AD3430, 00AD3550.
+template <std::size_t N>
+void gui_read_properties(const std::array<GuiPropertySpec, N>& specs, GuiPropertyVisitor& visitor) {
+    visitor.base_properties();
+    for (const GuiPropertySpec& spec : specs) {
+        if (spec.reads_with_default) {
+            visitor.read_with_default(spec);
+        } else {
+            visitor.read(spec);
+        }
+    }
+}
+template <std::size_t N>
+void gui_describe_properties(const std::array<GuiPropertySpec, N>& specs, bool always,
+    GuiPropertyVisitor& visitor) {
+    visitor.base_properties();
+    for (const GuiPropertySpec& spec : specs) {
+        if (always || !visitor.equals_default_00bd5680(spec)) {
+            visitor.describe(spec);
+        }
+    }
+}
+
+// Grid object: +20h/+24h size (base), +ECh..+F8h columns (std::vector of
+// 14h-byte records: width +0h, cell widgets std::vector at +4h..+10h),
+// +104h/+108h CellSize, +110h/+114h scroll offsets, +118h Visual_Group,
+// +11Ch/+120h content size.
+struct GuiGridColumn {
+    float width{};
+    std::vector<std::uintptr_t> cells;  // null entries are skipped
+};
+
+struct GuiGridState {
+    float width_20{};
+    float height_24{};
+    std::vector<GuiGridColumn> columns_ec;
+    float cell_w_104{};
+    float cell_h_108{};
+    float scroll_x_110{};
+    float scroll_y_114{};
+    std::uintptr_t visual_group_118{};
+    float content_w_11c{};
+    float content_h_120{};
+};
+
+struct GuiGridHost {
+    virtual ~GuiGridHost() = default;
+    virtual std::uintptr_t create_widget_00aa6640(int type, std::string_view name) = 0;
+    virtual void append_child_00aaa5a0(std::uintptr_t child) = 0;            // (child, 0)
+    virtual std::uintptr_t find_child_00aaa2b0(std::string_view name) = 0;  // on the grid
+    virtual void set_local_xy_00aa7d00(std::uintptr_t widget, float x, float y) = 0;
+    virtual void scrollbar_set_maximum_00ac7de0(std::uintptr_t scrollbar, float maximum) = 0;
+    virtual void scrollbar_set_value_00ac7d00(std::uintptr_t scrollbar, float value) = 0;
+};
+
+// 00ACA0B0, Grid vtable +74h (constructed), __thiscall, RET: a Group (type 2)
+// named Visual_Group at +118h, appended as a child.
+void gui_grid_constructed_00aca0b0(GuiGridState& grid, GuiGridHost& host);
+// 00ACA170, +78h (loaded), RET: with a non-zero size, the vertical scrollbar
+// goes to (width, 0) and the horizontal one to (0, height).
+void gui_grid_loaded_00aca170(const GuiGridState& grid, GuiGridHost& host);
+// 00ACA290, +84h, RET: lays the cells out column by column, records the
+// content size and sets both scrollbars' maxima.
+void gui_grid_layout_00aca290(GuiGridState& grid, GuiGridHost& host);
+// 00ACA540, +7Ch, RET: scrollbar values = -offset (-0.0 at 00D7A208 minus).
+void gui_grid_sync_scrollbars_00aca540(const GuiGridState& grid, GuiGridHost& host);
+// 00ACB140, +0Ch, RET 4: true when the type id is in the chain 00F8C088..00F8C094.
+bool gui_grid_is_kind_of_00acb140(const std::array<std::uint32_t, 3>& chain, std::uint32_t id) noexcept;
+
+// AnimIcon setters, vtable 00D5BCE0 +A8h/+ACh/+B0h, RET 4.
+struct GuiAnimIconFlags {
+    float fps_138{30.0f};
+    bool play_by_default_140{true};
+    bool loop_141{true};
+    bool forward_142{true};
+};
+inline void gui_anim_icon_set_forward_00ad2e00(GuiAnimIconFlags& icon, bool value) noexcept { icon.forward_142 = value; }
+inline void gui_anim_icon_set_loop_00ad2e10(GuiAnimIconFlags& icon, bool value) noexcept { icon.loop_141 = value; }
+inline void gui_anim_icon_set_fps_00ad2e20(GuiAnimIconFlags& icon, float value) noexcept { icon.fps_138 = value; }
+// Sound widget (type 14): +ECh the sample (refcounted), +F0h the tracked
+// sound, +F4h the sound class, +F8h SoundEfx, +100h Category.
+struct GuiSoundWidgetState {
+    std::uintptr_t sample_ec{};
+    std::uintptr_t sound_f0{};
+    std::int32_t sound_class_f4{};
+    std::string sound_efx_f8;
+    std::string category_100;
+};
+
+struct GuiSoundWidgetHost {
+    virtual ~GuiSoundWidgetHost() = default;
+    virtual void base_set_visible_00aa8530(bool visible) = 0;
+    virtual std::int64_t find_sound_type_00a7b0a0(std::string_view name) = 0;  // EDX:EAX
+    // 00A7E490 on *(00F8BBD8): (out, sample, class, type, 1); the temporary
+    // handle is released after 0054D4C0 stores it at +F0h.
+    virtual std::uintptr_t create_tracked_sound_00a7e490(std::uintptr_t sample,
+        std::int32_t sound_class, std::int64_t sound_type) = 0;
+    virtual void sound_stop(std::uintptr_t sound, bool flag) = 0;      // sound vtable +08h
+    virtual bool sound_finished(std::uintptr_t sound) = 0;             // sound vtable +0Ch
+    virtual void release_sound_0054d510(std::uintptr_t sound) = 0;      // adopt null into +F0h
+    virtual std::uintptr_t acquire_sample_00a83fd0(const std::string& name) = 0;  // *(00F8BBE8)
+    virtual std::int32_t find_sound_class_00a7acf0(const std::string& name) = 0;  // *(00F8BBD8)
+    virtual void retain(std::uintptr_t object) = 0;                     // InterlockedIncrement +4h
+    virtual void release(std::uintptr_t object) = 0;                    // decrement, slot 0 at zero
+};
+
+// 00ACDF10, Sound vtable +34h, __thiscall(bool), RET 4.
+void gui_sound_set_visible_00acdf10(GuiSoundWidgetState& sound, bool visible, GuiSoundWidgetHost& host);
+// 00ACD2C0, +40h (update), __thiscall(float), RET 4: hides the widget once
+// its sound reports finished.
+bool gui_sound_update_should_hide_00acd2c0(const GuiSoundWidgetState& sound, GuiSoundWidgetHost& host);
+// The tail of 00ACDDB0 (+18h) after the two string reads.
+void gui_sound_bind_resources_00acddb0(GuiSoundWidgetState& sound, GuiSoundWidgetHost& host);
 }  // namespace bsp
 
 #endif  // BSP_HUD_WIDGETS_HPP

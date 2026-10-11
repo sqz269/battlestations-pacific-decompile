@@ -420,4 +420,102 @@ std::uint32_t plane_spawn_target_id_0060ca20(const PlaneSpawnTargetView& plane) 
     }
     return 0;
 }
+void gui_grid_constructed_00aca0b0(GuiGridState& grid, GuiGridHost& host) {
+    grid.visual_group_118 = host.create_widget_00aa6640(2, "Visual_Group");
+    host.append_child_00aaa5a0(grid.visual_group_118);
+}
+
+void gui_grid_loaded_00aca170(const GuiGridState& grid, GuiGridHost& host) {
+    if (grid.width_20 == 0.0f || grid.height_24 == 0.0f) {
+        return;
+    }
+    if (const std::uintptr_t vertical = host.find_child_00aaa2b0("_Vertical_Scrollbar")) {
+        host.set_local_xy_00aa7d00(vertical, grid.width_20, 0.0f);
+    }
+    if (const std::uintptr_t horizontal = host.find_child_00aaa2b0("_Horizontal_Scrollbar")) {
+        host.set_local_xy_00aa7d00(horizontal, 0.0f, grid.height_24);
+    }
+}
+
+void gui_grid_layout_00aca290(GuiGridState& grid, GuiGridHost& host) {
+    float x = 0.0f;
+    float y = 0.0f;
+    for (const GuiGridColumn& column : grid.columns_ec) {
+        y = 0.0f;  // 00ACA30D: every column restarts at the top
+        for (std::uintptr_t cell : column.cells) {
+            if (cell != 0) {
+                host.set_local_xy_00aa7d00(cell, x, y);
+            }
+            y = y + grid.cell_h_108;
+        }
+        x = x + column.width;
+    }
+    // The content height is the last column's (the cursor is not maximised).
+    grid.content_w_11c = x;
+    grid.content_h_120 = y;
+    const std::uintptr_t horizontal = host.find_child_00aaa2b0("_Horizontal_Scrollbar");
+    const std::uintptr_t vertical = host.find_child_00aaa2b0("_Vertical_Scrollbar");
+    if (horizontal != 0) {
+        host.scrollbar_set_maximum_00ac7de0(horizontal, grid.content_w_11c - grid.width_20);
+    }
+    if (vertical != 0) {
+        host.scrollbar_set_maximum_00ac7de0(vertical, grid.content_h_120 - grid.height_24);
+    }
+}
+
+void gui_grid_sync_scrollbars_00aca540(const GuiGridState& grid, GuiGridHost& host) {
+    if (const std::uintptr_t horizontal = host.find_child_00aaa2b0("_Horizontal_Scrollbar")) {
+        host.scrollbar_set_value_00ac7d00(horizontal, -0.0f - grid.scroll_x_110);
+    }
+    if (const std::uintptr_t vertical = host.find_child_00aaa2b0("_Vertical_Scrollbar")) {
+        host.scrollbar_set_value_00ac7d00(vertical, -0.0f - grid.scroll_y_114);
+    }
+}
+
+bool gui_grid_is_kind_of_00acb140(const std::array<std::uint32_t, 3>& chain, std::uint32_t id) noexcept {
+    for (std::uint32_t entry : chain) {
+        if (entry == id) {
+            return true;
+        }
+    }
+    return false;
+}
+void gui_sound_set_visible_00acdf10(GuiSoundWidgetState& sound, bool visible, GuiSoundWidgetHost& host) {
+    host.base_set_visible_00aa8530(visible);
+    if (!visible) {
+        if (sound.sound_f0 != 0) {
+            host.sound_stop(sound.sound_f0, false);
+            host.release_sound_0054d510(sound.sound_f0);
+            sound.sound_f0 = 0;
+        }
+        return;
+    }
+    if (sound.sound_f0 != 0) {
+        return;  // already playing
+    }
+    const std::int64_t type = host.find_sound_type_00a7b0a0("Normal");
+    sound.sound_f0 = host.create_tracked_sound_00a7e490(sound.sample_ec, sound.sound_class_f4, type);
+}
+
+bool gui_sound_update_should_hide_00acd2c0(const GuiSoundWidgetState& sound, GuiSoundWidgetHost& host) {
+    return sound.sound_f0 != 0 && host.sound_finished(sound.sound_f0);
+}
+
+void gui_sound_bind_resources_00acddb0(GuiSoundWidgetState& sound, GuiSoundWidgetHost& host) {
+    const std::uintptr_t sample = host.acquire_sample_00a83fd0(sound.sound_efx_f8);
+    if (sound.sample_ec != sample) {
+        const std::uintptr_t old = sound.sample_ec;
+        sound.sample_ec = sample;
+        if (sample != 0) {
+            host.retain(sample);
+        }
+        if (old != 0) {
+            host.release(old);
+        }
+    }
+    if (sample != 0) {
+        host.release(sample);  // the acquire's temporary reference
+    }
+    sound.sound_class_f4 = host.find_sound_class_00a7acf0(sound.category_100);
+}
 }  // namespace bsp
