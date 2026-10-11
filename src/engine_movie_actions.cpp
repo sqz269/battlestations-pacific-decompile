@@ -156,4 +156,34 @@ std::pair<float, float> movie_blackout_level_duration_004660b0(const MovieAction
     return {action.num[0], action.num[1]};
 }
 
+void rewind_engine_movie_clock_0045c5b0(EngineMovieClock& clock) noexcept {
+    clock.time = 0.0f;
+    clock.history.fill(0.0f);
+}
+
+EngineMovieStep advance_engine_movie_clock_0045f970(EngineMovieClock& clock, float delta) noexcept {
+    if (delta > 1.0f) delta = 0.01f;                                   // 0045F977..0045F988
+    if (clock.state == 0 || clock.state == 3) return EngineMovieStep::Idle;  // 0045F98E..0045F99C
+    float scaled = delta;
+    if (clock.state == 2) scaled = static_cast<float>(static_cast<double>(delta) * 0.5);  // 0045F9AC
+    float sum = 0.0f;                                                   // 0045F9D0..0045FA44
+    for (const float sample : clock.history) sum = sum + sample;
+    const float step = static_cast<float>((static_cast<double>(sum) + scaled) / 21.0);  // 0045FA46..0045FA58
+    for (std::size_t i = 0; i + 1 < clock.history.size(); ++i) clock.history[i] = clock.history[i + 1];
+    clock.history.back() = scaled;                                      // 0045FAB5
+    clock.time = clock.time + step;                                     // 0045FAAE..0045FAC2
+    return clock.length <= clock.time ? EngineMovieStep::Finished : EngineMovieStep::Running;  // 0045FAC9
+}
+
+std::size_t run_due_movie_actions_004560e0(const std::vector<MovieAction>& actions,
+                                           std::size_t cursor, float time, bool entity_ready,
+                                           const std::function<void(const MovieAction&)>& run) {
+    while (cursor < actions.size()) {
+        if (!(time > actions[cursor].activate_time)) break;  // unordered also stops  // 00456148 FCOMIP, JBE 004561D9
+        if (entity_ready && run) run(actions[cursor]);    // 004561A0 CALL EDX
+        ++cursor;
+    }
+    return cursor;
+}
+
 } // namespace bsp

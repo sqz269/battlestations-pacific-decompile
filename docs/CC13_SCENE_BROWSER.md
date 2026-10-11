@@ -410,7 +410,7 @@ gated by a flag of the type record (record offset in brackets): `ReferPath` [+10
 `0045A210` appends the action to the owner. An unmatched type leaves the action pointer null,
 which the field reads then dereference; the host returns no action instead.
 
-### The type table `00460B80` `BSP_MovieActionTypes_Build`
+### The type table `00460B80` (now `BSP_EngineMovie_Construct`)
 
 Each record is built by `BSP_MovieActionType_Construct` (`0045D480`) from the name, then a label
 and a flag per field (ReferPath, Num1, Num2, Num3), the Enum option list, the Enum label and flag,
@@ -553,3 +553,59 @@ Open, in priority order:
 3. `00477710` mesh branches (CloudType 1 and 2) and the per-vertex colour loop.
 4. The open items 2..6 of the first handoff still stand (registry teardown, visual-base slots,
    the unreferenced vector-math cluster, a Lua implementation for the class loaders).
+
+## Engine-movie playback: clock, tracks and action dispatch (third packet)
+
+Host additions in `src/engine_movie_actions.cpp`: the clock (`0045F970`, the clock part of
+`0045C5B0`) and the action dispatch (`004560E0`). Status: reconstructed, build-tested, not wired.
+
+**Correction.** `00460B80` is the constructor of the 74h-byte movie object
+(`BSP_EngineMovie_Construct`; `BSP_Game_BeginEngineMovie` allocates 74h, calls it with `ECX` = the
+object and stores it at game+38h, `docs/GAME_SIMULATION_GATE.md`). Filling the global type vector
+`00E18550` is part of that constructor; the earlier name `BSP_MovieActionTypes_Build` is replaced.
+
+**Object.** Movie: +0 `Movielen`, +4 time, +8..+54h the last 20 frame deltas, +60h state (1 set by
+`BSP_EngineMovie_Start` `0045DB40`, 2 half speed, 0 and 3 idle, 5 the failed-load state the start
+routine tests), +68h/+6Ch the track vector. Tracks are created per `Animation` block by
+`BSP_EngineMovie_CreateTrack` (`0045EFB0`): `Entitypath "CameraPosition 01"` gives a 1F4h camera track
+(`0045BD00`, vtable `00CE4DCC`), anything else a 1D4h entity track (`0045B100`, vtable `00CE4DB8`).
+Track vtable: +4 bind (`00456DD0` resolves `Entitypath`, a squadron to its first plane, and every
+`ReferPath` into action+14h), +8 rewind (`00456290`), +0Ch update (`00459020` entity,
+`0045BD90` camera). Track fields used here: +108h the action list, +11Ch the entity, +120h the
+entity path (`0045D8A0`), +144h the action cursor.
+
+**Per frame.** `BSP_Game_UpdateCutscenePlayback` (`004C6B20`) calls `BSP_EngineMovie_Advance`
+(`0045F970`, `__thiscall`, float delta, `RET 4`):
+
+1. `delta > 1.0` becomes 0.01f (`00D7A238`); NaN is kept (`COMISS`/`JBE`).
+2. States 0 and 3 return. State 2 multiplies by 0.5 (`FMUL double [00D7A280]`).
+3. The step is the mean of the 20 stored deltas and this one: the history is summed left to right
+   through a float temporary, the delta added and the result divided by 21.0 (`00CE4D78`) on the
+   x87 stack, stored as float. So the clock is smoothed over 21 frames and lags a delta change.
+4. The history shifts left and takes the (scaled) delta; `time = float(time + step)`.
+5. `time >= Movielen` (`FCOMIP`, `JC` at `0045FACD`; NaN keeps running) calls
+   `BSP_EngineMovie_Stop` (`0045F600`); otherwise `BSP_EngineMovie_UpdateTracks` (`0045C560`,
+   formerly tagged `STL_inst`) calls every track's `vtable+0Ch(time)`.
+
+The entity track's update `00459020` moves the entity along its `PointList` (`004581E0`) or with its
+parent track, then calls `BSP_MovieTrack_RunDueActions` (`004560E0`): from the cursor, while
+`time > ActivateTime` (`FCOMIP`/`JBE` at `00456148`, so an action fires on the first frame strictly
+after its time and NaN stops the walk), run the action's slot 0 with the entity when the entity
+exists and its bytes +5Eh and +5Dh are clear (`004561A0`), and advance the cursor whether or not
+it ran. An action whose entity is gone at its time is skipped for good. `BSP_EngineMovie_Rewind`
+(`0045C5B0`, at the end of the parse) calls every track's rewind and zeroes time and history.
+
+Slot 1 (`aParticleEffect`'s stop) was not found among these callers; the track or movie
+destructor is the likely caller. The camera track's update `0045BD90` is not a Ghidra function yet.
+
+## Handoff (third packet)
+
+Open, in priority order:
+
+1. `BSP_EngineMovie_Stop` (`0045F600`): what it tears down, in which order it calls the Lua entry
+   points and the class-table resets, and whether it runs action slot 1. It reaches mission Lua
+   (`BSP_Game_CallLuaEntryPoint*`), so it belongs with whoever owns mission flow (cc9) before any
+   wiring.
+2. The camera track (`0045BD90` update, `00457160` bind) and how it reads `cFOV`/`cFOV_Now`
+   (their run bodies are empty), and the entity track's pose interpolation `00459020`/`004581E0`.
+3. `00477710` mesh branches (CloudType 1 and 2), unchanged from the second handoff.
