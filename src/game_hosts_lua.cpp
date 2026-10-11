@@ -31,6 +31,8 @@
 #include "bsp/recon_sensor_pass.hpp"   // packet cc9_get_property_class_readers
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/hud_movie_camera.hpp"
+#include "bsp/archive_text_writer.hpp"   // packet cc9_lua49_checkpoint
+#include "bsp/profile_checkpoint.hpp"   // packet cc9_lua49_checkpoint
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -266,6 +268,20 @@ constexpr bool kLuaKillScriptEntityBound = true;
 // ON: IJN01 resolves "Airfield 02" -> "AirField 02" (entity_resolves 78 -> 79)
 // and is gameplay-identical while PilotLand stays a record; JM05 identical.
 constexpr bool kFindEntityCaseInsensitiveBound = true;
+
+// Packet cc9_lua49_checkpoint (docs/CC13_PROFILE_SAVE.md; docs/SQUADRON_LAND_TASK.md
+// 5fk). SaveCheckpoint 008ACB70: argument 0 to 00438A00 on the profile
+// manager, then PushBoolean(1) (008ACB70's tail) whatever happened.
+// 00438A00 runs 00438020 (src/profile_checkpoint.cpp), now or as the storage
+// continuation 004389F0. LoadCheckpoint 008ACA30: 004379C0 on the calling
+// context, which pushes BSP_Chk_Save[id]'s copy or nil, and the result count.
+// SUBSTITUTIONS, labelled: the id is the mission script's file stem, not
+// game+2198h; the unlock record is 00436690's defaults (0, -1, -1, "") with
+// the difficulty from game+6ACh; the play time is 0.0; the archive is written
+// only to a file beside the executable (the build or export tree), never the
+// game installation or a profile; 008ACB70's gamepad-force and input-manager
+// calls are not run. OFF: both rows stay unimplemented records.
+constexpr bool kMissionCheckpointBound = false;
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
@@ -539,7 +555,10 @@ int binding_trampoline(lua_State* state) {
     // and calls 006485A0 on [00E198C4]+40h (008AB014..008AB01F).
     const bool force_select_row
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
-    const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
+    // Packet cc9_lua49_checkpoint.
+    const bool checkpoint_row = kMissionCheckpointBound
+        && (dispatch_row.address == 0x008acb70u || dispatch_row.address == 0x008aca30u);
+    const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
@@ -851,6 +870,10 @@ int binding_trampoline(lua_State* state) {
         // result count, 0.
         if (!host->error_replay()) bsp::game::hud_force_select_unit_006485a0();
         return 0;
+    }
+    if (checkpoint_row) {
+        if (host->error_replay()) return 0;
+        return host->mission_checkpoint_binding(state, dispatch_row.address == 0x008acb70u);
     }
     if (scoring_play_time_row) {
         if (!host->error_replay()) {
@@ -7161,6 +7184,65 @@ bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_n
         summary_.mission_script_path.c_str(), results.size(),
         summary_.mission_chunk_ok ? 1 : 0);
     return summary_.mission_chunk_ok;
+}
+
+int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) {
+    // The id: the mission script's file stem (SUBSTITUTION for game+2198h).
+    std::string id = summary_.mission_script_path;
+    const std::size_t slash = id.find_last_of("/\\");
+    if (slash != std::string::npos) id.erase(0, slash + 1);
+    const std::size_t dot = id.rfind('.');
+    if (dot != std::string::npos) id.erase(dot);
+    if (!save) {
+        // 008ACB22 CALL 004379C0, then 008ACB2B the result count.
+        const int top = ::lua_gettop(state);
+        try {
+            const std::optional<float> play_time = bsp::load_checkpoint_004379c0(state, id, state);
+            log_.notef("LoadCheckpoint 008ACA30: id=%s %s", id.c_str(),
+                play_time ? "table pushed" : "nil pushed");
+        } catch (const std::exception& e) {
+            ::lua_settop(state, top);
+            ::lua_pushnil(state);
+            log_.notef("LoadCheckpoint 008ACA30: id=%s failed: %s", id.c_str(), e.what());
+        }
+        log_.implemented("MissionLuaNative::LoadCheckpoint", "008aca30");
+        return ::lua_gettop(state) - top;
+    }
+    const int top = ::lua_gettop(state);
+    if (top >= 1 && ::lua_type(state, 1) == LUA_TTABLE) {
+        bsp::CheckpointRecordFields record;   // 00436690's defaults
+        record.difficulty = bsp::game::game_effective_difficulty_6ac();
+        bsp::ArchiveStringSink sink;
+        bsp::ArchiveTextOutput output;
+        output.buffered_0109cecc = &sink;
+        bsp::ArchiveTextWriter writer(output);
+        try {
+            bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true);
+            // Beside the executable only: the build or export tree.
+            char* program = nullptr;
+            std::string path;   // empty: no executable path, nothing written
+            if (_get_pgmptr(&program) == 0 && program != nullptr) {
+                std::string dir(program);
+                const std::size_t cut = dir.find_last_of("/\\");
+                if (cut != std::string::npos) path = dir.substr(0, cut + 1) + "checkpoint_" + id + ".txt";
+            }
+            std::FILE* f = nullptr;
+            if (!path.empty() && fopen_s(&f, path.c_str(), "wb") == 0 && f != nullptr) {
+                std::fwrite(sink.str().data(), 1, sink.str().size(), f);
+                std::fclose(f);
+            }
+            log_.notef("SaveCheckpoint 008ACB70: id=%s archive %zu bytes -> %s", id.c_str(),
+                sink.str().size(), path.c_str());
+        } catch (const std::exception& e) {
+            log_.notef("SaveCheckpoint 008ACB70: id=%s failed: %s", id.c_str(), e.what());
+        }
+    } else {
+        log_.notef("SaveCheckpoint 008ACB70: argument 0 is not a table; nothing saved");
+    }
+    ::lua_settop(state, top);
+    ::lua_pushboolean(state, 1);   // 008ACB70's PushBoolean(1)
+    log_.implemented("MissionLuaNative::SaveCheckpoint", "008acb70");
+    return 1;
 }
 
 bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsafe) {
