@@ -1,0 +1,2721 @@
+{
+  "schema": "cc12.c26b57-body.primary.v1",
+  "status": "ACCEPTED_BOUNDED_PHYSICAL_EVIDENCE",
+  "worker_commit": "99aedbb6c53eb74012024b0ff27a82a2bdaa8a51",
+  "worker_tree": "50121877057301c0dfed328217a032e720a55469",
+  "frozen_actual_Main": "c10e6a0097f669defca49449adfa5f95ee608b27",
+  "exact_worker_outputs": [
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "f2ce52077b2093666b0f0f0b9ee73d376c64d47a",
+      "length": 10757,
+      "sha256": "c9042fb6ebc946661edafcfa8eed0002ec69debb0ff66d366e69845d8d8c0814",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "f2ce52077b2093666b0f0f0b9ee73d376c64d47a",
+      "index_stage": "0"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_body_metadata.json",
+      "blob": "cb6173f96d71c3ca5ecd8541570ea40881b3725b",
+      "length": 190522,
+      "sha256": "0c4df282716cfee0bbb39de88d6905e6e24c50d1595585c032bf7e33d9952a9f",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "cb6173f96d71c3ca5ecd8541570ea40881b3725b",
+      "index_stage": "0"
+    }
+  ],
+  "physical": {
+    "start": "00C26B57",
+    "end_inclusive": "00C26B9C",
+    "length": 70,
+    "code_hex": "8b4c24045633f63bce7c1e83f9027e0c83f9037514a1d0dd09015ec3a1d0dd0901890dd0dd09015ec3e80690fdff5656565656c70016000000e85afbfcff83c41483c8ff5ec3",
+    "code_sha256": "9d245baa65238153afbd19dc0a07be7f84bb0c8b66e07b85e77b96b7b395c8ac"
+  },
+  "manual_records": [
+    {
+      "address": "00C26B57",
+      "size": 4,
+      "hex": "8b4c2404",
+      "mnemonic": "mov",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ecx"
+        },
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ss",
+          "base": "esp",
+          "index": null,
+          "scale": 1,
+          "displacement": 4
+        }
+      ],
+      "operand_access": [
+        2,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        139,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 76,
+      "sib": 36,
+      "disp": 4,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 3,
+        "disp_size": 1,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "ecx"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B5B",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B5C",
+      "size": 2,
+      "hex": "33f6",
+      "mnemonic": "xor",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        },
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        3,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        51,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 246,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi"
+      ],
+      "regs_written": [
+        "eflags",
+        "esi"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF",
+        "RESET_CF",
+        "RESET_OF",
+        "UNDEFINED_AF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B5E",
+      "size": 2,
+      "hex": "3bce",
+      "mnemonic": "cmp",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ecx"
+        },
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        59,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 206,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "ecx",
+        "esi"
+      ],
+      "regs_written": [
+        "eflags"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_AF",
+        "MODIFY_CF",
+        "MODIFY_OF",
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B60",
+      "size": 2,
+      "hex": "7c1e",
+      "mnemonic": "jl",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12741504
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        124,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_OF",
+        "TEST_SF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "Root_transfer": {
+        "relative": 30,
+        "target": "00C26B80",
+        "next": "00C26B62",
+        "return": null,
+        "target_queried": false
+      },
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B62",
+      "size": 3,
+      "hex": "83f902",
+      "mnemonic": "cmp",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ecx"
+        },
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 2
+        }
+      ],
+      "operand_access": [
+        1,
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        131,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 249,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 2,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "ecx"
+      ],
+      "regs_written": [
+        "eflags"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_AF",
+        "MODIFY_CF",
+        "MODIFY_OF",
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B65",
+      "size": 2,
+      "hex": "7e0c",
+      "mnemonic": "jle",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12741491
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        126,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_OF",
+        "TEST_SF",
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "Root_transfer": {
+        "relative": 12,
+        "target": "00C26B73",
+        "next": "00C26B67",
+        "return": null,
+        "target_queried": false
+      },
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B67",
+      "size": 3,
+      "hex": "83f903",
+      "mnemonic": "cmp",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ecx"
+        },
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 3
+        }
+      ],
+      "operand_access": [
+        1,
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        131,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 249,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 2,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "ecx"
+      ],
+      "regs_written": [
+        "eflags"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_AF",
+        "MODIFY_CF",
+        "MODIFY_OF",
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B6A",
+      "size": 2,
+      "hex": "7514",
+      "mnemonic": "jne",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12741504
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        117,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "Root_transfer": {
+        "relative": 20,
+        "target": "00C26B80",
+        "next": "00C26B6C",
+        "return": null,
+        "target_queried": false
+      },
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B6C",
+      "size": 5,
+      "hex": "a1d0dd0901",
+      "mnemonic": "mov",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        },
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 17423824
+        }
+      ],
+      "operand_access": [
+        2,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        161,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 17423824,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 1,
+        "disp_size": 4,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [],
+      "regs_written": [
+        "eax"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B71",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        2
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        94,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esi",
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B72",
+      "size": 1,
+      "hex": "c3",
+      "mnemonic": "ret",
+      "operands": [],
+      "operand_access": [],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        195,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "ret",
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B73",
+      "size": 5,
+      "hex": "a1d0dd0901",
+      "mnemonic": "mov",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        },
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 17423824
+        }
+      ],
+      "operand_access": [
+        2,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        161,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 17423824,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 1,
+        "disp_size": 4,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [],
+      "regs_written": [
+        "eax"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B78",
+      "size": 6,
+      "hex": "890dd0dd0901",
+      "mnemonic": "mov",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 17423824
+        },
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "ecx"
+        }
+      ],
+      "operand_access": [
+        2,
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        137,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 13,
+      "sib": 0,
+      "disp": 17423824,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 2,
+        "disp_size": 4,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "ecx"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B7E",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        2
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        94,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esi",
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B7F",
+      "size": 1,
+      "hex": "c3",
+      "mnemonic": "ret",
+      "operands": [],
+      "operand_access": [],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        195,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "ret",
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B80",
+      "size": 5,
+      "hex": "e80690fdff",
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12581771
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        232,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 4
+      },
+      "regs_read": [
+        "eip",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp",
+        "eip"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "branch_relative",
+        "not64bitmode"
+      ],
+      "Root_transfer": {
+        "relative": -159738,
+        "target": "00BFFB8B",
+        "next": "00C26B85",
+        "return": "00C26B85",
+        "target_queried": false
+      },
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B85",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B86",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B87",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B88",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B89",
+      "size": 1,
+      "hex": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        86,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B8A",
+      "size": 6,
+      "hex": "c70016000000",
+      "mnemonic": "mov",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": "eax",
+          "index": null,
+          "scale": 1,
+          "displacement": 0
+        },
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 22
+        }
+      ],
+      "operand_access": [
+        2,
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        199,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 2,
+        "imm_size": 4
+      },
+      "regs_read": [
+        "eax"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B90",
+      "size": 5,
+      "hex": "e85afbfcff",
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12543727
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        232,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 4
+      },
+      "regs_read": [
+        "eip",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp",
+        "eip"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "branch_relative",
+        "not64bitmode"
+      ],
+      "Root_transfer": {
+        "relative": -197798,
+        "target": "00BF66EF",
+        "next": "00C26B95",
+        "return": "00C26B95",
+        "target_queried": false
+      },
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B95",
+      "size": 3,
+      "hex": "83c414",
+      "mnemonic": "add",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esp"
+        },
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 20
+        }
+      ],
+      "operand_access": [
+        3,
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        131,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 196,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 2,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "eflags",
+        "esp"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_AF",
+        "MODIFY_CF",
+        "MODIFY_OF",
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B98",
+      "size": 3,
+      "hex": "83c8ff",
+      "mnemonic": "or",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        },
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": -1
+        }
+      ],
+      "operand_access": [
+        3,
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        131,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 200,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 2,
+        "imm_size": 1
+      },
+      "regs_read": [
+        "eax"
+      ],
+      "regs_written": [
+        "eax",
+        "eflags"
+      ],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [
+        "eflags"
+      ],
+      "eflag_effects": [
+        "MODIFY_PF",
+        "MODIFY_SF",
+        "MODIFY_ZF",
+        "RESET_CF",
+        "RESET_OF",
+        "UNDEFINED_AF"
+      ],
+      "groups": [],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B9B",
+      "size": 1,
+      "hex": "5e",
+      "mnemonic": "pop",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        2
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        94,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esi",
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    },
+    {
+      "address": "00C26B9C",
+      "size": 1,
+      "hex": "c3",
+      "mnemonic": "ret",
+      "operands": [],
+      "operand_access": [],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        195,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "ret",
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    }
+  ],
+  "cpu_contract": {
+    "scope": "Instruction-success effects only. No source types, services, memory validity, segment bases, ABI preservation or completed runtime path is established.",
+    "initial_state": "Use actual current ESP/SS for the entry load; all prior register, flags, segment-descriptor, memory and provider state remains unknown. Explicit ESP-based address size is 32 bits without establishing implicit stack size.",
+    "local_stack_predicates": "Renew actual current SS.B=1 separately at each PUSH, POP, CALL and RET when using ESP +/-4 formulas. Without that predicate, these formulas are not asserted; the actual SS descriptor selects the implicit stack address size.",
+    "local_branches": [
+      {
+        "cursor": "00C26B60",
+        "predicate": "SF != OF from the immediately preceding ECX-ESI CMP; after the local successful XOR ESI,ESI and no intervening state change, this is signed ECX < 0",
+        "true_cursor": "00C26B80",
+        "false_cursor": "00C26B62"
+      },
+      {
+        "cursor": "00C26B65",
+        "predicate": "ZF==1 or SF!=OF from ECX-2; along the preceding local nonnegative edge, this selects ECX 0..2",
+        "true_cursor": "00C26B73",
+        "false_cursor": "00C26B67"
+      },
+      {
+        "cursor": "00C26B6A",
+        "predicate": "ZF==0 from ECX-3; along the preceding local >2 edge, unequal values select C26B80 and equality selects C26B6C",
+        "true_cursor": "00C26B80",
+        "false_cursor": "00C26B6C"
+      }
+    ],
+    "local_absolute_access_routes": "The local 0..2 edge reads a dword through current DS:0109DDD0 into EAX and writes current ECX to that same encoded offset, then executes POP ESI/RET. The local equality-to-3 edge reads that offset into EAX then POP ESI/RET. These are physical schedules; no cell ownership, global type or service name is inferred.",
+    "first_opaque_boundary": {
+      "call": "00C26B80",
+      "numeric_target": "00BFFB8B",
+      "encoded_return": "00C26B85",
+      "claim": "No destination query. If execution returns to C26B85, renew all actual current state; zero ESI from before the opaque callee is not assumed to survive."
+    },
+    "post_first_call_schedule": "Five PUSH ESI instructions use their actual current ESI and SS stack state. They are not authenticated zero arguments. The following C26B8A store writes immediate22 through current DS:[EAX], with no returned-pointer or provider interpretation. Stack, absolute-cell and indirect-store aliases are not excluded.",
+    "second_opaque_boundary": {
+      "call": "00C26B90",
+      "numeric_target": "00BF66EF",
+      "encoded_return": "00C26B95",
+      "claim": "No destination query. Any actual return state is opaque, including ESP, ESI, EBP, flags, DS/SS descriptors and memory."
+    },
+    "post_second_call_schedule": "C26B95 adds20 to actual current ESP and derives arithmetic flags; it is not proof that five earlier arguments were removed. C26B98 then makes EAX=FFFFFFFF, CF=OF=0, SF=PF=1, ZF=0, AF undefined on successful completion. The subsequent local POP ESI and near RET do not modify EAX or those flags on normal completion; they use renewed current SS/stack predicates and actual stack contents, with an unknown return destination. This is not a proved completed whole-function path.",
+    "preservation_limits": "An earlier PUSH and later POP do not alone prove ESI preservation: unknown callees, stack changes, SS descriptor changes and possible aliasing stores can invalidate that conclusion. Near RET reads its actual current stack destination, without authenticating the original return slot.",
+    "not_queried": [
+      "C26B9D",
+      "numeric destination BFFB8B",
+      "numeric destination BF66EF",
+      "absolute cell 0109DDD0",
+      "dynamic DS:EAX destination",
+      "prototypes/providers/Source/Original/game/audio/runtime"
+    ]
+  },
+  "saved_flow_comparisons": [
+    {
+      "address": "00C26B57",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b5b"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B5B",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b5c"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B5C",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b5e"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B5E",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b60"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B60",
+      "physical_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b62"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B62",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b65"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B65",
+      "physical_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b73"
+        }
+      ],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b67"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b73"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b73"
+        }
+      ],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B67",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b6a"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B6A",
+      "physical_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b6c"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c26b80"
+        }
+      ],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B6C",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b71"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B71",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b72"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B72",
+      "physical_targets": [],
+      "physical_next_or_return_site": null,
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B73",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b78"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B78",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b7e"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B7E",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b7f"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B7F",
+      "physical_targets": [],
+      "physical_next_or_return_site": null,
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B80",
+      "physical_targets": [
+        {
+          "space": "ram",
+          "offset": "00bffb8b"
+        }
+      ],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b85"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bffb8b"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bffb8b"
+        }
+      ],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B85",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b86"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B86",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b87"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B87",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b88"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B88",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b89"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B89",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b8a"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B8A",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b90"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B90",
+      "physical_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf66ef"
+        }
+      ],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b95"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf66ef"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00bf66ef"
+        }
+      ],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B95",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b98"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B98",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b9b"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B9B",
+      "physical_targets": [],
+      "physical_next_or_return_site": {
+        "space": "ram",
+        "offset": "00c26b9c"
+      },
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    },
+    {
+      "address": "00C26B9C",
+      "physical_targets": [],
+      "physical_next_or_return_site": null,
+      "saved_flow_override": "NONE",
+      "default_targets": [],
+      "effective_targets": [],
+      "saved_arrays_differ": false,
+      "default_targets_match_physical": true,
+      "effective_targets_match_physical": true,
+      "default_flow_matches": true,
+      "effective_flow_matches": true,
+      "default_fallthrough_matches": true,
+      "effective_fallthrough_matches": true
+    }
+  ],
+  "Native_commands": 94,
+  "typed_originals": 84,
+  "separate_CLI_observations": 188,
+  "physical_CLI_source_reads": 564,
+  "function_count": 64730,
+  "modification_number": 98,
+  "actual_Git_objects": {
+    "c10e6a0097f669defca49449adfa5f95ee608b27": "commit",
+    "55ea72f0c44e9ed08754b861e7dc785f5abb5479": "tree",
+    "59018533b656aed9c1a4fb513282fcce7b93b792": "tree",
+    "bab9618d9a3c70e1caf15d5d67457d40d7b562d3": "blob",
+    "c0c1fcd3a42e5288063af39eab21c60d438ba793": "tree",
+    "89caaac9d7e5aa77c2fc6072c67abbfdbd132a3f": "blob",
+    "4b53754e33f621a9ef0cf5219425beeda76f0a1b": "blob",
+    "f394be59b3b5610ea2b4146e844a70d0700254d3": "blob",
+    "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+    "a46b97705f35162ba70bfbd4909788d11bb188b4": "blob",
+    "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+    "ba90f058569106f62c72dc9f9d72de205772fc7c": "blob",
+    "0056201883c1594d9267d2fcf4990385461f0857": "blob",
+    "4f73269e25719493aefe1d7f0111b8bbb6b62619": "blob",
+    "99aedbb6c53eb74012024b0ff27a82a2bdaa8a51": "commit",
+    "50121877057301c0dfed328217a032e720a55469": "tree",
+    "135625c1f041cdff6d4a326532204ad1fcd7e7a0": "tree",
+    "f0a0fc6bec6bbc817a52e60078d91945247af9be": "tree",
+    "f2ce52077b2093666b0f0f0b9ee73d376c64d47a": "blob",
+    "cb6173f96d71c3ca5ecd8541570ea40881b3725b": "blob"
+  },
+  "eight_positive_inputs_and_two_outputs": [
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_ENTRY.md",
+      "working_physical": {
+        "length": 5932,
+        "sha256": "12fe728b7975db8d1505b9f3c1c3b95e5cf93af3f156b26f2c9b4fea0a0d4acc"
+      },
+      "LF_blob": {
+        "length": 5932,
+        "sha256": "12fe728b7975db8d1505b9f3c1c3b95e5cf93af3f156b26f2c9b4fea0a0d4acc"
+      },
+      "blob": "bab9618d9a3c70e1caf15d5d67457d40d7b562d3"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_entry.json",
+      "working_physical": {
+        "length": 17651,
+        "sha256": "f5a6938fa81f60613d4f1e110422c2f467da33ada930e9f16f0d8adcace9d251"
+      },
+      "LF_blob": {
+        "length": 17651,
+        "sha256": "f5a6938fa81f60613d4f1e110422c2f467da33ada930e9f16f0d8adcace9d251"
+      },
+      "blob": "89caaac9d7e5aa77c2fc6072c67abbfdbd132a3f"
+    },
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "working_physical": {
+        "length": 2638,
+        "sha256": "0e360d7307fd3c3a8de2f41498fceef5b687858de881ee3d8efdeb05e772bc66"
+      },
+      "LF_blob": {
+        "length": 2638,
+        "sha256": "0e360d7307fd3c3a8de2f41498fceef5b687858de881ee3d8efdeb05e772bc66"
+      },
+      "blob": "4b53754e33f621a9ef0cf5219425beeda76f0a1b"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_entry_primary.json",
+      "working_physical": {
+        "length": 6449,
+        "sha256": "25f152a3a6ffa44ea267004fac0ba015a2fa9b9e43554c01732b7db09b5ee254"
+      },
+      "LF_blob": {
+        "length": 6449,
+        "sha256": "25f152a3a6ffa44ea267004fac0ba015a2fa9b9e43554c01732b7db09b5ee254"
+      },
+      "blob": "f394be59b3b5610ea2b4146e844a70d0700254d3"
+    },
+    {
+      "path": "config/target.json",
+      "working_physical": {
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "LF_blob": {
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/bsp.py",
+      "working_physical": {
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "LF_blob": {
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "working_physical": {
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "LF_blob": {
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "working_physical": {
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "LF_blob": {
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619"
+    },
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_BODY_METADATA.md",
+      "working_physical": {
+        "length": 10757,
+        "sha256": "c9042fb6ebc946661edafcfa8eed0002ec69debb0ff66d366e69845d8d8c0814"
+      },
+      "LF_blob": {
+        "length": 10757,
+        "sha256": "c9042fb6ebc946661edafcfa8eed0002ec69debb0ff66d366e69845d8d8c0814"
+      },
+      "blob": "f2ce52077b2093666b0f0f0b9ee73d376c64d47a"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_body_metadata.json",
+      "working_physical": {
+        "length": 190522,
+        "sha256": "0c4df282716cfee0bbb39de88d6905e6e24c50d1595585c032bf7e33d9952a9f"
+      },
+      "LF_blob": {
+        "length": 190522,
+        "sha256": "0c4df282716cfee0bbb39de88d6905e6e24c50d1595585c032bf7e33d9952a9f"
+      },
+      "blob": "cb6173f96d71c3ca5ecd8541570ea40881b3725b"
+    }
+  ],
+  "Root_gate_copies": 459,
+  "Root_gate_preimages": 448,
+  "all_1205_member_pins_verified": true,
+  "strict_audit": {
+    "archive_reads": 1,
+    "helper_executions": 1,
+    "exclusive_receipt_writes": 1,
+    "denied": [],
+    "unchanged_physical_helper_fully_read": true,
+    "Root_receipt_equals_both_worker_receipts": true,
+    "first_Root_execution_PASS": true
+  },
+  "Root_independent_manual_before_Capstone_import": true,
+  "Root_fresh_Capstone": {
+    "status": "PASS",
+    "manual_count": 28,
+    "actual_count": 28,
+    "Capstone_version": "5.0.7",
+    "actual_Capstone_producer_executed": true,
+    "manual_physically_written_before_Capstone_import": true,
+    "differences": [],
+    "code": {
+      "length": 70,
+      "sha256": "9d245baa65238153afbd19dc0a07be7f84bb0c8b66e07b85e77b96b7b395c8ac"
+    }
+  },
+  "artifact_pins": {
+    "Root_actual_final_review.py": {
+      "length": 6738,
+      "sha256": "383182126cef007c29655d14fb5746200232e1bc0dc0fde3f0c2eb3fcb7d65e3"
+    },
+    "Root_actual_final_review.json": {
+      "length": 2384347,
+      "sha256": "88a65fe0b77cb6342f335d2cd67f27aaca7539178a8d21cece6e16cf71c6d262"
+    },
+    "Root_strict_receipt.json": {
+      "length": 301225,
+      "sha256": "da50b9e2db53827b45c53b361893d94c5e29e4fc1fb3f204c810e5e353aa3959"
+    },
+    "Root_strict.execution.json": {
+      "length": 1186,
+      "sha256": "a0c938a8583cf645c299fe6c0595f8796cc58839abe66d12fccc954fa7d902ad"
+    },
+    "Root_own_manual.json": {
+      "length": 31768,
+      "sha256": "0913a96e1db9ba0d002afc314433d3d61aa803b48676eceeee7597fdd36dc8c7"
+    },
+    "Root_fresh_Capstone.json": {
+      "length": 29746,
+      "sha256": "d699b02e1fbc1d9e4c64d5ce34cdd01e860d5fb762a652a536ceeed14750a0e2"
+    },
+    "Root_cpu_fields.py": {
+      "length": 6354,
+      "sha256": "a88e57b0757cf21bd196e6fe4632978e47d6e4513327f9115549b73a8657b580"
+    },
+    "Root_decoder_derivation.json": {
+      "length": 396,
+      "sha256": "357b82774b788002f7f271d7c1c0c4977161846198a86e3a1fca2959f797bd8d"
+    },
+    "Root_decoder_derivation_attempt02.json": {
+      "length": 758,
+      "sha256": "ec632c9924128ac10e7ec0e4bac838c58dd214367d658b82c5c1eb46fcf9525b"
+    },
+    "Root_final_orchestration_incident.json": {
+      "length": 1031,
+      "sha256": "8b60a9b52b9085b96cfff43de356bb4ae453c1919d998b55f8ad0491f737bfe8"
+    },
+    "Root_worker_originals/replay.py": {
+      "length": 50931,
+      "sha256": "2d801fe2fd14bb2209634172fc560aafc7e51ae0bda080d4644169b92eab7c2d"
+    },
+    "Root_worker_originals/audit_replay.py": {
+      "length": 2984,
+      "sha256": "1d20f2a2aca2843ad207303c32814ffe4be724538a620652b9b48ef6cfe3fbfb"
+    },
+    "Root_worker_originals/proof.zip": {
+      "length": 4021158,
+      "sha256": "0ba9ccbee955d57f456d5f80b930899ed1d2ccf4fa25f4cc60c8e285f1339fa9"
+    }
+  },
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "failures": {
+    "worker": {
+      "worker_Native": 0,
+      "worker_capture_producer": 0,
+      "worker_decoder": 0,
+      "Root_actual_gate": 0,
+      "Root_inspection_command": 0,
+      "Root_shell_bootstrap_before_child": 1,
+      "Root_conversation_schema_display_truncations": 1,
+      "Root_bootstrap_history": {
+        "failures": 1,
+        "exact_command_transcription": "Root_bootstrap_attempt01_command.txt",
+        "tool_exit": 1,
+        "visible_combined_tool_output": "",
+        "original_separate_stdout_stderr_retained": false,
+        "cause": "Nested PowerShell here-string terminator in embedded command text",
+        "postfailure_file_inspection": "Only Root_listing_gate.py existed; no prepin, receipt or gate child execution occurred",
+        "corrected_execution": "Physical Python bootstrap; no nested here-string"
+      },
+      "Root_display_incident": {
+        "exact_command": "@'\nimport pathlib,json\np=pathlib.Path('local/cc12_crt_banner_first_direct_target_body_metadata')\nfor n in ['metadata_capture_manifest.json','metadata_gate.json','cli_observation_index.json']:\n a=json.loads((p/n).read_bytes());print(n,'type',type(a).__name__,'keys',list(a) if isinstance(a,dict) else len(a))\n if n=='metadata_capture_manifest.json':print({k:v for k,v in a.items() if k!='entries'})\n if n=='metadata_gate.json':print('small',{k:v for k,v in a.items() if k not in ['walks','records','units','complete_original_payloads']})\n if n=='cli_observation_index.json':print('first',next(iter(a.items())) if isinstance(a,dict) else a[0])\nprint('topfiles',[x.name for x in p.iterdir() if x.is_file()])\n'@ | python -",
+        "command_exit": 0,
+        "output_budget": 1600,
+        "reported_original_tokens": 1917,
+        "reported_omitted_tokens": 317,
+        "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr retained.",
+        "followup": "Bounded schema reads followed by complete physical-file validation.",
+        "Native_queries": 0
+      },
+      "prior_ENTRY_worker_history": {
+        "Native": 0,
+        "capture_producer": 0,
+        "actual_decoder": 0,
+        "strict_core_replay": 0,
+        "Root_gate": 0,
+        "Root_inspection": 0,
+        "worker_conversation_inspection_truncations": 3,
+        "retention": "Three display truncations remain in conversation and local inspection_history.json; no failed producer execution occurred."
+      },
+      "prior_ENTRY_PRIMARY_history": {
+        "Root_gate": 0,
+        "Root_inspection": 0,
+        "Root_final_review": 0,
+        "Root_strict": 0,
+        "worker": {
+          "Native": 0,
+          "capture_producer": 0,
+          "actual_decoder": 0,
+          "core_and_delivery_replay": 0,
+          "seal": 0,
+          "Root_gate_and_inspection": 0,
+          "conversation_display_truncations": 3
+        }
+      }
+    },
+    "Root_gate": 0,
+    "Root_decoder": 0,
+    "Root_actual_final_review": 0,
+    "Root_strict": 0,
+    "Root_final_orchestration": 1,
+    "Root_final_display_truncations": 0,
+    "Root_derivation_record_annotation_corrections": 1,
+    "Root_derivation_record_annotation_correction": {
+      "original_file": "Root_decoder_derivation.json",
+      "original_length": 396,
+      "original_sha256": "357b82774b788002f7f271d7c1c0c4977161846198a86e3a1fca2959f797bd8d",
+      "incorrect_recorded_count": 16,
+      "actual_AST_call_count": 12,
+      "decoder_reexecuted": false,
+      "physical_field_results_unchanged": true
+    },
+    "Root_final_orchestration_record": {
+      "phase": "Full physical pure-helper inspection before final execution",
+      "failures": 1,
+      "kind": "functions.exec JavaScript parse failure before any nested tool call",
+      "reported_error": "SyntaxError: Unexpected token '}'",
+      "original_stream_provenance": "Combined tool conversation output only; no separate original local stdout/stderr",
+      "command_exact": "const base=\"J:/PROG/battlestations-pacific-decompile-cc12_crt_banner_first_direct_target_body_metadata/local/cc12_crt_banner_first_direct_target_body_metadata/\";\nfor(const [a,b] of [[37800,42000],[42000,46200],[46200,50931]]) text(await tools.exec_command({cmd:`python -c 'from pathlib import Path; s=Path(\"${base}replay.py\").read_text(); print(s[${a}:${b}])'`,workdir:\"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_resume_integrator\",max_output_tokens:1900}));\n}",
+      "correction": "Removed the extra closing brace, then read all remaining physical helper bytes in bounded pieces",
+      "nested_shell_or_child_execution": false,
+      "Native_queries": 0
+    }
+  },
+  "Source_changes": false,
+  "Source_contents_read": false,
+  "new_tests": 0,
+  "builds": 0,
+  "Original_game_audio_runtime_runs": 0,
+  "GPR_writes": 0,
+  "uncertainty": [
+    "callee services or preservation",
+    "absolute cell identity/type/value",
+    "prototype/provider contract",
+    "Source implementation",
+    "ABI compatibility",
+    "build/test/runtime/game equivalence"
+  ],
+  "next_positive_candidates": [
+    "00BFFB8B",
+    "00BF66EF"
+  ]
+}
