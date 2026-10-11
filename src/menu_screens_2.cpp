@@ -1240,6 +1240,134 @@ void session_browser_build_rows_005789c0(const SessionBrowserState& filters, Ses
         - screen.viewport_height_8c));
 }
 
+namespace {
+
+// 004C5E60 widens byte by byte (provisional: the byte-to-unit rule was not traced), then
+// 0052D1E0 = vswprintf(buffer, text, 0x2122). Only the directives this installation's
+// Credits.lua uses are modelled: %c takes the argument, %% emits '%'; any other directive is
+// copied unchanged.
+std::wstring credits_format_percent(const std::string& text) {
+    std::wstring out;
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        const wchar_t c = static_cast<wchar_t>(static_cast<unsigned char>(text[i]));
+        if (c == L'%' && i + 1 < text.size() && (text[i + 1] == 'c' || text[i + 1] == 'C')) {
+            out.push_back(kCreditsPercentArgument);
+            ++i;
+        } else if (c == L'%' && i + 1 < text.size() && text[i + 1] == '%') {
+            out.push_back(L'%');
+            ++i;
+        } else {
+            out.push_back(c);
+        }
+    }
+    return out;
+}
+
+}  // namespace
+
+// 0052EE30, __thiscall(screen), RET; EDI = screen, EBP = the item index, ESI = screen+4Ch,
+// [ESP+1Ch] the item byte offset. Locals: x [ESP+28h], y [ESP+30h], width [ESP+38h], next
+// indent [ESP+40h], row y [ESP+44h], height [ESP+14h], text-clone flag [ESP+13h], image [ESP+20h].
+void credits_enter_0052ee30(CreditsLayoutState& screen, CreditsEnterHost& host) {
+    if (!host.stream54_exists()) host.stream54_construct_00a877d0();    // 0052EE51..0052EECE
+    host.stream50_request_stop_00a86f40();                               // 0052EED6..0052EEDF
+    host.stream54_start_00a867b0(host.stream_name_e18e64());             // 0052EEE4..0052EF41
+    host.stream54_request_fade_in_00a85c20();                            // 0052EF6C..0052EF75
+    host.gui_pause_movie_pages_00aa33a0(1);                              // 0052EF7A..0052EF83
+    host.set_frame_title_005189b0("FE.main_credits");                    // 0052EF88..0052EFCA
+    host.rebuild_command_bar_0054b530(back_only_command_bar());          // 0052EFF5..0052F14B
+    host.widget_set_local_y_00aa78f0(screen.moving_group_1c, 0.0F);      // 0052F211..0052F21A
+    screen.scroll_y_34 = 0.0F;                                           // 0052F229
+    screen.indent_48 = 0.0F;                                             // 0052F22E
+    float y = screen.start_y_40;
+    float width = 0.0F;
+    float next_indent = 0.0F;
+    float row_y = 0.0F;
+    float x = 0.0F;
+    for (const CreditsItem& item : screen.items_4c) {                    // 0052F252..0052F8D6
+        bool text_clone = false;
+        std::uintptr_t image = 0;
+        std::uintptr_t clone = 0;
+        float height = 0.0F;
+        bool placed = false;
+        switch (item.type) {                                             // jump table 0052F910
+        case CreditsItemType::Category:                                  // 0052F2CB
+            clone = host.clone_subtree_00aab4c0(screen.category_template_10, screen.moving_group_1c);
+            host.text_set_00abaed0(clone, item.text);
+            text_clone = true;
+            placed = clone != 0;
+            break;
+        case CreditsItemType::Person:                                    // 0052F326..0052F47B
+            clone = host.clone_subtree_00aab4c0(screen.person_template_14, screen.moving_group_1c);
+            if (!item.text.empty() && item.text.find('%') != std::string::npos) {
+                host.text_set_utf16_00ab6ab0(clone, credits_format_percent(item.text));
+            } else {
+                host.text_set_00abaed0(clone, item.text);
+            }
+            text_clone = true;
+            placed = clone != 0;
+            break;
+        case CreditsItemType::Image:                                     // 0052F480..0052F54D
+            // 0052F4D8..0052F4EE: the clone's parent argument (+1Ch) is pushed before the lookup.
+            image = host.clone_subtree_00aab4c0(
+                host.find_child_00aa7e00(screen.moving_group_1c, item.text + "_Icon"), screen.moving_group_1c);
+            placed = image != 0;
+            break;
+        case CreditsItemType::BlankLine: height = kCreditsBlankLineHeight; break;  // 0052F5D2
+        case CreditsItemType::VerticalGap:                                // 0052F5E5..0052F630
+            height = -0.0F - screen.row_space_44;
+            y = y + item.offset;
+            break;
+        case CreditsItemType::SetIndent: screen.indent_48 = item.offset; break;    // 0052F635..0052F668
+        case CreditsItemType::SameLine:                                   // 0052F66D..0052F684
+            screen.indent_48 = next_indent;
+            y = row_y;
+            break;
+        default: break;                                                   // JA 0052F89B
+        }
+        if (placed) {
+            x = kCreditsStaleX;                                          // 0052F558..0052F560
+            const std::uintptr_t widget = text_clone ? clone : image;
+            host.widget_show_34(widget, true);                           // 0052F566..0052F575 / 0052F689..0052F692
+            host.widget_set_colour_50(widget, item.colour);
+            if (text_clone) {                                            // 0052F5B2..0052F5C9
+                width = static_cast<float>(host.text_pixel_width_114(widget) / kCreditsTextPixels);
+                height = host.text_normalized_height_00ab6bd0(widget);
+            } else {                                                     // 0052F6D5..0052F6F6
+                const auto size = host.group_size_00aa6740(widget);
+                width = size[0];
+                height = size[1];
+            }
+            // 0052F725..0052F7B6: x87, each result rounded to float at 0052F7B6.
+            switch (item.align) {
+            case 0: x = static_cast<float>(static_cast<double>(host.group_origin_x_00aa6750(screen.frame_18)) + screen.indent_48); break;
+            case 1: {
+                const double left = host.group_origin_x_00aa6750(screen.frame_18);
+                x = static_cast<float>(host.group_size_00aa6740(screen.frame_18)[0] + left - width - screen.indent_48);
+                break;
+            }
+            case 2: {
+                const double left = host.group_origin_x_00aa6750(screen.frame_18);
+                x = static_cast<float>(host.group_size_00aa6740(screen.frame_18)[0] * 0.5 + left - width * 0.5);
+                break;
+            }
+            default: break;
+            }
+            // 0052F7C4..0052F885: position (x + Offset, y, -100).
+            host.set_resolved_position_00aa8240(widget, {static_cast<float>(item.offset + static_cast<double>(x)), y,
+                kCreditsItemDepth});
+            screen.widgets_24.push_back(widget);                         // 0052F88F..0052F896, 0052ED20
+        }
+        // 0052F89B..0052F8D2: next indent, row y and the row step (x87, stored to float).
+        next_indent = static_cast<float>(static_cast<double>(width) + screen.indent_48);
+        row_y = static_cast<float>(static_cast<double>(y) - screen.row_space_44);
+        y = static_cast<float>(static_cast<double>(y) + screen.row_space_44 + height);
+    }
+    screen.content_height_38 = y;                                         // 0052F8DB..0052F8E4
+    host.widget_virtual_70(screen.frame_18);                              // 0052F8E1..0052F8EE
+    screen.speed_offset_20 = 0.0F;                                        // 0052F8F0..0052F8FA
+}
+
 // 0052E150, EDI = screen, EBP = index.
 void credits_exit_0052e150(std::vector<std::uintptr_t>& items, CreditsExitHost& host) {
     host.stream54_request_stop_00a86f40();                           // 0052E172..0052E175

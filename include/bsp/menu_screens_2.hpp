@@ -561,6 +561,79 @@ struct CreditsExitHost {
     virtual void item_scalar_delete(std::uintptr_t item) = 0;           // item virtual +4(1)
 };
 
+// Credits Enter 0052EE30 (packet cc13-menus5). One 24h-byte item per Credits_Items row, read by
+// 0052D9C0 (Type, Text, Offset, Color, Align) into the vector at screen+4Ch.
+enum class CreditsItemType : std::int32_t {
+    Category = 0,     // clone of the category template +10h, narrow text
+    Person = 1,       // clone of the person template +14h; a "%" text is swprintf'd with U+2122
+    Image = 2,        // clone of the "<Text>_Icon" child of the moving group +1Ch
+    BlankLine = 3,    // height 00CED1B8 (1/36)
+    VerticalGap = 4,  // y += Offset (height -0.0 - RowSpace cancels the row step)
+    SetIndent = 5,    // +48h = Offset
+    SameLine = 6,     // next item continues the previous row: +48h = width + indent, y = row y
+};
+enum class CreditsAlign : std::int32_t { Left = 0, Right = 1, Centre = 2 };
+
+struct CreditsItem {
+    CreditsItemType type{CreditsItemType::Person};  // +00h, default 1
+    std::string text;                                // +04h
+    GuiColour colour{1.0F, 1.0F, 1.0F, 1.0F};        // +0Ch, static 00E18E50 (guard 00E18E60)
+    float offset{};                                  // +1Ch
+    std::int32_t align{2};                           // +20h; values above 2 keep x = 00CE7638
+};
+
+inline constexpr float kCreditsBlankLineHeight = 0.027777778F;  // 00CED1B8
+inline constexpr float kCreditsStaleX = 0.05F;                  // 00CE7638, x when Align > 2
+inline constexpr double kCreditsTextPixels = 960.0;             // 00CEC380, widget+114h / 960
+inline constexpr float kCreditsItemDepth = -100.0F;             // 00CE65D8, position z
+inline constexpr wchar_t kCreditsPercentArgument = 0x2122;      // TRADE MARK SIGN passed to vswprintf
+
+struct CreditsLayoutState {
+    std::uintptr_t category_template_10{};  // +10h
+    std::uintptr_t person_template_14{};    // +14h
+    std::uintptr_t frame_18{};              // +18h, origin/size reference and vtable +70h after layout
+    std::uintptr_t moving_group_1c{};       // +1Ch, parent of every clone, scrolled by the update
+    float speed_offset_20{};                // +20h
+    std::vector<std::uintptr_t> widgets_24; // +24h (begin +28h), deleted by the exit 0052E150
+    float scroll_y_34{};                    // +34h
+    float content_height_38{};              // +38h
+    float start_y_40{kCreditsField40};      // +40h ("StartY")
+    float row_space_44{kCreditsField44};    // +44h ("RowSpace")
+    float indent_48{};                      // +48h
+    std::vector<CreditsItem> items_4c;      // +4Ch
+};
+
+struct CreditsEnterHost {
+    virtual ~CreditsEnterHost() = default;
+    // Front-end manager *(00E198AC).
+    virtual bool stream54_exists() = 0;
+    virtual void stream54_construct_00a877d0() = 0;   // operator new(54h), name = copy of manager+48h
+    virtual void stream50_request_stop_00a86f40() = 0;
+    virtual void stream54_start_00a867b0(std::string_view name) = 0;
+    virtual std::string stream_name_e18e64() = 0;     // .data string 00E18E64
+    virtual void stream54_request_fade_in_00a85c20() = 0;
+    virtual void gui_pause_movie_pages_00aa33a0(std::int32_t arg) = 0;  // ECX = 004C12B0()
+    virtual void set_frame_title_005189b0(std::string_view title) = 0;
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    // Widgets.
+    virtual void widget_set_local_y_00aa78f0(std::uintptr_t widget, float y) = 0;
+    virtual std::uintptr_t clone_subtree_00aab4c0(std::uintptr_t widget, std::uintptr_t parent) = 0;
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;
+    virtual void text_set_00abaed0(std::uintptr_t widget, const std::string& text) = 0;
+    virtual void text_set_utf16_00ab6ab0(std::uintptr_t widget, const std::wstring& text) = 0;
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual void widget_set_colour_50(std::uintptr_t widget, const GuiColour& colour) = 0;
+    virtual float text_pixel_width_114(std::uintptr_t widget) = 0;              // float at widget+114h
+    virtual float text_normalized_height_00ab6bd0(std::uintptr_t widget) = 0;
+    virtual std::array<float, 2> group_size_00aa6740(std::uintptr_t widget) = 0;
+    virtual float group_origin_x_00aa6750(std::uintptr_t widget) = 0;          // first float of the result
+    virtual void set_resolved_position_00aa8240(std::uintptr_t widget, const std::array<float, 3>& position) = 0;
+    virtual void widget_virtual_70(std::uintptr_t widget) = 0;
+};
+
+// 0052EE30: slot +18h of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BD92; frame 89Ch.
+void credits_enter_0052ee30(CreditsLayoutState& screen, CreditsEnterHost& host);
+
 // 0052E150: slot +1Ch of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BC48.
 // `items` is the pointer vector +28h..+2Ch; entries are deleted and nulled in place.
 void credits_exit_0052e150(std::vector<std::uintptr_t>& items, CreditsExitHost& host);

@@ -334,3 +334,29 @@ Uncertainty: the record fields +30h, +34h, +90h/+94h and the registry +B8h/+BCh 
 anchor; 007701F0's server list is unexamined beyond the copy; the x87 ratio in 00576BE0 is modelled
 in double (the original keeps an 80-bit intermediate); `std::sort` stands in for the introsort
 00574A50, which agrees except for the order of equal keys.
+
+## Credits Enter (cc13-menus5)
+
+`credits_enter_0052ee30` (slot +18h of vtable 00CED200, `__thiscall(screen)`, frame 89Ch, SEH
+00C6BD92), reconstructed and build-tested; evidence is the listing 0052EE30..0052F90D, read whole.
+
+- Music: creates the manager's +54h stream when it is null (operator new 54h, 00A877D0 with a copy of
+  manager+48h), stops +50h, starts +54h with the string at 00E18E64 and fades it in; then
+  00AA33A0(1) on the GUI manager, title `FE.main_credits`, command bar (A3h, `globals.back`, 2).
+- Item rows (24h bytes, 0052D9C0): +00h Type (default 1), +04h Text, +0Ch Color (default white),
+  +1Ch Offset, +20h Align (default 2). Types: 0 category clone (+10h), 1 person clone (+14h), 2 the
+  `<Text>_Icon` child of +1Ch cloned, 3 blank line (height 1/36), 4 vertical gap (y += Offset, height
+  -0.0 - RowSpace), 5 indent +48h = Offset, 6 same line (+48h = previous width + indent, y = row y).
+- Person texts containing `%` are widened and passed as a format to vswprintf (0052D1E0) with 2122h;
+  this installation's Credits.lua uses it twice, in `"WBIE LOGO, WB SHIELD: %c & (c) Warner Bros.
+  Entertainment Inc."`, so `%c` becomes the TRADE MARK SIGN.
+- Placement: x by Align from the +18h frame (00AA6750 origin, 00AA6740 size): left + indent, right
+  (origin + width - item width - indent), centre (origin + width/2 - item width/2); other Align
+  values leave x at 0.05 (00CE7638). Position (x + Offset, y, -100). Text width = widget+114h / 960.
+  Row step y += RowSpace + height. Screen +40h is StartY and +44h RowSpace (the constructor's 0.5
+  and 1/72 are defaults that Register overrides from Credits.lua, not re-read here).
+- After the loop +38h = y (the update's scroll limit), frame +18h vtable +70h, +20h = 0.
+
+Uncertainty: 004C5E60's narrow-to-wide rule was not traced (modelled as byte zero-extension); the
+`%` formatter models only `%c` and `%%`; +18h is named "frame" by use only (Register binds
+`clipbox_Clipbox` and `moving_Group`; which lands at +18h was not checked).
