@@ -374,3 +374,135 @@ Commits after d425f766b: 8f15e962d (plane-spawn camera) and the segment 22 commi
 passing. Segment 22 next steps, by value: the chat update 005D18A0 with the overlay timers and
 005D0C60's row layout; the error dialog enter/update and the full code-to-key table in 005D24F0;
 the pause-multi update 005D3F20; then the lobby block (coordinate with the lobby lane).
+
+## Powerup manager enter, exit, update and the two list selectors (cc13-hud2)
+
+Reconstructed and build-tested, not wired into any host, not run in `bsp_game`: enter 0061B850
+(`hud_powerup_enter_0061b850`, vtable 00CF4DEC +18h, `__thiscall(screen)`, SEH 00C77F88), exit
+006169F0 (`hud_powerup_exit_006169f0`, +1Ch, no SEH frame), update 0061BEA0
+(`hud_powerup_update_0061bea0`, +20h, `__thiscall(screen, float dt)`, RET 4, SEH 00C7803E; the
+exported pseudocode calls it `__fastcall` and drops the float), the first list's carousel 00619C50
+(`hud_powerup_carousel_update_00619c50`, `__thiscall(screen+100h, float dt)`, RET 4) and the second
+list's selector 0061A6C0 (`hud_powerup_update_selection_0061a6c0`, `__thiscall(screen)`, RET).
+Evidence: the five listings read whole (`local/h2_m4dis.py`), constants from the PE on disk. The
+cleared item scope was reconstruct-only, no wiring (cc9, 2026-10-11).
+
+Object map. `*(00E198C4)` is the HUD manager; its +BCh is the support-manager screen (slot 4Eh,
+vtable 00CF6B44, "SM" below), +C0h this screen (slot 4Fh; the routines read their own lists and
+widgets through the global as often as through ECX, and the reconstruction keeps the two paths
+apart), +C4h slot 50h, +C8h slot 51h, +A8h slot 49h. A list entry's definition is entry+4; the
+definition has the name NativeString at +0, kind at +8 (1 = unit-class powerup), display text at
++14h, category bits at +88h (bit 0 `sipp_Icon` +C4h, 1 `szub_Icon` +C8h, 2 `plane_Icon` +CCh,
+3 `command_Icon` +D0h, each shown when its bit is clear) and one 38h-byte row per team at
++0Ch + team*38h (team = player record +28h): +0 text source, +1Ch icon name, +20h unit class
+(key +70h, texture +D4h).
+
+- Enter: slot 51h 00529A30; SM +1C4h placed at screen+14h, shown and sized (0.2987, 0.1984)
+  through virtual +58h; SM +12Ch/+130h/+134h hidden, +1B0h/+178h shown, +1C0h/+1C8h hidden;
+  00652A60, 0065D220, the open sound; 00614320; text_Text hidden twice around +20Ch = 0 and
+  +230h = 0.0; the info page at (+F4h - 0.30000001192092896, +F8h, +FCh) (FSUB of the double
+  00CE3DC8, float store); +248h = right_circle_Icon's resolved position; +110h = screen+8, the
+  carousel reset; 0061B0F0. A non-empty first list (+144h) sets mode +20h = 0 and the label from
+  its first entry's team row; an empty one sets mode 1, clears +1ECh/+1F0h/+1F4h, takes the
+  label from the second list (+184h, through HUD+C0h) and hides +48h..+54h. Both set
+  +254h = width(+114h)/960 and +234h = +254h + 0.013, +238h = tile_Icon extent y. Then +1E4h = 0,
+  +1E8h = 0.0, +1A4h emptied, PUMPERMANENT if PUM1STUSE was already shown else PUM1STUSE, and
+  slot 51h 00528F70.
+- Exit: slot 50h's +64h hidden, 0054E610, both pages' widgets restored (SM +F0h/+F4h/+1CCh and
+  +12Ch/+130h/+134h shown, HUD+C0h +B8h hidden), the close sound, right_circle_Icon moved to
+  empty_circle_Icon's position, the info page at +F4h minus 0.1 when SM's 0066FFA0 returns true,
+  else minus 0.25; deleting destructors on +28h..+34h and +58h..+64h (pointers kept), both trees
+  (+1B4h, +1CCh) erased and reset, 0065D220, slot 51h 00529060 and a tail jump to 00529A30.
+- Update: returns while the active hint is blocking (00690B00 on a second copy of the name) or
+  either page's byte +121h is set; tile_Icon sized (+230h*+234h, +238h); right_circle_Icon at
+  (tile extent x + +248h, +24Ch, +250h); text_Text at x = circle x - +254h*0.5 (y and z kept);
+  slot 50h's +64h shown with `ingame.pum_annoying_message_pc`/`_xbox` (byte 00F88A30); SM arrow
+  pairs +100h/+104h and +F8h/+FCh shown only when a list has more than four entries and is not
+  scrolling; PUMPERMANENT re-raised unless it is the active hint (00449AF0, case-insensitive) or
+  the active hint blocks. A first-list size change resets the carousel (+204h = size,
+  +208h = 1.0, +20Ch = 1); while +20Ch is set only 00611AE0 and 00617470 run. Otherwise
+  00611770, 0061AFF0, 00612B70, the 118h/119h actions switch between the lists (left/right
+  sound), 00619AE0 always runs, mode 0 runs 00619C50 and mode 1 0061A6C0, and the use input
+  (input-owner record bytes +0Bh or +10h) calls 008EB6E0 with the selected first-list entry.
+- 00619C50: while +13Fh is set only 006113A0(dt) and 00617470; otherwise 11Ah/11Bh step the
+  selection (wrap only when more than four entries; the slot index 0..3 moves first, then
+  006179D0 scrolls), unit-to-unit sound, the old slot widget hidden, 00618980. Then SM +178h
+  text = the selected definition +14h, and the shared tail: kind 1 shows SM +F4h/+1CCh, hides
+  +F0h and HUD+C0h +B8h, sets SM +158h's state 3 texture from the team row's icon name (two
+  resolves through 009552E0/00443490, state 0 and 3 at alpha 1.0) and the command icon's state
+  from the SM+42Ch cache; other kinds show +F0h/+B8h, `radar_sweep` shows radar_Icon, the rest
+  show color_Icon and the category icons.
+- 0061A6C0: the same over +184h with +1F0h (slot), +1ECh (scroll offset) and +1F4h (selection),
+  blocked by +1F9h or +1E4h; its label update widens +254h only when the new text is wider.
+
+The two carousels differ in the cache test: 00619C50 adds a state when the class key is absent
+(00611C50, iterator == end), 0061A6C0 adds one when the key is present and the class texture is
+non-null (the compare at 0061AC61 jumps away when the node equals the head), so the second list
+re-adds a state over an existing key and never fills an empty one. Recorded as the image does it.
+
+### Every write to the support-manager screen object
+
+No routine of the five writes a support-manager gameplay field (purchase, spawn, stock or cursor
+state). The direct stores into the SM object are the icon-state cache; everything else is a widget
+call or a callee with ECX = SM. Scan: `local/h2_smscan.py` (register taint from `[00E198C4]+BCh`,
+including `ADD reg, imm` field addresses), every hit checked in the listing; the helper callees
+(00614320, 0061B0F0, 00617470, 006113A0, 006179D0, 00618980, 006191A0, 00619AE0, 00611AE0,
+00611770, 0061AFF0, 00612B70, 00682BD0) were scanned the same way.
+
+| Instruction | Routine | SM field | Value source |
+| --- | --- | --- | --- |
+| 0061A0FC / 0061A101 | 00619C50 | int map +42Ch (00614060 find, 006171B0 subscript), key `*(class+70h)` | `BSP_GuiIcon_AddState(SM+1CCh, class+D4h, {0,0,1,1})`; only when the key is absent |
+| 0061ACD1 / 0061ACD6 | 0061A6C0 | the same map | the same, only when the key is present and class+D4h is non-null |
+| 0061B3C2 / 0061B3C7 (callee 0061B0F0 from enter 0061BAD5) | RebuildLists | the same map, key `*(row+20h)+70h` | `BSP_GuiIcon_AddState(SM+1CCh, class+D4h, {0,0,1,1})`; only when the key is absent (0061B355) |
+| 0061A172, 0061AD48 | both | the same map, read through 006171B0 | reached only when the key is present, so no node is inserted |
+| 0061B8FF -> 00652A60 | enter | +7Ch..+88h, +ACh..+B8h | deleting destructor (vtable +4, arg 1) on each non-null pointer; the pointers are not cleared |
+| 0061B910, 00616C3D -> 0065D220 | enter, exit | per slot i = 0..3: +7Ch, +8Ch, +9Ch, +ACh, +BCh, +CCh, +DCh, +108h, +118h (+4i) | widget pointers from 00AAB4C0 clones and 00AA7E00 lookups, then visibility (+34h) and x positions (+44h) using SM+2A4h/+2A8h |
+| 00616B5A -> 0066FFA0 | exit | +47Ch, +479h | only in effective game mode 8: +47Ch = `*(00E188A8)+648h` when it changed, then 0066FB00, 00668770 when +34Ch is 0, 0065A2B0; +479h = (+34Ch != 0 or +1F4h != 0). 00668770 rebuilds the SM's +1ECh list (+1F4h = 0 first) and writes a display entity's pose (+CCh..+108h, bytes +C8h/+10Ch); those callees belong to the support-manager lane and were not enumerated further |
+
+Widget-only calls on SM members (no SM field written): visibility (virtual +34h) on +F0h, +F4h,
++12Ch, +130h, +134h, +178h, +1B0h, +1C0h, +1C4h, +1C8h, +1CCh and, through 00652B00/30 and
+00652AA0/D0, +100h/+104h and +F8h/+FCh; size (virtual +58h) and position (00AA8240) on +1C4h;
+text (00ABAED0) on +178h; 00AB2690 and virtual +88h on +158h; 00AB64C0 and virtual +88h on
++1CCh; the four sounds read +1Ch/+24h/+28h/+2Ch. The pushes `push ecx` that the taint scan flags
+before `fstp [esp]` at 00619FF8, 0061A01D, 0061A045, 0061A1C1, 0061ABC5, 0061ABEA, 0061AC12 and
+0061AD95 reserve a float slot; the widget pointer is not an argument.
+
+The one gameplay-effective call is not on the SM object: 0061C772 calls 008EB6E0 with
+ECX = `*(00F88C30)` (the power-up manager that 008E9AF0 `BSP_PowerUpManager_CollectActive` and
+008EB110 `BSP_PowerUpManager_Update` belong to) and the selected first-list entry; 008EB6E0
+picks a target (008E45D0) and applies the power-up for player `*(00E188A8)+18ECh` (008EADA0).
+The reconstruction exposes it as `powerup_use_008eb6e0`; nothing calls it.
+
+Uncertainty: the double-to-float order of the x87 chains follows the listing, but the C++ uses
+double intermediates where the image used 80-bit ones (each chain here is one or two operations
+before a float store). The helpers 00611AE0, 00611770, 00612B70, 0061AFF0, 00619AE0, 006191A0,
+006179D0, 00617470, 00682BD0 and 00614320 are host calls, not reconstructed.
+
+## Handoff (cc13-hud2, 2026-10-11)
+
+Branch `agent/cc13-hud2` (agent/cc13-hud1 merged first). Reconstructed and build-tested, none
+wired or run in `bsp_game`: the powerup-manager enter 0061B850, exit 006169F0, update 0061BEA0,
+carousel 00619C50 and second-list selector 0061A6C0 here, and the formation Update 0053A8E0 in
+docs/CC13_MENU_SCREENS_2.md. 17 ledger names (11 new: 00619AE0, 0061AFF0, 00652A60, 0065D220,
+00652B00/30, 00652AA0/D0, 00AA1FA0, 00533D30, 00535EE0; the rest refreshed) and 6 reconstruction
+records, all applied in Ghidra (prior values in the worktree's
+`local/ghidra-annotations-*.json`); 135 + 73 report rows added, `tools/verify_report_calls.py`
+0 failed on both reports. No gameplay RNG is drawn.
+
+The two conditions cc9 set are met in the doc sections: the support-manager write table (no
+gameplay field written; the SM+42Ch icon cache, 00652A60's deletes, 0065D220's widget rebinds and
+0066FFA0's +47Ch/+479h are the only SM stores) and the 0077D600 table (two calls, Leave and follow
+on the leader, complete by byte scan). Two gameplay effects outside those objects are flagged for
+whoever wires these: 008EB6E0 (power-up use, from 0061C772) and the formation record write at
+0053AF37/0053AF3C with its 0077A080/0077C880 replication.
+
+Scripts in the worktree's `local/` (`h2_` prefix): `h2_smscan.py` (taint scan of
+`[00E198C4]+BCh` uses), `h2_m4dis.py` (listing; a bare address runs to the next function),
+`h2_rel32.py` (all E8/E9 and absolute references), `h2_consts.py`, `h2_rows.py <report> <spec>
+<callees>`, `h2_ln.py` (ledger names of a range), `h2_ledger.py` (this packet's records).
+
+Open, by value: the helpers left as host calls (00611AE0 first-list intro, 00611770, 00612B70,
+006113A0 scroll animation, 006179D0/006191A0 scroll starts, 00617470, 00619AE0, 0061AFF0,
+00614320, 0061B0F0); the formation screen's 00536A90 order labels, 00535F50 drag press, 00534C00,
+00533920/00533830; then the cc13-hud1 list above (segment 79 Grid containers, segment 22 chat
+update).
