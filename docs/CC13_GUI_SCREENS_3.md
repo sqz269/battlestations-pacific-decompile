@@ -388,3 +388,80 @@ Next, in order: `004D9830` (tagged as a scalar deleting destructor, but a game m
 with 1 by the hints code; 241 instructions, scene-node visibility through 004BDA70/00B6DA70);
 the HintSystem Lua wrappers in segment 56 (for cc9 to decide); the idle-camera shot filler; the
 remaining uncited segment-10 functions, after checking each against cc9/cc12 docs again.
+## HintSystem Lua wrappers, GUI layer visibility and the idle-camera shot loader (cc13-hints1, reconstructed, build-tested)
+
+Lease `cc13_hints1` (004D0920-004E7DB0, 008D1F50-008D2900, 0088CEC0-0088CF80) plus small leases
+for 008D2900-008D2D20, 00551440-00551A00 and five helper addresses. cc9 cleared the wrappers as
+reconstruct-only: nothing here touches `src/mission_lua_host.cpp` or any `game_hosts_*` file, and
+none of it is wired or run in `bsp_game`.
+
+### The eight HintSystem bindings
+
+Rows of the mission binding table 00E0B7B8 (the names are genuine Lua globals; the host list is
+`src/mission_lua_host.cpp`). Every handler is `__fastcall(lua_State* /*ECX*/)` returning the
+00B66400 result count; each first builds a dead `"luaMW_<Name> failed:"` NativeString and a
+function-static `"luakod"` string. Argument 0 is the index pushed first before 00B677E0 (EBP,
+zeroed in the prologue); no handler tests that the argument exists or is a string.
+
+| Lua name | Handler | Arguments | Work | Results |
+| --- | --- | --- | --- | --- |
+| ShowHint | 008D1F50 | name | Skipped while game+624h (termination reason, docs/GAME_SESSION_POLLS.md) is non-zero (008D2033/008D2041). Else `00690FD0 TriggerHint(name, 1)` (008D2086) and `00770870` on game+1EF0h (008D2104). | none |
+| ShowHintForced | 008D2190 | name | `00692FB0` (tracker+4 = 1, then TriggerHint(name, 1)) at 008D22B2; no +624h gate. | none |
+| AddStoredHint | 008D24F0 | name | `00690B20` at 008D2612. | none |
+| RemoveStoredHint | 008D2340 | name | `00690C30` at 008D2462. | none |
+| HideHint | 0088CEC0 | none | `0054E610` dismiss on `*(*(00E198C4)+A8h)` (0088CFB2). | none |
+| IsHintActive | 008D2850 | optional name | No argument (00B663F0 == 0, 008D2939): when the active name 0068E5B0 is non-empty (00449AF0 at 008D2974), a table `{HintID = name, duration = 0054D3C0 seconds left}` (00B67930, 008D2A03, 008D2A5F). With a name: when it equals the active name case-insensitively (00435C40 at 008D2AE6), the seconds left as an integer (008D2B5D). | table, integer or nothing |
+| IsHintCritical | 008D26A0 | name | `00690B00` (definition +114h; 0 for an empty name) at 008D27C0. | boolean (008D27CA) |
+| IsHintStored | 008D2BB0 | name | `0068E600` (profile seen set game+650h, then the mission list tracker+48h) at 008D2CD0. | boolean (008D2CDA) |
+
+The second TriggerHint argument is 1 from every Lua path: it is the "requested" flag that lets a
+hint through when the hints setting 00F8898C is 1. ShowHintForced additionally sets tracker+4,
+which bypasses setting 0 for one trigger. `00690B00` keeps its earlier name
+`BSP_AwardTracker_IsActiveHintBlocking`, but it tests the definition of the name it is given, so
+IsHintCritical asks about any hint, not only the active one; for a name that is not defined the
+image reads +114h of whatever 005FFB20 returns (not checked here).
+
+`00770870 BSP_Session_SendHintMessage` (provisional): only in session mode 1 (host,
+docs/SESSION_MESSAGE_DISPATCH.md) it builds message 22h (the "34" of
+`src/native_session_message_tags_33_34.cpp`) with the hint name through `0076F9E0` and sends it
+with `00784790(msg, 0)`. So a host's ShowHint is replicated to clients; the receive side was not
+read. A future host binding should keep this call behind the session mode, not drop it.
+
+### 004D9830 `BSP_Game_SetGuiLayersVisible` (tag corrected by ledger name)
+
+`__thiscall(game, char visible)`, `RET 4`, listing 004D9830..004D9B30. The `cg_scalar_deleting_dtor`
+tag is wrong: there is no vtable reference and the three callers call it directly. It stores
+game+61Eh (004D985C). With 0 it walks every layer of the GuiManager (004C12B0, map at +8; nodes from
+`*(*(value+1Ch)+0Ch)` chained through node+3Ch) and, for each node not named `_Console` (00CE7AA0)
+or `_Fps` (00CE7A98), saves node+ACh into the map game+628h (004D69D0) and calls
+`00B6DA70(0.0, 0)`. With 1 it restores every saved factor (no recursion) and clears the map.
+Callers: `004DC020` (now `BSP_Game_SaveHiresScreenshot`, provisional: hides, renders
+`c:\hires_%03i.bmp` through 00B708E0, restores with the saved +61Eh) and the hints screen
+(0054E674, 0054EA52) with 1. Hiding twice overwrites the saved factors with zeros; the image does
+the same. The hints host method was renamed `game_set_gui_layers_visible_004d9830`.
+
+### 00551440 `BSP_IdleCamera_LoadShotPairs`: the filler of 00E19328 / 00E193A8
+
+A byte scan of both arrays (`local/hi1_absscan.py 00E19320 00E19440`, absolute dwords and disp32)
+finds only the idle camera screen (0054EFA0 region, 0054F3E0, 0054F900, 00550410 readers), the two
+static initialisers (00CCB0AF, 00CDA7DA, `PUSH` of the array bases) and 00551440. Its only caller
+is the scene header applier `004F1D70` at 004F2218 with the result of `008F2260("IdleCameraPos")`
+(00CEA420), so the shots come from the mission scene file, not from Lua. 004F1D70 belongs to cc9's
+mission-load lane and was not touched.
+
+`__fastcall(property node or null)`, `RET`, listing 00551440..00551AF4. Both are arrays of eight
+`std::vector<IdleCameraShot>` (10h-byte vectors, 1Ch-byte shots). It empties all sixteen (00550E70),
+returns unless the node exists and its kind +4 is 6, then reads the eight mode tables `Capture1`,
+`Capture2`, `Capture3`, `Capture4`, `Duel`, `Escort`, `Siege`, `Competitive` (mode 0 to 7, the index
+Enter takes from 004BCA50). Per mode, the `Allied` table fills 00E19328[mode] and the `Japanese` table
+00E193A8[mode]: `Pair01`..`Pair04` (the loop stops at 4, 0055183A / 00551AB3), each `{From, To}`
+(eye, target). An empty or missing `From` ends that side; otherwise a shot is pushed (00551390) with
+the eye name; an empty `To` then also ends the side and leaves that shot with no target and +18h
+unset; otherwise the target is stored and +18h set to 1. The pushed temporary has only its two
+strings zeroed, so +00h, +04h and +18h start as stack garbage in the image (the reconstruction
+zeroes them; Enter rewrites all three). None of the lookups below the root are null-checked.
+
+Helpers named: `00551390` push_back, `00550390` shot destructor, `00550E70` erase,
+`0076F9E0` message 34 string constructor.
+
+Report: `reports/cc13_gui5.json` now 482 call rows, `tools/verify_report_calls.py` 0 failed.

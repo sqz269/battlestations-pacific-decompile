@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstdio>
 
 namespace bsp {
 namespace {
@@ -200,7 +201,7 @@ void hud_hints_dismiss_0054e610(HudHintsState& screen, HudHintsHost& host) {
         if (host.game_cinematic_hidden_634()) {
             host.game_set_cinematic_004cd0f0(false, false, true);       // 0054E657
             host.input_context_level_00a933f0(kHudHintsInputContext, 0);  // 0054E667
-            host.game_004d9830(true);                                   // 0054E674
+            host.game_set_gui_layers_visible_004d9830(true);                                   // 0054E674
         }
     } else if (host.widget_shown_38(screen.normal_group_24)) {
         host.widget_show_34(screen.normal_group_24, false);
@@ -259,7 +260,7 @@ void hud_hints_update_0054e6b0(HudHintsState& screen, HudHintsHost& host, float 
             host.game_set_cinematic_004cd0f0(false, false, true);           // 0054EA28
             host.game_hint_pause_004d94f0(true);                            // 0054EA35
             host.input_context_level_00a933f0(kHudHintsInputContext, 0);    // 0054EA45
-            host.game_004d9830(true);                                       // 0054EA52
+            host.game_set_gui_layers_visible_004d9830(true);                                       // 0054EA52
             screen.pausing_08 = false;
             screen.byte_09 = false;
             host.widget_show_34(screen.pause_group_20, false);
@@ -741,6 +742,129 @@ void game_set_system_pause_004d95f0(GamePauseState& game, GamePauseHost& host, b
     }
     const std::vector<std::int32_t> kept(kSystemPauseKeptScreens.begin(), kSystemPauseKeptScreens.end());
     gui_park_screens_004d6480(host, kept, paused);
+}
+
+// 00551440..00551AF4, read whole from the listing. Per mode: the allied pairs, then (also when
+// an allied pair breaks the loop, 0055184B) the japanese pairs.
+void idle_camera_load_shots_00551440(IdleCameraShotArray& allied_e19328, IdleCameraShotArray& japanese_e193a8,
+                                     const IdleCameraPosTable* root, std::int32_t root_kind) {
+    // 0055146B..005514F8: every vector of both arrays is emptied first (00550E70 erase).
+    for (std::size_t mode = 0; mode < kIdleCameraModeKeys.size(); ++mode) {
+        allied_e19328[mode].clear();
+        japanese_e193a8[mode].clear();
+    }
+    if (root == nullptr || root_kind != 6) return;  // 005514FD..00551503
+    // 00551510..00551590: all eight mode tables are looked up before the loop.
+    std::array<const IdleCameraPosTable*, 8> modes{};
+    for (std::size_t mode = 0; mode < modes.size(); ++mode) modes[mode] = root->table(kIdleCameraModeKeys[mode]);
+
+    const auto load_side = [](std::vector<IdleCameraShot>& shots, const IdleCameraPosTable* side) {
+        for (std::int32_t pair = 1; pair <= kIdleCameraMaxPairs; ++pair) {
+            char key[16];
+            std::snprintf(key, sizeof key, "Pair%02d", pair);           // 0055160D / 00551880 sprintf
+            const IdleCameraPosTable* entry = side->table(key);
+            const char* from = entry->string(kIdleCameraFromKey);
+            if (from == nullptr || *from == '\0') return;               // 00551642..0055164D
+            // 00551653..0055169A: a temporary with only its two strings (+08h..+14h) zeroed is
+            // pushed (00551390); +00h, +04h and +18h are uninitialised stack in the image.
+            shots.push_back(IdleCameraShot{});
+            shots.back().eye_name = from;
+            const char* to = entry->string(kIdleCameraToKey);           // 00551780..0055179E
+            if (to == nullptr || *to == '\0') return;                   // the shot keeps eye only
+            shots.back().target_name = to;
+            shots.back().enabled = true;                                // 0055183D MOV [ESI+18h],1
+        }
+    };
+    for (std::size_t mode = 0; mode < modes.size(); ++mode) {
+        load_side(allied_e19328[mode], modes[mode]->table(kIdleCameraAlliedKey));      // 005515E7
+        load_side(japanese_e193a8[mode], modes[mode]->table(kIdleCameraJapaneseKey));  // 00551854
+    }
+}
+
+// 004D9830..004D9B30, read from the listing. Hiding stores each node's factor through
+// operator[] (004D9AEE), so hiding twice overwrites the saved factors with the zeros of the
+// first hide; the image has the same property (004DC020 restores with the saved +61Eh value).
+void game_set_gui_layers_visible_004d9830(GuiLayerVisibilityState& game, GuiLayerVisibilityHost& host,
+                                          bool visible) {
+    game.gui_visible_61e = visible;  // 004D985C
+    if (visible) {
+        // 004D9890..004D98C6: every saved node gets its factor back (FLD [entry+10h]), no recursion.
+        for (const auto& [node, factor] : game.saved_628) host.node_set_visibility_00b6da70(node, factor, false);
+        game.saved_628.clear();  // 004D98CB..004D9919, the inlined tree clear
+        return;
+    }
+    // 004D992E..004D9B1A: all layer nodes except "_Console" and "_Fps" (case-insensitive).
+    for (const std::uintptr_t node : host.gui_layer_nodes()) {
+        const std::string name = host.node_name_00b6d800(node);
+        if (equals_insensitive(name, kGuiKeepConsoleNode) || equals_insensitive(name, kGuiKeepFpsNode)) continue;
+        game.saved_628[node] = host.node_visibility_ac(node);  // 004D9AD5..004D9B02
+        host.node_set_visibility_00b6da70(node, 0.0F, false);  // 004D9AF3 FLDZ, 004D9B06
+    }
+}
+
+// ---------------------------------------------------------------------------
+// HintSystem mission-Lua wrappers. Argument 0 is the index pushed first before 00B677E0 (EBP,
+// zeroed in each prologue). A missing argument reaches 00B662B0 as nil; the image does not test
+// for it, and the host's argument_string decides what that yields.
+// ---------------------------------------------------------------------------
+
+std::int32_t lua_show_hint_008d1f50(HintLuaHost& host) {
+    // 008D202D..008D2041: CMP [game+624h], 0; JNZ to the result count at 008D2140.
+    if (host.game_termination_reason_624() == 0) {
+        host.tracker_trigger_hint_00690fd0(host.argument_string(0), true);  // 008D2070 PUSH 1; 008D2086
+        // 008D20CC re-reads argument 0; 008D20EB..008D2104 ECX = game+1EF0h.
+        host.session_send_hint_00770870(host.argument_string(0));
+    }
+    return host.result_count_00b66400();  // 008D2144
+}
+
+std::int32_t lua_show_hint_forced_008d2190(HintLuaHost& host) {
+    host.tracker_trigger_forced_00692fb0(host.argument_string(0));  // 008D22B2
+    return host.result_count_00b66400();
+}
+
+std::int32_t lua_add_stored_hint_008d24f0(HintLuaHost& host) {
+    host.tracker_add_stored_00690b20(host.argument_string(0));  // 008D2612
+    return host.result_count_00b66400();
+}
+
+std::int32_t lua_remove_stored_hint_008d2340(HintLuaHost& host) {
+    host.tracker_remove_stored_00690c30(host.argument_string(0));  // 008D2462
+    return host.result_count_00b66400();
+}
+
+std::int32_t lua_hide_hint_0088cec0(HintLuaHost& host) {
+    host.hints_dismiss_0054e610();  // 0088CF9E..0088CFB2, ECX = *(*(00E198C4)+A8h)
+    return host.result_count_00b66400();
+}
+
+std::int32_t lua_is_hint_active_008d2850(HintLuaHost& host) {
+    if (host.argument_count_00b663f0() == 0) {  // 008D2939, JNZ 008D2940
+        // 008D2968 active name, 008D2974 00449AF0 case-insensitive "!= """, then a table
+        // {HintID = active name (008D2A03), duration = seconds left (008D2A50, 008D2A5F)}.
+        const std::string active = host.tracker_active_hint_0068e5b0();
+        if (!active.empty()) host.push_hint_table(active, host.hints_seconds_left_0054d3c0());
+    } else {
+        // 008D2AAA..008D2B3F: 008D2AE6 00435C40, the argument against the active name,
+        // case-insensitively.
+        const std::string name = host.argument_string(0);
+        if (equals_insensitive(name, host.tracker_active_hint_0068e5b0())) {
+            host.push_integer(host.hints_seconds_left_0054d3c0());  // 008D2B53, 008D2B5D
+        }
+    }
+    return host.result_count_00b66400();  // 008D2B66; 0 results reads as nil in the script
+}
+
+std::int32_t lua_is_hint_critical_008d26a0(HintLuaHost& host) {
+    // 008D27C0: 00690B00 returns 0 for an empty name, else definition(name)+114h.
+    host.push_boolean(host.tracker_definition_critical_00690b00(host.argument_string(0)));  // 008D27CA
+    return host.result_count_00b66400();
+}
+
+std::int32_t lua_is_hint_stored_008d2bb0(HintLuaHost& host) {
+    // 008D2CD0: 0068E600, the profile seen set (game+650h) or the mission list tracker+48h.
+    host.push_boolean(host.tracker_has_been_shown_0068e600(host.argument_string(0)));  // 008D2CDA
+    return host.result_count_00b66400();
 }
 
 }  // namespace bsp
