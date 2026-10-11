@@ -364,6 +364,15 @@ inline constexpr std::string_view kRewardsCountClose = ")";                     
 inline constexpr double kRewardsScoreRow = 0.030555555829778314;      // 00CF53B8
 inline constexpr double kRewardsScoreGroupGap = 0.0027777778450399637;  // 00CF53B0
 inline constexpr double kRewardsDoneToMargin = 0.020833333333333332;  // 00CF0000
+inline constexpr double kRewardsRankBarInset = 0.00625;               // 00CF2920
+inline constexpr std::string_view kRewardsScoreSeparator = " / ";  // 00CF2928
+inline constexpr std::int32_t kRewardsTopRank = 20;                  // 00574050 value with no next threshold
+// 00E08E00: FE.playerrank_01 .. FE.playerrank_20.
+inline constexpr std::array<std::string_view, 20> kRewardsPlayerRankKeys{
+    "FE.playerrank_01", "FE.playerrank_02", "FE.playerrank_03", "FE.playerrank_04", "FE.playerrank_05",
+    "FE.playerrank_06", "FE.playerrank_07", "FE.playerrank_08", "FE.playerrank_09", "FE.playerrank_10",
+    "FE.playerrank_11", "FE.playerrank_12", "FE.playerrank_13", "FE.playerrank_14", "FE.playerrank_15",
+    "FE.playerrank_16", "FE.playerrank_17", "FE.playerrank_18", "FE.playerrank_19", "FE.playerrank_20"};
 
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
@@ -488,6 +497,17 @@ struct RewardsEnterHost {
     virtual std::int32_t remaining_points_00910500(std::int32_t category, std::int32_t field08) = 0;
     virtual std::int32_t suicide_points_00910570(std::int32_t category, std::int32_t mode, std::int32_t field04) = 0;
     virtual std::int32_t map_usage_points_009064d0(float seconds) = 0;
+
+    // --- rank page (006359A3..00635F9E) ---
+    virtual void set_rank_flag_e08c8c(bool value) = 0;
+    virtual std::uint8_t session_byte_4d() = 0;                 // *(00F8A2FC)+4Dh, read without a null test
+    // 0050FC30(*(00E19900)+10h, "RANK"): the record's int vector at +48h.
+    virtual std::int32_t rank_threshold_0050fc30(std::int32_t index) = 0;
+    virtual std::int32_t profile_score_0090bf50() = 0;          // ECX = *(game+650h+64h)
+    virtual std::int32_t profile_last_score_30() = 0;           // game+650h+30h, -1 = none yet
+    virtual void set_profile_last_score_30(std::int32_t score) = 0;
+    virtual void set_screen_byte(std::uint32_t offset, std::uint8_t value) = 0;
+    virtual void set_screen_float(std::uint32_t offset, float value) = 0;
 };
 
 // Folds a native rank or medal number into an icon state: max(value - 1, 0),

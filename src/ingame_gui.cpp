@@ -802,6 +802,65 @@ float rewards_fill_scoring(RewardsEnterHost& host) {
     return s.cursor.y;
 }
 
+// 006359A3..006359F1: the scoring scroller (+128h) range is the cursor less
+// the +108h view's height and y.
+void rewards_scoring_scroll(RewardsEnterHost& host, float cursor_y) {
+    const RewardsWidget view = host.screen_widget(0x108);
+    const double below = static_cast<double>(cursor_y) - host.widget_size_00aa6740(view).y;
+    host.scroller_set_range_006834a0(0x128, static_cast<float>(below - host.widget_position_00aa6750(view).y));
+}
+
+// 006359F6..00635F9E: the rank page, only in a session whose +4Dh byte is set.
+void rewards_fill_rank(RewardsEnterHost& host) {
+    host.set_rank_flag_e08c8c(false);
+    if (host.game_byte(0x1EE3) == 0 || host.session_byte_4d() == 0) return;
+    host.set_rank_flag_e08c8c(true);
+
+    // 00635A32..00635A79: rank name and icon from the clamped rank index.
+    std::int32_t rank = host.profile_rank_byte_00574050() - 1;
+    if (rank < 0) rank = 0;
+    else if (rank > 19) rank = 19;
+    host.text_cstring_00abbe50(host.screen_widget(0x204), kRewardsPlayerRankKeys[static_cast<std::size_t>(rank)], true);
+    host.icon_state_88(host.screen_widget(0x208), rank);
+
+    // 00635A7B..00635BCE: the "RANK" thresholds either side.
+    const std::int32_t next = host.profile_rank_byte_00574050() != kRewardsTopRank ? host.rank_threshold_0050fc30(rank + 1) : 0;
+    const std::int32_t previous = host.profile_rank_byte_00574050() > 1 ? host.rank_threshold_0050fc30(rank) : 0;
+
+    // 00635BCE..00635C87: the gain since the last screen (+30h, -1 before any).
+    const std::int32_t score = host.profile_score_0090bf50();
+    const std::int32_t last = host.profile_last_score_30();
+    host.text_source_00abaed0(host.screen_widget(0x200), std::to_string(last == -1 ? score : score - last), false);
+
+    // 00635C87..00635CE9: FILD/FIDIV, so both shares are float quotients.
+    float before = 1.0f;
+    float now = 1.0f;
+    if (next != 0) {
+        before = last >= previous ? static_cast<float>(static_cast<double>(last - previous) / (next - previous)) : 0.0f;
+        now = static_cast<float>(static_cast<double>(score - previous) / (next - previous));
+    }
+    host.set_profile_last_score_30(score);
+
+    // 00635CED..00635EB9
+    if (next != 0) {
+        host.text_source_00abaed0(host.screen_widget(0x1FC),
+                                  std::to_string(score) + std::string(kRewardsScoreSeparator) + std::to_string(next), false);
+    } else {
+        host.text_source_00abaed0(host.screen_widget(0x1FC), std::to_string(score), false);
+    }
+
+    // 00635EB9..00635F9C: both bars (+20Ch, +210h) start at the old share;
+    // +21Ch is the width the update (0062B640) grows them to.
+    const float height = host.widget_size_00aa6740(host.screen_widget(0x20C)).y;
+    const auto width = static_cast<float>(static_cast<double>(host.widget_size_00aa6740(host.screen_widget(0x214)).x) -
+                                          kRewardsRankBarInset);
+    host.set_screen_byte(0x218, 0);
+    host.set_screen_float(0x21C, clamp_pointer_004155b0(now, {0.0f, 1.0f}) * width);
+    const GuiSize2 bar{clamp_pointer_004155b0(before, {0.0f, 1.0f}) * width, height};
+    host.widget_set_size_58(host.screen_widget(0x20C), bar);
+    host.widget_set_size_58(host.screen_widget(0x210), bar);
+}
+
 } // namespace
 
 void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host) {
@@ -834,10 +893,10 @@ void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnter
         host.set_page_title_e196c0(2, kRewardsScoringMissionFailed);
     }
     rewards_fill_objectives(host);
-    const float scoring_end_y = rewards_fill_scoring(host);
-    (void)scoring_end_y;
-    // NOT RECONSTRUCTED from 006359A3 on: the rank page, the award pages and the
-    // tail (docs/CC13_INGAME_GUI.md, rewards enter range table).
+    rewards_scoring_scroll(host, rewards_fill_scoring(host));
+    rewards_fill_rank(host);
+    // NOT RECONSTRUCTED from 00635F9E on: the award pages and the tail
+    // (docs/CC13_INGAME_GUI.md, rewards enter range table).
 }
 
 namespace {
