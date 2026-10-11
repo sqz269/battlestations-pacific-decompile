@@ -1,0 +1,37 @@
+# C07C45 direct-target entry evidence
+
+At `00C07C45`, the admitted bytes `8B 4D F0` decode as `MOV ECX, dword ptr [EBP-0x10]` in 32-bit x86. The effective address uses the actual current SS by default. This packet establishes this single three-byte instruction. The successor `00C07C48`, the remaining 17 owner bytes and the owner end cursor `00C07C59` remain unqueried. The saved name `__SEH_epilog4` does not authenticate a library role, frame, restored register or calling convention.
+
+The frozen baseline is `ff278d7b37adebd0eef5bc5ac4aae6e59b3c673e`. The accepted C1737B BODY and BODY_PRIMARY documents/reports, `config/target.json`, and three CLI producers are retained as eight actual Git blobs with their path/root trees and commit: 14 actual objects. Working LF, index and committed identities agree. Source is identity-only: `src=dfb2ee135e7b642465d448dcc1616fd92686ad51`, `include=7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9`. No Source contents, absence evidence or prior proof ZIP was read.
+
+The incoming edge is derived only from the accepted BODY's physical bytes at `00C17525`: `E8 1B 07 FF FF`. The signed little-endian displacement is `-63717`; adding it to arithmetic next EIP `00C1752A` modulo 2^32 yields `00C07C45`. Both accepted BODY and PRIMARY direct-call rows agree. No adjacency, current callsite/provider query or presumed epilog identity supplies this positive edge.
+
+## Original metadata and admission
+
+All three complete direct responses are byte-identical: 2,146 bytes, SHA-256 `34d015074d21d280378b1c2865c3725c4a04a1f32a61e89f22b5dd5fa310af5a`. Original wrappers retain direct bytes/base64, HTTP status, project/program checks and modification number. Each of four independent listing aliases reports one three-byte `ghidra.program.database.code.InstructionDB`, kind `instruction`, `defined=null`, at RAM `00C07C45`.
+
+Default and effective flow independently say `FALL_THROUGH`; call/jump/conditional/computed/terminal flags are false. Override is `NONE`; default and effective fallthrough are RAM `00C07C48`; fallthrough override is false and target arrays are empty. Function-at-query and containing-function each equal RAM `00C07C45`. The sole saved owner is `__SEH_epilog4`, with no-return/thunk/recursive-thunk flags false and null direct thunk target. Its complete inclusive body metadata is one 20-byte range `00C07C45..00C07C58`. These fields establish saved metadata only.
+
+Root admitted only `00C07C45..00C07C47` after reviewing the complete originals. All 179 initial Root artifacts, including 169 metadata preimages equal to the worker originals, were pinned and copied before the byte/text queries. Gate receipt: 8,026,569 bytes, SHA-256 `3c039e629c9f5ed1830411265ddc799306aabb34613cae6f33dfbda9079f5652`. Admission manifest: 1,928 bytes, SHA-256 `d04d1e73db0777bd94776b4f59e05494ac8eb34b096f1fc4667ce9cc48462f85`.
+
+There were 11 read-only CLI invocations: four counts, three typed captures, two exact three-byte reads and two context-zero text captures. Each retained its invocation, original stdout/stderr and physical checks of all three frozen CLI producers before and after execution. Project `bsp`, program `/battlestationspacific.exe`, x86 little-endian 32-bit mode, default RAM, image base `00400000`, function count 64,730 and modification number 98 remained consistent. GET provenance is supported by the frozen producer and response records, not an independent network trace.
+
+## Physical decoding and local effects
+
+Both byte captures have SHA-256 `396c8b58174086362d4309ca0a554e3a5cd783b8ea6990a0d52856ccaafec042`. Both 175-byte context-zero originals have SHA-256 `9136f9fb4501d069a045bf8e355d768ff7cd08ebc9e49c6424f64b1d94472498`; their exact text is `MOV ECX,dword ptr [EBP + -0x10]`, with no before/after context.
+
+The manual decode was completed and saved before fresh Capstone import. Opcode `8B` has ModRM `4D` at offset 1: mod `01` selects memory plus signed disp8, reg `001` selects ECX, and r/m `101` selects EBP. Displacement byte `F0` at offset 2 is unsigned 240 and signed -16, sign-extended to address bits `FFFFFFF0`. Operand/address sizes are 32 bits. There are no prefixes, SIB or immediate. The destination is four-byte ECX; the explicit four-byte memory source has EBP base, no index, scale 1, displacement -16 and default SS with no segment override.
+
+On normal completion, ECX receives the little-endian 32-bit value at actual current `SS:((EBP-16) mod 2^32)`. There is no memory write or implicit stack operation; ESP, EBP, other general registers and arithmetic EFLAGS remain unchanged. This explicit load does not require an implicit-stack address-size premise. Actual SS translation/mapping, memory contents and access/fault outcome are unknown. No frame, restoration, calling-convention or register-ABI interpretation follows from the saved owner name.
+
+Fresh Capstone 5.0.7 in `CS_ARCH_X86`/`CS_MODE_32` agrees on all manual physical fields and operands. Its ancillary records show operand accesses `[2,1]`, EFLAGS mask 0, EBP read, ECX written and no groups; these are retained separately. Loaded module/library identities and original decoder streams are retained. Manual artifact: 2,677 bytes, SHA-256 `f70cb644d3f8cfc9591361e5ff535e94a6c0e1c09fce3737caa366a29bafcabd`. Actual decoder artifact: 1,964 bytes, SHA-256 `fb18e4000f422a5b966d13d7ca9807ec1634bcb4a5ea2ad8b14f9bf82e2b8dc4`.
+
+## Finite replay and limits
+
+The original finite evidence ZIP and a physically distinct byte-identical copy both passed their first strict replay: exactly one supplied ZIP read, one pinned helper-code execution, one exclusive receipt write and zero denied events, including caught attempts. The fully read pure helper reconstructs the manual fields and validates the actual saved decoder result, complete Native responses, original Root copies and actual Git objects. It performs no Capstone import/execution or workspace query under the audit hook.
+
+Evidence ZIP: 424 members, 22296491 bytes, SHA-256 `d122a2516e704c87b37dc8b700adb9bd479cb8d998c9594cb5a0f28c14bdc2c9`. Pure helper: 29192 bytes, SHA-256 `137b4a093e61a8704ddd668a84ed67648e0711c4c908415c6732db9b02c435f9`. Guard: 3325 bytes, SHA-256 `49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e`. Final delivery adds exactly two public outputs, original publication/commit streams, six new actual Git objects and final unchanged checks on all eight positive inputs. Package postexecution originals and final strict receipts remain separate because they occur after archive construction.
+
+Worker Native, helper, strict-evidence and inspection failures are zero. Worker display truncations are one: a post-evidence template-inspection tool display was capped at 2,000 tokens for 2,094 tokens of output. The JSON report contains the scoped incident record; omitted stdout is unavailable and has not been recreated. It affected no Native/helper original or sealed evidence. The original Root gate's failure counters remain zero. Root separately reported one later manual-producer path failure before producing manual output or importing Capstone, followed by its first actual fresh comparison passing; Root retains that separate history in its PRIMARY review. The accepted C1737B PRIMARY's earlier IMUL SF comparison failure remains prior history.
+
+No Ghidra mutation, Source implementation, probe, build, fixture or runtime action was performed. This is first-instruction evidence only; function-level behavior, ABI compatibility and game behavior remain unestablished.
