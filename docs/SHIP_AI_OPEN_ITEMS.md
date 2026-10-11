@@ -16192,3 +16192,38 @@ OFF is `b89b3d537` (tree build). ON is the same commit exported with the switch 
 - **Still open from 206 item 3:**
   - the live-retire `006C8800` call at the host's retire sites (reference rows never reach them);
   - whether the `+A8h` assignment records have a Kill observer of their own.
+
+### 208.2 Who sights Shimotsuke and the blockade at 857.91 s: nobody; it is the listener registration (cc9-ships42, 2026-10-11; a read)
+
+- **The split endpoints.** 207.3's good build `b02e31546` has the same `src`/`include`/CMake tree as `783c4f35d^` =
+  `b982327be` (an empty `git diff --stat`). So the pair in 207.3 is the commit's own endpoints:
+  - `plane #1.1|.-2` dies at 115.05 s without the commit and at 114.85 s with it;
+  - `783c4f35d` is the split, and it is image-faithful.
+- **The script** (this installation's `scripts/missions/COTP-USN/us_osumi.lua`, mtime 2024-10-29):
+  - `luaPh2MovieEnd` (line 1646) adds primary 2 and calls `luaConListen()`.
+  - Then `luaDelay(luaShimListen, 6)` and `luaDelay(luaBlockListen, 6)` (lines 1664/1666) register the
+    `ShimotSighted` and `BlockSighted` recon listeners **on the same frame**. Each has `oldLevel {0,1}`,
+    `newLevel {2}`, `party {PARTY_ALLIED}` (lines 1944-1974).
+  - Neither unit gets `SetForcedReconLevel` before then. The blockade's is set inside `luaBlockade` (line 2041).
+- **The log** (`local\s42_cpoff_osf12.log`):
+  - `ConvoySighted` registers at clock <= 848.92 and fires for Ada1 at 851.92.
+  - Both later listeners register together (log lines 145406/145407, clock <= 854.91).
+  - Both fire on the very next 3 s recon refresh, 857.91 s (lines 146046/146050).
+  - No player unit is within 7.6 km of Shimotsuke then (`local\s42_near.py` over the `s42_tr_osf12m` trajectories).
+    So the dispatch is the first recon refresh after registration, not a spotter arriving.
+  - In ships41's `s41_g12` the same chain ran from the phase-2 start at 1406.05 s (DisplayScores) to 1410.20 s.
+- **So the 1410 -> 858 s move is the phase-2 start moving.** It is not a spotter's path. Phase 1 now ends about 555 s
+  earlier on current main.
+- **Consequence for item 4.** Rerouting spotters cannot separate the two callbacks, because the listeners are armed
+  together and both units already read as level 2 at the first refresh. Whether that level 2 comes from a real sensor
+  or from the listener's starting old level of 0 is unread (`00980E50`'s baseline). Either way the player cannot stagger
+  them by routing. Primary 3 is reachable only if Shimotsuke reads below 2 at registration, which this read does not
+  find.
+- **Variants on current main (from 207.3; `local\s42_p1_<row>.log`, 44000 frames, `-Traj`):**
+  - **a** (`s42_os_a.txt`, f17 without `27950 moveto Enterprise`): the Enterprise survives. Every troop transport
+    dies (TroopTrans6 1304.70 s, TroopTrans3 1490.08 s, TroopTrans5 1627.46 s, all to Airfield1/3 squadrons), and
+    `MissionStatus` fails at 1629.01 s.
+  - **b** (`s42_os_b.txt`, the moveto sent to (13500, -7500)): Takao1 sinks the Enterprise at 1571.96 s, and the
+    mission fails at 1574.51 s.
+  - With f17 as written, DM1, parked 45 m from the Enterprise, sinks it at 1553.34 s while firing at Shima4 about
+    2 km out. That friendly-fire case is gunnery35's (lead, 2026-10-11). The re-plan waits for it.
