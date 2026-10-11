@@ -1,5 +1,5 @@
 {
-  "packet": "cc13_water2_particles",
+  "packet": "cc13_water2_particles, cc13_particles1",
   "doc": "docs/CC13_PARTICLE_EMITTERS.md",
   "call_sites": [
     {
@@ -106,6 +106,120 @@
       "native": "00419510",
       "function": "00b06b10",
       "note": "FollowDirection axis"
+    },
+    {
+      "address": "00b08285",
+      "native": "00affd20",
+      "function": "00b08210",
+      "note": "RotationSpeed integral (kind 1)"
+    },
+    {
+      "address": "00b082d8",
+      "native": "00affd20",
+      "function": "00b08210",
+      "note": "speed integral (kind 1)"
+    },
+    {
+      "address": "00b084f1",
+      "native": "00bf85b0",
+      "function": "00b08210",
+      "note": "floor(frame)"
+    },
+    {
+      "address": "00b08501",
+      "native": "00bf7420",
+      "function": "00b08210",
+      "note": "ftol"
+    },
+    {
+      "address": "00b08509",
+      "native": "00b06a90",
+      "function": "00b08210",
+      "note": "frame A"
+    },
+    {
+      "address": "00b08531",
+      "native": "00b06a90",
+      "function": "00b08210",
+      "note": "frame B"
+    },
+    {
+      "address": "00b08540",
+      "native": "00bf857a",
+      "function": "00b08210",
+      "note": "fmod(frame, 1)"
+    },
+    {
+      "address": "00b0987f",
+      "native": "00b0c8b0",
+      "function": "00b09510",
+      "note": "result popped"
+    },
+    {
+      "address": "00b09929",
+      "native": "00b6fcb0",
+      "function": "00b09510",
+      "note": "camera view, ECX=[[00F8C274]+1Ch]"
+    },
+    {
+      "address": "00b09956",
+      "native": "004142e0",
+      "function": "00b09510",
+      "note": "view-space position"
+    },
+    {
+      "address": "00b09b27",
+      "native": "00b6db70",
+      "function": "00b09510",
+      "note": "node world refresh"
+    },
+    {
+      "address": "00b09bdc",
+      "native": "004b62e0",
+      "function": "00b09510",
+      "note": "light base diffuse"
+    },
+    {
+      "address": "00b09c51",
+      "native": "00b06a90",
+      "function": "00b09510",
+      "note": "frame A"
+    },
+    {
+      "address": "00b09c7b",
+      "native": "00b06a90",
+      "function": "00b09510",
+      "note": "frame B"
+    },
+    {
+      "address": "00b09c8a",
+      "native": "00bf857a",
+      "function": "00b09510",
+      "note": "fmod(frame, 1)"
+    },
+    {
+      "address": "00b05fc7",
+      "native": "00419510",
+      "function": "00b05dd0",
+      "note": "normalise velocity (FollowDirection)"
+    },
+    {
+      "address": "00b06068",
+      "native": "00bf7030",
+      "function": "00b05dd0",
+      "note": "sqrt(L*L + W*W)"
+    },
+    {
+      "address": "00b07c1a",
+      "native": "00affa70",
+      "function": "00b07bf0",
+      "note": "Size curve (kind 1)"
+    },
+    {
+      "address": "00b0897a",
+      "native": "00affa70",
+      "function": "00b08950",
+      "note": "Size curve (kind 1)"
     }
   ]
 }

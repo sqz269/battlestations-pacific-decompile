@@ -1,13 +1,15 @@
 // Particle geometry pass and quad emitters, segment 82 (packet cc13_water2
-// particles). Addresses 00B057C0, 00B06A90, 00B0C8B0, 00B05420, 00B05550 and
-// 00B06B10. Evidence, ABI and uncertainty: include/bsp/particle_emitters_cc13.hpp
+// particles, cc13_particles1). Addresses 00B057C0, 00B06A90, 00B0C8B0, 00B05420,
+// 00B05550, 00B06B10, 00B08210 and 00B09510. Evidence, ABI and uncertainty: include/bsp/particle_emitters_cc13.hpp
 // and docs/CC13_PARTICLE_EMITTERS.md.
 
 #include "bsp/particle_emitters_cc13.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstring>
 
+#include "bsp/camera_affine.hpp"
 #include "bsp/system_camera_axes.hpp"
 
 namespace bsp::particle_emitters {
@@ -376,6 +378,373 @@ std::int32_t emit_axial_quad_00b06b10(const void* definition, void* state, float
     wr<std::uint8_t*>(target, cursor, rd<std::uint8_t*>(target, cursor) + 0xe0);
     wr<std::int32_t>(target, room, rd<std::int32_t>(target, room) - 1);
     return 1;
+}
+
+std::int32_t emit_floating_quad_00b08210(const void* definition, void* state, float t, ParticleCurves& curves,
+                                         ParticleRandom& random) {
+    // B08213..B0823D: the emitter's fade gate; the cursor is read up front.
+    void* emitter = rd<void*>(state, 0x68);
+    const float emitter_alpha = rd<float>(emitter, 0x24);
+    if (0.004f > emitter_alpha) {  // [00CEC178]
+        return 0;
+    }
+    void* target = rd<void*>(emitter, 0x08);
+    std::uint8_t* vertex = rd<std::uint8_t*>(target, 0x1c4);
+    const float scale = static_cast<float>(rd<float>(state, 0x44) / 100.0);  // [00D7A220]
+
+    // B08264..B082C1: angle = +50h + +54h * (RotationSpeed integral * pi/180) * scale.
+    const float angle = static_cast<float>(
+        rd<float>(state, 0x54) * (integrate(curves, ptr(definition, 0x84), t) * 0.017453288659453392) * scale +
+        rd<float>(state, 0x50));  // [00D5DAF8]
+
+    // B082C5..B0833F: position = speed integral * scale * direction + origin.
+    const float ks = static_cast<float>(integrate(curves, ptr(definition, 0x2c), t) * scale);
+    const float d[3] = {rd<float>(state, 0x18) * ks, rd<float>(state, 0x1c) * ks, ks * rd<float>(state, 0x20)};
+    wr<float>(state, 0x00, d[0]);
+    wr<float>(state, 0x04, d[1]);
+    wr<float>(state, 0x08, d[2]);
+    wr<float>(state, 0x00, d[0] + rd<float>(state, 0x0c));
+    wr<float>(state, 0x04, d[1] + rd<float>(state, 0x10));
+    wr<float>(state, 0x08, d[2] + rd<float>(state, 0x14));
+    // B08346..B08351: frame advance, result popped.
+    if (rd<std::uint8_t>(definition, 0x4c) != 0) {
+        float ignored;
+        advance_texture_frame_00b0c8b0(state, curves, random, ignored);
+    }
+
+    // B08357..B084D6: alpha gate and premultiplied colour, as in 00B06B10.
+    float alpha = static_cast<float>(rd<float>(state, 0x5c) * evaluate(curves, ptr(definition, 0x38), t) *
+                                     emitter_alpha);
+    if (0.004f > alpha) {  // unordered continues (JBE)
+        return 0;
+    }
+    alpha = static_cast<float>(alpha * 255.0);  // [00CE4B48]
+    const float red = static_cast<float>(evaluate(curves, ptr(definition, 0x3c), t) * alpha);
+    const float green = static_cast<float>(evaluate(curves, ptr(definition, 0x40), t) * alpha);
+    const float blue = static_cast<float>(evaluate(curves, ptr(definition, 0x44), t) * alpha);
+    const std::int32_t blend_mode = rd<std::int32_t>(definition, 0x7c);
+
+    // B084DA: the particle floats, y = 0. B084DF: Size (+88h) times size +58h.
+    wr<float>(state, 0x04, 0.0f);
+    const float size = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x88), t));
+
+    // B084E3..B08549: frames (floor 00BF85B0, truncation 00BF7420) and blend (fmod 00BF857A).
+    const float frame = rd<float>(state, 0x30);
+    const std::int32_t frame_a = resolve_frame_index_00b06a90(
+        definition, static_cast<std::int32_t>(static_cast<float>(std::floor(static_cast<double>(frame)))));
+    const std::int32_t frame_b = resolve_frame_index_00b06a90(
+        definition,
+        static_cast<std::int32_t>(static_cast<float>(std::floor(static_cast<double>(rd<float>(state, 0x38))))));
+    const float blend = static_cast<float>(std::fmod(static_cast<double>(frame), 1.0));
+
+    // B0854D..B08605: clamp to [0, 255] (COMISS/FCOMIP with JBE: NaN passes through), pack.
+    auto clamp = [](float v) {
+        if (0.0f > v) return 0.0f;
+        return v > 255.0 ? 255.0f : v;  // double [00CE4B48], float [00CEDD44]
+    };
+    std::uint32_t argb = static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(blue))) |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(green)))) << 8 |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(red)))) << 16 |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(alpha)))) << 24;
+    if (blend_mode == 1) {
+        argb = (argb & 0x00ffffffu) | 0x01000000u;  // additive: alpha byte = 1
+    }
+
+    // B0862C..B08787: four 24h-byte vertices when the cursor is non-null; the
+    // room count drops either way (B0878D) and the result is 1.
+    if (vertex != nullptr) {
+        const std::uint8_t* frames = rd<const std::uint8_t*>(definition, 0x68);
+        const std::uint8_t* fa = frames + frame_a * 0x1c;
+        const std::uint8_t* fb = frames + frame_b * 0x1c;
+        struct Corner {
+            std::uint32_t u, v;
+            float angle;
+        };
+        // Corner angles: +pi [00CE3D28], -pi/2 and +pi/2 [00CE3830], +0; doubles added in x87.
+        const Corner corners[4] = {{0x14, 0x16, static_cast<float>(3.1415927410125732 + angle)},
+                                   {0x10, 0x16, static_cast<float>(angle - 1.5707963705062866)},
+                                   {0x14, 0x12, static_cast<float>(1.5707963705062866 + angle)},
+                                   {0x10, 0x12, angle}};
+        for (const Corner& c : corners) {
+            wr<float>(vertex, 0x00, rd<float>(state, 0x00));
+            wr<float>(vertex, 0x04, rd<float>(state, 0x04));
+            wr<float>(vertex, 0x08, rd<float>(state, 0x08));
+            wr<float>(vertex, 0x0c, c.angle);
+            wr<std::uint32_t>(vertex, 0x10, argb);
+            wr<std::uint16_t>(vertex, 0x14, rd<std::uint16_t>(fa, c.u));
+            wr<std::uint16_t>(vertex, 0x16, rd<std::uint16_t>(fa, c.v));
+            wr<std::uint16_t>(vertex, 0x18, rd<std::uint16_t>(fb, c.u));
+            wr<std::uint16_t>(vertex, 0x1a, rd<std::uint16_t>(fb, c.v));
+            wr<float>(vertex, 0x1c, blend);
+            wr<float>(vertex, 0x20, size);
+            vertex += 0x24;
+        }
+        wr<std::uint8_t*>(target, 0x1c4, rd<std::uint8_t*>(target, 0x1c4) + 0x90);
+    }
+    wr<std::int32_t>(target, 0x1bc, rd<std::int32_t>(target, 0x1bc) - 1);
+    return 1;
+}
+
+std::int32_t emit_sprite_quad_00b09510(const void* definition, void* state, float t, const float matrix[16],
+                                       float view_size_scale, const float wind_e13028[3], ParticleCurves& curves,
+                                       ParticleRandom& random, SpriteParticleHost& host) {
+    // B09516..B0954A: the emitter's fade gate.
+    void* emitter = rd<void*>(state, 0x68);
+    const float emitter_alpha = rd<float>(emitter, 0x24);
+    if (0.004f > emitter_alpha) {  // [00CEC178]
+        return 0;
+    }
+    void* target = rd<void*>(emitter, 0x08);
+    const bool second_buffer = rd<std::uint8_t>(ptr(state, 0x64), 0x65) != 0;
+    auto* vertex = rd<std::uint8_t*>(target, second_buffer ? 0x1d0 : 0x1c0);
+    const float scale = static_cast<float>(rd<float>(state, 0x44) / 100.0);  // [00D7A220]
+
+    // B09586..B095EA: angle as in 00B08210.
+    const float angle = static_cast<float>(
+        rd<float>(state, 0x54) * (integrate(curves, ptr(definition, 0x84), t) * 0.017453288659453392) * scale +
+        rd<float>(state, 0x50));  // [00D5DAF8]
+
+    // B095EE..B0965C: speed term, stored to state+0..8 first.
+    const float ks = static_cast<float>(integrate(curves, ptr(definition, 0x2c), t) * scale);
+    float p[3] = {rd<float>(state, 0x18) * ks, rd<float>(state, 0x1c) * ks, ks * rd<float>(state, 0x20)};
+    // B09669..B09741: gravity along matrix row 1, each product spilled.
+    {
+        const float g = static_cast<float>(integrate(curves, ptr(definition, 0x30), t));
+        const float gx = static_cast<float>(g * matrix[4]);
+        const float gy = static_cast<float>(matrix[5] * g);
+        const float gz = static_cast<float>(g * matrix[6]);
+        const float sx = gx * scale, sy = gy * scale, sz = gz * scale;
+        const float weight = rd<float>(state, 0x48);
+        p[0] = p[0] + sx * weight;
+        p[1] = p[1] + sy * weight;
+        p[2] = p[2] + weight * sz;
+    }
+    // B0974E..B097CC: wind [00E13028..30] times +4Ch.
+    {
+        const float ws = static_cast<float>(integrate(curves, ptr(definition, 0x34), t) * scale *
+                                            rd<float>(state, 0x4c));
+        p[0] = p[0] + ws * wind_e13028[0];
+        p[1] = p[1] + ws * wind_e13028[1];
+        p[2] = p[2] + ws * wind_e13028[2];
+    }
+    // B097D4..B09855: optional parameter +48h along the state vector +24h..2Ch.
+    if (const void* extra = ptr(definition, 0x48); extra != nullptr) {
+        const float v = static_cast<float>(scale * integrate(curves, extra, t));
+        p[0] = p[0] + v * rd<float>(state, 0x24);
+        p[1] = p[1] + rd<float>(state, 0x28) * v;
+        p[2] = p[2] + v * rd<float>(state, 0x2c);
+    }
+    p[0] = p[0] + rd<float>(state, 0x0c);
+    p[1] = rd<float>(state, 0x10) + p[1];
+    p[2] = rd<float>(state, 0x14) + p[2];
+    wr<float>(state, 0x00, p[0]);
+    wr<float>(state, 0x04, p[1]);
+    wr<float>(state, 0x08, p[2]);
+    // B09879..B0987F: frame advance, result popped.
+    if (rd<std::uint8_t>(definition, 0x4c) != 0) {
+        float ignored;
+        advance_texture_frame_00b0c8b0(state, curves, random, ignored);
+    }
+
+    // B0988D..B09925: alpha (no 0.004 gate here) and size = +58h * curve(Size +88h).
+    const float alpha = static_cast<float>(rd<float>(state, 0x5c) * evaluate(curves, ptr(definition, 0x38), t) *
+                                           emitter_alpha);
+    const std::int32_t blend_mode = rd<std::int32_t>(definition, 0x7c);
+    const float size = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x88), t));
+
+    // B09929..B09A38: near-camera fade. r = size * argument / view-space z,
+    // clamped to [0, 1] (NaN passes); fade = (1 - r)^2 by the inline pow
+    // (FYL2X/F2XM1/FSCALE, exponent 2.0f [00CE3958], negative base negated with
+    // -0.0f [00D7A208]); fade = 0 when 1 - r == 0. Only gates, and only when
+    // def+65h is clear: 0.007 [00D5E028] > fade * alpha returns 0.
+    {
+        CameraMatrix view;
+        std::memcpy(view.data(), host.camera_view_00b6fcb0(), sizeof(float) * 16);  // REP MOVSD at B09944
+        const double numerator = static_cast<double>(size) * view_size_scale;    // FSTP qword at B09946
+        std::array<float, 3> local;
+        transform_point_004142e0({p[0], p[1], p[2]}, view, local);
+        float r = static_cast<float>(numerator / local[2]);
+        if (0.0f > r) {
+            r = 0.0f;
+        } else if (r > 1.0f) {  // [00D7A24C]
+            r = 1.0f;
+        }
+        float fade = 1.0f - r;
+        if (fade == 0.0f) {
+            fade = 0.0f;
+        } else {
+            if (0.0f > fade) fade = -0.0f - fade;
+            fade = static_cast<float>(std::pow(static_cast<double>(fade), 2.0));
+        }
+        if (!second_buffer && 0.007000000216066837 > static_cast<double>(fade) * alpha) {
+            return 0;
+        }
+    }
+
+    // B09A4B..B09B06: alpha * 255 [00CE4B48]; raw colour curves.
+    const float alpha255 = static_cast<float>(alpha * 255.0);
+    const float red_curve = static_cast<float>(evaluate(curves, ptr(definition, 0x3c), t));
+    const float green_curve = static_cast<float>(evaluate(curves, ptr(definition, 0x40), t));
+    const float blue_curve = static_cast<float>(evaluate(curves, ptr(definition, 0x44), t));
+
+    // B09B06..B09C02: the optional dynamic light at state+60h.
+    if (void* light = rd<void*>(state, 0x60); light != nullptr) {
+        float lp[3] = {p[0], p[1], p[2]};
+        if (rd<std::uint8_t>(target, 0x1b0) != 0) {
+            if ((rd<std::uint8_t>(target, 0x5c) & 2) == 0) {
+                host.refresh_world_00b6db70(target);
+            }
+            lp[0] = p[0] + rd<float>(target, 0x120);
+            lp[1] = p[1] + rd<float>(target, 0x124);
+            lp[2] = p[2] + rd<float>(target, 0x128);
+        }
+        wr<float>(light, 0x1ec, lp[0]);  // inline copy of 00B094E0
+        wr<float>(light, 0x1f0, lp[1]);
+        wr<float>(light, 0x1f4, lp[2]);
+        const float rgba[4] = {red_curve, green_curve, blue_curve, 1.0f};  // 1.0f [00D7A24C]
+        host.light_set_base_diffuse_004b62e0(light, rgba);
+        wr<float>(light, 0x1f8, 0.01f < size ? size : 0.01f);  // [00D7A238]
+    }
+    const float red = red_curve * alpha255;
+    const float green = green_curve * alpha255;
+    const float blue = alpha255 * blue_curve;
+
+    // B09C2D..B09C9A: frames and blend as in 00B06B10.
+    const float frame = rd<float>(state, 0x30);
+    const std::int32_t frame_a = resolve_frame_index_00b06a90(
+        definition, static_cast<std::int32_t>(static_cast<float>(std::floor(static_cast<double>(frame)))));
+    const std::int32_t frame_b = resolve_frame_index_00b06a90(
+        definition,
+        static_cast<std::int32_t>(static_cast<float>(std::floor(static_cast<double>(rd<float>(state, 0x38))))));
+    const float blend = static_cast<float>(std::fmod(static_cast<double>(frame), 1.0));
+
+    // B09C9A..B09D52: clamp to [0, 255] (NaN passes through), pack.
+    auto clamp = [](float v) {
+        if (0.0f > v) return 0.0f;
+        return v > 255.0 ? 255.0f : v;  // double [00CE4B48], float [00CEDD44]
+    };
+    std::uint32_t argb = static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(blue))) |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(green)))) << 8 |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(red)))) << 16 |
+                         static_cast<std::uint32_t>(static_cast<std::uint8_t>(static_cast<std::int32_t>(clamp(alpha255)))) << 24;
+    if (blend_mode == 1) {
+        argb = (argb & 0x00ffffffu) | 0x01000000u;  // additive: alpha byte = 1
+    }
+    const std::uint16_t flag_half = blend_mode == 1 ? 0x3c00 : 0x0000;  // NEG/SBB/AND C400h/ADD 3C00h
+
+    // B09D52..B09FAB: four 38h-byte vertices, corner angle = angle + {-pi, -pi/2,
+    // +pi/2, 0} + pi/4 ([00CE3D28], [00CE3830], [00CEDCD0], doubles in x87).
+    const std::uint8_t* frames = rd<const std::uint8_t*>(definition, 0x68);
+    const std::uint8_t* fa = frames + frame_a * 0x1c;
+    const std::uint8_t* fb = frames + frame_b * 0x1c;
+    struct Corner {
+        std::uint32_t u, v;
+        float angle;
+    };
+    const double quarter = 0.7853981852531433;
+    const Corner corners[4] = {{0x10, 0x16, static_cast<float>((angle - 3.1415927410125732) + quarter)},
+                               {0x14, 0x16, static_cast<float>((angle - 1.5707963705062866) + quarter)},
+                               {0x10, 0x12, static_cast<float>((1.5707963705062866 + angle) + quarter)},
+                               {0x14, 0x12, static_cast<float>(angle + quarter)}};
+    for (const Corner& c : corners) {
+        wr<float>(vertex, 0x00, p[0]);
+        wr<float>(vertex, 0x04, p[1]);
+        wr<float>(vertex, 0x08, p[2]);
+        wr<float>(vertex, 0x0c, c.angle);
+        wr<std::uint32_t>(vertex, 0x10, argb);
+        wr<float>(vertex, 0x14, 1.0f);
+        wr<float>(vertex, 0x18, 1.0f);
+        wr<float>(vertex, 0x1c, 1.0f);
+        wr<float>(vertex, 0x20, blend);
+        wr<std::uint16_t>(vertex, 0x24, rd<std::uint16_t>(fa, c.u));
+        wr<std::uint16_t>(vertex, 0x26, rd<std::uint16_t>(fa, c.v));
+        wr<std::uint16_t>(vertex, 0x28, rd<std::uint16_t>(fb, c.u));
+        wr<std::uint16_t>(vertex, 0x2a, rd<std::uint16_t>(fb, c.v));
+        wr<float>(vertex, 0x2c, size);
+        wr<float>(vertex, 0x30, angle);
+        wr<std::uint16_t>(vertex, 0x34, 0);
+        wr<std::uint16_t>(vertex, 0x36, flag_half);
+        vertex += 0x38;
+    }
+    // B09FAB..B09FF5: advance the selected cursor, decrement its room.
+    const std::uint32_t cursor = second_buffer ? 0x1d0 : 0x1c0;
+    const std::uint32_t room = second_buffer ? 0x1cc : 0x1b8;
+    wr<std::uint8_t*>(target, cursor, rd<std::uint8_t*>(target, cursor) + 0xe0);
+    wr<std::int32_t>(target, room, rd<std::int32_t>(target, room) - 1);
+    return 1;
+}
+
+float* axial_bounding_sphere_00b05dd0(const void* definition, float sphere[4], const void* state, float t,
+                                      const float wind_e13028[3], ParticleCurves& curves,
+                                      const CameraAxesCrtAccess& crt) {
+    // B05DD0..B05E6C: Length (+8Ch) and Width (+90h) times size +58h.
+    const float length = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x8c), t));
+    const float width = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x90), t));
+
+    // B05E70..B05FE8: the axis, or with FollowDirection (+80h) the normalised
+    // curve velocity. Unlike 00B06B10, gravity here acts on y only (no matrix).
+    float axis[3];
+    if (rd<std::uint8_t>(definition, 0x80) == 0) {
+        axis[0] = rd<float>(definition, 0x94);
+        axis[1] = rd<float>(definition, 0x98);
+        axis[2] = rd<float>(definition, 0x9c);
+    } else {
+        const float scale = static_cast<float>(rd<float>(state, 0x44) / 100.0);  // [00D7A220]
+        const float ks = static_cast<float>(evaluate(curves, ptr(definition, 0x2c), t) * scale);
+        const float vx = rd<float>(state, 0x18) * ks;
+        const float vy0 = rd<float>(state, 0x1c) * ks;
+        const float vz = ks * rd<float>(state, 0x20);
+        const float vy = static_cast<float>(evaluate(curves, ptr(definition, 0x30), t) * scale *
+                                            rd<float>(state, 0x48) + vy0);
+        const float ws = static_cast<float>(evaluate(curves, ptr(definition, 0x34), t) * scale *
+                                            rd<float>(state, 0x4c));
+        const float velocity[3] = {ws * wind_e13028[0] + vx, ws * wind_e13028[1] + vy, ws * wind_e13028[2] + vz};
+        camera_vector_normalize_00419510(axis, velocity, &crt);
+    }
+
+    // B05FE8..B061BF: Alignment +A0h moves the centre half a quad along the
+    // axis (1 Bottom: +, 2 Top: -, otherwise the position); the radius is
+    // sqrt(L*L + W*W) through 00BF7030, each product spilled to float.
+    const std::int32_t alignment = rd<std::int32_t>(definition, 0xa0);
+    const float sign = alignment == 1 ? 1.0f : alignment == 2 ? -1.0f : 0.0f;
+    if (sign == 0.0f) {
+        sphere[0] = rd<float>(state, 0x00);
+        sphere[1] = rd<float>(state, 0x04);
+        sphere[2] = rd<float>(state, 0x08);
+    } else {
+        sphere[0] = rd<float>(state, 0x00) + sign * (length * axis[0]);
+        sphere[1] = rd<float>(state, 0x04) + sign * (axis[1] * length);
+        sphere[2] = rd<float>(state, 0x08) + sign * (axis[2] * length);
+    }
+    const float ll = length * length;
+    const float ww = width * width;
+    sphere[3] = static_cast<float>(std::sqrt(static_cast<double>(ll + ww)));
+    return sphere;
+}
+
+float* floating_bounding_sphere_00b07bf0(const void* definition, float sphere[4], const void* state, float t,
+                                         ParticleCurves& curves) {
+    sphere[0] = rd<float>(state, 0x00);
+    sphere[1] = rd<float>(state, 0x04);
+    sphere[2] = rd<float>(state, 0x08);
+    sphere[3] = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x88), t) *
+                                   0.5);  // [00D7A280]
+    return sphere;
+}
+
+float* sprite_bounding_sphere_00b08950(const void* definition, float sphere[4], const void* state, float t,
+                                       ParticleCurves& curves) {
+    // Same body as 00B07BF0 byte for byte except the rel32 displacements of the
+    // two curve calls, which reach the same 00AFFA70/00AFFAE0.
+    return floating_bounding_sphere_00b07bf0(definition, sphere, state, t, curves);
+}
+
+void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380) {
+    axial_count_00f8d380 = axial_count_00f8d380 - 1;
+}
+
+void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384) {
+    floating_count_00f8d384 = floating_count_00f8d384 - 1;
 }
 
 }  // namespace bsp::particle_emitters
