@@ -1,0 +1,1046 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_cleanup_direct_target_body_metadata",
+  "status": "complete saved-body physical decode with instruction-time memory and opaque-call boundary; independent Root final review pending",
+  "base_commit": "29cbf21392cce9f8d5594e5442476266766097b7",
+  "scope": {
+    "range": [
+      "00C11B31",
+      "00C11B45"
+    ],
+    "bytes": 21,
+    "whole_instructions": 7,
+    "unqueried_stop_exclusive": "00C11B46",
+    "saved_library_label_metadata_only": "__unlock"
+  },
+  "Native_metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "two_independent_length_driven_walks": true,
+    "closing_known_unit_walk": true,
+    "all_four_InstructionDB_aliases_at_each_start": true,
+    "complete_owner_range": {
+      "range_count": 1,
+      "returned_range_count": 1,
+      "address_count": "21",
+      "complete": true,
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c11b45"
+          },
+          "length": "21"
+        }
+      ]
+    },
+    "unit_partition": [
+      [
+        "00C11B31",
+        1
+      ],
+      [
+        "00C11B32",
+        2
+      ],
+      [
+        "00C11B34",
+        3
+      ],
+      [
+        "00C11B37",
+        7
+      ],
+      [
+        "00C11B3E",
+        6
+      ],
+      [
+        "00C11B44",
+        1
+      ],
+      [
+        "00C11B45",
+        1
+      ]
+    ],
+    "all_three_metadata_walks_equal": true,
+    "flow_overrides": "NONE throughout",
+    "FALL_THROUGH_units": 5,
+    "computed_call_address": "00C11B3E",
+    "computed_call_metadata": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "COMPUTED_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": true,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b44"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b44"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": [
+        {
+          "space": "EXTERNAL",
+          "offset": "00000159"
+        }
+      ]
+    },
+    "terminal_address": "00C11B45",
+    "terminal_fallthrough": null,
+    "automatic_direct_call_targets": "retained opaque, not traversed",
+    "CLI_commands": 31,
+    "CLI_breakdown": {
+      "typed_flow": 21,
+      "bytes": 2,
+      "paired_context_zero_text": 2,
+      "count_bookends": 6
+    },
+    "before_Root_gate_commands": 17,
+    "admitted_remaining_commands": 14,
+    "GET_method_provenance": "Pinned existing fetch_raw source and Root AST verification, original recorded URLs/status and per-command provenance; no separate network trace claimed."
+  },
+  "Root_gate": {
+    "producer": {
+      "bytes": 9630,
+      "sha256": "136b5ef88d338e347c7e786218b81a0d7699a851fd5c1a206459e4114acc0e44"
+    },
+    "receipt": {
+      "bytes": 41657,
+      "sha256": "c58d349b4e59c091feb5c8491e15143d6cdbf3f9ca0b9f53c2a3b9260b3dffc0"
+    },
+    "stdout": {
+      "bytes": 324,
+      "sha256": "64dbaeb2871de2a5ffff0b1fa4dbd3b9d66b0dbaef51c51342a7cb0d04ff0241"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "metadata_preimages_copied": 93,
+    "frozen_Git_preimages_copied": 23,
+    "all_copied_artifacts": 121,
+    "producer_executed_by_worker": false,
+    "Root_fresh_Native_queries": 0,
+    "Root_gate_failures": 0
+  },
+  "physical": {
+    "body_hex": "558BEC8B4508FF34C57864E100FF151022CE005DC3",
+    "body_pin": {
+      "bytes": 21,
+      "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56"
+    },
+    "paired_exact_bytes_equal": true,
+    "paired_context_zero_text_equal": true,
+    "manual_opcode_ModRM_SIB_displacement_immediate_decode": [
+      {
+        "address": "00C11B31",
+        "size": 1,
+        "bytes": "55",
+        "physical_fields": {
+          "opcode_hex": "55",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": false,
+          "encoded_register": 5
+        },
+        "operand_memory_default_segment": "ss",
+        "implicit_stack_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12655409,
+          "bytes": "55",
+          "size": 1,
+          "mnemonic": "push",
+          "op_str": "ebp",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            85,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "sib": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "ebp"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B32",
+        "size": 2,
+        "bytes": "8BEC",
+        "physical_fields": {
+          "opcode_hex": "8B",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": true,
+          "ModRM_hex": "EC",
+          "mod": 3,
+          "reg_or_group": 5,
+          "rm": 4,
+          "SIB_present": false
+        },
+        "operand_memory_default_segment": null,
+        "implicit_stack_segment": null,
+        "expected_detailed_decode": {
+          "address": 12655410,
+          "bytes": "8bec",
+          "size": 2,
+          "mnemonic": "mov",
+          "op_str": "ebp, esp",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            139,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 236,
+          "modrm_offset": 1,
+          "sib": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebp"
+            },
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "esp"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B34",
+        "size": 3,
+        "bytes": "8B4508",
+        "physical_fields": {
+          "opcode_hex": "8B",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": true,
+          "ModRM_hex": "45",
+          "mod": 1,
+          "reg_or_group": 0,
+          "rm": 5,
+          "SIB_present": false,
+          "encoded_displacement_little_endian": "08"
+        },
+        "operand_memory_default_segment": "ss",
+        "implicit_stack_segment": null,
+        "expected_detailed_decode": {
+          "address": 12655412,
+          "bytes": "8b4508",
+          "size": 3,
+          "mnemonic": "mov",
+          "op_str": "eax, dword ptr [ebp + 8]",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            139,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 69,
+          "modrm_offset": 1,
+          "sib": 0,
+          "displacement": 8,
+          "displacement_offset": 2,
+          "displacement_size": 1,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "eax"
+            },
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment_override": null,
+                "base": "ebp",
+                "index": null,
+                "scale": 1,
+                "displacement": 8
+              }
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B37",
+        "size": 7,
+        "bytes": "FF34C57864E100",
+        "physical_fields": {
+          "opcode_hex": "FF",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": true,
+          "ModRM_hex": "34",
+          "mod": 0,
+          "reg_or_group": 6,
+          "rm": 4,
+          "SIB_present": true,
+          "SIB_hex": "C5",
+          "SIB_offset": 2,
+          "scale_bits": 3,
+          "index_bits": 0,
+          "base_bits": 5,
+          "no_base_due_to_mod0_base5": true,
+          "encoded_displacement_little_endian": "7864E100"
+        },
+        "operand_memory_default_segment": "ds",
+        "implicit_stack_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12655415,
+          "bytes": "ff34c57864e100",
+          "size": 7,
+          "mnemonic": "push",
+          "op_str": "dword ptr [eax*8 + 0xe16478]",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            255,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 52,
+          "modrm_offset": 1,
+          "sib": 197,
+          "displacement": 14771320,
+          "displacement_offset": 3,
+          "displacement_size": 4,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment_override": null,
+                "base": null,
+                "index": "eax",
+                "scale": 8,
+                "displacement": 14771320
+              }
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B3E",
+        "size": 6,
+        "bytes": "FF151022CE00",
+        "physical_fields": {
+          "opcode_hex": "FF",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": true,
+          "ModRM_hex": "15",
+          "mod": 0,
+          "reg_or_group": 2,
+          "rm": 5,
+          "SIB_present": false,
+          "encoded_displacement_little_endian": "1022CE00"
+        },
+        "operand_memory_default_segment": "ds",
+        "implicit_stack_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12655422,
+          "bytes": "ff151022ce00",
+          "size": 6,
+          "mnemonic": "call",
+          "op_str": "dword ptr [0xce2210]",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            255,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 21,
+          "modrm_offset": 1,
+          "sib": 0,
+          "displacement": 13509136,
+          "displacement_offset": 2,
+          "displacement_size": 4,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment_override": null,
+                "base": null,
+                "index": null,
+                "scale": 1,
+                "displacement": 13509136
+              }
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B44",
+        "size": 1,
+        "bytes": "5D",
+        "physical_fields": {
+          "opcode_hex": "5D",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": false,
+          "encoded_register": 5
+        },
+        "operand_memory_default_segment": "ss",
+        "implicit_stack_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12655428,
+          "bytes": "5d",
+          "size": 1,
+          "mnemonic": "pop",
+          "op_str": "ebp",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            93,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "sib": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebp"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11B45",
+        "size": 1,
+        "bytes": "C3",
+        "physical_fields": {
+          "opcode_hex": "C3",
+          "prefixes": [],
+          "immediates": [],
+          "ModRM_present": false
+        },
+        "operand_memory_default_segment": "ss",
+        "implicit_stack_segment": "ss",
+        "expected_detailed_decode": {
+          "address": 12655429,
+          "bytes": "c3",
+          "size": 1,
+          "mnemonic": "ret",
+          "op_str": "",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            195,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "sib": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 0,
+          "immediate_size": 0,
+          "operands": []
+        }
+      }
+    ],
+    "actual_detailed_Capstone": [
+      {
+        "address": 12655409,
+        "bytes": "55",
+        "size": 1,
+        "mnemonic": "push",
+        "op_str": "ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          85,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12655410,
+        "bytes": "8bec",
+        "size": 2,
+        "mnemonic": "mov",
+        "op_str": "ebp, esp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 236,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "esp"
+          }
+        ]
+      },
+      {
+        "address": 12655412,
+        "bytes": "8b4508",
+        "size": 3,
+        "mnemonic": "mov",
+        "op_str": "eax, dword ptr [ebp + 8]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 69,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 8,
+        "displacement_offset": 2,
+        "displacement_size": 1,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "eax"
+          },
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": 8
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655415,
+        "bytes": "ff34c57864e100",
+        "size": 7,
+        "mnemonic": "push",
+        "op_str": "dword ptr [eax*8 + 0xe16478]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 52,
+        "modrm_offset": 1,
+        "sib": 197,
+        "displacement": 14771320,
+        "displacement_offset": 3,
+        "displacement_size": 4,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": null,
+              "index": "eax",
+              "scale": 8,
+              "displacement": 14771320
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655422,
+        "bytes": "ff151022ce00",
+        "size": 6,
+        "mnemonic": "call",
+        "op_str": "dword ptr [0xce2210]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 21,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 13509136,
+        "displacement_offset": 2,
+        "displacement_size": 4,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 13509136
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655428,
+        "bytes": "5d",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          93,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12655429,
+        "bytes": "c3",
+        "size": 1,
+        "mnemonic": "ret",
+        "op_str": "",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": []
+      }
+    ],
+    "Capstone_version": "5.0.7",
+    "all_seven_units_agree": true,
+    "physical_capture": {
+      "bytes": 14402,
+      "sha256": "5afa698cb0b1630f6c264e4ff0e5451ea1032eb6e18b837fb8269275e877ca48"
+    },
+    "scaled_memory_operand": {
+      "opcode_group": "FF /6 PUSH m32",
+      "ModRM": "34",
+      "SIB": "C5",
+      "scale_bits": 3,
+      "scale": 8,
+      "index_register": "EAX",
+      "base": null,
+      "mod0_base5_no_base": true,
+      "displacement_little_endian": "7864E100",
+      "displacement": "00E16478",
+      "default_segment": "DS"
+    },
+    "computed_call_operand": {
+      "opcode_group": "FF /2 CALL m32",
+      "ModRM": "15",
+      "SIB_present": false,
+      "base": null,
+      "displacement_little_endian": "1022CE00",
+      "pointer_cell_offset": "00CE2210",
+      "default_segment": "DS",
+      "pointer_cell_contents": "unknown",
+      "physical_return_address": "00C11B44"
+    }
+  },
+  "conditional_CPU_contract": {
+    "conditions": [
+      "Every ESP formula is conditional on actual 32-bit SS stack-address size at that instruction, 32-bit code/operand decoding, valid accesses and normal completion of the listed instructions. No live segment descriptor was queried.",
+      "Offsets, scaled effective addresses and ESP arithmetic are modulo 2^32. Every memory value is read using the registers, segment translation and memory current at that instruction.",
+      "No separation of SS and DS storage, no non-aliasing of stack/data/pointer cells and no preservation of earlier pushed words is assumed.",
+      "After the opaque computed call, all general registers, ESP, EBP, flags, segments and memory are unknown. Actual stack-size and decoding conditions must hold anew for each subsequent formula.",
+      "The source and target reads below express architectural operand-value dependencies; no microarchitectural bus order, fault precedence or live timing is claimed."
+    ],
+    "ordered_steps": [
+      {
+        "address": "00C11B31",
+        "hex": "55",
+        "instruction": "PUSH EBP",
+        "qualified_effect": "Let entry ESP=S and entry EBP=B. Under the stated actual 32-bit SS stack-size condition, ESP:=S-4 and current SS:[S-4]:=B."
+      },
+      {
+        "address": "00C11B32",
+        "hex": "8BEC",
+        "instruction": "MOV EBP,ESP",
+        "qualified_effect": "EBP:=current ESP. In the consecutive normal prefix this is S-4; this is a register assignment, not proof of an Original caller frame."
+      },
+      {
+        "address": "00C11B34",
+        "hex": "8B4508",
+        "instruction": "MOV EAX,[EBP+8]",
+        "qualified_effect": "A:=Read32(current SS, current EBP+8); EAX:=A. In the qualified prefix the offset is S+4. This read occurs after the entry stack write."
+      },
+      {
+        "address": "00C11B37",
+        "hex": "FF34C57864E100",
+        "instruction": "PUSH [EAX*8+E16478]",
+        "qualified_effect": "V:=Read32(current DS, (current EAX*8+00E16478) mod 2^32), before the stack destination write. Under actual 32-bit SS stack size in the prefix, ESP:=S-8 and current SS:[S-8]:=V."
+      },
+      {
+        "address": "00C11B3E",
+        "hex": "FF151022CE00",
+        "instruction": "CALL [00CE2210]",
+        "qualified_effect": "K:=Read32(current DS, 00CE2210) after the preceding memory-PUSH write and before this CALL return-address write. Under actual 32-bit SS stack size in the prefix, ESP:=S-12 and current SS:[S-12]:=00C11B44; the dynamic branch target is K."
+      },
+      {
+        "address": "00C11B44",
+        "hex": "5D",
+        "instruction": "POP EBP",
+        "qualified_effect": "Only if control returns here and actual 32-bit SS stack size holds anew, let Q be returned ESP. Bnew:=Read32(current SS,Q); EBP:=Bnew; ESP:=Q+4. Q has no established relation to S."
+      },
+      {
+        "address": "00C11B45",
+        "hex": "C3",
+        "instruction": "RET",
+        "qualified_effect": "If it normally follows that POP and actual 32-bit SS stack size holds, R:=Read32(current SS,Q+4); ESP:=Q+8 and EIP:=R. R is unknown."
+      }
+    ],
+    "alias_conditions": [
+      "The EBP-relative input is a current SS read after the first PUSH; it is not assumed to be a caller argument or literal 10.",
+      "The scaled DS source is read after the earlier stack write and EAX load. Its value V is determined before its own stack write, even if source and destination alias.",
+      "The memory-PUSH destination can alias the DS:[00CE2210] cell. Consequently K is read after that write and cannot be replaced with a value from an earlier memory snapshot.",
+      "The CALL return-address stack write can itself alias DS:[00CE2210]; K is the operand value determined before that write. No final value of that cell is claimed.",
+      "Any apparent saved EBP or return word may be changed or aliased. After the opaque callee, POP and RET observe the returned SS and current memory, not frozen prefix writes."
+    ],
+    "opaque_call_boundary": "If the computed target returns at C11B44, all returned general registers, EBP, ESP, segments, flags and memory are unknown. Let Q be actual returned ESP; no equality with the prefix is assumed.",
+    "flags": "The listed local PUSH/MOV/CALL/POP/RET operations do not modify arithmetic flags on normal completion; flags after the opaque call remain independently unknown.",
+    "final_if_normal_return": {
+      "EBP": "Bnew from current SS:[Q]",
+      "ESP": "Q+8 only under the explicitly renewed 32-bit SS stack-size condition",
+      "EIP": "R from current SS:[Q+4]",
+      "other_state": "unknown returned state except the listed local effects"
+    }
+  },
+  "finite_Git_proof": {
+    "positive_paths": [
+      "config/target.json",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "tools/ghidra_typed_flow.py",
+      "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+      "reports/cc12_locale_onexit_cleanup_direct_target_entry.json",
+      "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "reports/cc12_locale_onexit_cleanup_direct_target_entry_primary.json"
+    ],
+    "positive_count": 8,
+    "actual_commit_and_tree_objects": 6,
+    "Root_distinct_frozen_copies_verified": true,
+    "Source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "Source_contents_read": false,
+    "Source_census": false,
+    "prior_proof_archive_recursion": false,
+    "current_Main_Source_equality_claimed": false
+  },
+  "proof": {
+    "core_archive": {
+      "path": "local/cc12_locale_onexit_cleanup_direct_target_body_metadata/core_v1.zip",
+      "bytes": 2804663,
+      "sha256": "a63f3ce849d9af7cae6fa7c7a518b73223c7fa4cdce9dd8852a8776547162b72"
+    },
+    "copy_archive": {
+      "path": "local/cc12_locale_onexit_cleanup_direct_target_body_metadata/core_v1_copy.zip",
+      "bytes": 2804663,
+      "sha256": "a63f3ce849d9af7cae6fa7c7a518b73223c7fa4cdce9dd8852a8776547162b72"
+    },
+    "members_including_manifest": 325,
+    "distinct_file_ids": [
+      281475006254478,
+      281475006254479
+    ],
+    "replay": {
+      "bytes": 23807,
+      "sha256": "94430b0f5d020262290f266611923377756edd0fbdef29d913f2ac9172d8781e"
+    },
+    "guard": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "original_receipt": {
+      "bytes": 30378,
+      "sha256": "445125bfd8feb835aeb9a07b51b01048da035745a172c9ee1534969e948fc97c"
+    },
+    "copy_receipt": {
+      "bytes": 30378,
+      "sha256": "445125bfd8feb835aeb9a07b51b01048da035745a172c9ee1534969e948fc97c"
+    },
+    "first_attempt_original_and_copy_PASS": true,
+    "each_audit": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "local_capture_evidence": {
+      "completed_local_invocations": 8,
+      "all_producers_pinned_before_execution": true,
+      "original_streams_retained": true,
+      "offline_failures": 0,
+      "current_core_packaging_invocation_pinned": true
+    },
+    "post_archive_packaging_capture": [
+      {
+        "path": "local_core1.invocation.json",
+        "bytes": 735,
+        "sha256": "3e6ed661cb6d866748417f17ae142d0fac01274e919013fca79cd4dd0140e540"
+      },
+      {
+        "path": "local_core1.result.json",
+        "bytes": 302,
+        "sha256": "363f2e38e3b51e5f3fc187d32e1c58e8220bff7ac4582b45867de22ea9052985"
+      },
+      {
+        "path": "local_core1.stdout.bin",
+        "bytes": 463,
+        "sha256": "37bd87732e73768fa97feb871e717303a140525260a3f69d6c59712f6acaf232"
+      },
+      {
+        "path": "local_core1.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "delivery": "Separate post-commit finite actual-Git proof verifies exactly two output paths, all eight positive inputs unchanged and working/index/committed output-byte equality."
+  },
+  "failure_scope": {
+    "scope": "This body-metadata packet and its current Root listing gate only; historical failures in accepted input packets are not reclassified.",
+    "worker_Native_failures": 0,
+    "worker_offline_failures": 0,
+    "Root_current_gate_failures": 0,
+    "guarded_core_failures": 0,
+    "physical_producers_pinned_before_execution": true,
+    "original_stdout_stderr_captured_on_first_attempt": true,
+    "prior_producer_preimages_preserved": true
+  },
+  "limitations": [
+    "The saved label __unlock, complete owner range and no-return/thunk flags do not establish an unlock operation, lock number, parameter type or callee convention.",
+    "00E16478 is an encoded DS displacement with EAX scaled by eight; no data cell, table, bounds or pointed object was read.",
+    "00CE2210 is an encoded DS pointer-cell offset. Its contents and destination/provider remain unknown; no import cell, descriptor or callee query was made.",
+    "EXTERNAL:00000159 is a separate saved effective-flow scalar, not a RAM address, cell contents, dynamic EIP or authenticated provider.",
+    "No relation between Q and S, restoration of original B, argument cleanup, whole-function stack balance, return identity or Original ABI compatibility is established.",
+    "Existing Source contents were not read or compared inside this packet. Source trees are recorded by identity only, with no current-Main equality claim.",
+    "No C11B46, prototype, neighboring function, descriptor, import-cell, data, EXTERNAL or other target query; no C++ change, build, test, probe, Original/game process, OS/audio validation, runtime claim or GPR mutation."
+  ],
+  "next_boundary": "Root reviews the complete Native body separately before considering any explicit Source comparison or provider/ABI scope."
+}
