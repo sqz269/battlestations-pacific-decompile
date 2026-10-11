@@ -173,7 +173,7 @@ void session_browser_set_page_0057a0f0(SessionBrowserState& screen, std::int32_t
             return;
         }
         if (host.list_has_rows_00a9ac50()) {                         // 0057A4D1..0057A502
-            host.select_first_0056aa70();
+            session_browser_focus_list_0056aa70(host);
             host.widget_virtual(BW::EmptyText4C, kShow, 0);
             host.widget_virtual(BW::SessionList30, kShow, 1);
             return;
@@ -238,7 +238,7 @@ void session_browser_on_listbox_activate_0057aef0(SessionBrowserState& screen, b
 
 // 0057B600, __thiscall(screen, float seconds), RET 4. EBX = 0 throughout.
 void session_browser_update_0057b600(SessionBrowserState& screen, float seconds, SessionBrowserHost& host) {
-    host.layout_00568930();                                          // 0057B607
+    session_browser_layout_filter_rows_00568930(screen, host);                                        // 0057B607
     const bool listing_ready = host.session_query(0x19C);            // [ESP+0Bh]
     const bool has_sessions = host.session_count_00566310() != 0;    // inlined (end - begin) / 0A0h
 
@@ -320,7 +320,7 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
             return;
         }
         if (screen.page == 1) {
-            host.back_from_results_00568cb0();
+            session_browser_back_from_results_00568cb0(host);
             return;
         }
         if (screen.page == 2) {
@@ -348,13 +348,13 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
         if (host.action_004d92b0(0x4F) && host.widget_byte_85(BW::SessionList30) && host.session_query(0x198)) {
             // 0057BA34..0057BA4B: XUID first, then the user index; 00A4D440 is stdcall
             // (user, XUID) and pops the two dwords pushed before 00A3EAC0.
-            const std::uint64_t xuid = host.selected_player_xuid_00568d40();
+            const std::uint64_t xuid = session_browser_selected_xuid_00568d40(host);
             const std::uint32_t user = host.signed_in_user_00a3eac0();
             host.show_gamer_card_00a4d440(user, xuid);
             return;
         }
         if (!host.widget_byte_85(BW::SessionList30) && host.action_004d92b0(0x46)) {
-            host.list_action_00568df0(0);
+            session_browser_select_toggle_00568df0(screen, 0, host);
             return;
         }
         if (!host.widget_byte_85(BW::SessionList30) && host.pressed_004c43c0(0x47)) {
@@ -369,7 +369,7 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
         }
         if (host.action_004d92b0(0x4C)) {
             if (host.widget_byte_85(BW::FilterPanel2C)) host.filter_left_0056ee00();
-            else host.list_left_0056aad0();
+            else session_browser_return_to_list_0056aad0(screen, host);
             return;
         }
         if (host.action_004d92b0(0x4D)) {
@@ -424,6 +424,149 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
         host.session_set_00076a7a0(screen.field_24);                 // 0057BD5D..0057BD76
         session_browser_set_page_0057a0f0(screen, 2, host);
     }
+}
+
+// 00568930, ESI = screen, EBX = row, EBP = last visible row.
+void session_browser_layout_filter_rows_00568930(SessionBrowserState& screen, SessionBrowserHost& host) {
+    float y = kSessionBrowserFilterRowTop;                           // 00568933 (00CEED68)
+    std::int32_t last_visible = 0;
+    for (std::int32_t row = 0; row < 9; ++row) {                     // 00568950..005689AB
+        const float x = host.widget_f4_x_00aa67f0();
+        host.filter_row_set_position_00aa7dc0(row, x, y, 0.0F);
+        y = y + screen.row_spacing_25c;                              // FLD +25Ch, FADD, FSTP float
+        if (host.filter_row_visible_38(row)) last_visible = row;     // CMOVNE EBP, EBX
+    }
+    // 005689AD..005689C4: FILD (last + 1), FMUL float, FADD double 00CEED60, rounded to float.
+    const float height = static_cast<float>(
+        static_cast<double>(last_visible + 1) * screen.row_spacing_25c + kSessionBrowserFilterRowPad);
+    if (height == screen.field_240) return;                          // FUCOMIP; LAHF; TEST AH,44h; JNP
+    screen.field_240 = height;                                       // 005689DC..00568A18
+    host.scroller_attach_content_00683790(0x12C, 0);
+    const float range = static_cast<float>(screen.field_240 - host.widget_height_00aa6740(BW::Viewport44));
+    host.scroller_set_scroll_range_006834a0(0x12C, range);
+}
+
+namespace {
+
+// 00568AFD..00568B52 and 00568C4F..00568CA2: the pressed/hovered widget is redrawn by its kind.
+void browser_highlight(SessionBrowserEventHost& event, bool state) {
+    if (event.event_kind_5c() == 6) {
+        event.event_virtual_88(state ? 1 : 0, 0, 1.0F);
+    } else if (event.event_kind_5c() == 0x12) {
+        event.event_virtual_84(state ? 1 : 0);
+    }
+}
+
+}  // namespace
+
+// 00568A30, ESI = screen+0Ch, EDI = event. Offsets below are screen offsets (listener + 0Ch).
+void session_browser_on_widget_released_00568a30(SessionBrowserState& screen, SessionBrowserEventHost& event) {
+    if (event.event_is(0x40) || event.event_is(0x3C)) return;        // 00568A38..00568A44
+    if (event.event_is(0xBC)) {
+        event.scroller_end_thumb_drag_00683320(0x12C);
+    } else if (event.event_is(0xB8)) {
+        event.scroller_end_thumb_drag_00683320(0x188);
+    } else if (event.event_is(0xA8) || event.event_is(0xAC)) {
+        event.scroller_set_auto_scroll_00683300(0x12C, 0, 0.0F, 0);
+    } else if (event.event_is(0xB0) || event.event_is(0xB4)) {
+        event.scroller_set_auto_scroll_00683300(0x188, 0, 0.0F, 0);
+    } else if (event.event_is(0x7C) || event.event_is(0x80)) {
+        event.scroller_set_auto_scroll_00683300(0x1E4, 0, 0.0F, 0);
+        screen.refresh_timer = kSessionBrowserRefreshSeconds;        // 00568AB4..00568ABC
+    } else if (event.event_is(0x78)) {
+        event.scroller_end_thumb_drag_00683320(0x1E4);
+        screen.refresh_timer = kSessionBrowserRefreshSeconds;
+    }
+    browser_highlight(event, event.event_byte_d4());                 // SETNE on byte +D4h
+}
+
+// 00568B60, ESI = screen+0Ch, EDI = event.
+void session_browser_on_widget_hover_00568b60(SessionBrowserState& screen, bool hovered, SessionBrowserHost& host,
+    SessionBrowserEventHost& event) {
+    if (event.event_kind_5c() == kGuiEventCommandButton) {           // 00568B71..00568BA4
+        event.event_virtual_4c(hovered ? 0.5F : 1.0F);               // 00CE3800 / 00D7A24C
+        return;
+    }
+    if (event.event_is(0x114)) {                                     // 00568BAB..00568BE0
+        if (!host.widget_byte_85(BW::SessionList30)) return;
+        host.widget_virtual(BW::Toggle3C, kToggle, 1);
+        screen.toggle_50 = true;
+        host.list_clear_00a9cdc0(BW::SessionList30);
+        return;
+    }
+    if (event.event_is(0x40) || event.event_is(0x3C)) return;        // 00568BE3..00568BEF
+    // 00568BF5..00568C4D: the compiler's chain. Only an event equal to +BCh, +B8h and +78h at
+    // once with all three scrollers dragging skips the highlight.
+    const bool listed = event.event_is(0xAC) || event.event_is(0xA8) || event.event_is(0xB0) ||
+        event.event_is(0xB4) || event.event_is(0x7C) || event.event_is(0x80);
+    if (!listed && event.event_is(0xBC) && screen.scroller_12c_174 && event.event_is(0xB8) &&
+        screen.scroller_188_1d0 && event.event_is(0x78) && screen.scroller_1e4_22c) {
+        return;
+    }
+    browser_highlight(event, hovered);
+}
+
+// 00568CB0.
+void session_browser_back_from_results_00568cb0(SessionBrowserHost& host) {
+    host.session_call(0x8C);                                         // 00568CB0..00568CBE
+    host.session_set_mode_0076fad0(0);                               // 00568CC0..00568CCE
+    host.pop_request_interface_006881f0();                           // 00568CD9 tail JMP
+}
+
+// 00568D40, EBX = screen, EDI = screen+2A0h.
+std::uint64_t session_browser_selected_xuid_00568d40(SessionBrowserHost& host) {
+    if (!host.online_1fe4()) return 0;                               // 00568D41..00568D51
+    const std::size_t count = host.session_count_00566310();         // inlined
+    if (count == 0) return 0;
+    if (host.list_selected_index_00a9c920() < 0) return 0;           // 00568D7F..00568D89
+    if (static_cast<std::uint32_t>(host.list_selected_index_00a9c920()) >= count) return 0;  // JAE
+    const std::int32_t index = host.list_absolute_selection_005661c0();  // 00568DBA
+    return host.session_record_005663b0(static_cast<std::size_t>(index)).xuid_98;  // +98h/+9Ch
+}
+
+// 00568DF0, ESI = screen; both arms end in a tail JMP to list virtual +60h(0).
+void session_browser_select_toggle_00568df0(SessionBrowserState& screen, std::int32_t which, SessionBrowserHost& host) {
+    if (which == 0) {
+        if (screen.toggle_51 || host.widget_byte_85(BW::FilterPanel2C)) return;
+        host.widget_virtual(BW::Toggle40, kToggle, 1);
+        screen.toggle_50 = false;
+        screen.toggle_51 = true;
+        host.widget_virtual(BW::Toggle3C, kToggle, 0);
+        host.widget_virtual(BW::SessionList30, kFocus, 0);
+        return;
+    }
+    if (which != 1) return;
+    if (screen.toggle_50 || host.widget_byte_85(BW::FilterPanel2C)) return;
+    screen.toggle_51 = false;
+    host.widget_virtual(BW::Toggle40, kToggle, 0);
+    host.widget_virtual(BW::Toggle3C, kToggle, 1);
+    screen.toggle_50 = true;
+    host.widget_virtual(BW::SessionList30, kFocus, 0);
+}
+
+// 0056AA70. The list argument is compared with +30h after the input tick; all callers pass +30h.
+void session_browser_focus_list_0056aa70(SessionBrowserHost& host) {
+    host.input_owner_update_00a92c40(0.0F);                          // 0056AA70..0056AA80
+    if (host.session_count_00566310() == 0) host.list_clear_00a9cdc0(BW::SessionList30);
+    else host.widget_virtual(BW::SessionList30, kFocus, 1);          // tail JMP virtual +60h(1)
+}
+
+// 0056AAD0, ESI = screen.
+void session_browser_return_to_list_0056aad0(SessionBrowserState& screen, SessionBrowserHost& host) {
+    if (screen.toggle_50) {                                          // 0056AAD3..0056AAFE
+        if (!host.list_has_rows_00a9ac50()) return;
+        screen.toggle_50 = false;
+        host.widget_virtual(BW::Toggle3C, kToggle, 0);
+    } else if (screen.toggle_51) {                                   // 0056AB00..0056AB2A
+        if (!host.list_has_rows_00a9ac50()) return;
+        host.widget_virtual(BW::Toggle40, kToggle, 0);
+        screen.toggle_51 = false;
+    } else {
+        return;
+    }
+    session_browser_focus_list_0056aa70(host);                       // 0056AB2D
+    host.widget_virtual(BW::EmptyText4C, kShow, 0);
+    host.widget_virtual(BW::SessionList30, kShow, 1);
 }
 
 // 0056ED20, SEH 00C6ECD0. The selected row of +34h, its "setting_value_Text" child, 00ABAED0(text, 1).
@@ -528,7 +671,7 @@ void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, Sess
                 host.widget_virtual(BW::FilterList34, kFocus, 0);
                 return;
             }
-            host.back_from_results_00568cb0();
+            session_browser_back_from_results_00568cb0(host);
             return;
         }
         if (command == 0xA7) {                                       // refresh
@@ -538,7 +681,7 @@ void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, Sess
         if (command != 0xA5) return;                                 // 0057B084..0057B096
         if (!host.widget_byte_85(BW::SessionList30)) return;         // 0057B09C..0057B0A6
         if (!event.session_signed_in_198()) return;                  // 0057B0AC..0057B0BE
-        const std::uint64_t xuid = host.selected_player_xuid_00568d40();  // 0057B0CD
+        const std::uint64_t xuid = session_browser_selected_xuid_00568d40(host);  // 0057B0CD
         const std::uint32_t user = host.signed_in_user_00a3eac0();   // 0057B0D6
         host.show_gamer_card_00a4d440(user, xuid);                   // 0057B0DC
         return;
@@ -584,7 +727,7 @@ void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, Sess
         const bool thumb = event.event_is(0x78);
         const std::int32_t direction = event.event_is(0x80) ? 2 : 1;
         if (host.widget_byte_85(BW::FilterPanel2C)) return;
-        host.list_left_0056aad0();
+        session_browser_return_to_list_0056aad0(screen, host);
         if (!host.widget_byte_85(BW::SessionList30)) return;
         if (thumb) event.scroller_begin_thumb_drag_00683a40(0x1E4);
         else event.scroller_set_auto_scroll_00683300(0x1E4, direction, kSessionBrowserAutoScrollStep, 1);

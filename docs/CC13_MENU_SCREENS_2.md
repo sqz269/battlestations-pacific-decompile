@@ -130,6 +130,26 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   select their row (00A9C8F0 with event+D8h) and step it up/down. Non-returning paths end by
   highlighting the widget: kind 6 -> virtual +88h(2, 0, 1.0), kind 12h -> virtual +84h(2).
 
+## Segment 18 browser helpers (second turn, lease `cc13_menus4_seg18`)
+
+Containment of the listener slots 00568A30 (+0Ch) and 00568B60 (+18h) of vtable 00CEF100: 00568930
+ends with `RET` at 00568A24 followed by INT3 padding (00568A25..00568A2F), and Ghidra's body of
+00568930 holds exactly the 72 instructions of the descent, so both slots are separate functions.
+They and the destructor 005692E0 (ref 00CEED6C) were defined. Reconstructed and build-tested:
+
+- **00568930 LayoutFilterRows**: rows +54h..+74h at x = 00AA67F0(+F4h).x, y = 0.075 (00CEED68) plus
+  the row step +25Ch per row (rounded to float each step); the content height (last visible row + 1)
+  * step + 0.0111 (00CEED60) is applied to the +12Ch scroller (00683790, then range = height minus
+  the +44h viewport height) only when it differs from +240h, which the enter resets to 0.
+- **00568A30 OnWidgetReleased / 00568B60 OnWidgetHover**: end thumb drags (00683320) or auto-scroll
+  (00683300 with 0) on the three scrollers, the result scroller restarting the refresh countdown;
+  hover scales command buttons (virtual +4Ch, 0.5 hovered, else 1.0), selects toggle +3Ch from
+  widget +114h while the list is focused, and redraws the rest by kind (6: +88h, 12h: +84h). The hover
+  path's compare chain is reproduced literally (it can only skip the redraw for an event equal to three
+  different widgets at once).
+- **00568CB0 BackFromResults** (session +8Ch, mode 0, pop request), **00568D40 GetSelectedXuid**
+  (record +98h/+9Ch), **00568DF0 SelectToggle**, **0056AA70 FocusList** and **0056AAD0 ReturnToList**.
+
 ## Smaller reconstructions
 
 - **0052E150 Credits exit**: stops the credits stream (*(00E198AC)+54h, 00A86F40), restarts the menu
@@ -192,7 +212,7 @@ library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model p
 0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
 the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
 
-Call sites: `reports/cc13_menu_screens_2.json`, 233 rows, `tools/verify_report_calls.py`: 0 failed.
+Call sites: `reports/cc13_menu_screens_2.json`, 256 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 
@@ -231,3 +251,27 @@ Open, in order of value:
    build camera matrices; coordinate with the camera lane first.
 5. Left unnamed: 005347F0 (vtable 00CED548 slot +0Ch, tests 78h/49h/46h), 00519340 (unit vtables
    +130h, returns +3ACh), 0057D3E0 (00CEFC24 run, `XOR AL,AL; RET 8`).
+
+## Handoff update (cc13-menus4, second turn, 2026-10-11)
+
+0334b0af1 adds the segment-18 browser helpers (8 reconstructed, 3 functions defined, 9 names) and the
+dated 0057B530 correction appended to docs/MULTI_MENU_SCREENS.md; 38 functions are now reconstructed and
+build-tested, 256 call rows, 0 failed. Item 1 of the handoff above is done for 00568930..0056AAD0 and
+the two listener slots. Still open, in order:
+
+1. FinishJoin 0057AC10, first reading from the pseudocode (asm not read): when +288h is set it cancels
+   (session +8Ch, mode 0, pop request); it then walks the client's +94h results, looks each record's
+   first dword up in the tree at +278h (0056B850, header +27Ch) and, for a key not yet in the tree that
+   00574100 accepts, stores 00E08760 = -1.0, inserts the key (00571FD0) and joins that record
+   (0057A9C0(record, 0)). With no candidate it pops the request when 006878D0 > 0, sets 00E19610 = 1,
+   pushes request 10h, copies byte *(00F8A2FC)+4Dh to game+2059h, returns to page 0 (+270h = 2.5,
+   +274h = -1) and clears the tree. So +278h is the set of sessions already tried.
+2. JoinSession 0057A9C0 (lobby options 00575xxx copy, sessionname Lua global from the record's wide
+   name, session +8Ch, mode 2, then for record +04h == 0FFh a session block copied into
+   *(game+207Ch)+96Ch..+9A4h via 00568CE0, mode 6 and SetPage(2); otherwise 007701F0 and SetPage(2) or
+   the error path with request 1Bh).
+3. The row builders 00576D20/005789C0/00579980/00577650, BindLayout 0056BDA0, 0056B610, 0056D660 (filter
+   value refresh, ERROR!), PrepareEnter 00570300, selection changed 005787E0.
+4. Credits enter 0052EE30, tactical library enter 00511F40 / update 005162B0, the free camera
+   (0053DD90, 00540390; the camera conventions are in docs/CC13_CAMERA_CONTROLLERS.md, only cc9's
+   hud_movie_camera.cpp is off-limits).
