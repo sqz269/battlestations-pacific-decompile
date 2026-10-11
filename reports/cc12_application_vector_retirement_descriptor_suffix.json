@@ -1,0 +1,512 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_descriptor_suffix",
+  "status": "numeric_descriptor_suffix_evidence_only",
+  "verdict": "Two exact24B reads ofDB57C4..DB57DB agree. Independent manual and struct little-endian decoders return DWORDs00000000,00000000,00000000,00000000,00000000,00000001. Signed values also equal0,0,0,0,0,1. Accepted positive prefix12B is preserved numerically from an explicit immediate Git report. ClassicFH3 layout, field roles and Original handler behavior remain unauthenticated.",
+  "base_commit": "a222493299f33233400eb87f63c2cf9fa91fd5c9",
+  "frozen_tree": "91da8970ceaa585f3ec03d930412df3b234d5fff",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX.md",
+      "blob": "093945fd2901c617665e5582b7d1ee8c07df18f2",
+      "sha256": "9fa18ce993ef3faa3c175fb37fe1ffaedb6e5789fdf631d4d2b167fa9cb425fb",
+      "length": 3995
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix.json",
+      "blob": "af60a15497b7e9a9571e80d34bc4171805025e15",
+      "sha256": "63ed03771662bf21103e020791a116b92d3550fa2318c21dec0986dcea653e41",
+      "length": 13066
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX_PRIMARY.md",
+      "blob": "6645b30d291ea4573e1828b9e5c72594687c0931",
+      "sha256": "91d5948edda11aa3fb4e9984121a3202c402fa8210e5f72268b2499d42ce516c",
+      "length": 2677
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix_primary.json",
+      "blob": "d5521db355b8a4173e7e962d30afec5e6223aa53",
+      "sha256": "883075a5bb02c626bea08a29fcf2c3275e74b8427466e66b9c077bc87d56db94",
+      "length": 14048
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_SUFFIX.md",
+    "reports/cc12_application_vector_retirement_descriptor_suffix.json"
+  ],
+  "positive_prefix": {
+    "input": {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix.json",
+      "blob": "af60a15497b7e9a9571e80d34bc4171805025e15",
+      "sha256": "63ed03771662bf21103e020791a116b92d3550fa2318c21dec0986dcea653e41",
+      "length": 13066
+    },
+    "selector": "prefix",
+    "Root_acceptance_input": {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix_primary.json",
+      "blob": "d5521db355b8a4173e7e962d30afec5e6223aa53",
+      "sha256": "883075a5bb02c626bea08a29fcf2c3275e74b8427466e66b9c077bc87d56db94",
+      "length": 14048
+    },
+    "start": "00DB57B8",
+    "end_inclusive": "00DB57C3",
+    "length": 12,
+    "hex": "2205931901000000b057db00",
+    "sha256": "f739968ba1ecaa1310f01fdbc561487a62ea03c389bc22582ca82714940100ec",
+    "words": [
+      {
+        "word_index": 0,
+        "descriptor_offset": 0,
+        "address": "00DB57B8",
+        "hex": "19930522",
+        "unsigned": 429065506,
+        "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+      },
+      {
+        "word_index": 1,
+        "descriptor_offset": 4,
+        "address": "00DB57BC",
+        "hex": "00000001",
+        "unsigned": 1,
+        "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+      },
+      {
+        "word_index": 2,
+        "descriptor_offset": 8,
+        "address": "00DB57C0",
+        "hex": "00DB57B0",
+        "unsigned": 14374832,
+        "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+      }
+    ],
+    "boundary": "Exact12B selector bytes come from the finite accepted Git report blob. The saved36B DataDB in that report previously left its last24B unread. This packet issues no prefix-byte query and opens no prior proof archive."
+  },
+  "Root_gate": {
+    "artifacts": {
+      "Root_suffix_gate.json": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_vector_retirement_descriptor_suffix_primary\\Root_gate.json",
+        "length": 13135,
+        "sha256": "e00a750d1697b23af27c4bb03416b6608e6353ae20fd2ef515e3b48cd59eb9e2"
+      },
+      "Root_suffix_gate.py": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_vector_retirement_descriptor_suffix_primary\\Root_gate.py",
+        "length": 3699,
+        "sha256": "96d841bcae49e0d152076875ac6f6af08a63bc96d6d2f1bb54b2e7fad9fa6d13"
+      }
+    },
+    "admission": {
+      "admitted": true,
+      "suffix_address": "00DB57C4",
+      "suffix_end_inclusive": "00DB57DB",
+      "suffix_length": 24,
+      "metadata_addresses": [
+        "00DB57B8",
+        "00DB57B9",
+        "00DB57BA",
+        "00DB57BB",
+        "00DB57BC",
+        "00DB57BD",
+        "00DB57BE",
+        "00DB57BF",
+        "00DB57C0",
+        "00DB57C1",
+        "00DB57C2",
+        "00DB57C3",
+        "00DB57C4",
+        "00DB57C5",
+        "00DB57C6",
+        "00DB57C7",
+        "00DB57C8",
+        "00DB57C9",
+        "00DB57CA",
+        "00DB57CB",
+        "00DB57CC",
+        "00DB57CD",
+        "00DB57CE",
+        "00DB57CF",
+        "00DB57D0",
+        "00DB57D1",
+        "00DB57D2",
+        "00DB57D3",
+        "00DB57D4",
+        "00DB57D5",
+        "00DB57D6",
+        "00DB57D7",
+        "00DB57D8",
+        "00DB57D9",
+        "00DB57DA",
+        "00DB57DB"
+      ],
+      "Root_pins": {
+        "Root_suffix_gate.json": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_vector_retirement_descriptor_suffix_primary\\Root_gate.json",
+          "length": 13135,
+          "sha256": "e00a750d1697b23af27c4bb03416b6608e6353ae20fd2ef515e3b48cd59eb9e2"
+        },
+        "Root_suffix_gate.py": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_vector_retirement_descriptor_suffix_primary\\Root_gate.py",
+          "length": 3699,
+          "sha256": "96d841bcae49e0d152076875ac6f6af08a63bc96d6d2f1bb54b2e7fad9fa6d13"
+        }
+      },
+      "reads": 2,
+      "counts": "Before first read, between reads, before closing typed36, and after closing typed36.",
+      "scope": "Root accepted all72 paired metadata responses. Exactly two24B suffix reads; no text, prototype, adjacent data, body, target or new prefix-byte query."
+    },
+    "producer_boundary": "Exact Root JSON and producer bytes copied from the named Root private gate path and retained under explicit packet filenames. Root producer body is pinned opaque and not executed by this worker."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "modification_number": "98",
+    "function_count": 64730,
+    "autostart": false,
+    "read_only": true,
+    "verification": "Before/after identities in each typed batch and all108 direct raw typed responses identify the same saved project/program and epoch. Six count checkpoints remain64730."
+  },
+  "saved_listing": {
+    "start": "00DB57B8",
+    "end_inclusive": "00DB57DB",
+    "length": 36,
+    "unit": {
+      "address": {
+        "space": "ram",
+        "offset": "00db57b8"
+      },
+      "length": 36,
+      "java_class": "ghidra.program.database.code.DataDB",
+      "kind": "data",
+      "defined": true
+    },
+    "metadata_addresses": 36,
+    "typed_sweeps": 3,
+    "all_instruction_at_null": true,
+    "all_instruction_containing_null": true,
+    "entry_code_unit_at_equals_containing": true,
+    "all_containing_units_same": true,
+    "all_35_interior_code_unit_at_null": true,
+    "all_function_aliases_null": true,
+    "all_function_lists_empty": true,
+    "all_instruction_flow_null": true,
+    "boundary": "Defined DataDB36 is saved listing metadata. It is not an authenticated C++ EH descriptor type or a function body."
+  },
+  "suffix": {
+    "start": "00DB57C4",
+    "end_inclusive": "00DB57DB",
+    "length": 24,
+    "reads": 2,
+    "reads_equal": true,
+    "hex": "000000000000000000000000000000000000000001000000",
+    "sha256": "640e494dd31edb66b0748239aa90547d77e8ab37843b5bc8352a5f39e5296f06",
+    "read_boundary": "Exactly24B per request, wholly inside the admitted36B saved unit. No prefix reread, neighboring data, instruction text, prototype, target, callee or destination query."
+  },
+  "suffix_words": [
+    {
+      "word_index": 3,
+      "descriptor_offset": 12,
+      "address": "00DB57C4",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 4,
+      "descriptor_offset": 16,
+      "address": "00DB57C8",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 5,
+      "descriptor_offset": 20,
+      "address": "00DB57CC",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 6,
+      "descriptor_offset": 24,
+      "address": "00DB57D0",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 7,
+      "descriptor_offset": 28,
+      "address": "00DB57D4",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 8,
+      "descriptor_offset": 32,
+      "address": "00DB57D8",
+      "hex": "00000001",
+      "unsigned": 1,
+      "signed": 1,
+      "provenance": "fresh paired exact24B suffix reads"
+    }
+  ],
+  "nine_numeric_words_by_offset": [
+    {
+      "word_index": 0,
+      "descriptor_offset": 0,
+      "address": "00DB57B8",
+      "hex": "19930522",
+      "unsigned": 429065506,
+      "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+    },
+    {
+      "word_index": 1,
+      "descriptor_offset": 4,
+      "address": "00DB57BC",
+      "hex": "00000001",
+      "unsigned": 1,
+      "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+    },
+    {
+      "word_index": 2,
+      "descriptor_offset": 8,
+      "address": "00DB57C0",
+      "hex": "00DB57B0",
+      "unsigned": 14374832,
+      "provenance": "retained accepted positive12B prefix report; not freshly byte-read in this packet"
+    },
+    {
+      "word_index": 3,
+      "descriptor_offset": 12,
+      "address": "00DB57C4",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 4,
+      "descriptor_offset": 16,
+      "address": "00DB57C8",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 5,
+      "descriptor_offset": 20,
+      "address": "00DB57CC",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 6,
+      "descriptor_offset": 24,
+      "address": "00DB57D0",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 7,
+      "descriptor_offset": 28,
+      "address": "00DB57D4",
+      "hex": "00000000",
+      "unsigned": 0,
+      "signed": 0,
+      "provenance": "fresh paired exact24B suffix reads"
+    },
+    {
+      "word_index": 8,
+      "descriptor_offset": 32,
+      "address": "00DB57D8",
+      "hex": "00000001",
+      "unsigned": 1,
+      "signed": 1,
+      "provenance": "fresh paired exact24B suffix reads"
+    }
+  ],
+  "decode": {
+    "manual": "For each four-byte group, sum byte[i] shifted by8*i, then subtract2^32 for a signed value if bit31 is set.",
+    "independent": "struct.unpack(<6I) for the fresh suffix and <3I for the positive prefix; exact agreement.",
+    "manual_unsigned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "independent_unsigned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "provenance": "The nine-word presentation combines prior positive12B evidence and fresh24B evidence; it is not a fresh36B capture.",
+    "interpretation_boundary": "Values are numeric only. ClassicFH3 field assignments and their semantics remain conditional and unauthenticated; no pointer or field value is followed."
+  },
+  "capture_integrity": {
+    "typed_raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "typed_response_count": 108,
+    "unique_metadata_addresses": 36,
+    "per_address_raw_sha256": {
+      "00db57b8": "e87a635cfc2c600fc9404486e2f3a1d271ac377437dd04ec286ca7cb3eb862b3",
+      "00db57b9": "12f80c441e1be6e88e8e4cb6ce44017987d4cc6a784307047eef7358ddb21154",
+      "00db57ba": "9cbeef1281a86042df8d8b610ba3909b68ddbcd84590cfca5f72bb9b2b4d5ceb",
+      "00db57bb": "b7839438a37b4b80990ae9dea2266498a572eb8db99a888abce963b49e56095a",
+      "00db57bc": "070a5246632efe19c92c695a4a86ddf4d8383fa8f15accfd4508942986000c27",
+      "00db57bd": "e5268518399195d29b7a09b9be1a53a72ba79116a9afa23a71e9786607bdb05a",
+      "00db57be": "2a91c2cffbc82cb9c61cbd467e33f374004e8ac059413bdf5d035e9d123f50e7",
+      "00db57bf": "4a15edd8e52a12de07a5a02eacb2d7a79be7cceb64a8041bb479ebf0b2f4d4de",
+      "00db57c0": "e28949dc9a35b59662c67395ee356bba0316a5b3cf478acfcd471bf300610826",
+      "00db57c1": "32d2da141a9b4f0fa85d251713126b6158b4dc9967a6c4a1d010f33219cde208",
+      "00db57c2": "0be5741325f9f6d043b977c360011c4121361adc29dc10fb667271fa05a2c5d0",
+      "00db57c3": "11a100a00f0f7cdbd5e013a1373f5761b6f363860f75a90412cd3c8a48f029ac",
+      "00db57c4": "69ca7403bb96b7b61f4fb62337c657cc3e9d1a3f90b3148d4a5e34ed27e95acd",
+      "00db57c5": "b0d564eb3ce735c0b412c4524b83d5ba51874d137f643df5400c46454dca19bc",
+      "00db57c6": "0a40bb0ccc9b133eae0a296dafe74490f23e3f95724bd3c574ebf16e071ec1d2",
+      "00db57c7": "a2018a7edcfedbe863566f8db01c951ed72f81adf67fd24149cfe9cc6efa182d",
+      "00db57c8": "5f841eac1138e6e5f8a95cfb32c41da465b07649aa1056d69864e49b7f7c7e6d",
+      "00db57c9": "319453d417f8b13d02e4fa307e39c3f2e18efd572d410ec7ecf95ebc094d5083",
+      "00db57ca": "c9478541693996fc3c0991d2ea8ddd619ac99aee92e6b80939e27b3b2cd7382e",
+      "00db57cb": "ce96df69b1aa31633a07e8156d8bfd89504ad5f48a4c18b422acde71c16059bd",
+      "00db57cc": "458d8a2d2d884e9533f4076dfc22002f5c4e77d0b10fdf7d9253e54ff568c1b6",
+      "00db57cd": "f6cdea723d45d0d1f6ad1da35304c917184a43eb7cd9d93e4a7e47a9bb2a23fd",
+      "00db57ce": "01eed0dcb30e91e2878c47d8b1659f937b234816b0ab9a7faa6b66febc83e32c",
+      "00db57cf": "330aa81bc868298d33d84dfe60d2965cfa6d2dcf1fe51ad58cefc4a79d8cd449",
+      "00db57d0": "feae5d633d7cf81dbe5fe059f2a47e624b44c451a795ebaa9a37e567428fea9b",
+      "00db57d1": "45b4b9a89ec3672269731afc7bb00f63dbca2f73989e67285af78e23c68ca9dd",
+      "00db57d2": "1a1065b08254a7b86aa079728fbdaaf4da4a4a7fb38c23cf40cdd6d3e587e5ea",
+      "00db57d3": "c34f7e36f7ff16871c55ec55deffea517d7812feddf1cb656a43182f583869a8",
+      "00db57d4": "c307e9842ae2484bb803a934068e9165601cd56f6489cae158b369b6cb7c4f87",
+      "00db57d5": "5f04e6d61aa3321c70a074e35439183d68f56bc54d83949e9b4a51a75d09097b",
+      "00db57d6": "d95985503d0f2898285c27a74df4a142d2e73884b5c1ed6255793cf2b6fac3cc",
+      "00db57d7": "1a19c8143414e462155e62c987199e6aefeb0a3f493e201201962fe9a3972f65",
+      "00db57d8": "66eb6143edef01246fb14062588aea8ff3712b26935b5d0d5a031281eee0de44",
+      "00db57d9": "37218ad2fb63d1e98a4a53eed39090094543e88413cc383020b1fadbf6557341",
+      "00db57da": "5a063f19c71fc13d227b39616eef8ed11d54b998508612efcfa17751d1c40692",
+      "00db57db": "4ae872bd040193f7d23e724d7c4653000a4a95e89612682df76247a0303e8e79"
+    },
+    "paired_and_closing_equal": true,
+    "count_checkpoint_labels": [
+      "count_gate_before",
+      "count_gate_after",
+      "count_admitted_before",
+      "count_between_bytes",
+      "count_before_close",
+      "count_close"
+    ],
+    "Native_commands": 11,
+    "Native_failures": [],
+    "helper_failures": [],
+    "all_Native_raw_and_streams_retained": true,
+    "preimages": [
+      "collect_gate.py",
+      "seal_initial.py"
+    ],
+    "automatic_object_boundary": "Automatic target/companion objects remain opaque in complete retained response bodies. Replay reads only admitted query/listing/function-owner/flow-null metadata.",
+    "producer_boundary": "Physical helpers are retained. The initial executed collector and sealer bodies are preserved before the Root-admitted count schedule and proof inventory change."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before36",
+    "typed_gate_after36",
+    "count_gate_after",
+    "Root suffix admission",
+    "count_admitted_before",
+    "suffix_bytes_first24",
+    "count_between_bytes",
+    "suffix_bytes_second24",
+    "count_before_close",
+    "typed_close36",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_descriptor_suffix",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Eight finite positive Git blobs, actual frozen/staged/final commit and tree objects, and exactly two output blobs; physical helpers/preimages and complete direct Native captures. Pure supplied-ZIP replay verifies Git closure, all108 admitted metadata responses, paired24B bytes, independent numeric results and prior prefix selector provenance.",
+    "audit": "After bootstrap each replay allows exactly one archive read, one declared receipt write and one retained replay-code execution; other imports, file reads, directory traversal, process, network and Native access are denied.",
+    "counts": "Actual object and entry counts are measured by the final replay.",
+    "self_reference_boundary": "Observed final commit/tree/ZIP pins and actual receipts are supplied separately in the handoff.",
+    "Source_boundary": "Source subtree IDs are revision identity only, with no Source content/census, previous archive recursion or Root current-Source equality constraint."
+  },
+  "credit": {
+    "fresh_numeric_suffix_bytes": true,
+    "independent_little_endian_decodes": true,
+    "positive_prefix_numeric_preservation": true,
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "authenticated_layout": false,
+    "authenticated_field_roles": false,
+    "pointer_interpretation": false,
+    "handler_semantics": false,
+    "actual_action_invocation": false,
+    "actual_action_frame_binding": false,
+    "actual_action_receiver": false,
+    "state0_action": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false,
+    "OS_audio_execution": false
+  },
+  "continuation": "Root may evaluate this numeric evidence within its existing review. This packet authorizes no target following, handler-layout authentication, Original claim or parent Source change."
+}
