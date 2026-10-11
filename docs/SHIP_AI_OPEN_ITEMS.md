@@ -16095,3 +16095,21 @@ OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_
   destination (shipyard rally / script), not `+127Ch`.
 - **Uncertainty.** The table gives each boat's last value, not its minimum. A per-frame minimum needs a traced run.
   This read was not run on JM08 here.
+
+### 207.3 What moved USNOS: cc11's soft-roll offset store `783c4f35d` (cc9-ships42, 2026-10-11)
+
+- **Method.** Bisect over the 400 first-parent main commits touching `src`/`include`/CMake between the ships41 base
+  (`77c48587d`; good, as `s41_f17` shows) and `10bef4a99^1`. Each probe is a `pair_export.py --commit <sha>` control
+  build with USNOS + `s41_os_f12.txt` at 2600 mission frames, reading the death time of `plane #1.1|.-2` (115.05 s good,
+  114.85 s moved). List: `local\s42_bisect_list.txt`; logs: `local\s42_b<index>_osf12s.log`.
+- **Result.** Index 100 (`adb25f801`) good, 200 and 300 moved; 106 (`b02e31546`) good, **107 (`783c4f35d`, "Restore
+  native x87 soft-roll offset store in tuning loader", docs/CC11_GAME_TUNING_SOFT_ROLL.md) moved**. b106 -> b107
+  `pair_diff` exit 3; the first changed death rows are the AA kills of `plane #1.1` (118.05 -> 118.00 s) and
+  `plane #1.3|.-3` (killer Portland1 -> NH).
+- **What it is.** The tuning loader now stores `+580h = (1 - SoftRollMul) * SoftRollCtrl` (`007E6FB3..007E6FDA`), which
+  `src/game_hosts_units.cpp:30299` hands to the pilot roll servo as `soft_roll_offset`. With this installation's
+  `PlaneGlobals.lua` values it is about 0.015 instead of 0. It is an unswitched image correction, so the move is real
+  behaviour: every plane's roll changes, and with it the AA kills and the strike timing.
+- **Consequence for this lane.** 205's USNOS helm files (f7..f17) were tuned on the old plane roll. On current main the
+  Enterprise is sunk by DM1 at 1553.34 s, and the mission fails at 1554.69 s. The f12/f17 plans, the capture-party
+  pair, 206 item 1 and the primary-3 reroute all need a re-plan on current main.
