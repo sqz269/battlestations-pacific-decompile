@@ -218,3 +218,42 @@ edit left to the integrator.
 - *0109CECC virtual +14h is modelled as "may create a profile under this name" and +18h as
   "choose the name-conflict message"; both from the message strings, not the callee bodies.
 - The `us_flag_frame` frame index 1 is read as the US flag frame from which groups get it.
+
+## Map and minimap screen handlers (named only)
+
+The in-game tactical map (`GUI_map`) is a front-end screen with vtable 00CF0134; the minimap's is
+00CF1404. Slot layout from the base 00CEAE54: +00h screen id, +0Ch deleting destructor, +10h
+register, +14h layout, +18h enter, +1Ch exit, +20h update, +24h child collection.
+
+| Vtable slot | GUI_map (00CF0134) | Minimap (00CF1404) |
+|---|---|---|
+| +00h | 005A8EE0 (no function) | 005C06B0 (no function) |
+| +08h | 005A8EF0 (no function) | 004F7580 base |
+| +0Ch | 005AB140 deleting destructor -> 005A8600 `BSP_HudMapScreen_Destruct` | 005C0910 |
+| +10h | 005AB190 `BSP_HudMapScreen_Register` (cc12 audit, untouched) | 005BEC50 |
+| +14h | 004F7590 base | 005BE240 |
+| +18h | 005B3470 enter (cc12 audit, untouched) | 005BD550 |
+| +1Ch | 005A4200 `BSP_HudMapScreen_Exit` | 005C0E10 `BSP_HudMinimapScreen_Exit` |
+| +20h | 005B45C0 (no function) | 005C0F20 |
+| +24h | 005A8F20 (no function) | 005C0800 (no function) |
+
+Both screens own an icon map keyed by the observed object and an observer subobject whose slot 0
+(005A5920 for the map, vtable 00CF011C, map at +490h; 005BFDF0 for the minimap, vtable 00CF13F0,
+map at +F0h) deletes the released object's icon and erases its node. Slots 2..4 of both observer
+vtables are the shared 0042B120 / 0042B130 / 0042B140.
+
+005A4200 and 005A8600 both walk the scene for the node named `Terrain Visibility Group` and
+restore visibility 1.0 on its `BushGroup` and `TreeGroup` children, skipping models whose effect
+name contains `wavedamp`; the exit does it only when +56Ch is set. The hiding counterpart is in the
+enter 005B3470, which this packet did not read (cc12 audit).
+
+The map's generated models: 005A2340 (`StoredQuad`, `map_cmd_building.mshd`, `pf43.mvfm`),
+005A2730 (`ACone`, `SimpleColor.mvfm`), 005A2C30 (`SimpleColor.mvfm`), and 005A91E0, which
+registers `cCapRadSquared`, `cCapRadOutSquared`, `cLandRadSquared` and `cLandRadOutSquared` on a
+005A2340 model. Names are provisional and come from those strings.
+
+005C4080 (`BSP_MissionTree_IncompleteMissionSideMask`, unreferenced) folds a four-bit mask over
+every mission that 0090C560 reports incomplete: ids starting `USN` (00CF1468, `_stricmp` on the
+first three bytes) clear bit 0 or 1, other ids bit 2 or 3, chosen by whether record +68h is zero.
+The 005C6A70 schema puts the third `date` component at +68h, and no shipped mission has a zero
+day, so what the bit pair distinguishes is open.
