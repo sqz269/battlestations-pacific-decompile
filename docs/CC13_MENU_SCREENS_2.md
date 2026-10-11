@@ -360,3 +360,37 @@ in double (the original keeps an 80-bit intermediate); `std::sort` stands in for
 Uncertainty: 004C5E60's narrow-to-wide rule was not traced (modelled as byte zero-extension); the
 `%` formatter models only `%c` and `%%`; +18h is named "frame" by use only (Register binds
 `clipbox_Clipbox` and `moving_Group`; which lands at +18h was not checked).
+
+## Tactical library Enter (cc13-menus5)
+
+`tactical_library_enter_00511f40` (slot +18h of vtable 00CEB9B4, `__thiscall(screen)`, 11488 bytes,
+SEH 00C6A616), reconstructed and build-tested. Ghidra decompiles it but warns "unable to track
+spacebase fully" and drops ten blocks as unreachable, and most widget calls lose their ECX; the
+reconstruction follows the listing (`m5_dis.py` 00511F40..00514BD6), using the pseudocode only for the
+order of the per-kind calls and the five-triple command-bar argument lists, whose string pushes were
+matched in the listing.
+
+- Kinds (+94h) from jump table 00514BD8: 0 personal achievements (template +4F4h), 1 power-ups
+  (+4F8h), 2 units and weapons (+4ECh), 3 movies (+4F0h), 4 naval academy (+500h), 5 order of battle
+  (+4ECh), 6 unlocks (+4ECh, help line only, no frame title), 7 none, 8 nose art (+504h). Each case sets
+  `FE.taclib_<kind>_title` through 00518D60 (ECX = -1, EDX = 0, title slot 0), `FE.taclib_<kind>_help`
+  through 0054A0C0, runs its list builder and rebuilds the command bar.
+- A pending entry (+9Ch non-null, +A0h != 2, kind != 7) switches to kind 6 with 0050E3C0 when +A4h is
+  set, else kind 5 with 0050EF80. Kind 4 first runs `luaLoadControlFunctionNames()` (0 = success; the
+  two Hungarian diagnostics say "executed / could not execute ... in GIAchievements") and marks the
+  academy records (vector +404h, 6Ch bytes, byte +44h): all when there is no entry, otherwise only the
+  entry's ids (*(entry+8Ch) vector, index lookup 004FAAC0); +3C0h becomes the last marked record's
+  +40h and is handed to 00511BF0.
+- Carousel: three clones of the kind's template at +508h/+50Ch/+510h, scales (0.5, 0.5), (1, 1),
+  (0.5, 0.5) through widget +48h, x = centre - 0.46, centre, centre + 0.46 (+43Ch = 0.46 from
+  00CEBE7C, +440h = the centre clone's local x); per-panel lookups pic_BG_Icon (+580h stride 0Ch),
+  icon_big_BG_Icon (+57Ch), icon_big_BG2_Icon (+584h, non-recursive), keret_Framebox (+5A0h..), and per
+  kind lock_Icon (0), video_Movie plus a pic_BG_Icon clone (4), pic_Hide_Icon (3).
+- The data list per kind for 0050D900(list, screen+444h): 0 +3D4h, 1 +3E4h, 2/5/6 +3F4h, 3 +3C4h, 4
+  +404h, 8 +414h. Kind 8 then runs 004FC8C0, kind 6 004FBE90(1). +5B4h = -1 on every exit.
+
+Uncertainty: the list builders (005012F0, 00500E90, 00500860, 00500450, 005010C0, 00506660, 005001A0,
+00500640) are named from their single call sites only; 00502480 (HDR_, ReflectionCubeMap) is the 3D
+preview setup shared with the front-end preview and Register; 00B33AC0 (ECX = *(00F8D394), arg 1) is
+unexamined. The Update 005162B0 was decompiled but not reconstructed (register-dependent loop bodies,
+`unaff_ESI`/`unaff_EDI`, x87 row placement); see the handoff.

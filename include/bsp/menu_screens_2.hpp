@@ -819,6 +819,119 @@ void tactical_library_toggle_view_00511b40(TacticalLibraryNavState& screen, Tact
 // 00514C20: __thiscall(screen), RET; SEH 00C6A670. Toggles, then refreshes the page of the new mode.
 void tactical_library_switch_view_00514c20(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host);
 
+// Tactical library Enter 00511F40 (packet cc13-menus5). Library kinds (+94h) as the Enter's
+// jump table 00514BD8 lays them out.
+enum class TacticalLibraryKind : std::int32_t {
+    PersonalAchievements = 0, PowerUps = 1, UnitsWeapons = 2, Movies = 3, NavalAcademy = 4,
+    OrderOfBattle = 5, Unlocks = 6, None = 7, NoseArt = 8,
+};
+inline constexpr std::size_t kTacticalLibraryRowPairs = 0x28;           // the clone loop 005124CB
+inline constexpr float kTacticalLibraryListPad130Oob = -0.018F;         // 00CEC03C (kind 5)
+inline constexpr float kTacticalLibraryListPad130 = -0.022F;            // 00CEC038
+inline constexpr float kTacticalLibraryListPad134 = -509.0F;            // 00CEC034
+inline constexpr float kTacticalLibraryPanelSpacing = 0.46F;            // 00CEBE7C -> +43Ch
+inline constexpr float kTacticalLibrarySidePanelScale = 0.5F;           // 00CE3800
+inline constexpr std::string_view kTacticalLibraryControlNamesLua = "luaLoadControlFunctionNames()";  // 00CEC110
+
+struct TacticalLibraryEnterState {
+    TacticalLibraryKind kind_94{TacticalLibraryKind::None};
+    std::uintptr_t entry_9c{};        // +9Ch, the entry the library was opened for (0 = none)
+    std::int32_t entry_arg_a0{};      // +A0h, 2 = no entry page
+    bool entry_unlocks_a4{};          // +A4h: kind 6 instead of 5
+    std::uintptr_t item_group_ac{};   // +ACh
+    std::uintptr_t main_text_b0{};    // +B0h
+    std::uintptr_t list_b8{};         // +B8h, = +BCh for kind 5, else +C0h
+    std::uintptr_t list_bc{};         // +BCh, order-of-battle list
+    std::uintptr_t list_c0{};         // +C0h, menu list
+    std::uintptr_t list_frame_c4{};   // +C4h (MainListbox_Text parent)
+    std::array<std::uintptr_t, 3> hidden_128{};  // +12Ch, +128h, +130h (hidden first, in that order)
+    std::uint32_t selected_value_3c0{};  // +3C0h, record +40h of the last marked academy entry
+    float panel_spacing_43c{};
+    float centre_x_440{};
+    std::array<std::uintptr_t, 6> templates_4ec{};  // +4ECh, +4F0h, +4F4h, +4F8h, +500h, +504h (+4FCh unused)
+    std::uintptr_t info_parent_4dc{};               // +4DCh
+    std::array<std::uintptr_t, 3> panels_508{};     // +508h, +50Ch, +510h
+    std::array<std::uintptr_t, 3> video_51c{};      // +51Ch.. (kind 4)
+    std::array<std::uintptr_t, 3> video_pic_528{};  // +528h.. (kind 4, pic_BG_Icon clones)
+    std::array<std::uintptr_t, 3> lock_540{};       // +540h.. (kind 0)
+    std::array<std::uintptr_t, 3> hide_54c{};       // +54Ch.. (kind 3)
+    bool show_side_arrows_560{};                    // +560h
+    std::uintptr_t row_template_56c{};              // +56Ch
+    std::uintptr_t row_template_570{};              // +570h
+    std::array<std::uintptr_t, 2> arrows_574{};     // +574h, +578h
+    std::array<std::uintptr_t, 3> big_bg_57c{};     // +57Ch, +588h, +594h (stride 0Ch, per panel)
+    std::array<std::uintptr_t, 3> pic_bg_580{};     // +580h, +58Ch, +598h
+    std::array<std::uintptr_t, 3> big_bg2_584{};    // +584h, +590h, +59Ch
+    std::array<std::uintptr_t, 3> frames_5a0{};     // +5A0h, +5A4h, +5A8h (keret_Framebox)
+    float field_5b4{};                              // +5B4h, -1 at exit
+    std::array<std::uintptr_t, kTacticalLibraryRowPairs> rows_1d8{};  // +1D8h
+    std::array<std::uintptr_t, kTacticalLibraryRowPairs> rows_278{};  // +278h
+};
+
+struct TacticalLibraryEnterHost {
+    virtual ~TacticalLibraryEnterHost() = default;
+    virtual void singleton_f8d394_00b33ac0(std::int32_t arg) = 0;   // ECX = *(00F8D394), 16 bytes
+    virtual void reset_004f8fa0() = 0;                              // ECX = screen
+    virtual bool lua_run_string_006b8ad0(std::string_view code) = 0;  // ECX = *(*(game+1A08h)+4), (code, 0, 0, 2); true = 0
+    virtual void diagnostic_004254b0(std::string_view text) = 0;
+    virtual void open_entry_unlocks_0050e3c0(std::uintptr_t entry, std::int32_t arg) = 0;  // (+9Ch, +A0h, 0)
+    virtual void open_entry_order_of_battle_0050ef80(std::uintptr_t entry, std::int32_t arg) = 0;
+    // Widgets.
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name, bool recursive) = 0;
+    virtual std::uintptr_t clone_subtree_00aab4c0(std::uintptr_t widget, std::uintptr_t parent) = 0;
+    virtual void widget_set_dword_e0(std::uintptr_t widget, std::int32_t value) = 0;
+    virtual void widget_set_byte_77(std::uintptr_t widget, bool value) = 0;
+    virtual void widget_set_byte_f4(std::uintptr_t widget, bool value) = 0;
+    virtual void set_listener_00aa6bc0(std::uintptr_t widget, bool screen_plus_68) = 0;  // (screen+68h or 0, 0)
+    virtual void widget_set_scale_48(std::uintptr_t widget, float x, float y) = 0;
+    virtual float widget_local_x_00aa67f0(std::uintptr_t widget) = 0;
+    virtual void widget_set_local_x_00aa78d0(std::uintptr_t widget, float x) = 0;
+    virtual std::array<float, 2> group_size_00aa6740(std::uintptr_t widget) = 0;
+    virtual void widget_set_size_58(std::uintptr_t widget, const std::array<float, 2>& size) = 0;
+    virtual std::array<float, 3> group_origin_00aa6750(std::uintptr_t widget) = 0;
+    virtual void set_resolved_position_00aa8240(std::uintptr_t widget, const std::array<float, 3>& position) = 0;
+    virtual void list_set_pads_12c(std::uintptr_t list, float f12c, float f130, float f134) = 0;
+    virtual void list_clear_rows_00a9bec0(std::uintptr_t list) = 0;
+    virtual void widget_virtual_60(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual void widget_virtual_80(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual void list_set_listener_00a9ac40(std::uintptr_t list) = 0;   // screen+64h
+    virtual void list_select_index_00a9c7c0(std::uintptr_t list, std::int32_t index) = 0;
+    // Front end.
+    virtual void frame_select_00518d60(std::string_view title) = 0;     // ECX = -1, EDX = 0, (0, title)
+    virtual void set_help_line_0054a0c0(std::string_view text) = 0;     // ECX = *(00E1930C)
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual void show_order_of_battle_page_004fff20() = 0;
+    virtual void show_unlocks_page_004ffd00() = 0;
+    // Screen-local builders (ECX = screen), one per kind; names are hypotheses from that use.
+    virtual void prepare_achievements_00509de0() = 0;
+    virtual void build_achievements_list_005012f0() = 0;
+    virtual void build_power_up_list_00500e90() = 0;
+    virtual void build_units_weapons_list_00500860() = 0;
+    virtual void preview_setup_00502480() = 0;
+    virtual void prepare_movies_004fac50() = 0;
+    virtual void build_movie_list_00500450() = 0;
+    virtual void build_academy_list_005010c0() = 0;
+    virtual void build_order_of_battle_list_00506660() = 0;
+    virtual void vehicle_class_registry_004356f0() = 0;   // ECX = BSP_VehicleClassRegistry_GetSingleton()
+    virtual void prepare_unlocks_005021e0() = 0;
+    virtual void build_unlocks_list_005001a0() = 0;
+    virtual void build_nose_art_list_00500640() = 0;
+    // Naval academy records: vector +404h..+40Ch (6Ch bytes), +40h value, +44h marked byte.
+    virtual std::size_t academy_record_count() = 0;
+    virtual void academy_set_marked_44(std::size_t index, bool marked) = 0;
+    virtual std::uint32_t academy_value_40(std::size_t index) = 0;
+    virtual std::vector<std::uint32_t> entry_ids_8c(std::uintptr_t entry) = 0;   // *(entry+8Ch..+90h)
+    virtual std::size_t academy_find_004faac0(std::uint32_t id) = 0;           // (screen+404h, id)
+    virtual void select_list_entry_0050d900(std::uint16_t list_offset) = 0;    // (screen+offset, screen+444h)
+    virtual void show_selection_00511bf0(std::uint32_t value) = 0;
+    virtual void nose_art_refresh_004fc8c0() = 0;
+    virtual void unlocks_refresh_004fbe90(std::int32_t arg) = 0;
+};
+
+// 00511F40: slot +18h of vtable 00CEB9B4, __thiscall(screen), RET; SEH 00C6A616; 11488 bytes.
+void tactical_library_enter_00511f40(TacticalLibraryEnterState& screen, TacticalLibraryEnterHost& host);
+
 // 00515BC0: __thiscall(screen), RET; SEH 00C6A708. Leaves the 3D view if active, then the screen.
 void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
 // 00515E00: __thiscall(screen), RET; SEH 00C6A748. Leaves the 3D view, or the screen through 00515BC0.

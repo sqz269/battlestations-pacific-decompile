@@ -1629,4 +1629,260 @@ void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, Tacti
     tactical_library_leave_00515bc0(screen, host);                   // 00515FEF
 }
 
+namespace {
+
+using TlKind = TacticalLibraryKind;
+using CommandBar = std::array<MainMenuCommandArgument, 5>;
+
+// The four-plus-back bars of the kind pages (decompiled argument lists, string pushes confirmed in
+// the listing).
+constexpr CommandBar kTlBarScrollNavigate{{{0, "", 1}, {0xB2, "globals.scroll_menu", 0},
+    {0xB3, "globals.navigate", 1}, {0xA3, "globals.back", 2}, {0, "", 1}}};
+
+}  // namespace
+
+// 00511F40, __thiscall(screen), RET; ESI = screen, EBX = 5 until 00512547, [ESP+24h] the panel
+// template the kind picks. Sections: 00511F65..005125D4 common setup, jump table 00514BD8 on +94h
+// (0..8, above 8 -> 00513808), 0051380C..005145E2 the three-panel carousel, 005145E2..00514BD6 the
+// list selection and frame layout.
+void tactical_library_enter_00511f40(TacticalLibraryEnterState& screen, TacticalLibraryEnterHost& host) {
+    host.singleton_f8d394_00b33ac0(1);                                   // 00511F6D..00511F75
+    host.reset_004f8fa0();                                               // 00511F7A..00511F7C
+    screen.show_side_arrows_560 = true;                                  // 00511F87
+    screen.selected_value_3c0 = 0;                                       // 00511F8E
+    for (const std::uintptr_t widget : screen.hidden_128) host.widget_show_34(widget, false);  // +12Ch, +128h, +130h
+    if (screen.kind_94 == TlKind::NavalAcademy) {                        // 00511FB8..00511FED
+        host.diagnostic_004254b0(host.lua_run_string_006b8ad0(kTacticalLibraryControlNamesLua)
+            ? "luaLoadControlFunctionNames() lua parancs vegrehajtva a a GIAchievements-ben."
+            : "Nem sikerult vegrehajtani a luaLoadControlFunctionNames() lua parancsot a GIAchievements-ben.");
+    }
+    // 00511FF5..00512041: an entry to open switches to kind 6 (+A4h set) or 5.
+    if (screen.kind_94 != TlKind::None && screen.entry_arg_a0 != 2 && screen.entry_9c != 0) {
+        if (screen.entry_unlocks_a4) {
+            screen.kind_94 = TlKind::Unlocks;
+            host.open_entry_unlocks_0050e3c0(screen.entry_9c, screen.entry_arg_a0);
+        } else {
+            screen.kind_94 = TlKind::OrderOfBattle;
+            host.open_entry_order_of_battle_0050ef80(screen.entry_9c, screen.entry_arg_a0);
+        }
+    }
+    host.widget_show_34(screen.list_bc, false);                          // 00512046..00512060
+    host.widget_show_34(screen.list_c0, false);
+    screen.list_b8 = screen.kind_94 == TlKind::OrderOfBattle ? screen.list_bc : screen.list_c0;  // 00512062..0051207E
+    screen.item_group_ac = host.find_child_00aa7e00(screen.list_b8, "Item_Group", true);        // 00512084..005120D0
+    host.widget_show_34(screen.item_group_ac, false);
+    screen.main_text_b0 = host.find_child_00aa7e00(screen.list_frame_c4, "MainListbox_Text", true);  // 0051210F..0051215D
+    host.widget_show_34(screen.main_text_b0, false);
+    if (screen.kind_94 != TlKind::None) {                                // 00512197..005121D9
+        host.list_set_pads_12c(screen.list_b8, 0.0F,
+            screen.kind_94 == TlKind::OrderOfBattle ? kTacticalLibraryListPad130Oob : kTacticalLibraryListPad130,
+            kTacticalLibraryListPad134);
+    }
+    host.list_clear_rows_00a9bec0(screen.list_b8);                       // 005121E1..005121F9
+    host.widget_virtual_60(screen.list_b8, 1);
+    screen.item_group_ac = host.find_child_00aa7e00(screen.list_b8, "Item_Group", true);  // 005121FD..0051224B
+    host.list_set_listener_00a9ac40(screen.list_b8);                     // 00512277..00512281
+    host.widget_virtual_60(screen.list_b8, 1);
+    host.list_select_index_00a9c7c0(screen.list_b8, 0);                  // 00512295..0051229C
+    host.widget_virtual_80(screen.list_b8, 1);
+    host.widget_show_34(screen.list_frame_c4, false);                    // 005122B3..005122D1
+    host.widget_set_byte_77(screen.list_frame_c4, true);
+    host.widget_set_byte_77(screen.list_b8, false);
+    host.widget_show_34(screen.list_b8, true);                           // 005122D5..005122E2
+    if (screen.kind_94 == TlKind::OrderOfBattle) {                       // 005122E4..005122F5
+        host.show_order_of_battle_page_004fff20();
+    } else if (screen.kind_94 != TlKind::None) {                         // 005122FA..005123A2
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.select", 0}, {0, "", 1}, {0, "", 1}, {0, "", 1},
+            {0xA3, "globals.back", 2}}});
+    }
+    for (const std::uintptr_t widget : screen.templates_4ec) host.widget_show_34(widget, false);  // 00512468..005124C0
+    for (std::size_t i = 0; i < kTacticalLibraryRowPairs; ++i) {         // 005124C2..00512543
+        screen.rows_1d8[i] = host.clone_subtree_00aab4c0(screen.row_template_56c, 0);
+        screen.rows_278[i] = host.clone_subtree_00aab4c0(screen.row_template_570, 0);
+        host.widget_show_34(screen.rows_1d8[i], false);
+        host.widget_show_34(screen.rows_278[i], false);
+        host.widget_set_dword_e0(screen.rows_1d8[i], 1);
+        host.widget_set_dword_e0(screen.rows_278[i], 1);
+        host.set_listener_00aa6bc0(screen.rows_1d8[i], true);
+        host.set_listener_00aa6bc0(screen.rows_278[i], true);
+    }
+    host.widget_show_34(host.find_child_00aa7e00(screen.info_parent_4dc, "INFO_box_Group", true), true);  // 00512545..005125A0
+
+    std::uintptr_t panel_template = 0;                                   // [ESP+24h]
+    const auto& t = screen.templates_4ec;                                // +4ECh, +4F0h, +4F4h, +4F8h, +500h, +504h
+    switch (screen.kind_94) {
+    case TlKind::PersonalAchievements:                                   // 00512853
+        host.prepare_achievements_00509de0();
+        panel_template = t[2];
+        host.frame_select_00518d60("FE.taclib_personalachievements_title");
+        host.set_help_line_0054a0c0("FE.taclib_personalachievements_help");
+        host.build_achievements_list_005012f0();
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    case TlKind::PowerUps:                                               // 00512F1F
+        panel_template = t[3];
+        host.frame_select_00518d60("FE.taclib_powerups_title");
+        host.set_help_line_0054a0c0("FE.taclib_powerups_help");
+        host.build_power_up_list_00500e90();
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    case TlKind::UnitsWeapons:                                           // 0051316A
+        panel_template = t[0];
+        host.frame_select_00518d60("FE.taclib_unitsweapons_title");
+        host.set_help_line_0054a0c0("FE.taclib_unitsweapons_help");
+        host.build_units_weapons_list_00500860();
+        host.preview_setup_00502480();
+        host.rebuild_command_bar_0054b530({{{0, "", 0}, {0xA7, "globals.3dview", 1}, {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1}, {0xA3, "globals.back", 2}}});
+        break;
+    case TlKind::Movies:                                                 // 005125E1
+        host.prepare_movies_004fac50();
+        panel_template = t[1];
+        host.frame_select_00518d60("FE.taclib_movies_title");
+        host.set_help_line_0054a0c0("FE.taclib_movies_help");
+        host.build_movie_list_00500450();
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.playmovie", 0}, {0, "", 1}, {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1}, {0xA3, "globals.back", 2}}});
+        break;
+    case TlKind::NavalAcademy: {                                         // 00512ABA
+        panel_template = t[4];
+        host.frame_select_00518d60("FE.taclib_navalacademy_title");
+        host.set_help_line_0054a0c0("FE.taclib_navalacademy_help");
+        const std::size_t count = host.academy_record_count();
+        if (screen.entry_9c == 0) {                                      // 00512B79 -> 00512EAD
+            for (std::size_t i = 0; i < count; ++i) host.academy_set_marked_44(i, true);
+        } else {                                                         // 00512B85..00512C85
+            for (std::size_t i = 0; i < count; ++i) host.academy_set_marked_44(i, false);
+            std::uint32_t last = 0;
+            for (const std::uint32_t id : host.entry_ids_8c(screen.entry_9c)) {
+                const std::size_t index = host.academy_find_004faac0(id);
+                host.academy_set_marked_44(index, true);
+                last = host.academy_value_40(index);
+            }
+            screen.selected_value_3c0 = last;
+        }
+        host.build_academy_list_005010c0();                              // 00512C8D..00512C8F
+        host.rebuild_command_bar_0054b530(kTlBarScrollNavigate);
+        break;
+    }
+    case TlKind::OrderOfBattle:                                          // 005133CE
+        panel_template = t[0];
+        screen.show_side_arrows_560 = false;
+        host.frame_select_00518d60("FE.taclib_orderofbattle_title");
+        host.set_help_line_0054a0c0("FE.taclib_orderofbattle_help");
+        host.build_order_of_battle_list_00506660();
+        host.vehicle_class_registry_004356f0();
+        host.preview_setup_00502480();
+        host.show_order_of_battle_page_004fff20();
+        break;
+    case TlKind::Unlocks:                                                // 005134BA, no frame title
+        host.prepare_unlocks_005021e0();
+        panel_template = t[0];
+        screen.show_side_arrows_560 = false;
+        host.set_help_line_0054a0c0("FE.taclib_unlocks_help");
+        host.build_unlocks_list_005001a0();
+        host.preview_setup_00502480();
+        host.show_unlocks_page_004ffd00();
+        break;
+    case TlKind::NoseArt:                                                // 00513547
+        panel_template = t[5];
+        host.frame_select_00518d60("FE.taclib_noseart_title");
+        host.set_help_line_0054a0c0("FE.taclib_noseart_help");
+        host.build_nose_art_list_00500640();
+        host.widget_show_34(host.find_child_00aa7e00(screen.info_parent_4dc, "INFO_box_Group", true), false);
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.select", 0}, {0, "", 1}, {0xB3, "globals.navigate", 1},
+            {0, "", 1}, {0xA3, "globals.cancel", 2}}});
+        break;
+    case TlKind::None:                                                   // 00513801
+        screen.show_side_arrows_560 = false;
+        break;
+    default: break;                                                      // 00513808
+    }
+    if (!screen.show_side_arrows_560) {                                  // 0051380C..00513847
+        for (const std::uintptr_t arrow : screen.arrows_574) {
+            host.widget_show_34(arrow, false);
+            host.set_listener_00aa6bc0(arrow, false);
+        }
+    }
+    if (panel_template != 0) {                                           // 0051384C..005145DF
+        for (std::uintptr_t& panel : screen.panels_508) panel = host.clone_subtree_00aab4c0(panel_template, 0);
+        for (const std::uintptr_t panel : screen.panels_508) host.widget_show_34(panel, true);
+        host.widget_set_scale_48(screen.panels_508[0], kTacticalLibrarySidePanelScale, kTacticalLibrarySidePanelScale);
+        host.widget_set_scale_48(screen.panels_508[1], 1.0F, 1.0F);
+        host.widget_set_scale_48(screen.panels_508[2], kTacticalLibrarySidePanelScale, kTacticalLibrarySidePanelScale);
+        screen.panel_spacing_43c = kTacticalLibraryPanelSpacing;         // 00513921..00513957
+        screen.centre_x_440 = host.widget_local_x_00aa67f0(screen.panels_508[1]);
+        host.widget_set_local_x_00aa78d0(screen.panels_508[0],           // x87, rounded through a float store
+            static_cast<float>(static_cast<double>(screen.centre_x_440) - screen.panel_spacing_43c));
+        host.widget_set_local_x_00aa78d0(screen.panels_508[1], screen.centre_x_440);
+        host.widget_set_local_x_00aa78d0(screen.panels_508[2],
+            static_cast<float>(static_cast<double>(screen.centre_x_440) + screen.panel_spacing_43c));
+        for (std::size_t i = 0; i < 3; ++i) {                            // 005139A7..00513DD2
+            screen.pic_bg_580[i] = host.find_child_00aa7e00(screen.panels_508[i], "pic_BG_Icon", true);
+        }
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.big_bg_57c[i] = host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG_Icon", true);
+        }
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.big_bg2_584[i] = host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG2_Icon", false);
+        }
+        if (host.find_child_00aa7e00(screen.panels_508[0], "keret_Framebox", false) != 0) {  // 00513E28..00514024
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.frames_5a0[i] = host.find_child_00aa7e00(screen.panels_508[i], "keret_Framebox", true);
+                host.widget_show_34(screen.frames_5a0[i], true);
+            }
+        }
+        screen.lock_540 = {};                                             // 0051402E..0051404C
+        screen.hide_54c = {};
+        if (screen.kind_94 == TlKind::PersonalAchievements) {            // 0051407D..0051419B
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.lock_540[i] = host.find_child_00aa7e00(screen.panels_508[i], "lock_Icon", true);
+            }
+        } else if (screen.kind_94 == TlKind::NavalAcademy) {             // 005141F0..005144C6
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.video_51c[i] = host.find_child_00aa7e00(screen.panels_508[i], "video_Movie", true);
+                host.widget_set_byte_f4(screen.video_51c[i], false);
+                screen.video_pic_528[i] = host.clone_subtree_00aab4c0(
+                    host.find_child_00aa7e00(screen.panels_508[i], "pic_BG_Icon", true), 0);
+            }
+        } else if (screen.kind_94 == TlKind::Movies) {                   // 005144DA..005145B1
+            for (std::size_t i = 0; i < 3; ++i) {
+                screen.hide_54c[i] = host.find_child_00aa7e00(screen.panels_508[i], "pic_Hide_Icon", true);
+            }
+        }
+    }
+    // 005145E2..00514668: the kind's data list (+3C4h..+414h, 10h apart) into the selection +444h.
+    switch (screen.kind_94) {
+    case TlKind::PersonalAchievements: host.select_list_entry_0050d900(0x3D4); break;
+    case TlKind::PowerUps: host.select_list_entry_0050d900(0x3E4); break;
+    case TlKind::UnitsWeapons:
+    case TlKind::OrderOfBattle:
+    case TlKind::Unlocks: host.select_list_entry_0050d900(0x3F4); break;
+    case TlKind::Movies: host.select_list_entry_0050d900(0x3C4); break;
+    case TlKind::NavalAcademy: host.select_list_entry_0050d900(0x404); break;
+    case TlKind::NoseArt: host.select_list_entry_0050d900(0x414); break;
+    default: break;
+    }
+    host.show_selection_00511bf0(screen.selected_value_3c0);             // 0051466D..0051467D
+    if (screen.kind_94 == TlKind::NoseArt) {                             // 00514682..0051469F
+        host.nose_art_refresh_004fc8c0();
+    } else if (screen.kind_94 == TlKind::Unlocks) {
+        host.unlocks_refresh_004fbe90(1);
+    }
+    // 005146A4..00514BAF: each keret frame takes its own size and sits on its panel's
+    // icon_big_BG_Icon origin, one unit nearer (z + 1.0 from 00D7A210).
+    if (screen.panels_508[0] != 0 && host.find_child_00aa7e00(screen.panels_508[0], "keret_Framebox", false) != 0) {
+        for (std::size_t i = 0; i < 3; ++i) {
+            screen.frames_5a0[i] = host.find_child_00aa7e00(screen.panels_508[i], "keret_Framebox", true);
+            host.widget_set_size_58(screen.frames_5a0[i], host.group_size_00aa6740(screen.frames_5a0[i]));
+            const auto origin = host.group_origin_00aa6750(
+                host.find_child_00aa7e00(screen.panels_508[i], "icon_big_BG_Icon", false));
+            host.set_resolved_position_00aa8240(screen.frames_5a0[i], {static_cast<float>(origin[0] + 0.0),
+                static_cast<float>(0.0 + origin[1]), static_cast<float>(origin[2] + 1.0)});
+            host.widget_show_34(screen.frames_5a0[i], true);
+        }
+    }
+    screen.field_5b4 = -1.0F;                                            // 00514BB1..00514BC0
+}
+
 }  // namespace bsp
