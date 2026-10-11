@@ -1,0 +1,387 @@
+{
+  "schema": "bsp.cc12.locale-onexit-second-call-target-entry-metadata.v1",
+  "status": "closed_exact_entry_metadata_only",
+  "packet": "cc12_locale_onexit_second_call_target_entry_metadata",
+  "frozen_HEAD": "d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8",
+  "predecessor": {
+    "worker_commit": "56cd269bc414a4c7b228473e8a9e3cd945c7be5f",
+    "primary_commit": "d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8",
+    "primary_doc": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY_PRIMARY.md",
+    "primary_report": "reports/cc12_locale_onexit_second_call_body_primary.json",
+    "selection": "Previously accepted physical E8 at BFBA6A has numeric target C11C21. No fresh predecessor or automatic-target-object reinterpretation."
+  },
+  "Native": {
+    "status": "PASS",
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "address": "00C11C21",
+    "scope": "Exact entry metadata/prototype prefix/positive whole entry-unit bytes only.",
+    "typed_response_count": 2,
+    "raw_pair_equal": true,
+    "raw_pin": {
+      "bytes": 2139,
+      "sha256": "d419a5b2f6a20dcbe810b9c4eb12e4b9efbf3eaea32ec4511106d3ab365652d8"
+    },
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c21"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c21"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c21"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11c21"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "function_at_query": {
+      "space": "ram",
+      "offset": "00c11c21"
+    },
+    "function_containing_query": {
+      "space": "ram",
+      "offset": "00c11c21"
+    },
+    "qualified_functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c11c21"
+        },
+        "name": "__lock",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "49",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11c21"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c51"
+              },
+              "length": "49"
+            }
+          ]
+        }
+      }
+    ],
+    "saved_function_at_entry_available": true,
+    "entry_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c11c22"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c11c22"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "saved_prototype_prefix": [
+      "Function: __lock at 00c11c21",
+      "Signature: void __cdecl __lock(int _File)",
+      "Entry: 00c11c21",
+      "Body: 00c11c21 - 00c11c51"
+    ],
+    "prototype_availability": "saved prefix",
+    "positive_entry_extent": true,
+    "entry_bytes_length": 1,
+    "entry_bytes_pair_equal": true,
+    "prototype_companion": "entire automatic companion opaque",
+    "automatic_target_objects": "entire automatic objects opaque",
+    "saved_name_prototype_or_lock_meaning_authentication": false,
+    "actual_OS_CRT_callback_status_ABI_game_validation": false,
+    "data_bytes_read": 0,
+    "GPR_mutations": 0,
+    "body_text_callee_stack_Source_queries": 0,
+    "full_body_admitted": false
+  },
+  "exact_entry_code": {
+    "hex": "55",
+    "bytes": 1,
+    "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+  },
+  "saved_fields_limit": "Name __lock, void return, __cdecl calling-convention annotation and parameter name/type int _File are saved metadata only. No locking/provider, parameter meaning or actual ABI is authenticated.",
+  "saved_body_range_limit": "C11C21..C11C51 is saved range metadata only. Only exact C11C21 entry metadata and its one-byte unit were read.",
+  "quarantine": {
+    "semantic_credit": false,
+    "whole_automatic_prototype_companion_opaque": true,
+    "whole_automatic_target_objects_opaque": true,
+    "saved_name_prototype_or_lock_meaning_authentication": false
+  },
+  "Source_identity_only": {
+    "tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "Actual worker frozen base and independently captured worker final only.",
+    "census_performed": false,
+    "Source_files_read": 0,
+    "current_Root_equality_claimed": false,
+    "implementation_build_fixture_runtime_credit": false
+  },
+  "bounded_provenance": {
+    "finite_positive_prerequisite_and_tool_files": 9,
+    "actual_frozen_Git_objects": 6,
+    "selected_files": [
+      {
+        "path": "config/target.json",
+        "git_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git_entry": "GitBlobs/config/target.json",
+        "git_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_entry": "PhysicalFiles/config/target.json",
+        "physical_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+        "git_oid": "af95b6fa5b6f794bae9a277ae134f1ac56a2b949",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+        "git_pin": {
+          "bytes": 3650,
+          "sha256": "9489a9e76d716c157a21a48a0f64e851bf24a5e16beaab49b5d3ffc28c214b46"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+        "physical_pin": {
+          "bytes": 3650,
+          "sha256": "9489a9e76d716c157a21a48a0f64e851bf24a5e16beaab49b5d3ffc28c214b46"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY_PRIMARY.md",
+        "git_oid": "da61dff70376e2fd359b79bb441b9af4b7ef37a8",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY_PRIMARY.md",
+        "git_pin": {
+          "bytes": 1751,
+          "sha256": "5c68146849e18c5e7d4dd2fb57b03880c8956096d9b73ca8f15ef58f68c96941"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY_PRIMARY.md",
+        "physical_pin": {
+          "bytes": 1751,
+          "sha256": "5c68146849e18c5e7d4dd2fb57b03880c8956096d9b73ca8f15ef58f68c96941"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_body.json",
+        "git_oid": "446b713464651c99bcca040796dd6009300f1b5b",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_second_call_body.json",
+        "git_pin": {
+          "bytes": 20025,
+          "sha256": "1292c273f75334fce8dffd14d5a823a46c7d5291c3d153717123d1a69a8c255c"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_second_call_body.json",
+        "physical_pin": {
+          "bytes": 20025,
+          "sha256": "1292c273f75334fce8dffd14d5a823a46c7d5291c3d153717123d1a69a8c255c"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_body_primary.json",
+        "git_oid": "df53b31b0a7a96841623c4c72b85922a1acd3f50",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_second_call_body_primary.json",
+        "git_pin": {
+          "bytes": 16684,
+          "sha256": "fc8401c4c723e89eba2438d83859c4444e5789cf36f327c02e3d9441d764164a"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_second_call_body_primary.json",
+        "physical_pin": {
+          "bytes": 16684,
+          "sha256": "fc8401c4c723e89eba2438d83859c4444e5789cf36f327c02e3d9441d764164a"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git_entry": "GitBlobs/tools/bsp.py",
+        "git_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_entry": "PhysicalFiles/tools/bsp.py",
+        "physical_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git_entry": "GitBlobs/tools/ghidra_export.py",
+        "git_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_export.py",
+        "physical_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git_entry": "GitBlobs/tools/ghidra_typed_flow.py",
+        "git_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_typed_flow.py",
+        "physical_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/workspace.py",
+        "git_oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git_entry": "GitBlobs/tools/workspace.py",
+        "git_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_entry": "PhysicalFiles/tools/workspace.py",
+        "physical_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_raw_equal_Git": true
+      }
+    ],
+    "inherited_archives_traversed": 0,
+    "retained_offline_helpers": 4,
+    "retained_producers": 7,
+    "complete_CLI_streams": 7,
+    "failed_or_interrupted_Native_captures": 0
+  },
+  "archive": {
+    "bytes": 399034,
+    "sha256": "0cb2f724290176ddb207b96e6ac38e359fae0309e147e819a12f3b5401ea515b"
+  },
+  "archive_path": "local/cc12_locale_onexit_second_call_target_entry_metadata/evidence.zip",
+  "offline_guard": {
+    "status": "PASS",
+    "guard_active_before_helper_execution": true,
+    "helper_pins_verified_before_import": [
+      {
+        "bytes": 5017,
+        "name": "common.py",
+        "sha256": "a1350196d5106e62d11bd19fcc03904ee5552ad9579feb3535c75605ad2dee15"
+      },
+      {
+        "bytes": 3649,
+        "name": "delivery_verifier.py",
+        "sha256": "41b0f1d58f1a4d1307ba9a321cfdfd909948ca94fcf94d8327170cb5be5acf1e"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 5917,
+        "name": "verifier.py",
+        "sha256": "1cc62a1a18904f30926c272212b84d4136a65ea897ff73536b14d901da821581"
+      }
+    ],
+    "unexpected_denials": [],
+    "distinct_physical_copy_verified": true
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+      "reports/cc12_locale_onexit_second_call_target_entry_metadata.json"
+    ],
+    "separate_delivery_archive": "local/cc12_locale_onexit_second_call_target_entry_metadata/delivery_git.zip",
+    "actual_worker_base_final_Git_objects": 8,
+    "current_staged_committed_bytes_equal_required": true
+  },
+  "not_established": [
+    "body behavior",
+    "callees",
+    "locking or provider meaning",
+    "return state",
+    "stack cleanup",
+    "memory or register preservation",
+    "OS/CRT authenticity",
+    "callback ownership",
+    "status meaning",
+    "actual ABI or parameter meaning",
+    "actual execution or game validation"
+  ],
+  "next_scope": "None admitted. Native is closed; Root chooses any full-body continuation."
+}
