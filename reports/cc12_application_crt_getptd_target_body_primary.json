@@ -1,0 +1,121 @@
+{
+  "status": "Root_REVIEWED_STORED_NATIVE_BODY",
+  "worker_commit": "7b536f46190e3dc08b89b3ad7a7a1f1589dddb09",
+  "address": "00C051B7",
+  "ranges": [
+    {
+      "start": "00C051B7",
+      "end": "00C0521E",
+      "bytes": 104,
+      "instructions": 37
+    },
+    {
+      "start": "00C05222",
+      "end": "00C0522D",
+      "bytes": 12,
+      "instructions": 6
+    }
+  ],
+  "excluded_unqueried_gap": "00C0521F..00C05221",
+  "epoch": 98,
+  "function_count": 64730,
+  "Root_checks": {
+    "status": "PASS",
+    "archive_sha256": "0e03ef428bfc130cd420f7cd5edba6e2af96c4fa228373318efaa6a9f1d7e19f",
+    "manifest_members": 120,
+    "actual_frozen_Git_objects": 8,
+    "finite_inputs_verified_against_actual_Git": 12,
+    "Root_independent_manual_and_actual_Capstone": 43,
+    "Capstone_version": "5.0.7",
+    "separate_actual_ranges": true,
+    "excluded_gap_read": false,
+    "current_Root_Source_equality": false,
+    "Source_census": false
+  },
+  "strict_audit": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "pins": [
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/evidence.zip",
+      "bytes": 645339,
+      "sha256": "0e03ef428bfc130cd420f7cd5edba6e2af96c4fa228373318efaa6a9f1d7e19f"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_review.py",
+      "bytes": 8945,
+      "sha256": "df9d94933ad47226fbc698bdf91e2a81617f71ef8c19567904f105763d0913a3"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_actual_review.json",
+      "bytes": 12896,
+      "sha256": "150857a19e852f42c0db441dcc42c6c9987536a2fd7ed21d7cb719806d454478"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_strict_replay.py",
+      "bytes": 2196,
+      "sha256": "b9129e8f3c52dadbf5ce65859147957df4dc735388ba2108a475f1e1b8a9c71d"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_strict_receipt.json",
+      "bytes": 3752,
+      "sha256": "750fdeaa9d332050bac70ceb542f512488d5e787d75c4f7a19a4adbb5be4db7d"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_listing_gate.py",
+      "bytes": 4877,
+      "sha256": "67e30d182f89ed1804ab64e47a61caefec5346043c85795ea04f35cc1edb2a4e"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/Root_listing_gate.json",
+      "bytes": 56270,
+      "sha256": "dc0e29bf81bdb6dfbed5e1fab2af74b8cd278678f948d765c3cae0968a5da913"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/staged_git_receipt.json",
+      "bytes": 3855,
+      "sha256": "3197752e72a81610b040bfdd1f245688d6d26a39de2b09e777f2df6bf7862d18"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_target_body_primary/final_git_receipt.json",
+      "bytes": 3747,
+      "sha256": "b84510d3638792f56a9cf346dcbbb5f1e51ea6651e96f492ff2c501b6d400579"
+    }
+  ],
+  "worker_outputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_GETPTD_TARGET_BODY.md",
+      "mode": "100644",
+      "git_blob": "18b0ab21c9f362c232528aa996cf6268d0d63b6d",
+      "bytes": 16533,
+      "sha256": "7273812c6a48c809b2f530dcd12da959f69b9ef4805c7a9ecc506d28531fb906"
+    },
+    {
+      "path": "reports/cc12_application_crt_getptd_target_body.json",
+      "mode": "100644",
+      "git_blob": "ff279a7a0ab5301facaa879d433b8cabaaf90495",
+      "bytes": 41165,
+      "sha256": "7e0e38e2452b558e06f6a3f37103191aa7b3b77b9d58ea2bb15c42a5a3d02fd1"
+    }
+  ],
+  "qualifications": [
+    "Four 116-address typed sweeps retain 464 raw responses; only admitted saved ranges decoded.",
+    "All ten calls retain unknown external returned registers, flags, memory, stack and environment; every later read uses current state.",
+    "C0521A physical E8 targets BF9DC8 and has arithmetic return C0521F in excluded gap; CALL_RETURN metadata does not prove actual nonreturn.",
+    "Computed dispatch cells remain unread; EXTERNAL-space annotations remain distinct from RAM cells and provider identities.",
+    "After C05223 returns, MOV EAX,ESI copies returned unknown ESI; earlier pointer identity is not preserved by assumption.",
+    "Immediate inputs and frozen actual Git objects checked positively; no inherited archive traversal, Source census or current Root Source equality."
+  ],
+  "credit": {
+    "exported_evidence": true,
+    "reconstructed_Source": false,
+    "build": false,
+    "fixture": false,
+    "original_ABI": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
