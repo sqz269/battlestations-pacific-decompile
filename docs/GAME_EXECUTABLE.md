@@ -15485,3 +15485,58 @@ All seven complete and log the exec guard's refusal (`bsp: refused a mission scr
 - The BSM01 and LOMP10 predictions missed: `rack` reaches both through `pool`.
 - ESMP08 has no AE row. cc9-lua46's i3 completion (3387.43 s) was on an older base, before `stock`, `rack` and the
   held-slot moveto change.
+
+## Mission reference baselines, 2026-10-11 ag (main 10bef4a99)
+
+Packet `cc9_reference_rebaseline_35`, worker cc9-gunnery35. The base is main `10bef4a99`, and the previous
+reference is AF (`49eee58d5`, `local\g33_af_<row>.log` and `local\g33_afw_<key>.log` in cc9-gunnery33's tree). Main
+moved about 2850 commits between the two bases, almost all native startup, VFS, allocator, fixture and metadata work
+from the Codex lineages cc11/cc12.
+
+### The switch diff and the plan
+
+`local\g35_switches.py 49eee58d5 10bef4a99` lists six new switches and no flips. Five are ON at the base:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `thr` | `kPilotThrottleGroundArmBound` | SQUADRON_LAND_TASK 5fe | JM08 g5 exit 3 (every airfield member takes off); LOMP10 p2 completes 1452.89 -> 1013.58 s; USN04 9000 identical |
+| `torp` | `kTorpedoBotReadyGateBound` | GUNNERY 161 | exit 3 on JM06, LOMP10 9000 (PT 02 dies 245.76 -> 247.61 s), USN02, IJN11; LOMP06 1000 and USN01 exit 1 |
+| `yard` | `kShipyardDeathReleaseBound` | GUNNERY 162 | JM08 g9 orders exit 3; rows without `build` lines do not reach the path |
+| `hcb` | `kUnitHealthCallbackGuardBound` (cc11) | GUNNERY_HEALTH_CALLBACK_PAIR_CC11 | USNOS `s41_os_f12` 80000 with the capture switch ON: 45 prior-party-0 neutralizations -> 0, deaths 471 -> 467 |
+| `c8` | `kShipDirectorClass8Bound` (cc11) | TORPEDO_DIRECTOR_JM06_PAIR_CC11 | JM06 3000 exit 3: the three tutorial TypeB submarines get torpedo mask 3; headline numbers equal |
+
+`kAirOpsSceneSquadronOrdersBound` is new and OFF in the base. `kStockReturnQueueEraseBound` was already ON at AF's base
+(AF's `stock`), so it is not an AG switch.
+
+**Rows.** AF's twenty-two in AF's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player), and eight scripted wins: AF's seven (`local\g32_ord_<key>.txt` in cc9-gunnery32's tree, cc9-lua46's
+`l46_e8_orders2.txt`) plus USNOS with cc9-ships41's `local\s41_os_f17.txt` at 150000 frames (ships41 completed it at
+6716.49 s on its own base).
+
+**Binaries** (`pair_export.py --commit 10bef4a99`): AG is `local\g35_ag`; the anchor (all five OFF) is `local\g35_anc`.
+The tools are `local\g35_ref_jobs.py` and `local\g35_queue.ps1` (three at a time through `tools/run_game.ps1`). Before
+any reference run, a clean build of this tree passed its 2 ctest suites and a JM06 300-frame smoke exited 0.
+
+### Predictions (written before any reference run started)
+
+- **Anchor against AF:** gameplay-identical (exit 0/1) on all twenty-two rows and the seven AF wins, completion times
+  equal. The unswitched cc11/cc12 work is startup, VFS, allocator and fixture code. Any move is the headline finding and
+  is bisected to a commit range before anything else.
+- **AG against the anchor.**
+  - `torp` moves JM06, LOMP10, LOMP10 long, USN02 and IJN11 (exit 3) with torpedo launches. Only LOMP10 long has a
+    death move (PT 02 about 1.85 s later). LOMP06 and USN01 exit 0/1.
+  - `c8` also moves JM06 (unit ranges and masks of the tutorial TypeB boats), and possibly BSM01 or LOMP06 if they carry
+    class-8 submarines without a Lua enable. Uncertain.
+  - `thr` moves the JM08 rows (airfield members take off; JM08 long's failure time moves) and the LOMP10 rows if their
+    airfield squadrons launch inside the window. USN04 and E2 identical.
+  - `yard` is inert on every idle row (no `build` lines).
+  - `hcb`: tracked source keeps `kCaptureStatePartyFromUnitBound` OFF, so the guard only removes repeated health-zero
+    callbacks. Expected inert on idle rows; may move USNOS rows where HQs fall. Uncertain.
+- **Leave-one-out** (round 1 on every moved row and win, then a 5-row round 2): each group OFF reverts only its own rows.
+- **Scripted wins (AG).**
+  - USN01 648.42 s, USN12 1544.78 s and ESMP08 2371.69 s as AF unless `hcb` or `thr` reaches them.
+  - LOMP10 p2: about 1013.58 s (`thr`), possibly moved again by `torp` (PT 02's tubes).
+  - USN02 (727.60 s) and LOMP06 (267.41 s) carry torpedo ships: `torp` may re-time both; the size is not predicted.
+  - BSM01 p6 is a knife-edge contact (547.39 s MiniSub death, 875.91 s end): any upstream move may shift it.
+  - USNOS f17 completes near 6716.49 s, or moves by `hcb` (HQ captures).
+  - Every completed win logs the exec guard's `sus_prog.exe` refusal.

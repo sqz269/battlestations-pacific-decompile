@@ -512,6 +512,22 @@ constexpr bool kLandPlatformAttachmentBound = true;
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kAaLineOfFireBound = true;
+//  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
+//    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
+//    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
+//    third field. Nothing reads that field (the decision object's only members
+//    are 00729560, 00729600 and 0072F6E0), so only the draw itself matters: ON
+//    takes it (Draw::line_of_fire_ttl, key (gun, target)). OFF: no draw.
+//    docs/GUNNERY_OPEN_ITEMS.md 164.
+constexpr bool kAaLineOfFireExpiryDrawBound = false;
+//  * kTailGunnerNoArmourTestBound: packet cc9_g35_friendly_fire. 0072C6A0 gives
+//    a kind-1 gun with an ancestor of kind 0Fh (a plane) the TailGunnerBot
+//    (008FE9F0, vtable 00D18140), whose slot 1Ch 008FBF70 is 0085A9A0 then the
+//    gun's vtable[1D4h]: no armour term. The AAGunnerBot's 008FBE00 (008FBE17)
+//    keeps it. ON: a plane-owned kind-1 gun skips the armour term. OFF: the
+//    refusals that would be lifted are counted (armour_rejects_tail).
+//    docs/GUNNERY_OPEN_ITEMS.md 164.
+constexpr bool kTailGunnerNoArmourTestBound = false;
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1500,6 +1516,7 @@ struct GameGunneryHost::Impl {
     std::map<int, float> bullet_min_range;
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_armour_rejects{0};
+    unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
     // Per gun index: evaluations where 00865773's minimum-air-range skip applies.
     std::map<std::size_t, unsigned long long> aa_min_range_skips_by_gun;
@@ -1550,6 +1567,7 @@ struct GameGunneryHost::Impl {
         bomb_scatter = 22,    // 006E4D50's four drop draws, key (unit, 0)
         depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
         depth_charge_launch = 24, // 006FDA4F / 006FDAE3 / 006FDB26, the activate's three draws, key (gun, 0..2)
+        line_of_fire_ttl = 25, // 0072F76D, the cache record's unread expiry, key (gun, target)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -5470,6 +5488,11 @@ public:
                 ++owner_.line_of_fire_queries;
                 clear = !owner_.line_of_fire_blocked_0072cdd0(unit_, other, muzzle);
                 if (!clear) ++owner_.line_of_fire_blocked;
+                if constexpr (kAaLineOfFireExpiryDrawBound) {
+                    // 0072F76D: the record's expiry, drawn and never read.
+                    (void)owner_.draw(GameGunneryHost::Impl::Draw::line_of_fire_ttl, g, other,
+                        0.8f, 1.2f);
+                }
                 owner_.line_of_fire_cache.emplace(key, clear);
                 owner_.done("Gun::target_shot_decision_0072f6e0", 0x0072f6e0u);
             }
@@ -5485,11 +5508,17 @@ public:
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
             const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
                                             : 0.0f;
+            // 008FBF70 (TailGunnerBot, a plane-owned kind-1 gun) has no armour term.
+            const bool tail_gunner = owner_.units.unit_is_kind_of(unit_,
+                bsp::kUnitGunneryKindPlaneBase);
             if (b != nullptr && best <= owner_.unit_state[other].armour) {
-                in.slot_accepts_target = false;
-                last_refusal_ = AaRefusal::armour;
-                ++owner_.aa_armour_rejects;
-                return;
+                if (tail_gunner) ++owner_.aa_armour_rejects_tail;
+                if (!(kTailGunnerNoArmourTestBound && tail_gunner)) {
+                    in.slot_accepts_target = false;
+                    last_refusal_ = AaRefusal::armour;
+                    ++owner_.aa_armour_rejects;
+                    return;
+                }
             }
         }
         if (len <= 0.0f || row.arcs.empty()) return;
@@ -13205,10 +13234,12 @@ void GameGunneryHost::report() {
                 fp.loaded ? 1 : 0, fp.mesh.empty() ? "-" : fp.mesh.c_str());
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
-            "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
+            "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
+            "lof_expiry_draw=%d (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
-            host.aa_min_range_skips);
+            host.aa_min_range_skips, host.aa_armour_rejects_tail,
+            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "

@@ -14503,8 +14503,17 @@ So the four Gyoraitei's `mask=3` is the image's. There is nothing to bind. The e
 
 ### Item 2: JM08 strike runs (`local\l49_j8gen.py`, l48's generator plus `--end` and `--boat-start`)
 
-**What moved on this main:** the AI tubes now fire. On the g10 orders, the torpedo gate reads `targeted=8398
-sent=5434 shots=18`, where l48's runs had `targeted=0`. The `+7Dh` hold of GUNNERY 161.4 is gone.
+**What moved on this main: the AI tubes now launch.**
+- On the g10 orders the torpedo gate reads `targeted=8398 sent=5434 shots=18`.
+- l48's g10 on `62988a6fa` already targeted (`targeted=12095`), but had `accepted=0 sent=0 shots=0`.
+  - Only l48's g5 and g9 (boats sent at the landships) have `targeted=0`. That is GUNNERY 161.4's `+7Dh` hold, and
+    it is order-dependent.
+  - 5fg's "`targeted=0` on every JM08 run" holds for those two runs only.
+- Sent at Nevada, the boats open `+7Dh` (`pass byte 7d ... final=1`).
+- An export of `060c4b712` (cc9-gunnery34: `kTorpedoBotReadyGateBound` and `kShipyardDeathReleaseBound` ON) gives
+  `targeted=4648 sent=3581 shots=12` on these orders at 9000 frames. HEAD gives 4485 / 3602 / 12.
+- So the launches come from `kTorpedoBotReadyGateBound`: the zero-speed tubes now pass the image's 1-degree test
+  (GUNNERY 161).
 
 | run | frames | Hosho first | Isokaze/Fubuki first | boats first | outcome |
 | --- | --- | --- | --- | --- | --- |
@@ -14518,6 +14527,15 @@ sent=5434 shots=18`, where l48's runs had `targeted=0`. The `+7Dh` hold of GUNNE
 
 - **Bullet 66** is the Gyoraitei torpedo. It does 1370 hp to Missouri (11000 hp, armour 130). About one launch in six
   hits. Missouri repairs about 22 hp/s, so one or two hits a minute never add up.
+- **The 22 hp/s is the image's rate.** In `0093C770` the heal is `task+28h x dt x settings+3B4h x max x rate`.
+  - `settings+3B4h` is `BodyRepairTickPercentage / 100` (`0083E243`, default 0.2).
+  - At task kind 0, `rate` is `settings+3D4h` = `BodyRepairMultiplier` (`0083E4AF`, default 2.0) times the gameplay
+    modifier. Otherwise it is 1.0.
+  - `task+28h` is 1.0 from `0093BD06`, and only `SetRepairEffectivity` (`008AD8D0`) changes it. `prcpjm08.lua`
+    never calls it.
+  - `dt` is the frame step (`0093CA20` <- `008160B0` <- `00826B84`).
+  - This installation's `shipglobals.lua` (2024-07-13) authors 0.1 and 2 (lines 79 and 88; the 0.05 at line 749 is
+    inside `if FailureDebug`). So the rate is 0.002 x 11000 = 22 hp/s, as the host logs.
 - **The shipyard builds in fours.** The next four appear only after the previous boats die, and the 12 boats are spent
   by about 730 s.
 - **Isokaze and Fubuki never launch.** Their scene `Ship` group carries `TorpedoDirector = false`. In the image too,
@@ -14570,29 +14588,46 @@ turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
   up, too late. The release gate (25 m, `00CE3880`) is never met.
 
 **Why the stick is zero.**
-- `usn_19_coralus.lua` gives every striker `SetSkillLevel(.., 2)`, and `kSkillLevelBound` applies it, so
-  `009F9D22` captures row 2, SPVeteran.
-- This installation's `robots.lua` (2025-06-01) authors `DiveBombAimPrecPullPlus`/`Minus` = 0.0 for SPVeteran
-  (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same (1134-1135).
-- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic on the authored
-  row.
+- **The strikers fly row 2, SPVeteran.** They are carrier launches, not script `SetSkillLevel` targets:
+  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1, the
+    host's `game+6ACh` (lines 66-82, 156, 195).
+  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
+    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
+  - `009F9D22` captures that row. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
+    Japanese Zuikaku strikers.
+- **This installation's `robots.lua` (2025-06-01) zeroes the row.** Its SPVeteran PilotBot row authors
+  `DiveBombAimPrecPullPlus`/`Minus` = 0.0 (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same
+  (1134-1135).
+- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic, applied to the
+  row as this installation authors it.
+
+**The zero row is the mod's, not retail's.**
+- `robots.lua` is dated 2025-06-01, after the 2024 bulk. Beside it sits `robots__.lua.bak`, of the same date. The two
+  files differ on 719 lines.
+- The `.bak`'s SPVeteran row has non-zero values where `robots.lua` has zeros:
+
+  | field | `.bak` | `robots.lua` |
+  | --- | --- | --- |
+  | `DiveBombAimPrecPullPlus` / `Minus` | 0.014 / 0.018 | 0 / 0 |
+  | `DiveBombAimPrecDist` / `Mul` | 35 / 0.24 | 0 / 0 |
+  | `DiveBombAimPitchRatio` | 3.0 | 0 |
+  | `DiveBombTargetHError` / `VError` / `CalcTargetPosError` | 25 / 4 / 3 | 0 / 0 / 0 |
+  | `TorpReleaseAlt` | 10 | 5 |
+  | `TorpTargetHError` / `VError` / `CalcTargetPosError` | 5 / 10 / 6 | 0 / 0 / 1 |
+  | `LevelBombTargetHError` / `VError` | 15 / 40 | 0 / 0 |
+
+- The installed row reads as a "perfect aim" edit: every error and precision field is zeroed. A zero pull gain,
+  though, is not perfect aim in the image's law. It only removes the correction.
+- No other copy of `robots.lua` (packed or bulk) is in the installation. Whether the `.bak` is retail is not known.
+- So the zero stick is this installation's behaviour. It is not evidence about the retail game.
 
 **Where this leaves the "no release".**
-- If the image also captures row 2, the dive has no aim feedback, and the release rests on the turndown hand-over
-  alone.
+- With the installed row, the dive has no aim feedback. The release then rests on the turndown hand-over alone.
 - The roll-in point is already the image's: `S = 0.7h + 200` (`009C65C1`; `thr` 929.5 at h 1042 in the trace), with
   completion `009C7EA0` at pitch < -1.0 inverted or < -1.3. TURNDOWN_HEADING and GUNNERY 150/157 read the rest of the
   steering and the hand-over against the image.
 - What remains is the airframe's pull-through: how far a split-S moves the aircraft and how much the nose
   overshoots once the stick is neutral. That is the flight model.
-- **The row is settled for the US strikers.** They are carrier launches, not script `SetSkillLevel` targets.
-  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1,
-    the host's `game+6ACh` (lines 66-82, 156, 195).
-  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
-    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
-  - So row 2 is the image's row too. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
-    Japanese Zuikaku strikers.
-  - **The zero-gain dive is this installation's authored behaviour at difficulty 1.**
 
 **USNOS f7** (`s41_os_f7`, 60000 frames, `local\l49_main_osf7.log`) **gives no carrier strike to read on this
 main.**
@@ -14613,3 +14648,48 @@ main.**
 | `l49_j8sum.py` | summarizes a run's deaths and outcome |
 | `l49_dispscan.py <disp> [lo hi]` | lists every operand with that displacement, swept from the function starts |
 | `l49_diag_dive.py`, `l49_diag_dive2.py` | the diagnostic patches |
+
+## 5fj. The movie camera's `goaround` modifier and keyframe events, `kMovieKeyframeModifierBound` (packet `cc9_lua49_movie_modifier`, cc9-lua49, 2026-10-11)
+
+cc13-camera1 reconstructed the keyframe modifiers and events (docs/CC13_CAMERA_CONTROLLERS.md sections 2, 4, 7 and
+12; `src/cc13_camera_controllers.cpp`). Until now `src/hud_movie_camera.cpp` counted the `modifier` and `event` keys
+as unsupported. This packet wires them in behind one switch, committed OFF.
+
+**Does the in-engine path run?** cc13 found that the host never loads a movie page (`MovieBridge`). The keyframe
+camera is a different object, and it does run:
+- `movie camera 005CC170 built and installed as the mover`, then `movie camera pose ...` every 40 frames, in every
+  JM08 log;
+- the mission-end camera of `commandhelpers.lua` (2024-10-29), `luaMissionFailedNew`/`luaMissionCompletedNew` ->
+  `luaInitMissionEnd`, passes `goaround` modifiers (lines 10280-10305, 10787-10828), and for a dead ship or plane a
+  `sunk` event whose function is `luaMissionEnd_FadeAway` (10795);
+- before this packet, `MovieKeyframe::unsupported_key` counted 4 calls on JM08 g10.
+
+**The wiring, address by address.**
+
+| image | what | where |
+| --- | --- | --- |
+| `007A1631..007A163C` | the modifier block runs only for a camera key or a named `postype` (the same gate as `pos`/`polar`) | `parse_007a0eb0` |
+| `007A1A29..007A1BB2` | `position.modifier` is a table. Its `name` picks the class: `goaround` is 007A0650 (64h bytes), and `gamecamera`/`fpscamera` are 007A06D0. 00799DE0 stores it at `+E4h`, and slot `+1Ch` parses the same table | `goaround_construct_007a0650`, `goaround_parse_007a3100`; gamecamera stays unsupported |
+| `00795C89..00795CB7` | in 00795C10, after begin and before 00795650: slot `+Ch` with `(clock - start, &pose, dt)` | `modifier_evaluate` copies the four goaround fields in and out |
+| `007A1F94..007A22EE` | the `event`, for a camera key or a named postype, watches the parent `+1Ch` | `keyframe_event_parse_007a1f94` |
+| `00798D38..00798D59` | 00798C80's tail: 00797ED0 over the look-at track, then the camera track. 0078E630 fires a triggered event once and deletes it | `movie_camera_key_ticks_00797ed0`; the hud host runs it after the fixed step |
+| `00791540` -> `00887E50` | `_G[function]()` | `MovieParentBinding::run_script_00887e50`, through the script-orders host |
+
+**Labelled.**
+- **Event order:** the event is taken off the key before its script runs, because the script can destroy the camera.
+  The image fires first and deletes after.
+- **Event entity:** `noentity` never fires, because the host has no entity deletion. `killed` and `sunk` read the
+  destroyed byte, and `sunk` reads the parent's world y.
+- **Script-orders counters:** the script runs through the script-orders host's 00887E50, which also counts it among
+  its blackout callbacks.
+
+**Predictions (before any run).**
+- **LOMP10 3000** (control): no mission end, so no modifier is parsed. Exit 0 or 1.
+- **USN02 3000:** the mission fails at about 74.30 s, `luaMissionFailedNew` on a random live ally.
+  - `luaInitMissionEnd` builds a `goaround` camera keyframe, with no event because the ally is alive.
+  - ON, the camera poses after the end orbit the ally, and the unsupported count drops.
+  - Gameplay is identical to the end. pair_diff 1, or 3 only through the end-of-mission camera lines.
+- **JM08 g10 orders, 24000:** the HQ falls at 1062.11 s, and the same end path runs on the HQ (a building, so no
+  event). Same expectation as USN02.
+- **No reference row reaches a `sunk` event.** That needs a mission ending on a dead ship or plane. The event arm is
+  therefore build-tested only, unless a row reaches it.
