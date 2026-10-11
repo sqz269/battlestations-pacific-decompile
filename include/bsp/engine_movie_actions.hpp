@@ -6,11 +6,14 @@
 // actions"). Every name is a hypothesis; nothing here is wired into a game host.
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 namespace bsp {
 
@@ -96,5 +99,43 @@ std::optional<std::pair<std::int32_t, bool>> movie_set_gear_request_00464a30(con
 // (005B9BA0) with (level = Num1, duration = Num2, empty callback); see
 // include/bsp/mission_blackout.hpp for the arm.
 std::pair<float, float> movie_blackout_level_duration_004660b0(const MovieAction& action);
+
+// The movie object's clock (74h-byte object from 00460B80, kept at game+38h):
+// length +0 (Movielen), time +4, a 20-sample history of frame deltas +8..+54h,
+// state +60h (1 started by 0045DB40, 2 half speed, 0 and 3 idle, 5 failed load).
+struct EngineMovieClock {
+    float length{};
+    float time{};
+    std::array<float, 20> history{};
+    std::int32_t state{};
+};
+
+// Address: 0045C5B0 (the clock part). __fastcall, ECX = movie, RET. Calls every
+// track's vtable+8 (not modelled), then zeroes +4..+54h: time and history.
+void rewind_engine_movie_clock_0045c5b0(EngineMovieClock& clock) noexcept;
+
+enum class EngineMovieStep { Idle, Running, Finished };
+
+// Address: 0045F970. __thiscall, ECX = movie, [ESP+4] = float frame delta,
+// RET 4; caller BSP_Game_UpdateCutscenePlayback (004C6B20). A delta above 1.0
+// becomes 0.01f (00D7A238). States 0 and 3 return. State 2 halves the delta
+// (FMUL double 0.5). The step is (history sum + delta) / 21.0 (00CE4D78): the
+// sum is accumulated left to right through a float temporary, the add and
+// divide run on the x87 stack and are stored as float. The history shifts left
+// and takes the (scaled) delta; time = float(time + step). time >= length ->
+// Finished (0045F600, the stop/teardown); otherwise Running, and the caller
+// runs 0045C560: every track's vtable+0Ch(time).
+EngineMovieStep advance_engine_movie_clock_0045f970(EngineMovieClock& clock, float delta) noexcept;
+
+// Address: 004560E0. __thiscall, ECX = track, [ESP+4] = float time, RET 4;
+// tail of the entity track's update 00459020 (vtable+0Ch of 00CE4DB8). The
+// track keeps its actions in a std::list (+108h) with a cursor (+144h). From
+// the cursor, while an action's ActivateTime (+4) is below `time`: run it
+// (action vtable slot 0 with the track's entity +11Ch) when the entity exists
+// and its bytes +5Eh and +5Dh are clear, then advance the cursor whether or
+// not it ran. Returns the new cursor.
+std::size_t run_due_movie_actions_004560e0(const std::vector<MovieAction>& actions,
+                                           std::size_t cursor, float time, bool entity_ready,
+                                           const std::function<void(const MovieAction&)>& run);
 
 } // namespace bsp
