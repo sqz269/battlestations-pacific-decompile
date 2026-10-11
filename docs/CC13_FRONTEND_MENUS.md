@@ -745,3 +745,48 @@ as floats) and is not usable here.
 
 Named alongside: 005D5490, 005D51F0, 005D5220, 005D5130, 005D67E0 (see the ledger evidence). Report
 rows: `reports/cc13_frontend_menus.json` (415 rows, 0 failed). Nothing was run in `bsp_game`.
+## Slot functions defined by cc13-frontend3
+
+The frontend2 method (`.rdata` dword scan for 16-byte aligned code targets with no function,
+referenced from 00CE0000..00CFFFFF, extents by recursive descent over the disk image, defined with
+`tools/ghidra_define_function.py`, record `reports/cc13_frontend3_defined.json`) over
+005C5600..005E09A0, 00604A50..0061F000 and 00680000..00690000: 89 functions defined (each checked
+absent before and present after through the live bridge), 68 named in the ledger and Ghidra.
+
+Skipped: all of 00568930..00584000 (cc13-menus4 holds 0056D9A0..00580530 and the three hits below
+it, 00568A30/00568B60/005692E0, sit in the same 00CEFxxx vtables); hits cited by other docs
+(005CE740, 005CFE50, 005D1460 in docs/MULTI_MENU_SCREENS.md, 005D3580 in
+docs/LOCAL_PLAYER_UNIT_LISTS.md, 00606230/006067E0 in docs/SCENE_CONTENTS_HOSTS.md, 0060D560 in
+docs/INTERFACE_RUNTIME_TAIL.md, 00689BD0 in the frontend-manager docs).
+
+| Kind | Count | Addresses |
+|---|---|---|
+| `<Screen>_GetScreenId` | 15 | movie 37h 005CB070, engine movie 38h 005CB0D0, movie-camera debug 36h 005CE5B0, plane effects 3Fh 00606220, plane 3Eh 00606A80, slot 40h 0060C6B0, plane spawn 41h 0060CB20, scoring 5Eh 0060FE00, powerup manager 4Fh 00619160, warning 50h 00682140, overlays 24h 0068A320, 46h 0068A400, 2Fh 0068A4E0, binoculars 4Ah 0068A5D0, common 27h 0068A8F0 |
+| `<Screen>_CollectChildren` | 9 | 005CDF30, 005CDF40, 005CE5D0, 005D0020, 005D2F60, 005D3990, 0060D280, 0060FE40, 00682EC0 |
+| Enter/Exit/Update/Register/IsSelfManaged and no-ops | 14 | 005CDD70, 005D18A0, 005D1F90, 005D3960, 005D3B40, 0060C870, 0060D980, 0060FE20 (`game+1FE4h == 0`), 0060C750, 0060C760, 0060C770, 0068A410, 0068A5E0, 005CAF60 |
+| observer `OnObservedReleased` | 2 | 005CAF70, 005CB080 |
+| session messages 52 (00CF17F8) and 196 (00CF4378) | 6 | 005CB8C0, 005CB8B0, 00605320, 006052E0, 00605300, 006052B0 |
+| dtor adjustor thunks | 22 | see the ledger (`CG_scalar_deleting_dtor_<target>_Adjustor<N>`) |
+
+Defined but not named (no class or role settled): 005D14B0, 005D2000, 005D23E0, 005D34E0
+(stores the list index to 00E19550), 005D3790, 005D5D50, 005D6060 (lobby widget listener slots
++0Ch/+18h), 00604E70, 00604EC0, 00605180, 00605190 (slots +12Ch/+128h of the unit-sized vtable
+00CF4238), 0060C610, 0060C620, 0060C7D0, 0060C960, 0060CA20, 0060DE00, 0061B840, 0061C7F0,
+00687470 (an element count shared by vtables 00CE93F8/00CE9524), 0068DF50.
+
+## Handoff (cc13-frontend3)
+
+Commits on agent/cc13-frontend3 (based on origin/main with agent/cc13-frontend2 merged):
+a1faf3126 (0066B6C0, 005E5B30, 005E8B20), c83fd8857 (0062C2C0 opening segment and outline), and
+this one (89 slot functions, 68 names). Build passes; report rows verified (frontend menus 415,
+in-game GUI 213, 0 failed). Nothing was run in `bsp_game`. The support-manager and rewards
+sections are in docs/CC13_INGAME_GUI.md.
+
+Open, in order of value:
+
+1. The rewards enter 0062C2C0 beyond 0062CA7B: about 10,000 instructions to 00636D79, outlined by
+   range in docs/CC13_INGAME_GUI.md. Take one range per packet (objectives, then the scoring
+   tables, which repeat one row builder many times).
+2. Host wiring of `support_manager_refresh_info_0066b6c0` needs cc9 (00675C40 is theirs).
+3. The 21 defined-but-unnamed slot functions above and frontend2's twelve.
+4. 00568930..00584000 once cc13-menus4 releases it.
