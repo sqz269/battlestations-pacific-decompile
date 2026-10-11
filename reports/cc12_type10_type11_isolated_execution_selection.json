@@ -16828,6 +16828,113 @@
             "Closing epoch cache and failed-only cleanup changes retain the original successful gates and strict same T0/F600. No performance or runtime cleanup claim.",
             "The original failed F6 Native01 hold is preserved. No replay or clock reset."
           ]
+        },
+        "fresh_F7_Prepare_DATA_assembled_inert_adopter_checkpoint": {
+          "status": "F7_PREPARE_UNADOPTED_DATA_ASSEMBLED_AND_ACTUAL_SEALS_BOUND_INERT_PLAN",
+          "scope": "DATA_ASSEMBLY_AND_SOURCE_ONLY",
+          "author": "Root",
+          "Source_credit": 0,
+          "Root_joint_DATA_acceptance_issued": false,
+          "new_native_clock_started": false,
+          "actual_materializer_terminal": {
+            "tool": "write_stdin",
+            "chunk_id": "d2cadb",
+            "exit_code": 0,
+            "prior_session_id": 46611
+          },
+          "materialization_instruction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_prepare01_DATA_materialization_instruction_DATA01.json",
+            "bytes": 5882,
+            "sha256": "301c0a50ca994b66ff242eeb66a1436bb898d81416145a6bbfe7505e0637d28e"
+          },
+          "original_materialization_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_prepare01_materialization_original_genuine_native_DATA01.json",
+            "bytes": 6496,
+            "sha256": "0de41db1ba58a86aa0f713618eec896c15546b20cd064ee266ebb86508027df4"
+          },
+          "unadopted_Root_seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F7D08_adopter01\\type1011_f7_prepare01\\Root_seal.DATA.json",
+            "bytes": 7554,
+            "sha256": "538d753b9cd80f3bfb39c8bc5e4e65e9bca63a0433628b075d74233c7b0d2edf"
+          },
+          "immutable_D03_base_seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select08\\base_seal_DATA.json",
+            "bytes": 6168755,
+            "sha256": "e20d91dd1484bec5ea890827b9c8a534df84f856e2a4fa50123524b5804295d5"
+          },
+          "actual_seals_bound_inert_adopter_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\adoption_plan.F7_prepare01.actual_seals_bound.inert_DATA01.json",
+            "bytes": 18684,
+            "sha256": "b5d547f6e453630f4b89bfe3bd2b86d4009359d6698ff812ef3946b10ad00e69"
+          },
+          "inert_plan_changed_fields": [
+            "status",
+            "unadopted_Root_seal",
+            "D03_base_seal"
+          ],
+          "corrected_inert_plan_derivation": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_prepare01_actual_seals_bound_inert_adopter_derivation_DATA02.json",
+            "bytes": 7045329,
+            "sha256": "2ddf00af3ca0cb06fdfa98fd57f27a0240fa3de6e1385566e847386e1309fa98"
+          },
+          "exact_derivation_count_correction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_prepare01_inert_plan_derivation_count_correction_proof_DATA01.json",
+            "bytes": 9893,
+            "sha256": "e234e6dab131f1d08d5cabdda260560ab74c3e70fd9e67565a1307bc73dd3312"
+          },
+          "original_inert_plan_binding_and_count_correction_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_prepare01_inert_plan_binding_and_count_correction_original_genuine_native_DATA01.json",
+            "bytes": 14945,
+            "sha256": "ea9e1c618a76d63a6213ea6a856667990791459c8ab36db53f4d23268296b5be",
+            "readonly": true,
+            "nlink": 1
+          },
+          "derivation_count_correction": {
+            "original_declared_count": 88812,
+            "actual_and_corrected_count": 88818,
+            "old_record_preserved": true,
+            "only_field_changed": "check_count",
+            "plan_changed": false
+          },
+          "generic_timed_auxiliary_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_generic_auxiliary_complete_Source_acceptance_DATA01.json",
+            "bytes": 4242,
+            "sha256": "79f99260669307a856d082c59df85595d339ee06d909069e93bb9ef6d696d884"
+          },
+          "generic_timed_auxiliary_Source_current_review": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_generic_auxiliary_complete_Source_current_review_DATA01.json",
+            "bytes": 360027,
+            "sha256": "8a96c23c3d32287f104d6847489ef83fc0414ec8e39bb43781535ee40b0df74c"
+          },
+          "generic_timed_auxiliary_selected_byte_copy": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\selected_generic_F7_Root_event_and_fourth_observer.py",
+            "bytes": 16690,
+            "sha256": "ab9ad2e3683d24ea0e252cb94aa0d683dfd6bf8b44cda3f37b42f39f77061b36"
+          },
+          "generic_timed_auxiliary_original_Source_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_generic_auxiliary_Source_acceptance_original_genuine_native_DATA01.json",
+            "bytes": 7718,
+            "sha256": "b720786c75d32b519f771f3e61d4e67c67fb41920a54a5bf2c66a14332d3d081"
+          },
+          "complete_UN_graph_peer_review_pending": true,
+          "Root_DATA_adoption_authorization_issued": false,
+          "selected_adopter_executed": false,
+          "selected_fixture_executed": false,
+          "failed_F6_Native01_preserved": true,
+          "failed_F6_Native01_used_as_predecessor": false,
+          "actual_T0": null,
+          "actual_F": null,
+          "actual_API_fixture_terminal": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "limits": [
+            "Materializer zero proves DATA assembly only; full independent graph review and separate Root adoption are pending at this checkpoint.",
+            "The fresh F7 Prepare fixture has not started; no deadline or runtime result is predicted.",
+            "The original F6 Native01 partial timed hold and all failed Source/data producer records are preserved."
+          ]
         }
       }
     }

@@ -491,3 +491,12 @@ Root accepted all nine fixture Sources, both namespace helpers and the three sta
 Actual constructor `0ba905/0` created fresh inert Prepare plans and profiles: all 24 inherited immutable families remain, four complete families were added, and exactly 11 profile fields changed while PATH and Job policy remained unchanged. The complete constructor report passed 73,220 checks with 1,308 pins; independent review `676c62/0` passed 244,093 checks with 1,318 pins. The constructor copied the reviewed helpers but did not execute the materializer, adopter or fixture.
 
 The prior F6 Native01 hold and original deadline remain recorded. Fresh F7 Prepare, Review and Native results are still required. No new clock, DATA adoption, fixture qualification, ABI compatibility or game validation is granted by this Source checkpoint.
+
+
+### Fresh F7 Prepare DATA assembly and inert adoption plan (2026-10-11)
+
+The selected Prepare materializer completed with actual terminal `d2cadb/0`, producing an unadopted Root DATA seal and immutable D03 base. Root bound those actual seals into a new inert adopter plan by changing exactly three draft fields: status, unadopted Root seal and D03 base seal. All other draft fields remain unchanged. The complete independent UN graph review is pending; no DATA adoption authorization is issued by this checkpoint.
+
+The inert-plan evidence writer appended six actual predicate rows after binding its count. The original produced record is preserved. A separate byte-invertible correction changes only the declared count from 88,812 to the actual 88,818 positive rows; the inert plan itself is unchanged. Root also accepted and copied the generic timed auxiliary Source byte for byte after consuming its complete independent Source review. The selected auxiliary has not executed.
+
+Prepare DATA assembly has not started the fixture or its QPC deadline. The prior F6 Native01 hold remains preserved. Fresh actual phase terminals, separate adoption, fixture qualification, ABI compatibility and game validation remain outstanding.
