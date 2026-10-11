@@ -1,7 +1,9 @@
 # Frontend menus: list pages, new-profile entry, mission map icons (packet `cc13_frontend_menus`)
 
 Addresses: 005805A0, 00580530, 00584F50, 005853C0, 005886F0, 00588370, 00590E60, 005807D0,
-00580780, 00585EB0, 0058D9E0, 005845D0, 00585C50, 00586150, 0058CE30, 00583E50, 00588280.
+00580780, 00585EB0, 0058D9E0, 005845D0, 00585C50, 00586150, 0058CE30, 00583E50, 00588280,
+0059CB90, 005A4200, 005A8600, 005A5920, 005BFDF0, 005C0E10, 005A2340, 005A2730, 005A2C30,
+005A91E0, 005C4080.
 Files: `include/bsp/frontend_menus.hpp`, `src/frontend_menus.cpp`,
 `reports/cc13_frontend_menus.json` (call-site rows, `tools/verify_report_calls.py`: 58 rows, 0 failed).
 
@@ -257,3 +259,34 @@ every mission that 0090C560 reports incomplete: ids starting `USN` (00CF1468, `_
 first three bytes) clear bit 0 or 1, other ids bit 2 or 3, chosen by whether record +68h is zero.
 The 005C6A70 schema puts the third `date` component at +68h, and no shipped mission has a zero
 day, so what the bit pair distinguishes is open.
+
+## The HUD unit icon index (0059CB90)
+
+`BSP_Unit_GetHudIconIndex`, `__fastcall`(ECX unit or null, EDX class descriptor or null), returns
+the icon index the marker and ship screens use (callers 0063D1E0, 0064AE20, 0063C620, 005AAC00,
+005ADDA0). Reconstructed as `hud_unit_icon_index_0059cb90`, complete, build-tested. Class ids are
+the IsKindOf ids of docs/RECON_SLOT_LISTS.md; a unit is asked through its virtual +5Ch, a
+descriptor through its virtual +18h.
+
+| Test (descriptor unless noted) | Index |
+|---|---|
+| no unit and no descriptor | 0 |
+| ship 06h: battleship 0Dh | 17h if +808h else 2 |
+| cruiser 0Ah | 3 if +808h (HeavyCruiser) else 4 |
+| mothership 09h | 6 if +82Ch else 5 |
+| destroyer 07h | 8 |
+| landing ship 0Ch | 1Ah if +818h, else 1Bh if +81Ah, else 0Ah |
+| cargo 0Bh | 16h if +809h else 15h |
+| torpedo boat 0Eh / submarine 08h / other ship | 0Dh / 10h / 0 |
+| plane 0Fh, descriptor from the unit | kamikaze 17h with unit+C24h clear: 0Bh; else by 007BCA50: bomb 9 or 0Dh -> 1, torpedo 0Ah -> 11h, depth charge 0Bh -> 7, 0Fh -> 0Ch, rocket 12h -> 0Eh, otherwise 9 |
+| plane 0Fh, descriptor supplied | bomber 10h or dive bomber 12h -> 1, torpedo bomber 11h -> 11h, kamikaze 17h -> 0Bh, else 9 |
+| dummy target 35h | 0Ch |
+| (unit, no descriptor supplied) shipyard 46h / airfield 45h / convoy 1Ah | 0Fh / 14h / 1Eh |
+| land fort 1Bh with a member answering 20h / any other non-building | 18h / 19h |
+| command building 1Ch, class bytes +1A5h / +1A4h / +1A8h / +1A7h | 1Ch / 1Dh / 21h / 20h, else 1Fh |
+
+When only the unit is given, the descriptor is unit+538h, or the leader's (unit+3D0h)+538h for a
+squadron (18h). The kamikaze test and 007BCA50 also run on the leader. Descriptor bytes past +800h
+are per-subclass: other packets name +808h HeavyCruiser on cruisers (avoid_zone_draft_bodies.hpp)
+and +808h/+809h BigLandingShip/Rocketer on landing ships, which does not name them on the
+battleship or cargo tested here. +818h, +81Ah, +82Ch and the command-building bytes are unnamed.

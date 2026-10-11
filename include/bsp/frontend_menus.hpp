@@ -300,6 +300,41 @@ struct NewProfileCommitHost : NewProfileTextHost {
 // 00590E60, slot +8 (Enter): __thiscall, ECX = owner (screen+0Ch), RET.
 void new_profile_commit_00590e60(const NewProfileEditState& state, NewProfileCommitHost& host);
 
+// ---------------------------------------------------------------------------
+// The HUD unit icon index (0059CB90)
+// ---------------------------------------------------------------------------
+
+// 0059CB90: __fastcall(ECX = unit or null, EDX = class descriptor or null),
+// RET, EAX = icon index. Callers: 0063D1E0 (BSP_HudMarker_WriteUnitMarkerWidgets),
+// 0064AE20 (BSP_HudShipScreen45_ApplyUnit), 0063C620, 005AAC00 and 005ADDA0.
+// Class ids are the entity IsKindOf ids of docs/RECON_SLOT_LISTS.md and
+// docs/ENTITY_CLASS_IDS.md; projectile kinds are award_trackers.hpp's.
+struct HudUnitRef {
+    void* native{};
+    explicit operator bool() const noexcept { return native != nullptr; }
+};
+struct HudClassRef {
+    void* native{};
+    explicit operator bool() const noexcept { return native != nullptr; }
+};
+
+struct HudUnitIconHost {
+    virtual ~HudUnitIconHost() = default;
+    virtual bool unit_is_kind_5c(HudUnitRef unit, int class_id) = 0;    // unit virtual +5Ch
+    virtual bool class_is_kind_18(HudClassRef cls, int class_id) = 0;   // descriptor virtual +18h
+    virtual HudClassRef unit_class_538(HudUnitRef unit) = 0;            // unit+538h
+    virtual HudUnitRef squadron_leader_3d0(HudUnitRef squadron) = 0;    // unit+3D0h
+    virtual std::uint8_t class_byte(HudClassRef cls, std::uint16_t offset) = 0;
+    virtual std::uint8_t unit_byte_c24(HudUnitRef unit) = 0;
+    // 007BCA50: +96Ch, or the first IsKindOf(20h) member whose +3F4h->+80h is
+    // 10 answers its +3F8h->+34h->+8h; 0 otherwise.
+    virtual std::int32_t plane_projectile_kind_007bca50(HudUnitRef plane) = 0;
+    virtual HudUnitRef first_member_48(HudUnitRef unit) = 0;            // unit+48h
+    virtual HudUnitRef next_member_44(HudUnitRef member) = 0;           // member+44h
+};
+
+std::int32_t hud_unit_icon_index_0059cb90(HudUnitRef unit, HudClassRef cls, HudUnitIconHost& host);
+
 } // namespace bsp
 
 #endif

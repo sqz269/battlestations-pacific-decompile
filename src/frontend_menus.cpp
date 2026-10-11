@@ -223,4 +223,71 @@ void new_profile_commit_00590e60(const NewProfileEditState& state, NewProfileCom
     host.build_top_level_page_00584ae0(false);
 }
 
+std::int32_t hud_unit_icon_index_0059cb90(HudUnitRef unit, HudClassRef cls, HudUnitIconHost& host) {
+    const bool class_supplied = static_cast<bool>(cls);
+    if (!unit) {
+        if (!cls) return 0;
+    } else if (!cls && (host.unit_is_kind_5c(unit, 0x05) || host.unit_is_kind_5c(unit, 0x18))) {
+        // 0059CBC4..0059CBE8: a squadron answers its leader's descriptor.
+        cls = host.unit_is_kind_5c(unit, 0x18)
+            ? host.unit_class_538(host.squadron_leader_3d0(unit))
+            : host.unit_class_538(unit);
+    }
+    if (cls) {
+        if (host.class_is_kind_18(cls, 0x06)) {            // ship
+            if (host.class_is_kind_18(cls, 0x0D))          // MBattleship
+                return host.class_byte(cls, 0x808) ? 0x17 : 0x02;
+            if (host.class_is_kind_18(cls, 0x0A))          // MCruiser, +808h HeavyCruiser
+                return host.class_byte(cls, 0x808) ? 0x03 : 0x04;
+            if (host.class_is_kind_18(cls, 0x09))          // MMothership
+                return host.class_byte(cls, 0x82C) ? 0x06 : 0x05;
+            if (host.class_is_kind_18(cls, 0x07)) return 0x08;  // MDestroyer
+            if (host.class_is_kind_18(cls, 0x0C)) {        // MLandingShip
+                if (host.class_byte(cls, 0x818)) return 0x1A;
+                return host.class_byte(cls, 0x81A) ? 0x1B : 0x0A;
+            }
+            if (host.class_is_kind_18(cls, 0x0B))          // MCargo
+                return host.class_byte(cls, 0x809) ? 0x16 : 0x15;
+            if (host.class_is_kind_18(cls, 0x0E)) return 0x0D;  // MTorpedoBoat
+            return host.class_is_kind_18(cls, 0x08) ? 0x10 : 0x00;  // MSubmarine
+        }
+        if (host.class_is_kind_18(cls, 0x0F)) {            // plane
+            if (!class_supplied) {
+                HudUnitRef plane = unit;
+                if (host.unit_is_kind_5c(plane, 0x18)) plane = host.squadron_leader_3d0(plane);
+                if (host.unit_is_kind_5c(plane, 0x17) && host.unit_byte_c24(plane) == 0) return 0x0B;
+                switch (host.plane_projectile_kind_007bca50(plane)) {
+                case 0x09: case 0x0D: return 0x01;
+                case 0x0A: return 0x11;
+                case 0x0B: return 0x07;
+                case 0x0F: return 0x0C;
+                case 0x12: return 0x0E;
+                default: return 0x09;
+                }
+            }
+            if (host.class_is_kind_18(cls, 0x10) || host.class_is_kind_18(cls, 0x12)) return 0x01;
+            if (host.class_is_kind_18(cls, 0x11)) return 0x11;
+            return host.class_is_kind_18(cls, 0x17) ? 0x0B : 0x09;
+        }
+        if (host.class_is_kind_18(cls, 0x35)) return 0x0C;  // the dummy-target vehicle
+    }
+    if (class_supplied || !unit) return 0;
+    if (host.unit_is_kind_5c(unit, 0x46)) return 0x0F;     // MShipyard
+    if (host.unit_is_kind_5c(unit, 0x45)) return 0x14;     // MAirfield
+    if (host.unit_is_kind_5c(unit, 0x1A)) return 0x1E;     // LandConvoy
+    if (!host.unit_is_kind_5c(unit, 0x1C)) {               // not MCommandBuilding
+        if (host.unit_is_kind_5c(unit, 0x1B)) {            // MLandFort
+            for (HudUnitRef m = host.first_member_48(unit); m; m = host.next_member_44(m)) {
+                if (host.unit_is_kind_5c(m, 0x20)) return 0x18;
+            }
+        }
+        return 0x19;
+    }
+    const HudClassRef building = host.unit_class_538(unit);
+    if (host.class_byte(building, 0x1A5)) return 0x1C;
+    if (host.class_byte(building, 0x1A4)) return 0x1D;
+    if (host.class_byte(building, 0x1A8)) return 0x21;
+    return host.class_byte(building, 0x1A7) ? 0x20 : 0x1F;
+}
+
 } // namespace bsp
