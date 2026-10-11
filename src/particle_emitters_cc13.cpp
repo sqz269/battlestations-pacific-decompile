@@ -813,6 +813,33 @@ std::int32_t emit_object_00af85b0(const void* definition, void* state, float t, 
     return 0;
 }
 
+void submit_particle_model_render_00af73a0(void* model, void* context, ParticleModelRenderHost& host) {
+    // AF73A7..AF73E3: pass gates on camera+198h and the system (+18Ch) flags.
+    void* camera = rd<void*>(context, 0x08);
+    const std::int32_t pass = rd<std::int32_t>(camera, 0x198);
+    const void* system = ptr(model, 0x18c);
+    if (pass == 2) return;
+    if (pass == 1 && rd<std::uint8_t>(system, 0x7a) == 0) return;
+    if (rd<std::uint8_t>(system, 0x70) == 1 && pass != 3) return;
+    // AF73E9..AF73F2: ModelEffectOptions +5, "hide particles".
+    if (host.hide_particles_option_0051f6b0()) return;
+    // AF73F8..AF7412: world sphere (vtable +48h), classified against the camera.
+    const std::uint32_t classification = host.classify_sphere_00b71530(camera, host.model_world_sphere_slot48(model));
+    if (classification == 0xaaa) return;  // outside
+    // AF7414..AF7424: fade +1D8h must exceed 0.0035 [00CF6548] (unordered skips).
+    if (!(static_cast<double>(rd<float>(model, 0x1d8)) > 0.0035000001080334187)) return;
+    // AF7426..AF7455: render entries of mesh +1B4h when its element 0 has +10h.
+    void* mesh = rd<void*>(model, 0x1b4);
+    if (rd<std::uint32_t>(host.mesh_element_00b732c0(mesh, 0), 0x10) != 0) {
+        host.create_render_entries_00b72f80(mesh, context, model, 1.0f, 1365.0f /*[00D5DAAC]*/, 0);
+    }
+    // AF745A..AF7485: debug "show boundings" (0051F520 +4): [00F8D394] vtable
+    // +C8h(sphere, camera, classification).
+    if (host.show_boundings_option_0051f520()) {
+        host.debug_draw_sphere_slot_c8(host.model_world_sphere_slot48(model), camera, classification);
+    }
+}
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380) {
     axial_count_00f8d380 = axial_count_00f8d380 - 1;
 }

@@ -242,6 +242,39 @@ public:
 std::int32_t emit_object_00af85b0(const void* definition, void* state, float t, const float matrix[16],
                                   const float wind_e13028[3], ParticleCurves& curves, ObjectParticleHost& host);
 
+// What 00AF73A0 reaches.
+class ParticleModelRenderHost {
+public:
+    virtual ~ParticleModelRenderHost() = default;
+    // 0051F6B0 BSP_ModelEffectOptions_GetSingleton()+5 != 0 ("hide particles").
+    virtual bool hide_particles_option_0051f6b0() = 0;
+    // model vtable +48h (00B6E8C0 BSP_Model_GetWorldSphere in D5DA50), no stack arguments.
+    virtual const void* model_world_sphere_slot48(void* model) = 0;
+    // 00B71530 BSP_NativeCamera_ClassifySphere(camera ECX, sphere); 0AAAh = outside.
+    virtual std::uint32_t classify_sphere_00b71530(void* camera, const void* sphere) = 0;
+    // 00B732C0 BSP_MeshObject_GetElement(mesh ECX, index).
+    virtual const void* mesh_element_00b732c0(void* mesh, std::int32_t index) = 0;
+    // 00B72F80 BSP_NativeMesh_CreateRenderEntries(mesh ECX, context, model, float, float, int).
+    virtual void create_render_entries_00b72f80(void* mesh, void* context, void* model, float a, float b,
+                                                std::int32_t c) = 0;
+    // 0051F520()+4 != 0 (the debug-options "show boundings" flag).
+    virtual bool show_boundings_option_0051f520() = 0;
+    // [00F8D394] (the graphics device object) vtable +C8h(sphere, camera, classification); provisional.
+    virtual void debug_draw_sphere_slot_c8(const void* sphere, void* camera, std::uint32_t classification) = 0;
+};
+
+// 00AF73A0 `void __thiscall(particle model, render context, int, int, int)`,
+// RET 10h, the model table D5DA50 slot 8 (+20h): render submission of a
+// particle model (MwParticleSystem). Gates: camera = context+8, pass =
+// camera+198h: skip pass 2; skip pass 1 unless system(+18Ch)+7Ah; when
+// system+70h == 1 only pass 3. Then skip when ModelEffectOptions +5 (hide
+// particles), when the world sphere classifies as 0AAAh, or unless +1D8h >
+// 0.0035. Mesh +1B4h element 0 with +10h set gets 00B72F80(mesh, context,
+// model, 1.0, 1365.0, 0); with debug show-boundings the device draws the sphere.
+// Ghidra's view of the vtable +48h calls is wrong: it takes no stack arguments,
+// and the two pushes before the second call are +C8h's last two arguments.
+void submit_particle_model_render_00af73a0(void* model, void* context, ParticleModelRenderHost& host);
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380);
 void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384);
 

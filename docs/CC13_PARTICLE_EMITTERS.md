@@ -263,6 +263,28 @@ returning 0.
   singleton 00F8D38C.
 - 00B0A420 ..._DestructSingletonBase is the same tail, reached only from the unwind funclets.
 
+### The particle model's render hook
+
+**00AF73A0 BSP_NativeParticleModel_SubmitRender** — `__thiscall(model, render context, 3 unread ints)`,
+RET 10h. It is the particle model table D5DA50, slot +20h.
+- **Pass gates.** camera = context+8 and pass = camera+198h.
+  - It skips pass 2.
+  - It skips pass 1 unless system(+18Ch)+7Ah is set.
+  - When system+70h == 1, only pass 3 runs.
+- **Skips.** It also returns when:
+  - ModelEffectOptions +5 ("hide particles") is set;
+  - 00B71530 classifies the vtable +48h world sphere as 0AAAh (outside);
+  - +1D8h <= 0.0035 or is NaN.
+- **Render entries.** When mesh +1B4h element 0 has +10h set, it calls 00B72F80(mesh, context, model, 1.0,
+  1365.0, 0).
+- **Debug draw.** With debug "show boundings" (0051F520 +4), [00F8D394] vtable +C8h(sphere, camera,
+  classification) draws the sphere.
+- **Ghidra's pseudocode.** It gives the second +48h call two arguments. The listing shows that +48h takes
+  none; those pushes are the last two arguments of +C8h.
+
+Also named: 00AF6B90 BSP_TypeInfo_InitializeMwParticleSystem (the "MwParticleSystem" string anchor) and
+its unreferenced wrapper 00AF7490.
+
 ## 4. Handoff
 
 - Leases are released. The work is committed on `agent/cc13-water2`.
