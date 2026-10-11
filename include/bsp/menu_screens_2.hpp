@@ -819,6 +819,79 @@ void tactical_library_toggle_view_00511b40(TacticalLibraryNavState& screen, Tact
 // 00514C20: __thiscall(screen), RET; SEH 00C6A670. Toggles, then refreshes the page of the new mode.
 void tactical_library_switch_view_00514c20(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host);
 
+// ---------------------------------------------------------------------------
+// HUD free camera (screen 2Bh, INTF_FREECAMERA, vtable 00CEDCA8): Enter 0053DD90, Update 00540390
+// (packet cc13-menus5). Reconstructed only; the camera mover is a host object.
+// ---------------------------------------------------------------------------
+
+inline constexpr double kFreeCameraForwardScale = 200.0;           // 00CE4D70
+inline constexpr double kFreeCameraStrafeScale = 100.0;            // 00D7A220 (strafe and vertical)
+inline constexpr double kFreeCameraTurnScale = 1.7453292608261108; // 00CEDCD8 (float 100 deg in rad)
+inline constexpr double kFreeCameraRollScale = 0.7853981852531433; // 00CEDCD0 (float pi/4)
+inline constexpr double kFreeCameraResetRate = 1.5707963705062866; // 00CE3830 (float pi/2)
+inline constexpr float kFreeCameraPitchLimit = 1.5533431F;          // 00CEC400 / 00CEC574 = +-89 deg
+inline constexpr float kFreeCameraNoUnitsMessageA = 750.0F;         // 00CEDCE0
+inline constexpr float kFreeCameraNoUnitsMessageB = 10.0F;          // 00CE38B8
+inline constexpr std::string_view kFreeCameraNoUnitsText = "NO MORE PLAYER UNITS";  // 00CEDCE4
+
+// The input owner (004BEC00()+4) analog slots the update reads, 30h apart.
+enum class FreeCameraAxis : std::uint16_t {
+    Forward = 0x1164, Strafe = 0x1194, Vertical = 0x11C4, Yaw = 0x11F4, Pitch = 0x1224, Roll = 0x1344,
+};
+inline constexpr std::uint16_t kFreeCameraResetPitchControl = 0x1260;  // byte +28h active, float +24h value
+inline constexpr std::uint16_t kFreeCameraResetAllControl = 0x1290;
+inline constexpr std::int32_t kFreeCameraMarkAction = 0x61;           // 004C43C0(61h)
+
+using FreeCameraMatrix = std::array<float, 16>;
+
+struct FreeCameraState {
+    bool active_04{};                // +04h
+    std::uint32_t field_20{};        // +20h, copied to +64h each update
+    std::uintptr_t mover_24{};       // +24h, 900-byte camera mover (00432750), 0 until the first Enter
+    float acceleration_34{};         // +34h, multiplies every rate step
+    float speed_forward_38{};        // +38h
+    float speed_strafe_3c{};         // +3Ch
+    float speed_vertical_40{};       // +40h
+    float rate_yaw_44{};             // +44h (applied to angle Y)
+    float rate_pitch_48{};           // +48h (applied to angle X, clamped +-89 deg)
+    std::array<float, 3> angles_54{};  // +54h, +58h, +5Ch from 0042D2E0 at Enter
+    std::uint32_t burst_64{};        // +64h, first dword of the 0053F2D0 container
+};
+
+struct FreeCameraHost {
+    virtual ~FreeCameraHost() = default;
+    // Enter.
+    virtual std::uintptr_t create_mover_00432750() = 0;            // operator new(900), memset 0, construct
+    virtual void mover_place_00923870(std::uintptr_t mover, std::uintptr_t parent, const FreeCameraMatrix& world) = 0;  // (0, game+19CCh, &m)
+    virtual void observer_register_pair_00694a60(std::uintptr_t mover) = 0;  // EDX = screen+8
+    virtual bool take_saved_pose_e192a9() = 0;                      // byte 00E192A9 set: clears it, true
+    virtual FreeCameraMatrix saved_pose_e192b0() = 0;
+    virtual FreeCameraMatrix player_camera_world_19fc() = 0;       // *(game+19FCh)+F0h after 00B6DB70 unless +5Ch bit 1
+    virtual void mover_set_matrix_74_004134f0(std::uintptr_t mover, const FreeCameraMatrix& matrix) = 0;
+    virtual std::array<float, 3> mover_angles_0042d2e0(std::uintptr_t mover) = 0;  // ECX = mover+74h
+    virtual void mover_invalidate_pose_tree(std::uintptr_t mover) = 0;  // +C8h = +10Ch = 0, 0042ED50 on the +48h/+44h children
+    virtual void game_set_camera_mover_004bc410(std::uintptr_t mover) = 0;
+    // Update.
+    virtual bool game_has_player_units_1970() = 0;                  // *(game+1970h) != 0
+    virtual void show_message_004c7070(float a, float b, std::string_view text) = 0;  // cdecl(game, a, b, text)
+    virtual float input_axis(FreeCameraAxis axis) = 0;
+    virtual bool input_control_active(std::uint16_t control) = 0;   // byte +28h set and float +24h > 0.0
+    virtual std::array<float, 9> mover_world_rows_cc(std::uintptr_t mover) = 0;  // after 00414DB0 when +C8h clear: rows +CCh, +DCh, +ECh
+    virtual std::array<float, 3> mover_world_translation_fc(std::uintptr_t mover) = 0;  // the same matrix, +30h..+38h
+    virtual std::array<float, 3>& mover_position_a4(std::uintptr_t mover) = 0;
+    virtual void mover_set_rotation_00467050(std::uintptr_t mover, float x, float y, float z) = 0;  // ECX = mover+74h
+    virtual bool action_pressed_004c43c0(std::int32_t action) = 0;
+    virtual void mark_position_0053d230(const std::array<float, 3>& position) = 0;  // ECX = screen
+    virtual void mover_invalidate_subtree_0042ed50(std::uintptr_t mover) = 0;
+    virtual void mover_apply_shake_and_publish_004329d0(std::uintptr_t mover, float seconds) = 0;
+    virtual void burst_update_0053f2d0(float seconds) = 0;          // ECX = screen+64h, (dt, mover+CCh)
+};
+
+// 0053DD90: slot +18h of vtable 00CEDCA8, __thiscall(screen), RET; SEH 00C6C7C8.
+void free_camera_enter_0053dd90(FreeCameraState& screen, FreeCameraHost& host);
+// 00540390: slot +20h of vtable 00CEDCA8, __thiscall(screen, float seconds), RET 4.
+void free_camera_update_00540390(FreeCameraState& screen, float seconds, FreeCameraHost& host);
+
 // Tactical library Enter 00511F40 (packet cc13-menus5). Library kinds (+94h) as the Enter's
 // jump table 00514BD8 lays them out.
 enum class TacticalLibraryKind : std::int32_t {

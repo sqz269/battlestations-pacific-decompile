@@ -394,3 +394,60 @@ Uncertainty: the list builders (005012F0, 00500E90, 00500860, 00500450, 005010C0
 preview setup shared with the front-end preview and Register; 00B33AC0 (ECX = *(00F8D394), arg 1) is
 unexamined. The Update 005162B0 was decompiled but not reconstructed (register-dependent loop bodies,
 `unaff_ESI`/`unaff_EDI`, x87 row placement); see the handoff.
+
+## HUD free camera Enter and Update (cc13-menus5)
+
+`free_camera_enter_0053dd90` and `free_camera_update_00540390` (vtable 00CEDCA8 slots +18h and +20h),
+reconstructed and build-tested; read from the listings 0053DD90..0053DF3B and 00540390..00540AE7 (every
+x87 sequence and register argument checked there). They reuse `unit_step_towards_0042ac60`
+(`unit_motion.hpp`) and `wrapped_angle_add_00438aa0` (`unit_rudder.hpp`); 0042D2E0 is the existing
+`extract_camera_matrix_angles_0042d2e0` (outputs X, Y, Z = EDX, then the two stack pointers).
+
+- Enter: mover +24h created once (operator new 900, memset, 00432750; 00923870(mover, 0, game+19CCh,
+  identity); 00694A60 with EDX = screen+8). Source pose: the saved matrix 00E192B0 once when byte
+  00E192A9 is set (cleared), otherwise `*(game+19FCh)+F0h` after 00B6DB70 when that node's +5Ch bit 1 is
+  clear. 004134F0 copies it into mover+74h; angles to +54h/+58h/+5Ch; mover +C8h/+10Ch cleared and
+  0042ED50 run on its child chain (+48h, next +44h); 004BC410 installs it; +38h..+48h = 0.
+- Update (RET 4): returns unless +04h and +24h. Axes from the input owner (004BEC00()+4): forward
+  +1164h x 200, strafe +1194h x 100, vertical +11C4h x 100, yaw +11F4h x 1.7453 (100 deg), pitch +1224h
+  x 1.7453, roll +1344h x 0.7854 (45 deg). Each of the first five drives a smoothed field (+38h, +3Ch,
+  +40h, +44h, +48h): opposite sign -> 0, smaller magnitude -> taken, larger -> 0042AC60 by
+  dt x scale x +34h. Velocity = +38h x row2 (+ECh) + +3Ch x row0 (+CCh) + +40h x row1 (+DCh) of the
+  mover world matrix; mover+A4h += dt x velocity. Angles re-read from mover+74h; control +1260h steps
+  X toward 0, control +1290h steps X, Y, Z toward 0 (pi/2 per s); otherwise X += +48h x dt (wrapped,
+  clamped to +-1.5533 = 89 deg), Y += +44h x dt, Z += raw roll x dt. 00467050(X, Y, Z) on mover+74h.
+  Action 61h (004C43C0) calls 0053D230 with the world translation (it forwards it to the object at
+  00E188D8: vtable +5Ch(6), then +118h(position)). Then 0042ED50, 004329D0(dt), +64h = +20h and the
+  burst container 0053F2D0(dt, mover+CCh) at +64h. With no player units (game+1970h == 0) it calls
+  the printf-style debug sink 004C7070(game, 750.0, 10.0, "NO MORE PLAYER UNITS") every update.
+
+Uncertainty: the axis roles are named from the motion they drive (pitch is the clamped X angle); the
+vectors are summed in float as stored by the original but the x87 products carry extended precision
+before each store (a double-rounding difference is possible in rare cases); 0053D230's target object
+(00E188D8) and the burst container are not examined.
+
+## Handoff (cc13-menus5, 2026-10-11)
+
+Commits on agent/cc13-menus5: 849e54ee8 (browser join, rows, layout), fc41dd662 (credits Enter),
+b9d599c39 (tactical library Enter) and the free-camera commit after them; menus4's e2779b1d4 was merged
+first. 9 functions newly reconstructed and build-tested here plus 5 helper reconstructions (00568490,
+00574100, 0056A870, 00576BE0, 00578320), 30 names, 613 call rows, 0 failed; none ran in `bsp_game`.
+Helper scripts in the worktree's `local/` with the `m5_` prefix: `m5_dc.py` (uncapped, noise-filtered
+live decompile), `m5_bind.py` (one line per find/load/vcall from an `m5_dis.py` listing),
+`m5_rows.py` (adds host_steps rows for direct calls), `m5_names*.py`.
+
+Open, in order of value:
+
+1. Tactical library Update 005162B0 (4048 bytes): decompiles, but the order-of-battle (kind 5, vector
+   +460h, 2Ch records) and unlocks (kind 6, vector +470h) row loops lose ESI/EDI and position rows with
+   x87 through 00AA8240; read the listing. Kind 3 stops a playing movie on action 4Bh and restarts the
+   menu stream 00E18D78; kind 7 runs 00514FB0 on 4Bh; +5B4h counts down and then launches the selected mission (BSP_MainMenu_PlaySelectedMission, game+6ACh/+6B0h = the list selection).
+2. Session browser RefreshRowDetails 00577650 (3280 bytes; map name from registry +34h via
+   FE.unknown_mapname, the settings rows 00569FF0, `_atol` over a 00E198AC+5Ch+24h list) and the
+   uncalled 00579980 (row-builder sibling); PrepareEnter 00570300, selection changed 005787E0,
+   0056D660 (filter value refresh, ERROR!), 0056B610.
+3. Credits Register 0052FFC0 (Credits.lua, StartY/RowSpace/Speed, which of clipbox_Clipbox and
+   moving_Group lands at +18h/+1Ch) and ReadItemStyle's `Align` read, which the pseudocode shows
+   writing through a null pointer (check the listing).
+4. HUD screens from menus4's list: formation Enter/Exit/Update (0053A4D0, 00536800, 0053A8E0), frame
+   stats Register 0053C740, menu-prompt Exit 00530970.

@@ -2,8 +2,11 @@
 // Evidence: docs/CC13_MENU_SCREENS_2.md.
 
 #include "bsp/menu_screens_2.hpp"
+#include "bsp/unit_motion.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 namespace bsp {
 
@@ -1627,6 +1630,119 @@ void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, Tacti
         return;
     }
     tactical_library_leave_00515bc0(screen, host);                   // 00515FEF
+}
+
+// 0053DD90, __thiscall(screen), RET; ESI = screen, EBX = 0.
+void free_camera_enter_0053dd90(FreeCameraState& screen, FreeCameraHost& host) {
+    if (screen.mover_24 == 0) {                                          // 0053DDAE..0053DE80
+        screen.mover_24 = host.create_mover_00432750();
+        FreeCameraMatrix identity{};
+        identity[0] = identity[5] = identity[10] = identity[15] = 1.0F;  // 0053DE03..0053DE5D
+        host.mover_place_00923870(screen.mover_24, 0, identity);
+        host.observer_register_pair_00694a60(screen.mover_24);
+    }
+    // 0053DE85..0053DEC0: a pose saved by an earlier screen wins once, else the player camera.
+    const FreeCameraMatrix source = host.take_saved_pose_e192a9() ? host.saved_pose_e192b0()
+                                                                  : host.player_camera_world_19fc();
+    host.mover_set_matrix_74_004134f0(screen.mover_24, source);
+    screen.angles_54 = host.mover_angles_0042d2e0(screen.mover_24);      // 0053DEC5..0053DED6
+    host.mover_invalidate_pose_tree(screen.mover_24);                    // 0053DEDB..0053DEFD
+    host.game_set_camera_mover_004bc410(screen.mover_24);                // 0053DEFF..0053DF09
+    screen.speed_forward_38 = 0.0F;                                      // 0053DF0E..0053DF2A
+    screen.speed_strafe_3c = 0.0F;
+    screen.speed_vertical_40 = 0.0F;
+    screen.rate_yaw_44 = 0.0F;
+    screen.rate_pitch_48 = 0.0F;
+}
+
+namespace {
+
+// One smoothed channel (00540472..005404FE and four copies): opposite signs stop at once, a smaller
+// magnitude is taken at once, a larger one is approached by dt * scale * +34h per update. The
+// product and both magnitudes are compared in x87 after float stores; the step is rounded to float
+// before the call.
+void free_camera_smooth(float& value, float target, double scale, float seconds, float acceleration) {
+    if (value * target < 0.0F) {                                         // FCOMIP; JB
+        value = 0.0F;
+        return;
+    }
+    if (std::fabs(target) <= std::fabs(value)) {                         // AND 7FFFFFFFh; FCOMIP; JBE
+        value = target;
+        return;
+    }
+    const float step = static_cast<float>(static_cast<double>(seconds) * scale * acceleration);
+    value = unit_step_towards_0042ac60(value, target, step);
+}
+
+}  // namespace
+
+// 00540390, __thiscall(screen, float seconds), RET 4; ESI = screen. Locals: [ESP+18h] forward
+// input, later angle Y; [ESP+14h] strafe input, later angle Z; [ESP+10h] vertical input, later
+// angle X; [ESP+20h]/[ESP+24h] yaw/pitch inputs; [ESP+2Ch] roll input.
+void free_camera_update_00540390(FreeCameraState& screen, float seconds, FreeCameraHost& host) {
+    if (!screen.active_04 || screen.mover_24 == 0) return;              // 00540398..005403A7
+    if (!host.game_has_player_units_1970()) {                            // 005403AD..005403D7
+        host.show_message_004c7070(kFreeCameraNoUnitsMessageA, kFreeCameraNoUnitsMessageB, kFreeCameraNoUnitsText);
+    }
+    // 005403DF..0054046E: each axis times its double scale, stored to float.
+    const float forward = static_cast<float>(host.input_axis(FreeCameraAxis::Forward) * kFreeCameraForwardScale);
+    const float strafe = static_cast<float>(host.input_axis(FreeCameraAxis::Strafe) * kFreeCameraStrafeScale);
+    const float vertical = static_cast<float>(host.input_axis(FreeCameraAxis::Vertical) * kFreeCameraStrafeScale);
+    const float yaw = static_cast<float>(host.input_axis(FreeCameraAxis::Yaw) * kFreeCameraTurnScale);
+    const float pitch = static_cast<float>(host.input_axis(FreeCameraAxis::Pitch) * kFreeCameraTurnScale);
+    const float roll = static_cast<float>(host.input_axis(FreeCameraAxis::Roll) * kFreeCameraRollScale);
+    free_camera_smooth(screen.speed_forward_38, forward, kFreeCameraForwardScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.speed_strafe_3c, strafe, kFreeCameraStrafeScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.speed_vertical_40, vertical, kFreeCameraStrafeScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.rate_yaw_44, yaw, kFreeCameraTurnScale, seconds, screen.acceleration_34);
+    free_camera_smooth(screen.rate_pitch_48, pitch, kFreeCameraTurnScale, seconds, screen.acceleration_34);
+    // 00540748..005408B4: velocity = forward * row2 + strafe * row0 + vertical * row1 of the
+    // mover's world matrix (+ECh, +CCh, +DCh), every product and sum stored to float; then
+    // position += dt * velocity.
+    const auto rows = host.mover_world_rows_cc(screen.mover_24);
+    std::array<float, 3> velocity{};
+    for (std::size_t i = 0; i < 3; ++i) {
+        const float up = screen.speed_vertical_40 * rows[3 + i];
+        const float side = screen.speed_strafe_3c * rows[i];
+        const float ahead = screen.speed_forward_38 * rows[6 + i];
+        const float sum = ahead + side;
+        velocity[i] = sum + up;
+    }
+    auto& position = host.mover_position_a4(screen.mover_24);
+    for (std::size_t i = 0; i < 3; ++i) position[i] = position[i] + seconds * velocity[i];
+    std::array<float, 3> angles = host.mover_angles_0042d2e0(screen.mover_24);  // 005408B7..005408C7
+    float& angle_x = angles[0];
+    float& angle_y = angles[1];
+    float& angle_z = angles[2];
+    // 005408CC..00540991: the two reset controls step the angles toward 0 at pi/2 per second.
+    bool resetting = false;
+    if (host.input_control_active(kFreeCameraResetPitchControl)) {
+        angle_x = unit_step_towards_0042ac60(angle_x, 0.0F, static_cast<float>(seconds * kFreeCameraResetRate));
+        resetting = true;
+    }
+    if (host.input_control_active(kFreeCameraResetAllControl)) {
+        const float step = static_cast<float>(seconds * kFreeCameraResetRate);
+        angle_x = unit_step_towards_0042ac60(angle_x, 0.0F, step);
+        angle_y = unit_step_towards_0042ac60(angle_y, 0.0F, step);
+        angle_z = unit_step_towards_0042ac60(angle_z, 0.0F, step);
+    } else if (!resetting) {                                             // 00540996..00540A3C
+        angle_x = wrapped_angle_add_00438aa0(angle_x, screen.rate_pitch_48 * seconds);
+        if (angle_x > kFreeCameraPitchLimit) {                           // FCOMIP; JBE skips
+            angle_x = kFreeCameraPitchLimit;
+        } else if (-kFreeCameraPitchLimit > angle_x) {                   // COMISS; JBE skips
+            angle_x = -kFreeCameraPitchLimit;
+        }
+        angle_y = wrapped_angle_add_00438aa0(angle_y, screen.rate_yaw_44 * seconds);
+        angle_z = wrapped_angle_add_00438aa0(angle_z, roll * seconds);   // the raw roll input, unsmoothed
+    }
+    host.mover_set_rotation_00467050(screen.mover_24, angle_x, angle_y, angle_z);  // 00540A40..00540A60
+    if (host.action_pressed_004c43c0(kFreeCameraMarkAction)) {           // 00540A65..00540A92
+        host.mark_position_0053d230(host.mover_world_translation_fc(screen.mover_24));
+    }
+    host.mover_invalidate_subtree_0042ed50(screen.mover_24);             // 00540A97..00540A9A
+    host.mover_apply_shake_and_publish_004329d0(screen.mover_24, seconds);  // 00540A9F..00540AAA
+    screen.burst_64 = screen.field_20;                                   // 00540AAF..00540AB8
+    host.burst_update_0053f2d0(seconds);                                 // 00540ABA..00540ADB
 }
 
 namespace {
