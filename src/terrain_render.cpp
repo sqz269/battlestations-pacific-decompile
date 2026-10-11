@@ -54,6 +54,24 @@ FoliageCellSide foliage_cell_classify_plane_00ae2fe0(const FoliageCellBox& cell,
     return FoliageCellSide::Inside;
 }
 
+TerrainBoxVisibility terrain_box_classify_planes_00ae05e0(const std::vector<TerrainPlane>& planes,
+    const TerrainVec3f& centre, const TerrainVec3f& half_extent) noexcept
+{
+    TerrainBoxVisibility result = TerrainBoxVisibility::Inside;
+    for (const TerrainPlane& plane : planes) {
+        const float reach = std::fabs(plane.c) * half_extent.z + std::fabs(plane.a) * half_extent.x
+            + std::fabs(plane.b) * half_extent.y;
+        const float side = (plane.c * centre.z + plane.a * centre.x + centre.y * plane.b) - plane.d;
+        if (side < -reach) {
+            return TerrainBoxVisibility::Outside;
+        }
+        if (side < reach) {
+            result = TerrainBoxVisibility::Intersecting;
+        }
+    }
+    return result;
+}
+
 FoliageBakedVertex foliage_bake_vertex_00ae41c0(const FoliageSourceVertex& source,
     float yaw_cos, float yaw_sin, float scale, const TerrainVec3f& offset,
     float uv_scale_u, float uv_scale_v, float uv_offset_u, float uv_offset_v) noexcept

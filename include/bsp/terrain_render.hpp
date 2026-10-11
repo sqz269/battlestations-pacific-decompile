@@ -48,6 +48,23 @@ enum class FoliageCellSide : std::int32_t {
 FoliageCellSide foliage_cell_classify_plane_00ae2fe0(const FoliageCellBox& cell,
     const TerrainVec3f& translation, float a, float b, float c, float d) noexcept;
 
+struct TerrainPlane {
+    float a{}, b{}, c{}, d{}; // a*x + b*y + c*z - d
+};
+
+enum class TerrainBoxVisibility : std::int32_t {
+    Intersecting = 0,
+    Inside = 1,
+    Outside = 2,
+};
+
+// 00AE05E0, __fastcall(ECX = plane count, EDX = planes 10h apart), stack
+// (centre*, half_extent*), RET 8: the centre/half-extent box test. Per plane,
+// r = |c|*e.z + |a|*e.x + |b|*e.y and s = (c*p.z + a*p.x + b*p.y) - d; s < -r
+// returns Outside at once, s < r downgrades the answer to Intersecting.
+TerrainBoxVisibility terrain_box_classify_planes_00ae05e0(const std::vector<TerrainPlane>& planes,
+    const TerrainVec3f& centre, const TerrainVec3f& half_extent) noexcept;
+
 // One baked vertex of 00AE41C0's 24h-byte output: position, normal, UV and a
 // packed colour (0xFFFFFFFF when the source stream has no colour semantic 10).
 struct FoliageBakedVertex {

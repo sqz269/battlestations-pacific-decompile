@@ -43,6 +43,18 @@ clamps to `+38h`/`+3Ch` minus one with a `00D5D658` store); not analysed further
   `y0 <= y1`. The far vertex behind the plane gives 0, the near vertex on or behind gives 1,
   otherwise 10.
 
+## Bush cell LOD walk: `00AE1A10` -> `00AE05E0`
+
+- `00AE05E0` (`__fastcall(ECX = count, EDX = planes)`, stack (centre*, half extent*),
+  `RET 8`), reconstructed as `terrain_box_classify_planes_00ae05e0`: per plane
+  `r = |c|*ez + |a|*ex + |b|*ey`, `s = c*pz + a*px + b*py - d`; `s < -r` returns 2 at once,
+  `s < r` makes the result 0, otherwise it stays 1.
+- `00AE1A10` (recursive, from `00AE1FB0`, the `BushOjjekt` path): 2 skips the node; an
+  internal node (`+34h`) that is not wholly inside recurses into `+1Ch..+28h`; otherwise a
+  draw section covers vertices `+2Ch..+30h` (triangle count `n/3`) with material
+  `group+110h` when the centre is within the `00AD5720` distance of the point at
+  `group+118h..+120h`, else `group+10Ch`. The section's `+34h` keeps that distance.
+
 ## Foliage instance bake: `00AE41C0` (unreferenced)
 
 `__thiscall(pos*, vertex_out, index_out, short base, uv_scale*, uv_offset*, scale*)`,
