@@ -249,3 +249,23 @@ as unreferenced, not as dead.
   (`src/game_hosts_mission_result.cpp`, not touched here); the extratitles half of
   `00AB0520`/`00AADBA0`; `00AC8320`; the ten-sample arc weight when the buffers are
   not rebuilt; whether layouts in this installation use `Curve` with `PosArray` at all.
+
+## Handoff (cc13-render1, 2026-10-11)
+
+State: 77 ledger names in the segment (two of them renames), 21 functions defined in Ghidra
+from disk bounds, 16 reconstruction records across `src/gui_render.cpp` and
+`src/movie_subtitles.cpp`, all build-tested only. 196 functions in the range still carry
+raw `FUN_` names with no ledger name; most are STL template instances (vector/string
+growth, `_Ufill`, `_Copy`), EH helpers and per-class pool slabs that the surrounding
+widget docs already cover by caller.
+
+Next steps, in order of value:
+1. Wire `movie_subtitle_update_00aadba0` and the `.mws` row shape into the game host's
+   `prepare/update/clear_movie_subtitles` (`src/game_hosts_mission_result.cpp`); the host
+   needs a Lua run of the script and the Bink realtime triple.
+2. The extratitles half of `00AB0520` (24h records: two numbers, a widget name that is
+   cloned, start/end, a boolean and a defaulted number) and the widget +54h/+50h calls in
+   `00AADBA0`.
+3. `00AC8320` (Scrollbar +80h) and `00ABCC70` (Curve CreateGeometry) bodies.
+4. A Ghidra snapshot (`python tools/bsp.py snapshot`) so the index sees the 21 new
+   functions; the shared exports were not refreshed by this packet.
