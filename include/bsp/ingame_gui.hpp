@@ -217,6 +217,7 @@ struct RewardsEnterState {
     std::string mission28;                 // +28h, copy of game+2198h
     std::string mission30;                 // +30h, copy of game+2198h, then the profile's +68h id
     std::vector<RewardsAwardPage> pages238;  // +238h (cleared by 00625A50)
+    std::int32_t field38{};                // +38h: 3 when +18h is clear, else -1 (00636D51)
 };
 
 // A native GUI widget (vtable 00D5BED0 family), opaque here.
@@ -374,6 +375,31 @@ inline constexpr std::array<std::string_view, 20> kRewardsPlayerRankKeys{
     "FE.playerrank_11", "FE.playerrank_12", "FE.playerrank_13", "FE.playerrank_14", "FE.playerrank_15",
     "FE.playerrank_16", "FE.playerrank_17", "FE.playerrank_18", "FE.playerrank_19", "FE.playerrank_20"};
 
+// One 10h-byte element of the screen+248h vector (the unlock awards).
+struct RewardsUnlockAward {
+    std::int32_t icon_id{};   // +04h
+    std::string unit;         // +08h
+};
+// One 1Ch-byte element of the profile's pending awards (game+70Ch).
+struct RewardsPendingAward {
+    std::string title;        // +00h
+    std::string detail;       // +08h
+    std::string icon_name;    // +10h, used when the id is 0
+    std::int32_t icon_id{};   // +18h
+};
+// The 54h-byte award record fields the badge pages read.
+struct RewardsAwardDefinition {
+    std::string title;        // +00h
+    std::string detail;       // +0Ch
+    std::string texture;      // +14h
+};
+
+inline constexpr std::string_view kRewardsUnlockedUnitPrefix = "FE.scoring_unlockedunit|.: |";  // 00CF5250
+inline constexpr std::string_view kRewardsUnlockText = "FE.scoring_unlock_text";                // 00CF5208
+inline constexpr double kRewardsAwardGap = 0.006944444444444444;    // 00CF4570 (1/144)
+inline constexpr double kRewardsAwardPadding = 0.013888888888888888;  // 00CEBDD0 (1/72)
+inline constexpr std::array<float, 4> kRewardsAwardTextureColor{0.0f, 0.0f, 1.0f, 1.0f};
+
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
     virtual bool session_present_f8a2fc() = 0;
@@ -508,21 +534,41 @@ struct RewardsEnterHost {
     virtual void set_profile_last_score_30(std::int32_t score) = 0;
     virtual void set_screen_byte(std::uint32_t offset, std::uint8_t value) = 0;
     virtual void set_screen_float(std::uint32_t offset, float value) = 0;
+
+    // --- award pages (00635FA3..00636C33) and tail ---
+    virtual void set_awards_flag_e08c8d(bool value) = 0;
+    virtual bool profile_has_pending_awards_0061eb80() = 0;     // profile+BCh vector (1Ch elements) non-empty
+    virtual std::vector<RewardsUnlockAward> unlock_awards_248() = 0;
+    virtual std::vector<RewardsPendingAward> profile_pending_awards_70c() = 0;
+    virtual void profile_clear_pending_awards_006277c0() = 0;
+    // On *(*(00E198AC)+70h): an icon by id (004FB150) or by name (004FC070).
+    virtual void award_icon_by_id_004fb150(std::int32_t id, RewardsWidget icon) = 0;
+    virtual void award_icon_by_name_004fc070(const std::string& name, RewardsWidget icon) = 0;
+    virtual bool badge_award_earned_0090c000(const std::string& key) = 0;  // ECX = *(game+21A0h), key by value
+    // 0050FC30(*(00E19900)+10h, key) copied by 0050A210, freed by 00501FA0.
+    virtual RewardsAwardDefinition award_definition(const std::string& key) = 0;
+    virtual void set_state_texture_00ab44b0(RewardsWidget icon, std::int32_t state, std::string_view path,
+                                            const std::array<float, 4>& rgba) = 0;
+    virtual void widget_set_local_y_00aa78f0(RewardsWidget widget, float y) = 0;
+    virtual void apply_award_pages_0062a970() = 0;              // ECX = screen
+    virtual std::array<std::uint8_t, 6> page_flags_e08c88() = 0;  // 00E08C88..00E08C8D
+    virtual void change_page_00622e30(std::int32_t direction) = 0;
+    virtual void set_help_line_0054a0c0(std::string_view text) = 0;  // ECX = *(00E1930C)
 };
 
 // Folds a native rank or medal number into an icon state: max(value - 1, 0),
 // passed on as its low word (MOVZX ... WORD PTR).
 std::int32_t rewards_icon_state(std::int32_t value) noexcept;
 
-// 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. Partial:
-// the state reset, the early return on +3Ch and the award-page queue up to
-// 0062CA7B, then rewards_screen_enter_pages_0062ca7b. Returns false where the
-// native routine returns (+3Ch).
+// 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. The state
+// reset, the early return on +3Ch and the award-page queue up to 0062CA7B,
+// then rewards_screen_enter_pages_0062ca7b. Returns false where the native
+// routine returns early (+3Ch).
 bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, RewardsEnterHost& host);
 
-// 0062CA7B..: the page builders of the same body (one native function; split
-// here at the point both opening paths join). Partial: see the range table in
-// docs/CC13_INGAME_GUI.md for what is reconstructed.
+// 0062CA7B..00636D78: the page builders of the same body (one native function;
+// split here at the point both opening paths join). Range table and evidence in
+// docs/CC13_INGAME_GUI.md.
 void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host);
 
 // ---------------------------------------------------------------------------

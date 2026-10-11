@@ -861,6 +861,121 @@ void rewards_fill_rank(RewardsEnterHost& host) {
     host.widget_set_size_58(host.screen_widget(0x210), bar);
 }
 
+// One award entry: a clone of +18Ch under +188h with award_Icon,
+// award_title_Text and award_detail_Text already filled by the caller, then
+// laid out at the running local position (`at`, [esp+E0h]). Native copies:
+// 00636258..006363A7, 006365DA..0063671F, 00636A4D..00636BA7.
+void rewards_award_layout(RewardsEnterHost& host, RewardsWidget item, RewardsWidget icon, RewardsWidget title,
+                          RewardsWidget detail, RewardsVec3& at) {
+    // The detail sits 1/144 below the title's text.
+    const double title_bottom =
+        static_cast<double>(host.widget_local_position_00aa67f0(title).y) + host.text_height_00ab6bd0(title);
+    host.widget_set_local_y_00aa78f0(detail, static_cast<float>(title_bottom + kRewardsAwardGap));
+    host.widget_show_34(item, true);
+    host.widget_set_local_position_00aa7dc0(item, at);
+    // FCOMI: the icon height wins only when it exceeds the float-rounded text
+    // height; otherwise the text height is recomputed unrounded.
+    const double icon_height = host.widget_size_00aa6740(icon).y;
+    const double text_height =
+        (static_cast<double>(host.widget_local_position_00aa67f0(detail).y) + host.text_height_00ab6bd0(detail)) -
+        host.widget_local_position_00aa67f0(title).y;
+    const double height = icon_height > static_cast<float>(text_height) ? icon_height : text_height;
+    host.widget_set_size_58(item, {host.widget_size_00aa6740(item).x, static_cast<float>(height + kRewardsAwardPadding)});
+    at.y = static_cast<float>(host.widget_size_00aa6740(item).y + kRewardsAwardGap + at.y);
+}
+
+struct RewardsAwardItem {
+    RewardsWidget item;
+    RewardsWidget icon;
+};
+
+RewardsAwardItem rewards_award_clone(RewardsEnterHost& host) {
+    const RewardsWidget item = host.clone_under_00aab4c0(host.screen_widget(0x18C), host.screen_widget(0x188));
+    return {item, host.child_00aa7e00(item, "award_Icon")};
+}
+
+// 00635FA3..00636C33: the award pages (+18Ch entries in the +184h view).
+void rewards_fill_awards(RewardsEnterState& screen, RewardsEnterHost& host) {
+    const RewardsCommitRecord& record = host.commit_record();
+    host.set_awards_flag_e08c8d(false);
+    if (host.game_byte(0x1EE3) == 0 && !screen.commit_present19) return;
+    const std::vector<RewardsUnlockAward> unlocks = host.unlock_awards_248();
+    host.set_awards_flag_e08c8d(host.profile_has_pending_awards_0061eb80() || !unlocks.empty() || record.badge > 0);
+    RewardsVec3 at = host.widget_local_position_00aa67f0(host.screen_widget(0x18C));
+
+    // 0063603D..006363A7: one entry per unlocked vehicle class.
+    for (const RewardsUnlockAward& unlock : unlocks) {
+        const RewardsAwardItem entry = rewards_award_clone(host);
+        host.award_icon_by_id_004fb150(unlock.icon_id, entry.icon);
+        const RewardsWidget title = host.child_00aa7e00(entry.item, "award_title_Text");
+        host.text_source_00abaed0(title, std::string(kRewardsUnlockedUnitPrefix) + unlock.unit, true);
+        const RewardsWidget detail = host.child_00aa7e00(entry.item, "award_detail_Text");
+        host.text_cstring_00abbe50(detail, kRewardsUnlockText, true);
+        rewards_award_layout(host, entry.item, entry.icon, title, detail, at);
+    }
+
+    // 006363AC..00636735: the profile's pending awards, cleared afterwards.
+    if (host.profile_has_pending_awards_0061eb80()) {
+        for (const RewardsPendingAward& award : host.profile_pending_awards_70c()) {
+            const RewardsAwardItem entry = rewards_award_clone(host);
+            if (award.icon_id == 0) {
+                host.award_icon_by_name_004fc070(award.icon_name, entry.icon);
+            } else {
+                host.award_icon_by_id_004fb150(award.icon_id, entry.icon);
+            }
+            const RewardsWidget title = host.child_00aa7e00(entry.item, "award_title_Text");
+            host.text_source_00abaed0(title, award.title, true);
+            const RewardsWidget detail = host.child_00aa7e00(entry.item, "award_detail_Text");
+            host.text_source_00abaed0(detail, award.detail, true);
+            rewards_award_layout(host, entry.item, entry.icon, title, detail, at);
+        }
+        host.profile_clear_pending_awards_006277c0();
+    }
+
+    // 00636739..00636BF9: badges, from the commit record's key list.
+    if (record.badge > 0) {
+        for (const std::string& key : host.commit_record_keys_6c()) {
+            if (!host.badge_award_earned_0090c000(key)) continue;
+            const RewardsAwardItem entry = rewards_award_clone(host);
+            const RewardsAwardDefinition award = host.award_definition(key);
+            // 00449AF0 against "" (00CE3A0C), case-insensitive; the path is "" + texture.
+            if (!award.texture.empty()) {
+                host.set_state_texture_00ab44b0(entry.icon, 0, award.texture, kRewardsAwardTextureColor);
+                host.widget_show_34(entry.icon, true);
+            } else {
+                host.widget_show_34(entry.icon, false);
+            }
+            const RewardsWidget title = host.child_00aa7e00(entry.item, "award_title_Text");
+            host.text_source_00abaed0(title, award.title, true);
+            const RewardsWidget detail = host.child_00aa7e00(entry.item, "award_detail_Text");
+            host.text_source_00abaed0(detail, award.detail, true);
+            rewards_award_layout(host, entry.item, entry.icon, title, detail, at);
+        }
+    }
+
+    // 00636BFE..00636C33: the award scroller (+19Ch).
+    const double below = static_cast<double>(at.y) - host.widget_size_00aa6740(host.screen_widget(0x184)).y;
+    host.scroller_set_range_006834a0(0x19C, static_cast<float>(below + kRewardsAwardGap));
+}
+
+// 00636C38..00636D60
+void rewards_enter_tail(RewardsEnterState& screen, RewardsEnterHost& host) {
+    if (screen.input_locked258 && !screen.pages238.empty()) {
+        host.widget_set_active_60(host.screen_widget(0xD4), false);
+        host.apply_award_pages_0062a970();
+    }
+    // +1Dh: more than one of the six page flags 00E08C88..00E08C8D is set.
+    std::int32_t pages = 0;
+    for (const std::uint8_t flag : host.page_flags_e08c88()) {
+        if (flag != 0) ++pages;
+    }
+    screen.field1d = pages > 1;
+    host.set_frame_title_00518d60("");
+    host.change_page_00622e30(0);
+    host.set_help_line_0054a0c0("");
+    screen.field38 = screen.score_zero18 ? -1 : 3;
+}
+
 } // namespace
 
 void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host) {
@@ -895,8 +1010,8 @@ void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnter
     rewards_fill_objectives(host);
     rewards_scoring_scroll(host, rewards_fill_scoring(host));
     rewards_fill_rank(host);
-    // NOT RECONSTRUCTED from 00635F9E on: the award pages and the tail
-    // (docs/CC13_INGAME_GUI.md, rewards enter range table).
+    rewards_fill_awards(screen, host);
+    rewards_enter_tail(screen, host);
 }
 
 namespace {
