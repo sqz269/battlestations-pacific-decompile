@@ -1,0 +1,1829 @@
+{
+  "schema": "bsp.cc12.getptd-first-direct-body.v1",
+  "status": "Native_BODY_EVIDENCE_CLOSED",
+  "address": "00C05070",
+  "frozen_worker_HEAD": "f8b434bd2ac7a44057deba47667206fe15aebecf",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_GETPTD_FIRST_DIRECT_TARGET_BODY.md",
+    "reports/cc12_application_crt_getptd_first_direct_target_body.json"
+  ],
+  "Native": {
+    "status": "PASS",
+    "address": "00C05070",
+    "listing": {
+      "status": "PASS",
+      "epoch": 98,
+      "function_count": 64730,
+      "paired_50_raw_bodies_equal": true,
+      "typed_calls": 2,
+      "count_calls": 3,
+      "raw_responses": 100,
+      "failed_calls": 0,
+      "saved_owner": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c05070"
+        },
+        "name": "LIBCRT_unmatched_00c05070",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "50",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05070"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c050a1"
+              },
+              "length": "50"
+            }
+          ]
+        }
+      },
+      "whole_instruction_units": [
+        {
+          "address": "00C05070",
+          "length": 1,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05070"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05071"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05071"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05071",
+          "length": 6,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05071"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05077"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05077"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05077",
+          "length": 6,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05077"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "COMPUTED_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": true,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "COMPUTED_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": true,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0507d"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0507d"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": [
+              {
+                "space": "EXTERNAL",
+                "offset": "00000104"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C0507D",
+          "length": 2,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c0507d"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0507f"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0507f"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C0507F",
+          "length": 2,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c0507f"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05081"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05081"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05081",
+          "length": 2,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05081"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "CONDITIONAL_JUMP",
+              "is_call": false,
+              "is_jump": true,
+              "is_conditional": true,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "CONDITIONAL_JUMP",
+              "is_call": false,
+              "is_jump": true,
+              "is_conditional": true,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05083"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05083"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c0509e"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c0509e"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C05083",
+          "length": 6,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05083"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05089"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05089"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05089",
+          "length": 5,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05089"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0508e"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0508e"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c04fde"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c04fde"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C0508E",
+          "length": 1,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c0508e"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0508f"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0508f"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C0508F",
+          "length": 2,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c0508f"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05091"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05091"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05091",
+          "length": 1,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05091"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05092"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05092"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05092",
+          "length": 6,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05092"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05098"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05098"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C05098",
+          "length": 6,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c05098"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "COMPUTED_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": true,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "COMPUTED_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": true,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0509e"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0509e"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": [
+              {
+                "space": "EXTERNAL",
+                "offset": "00000102"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C0509E",
+          "length": 2,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c0509e"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c050a0"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c050a0"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C050A0",
+          "length": 1,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c050a0"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c050a1"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c050a1"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "address": "00C050A1",
+          "length": 1,
+          "listing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c050a1"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        }
+      ],
+      "per_byte": [
+        {
+          "query": "00C05070",
+          "start": "00C05070",
+          "length": 1,
+          "raw_bytes": 2158,
+          "raw_sha256": "e5416201e9877bca3a12bac06f1f5177a0b06bf519332f77468cbb8f59d85695"
+        },
+        {
+          "query": "00C05071",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 2127,
+          "raw_sha256": "cad9a568c345799c510162faff88605299d99889c8fee1faf47cad49585b4962"
+        },
+        {
+          "query": "00C05072",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "9bea995ccb6d5d7f6095a43013879bf7aec43acdb9c30a10e26aa9a866d4346a"
+        },
+        {
+          "query": "00C05073",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "5dd0a4591ddfa424bbb059f8928bc5b18b6d3cae61cbcdd022ee0d666b8121ab"
+        },
+        {
+          "query": "00C05074",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "2db8b5921edd6fbeac76da55cdd2eaaa0ed880df989dec645f46f6d87c3fc2b5"
+        },
+        {
+          "query": "00C05075",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "cd49f249d4b6d4a7b1d130b7f5e4062cf3c00e604cfc0263856a12dfcc45a987"
+        },
+        {
+          "query": "00C05076",
+          "start": "00C05071",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "9bce8df6570d9261bf0e4b416101e482d5a5fa360e1f31a38109b096fe9618fe"
+        },
+        {
+          "query": "00C05077",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 2450,
+          "raw_sha256": "2e1afc9b41a961c5d8c502a73dbc8573230d413ea183e6b6cdbf6b58a9790ae9"
+        },
+        {
+          "query": "00C05078",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "9b80588cddedb60c5ab730e7e2f224b8b438151cd62ea6055645791518e347cc"
+        },
+        {
+          "query": "00C05079",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "1ab22a34789fceb4d104e5a6f9edeb465a962c3740068283626981b8fb1bba25"
+        },
+        {
+          "query": "00C0507A",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "87ffe4807ddfe072c7fc6a913897062d941a24eabae99c8f633f25ae1ebaad9a"
+        },
+        {
+          "query": "00C0507B",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "0f245c53f9b360e0be868c01e837321a5228208ceb47721031066a0046a281c7"
+        },
+        {
+          "query": "00C0507C",
+          "start": "00C05077",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "30372cc8574b906104253956d599772ad2f9eb91a547da28581dceb89f5e3b4d"
+        },
+        {
+          "query": "00C0507D",
+          "start": "00C0507D",
+          "length": 2,
+          "raw_bytes": 2127,
+          "raw_sha256": "b3c7df1a651a8d50e3f5f195a7530ddb3dbc631743a21563312e3d53bc9b2b01"
+        },
+        {
+          "query": "00C0507E",
+          "start": "00C0507D",
+          "length": 2,
+          "raw_bytes": 1348,
+          "raw_sha256": "e393d9e94d4fb96141d5d1bf256c3e6ee489549a73fa86f2ca393ced8047943e"
+        },
+        {
+          "query": "00C0507F",
+          "start": "00C0507F",
+          "length": 2,
+          "raw_bytes": 2127,
+          "raw_sha256": "7b0e0f1b89fbc6a3ca54b5b86b6f3b28fbbf3454e4e32edd1741844381cac07d"
+        },
+        {
+          "query": "00C05080",
+          "start": "00C0507F",
+          "length": 2,
+          "raw_bytes": 1348,
+          "raw_sha256": "6aa2b28b0302ed9df5e5f05454d0735537107b9435ce0b4b7c481a1cb62c3a6c"
+        },
+        {
+          "query": "00C05081",
+          "start": "00C05081",
+          "length": 2,
+          "raw_bytes": 2201,
+          "raw_sha256": "feb3678a0f0130217a19966c17c3dd3592dbc5bdc22d13cbe2cc3d4db48a8ade"
+        },
+        {
+          "query": "00C05082",
+          "start": "00C05081",
+          "length": 2,
+          "raw_bytes": 1348,
+          "raw_sha256": "ae673c1c89ccfdad07bb3e2d649c2f1e953717d9c567ca28f9714faac11b1ca5"
+        },
+        {
+          "query": "00C05083",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 2127,
+          "raw_sha256": "6260fcf16f5143e1cbac4e2c47d80a0e912392da6abea03632a6e5e279702c15"
+        },
+        {
+          "query": "00C05084",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "afa657f28335c78fc740acd601ae8a9c1cfd4cc0317990b00b68988bc7402e7f"
+        },
+        {
+          "query": "00C05085",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "225818ee4c6317f8e836be8b9abf0213d709f6fb2e5821997c40d4d0822a27cd"
+        },
+        {
+          "query": "00C05086",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "734a7a1fb46197fce970394c7641a171a2e1eab5b7d8902fa95a1373b528875b"
+        },
+        {
+          "query": "00C05087",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "3684ff591f642b5ffe1cccfd87bed261135af947e9a33b6d7b6e371b37a7bfe4"
+        },
+        {
+          "query": "00C05088",
+          "start": "00C05083",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "dfdddce40212e9af6419be6bc5c05d2e170087b7ed59dc3dda5b86c10e011fe6"
+        },
+        {
+          "query": "00C05089",
+          "start": "00C05089",
+          "length": 5,
+          "raw_bytes": 2503,
+          "raw_sha256": "dbf9171feec8a6936c369fdd29ee64207a9d2132cca8cf77332f423469c92d20"
+        },
+        {
+          "query": "00C0508A",
+          "start": "00C05089",
+          "length": 5,
+          "raw_bytes": 1348,
+          "raw_sha256": "0475f4ec19c62bd5da8e2127aebbd029cc5021ff40b2d22e94c9225549fad563"
+        },
+        {
+          "query": "00C0508B",
+          "start": "00C05089",
+          "length": 5,
+          "raw_bytes": 1348,
+          "raw_sha256": "19d5bacdbfbc3262b0e88f7182b2c3af1f3ea67b6aa499a70eada7e451165e95"
+        },
+        {
+          "query": "00C0508C",
+          "start": "00C05089",
+          "length": 5,
+          "raw_bytes": 1348,
+          "raw_sha256": "9d08700b45bedb157de3c215e2570da143f1b7064b536913fbee298bdc70771d"
+        },
+        {
+          "query": "00C0508D",
+          "start": "00C05089",
+          "length": 5,
+          "raw_bytes": 1348,
+          "raw_sha256": "c25d0a56d0963394818a694376e285d8db5b7e4d07d6e03b6af280c183f94365"
+        },
+        {
+          "query": "00C0508E",
+          "start": "00C0508E",
+          "length": 1,
+          "raw_bytes": 2127,
+          "raw_sha256": "6cfd4d9f2338565ffeab2b7073381d361164dcc7a2ce5c5d1f048a846d4a7a44"
+        },
+        {
+          "query": "00C0508F",
+          "start": "00C0508F",
+          "length": 2,
+          "raw_bytes": 2127,
+          "raw_sha256": "6dcee9de0168b8e341d9cf210b7c0c79979af17284feca3f0e56324516c29abc"
+        },
+        {
+          "query": "00C05090",
+          "start": "00C0508F",
+          "length": 2,
+          "raw_bytes": 1348,
+          "raw_sha256": "e7a44b1d8d8c28229694be3b9dd3a6206618a289ad6b71e9910ba4e86e52bb55"
+        },
+        {
+          "query": "00C05091",
+          "start": "00C05091",
+          "length": 1,
+          "raw_bytes": 2127,
+          "raw_sha256": "c213ad4b4d7238945423372ec00a6c454bf7482a05dd4cd05af42b282df20835"
+        },
+        {
+          "query": "00C05092",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 2127,
+          "raw_sha256": "17b8c6ac037acbc7ce3544752d25c7f95bb7f31a38d49a7792501680bcfd6d86"
+        },
+        {
+          "query": "00C05093",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "1b2d59e1054156acc915a540f701fd2e45955b319f161154bee91d2cbe01542c"
+        },
+        {
+          "query": "00C05094",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "d417779d3d731e01e72807a72a259af87fefbaff7c4c10cc93ba8f534d221698"
+        },
+        {
+          "query": "00C05095",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "55c1a8e2dfb3ecdfdcb0c5cae77545777853964bf05114cbdf0765724ce8f05a"
+        },
+        {
+          "query": "00C05096",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "7ae322348cdb53debe9dbed1c7512f73fb0d5973df70f043bcafafaf40538673"
+        },
+        {
+          "query": "00C05097",
+          "start": "00C05092",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "6e59cf746370b072065298333203957faab20f156d73748fac5cb75630f8e559"
+        },
+        {
+          "query": "00C05098",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 2450,
+          "raw_sha256": "c09a4cbc730d69405471d5bbaa133ed7e02e4f1068074066bc1a115aba0decc9"
+        },
+        {
+          "query": "00C05099",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "8d029fafd91bdba5918374885bc225141e8fcaf177b62cf42e431847e6b887af"
+        },
+        {
+          "query": "00C0509A",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "3f7cad4a02acdead196c1436334bf6f48e2c43ddd4ad25a5e14dea07d53bbc4a"
+        },
+        {
+          "query": "00C0509B",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "f05c43c2eb0e5487d685e1064eb00b2abe2af63397e17733974eb12492e45a79"
+        },
+        {
+          "query": "00C0509C",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "b13ff8e694dee517484898ca52c90f373f0db18268e9e5402add9fa1899b6916"
+        },
+        {
+          "query": "00C0509D",
+          "start": "00C05098",
+          "length": 6,
+          "raw_bytes": 1348,
+          "raw_sha256": "79f1376441cf0fb2b243eb4378b976346ff14635f18855b452d63b6316484cf6"
+        },
+        {
+          "query": "00C0509E",
+          "start": "00C0509E",
+          "length": 2,
+          "raw_bytes": 2127,
+          "raw_sha256": "6c3b09c3f2338b907836c24a52972fc06180a443111b588e20da7dfc3e2e3411"
+        },
+        {
+          "query": "00C0509F",
+          "start": "00C0509E",
+          "length": 2,
+          "raw_bytes": 1348,
+          "raw_sha256": "0e85ac767674a50fc9cdf8cc56ac48d3bcc50ee2ef64ebcbcf8302c117eb45ac"
+        },
+        {
+          "query": "00C050A0",
+          "start": "00C050A0",
+          "length": 1,
+          "raw_bytes": 2127,
+          "raw_sha256": "7ad4343b5b3159578c611f7588c676ff4f8f59c97922babbbd6d76dde3a78d5b"
+        },
+        {
+          "query": "00C050A1",
+          "start": "00C050A1",
+          "length": 1,
+          "raw_bytes": 2059,
+          "raw_sha256": "be5d6325c34d3f8dd5abd965d066b6e67b5d332dee2a1692cea0c9e86999f045"
+        }
+      ],
+      "covered_bytes": 50,
+      "instruction_count": 16,
+      "automatic_target_objects_opaque": 3,
+      "complete_at_and_containing_aliases": true,
+      "no_straddling_or_uncovered_byte": true,
+      "listing_admits_no_operands_or_body_semantics": true
+    },
+    "all_three_50_address_raw_sweeps_equal": true,
+    "raw_typed_responses": 150,
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_CLI_calls": 11,
+    "typed_calls": 3,
+    "count_calls": 5,
+    "code_reads": 2,
+    "context_zero_sweeps": 1,
+    "failed_Native_calls": 0,
+    "range": {
+      "start": "00C05070",
+      "end_inclusive": "00C050A1",
+      "bytes": 50,
+      "instructions": 16
+    },
+    "paired_code_equal": true,
+    "code_sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+    "manual_decode": [
+      {
+        "address": "00C05070",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05071",
+        "size": 6,
+        "bytes": "ff35005be100",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 14768896
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 4,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05077",
+        "size": 6,
+        "bytes": "ff15bc20ce00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 13508796
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 4,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C0507D",
+        "size": 2,
+        "bytes": "8bf0",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C0507F",
+        "size": 2,
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05081",
+        "size": 2,
+        "bytes": "751b",
+        "mnemonic": "jne",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603550
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 1
+        }
+      },
+      {
+        "address": "00C05083",
+        "size": 6,
+        "bytes": "ff3538de0901",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 17423928
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 4,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05089",
+        "size": 5,
+        "bytes": "e850ffffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603358
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        }
+      },
+      {
+        "address": "00C0508E",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C0508F",
+        "size": 2,
+        "bytes": "8bf0",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05091",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05092",
+        "size": 6,
+        "bytes": "ff35005be100",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 14768896
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 4,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C05098",
+        "size": 6,
+        "bytes": "ff15b420ce00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 13508788
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 4,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C0509E",
+        "size": 2,
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C050A0",
+        "size": 1,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      },
+      {
+        "address": "00C050A1",
+        "size": 1,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": [],
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        }
+      }
+    ],
+    "actual_detailed_Capstone_version": "5.0.7",
+    "all_boundaries_operands_and_encoding_fields_agree": true,
+    "physical_dispatch_cells_contents_unread": [
+      "00CE20BC",
+      "00CE20B4"
+    ],
+    "physical_data_cells_contents_unread": [
+      "00E15B00",
+      "0109DE38"
+    ],
+    "direct_call_destination_address_only": {
+      "site": "00C05089",
+      "target": "00C04FDE"
+    },
+    "saved_EXTERNAL_annotations_distinct_from_physical_cells": [
+      {
+        "site": "00C05077",
+        "space": "EXTERNAL",
+        "offset": "00000104"
+      },
+      {
+        "site": "00C05098",
+        "space": "EXTERNAL",
+        "offset": "00000102"
+      }
+    ],
+    "automatic_target_objects_opaque_per_sweep": 3,
+    "contract": {
+      "scope": "Conditional local 32-bit x86 semantics only: each instruction must still have its captured encoding when it executes normally in an appropriate environment. Faults, changed code and asynchronous effects are not modeled. Addresses retain DS/SS segment roles; no flat-segment equality is presumed. Local operations leave unmentioned registers unchanged; each external call discards all prior returned-state assumptions.",
+      "memory_order": "Every operand load and stack pop observes memory at that instruction, after preceding writes on that path. PUSH reads its source before decrementing ESP and writing the new stack slot. A computed CALL reads its dispatch cell before pushing the return address. Do not cache either read of 00E15B00 across calls or pushes.",
+      "instruction_effects": [
+        {
+          "address": "00C05070",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05071",
+          "instruction": "push M32[DS:0x00E15B00]",
+          "conditional_effect": "v := M32[DS:0x00E15B00] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05077",
+          "instruction": "call M32[DS:0x00CE20BC]",
+          "conditional_effect": "target := M32[DS:0x00CE20BC] before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0507D; transfer to target. If it later resumes at 0x00C0507D, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0507D",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX in current state; flags unchanged."
+        },
+        {
+          "address": "00C0507F",
+          "instruction": "test ESI, ESI",
+          "conditional_effect": "t := ESI & ESI; ZF/SF/PF := predicates of t; CF=OF=0; AF undefined. No register or memory writes."
+        },
+        {
+          "address": "00C05081",
+          "instruction": "jne 0x00C0509E",
+          "conditional_effect": "If ZF=0, go to 0x00C0509E; otherwise go to 0x00C05083; state unchanged."
+        },
+        {
+          "address": "00C05083",
+          "instruction": "push M32[DS:0x0109DE38]",
+          "conditional_effect": "v := M32[DS:0x0109DE38] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05089",
+          "instruction": "call 0x00C04FDE",
+          "conditional_effect": "target := 0x00C04FDE before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0508E; transfer to target. If it later resumes at 0x00C0508E, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0508E",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] at this instruction; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0508F",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX in current state; flags unchanged."
+        },
+        {
+          "address": "00C05091",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05092",
+          "instruction": "push M32[DS:0x00E15B00]",
+          "conditional_effect": "v := M32[DS:0x00E15B00] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05098",
+          "instruction": "call M32[DS:0x00CE20B4]",
+          "conditional_effect": "target := M32[DS:0x00CE20B4] before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0509E; transfer to target. If it later resumes at 0x00C0509E, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0509E",
+          "instruction": "mov EAX, ESI",
+          "conditional_effect": "EAX := ESI in current state; flags unchanged."
+        },
+        {
+          "address": "00C050A0",
+          "instruction": "pop ESI",
+          "conditional_effect": "ESI := M32[SS:ESP] at this instruction; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C050A1",
+          "instruction": "ret",
+          "conditional_effect": "target := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; transfer to target; flags unchanged. Entry-stack restoration, caller identity and a valid return destination are unproved."
+        }
+      ],
+      "call_boundaries": [
+        "00C05077",
+        "00C05089",
+        "00C05098"
+      ],
+      "branch_qualification": "If C05077 resumes at C0507D, ESI is set to that returned EAX and tested. A nonzero value takes the local short path to C0509E, where EAX is assigned that ESI before POP ESI and RET. The zero path calls C04FDE at C05089; returned ESP/EBP/EAX/ESI and all other state are unknown. C0508E pops from current returned ESP; C0508F sets ESI from current EAX. C05091 pushes that ESI; C05092 rereads 00E15B00 after that push, preserving possible aliases.",
+      "final_call_qualification": "If C05098 resumes at C0509E, MOV EAX,ESI uses returned unknown ESI. It does not promise the value copied or pushed before that call. POP ESI and RET subsequently read current stack memory.",
+      "limits": "No TLS, locking, caching, allocation, decoding-provider, argument or return-type meaning is authenticated. Saved function names, no-return annotations and EXTERNAL scalars do not establish original ABI or runtime behavior."
+    },
+    "immediate_accepted_entry_inputs_used_without_archive_recursion": true,
+    "Source_build_ABI_runtime_or_gameplay_credit": false
+  },
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_body/evidence.zip",
+      "bytes": 547224,
+      "sha256": "b3502946501de284814b07c492c15e577e0e1cd312a2dab83b066fd6693f7a98"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_body/distinct_copy/evidence.zip",
+      "bytes": 547224,
+      "sha256": "b3502946501de284814b07c492c15e577e0e1cd312a2dab83b066fd6693f7a98"
+    },
+    "manifest": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_body/manifest.json",
+      "bytes": 14577,
+      "sha256": "4fcf727d52a3950d0a276e656da8dcc73d7f5182d713de1e09d90d300aa26dba"
+    },
+    "physical_copy_proof": {
+      "samefile": false,
+      "different_resolved_paths": true,
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_first_direct_target_body\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006147220
+      },
+      "copy": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_first_direct_target_body\\distinct_copy\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006147222
+      }
+    },
+    "physical_copy_proof_pin": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_body/distinct_copy_proof.json",
+      "bytes": 589,
+      "sha256": "76d47d632bdeb418d6443cd438c2fa84e09008b2e10858850eaf172e343485a8"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/capture_body.py",
+        "bytes": 4792,
+        "sha256": "c8cee5d77e30c8375228709550d0e0c7fd43a9afdc0db4ddc50c8ef50e0c98cb"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/body_parser.py",
+        "bytes": 29693,
+        "sha256": "98df90df5336a074622221919a8a095b13801645c1d1899c27ceda08b502b7db"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/guard_replay.py",
+        "bytes": 3244,
+        "sha256": "f08671ddcbb521130ce6e840d13502fe55059424c4a85ffe134dfee454c899ca"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/packet_tool.py",
+        "bytes": 22766,
+        "sha256": "5870cc1181c7236230da696b1c9d0a0cd220241d0070cf783a78c31a662584ca"
+      }
+    ],
+    "preexecution_pins": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_body/replay_preexecution_pins.json",
+      "bytes": 2247,
+      "sha256": "e1fef9d35f76459a5e8bd020cf7c842f9ea90b4b307d57926ce8f832316a47c7"
+    },
+    "replay_equal": true,
+    "replay_result": {
+      "all_hashes_checked_before_semantic_replay": true,
+      "all_helpers_Root_producer_and_preimages_retained": true,
+      "body": {
+        "Native_CLI_calls": 11,
+        "Source_build_ABI_runtime_or_gameplay_credit": false,
+        "actual_detailed_Capstone_version": "5.0.7",
+        "address": "00C05070",
+        "all_boundaries_operands_and_encoding_fields_agree": true,
+        "all_three_50_address_raw_sweeps_equal": true,
+        "automatic_target_objects_opaque_per_sweep": 3,
+        "code_reads": 2,
+        "code_sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "context_zero_sweeps": 1,
+        "count_calls": 5,
+        "direct_call_destination_address_only": {
+          "site": "00C05089",
+          "target": "00C04FDE"
+        },
+        "epoch": 98,
+        "failed_Native_calls": 0,
+        "function_count": 64730,
+        "immediate_accepted_entry_inputs_used_without_archive_recursion": true,
+        "paired_code_equal": true,
+        "physical_data_cells_contents_unread": [
+          "00E15B00",
+          "0109DE38"
+        ],
+        "physical_dispatch_cells_contents_unread": [
+          "00CE20BC",
+          "00CE20B4"
+        ],
+        "range": {
+          "bytes": 50,
+          "end_inclusive": "00C050A1",
+          "instructions": 16,
+          "start": "00C05070"
+        },
+        "raw_typed_responses": 150,
+        "saved_EXTERNAL_annotations_distinct_from_physical_cells": [
+          {
+            "offset": "00000104",
+            "site": "00C05077",
+            "space": "EXTERNAL"
+          },
+          {
+            "offset": "00000102",
+            "site": "00C05098",
+            "space": "EXTERNAL"
+          }
+        ],
+        "status": "PASS",
+        "typed_calls": 3
+      },
+      "body_findings_sha256": "52aee5147094caf79bbbd962721c42e015a95ea660e4fc5b7c488daba5e71eba",
+      "git": {
+        "Source_content_census": false,
+        "Source_subtree_identities": {
+          "include": "09add3be594e63edcce6a16ec041ed965441e898",
+          "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+        },
+        "actual_commit_to_positive_input_paths_proved": true,
+        "actual_object_payloads": 8,
+        "current_Root_Source_equality": false,
+        "finite_immediate_positive_paths": 12,
+        "frozen_HEAD": "f8b434bd2ac7a44057deba47667206fe15aebecf",
+        "inherited_archive_recursion": false,
+        "root_tree": "2486020b11fad950846bf2819b7dcf333fe3d9d2"
+      },
+      "manifest_members": 84,
+      "semantic_instruction_count": 16,
+      "status": "PASS"
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/original_replay.json",
+        "bytes": 1956,
+        "sha256": "8a3597b289c8eb7cec51deb6a805b6e3321517d3eb1c132fa0585e1f19c25344"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/original_guard.json",
+        "bytes": 560,
+        "sha256": "f41367adedb9d31b852328105eb70af5fff577d8caa3d6f1372534ba9f07eab5"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/original_command.json",
+        "bytes": 575,
+        "sha256": "96f1555ff2b4bd7d07ac7a656ffb7b5949b694753e0a2a356024d80e4c45248c"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/distinct_copy_replay.json",
+        "bytes": 1956,
+        "sha256": "8a3597b289c8eb7cec51deb6a805b6e3321517d3eb1c132fa0585e1f19c25344"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/distinct_copy_guard.json",
+        "bytes": 575,
+        "sha256": "c5317d426084645b78934fc2535d0584522b13aa0dc2906d9e32659052398f0d"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_body/distinct_copy_command.json",
+        "bytes": 590,
+        "sha256": "d2323c3f24bb7dadd8afc1fa1b017bc22534601467974a35503741758e88fa24"
+      }
+    ]
+  },
+  "Source_subtree_identities": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "scope": "Saved fifty-byte function body and conditional local semantics only. Names and EXTERNAL scalars are annotations. Data/provider/callee contents remain unread; Source IDs identify worker base/delivery revisions only.",
+  "credit": {
+    "Source_changes": false,
+    "build_or_new_tests": false,
+    "original_ABI": false,
+    "runtime_or_gameplay": false,
+    "GPR_mutation": false,
+    "Source_census": false,
+    "current_Root_Source_equality": false,
+    "inherited_archive_recursion": false
+  },
+  "delivery_receipts": {
+    "staged": "local/cc12_application_crt_getptd_first_direct_target_body/staged_git_receipt.json",
+    "final": "local/cc12_application_crt_getptd_first_direct_target_body/final_git_receipt.json",
+    "meaning": "Actual Git receipts outside the sealed ZIP avoid circular hashes and pin exactly two outputs."
+  }
+}
