@@ -249,7 +249,7 @@ docs/MISSION_TREE_LUA_READER.md), [esp+9Ch] the local player's scoreboard row.
 
 Listing repair (cc13-rewards1, record `reports/cc13_rewards1_listing_repair.json`): the `_free` calls at 0063169B and 00632A54 (the kills-map copy release in the two damage tables) carried a CALL_RETURN flow override (effective CALL_TERMINATOR; `_free` itself is not no-return), so Ghidra had no instructions at 006316A0..006316CA and 00632A59..00632A83, the fall-through that steps the L3 iterator (0057F4A0) and jumps back to the loop head (00630E15 / 00632126). Both ranges were disassembled after a byte check against the disk image, both overrides cleared to NONE, and 0062C2C0 re-created from its instructions (name and plate kept; the signature was the default). The two 0057F4A0 rows are back in the report.
 
-Uncertain: the meaning of +10h (the voice gate), record+1E4h, row+5Ch (an AI slot is a guess);
+Uncertain: the meaning of +10h (the voice gate), record+1E4h (row+5Ch is the AI flag, see 0062A0B0 below);
 the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
 byte +22Fh+count has no bound against the eight bytes cleared.
 
@@ -271,8 +271,8 @@ ABI-compatible (host-interface projection), not game-validated; no host wiring.
 
 ### Handoff (cc13-rewards1)
 
-The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
-(3) the bodies of 0062A0B0, the 00625D10 predicate and the score-table formulas; (4) host wiring
+The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h and record+24Dh;
+(3) done for 0062A0B0 and 00625D10; the score-table formulas belong to the side-AI lanes; (4) host wiring
 of `RewardsEnterHost` (none exists).
 
 ## Scoreboard rows 0062A0B0 and their sort 00625D10 (cc13-rewards1, reconstructed, build-tested)
