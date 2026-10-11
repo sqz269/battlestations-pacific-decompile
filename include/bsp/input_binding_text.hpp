@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <vector>
 
 #include "bsp/input_settings.hpp"
 
@@ -76,6 +77,35 @@ void append_binding_display_text_0069e9e0(const InputSettings& settings,
 // Native uses map operator[] for the device, the input and the reverse vector
 // and invokes the checked-container failure on a short vector; the host
 // throws std::out_of_range for any missing entry instead of inserting.
+// One A92790 reading: the 14h-byte descriptor (class, index, +8, key, flag)
+// and the float scale. 006A33F0 pre-fills the descriptor with {-1, 0, 0, 0}
+// before the call; see include/bsp/native_input_binding_slots.hpp for what
+// A92790 writes for a missing slot.
+struct BindingSlotReading {
+    KeyboardInputBinding binding;
+    float scale{};
+};
+using ReadBindingSlotFn =
+    std::function<BindingSlotReading(std::uint32_t action, std::int32_t slot)>;
+
+// Address: 006A33F0 (body 006A33F0..006A3860).
+// Original ABI: __thiscall, ECX = input settings, [EBP+8] = action,
+// [EBP+0Ch] = positive std::vector<NativeString>*, [EBP+10h] = negative
+// vector, RET 0Ch. Caller 008CC030.
+//
+// Visits slots 0, 2, 1, 3 (i + 2j for i, j in 0..1) through A92790 on the
+// input manager (004BEC00) and skips a class of -1. A button label goes to
+// `positive` when the scale is >= 0 (or NaN) and to `negative` when it is
+// below zero. An axis (as in 006A9850) produces one label for each list:
+// text + "|.+" / "|.-" (class 1 key 0Ah: "|. |^globals.down" / "|. |^globals.up"),
+// with the "+"/down suffix going to `positive` for a non-negative scale and
+// to `negative` for a negative one. The list roles are a hypothesis.
+void collect_action_binding_texts_006a33f0(const InputSettings& settings, std::uint32_t action,
+                                           const ReadBindingSlotFn& read_slot,
+                                           const BindingTextHooks& hooks,
+                                           std::vector<std::string>& positive,
+                                           std::vector<std::string>& negative);
+
 std::string binding_slot_text_006a9850(const InputSettings& settings, const std::string& device,
                                        const std::string& input, std::int32_t slot,
                                        const BindingTextHooks& hooks);

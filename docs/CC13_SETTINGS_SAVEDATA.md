@@ -1,6 +1,6 @@
 # CC13 settings and mission save data (segment 29)
 
-Addresses: 0069e300, 0069e9e0, 006a5640, 006a9850, 006ad470, 006ad8d0, 006addc0, 006ae120, 006ae280, 006ae400, 006ae730,
+Addresses: 0069e300, 0069e9e0, 006a33f0, 006a5640, 006a9850, 006ad470, 006ad8d0, 006addc0, 006ae120, 006ae280, 006ae400, 006ae730,
 006ae870, 006aea00, 006aebf0, 006aedc0, 006aef70, 006af120, 006af2b0, 006af420, 006af870,
 006af8b0, 006afb00, 006afe80, 006afec0, 006aff20, 006aff90, 006b0020, 006b0650, 006b0be0,
 006b1190, 006b1490, 006b17b0, 006b1870, 006b1e40, 006b23e0, 006b2d30, 006b2e90, 006b2fc0,
@@ -33,7 +33,7 @@ document or source covered, plus the control-preset writer.
 | Item | Exported | Reconstructed | Build-tested | Fixture/game validated |
 | --- | --- | --- | --- | --- |
 | `006A5640` control preset writer | yes | `src/control_preset_archive.cpp` | yes | no |
-| `0069E300`, `0069E9E0`, `006A9850` binding display text | yes | `src/input_binding_text.cpp` | yes | `0069E300` probed with the real `GetKeyNameTextA` |
+| `0069E300`, `0069E9E0`, `006A33F0`, `006A9850` binding display text | yes | `src/input_binding_text.cpp` | yes | `0069E300` probed with the real `GetKeyNameTextA` |
 | Lua pickler encode/decode (`006ADDC0..006B68C0`, 26 routines) | yes | `src/mission_savedata_lua.cpp` | yes | host round-trip probe only (below) |
 | `006B7710` save tail (register, encode, emit, restore) | yes | wrapper only | yes | no |
 | `006B7710` archive header, `006B5960` load tail, `006AF8B0`, `006AFB00` | yes / disk | documented only | n/a | no |
@@ -229,7 +229,7 @@ After `decode_mission_lua_state_006b23e0` every identity was restored, `anon` wa
 or `_R_` remained in the trees, and `_G.__ == ""`. This checks the host implementation against
 its own reading of the assembly; it is not a native differential run.
 
-## Binding display text `0069E300`, `0069E9E0`, `006A9850`
+## Binding display text `0069E300`, `0069E9E0`, `006A33F0`, `006A9850`
 
 These build the label the control-binding screens show for one input slot. Host:
 `include/bsp/input_binding_text.hpp` over the existing `InputSettings` model.
@@ -261,6 +261,15 @@ is `-1`, and otherwise the `0069E9E0` text plus, for axes (class 1 code >= 8, cl
 slot's bit in the device's runtime reverse vector. An empty result becomes `FE_pc.cs_unknown`.
 Native uses map `operator[]` (`0055C110`, `006A45C0`, `006A4CA0`), so it inserts missing entries
 before failing the checked index; the host throws `std::out_of_range` instead.
+
+`006A33F0` (`__thiscall`, `ECX` = settings, `[EBP+8]` = action, `[EBP+0Ch]` and `[EBP+10h]` =
+two `NativeString` vectors, `RET 0Ch`; caller `008CC030`) reads slots 0, 2, 1, 3 of one action
+through `BSP_InputManager_ReadBindingDescriptor` (`00A92790`) on `BSP_InputManager_GetSingleton`
+(`004BEC00`), with the descriptor pre-filled `{-1, 0, 0, 0}`, and skips class `-1`. A button label
+goes to the first list when the slot scale is not below zero (`COMISS 0.0, scale; JBE`, so NaN
+counts as non-negative) and to the second otherwise. An axis label is pushed to both lists, the
+first getting `|.+`/down for a non-negative scale and `|.-`/up for a negative one, the second the
+opposite. Reading the lists as positive and negative direction labels is a hypothesis.
 
 ## Divergences and uncertainty
 
@@ -309,9 +318,9 @@ The call sites cited above are listed in `reports/cc13_settings_savedata.json` f
 ## Handoff
 
 Done: segment survey, the whole mission Lua pickler (encode, naming, strip, restore, resolve),
-control preset writer, binding display text (`0069E300`, `0069E9E0`, `006A9850`), 45 ledger
+control preset writer, binding display text (`0069E300`, `0069E9E0`, `006A33F0`, `006A9850`), 46 ledger
 names applied to Ghidra with plate comments, report rows verified by
-`tools/verify_report_calls.py` (52 rows, 0 failed).
+`tools/verify_report_calls.py` (54 rows, 0 failed).
 
 Open, in priority order:
 
@@ -322,8 +331,8 @@ Open, in priority order:
 3. The hidden adapters `006AD4D0`, `006AD530`, `006AD560` and the twins `00951820`/`00951940`
    (entity-id registry archive read/write, segment of `00951xxx`).
 4. Remaining raw functions in `00696470..006AD3F0` are mostly `std::_Tree`/vector
-   instantiations. `006A33F0` (the other `0069E9E0` caller, from `008CC030`), `006A9A40` and
-   `006AAC50` (`|. (|||.)|`, called from the binding screens) are the next string-anchored
-   targets.
+   instantiations. `006A9A40` (rebinding with `BSP_InputSettings_SuppressAlternateBinding`) and
+   `006AAC50` (`|. (|`/`|.)|` conflict text, called from the binding screens) are the next
+   string-anchored targets.
 5. Whether anything reaches `006B7710`/`006B5960` at run time; a breakpoint on either during a
    mission would settle it.

@@ -87,6 +87,48 @@ void append_binding_display_text_0069e9e0(const InputSettings& settings,
         if (record.primary == binding.device_type && record.secondary == binding.key) out += name;
 }
 
+namespace {
+
+// 006A991A..006A9938 and 006A3497..006A34D7: class 1 from key 8, class 2 from 3Ch.
+bool is_axis_binding(const KeyboardInputBinding& binding) {
+    const auto key = static_cast<std::uint32_t>(binding.key);
+    return (binding.device_type == 1 && key >= 8) || (binding.device_type == 2 && key >= 0x3C);
+}
+
+// Class 1 key 0Ah uses the up/down words instead of the signs.
+const char* axis_suffix(const KeyboardInputBinding& binding, bool minus) {
+    const bool vertical = binding.device_type == 1 && binding.key == 0x0A;
+    if (minus) return vertical ? "|. |^globals.up" : "|.-";  // 00CF803C / 00CF8038
+    return vertical ? "|. |^globals.down" : "|.+";            // 00CF8024 / 00CF8020
+}
+
+} // namespace
+
+void collect_action_binding_texts_006a33f0(const InputSettings& settings, std::uint32_t action,
+                                           const ReadBindingSlotFn& read_slot,
+                                           const BindingTextHooks& hooks,
+                                           std::vector<std::string>& positive,
+                                           std::vector<std::string>& negative) {
+    // 006A341B..006A36C6: outer i, inner j, slot = i + (j ? 2 : 0).
+    for (std::int32_t i = 0; i < 2; ++i) {
+        for (std::int32_t j = 0; j < 2; ++j) {
+            const BindingSlotReading reading = read_slot(action, i + (j ? 2 : 0));
+            if (reading.binding.device_type == -1) continue; // 006A346B
+            std::string text;
+            append_binding_display_text_0069e9e0(settings, reading.binding, text, hooks);
+            // COMISS 0.0, scale; JBE: NaN and zero count as non-negative.
+            const bool below_zero = 0.0f > reading.scale;
+            if (!is_axis_binding(reading.binding)) {
+                (below_zero ? negative : positive).push_back(text); // 006A34C3 / 006A3857
+                continue;
+            }
+            // 006A34E2..006A367A (scale < 0) and 006A36F7..006A3840 (scale >= 0).
+            positive.push_back(text + axis_suffix(reading.binding, below_zero));
+            negative.push_back(text + axis_suffix(reading.binding, !below_zero));
+        }
+    }
+}
+
 std::string binding_slot_text_006a9850(const InputSettings& settings, const std::string& device,
                                        const std::string& input, std::int32_t slot,
                                        const BindingTextHooks& hooks) {
@@ -102,15 +144,11 @@ std::string binding_slot_text_006a9850(const InputSettings& settings, const std:
     std::string text;
     append_binding_display_text_0069e9e0(settings, binding, text, hooks);
 
-    // 006A991A..006A9938: axes are class 1 from key 8 and class 2 from key 3Ch.
-    const bool axis = (binding.device_type == 1 && static_cast<std::uint32_t>(binding.key) >= 8) ||
-                      (binding.device_type == 2 && static_cast<std::uint32_t>(binding.key) >= 0x3C);
-    if (axis) {
-        const bool vertical = binding.device_type == 1 && binding.key == 0x0A; // 006A993E
-        // 006A994E..006A9973: runtime_reverse[input][slot] on the device record.
+    if (is_axis_binding(binding)) {
+        // 006A994E..006A9997: runtime_reverse[input][slot] on the device record
+        // selects the minus/up suffix.
         const bool reversed = record.runtime_reverse.at(input).at(static_cast<std::size_t>(slot));
-        if (reversed) text += vertical ? "|. |^globals.up" : "|.-";   // 00CF803C / 00CF8038
-        else text += vertical ? "|. |^globals.down" : "|.+";         // 00CF8024 / 00CF8020
+        text += axis_suffix(binding, reversed);
     }
     // 006A99D8..006A99E8.
     if (text.empty()) text = "FE_pc.cs_unknown";
