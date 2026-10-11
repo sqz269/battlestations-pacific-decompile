@@ -1,0 +1,545 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_crt_unwind_dispatch_direct_target_entry",
+  "status": "single_entry_instruction_physical_evidence_only",
+  "verdict": "Paired exact1B reads atC07623 agree:55. Manual opcode and actual detailed Capstone decode PUSH EBP. On successful completion, entryESP T becomesT-4 modulo2^32 and DWORD SS:[T-4] receives current incoming EBP B, with EBP and flags unchanged. Saved FindHandler name/prototype and complete854B owner range remain metadata; the remaining853B and all eventual behavior are unexamined.",
+  "base_commit": "797b72c27038d2d146d99e22a227a63c85f766d9",
+  "frozen_tree": "a81cad08f0c11b4814bc9aad7576476edfc21efb",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+      "blob": "6a70950b42b0a636709e1ea579ce240d39627166",
+      "sha256": "abd9e65b627bb2df549a85d069eff02feaf6083c8e0aca47a4832a35c14a28c5",
+      "length": 5076
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+      "sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+      "length": 196696
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+      "blob": "d084d57a3ff8d79b9851e4a5c3d6353ce755873a",
+      "sha256": "ab577b2b02f3845c7465f056a46cb84056cf8dc979e069b3dbb838163a1814f4",
+      "length": 2988
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+      "blob": "5a0a50da63d0892db965a23310d430a904374e26",
+      "sha256": "b405b8f281c1a5f42317593ff263a8f17581c81cf1e0605a155df60134d130e9",
+      "length": 344054
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_UNWIND_DISPATCH_DIRECT_TARGET_ENTRY.md",
+    "reports/cc12_application_crt_unwind_dispatch_direct_target_entry.json"
+  ],
+  "positive_direct_target": {
+    "schema": 1,
+    "positive_report_input": {
+      "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+      "sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+      "length": 196696
+    },
+    "positive_primary_input": {
+      "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+      "blob": "5a0a50da63d0892db965a23310d430a904374e26",
+      "sha256": "b405b8f281c1a5f42317593ff263a8f17581c81cf1e0605a155df60134d130e9",
+      "length": 344054
+    },
+    "body_selector": "instruction_operands.code_hex",
+    "body_start": "00C07991",
+    "body_length": 228,
+    "body_sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+    "call_site": "00C07A65",
+    "call_body_offset": 212,
+    "call_hex": "e8b9fbffff",
+    "call_sha256": "360d316f564a42f4ae95af38ade0e5cd61dabcfb4431d7846b56004afebdfc40",
+    "manual": {
+      "opcode": "E8",
+      "relative_unsigned": 4294966201,
+      "relative_signed": -1095,
+      "next_EIP": "00C07A6A",
+      "target": "00C07623",
+      "return_address_push_bytes": 4
+    },
+    "actual_detailed_Capstone": {
+      "version": "5.0.7",
+      "mode": "x86 32-bit detail=True",
+      "instruction": {
+        "address": "00C07A65",
+        "size": 5,
+        "hex": "e8b9fbffff",
+        "mnemonic": "call",
+        "op_str": "0xc07623",
+        "operands": [
+          {
+            "type": "immediate",
+            "size": 4,
+            "value": 12613155
+          }
+        ],
+        "registers_read": [
+          "esp",
+          "eip"
+        ],
+        "registers_written": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0
+      }
+    },
+    "prior_instruction_selector": "instruction_operands.instructions[address=00C07A65]",
+    "prior_instruction": {
+      "address": "00C07A65",
+      "bytes_hex": "E8 B9 FB FF FF",
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "immediate",
+          "size": 4,
+          "value": 12613155
+        }
+      ],
+      "size": 5
+    },
+    "qualified_current_caller_state": {
+      "first_opaque_call": {
+        "site": "00C07997",
+        "direct_target_address_only": "00C0522E",
+        "return_address": "00C0799C",
+        "target_entry_ESP": "S-0x14",
+        "target_entry_EBP": "H",
+        "stack_write": "[S-0x14]=00C0799C",
+        "returned_symbols": {
+          "ESP": "Q0",
+          "EBP": "F0",
+          "EAX": "P",
+          "memory": "M0"
+        },
+        "all_returned_registers_flags_memory_and_stack_cleanup": "unknown",
+        "frame_preservation_or_stack_balance_assumed": false
+      },
+      "direct_target_call": {
+        "site": "00C07A65",
+        "direct_target_address_only": "00C07623",
+        "return_address": "00C07A6A",
+        "push_execution_order": [
+          "L20@0=DWORD[F0+0x20]",
+          "L1c@1=DWORD[F0+0x1C]",
+          "L24@2=DWORD[F0+0x24] (full DWORD)",
+          "D",
+          "L14@4=DWORD[F0+0x14]",
+          "L10@5=DWORD[F0+0x10]",
+          "Lc@6=DWORD[F0+0xC]",
+          "C"
+        ],
+        "target_entry_ESP": "Q0-0x24",
+        "target_entry_EBP": "F0",
+        "target_stack_ascending": [
+          "00C07A6A",
+          "C",
+          "Lc@6",
+          "L10@5",
+          "L14@4",
+          "D",
+          "L24@2",
+          "L1c@1",
+          "L20@0"
+        ],
+        "return_symbols": {
+          "ESP": "Q3",
+          "EBP": "F3",
+          "EAX": "A3",
+          "memory": "M3"
+        },
+        "all_returned_registers_flags_memory_and_stack_cleanup": "unknown",
+        "continuation": "ADD ESP,0x20 falls through to fixed-one; Z=Q3+0x20 and EAX becomes 1."
+      },
+      "boundary": "F0 and Q0 are current symbols after an opaque first call; the accepted report assumes neither frame preservation nor stack balance. Outgoing memory operands are loaded at their respective push times. This does not authenticate the target ABI, saved FindHandler label or Original FH3 behavior."
+    },
+    "scope": "Only five retained call bytes redecoded offline from the exact immediate positive228B report selector. No fresh caller, provider, callee or destination query; no earlier archive opened."
+  },
+  "Root_gate": {
+    "artifacts": {
+      "Root_entry_gate.json": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_entry_gate.json",
+        "length": 837,
+        "sha256": "9f2213de43bb572e9d53ba4a2279aa3ed36b7092cd18cbb28a72578d13aa3482"
+      },
+      "Root_entry_gate.py": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_entry_gate.py",
+        "length": 3802,
+        "sha256": "8c56c4af6c5580e5f5747f424b83912f3d3736241ae2fdaecc58fc1c23b28bf6"
+      },
+      "Root_gate_preparation_failure.json": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_gate_preparation_failure.json",
+        "length": 344,
+        "sha256": "703447ac7e9841559e89abc513e406380393f2fafb6e45abfe5b4b99dd856869"
+      }
+    },
+    "admission": {
+      "admitted": true,
+      "address": "00C07623",
+      "length": 1,
+      "reads": 2,
+      "saved_text": true,
+      "context": 0,
+      "prototype": true,
+      "prototype_prefix_lines_used": 4,
+      "closing_metadata_addresses": [
+        "00C07623"
+      ],
+      "Root_pins": {
+        "Root_entry_gate.json": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_entry_gate.json",
+          "length": 837,
+          "sha256": "9f2213de43bb572e9d53ba4a2279aa3ed36b7092cd18cbb28a72578d13aa3482"
+        },
+        "Root_entry_gate.py": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_entry_gate.py",
+          "length": 3802,
+          "sha256": "8c56c4af6c5580e5f5747f424b83912f3d3736241ae2fdaecc58fc1c23b28bf6"
+        },
+        "Root_gate_preparation_failure.json": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry_primary\\Root_gate_preparation_failure.json",
+          "length": 344,
+          "sha256": "703447ac7e9841559e89abc513e406380393f2fafb6e45abfe5b4b99dd856869"
+        }
+      },
+      "scope": "Two exact1B reads only, context0 at the exact entry, four prototype metadata prefix lines and closing exact-entry metadata/count. No remaining853B, interiors, callee, target, data or adjacent query."
+    },
+    "producer_boundary": "Root gate JSON, physical producer and disclosed preparation failure are copied/pinned. The Root producer is opaque and not executed by this worker.",
+    "preparation_failure_disclosure": {
+      "failure": "Initial offline generator attempted write before creating owned private directory; follow-up Python launch could not find producer. No gate executed or Native query performed.",
+      "first_exit_code": 1,
+      "second_exit_code": 1,
+      "correction": "Create the leased private directory before producer write; gate logic unchanged."
+    },
+    "failure_scope": "Root disclosed two failed offline preparation/launch attempts before successful gate execution; no gate or Native query ran during those failures. Worker does not claim Root preparation was error-free."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "modification_number": "98",
+    "function_count": 64730,
+    "autostart": false,
+    "GPR_read_only": true
+  },
+  "saved_analysis": {
+    "query_address": "00C07623",
+    "listing_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07623"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07623"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07623"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07623"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07623"
+      },
+      "name": "FindHandler",
+      "no_return": false,
+      "is_thunk": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "854",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07623"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07978"
+            },
+            "length": "854"
+          }
+        ]
+      }
+    },
+    "saved_owner_bytes": 854,
+    "physical_bytes_read": 1,
+    "remaining_saved_owner_bytes_unread": 853,
+    "flow_flags": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "fallthrough_overridden": false
+    },
+    "saved_text": {
+      "00c07623": {
+        "address": "00c07623",
+        "instruction": "PUSH EBP",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      }
+    },
+    "prototype_prefix_only": [
+      "Function: FindHandler at 00c07623",
+      "Signature: void __cdecl FindHandler(EHExceptionRecord * param_1, EHRegistrationNode * param_2, _CONTEXT * param_3, void * param_4, _s_FuncInfo * param_5, uchar param_6, int param_7, EHRegistrationNode * param_8)",
+      "Entry: 00c07623",
+      "Body: 00c07623 - 00c07978"
+    ],
+    "boundary": "All four aliases identify the same1B entry instruction. Owner range C07623..C07978 is complete saved metadata only, with non-thunk/no-return=false. The saved FindHandler symbol, typed parameters and __cdecl text authenticate neither semantics nor original ABI. Automatic prototype remainder and target/companion objects remain opaque."
+  },
+  "physical_entry": {
+    "schema": 1,
+    "address": "00C07623",
+    "length": 1,
+    "hex": "55",
+    "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7",
+    "paired_equal": true,
+    "manual": {
+      "opcode": "55",
+      "family": "50+rd: PUSH r32",
+      "register_index": 5,
+      "register": "ebp",
+      "operand_width": 4,
+      "implicit_stack_segment": "ss",
+      "entry_symbols": {
+        "ESP": "T",
+        "EBP": "B"
+      },
+      "successful_instruction_effect": "ESP := T-4 modulo2^32; DWORD SS:[T-4] := incoming current B. EBP and flags are unchanged.",
+      "next_sequential_address_arithmetic_only": "00C07624",
+      "boundary": "No byte or metadata at C07624 was queried. No remainder, return behavior, saved parameter type or ABI is established."
+    },
+    "actual_detailed_Capstone": {
+      "version": "5.0.7",
+      "mode": "x86 32-bit detail=True",
+      "instruction": {
+        "address": "00C07623",
+        "size": 1,
+        "hex": "55",
+        "mnemonic": "push",
+        "op_str": "ebp",
+        "operands": [
+          {
+            "type": "register",
+            "size": 4,
+            "register": "ebp",
+            "access": 1
+          }
+        ],
+        "registers_read": [
+          "esp",
+          "ebp"
+        ],
+        "registers_written": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "eflags": 0
+      }
+    },
+    "conditional_current_caller_composition": {
+      "condition": "If the accepted dispatcher default direct-call path reaches this entry, and the admitted PUSH completes.",
+      "incoming_state": {
+        "ESP": "T=Q0-0x24",
+        "EBP": "B=F0"
+      },
+      "after_one_instruction": {
+        "ESP": "Q0-0x28",
+        "EBP": "F0",
+        "stack_write": "DWORD SS:[Q0-0x28] := current F0"
+      },
+      "return_address_from_prior_E8": "00C07A6A at SS:[Q0-0x24] before this PUSH",
+      "boundary": "Q0/F0 come from the caller current state after its opaque first external call, not assumed preserved original ESP/EBP. Operand loads remain per-push current-memory values. Callee body, ABI and all eventual returned registers/flags/memory/cleanup remain unknown."
+    }
+  },
+  "qualified_composition": {
+    "condition": "If the accepted dispatcher default direct-call path reaches this entry, and the admitted PUSH completes.",
+    "incoming_state": {
+      "ESP": "T=Q0-0x24",
+      "EBP": "B=F0"
+    },
+    "after_one_instruction": {
+      "ESP": "Q0-0x28",
+      "EBP": "F0",
+      "stack_write": "DWORD SS:[Q0-0x28] := current F0"
+    },
+    "return_address_from_prior_E8": "00C07A6A at SS:[Q0-0x24] before this PUSH",
+    "boundary": "Q0/F0 come from the caller current state after its opaque first external call, not assumed preserved original ESP/EBP. Operand loads remain per-push current-memory values. Callee body, ABI and all eventual returned registers/flags/memory/cleanup remain unknown."
+  },
+  "capture_integrity": {
+    "typed_raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "typed_response_count": 3,
+    "unique_metadata_addresses": 1,
+    "direct_raw_sha256": "95ed1c0af13dd0bb666255e58873ee6bd62912a54c44fc3ee9cc6d69616288c4",
+    "paired_and_closing_equal": true,
+    "count_checkpoint_labels": [
+      "count_gate_before",
+      "count_gate_after",
+      "count_admitted_before",
+      "count_close"
+    ],
+    "Native_commands": 11,
+    "worker_Native_failures": [],
+    "worker_helper_failures": [],
+    "Root_preparation_failures": "See separately retained Root_gate_preparation_failure.json; two failed offline attempts disclosed.",
+    "all_worker_Native_raw_and_streams_retained": true,
+    "preimages": [
+      "seal_initial.py",
+      "report_before_wording.py",
+      "report_before_wording.json"
+    ],
+    "automatic_object_boundary": "Only admitted exact-query/listing/owner/body-range/flow-flag metadata is examined. No automatic target object is traversed or followed.",
+    "read_boundary": "Exactly one entry byte per read, context0 atC07623, only four prototype metadata prefix lines, and closing exact-entry typed metadata. No C07624 metadata/bytes, remaining owner body, data, callee, provider or destination query."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before1",
+    "typed_gate_after1",
+    "count_gate_after",
+    "Root exact-entry admission",
+    "count_admitted_before",
+    "entry_bytes_first1",
+    "entry_bytes_second1",
+    "context0_entry",
+    "prototype_first_four_metadata_lines",
+    "typed_close1",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_crt_unwind_dispatch_direct_target_entry",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Eight finite immediate positive Git blobs, actual frozen/staged/final commit/tree objects and exactly two output blobs. Complete physical helpers/preimages and direct Native captures. Pure supplied-ZIP replay checks actual Git closure, all metadata aliases, paired1B reads, actual manual/Capstone results, the positive228B selector and its five-byte E8 direct-call slice, and qualified current-state composition.",
+    "audit": "After bootstrap each replay permits one supplied ZIP read, one declared receipt write and one retained replay-code execution. Other imports, file reads, directory traversal, process, network and Native access are denied.",
+    "counts": "Archive/object counts measured by actual final replay, not inherited.",
+    "self_reference_boundary": "Final commit/tree/ZIP pins and actual receipts are supplied in the separate handoff.",
+    "Source_boundary": "Source subtree IDs are revision identity only. No Source content/census, previous archive recursion or future Root Source-equality constraint."
+  },
+  "credit": {
+    "physical_entry_opcode": true,
+    "manual_opcode_decode": true,
+    "actual_detailed_Capstone": true,
+    "positive_numeric_direct_call_provenance": true,
+    "conditional_one_instruction_effect": true,
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "saved_name_semantics": false,
+    "saved_prototype_types_or_convention": false,
+    "remaining853B_body": false,
+    "complete_function_behavior": false,
+    "original_frame_binding": false,
+    "handler_selection_behavior": false,
+    "eventual_return_state": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false,
+    "OS_audio_execution": false
+  },
+  "continuation": "Any inspection beyond the admitted entry byte, or behavior reconstruction of the full854-byte owner, requires a separately bounded Root admission. This packet changes no Source and authenticates no Original handler, ABI, frame binding or return contract."
+}
