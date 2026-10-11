@@ -1,0 +1,402 @@
+{
+  "schema": "bsp.cc12.particle_mesh_raw_key_window_readiness.worker.v1",
+  "packet": "cc12_particle_mesh_raw_key_window_readiness",
+  "status": "Source_only_conditional_dormant_interface_readiness",
+  "captured_commit": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+  "document_pin": {
+    "path": "docs/CC12_PARTICLE_MESH_RAW_KEY_WINDOW_READINESS.md",
+    "bytes": 13599,
+    "sha256": "92832f766ee77d78d5c41db2f0fb1310b12ee51319319162643acc2265b0ddda"
+  },
+  "Source_roots": {
+    "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+    "include": "053e10d974d4c812562c787a216fd14d613681b0",
+    "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+    "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+    "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+    "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+  },
+  "Root_epoch": {
+    "manifest": {
+      "entry": "blobs/2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75",
+      "bytes": 1264559,
+      "sha256": "2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75"
+    },
+    "whole_project_preimages": 3356,
+    "raw_EOL_variants": [
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "LF_differences": [],
+    "artifact_declarations_not_followed": 4,
+    "inherited_build_artifact_or_runtime_credit": false
+  },
+  "Source_contract": {
+    "closed_Source_paths": 4228,
+    "actual_Git_rows": 4263,
+    "actual_trees": 10,
+    "src_include_corpus": 4210,
+    "queries": 36,
+    "excerpts": 54,
+    "lexical_order_checks": 22,
+    "lexical_absence_checks": 3,
+    "observed_Main_at_capture": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+    "Source_delta_from_observed_Main": []
+  },
+  "prospective_interface": {
+    "name": "NativeParticleMeshRawKeyPreparation",
+    "required_method": "prepare_mesh_raw_key(void*, size_t, NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&) -> NativeMeshPreparedRecord&",
+    "method_may_throw": true,
+    "defaults_or_fakes": false,
+    "preparation_must_not_construct_or_transition": true,
+    "persistent_same_key_record_required": true,
+    "preparation_throw_requires_completed_metadata_cancellation": true
+  },
+  "prospective_entry": {
+    "name": "create_native_particle_prepared_mesh",
+    "parameters": [
+      "NativeMeshEnvironment&",
+      "NativeMeshConstants",
+      "NativeRenderActualOwnerRegistry&",
+      "NativeParticleMeshRawKeyPreparation&"
+    ],
+    "return_type": "NativeMeshStorage*",
+    "whole_entry_noexcept": false,
+    "producer": "NativeMeshPool::allocate_slot_00b73a10",
+    "null_bypass": true,
+    "raw_return_only_before_transition": true,
+    "raw_return": "same NativeMeshPool::return_slot_00b72da0",
+    "single_transition": "NativeMeshPreparedRecord::construct_and_publish noexcept",
+    "existing_private_helper_hooks_factories_and_calleevtable_unchanged": true
+  },
+  "GO": [
+    "Conditional dormant separate raw-key preparation interface and allocator orchestration through required real persistent provider",
+    "Use the actual supplied canonical pool and same accepted registry/record transition",
+    "No active caller or full-resource custody claim"
+  ],
+  "NO_GO": [
+    "Concrete persistent mesh/model custodian and preparation provider without Source closure",
+    "Active particle private-helper/factory/callee-vtable replacement",
+    "Full material/section/stream resource delegate and partial-failure custody",
+    "Reuse exclusion inferred from pool or registry locks",
+    "Disposal or record destruction during active terminal callback",
+    "Allocation authenticity, Native ABI/SEH, startup or gameplay proof"
+  ],
+  "required_dependencies": [
+    "Genuine initialized canonical pool and actual C0h allocation provenance",
+    "Stable precreated persistent same-key record/provider",
+    "Completed metadata cancellation before any preparation throw",
+    "Independent exclusion of raw-slot reuse/trim from physical return through old-entry removal across all participating paths",
+    "Retention of published records across later acquired-construction failures without extra Native release/retain",
+    "Explicit later host disposal only after callback/terminal/resolved-borrower quiescence",
+    "Same registry/profile/constants/string domains and full borrowed lifetime",
+    "Separate actual material/section/stream/model custodian and application entry contracts"
+  ],
+  "actual_Source_pins": {
+    "include/bsp/native_mesh_owner.hpp": {
+      "entry": "blobs/f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636",
+      "bytes": 9476,
+      "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+    },
+    "src/native_mesh_owner.cpp": {
+      "entry": "blobs/8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe",
+      "bytes": 12622,
+      "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+    },
+    "include/bsp/native_particle_model_construction.hpp": {
+      "entry": "blobs/1cacbebb65dcc15cf95fc1f6e6cc72c640b43de2c3126172dd85ab40b658cbc5",
+      "bytes": 7538,
+      "sha256": "1cacbebb65dcc15cf95fc1f6e6cc72c640b43de2c3126172dd85ab40b658cbc5"
+    },
+    "src/native_particle_model_construction.cpp": {
+      "entry": "blobs/b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+      "bytes": 17269,
+      "sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c"
+    },
+    "include/bsp/native_particle_model_lifetime.hpp": {
+      "entry": "blobs/8fcf789afd6c545af29181f550baa076adde08b38dd022190f8b76859999639c",
+      "bytes": 12566,
+      "sha256": "8fcf789afd6c545af29181f550baa076adde08b38dd022190f8b76859999639c"
+    },
+    "src/native_particle_model_lifetime.cpp": {
+      "entry": "blobs/6d51727a56765d9e086af906a67457133be1d7960e4a5c6b601e722d7c4dfcce",
+      "bytes": 17651,
+      "sha256": "6d51727a56765d9e086af906a67457133be1d7960e4a5c6b601e722d7c4dfcce"
+    },
+    "include/bsp/native_mesh_pool.hpp": {
+      "entry": "blobs/e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "bytes": 2929,
+      "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+    },
+    "src/native_mesh_pool.cpp": {
+      "entry": "blobs/4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+      "bytes": 11152,
+      "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+    },
+    "include/bsp/native_render_context.hpp": {
+      "entry": "blobs/0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806",
+      "bytes": 9300,
+      "sha256": "0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806"
+    },
+    "src/native_render_context.cpp": {
+      "entry": "blobs/da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b",
+      "bytes": 10586,
+      "sha256": "da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b"
+    }
+  },
+  "prior": {
+    "status": "pass",
+    "mesh_commit": "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+    "readiness_commit": "2aed64d3cd4d218c6f7a85a0f0de2892f18a7ae1",
+    "artifacts": [
+      {
+        "name": "mesh-prepared-record",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\cc12_native_mesh_prepared_record_proof.zip",
+        "entry": "prior/mesh-prepared-record.zip",
+        "bytes": 146478816,
+        "sha256": "fea5d511ccd07cb41086f0fa9767a952665d7c27a21e09005b023541125537bc",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      },
+      {
+        "name": "mesh-prepared-record-helper",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\portable_replay.py",
+        "entry": "prior/mesh-prepared-record-helper.py",
+        "bytes": 5792,
+        "sha256": "4948c572c47102ef1ed546c631fe16f89e0115c989c9496bec59bd9bc2ea3d05",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      },
+      {
+        "name": "mesh-prepared-record-receipt",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\portable_replay_receipt.json",
+        "entry": "prior/mesh-prepared-record-receipt.json",
+        "bytes": 1210,
+        "sha256": "046bf4763f897f63f9cb48755a00abddd71144139483fdef3980507bfcde2d4d",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      },
+      {
+        "name": "mesh-preconstruction-readiness",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_mesh_preconstruction_admission_readiness\\evidence.zip",
+        "entry": "prior/mesh-preconstruction-readiness.zip",
+        "bytes": 18477318,
+        "sha256": "e62f1d1b58813d346484486c7f9d1b8636b21278910cef5f0d8df0c6a041d11f",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      },
+      {
+        "name": "mesh-preconstruction-readiness-helper",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_mesh_preconstruction_admission_readiness\\portable_replay.py",
+        "entry": "prior/mesh-preconstruction-readiness-helper.py",
+        "bytes": 4185,
+        "sha256": "3b5763faccbd325ab284aa82047def26535cabe1e90223987866bd283f64106b",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      },
+      {
+        "name": "mesh-preconstruction-readiness-receipt",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_mesh_preconstruction_admission_readiness\\replay_in_place.json",
+        "entry": "prior/mesh-preconstruction-readiness-receipt.json",
+        "bytes": 3452,
+        "sha256": "c35f5b1e6363db9349bdd702c1f0bb227dd6e00bfcd3739b3b2bd62e1a5de26d",
+        "physical_copy": true,
+        "historical_build_or_runtime_credit": false
+      }
+    ],
+    "boundary": "Physically retained immutable prior proofs/helpers/receipts only. No nested compiled evidence is replayed, followed or credited for this Source-only readiness."
+  },
+  "limits": {
+    "no_CXX_changes": true,
+    "no_build_tests_or_probes": true,
+    "no_Native_GPR_exports_or_ledgers": true,
+    "no_runtime": true,
+    "concrete_custodian_NO_GO": true,
+    "existing_callers_unchanged": true,
+    "historical_build_artifact_or_runtime_credit": false,
+    "finite_regex_not_compiler_call_graph": true,
+    "parameter_layout_profile_not_allocation_authenticity": true
+  },
+  "boundary": "Source/Git/finite lexical readiness only. No Source mutation, compilation, tests, Native/GPR, export, ledger, game, OS or audio runtime. Prior archive bytes retained without current build/artifact/runtime credit.",
+  "proof": {
+    "zip": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\evidence.zip",
+      "bytes": 181151111,
+      "sha256": "1d3864b1432d6018a8a6d22243e4c28d7baaf7f6c0f0fcbbdee730e74e6ed5b3"
+    },
+    "script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\portable_replay.py",
+      "bytes": 4449,
+      "sha256": "094093664cd18a48da905987a2503bc588e8952569cbc8ce248cc799477a2af2"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\manifest.json",
+      "bytes": 1226268,
+      "sha256": "c09b5fa6ff05baf341c97209189df969893d7e950187df0fe95b5d0766c07b7f"
+    },
+    "in_place_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\replay_in_place.json",
+      "bytes": 2949,
+      "sha256": "8c7538f6138aa58ec36f6be295de402c56867cbd051ae2e76b5922135a055ae1"
+    },
+    "physical_relocation": {
+      "zip": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\relocated\\evidence.zip",
+        "bytes": 181151111,
+        "sha256": "1d3864b1432d6018a8a6d22243e4c28d7baaf7f6c0f0fcbbdee730e74e6ed5b3"
+      },
+      "script": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\relocated\\portable_replay.py",
+        "bytes": 4449,
+        "sha256": "094093664cd18a48da905987a2503bc588e8952569cbc8ce248cc799477a2af2"
+      },
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\relocated\\replay_relocated.json",
+        "bytes": 2949,
+        "sha256": "8c7538f6138aa58ec36f6be295de402c56867cbd051ae2e76b5922135a055ae1"
+      }
+    },
+    "identical_guarded_receipts": true,
+    "one_read_only_ZIP_open": true,
+    "summary": {
+      "GO": [
+        "Conditional dormant separate raw-key preparation interface and allocator orchestration through required real persistent provider",
+        "Use the actual supplied canonical pool and same accepted registry/record transition",
+        "No active caller or full-resource custody claim"
+      ],
+      "NO_GO": [
+        "Concrete persistent mesh/model custodian and preparation provider without Source closure",
+        "Active particle private-helper/factory/callee-vtable replacement",
+        "Full material/section/stream resource delegate and partial-failure custody",
+        "Reuse exclusion inferred from pool or registry locks",
+        "Disposal or record destruction during active terminal callback",
+        "Allocation authenticity, Native ABI/SEH, startup or gameplay proof"
+      ],
+      "Root_Source3356": {
+        "LF_differences": [],
+        "artifact_declarations_not_followed": 4,
+        "inherited_build_artifact_or_runtime_credit": false,
+        "manifest": {
+          "bytes": 1264559,
+          "entry": "blobs/2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75",
+          "sha256": "2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75"
+        },
+        "raw_EOL_variants": [
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "whole_project_preimages": 3356
+      },
+      "Source_Git": {
+        "Source_paths": 4228,
+        "actual_git_rows": 4263,
+        "root": "3d759919f531ed493a6d6f9b2c15a9c78148ed08",
+        "trees": 10
+      },
+      "Source_roots": {
+        "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+        "include": "053e10d974d4c812562c787a216fd14d613681b0",
+        "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+        "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+        "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+      },
+      "boundary": "Source/Git/finite lexical readiness and physically retained historical pins only. No compilation/tests/probes, Native/GPR, new compiled review, pool-allocation authenticity, ABI or runtime proof. Nested prior ZIPs are pin-checked immutable history without build or runtime credit. Final immutable commit/delivery pins are verified separately in the repository.",
+      "captured_commit": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+      "checked_zip_members": 4307,
+      "delivery_document_pin": {
+        "bytes": 13599,
+        "path": "docs/CC12_PARTICLE_MESH_RAW_KEY_WINDOW_READINESS.md",
+        "sha256": "92832f766ee77d78d5c41db2f0fb1310b12ee51319319162643acc2265b0ddda"
+      },
+      "excerpts": 54,
+      "guard": {
+        "allowed_zip_reads": 1
+      },
+      "lexical_absence_checks": 3,
+      "lexical_order_checks": 22,
+      "prior_physical_artifacts": {
+        "historical_build_or_runtime_credit": false,
+        "mesh_commit": "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+        "nested_compiled_evidence_replayed": false,
+        "physical_artifacts": 6,
+        "readiness_commit": "2aed64d3cd4d218c6f7a85a0f0de2892f18a7ae1"
+      },
+      "queries": 36,
+      "query_corpus": 4210,
+      "retained_bytes": 235268295,
+      "status": "pass",
+      "zip_members": 4308
+    }
+  },
+  "local_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\capture.py",
+      "bytes": 4643,
+      "sha256": "fd0e7f3d5481295e1a5f4b7cf7d9627dc3d9208bb39d2fb9fbedb104ab8b4975"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\capture.json",
+      "bytes": 4734878,
+      "sha256": "0bff93d34af5fe72cb859c4f48b8914d7927d824cb7d507939aa7e772994757e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\git_tools.py",
+      "bytes": 2841,
+      "sha256": "9299dde96ca235bec79a8229c01ac30dd3b1b303e4294ef5258fb74f7f320c29"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\verify_source.py",
+      "bytes": 3293,
+      "sha256": "1939324c0e35a5b4b9b921af109c46e21408c02c3984b8a5a0242ee4ba486656"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\source_integrity.json",
+      "bytes": 1876,
+      "sha256": "de5eec0d0b0742e266dd4be66ec22aa44894fcd6dcd149300de2f5c011b2701e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\source_evidence.py",
+      "bytes": 16845,
+      "sha256": "d14b70fdf4b5c4c51a19613702f1a3343dfcb909bcb9974b17d0162eaef64213"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\source_evidence.json",
+      "bytes": 554887,
+      "sha256": "c58fee166017deefd8c03cd61e6e0b29854fefef6dbd00fea6f5931136e288f7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\verify_live.py",
+      "bytes": 1743,
+      "sha256": "ca6fff9c42ba1158c3cc39cf21de5fa44b1ab8530269d6d7e663196d29848c95"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\separate_git_result.json",
+      "bytes": 929,
+      "sha256": "97465a8b1a7231905a0bb24ab5376c652ec74b5a76e083907819fb00e45a5c2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\package.py",
+      "bytes": 1695,
+      "sha256": "485da4f6a376fc0d103bc6abfd5a4e67182f001066aadba90ff1d500ea1c8e79"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\publish.py",
+      "bytes": 19930,
+      "sha256": "f920baa4de7eec553346fdac8987049070920d2b3bc5c0b603bc2d3744622669"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_particle_mesh_raw_key_window_readiness\\report_core.json",
+      "bytes": 11316,
+      "sha256": "bb3e4ebcb0d649676d3dca77595e8a330032c1495296660a0bcc602ca9fead3e"
+    }
+  ]
+}
