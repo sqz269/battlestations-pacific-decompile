@@ -1,0 +1,1523 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_lock_body",
+  "status": "bounded Native whole-body evidence; continuation scope closed",
+  "frozen_HEAD": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74",
+  "positive_predecessors": [
+    {
+      "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+      "oid": "846a6f3cf6d1cea02b1bb50fc64d8e4a8121bc07",
+      "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+      "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+      "bytes": 2760,
+      "sha256": "989a1ad71ac5f3863b05477df6e384c61a07d67def7eef92399b3df957f4d51f"
+    },
+    {
+      "path": "reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+      "oid": "83835e8900a08e006adaaa333af3cdb1ae0fe9fd",
+      "blob_member": "blobs/reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+      "physical_member": "physical/reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+      "bytes": 13749,
+      "sha256": "fae343a0ead4c4eb0bdf608307d22437ed5e0e843badd389ee2ff11c2f2c2be6"
+    },
+    {
+      "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+      "oid": "8cb95202d91fb3188382f8cb30c4a8b5b102328d",
+      "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+      "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+      "bytes": 2125,
+      "sha256": "d6d65d4bbe74cb6d28f79c780b4566f00d70b7a1ee3e8df8304db3cc63dc7a38"
+    },
+    {
+      "path": "reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+      "oid": "7d6f15f03f5d9e6712100c4f600b2a09b6fd5cf2",
+      "blob_member": "blobs/reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+      "physical_member": "physical/reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+      "bytes": 15520,
+      "sha256": "62ab4ce1a2bfe2d1b72d0b2e261e2eb847b6d1bb749e435593ff0315fa9fbc82"
+    }
+  ],
+  "entry_contract": {
+    "address": "00C11C21",
+    "saved_name": "__lock",
+    "saved_prefix_metadata_only": "void __cdecl __lock(int _File)",
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c11c21"
+      },
+      "name": "__lock",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "49",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11c51"
+            },
+            "length": "49"
+          }
+        ]
+      }
+    },
+    "automatic_target_objects": "opaque in their entirety",
+    "prototype_companion": "not queried in this packet; inherited opaque boundary"
+  },
+  "listing_gate": {
+    "worker_projection": {
+      "path": "local/cc12_locale_onexit_lock_body/metadata_gate.json",
+      "bytes": 96531,
+      "sha256": "15b35c8df97b6904c0e95490f3a25e3489ab85e35b839e19a0edbca1f3e24fb2"
+    },
+    "Root_independent_admission": {
+      "path": "local/cc12_locale_onexit_lock_body/Root_listing_gate.json",
+      "bytes": 26511,
+      "sha256": "73048bf80252d7a70d810a407bc630e485522feb8fd2dc85368fddaa3d68fee7"
+    },
+    "Root_producer_retained_not_executed": {
+      "path": "local/cc12_locale_onexit_lock_body/Root_listing_gate.py",
+      "bytes": 3575,
+      "sha256": "a82a62e58272b42fb16eede0ceef99519efca553d5c9687f966d53a7de0b2e20"
+    },
+    "all_four_aliases": [
+      "instruction_at",
+      "instruction_containing",
+      "code_unit_at",
+      "code_unit_containing"
+    ],
+    "query_units_per_capture": 49,
+    "captures": [
+      {
+        "path": "local/cc12_locale_onexit_lock_body/typed_every_unit_a.raw.json",
+        "bytes": 224986,
+        "sha256": "5e4d63f08ba4e107eba01805f4899551fb30fb43355a00bdb7756a21a9f65eac"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_body/typed_every_unit_b.raw.json",
+        "bytes": 224986,
+        "sha256": "ea804b531c4cf177aa31ef76ac9a901e9e1cd438342d819fac3374c881f3def6"
+      }
+    ],
+    "whole_instruction_count": 20,
+    "partition": [
+      {
+        "address": "00C11C21",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C22",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c24"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c24"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C24",
+        "length": 3,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c27"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c27"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C27",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c28"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c28"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C28",
+        "length": 7,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c2f"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c2f"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C2F",
+        "length": 3,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c32"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c32"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C32",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c34"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c34"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11c47"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11c47"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11C34",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c35"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c35"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C35",
+        "length": 5,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3a"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3a"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11b5e"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11b5e"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11C3A",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3c"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3c"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C3C",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3d"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3d"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C3D",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3f"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c3f"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11c47"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c11c47"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11C3F",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c41"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c41"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C41",
+        "length": 5,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c46"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c46"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bfba09"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bfba09"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11C46",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c47"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c47"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C47",
+        "length": 2,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c49"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c49"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C49",
+        "length": 6,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c4f"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c4f"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": [
+            {
+              "space": "EXTERNAL",
+              "offset": "0000015b"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C11C4F",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c50"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c50"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C50",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c51"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c51"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "address": "00C11C51",
+        "length": 1,
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "TERMINATOR",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "effective_flow": {
+            "name": "TERMINATOR",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      }
+    ]
+  },
+  "Native": {
+    "program": {
+      "path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": {
+        "space": "ram",
+        "offset": "00400000"
+      },
+      "default_address_space": "ram",
+      "project": {
+        "name": "bsp",
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+      }
+    },
+    "epoch": 98,
+    "count_before_after_metadata_after_body": [
+      64730,
+      64730,
+      64730
+    ],
+    "exact_read_length": 49,
+    "code_hex": "558BEC8B4508568D34C57864E100833E00751350E824FFFFFF85C05975086A11E8C39DFEFF59FF36FF151822CE005E5DC3",
+    "code_sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+    "reads": [
+      {
+        "path": "local/cc12_locale_onexit_lock_body/body_bytes_a.stdout.bin",
+        "bytes": 248,
+        "sha256": "d00dc57d5abe41987e68e6e3c7aa8a93f0992c76bb69c805394b2a7944da91f9"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_body/body_bytes_b.stdout.bin",
+        "bytes": 248,
+        "sha256": "d00dc57d5abe41987e68e6e3c7aa8a93f0992c76bb69c805394b2a7944da91f9"
+      }
+    ],
+    "saved_text_capture": {
+      "path": "local/cc12_locale_onexit_lock_body/body_text.raw.json",
+      "bytes": 3168,
+      "sha256": "fc548f024e5c540c20de910072f16e4b63286838e23ab842988bf9fb058251a8"
+    },
+    "context": 0,
+    "instruction_rows": [
+      {
+        "address": "00C11C21",
+        "hex": "55",
+        "saved_text": "PUSH EBP"
+      },
+      {
+        "address": "00C11C22",
+        "hex": "8bec",
+        "saved_text": "MOV EBP,ESP"
+      },
+      {
+        "address": "00C11C24",
+        "hex": "8b4508",
+        "saved_text": "MOV EAX,dword ptr [EBP + 0x8]"
+      },
+      {
+        "address": "00C11C27",
+        "hex": "56",
+        "saved_text": "PUSH ESI"
+      },
+      {
+        "address": "00C11C28",
+        "hex": "8d34c57864e100",
+        "saved_text": "LEA ESI,[EAX*0x8 + 0xe16478]"
+      },
+      {
+        "address": "00C11C2F",
+        "hex": "833e00",
+        "saved_text": "CMP dword ptr [ESI],0x0"
+      },
+      {
+        "address": "00C11C32",
+        "hex": "7513",
+        "saved_text": "JNZ 0x00c11c47",
+        "physical_relative_target": "00C11C47"
+      },
+      {
+        "address": "00C11C34",
+        "hex": "50",
+        "saved_text": "PUSH EAX"
+      },
+      {
+        "address": "00C11C35",
+        "hex": "e824ffffff",
+        "saved_text": "CALL 0x00c11b5e",
+        "physical_relative_target": "00C11B5E"
+      },
+      {
+        "address": "00C11C3A",
+        "hex": "85c0",
+        "saved_text": "TEST EAX,EAX"
+      },
+      {
+        "address": "00C11C3C",
+        "hex": "59",
+        "saved_text": "POP ECX"
+      },
+      {
+        "address": "00C11C3D",
+        "hex": "7508",
+        "saved_text": "JNZ 0x00c11c47",
+        "physical_relative_target": "00C11C47"
+      },
+      {
+        "address": "00C11C3F",
+        "hex": "6a11",
+        "saved_text": "PUSH 0x11"
+      },
+      {
+        "address": "00C11C41",
+        "hex": "e8c39dfeff",
+        "saved_text": "CALL 0x00bfba09",
+        "physical_relative_target": "00BFBA09"
+      },
+      {
+        "address": "00C11C46",
+        "hex": "59",
+        "saved_text": "POP ECX"
+      },
+      {
+        "address": "00C11C47",
+        "hex": "ff36",
+        "saved_text": "PUSH dword ptr [ESI]"
+      },
+      {
+        "address": "00C11C49",
+        "hex": "ff151822ce00",
+        "saved_text": "CALL dword ptr [0x00ce2218]",
+        "physical_indirect_cell": "00CE2218"
+      },
+      {
+        "address": "00C11C4F",
+        "hex": "5e",
+        "saved_text": "POP ESI"
+      },
+      {
+        "address": "00C11C50",
+        "hex": "5d",
+        "saved_text": "POP EBP"
+      },
+      {
+        "address": "00C11C51",
+        "hex": "c3",
+        "saved_text": "RET"
+      }
+    ],
+    "ModRM_and_SIB": [
+      {
+        "address": "00C11C22",
+        "ModRM": "EC",
+        "mod": 3,
+        "reg": 5,
+        "rm": 4,
+        "meaning": "MOV EBP,ESP"
+      },
+      {
+        "address": "00C11C24",
+        "ModRM": "45",
+        "mod": 1,
+        "reg": 0,
+        "rm": 5,
+        "displacement_signed": 8,
+        "meaning": "MOV EAX,[EBP+8]"
+      },
+      {
+        "address": "00C11C28",
+        "ModRM": "34",
+        "mod": 0,
+        "reg": 6,
+        "rm": 4,
+        "SIB": "C5",
+        "scale_exponent": 3,
+        "index": 0,
+        "base": 5,
+        "base_absent": true,
+        "displacement_le": "7864E100",
+        "displacement": "00E16478",
+        "meaning": "LEA ESI,[EAX*8+E16478]"
+      },
+      {
+        "address": "00C11C2F",
+        "ModRM": "3E",
+        "mod": 0,
+        "group_operation": 7,
+        "rm": 6,
+        "immediate_signed": 0,
+        "meaning": "CMP dword [ESI],0"
+      },
+      {
+        "address": "00C11C3A",
+        "ModRM": "C0",
+        "mod": 3,
+        "reg": 0,
+        "rm": 0,
+        "meaning": "TEST EAX,EAX"
+      },
+      {
+        "address": "00C11C47",
+        "ModRM": "36",
+        "mod": 0,
+        "group_operation": 6,
+        "rm": 6,
+        "meaning": "PUSH dword [current ESI]"
+      },
+      {
+        "address": "00C11C49",
+        "ModRM": "15",
+        "mod": 0,
+        "group_operation": 2,
+        "rm": 5,
+        "displacement_le": "1822CE00",
+        "physical_dispatch_cell": "ram:00CE2218",
+        "cell_content": "unread and unknown",
+        "saved_effective_target_scalar_only": "EXTERNAL:0000015b"
+      }
+    ],
+    "state_and_actual_time_memory": [
+      {
+        "point": "entry",
+        "ESP": "S",
+        "EBP": "B0",
+        "ESI": "I0",
+        "memory": "unknown"
+      },
+      {
+        "point": "C11C21..C11C28",
+        "writes_in_order": [
+          "[S-4] := B0",
+          "[S-8] := I0"
+        ],
+        "actual_time_load": "A := load32_at_C11C24(S+4)",
+        "ESP": "S-8",
+        "EBP": "S-4",
+        "EAX": "A",
+        "ESI": "L=(8*A+00E16478) mod 2^32"
+      },
+      {
+        "point": "C11C2F/C11C32",
+        "actual_time_load": "V := load32_at_C11C2F(L)",
+        "branch": "V != 0 reaches C11C47; V == 0 reaches C11C34",
+        "alias_limit": "V observes earlier stack writes if their addresses alias L; it is not an entry-memory snapshot."
+      },
+      {
+        "point": "C11C34/C11C35",
+        "condition": "V == 0",
+        "writes_in_order": [
+          "[S-12] := A",
+          "[S-16] := 00C11C3A"
+        ],
+        "physical_call_target": "00C11B5E",
+        "possible_return": "R1: ESP=S1, EBP=B1, ESI=I1, EAX=A1, all registers/flags/memory unknown"
+      },
+      {
+        "point": "C11C3A..C11C3D",
+        "condition": "R1 actually returns at C11C3A and instructions complete",
+        "TEST": "EAX=A1; ZF := (A1 == 0), SF/PF from A1, CF/OF cleared, AF undefined",
+        "POP": "ECX := load32_at_C11C3C(S1); ESP := S1+4; flags unchanged",
+        "branch": "A1 != 0 reaches C11C47; A1 == 0 reaches C11C3F"
+      },
+      {
+        "point": "C11C3F/C11C41",
+        "condition": "R1 continuation with A1 == 0",
+        "writes_in_order": [
+          "[S1] := sign_extend32(11h)=17",
+          "[S1-4] := 00C11C46"
+        ],
+        "physical_call_target": "00BFBA09",
+        "possible_return": "R2: ESP=S2, EBP=B2, ESI=I2, all registers/flags/memory unknown"
+      },
+      {
+        "point": "C11C46",
+        "condition": "R2 actually returns at C11C46",
+        "POP": "ECX := load32_at_C11C46(S2); ESP := S2+4; flags unchanged"
+      },
+      {
+        "point": "C11C47",
+        "path_inputs": [
+          {
+            "path": "first comparison nonzero",
+            "ESP_before": "S-8",
+            "ESI": "L",
+            "EBP": "S-4"
+          },
+          {
+            "path": "R1 return and A1 nonzero",
+            "ESP_before": "S1+4",
+            "ESI": "I1",
+            "EBP": "B1"
+          },
+          {
+            "path": "R2 return then POP ECX",
+            "ESP_before": "S2+4",
+            "ESI": "I2",
+            "EBP": "B2"
+          }
+        ],
+        "actual_time_order": "Let current ESP=P and ESI=I. Read W=load32_at_C11C47(I); then ESP=P-4 and [P-4]:=W.",
+        "alias_limit": "No reuse of V; I and memory may have changed on either external return; the source is read before the stack write."
+      },
+      {
+        "point": "C11C49",
+        "actual_time_order": "Read T=load32_at_C11C49(00CE2218); then ESP=P-8 and [P-8]:=00C11C4F; dispatch T.",
+        "alias_limit": "The cell is loaded after the preceding PUSH and may alias that write. No earlier cell value, import, or provider identity is supplied.",
+        "possible_return": "R3: ESP=Q; every returned register/flag and all memory unknown"
+      },
+      {
+        "point": "C11C4F..C11C51",
+        "condition": "R3 actually returns at C11C4F and subsequent operations complete",
+        "actual_time_loads_in_order": [
+          "ESI := load32_at_C11C4F(Q); ESP := Q+4",
+          "EBP := load32_at_C11C50(Q+4); ESP := Q+8",
+          "EIP := load32_at_C11C51(Q+8); ESP := Q+12"
+        ],
+        "flags": "POPs and RET leave the unknown R3 flags unchanged",
+        "limit": "No equation Q=S-derived is available; no original register restoration, eventual target or caller cleanup is established."
+      }
+    ],
+    "flow_distinction": {
+      "address": "00C11C49",
+      "physical": "FF /2 with mod=00 rm=101: near indirect CALL via current dword at ram:00CE2218",
+      "saved_default_targets": [],
+      "saved_effective_targets": [
+        {
+          "space": "EXTERNAL",
+          "offset": "0000015b"
+        }
+      ],
+      "direct_call_targets_companions": "opaque; not inspected or adopted"
+    }
+  },
+  "provenance": {
+    "finite_positive_files": 9,
+    "selected_files": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "tools/workspace.py",
+        "oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "blob_member": "blobs/tools/workspace.py",
+        "physical_member": "physical/tools/workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+        "oid": "846a6f3cf6d1cea02b1bb50fc64d8e4a8121bc07",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+        "bytes": 2760,
+        "sha256": "989a1ad71ac5f3863b05477df6e384c61a07d67def7eef92399b3df957f4d51f"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+        "oid": "83835e8900a08e006adaaa333af3cdb1ae0fe9fd",
+        "blob_member": "blobs/reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+        "bytes": 13749,
+        "sha256": "fae343a0ead4c4eb0bdf608307d22437ed5e0e843badd389ee2ff11c2f2c2be6"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+        "oid": "8cb95202d91fb3188382f8cb30c4a8b5b102328d",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_PRIMARY.md",
+        "bytes": 2125,
+        "sha256": "d6d65d4bbe74cb6d28f79c780b4566f00d70b7a1ee3e8df8304db3cc63dc7a38"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+        "oid": "7d6f15f03f5d9e6712100c4f600b2a09b6fd5cf2",
+        "blob_member": "blobs/reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_second_call_target_entry_primary.json",
+        "bytes": 15520,
+        "sha256": "62ab4ce1a2bfe2d1b72d0b2e261e2eb847b6d1bb749e435593ff0315fa9fbc82"
+      }
+    ],
+    "actual_frozen_Git_objects": [
+      {
+        "kind": "commit",
+        "oid": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74",
+        "member": "objects/2b72d2d0b958f8d86c52d1d047ae7c7238b35d74",
+        "bytes": 435,
+        "sha256": "3632f2ad22f7e7bd05b916b4fdde4e3c722ecbc576f5fd723d0551bd58012fb7"
+      },
+      {
+        "kind": "tree",
+        "oid": "b465b34fd9c081e384838ffbf9da47521ecc7529",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74^{tree}",
+        "member": "objects/b465b34fd9c081e384838ffbf9da47521ecc7529",
+        "bytes": 563,
+        "sha256": "62df1e998427f01f38b176edb81c86469cdf6c0d7f7270fcdd1a3de0389ce54e"
+      },
+      {
+        "kind": "tree",
+        "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74:config",
+        "member": "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      {
+        "kind": "tree",
+        "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74:tools",
+        "member": "objects/fa269934679ee43da523f7bf9c369e4e27d83531",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      {
+        "kind": "tree",
+        "oid": "4c31d37b10139400cd92783b01f23b8c01b54ab5",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74:docs",
+        "member": "objects/4c31d37b10139400cd92783b01f23b8c01b54ab5",
+        "bytes": 228884,
+        "sha256": "17017bcddc9c91e00aac8fd36f0475cb6e88c0f43955eecbc9a3819cba85473f"
+      },
+      {
+        "kind": "tree",
+        "oid": "57c5b82207034a208e8c657f8092401117c4732b",
+        "ref": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74:reports",
+        "member": "objects/57c5b82207034a208e8c657f8092401117c4732b",
+        "bytes": 353755,
+        "sha256": "50609763148e5a815c07a232330c0d29085f4b4c39c523674b43cf100ae86ec4"
+      }
+    ],
+    "prior_archives_traversed": 0,
+    "CLI_commands_with_complete_streams": 8,
+    "failed_or_interrupted_Native_captures": 0,
+    "Root_gate_copied_without_execution": true
+  },
+  "core_archive": {
+    "path": "local/cc12_locale_onexit_lock_body/core_v2.zip",
+    "bytes": 1522476,
+    "sha256": "c754dff6d5b612b6b856d80e11a2e1b6c5ac2b6409066779f2dc1837d89cf6cf"
+  },
+  "distinct_physical_copy": {
+    "path": "local/cc12_locale_onexit_lock_body/core_v2_copy.zip",
+    "bytes": 1522476,
+    "sha256": "c754dff6d5b612b6b856d80e11a2e1b6c5ac2b6409066779f2dc1837d89cf6cf"
+  },
+  "offline_replay": {
+    "receipts": [
+      {
+        "path": "local/cc12_locale_onexit_lock_body/core_v2_original.guard.json",
+        "bytes": 4005,
+        "sha256": "5addfeb56a3cdac73bf53e6fab05d66ec370719bc6221ea2e95942b90b11ab01"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_body/core_v2_copy.guard.json",
+        "bytes": 4005,
+        "sha256": "5addfeb56a3cdac73bf53e6fab05d66ec370719bc6221ea2e95942b90b11ab01"
+      }
+    ],
+    "result": {
+      "phase": "core",
+      "status": "PASS",
+      "base": "2b72d2d0b958f8d86c52d1d047ae7c7238b35d74",
+      "source_identity_only": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "typed_response_count": 98,
+      "address_units": 49,
+      "instruction_count": 20,
+      "epoch": 98,
+      "count_bookends": 64730,
+      "command_streams": 8,
+      "bytes_sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+      "physical_decoding": [
+        {
+          "address": "00C11C21",
+          "hex": "55",
+          "saved_text": "PUSH EBP"
+        },
+        {
+          "address": "00C11C22",
+          "hex": "8bec",
+          "saved_text": "MOV EBP,ESP"
+        },
+        {
+          "address": "00C11C24",
+          "hex": "8b4508",
+          "saved_text": "MOV EAX,dword ptr [EBP + 0x8]"
+        },
+        {
+          "address": "00C11C27",
+          "hex": "56",
+          "saved_text": "PUSH ESI"
+        },
+        {
+          "address": "00C11C28",
+          "hex": "8d34c57864e100",
+          "saved_text": "LEA ESI,[EAX*0x8 + 0xe16478]"
+        },
+        {
+          "address": "00C11C2F",
+          "hex": "833e00",
+          "saved_text": "CMP dword ptr [ESI],0x0"
+        },
+        {
+          "address": "00C11C32",
+          "hex": "7513",
+          "saved_text": "JNZ 0x00c11c47",
+          "physical_relative_target": "00C11C47"
+        },
+        {
+          "address": "00C11C34",
+          "hex": "50",
+          "saved_text": "PUSH EAX"
+        },
+        {
+          "address": "00C11C35",
+          "hex": "e824ffffff",
+          "saved_text": "CALL 0x00c11b5e",
+          "physical_relative_target": "00C11B5E"
+        },
+        {
+          "address": "00C11C3A",
+          "hex": "85c0",
+          "saved_text": "TEST EAX,EAX"
+        },
+        {
+          "address": "00C11C3C",
+          "hex": "59",
+          "saved_text": "POP ECX"
+        },
+        {
+          "address": "00C11C3D",
+          "hex": "7508",
+          "saved_text": "JNZ 0x00c11c47",
+          "physical_relative_target": "00C11C47"
+        },
+        {
+          "address": "00C11C3F",
+          "hex": "6a11",
+          "saved_text": "PUSH 0x11"
+        },
+        {
+          "address": "00C11C41",
+          "hex": "e8c39dfeff",
+          "saved_text": "CALL 0x00bfba09",
+          "physical_relative_target": "00BFBA09"
+        },
+        {
+          "address": "00C11C46",
+          "hex": "59",
+          "saved_text": "POP ECX"
+        },
+        {
+          "address": "00C11C47",
+          "hex": "ff36",
+          "saved_text": "PUSH dword ptr [ESI]"
+        },
+        {
+          "address": "00C11C49",
+          "hex": "ff151822ce00",
+          "saved_text": "CALL dword ptr [0x00ce2218]",
+          "physical_indirect_cell": "00CE2218"
+        },
+        {
+          "address": "00C11C4F",
+          "hex": "5e",
+          "saved_text": "POP ESI"
+        },
+        {
+          "address": "00C11C50",
+          "hex": "5d",
+          "saved_text": "POP EBP"
+        },
+        {
+          "address": "00C11C51",
+          "hex": "c3",
+          "saved_text": "RET"
+        }
+      ],
+      "saved_effective_target_only": "EXTERNAL:0000015b",
+      "automatic_target_objects": "opaque",
+      "frozen_Git_objects": 6,
+      "positive_files": 9,
+      "archive": {
+        "bytes": 1522476,
+        "sha256": "c754dff6d5b612b6b856d80e11a2e1b6c5ac2b6409066779f2dc1837d89cf6cf"
+      },
+      "archive_members_verified": 64
+    },
+    "guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 2,
+      "unexpected_denials": []
+    },
+    "helper_pins_verified_before_execution": [
+      {
+        "name": "metadata_replay.py",
+        "bytes": 4576,
+        "sha256": "963d2aea640f8afc53cfe473154c106442277d7dd22e5eb7f20630963f9dab70"
+      },
+      {
+        "name": "replay.py",
+        "bytes": 12218,
+        "sha256": "42a0ffb0e01df44070f28f5948640bb45e74b85ca2a2b083daeb897799888d8f"
+      },
+      {
+        "name": "guarded_replay.py",
+        "bytes": 3422,
+        "sha256": "51a1bd542b1487b1216b161e59a45385de21dfe167ef3b23b1c6b99c3e048e62"
+      }
+    ],
+    "helper_bodies_are_retained": true,
+    "producer_bodies_in_core": 6,
+    "preliminary_successful_archive_retained": {
+      "path": "local/cc12_locale_onexit_lock_body/core_v1.zip",
+      "bytes": 1522343,
+      "sha256": "0dac9d248c754dd6cb0b9809d40076a3563685fafda18419baa27ea42d201fa7"
+    },
+    "version_change": "Core v2 changes only the unused delivery-result counter: twelve object records are now distinguished from distinct object IDs. No Native recapture."
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_LOCK_BODY.md",
+      "reports/cc12_locale_onexit_lock_body.json"
+    ],
+    "post_commit_archive": "local/cc12_locale_onexit_lock_body/delivery_v1.zip",
+    "post_commit_receipts": [
+      "local/cc12_locale_onexit_lock_body/delivery_v1_original.guard.json",
+      "local/cc12_locale_onexit_lock_body/delivery_v1_copy.guard.json"
+    ],
+    "closure": "Actual frozen/final commit and selected tree objects, selected blobs/physical bytes and owned staged bytes; root and changed subtree comparisons prove exactly two changed paths.",
+    "self_reference_boundary": "The delivery archive and receipts are generated after committing these outputs and are handed off separately; their hashes cannot be embedded in this same commit."
+  },
+  "Source_identity_only": {
+    "trees": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "worker frozen base and final tree identity only",
+    "current_or_future_Root_equality": "not claimed",
+    "census": "not performed",
+    "implementation_credit": false
+  },
+  "not_established": [
+    "argument meaning",
+    "locking/provider/CRT identity",
+    "memory cell contents",
+    "external call behavior or return",
+    "preserved external registers/flags/ESP/memory",
+    "caller cleanup or ABI",
+    "callback ownership or status",
+    "exception/unwind behavior",
+    "Source/build/test/probe result",
+    "Original game/OS/audio execution",
+    "startup or gameplay completion"
+  ],
+  "next_scope": "Closed after exact-body evidence. Any callee, memory cell, provider or continuation body requires a separate Root decision."
+}
