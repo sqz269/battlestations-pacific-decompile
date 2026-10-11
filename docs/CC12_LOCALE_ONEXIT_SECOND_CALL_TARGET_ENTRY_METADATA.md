@@ -1,0 +1,13 @@
+# Locale onexit second-call target: exact entry metadata
+
+The accepted physical E8 at `BFBA6A` selects numeric target `C11C21`. This packet freshly queries that exact entry under `C:/Users/sqz269/bsp.gpr` and `/battlestationspacific.exe`; it does not reinterpret the predecessor's opaque automatic target object. Two complete typed responses agree at epoch 98 / count 64,730, with unchanged count and identity bookends.
+
+All four listing identities report one InstructionDB unit at `C11C21`, length one. Function-at and function-containing both identify `C11C21`. The direct saved function record names `__lock`, with `no_return=false`, no thunk, no direct thunk target, and one complete saved range `C11C21..C11C51` of 49 address units. The saved prefix is `void __cdecl __lock(int _File)`. The name, return type, calling-convention annotation and parameter label/type remain metadata; they establish no locking/provider behavior, argument meaning or actual ABI. The entire automatic prototype companion and every automatic target object remain opaque.
+
+Entry default/effective flow metadata agree on `FALL_THROUGH`, override `NONE`, no fallthrough override, fallthrough `C11C22` and empty target-address arrays. After that positive one-byte extent was established, two exact entry-unit reads both returned `55`. No continuation address, instruction text, callee, stack, data, decompile or disassembly was queried. No function or listing was created, repaired or annotated.
+
+Native is closed. Body behavior, returned registers/memory/ESP, stack cleanup, callback ownership, status, actual OS/CRT identity, ABI and execution remain unresolved. The saved 49-byte body range does not admit traversal. No Source implementation, build, executable probe or game/OS/audio execution occurred.
+
+The finite proof retains the two raw typed responses, all seven count/prototype/byte CLI streams, nine immediate positive predecessor/tool inputs, six actual frozen Git objects, four pure replay helpers and their producers. Strict original and distinct-copy replay pins helper bytes before import and permits only the supplied archive read and result write. Separate delivery checks cover eight actual base/final Git objects and exact current/staged/committed bytes for the two owned outputs. Prior archives are not traversed and earlier proof sets remain immutable.
+
+Frozen worker base is `d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8`. Source identities are `src=af8efebaa30365fa0f7f2f591c45861a55b4b1b2` and `include=09add3be594e63edcce6a16ec041ed965441e898`. They apply only to this worker's frozen base and final state, with no Source census, current/future Root equality or implementation/build/runtime credit. Any further Native scope requires a separate Root decision.
