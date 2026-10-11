@@ -1,0 +1,3061 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_outbound_jump_target_body_metadata",
+  "status": "bounded_saved_body_physical_decode_documented",
+  "frozen_commit": "508e69254ec6fc2bab6b3a2f5c48b99068330ad8",
+  "finite_Git_inputs": [
+    {
+      "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_ENTRY.md",
+      "git_blob": "adcbbfa905a04c10b65e135d2875ace9bebe0981",
+      "working_payload": "captures/input_0.working_raw",
+      "working_file": {
+        "size": 5398,
+        "sha256": "1a1d19f310a2e746f7d27c0f81282edd03fe40deec5c05dede43053e3826d96c"
+      },
+      "working_LF": {
+        "size": 5398,
+        "sha256": "1a1d19f310a2e746f7d27c0f81282edd03fe40deec5c05dede43053e3826d96c"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "reports/cc12_findhandler_outbound_jump_target_entry.json",
+      "git_blob": "e5be521aadc61126c55d2e4cbe0e124214b21eb3",
+      "working_payload": "captures/input_1.working_raw",
+      "working_file": {
+        "size": 18987,
+        "sha256": "0f4486219d91523eca90a7f0df49fc7f0ca2cee24553c6a9b5a2b209b6f9276e"
+      },
+      "working_LF": {
+        "size": 18987,
+        "sha256": "0f4486219d91523eca90a7f0df49fc7f0ca2cee24553c6a9b5a2b209b6f9276e"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_ENTRY_PRIMARY.md",
+      "git_blob": "22876e8b3cee76bbaf9ff25126d9c6cc48bd7cda",
+      "working_payload": "captures/input_2.working_raw",
+      "working_file": {
+        "size": 2883,
+        "sha256": "46cb998d9282eb21b7df0eadc258aa124512972226142b3dee6c81acba62ae3f"
+      },
+      "working_LF": {
+        "size": 2883,
+        "sha256": "46cb998d9282eb21b7df0eadc258aa124512972226142b3dee6c81acba62ae3f"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "reports/cc12_findhandler_outbound_jump_target_entry_primary.json",
+      "git_blob": "7b8b9c244c07b13945031194194f7e854e10da0d",
+      "working_payload": "captures/input_3.working_raw",
+      "working_file": {
+        "size": 15808,
+        "sha256": "5266093f5818535ed371b51fec7586baf8c65e28c2d1743ad0aea11b5b3b9521"
+      },
+      "working_LF": {
+        "size": 15808,
+        "sha256": "5266093f5818535ed371b51fec7586baf8c65e28c2d1743ad0aea11b5b3b9521"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_payload": "captures/input_4.working_raw",
+      "working_file": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_payload": "captures/input_5.working_raw",
+      "working_file": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_payload": "captures/input_6.working_raw",
+      "working_file": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_payload": "captures/input_7.working_raw",
+      "working_file": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true
+    }
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_edge": {
+    "address": "00C07AF3",
+    "hex": "e97dffffff",
+    "opcode": 233,
+    "signed_displacement": -131,
+    "next_address": "00C07AF8",
+    "numeric_target": "00C07A75",
+    "return_address_push": false,
+    "origin": "immediate accepted BODY report; no new source-edge query"
+  },
+  "metadata": {
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "name": "terminate",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "44",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a75"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07a94"
+            },
+            "length": "32"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a9c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07aa7"
+            },
+            "length": "12"
+          }
+        ]
+      }
+    },
+    "ranges": [
+      {
+        "start": "00C07A75",
+        "end_inclusive": "00C07A94",
+        "size": 32
+      },
+      {
+        "start": "00C07A9C",
+        "end_inclusive": "00C07AA7",
+        "size": 12
+      }
+    ],
+    "whole_units_per_walk": 12,
+    "independent_walks": 2,
+    "three_raws_per_start_equal": true,
+    "gap_query_or_classification": false,
+    "unqueried_range_end_cursors": [
+      "00C07A95",
+      "00C07AA8"
+    ]
+  },
+  "Root_gate": {
+    "status": "PASS",
+    "frozen_commit": "508e69254ec6fc2bab6b3a2f5c48b99068330ad8",
+    "metadata_manifest": {
+      "size": 136538,
+      "sha256": "43ffbe38829c8b9549a557d099443077f71e407ad6485cdabaf9b4aff8c499fe"
+    },
+    "Root_metadata_preimages_copied": 385,
+    "actual_frozen_Git_objects": 14,
+    "positive_inputs": 8,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "admitted_ranges": [
+      [
+        "00C07A75",
+        "00C07A94"
+      ],
+      [
+        "00C07A9C",
+        "00C07AA7"
+      ]
+    ],
+    "admitted_body_bytes": 44,
+    "admitted_units": [
+      {
+        "address": "00C07A75",
+        "length": 2,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a77"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a77"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2254,
+          "sha256": "23cb77b0a2e1ab56c765f4194671d8f00fbd66d6b8a4d6c3006794d613b703d5"
+        }
+      },
+      {
+        "address": "00C07A77",
+        "length": 5,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a7c"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a7c"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2223,
+          "sha256": "f6325daea1938ecd9a4751d46246f3646d3193f7eabe43cbe07f2f96fd6ce03e"
+        }
+      },
+      {
+        "address": "00C07A7C",
+        "length": 5,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a81"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a81"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07c00"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07c00"
+            }
+          ]
+        },
+        "direct_original_raw_pin": {
+          "size": 2579,
+          "sha256": "6f229b22a7c45919e73f4392286612b8b6a8c63574e1edc246cc47640c74f6df"
+        }
+      },
+      {
+        "address": "00C07A81",
+        "length": 5,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a86"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a86"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c0522e"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c0522e"
+            }
+          ]
+        },
+        "direct_original_raw_pin": {
+          "size": 2574,
+          "sha256": "d2424139ae081a9c0f178e83386325551e92a444c8ec85f4e502703b399a3758"
+        }
+      },
+      {
+        "address": "00C07A86",
+        "length": 3,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a89"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a89"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2223,
+          "sha256": "1d88a25de5ad9c06b12f601e6bb003eb7da4f9bf49d474fef8a37262cdb0df10"
+        }
+      },
+      {
+        "address": "00C07A89",
+        "length": 2,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8b"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8b"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2223,
+          "sha256": "647987038ec0a7ad48f1ad834b84fcd406fb5ab663d55d5dd8c99457c3e57a20"
+        }
+      },
+      {
+        "address": "00C07A8B",
+        "length": 2,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8d"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8d"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07aa3"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07aa3"
+            }
+          ]
+        },
+        "direct_original_raw_pin": {
+          "size": 2297,
+          "sha256": "b83109c3652683a7e877b480aea230194fd03659ad325d680697d0faafd460f3"
+        }
+      },
+      {
+        "address": "00C07A8D",
+        "length": 4,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a91"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a91"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2223,
+          "sha256": "7da539fdf1d36976fa636cbfb1d59e863f5973d17866e789aeecc3b7622bb20d"
+        }
+      },
+      {
+        "address": "00C07A91",
+        "length": 2,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a93"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a93"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2221,
+          "sha256": "9b11f38ca4b77c308f68b06ac0263f7baec23140ef64da471801761a3e7ed027"
+        }
+      },
+      {
+        "address": "00C07A93",
+        "length": 2,
+        "range_index": 0,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07a9c"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07a9c"
+            }
+          ]
+        },
+        "direct_original_raw_pin": {
+          "size": 2241,
+          "sha256": "f927c8c27b8925cbbe8bed6cb738deaed5579ea9e243214a2d8e21c1223e0500"
+        }
+      },
+      {
+        "address": "00C07A9C",
+        "length": 7,
+        "range_index": 1,
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07aa3"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07aa3"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "direct_original_raw_pin": {
+          "size": 2223,
+          "sha256": "ff62e31e54b987f21f6bd63518e7a78630299f9f2e593e5d3d9330f392d33f7d"
+        }
+      },
+      {
+        "address": "00C07AA3",
+        "length": 5,
+        "range_index": 1,
+        "saved_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c04de2"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c04de2"
+            }
+          ]
+        },
+        "direct_original_raw_pin": {
+          "size": 2512,
+          "sha256": "9352c9e82a851bae3828bfc81717976526df80e9604e116728185e257fbb93fb"
+        }
+      }
+    ],
+    "complete_saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "name": "terminate",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "44",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a75"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07a94"
+            },
+            "length": "32"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a9c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07aa7"
+            },
+            "length": "12"
+          }
+        ]
+      }
+    },
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_commands": 28,
+    "original_direct_typed_raws": 24,
+    "original_HTTP_GET_responses": 132,
+    "gap_unadmitted": "00C07A95..00C07A9B",
+    "unqueried_end_cursors": [
+      "00C07A95",
+      "00C07AA8"
+    ],
+    "no_proto_target_cell_provider_decompile_query_admitted": true,
+    "annotation_not_physical_opcode": "C07AA3 CALL_RETURN is saved metadata; bytes unexamined at this gate, nonreturn unproved",
+    "worker_offline_Main_race_failures": 1,
+    "worker_Native_failures": 0,
+    "Root_gate_failures": 0,
+    "Root_inspection_history": {
+      "Root_offline_inspection_failures": 1,
+      "Root_output_truncations": 1,
+      "details": [
+        "Guessed whole_units units key raised KeyError; actual walks is list of lists",
+        "Follow-up schema display accidentally printed a full walk and was tool-truncated; no whole-walk conclusion relied on that display"
+      ],
+      "provenance": "Original combined tool outputs in conversation; no separate locally retained original streams claimed",
+      "Native_or_GPR_effects": 0
+    },
+    "Root_fresh_Native_queries": 0,
+    "GPR_mutations": 0
+  },
+  "Native": {
+    "commands": 37,
+    "phase1": 28,
+    "phase2": 9,
+    "HTTP_responses": 172,
+    "endpoint_counts": {
+      "list_project_files": 62,
+      "get_current_program_info": 62,
+      "get_function_count": 6,
+      "get_flow_metadata": 36,
+      "read_memory": 4,
+      "get_assembly_context": 2
+    },
+    "function_count": 64730,
+    "epoch": 98,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "physical": {
+    "blocks": [
+      {
+        "start": "00C07A75",
+        "size": 32,
+        "hex": "6a08685835e000e87f010000e8a8d7ffff8b407885c074168365fc00ffd0eb07",
+        "sha256": "eb271829478822604a351ef787f25a32836c966b6cac718f8026d6db08275675",
+        "paired_equal": true
+      },
+      {
+        "start": "00C07A9C",
+        "size": 12,
+        "hex": "c745fcfeffffffe83ad3ffff",
+        "sha256": "16952dddbc793efd41a2c94718e46f9cec2fee1ac42f3ea55a2e3371d4a184c2",
+        "paired_equal": true
+      }
+    ],
+    "instructions": [
+      {
+        "physical": {
+          "address": "00C07A75",
+          "length": 2,
+          "hex": "6a08",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "6a",
+              "value": 106
+            },
+            {
+              "field": "immediate",
+              "offset": 1,
+              "size": 1,
+              "hex": "08",
+              "value": 8
+            }
+          ],
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 8
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07A77"
+        },
+        "saved_text": "PUSH 0x8",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a77"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a77"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A77",
+          "length": 5,
+          "hex": "685835e000",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "68",
+              "value": 104
+            },
+            {
+              "field": "immediate",
+              "offset": 1,
+              "size": 4,
+              "hex": "5835e000",
+              "value": 14693720
+            }
+          ],
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 14693720
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07A7C"
+        },
+        "saved_text": "PUSH 0xe03558",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a7c"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a7c"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A7C",
+          "length": 5,
+          "hex": "e87f010000",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "e8",
+              "value": 232
+            },
+            {
+              "field": "relative_displacement",
+              "offset": 1,
+              "size": 4,
+              "hex": "7f010000",
+              "value": 383
+            }
+          ],
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12614656
+            }
+          ],
+          "transfer": {
+            "kind": "call",
+            "signed_displacement": 383,
+            "numeric_target": "00C07C00",
+            "next_address": "00C07A81",
+            "encoded_return_address": "00C07A81"
+          },
+          "numeric_next_address": "00C07A81"
+        },
+        "saved_text": "CALL 0x00c07c00",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a81"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a81"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07c00"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07c00"
+            }
+          ]
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A81",
+          "length": 5,
+          "hex": "e8a8d7ffff",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "e8",
+              "value": 232
+            },
+            {
+              "field": "relative_displacement",
+              "offset": 1,
+              "size": 4,
+              "hex": "a8d7ffff",
+              "value": -10328
+            }
+          ],
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12603950
+            }
+          ],
+          "transfer": {
+            "kind": "call",
+            "signed_displacement": -10328,
+            "numeric_target": "00C0522E",
+            "next_address": "00C07A86",
+            "encoded_return_address": "00C07A86"
+          },
+          "numeric_next_address": "00C07A86"
+        },
+        "saved_text": "CALL 0x00c0522e",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a86"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a86"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c0522e"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c0522e"
+            }
+          ]
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A86",
+          "length": 3,
+          "hex": "8b4078",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": {
+            "value": 64,
+            "mod": 1,
+            "reg_opcode": 0,
+            "rm": 0
+          },
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "8b",
+              "value": 139
+            },
+            {
+              "field": "modrm",
+              "offset": 1,
+              "size": 1,
+              "hex": "40",
+              "value": 64
+            },
+            {
+              "field": "displacement",
+              "offset": 2,
+              "size": 1,
+              "hex": "78",
+              "value": 120
+            }
+          ],
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "eax"
+            },
+            {
+              "kind": "mem",
+              "size": 4,
+              "segment_override": null,
+              "default_segment": "ds",
+              "base": "eax",
+              "index": null,
+              "scale": 1,
+              "displacement": 120
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07A89"
+        },
+        "saved_text": "MOV EAX,dword ptr [EAX + 0x78]",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a89"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a89"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A89",
+          "length": 2,
+          "hex": "85c0",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": {
+            "value": 192,
+            "mod": 3,
+            "reg_opcode": 0,
+            "rm": 0
+          },
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "85",
+              "value": 133
+            },
+            {
+              "field": "modrm",
+              "offset": 1,
+              "size": 1,
+              "hex": "c0",
+              "value": 192
+            }
+          ],
+          "mnemonic": "test",
+          "operands": [
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "eax"
+            },
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "eax"
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07A8B"
+        },
+        "saved_text": "TEST EAX,EAX",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8b"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8b"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A8B",
+          "length": 2,
+          "hex": "7416",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "74",
+              "value": 116
+            },
+            {
+              "field": "relative_displacement",
+              "offset": 1,
+              "size": 1,
+              "hex": "16",
+              "value": 22
+            }
+          ],
+          "mnemonic": "je",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12614307
+            }
+          ],
+          "transfer": {
+            "kind": "conditional_jump",
+            "signed_displacement": 22,
+            "numeric_target": "00C07AA3",
+            "next_address": "00C07A8D",
+            "encoded_return_address": null
+          },
+          "numeric_next_address": "00C07A8D"
+        },
+        "saved_text": "JZ 0x00c07aa3",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": true,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8d"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a8d"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07aa3"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07aa3"
+            }
+          ]
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A8D",
+          "length": 4,
+          "hex": "8365fc00",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": {
+            "value": 101,
+            "mod": 1,
+            "reg_opcode": 4,
+            "rm": 5
+          },
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "83",
+              "value": 131
+            },
+            {
+              "field": "modrm",
+              "offset": 1,
+              "size": 1,
+              "hex": "65",
+              "value": 101
+            },
+            {
+              "field": "displacement",
+              "offset": 2,
+              "size": 1,
+              "hex": "fc",
+              "value": -4
+            },
+            {
+              "field": "immediate",
+              "offset": 3,
+              "size": 1,
+              "hex": "00",
+              "value": 0
+            }
+          ],
+          "mnemonic": "and",
+          "operands": [
+            {
+              "kind": "mem",
+              "size": 4,
+              "segment_override": null,
+              "default_segment": "ss",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -4
+            },
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 0
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07A91"
+        },
+        "saved_text": "AND dword ptr [EBP + -0x4],0x0",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a91"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a91"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A91",
+          "length": 2,
+          "hex": "ffd0",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": {
+            "value": 208,
+            "mod": 3,
+            "reg_opcode": 2,
+            "rm": 0
+          },
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "ff",
+              "value": 255
+            },
+            {
+              "field": "modrm",
+              "offset": 1,
+              "size": 1,
+              "hex": "d0",
+              "value": 208
+            }
+          ],
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "eax"
+            }
+          ],
+          "transfer": {
+            "kind": "computed_call",
+            "target_operand": {
+              "kind": "reg",
+              "size": 4,
+              "name": "eax"
+            },
+            "numeric_target": null,
+            "encoded_return_address": "00C07A93"
+          },
+          "numeric_next_address": "00C07A93"
+        },
+        "saved_text": "CALL EAX",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a93"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07a93"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A93",
+          "length": 2,
+          "hex": "eb07",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "eb",
+              "value": 235
+            },
+            {
+              "field": "relative_displacement",
+              "offset": 1,
+              "size": 1,
+              "hex": "07",
+              "value": 7
+            }
+          ],
+          "mnemonic": "jmp",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12614300
+            }
+          ],
+          "transfer": {
+            "kind": "jump",
+            "signed_displacement": 7,
+            "numeric_target": "00C07A9C",
+            "next_address": "00C07A95",
+            "encoded_return_address": null
+          },
+          "numeric_next_address": "00C07A95"
+        },
+        "saved_text": "JMP 0x00c07a9c",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07a9c"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c07a9c"
+            }
+          ]
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07A9C",
+          "length": 7,
+          "hex": "c745fcfeffffff",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": {
+            "value": 69,
+            "mod": 1,
+            "reg_opcode": 0,
+            "rm": 5
+          },
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "c7",
+              "value": 199
+            },
+            {
+              "field": "modrm",
+              "offset": 1,
+              "size": 1,
+              "hex": "45",
+              "value": 69
+            },
+            {
+              "field": "displacement",
+              "offset": 2,
+              "size": 1,
+              "hex": "fc",
+              "value": -4
+            },
+            {
+              "field": "immediate",
+              "offset": 3,
+              "size": 4,
+              "hex": "feffffff",
+              "value": 4294967294
+            }
+          ],
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "mem",
+              "size": 4,
+              "segment_override": null,
+              "default_segment": "ss",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -4
+            },
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 4294967294
+            }
+          ],
+          "transfer": null,
+          "numeric_next_address": "00C07AA3"
+        },
+        "saved_text": "MOV dword ptr [EBP + -0x4],0xfffffffe",
+        "saved_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07aa3"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07aa3"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "physical": {
+          "address": "00C07AA3",
+          "length": 5,
+          "hex": "e83ad3ffff",
+          "mode": "x86-32 interpretation; live segment attributes unestablished",
+          "prefixes": [],
+          "modrm": null,
+          "sib": null,
+          "fields": [
+            {
+              "field": "opcode",
+              "offset": 0,
+              "size": 1,
+              "hex": "e8",
+              "value": 232
+            },
+            {
+              "field": "relative_displacement",
+              "offset": 1,
+              "size": 4,
+              "hex": "3ad3ffff",
+              "value": -11462
+            }
+          ],
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12602850
+            }
+          ],
+          "transfer": {
+            "kind": "call",
+            "signed_displacement": -11462,
+            "numeric_target": "00C04DE2",
+            "next_address": "00C07AA8",
+            "encoded_return_address": "00C07AA8"
+          },
+          "numeric_next_address": "00C07AA8"
+        },
+        "saved_text": "CALL 0x00c04de2",
+        "saved_flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00c04de2"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00c04de2"
+            }
+          ]
+        }
+      }
+    ],
+    "total_instructions": 12,
+    "total_bytes": 44,
+    "gap_bytes_read_or_classified": false,
+    "paired_context_equal": true,
+    "manual_detailed_Capstone_agreement": true
+  },
+  "actual_detailed_Capstone": {
+    "version": "5.0.7",
+    "arch": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "instructions": [
+      {
+        "address": "00C07A75",
+        "size": 2,
+        "hex": "6a08",
+        "mnemonic": "push",
+        "op_str": "8",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 8
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          106,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 1
+        },
+        "regs_read": [
+          "esp"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "not64bitmode"
+        ]
+      },
+      {
+        "address": "00C07A77",
+        "size": 5,
+        "hex": "685835e000",
+        "mnemonic": "push",
+        "op_str": "0xe03558",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 14693720
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "esp"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "not64bitmode"
+        ]
+      },
+      {
+        "address": "00C07A7C",
+        "size": 5,
+        "hex": "e87f010000",
+        "mnemonic": "call",
+        "op_str": "0xc07c00",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614656
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "esp",
+          "eip"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ]
+      },
+      {
+        "address": "00C07A81",
+        "size": 5,
+        "hex": "e8a8d7ffff",
+        "mnemonic": "call",
+        "op_str": "0xc0522e",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12603950
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "esp",
+          "eip"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ]
+      },
+      {
+        "address": "00C07A86",
+        "size": 3,
+        "hex": "8b4078",
+        "mnemonic": "mov",
+        "op_str": "eax, dword ptr [eax + 0x78]",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "name": "eax"
+          },
+          {
+            "kind": "mem",
+            "size": 4,
+            "segment_override": null,
+            "default_segment": "ds",
+            "base": "eax",
+            "index": null,
+            "scale": 1,
+            "displacement": 120
+          }
+        ],
+        "operand_access": [
+          2,
+          1
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 64,
+        "sib": 0,
+        "disp": 120,
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 1,
+          "imm_offset": 0,
+          "imm_size": 0
+        },
+        "regs_read": [
+          "eax"
+        ],
+        "regs_written": [
+          "eax"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": []
+      },
+      {
+        "address": "00C07A89",
+        "size": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "op_str": "eax, eax",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "name": "eax"
+          },
+          {
+            "kind": "reg",
+            "size": 4,
+            "name": "eax"
+          }
+        ],
+        "operand_access": [
+          1,
+          1
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          133,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 192,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        },
+        "regs_read": [
+          "eax"
+        ],
+        "regs_written": [
+          "eflags"
+        ],
+        "eflags": 17592192335900,
+        "eflag_effects": [
+          "MODIFY_PF",
+          "MODIFY_SF",
+          "MODIFY_ZF",
+          "RESET_CF",
+          "RESET_OF",
+          "UNDEFINED_AF"
+        ],
+        "groups": []
+      },
+      {
+        "address": "00C07A8B",
+        "size": 2,
+        "hex": "7416",
+        "mnemonic": "je",
+        "op_str": "0xc07aa3",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614307
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          116,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 1
+        },
+        "regs_read": [
+          "eflags"
+        ],
+        "regs_written": [],
+        "eflags": 34359738368,
+        "eflag_effects": [
+          "TEST_ZF"
+        ],
+        "groups": [
+          "branch_relative",
+          "jump"
+        ]
+      },
+      {
+        "address": "00C07A8D",
+        "size": 4,
+        "hex": "8365fc00",
+        "mnemonic": "and",
+        "op_str": "dword ptr [ebp - 4], 0",
+        "operands": [
+          {
+            "kind": "mem",
+            "size": 4,
+            "segment_override": null,
+            "default_segment": "ss",
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4
+          },
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 0
+          }
+        ],
+        "operand_access": [
+          3,
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          131,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 101,
+        "sib": 0,
+        "disp": -4,
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 1,
+          "imm_offset": 3,
+          "imm_size": 1
+        },
+        "regs_read": [
+          "ebp"
+        ],
+        "regs_written": [
+          "eflags"
+        ],
+        "eflags": 17592192335900,
+        "eflag_effects": [
+          "MODIFY_PF",
+          "MODIFY_SF",
+          "MODIFY_ZF",
+          "RESET_CF",
+          "RESET_OF",
+          "UNDEFINED_AF"
+        ],
+        "groups": []
+      },
+      {
+        "address": "00C07A91",
+        "size": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "op_str": "eax",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "name": "eax"
+          }
+        ],
+        "operand_access": [
+          1
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 208,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 0,
+          "imm_size": 0
+        },
+        "regs_read": [
+          "esp",
+          "eax"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "call",
+          "not64bitmode"
+        ]
+      },
+      {
+        "address": "00C07A93",
+        "size": 2,
+        "hex": "eb07",
+        "mnemonic": "jmp",
+        "op_str": "0xc07a9c",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614300
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          235,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 1
+        },
+        "regs_read": [],
+        "regs_written": [],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "branch_relative",
+          "jump"
+        ]
+      },
+      {
+        "address": "00C07A9C",
+        "size": 7,
+        "hex": "c745fcfeffffff",
+        "mnemonic": "mov",
+        "op_str": "dword ptr [ebp - 4], 0xfffffffe",
+        "operands": [
+          {
+            "kind": "mem",
+            "size": 4,
+            "segment_override": null,
+            "default_segment": "ss",
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4
+          },
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 4294967294
+          }
+        ],
+        "operand_access": [
+          2,
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          199,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 69,
+        "sib": 0,
+        "disp": -4,
+        "encoding": {
+          "modrm_offset": 1,
+          "disp_offset": 2,
+          "disp_size": 1,
+          "imm_offset": 3,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "ebp"
+        ],
+        "regs_written": [],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": []
+      },
+      {
+        "address": "00C07AA3",
+        "size": 5,
+        "hex": "e83ad3ffff",
+        "mnemonic": "call",
+        "op_str": "0xc04de2",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12602850
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "esp",
+          "eip"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ]
+      }
+    ]
+  },
+  "local_CPU_contract": {
+    "interpretation": "Unprefixed x86-32 instruction interpretation in the saved language. Live segment descriptors and execution are unverified. Effects below require successful normal execution of the stated instructions.",
+    "incoming_edge": "Accepted E9 at C07AF3 transfers numerically to C07A75 without changing ESP or pushing a return address. This body does not infer a call frame from that incoming jump.",
+    "implicit_stack_rule": "For each PUSH or near CALL, impose the actual instruction-time SS.B=1 condition anew before using ESP arithmetic: new ESP=(current ESP-4) mod 2^32 and a dword write through current SS at that offset. Unknown post-call SS attributes cannot inherit a prior stack-size assumption. These equations do not assert a flat segment, valid mapping, successful access, or live 32-bit stack.",
+    "initial_pushes": "C07A75 sign-extends imm8 08 to dword 00000008; C07A77 pushes literal 00E03558. With a current 32-bit stack and uninterrupted normal execution, the two successive dword writes precede the first CALL return-address write. No pointer, argument, descriptor, or object meaning is assigned to 00E03558.",
+    "first_call": "C07A7C E8 has signed rel32 +383, next/encoded return C07A81, target C07C00. The push uses the instruction-time SS and stack-size condition. Target bytes, prototype, convention, effects, and return are unknown.",
+    "second_call": "If control reaches C07A81 after the opaque call, every GPR including EBP/ESP, segment selector and hidden attributes, EFLAGS, memory, and x87 state is unknown again. Its E8 rel32 -10328 has next/encoded return C07A86 and target C0522E. Apply the current SS.B=1 condition anew to any ESP stack equation; return and cleanup are unproved.",
+    "load": "If control reaches C07A86 after that opaque call, use fresh unknown current state again. 8B 40 78 reads a dword through current DS at address-size-32 offset (old EAX+0x78) mod 2^32, then writes EAX with that value. There is no segment override; neither the original EAX value nor the memory provenance is known. MOV leaves EFLAGS unchanged.",
+    "test_branch": "C07A89 TEST EAX,EAX reads the loaded EAX without modifying it. CF=OF=0; SF/ZF/PF follow the result EAX, AF is undefined. C07A8B JE has rel8 +22 from C07A8D to C07AA3 and tests ZF without changing EFLAGS or the stack. If these instructions execute normally without an intervening state change, the zero case skips AND, indirect CALL, JMP, and the later MOV.",
+    "nonzero_store": "On the nonzero fallthrough, C07A8D 83 /4 sign-extends imm8 00 and performs a dword read-modify-write at current SS:(EBP-4) using 32-bit effective-address arithmetic. This reads the prior dword even though the successful result is zero; it may fault. EAX/EBP/ESP are unchanged by the instruction. Successful AND sets CF=OF=SF=0, ZF=PF=1; AF is undefined. Explicit EBP addressing does not require SS.B=1; that condition is for implicit stack-pointer arithmetic.",
+    "computed_call": "C07A91 FF /2 reads the instruction-time EAX as its near-call target before its return-address stack write; the register value is still the loaded nonzero value along the uninterrupted normal path. Encoded return is C07A93. The prior AND can alias the original load cell or later stack writes without changing EAX itself. No distinctness of these memory cells is established. Apply current SS.B=1 anew for ESP-4 and current SS for the push; target behavior remains opaque.",
+    "post_computed_call": "If control reaches C07A93 after the opaque computed call, every GPR/ESP/EBP, segment and attributes, EFLAGS, memory, and x87 state is unknown again. EB 07 jumps from numeric next C07A95 to C07A9C; it does not change ESP or push a return address. C07A95 is arithmetic only, unqueried and unclassified.",
+    "later_store": "C07A9C C7 /0 writes literal FFFFFFFE to current SS:(EBP-4) with a 32-bit effective-address offset, without a destination read. It preserves EFLAGS and registers. Post-call EBP and SS need not match the earlier AND, so equality of their cells is unproved; arbitrary partial or complete aliasing with other memory/stack writes remains possible. Store completion and later CALL access are separate ordered events.",
+    "final_call": "C07AA3 E8 3A D3 FF FF is a physical direct CALL: signed rel32 -11462, numeric target C04DE2, next/encoded return C07AA8. Under the newly imposed actual current SS.B=1 condition, it writes C07AA8 through current SS at ESP-4 and updates ESP. CALL itself preserves arithmetic EFLAGS before transfer. C07AA8 is an unqueried cursor, not an admitted instruction or continuation. Callee behavior, return, and all state on any later return are unconstrained.",
+    "saved_annotation": "At C07AA3 saved default UNCONDITIONAL_CALL plus CALL_RETURN yields effective CALL_TERMINATOR. Both saved default/effective fallthrough are null; this is retained metadata, not physical proof of nonreturn. The owner saved name terminate, no_return=false, and nonthunk status convey no established library, EH, TLS, runtime, or ABI meaning.",
+    "alias_and_fault_limits": "Memory dependencies use each instruction-time segment and register state in execution order. No alias disjointness, pointer validity, exception route, callee preservation, stack cleanup, nonreturn, or successful whole-path execution is inferred. Flags described are instruction effects only, never promises across opaque calls."
+  },
+  "failures": {
+    "strict_replay_failed_invocations": 2,
+    "strict_replay_history": {
+      "failed_strict_invocations": 2,
+      "attempt01": {
+        "status": "FAIL",
+        "returncode": 1,
+        "command": "replay_original.command.json",
+        "stdout_size": 0,
+        "stderr_size": 0,
+        "receipt": null,
+        "denial_telemetry": "unavailable; no denial count or retroactive PASS is claimed"
+      },
+      "diagnostic_attempt02": {
+        "status": "FAIL",
+        "returncode": 1,
+        "command": "replay_diagnostic.command.json",
+        "receipt": "diagnostic_replay_receipt.json",
+        "failure": "AssertionError at original replay.py line212: expected391 was erroneously371",
+        "actual_audit": {
+          "zip_reads": 1,
+          "helper_execs": 1,
+          "receipt_writes": 1,
+          "denied": []
+        }
+      },
+      "proven_cause": "A numeric substring replacement applied to an authored helper template changed expected391 into371. Retained Root manifest actually has391 artifacts.",
+      "correction": "Exact-line correction assert len(copies) == 371 to ==391; no decoding, Native data, or semantic assertion was relaxed.",
+      "guard_change": "Catch validation exceptions and record their type/message/line numbers in the single exclusively created receipt, while preserving the same deny-all-other audit rule and requiring denied[] empty.",
+      "failed_public_commit": "d880edb1a2bb1593563a7ea7fe3c1638f804460a",
+      "failed_commit_reachable_ref": "refs/heads/agent/cc12_findhandler_outbound_jump_target_body_metadata_attempt01",
+      "failed_archive_opaque": {
+        "path": "replay_attempt01/failed_proof.zip",
+        "size": 4828354,
+        "sha256": "3896ee7ba7a6c25d86a70365c7823ccf4f44e4a518f78830617bcb13d5e3caa3",
+        "recursive_open_or_execution": false
+      },
+      "preimages": {
+        "replay_attempt01/actual_final_git.json": {
+          "size": 18404,
+          "sha256": "d934fb44e9eacbf29619af63dd8b47e1537216b3edffc1d219969e9a28062c00"
+        },
+        "replay_attempt01/archive_manifest.json": {
+          "size": 158456,
+          "sha256": "63368f28bf3e14ced6a37fdd138f167f7bae74bcb3ad67cc7ad4c313aae98c9f"
+        },
+        "replay_attempt01/audit_replay.py": {
+          "size": 2351,
+          "sha256": "8deb67ea53026ce6da9f1c0feae2d4cba092c2b0e967f467a73d95bc4d90f032"
+        },
+        "replay_attempt01/audit_replay_diagnostic.py": {
+          "size": 2727,
+          "sha256": "bdb93a8fc36e01313d9e56785e304e182a575fa95e0c0a27f942fcc3664a5521"
+        },
+        "replay_attempt01/body_capture_manifest.json": {
+          "size": 25385,
+          "sha256": "a64418006bc7afa7a75e63d76c70f75b9a233055925f626ccd325bb6888a744b"
+        },
+        "replay_attempt01/body_collector.command.json": {
+          "size": 913,
+          "sha256": "501911912eeef1ebe07a929461ab01ecd8f1bb98922a145b413899caa69f10e6"
+        },
+        "replay_attempt01/body_collector.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/body_collector.stdout": {
+          "size": 200,
+          "sha256": "8fc459e7d7cc4df8b680d0d8b65c5d13525cf9934913a97feb21bf7f8b75d40a"
+        },
+        "replay_attempt01/body_producer_before_execution.json": {
+          "size": 452,
+          "sha256": "4a1b20acdc6769bbfa70a84a6c379959bf4e530ff575aeed173cffd44c7202b7"
+        },
+        "replay_attempt01/capstone_detail.json": {
+          "size": 11682,
+          "sha256": "ca9411711c81ea0bbf97ba4acc17c13a748e47c87e7fc5f63e4d965ad73a8476"
+        },
+        "replay_attempt01/capture_body.py": {
+          "size": 5412,
+          "sha256": "b9f68c1de4bb746032e6f308798c224700b9b46ad58317556ff840348f146ae6"
+        },
+        "replay_attempt01/capture_metadata.py": {
+          "size": 10714,
+          "sha256": "2a5f0ea048b4548e25df2e5f22a2127b121946137082f01578cd4a5b0bf02b34"
+        },
+        "replay_attempt01/collector_attempt02.command.json": {
+          "size": 931,
+          "sha256": "c37e071009fd4549a90b37577b8216de317a5f8f8ae3d8b088e4d8a9827b9b45"
+        },
+        "replay_attempt01/collector_attempt02.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/collector_attempt02.stdout": {
+          "size": 539,
+          "sha256": "d0d7c85a5c37cf028aabb503f810b19a898dc93804ee6ec2b8fdfc5999752838"
+        },
+        "replay_attempt01/commit_message.txt": {
+          "size": 245,
+          "sha256": "036eed8289ccf117361feaaf396a45b16eaa5566b5a9c2a3a360642aa35db514"
+        },
+        "replay_attempt01/correct_replay.py": {
+          "size": 10410,
+          "sha256": "71d4a61a41012027385873cd38862ce02b272bba72238650e050b8995be7c4ce"
+        },
+        "replay_attempt01/correction_before_execution.json": {
+          "size": 311,
+          "sha256": "be297e31d55d5fac93227c7ff69e6947a678209051c61f531c6f8effc6493a3e"
+        },
+        "replay_attempt01/decode_body.py": {
+          "size": 6113,
+          "sha256": "2c3f8dccdef090477bef0b32c07bb9292d0f70fb60b1d2b5dde0bfe703d60846"
+        },
+        "replay_attempt01/decoder_before_execution.json": {
+          "size": 446,
+          "sha256": "b21881a1d15b751a6e8511b97388d377011c9faa22e5354795a0222015a42e5e"
+        },
+        "replay_attempt01/decoder_first.command.json": {
+          "size": 909,
+          "sha256": "95b2984cfb504f62d897dac383ffec86aa712f2c6e7ac96a1e08ca749dca866a"
+        },
+        "replay_attempt01/decoder_first.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/decoder_first.stdout": {
+          "size": 594,
+          "sha256": "3509b518f1920619f0e32b8bd49489d95dcf26345847f834623619d0ed83e77d"
+        },
+        "replay_attempt01/diagnostic_before_execution.json": {
+          "size": 319,
+          "sha256": "50d10b0396b380965fae57f606470c045f54ac5ff64a29b12f980127db885d20"
+        },
+        "replay_attempt01/diagnostic_replay_receipt.json": {
+          "size": 844,
+          "sha256": "a410f71806febdd1e599976e5f3c7ae8eb5b092e71826524db4eb23a745d1516"
+        },
+        "replay_attempt01/failure_history.json": {
+          "size": 2557,
+          "sha256": "bd36a9256614314eb2d8ccec4fece139143ea69ae9e2f0fbd52befcd00397693"
+        },
+        "replay_attempt01/final_producers_before_execution.json": {
+          "size": 1277,
+          "sha256": "1555ed0e9dae98a80f4cc471cb5fade74ce904c670215ce7c976a0592f549c6e"
+        },
+        "replay_attempt01/finite_git.json": {
+          "size": 9482,
+          "sha256": "58d35ea2908b75a401e3e997e2bda8b55558a42558adef047f70fde34db0ea5f"
+        },
+        "replay_attempt01/handoff_pre_receipts.json": {
+          "size": 1940,
+          "sha256": "8e023e4ee84e00cbab331f5b52db8477ed0d90b4c7208db3720dd618c8639856"
+        },
+        "replay_attempt01/metadata_capture_manifest.json": {
+          "size": 136538,
+          "sha256": "43ffbe38829c8b9549a557d099443077f71e407ad6485cdabaf9b4aff8c499fe"
+        },
+        "replay_attempt01/outputs_first.command.json": {
+          "size": 913,
+          "sha256": "df857be9203daa09f23ae6134c16439d6457b8ff0d6ac0e75b920b6b00105b67"
+        },
+        "replay_attempt01/outputs_first.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/outputs_first.stdout": {
+          "size": 322,
+          "sha256": "6c4b247a27ae8989196d567b019efc26e83caf095ce3b928a54fe44f938f28e1"
+        },
+        "replay_attempt01/package_final.py": {
+          "size": 5340,
+          "sha256": "85d095a7be0179b645ecbffffc188bead042cc507c723a9863b7d78fca1759b4"
+        },
+        "replay_attempt01/package_first.command.json": {
+          "size": 914,
+          "sha256": "0c8a888a0c4b423ed7691c5e9355e3aa44effbe47bd0b85a432939f6c6a95270"
+        },
+        "replay_attempt01/package_first.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/package_first.stdout": {
+          "size": 1735,
+          "sha256": "f2d6aa6f37e0b117543be820efc49c7e9b9799d08c05abaf46bc7a7899c0c734"
+        },
+        "replay_attempt01/physical_decode.json": {
+          "size": 25319,
+          "sha256": "9b536bd42b1209b337c33d711732c283fa15c28cfb976f54a40790862876a107"
+        },
+        "replay_attempt01/physical_fields.py": {
+          "size": 4296,
+          "sha256": "ca42316594e81d1e41ad9ed114db1ecd764ddf8cf4b169c63608f386500902b4"
+        },
+        "replay_attempt01/prepare_before_execution.json": {
+          "size": 307,
+          "sha256": "e9b4ac44eb6b4b650bcd1168d72566d77a3c87946793daf8ef34be8e6c64a689"
+        },
+        "replay_attempt01/prepare_replay.py": {
+          "size": 9855,
+          "sha256": "4f44d58eaa270d77bdc002c5888fb90f2e715959ec459ad782e7f4475db2b662"
+        },
+        "replay_attempt01/prepare_replay_first.command.json": {
+          "size": 928,
+          "sha256": "01080869dea27cee30e64e57317086cde523b75751733bd9b42b9a52e81c7b11"
+        },
+        "replay_attempt01/prepare_replay_first.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/prepare_replay_first.stdout": {
+          "size": 92,
+          "sha256": "ef098916318184570cbb72107981e58809d9596295a06b232b9b22d7dc5b424e"
+        },
+        "replay_attempt01/preserve_attempt01.py": {
+          "size": 2352,
+          "sha256": "b2234f72912d54e14366f7c4ea165f40eaf09176f75c5598b27de4d3489cd893"
+        },
+        "replay_attempt01/producer_before_execution.json": {
+          "size": 713,
+          "sha256": "437881918db9106bd2fd5697d9284577b71344200240bb2cfb65912d651a53af"
+        },
+        "replay_attempt01/replay.py": {
+          "size": 28872,
+          "sha256": "1c36410a0caabc68bab1526d7a3e4b00279f5a57e35b05c593abb94fa8b5fa91"
+        },
+        "replay_attempt01/replay_diagnostic.command.json": {
+          "size": 2372,
+          "sha256": "e3636d1f28a67383742db681ff08d896557b3a42eb6afe1a5768b96c9898f128"
+        },
+        "replay_attempt01/replay_diagnostic.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/replay_diagnostic.stdout": {
+          "size": 303,
+          "sha256": "17fceebfe4fc368e35815b889c60923e9be65ea2d75c1d822df6a1dc90f2bc3e"
+        },
+        "replay_attempt01/replay_original.command.json": {
+          "size": 2322,
+          "sha256": "a64d0afe7d7ee830feb20e2998cf9819e4571dd0c7b4af544989c3d086e3856e"
+        },
+        "replay_attempt01/replay_original.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/replay_original.stdout": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "replay_attempt01/replay_tail.py": {
+          "size": 24574,
+          "sha256": "41578270fd9c497e1d96c1e094da83845c29a89b032003f6cc2d0b30ec9de513"
+        },
+        "replay_attempt01/Root_gate_copy_manifest.json": {
+          "size": 65301,
+          "sha256": "8f769669a9beb6a9a6e44577928d4b226053c4aab744f919f4eeca5a92594770"
+        },
+        "replay_attempt01/run_body.py": {
+          "size": 1027,
+          "sha256": "9028d2935c450279909f088af832e429cd6f604e5a5ebd10707f89427f51a8f5"
+        },
+        "replay_attempt01/run_capture.py": {
+          "size": 1041,
+          "sha256": "86bb29e00dae5eb4afa36618d73dd2071577cf237fb73fc42c379742f4c09084"
+        },
+        "replay_attempt01/run_correction.py": {
+          "size": 1033,
+          "sha256": "8f45adbe74cdbe27b2b4c118df6600069acd585df64f19deffe0f2a655d38527"
+        },
+        "replay_attempt01/run_decoder.py": {
+          "size": 1024,
+          "sha256": "32636fd673933a4533d29525c8e8ce71760bff9706578964890e7b9bda16a7ff"
+        },
+        "replay_attempt01/run_diagnostic.py": {
+          "size": 1611,
+          "sha256": "7066cf38f5b407857833ea27cdaa089202b83be8e280a198097d945ead51b16e"
+        },
+        "replay_attempt01/run_outputs.py": {
+          "size": 1026,
+          "sha256": "9e3770ca08af246f8b3777b9a2a8e503f7bd71c7f27881105e6058d100bdac70"
+        },
+        "replay_attempt01/run_package.py": {
+          "size": 1026,
+          "sha256": "5406564c99bb2c6fd89f880dce8fec20216fc40b8da497ada16cb83cb05aa272"
+        },
+        "replay_attempt01/run_prepare.py": {
+          "size": 1041,
+          "sha256": "11c3b1f37e14b2d86e32a32680400d759d4104df81cf1036bdcf201a3e4f4906"
+        },
+        "replay_attempt01/run_replays.py": {
+          "size": 1669,
+          "sha256": "ed30ad7355ba6a275dbc4c2e50817851a6957594e8068e95ef1700d7824f6d5b"
+        },
+        "replay_attempt01/whole_units.json": {
+          "size": 66771,
+          "sha256": "ae8fe70da68b19cfa946602f4c55e0c3212193c817b72d058d0a47671608bc67"
+        },
+        "replay_attempt01/write_outputs.py": {
+          "size": 14940,
+          "sha256": "dbce78d607a4e5a07f17c2540d765bf3a59b350219dab5c3f88c799be9ed547d"
+        },
+        "replay_attempt01/outputs/docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_BODY_METADATA.md": {
+          "size": 9943,
+          "sha256": "f72fed1b63e028440b9bb78f8fda4c74a2840d87ac0d711ceb458cbee0b44551"
+        },
+        "replay_attempt01/outputs/reports/cc12_findhandler_outbound_jump_target_body_metadata.json": {
+          "size": 79884,
+          "sha256": "fdb9070e03c0014cc3bc132c00dbeee053ac43ec3611c4427d39b5a145e9d482"
+        },
+        "replay_attempt01/failed_proof.zip": {
+          "size": 4828354,
+          "sha256": "3896ee7ba7a6c25d86a70365c7823ccf4f44e4a518f78830617bcb13d5e3caa3"
+        }
+      },
+      "Native_or_GPR_effects": 0,
+      "final_Git_strategy": "Amend only the worker-owned unpublished two-output commit, keeping its original frozen parent; retain the failed commit on its own explicit branch."
+    },
+    "worker_offline_Main_race": 1,
+    "worker_Native": 0,
+    "worker_decoder": 0,
+    "Root_offline_gate": 0,
+    "Root_offline_inspection": 1,
+    "Root_output_truncation": 1,
+    "current_worker_history": {
+      "worker_offline_capture_failures": 1,
+      "worker_Native_failures": 0,
+      "failure": "Main advanced after the worktree froze; an overstrict current-Main-equals-frozen assertion failed before any Native command.",
+      "frozen_worktree": "508e69254ec6fc2bab6b3a2f5c48b99068330ad8",
+      "Main_observed_after_freeze": "a8430e60ef99c3ea7269041e3476b0979b0f5d26",
+      "Native_commands_before_failure": 0,
+      "GPR_mutations": 0,
+      "first_attempt_producer": "attempt01/capture_metadata.py",
+      "preexecution_pin_preimage": "attempt01/producer_before_execution.json",
+      "original_local_subprocess_streams": "attempt01/captures/git_head.* and git_main.*; preserved unchanged by directory rename",
+      "collector_output": "attempt01/collector_tool_output.txt",
+      "collector_output_provenance": "Exact received exec tool output copied here; the initial top-level collector was not separately redirected to local stdout/stderr, and no such original separate local streams are claimed.",
+      "correction": "Continue from the actual Main revision frozen when the worktree was created; require the worktree HEAD to match and record any later Main revision separately.",
+      "attempt01_pins": {
+        "attempt01/capture_metadata.py": {
+          "size": 10314,
+          "sha256": "90abee41e615351967dd90e6e9c014e202ea501486d9b17061cb405365034d47"
+        },
+        "attempt01/captures/git_head.command.json": {
+          "size": 635,
+          "sha256": "234ca369209d106e7a3996b8858cfb5023c61cfaeb2a0efb55cc1bcefbcf4ff2"
+        },
+        "attempt01/captures/git_head.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "attempt01/captures/git_head.stdout": {
+          "size": 41,
+          "sha256": "f6cdb585c99b2a00fc59d739bc4bfd1b455ae7e877e77d8048d4b08e2e086ca4"
+        },
+        "attempt01/captures/git_main.command.json": {
+          "size": 737,
+          "sha256": "2aac12a0971307840808de1151ca48900127b248f60b71b7ed871100fc204aa6"
+        },
+        "attempt01/captures/git_main.stderr": {
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "attempt01/captures/git_main.stdout": {
+          "size": 41,
+          "sha256": "df70891fdab71481790cca1f7128911420d2738f0f35eb156ee37601aeed821b"
+        },
+        "attempt01/collector_tool_output.txt": {
+          "size": 499,
+          "sha256": "2da22c7eb1d41de1e381c39e1f85b0653711b1d9b8ff3e5355c2e1f72c59b051"
+        },
+        "attempt01/producer_before_execution.json": {
+          "size": 584,
+          "sha256": "8fd48a51b9b013697850084b8778ca6035e0a0fe5f8164279cc82c16961bb877"
+        }
+      }
+    },
+    "current_Root_history": {
+      "Root_offline_inspection_failures": 1,
+      "Root_output_truncations": 1,
+      "details": [
+        "Guessed whole_units units key raised KeyError; actual walks is list of lists",
+        "Follow-up schema display accidentally printed a full walk and was tool-truncated; no whole-walk conclusion relied on that display"
+      ],
+      "provenance": "Original combined tool outputs in conversation; no separate locally retained original streams claimed",
+      "Native_or_GPR_effects": 0
+    },
+    "accepted_entry_history_preserved_without_archive_recursion": {
+      "Root_gate": 2,
+      "Root_offline_inspection": 3,
+      "worker_Native": 0,
+      "worker_decoder": 0,
+      "Root_history": {
+        "inspection_failures": [
+          "FileNotFoundError guessed git/frozen.json; actual finite_git.json",
+          "KeyError guessed files; actual inputs",
+          "PowerShell quoting parser error; command not started"
+        ],
+        "gate_failures": [
+          "AST Request expected attribute but actual imported name",
+          "formatted positive doc searched for contiguous E97DFFFFFF"
+        ],
+        "attempt01_producer": "exact reconstruction from original tool-call code before correction",
+        "attempt01_streams": "complete original tool output in conversation; overwritten locally by attempt02, no separate local originals claimed",
+        "attempt02_streams": "complete actual original local stdout/stderr retained",
+        "Native_or_GPR_effects": 0
+      },
+      "attempt01_original_separate_local_streams_available": false,
+      "attempt01_producer_provenance": "Exact reconstruction from original tool-call code, as disclosed by Root; not claimed as an untouched original file.",
+      "attempt01_streams_limit": "Root reports the complete original first-failure tool output remains in the conversation. The separate local streams were overwritten by attempt02; no complete original separate local copies are claimed or synthesized here.",
+      "attempt02_streams": "Actual original local stdout/stderr copied unchanged.",
+      "effects": "Root offline errors caused no Native query or GPR mutation. Worker captures and decoder passed first execution. Any later replay failure is retained in its own attempt streams."
+    },
+    "accepted_entry_primary_failure_counts": {
+      "Root_actual_Git_archive_manual": 0,
+      "Root_strict_replay": 0,
+      "worker_Native_decoder_replay": 0
+    },
+    "message_arithmetic_correction": "Preliminary handoff said 173 HTTP responses; direct enumeration establishes 172. No capture changed, failed query, or extra Native query resulted.",
+    "proof_replay": "First strict process streams and receipts are retained beside the two proof ZIP files. Any failure must be retained and disclosed; a generated report alone does not establish replay success."
+  },
+  "evidence_pins": {
+    "finite_git.json": {
+      "size": 9482,
+      "sha256": "58d35ea2908b75a401e3e997e2bda8b55558a42558adef047f70fde34db0ea5f"
+    },
+    "metadata_capture_manifest.json": {
+      "size": 136538,
+      "sha256": "43ffbe38829c8b9549a557d099443077f71e407ad6485cdabaf9b4aff8c499fe"
+    },
+    "whole_units.json": {
+      "size": 66771,
+      "sha256": "ae8fe70da68b19cfa946602f4c55e0c3212193c817b72d058d0a47671608bc67"
+    },
+    "failure_history.json": {
+      "size": 2557,
+      "sha256": "bd36a9256614314eb2d8ccec4fece139143ea69ae9e2f0fbd52befcd00397693"
+    },
+    "Root_gate_copy_manifest.json": {
+      "size": 65301,
+      "sha256": "8f769669a9beb6a9a6e44577928d4b226053c4aab744f919f4eeca5a92594770"
+    },
+    "Root_gate/Root_listing_gate.py": {
+      "size": 10667,
+      "sha256": "019b8797484e1b955f3df492feea96ff7e9e09d4d516cd59301465ba8618e261"
+    },
+    "Root_gate/Root_listing_gate.json": {
+      "size": 16079,
+      "sha256": "f24e7c60036eac08870a146cb5e4b870bbab4cfce847e5436df932ee563c030f"
+    },
+    "Root_gate/Root_inspection_history.json": {
+      "size": 467,
+      "sha256": "80a87a19b9468153720c00835a0e24c538819b19ee9bcf7de15e00b7aa74ef9d"
+    },
+    "body_capture_manifest.json": {
+      "size": 25385,
+      "sha256": "a64418006bc7afa7a75e63d76c70f75b9a233055925f626ccd325bb6888a744b"
+    },
+    "physical_decode.json": {
+      "size": 25319,
+      "sha256": "9b536bd42b1209b337c33d711732c283fa15c28cfb976f54a40790862876a107"
+    },
+    "capstone_detail.json": {
+      "size": 11682,
+      "sha256": "ca9411711c81ea0bbf97ba4acc17c13a748e47c87e7fc5f63e4d965ad73a8476"
+    },
+    "physical_fields.py": {
+      "size": 4296,
+      "sha256": "ca42316594e81d1e41ad9ed114db1ecd764ddf8cf4b169c63608f386500902b4"
+    },
+    "decode_body.py": {
+      "size": 6113,
+      "sha256": "2c3f8dccdef090477bef0b32c07bb9292d0f70fb60b1d2b5dde0bfe703d60846"
+    },
+    "replay.py": {
+      "size": 29985,
+      "sha256": "43e86212b960d583c134acc5253eff0500b068115d7fa46d5f42cc102a5ba59d"
+    },
+    "audit_replay.py": {
+      "size": 2727,
+      "sha256": "bdb93a8fc36e01313d9e56785e304e182a575fa95e0c0a27f942fcc3664a5521"
+    },
+    "package_final.py": {
+      "size": 5620,
+      "sha256": "bd220b040a268b70f0cfc5ee4d9e4e11ba4f58945454071221f61f2ea6ce4843"
+    },
+    "run_replays.py": {
+      "size": 1711,
+      "sha256": "ce358dfddf864faaea8ccb68f481a681a74fecf014835180a272bb4ccd0da666"
+    },
+    "final_producers_before_execution.json": {
+      "size": 1560,
+      "sha256": "7eb4c8e34b43008082c560182d3e7a5da9eeff0d6f862bc0612d17743d408bba"
+    },
+    "collector_attempt02.command.json": {
+      "size": 931,
+      "sha256": "c37e071009fd4549a90b37577b8216de317a5f8f8ae3d8b088e4d8a9827b9b45"
+    },
+    "body_collector.command.json": {
+      "size": 913,
+      "sha256": "501911912eeef1ebe07a929461ab01ecd8f1bb98922a145b413899caa69f10e6"
+    },
+    "decoder_first.command.json": {
+      "size": 909,
+      "sha256": "95b2984cfb504f62d897dac383ffec86aa712f2c6e7ac96a1e08ca749dca866a"
+    },
+    "replay_failure_history.json": {
+      "size": 12881,
+      "sha256": "5a1df0f3c6b80b4d658df5783e1e7795038b9d205c73792fcca66a0b26e04661"
+    }
+  },
+  "proof_delivery": {
+    "directory": "local/cc12_findhandler_outbound_jump_target_body_metadata",
+    "archives": [
+      "proof.final.zip",
+      "proof.final.copy.zip"
+    ],
+    "finite_actual_Git_objects": 20,
+    "positive_input_blobs": 8,
+    "owned_outputs": 2,
+    "strong_audit": "one supplied ZIP read, one exact reviewed helper exec, one exclusive receipt write; every other audit event denied and denied[] must remain empty",
+    "Capstone_under_audit": false,
+    "archive_contained_code_execution": false,
+    "Root_metadata_preimages": 385,
+    "Root_gate_artifacts": 391
+  },
+  "validation_boundary": {
+    "Source_changes": false,
+    "Source_census": false,
+    "GPR_writes": 0,
+    "build": false,
+    "fixture_execution": false,
+    "native_probe": false,
+    "Original_execution": false,
+    "game_validation": false,
+    "ABI_compatibility": false,
+    "OS_or_audio_runtime_credit": false,
+    "target_provider_cell_descriptor_or_prototype_queries": false,
+    "gap_classification": false,
+    "prior_archive_recursion": false
+  },
+  "next_scope": "No further scope is admitted. Each direct target, computed-call provider, data meaning, or unqueried cursor requires a separately bounded metadata-first gate."
+}
