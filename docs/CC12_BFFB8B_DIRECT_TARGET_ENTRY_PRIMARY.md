@@ -1,0 +1,9 @@
+# BFFB8B DIRECT TARGET ENTRY independent primary review
+
+Root independently decoded E8 27 56 00 00 at BFFB8B before fresh actual Capstone 5.0.7. Signed rel32 +22055 from encoded return BFFB90 reaches numeric C051B7. Detailed fields, operands, register and flag effects and groups agree. Renew actual current SS.B=1 at this CALL before using the ESP−4 stack formula. Callee execution and any returned state remain opaque; neither return site, remaining 14 owner bytes nor destination body/provider/prototype was queried.
+
+Root checked all 20 actual Git objects, ten working/LF/index identities, 262 final member pins and 63 original Root gate copies (55 preimages). Its distinct copied proof passed the strict replay first execution and its receipt is byte-identical to both worker receipts: one ZIP read, one exact helper-code execution, one exclusive receipt and zero denied events. Current failed-core archives are retained inert; no earlier accepted archive was opened or archived code executed.
+
+The worker retains one offline Git-dispatch failure, two recovery-only schema rejections and two display incidents. Root’s initial display incident remains separately pinned. Final review added one missing physical manifest lookup and one 41-token display omission, both followed by bounded complete checks. Root’s post-strict comparison used the wrong receipt fields after the actual strict replay had passed; original driver, preexecution pins and actual stdout/stderr are retained. A separate comparison of actual guard stdout and unchanged receipts passed, without rerunning the decoder, final review or strict replay.
+
+Only documentation and evidence reports changed. Source identities are unchanged; no new tests, build, probe, Ghidra mutation or game/OS/audio execution was performed. These conditional instruction contracts establish neither ABI/runtime validation nor completion of the overall reconstruction goal.
