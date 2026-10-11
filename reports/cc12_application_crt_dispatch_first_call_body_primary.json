@@ -1,0 +1,1739 @@
+{
+  "schema": 1,
+  "status": "reviewed_Native_full_body_conditional_operands",
+  "address": "00C0522E",
+  "worker_commit": "b98c3433b63671e3e109af311f1cdac1fe7af473",
+  "Native_epoch": 98,
+  "function_count": 64730,
+  "reviews": {
+    "Root_actual_review.json": {
+      "status": "PASS",
+      "worker_commit": "b98c3433b63671e3e109af311f1cdac1fe7af473",
+      "frozen_base": "184cf9919a6432c80de99b51a8345635ad2a4e94",
+      "actual_frozen_Git_objects": [
+        {
+          "kind": "commit",
+          "oid": "184cf9919a6432c80de99b51a8345635ad2a4e94"
+        },
+        {
+          "kind": "tree",
+          "oid": "960c98913d6979c37dfb83d18672749bcc5c125c"
+        },
+        {
+          "kind": "tree",
+          "oid": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+        },
+        {
+          "kind": "tree",
+          "oid": "09add3be594e63edcce6a16ec041ed965441e898"
+        },
+        {
+          "kind": "tree",
+          "oid": "5c48f48b9ba19ecca5d972dc03c8aba27a03f90f"
+        },
+        {
+          "kind": "tree",
+          "oid": "2eb46c92f4f638ee077a17c98d49b90e0f661c25"
+        },
+        {
+          "kind": "tree",
+          "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25"
+        },
+        {
+          "kind": "tree",
+          "oid": "fa269934679ee43da523f7bf9c369e4e27d83531"
+        }
+      ],
+      "actual_finite_inputs": [
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_ENTRY_PRIMARY.md",
+          "git_blob": "e497540849a6daff7c436f8d7c22d7bbce70a4dc"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_first_call_entry_primary.json",
+          "git_blob": "62a79424cbde603b8af0c51551428df29a9a6886"
+        },
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+          "git_blob": "d084d57a3ff8d79b9851e4a5c3d6353ce755873a"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+          "git_blob": "5a0a50da63d0892db965a23310d430a904374e26"
+        },
+        {
+          "path": "config/target.json",
+          "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+        },
+        {
+          "path": "tools/bsp.py",
+          "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c"
+        },
+        {
+          "path": "tools/ghidra_typed_flow.py",
+          "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619"
+        },
+        {
+          "path": "tools/ghidra_export.py",
+          "git_blob": "0056201883c1594d9267d2fcf4990385461f0857"
+        },
+        {
+          "path": "tools/branch_sync.py",
+          "git_blob": "f73dbc623c26495daff4c94da0e5b74388eb0cc2"
+        },
+        {
+          "path": "tools/coordination.py",
+          "git_blob": "c9b6a6788498b82373233afe3211002ed90ca4c1"
+        },
+        {
+          "path": "tools/ledger.py",
+          "git_blob": "1d037c9effea576092d60ce5b4d4783420a617f7"
+        },
+        {
+          "path": "tools/workspace.py",
+          "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604"
+        }
+      ],
+      "actual_outputs": [
+        {
+          "path": "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_BODY.md",
+          "mode": "100644",
+          "git_blob": "81327cdc1809f0a353d6d0af8c7e79ff996a826b",
+          "bytes": 4369,
+          "sha256": "6600058a364f14d40deafddac8beae431438cfab6567bd1c77fa4025d67231e8"
+        },
+        {
+          "path": "reports/cc12_application_crt_dispatch_first_call_body.json",
+          "mode": "100644",
+          "git_blob": "4b92d9c76cfb6f76bc58067783573447ab8a3586",
+          "bytes": 40021,
+          "sha256": "35e93512ae6a924fc4e49fa1c6f3cb90f0523d700908c69328b069dee6859932"
+        }
+      ],
+      "physical_helpers": [
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_body/capture_body.py",
+          "bytes": 4498,
+          "sha256": "ae4346adc556ed21fc84e6318663d60bd7fec56f7c28009cca77954ac5ea72ec"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_body/metadata_parser.py",
+          "bytes": 25019,
+          "sha256": "81104f6ef41f9f55c465b208e5eda4fa056e69e5f3a25ebbf70b3eac1953ca02"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_body/guard_replay.py",
+          "bytes": 2283,
+          "sha256": "aa1c45f08d4f1b384c5a3612003af932f08ff90f710449bb7cb8c692b6b495c8"
+        },
+        {
+          "path": "local/cc12_application_crt_dispatch_first_call_body/packet_tool.py",
+          "bytes": 23256,
+          "sha256": "beeb6d2412df1746c22ad41c1c1b1f031c5158497c7396bc57baa4dcc28570be"
+        }
+      ],
+      "Root_CRLF_only_variants": [
+        "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_ENTRY_PRIMARY.md",
+        "reports/cc12_application_crt_dispatch_first_call_entry_primary.json",
+        "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+        "reports/cc12_application_crt_dispatch_body_primary.json"
+      ],
+      "frozen_worker_Source_IDs": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Root_current_Source_IDs": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "current_Source_equality_claimed": false,
+      "new_Source_content_census": false,
+      "Original_FH3_ABI_activation_or_runtime_credit": false
+    },
+    "Root_listing_gate.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "function_count": 64730,
+      "typed_response_count": 48,
+      "all_24_raw_pairs_equal": true,
+      "qualified_units": [
+        {
+          "start": "00C0522E",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0522f"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0522f"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C0522F",
+          "length": 5,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05234"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05234"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c051b7"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c051b7"
+              }
+            ]
+          }
+        },
+        {
+          "start": "00C05234",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05236"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05236"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C05236",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05238"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05238"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C05238",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "CONDITIONAL_JUMP",
+              "is_call": false,
+              "is_jump": true,
+              "is_conditional": true,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "CONDITIONAL_JUMP",
+              "is_call": false,
+              "is_jump": true,
+              "is_conditional": true,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0523a"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0523a"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c05242"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c05242"
+              }
+            ]
+          }
+        },
+        {
+          "start": "00C0523A",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c0523c"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c0523c"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C0523C",
+          "length": 5,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05241"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05241"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00bfba09"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00bfba09"
+              }
+            ]
+          }
+        },
+        {
+          "start": "00C05241",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05242"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05242"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C05242",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05244"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05244"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C05244",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c05245"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c05245"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C05245",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        }
+      ],
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c0522e"
+        },
+        "name": "__getptd",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "24",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c0522e"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c05245"
+              },
+              "length": "24"
+            }
+          ]
+        }
+      },
+      "automatic_target_objects_opaque": true,
+      "raw_capture_pins": [
+        {
+          "path": "listing_before.json",
+          "bytes": 114710,
+          "sha256": "093f90d446bebe90c5b389445514e9a8a0aaef2b9404ee732cefba18c2e247f5"
+        },
+        {
+          "path": "listing_after.json",
+          "bytes": 114710,
+          "sha256": "c702edc0b18da55ad2fe204710cda39de603466e2ecada09feb009d33eb05e05"
+        }
+      ],
+      "next_admission": {
+        "code": "Only two exact24byte reads C0522E..C05245",
+        "texts": "Only contextzero11qualifiedstarts",
+        "required": "Fresh all24address/countbookends equal this gate; manual opcode/ModRM/relative + actual detailedCapstone + savedtexts",
+        "excluded": "No C051B7/BFBA09 callee bodies, literals/data/stack, prototype, decompile, disasm, GPR mutation, Source or runtime"
+      },
+      "Source_OR_ABI_runtime_credit": false
+    },
+    "Root_core_replay.json": {
+      "OriginalFH3_or_runtime_invocation": false,
+      "Root_listing_gate_sha256": "44fed27a9c912d097c8b035a48368c187a9fc2ce61ca24ca077a0d500325aa8a",
+      "Source_content_census": false,
+      "automatic_target_function_fields_credited": [],
+      "body": {
+        "capstone_execution": {
+          "base_address": "00C0522E",
+          "binding_version": "5.0.7",
+          "code_sha256": "cde242ec079bf21854f59956d9ccd96cada3bce642173044e6c8c16fc11ee0f1",
+          "library_version": [
+            5,
+            0,
+            1280
+          ],
+          "mode": "CS_ARCH_X86 / CS_MODE_32",
+          "tool_pins": [
+            {
+              "bytes": 43729,
+              "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+              "role": "python_binding",
+              "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+            },
+            {
+              "bytes": 7572480,
+              "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+              "role": "native_decoder_library",
+              "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+            }
+          ]
+        },
+        "code_bytes_per_read": 24,
+        "code_hex": "56 E8 83 FF FF FF 8B F0 85 F6 75 08 6A 10 E8 C8 67 FF FF 59 8B C6 5E C3",
+        "code_read_count": 2,
+        "code_reads_equal": true,
+        "code_sha256": "cde242ec079bf21854f59956d9ccd96cada3bce642173044e6c8c16fc11ee0f1",
+        "context_neighbors_returned": 0,
+        "external_targets_followed": false,
+        "guarded_replay_limit": "The pure replay independently decodes exact opcodes/ModRM/relative fields and checks retained Capstone operands; it does not load Capstone.",
+        "instruction_count": 11,
+        "instructions": [
+          {
+            "address": "00C0522E",
+            "bytes_hex": "56",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00C0522F",
+            "bytes_hex": "E8 83 FF FF FF",
+            "mnemonic": "call",
+            "operands": [
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 12603831
+              }
+            ],
+            "size": 5
+          },
+          {
+            "address": "00C05234",
+            "bytes_hex": "8B F0",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00C05236",
+            "bytes_hex": "85 F6",
+            "mnemonic": "test",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00C05238",
+            "bytes_hex": "75 08",
+            "mnemonic": "jne",
+            "operands": [
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 12603970
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00C0523A",
+            "bytes_hex": "6A 10",
+            "mnemonic": "push",
+            "operands": [
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 16
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00C0523C",
+            "bytes_hex": "E8 C8 67 FF FF",
+            "mnemonic": "call",
+            "operands": [
+              {
+                "kind": "immediate",
+                "size": 4,
+                "value": 12565001
+              }
+            ],
+            "size": 5
+          },
+          {
+            "address": "00C05241",
+            "bytes_hex": "59",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "ecx",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00C05242",
+            "bytes_hex": "8B C6",
+            "mnemonic": "mov",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "eax",
+                "size": 4
+              },
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 2
+          },
+          {
+            "address": "00C05244",
+            "bytes_hex": "5E",
+            "mnemonic": "pop",
+            "operands": [
+              {
+                "kind": "register",
+                "name": "esi",
+                "size": 4
+              }
+            ],
+            "size": 1
+          },
+          {
+            "address": "00C05245",
+            "bytes_hex": "C3",
+            "mnemonic": "ret",
+            "operands": [],
+            "size": 1
+          }
+        ],
+        "manual_capstone_saved_texts_agree": true,
+        "status": "PASS"
+      },
+      "body_of_external_callee_followed": false,
+      "callee_ABI_or_TLS_semantics_authenticated": false,
+      "counts": {
+        "code_reads": 2,
+        "count_calls": 7,
+        "text_queries": 1,
+        "typed_cli_requests": 4,
+        "typed_response_count": 96
+      },
+      "data_or_stack_bytes_read": 0,
+      "epoch": 98,
+      "exact_physical_helper_count": 4,
+      "failed_Native_capture_count": 0,
+      "four_complete_24_address_passes_raw_equal": true,
+      "frozen_head": "184cf9919a6432c80de99b51a8345635ad2a4e94",
+      "frozen_worker_Source_subtree_identities": {
+        "include": "09add3be594e63edcce6a16ec041ed965441e898",
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+      },
+      "function_count": 64730,
+      "git_object_count": 8,
+      "member_count": 76,
+      "metadata": {
+        "all_internal_jump_targets_are_qualified_starts": true,
+        "computed_call_sites": [],
+        "direct_call_site_addresses_only": [
+          {
+            "site": "00C0522F",
+            "target_address": "00C051B7"
+          },
+          {
+            "site": "00C0523C",
+            "target_address": "00BFBA09"
+          }
+        ],
+        "flow_counts": {
+          "CONDITIONAL_JUMP": 1,
+          "FALL_THROUGH": 7,
+          "TERMINATOR": 1,
+          "UNCONDITIONAL_CALL": 2
+        },
+        "opaque_automatic_target_objects": 2,
+        "per_byte": [
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 1,
+            "instruction_start": "00C0522E",
+            "query": "00C0522E",
+            "raw_sha256": "2a701d8a97e1a39712fd14fa0835bcb7f47103719330e92e6d0d029d360ff794"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0522F",
+            "query": "00C0522F",
+            "raw_sha256": "676fcf5d35123d94d64e9f7a1f5f2bff9d014479a22f38330b70d4d0c1259715"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0522F",
+            "query": "00C05230",
+            "raw_sha256": "0f47b8781f8d3f9706e5f03775bd78c57e8ac17a6fadb52d1aaadd73eeb324ac"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0522F",
+            "query": "00C05231",
+            "raw_sha256": "317588b3cead0a531ff63553b281617e7f7869dee5f072e80549580a6c3cb976"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0522F",
+            "query": "00C05232",
+            "raw_sha256": "fa1142cdcc8c6fe4cc08621d25588afb1f5bc085c716245c92d10217b681472f"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0522F",
+            "query": "00C05233",
+            "raw_sha256": "f0d139975102d48cbb49bc112e7218c643735aa164154ebd080e6a2b8d9a779a"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05234",
+            "query": "00C05234",
+            "raw_sha256": "f1b776be44c218e687c4c81dae390779eff2ac8a770832be9466a7e0e71f28b4"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05234",
+            "query": "00C05235",
+            "raw_sha256": "899d560a514df443129d23f6d092362372b5ebe9968aa74d4506f52af79dcb57"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05236",
+            "query": "00C05236",
+            "raw_sha256": "039a2f290ee79d9e7d8a4278a92678903ae2374eb2280a48371039814077b78a"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05236",
+            "query": "00C05237",
+            "raw_sha256": "87e55c8b170845706409bd6f7aaa00f97c39c9e63a329b972cabf345c44c8085"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05238",
+            "query": "00C05238",
+            "raw_sha256": "7a880faeade4bf3f78830fe6874916ba6a59bf6d277eb7205b9577bbc1660fce"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05238",
+            "query": "00C05239",
+            "raw_sha256": "ab5871888fc973fb228208f57e277f40e965aef7e41fb80d3a888d39b698d280"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C0523A",
+            "query": "00C0523A",
+            "raw_sha256": "dc70cda833e1acfed4ff118d048c47f999b0876d588b3070c5a7e70fe957c730"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C0523A",
+            "query": "00C0523B",
+            "raw_sha256": "d2b612a67d19edf037dccf7297145051e8d62f1a177ae9a5e15af24fda80c4e1"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0523C",
+            "query": "00C0523C",
+            "raw_sha256": "454515e339936a4459ee4ed6cb9c148a3b792e6ca2bf5b488734c84e6bea9c7a"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0523C",
+            "query": "00C0523D",
+            "raw_sha256": "8c22f6387407d6507cf7ed6c6afe7dca9eab28911f0f4c7404e8bb5d809370c3"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0523C",
+            "query": "00C0523E",
+            "raw_sha256": "c48c8689c45a02521207723c95ce053d4e21a5202230ba6c9feefebe3892ea0d"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0523C",
+            "query": "00C0523F",
+            "raw_sha256": "783da5acc2d305e2d74292918b7d409c0cb47d4cb4f55ec89913c9f21dc15a7f"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 5,
+            "instruction_start": "00C0523C",
+            "query": "00C05240",
+            "raw_sha256": "b4f099873d88caa1ce7457524625564e2efd5ea4d7c99df336ec2510050a025f"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 1,
+            "instruction_start": "00C05241",
+            "query": "00C05241",
+            "raw_sha256": "0bee30d107dfaa335fe159a16e003c4cac3124ec3ba5144e198f1e81eb76cb6f"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05242",
+            "query": "00C05242",
+            "raw_sha256": "8931515947186234925423657e5edf06caab75e9a38bd0b3381c484a7675a455"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 2,
+            "instruction_start": "00C05242",
+            "query": "00C05243",
+            "raw_sha256": "3d5909d6c5103c177ddcd6b5a7d96e214da636eb5928f2aa99eff669a7c1bd60"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 1,
+            "instruction_start": "00C05244",
+            "query": "00C05244",
+            "raw_sha256": "f8822570a3ca500488536256ed0e4f3e10892010e5fb1a28bb82bff3c07300df"
+          },
+          {
+            "function_owner": "00C0522E",
+            "instruction_length": 1,
+            "instruction_start": "00C05245",
+            "query": "00C05245",
+            "raw_sha256": "fe5b0233580c80fcc56594044845b23eaa03908e95d44b3b9115a9422e608048"
+          }
+        ],
+        "saved_function": {
+          "body": {
+            "address_count": "24",
+            "complete": true,
+            "range_count": 1,
+            "ranges": [
+              {
+                "end_inclusive": {
+                  "offset": "00c05245",
+                  "space": "ram"
+                },
+                "length": "24",
+                "start": {
+                  "offset": "00c0522e",
+                  "space": "ram"
+                }
+              }
+            ],
+            "returned_range_count": 1
+          },
+          "direct_thunk_target": null,
+          "entry": {
+            "offset": "00c0522e",
+            "space": "ram"
+          },
+          "is_thunk": false,
+          "name": "__getptd",
+          "no_return": false,
+          "thunk_target_recursive": false
+        },
+        "units": [
+          {
+            "end_inclusive": "00C0522E",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c0522f",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c0522f",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00C0522E"
+          },
+          {
+            "end_inclusive": "00C05233",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05234",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "default_targets": [
+                {
+                  "offset": "00c051b7",
+                  "space": "ram"
+                }
+              ],
+              "effective_fallthrough": {
+                "offset": "00c05234",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "effective_targets": [
+                {
+                  "offset": "00c051b7",
+                  "space": "ram"
+                }
+              ],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 5,
+            "start": "00C0522F"
+          },
+          {
+            "end_inclusive": "00C05235",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05236",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c05236",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00C05234"
+          },
+          {
+            "end_inclusive": "00C05237",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05238",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c05238",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00C05236"
+          },
+          {
+            "end_inclusive": "00C05239",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c0523a",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": true,
+                "is_jump": true,
+                "is_terminal": false,
+                "name": "CONDITIONAL_JUMP"
+              },
+              "default_targets": [
+                {
+                  "offset": "00c05242",
+                  "space": "ram"
+                }
+              ],
+              "effective_fallthrough": {
+                "offset": "00c0523a",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": true,
+                "is_jump": true,
+                "is_terminal": false,
+                "name": "CONDITIONAL_JUMP"
+              },
+              "effective_targets": [
+                {
+                  "offset": "00c05242",
+                  "space": "ram"
+                }
+              ],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00C05238"
+          },
+          {
+            "end_inclusive": "00C0523B",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c0523c",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c0523c",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00C0523A"
+          },
+          {
+            "end_inclusive": "00C05240",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05241",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "default_targets": [
+                {
+                  "offset": "00bfba09",
+                  "space": "ram"
+                }
+              ],
+              "effective_fallthrough": {
+                "offset": "00c05241",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": true,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "UNCONDITIONAL_CALL"
+              },
+              "effective_targets": [
+                {
+                  "offset": "00bfba09",
+                  "space": "ram"
+                }
+              ],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 5,
+            "start": "00C0523C"
+          },
+          {
+            "end_inclusive": "00C05241",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05242",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c05242",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00C05241"
+          },
+          {
+            "end_inclusive": "00C05243",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05244",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c05244",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 2,
+            "start": "00C05242"
+          },
+          {
+            "end_inclusive": "00C05244",
+            "flow": {
+              "default_fallthrough": {
+                "offset": "00c05245",
+                "space": "ram"
+              },
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "default_targets": [],
+              "effective_fallthrough": {
+                "offset": "00c05245",
+                "space": "ram"
+              },
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": false,
+                "name": "FALL_THROUGH"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00C05244"
+          },
+          {
+            "end_inclusive": "00C05245",
+            "flow": {
+              "default_fallthrough": null,
+              "default_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": true,
+                "name": "TERMINATOR"
+              },
+              "default_targets": [],
+              "effective_fallthrough": null,
+              "effective_flow": {
+                "is_call": false,
+                "is_computed": false,
+                "is_conditional": false,
+                "is_jump": false,
+                "is_terminal": true,
+                "name": "TERMINATOR"
+              },
+              "effective_targets": [],
+              "fallthrough_overridden": false,
+              "flow_override": "NONE"
+            },
+            "length": 1,
+            "start": "00C05245"
+          }
+        ]
+      },
+      "prerequisite_input_count": 12,
+      "prototype_or_decompile_queries": 0,
+      "status": "PASS"
+    },
+    "Root_guard_receipt.json": {
+      "status": "PASS",
+      "only_supplied_ZIP_read": true,
+      "reads": 1,
+      "post_preload_imports": false,
+      "directory_process_network_dynamic_library_or_mutations": false
+    },
+    "Root_operand_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "function_count": 64730,
+      "code_bytes": 24,
+      "instructions": 11,
+      "code_sha256": "cde242ec079bf21854f59956d9ccd96cada3bce642173044e6c8c16fc11ee0f1",
+      "Root_manual_opcode_ModRM_relative_operands_equal": true,
+      "Root_Capstone_version": "5.0.7",
+      "Root_Capstone_actual_execution": true,
+      "detailed_operands_equal": true,
+      "saved_context_zero_texts": 11,
+      "text_queries_retained": 1,
+      "saved_text_operands_validated_by_reexecuted_pinned_parser": true,
+      "manual_rows": [
+        {
+          "address": "00C0522E",
+          "size": 1,
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C0522F",
+          "size": 5,
+          "bytes_hex": "E8 83 FF FF FF",
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "immediate",
+              "value": 12603831,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05234",
+          "size": 2,
+          "bytes_hex": "8B F0",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            },
+            {
+              "kind": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05236",
+          "size": 2,
+          "bytes_hex": "85 F6",
+          "mnemonic": "test",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            },
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05238",
+          "size": 2,
+          "bytes_hex": "75 08",
+          "mnemonic": "jne",
+          "operands": [
+            {
+              "kind": "immediate",
+              "value": 12603970,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C0523A",
+          "size": 2,
+          "bytes_hex": "6A 10",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "immediate",
+              "value": 16,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C0523C",
+          "size": 5,
+          "bytes_hex": "E8 C8 67 FF FF",
+          "mnemonic": "call",
+          "operands": [
+            {
+              "kind": "immediate",
+              "value": 12565001,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05241",
+          "size": 1,
+          "bytes_hex": "59",
+          "mnemonic": "pop",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "ecx",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05242",
+          "size": 2,
+          "bytes_hex": "8B C6",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05244",
+          "size": 1,
+          "bytes_hex": "5E",
+          "mnemonic": "pop",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C05245",
+          "size": 1,
+          "bytes_hex": "C3",
+          "mnemonic": "ret",
+          "operands": []
+        }
+      ],
+      "call_site_targets_only": [
+        "00C0522F->00C051B7",
+        "00C0523C->00BFBA09"
+      ],
+      "computed_call": null,
+      "all_external_return_registers_flags_memory_unknown": true,
+      "Original_FH3_frame_or_callee_ABI_or_runtime_credit": false
+    }
+  },
+  "conditional_contract": {
+    "entry": "ESP=T, ESI=U",
+    "first_call": "PUSH saves U atSS:[T-4]; CALL C051B7 atC0522F pushes C05234 atSS:[T-8]",
+    "first_return": "ESP=Q1, EBP=B1, EAX=A1, all registers/flags/memory unknown",
+    "first_local": "MOV ESI,EAX sets ESI=A1; TEST EAX,EAX selects branch",
+    "nonzero": "MOV EAX,ESI gives A1; POP ESI reads M1[Q1]; RET consumes M1[Q1+4]; final ESP=Q1+8 if complete",
+    "zero": "PUSH literal16 atSS:[Q1-4]; CALL BFBA09 atC0523C pushesC05241 atSS:[Q1-8]",
+    "second_return": "ESP=Q2, EBP=B2, EAX=A2, ESI=I2 and all registers/flags/memory unknown",
+    "second_suffix": "POP ECX reads M2[Q2]; MOV EAX,ESI gives I2; POP ESI reads M2[Q2+4]; RET consumes M2[Q2+8]; final ESP=Q2+12 if complete",
+    "conditional_restoration": "Requires Q1=T-4 and if selected Q2=Q1-4, plus intact saved ESI/return words; no own EBP restore exists",
+    "saved_getptd_TLS_termination_or_callee_ABI_authenticated": false
+  },
+  "proofs": {
+    "evidence.zip": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/evidence.zip",
+      "bytes": 562832,
+      "sha256": "eb8eac058d0691596e3dbc81215338ba38a56165991f0abb6d499e8f90da987b"
+    },
+    "manifest.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/manifest.json",
+      "bytes": 13196,
+      "sha256": "182a5bc8559e4e69f0e319e918f0b309ec82bc2a0ae053f0c24f56333f3bbc3e"
+    },
+    "seal.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/seal.json",
+      "bytes": 28713,
+      "sha256": "cc645ced0364284c1ab0a12fe3e0f448d308fc3b8405731a087330bbfb7e0388"
+    },
+    "final_git_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/final_git_receipt.json",
+      "bytes": 3720,
+      "sha256": "e0ef379d6cea5e42a158c3f467d68f3f63bfbb0795edfb4a94d5750ce67b1c41"
+    },
+    "staged_git_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/staged_git_receipt.json",
+      "bytes": 3840,
+      "sha256": "1e2fb4e40c2a5a5017d1773e9456a7752f66f9dc2b3089c241b51cc926e75869"
+    },
+    "Root_actual_review.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_actual_review.json",
+      "bytes": 4740,
+      "sha256": "ffa350de402ccd13c98d71d28d6ccc6d38e09a8d05416260b07f454c72d1e935"
+    },
+    "Root_listing_gate.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_listing_gate.json",
+      "bytes": 12241,
+      "sha256": "44fed27a9c912d097c8b035a48368c187a9fc2ce61ca24ca077a0d500325aa8a"
+    },
+    "Root_core_replay.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_core_replay.json",
+      "bytes": 16216,
+      "sha256": "16a0a563dc734eeb4e02a63bba15c266e8ac4872ccef381c135c80e5234a301a"
+    },
+    "Root_guard_receipt.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_guard_receipt.json",
+      "bytes": 160,
+      "sha256": "677181b2cec1ad91e364b41c4990404a6426e43c705e8cc89b9f15fe1a232f70"
+    },
+    "Root_operand_review.json": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_operand_review.json",
+      "bytes": 3736,
+      "sha256": "f48734de370b20488ee506a5b222a8c786588e62650ccbbebdc8c0f449c07f60"
+    },
+    "Root_exact_code.bin": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Root_exact_code.bin",
+      "bytes": 24,
+      "sha256": "cde242ec079bf21854f59956d9ccd96cada3bce642173044e6c8c16fc11ee0f1"
+    },
+    "Tools/capture_body.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Tools/capture_body.py",
+      "bytes": 4498,
+      "sha256": "ae4346adc556ed21fc84e6318663d60bd7fec56f7c28009cca77954ac5ea72ec"
+    },
+    "Tools/metadata_parser.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Tools/metadata_parser.py",
+      "bytes": 25019,
+      "sha256": "81104f6ef41f9f55c465b208e5eda4fa056e69e5f3a25ebbf70b3eac1953ca02"
+    },
+    "Tools/guard_replay.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Tools/guard_replay.py",
+      "bytes": 2283,
+      "sha256": "aa1c45f08d4f1b384c5a3612003af932f08ff90f710449bb7cb8c692b6b495c8"
+    },
+    "Tools/packet_tool.py": {
+      "path": "local/cc12_application_crt_dispatch_first_call_body_primary/Tools/packet_tool.py",
+      "bytes": 23256,
+      "sha256": "beeb6d2412df1746c22ad41c1c1b1f031c5158497c7396bc57baa4dcc28570be"
+    }
+  },
+  "qualification": "Saved __getptd name and original signature remain metadata; no external target bodies/data/stack, TLS, returned-state ABI, termination, Original FH3, Source activation or runtime/gameplay authentication"
+}
