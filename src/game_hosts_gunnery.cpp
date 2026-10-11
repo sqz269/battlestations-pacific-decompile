@@ -519,7 +519,7 @@ constexpr bool kAaLineOfFireBound = true;
 //    are 00729560, 00729600 and 0072F6E0), so only the draw itself matters: ON
 //    takes it (Draw::line_of_fire_ttl, key (gun, target)). OFF: no draw.
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
-constexpr bool kAaLineOfFireExpiryDrawBound = false;
+constexpr bool kAaLineOfFireExpiryDrawBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
 //  * kTailGunnerNoArmourTestBound: packet cc9_g35_friendly_fire. 0072C6A0 gives
 //    a kind-1 gun with an ancestor of kind 0Fh (a plane) the TailGunnerBot
 //    (008FE9F0, vtable 00D18140), whose slot 1Ch 008FBF70 is 0085A9A0 then the
@@ -527,7 +527,7 @@ constexpr bool kAaLineOfFireExpiryDrawBound = false;
 //    keeps it. ON: a plane-owned kind-1 gun skips the armour term. OFF: the
 //    refusals that would be lifted are counted (armour_rejects_tail).
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
-constexpr bool kTailGunnerNoArmourTestBound = false;
+constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
