@@ -1,0 +1,23 @@
+{
+  "packet": "cc13_water1",
+  "doc": "docs/CC13_WATER_RENDER.md",
+  "call_sites": [
+    {"address": "0078d19d", "native": "00ba0090", "function": "0078cff0", "note": "ECX = [world+A8h]; ocean per-frame update"},
+    {"address": "0078d02c", "native": "00ba2ff0", "function": "0078cff0", "note": "beam system update"},
+    {"address": "0078d00d", "native": "00ba40f0", "function": "0078cff0", "note": "water particle update"},
+    {"address": "00ba0b2d", "native": "00b9cb80", "function": "00ba0090"},
+    {"address": "00ba0b70", "native": "00ba70f0", "function": "00ba0090"},
+    {"address": "00ba0b83", "native": "00ba8ee0", "function": "00ba0090"},
+    {"address": "00ba0b8b", "native": "00b9f0a0", "function": "00ba0090"},
+    {"address": "00ba0bb0", "native": "00b9ab60", "function": "00ba0090"},
+    {"address": "00b99cde", "native": "00b62d10", "function": "00b99c80"},
+    {"address": "00b99d14", "native": "00b62d10", "function": "00b99c80"},
+    {"address": "00b99c34", "native": "00b62d10", "function": "00b99bf0"},
+    {"address": "00880029", "native": "00bb0a90", "function": "00880000", "note": "landscape+3D4h, null-checked"},
+    {"address": "00880046", "native": "00baec50", "function": "00880000", "note": "landscape+3D8h, null-checked"},
+    {"address": "008830aa", "native": "00ba1370", "function": "00882ac0"},
+    {"address": "0086df76", "native": "00badc70", "function": "0086d180"},
+    {"address": "0086e504", "native": "00bae2e0", "function": "0086d180"},
+    {"address": "00ba3275", "native": "00ba2c20", "function": "00ba2ff0", "note": "ECX = 00E130C0 private Mersenne state"}
+  ]
+}
