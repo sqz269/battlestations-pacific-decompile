@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace bsp {
@@ -282,6 +283,245 @@ struct SessionBrowserCommandBarView {
 // Returns false when the original returns without rebuilding (no list focused, +50h and +51h clear).
 bool session_browser_command_bar_0056e3e0(const SessionBrowserCommandBarView& view,
     std::array<MainMenuCommandArgument, 5>& arguments);
+
+// ---------------------------------------------------------------------------
+// Session browser join path (packet cc13-menus5): JoinSession 0057A9C0, FinishJoin 0057AC10,
+// the joinable test 00574100 and the content-mask test 00568490. Reconstructed only; the
+// multiplayer session layer is not wired.
+// ---------------------------------------------------------------------------
+
+inline constexpr float kSessionJoinRetryTimerReset = -1.0F;  // 00D7A260 -> 00E08760
+inline constexpr std::int8_t kSessionRecordKindOnline = -1;  // record+04h == 0FFh
+inline constexpr std::int32_t kSessionJoinNetworkMode = 2;   // game+1FE4h and 0076FAD0(2)
+inline constexpr std::int32_t kSessionClientModeJoining = 6; // *(game+207Ch)+9Ch
+inline constexpr std::int32_t kSessionClientModeJoined = 7;
+inline constexpr std::int32_t kRequestNoSessionFound = 0x10;  // 00688AD0(10h) from FinishJoin
+inline constexpr std::int32_t kRequestJoinFailed = 0x1B;      // 00688AD0(1Bh) from JoinSession
+inline constexpr std::int32_t kErrorScreenJoinFailed = 4;     // 005D2E70(4)
+
+// The 3Ch-byte block at *(game+207Ch)+96Ch (cNetworkClient = +C8h, so client +8A4h, the
+// pSessionInfo argument 00A39B80 passes to XSessionCreate). The layout matches the Xbox 360
+// XSESSION_INFO: sessionID +0h, hostAddress (XNADDR, 24h bytes) +8h, keyExchangeKey +2Ch.
+struct SessionInfoBlock {
+    std::array<std::uint32_t, 2> session_id{};       // +96Ch, +970h
+    std::array<std::uint32_t, 9> host_address{};     // +974h..+997h
+    std::array<std::uint32_t, 4> key_exchange_key{}; // +998h..+9A7h
+};
+
+// The 88h-byte object at *(record+00h), as copied by 00568CE0 (vtable 00CEED04): +04h the
+// session id, +0Ch the key, +1Ch the host address; +40h (10 dwords) and +68h (8 dwords) are
+// copied but not read by the join.
+struct SessionSearchResultView {
+    std::array<std::uint32_t, 2> session_id_04{};
+    std::array<std::uint32_t, 4> key_0c{};
+    std::array<std::uint32_t, 9> host_address_1c{};
+};
+
+// One 0A0h-byte session record, the fields the join path reads.
+struct SessionJoinRecord {
+    std::uint32_t key_00{};          // record+00h, the search-result pointer; the tried-set key
+    SessionSearchResultView result;  // *(record+00h), read only when kind_04 == -1
+    std::int8_t kind_04{};           // record+04h: -1 online result, else a listed-server index
+    std::wstring name_08;            // record+08h (buffer +0Ch, capacity +20h, inline below 8)
+    std::int32_t open_slots_24{};    // record+24h, must be > 0
+    std::uint32_t players_28{};      // record+28h, must be below +2Ch (unsigned)
+    std::uint32_t max_players_2c{};  // record+2Ch
+    std::uint32_t field_30{};        // record+30h, rejected by filter byte +17h above screen+24Ch
+    std::uint32_t field_34{};        // record+34h, sort key 4 (descending)
+    std::int32_t connection_38{};    // record+38h, compared with the five ping thresholds
+    std::uint8_t rank_min_48{};      // record+48h
+    std::uint8_t rank_max_49{};      // record+49h
+    std::array<std::uint32_t, 14> lobby_options_4c{};  // record+4Ch, handed to 005D49E0
+    std::uint32_t required_mask_88{};  // record+88h, tested against game+728h
+    std::uint32_t required_mask_8c{};  // record+8Ch, tested against game+72Ch
+    std::uint32_t ratio_den_90{};    // record+90h, filter byte +18h: +94h / +90h
+    std::uint32_t ratio_num_94{};    // record+94h
+};
+
+struct SessionJoinHost {
+    virtual ~SessionJoinHost() = default;
+    // Session client *(00F8A2FC).
+    virtual void session_cancel_8c() = 0;                          // vtable +8Ch
+    virtual const std::vector<SessionJoinRecord>& client_results_94() = 0;  // vtable +94h, vector +4h/+8h
+    virtual bool client_byte_4d() = 0;                             // client+4Dh
+    // Game *(00E188A8).
+    virtual std::int32_t network_mode_1fe4() = 0;                  // game+1FE4h
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0; // ECX = game+1EF0h
+    virtual void select_listed_server_007701f0(std::int32_t index) = 0;  // ECX = game+1EF0h
+    virtual std::int32_t client_mode_9c() = 0;                     // *(game+207Ch)+9Ch
+    virtual void set_client_mode_9c(std::int32_t mode) = 0;
+    virtual SessionInfoBlock& client_session_info_96c() = 0;       // *(game+207Ch)+96Ch
+    virtual void network_client_connect_00a39b80() = 0;            // ECX = *(game+207Ch)+C8h
+    virtual void set_game_byte_2059(bool value) = 0;
+    virtual std::uint32_t content_mask_728() = 0;                  // game+728h
+    virtual std::uint32_t content_mask_72c() = 0;                  // game+72Ch
+    virtual std::uint8_t profile_rank_00574050() = 0;              // "RANK" on game+650h
+    // Xenon system manager.
+    virtual bool has_selected_user() = 0;                          // BSP_XenonSystemManager_HasSelectedUser
+    virtual std::string selected_username() = 0;                   // BSP_XenonSystemManager_GetSelectedUsername
+    // Globals and front-end managers.
+    virtual void copy_stored_lobby_options_005d49e0(const std::array<std::uint32_t, 14>& options) = 0;
+    virtual void lua_set_global_string(std::string_view name, const std::string& value) = 0;  // 00B67630
+    virtual bool search_flag_e08700() = 0;
+    virtual void set_join_retry_timer_e08760(float value) = 0;
+    virtual void set_global_e19610(std::int32_t value) = 0;
+    virtual std::int32_t request_count_006878d0() = 0;             // ECX = *(00E198B4)
+    virtual void pop_request_interface_006881f0() = 0;
+    virtual void push_request_interface_logged_00688ad0(std::int32_t id) = 0;
+    virtual void error_screen_show_005d2e70(std::int32_t kind) = 0;  // ECX = *(*(00E198B4)+50h)
+    virtual void set_page_0057a0f0(std::int32_t page) = 0;         // session_browser_set_page_0057a0f0
+};
+
+// The screen fields the join path owns besides SessionBrowserState: the tried-session set
+// (std::set<record key>, header +27Ch, size +280h). JoinSession stores the joined key in +24h
+// (SessionBrowserState::field_24).
+struct SessionJoinState {
+    std::vector<std::uint32_t> tried_keys_278;  // kept sorted, unique (the original is a red-black tree)
+};
+
+// 00568490: __thiscall(record), RET.
+bool session_record_content_allowed_00568490(const SessionJoinRecord& record, SessionJoinHost& host);
+// 00574100: __thiscall(record), RET; SEH 00C6F1B9.
+bool session_record_joinable_00574100(const SessionJoinRecord& record, SessionJoinHost& host);
+// 00568CE0 subset: the XSESSION_INFO fields JoinSession copies out of the 00568CE0 object.
+SessionInfoBlock session_info_from_search_result(const SessionSearchResultView& result);
+// 0057A9C0: __thiscall(screen, record, arg), RET 8; the second argument is never read.
+void session_browser_join_session_0057a9c0(SessionBrowserState& screen, const SessionJoinRecord& record,
+    SessionJoinHost& host);
+// 0057AC10: __thiscall(screen), RET; no SEH frame.
+void session_browser_finish_join_0057ac10(SessionBrowserState& screen, SessionJoinState& join,
+    SessionJoinHost& host);
+
+// ---------------------------------------------------------------------------
+// Session browser rows (packet cc13-menus5)
+// ---------------------------------------------------------------------------
+
+using GuiColour = std::array<float, 4>;
+inline constexpr GuiColour kSessionRowJoinable{0.976471F, 0.858824F, 0.6F, 1.0F};  // 00CEF16C, 00CEF168, 00CE3D30, 00D7A24C
+inline constexpr GuiColour kSessionRowLocked{1.0F, 0.0F, 0.0F, 1.0F};   // static 00E19498 (guard 00E194A8 bit 0)
+inline constexpr GuiColour kSessionRowIdle{0.5F, 0.5F, 0.5F, 1.0F};     // static 00E19484 (guard 00E19494 bit 0)
+inline constexpr std::int32_t kLobbyOptionGameMode = 2;  // registry key handed to 00575E80 with record+54h
+
+// Widget handles are opaque pointer values from 00AA7E00 (find child by name, recursive flag 1).
+struct SessionRowHost {
+    virtual ~SessionRowHost() = default;
+    virtual std::int32_t network_mode_1fe4() = 0;                   // *(00E188A8)+1FE4h
+    virtual std::uint32_t content_mask_728() = 0;
+    virtual std::uint32_t content_mask_72c() = 0;
+    virtual const std::vector<SessionJoinRecord>& client_results_94() = 0;  // session client vtable +94h
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;
+    virtual void text_set_00abaed0(std::uintptr_t widget, const std::string& text) = 0;           // arg 0
+    virtual void text_set_ellipsized_00abb000(std::uintptr_t widget, const std::string& text, float width) = 0;  // arg 1
+    virtual void widget_set_colour_50(std::uintptr_t widget, const GuiColour& colour) = 0;       // vtable +50h
+    // 00576B10 registry, +10h map, 00575E80 find(kind, value), 005732C0 the entry's text.
+    virtual std::string lobby_option_text(std::int32_t kind, std::uint32_t value) = 0;
+    // Lobby option registry 00576B10 fields.
+    virtual std::int32_t ping_threshold_90(std::size_t index) = 0;  // registry+90h + 4*index, 0..4
+    virtual std::uint32_t ratio_minimum_b8() = 0;                   // registry+B8h
+    virtual float ratio_maximum_bc() = 0;                           // registry+BCh
+    virtual std::int32_t game_type_filter_e086c0() = 0;             // -1 = any
+    // Widgets (vtable slots of the GUI widget class).
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual void widget_set_state_88(std::uintptr_t widget, std::int32_t state, std::int32_t arg, float weight) = 0;
+    virtual bool widget_byte_85(std::uintptr_t widget) = 0;
+    virtual std::string widget_text_f4(std::uintptr_t widget) = 0;  // NativeString at widget+F4h
+    virtual std::uintptr_t clone_subtree_00aab4c0(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual void widget_set_floats_30(std::uintptr_t widget, float f30, float f34) = 0;  // plain stores
+    virtual void widget_set_byte_77(std::uintptr_t widget, bool value) = 0;
+    virtual void widget_virtual_80(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual void widget_focus_60(std::uintptr_t widget, bool value) = 0;
+    // Listbox 00A9xxxx runtime.
+    virtual std::uintptr_t list_selected_row_00425e50(std::uintptr_t list) = 0;
+    virtual void list_set_listener_00a9ac40(std::uintptr_t list, bool screen_plus_8) = 0;
+    virtual void list_clear_rows_00a9bec0(std::uintptr_t list) = 0;
+    virtual void list_append_row_00a9d750(std::uintptr_t list, std::uintptr_t row) = 0;  // (row, 0, 0)
+    virtual std::int32_t list_row_count_104(std::uintptr_t list) = 0;
+    virtual std::uintptr_t list_row_at_00a9be00(std::uintptr_t list, std::int32_t index) = 0;
+    virtual float group_height_00aa6740(std::uintptr_t widget) = 0;  // returned vector +4
+    virtual void scroller_attach_content_00683790(std::int32_t arg) = 0;  // ECX = screen+1E4h
+    virtual void scroller_set_scroll_range_006834a0(float range) = 0;     // ECX = screen+1E4h
+    virtual void refresh_row_details_00577650() = 0;
+};
+
+// Screen fields the row routines read or write (beyond SessionBrowserState).
+struct SessionRowState {
+    std::uintptr_t filter_panel_2c{};               // +2Ch (its byte +85h)
+    std::uintptr_t session_list_30{};               // +30h
+    float viewport_height_8c{};                      // +8Ch, subtracted from the content height
+    std::uintptr_t row_template_e8{};               // +E8h
+    std::array<std::uint32_t, 3> applied_counts_244{};  // +244h, +248h, +24Ch
+    std::uintptr_t selected_row_26c{};               // +26Ch
+    std::vector<SessionJoinRecord> results_290;      // +290h, the last client snapshot
+    std::vector<SessionJoinRecord> records_2a0;      // +2A0h, the filtered, sorted list
+    std::int32_t sort_key_2b0{};                     // +2B0h
+    std::array<std::uintptr_t, 4> sort_icons_2b4{};  // +2B4h keys 0, 1, 5, 4 (in that order)
+};
+
+// The six sort keys of 0056A870 (the record comparator; descending ones compare b < a).
+enum class SessionSortKey : std::int32_t {
+    Name = 0,           // _wcsicmp(a.name, b.name) < 0
+    GameMode = 1,       // a+54h < b+54h
+    MaxPlayers = 2,     // descending +2Ch
+    FreeSlots = 3,      // descending +2Ch - +28h
+    Field34 = 4,        // descending +34h
+    Fullness = 5,       // descending +2Ch * 16 + +28h
+    KeepCurrent = 6,    // 005789C0 only: keep +2B0h and refresh +290h from the client
+};
+// 00E1947C[key]: one reverse flag per sort key (bytes, toggled when the same key is chosen again).
+using SessionSortReverseFlags = std::array<bool, 6>;
+
+// 0056A870: __thiscall(key*, a, b), RET 8.
+bool session_record_less_0056a870(SessionSortKey key, const SessionJoinRecord& a, const SessionJoinRecord& b);
+// 00576BE0: __thiscall(screen, record), RET 4; the filter test 005789C0 applies to +290h.
+bool session_record_passes_filters_00576be0(const SessionBrowserState& filters, const SessionRowState& screen,
+    const SessionJoinRecord& record, SessionRowHost& host);
+// 00578320: __fastcall(ECX = Connection_Group widget, EDX = record+38h); SEH 00C6F4A8.
+void session_row_set_connection_icons_00578320(std::uintptr_t group, std::int32_t connection,
+    SessionRowHost& host);
+// 0056BDA0 BindLayout: loads the two browser pages and binds the widget fields of the 2D0h-byte
+// screen. Widgets are keyed by their screen offset; kLocal* keys are temporaries the original
+// keeps in registers.
+inline constexpr std::uint16_t kBindLocalCucc = 0xFFFF;         // EDI, cucc_Group
+inline constexpr std::uint16_t kBindLocalSliderPos = 0xFFFE;    // the twice-searched slider_pos_Group
+inline constexpr float kSessionListRowSpan = 0.47395834F;       // 00CEEED0 -> 00A9CEB0(value, 0)
+inline constexpr float kSessionListPad128 = 0.0069444445F;      // 00CEEECC -> list+128h
+inline constexpr float kSessionListPad130 = 0.0027777778F;      // 00CEE600 -> list+130h
+
+struct SessionBrowserLayoutHost {
+    virtual ~SessionBrowserLayoutHost() = default;
+    virtual std::uintptr_t load_page_00aa5840(std::string_view name) = 0;   // GUI manager 004C12B0, (name, 1, 0)
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual void set_listener_00aa6bc0(std::uintptr_t widget) = 0;           // (screen+0Ch, 0): +DCh, +79h
+    virtual float group_height_00aa6740(std::uintptr_t widget) = 0;          // returned vector +4
+    virtual void list_configure_00a9ceb0(std::uintptr_t list, float value, std::int32_t arg) = 0;
+    virtual void list_set_pads_128(std::uintptr_t list, float f128, float f12c, float f130, float f134) = 0;
+    virtual void list_set_byte_149(std::uintptr_t list, bool value) = 0;
+    virtual void scroller_attach_content_00683790(std::uint16_t scroller, std::uintptr_t content) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(std::uint16_t scroller, std::uintptr_t frame, float extent,
+        std::uintptr_t up, std::uintptr_t down) = 0;
+};
+
+struct SessionBrowserLayout {
+    std::vector<std::pair<std::uint16_t, std::uintptr_t>> widgets;  // (screen offset, widget), in bind order
+    float slider_back_height_90{};  // +90h
+    float clip_height_8c{};         // +8Ch
+    std::uintptr_t at(std::uint16_t offset) const noexcept {
+        for (const auto& [key, widget] : widgets) if (key == offset) return widget;
+        return 0;
+    }
+};
+
+// 0056BDA0: __thiscall(screen), RET; SEH 00C6E9E0. Slot +14h of vtable 00CEF134 (00CEF148).
+void session_browser_bind_layout_0056bda0(SessionBrowserLayout& layout, SessionBrowserLayoutHost& host);
+
+// 005789C0: __thiscall(screen, sort key), RET 4; SEH 00C6F5C0.
+void session_browser_build_rows_005789c0(const SessionBrowserState& filters, SessionRowState& screen,
+    SessionSortReverseFlags& reverse, std::int32_t sort_key, SessionRowHost& host);
+
+// 00576D20: __thiscall(screen), returns int (1 on one path, otherwise the colour virtual's
+// result; SetPage ignores it); SEH 00C6F43B.
+void session_browser_update_selected_row_00576d20(SessionRowState& screen, SessionRowHost& host);
 
 // ---------------------------------------------------------------------------
 // Credits screen (constructor 0052FCE0, primary vtable 00CED200)

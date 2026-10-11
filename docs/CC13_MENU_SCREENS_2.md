@@ -275,3 +275,62 @@ the two listener slots. Still open, in order:
 4. Credits enter 0052EE30, tactical library enter 00511F40 / update 005162B0, the free camera
    (0053DD90, 00540390; the camera conventions are in docs/CC13_CAMERA_CONTROLLERS.md, only cc9's
    hud_movie_camera.cpp is off-limits).
+## Session browser join path, rows and layout (cc13-menus5, 2026-10-11)
+
+Reconstructed and build-tested in `src/menu_screens_2.cpp` (none ran in `bsp_game`; the multiplayer
+session layer is reconstructed only, not wired). Call sites are in `reports/cc13_menu_screens_2.json`.
+
+| Address | Name (hypothesis) | ABI | Evidence |
+|---|---|---|---|
+| 0057A9C0 | JoinSession | `__thiscall(screen, record, arg)`, RET 8; arg never read | asm 0057A9C0..0057AC09; EDI = 2 from 0057AA92 is both the network mode and the SetPage argument at 0057ABEC |
+| 0057AC10 | FinishJoin | `__thiscall(screen)`, RET | asm; the tree clear is the inlined `_Tidy` loop (0057AE10..0057AE2C: 11 bytes at 0057AE23 Ghidra left undisassembled because `_free` is marked no-return; bytes `83 C4 04 80 7E 11 00 8B EE 74 E2`) |
+| 00574100 | BSP_SessionRecord_IsJoinable | `__thiscall(record)`, SEH 00C6F1B9 | decompile + asm: the two 00574050 calls take ECX = game+650h (the profile, "RANK" 00CEF15C) |
+| 00568490 | BSP_SessionRecord_HasRequiredContent | `__thiscall(record)` | decompile (two mask subsets) |
+| 00568CE0 | BSP_SessionSearchResult_CopyConstruct | `__thiscall(dst, src)`, RET 4 | decompile; vtable 00CEED04 |
+| 00A39B80 | BSP_NetworkClient_Connect | `__thiscall(client)` | string "cNetworkClient::Connect() --> XSessionCreate"; pSessionInfo = client+8A4h |
+| 007701F0 | BSP_Session_SelectListedServer | `__thiscall(game+1EF0h, index)`, RET 4 | decompile; provisional |
+| 006878D0 | BSP_InterfaceManager_RequestCount | `__thiscall(mgr)` | decompile (vector +5Ch size) |
+| 00576D20 | UpdateSelectedRow (was BuildRowsDefault) | `__thiscall(screen)`, SEH 00C6F43B | asm 00576D20..0057763D |
+| 005789C0 | BuildRows | `__thiscall(screen, sort key)`, RET 4, SEH 00C6F5C0 | asm 005789C0..00579972 |
+| 0056A870 | BSP_SessionRecord_LessBySortKey | `__thiscall(key*, a, b)`, RET 8 | decompile (jump table) |
+| 00576BE0 | RecordPassesFilters | `__thiscall(screen, record)`, RET 4 | decompile + x87 asm 00576CD2..00576D17 |
+| 00578320 | BSP_SessionBrowserRow_SetConnectionIcons | `__fastcall(group, value)`, SEH 00C6F4A8 | asm; JG at 0057837E hides the icon |
+| 0056BDA0 | BindLayout | `__thiscall(screen)`, slot +14h of 00CEF134 | asm; 17 listener calls (screen+0Ch, 0) |
+
+Findings:
+
+- The 3Ch-byte block JoinSession writes at `*(game+207Ch)+96Ch` is the client's `XSESSION_INFO`
+  (client = +C8h, so +8A4h, the pointer 00A39B80 hands to `XSessionCreate`): session id +96Ch, XNADDR
+  +974h..+997h (REP MOVSD of 9 dwords), key exchange key +998h..+9A7h. The source object (00568CE0)
+  keeps them at +04h, +1Ch and +0Ch.
+- Record layout additions (0A0h bytes): +08h wide session name (`std::wstring`, buffer +0Ch, capacity
+  +20h), +24h open slots (> 0), +28h players, +2Ch max players, +30h (filter byte +17h, upper bound
+  screen+24Ch), +34h (sort key 4), +38h connection value (ping icons), +48h/+49h rank range, +4Ch 14
+  lobby option indices (+54h = game mode, kind 2), +88h/+8Ch required content masks, +90h/+94h ratio.
+- `screen+278h` is a `std::set` of record keys (record+00h) already tried; FinishJoin inserts before
+  joining and clears it when no candidate is left. The poll 0057B530 clears the same set through
+  0056A090 (the host hook `clear_search_list_0056a090`).
+- 00576D20 is not a row builder: with exactly one client result it replaces the stored record with the
+  same session id (insert before + erase, leaving the 0A0h temporary from `operator new` unfreed in
+  the listing) and rewrites only row +26Ch; otherwise it greys that row (0.5, 0.5, 0.5, 1).
+- Row colours: joinable (249/255, 219/255, 0.6, 1) from 00CEF16C/00CEF168/00CE3D30; locked
+  (1, 0, 0, 1) static 00E19498.
+- Sort: `+2B0h` key, reverse flags 00E1947C[key] toggled when the same key is chosen again, header
+  icons +2B4h/+2B8h/+2BCh/+2C0h for keys 0/1/5/4 get state 3 (reversed) or 2 through widget +88h.
+- BuildRows reads the list's selected-row name and `_stricmp`s it per row, but the result is discarded
+  (00579817..00579835); only the +26Ch row name picks the new +26Ch.
+- BindLayout widget map: +2Ch filters page, +28h browser page, +EC menu_line_Group, +34h
+  Settings_Listbox, +128h servers_fix_Group, +38h servers_FrameBox, +4Ch noserver_Text, +84h
+  servers_Clipbox, +30h servers_Listbox, +E8h listbox1_Group (row template), +88h slider_pos_Group,
+  +118h slider_Group, +78h slider_FrameBox, +7Ch ScrollUp_Icon, +80h ScrollDown_Icon, +90h back_Icon
+  height, +8Ch clip height, +120h settings_Group, +40h settings_FrameBox, +48h setting_Clipbox, +124h
+  setting_template_Group, +A4h rank_Icon, +94h setting_Text, +98h setting_var_Text, +D0h
+  game_mode_var_Text, +A0h map_Icon, +9Ch tilt_Icon, +B8h/+B0h/+B4h settings scroll frame/down/up,
+  +114h filters_Group, +44h setting_Clipbox, +FCh textbox_Group, +100h moving_Group, +F4h/+F8h filter
+  row templates, +BCh/+A8h/+ACh filter scroll frame/down/up, +3Ch New_FrameBox. Scrollers: +1E4h
+  (content +30h), +188h (content +124h), +12Ch (content +100h).
+
+Uncertainty: the record fields +30h, +34h, +90h/+94h and the registry +B8h/+BCh have no semantic
+anchor; 007701F0's server list is unexamined beyond the copy; the x87 ratio in 00576BE0 is modelled
+in double (the original keeps an 80-bit intermediate); `std::sort` stands in for the introsort
+00574A50, which agrees except for the order of equal keys.
