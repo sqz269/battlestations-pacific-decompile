@@ -16319,3 +16319,33 @@ The whole `009ED6B0..009EF228` listing (`local\s42_9ed6b0.asm`, 1629 lines from 
   least a fade later. That depends on which Allied sensor identifies each of them at 7.6-12 km (Portland1, at 7627 m
   from Shimotsuke and 11919 m from ToSpawnShima, is the nearest surface unit). The pass's per-sensor ranges are not
   traced here. Unless a sensor that sees only Shimotsuke can be placed, primary 3 is not recoverable by routing.
+
+### 208.6 The live retire: `kLandTaskRetireQueueEraseBound`, committed OFF (cc9-ships42, 2026-10-11; 206 item 3)
+
+- **Reachable now.** On current main, USNOS f12 retires seven Enterprise land tasks through `009B34D0` at
+  1401.14-1401.84 s (`local\s42_cpoff_osf12.log`), right after the `28000 order Enterprise <slot> 2` lines. The
+  squadrons are `Enterprise_sqn03`, `sqn04` and `sqn05`; the unsuffixed `sqn04` and `sqn05` are their leaders. ESMP08 p3
+  logs two retreat installs.
+- **The image** (`009B3F50` read in 204; `006C8800`/`006C7680` here):
+  - The destructor calls `006C8800(plane+9D4h)` only for the task's plane that is its squadron's flight leader
+    (`007B8AD0` at `009B3F9E`).
+  - `006C8800` walks the `00E19948` block list and calls `006C7680(block, squadron)`.
+  - Only at a block whose queue holds the squadron (`006C76B6` find, else skip), `006C7680`:
+    - erases that queue record with `006BF7F0` (the last record moved into its place);
+    - erases every `+A8h` record whose plane's `+9D4h` is the squadron, in order (`006C7540`);
+    - for each slot (`block+4Ch`, 58h stride) whose `+28h` is the squadron: `+0Ch = +8h` when the state is 2, then
+      state 3, timer 0, or `00CE3850` (5.0) with `+34h` cleared when `+34h` is set, then `006BF150`.
+- **The binding** (`src/game_hosts_units.cpp`, `land_task_retire_006c8800`) runs at the host's two live-retire sites:
+  the retreat install (before it clears the land task) and `009B34D0`'s invalid-command arm.
+  - **LABELLED:** `006BF150`'s slot publication is not carried. Squadron membership stands in for the record plane's
+    `+9D4h`.
+  - OFF logs the `land task retire:` line ("kept, unbound") and changes nothing. Census: `summary land task retire queue
+    erase`.
+
+**Predictions (OFF -> ON), written before the pairs.**
+- **USNOS f12, 32000 frames:** two leader calls at 1401.79/1401.84 s (`sqn05`, `sqn04`). If the Enterprise deck queues
+  them at that moment, the records are erased and the Enterprise's landing timing moves after 1401 s (exit 3).
+  Otherwise the census shows calls with no erase (exit 0/1).
+- **ESMP08 p3 (72000):** the two retreat installs erase only if a retreating leader's squadron is queued. Expect
+  identity or late landing-timing moves.
+- **Flip rule:** ON on a mechanism match: every erase follows a leader's live retire, and nothing else moves first.

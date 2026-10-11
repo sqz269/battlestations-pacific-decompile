@@ -2620,6 +2620,8 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_site_leaves{0};
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
+    unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
+    unsigned long long land_retire_assignment_erases{0}, land_retire_slot_states{0};
     // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
     unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
@@ -5344,6 +5346,16 @@ struct GameUnitsHost::Impl {
     // LABELLED: the host erases at the leave sweep, one frame boundary before the image's
     // flush. False: a shot-down squadron's record stays and keeps the largest n.
     static constexpr bool kSquadronKillQueueEraseBound = true;   // ON by its pairs (SHIP_AI 208.1)
+    // Packet cc9_land_task_retire_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 208.6). True: a
+    // land task retired while its plane lives (the retreat install's 0099A4C0 retire, or
+    // 009B34D0's invalid command) runs the destructor's 009B3F50 tail: for the squadron's
+    // flight leader (007B8AD0), 006C8800(plane+9D4h) walks every block, and 006C7680, at
+    // a block that queues the squadron, erases that record (006BF7F0, the last moved into
+    // its place), every +A8h record whose plane belongs to the squadron (006C7540, in
+    // order), and sends each launch slot holding it to state 3 (+0Ch = +8h from state 2,
+    // timer 0, or 5.0 with +34h cleared). 006BF150's slot publication is not carried.
+    // False: the retire leaves the deck's records as they were.
+    static constexpr bool kLandTaskRetireQueueEraseBound = false;
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -6347,6 +6359,63 @@ struct GameUnitsHost::Impl {
                 }
                 q.resize(w);
                 squadron_kill_queue_erases += held;
+            }
+        }
+    }
+
+    // 009B3F50's tail at a live retire: 007B8AD0, then 006C8800 -> 006C7680 per block.
+    void land_task_retire_006c8800(const GameUnitSlot& unit, const char* site) {
+        if (!unit_is_flight_leader_007b8ad0(unit.process_index)) return;   // 009B3F9E
+        bsp::PlaneSquadronHostRecord* rec =
+            bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
+        if (rec == nullptr) return;                                          // 006C8803
+        ++land_retire_leader_calls;
+        const std::size_t sqi = static_cast<std::size_t>(
+            rec - bsp::plane_squadron_registry().records().data());
+        bsp::AirOpsDeckRegistry& air_decks = bsp::air_ops_decks();
+        for (std::size_t di = 0; di < landing_decks.size(); ++di) {
+            LandingDeck& d = landing_decks[di];
+            std::size_t k = 0;
+            while (k < d.queue.size() && d.queue[k].squadron != sqi) ++k;   // 006C76B6
+            if (k == d.queue.size()) continue;
+            std::size_t assignments = 0;
+            for (const LandingAssignment& a : d.assignments) {
+                if (bsp::plane_squadron_registry().find_by_member_unit(a.plane) == rec) ++assignments;
+            }
+            log.notef("  land task retire: %s (%s) leads %s; deck %zu queue record %s, %zu +A8h "
+                "record(s) (009B3FB3 -> 006C8800 -> 006C7680, packet "
+                "cc9_land_task_retire_queue_erase)", unit.row.name.c_str(), site,
+                rec->name.c_str(), di, kLandTaskRetireQueueEraseBound ? "erased" : "kept, unbound",
+                assignments);
+            if constexpr (kLandTaskRetireQueueEraseBound) {
+                d.queue[k] = d.queue.back();                                 // 006BF7F0
+                d.queue.pop_back();
+                ++land_retire_queue_erases;
+                std::size_t w = 0;                                           // 006C7540
+                for (std::size_t r = 0; r < d.assignments.size(); ++r) {
+                    if (bsp::plane_squadron_registry().find_by_member_unit(d.assignments[r].plane)
+                            == rec) continue;
+                    d.assignments[w++] = d.assignments[r];
+                }
+                land_retire_assignment_erases += d.assignments.size() - w;
+                d.assignments.resize(w);
+                if (rec->squadron_unit == bsp::kPlaneSquadronNoUnit) continue;
+                const std::uint32_t entity = static_cast<std::uint32_t>(rec->squadron_unit + 1u);
+                if (bsp::AirOpsDeck* deck = air_decks.mutable_at(di)) {
+                    for (bsp::AirOpsSlot& slot : deck->slots) {              // 006C7710..006C779D
+                        if (slot.launched_squadron != entity) continue;
+                        if (slot.state == bsp::AirOpsSlotState::kLaunching) {
+                            slot.requested_count = slot.assigned_count;
+                        }
+                        slot.state = bsp::AirOpsSlotState::kLaunched;
+                        slot.timer = 0.0f;
+                        if (slot.launch_requested) {
+                            slot.timer = bsp::kAirOpsSlotCooldownSeconds;
+                            slot.launch_requested = false;
+                        }
+                        ++land_retire_slot_states;
+                    }
+                }
             }
         }
     }
@@ -7507,6 +7576,7 @@ struct GameUnitsHost::Impl {
         unit.torpedo_state = bsp::TorpedoState::kNone;
         unit.moveto_task_installed = false;
         unit.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+        if (unit.land_task_installed) land_task_retire_006c8800(unit, "retreat install");
         unit.land_task_installed = false;
         unit.land_state = GameUnitSlot::LandTaskState::kNone;
         unit.strafe_task_installed = false;
@@ -29094,6 +29164,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009B3F15 skips the rule and the state, and 009B3560
                             // answers 0, so 0099A4C0 retires the task.
                             ++owner_.land_retired_invalid;
+                            owner_.land_task_retire_006c8800(unit_, "009B34D0 invalid");
                             owner_.log.notef("  land task %s: retired, the squadron's command "
                                 "is no longer land at this site (009B34D0) at %.2f s",
                                 unit_.row.name.c_str(),
@@ -33921,6 +33992,12 @@ void GameUnitsHost::report() {
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
         host.stock_return_queue_misses);
+    host.log.notef("summary land task retire queue erase bound=%d leader_calls=%llu "
+        "queue_erases=%llu assignment_erases=%llu slot_states=%llu (009B3FB3 -> 006C8800 -> "
+        "006C7680, packet cc9_land_task_retire_queue_erase)",
+        Impl::kLandTaskRetireQueueEraseBound ? 1 : 0, host.land_retire_leader_calls,
+        host.land_retire_queue_erases, host.land_retire_assignment_erases,
+        host.land_retire_slot_states);
     host.log.notef("summary squadron kill queue erase bound=%d kills=%llu erases=%llu "
         "(00926D90 -> 009273A0 slot+4 -> 006C4B30, packet cc9_squadron_kill_queue_erase)",
         Impl::kSquadronKillQueueEraseBound ? 1 : 0, host.squadron_kill_queue_kills,
