@@ -1,0 +1,66 @@
+{
+  "packet": "cc13_scene_renderer",
+  "doc": "docs/CC13_SCENE_RENDERER.md",
+  "call_sites": [
+    {
+      "address": "00b0d5b2",
+      "native": "00b4d270",
+      "function": "00b0d580",
+      "note": "texture +44h samples"
+    },
+    {
+      "address": "00b0d5cb",
+      "native": "00b4d170",
+      "function": "00b0d580",
+      "note": "shadow map holder"
+    },
+    {
+      "address": "00b0d5ec",
+      "native": "00b3ce20",
+      "function": "00b0d580",
+      "note": "target +50h samples"
+    },
+    {
+      "address": "00b17249",
+      "native": "00b20240",
+      "function": "00b17240",
+      "note": "can execute"
+    },
+    {
+      "address": "00b17254",
+      "native": "00b1bf40",
+      "function": "00b17240",
+      "note": "command prefix"
+    },
+    {
+      "address": "00b1725e",
+      "native": "00b46a70",
+      "function": "00b17240",
+      "note": "upload prefix"
+    },
+    {
+      "address": "00b1727e",
+      "native": "00b156c0",
+      "function": "00b17240",
+      "note": "render scene"
+    },
+    {
+      "address": "00b0daeb",
+      "native": "00bf7fbf",
+      "function": "00b0daa0",
+      "note": "_stricmp"
+    },
+    {
+      "address": "00b18aee",
+      "native": "00b17e10",
+      "function": "00b18ae0",
+      "note": "3 words"
+    },
+    {
+      "address": "00b18b4e",
+      "native": "00b17e10",
+      "function": "00b18b40",
+      "note": "16 words, matrix"
+    }
+  ]
+}
