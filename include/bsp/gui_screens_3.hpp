@@ -298,4 +298,152 @@ void idle_camera_update_00550410(IdleCameraState& screen, IdleCameraHost& host, 
 // 0054F3E0: observer vtable 00CEE3F0 +04h, __thiscall(screen+8, observed), RET 4.
 void idle_camera_on_released_0054f3e0(IdleCameraState& screen, IdleCameraHost& host, std::uintptr_t observed);
 
+// ---------------------------------------------------------------------------
+// Hint tracker stored-hint helpers. 00690B20 and 00690C30 back the HintSystem Lua bindings
+// AddStoredHint and RemoveStoredHint (table 00E0B7F0: ShowHint 008D1F50, ShowHintForced
+// 008D2190, AddStoredHint 008D24F0, RemoveStoredHint 008D2340, HideHint 0088CEC0,
+// IsHintActive 008D2850).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::int32_t kHintUnitClassReset = 0x13;  // tracker+18h after a removal (00690C5C)
+
+struct HintStoreHost {
+    virtual ~HintStoreHost() = default;
+    virtual const HintDefinition* find_definition_0068e450(const std::string& name) = 0;  // null = end()
+    virtual bool has_been_shown_0068e600(const std::string& name) = 0;
+    virtual bool profile_has_seen_007f8e00(const std::string& name) = 0;   // ECX = game+650h
+    virtual void profile_mark_seen_007fae20(const std::string& name) = 0;  // ECX = game+650h
+    virtual void profile_unmark_007fae60(const std::string& name) = 0;     // game+650h+8 -> 005FE8B0
+    virtual void mission_seen_push_back_48(const std::string& name) = 0;   // 004D2660 on +48h
+    // The list +48h, rebuilt by 0068EE00.
+    virtual std::vector<std::string>& mission_seen_48() = 0;
+    virtual bool player_unit_present_e188d8() = 0;
+    virtual std::int32_t player_unit_class_170() = 0;   // (*(unit+170h))->vtable[0]()
+    virtual void history7c_clear_00690ca0() = 0;        // tree at +7Ch emptied (004DCDB0 on the root)
+    virtual void history94_clear() = 0;                 // tree at +94h emptied (00690CEC..00690D1B)
+    virtual bool history94_has_key(const std::string& key) = 0;   // 005FD120 lower bound + compare
+    virtual void history94_push_back(const std::string& key, const std::string& name) = 0;
+    virtual void history94_assign_single(const std::string& key, const std::string& name) = 0;
+    virtual std::vector<std::string> profile_shown_names_65c() = 0;  // list at *(game+65Ch)
+};
+
+struct HintStoreState {
+    std::int32_t last_unit_class_18{};  // +18h
+};
+
+// 00690B20: __thiscall(tracker, NativeString* name), RET 4; Lua AddStoredHint.
+void hint_tracker_add_stored_00690b20(HintStoreHost& host, const std::string& name);
+// 00690C30: __thiscall(tracker, NativeString* name), RET 4; Lua RemoveStoredHint.
+void hint_tracker_remove_stored_00690c30(HintStoreState& tracker, HintStoreHost& host, const std::string& name);
+// 0068EE00: __thiscall(tracker, NativeString* name), RET 4; rebuilds +48h without the name.
+void hint_tracker_drop_mission_seen_0068ee00(HintStoreHost& host, const std::string& name);
+// 00690CA0: __fastcall(tracker), RET; called by the pause screen's Register 00602280.
+void hint_tracker_clear_new_history_00690ca0(HintStoreHost& host);
+// 00690CD0: __fastcall(tracker), RET; called by 005922F0 (play selected mission) and 006921B0.
+void hint_tracker_rebuild_history_00690cd0(HintStoreHost& host);
+
+// ---------------------------------------------------------------------------
+// Hint definition loading: 006921B0 (reload) runs Scripts/datatables/HintSystemMessages.lua and
+// hands five sub-tables to 0068F030.
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kHintScript = "Scripts/datatables/HintSystemMessages.lua";  // 00692249
+inline constexpr std::string_view kHintRootTable = "HintSystemMessages";   // 00CF7CA4
+inline constexpr std::string_view kHintDefaultType = "hints.gameplay_general_hint";  // 00CF7B10
+inline constexpr std::string_view kHintDefaultRule = "repeatable";          // 00CF7B48
+inline constexpr std::int32_t kHintDefaultDuration = 12;                    // 0069008A
+inline constexpr std::size_t kHintTitleDescRows = 8;
+
+// One entry of a hint table as the Lua object accessors see it (00B67800 get_by_name, 00B65FB0
+// is_nil, 00B662B0 string, 00B66250 boolean, 00B66290 integer, 00B67080/00B67190 iteration).
+struct HintLuaEntry {
+    virtual ~HintLuaEntry() = default;
+    virtual std::string id() = 0;                        // "id" (00CF16BC), read without a nil test
+    virtual bool is_nil(std::string_view key) = 0;
+    virtual std::string string(std::string_view key) = 0;
+    virtual bool boolean(std::string_view key) = 0;
+    virtual std::int32_t integer(std::string_view key) = 0;
+    virtual std::size_t row_count() = 0;                 // TitleDescList elements in iteration order
+    virtual bool row_is_nil(std::size_t row, std::string_view key) = 0;
+    virtual std::string row_string(std::size_t row, std::string_view key) = 0;
+};
+
+struct HintTableHost {
+    virtual ~HintTableHost() = default;
+    // Iterates one sub-table's entries; null at the end.
+    virtual HintLuaEntry* next_entry() = 0;
+    virtual void store_definition_005fdd90(const std::string& id, const HintDefinition& def) = 0;  // map+30h[id] = def
+};
+
+// 0068F030: __thiscall(tracker, LuaObject table by value, char other_category), RET 18h.
+// `carry` holds the stack definition between entries (see the cooldowntime note in the source).
+void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category, HintDefinition& carry);
+
+struct HintReloadHost {
+    virtual ~HintReloadHost() = default;
+    virtual void history7c_clear() = 0;                       // 004DCDB0 on +7Ch (006921C0..)
+    virtual bool run_script_with_overrides(std::string_view path) = 0;   // fresh LuaStateOwner
+    virtual void definitions_clear_004d7370() = 0;            // map +30h emptied
+    // Selects the sub-table HintSystemMessages.<group>.<name> for the next loader pass.
+    virtual void select_table(std::string_view group, std::string_view name) = 0;
+    virtual void load_selected_0068f030(bool other_category) = 0;
+    virtual void rebuild_history_00690cd0() = 0;
+    virtual void close_script() = 0;
+};
+
+struct HintReloadState {
+    bool force_next_04{};
+    std::int32_t last_unit_class_18{};
+    std::string last_timed_1c;
+    float last_timed_seconds_24{};
+    std::string active_60;
+};
+
+// 006921B0: __fastcall(tracker), RET.
+void hint_tracker_reload_006921b0(HintReloadState& tracker, HintReloadHost& host);
+
+// ---------------------------------------------------------------------------
+// Segment 10: GUI parking of in-game screens (game singleton 00E188A8 methods).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::int32_t kGuiScreenSlots = 0x5F;          // 004D6725: screens 0..5Eh of 00E18B60
+inline constexpr double kGuiParkOffsetX = 1000.0;               // 00CE47A0
+// Screens left in place while a hint pauses the game (004D94F0): 28h, 55h (menu prompt),
+// 57h (frame stats), 5Dh, 34h (hints).
+inline constexpr std::array<std::int32_t, 5> kHintPauseKeptScreens{0x28, 0x55, 0x57, 0x5D, 0x34};
+// Screens left in place while the game+61Fh pause is on (004D95F0).
+inline constexpr std::array<std::int32_t, 16> kSystemPauseKeptScreens{
+    0x0D, 0x0E, 0x0F, 0x28, 0x3C, 0x3D, 0x53, 0x55, 0x57, 0x58, 0x59, 0x5C, 0x5D, 0x19, 0x5E, 0x0C};
+
+struct GuiParkHost {
+    virtual ~GuiParkHost() = default;
+    virtual bool screen_present_e18b60(std::int32_t slot) = 0;
+    virtual std::vector<std::uintptr_t> screen_collect_24(std::int32_t slot) = 0;  // screen vtable +24h
+    virtual bool widget_parked_121(std::uintptr_t widget) = 0;
+    virtual void widget_set_parked_121(std::uintptr_t widget, bool parked) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(std::uintptr_t widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(std::uintptr_t widget, const std::array<float, 3>& p) = 0;
+};
+
+// 004D6480: __stdcall-like (std::vector<int>* kept, char park), RET 8 (ECX unused).
+void gui_park_screens_004d6480(GuiParkHost& host, const std::vector<std::int32_t>& kept, bool park);
+
+struct GamePauseState {
+    bool system_pause_61f{};   // game+61Fh
+    bool hint_pause_620{};     // game+620h
+    std::int32_t pause_lock_624{};  // game+624h, blocks 004D94F0 when non-zero
+    std::int32_t session_kind_1fe4{};
+};
+
+struct GamePauseHost : GuiParkHost {
+    virtual void hints_advance_basic_step_0054e440() = 0;     // ECX = *(*(00E198C4)+A8h)
+    virtual bool hud_screen_e8_flag() = 0;                    // 00E198C4 && +E8h && *(+E8h)+4
+    virtual void input_force_refresh() = 0;                   // input+20h = 1; 00A93020
+};
+
+// 004D94F0: __thiscall(game, char paused), RET 4; SEH 00C66588.
+void game_set_hint_pause_004d94f0(GamePauseState& game, GamePauseHost& host, bool paused);
+// 004D95F0: __thiscall(game, char paused), RET 4.
+void game_set_system_pause_004d95f0(GamePauseState& game, GamePauseHost& host, bool paused);
+
 }  // namespace bsp
