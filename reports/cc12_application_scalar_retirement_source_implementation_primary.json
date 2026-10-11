@@ -1,0 +1,639 @@
+{
+  "status": "PASS_qualified_dormant_Source",
+  "packet": "cc12_application_scalar_retirement_source_implementation_primary",
+  "worker_commit": "44f2a7713dccf8a1dccb322b60e79a82191b31d5",
+  "worker_parent": "9de2a9991b4355c3c83b4d51eae782b219de1d93",
+  "actual_Git_review": {
+    "status": "PASS",
+    "worker_commit": "44f2a7713dccf8a1dccb322b60e79a82191b31d5",
+    "parent": "9de2a9991b4355c3c83b4d51eae782b219de1d93",
+    "tree": "1c6fe95bfeb3b74c208658dea6337812e950cce6",
+    "members": 84,
+    "finite_actual_Git_inputs": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "blob": "66f2836056aae1c6e129be91a7b46f8d81b0ec86",
+        "bytes": 12440,
+        "sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "blob": "5743ebaaa1fbe3521a662db57df2710cfecc29c4",
+        "bytes": 10396,
+        "sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION.md",
+        "blob": "9bcbe40b99bec0547c12f6ccdc973d42b56f76c4",
+        "bytes": 6445,
+        "sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation.json",
+        "blob": "206576177a1c9bd8005da03439e3b770d9a09c9e",
+        "bytes": 29621,
+        "sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION_PRIMARY.md",
+        "blob": "e3aec5f920336cf7977989b889d04c17dc680696",
+        "bytes": 3331,
+        "sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation_primary.json",
+        "blob": "fa5e03ceb5aab0e76fe947ee5fd958bc1df51751",
+        "bytes": 11734,
+        "sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+        "blob": "09e676baad335d7db5c894fa3026d81dbf49671a",
+        "bytes": 5246,
+        "sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_readiness.json",
+        "blob": "61412a36ff96686d2e8e6072d536f9b7b7d1d69e",
+        "bytes": 11864,
+        "sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_STORAGE_PROVIDER_PRIMARY.md",
+        "blob": "9af4cf38085c4f6dc404af9650f5ccc2b8c82853",
+        "bytes": 2794,
+        "sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_storage_provider_primary.json",
+        "blob": "f5224567af643c8df3dece0fcde349e151f5cfd7",
+        "bytes": 20252,
+        "sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_TABLE_ENTRY_READINESS.md",
+        "blob": "9557b120f5ae3d01c610be5a78a987fff3aa6a6f",
+        "bytes": 4753,
+        "sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c"
+      },
+      {
+        "path": "reports/cc12_application_scalar_table_entry_readiness.json",
+        "blob": "80dbd8d7eabd87ea7edd3e38539664e7f7877937",
+        "bytes": 11358,
+        "sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "docs/SINGLETON_LIFETIME.md",
+        "blob": "fdc81ab12fda7d0f7a1651c208d901ef586156a7",
+        "bytes": 8640,
+        "sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f"
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "blob": "d52f6a8e6dbbab41c89787606cb8ca23349f767b",
+        "bytes": 28284,
+        "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+      },
+      {
+        "path": "include/bsp/native_shader_binary_cache.hpp",
+        "blob": "c622171df4c13d649f850b11900921ec95ead010",
+        "bytes": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      {
+        "path": "include/bsp/native_shader_preload.hpp",
+        "blob": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+        "bytes": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_STORAGE_PROVIDER_READINESS.md",
+        "blob": "e2d2bff863597544f8778e0de28bc42c37c48763",
+        "bytes": 8012,
+        "sha256": "ac6971b781951c1420e5e9cbe193ba782c4ba1bc1f25e45baa9467a9fecc8230"
+      },
+      {
+        "path": "reports/cc12_application_scalar_retirement_storage_provider_readiness.json",
+        "blob": "2d33a23ac687f3c9a95955b02cce052a77edab7a",
+        "bytes": 25941,
+        "sha256": "fa0db50c10ccfbe5a4dbf5cfdd84d0dbd58e9de2c9679f0ff3fe42ec5c909dc5"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_STORAGE_PROVIDER_READINESS_PRIMARY.md",
+        "blob": "a7b7bb0910e719450b1ac6da83d7507ff6965314",
+        "bytes": 2905,
+        "sha256": "09588209820b39839bf1314fbf25c4a878eeb2746f1a65b7e0a9aed31a468148"
+      },
+      {
+        "path": "reports/cc12_application_scalar_retirement_storage_provider_readiness_primary.json",
+        "blob": "f5245af87e78565cf5dc751b17a60442d0cd447b",
+        "bytes": 17907,
+        "sha256": "6adb08c73d1e01555ed27a878b5220a72dea7a4cf7f5f99390c5311167b717ce"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "blob": "e1ed7c82d212343521dabfa68632fd8318797313",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      }
+    ],
+    "actual_outputs": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "blob": "06b62789d8273042ea17ca49724cef478dd99df4",
+        "git_bytes": 13644,
+        "git_sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
+        "working_bytes": 13644,
+        "working_sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "blob": "0424b6fe7d30e249ca9e2dc444b9d0db80a4cc3f",
+        "git_bytes": 11091,
+        "git_sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+        "working_bytes": 11091,
+        "working_sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_SOURCE_IMPLEMENTATION.md",
+        "blob": "68df19b3670cd61b90154fad8f188128fcd6fe3a",
+        "git_bytes": 6395,
+        "git_sha256": "c6656c0358ab3de89ac286ee645bdf105cbae67dc33907c3b5bbd510754021b5",
+        "working_bytes": 6414,
+        "working_sha256": "546bd689dd8ab0a00b9b167e436ae50b9f79eb27f3800614cdfaf795ac0a7a0e"
+      },
+      {
+        "path": "reports/cc12_application_scalar_retirement_source_implementation.json",
+        "blob": "6da5093ae47e303c0581cf3202c9983370de41ad",
+        "git_bytes": 33091,
+        "git_sha256": "2c15f9f646f5c65655e1a7a1a211fb6aec1d0d176d2e4785ad8245bd26597ef3",
+        "working_bytes": 33791,
+        "working_sha256": "def8cfcee8e84a3467531efd654769c41f185f3444f20d5f235f5225802c9a7b"
+      }
+    ],
+    "source_matches_previously_full_read_candidate": true,
+    "archive_sha256": "32f8360a763a29a5ea53bd5ccd0555945794f34ff66b25eb5b44fa2cea0c9d60",
+    "archive_bytes": 316741,
+    "frozen_Source_identity_only": {
+      "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+      "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+    },
+    "actual_final_payloads_retained": true,
+    "executed_evidence_helpers": 0,
+    "boundary": "Finite actual Git and positive source identity review; no Native queries, Original, probes or ABI/runtime assertion."
+  },
+  "Root_guard": {
+    "guard_active_before_exec": true,
+    "helper_sha256": "d13de2b624c854bcec5ec55582c47133305bef30277f4da623278d2e4ee81576",
+    "result": {
+      "status": "PASS",
+      "phase": "final",
+      "ZIP_file_reads": 1,
+      "ZIP_opens": 1,
+      "helper_executions": 1,
+      "exclusive_receipt_writes": 1,
+      "manifest_sha256": "8b6b3e4a936d8a5e3b3e8413e29e3136a29250950636b540607f3ee2bb7ef2fc",
+      "zip_pin": {
+        "bytes": 316741,
+        "sha256": "32f8360a763a29a5ea53bd5ccd0555945794f34ff66b25eb5b44fa2cea0c9d60"
+      },
+      "entries": 84,
+      "finite_Git_inputs": 25,
+      "helpers": 6,
+      "owned_outputs": 4,
+      "registered_checks": 3,
+      "compiler_scalar_section_bytes": 147,
+      "final_commit": "44f2a7713dccf8a1dccb322b60e79a82191b31d5",
+      "boundary": "Internal finite identity replay and compiler Source positives only. No Original callee preservation, ABI, active provider/caller, ownership or runtime acceptance."
+    },
+    "status": "PASS",
+    "audit": {
+      "ZIP_reads": 1,
+      "receipt_writes": 1,
+      "helper_execs": 1,
+      "denials": []
+    }
+  },
+  "Root_build": {
+    "status": "PASS",
+    "exit_code": 0,
+    "finished_UTC": "2026-10-11T08:43:18.376583+00:00",
+    "before": {
+      "include/bsp/native_render_service_base.hpp": {
+        "bytes": 13644,
+        "sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be"
+      },
+      "src/native_render_service_base.cpp": {
+        "bytes": 11091,
+        "sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e"
+      },
+      "local/seed_reference.hpp": {
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      }
+    },
+    "after": {
+      "include/bsp/native_render_service_base.hpp": {
+        "bytes": 13644,
+        "sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be"
+      },
+      "src/native_render_service_base.cpp": {
+        "bytes": 11091,
+        "sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e"
+      },
+      "local/seed_reference.hpp": {
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      }
+    },
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": {
+      "bytes": 3885,
+      "sha256": "864fa426bbd3faf6a4fd9584e125fd3932ac054bb0eb1508d85eebfb798cbc17"
+    },
+    "existing_LNK4006_present": true,
+    "new_tests_or_probes": false,
+    "boundary": "Source Win32 compilation and existing fixture checks only; no Original ABI, active caller/provider, startup or gameplay proof."
+  },
+  "Root_compiler_positive_review": {
+    "status": "PASS",
+    "Root_actual_object": {
+      "bytes": 20050,
+      "sha256": "93c91c5ac7738da0ec3b4f832131c6fac2caf2a3482adc6a870944ae8b3dbcf2"
+    },
+    "scalar_defined_symbol": {
+      "index": 91,
+      "name": "?retire_native_application_scalar_00737e00@bsp@@YAPAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@ADEP6AX0@Z@Z",
+      "value": 0,
+      "section": 32,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0
+    },
+    "parent_defined_symbol": {
+      "index": 90,
+      "name": "?retire_native_application_007379a0@bsp@@YAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@@Z",
+      "value": 0,
+      "section": 28,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0
+    },
+    "scalar_extent_bytes": 147,
+    "scalar_raw_hex": "558bec6aff680000000064a1000000005083ec0c535657a10000000033c5508d45f464a3000000008b45088b5d148945e8895decc645f0018b7d108b750c576a0056c745fc00000000e8000000008b068b4f0450ffd1538b5d0853c645f000e8000000008b4d1883c418c745fcffffffff8a09f6c101740753ff551c83c4048bc38b4df464890d00000000595f5e5b8be55dc3",
+    "scalar_raw_sha256": "bee9d619325c8ef1d2f5b4bad3f115c79a11bf8503129f03691dd25691439c31",
+    "relocations": [
+      {
+        "offset": 6,
+        "type": 6,
+        "decorated_target": "__ehhandler$?retire_native_application_scalar_00737e00@bsp@@YAPAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@ADEP6AX0@Z@Z"
+      },
+      {
+        "offset": 24,
+        "type": 6,
+        "decorated_target": "___security_cookie"
+      },
+      {
+        "offset": 74,
+        "type": 20,
+        "decorated_target": "?resize_native_application_pointer_vector_00735f30@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z"
+      },
+      {
+        "offset": 96,
+        "type": 20,
+        "decorated_target": "?retire_native_application_base_00bea990@bsp@@YAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+      }
+    ],
+    "direct_parent_relocation_present": false,
+    "late_tail_offset": 113,
+    "late_tail_manual_encoding_agrees_with_actual_Capstone": true,
+    "Capstone_version": "5.0.7",
+    "late_tail_instructions": [
+      {
+        "offset": 113,
+        "hex": "8a09",
+        "mnemonic": "mov",
+        "operands": "cl, byte ptr [ecx]",
+        "eflags": 0,
+        "operand_fields": [
+          {
+            "type": 1,
+            "size": 1,
+            "register": "cl",
+            "immediate": null,
+            "memory": null
+          },
+          {
+            "type": 3,
+            "size": 1,
+            "register": null,
+            "immediate": null,
+            "memory": {
+              "base": "ecx",
+              "index": null,
+              "displacement": 0
+            }
+          }
+        ]
+      },
+      {
+        "offset": 115,
+        "hex": "f6c101",
+        "mnemonic": "test",
+        "operands": "cl, 1",
+        "eflags": 17592192335900,
+        "operand_fields": [
+          {
+            "type": 1,
+            "size": 1,
+            "register": "cl",
+            "immediate": null,
+            "memory": null
+          },
+          {
+            "type": 2,
+            "size": 1,
+            "register": null,
+            "immediate": 1,
+            "memory": null
+          }
+        ]
+      },
+      {
+        "offset": 118,
+        "hex": "7407",
+        "mnemonic": "je",
+        "operands": "0x7f",
+        "eflags": 34359738368,
+        "operand_fields": [
+          {
+            "type": 2,
+            "size": 4,
+            "register": null,
+            "immediate": 127,
+            "memory": null
+          }
+        ]
+      },
+      {
+        "offset": 120,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx",
+        "eflags": 0,
+        "operand_fields": [
+          {
+            "type": 1,
+            "size": 4,
+            "register": "ebx",
+            "immediate": null,
+            "memory": null
+          }
+        ]
+      },
+      {
+        "offset": 121,
+        "hex": "ff551c",
+        "mnemonic": "call",
+        "operands": "dword ptr [ebp + 0x1c]",
+        "eflags": 0,
+        "operand_fields": [
+          {
+            "type": 3,
+            "size": 4,
+            "register": null,
+            "immediate": null,
+            "memory": {
+              "base": "ebp",
+              "index": null,
+              "displacement": 28
+            }
+          }
+        ]
+      },
+      {
+        "offset": 124,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4",
+        "eflags": 63,
+        "operand_fields": [
+          {
+            "type": 1,
+            "size": 4,
+            "register": "esp",
+            "immediate": null,
+            "memory": null
+          },
+          {
+            "type": 2,
+            "size": 4,
+            "register": null,
+            "immediate": 4,
+            "memory": null
+          }
+        ]
+      },
+      {
+        "offset": 127,
+        "hex": "8bc3",
+        "mnemonic": "mov",
+        "operands": "eax, ebx",
+        "eflags": 0,
+        "operand_fields": [
+          {
+            "type": 1,
+            "size": 4,
+            "register": "eax",
+            "immediate": null,
+            "memory": null
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "register": "ebx",
+            "immediate": null,
+            "memory": null
+          }
+        ]
+      }
+    ],
+    "worker_positive_section_and_relocations_agree": true,
+    "boundary": "Actual Root compiler positives only; no whole-object identity, Original instruction/ABI, preservation, handler, caller or runtime claim."
+  },
+  "Source_contract": {
+    "explicit_receiver": "actual A, already-live accepted parent rows at A+8, allocation and same context",
+    "schedule": [
+      "capture A",
+      "genuine parent7379A0 once",
+      "late volatile selector byte read after successful return",
+      "bit0 only",
+      "selected supplied matching-family BF65AC(A)",
+      "return captured address without dereference"
+    ],
+    "outer_free_distinct_from_array_free": true,
+    "inherited_parent_cleanup_unchanged": true,
+    "no_new_owner_binding_table_activation_or_catch": true
+  },
+  "Native_qualification": {
+    "retained30B_sha256": "df7c5e8e769109da1b0c6187ead9fe97cd0037bf3b9d6eaaaf61e67d0c3fef17",
+    "physical_late_TEST": "BYTE SS:[current post-parent ESP+8], mask1",
+    "selected_PUSH_and_return_MOV_use": "current ESI",
+    "entry_selector_and_captured_A_require_actual_callee_ESP_balance_and_ESI_preservation": true,
+    "preservation_authenticated": false
+  },
+  "active_use_holds": [
+    "actual caller, allocation start and matching host family",
+    "live selector through late read",
+    "all inherited row/manager/cell/section/depth/provider domains",
+    "remaining alias and retirement quiescence",
+    "Original ABI and runtime integration"
+  ],
+  "Root_failures": {
+    "actual_review": 0,
+    "strict_replay": 0,
+    "build": 0,
+    "COFF_review": 0,
+    "publication_tool_preparation": 1
+  },
+  "worker_superseded_expectation": {
+    "retained": "direct parent relocation requirement rejected; compiler incorporated schedule; no Source/compiler change or rebuild",
+    "acceptance_credit": false
+  },
+  "no_new_tests_probes_Native_GPR_Original_game_OS_audio_or_runtime": true,
+  "private_evidence": [
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_candidate_Source_review.json",
+      "bytes": 771,
+      "sha256": "04e13c3daed96db19acbbeb06590a098d059cd6452a7295f55af7f587722e856"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_actual_review.py",
+      "bytes": 4608,
+      "sha256": "4312a4e409260123d547e742f532cee26fda604d787360c27dfe645501c6b9a0"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_actual_review.json",
+      "bytes": 8626,
+      "sha256": "9e2e74dd1983f9dc5a25e07e34ff5ff0e9708263b2ef3eb2a50abf4eae179483"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_final_commit.bin",
+      "bytes": 723,
+      "sha256": "d5af36f050f35da5269c474f2f8ee85e3c48266c19d05e9591668b1be0c7a0e7"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_final_tree.bin",
+      "bytes": 563,
+      "sha256": "a53b1d4279b3ff513b4e4ed1e011c74c3dcfc7c03c553e2fd3c532995221c67a"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/guard.py",
+      "bytes": 9935,
+      "sha256": "d13de2b624c854bcec5ec55582c47133305bef30277f4da623278d2e4ee81576"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/coff_review.py",
+      "bytes": 3823,
+      "sha256": "1f26f932e751cc7d61c9823b413540c30667bd7394f3b65d060ab7edb0e9f70b"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/proof.zip",
+      "bytes": 316741,
+      "sha256": "32f8360a763a29a5ea53bd5ccd0555945794f34ff66b25eb5b44fa2cea0c9d60"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/proof_distinct_copy.zip",
+      "bytes": 316741,
+      "sha256": "32f8360a763a29a5ea53bd5ccd0555945794f34ff66b25eb5b44fa2cea0c9d60"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/worker_finalpins.json",
+      "bytes": 6764,
+      "sha256": "892f37b424b3fc683b54f10c8509de4170f48c42ac24af0a32516ab29fd0f0b6"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_strict_replay.py",
+      "bytes": 2177,
+      "sha256": "86b6daff4572b117ef16c06deec714b57fceaf51c070aad093ca9f1db72dfb4f"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_guard_receipt.json",
+      "bytes": 1047,
+      "sha256": "78f98050c902054b57bfec8cebfcf1d34912a7530192733eb8f9cde64e05c614"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_build_once.py",
+      "bytes": 2145,
+      "sha256": "9ebc859a3ecb2760115158c65a8c1ce0e5a7b2f2c5abe25830d6232b167cec62"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_build_invocation.json",
+      "bytes": 946,
+      "sha256": "77eff2a86f8ccf215c2cfb4bfc1952dcacd605804ba2b739de792332a58f3eee"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_build.log",
+      "bytes": 3885,
+      "sha256": "864fa426bbd3faf6a4fd9584e125fd3932ac054bb0eb1508d85eebfb798cbc17"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_build_receipt.json",
+      "bytes": 1527,
+      "sha256": "ebb6a11a2f2be99cfa0d6e22d32351c86eba209719ba02df255883d40eca33ee"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_COFF_review.py",
+      "bytes": 3981,
+      "sha256": "6714fac8593137d1f7175d171a03d9930222a415e037da604f973d2b6eaa77d2"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_COFF_review.json",
+      "bytes": 5675,
+      "sha256": "970b4e74e20738a81483696d359e418a1a8b3fe840d5e35d7778b5c3cb0c7773"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_native_render_service_base.obj",
+      "bytes": 20050,
+      "sha256": "93c91c5ac7738da0ec3b4f832131c6fac2caf2a3482adc6a870944ae8b3dbcf2"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_publication_preparation_failure.json",
+      "bytes": 616,
+      "sha256": "a82b028869ed8c10ccacad7b3dbace88d1d20e0c42ed5a14ad00bdc88c6d5d0e"
+    },
+    {
+      "path": "local/cc12_application_scalar_retirement_source_implementation_primary/Root_write_primary.py",
+      "bytes": 7935,
+      "sha256": "1dd0d6526e35744477c987e2b1e76e6b7d2a4ba7f4b7c659a8f2026debf34513"
+    }
+  ]
+}
