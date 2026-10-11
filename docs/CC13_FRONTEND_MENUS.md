@@ -485,3 +485,133 @@ them partial). Named in this packet: 46. Open: the multiplayer enter/update bodi
 005E5B30, 005E8B20, 005ECD80), the controls update 00560430 (Xbox keyboard preset naming,
 `Presets/%S.preset` save, `ControlPresetsOrder`), the pause screen bodies, and the Ghidra-less
 vtable slots listed in the table above.
+
+# Third packet (cc13-frontend2, 2026-10-11): Ghidra-less vtable slots defined and named
+
+Leases `cc13_frontend2_seg20` (00584000..005C5600), `cc13_frontend2_seg1723` (00554680..00568930,
+005E09A0..00604A50), `cc13_frontend2_seg2627` (0061F000..00681000).
+
+## Defining the slot functions
+
+Every handoff address in "Functions Ghidra lacks" and in the in-game GUI doc's slot list, plus
+every other code pointer in the 00CExxxx..00CFxxxx vtables that lands on a 16-byte aligned
+address inside these leases with no Ghidra function (`local/f2_scan.py`: an `.rdata` dword scan
+filtered by vtable bases taken from constructor `MOV [reg+N],imm32` stores), was defined with
+`tools/ghidra_define_function.py` (locked, bytes compared to the disk image, no flow re-discovery).
+Extents come from a recursive descent over the disk image (`local/f2_extent.py`, follows the
+five-entry switch of 005B45C0 at 005B5B64); two extents with an alignment hole (0055D180, 00646170)
+were checked by hand. 178 functions were defined; the record of every bridge call is
+`reports/cc13_frontend2_defined.json`. 166 of them were named in the ledger and in Ghidra.
+
+The bulk follows the base screen vtable 00CEAE54 slot layout:
+
+| Kind | Count | Evidence |
+|---|---|---|
+| `<Screen>_GetScreenId` (+00h) | 20 | `MOV EAX,id; RET`: map 4Ch, minimap 35h, limbo 32h, objectives 39h, orders 3Bh, pause 3Ch, pause-cheat 3Dh, scene-init 5Ah, markers 4Dh, spectator 43h, HUD root 44h, ship status 45h, submarine 48h, periscope 47h, support manager 4Eh, tactical sheet 54h, cursor 28h, follow 49h, unit library 5, narrative 33h |
+| `<Screen>_IsSelfManaged` (+04h) | 6 | `MOV AL,1`: pause, pause-cheat, scene-init, spectator, narrative; tactical sheet returns `*(00E188A8)+1FE4h == 0` |
+| `<Screen>_OccludesLowerLevels` (+08h) | 2 | `MOV AL,1`: map, scene-init |
+| Enter/Exit/Update/BindLayout | 32 | slot position; empty bodies noted per row |
+| `<Screen>_CollectChildren` (+24h) | 16 | `ADD ECX,N; PUSH ECX; MOV ECX,[ESP+8]; CALL 004D6790; RET 4` |
+| `CG_scalar_deleting_dtor_<target>_Adjustor<N>` | 25 | `SUB ECX,N; JMP dtor` at +00h of listener sub-objects |
+| `BSP_SessionMessage<id>_{ScalarDelete,Write,Read,IsType}` | 27 | five-slot vtables 00CF5C38, 00CF5C4C, 00CF61FC, 00CF64C4, 00CF64D8, 00CF64EC, 00CF6500, 00CF3BB8 with ids 160, 148, 161, 130, 167, 168, 169, 188; type tests walk the chain id -> 49h -> 46h |
+| listener slots and callbacks | 38 | listed below |
+
+This answers the FRONTEND_SCREEN_SETS.md gap "which leaf types override +4h/+8h" for the screens in
+these leases: the overriders are the six +04h and two +08h rows above.
+
+Named listener slots and callbacks with behaviour (all provisional except pure no-ops):
+00590D80 `BSP_MainMenu_OnProfileLoaded`, 00590E40/00590E50 `BSP_MainMenu_OnAsyncTextRequestDone(2)`,
+00588460 `BSP_MainMenu_RemoveFileStoreFile`, 0058EE40 `BSP_MainMenu_StringMapFindOrInsert`,
+005861A0 `BSP_MainMenu_OnMovieAdvance`, 00560BF0 `BSP_ControlBindingScreen_HandleGuiEvent`,
+0055D180 `BSP_ControlBindingScreen_OnListboxSelectionChanged`, 00561E50
+`BSP_LeaderboardsScreen_OnListboxSelectionChanged`, 005D9D90 `BSP_MultiGameLobbyScreen_OnListboxActivate`,
+005E7160/005E73A0 `BSP_MultiMainMenuScreen_OnListboxActivate`/`_OnListboxSelectionChanged`, 005E97D0
+`BSP_MultiMainMenuScreen_HandleGuiEvent`, 005EA2D0 `BSP_MultiMainMenuScreen_Update`, 005EBC90
+`BSP_MultiModeSelectorScreen_OnListboxSelectionChanged`, 005ED450 `BSP_MultiModeSelectorScreen_HandleGuiEvent`,
+005FDB50 `BSP_HudPauseScreen_HandleGuiEvent`, 00645BB0 `BSP_InGameHudRootListener_Current0C`,
+0067B0E0 `BSP_HudTacticalSheetScreen_OnListboxActivate`, 0067BC60/0067C130 overlay observers
+`_OnReleased`, and the no-op slots (`...NoOp`). Evidence strings are in the ledger rows.
+
+Defined but deliberately not named: 005EF5F0, 005F0440, 005F1CB0, 005F4C10 (options screens,
+docs/OPTIONS_MENU_SCREENS.md and cc12's options reviews), 005662D0 (vtable base unclear),
+0064B6B0, 0064B6D0, 00650870 (slots +12Ch/+130h/+128h of unit-sized vtables 00CF5CE8/00CF6250),
+006502D0, 0067B3A0, 0067BAA0 (observer and enter slots of classes whose register functions carry
+generic names), 00646170 (register-argument copy helper, `EAX = EDX` count).
+
+Not covered: the same scan outside these leases (00568930..00584000, 005C5600..005E09A0,
+00604A50..0061F000 and 0068xxxx, e.g. the overlay vtables' 0068A320/0068A400/0068A5D0 slots).
+
+## Reconstructed in the third packet
+
+| Address | C++ | Coverage |
+|---|---|---|
+| 00560430 | `control_binding_screen_update_00560430` | reconstructed, complete, build-tested |
+| 005EC5B0 | `multi_mode_selector_enter_005ec5b0` | reconstructed, complete, build-tested |
+| 005ECD80 | `multi_mode_selector_update_005ecd80` | reconstructed, complete, build-tested |
+
+Call sites: `reports/cc13_frontend_menus.json` (188 rows, `tools/verify_report_calls.py`: 0
+failed). Nothing was run in `bsp_game`.
+
+00560430 `BSP_ControlBindingScreen_Update`, `__thiscall`(screen, float seconds), RET 4. The listing
+holds EBX = 0, EBP = 2 and EDI = -1 across the body, which the pseudocode loses (the 004BA6D0(2, 0)
+device test, the "Slider" kind test against EBP, and the -1 event kind). Order of work:
+
+1. The seconds argument is replaced by `*(00E188A8)+21ECh`; the hint timer +10h runs down to 0.
+2. When the Xbox keyboard overlapped at +44h has left `ERROR_IO_PENDING` (3E5h) and
+   `XGetOverlappedResult` returns 0, every character of the wide name at +60h goes through
+   005EF500, `Presets` is created when *0109CEEC slot +8 says it is missing (00BF94C6), and
+   `Presets/%S.preset` is written: 00BD5D60 opens the writer, 00BD6DB0 writes the root
+   `CONTROL_PRESET`, 006A5640 (docs/CC13_SETTINGS_SAVEDATA.md) the preset, 00BD5860 closes it.
+3. +194h becomes 00A90F90 (input pending on *(00F8BBF4)) and +198h counts down; while input was
+   seen and the hold is positive, page 2 and page 3 (when not editing a value) wait. +195h skips
+   one update.
+4. Pages (+168h; meanings provisional): 0 back pushes interface request 0Ch, else slot +34h(0)
+   on *(+210h); 1 back refreshes page 0; 2 reads the raw event (00A90530): a "Slider" axis is
+   remembered at +24Ch, DirectInput Delete (D3h) stores the unbound event (kind -1, code -1),
+   Return (1Ch) starts the capture only when the hint timer is exactly 0, back confirms
+   (00560210), left/right pick binding slot 0/1 or adjust the edited value (0055CCC0); 3 binds the
+   next event unless it is Escape (key 1) or an unmoved slider, then returns to page 2; 4 waits
+   for back or a class-2 device, dismisses prompt slot 3 and returns to page 2.
+5. Page 2 ends with the scroller at +1A0h, 0055CEC0 while dragging, and 00553B00 with the binding
+   text widget (+190h) or null while editing.
+
+005EC5B0 (enter) builds six mode rows from the .data table 00E0898C (`globals.gamemode_escort`,
+`_siege`, `_competitive`, `_duel`, `_islandcapture`, `_any`); `_any` is disabled unless 00E19610 is
+2, and 00E19614 is clamped to 0..4 (0..5 when `_any` is allowed). With 00E08700 set it reopens on
+the option list (+A8h). On a live session it refreshes the QoS service lookup (+10h).
+
+005ECD80 (update): back without accept goes to 005ECA90; on the mode list it shows select /
+navigate / scroll_menu / back; on the option list left/right change the option (005ECBA0), accept
+opens it (005EC250), stage +F8h 3 shows `FE.create`; stages 0..2 run the +FCh timer, stage 1 waits
+for the session (slot +180h) or lets back cancel once the timer is negative (00688C70, session
+slot +170h(0), 0076FAD0(0)), stage 2 pushes interface request 14h. The two followers +B0h/+B4h take
+the option list's +F4h as Y; 00427190(8) on the profile-hints singleton ends both branches.
+
+Open: the multiplayer lobby enter/update (005E51D0, 005E5B30) and main-menu enter (005E8B20),
+each over 1000 instructions, were not reconstructed.
+
+## Handoff (cc13-frontend2)
+
+Commits on agent/cc13-frontend2: 029b56338 (178 slot functions defined, 166 named), 50834b32a
+(00560430, 005EC5B0, 005ECD80, 0062B640 reconstructed), plus the origin/main merges and this
+handoff. Build: `scripts/build.ps1` passes. Reports: `reports/cc13_frontend_menus.json` 188 rows
+and `reports/cc13_ingame_gui.json` 33 rows, 0 failed. Nothing was run in `bsp_game`.
+
+Tools left in the worktree's `local/` (copy them, the tree is temporary): `f2_extent.py` (function
+extent by recursive descent over the disk image, follows `JMP [reg*4+table]`), `f2_scan.py`
+(vtable code pointers with no function), `f2_slots.py` (vtable/slot/body table for the defined
+set), `f2_dis.py` (capstone listing with names and strings), `f2_rows.py` (report rows from a
+listing), `f2_names1.py` (the naming rules used here).
+
+Open, in order of value:
+
+1. The multiplayer lobby enter 005E51D0 (676 instructions; EBX = 0 and EBP = 1 in registers per
+   docs/MAIN_MENU_COMMAND_OWNER.md and docs/GUI_TEXT_ELLIPSIS.md; eight player rows laid out with
+   x87 at 00D7A258 steps) and update 005E5B30 (1060), and the multi main-menu enter 005E8B20 (1028).
+2. The support-manager purchase menu 0066B6C0 (1601 instructions; `ingame.sm_cp`, `sm_stock`,
+   `sm_cost`, `sm_support`). Not cited by any cc9 doc, but its callers are 0066D020 and cc9's
+   support-manager update 00675C40, so ask cc9 before reconstructing.
+3. The rewards enter 0062C2C0 (about 5200 instructions).
+4. The same undefined-slot scan outside these leases: 00568930..00584000, 005C5600..005E09A0,
+   00604A50..0061F000 and the 0068xxxx overlay slots (0068A320, 0068A400, 0068A5D0, ...).
+5. The twelve defined-but-unnamed functions listed in the third-packet section.
