@@ -1,0 +1,768 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_dispatch_first_direct_callee_entry_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "6990b6d4aa6e6477572f9ecc2c31c80abb3f6abe",
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_first_direct_callee_entry_primary",
+  "artifact_pins": {
+    "Root_entry_gate.py": {
+      "length": 9160,
+      "sha256": "c446f580b9c726da83551973f7e171133d57bfaafd5571398b2b25a3e7edd8f9"
+    },
+    "Root_entry_gate.json": {
+      "length": 4586,
+      "sha256": "e5f79de25af3eea0a11ee8d52abd735efb11d1e47f61496ac8b4d0219da53515"
+    },
+    "Root_entry_gate.stdout": {
+      "length": 281,
+      "sha256": "1f291f77c487f01d85c3668895b1ec3b80d159c98269ecd527710e5bbbe046c3"
+    },
+    "Root_entry_gate.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_actual_review.py": {
+      "length": 7707,
+      "sha256": "d278dd778b5d0e8a3b18c056d8f081110363e6d0968d7691a02a5ddf0bc78d1d"
+    },
+    "Root_actual_review.json": {
+      "length": 2332,
+      "sha256": "b61d5c1ee4c68b1abdb5ecc1488a82598cdae79ff94edb0bf4f4e0a38a58d825"
+    },
+    "Root_actual_review.stdout": {
+      "length": 111,
+      "sha256": "bb42a1eae96fcf475a3f31fd9e4026fd4f32a42fd9b7e9e342f7c764c3606b10"
+    },
+    "Root_actual_review.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_reviewed_replay.py": {
+      "length": 23963,
+      "sha256": "d6eeabaa467e9c533f13111622c15db2d41db57bd55597e72b28ce2f7e1209af"
+    },
+    "Root_reviewed_worker_guard.py": {
+      "length": 2353,
+      "sha256": "dea7116068843e5affbe63c85bfc6bf23bc60f874ca9761819a27d024b104a5d"
+    },
+    "Root_delivery.zip": {
+      "length": 2779555,
+      "sha256": "3f91e7ea58854f48a2320ffb44d254c479597d68899233c42d2a7f7be75a396d"
+    },
+    "Root_delivery_strict_receipt.json": {
+      "length": 13400,
+      "sha256": "83e607e4bd7219b4e04f87b929df278f94dd937c10931486b0cc0abb721ecfb5"
+    },
+    "Root_delivery_strict.stdout": {
+      "length": 267,
+      "sha256": "942924f3def140809cb55af848b68682224a7ab6c053595cab8f4803ec54c1f5"
+    },
+    "Root_delivery_strict.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "worker_outputs": {
+    "docs/CC12_CRT_DISPATCH_FIRST_DIRECT_CALLEE_ENTRY.md": {
+      "length": 6986,
+      "sha256": "f71f06ad6b73519ebbee1844c6f38546c307a127aa1796039ee686b87801cfee"
+    },
+    "reports/cc12_crt_dispatch_first_direct_callee_entry.json": {
+      "length": 23254,
+      "sha256": "6e7b6047507213477ca09c494a9b834e55ccdec65a3c8d5698e348211eca3740"
+    }
+  },
+  "initial_Root_gate": {
+    "status": "PASS",
+    "frozen_commit": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+    "observed_Main_at_worker_capture": "a8430e60ef99c3ea7269041e3476b0979b0f5d26",
+    "frozen_is_actual_ancestor": true,
+    "metadata_manifest": {
+      "length": 9000,
+      "sha256": "574118580f3fa2fd6987b69289bebbd11a4f9f6de55d48bfb650fb2dd9d52c68"
+    },
+    "copied_metadata_preimages": 43,
+    "actual_frozen_Git_objects": 14,
+    "finite_positive_inputs": 8,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "complete_payload": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "00c05b68"
+      },
+      "modification_number_before": "98",
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05b68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05b68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05b68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05b68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b6a"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05b6a"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "function_at_query": {
+        "space": "ram",
+        "offset": "00c05b68"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00c05b68"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "00c05b68"
+          },
+          "name": "__FF_MSGBANNER",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "57",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c05b68"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c05ba0"
+                },
+                "length": "57"
+              }
+            ]
+          }
+        }
+      ],
+      "direct_call_targets": [],
+      "modification_number_after": "98"
+    },
+    "admitted_exact_entry": {
+      "address": "00C05B68",
+      "length": 2
+    },
+    "unadmitted_owner_bytes": 55,
+    "C05B6A_unadmitted": true,
+    "no_body_proto_target_cell_provider_query_admitted": true,
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_commands": 4,
+    "worker_Native_failures": 0,
+    "worker_offline_precondition_failures": 1,
+    "Root_gate_failures": 0,
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "method_provenance": "actual frozen fetch_raw AST explicit GET plus original requested response URLs; no separate wire trace claimed"
+  },
+  "Root_actual_Git_archive_and_independent_physical_review": {
+    "status": "PASS",
+    "worker_commit": "6990b6d4aa6e6477572f9ecc2c31c80abb3f6abe",
+    "frozen_commit": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+    "delivery_members": 179,
+    "worker_core_bytes_and_copy_verified": {
+      "length": 2008451,
+      "sha256": "0fdfc9acb43e926cb1e2eaf178e23ccc94e91485354283256fefdd513b8ebead"
+    },
+    "Root_delivery_only_replay_scope": true,
+    "actual_Git_objects": 20,
+    "positive_inputs": 8,
+    "owned_outputs": [
+      "docs/CC12_CRT_DISPATCH_FIRST_DIRECT_CALLEE_ENTRY.md",
+      "reports/cc12_crt_dispatch_first_direct_callee_entry.json"
+    ],
+    "Root_copies_verified": 62,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "manual_entry": {
+      "opcode": "6A",
+      "immediate_hex": "03",
+      "immediate_bytes": 1,
+      "operand_bytes": 4,
+      "signed_value": 3,
+      "stack_write": "current SS, S-4 only under renewed actual SS32",
+      "flags_modified": false
+    },
+    "manual_incoming_call": {
+      "hex": "e85aa10000",
+      "signed_rel32": 41306,
+      "numeric_target": "00C05B68",
+      "encoded_return": "00BFBA0E",
+      "qualified_joined_ESP": "T-8 only under both actual SS32 predicates and consecutive normal execution; no stable frame or argument meaning"
+    },
+    "actual_detailed_Capstone": {
+      "address": "00C05B68",
+      "hex": "6a03",
+      "length": 2,
+      "id": 609,
+      "mnemonic": "push",
+      "op_str": "3",
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        106,
+        0,
+        0,
+        0
+      ],
+      "address_size": 4,
+      "modrm_offset": 0,
+      "modrm": 0,
+      "sib": 0,
+      "disp_offset": 0,
+      "disp_size": 0,
+      "displacement": 0,
+      "imm_offset": 1,
+      "imm_size": 1,
+      "operands": [
+        {
+          "size": 4,
+          "access": 0,
+          "type": "imm",
+          "value": 3
+        }
+      ],
+      "regs_read_implicit": [
+        "esp"
+      ],
+      "regs_written_implicit": [
+        "esp"
+      ],
+      "regs_read_all": [
+        "esp"
+      ],
+      "regs_written_all": [
+        "esp"
+      ],
+      "groups": [
+        "not64bitmode"
+      ],
+      "eflags": 0,
+      "eflags_names": []
+    },
+    "Root_actual_or_manual_review_failures": 0,
+    "Root_metadata_gate_failures": 0,
+    "worker_offline_Main_race_failures": 1,
+    "worker_Native_failures": 0,
+    "Source_build_ABI_runtime_credit": false
+  },
+  "Root_strict_delivery_replay": {
+    "schema": "cc12.c05b68-entry.replay.v1",
+    "status": "PASS",
+    "phase": "delivery",
+    "archive_pin": {
+      "length": 2779555,
+      "sha256": "3f91e7ea58854f48a2320ffb44d254c479597d68899233c42d2a7f7be75a396d"
+    },
+    "archive_entries": 179,
+    "frozen_actual_Git_commit": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+    "frozen_tree": "e138972c91fe0c8e00abfa76fefb5869a0551e61",
+    "observed_Main_at_capture": "a8430e60ef99c3ea7269041e3476b0979b0f5d26",
+    "frozen_is_ancestor_not_current_Main": true,
+    "finite_actual_Git_inputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA.md",
+        "blob": "00898d7e2fd41314c349109426762359cf394dd8",
+        "length": 7850,
+        "sha256": "f8cb931898edd742807bd6fee9668f5d1be09f774b5eab8dbb55a41883020084",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata.json",
+        "blob": "26514187a33f62057e4cfbee1d93bb704bccfbac",
+        "length": 46734,
+        "sha256": "db882517ee5a684f5edf9a9321db87d67ad8c8271a0ffd30a3813ae200bd650d",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+        "blob": "0890b0d1cf81cedbc9e136781240b10ce65c4bd1",
+        "length": 2943,
+        "sha256": "ed0b9dee678259519e6a16988bd565b98ec80ca775a1e7d37835266669601c90",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata_primary.json",
+        "blob": "b530cc4f34538eabd661c110be120f344fa50016",
+        "length": 157847,
+        "sha256": "529a32b363f064bc84fe0ae9b117222e8d1a35a967e52cae684532fe1c7b18d7",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "working_bytes_equal_Git_blob": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "working_bytes_equal_Git_blob": true
+      }
+    ],
+    "source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "Native_commands": 11,
+    "count_checkpoints": 4,
+    "function_count": 64730,
+    "modification_number": 98,
+    "original_typed_responses": [
+      {
+        "capture": "entry_a",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      },
+      {
+        "capture": "entry_b",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      },
+      {
+        "capture": "entry_close",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      }
+    ],
+    "Root_gate_files_copied": 62,
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c05b68"
+      },
+      "name": "__FF_MSGBANNER",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "57",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c05b68"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c05ba0"
+            },
+            "length": "57"
+          }
+        ]
+      }
+    },
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "instruction_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c05b6a"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c05b6a"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "physical": {
+      "length": 2,
+      "code_hex": "6a03",
+      "code_sha256": "413d574c3b171871faa327f83f0ca55e6ffbbf2bf281b4146219a7e59bc14173",
+      "manual": {
+        "address": "00C05B68",
+        "hex": "6a03",
+        "length": 2,
+        "prefixes": [],
+        "opcode": "6A",
+        "mnemonic": "push",
+        "operand_size_bits": 32,
+        "address_size_bits": 32,
+        "stack_address_size": "current SS descriptor B attribute; not implied by code address size",
+        "modrm": null,
+        "sib": null,
+        "displacement": null,
+        "immediate": {
+          "offset": 1,
+          "size": 1,
+          "hex": "03",
+          "unsigned_value": 3,
+          "signed_value": 3,
+          "sign_extended_operand_bits": 32,
+          "sign_extended_value": 3,
+          "pushed_little_endian_hex": "03000000"
+        },
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "access": 0,
+            "value": 3
+          }
+        ],
+        "implicit_memory_write": {
+          "segment": "current SS",
+          "value": 3,
+          "size": 4,
+          "offset_if_current_SS_B_1": "(current ESP - 4) modulo 2^32"
+        },
+        "implicit_regs_read": [
+          "esp"
+        ],
+        "implicit_regs_written": [
+          "esp"
+        ],
+        "eflags_modified_names": [],
+        "success_fallthrough": "00C05B6A",
+        "success_fallthrough_queried": false,
+        "transfer": null
+      },
+      "paired_bytes_equal": true,
+      "paired_context0_equal": true,
+      "three_typed_responses_equal": true,
+      "manual_actual_text_typed_agree": true
+    },
+    "actual_Capstone": {
+      "producer": {
+        "file": "decode_actual.py",
+        "length": 4871,
+        "sha256": "f57d5ae5f7d53d51e4e588205a40118ec9029147c56cd9d84ca494ce57fca1dd"
+      },
+      "Capstone_python_version": "5.0.7",
+      "Capstone_engine_version": [
+        5,
+        0,
+        1280
+      ],
+      "architecture": "CS_ARCH_X86",
+      "mode": "CS_MODE_32",
+      "detail": true,
+      "runtime_Capstone_is_outside_pure_ZIP_replay": true,
+      "code_hex": "6a03",
+      "code_sha256": "413d574c3b171871faa327f83f0ca55e6ffbbf2bf281b4146219a7e59bc14173",
+      "length": 2,
+      "instructions": [
+        {
+          "address": "00C05B68",
+          "hex": "6a03",
+          "length": 2,
+          "id": 609,
+          "mnemonic": "push",
+          "op_str": "3",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            106,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm_offset": 0,
+          "modrm": 0,
+          "sib": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "displacement": 0,
+          "imm_offset": 1,
+          "imm_size": 1,
+          "operands": [
+            {
+              "size": 4,
+              "access": 0,
+              "type": "imm",
+              "value": 3
+            }
+          ],
+          "regs_read_implicit": [
+            "esp"
+          ],
+          "regs_written_implicit": [
+            "esp"
+          ],
+          "regs_read_all": [
+            "esp"
+          ],
+          "regs_written_all": [
+            "esp"
+          ],
+          "groups": [
+            "not64bitmode"
+          ],
+          "eflags": 0,
+          "eflags_names": []
+        }
+      ]
+    },
+    "cpu_contract": {
+      "entry_state": "All prior opaque return state remains unknown: registers including EBP and ESP, flags, segment selectors and descriptors, SS stack attributes, memory and provider state. Saved names and caller offsets do not recover a type, frame or preservation convention.",
+      "incoming_edge": {
+        "site": "00BFBA09",
+        "hex": "e85aa10000",
+        "signed_rel32": 41306,
+        "numeric_target": "00C05B68",
+        "encoded_return": "00BFBA0E",
+        "local_predicate": "Only when this near CALL executes successfully with actual current 32-bit stack addressing (SS.B=1), if ESP immediately before it is T.",
+        "local_effect": "ESP=(T-4) modulo 2^32; write return 00BFBA0E as a dword through current SS at that offset; enter numeric C05B68. No callee or later state follows from this effect alone."
+      },
+      "entry_push": {
+        "local_predicate": "Renew the actual current SS.B=1 predicate at this PUSH; do not inherit stack attributes across opaque calls. The instruction must complete without fault.",
+        "local_effect": "Let S be current ESP at C05B68. Write sign_extend_32(03)=00000003 as a four-byte value through current SS at (S-4) modulo 2^32, set ESP to that offset, and continue at C05B6A. No arithmetic flags change.",
+        "joined_with_incoming_call": "Only along the accepted successful incoming CALL followed directly by this successful PUSH, with current SS.B=1 established at each operation and no intervening state change: S=T-4 and resulting ESP=T-8 (modulo 2^32). The new dword is 3; the prior CALL wrote BFBA0E at the preceding stack location. This describes local writes, not a stable frame or recovered argument.",
+        "outside_predicate": "With a different or unknown SS stack-address attribute, do not claim the full-ESP S-4/T-8 equations. Segment translation, limits, permissions, memory accessibility, faults and actual runtime values remain unverified.",
+        "other_state": "No explicit general register except stack pointer is written, and flags are unaffected by the instruction; existing values remain unknown. No callee-wide preservation or return behavior is inferred."
+      },
+      "continuation": "C05B6A is arithmetic and saved fallthrough only; no byte, text, owner body continuation, provider, target cell, prototype or service query was made there.",
+      "no_credit": [
+        "Source",
+        "build",
+        "tests",
+        "probe",
+        "ABI compatibility",
+        "Original executable execution",
+        "game",
+        "OS/audio",
+        "runtime behavior",
+        "GPR mutation"
+      ]
+    },
+    "failure_accounting": {
+      "worker_offline_Main_advanced_precondition": 1,
+      "failed_attempt_Native_commands": 0,
+      "worker_Native": 0,
+      "phase2_capture": 0,
+      "actual_decoder": 0,
+      "Root_gate": 0
+    },
+    "pure_replay_design": "Actual detailed decoder output is inert data. No decoder import or construction; archived producers are not executed. Strong runner allows only one archive open, exact code object exec and exclusive receipt create, records every denied event and requires denied=[].",
+    "final_Git": {
+      "commit": "6990b6d4aa6e6477572f9ecc2c31c80abb3f6abe",
+      "tree": "5e996f67c73e2cfc047f485868a208da9329c81b",
+      "outputs": [
+        {
+          "path": "docs/CC12_CRT_DISPATCH_FIRST_DIRECT_CALLEE_ENTRY.md",
+          "blob": "c192f97c249abe9c81500bd7c32b3a551a3f1894",
+          "length": 6986,
+          "sha256": "f71f06ad6b73519ebbee1844c6f38546c307a127aa1796039ee686b87801cfee",
+          "working_bytes_equal_Git_blob": true,
+          "index_mode": "100644",
+          "index_blob": "c192f97c249abe9c81500bd7c32b3a551a3f1894",
+          "index_stage": "0"
+        },
+        {
+          "path": "reports/cc12_crt_dispatch_first_direct_callee_entry.json",
+          "blob": "604b7d8640d5916bae00d16f4c935d62b5858699",
+          "length": 23254,
+          "sha256": "6e7b6047507213477ca09c494a9b834e55ccdec65a3c8d5698e348211eca3740",
+          "working_bytes_equal_Git_blob": true,
+          "index_mode": "100644",
+          "index_blob": "604b7d8640d5916bae00d16f4c935d62b5858699",
+          "index_stage": "0"
+        }
+      ],
+      "exactly_two_outputs": true,
+      "current_index_working_blob_equal": true
+    },
+    "scope": "Exact two-byte entry only; no Source/build/test/probe/GPR-write/ABI/game/OS-audio/runtime credit."
+  },
+  "Root_strict_audit": {
+    "audit": "PASS",
+    "archive_reads": 1,
+    "exclusive_receipt_writes": 1,
+    "helper_executions": 1,
+    "denied": []
+  },
+  "failure_history": {
+    "worker_offline_Main_reference_race": 1,
+    "failed_attempt_Native_commands": 0,
+    "worker_Native_phase2_decoder_core_delivery": 0,
+    "Root_gate_actual_manual_delivery_replay": 0
+  },
+  "validation_credit": {
+    "exact_entry_saved_listing": true,
+    "complete_owner_metadata_only": true,
+    "whole_owner_bytes_unread": 55,
+    "Source_modified": false,
+    "new_build_test_probe": false,
+    "Original_ABI_compatible": false,
+    "game_runtime_OS_audio_validated": false
+  },
+  "next_boundary": "A separately leased metadata-only walk of complete saved C05B68..C05BA0 owner range. C05B6A is not queried or admitted by this entry review."
+}
