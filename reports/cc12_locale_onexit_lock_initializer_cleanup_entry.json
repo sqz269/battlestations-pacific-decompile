@@ -1,0 +1,600 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_lock_initializer_cleanup_entry",
+  "status": "bounded exact-entry Native evidence; remaining body closed",
+  "frozen_HEAD": "a815dbae5acd12cda8aeb66cc4e9ff72d54af470",
+  "positive_predecessor": {
+    "physical_call": "00C11C0A",
+    "bytes": "E809000000",
+    "numeric_target": "00C11C18",
+    "physical_return_address": "00C11C0F",
+    "claim": "Accepted numeric direct-call edge from the immediate body packet. Target role and external returned state remain unknown.",
+    "immediate_files": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "oid": "d08c5922aff7d5781aa9ce1c2e5942e4c4f2a369",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "bytes": 11169,
+        "sha256": "390e7346d047d2f2d4a227720b1e0e894272e9db75d6c0771b59e0d6738b2c13"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_body.json",
+        "oid": "a9803cb94208f74a4cf048d9253ad8c7d3d9cb47",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "bytes": 42153,
+        "sha256": "ff60700724b0d66876292b9f2f4b675d4489b18b7149f0365a8625b521d7c30b"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "oid": "8d081a598623b4ef5e79e6ffcc3b69aa8252aec2",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "bytes": 2690,
+        "sha256": "9eb539a6cabfe88fb7e12324ca6d79bbbe22e9970d6c7959576bf6b5c5e1fdb1"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "oid": "621d44bde2f250d86d6c33f0d2a4b3aa44ae0565",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "bytes": 9510,
+        "sha256": "5c2ddc352648754cc2a9584e525628a769b78a2cd972459f33d2db5a9cfdda70"
+      }
+    ]
+  },
+  "Root_entry_gate": {
+    "proof": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/Root_entry_gate.json",
+      "bytes": 816,
+      "sha256": "d8e2086af9a22093815baf58e3bcee8c391aafaf20541b9a50a39f32608f87e7"
+    },
+    "producer_retained_not_executed": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/Root_entry_gate.py",
+      "bytes": 3783,
+      "sha256": "2463aee5d947dca49f7957b683c70cfde1af7b5acc095112cbe2701ae0bec3e2"
+    },
+    "admitted": [
+      "two exact 2-byte reads at C11C18",
+      "one context-zero saved-text read at C11C18",
+      "four prototype prefix lines as metadata",
+      "one closing exact-entry typed capture and count"
+    ],
+    "not_admitted": [
+      "C11C1A..C11C20 instruction bytes or interiors",
+      "adjacent code",
+      "targets",
+      "data",
+      "providers",
+      "automatic companions"
+    ]
+  },
+  "typed_metadata": {
+    "captures": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/typed_a.raw.json",
+        "bytes": 8891,
+        "sha256": "a049a93e65d048bce68c8f15d6d2999be148c67fe62d67ad66b068b800d0f72b"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/typed_b.raw.json",
+        "bytes": 8891,
+        "sha256": "1a40eaa2e48479a3e885c846ca0d708bba717c7fb4f3b8ef0311f093ceb371ed"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/typed_closing.raw.json",
+        "bytes": 8891,
+        "sha256": "505fae2fdbcfa8090f1d8af522287ff485643926f56a04e0c66a0474efe11654"
+      }
+    ],
+    "projection": {
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11c18"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11c18"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11c18"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c11c18"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c1a"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11c1a"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "owner": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c11c18"
+        },
+        "name": "LIBCRT_LockInitializer_UnlockLock10_00c11c18",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "9",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c11c18"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c11c20"
+              },
+              "length": "9"
+            }
+          ]
+        }
+      },
+      "raw_payload_pin": {
+        "bytes": 2175,
+        "sha256": "c9c7b6214f7f8fff9afa802e8de392a085a696322a12f0721af7f31ea6bb250a"
+      },
+      "opaque": "entire automatic direct_call_targets value"
+    },
+    "epoch": 98,
+    "count_bookends": [
+      64730,
+      64730,
+      64730,
+      64730
+    ],
+    "all_four_aliases_verified": true,
+    "payloads_equal": true,
+    "raw_HTTP_JSON_base64_digests_retained": true,
+    "entire_automatic_target_objects": "opaque"
+  },
+  "entry_code": {
+    "address": "00C11C18",
+    "whole_unit_bytes": 2,
+    "hex": "6A0A",
+    "sha256": "cee00b08a818db87e17e703273818e5194f83280e1ef3eae9214ff14675d9e6d",
+    "reads": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/entry_bytes_a.stdout.bin",
+        "bytes": 21,
+        "sha256": "4a5acfcf69fb10ef459458e78c19fa80f236a2ae611de0e45c74c86d7034b368"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/entry_bytes_b.stdout.bin",
+        "bytes": 21,
+        "sha256": "4a5acfcf69fb10ef459458e78c19fa80f236a2ae611de0e45c74c86d7034b368"
+      }
+    ],
+    "context_zero_saved_text": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/entry_text.raw.json",
+      "bytes": 157,
+      "sha256": "39fb025796cc29962a61fe07801c4cf4c82b5d5a4de5344a14d63f1dae972479"
+    },
+    "saved_instruction": "PUSH 0xa",
+    "independent_physical_decode": {
+      "opcode": "6A",
+      "immediate_byte": "0A",
+      "signed_immediate": 10,
+      "default_operand_bits": 32,
+      "ModRM": null,
+      "relative_target": null
+    },
+    "actual_detailed_Capstone": {
+      "capture": {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/capstone_detail.json",
+        "bytes": 930,
+        "sha256": "8e485ec9a9b8ed15df5b356e0707c7d5ca4cb0067232a4395c5ccdc1f888fc64"
+      },
+      "producer": {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/capture_capstone.py",
+        "bytes": 2652,
+        "sha256": "63b609ffee1ec381c2f69462b4afe265bdf23c69d7e4709a20e514798c642295"
+      },
+      "result": {
+        "decoder": "Capstone",
+        "version": "5.0.7",
+        "mode": "x86-32",
+        "input": {
+          "bytes": 2,
+          "sha256": "cee00b08a818db87e17e703273818e5194f83280e1ef3eae9214ff14675d9e6d"
+        },
+        "unit": {
+          "address": 12655640,
+          "bytes": "6a0a",
+          "size": 2,
+          "mnemonic": "push",
+          "op_str": "0xa",
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            106,
+            0,
+            0,
+            0
+          ],
+          "address_size": 4,
+          "modrm": 0,
+          "modrm_offset": 0,
+          "displacement": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "immediate_offset": 1,
+          "immediate_size": 1,
+          "operands": [
+            {
+              "type": 2,
+              "size": 4,
+              "access": 0,
+              "immediate": 10
+            }
+          ]
+        },
+        "independent_opcode": {
+          "opcode": "6A",
+          "immediate_byte": "0A",
+          "signed_immediate": 10,
+          "default_operand_bits": 32,
+          "ModRM": null,
+          "relative_target": null
+        }
+      }
+    },
+    "conditional_machine_effect": {
+      "assumptions": "Normal completion under saved x86 default-32 decode and a 32-bit stack model.",
+      "ESP_before": "S",
+      "ESP_after": "S-4 modulo 2^32",
+      "write": "current SS:[S-4] := 0000000Ah",
+      "instruction_flags": "unchanged by this PUSH on normal completion",
+      "caller_argument_read": false,
+      "ModRM": null,
+      "relative_target": null,
+      "next_address": "00C11C1A; instruction there not read"
+    },
+    "limits": [
+      "The literal 10 has no established argument or lock-number meaning.",
+      "No whole-function return, stack balance or cleanup effect is established.",
+      "Possible external returned registers, ESP, EBP, flags, segments and memory remain unknown."
+    ]
+  },
+  "saved_function_metadata": {
+    "name": "LIBCRT_LockInitializer_UnlockLock10_00c11c18",
+    "no_return": false,
+    "is_thunk": false,
+    "complete_saved_range": "00C11C18..00C11C20",
+    "saved_address_count": 9,
+    "remaining_unread_bytes": 7,
+    "remaining_unread_range": "00C11C1A..00C11C20",
+    "name_signature_role_ABI": "metadata only; no cleanup, unlock, locking, CRT, argument-count or return guarantee"
+  },
+  "prototype_capture": {
+    "stream": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/prototype.stdout.bin",
+      "bytes": 374,
+      "sha256": "d133445087d812843068e32a0c35a56e5ca16e994dcb4686aac0310f62625f30"
+    },
+    "interpreted_prefix_lines": 4,
+    "prefix": [
+      "Function: LIBCRT_LockInitializer_UnlockLock10_00c11c18 at 00c11c18",
+      "Signature: undefined LIBCRT_LockInitializer_UnlockLock10_00c11c18(void)",
+      "Entry: 00c11c18",
+      "Body: 00c11c18 - 00c11c20"
+    ],
+    "opaque_delivered_suffix_pin": {
+      "bytes": 189,
+      "sha256": "33a723e5442454158ea233ce31566ccb2b846ccafb5439aa8b523b5672eaa456"
+    },
+    "opaque_suffix_parsed": false,
+    "incidental_delivery": "CLI --lines 4 still delivered an opaque suffix; only the four prefix lines were displayed and interpreted."
+  },
+  "provenance": {
+    "selected_positive_files": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "oid": "d08c5922aff7d5781aa9ce1c2e5942e4c4f2a369",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "bytes": 11169,
+        "sha256": "390e7346d047d2f2d4a227720b1e0e894272e9db75d6c0771b59e0d6738b2c13"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_body.json",
+        "oid": "a9803cb94208f74a4cf048d9253ad8c7d3d9cb47",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "bytes": 42153,
+        "sha256": "ff60700724b0d66876292b9f2f4b675d4489b18b7149f0365a8625b521d7c30b"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "oid": "8d081a598623b4ef5e79e6ffcc3b69aa8252aec2",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY_PRIMARY.md",
+        "bytes": 2690,
+        "sha256": "9eb539a6cabfe88fb7e12324ca6d79bbbe22e9970d6c7959576bf6b5c5e1fdb1"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "oid": "621d44bde2f250d86d6c33f0d2a4b3aa44ae0565",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_body_primary.json",
+        "bytes": 9510,
+        "sha256": "5c2ddc352648754cc2a9584e525628a769b78a2cd972459f33d2db5a9cfdda70"
+      }
+    ],
+    "actual_frozen_Git_objects": [
+      {
+        "kind": "commit",
+        "oid": "a815dbae5acd12cda8aeb66cc4e9ff72d54af470",
+        "member": "objects/a815dbae5acd12cda8aeb66cc4e9ff72d54af470",
+        "bytes": 434,
+        "sha256": "442c5f03984de894c1d6c6180563067be7012d5a90308c1548d6af28a8d69326"
+      },
+      {
+        "kind": "tree",
+        "oid": "5088300142d7d4cd8d5fd9671520b61337c9fa71",
+        "member": "objects/5088300142d7d4cd8d5fd9671520b61337c9fa71",
+        "bytes": 563,
+        "sha256": "922989c4da96691d123fb69505f32c431a9a5b76ed5bddbaa30569533609dfdf"
+      },
+      {
+        "kind": "tree",
+        "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "member": "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      {
+        "kind": "tree",
+        "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+        "member": "objects/fa269934679ee43da523f7bf9c369e4e27d83531",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      {
+        "kind": "tree",
+        "oid": "75e59bcd53df5bcde380c33b5df5055261525627",
+        "member": "objects/75e59bcd53df5bcde380c33b5df5055261525627",
+        "bytes": 230511,
+        "sha256": "b1b16958cf85733d8835cc649b4511cc6142e14911276d693f50544287652baf"
+      },
+      {
+        "kind": "tree",
+        "oid": "05e8ea50278e9da76f869335cfc3a1320babb88e",
+        "member": "objects/05e8ea50278e9da76f869335cfc3a1320babb88e",
+        "bytes": 355422,
+        "sha256": "c580acac8917c603f2663456a93089ef4d229639f48df44256c61b4e7183c862"
+      }
+    ],
+    "finite_positive_files": 8,
+    "CLI_commands_with_complete_streams": 11,
+    "failed_Native_captures": 0,
+    "capture_schedule": {
+      "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/capture_schedule.json",
+      "bytes": 211,
+      "sha256": "15b338045366dd00792775f918bd8c1c51ad069cb96f3e5576f8a6555debf067"
+    },
+    "producer_revision_records": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/git_producer_revision.json",
+        "bytes": 456,
+        "sha256": "a81c30da53783d3e9143fe744437a707f823ecd5155139a96ea4bf4ddb7c31aa"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/replay_revision.json",
+        "bytes": 817,
+        "sha256": "e0f0a49f634201632b7bb501c081319dd2069f9f5d3e903915f9a9a62b8a128f"
+      }
+    ],
+    "preimages": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/preimages/body_capture_git.py",
+        "bytes": 3382,
+        "sha256": "b6f1e457ba94eeddd39b3c6fb3601b83c9371699f18c87ca0b10644ad6db21d7"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/preimages/entry_replay.py",
+        "bytes": 12963,
+        "sha256": "533dc894ab596b3e09d2c3527ae886cc85577d14ee0f5eeb9e25813514decc30"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/preimages/entry_guarded_replay.py",
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    ],
+    "earlier_archives_traversed": 0
+  },
+  "core_archive": {
+    "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/core_v1.zip",
+    "bytes": 1063038,
+    "sha256": "0accc63b0233556802e9bf33cd4a9c4947176e74a90f3f5337643627d7ee1ba4"
+  },
+  "distinct_physical_copy": {
+    "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/core_v1_copy.zip",
+    "bytes": 1063038,
+    "sha256": "0accc63b0233556802e9bf33cd4a9c4947176e74a90f3f5337643627d7ee1ba4"
+  },
+  "offline_replay": {
+    "receipts": [
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/core_v1_original.guard.json",
+        "bytes": 6427,
+        "sha256": "453750673424c0aa9585aaba4b6ffbce18a4c652b0e94a550d2073ed00e546db"
+      },
+      {
+        "path": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/core_v1_copy.guard.json",
+        "bytes": 6427,
+        "sha256": "453750673424c0aa9585aaba4b6ffbce18a4c652b0e94a550d2073ed00e546db"
+      }
+    ],
+    "guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "helper_pins_verified_before_execution": [
+      {
+        "name": "replay.py",
+        "bytes": 14111,
+        "sha256": "6512ccefc353b1947d9223b272b6968f66aa0378374cf64cff1a163c129fc6cf"
+      },
+      {
+        "name": "guarded_replay.py",
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    ],
+    "archive_members_verified": 78,
+    "status": "PASS"
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+      "reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json"
+    ],
+    "post_commit_archive": "local/cc12_locale_onexit_lock_initializer_cleanup_entry/delivery_v1.zip",
+    "receipts": [
+      "local/cc12_locale_onexit_lock_initializer_cleanup_entry/delivery_v1_original.guard.json",
+      "local/cc12_locale_onexit_lock_initializer_cleanup_entry/delivery_v1_copy.guard.json"
+    ],
+    "closure": "Actual frozen/final commit and selected tree objects, selected physical/blob bytes and owned staged bytes; root/subtree comparison proves exactly two changed paths.",
+    "self_reference_boundary": "Delivery archive and receipts are produced after committing these outputs and handed off separately."
+  },
+  "Source_identity_only": {
+    "trees": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "worker frozen base and final revision identity only",
+    "current_or_future_Root_equality": "not claimed",
+    "census": "not performed",
+    "implementation_credit": false
+  },
+  "not_established": [
+    "target routine role",
+    "whole body behavior",
+    "literal or argument meaning",
+    "cleanup or unlock behavior",
+    "locking, provider or CRT identity",
+    "ABI",
+    "whole-function return or stack balance",
+    "exception or unwind contract",
+    "Source implementation",
+    "fresh build or test result",
+    "Original game/OS/audio behavior",
+    "startup or gameplay completion"
+  ],
+  "next_scope": "Closed at the exact entry. Remaining body bytes, interiors, targets and data require a separate Root scope decision."
+}
