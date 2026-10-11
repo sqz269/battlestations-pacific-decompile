@@ -13,6 +13,8 @@
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/model_bounds.hpp"
+#include "bsp/native_camera_projection.hpp"
 #include "bsp/system_camera_axes.hpp"
 
 namespace bsp::particle_emitters {
@@ -837,6 +839,122 @@ void submit_particle_model_render_00af73a0(void* model, void* context, ParticleM
     // +C8h(sphere, camera, classification).
     if (host.show_boundings_option_0051f520()) {
         host.debug_draw_sphere_slot_c8(host.model_world_sphere_slot48(model), camera, classification);
+    }
+}
+
+float particle_system_lod_fade_00af4130(const void* system, float x, float y, float z, const CameraMatrix& view_projection,
+                                        float camera_fov, float& distance_out, const CameraAxesCrtAccess& crt) {
+    const float near_distance = rd<float>(system, 0x68);
+    const float far_distance = rd<float>(system, 0x6c);
+    // AF4138..AF4192: sphere {position, +8Ch + +88h} through the view-projection.
+    const float radius = rd<float>(system, 0x8c) + rd<float>(system, 0x88);
+    std::array<float, 4> sphere{x, y, z, radius};
+    transform_sphere_007c1180(sphere, view_projection, sphere);
+    // AF4197..AF4228: FOV-normalised distance, d = |c| * (1/tan(20 deg)) / (1/tan(fov/2)).
+    auto bits = [](float v) {
+        std::uint32_t b;
+        std::memcpy(&b, &v, sizeof b);
+        return b;
+    };
+    const float k1 = static_cast<float>(1.0 / native_projection_tangent_00412e20(bits(0.349065781f)));  // [00D5D954]
+    const double d1 = static_cast<double>(camera_vector_length_00419440(sphere.data(), &crt)) * k1;  // FSTP qword
+    const float half_fov = static_cast<float>(camera_fov * 0.5);  // [00D7A280]
+    const float k2 = static_cast<float>(1.0 / native_projection_tangent_00412e20(bits(half_fov)));
+    const float d = static_cast<float>(d1 / k2);
+    distance_out = d;  // FST [out]
+    // AF4237..AF427C: 0 at or beyond far (+6Ch), 1 at or inside near (+68h),
+    // otherwise 1 - (d - near) / (far - near). JB continues on unordered.
+    if (!(d < far_distance) && !std::isnan(d) && !std::isnan(far_distance)) return 0.0f;
+    if (!(near_distance < d) && !std::isnan(d) && !std::isnan(near_distance)) return 1.0f;
+    const float q = static_cast<float>((static_cast<double>(d) - near_distance) /
+                                       (static_cast<double>(far_distance) - near_distance));
+    return static_cast<float>(1.0 - q);
+}
+
+float particle_model_lod_fade_00af6300(void* model, void* camera, ParticleModelLodHost& host,
+                                       const CameraAxesCrtAccess& crt) {
+    // AF6313..AF631D: refresh the world matrix unless +5Ch bit 1 is set.
+    if ((rd<std::uint8_t>(model, 0x5c) & 2) == 0) {
+        host.refresh_world_00b6db70(model);
+    }
+    float distance = 0.0f;
+    const float fade = particle_system_lod_fade_00af4130(
+        ptr(model, 0x18c), rd<float>(model, 0x120), rd<float>(model, 0x124), rd<float>(model, 0x128),
+        host.view_projection_00b70490(camera), rd<float>(camera, 0x1c4), distance, crt);
+    wr<float>(model, 0x1e0, distance);
+    return fade;
+}
+
+bool particle_model_update_visibility_00af6360(void* model, void* camera, ParticleModelLodHost& host,
+                                               const CameraAxesCrtAccess& crt) {
+    const float visibility =
+        static_cast<float>(particle_model_lod_fade_00af6300(model, camera, host, crt) * rd<float>(model, 0x1dc));
+    wr<float>(model, 0x1d8, visibility);
+    return static_cast<double>(visibility) > 0.0035000001080334187;  // [00CF6548]
+}
+
+float emitter_distance_fade_00afaa20(const void* emitter_definition, float x) {
+    const float start = rd<float>(emitter_definition, 0x30);
+    if (x <= start) return 0.0f;
+    const float fade_out = rd<float>(emitter_definition, 0x3c);
+    const float hold_end = rd<float>(emitter_definition, 0x38);
+    const float end = fade_out + hold_end;  // spilled
+    if (end <= x) return 0.0f;
+    const float fade_in = rd<float>(emitter_definition, 0x34);
+    const float full = fade_in + start;  // spilled
+    if (full <= x && x <= hold_end) return 1.0f;
+    if (start < x && x < full) {
+        if (fade_in <= 0.0f) return 0.0f;  // [00D7A218]
+        const float rise = x - start;
+        return rise / fade_in;
+    }
+    if (hold_end < x && x < end && 0.0f < fade_out) {
+        const float fall = x - hold_end;
+        float v = 1.0f - fall / fade_out;
+        if (v < 0.0f) v = 0.0f;  // 004155B0 BSP_Float_ClampByPointer(v, 0, 1.0 [00D7A24C])
+        if (v > 1.0f) v = 1.0f;
+        return v;
+    }
+    return 0.0f;
+}
+
+std::int32_t emitter_update_00aff7a0(void* emitter, void* context, float distance, ParticleEmitterHost& host) {
+    void* container = rd<void*>(emitter, 0x10);
+    if (container == nullptr) return 0;
+    const float fade = emitter_distance_fade_00afaa20(ptr(emitter, 0x0c), distance);
+    wr<float>(emitter, 0x24, fade);
+    if (0.004f > fade) return 0;  // [00CEC178], JA: unordered continues
+    host.container_update_slot0(container, context);
+    return rd<std::int32_t>(container, 0x28);
+}
+
+std::int32_t emitter_build_geometry_00aff7f0(void* emitter, const float view[16], float distance, float argument,
+                                             ParticleGeometryHost& host) {
+    void* container = rd<void*>(emitter, 0x10);
+    if (container == nullptr) return 0;
+    const float model_visibility = rd<float>(ptr(emitter, 0x08), 0x1d8);
+    const float fade = emitter_distance_fade_00afaa20(ptr(emitter, 0x0c), distance);
+    const float alpha = model_visibility > fade ? fade : model_visibility;  // JBE keeps +1D8h on unordered
+    wr<float>(emitter, 0x24, alpha);
+    if (0.004f > alpha) return 0;
+    build_container_geometry_00b05550(container, view, argument, host);
+    return rd<std::int32_t>(container, 0x28);
+}
+
+void particle_model_update_emitters_00af5ee0(void* model, void* context, ParticleEmitterHost& host) {
+    // The count +198h and the array +194h are re-read on every iteration.
+    for (std::int32_t i = 0; i < rd<std::int32_t>(model, 0x198); ++i) {
+        void* emitter = rd<void* const*>(model, 0x194)[i];
+        emitter_update_00aff7a0(emitter, context, rd<float>(model, 0x1e0), host);
+    }
+}
+
+void particle_model_build_geometry_00af5e90(void* model, const float view[16], float argument,
+                                            ParticleGeometryHost& host) {
+    // The count +198h and the array +194h are re-read on every iteration.
+    for (std::int32_t i = 0; i < rd<std::int32_t>(model, 0x198); ++i) {
+        void* emitter = rd<void* const*>(model, 0x194)[i];
+        emitter_build_geometry_00aff7f0(emitter, view, rd<float>(model, 0x1e0), argument, host);
     }
 }
 

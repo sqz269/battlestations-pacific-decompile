@@ -285,6 +285,29 @@ RET 10h. It is the particle model table D5DA50, slot +20h.
 Also named: 00AF6B90 BSP_TypeInfo_InitializeMwParticleSystem (the "MwParticleSystem" string anchor) and
 its unreferenced wrapper 00AF7490.
 
+### LOD, visibility and the per-emitter frame chain
+
+This chain explains where emitter+24h (the alpha that every quad emitter gates on at 0.004) comes from.
+
+| Address | Name | What it does |
+| --- | --- | --- |
+| 00AF4130 | BSP_ParticleSystem_ComputeLodFade | FOV-normalised distance d (below) and the near/far fade from system +68h/+6Ch |
+| 00AF6300 | BSP_NativeParticleModel_ComputeLodFade | World refresh, then 00AF4130 on +18Ch with the world position; d goes to model+1E0h |
+| 00AF6360 | BSP_NativeParticleModel_UpdateVisibility | model+1D8h = fade · model+1DCh; visible when > 0.0035 (the 00AF73A0 threshold) |
+| 00AFAA20 | BSP_ParticleEmitter_DistanceFade | Per-emitter window over d: start +30h, fade-in +34h, hold-end +38h, fade-out +3Ch |
+| 00AFF7A0 | BSP_ParticleEmitter_Update | emitter+24h = window fade; above 0.004, container vtable slot 0(context) |
+| 00AFF7F0 | BSP_ParticleEmitter_BuildGeometry | emitter+24h = min(model+1D8h, window fade); above 0.004, 00B05550 |
+| 00AF5EE0 / 00AF5E90 | BSP_NativeParticleModel_UpdateEmitters / _BuildEmitterGeometry | Loop the +194h/+198h emitters with d = model+1E0h |
+
+- **00AF4130's distance.**
+  - d = |centre of 007C1180(sphere, 00B70490 view-projection)| · (1/tan 20°) / (1/tan(fov/2)).
+  - The first product is spilled as a double. The tangent is the native 00412E20 FSINCOS helper.
+  - The result is 0 at or beyond far, 1 at or inside near, and linear in between.
+- **00AFAA20's NaN paths** are not checked against its FCOMI/JAE/JB chain.
+- **Callers.** 00AF6360 and the large 00AF63A0 (which calls 00AF5E90) are called from 00AF0C50
+  BSP_FoliageGroups_BuildVisibleSet (segment 81, not leased here). That name looks wrong for a routine
+  that drives particle models; it is open.
+
 ## 4. Handoff
 
 - Leases are released. The work is committed on `agent/cc13-water2`.

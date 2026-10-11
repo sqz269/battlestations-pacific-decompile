@@ -275,6 +275,69 @@ public:
 // and the two pushes before the second call are +C8h's last two arguments.
 void submit_particle_model_render_00af73a0(void* model, void* context, ParticleModelRenderHost& host);
 
+// ---- Particle model LOD and per-emitter frame chain (cc13_particles1) ----
+// Model fields used: +5Ch transform flags, +120h..128h world position, +18Ch
+// system/definition, +194h emitter array, +198h emitter count, +1D8h
+// visibility, +1DCh visibility scale, +1E0h last LOD distance. Emitter fields:
+// +08h model, +0Ch emitter definition (distance window +30h..3Ch), +10h
+// particle container, +24h emitter alpha (the fade every quad emitter gates on).
+
+// 00AF4130 `float __thiscall(system ECX, float x, float y, float z, camera,
+// float* distance_out)`, RET 14h. sphere = {x, y, z, +8Ch + +88h} through
+// 007C1180 with the camera's 00B70490 view-projection; d = float(double(
+// |centre| (00419440) * float(1/tan(20 deg [00D5D954]))) / float(1/tan(
+// camera+1C4h * 0.5))) with the native 00412E20 tangent; *distance_out = d.
+// Returns 0 when d >= far (+6Ch), 1 when d <= near (+68h), else 1 - (d -
+// near)/(far - near). The camera arrives here as its matrix and FOV.
+float particle_system_lod_fade_00af4130(const void* system, float x, float y, float z, const CameraMatrix& view_projection,
+                                        float camera_fov, float& distance_out, const CameraAxesCrtAccess& crt);
+
+class ParticleModelLodHost {
+public:
+    virtual ~ParticleModelLodHost() = default;
+    virtual void refresh_world_00b6db70(void* model) = 0;                     // 00B6DB70
+    virtual const CameraMatrix& view_projection_00b70490(void* camera) = 0;  // 00B70490
+};
+
+// 00AF6300 `float __thiscall(model, camera)`, RET 4: 00B6DB70 unless +5Ch bit
+// 1, then 00AF4130(+18Ch, world position, camera, &+1E0h).
+float particle_model_lod_fade_00af6300(void* model, void* camera, ParticleModelLodHost& host,
+                                       const CameraAxesCrtAccess& crt);
+// 00AF6360 `bool __thiscall(model, camera)`, RET 4: +1D8h = float(00AF6300 *
+// +1DCh); returns +1D8h > 0.0035 [00CF6548].
+bool particle_model_update_visibility_00af6360(void* model, void* camera, ParticleModelLodHost& host,
+                                               const CameraAxesCrtAccess& crt);
+
+// 00AFAA20 `float __thiscall(emitter definition, float distance)`, RET 4: a
+// distance window. 0 up to start +30h; ramps over fade-in +34h; 1 until
+// hold-end +38h; ramps down over fade-out +3Ch (clamped by 004155B0); 0 beyond.
+// Sums are spilled to float. NaN paths follow C++ comparisons and are not
+// checked against the FCOMI/JAE/JB chain.
+float emitter_distance_fade_00afaa20(const void* emitter_definition, float distance);
+
+class ParticleEmitterHost {
+public:
+    virtual ~ParticleEmitterHost() = default;
+    // [[container]]+0 (container vtable slot 0) with one stack argument.
+    virtual void container_update_slot0(void* container, void* context) = 0;
+};
+
+// 00AFF7A0 `int __thiscall(emitter, context, float distance)`, RET 8: 0 without
+// a container; alpha +24h = 00AFAA20(+0Ch, distance); 0 when 0.004 > alpha;
+// else container slot 0(context) and return container+28h.
+std::int32_t emitter_update_00aff7a0(void* emitter, void* context, float distance, ParticleEmitterHost& host);
+// 00AFF7F0 `int __thiscall(emitter, view, float distance, float argument)`,
+// RET 0Ch: as 00AFF7A0 but alpha = min(model+1D8h, fade) (model value kept on
+// unordered) and the work is 00B05550(container, view, argument).
+std::int32_t emitter_build_geometry_00aff7f0(void* emitter, const float view[16], float distance, float argument,
+                                             ParticleGeometryHost& host);
+// 00AF5EE0 `void __thiscall(model, context)`, RET 4, and 00AF5E90 `void
+// __thiscall(model, view, float argument)`, RET 8: loop the emitters with
+// distance = model+1E0h (count and array re-read every iteration).
+void particle_model_update_emitters_00af5ee0(void* model, void* context, ParticleEmitterHost& host);
+void particle_model_build_geometry_00af5e90(void* model, const float view[16], float argument,
+                                            ParticleGeometryHost& host);
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380);
 void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384);
 
