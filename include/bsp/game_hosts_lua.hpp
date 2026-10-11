@@ -804,6 +804,10 @@ public:
     bool run_mission_script_008860b0(const std::string& script_name);
     // 0045f520 (forced) and 0045f440 (thread safe).
     bool call_entry_point(const std::string& name, bool threadsafe);
+    // Packet cc9_lua49_checkpoint (kMissionCheckpointBound in the .cpp):
+    // SaveCheckpoint 008ACB70 (save = true) and LoadCheckpoint 008ACA30 on
+    // this state's BSP_Chk_Save. Returns the binding's result count.
+    int mission_checkpoint_binding(lua_State* state, bool save);
 
     // Milestone 2i: `VehicleClass[index]`, from the table the autoload folder
     // of 00886900 already ran. `index` is the id the scene's

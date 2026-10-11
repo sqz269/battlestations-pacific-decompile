@@ -178,7 +178,7 @@ Host wiring: none, by instruction (00675C40 is cc9's). Wiring would mean 00675C4
 screen offsets above; no edit was made on that path. The x87 bar widths are computed in double,
 which can differ from the extended-precision result in the last float bit in rare cases.
 Named alongside (provisional): 0065A2B0, 0065AB40, 0065AE90, 0065AC30, 0065BBC0, 0065BB00.
-## Rewards enter 0062C2C0 (cc13-frontend3, opening segment reconstructed, rest outlined)
+## Rewards enter 0062C2C0 (cc13-frontend3, opening segment; the rest is in the cc13-rewards1 section below)
 
 The body does not decompile and is far larger than the earlier estimate: the recursive descent
 that stopped at 0063158F missed jumps to 006316CB..00631BA3 and to the shared epilogue 00636D63;
@@ -221,3 +221,77 @@ Outline of the rest (string anchors and calls in address order; not reconstructe
 | 00636C69..00636D60 | 0062A970, frame title 00518D60, page 00622E30, help line 0054A0C0, a final +38h store |
 
 A successor should take these ranges one at a time with the same EH-anchored listing reading.
+## Rewards enter page builders 0062CA7B..00636D78 (cc13-rewards1, reconstructed, build-tested)
+
+Read from a capstone listing of the disk image (10757 instructions, 0062C2C0..00636D78) folded by
+`local/rw1_sq.py` (string temporaries, child lookups, pool releases). ESP offsets are base-relative
+(post-prologue ESP, EH state at [esp+E74h]); pushes are subtracted at every read. The screen is EBP
+until 0062EBAF, where EBP is reused; from there the screen is [esp+54h] (stored at 0062C2F7).
+`rewards_screen_enter_pages_0062ca7b` in `src/ingame_gui.cpp` continues the opening function at the
+join point; call rows in `reports/cc13_ingame_gui.json` carry `function: 0062c2c0` and the C++ name
+in `cpp`.
+
+Locals: [esp+24h] is the commit record (004B4750), [esp+38h] the 00594A70 mission-score record,
+[esp+84h] the 005C3870 mission-tree record (+38h `debriefingText`, +50h `debriefingVoice`, per
+docs/MISSION_TREE_LUA_READER.md), [esp+9Ch] the local player's scoreboard row.
+
+| Range | Status | Content |
+|---|---|---|
+| 0062CA7B..0062CBE0 | reconstructed | +258h = 1 when award pages are queued; `backgrnd_Icon` (+20h) and `back_Icon` (+25Ch) slot +88h state = !+19h; page mode +58h: game+1EE3h or game+1FE4h set gives 1 with 00E08C88 = 0, 00E08C89 = 1, else +19h ? 0 : 2 with 00E08C88 = +19h, 00E08C89 = 0 |
+| 0062CBE6..0062D2F6 | reconstructed | mode 0, page +40h: `debriefing_Clipbox`/`move_Group`/`congrat1_Text` gets `debriefingText` (localised); scroller +68h range = that text's height (00AB6BD0) - [+D0h]; `rank_Icon` = max(00574050 - 1, 0); `info_Group`: `time_value_Text` = 0043CC20(004396F0(record+0Ch)), `score_value_Text` = record+1E0h; `medal_Icon` shown with state max(record+4 - 1, 0) when +19h; when [+10h] == 0 (NEG/SBB/TEST 00E18B5Ch) the voice "sound/messages/" + 008D57A0(00F88980) + "/streamed_dialogs/" + `debriefingVoice` is requested with callback 00622E00 |
+| 0062D2FB..0062E9B7 | reconstructed | mode 1, page +44h: `time_value_Text`; +230h/+234h cleared; listbox +D4h cleared, listener 0; 0062A0B0 builds the 60h-byte rows at +220h, 00625D10 sorts them (introsort shape); game+614h == 7: title 1 = missioncompleted/missionfailed by record+0, `END_Text` = record+254h, USA/JAP hidden, every row in slot i; otherwise title 1 = USN_wins when (won ? side == 0 : side == 1) else IJN_wins, `USA_Text` = record+25Ch with the side-0 rows in slots 0.., `JAP_Text` = record+264h placed 6 row heights below `USA_Text`, side-1 rows from slot 6 numbered slot-5. Each row: clone of +D8h shown, inserted with its index, byte +22Fh+count = !row+5Ch, `rank_Text`, `name_Text` (localised when row+5Ch or "globals.newplayer"), `clan_Text`, `score_Text`, `flag_Icon` (side, 0, 1), `rank_Icon` state and visibility, position = template + (0, (height + 1/120) * slot, 0). Then listener screen+8, select the local row, active, listbox +12Ch/+130h/+134h, 00A9CEB0(0.575, 0), +128h |
+| 0062E9BF..0062EA44 | reconstructed | lost single-player mission: title 2 = "FE.scoring_missionfailed"; side = 005C27E0(tree record) without a session, else record+1E4h == 0 |
+| 0062EA44..00630188 | reconstructed | objectives page: the side's three lists in the commit record (+204h/+210h/+21Ch or +228h/+234h/+240h, std::list size at +8); gap = +E0h.y - +ECh.y; spacing = ((0.65277779 - lines/36) - (1/36 + gap) * sections) / (sections + 1); cursor = (+DCh.x, spacing + 0.17361111, -1); 00E08C8A = any objective. Each non-empty section shows its header (+ECh/+F0h/+F4h, placed at the cursor; the primary one takes the x of +F0h) and box (+E0h/+E4h/+E8h, placed one gap lower at z 0, height (n + 1)/36), then per node a clone of +DCh: `number_Text` "N.", `primary_Text` = key without its first character (primary: 00ABB000 with width -1; secondary: 00ABAED0; hidden: "globals.obj_hid" unless 0061F340 finds the key in the 00594A70 record +21Ch/+240h with +1Ch set), `primary_value_Text` "^FE.rewards_completed"/"^FE.rewards_failed" (00ABBE50) by node+1Ch, `primary_point_value_Text` = the record+18h points map (0061EC70, node+14h) or "0", colour (0.7, 0.1, 0.1, 1) when failed, shown, kept in +F8h (0052ED20), placed at the cursor, cursor += 1/36; after a section cursor += spacing + 1/72. An empty section hides both widgets |
+| 00630188..006359A3 | reconstructed | scoring page. 00E08C8B = 0; mode [esp+40h] = game+1FE4h ? 2 : game+6ACh; templates +10Ch (table), +110h (group), +114h (row) under +118h; the table's child local positions (00AA67F0 = &widget+0Ch) are saved and re-applied to each clone with 00AA7DC0; the done-to column width = total.x - done_to.x - 1/48. A table is a clone at the cursor with `header_Text` (00ABB000, width -1), shown, cursor.y += +110h.y - +10Ch.y; a group is a +110h clone with `done_by_value_Text` at (group.x, cursor.y, group.z); a row is a +114h clone at (row.x, cursor.y, row.z), cursor.y += 0.0305556; a group ends with cursor.y += 1/360 and its `row_line_FrameBox` sized and placed; a table ends with vline1..4 sized to (vline1 width, cursor.y - vline1.y) (the command table hides vline2/3) and row/separator lines sized. Tables: `FE.scoring_playeract` when record+A4h (map +9Ch) and `FE.scoring_partyact` when record+B0h (map +A8h): one group per by-category (00E0B5E0 unit-category keys), one row per (friendly key, target category): damage, kills from a copy of record+B4h/+C0h (00593480; 0062C170 -> 0062BB60 -> 00625900; freed by 00593180), total = 00911CE0(by, target, friendly, damage, mode, record+24Dh) + 00911C00(friendly, by, target, (float)kills, mode, record+24Dh); friendly key 0 prefixes "FE.scoring_friendlyhit|.: |" and paints done-to, total, kills (player) or done-to, damage, kills, total (party) (0.7, 0.1, 0.1, 1). `FE.scoring_command` (columns `FE.scoring_command_type`/`_amount`, `damage_Text`/`kills_Text` hidden) when any of record+D4h, +E0h, +14h > 0, +1DCh > 0, +50h: groups `FE.scoring_remaining` (map +CCh, side key 0 only, 00910500(category, record+8) * count, label "<category>|. (x<count>)"), `FE.scoring_suicide` (map +D8h, 00910570(category, mode, record+4) * count, painted), `FE.scoring_mapusage` (009064D0(record+14h), "%d:%02d:%02d" / "%d:%02d" / "%d" of max(t, 1), truncated seconds, not localised), `FE.scoring_badge` (record+1DCh, label record+1DCh / 100), `FE.scoring_missionspec` (map +48h, node +0Ch label, +14h points) |
+| 006359A3..00635F9E | reconstructed | scroller +128h range = cursor.y - +108h height - +108h y. Rank page, only when game+1EE3h and *(00F8A2FC)+4Dh: 00E08C8C = 1; rank = clamp(00574050 - 1, 0, 19): +204h = FE.playerrank_NN (00E08E00, 00ABBE50), +208h slot +88h state rank; thresholds from 0050FC30(*(00E19900)+10h, "RANK") vector +48h: next = [rank + 1] unless the rank byte is 20, previous = [rank] when the byte > 1; score = 0090BF50(profile+64h); +200h = score - profile+30h (or the score when +30h is -1); shares (last - previous)/(next - previous) (0 when last < previous) and (score - previous)/(next - previous), both 1.0 without a next threshold; profile+30h = score; +1FCh = "score / next" or the score; +218h = 0, +21Ch = clamp(now) * (+214h width - 0.00625), bars +20Ch/+210h sized (clamp(before) * that, +20Ch height) |
+| 00635FA3..00636C33 | reconstructed | award pages, when game+1EE3h or +19h: 00E08C8D = 0061EB80 (profile+BCh pending awards non-empty) or +248h non-empty or record+1DCh > 0; entries are clones of +18Ch under +188h at the running local position (start: +18Ch's), each with `award_Icon`, `award_title_Text`, `award_detail_Text` placed 1/144 below the title text (00AA78F0), shown, sized to max(icon height, text height) + 1/72 (FCOMI against the float-rounded text height), position += height + 1/144. Sources in order: +248h (10h elements: 004FB150 icon by id +4, title "FE.scoring_unlockedunit|.: |" + unit +8, detail "FE.scoring_unlock_text"); the profile's pending awards game+70Ch (1Ch elements: icon by name +10h through 004FC070 when id +18h is 0, title +0, detail +8), cleared by 006277C0; with record+1DCh > 0 every key of record+6Ch that 0090C000 accepts, its award record (0050FC30 on *(00E19900)+10h, copied by 0050A210, freed by 00501FA0): texture +14h through 00AB44B0(0, "" + texture, (0, 0, 1, 1)) and the icon shown, or the icon hidden, title +0, detail +0Ch. Scroller +19Ch range = position - +184h height + 1/144 |
+| 00636C38..00636D78 | reconstructed | tail: with +258h and pages queued, listbox +D4h slot +60h(0) and 0062A970; +1Dh = more than one of 00E08C88..00E08C8D set; frame title "" (00518D60), 00622E30(0), help line "" (0054A0C0 on *(00E1930C)); +38h = +18h ? -1 : 3 |
+
+Listing repair (cc13-rewards1, record `reports/cc13_rewards1_listing_repair.json`): the `_free` calls at 0063169B and 00632A54 (the kills-map copy release in the two damage tables) carried a CALL_RETURN flow override (effective CALL_TERMINATOR; `_free` itself is not no-return), so Ghidra had no instructions at 006316A0..006316CA and 00632A59..00632A83, the fall-through that steps the L3 iterator (0057F4A0) and jumps back to the loop head (00630E15 / 00632126). Both ranges were disassembled after a byte check against the disk image, both overrides cleared to NONE, and 0062C2C0 re-created from its instructions (name and plate kept; the signature was the default). The two 0057F4A0 rows are back in the report.
+
+Uncertain: the meaning of +10h (the voice gate), record+1E4h (row+5Ch is the AI flag, see 0062A0B0 below);
+the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
+byte +22Fh+count has no bound against the eight bytes cleared.
+
+Helpers named by cc13-rewards1 (ledger + Ghidra, provisional; RET immediates checked against the
+disk image): 0062A0B0 `BSP_RewardsScreen_BuildScoreRows`, 00625D10 `STL_RewardsScoreRows_Sort`,
+00A9CEB0 `BSP_GuiListbox_SetField124`, 0061EB80 `BSP_Profile_HasPendingAwards`, 004FB150
+`BSP_IconAtlas_ApplyById`, 004FC070 `BSP_IconAtlas_ApplyByName`, 0090C000
+`BSP_ScoreTable_IsBadgeEarned`, 0050FC30 `BSP_AwardTable_FindRecord`, 0050A210
+`BSP_AwardRecord_CopyConstruct`, 00911CE0 `BSP_ScoreTable_DamagePoints` (RET 18h), 00911C00
+`BSP_ScoreTable_KillPoints` (RET 18h), 00910500 `BSP_ScoreTable_RemainingUnitPoints` (RET 8),
+00910570 `BSP_ScoreTable_SuicidePoints` (RET 0Ch), 009064D0 `BSP_ScoreTable_MapUsagePoints`
+(RET 4), 00AA67F0 `BSP_GuiWidget_GetLocalPosition`. Not named: 00574050 (the profile "RANK" low
+byte; leased to cc13-menus5), 00622E00 (the voice callback; no Ghidra function), and the STL
+helpers 0061EC70, 0061F340, 0052ED20, 0057F010, 0057F350/0057F430/0057F4A0, 00593480/00593180,
+0062C170/0062BB60/00625900, 006277C0.
+
+Status: exported (capstone listing), reconstructed, build-tested; not fixture-tested, not
+ABI-compatible (host-interface projection), not game-validated; no host wiring.
+
+### Handoff (cc13-rewards1)
+
+The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h and record+24Dh;
+(3) done for 0062A0B0 and 00625D10; the score-table formulas belong to the side-AI lanes; (4) host wiring
+of `RewardsEnterHost` (none exists).
+
+## Scoreboard rows 0062A0B0 and their sort 00625D10 (cc13-rewards1, reconstructed, build-tested)
+
+`rewards_build_score_rows_0062a0b0` (747 instructions, 0062A0B0..0062A960, RET): the rows at
+screen+220h are cleared (00625980) and the game mode read (004BCA50). For each slot 0..7 of
+game+18CCh: a null slot, +20h < 0, or +9h set with +0Ah clear is skipped; otherwise a zeroed 60h
+row is pushed (00627820; temporary destroyed by 0061F2C0) and filled: +00h/+04h = slot
++80h/+84h; +08h = slot +58h, except an AI slot (+9h) whose name is at most one character takes
+00E08940[+2Ch] (FE.easy x4, FE.normal, FE.hard); +10h = " " (00CE3A90) for an AI slot, else slot
++78h; +5Ch = slot +9h (so row+5Ch is the AI flag); +18h = slot +28h; +50h = the per-player score
+record *(game+21A0h)+4+slot*284h +1E0h; +34h = the game mode; +48h = the number of keys in that
+record's +6Ch list accepted by 0090C000; +58h = the profile's "RANK" byte (00574050) when slot
++20h == game+18ECh, else slot +90h. `rewards_sort_score_rows_00625d10`: the comparator
+(00623457, 006234B1: CMP against +50h, JLE/JG) puts higher scores first and moves a row only
+past strictly lower ones; with at most eight rows only the insertion path (00623410) runs, so the
+model is a stable sort by descending score.
+
+The score-table point functions 00911CE0, 00911C00, 00910500 and 00910570 are cited by
+docs/BOT_SCHEDULER_OUTPUT.md, docs/SIDE_AI_SCHEDULER_HANDOFF.md and docs/SCORING_BODIES.md (the
+side-AI scoring lanes), so their bodies are left to those lanes; they are named and documented
+here only. 009064D0 has no other reader.

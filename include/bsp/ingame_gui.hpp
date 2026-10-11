@@ -195,11 +195,19 @@ inline constexpr std::string_view kRewardsServiceRankPrefix = "RANK_SR";  // 00C
 // string is empty here): 0 = rank change, 1 = one unlocked vehicle class.
 enum class RewardsAwardPage : std::uint8_t { RankChange = 0, Unlock = 1 };
 
+// Page modes stored at screen+58h by 0062CB8D..0062CBD4.
+enum class RewardsPageMode : std::int32_t {
+    CampaignWon = 0,   // single player, +19h set: the debriefing page (+40h)
+    Session = 1,       // game+1EE3h or game+1FE4h set: the scoreboard page (+44h)
+    CampaignLost = 2,  // single player, +19h clear: neither page is filled here
+};
+
 struct RewardsEnterState {
     float field64{};                       // +64h, cleared
-    bool input_locked258{};                // +258h, cleared
-    bool score_zero18{};                   // +18h: commit record +0Ch == 0.0f (UCOMISS, ordered)
-    bool commit_present19{};               // +19h: *(commit record) != 0
+    bool input_locked258{};                // +258h, cleared; set at 0062CA92 when pages are queued
+    bool score_zero18{};                   // +18h: commit record +0Ch (play seconds) == 0.0f (UCOMISS, ordered)
+    bool commit_present19{};               // +19h: *(commit record) != 0, the mission-won word (0062D461)
+    RewardsPageMode page_mode58{};         // +58h
     bool group_completed1c{};              // +1Ch
     bool field1d{};                        // +1Dh, cleared
     bool unlocks_pending24{};              // +24h: 007F93F0 on the profile
@@ -209,7 +217,216 @@ struct RewardsEnterState {
     std::string mission28;                 // +28h, copy of game+2198h
     std::string mission30;                 // +30h, copy of game+2198h, then the profile's +68h id
     std::vector<RewardsAwardPage> pages238;  // +238h (cleared by 00625A50)
+    std::int32_t field38{};                // +38h: 3 when +18h is clear, else -1 (00636D51)
 };
+
+// A native GUI widget (vtable 00D5BED0 family), opaque here.
+using RewardsWidget = void*;
+
+struct RewardsVec3 {
+    float x{};
+    float y{};
+    float z{};
+};
+
+// The commit record 004B4750 returns (ECX = *(00E188A8)), held at [esp+24h]
+// from 0062C3B2 on; only the fields the page builders read.
+struct RewardsCommitRecord {
+    std::int32_t won{};        // +00h: nonzero selects FE.rewards_missioncompleted
+    std::int32_t field04{};    // +04h: medal_Icon state + 1; third argument of 00910570
+    std::int32_t field08{};    // +08h: second argument of 00910500
+    float map_seconds{};       // +14h: FE.scoring_mapusage input
+    std::uint8_t flag24d{};    // +24Dh: last argument of 00911CE0/00911C00
+    std::int32_t badge{};      // +1DCh: FE.scoring_badge points
+    float play_seconds{};      // +0Ch: BSP_Text_FormatPlayTime input
+    std::int32_t score{};      // +1E0h: score_value_Text
+    std::int32_t field1e4{};   // +1E4h: side test when game+1EE3h is set (0062EA31)
+    std::string end_text;      // +254h: END_Text source (localised)
+    std::string usn_text;      // +25Ch: USA_Text source (localised)
+    std::string ijn_text;      // +264h: JAP_Text source (localised)
+};
+
+// One 60h-byte row of the scoreboard vector at screen+220h (begin +224h, end
+// +228h), filled by 0062A0B0 and sorted by 00625D10.
+struct RewardsScoreRow {
+    std::uint32_t id0{};       // +00h, compared with the local player's +80h
+    std::uint32_t id4{};       // +04h, compared with the local player's +84h
+    std::string name;          // +08h
+    std::string clan;          // +10h
+    std::int32_t side{};       // +18h: 0 = USN rows, 1 = IJN rows
+    std::int32_t score{};      // +50h
+    std::int32_t rank{};       // +58h: rank_Icon state + 1
+    std::int32_t game_mode34{};  // +34h: 004BCA50 when the row was built
+    std::int32_t badges48{};   // +48h: keys of the player's score record that 0090C000 accepts
+    bool ai5c{};               // +5Ch: the slot's +9h byte (an AI slot; its name may be a difficulty key)
+};
+
+// The player record *(game+18CCh + 4*slot) fields 0062A0B0 reads.
+struct RewardsPlayerSlot {
+    bool ai09{};               // +09h
+    bool byte0a{};             // +0Ah: an AI slot without it is skipped
+    std::int32_t index20{};    // +20h: negative = empty; compared with game+18ECh
+    std::int32_t side28{};     // +28h
+    std::int32_t difficulty2c{};  // +2Ch: index into kRewardsAiNameKeys
+    std::string name58;        // +58h, C string
+    std::string clan78;        // +78h, C string
+    std::uint32_t id80{};      // +80h
+    std::uint32_t id84{};      // +84h
+    std::uint8_t rank90{};     // +90h
+};
+
+// 00E08940: the AI name keys by difficulty (6..8 are not strings in the image).
+inline constexpr std::array<std::string_view, 6> kRewardsAiNameKeys{"FE.easy", "FE.easy", "FE.easy", "FE.easy", "FE.normal", "FE.hard"};
+inline constexpr std::string_view kRewardsAiClan = " ";  // 00CE3A90
+
+struct RewardsEnterHost;
+
+// 0062A0B0: __thiscall(screen), RET. Rebuilds the +220h rows from the eight player slots.
+std::vector<RewardsScoreRow> rewards_build_score_rows_0062a0b0(RewardsEnterHost& host);
+// 00625D10: the rows by descending score; equal scores keep their order (the
+// insertion-sort path, 00623410, which is the only one up to 20h rows).
+void rewards_sort_score_rows_00625d10(std::vector<RewardsScoreRow>& rows);
+
+// The local player's record *(game+18CCh + 4*game+18ECh), read only when
+// game+18ECh is in 0..7.
+struct RewardsLocalPlayer {
+    std::int32_t side{};       // +28h
+    std::string name;          // +58h
+    std::uint32_t id80{};      // +80h
+    std::uint32_t id84{};      // +84h
+};
+
+inline constexpr std::string_view kRewardsMissionCompleted = "FE.rewards_missioncompleted";  // 00CF560C
+inline constexpr std::string_view kRewardsMissionFailed = "FE.rewards_missionfailed";        // 00CF55F0
+inline constexpr std::string_view kRewardsUsnWins = "FE.scoring_USN_wins";                   // 00CF5594
+inline constexpr std::string_view kRewardsIjnWins = "FE.scoring_IJN_wins";                   // 00CF5580
+inline constexpr std::string_view kRewardsScoringMissionFailed = "FE.scoring_missionfailed"; // 00CF5558
+inline constexpr std::string_view kRewardsNewPlayer = "globals.newplayer";                   // 00CEF794
+inline constexpr std::int32_t kRewardsGameModeNoSides = 7;  // game+614h value with one shared table
+inline constexpr double kRewardsRowGap = 0.008333333333333333;  // 00CF0DE8, added to the row height
+inline constexpr double kRewardsIjnTableRows = 6.0;             // 00CE6628
+inline constexpr std::int32_t kRewardsIjnFirstSlot = 6;         // 0062E2D4
+inline constexpr float kRewardsListbox124 = 0.575f;             // 00CF557C
+inline constexpr float kRewardsListbox12c = -0.0541666672f;     // 00CF5578
+inline constexpr float kRewardsListbox130 = 0.00763888890f;     // 00CF5574
+inline constexpr float kRewardsListbox128 = 0.00555555569f;     // 00CF2548
+// The debriefing-voice completion callback pushed at 0062D1D4: it hands the name
+// to *(*(00E198AC)+60h) through 0061F9D0, then removes the file from the store.
+inline constexpr std::uint32_t kRewardsDebriefVoiceCallback = 0x00622E00;
+
+// One node of a commit-record objective list (node fields after next/prev).
+struct RewardsObjective {
+    std::string key;           // node+0Ch: shown without its first character (00469840(1, 7FFFFFFFh))
+    std::string points_key;    // node+14h: key of the record+18h points map
+    std::int32_t completed{};  // node+1Ch
+};
+
+enum class RewardsObjectiveKind : std::uint8_t { Primary = 0, Secondary = 1, Hidden = 2 };
+
+inline constexpr std::string_view kRewardsObjectiveCompleted = "^FE.rewards_completed";  // 00CF5514
+inline constexpr std::string_view kRewardsObjectiveFailed = "^FE.rewards_failed";        // 00CF5500
+inline constexpr std::string_view kRewardsHiddenObjective = "globals.obj_hid";                 // 00CEFCE8
+inline constexpr std::string_view kRewardsObjectiveNumberSuffix = ".";                   // 00CE3A70
+inline constexpr std::string_view kRewardsZeroPoints = "0";                              // 00CE43BC
+inline constexpr double kRewardsObjectiveLine = 0.02777777798473835;   // 00CF5550 (1/36 as a float)
+inline constexpr double kRewardsObjectiveArea = 0.6527777910232544;    // 00CF5548
+inline constexpr double kRewardsObjectiveTop = 0.1736111111111111;     // 00CF5540
+inline constexpr double kRewardsObjectiveHeaderGap = 0.013888888992369175;  // 00CF0B20
+inline constexpr float kRewardsObjectiveDepth = -1.0f;                 // 00D7A260
+inline constexpr std::array<float, 4> kRewardsFailedColor{0.7f, 0.1f, 0.1f, 1.0f};  // 00CE3E18, 00D7A2F0 x2, 00D7A24C
+
+// The scoring page (0063018D..006359A3) reads these maps of the commit record.
+// Damage: record+9Ch (player) / +A8h (party), map<by category, map<friendly
+// key, map<target category, damage>>>; an L1 node with an empty inner map
+// still opens a group.
+struct RewardsDamageTarget {
+    std::int32_t category{};   // L3 key, index into kRewardsUnitCategoryKeys
+    std::int32_t damage{};     // L3 value
+};
+struct RewardsDamageSide {
+    std::int32_t friendly_key{};  // L2 key: 0 is a friendly hit
+    std::vector<RewardsDamageTarget> targets;
+};
+struct RewardsDamageGroup {
+    std::int32_t by_category{};   // L1 key
+    std::vector<RewardsDamageSide> sides;
+};
+// record+CCh (count +D4h): map<side key, map<category, count>>; record+D8h
+// (count +E0h): map<category, count>.
+struct RewardsCategoryCount {
+    std::int32_t category{};
+    std::int32_t count{};
+};
+struct RewardsRemainingSide {
+    std::int32_t side_key{};      // only key 0 is listed
+    std::vector<RewardsCategoryCount> counts;
+};
+// record+48h (count +50h): map<name, int>, node +0Ch and +14h.
+struct RewardsMissionSpecial {
+    std::string name;
+    std::int32_t points{};
+};
+
+// 00E0B5E0: the unit-category keys the scoring tables index (20 pointers;
+// 18 and 19 are empty strings).
+inline constexpr std::array<std::string_view, 20> kRewardsUnitCategoryKeys{
+    "globals.unitcat_carrier", "globals.unitcat_destroyer", "globals.unitcat_torpedoboat",
+    "globals.unitcat_battleship", "globals.unitcat_cruiser", "globals.unitcat_cargo",
+    "globals.unitcat_landingship", "globals.unitcat_levelbomber", "globals.unitcat_divebomber",
+    "globals.unitcat_torpedobomber", "globals.unitcat_fighter", "globals.unitcat_reconplane",
+    "globals.unitcat_kamikaze", "globals.unitcat_submarine", "globals.unitcat_landvehicle",
+    "globals.unitcat_landfort", "globals.unitcat_airfield", "globals.unitcat_shipyard", "", ""};
+
+inline constexpr std::string_view kRewardsScoringPlayerAct = "FE.scoring_playeract";      // 00CF5424
+inline constexpr std::string_view kRewardsScoringPartyAct = "FE.scoring_partyact";        // 00CF539C
+inline constexpr std::string_view kRewardsScoringCommand = "FE.scoring_command";          // 00CF5388
+inline constexpr std::string_view kRewardsScoringCommandType = "FE.scoring_command_type";  // 00CF5370
+inline constexpr std::string_view kRewardsScoringCommandAmount = "FE.scoring_command_amount";  // 00CF5344
+inline constexpr std::string_view kRewardsScoringRemaining = "FE.scoring_remaining";      // 00CF5304
+inline constexpr std::string_view kRewardsScoringSuicide = "FE.scoring_suicide";          // 00CF52E8
+inline constexpr std::string_view kRewardsScoringMapUsage = "FE.scoring_mapusage";        // 00CF52D4
+inline constexpr std::string_view kRewardsScoringBadge = "FE.scoring_badge";              // 00CF52A8
+inline constexpr std::string_view kRewardsScoringMissionSpec = "FE.scoring_missionspec";  // 00CF5290
+inline constexpr std::string_view kRewardsFriendlyHitPrefix = "FE.scoring_friendlyhit|.: |";  // 00CF53C0
+inline constexpr std::string_view kRewardsCountOpen = "|. (x";                            // 00CF52FC
+inline constexpr std::string_view kRewardsCountClose = ")";                               // 00CE584C
+inline constexpr double kRewardsScoreRow = 0.030555555829778314;      // 00CF53B8
+inline constexpr double kRewardsScoreGroupGap = 0.0027777778450399637;  // 00CF53B0
+inline constexpr double kRewardsDoneToMargin = 0.020833333333333332;  // 00CF0000
+inline constexpr double kRewardsRankBarInset = 0.00625;               // 00CF2920
+inline constexpr std::string_view kRewardsScoreSeparator = " / ";  // 00CF2928
+inline constexpr std::int32_t kRewardsTopRank = 20;                  // 00574050 value with no next threshold
+// 00E08E00: FE.playerrank_01 .. FE.playerrank_20.
+inline constexpr std::array<std::string_view, 20> kRewardsPlayerRankKeys{
+    "FE.playerrank_01", "FE.playerrank_02", "FE.playerrank_03", "FE.playerrank_04", "FE.playerrank_05",
+    "FE.playerrank_06", "FE.playerrank_07", "FE.playerrank_08", "FE.playerrank_09", "FE.playerrank_10",
+    "FE.playerrank_11", "FE.playerrank_12", "FE.playerrank_13", "FE.playerrank_14", "FE.playerrank_15",
+    "FE.playerrank_16", "FE.playerrank_17", "FE.playerrank_18", "FE.playerrank_19", "FE.playerrank_20"};
+
+// One 10h-byte element of the screen+248h vector (the unlock awards).
+struct RewardsUnlockAward {
+    std::int32_t icon_id{};   // +04h
+    std::string unit;         // +08h
+};
+// One 1Ch-byte element of the profile's pending awards (game+70Ch).
+struct RewardsPendingAward {
+    std::string title;        // +00h
+    std::string detail;       // +08h
+    std::string icon_name;    // +10h, used when the id is 0
+    std::int32_t icon_id{};   // +18h
+};
+// The 54h-byte award record fields the badge pages read.
+struct RewardsAwardDefinition {
+    std::string title;        // +00h
+    std::string detail;       // +0Ch
+    std::string texture;      // +14h
+};
+
+inline constexpr std::string_view kRewardsUnlockedUnitPrefix = "FE.scoring_unlockedunit|.: |";  // 00CF5250
+inline constexpr std::string_view kRewardsUnlockText = "FE.scoring_unlock_text";                // 00CF5208
+inline constexpr double kRewardsAwardGap = 0.006944444444444444;    // 00CF4570 (1/144)
+inline constexpr double kRewardsAwardPadding = 0.013888888888888888;  // 00CEBDD0 (1/72)
+inline constexpr std::array<float, 4> kRewardsAwardTextureColor{0.0f, 0.0f, 1.0f, 1.0f};
 
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
@@ -241,13 +458,151 @@ struct RewardsEnterHost {
     virtual bool group_completed_005c3be0(const std::string& mission) = 0;
     virtual std::vector<std::string> commit_record_keys_6c() = 0;  // list +6Ch, node +0Ch
     virtual bool has_prefix_00553c80(std::string_view key, std::string_view prefix) = 0;  // (prefix, 0)
+
+    // --- page builders (0062CA7B on) ---
+    virtual const RewardsCommitRecord& commit_record() = 0;       // [esp+24h]
+    // The 005C3870 mission record kept at [esp+84h]: +38h debriefingText,
+    // +50h debriefingVoice (docs/MISSION_TREE_LUA_READER.md).
+    virtual std::string selected_debriefing_text_38() = 0;
+    virtual std::string selected_debriefing_voice_50() = 0;
+    virtual std::int32_t mission_side_005c27e0() = 0;            // ECX = the 005C3870 record
+    // 00574050 on game+650h: the low byte of the profile's "RANK" value (+A0h map, 005070C0).
+    virtual std::int32_t profile_rank_byte_00574050() = 0;
+    virtual RewardsWidget screen_widget(std::uint32_t offset) = 0;  // *(screen + offset)
+    virtual std::uint32_t screen_dword(std::uint32_t offset) = 0;
+    virtual float screen_float(std::uint32_t offset) = 0;
+    virtual std::uint8_t game_byte(std::uint32_t offset) = 0;
+    // 00AA7E00(name, 1) on ECX = parent; the name is a temporary NativeString.
+    virtual RewardsWidget child_00aa7e00(RewardsWidget parent, std::string_view name) = 0;
+    virtual void widget_show_34(RewardsWidget widget, bool show) = 0;
+    virtual void widget_set_active_60(RewardsWidget widget, bool active) = 0;
+    virtual void icon_state_88(RewardsWidget widget, std::int32_t state) = 0;  // (state, 0, 1.0f)
+    // 00ABAED0(source, localise): RET 8.
+    virtual void text_source_00abaed0(RewardsWidget text, std::string_view source, bool localise) = 0;
+    virtual float text_height_00ab6bd0(RewardsWidget text) = 0;
+    virtual GuiSize2 widget_size_00aa6740(RewardsWidget widget) = 0;
+    virtual RewardsVec3 widget_position_00aa6750(RewardsWidget widget) = 0;
+    virtual void widget_set_position_00aa8240(RewardsWidget widget, const RewardsVec3& position) = 0;
+    virtual RewardsWidget clone_00aab4c0(RewardsWidget widget) = 0;   // parent 0
+    virtual void scroller_set_range_006834a0(std::uint32_t scroller_offset, float range) = 0;
+    // 00E08C88 / 00E08C89, written beside +58h.
+    virtual void set_debrief_flags_e08c88(bool won, bool session) = 0;
+    // The six page titles in the NativeString vector at 00E196C0 (read by
+    // 00621C60, the page switch); element 1 is the +44h page, 2 the +48h page.
+    virtual void set_page_title_e196c0(std::size_t index, std::string_view key) = 0;
+    virtual float round_value_004396f0(float value) = 0;
+    // The debriefing voice: 004FC150 -> 00BE80B0 -> BSP_FileStore_RequestFile
+    // (00BE7CD0) with the completion callback 00622E00.
+    virtual void request_streamed_dialog_00be7cd0(std::string_view path, std::uint32_t callback) = 0;
+    virtual std::string_view audio_language_folder_008d57a0() = 0;  // ECX = 00F88980
+    // The scoreboard rows (+220h), rebuilt by rewards_build_score_rows_0062a0b0
+    // and sorted by rewards_sort_score_rows_00625d10.
+    virtual std::vector<RewardsScoreRow>& score_rows_220() = 0;
+    // --- 0062A0B0 inputs ---
+    virtual bool player_slot_18cc(std::int32_t slot, RewardsPlayerSlot& out) = 0;  // false for a null slot
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+    // The per-player score record *(game+21A0h)+4+slot*284h: +1E0h and the key list +6Ch.
+    virtual std::int32_t player_score_1e0(std::int32_t slot) = 0;
+    virtual std::vector<std::string> player_score_keys_6c(std::int32_t slot) = 0;
+    virtual bool local_player(RewardsLocalPlayer& out) = 0;       // false when game+18ECh is outside 0..7
+    // The scoreboard listbox at screen+D4h and its row template at +D8h.
+    virtual void listbox_clear_rows_00a9bec0() = 0;
+    virtual void listbox_set_listener_00a9ac40(bool screen_listener) = 0;  // 0 or screen+8
+    virtual void listbox_insert_row_00a9da30(RewardsWidget row, std::int32_t data) = 0;  // (row, data, 0, 0)
+    virtual std::int32_t listbox_row_count_104() = 0;
+    virtual void listbox_select_00a9c7c0(std::int32_t index) = 0;
+    virtual void listbox_set_float(std::uint32_t offset, float value) = 0;
+    virtual void listbox_set_124_00a9ceb0(float value, bool relayout) = 0;
+    // byte screen+22Fh+count after an insert (+230h..+237h are cleared first).
+    virtual void set_row_human_flag(std::int32_t count_after_insert, bool human) = 0;
+    virtual void clear_row_human_flags_230() = 0;
+
+    // --- objectives page (0062EA1B..00630188) ---
+    // The commit record's three objective lists for a side (0: +204h, +210h,
+    // +21Ch; else +228h, +234h, +240h), each a std::list (head +4, size +8).
+    virtual const std::vector<RewardsObjective>& commit_objectives(std::int32_t side, RewardsObjectiveKind kind) = 0;
+    // 0061EC70 on record+18h: the points map, keyed by node+14h.
+    virtual bool commit_objective_points(const std::string& points_key, std::int32_t& points) = 0;
+    // 0061F340 on the 00594A70 record +21Ch (side 0) or +240h: true when the key
+    // is present and that node's +1Ch is nonzero.
+    virtual bool hidden_objective_revealed(std::int32_t side, const std::string& key) = 0;
+    virtual void text_ellipsized_00abb000(RewardsWidget text, std::string_view source, float width, bool localise) = 0;
+    virtual void text_cstring_00abbe50(RewardsWidget text, std::string_view source, bool localise) = 0;
+    virtual void widget_set_size_58(RewardsWidget widget, GuiSize2 size) = 0;
+    virtual void widget_set_color_50(RewardsWidget widget, const std::array<float, 4>& rgba) = 0;
+    // 0052ED20: push_back onto the widget vector at screen+F8h.
+    virtual void keep_created_widget_f8_0052ed20(RewardsWidget widget) = 0;
+    virtual void set_objectives_flag_e08c8a(bool any) = 0;
+
+    // --- scoring page (0063018D..006359A3) ---
+    virtual void set_scoring_flag_e08c8b(bool value) = 0;
+    virtual RewardsWidget clone_under_00aab4c0(RewardsWidget widget, RewardsWidget parent) = 0;
+    virtual RewardsVec3 widget_local_position_00aa67f0(RewardsWidget widget) = 0;  // &widget+0Ch
+    virtual void widget_set_local_position_00aa7dc0(RewardsWidget widget, const RewardsVec3& position) = 0;
+    virtual std::vector<RewardsDamageGroup> damage_groups(std::uint32_t map_offset) = 0;  // +9Ch / +A8h
+    // 00593480 copies the map at record+`kills_offset` (+B4h / +C0h); the
+    // 0062C170 -> 0062BB60 -> 00625900 chain indexes the copy (a missing key
+    // reads 0 there); the copy is freed after the row (00593180).
+    virtual std::int32_t kills_from_copy(std::uint32_t kills_offset, std::int32_t friendly_key,
+                                         std::int32_t by_category, std::int32_t target_category) = 0;
+    virtual std::vector<RewardsRemainingSide> remaining_units_cc() = 0;
+    virtual std::vector<RewardsCategoryCount> suicides_d8() = 0;
+    virtual std::vector<RewardsMissionSpecial> mission_specials_48() = 0;
+    // The point formulas on *(game+21A0h).
+    virtual std::int32_t damage_points_00911ce0(std::int32_t by, std::int32_t target, std::int32_t friendly_key,
+                                                std::int32_t damage, std::int32_t mode, std::uint8_t flag24d) = 0;
+    virtual std::int32_t kill_points_00911c00(std::int32_t friendly_key, std::int32_t by, std::int32_t target,
+                                              float kills, std::int32_t mode, std::uint8_t flag24d) = 0;
+    virtual std::int32_t remaining_points_00910500(std::int32_t category, std::int32_t field08) = 0;
+    virtual std::int32_t suicide_points_00910570(std::int32_t category, std::int32_t mode, std::int32_t field04) = 0;
+    virtual std::int32_t map_usage_points_009064d0(float seconds) = 0;
+
+    // --- rank page (006359A3..00635F9E) ---
+    virtual void set_rank_flag_e08c8c(bool value) = 0;
+    virtual std::uint8_t session_byte_4d() = 0;                 // *(00F8A2FC)+4Dh, read without a null test
+    // 0050FC30(*(00E19900)+10h, "RANK"): the record's int vector at +48h.
+    virtual std::int32_t rank_threshold_0050fc30(std::int32_t index) = 0;
+    virtual std::int32_t profile_score_0090bf50() = 0;          // ECX = *(game+650h+64h)
+    virtual std::int32_t profile_last_score_30() = 0;           // game+650h+30h, -1 = none yet
+    virtual void set_profile_last_score_30(std::int32_t score) = 0;
+    virtual void set_screen_byte(std::uint32_t offset, std::uint8_t value) = 0;
+    virtual void set_screen_float(std::uint32_t offset, float value) = 0;
+
+    // --- award pages (00635FA3..00636C33) and tail ---
+    virtual void set_awards_flag_e08c8d(bool value) = 0;
+    virtual bool profile_has_pending_awards_0061eb80() = 0;     // profile+BCh vector (1Ch elements) non-empty
+    virtual std::vector<RewardsUnlockAward> unlock_awards_248() = 0;
+    virtual std::vector<RewardsPendingAward> profile_pending_awards_70c() = 0;
+    virtual void profile_clear_pending_awards_006277c0() = 0;
+    // On *(*(00E198AC)+70h): an icon by id (004FB150) or by name (004FC070).
+    virtual void award_icon_by_id_004fb150(std::int32_t id, RewardsWidget icon) = 0;
+    virtual void award_icon_by_name_004fc070(const std::string& name, RewardsWidget icon) = 0;
+    virtual bool badge_award_earned_0090c000(const std::string& key) = 0;  // ECX = *(game+21A0h), key by value
+    // 0050FC30(*(00E19900)+10h, key) copied by 0050A210, freed by 00501FA0.
+    virtual RewardsAwardDefinition award_definition(const std::string& key) = 0;
+    virtual void set_state_texture_00ab44b0(RewardsWidget icon, std::int32_t state, std::string_view path,
+                                            const std::array<float, 4>& rgba) = 0;
+    virtual void widget_set_local_y_00aa78f0(RewardsWidget widget, float y) = 0;
+    virtual void apply_award_pages_0062a970() = 0;              // ECX = screen
+    virtual std::array<std::uint8_t, 6> page_flags_e08c88() = 0;  // 00E08C88..00E08C8D
+    virtual void change_page_00622e30(std::int32_t direction) = 0;
+    virtual void set_help_line_0054a0c0(std::string_view text) = 0;  // ECX = *(00E1930C)
 };
 
-// 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. Partial:
-// the state reset, the early return on +3Ch and the award-page queue up to
-// 0062CA7B; the page builders that follow (to 00636D79) are not reconstructed.
-// Returns false where the native routine returns (+3Ch).
+// Folds a native rank or medal number into an icon state: max(value - 1, 0),
+// passed on as its low word (MOVZX ... WORD PTR).
+std::int32_t rewards_icon_state(std::int32_t value) noexcept;
+
+// 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. The state
+// reset, the early return on +3Ch and the award-page queue up to 0062CA7B,
+// then rewards_screen_enter_pages_0062ca7b. Returns false where the native
+// routine returns early (+3Ch).
 bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, RewardsEnterHost& host);
+
+// 0062CA7B..00636D78: the page builders of the same body (one native function;
+// split here at the point both opening paths join). Range table and evidence in
+// docs/CC13_INGAME_GUI.md.
+void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host);
 
 // ---------------------------------------------------------------------------
 // Support-manager info panel refresh (0066B6C0)
