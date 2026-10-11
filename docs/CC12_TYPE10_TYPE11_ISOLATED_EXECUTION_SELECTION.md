@@ -377,3 +377,14 @@ Root issued the F6 review01 Source/plan text receipt after complete review of 35
 
 
 Root accepted the inert F6 native01 formal authorizer Source02 through a paired Source-only gate: 41 Root checks with 16 direct input bookends and 3,582 independent checks with 69 bookends. Source02 clears the eight empty-file and 17 omitted-observer-file blockers; the original Source01/HOLD remains preserved. The full OBS census is 1,246 files and 1,253 members. Both whole derivations and unchanged algorithm functions were verified. Native startup adapters remain under Source review. No new transition, assembly, adoption, ordinary host startup, native Dispatch, clock, compiler, target, ABI or game qualification is recorded by this checkpoint.
+
+
+### Native preparation: accepted startup Sources and Review transition
+
+Root accepted the new inert native ordinary-startup probe and admission Sources after complete raw/AST/dependency review: Root 73 checks / 19 direct pins, independent 1,511 / 19, and final independent current closure 1,935 / 20. The original verifier emitted 1,919 / 20; its original count and tool evidence are retained separately.
+
+The actual Review-to-native transition and inert assembly plan are issued. Independent review passed 10,473 checks / 18 pins; all 20 transition fields match the accepted prior records plus four Root attestations. The 40-field plan changes only phase, label and transition. The exact assembler CLI mode is phase, with native selected by the plan. Fixture inventory admits the actual Root text receipt once; the complete prior observer and external inventories are retained.
+
+New Source/transport and terminal-utility staging controls are issued and independently accepted: 3,957 checks / 39 pins, final closure 5,194 / 40. Generic Source and transport contracts retain their complete original counts and nested selectors. The formal baseline is accepted Review DATA01 (46,896 bytes); the accepted Source02 derivative is a separate gate. All three utility copies match their TEXT byte-for-byte.
+
+The old startup inspector had Prepare-to-Review assumptions. A native inspector derivative is now authored with exact helper provenance; both Source body reviews passed and the exact inert alias is staged; final independent closure and Root Source acceptance remain pending. The DATA assembler completed with original terminal f8974d/0; its unadopted generation and empty native observer directory await independent review and adoption. Native adoption, ordinary startup, formal Dispatch, a new phase clock and ABI/game qualification remain pending. All earlier HOLD and accepted Source-only snapshots are preserved.
