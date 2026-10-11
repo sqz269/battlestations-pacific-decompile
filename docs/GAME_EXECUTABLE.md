@@ -15540,3 +15540,141 @@ any reference run, a clean build of this tree passed its 2 ctest suites and a JM
   - BSM01 p6 is a knife-edge contact (547.39 s MiniSub death, 875.91 s end): any upstream move may shift it.
   - USNOS f17 completes near 6716.49 s, or moves by `hcb` (HQ captures).
   - Every completed win logs the exec guard's `sus_prog.exe` refusal.
+
+### Results (AG, base 10bef4a99)
+
+**Headline: the anchor is not AF.** Seven of AF's twenty-nine rows and wins reproduce (five rows, two wins). The other
+seventeen rows and five wins move, and all of it is one unswitched cc11 commit:
+- **`783c4f35d`**, "Restore native x87 soft-roll offset store in tuning loader" (`src/game_tuning_singleton.cpp`).
+- It now stores `GameTuningBlock+580h = (1 - SoftRollMul) x SoftRollCtrl` at load, the image's `007E6FB3..007E6FDA`
+  (read from disk: `FLD [EBP+57Ch]; FLD1; FSUBRP; FMUL [EBP+578h]; FSTP [EBP+580h]`).
+- Before it, `+580h` stayed 0. `src/game_hosts_units.cpp` hands it to `plane_ai_control.cpp`'s soft-roll branch
+  (`0099E332`) as `soft_roll_offset`, so every plane's roll law moves.
+- **Bisect** (JM08 3000, AF's launch form, the five switches OFF; `local\g35_bisect.ps1`):
+  - `783c4f35d^` (`b982327be`) = AF (exit 1) on JM08, USN01 and LOMP10.
+  - `783c4f35d` = the anchor (exit 1) on JM08, USN01, LOMP10 and USN13.
+  - The first divergence is `plane formation geometry` of Wildcat #1.1 at tick 400 (20 s).
+- **The anchor against AF:** exit 1 on JM06, LOMP06, USN12, BSM01 and USN02, the rows with no flying plane in the
+  window. Exit 3 on the other seventeen.
+
+| outcome moved by the soft roll alone (AF -> anchor) | |
+| --- | --- |
+| USN01 p8 (`s38_u1_p8`) | **completed 648.42 s -> failed 920.60 s** (Game Over, entity `CB2`, MissionPhase 2; Convoy2-5 and the Nells survive, deaths 89 -> 68) |
+| USNOS f17 (`s41_os_f17`) | **completed 6716.49 s -> failed 1554.69 s** (Game Over, `HQ1`). The pre-soft-roll build `b982327be` completes at 6716.49 s, = ships41 |
+| USN13 long | failed at 341.59 s -> runs all 9000 frames |
+| JM05 long | runs all 9000 frames -> **failed at 312.05 s** (Shokaku dies; deaths 51 -> 44) |
+| LOMP10 p2 | 1452.89 -> 1158.10 s |
+| ESMP08 orders2 | 2371.69 -> 3204.10 s |
+| BSM01 p6 | `Mission.EndMission` 875.91 -> 1503.34 s (the knife-edge contact) |
+
+**A crash on the anchor (USNOS f17).**
+- **Fault:** `0xC0000005` at `bsp_game.exe+307DFB`, at t = 4230 s. This is after the 1554.69 s failure: the harness
+  keeps simulating to the frame limit. Minidump: `local\g35_ancw_os.dmp`.
+- **Symbolization.** A `/Zi /DEBUG` rebuild of the same sources was made (`local\g35_dbg`; `CL=/Zi /FS`,
+  `_LINK_=/DEBUG /OPT:REF /OPT:ICF`). Each stack address was mapped into it by its unique surrounding bytes
+  (`local\g35_map.py`).
+- **Stack:**
+  - `local_support_kernel` (`native_dyn_convex_support.cpp:93`, the transcribed `00C35969` loop: a 16-bit vertex index
+    from the adjacency list times 16, read out of range)
+  - `support64_kernel :319`
+  - `search_kernel` (`native_dyn_general_convex.cpp:648`)
+  - `intersect_kernel :2009`
+  - `dispatch_native_dyn_general_convex_00c535e0`
+  - `HullTerrainContactSolver::hull_fort_narrow_phase :1057` or `hull_hull_narrow_phase :917` (a heuristic stack
+    scan)
+  - `world_step :1401`
+- **Not deterministic.** A build of `c2a886a8a` with the anchor's switches matches the anchor log line for line
+  through t = 2128.95 s (the same `impact blast ... Shima6` lines at 376966 and 377121), and it ran all 150000 frames
+  without a fault. Its `BSP_HULL_REBUILD_TRACE` logged no hull-shape rebuild.
+- **Reading:** a memory-safety fault (stale or uninitialized adjacency data in the dyn hull) is likely; bad geometry
+  is not. Open.
+
+**AG against the anchor:** exit 3 on USN02, JM06, JM05, JM05 long, USNOS, USNOS long, LOMP06 and IJN11. The other
+fourteen rows are exit 0/1.
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13479.7 | 48 | 1026 (137) | 14239 | 98.70 s | 5 of 16 / 2 of 19 | 15 | Lexington-class01 3295.52 | none (Mission.EndMission never true) | 481 | `local\g35_ag_usn04.log` |
+| USN01 | 3000 | 34435.6 | 29 | 1398 (329) | 2291 | 12.90 s | 0 of 5 / - | 3 | ScoutDauntless 3152.14 | none (Mission.EndMission never true) | 488 | `local\g35_ag_usn01.log` |
+| USN04 (E2) | 9000 | 13733.0 | 52 | 1042 (141) | 14849 | 98.70 s | 5 of 16 / 3 of 19 | 19 | Lexington-class01 5737.61 | none (Mission.EndMission never true) | 481 | `local\g35_ag_e2.log` |
+| USN02 | 9000 | 42980.9 | 3 | 5028 (327) | 4335 | 37.45 s | - | - | (none) 839.36 | failed at 74.30 s (Mission.MissionStatus) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 reac | 486 | `local\g35_ag_usn02.log` |
+| JM06 (smoke) | 3000 | 3587.2 | 2 | 149 (140) | 233 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 445 | `local\g35_ag_jm06.log` |
+| JM08 (smoke) | 3000 | 9596.6 | 20 | 429 (147) | 1590 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g35_ag_jm08.log` |
+| USN13 (smoke) | 3000 | 4570.5 | 19 | 284 (31) | 3442 | 98.90 s | 0 of 24 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 465 | `local\g35_ag_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 442 | `local\g35_ag_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 435 | `local\g35_ag_lomp06.log` |
+| LOMP10 | 3000 | 3504.8 | 3 | 245 (114) | 4583 | 91.95 s | - / 16 of 8 | - | (none) 8403.78 | none (Mission.EndMission never true) | 470 | `local\g35_ag_lomp10.log` |
+| JM05 | 3000 | 17420.0 | 16 | 513 (75) | 2028 | 5.85 s | 0 of 12 / 0 of 6 | 2 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 500 | `local\g35_ag_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 436 | `local\g35_ag_usn12.log` |
+| LOMP10 (long) | 9000 | 4100.1 | 5 | 253 (118) | 4595 | 91.95 s | - / 16 of 8 | - | (none) 8403.78 | none (Mission.EndMission never true) | 484 | `local\g35_ag_lomp10l.log` |
+| USNOS | 3000 | 45849.3 | 87 | 1484 (231) | 5140 | 5.00 s | - | 6 | NH 1497.26 | none (Mission.EndMission never true) | 502 | `local\g35_ag_usnos.log` |
+| USNOS (long) | 9000 | 55609.3 | 114 | 2146 (310) | 8438 | 5.00 s | - | 8 | NH 4492.07 | none (Mission.EndMission never true) | 509 | `local\g35_ag_usnosl.log` |
+| IJN01 | 3000 | 1763.3 | 1 | 161 (149) | 5017 | 80.20 s | - | - | A7M_1 8788.23 | none (Mission.EndMission never true) | 430 | `local\g35_ag_ijn01.log` |
+| JM05 (long) | 9000 | 41396.4 | 49 | 1221 (443) | 16038 | 5.85 s | 10 of 15 / 2 of 27 | 18 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 536 | `local\g35_ag_jm05l.log` |
+| JM08 (long) | 36000 | 115124.6 | 141 | 8605 (605) | 7022 | 5.25 s | - | 1 | Headquarter 01 0.00 | failed at 1026.93 s (Mission.MissionStatus) text="Mission Failed - The HQ has been destroyed!" entity="Headqua | 491 | `local\g35_ag_jm08l.log` |
+| USN13 (long) | 9000 | 35180.1 | 46 | 1614 (224) | 9941 | 98.90 s | 0 of 24 / - | 17 | Enterprise 2777.59 | none (Mission.EndMission never true) | 499 | `local\g35_ag_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 509 (101) | 3754 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 455 | `local\g35_ag_esmp08l.log` |
+| USNRM01 | 9000 | 31375.0 | 152 | 1792 (1405) | 59220 | 166.96 s | 5 of 11 / 1 of 12 | 104071 | West Virginia 0.00 | none (Mission.EndMission never true) | 498 | `local\g35_ag_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 128 (31) | 1081 | 65.20 s | 0 of 9 / - | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 492 | `local\g35_ag_ijn11.log` |
+
+**Leave-one-out.**
+
+Round 1 left each switch out on the eight moved rows and five wins (logs `local\g35_loo_<s>1_<row>.log` and
+`local\g35_loow_<s>1_<key>.log`, lanes `local\g35_lane_{a,b}`).
+- `yard` was not run: every AG log has `unit_deaths=0` on the `shipyard death release` line, so the release never
+  ran.
+- `hcb` was run on eleven rows and wins: **= AG on all of them** (exit 1). This is despite 2 to 303 suppressed
+  callbacks per row; tracked source keeps `kCaptureStatePartyFromUnitBound` OFF.
+
+| switch OFF | rows that return to the anchor (exit 1) | rows still moved | wins |
+| --- | --- | --- | --- |
+| `thr` | JM05, JM05 long (the 312.05 s failure returns) | IJN11 (also `torp`) | LOMP10 p2 back to **1158.10 s**; the rest = AG |
+| `torp` | USN02 | IJN11, JM06, USNOS, USNOS long (with `c8`) | USN02 p7 **727.60 s**, USN12 p2 **1544.78 s** (both = anchor); LOMP06 p2 **completes at 267.41 s**; BSM01 p6 moves (end 1503.34 s) |
+| `c8` | LOMP06, USNOS, USNOS long | JM06 (also `torp`) | LOMP06 p2 completes at **256.96 s**; BSM01 p6 = anchor |
+| `hcb` | none (= AG everywhere) | | = AG |
+
+Round 2 on five rows put one switch back on the anchor (`local\g35_lane_c`, `local\g35_loo{,w}_<v>2_<row>.log`):
+
+| anchor + | JM06 | LOMP06 | USNOS / USNOS long | LOMP06 p2 |
+| --- | --- | --- | --- | --- |
+| `torp` only | moved from both | = anchor | = anchor | completes 256.96 s |
+| `c8` only | moved from both | **= AG** | moved from both | completes 267.41 s |
+
+**Attribution.**
+- **LOMP06 p2 loses its win only with `c8` and `torp` together.**
+  - Either alone completes: 256.96 s with `torp`, 267.41 s with `c8`.
+  - Together they change the class-8 Narwhal's engagement. Its unit-table range goes 1500 -> 1852 (the torpedo
+    category's range, as on JM06's tutorial boats). Which of its tubes the gate then launches was not traced.
+  - Narwhal's shots fall 187 -> 35. Taijun Maru dies at 179.56 s instead of Kongosan Maru, and the mission never
+    completes in 16000 frames.
+  - Both switches are image readings (TORPEDO_DIRECTOR_CLASS8_CC11, GUNNERY 161). The order file `s37_l6_p2` needs
+    re-tuning, not the switches.
+- **USN02 p7 727.60 -> 782.03 s and USN12 p2 1544.78 -> 1529.92 s** are `torp`, as 161 predicted for torpedo ships.
+- **JM05 long's 312.05 s failure** (from the soft roll) is cured by `thr`: the MainAirfield squadrons' members take off.
+- **USNOS and BSM01 p6** are `c8` (the class-8 boats), with `torp` acting only through it.
+- **LOMP10 and LOMP10 long:** `torp` no longer moves them. Under the soft roll PT 02 dies at 237.31 s from 1622 m,
+  before its tubes bear (AF: 245.76 s).
+
+### Scripted-win rows (AG)
+
+| row | order file | frames | AF | anchor | **AG** | EndScene | guard line | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 | 727.60 s | 727.60 s | **782.03 s** (`torp`) | past the window | 120443 | `local\g35_agw_u2.log` |
+| USN01 | `s38_u1_p8` | 22000 | 648.42 s | failed 920.60 s | **failed 920.60 s** (soft roll) | 960.19 s | none | `local\g35_agw_u1.log` |
+| LOMP06 | `s37_l6_p2` | 16000 | 267.41 s | 267.41 s | **no completion** (`c8` + `torp`) | - | none | `local\g35_agw_l6.log` |
+| LOMP10 | `s37_l10_p2` | 30000 | 1452.89 s | 1158.10 s | **957.54 s** (`thr`) | 992.08 s | 107975 | `local\g35_agw_l10.log` |
+| USN12 | `s38_u12_p2` | 36000 | 1544.78 s | 1544.78 s | **1529.92 s** (`torp`) | 1564.50 s | 223489 | `local\g35_agw_u12.log` |
+| BSM01 | `s38_b1_p6` | 40000 | `EndMission` 875.91 s | 1503.34 s | **`EndMission` 1503.34 s** (`c8`) | not reached | none in 40000 frames | `local\g35_agw_b1.log` |
+| ESMP08 | cc9-lua46 `l46_e8_orders2.txt` | 72000 | 2371.69 s | 3204.10 s | **3204.10 s** (soft roll) | 3238.68 s | 614433 | `local\g35_agw_e8.log` |
+| USNOS | cc9-ships41 `s41_os_f17.txt` | 150000 | (6716.49 s on `b982327be`) | failed 1554.69 s, then the fault at 4230 s | **failed 1554.69 s** (soft roll) | 1594.28 s | none | `local\g35_agw_os.log` |
+
+- **Four AG wins complete and log the exec guard's `sus_prog.exe` refusal:** USN02, LOMP10, USN12 and ESMP08.
+- **Lost:** USN01 p8 and USNOS f17 (both to the soft roll) and LOMP06 p2 (`c8` + `torp`).
+- **BSM01 p6** reaches `Mission.EndMission` at 1503.34 s without the completion script's process launch inside
+  40000 frames.
+- **Predictions that missed:**
+  - The anchor was predicted = AF.
+  - `torp` was predicted to move LOMP10.
+  - `hcb` was predicted to move USNOS; it moves nothing.
+  - The LOMP06 loss was not predicted.
+  - USN01 and USNOS were predicted to hold.
