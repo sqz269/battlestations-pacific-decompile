@@ -1,0 +1,219 @@
+{
+  "schema": "bsp.cc12.application-crt-dispatch-entry.Root.v1",
+  "status": "direct_entry_metadata_accepted",
+  "worker_commit": "756ae89e8598574471d54fc7a1c05ba3a90973f8",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/evidence.zip",
+      "bytes": 455525,
+      "sha256": "012bdb9d74dfc6e215f3d213dd0a9f2a44c0575dd64fb94dfe10f846029c81d2"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/manifest.json",
+      "bytes": 8330,
+      "sha256": "aa50e443b8ac23bfe2816340db082d1d3625490dbf1b4e726b19d85ee8b139a2"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/seal.json",
+      "bytes": 6663,
+      "sha256": "5add9917d89b418a07c6e2de4f46dee4252c66f66ce3528c97277c6d70143090"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/portable_replay.py",
+      "bytes": 9386,
+      "sha256": "caa34d0adfcd6a7ef18089021e546edf9f4861e3c7b4e15f56e7f75f30b4e05a"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/guard_replay.py",
+      "bytes": 2283,
+      "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/Root_guard_runner.py",
+      "bytes": 736,
+      "sha256": "f4d40f88c8294728a81f3657c73dd7abdf2172564de1b3e583f71c1a27e225ba"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/Root_guard.json",
+      "bytes": 2684,
+      "sha256": "9139b4c9556bec749bb6cea66741b269e356c2361e3e8ebe0e9e87b43afb9b90"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/Root_guard.stderr.txt",
+      "bytes": 425,
+      "sha256": "024a475a6a89f727c0ba736a72e82f65a6c41b1b5c182b9f51828ba9a0b85575"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/copy_and_actual.py",
+      "bytes": 4772,
+      "sha256": "4a641aae84bd029246b8e45a72329922695a4dbd8c8156d3f5448c5ff9439c1d"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/Root_actual_review.json",
+      "bytes": 10220,
+      "sha256": "8d7280f0239240200cb99ceab93a4a6b0ddff3b89f77d8cd5f6b5afbb5a2c5e5"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/review_native.py",
+      "bytes": 4270,
+      "sha256": "2e51b2379fc206eb4bb981f7025dffe2d6376f45b728b7f68dab1c4dbb87d5d5"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/Root_Native_review.json",
+      "bytes": 3111,
+      "sha256": "c5ed52d3322796d9949c6e095ccbcb4e386fd1c657e61d1b9bb8d1ea8d458a59"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/staged_git_receipt.json",
+      "bytes": 3337,
+      "sha256": "f351e7507181e58effb7afb961c06cf2b7893adb271bf6ed4d1dbedac3e37783"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_primary/final_git_receipt.json",
+      "bytes": 3219,
+      "sha256": "5c79b8dcca25682950f63ea996c55811a999d07b15cb0765993b7153b056831c"
+    }
+  ],
+  "Native": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "typed_captures": 2,
+    "raw_capture_bytes_equal": true,
+    "raw_gate_sha256": "bea38c7bcec2f895126989e51142ddc667a7836202fc27b9081fba4872c72ff1",
+    "saved_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07991"
+      },
+      "name": "___InternalCxxFrameHandler",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "228",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07991"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07a74"
+            },
+            "length": "228"
+          }
+        ]
+      }
+    },
+    "entry_listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07991"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07991"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07991"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07991"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "entry_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c07992"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c07992"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "saved_entry_prototype": "undefined ___InternalCxxFrameHandler(void)",
+    "automatic_proto_companion_summary_wholly_opaque": true,
+    "proto_companion_emitted_lines": "40/50 CLI truncation retained; no complete HTTP companion claim",
+    "instruction_texts_or_code_data_bytes_read": 0,
+    "Original_FH3_register_ABI_and_invocation_authenticated": false,
+    "body_expansion_admitted": false
+  },
+  "actual_membership": {
+    "objects": 8,
+    "inputs": 10,
+    "outputs": 2,
+    "helpers": 11,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_content_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+      "reports/cc12_application_crt_handler_body_primary.json"
+    ]
+  },
+  "strict_guard": {
+    "supplied_ZIP_only": true,
+    "no_post_preload_imports_or_external_effects": true
+  },
+  "next_admission": {
+    "packet": "cc12_application_crt_dispatch_body_listing_metadata",
+    "scope": "Fresh typed listing/function/flow metadata at exact228 saved-body addresses C07991..C07A74 only",
+    "required": "Return exact captures/ownership/unit/flow coverage to Root under98/64730 closure before code bytes, instruction texts or further analysis",
+    "excluded": "No prototype repetition, decompile/disasm/opcodes/data/target following/callers/GPR mutation/Source/runtime"
+  },
+  "overall_goal_complete": false
+}
