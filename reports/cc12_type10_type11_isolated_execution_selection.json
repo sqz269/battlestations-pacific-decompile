@@ -16157,6 +16157,97 @@
             "The original fixed HOLD_DATA01 remains immutable; a later derivative needs a fresh HOLD filename",
             "No startup, native clock, fixture, ABI or game qualification has occurred"
           ]
+        },
+        "fresh_F6_native01_Root_Source04_peer_Source08_closed_Source_staging_acceptance_checkpoint": {
+          "schema": "Root_F6_native01_Root_Source04_peer_Source08_closed_Source_staging_checkpoint_v1",
+          "Source_credit": 0,
+          "Root_joint_DATA_acceptance_issued": false,
+          "new_native_clock_started": false,
+          "candidate_execution_at_checkpoint": false,
+          "status": "reviewed_and_staged_Source_pair; joint_DATA_execution_pending",
+          "Source_only_gate": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_joint_SOURCE04_peer_SOURCE08_Source_accepted_DATA01.json",
+            "bytes": 10385737,
+            "sha256": "4a07f556dcfaa1b3ccf90524990716beb5e1aec232bb4496075f6986ff52367d"
+          },
+          "Source_only_gate_original_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_joint_SOURCE04_peer_SOURCE08_Source_acceptance_original_genuine_native_DATA01.json",
+            "bytes": 7779,
+            "sha256": "8d198ff6d283d8010732c8cdcd30d6b37f74e492b4e10d661c61619d798f8620"
+          },
+          "Source_gate_writer": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\review_and_stage_joint_SOURCE04_peer_SOURCE08_Root_DATA03.py",
+            "bytes": 23500,
+            "sha256": "cb8b247f5504ee0a37c068bb69a482283beeffb19947a1340307ecadeacaef75"
+          },
+          "actual_Source_gate_inputs": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_joint_SOURCE04_peer_SOURCE08_Root_gate_inputs_DATA04.json",
+            "bytes": 25351,
+            "sha256": "40d962e2017c5bb270bf5887751bcf00184ffc85717cb6ef81f9c5f3616f179b"
+          },
+          "staged_Source_aliases": {
+            "Root": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\consume_F6_native01_complete_adopted_DATA_joint_Root_SOURCE04.py",
+              "bytes": 51957,
+              "sha256": "e7ca2494d93639bc8ab59b7b97d458369cfc9d0b14a6d7afa21f99ad4f52f21f"
+            },
+            "peer": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\independent_review_consumer_F6_native01_SOURCE08.py",
+              "bytes": 98241,
+              "sha256": "67b614c18504380ec5dc5430b19e7876577027186539088a13c09b9ae07cbe14"
+            }
+          },
+          "Source_gate_complete_positive_checks": 39515,
+          "Source_gate_complete_current_pins": 52,
+          "whole_Source_gate_consumption_original_chunk": "db52c8",
+          "whole_Source_gate_consumption_original_exit_code": 0,
+          "actual_Source_gate_original_chunk": "004f5d",
+          "actual_Source_gate_original_exit_code": 0,
+          "actual_retry_input": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_joint_actual_selected_inputs_DATA02.json",
+            "bytes": 14582,
+            "sha256": "bdcf24d702bae01f6e4e9aefd30e404cb134ee3d67442d70bb85d9afd765fadf"
+          },
+          "focused_Source03_review": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_job_peer/local/cc12_type1011_F6_native01_joint_staging_gate_Source03_finite_review_20261011.DATA.json",
+            "bytes": 95281,
+            "sha256": "6703dc023960a0bf237e5bfbb5cd43078e3db4baea54c3da1deea477a2b5d53f"
+          },
+          "focused_Source03_review_complete_checks": 37,
+          "focused_Source03_review_complete_pins": 6,
+          "focused_Source03_review_literal_field_accesses": 159,
+          "focused_Source03_review_unique_loaded_fields": 97,
+          "preserved_Source02_gate_failure_original_native": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/Root_F6_native01_materialization_control01/Root_F6_native01_joint_SOURCE04_peer_SOURCE08_gate_Source02_failed_original_genuine_native_DATA01.json",
+            "bytes": 3726,
+            "sha256": "4fc5b9c7e44f7afa467d463d46e5ed55ee52174d724a6c7bf5dd4a4ca61c4af8"
+          },
+          "preserved_Source02_static_PASS": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_job_peer/local/cc12_type1011_F6_native01_joint_staging_gate_Source02_static_review_20261011/review.DATA.json",
+            "bytes": 121004,
+            "sha256": "6b8e3532f2d21726be2ad68d8c56a2e2aec73d6b3f12ccd4ec35ad65395226c1"
+          },
+          "preserved_Source01_static_HOLD": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_job_peer/local/cc12_type1011_F6_native01_joint_staging_gate_Source01_static_review_20261011/finding.DATA.json",
+            "bytes": 64202,
+            "sha256": "4608b5710f9319c61860e9afbabcd14223807ab4b3d63e355f1b56d8172470dc"
+          },
+          "author_closed_paired_Source_seal": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT/local/type1011F6NativePeerInternalSourceTEXT08_Root04/seal.DATA.json",
+            "bytes": 39658,
+            "sha256": "2cafbaca38a6d9ad8db10774be3161184facb1db4860bfeab2987209237bd4b2"
+          },
+          "independent_closed_paired_Source_seal": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_review_startup_sources/local/Root_F6_native01_peer08_Root04_independent_Source_review_20261011/seal.DATA.json",
+            "bytes": 49108,
+            "sha256": "6358d81cfd357f7d3c0b03e37dc1dfda8f18c1afc1a0c243e895232cd3e088bb"
+          },
+          "independent_complete_outer_closure": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_review_startup_sources/local/Root_F6_native01_peer08_Root04_independent_Source_review_20261011.outer_closer_original_genuine_native_DATA01.json",
+            "bytes": 10025105,
+            "sha256": "1a764f7fbbc6d26613c605cdbea4d8d45ddf58bef7ee743ec2876fc2bb55cbcf"
+          },
+          "boundary": "Root04 changes only the fresh HOLD destination. Peer08 corrects actual_original_session_id. Source-only acceptance does not issue joint DATA, startup, dispatch, runtime, fixture, ABI or game qualification."
         }
       }
     }
