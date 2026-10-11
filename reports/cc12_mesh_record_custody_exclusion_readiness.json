@@ -1,0 +1,833 @@
+{
+  "schema": "bsp.cc12.mesh-record-custody-exclusion-readiness.worker.v1",
+  "packet": "cc12_mesh_record_custody_exclusion_readiness",
+  "UTC": "2026-10-11T02:07:20.219841+00:00",
+  "status": "Source_readiness_complete_CXX_custody_exclusion_NO_GO",
+  "captured_commit": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+  "Source_roots": {
+    "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+    "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+    "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+    "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+    "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+    "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+  },
+  "Source": {
+    "status": "pass",
+    "captured_commit": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+    "Source_Git": {
+      "Source_paths": 4228,
+      "actual_git_rows": 4277,
+      "trees": 10,
+      "root": "5c65a2278a32e59733f2cf8ce86ac21ea4f9fb08"
+    },
+    "Source_roots": {
+      "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+      "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+      "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+      "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+      "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+      "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+    },
+    "Root_epoch": {
+      "manifest": {
+        "entry": "blobs/e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a",
+        "bytes": 1271280,
+        "sha256": "e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a"
+      },
+      "whole_project_preimages": 3356,
+      "raw_EOL_variants": [
+        "include/bsp/sound_configuration.hpp",
+        "include/bsp/sound_startup.hpp",
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "src/game_sound_runtime.cpp",
+        "src/sound_configuration.cpp",
+        "src/sound_startup.cpp"
+      ],
+      "LF_differences": [],
+      "artifact_declarations_not_followed": 4,
+      "inherited_build_artifact_or_runtime_credit": false
+    },
+    "prior": {
+      "physical_artifacts": 11,
+      "old_commits": [
+        "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+        "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3"
+      ],
+      "nested_full_physical_index_and_Git_consistency_checked_separately": true,
+      "historical_build_or_runtime_credit": false
+    },
+    "boundary": "Source/Git/finite lexical readiness only. No Source mutation, compilation, tests, Native/GPR, export, ledger, game, OS or audio runtime. Prior archive bytes retained without current build/artifact/runtime credit."
+  },
+  "evidence": {
+    "corpus": 4217,
+    "queries": 57,
+    "excerpts": 83,
+    "orders": 33,
+    "absences": 6,
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\source_evidence.json",
+      "bytes": 676116,
+      "sha256": "a92dfb46d6ea57d2b6603b715e475002abba0ab39d15ae7a54409a7e34470b00"
+    }
+  },
+  "historical": {
+    "status": "pass",
+    "physical_artifacts": 11,
+    "old_actual_Git": [
+      {
+        "name": "mesh-prepared-record",
+        "commit": "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+        "closure": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4230,
+          "trees": 10,
+          "root": "0f59507e66c1f79fda6e0167bf1f6732b42e3164"
+        },
+        "Source_roots": {
+          "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+          "include": "053e10d974d4c812562c787a216fd14d613681b0",
+          "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+          "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+          "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+          "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+        },
+        "current_Source_LF_differences": [
+          "include/bsp/native_particle_model_construction.hpp",
+          "include/bsp/native_render_service_base.hpp",
+          "src/native_particle_model_construction.cpp",
+          "src/native_render_service_base.cpp"
+        ]
+      },
+      {
+        "name": "particle-raw-key",
+        "commit": "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3",
+        "closure": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4230,
+          "trees": 10,
+          "root": "29652476c3bc831d2e213cb1c29cf7f3c874e723"
+        },
+        "Source_roots": {
+          "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+          "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+          "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+          "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+          "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+          "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+        },
+        "current_Source_LF_differences": []
+      }
+    ],
+    "archives": [
+      {
+        "name": "mesh-prepared-record",
+        "members": 5422,
+        "Git": {
+          "status": "pass",
+          "baseline_commit": "a5351f3e6711f1990c30566a1db30fa8623c82b4",
+          "baseline": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4235,
+            "trees": 10,
+            "root": "a1ece646be44d7ae8c357449d106f052a37ee7fb"
+          },
+          "actual_staged": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4235,
+            "trees": 10,
+            "root": "3b0877c7da79155e0151946db2be83015cda2a35"
+          },
+          "staged_Source_roots": {
+            "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+            "include": "053e10d974d4c812562c787a216fd14d613681b0",
+            "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+            "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+            "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+            "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+          },
+          "boundary": "Portable verification of retained real Git objects and actual staged Source receipt; final committed Source equality is checked separately in the repository."
+        },
+        "complete_physical_indices": 490,
+        "actual_all_offset_symbol_definition_rows": 274930,
+        "prior_helper_exact": true,
+        "compiled_or_build_credit": false
+      },
+      {
+        "name": "particle-raw-key",
+        "members": 4503,
+        "Git": {
+          "status": "pass",
+          "baseline_commit": "c3adbcdf6f7ce3bcd834784ace3f574a4291d528",
+          "baseline": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4241,
+            "trees": 10,
+            "root": "3dc1aef46edeaac51b4a59fdcca69cebe327ba76"
+          },
+          "actual_staged": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4241,
+            "trees": 10,
+            "root": "b529c13fd9508ca8f302f41b7b122f0c04ff5def"
+          },
+          "staged_Source_roots": {
+            "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+            "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+            "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+            "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+            "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+            "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+          },
+          "boundary": "Portable verification of retained real Git objects and actual staged Source receipt; final committed Source equality is checked separately in the repository."
+        },
+        "complete_physical_indices": 20,
+        "actual_all_offset_symbol_definition_rows": 5167,
+        "prior_helper_exact": true,
+        "compiled_or_build_credit": false
+      },
+      {
+        "name": "raw-key-window-readiness",
+        "members": 4307,
+        "Git": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4263,
+          "trees": 10,
+          "root": "3d759919f531ed493a6d6f9b2c15a9c78148ed08"
+        },
+        "nested": [
+          {
+            "entry": "prior/mesh-prepared-record.zip",
+            "members": 5422,
+            "all_member_pins_checked": true
+          },
+          {
+            "entry": "prior/mesh-preconstruction-readiness.zip",
+            "members": 4295,
+            "all_member_pins_checked": true
+          }
+        ],
+        "compiled_or_build_credit": false
+      }
+    ],
+    "historical_build_or_runtime_credit": false,
+    "boundary": "Read-only consistency replay of complete supplied historical archive members, actual Git closures and every selected full physical index against its retained object bytes. Does not execute the prior portable scripts, decode new code, run old tests, build or credit current ABI/runtime."
+  },
+  "decision_matrix": [
+    {
+      "participant": "Prepared record + dormant raw-key entry",
+      "positive": "Real exact-key admission, stable nonmoving record requirement and supported-noexcept closed transition; prepare-only raw return",
+      "missing": "No concrete provider or application instance; interface/state is not lifetime or exclusion",
+      "Source_excerpts": [
+        "mesh_record_preparation",
+        "raw_key_dormant_entry"
+      ]
+    },
+    {
+      "participant": "Actual process mesh pool",
+      "positive": "GameNativeResourcePoolProcess owns mesh storage/companion on the shared allocator list and binds the static adapter",
+      "missing": "Startup/getter mutex releases before borrowed operations; no runtime participation scope",
+      "Source_excerpts": [
+        "process_pool_identity",
+        "process_pool_borrow"
+      ]
+    },
+    {
+      "participant": "Direct allocation / return",
+      "positive": "Pool CS protects freelist/count/table changes within each operation",
+      "missing": "Returned slot is available after LeaveCriticalSection and before host unbind",
+      "Source_excerpts": [
+        "pool_actual_allocate",
+        "pool_actual_return"
+      ]
+    },
+    {
+      "participant": "Slab trim / destroy / static exit",
+      "positive": "Actual trim callback is registered; trim frees slabs and rewrites moved slab indices; static exit destroys the actual pool",
+      "missing": "Trim takes no CS; shutdown must exclude all live Native payloads and host callbacks/borrowers",
+      "Source_excerpts": [
+        "pool_slab_trim",
+        "pool_destroy"
+      ]
+    },
+    {
+      "participant": "Allocator-list / CRT failure handler",
+      "positive": "trim_all dispatches genuine registered callbacks; real allocation invokes _callnewh",
+      "missing": "No literal handler install or trim_all caller is established in this finite Source corpus; external/reentrant participation remains unclosed",
+      "Source_excerpts": [
+        "allocator_list_trim",
+        "allocator_allocate_handler"
+      ]
+    },
+    {
+      "participant": "Particle private create_mesh / AF74 failure",
+      "positive": "Existing actual-pool allocator -> Native constructor -> noexcept postconstruction bind; acquired failure destroys entered emitters/base and retires failed profile",
+      "missing": "No raw-preparation activation or full surviving resource custody; both mesh fields and section/material/stream paths remain distinct",
+      "Source_excerpts": [
+        "particle_raw_window",
+        "particle_outer_failure"
+      ]
+    },
+    {
+      "participant": "Static mesh pool adapters",
+      "positive": "Global allocate/return forward to the same bound actual pool; explicit CRT cleanup",
+      "missing": "These are static pool adapters, not proof of a separate StaticMesh owner; all their callers participate",
+      "Source_excerpts": [
+        "pool_static_binding_and_forward",
+        "GUI_static_mesh_acquired"
+      ]
+    },
+    {
+      "participant": "Tracer",
+      "positive": "Actual pool -> Native constructor -> postconstruction bind_mesh",
+      "missing": "Same returned-key interval; no prepared-record custodian or shared exclusion",
+      "Source_excerpts": [
+        "other_tracer_mesh_producer",
+        "mesh_companion_terminal"
+      ]
+    },
+    {
+      "participant": "GUI acquired factories / generic clone",
+      "positive": "Stable list entries own NativeMeshReference; same actual owner domain; canonical clone borrows a resolved companion",
+      "missing": "GUI callback unbinds then erases during active terminal call; cannot transplant into PreparedRecord explicit-later-disposal contract",
+      "Source_excerpts": [
+        "GUI_geometry_owners_and_destructor",
+        "GUI_canonical_clone_borrow"
+      ]
+    },
+    {
+      "participant": "Post-effect / post-effect20",
+      "positive": "Stable block-owned inline companions, actual static allocation/return, late registered retirement and explicit host-quiescent reset",
+      "missing": "Different construction/unwind/custody contracts; named reset and retired flags do not prove external quiescence or global exclusion",
+      "Source_excerpts": [
+        "post_effect_mesh_acquisition",
+        "post_effect20_quiescent_reset"
+      ]
+    },
+    {
+      "participant": "Canonical registry borrowing / raw terminal",
+      "positive": "find holds short metadata lock, resolve returns borrowed reference; raw terminal decrements actual count then resolves",
+      "missing": "No lock across terminal dispatch; size/capacity/admission do not exclude pool reuse or keep borrowers alive",
+      "Source_excerpts": [
+        "registry_find_and_resolve",
+        "registry_raw_terminal_entry"
+      ]
+    },
+    {
+      "participant": "Direct companion terminal",
+      "positive": "release_render_command_reference decrements the same captured count then invokes terminal virtual method",
+      "missing": "Bypasses lookup; exclusion must include this entry and every outstanding direct companion borrower",
+      "Source_excerpts": [
+        "direct_companion_terminal_entry",
+        "mesh_companion_terminal"
+      ]
+    },
+    {
+      "participant": "Application / standalone texture graph",
+      "positive": "Actual application owns canonical registry and genuine mesh environment; standalone services have their own real scope",
+      "missing": "Separate registry/environment lifetimes may share supplied pool; no PreparedRecord storage/provider instantiation is shown",
+      "Source_excerpts": [
+        "application_actual_mesh_graph",
+        "independent_texture_owner_graph"
+      ]
+    },
+    {
+      "participant": "Singleton drain / partial resource failures",
+      "positive": "Application checks selected resource/queue/worker drain conditions; normal particle retirement releases second mesh, first mesh and base geometry separately",
+      "missing": "Drain is not an all-borrower join or PreparedRecord disposal proof; partial AF74 and later effect failures require independent survivor custody",
+      "Source_excerpts": [
+        "application_retention_limits",
+        "particle_normal_mesh_retirement"
+      ]
+    }
+  ],
+  "GO": {
+    "packet": "cc12_mesh_process_lifecycle_admission_readiness",
+    "scope": "Source-only evidence admission for a genuine host operation and borrower lifecycle boundary around the actual process-owned mesh pool; not C++ implementation",
+    "owned_future_outputs": [
+      "docs/CC12_MESH_PROCESS_LIFECYCLE_ADMISSION_READINESS.md",
+      "reports/cc12_mesh_process_lifecycle_admission_readiness.json",
+      "local/cc12_mesh_process_lifecycle_admission_readiness/"
+    ],
+    "positive_inputs": [
+      "GameNativeResourcePoolProcess actual pool identity/startup/getter",
+      "NativeMeshPool direct/static allocation, return, trim, destruction and allocator-list registration",
+      "GameNativeRendererApplication/TextureLoadingGraph and standalone texture-service borrowers",
+      "canonical registry raw/find/resolve and direct RenderCommandReference terminal/borrow entries",
+      "all exact current Source producer/return/trim/terminal family matches in this packet"
+    ],
+    "required_output": "Positive real begin/end participation and closure for each listed path plus a separate later callback/borrower quiescence proof. If Source cannot identify the actual host policy or handler/caller bridge, report the missing dependency and do not add a token/interface or speculative code.",
+    "prerequisites": [
+      "Pin the genuine process-owned pool, Native environment, canonical registry, real profiles/constants/strings and every borrower lifetime; no shadow domains or allocation authenticity inferred from extent/alignment.",
+      "Name an actual stable persistent host owner for each record/callback before preparation and through successful construction, later resource failure, terminal return/unbind and explicit disposal.",
+      "Supply positive all-participating-path exclusion across physical return -> exact old-key unbinding, covering direct/static allocation, return, trim, slab reindex/free, destroy/CRT exit, registered allocator-list dispatch and real allocation/new-handler callbacks.",
+      "Close same-thread/reentrant and cross-thread participation, aliases and externally supplied callbacks; a wrapper, unused interface, metadata mutex, named token or startup lock is insufficient.",
+      "Separately prove no active constructor/preparation, terminal call, retirement callback, registry-resolved borrower or direct companion borrower before host disposal; retired() and count zero do not provide that proof.",
+      "On preparation throw cancel entered metadata/abandon only unconstructed records before actual once-only raw return; preserve genuine allocator/return failure behavior and supported-noexcept transition.",
+      "Retain published records on partial/later resource failure until their independently justified Native terminal route; no autorelease, retry, rollback, extra creator reference or invented cleanup.",
+      "Keep GUI, tracer, particle, static adapters and both post-effect policies distinct; complete renderer/stream/material/section and persistent application-custodian contracts before resource delegation or activation."
+    ],
+    "current_CXX_admission": false
+  },
+  "NO_GO": [
+    "Concrete active RawKeyPreparation/provider/custodian or mesh factory replacement",
+    "All-path reuse/trim exclusion from current Source locks, capacities, state or a proposed wrapper",
+    "Quiescent disposal inferred from retired state, zero Native count, absent registry key or one worker join",
+    "Transplant GUI self-erasure or post-effect reset/failure policy into PreparedRecord",
+    "Full particle resource delegate or persistent application custody",
+    "Original ABI/FH3, hardware/foreign-exception handling, runtime/startup/gameplay evidence"
+  ],
+  "document_pin": {
+    "path": "docs/CC12_MESH_RECORD_CUSTODY_EXCLUSION_READINESS.md",
+    "bytes": 18186,
+    "sha256": "bdfb2d985aa6b9bbc4e3021f074bc9f82cf44b76c7a2ed5e690a8e49f517f1c8"
+  },
+  "limits": {
+    "no_CXX_changes": true,
+    "no_build_tests_or_probes": true,
+    "no_Native_GPR_exports_or_ledgers": true,
+    "no_runtime": true,
+    "concrete_custodian_NO_GO": true,
+    "existing_callers_unchanged": true,
+    "new_current_compiled_credit": false
+  },
+  "final_delivery": "Actual staged and immutable two-file Git closure and raw/LF delivery pins are retained separately after publishing/commit.",
+  "later_Source_qualification": {
+    "status": "pass",
+    "frozen_worker": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+    "qualified_Main": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+    "Source_Git": {
+      "Source_paths": 4228,
+      "actual_git_rows": 4235,
+      "trees": 10,
+      "root": "905f7dbe23a790bd2effa22d306a13b06934523f"
+    },
+    "Source_roots": {
+      "src": "a62d3549c06d76f6342b17507a39dcd250c1ef4f",
+      "include": "c75c7cfeed1028dcb11a9ceb1d6fc8601148e67c",
+      "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+      "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+      "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+      "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+    },
+    "exact_changed_Source": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "accepted_Source_commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+    "accepted_Source_Git": {
+      "Source_paths": 4228,
+      "actual_git_rows": 4228,
+      "trees": 8,
+      "root": "b5df4a5b9089a7de15b293ddc112089a96ae7573"
+    },
+    "accepted_branch_delta_to_qualified_Main": [
+      "include/bsp/native_particle_model_construction.hpp",
+      "src/native_particle_model_construction.cpp"
+    ],
+    "Root_acceptance_commit": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+    "Root_Source3356_manifest": {
+      "entry": "blobs/c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2",
+      "bytes": 1267920,
+      "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+    },
+    "Root3356_preimages": 3356,
+    "raw_EOL_variants": [
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "LF_Source3356_delta": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "artifact_declarations_not_followed": 4,
+    "finite_evidence": {
+      "corpus": 4217,
+      "queries": 57,
+      "excerpts": 83,
+      "orders": 33,
+      "absences": 6,
+      "all_queries_matches_excerpts_orders_absences_and_conclusions_equal": true
+    },
+    "preserved_baseline_pins": [
+      {
+        "entry": "baseline_replay\\evidence.zip",
+        "bytes": 441490043,
+        "sha256": "a0e7b4dc6e1713e22d108816609f9be8f78328daa7596d5eac05f3be48cbb79c"
+      },
+      {
+        "entry": "baseline_replay\\portable_replay.py",
+        "bytes": 4839,
+        "sha256": "325152aee95a6ccfa3e484d9996008c7fec317bdc63bb5305766d15630f8cecf"
+      },
+      {
+        "entry": "baseline_replay\\replay_in_place.json",
+        "bytes": 10179,
+        "sha256": "25fd5916ed84979a41d30dcc28dd831543e0978ee3fb1b9fe86b74d567001d29"
+      }
+    ],
+    "inherited_build_test_object_runtime_credit": false,
+    "decision": "Existing mesh-custody/exclusion CXX NO-GO and next Source-only lifecycle admission GO unchanged.",
+    "boundary": "Exact later two-Source-path qualification only. Original frozen 22e/e89 proof remains physically preserved. No later Root compilation/test/object/runtime credit is transferred."
+  },
+  "proof": {
+    "zip": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\evidence.zip",
+      "bytes": 444569900,
+      "sha256": "320ef36ab730e1246e0f3fbd4a8de8464bac87a2107bec807ed34795063d269c"
+    },
+    "helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\portable_replay.py",
+      "bytes": 5776,
+      "sha256": "947bd2e00b4389a30d301ee973b136431596241ba4e4965c47338eb70853776c"
+    },
+    "original_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\replay_in_place.json",
+      "bytes": 12993,
+      "sha256": "6d0424111b9c69fbf4058b60dc2a5ec55f6f8f185911c3d97da371d1d7a9008f"
+    },
+    "physical_copy_zip": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\relocated\\evidence.zip",
+      "bytes": 444569900,
+      "sha256": "320ef36ab730e1246e0f3fbd4a8de8464bac87a2107bec807ed34795063d269c"
+    },
+    "physical_copy_helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\relocated\\portable_replay.py",
+      "bytes": 5776,
+      "sha256": "947bd2e00b4389a30d301ee973b136431596241ba4e4965c47338eb70853776c"
+    },
+    "physical_copy_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_record_custody_exclusion_readiness\\relocated\\replay_relocated.json",
+      "bytes": 12993,
+      "sha256": "6d0424111b9c69fbf4058b60dc2a5ec55f6f8f185911c3d97da371d1d7a9008f"
+    },
+    "identical_receipts": true,
+    "replay": {
+      "GO": {
+        "current_CXX_admission": false,
+        "owned_future_outputs": [
+          "docs/CC12_MESH_PROCESS_LIFECYCLE_ADMISSION_READINESS.md",
+          "reports/cc12_mesh_process_lifecycle_admission_readiness.json",
+          "local/cc12_mesh_process_lifecycle_admission_readiness/"
+        ],
+        "packet": "cc12_mesh_process_lifecycle_admission_readiness",
+        "positive_inputs": [
+          "GameNativeResourcePoolProcess actual pool identity/startup/getter",
+          "NativeMeshPool direct/static allocation, return, trim, destruction and allocator-list registration",
+          "GameNativeRendererApplication/TextureLoadingGraph and standalone texture-service borrowers",
+          "canonical registry raw/find/resolve and direct RenderCommandReference terminal/borrow entries",
+          "all exact current Source producer/return/trim/terminal family matches in this packet"
+        ],
+        "prerequisites": [
+          "Pin the genuine process-owned pool, Native environment, canonical registry, real profiles/constants/strings and every borrower lifetime; no shadow domains or allocation authenticity inferred from extent/alignment.",
+          "Name an actual stable persistent host owner for each record/callback before preparation and through successful construction, later resource failure, terminal return/unbind and explicit disposal.",
+          "Supply positive all-participating-path exclusion across physical return -> exact old-key unbinding, covering direct/static allocation, return, trim, slab reindex/free, destroy/CRT exit, registered allocator-list dispatch and real allocation/new-handler callbacks.",
+          "Close same-thread/reentrant and cross-thread participation, aliases and externally supplied callbacks; a wrapper, unused interface, metadata mutex, named token or startup lock is insufficient.",
+          "Separately prove no active constructor/preparation, terminal call, retirement callback, registry-resolved borrower or direct companion borrower before host disposal; retired() and count zero do not provide that proof.",
+          "On preparation throw cancel entered metadata/abandon only unconstructed records before actual once-only raw return; preserve genuine allocator/return failure behavior and supported-noexcept transition.",
+          "Retain published records on partial/later resource failure until their independently justified Native terminal route; no autorelease, retry, rollback, extra creator reference or invented cleanup.",
+          "Keep GUI, tracer, particle, static adapters and both post-effect policies distinct; complete renderer/stream/material/section and persistent application-custodian contracts before resource delegation or activation."
+        ],
+        "required_output": "Positive real begin/end participation and closure for each listed path plus a separate later callback/borrower quiescence proof. If Source cannot identify the actual host policy or handler/caller bridge, report the missing dependency and do not add a token/interface or speculative code.",
+        "scope": "Source-only evidence admission for a genuine host operation and borrower lifecycle boundary around the actual process-owned mesh pool; not C++ implementation"
+      },
+      "NO_GO": [
+        "Concrete active RawKeyPreparation/provider/custodian or mesh factory replacement",
+        "All-path reuse/trim exclusion from current Source locks, capacities, state or a proposed wrapper",
+        "Quiescent disposal inferred from retired state, zero Native count, absent registry key or one worker join",
+        "Transplant GUI self-erasure or post-effect reset/failure policy into PreparedRecord",
+        "Full particle resource delegate or persistent application custody",
+        "Original ABI/FH3, hardware/foreign-exception handling, runtime/startup/gameplay evidence"
+      ],
+      "Root_Source3356": {
+        "LF_differences": [],
+        "artifact_declarations_not_followed": 4,
+        "inherited_build_artifact_or_runtime_credit": false,
+        "manifest": {
+          "bytes": 1271280,
+          "entry": "blobs/e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a",
+          "sha256": "e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a"
+        },
+        "raw_EOL_variants": [
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "whole_project_preimages": 3356
+      },
+      "Source_Git": {
+        "Source_paths": 4228,
+        "actual_git_rows": 4277,
+        "root": "5c65a2278a32e59733f2cf8ce86ac21ea4f9fb08",
+        "trees": 10
+      },
+      "Source_roots": {
+        "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+        "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+        "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+        "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+        "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+      },
+      "boundary": "Source/Git/finite lexical readiness and physically retained historical pins only. No new compilation/tests/probes, Native/GPR, current compiled/ABI/runtime or pool-authenticity credit. Reused historical full indices and actual Git closures are consistency checked only. Final immutable commit/delivery pins are verified separately in the repository.",
+      "captured_commit": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+      "checked_zip_members": 4391,
+      "delivery_document_pin": {
+        "bytes": 18186,
+        "path": "docs/CC12_MESH_RECORD_CUSTODY_EXCLUSION_READINESS.md",
+        "sha256": "bdfb2d985aa6b9bbc4e3021f074bc9f82cf44b76c7a2ed5e690a8e49f517f1c8"
+      },
+      "excerpts": 83,
+      "guard": {
+        "allowed_zip_reads": 1
+      },
+      "historical_graph_consistency": {
+        "archives": [
+          {
+            "Git": {
+              "actual_staged": {
+                "Source_paths": 4228,
+                "actual_git_rows": 4235,
+                "root": "3b0877c7da79155e0151946db2be83015cda2a35",
+                "trees": 10
+              },
+              "baseline": {
+                "Source_paths": 4228,
+                "actual_git_rows": 4235,
+                "root": "a1ece646be44d7ae8c357449d106f052a37ee7fb",
+                "trees": 10
+              },
+              "baseline_commit": "a5351f3e6711f1990c30566a1db30fa8623c82b4",
+              "boundary": "Portable verification of retained real Git objects and actual staged Source receipt; final committed Source equality is checked separately in the repository.",
+              "staged_Source_roots": {
+                "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+                "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+                "include": "053e10d974d4c812562c787a216fd14d613681b0",
+                "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+                "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+                "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+              },
+              "status": "pass"
+            },
+            "actual_all_offset_symbol_definition_rows": 274930,
+            "compiled_or_build_credit": false,
+            "complete_physical_indices": 490,
+            "members": 5422,
+            "name": "mesh-prepared-record",
+            "prior_helper_exact": true
+          },
+          {
+            "Git": {
+              "actual_staged": {
+                "Source_paths": 4228,
+                "actual_git_rows": 4241,
+                "root": "b529c13fd9508ca8f302f41b7b122f0c04ff5def",
+                "trees": 10
+              },
+              "baseline": {
+                "Source_paths": 4228,
+                "actual_git_rows": 4241,
+                "root": "3dc1aef46edeaac51b4a59fdcca69cebe327ba76",
+                "trees": 10
+              },
+              "baseline_commit": "c3adbcdf6f7ce3bcd834784ace3f574a4291d528",
+              "boundary": "Portable verification of retained real Git objects and actual staged Source receipt; final committed Source equality is checked separately in the repository.",
+              "staged_Source_roots": {
+                "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+                "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+                "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+                "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+                "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+                "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+              },
+              "status": "pass"
+            },
+            "actual_all_offset_symbol_definition_rows": 5167,
+            "compiled_or_build_credit": false,
+            "complete_physical_indices": 20,
+            "members": 4503,
+            "name": "particle-raw-key",
+            "prior_helper_exact": true
+          },
+          {
+            "Git": {
+              "Source_paths": 4228,
+              "actual_git_rows": 4263,
+              "root": "3d759919f531ed493a6d6f9b2c15a9c78148ed08",
+              "trees": 10
+            },
+            "compiled_or_build_credit": false,
+            "members": 4307,
+            "name": "raw-key-window-readiness",
+            "nested": [
+              {
+                "all_member_pins_checked": true,
+                "entry": "prior/mesh-prepared-record.zip",
+                "members": 5422
+              },
+              {
+                "all_member_pins_checked": true,
+                "entry": "prior/mesh-preconstruction-readiness.zip",
+                "members": 4295
+              }
+            ]
+          }
+        ],
+        "boundary": "Read-only consistency replay of complete supplied historical archive members, actual Git closures and every selected full physical index against its retained object bytes. Does not execute the prior portable scripts, decode new code, run old tests, build or credit current ABI/runtime.",
+        "historical_build_or_runtime_credit": false,
+        "old_actual_Git": [
+          {
+            "Source_roots": {
+              "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+              "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+              "include": "053e10d974d4c812562c787a216fd14d613681b0",
+              "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+              "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+              "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+            },
+            "closure": {
+              "Source_paths": 4228,
+              "actual_git_rows": 4230,
+              "root": "0f59507e66c1f79fda6e0167bf1f6732b42e3164",
+              "trees": 10
+            },
+            "commit": "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+            "current_Source_LF_differences": [
+              "include/bsp/native_particle_model_construction.hpp",
+              "include/bsp/native_render_service_base.hpp",
+              "src/native_particle_model_construction.cpp",
+              "src/native_render_service_base.cpp"
+            ],
+            "name": "mesh-prepared-record"
+          },
+          {
+            "Source_roots": {
+              "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+              "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+              "include": "a2c5e5e3db98473838907b88f8b842cfaeb1a900",
+              "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+              "src": "b3e07bb42d9bc4c37ba4d7f4e586c3037cde4186",
+              "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+            },
+            "closure": {
+              "Source_paths": 4228,
+              "actual_git_rows": 4230,
+              "root": "29652476c3bc831d2e213cb1c29cf7f3c874e723",
+              "trees": 10
+            },
+            "commit": "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3",
+            "current_Source_LF_differences": [],
+            "name": "particle-raw-key"
+          }
+        ],
+        "physical_artifacts": 11,
+        "status": "pass"
+      },
+      "later_Source_qualification": {
+        "LF_Source3356_delta": [
+          "include/bsp/native_render_service_base.hpp",
+          "src/native_render_service_base.cpp"
+        ],
+        "Root3356_preimages": 3356,
+        "Root_Source3356_manifest": {
+          "bytes": 1267920,
+          "entry": "blobs/c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2",
+          "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+        },
+        "Root_acceptance_commit": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+        "Source_Git": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4235,
+          "root": "905f7dbe23a790bd2effa22d306a13b06934523f",
+          "trees": 10
+        },
+        "Source_roots": {
+          "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+          "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+          "include": "c75c7cfeed1028dcb11a9ceb1d6fc8601148e67c",
+          "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+          "src": "a62d3549c06d76f6342b17507a39dcd250c1ef4f",
+          "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+        },
+        "accepted_Source_Git": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4228,
+          "root": "b5df4a5b9089a7de15b293ddc112089a96ae7573",
+          "trees": 8
+        },
+        "accepted_Source_commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+        "accepted_branch_delta_to_qualified_Main": [
+          "include/bsp/native_particle_model_construction.hpp",
+          "src/native_particle_model_construction.cpp"
+        ],
+        "artifact_declarations_not_followed": 4,
+        "boundary": "Exact later two-Source-path qualification only. Original frozen 22e/e89 proof remains physically preserved. No later Root compilation/test/object/runtime credit is transferred.",
+        "decision": "Existing mesh-custody/exclusion CXX NO-GO and next Source-only lifecycle admission GO unchanged.",
+        "exact_changed_Source": [
+          "include/bsp/native_render_service_base.hpp",
+          "src/native_render_service_base.cpp"
+        ],
+        "finite_evidence": {
+          "absences": 6,
+          "all_queries_matches_excerpts_orders_absences_and_conclusions_equal": true,
+          "corpus": 4217,
+          "excerpts": 83,
+          "orders": 33,
+          "queries": 57
+        },
+        "frozen_worker": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+        "inherited_build_test_object_runtime_credit": false,
+        "preserved_baseline_pins": [
+          {
+            "bytes": 441490043,
+            "entry": "baseline_replay\\evidence.zip",
+            "sha256": "a0e7b4dc6e1713e22d108816609f9be8f78328daa7596d5eac05f3be48cbb79c"
+          },
+          {
+            "bytes": 4839,
+            "entry": "baseline_replay\\portable_replay.py",
+            "sha256": "325152aee95a6ccfa3e484d9996008c7fec317bdc63bb5305766d15630f8cecf"
+          },
+          {
+            "bytes": 10179,
+            "entry": "baseline_replay\\replay_in_place.json",
+            "sha256": "25fd5916ed84979a41d30dcc28dd831543e0978ee3fb1b9fe86b74d567001d29"
+          }
+        ],
+        "qualified_Main": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+        "raw_EOL_variants": [
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "status": "pass"
+      },
+      "lexical_absence_checks": 6,
+      "lexical_order_checks": 33,
+      "prior_physical_artifacts": {
+        "historical_build_or_runtime_credit": false,
+        "nested_full_physical_index_and_Git_consistency_checked_separately": true,
+        "old_commits": [
+          "aaa1e25d4819621bba02f9c869758b8fc1de8c1b",
+          "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3"
+        ],
+        "physical_artifacts": 11
+      },
+      "queries": 57,
+      "query_corpus": 4217,
+      "retained_bytes": 525139651,
+      "status": "pass",
+      "zip_members": 4392
+    }
+  }
+}
