@@ -247,9 +247,9 @@ docs/MISSION_TREE_LUA_READER.md), [esp+9Ch] the local player's scoreboard row.
 | 00635FA3..00636C33 | reconstructed | award pages, when game+1EE3h or +19h: 00E08C8D = 0061EB80 (profile+BCh pending awards non-empty) or +248h non-empty or record+1DCh > 0; entries are clones of +18Ch under +188h at the running local position (start: +18Ch's), each with `award_Icon`, `award_title_Text`, `award_detail_Text` placed 1/144 below the title text (00AA78F0), shown, sized to max(icon height, text height) + 1/72 (FCOMI against the float-rounded text height), position += height + 1/144. Sources in order: +248h (10h elements: 004FB150 icon by id +4, title "FE.scoring_unlockedunit|.: |" + unit +8, detail "FE.scoring_unlock_text"); the profile's pending awards game+70Ch (1Ch elements: icon by name +10h through 004FC070 when id +18h is 0, title +0, detail +8), cleared by 006277C0; with record+1DCh > 0 every key of record+6Ch that 0090C000 accepts, its award record (0050FC30 on *(00E19900)+10h, copied by 0050A210, freed by 00501FA0): texture +14h through 00AB44B0(0, "" + texture, (0, 0, 1, 1)) and the icon shown, or the icon hidden, title +0, detail +0Ch. Scroller +19Ch range = position - +184h height + 1/144 |
 | 00636C38..00636D78 | reconstructed | tail: with +258h and pages queued, listbox +D4h slot +60h(0) and 0062A970; +1Dh = more than one of 00E08C88..00E08C8D set; frame title "" (00518D60), 00622E30(0), help line "" (0054A0C0 on *(00E1930C)); +38h = +18h ? -1 : 3 |
 
-Ghidra has no instructions at 006316A3..006316C6 and 00632A5C..00632A7F (the L3 iterator steps of the two damage tables, reached only after 00593180): their call rows (0057F4A0 at 006316B5 and 00632A6E) are left out of the report; a listing repair is needed before the body can be re-exported whole.
+Listing repair (cc13-rewards1, record `reports/cc13_rewards1_listing_repair.json`): the `_free` calls at 0063169B and 00632A54 (the kills-map copy release in the two damage tables) carried a CALL_RETURN flow override (effective CALL_TERMINATOR; `_free` itself is not no-return), so Ghidra had no instructions at 006316A0..006316CA and 00632A59..00632A83, the fall-through that steps the L3 iterator (0057F4A0) and jumps back to the loop head (00630E15 / 00632126). Both ranges were disassembled after a byte check against the disk image, both overrides cleared to NONE, and 0062C2C0 re-created from its instructions (name and plate kept; the signature was the default). The two 0057F4A0 rows are back in the report.
 
-Uncertain: the meaning of +10h (the voice gate), record+1E4h, row+5Ch (an AI slot is a guess);
+Uncertain: the meaning of +10h (the voice gate), record+1E4h (row+5Ch is the AI flag, see 0062A0B0 below);
 the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
 byte +22Fh+count has no bound against the eight bytes cleared.
 
@@ -271,8 +271,27 @@ ABI-compatible (host-interface projection), not game-validated; no host wiring.
 
 ### Handoff (cc13-rewards1)
 
-The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) a Ghidra listing
-repair for 006316A3..006316C6 and 00632A5C..00632A7F (then re-add the two 0057F4A0 rows and
-re-export the body); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
-(3) the bodies of 0062A0B0, the 00625D10 predicate and the score-table formulas; (4) host wiring
+The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h and record+24Dh;
+(3) done for 0062A0B0 and 00625D10; the score-table formulas belong to the side-AI lanes; (4) host wiring
 of `RewardsEnterHost` (none exists).
+
+## Scoreboard rows 0062A0B0 and their sort 00625D10 (cc13-rewards1, reconstructed, build-tested)
+
+`rewards_build_score_rows_0062a0b0` (747 instructions, 0062A0B0..0062A960, RET): the rows at
+screen+220h are cleared (00625980) and the game mode read (004BCA50). For each slot 0..7 of
+game+18CCh: a null slot, +20h < 0, or +9h set with +0Ah clear is skipped; otherwise a zeroed 60h
+row is pushed (00627820; temporary destroyed by 0061F2C0) and filled: +00h/+04h = slot
++80h/+84h; +08h = slot +58h, except an AI slot (+9h) whose name is at most one character takes
+00E08940[+2Ch] (FE.easy x4, FE.normal, FE.hard); +10h = " " (00CE3A90) for an AI slot, else slot
++78h; +5Ch = slot +9h (so row+5Ch is the AI flag); +18h = slot +28h; +50h = the per-player score
+record *(game+21A0h)+4+slot*284h +1E0h; +34h = the game mode; +48h = the number of keys in that
+record's +6Ch list accepted by 0090C000; +58h = the profile's "RANK" byte (00574050) when slot
++20h == game+18ECh, else slot +90h. `rewards_sort_score_rows_00625d10`: the comparator
+(00623457, 006234B1: CMP against +50h, JLE/JG) puts higher scores first and moves a row only
+past strictly lower ones; with at most eight rows only the insertion path (00623410) runs, so the
+model is a stable sort by descending score.
+
+The score-table point functions 00911CE0, 00911C00, 00910500 and 00910570 are cited by
+docs/BOT_SCHEDULER_OUTPUT.md, docs/SIDE_AI_SCHEDULER_HANDOFF.md and docs/SCORING_BODIES.md (the
+side-AI scoring lanes), so their bodies are left to those lanes; they are named and documented
+here only. 009064D0 has no other reader.
