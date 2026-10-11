@@ -1,0 +1,293 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-descriptor-prefix.Root.v1",
+  "status": "exact_twelve_byte_data_prefix_accepted",
+  "worker_commit": "9529409baf4bf13ce1a9ece440cf36cdb2e77957",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/evidence.zip",
+      "bytes": 193280,
+      "sha256": "39aadf90d8b8e73803b3f47953ccbb7f0211a36c249a72d9640c47dcc41c8a17"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/manifest.json",
+      "bytes": 10634,
+      "sha256": "06c3b661e8413fa7ea42b9b58c83af7d1add66d8a547dc4c82bafdbe220ac8ef"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/seal.json",
+      "bytes": 4690,
+      "sha256": "0ec4213311ce57968fbb3790b1ad64b226e81969de4198a0f5fe6499ca4d5e76"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/portable_replay.py",
+      "bytes": 10755,
+      "sha256": "f430fb00e2274ffded3ab09dc64b508cee813016cd69da918a52749b42d54190"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/guard_replay.py",
+      "bytes": 2134,
+      "sha256": "91fb00d230454f8b63a8c2ed01ed4cca9885c305f76fdadb26fe5ff9241e77bb"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/packet_tool.py",
+      "bytes": 17520,
+      "sha256": "182ba5fff910b5659f623915e4995e14bf16aa8cba0a4db1bc702d0435ee5172"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_guard_runner.py",
+      "bytes": 726,
+      "sha256": "cb00b5829e8ee6da26f54da7b50f8d2b4076e59405def980628a773ade8bd74e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/copy_and_actual.py",
+      "bytes": 4863,
+      "sha256": "8fc8da31ffbb8fb6101c2cac6d78780a0cd8ea034f47137e5e3c68928f1a62ab"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_guard.json",
+      "bytes": 893,
+      "sha256": "eefa23a9e479edd388bd456452641a174a684ad87fe175a09108eacda73dd368"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_guard.stderr.txt",
+      "bytes": 403,
+      "sha256": "6655156795d7bbfc80d4b5fc34ac9f72feaaadd4c80a8d7c47b4889777598051"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_initial_gate.json",
+      "bytes": 3529,
+      "sha256": "c2613ee0b889849a0150dc498d40f26c41b21dffa0e2507d2187c98585fd41c9"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_data_review.json",
+      "bytes": 1474,
+      "sha256": "37acdfa0e4fd2c8d0f30eed90ffd0a7844ffb914788e6617050459dd419a8659"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_exact_prefix.bin",
+      "bytes": 12,
+      "sha256": "c0fc5d85de2ee0215c7df14582b29614b72ced81346a5b19d813ff1ada562655"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/Root_actual_review.json",
+      "bytes": 9293,
+      "sha256": "878a8505989f4d03fa9c7869b56770d4d06c08286cd9281cc4f5d9466479f5a3"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/staged_git_receipt.json",
+      "bytes": 3471,
+      "sha256": "2bbba6ce1e6cead75079d944f65b3f82172866c658876938f42746e544796499"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_primary/final_git_receipt.json",
+      "bytes": 3313,
+      "sha256": "ad0dfdf0fa3e138e3334c07e4823a9d6460c6b7bac96f2c9ea2d3a8b0ccce84f"
+    }
+  ],
+  "Native_initial_gate": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "actual_typed_addresses": 12,
+    "qualified": [
+      {
+        "address": "00E01CF8",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": true,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CF9",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFA",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFB",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFC",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFD",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFE",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01CFF",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01D00",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01D01",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01D02",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      },
+      {
+        "address": "00E01D03",
+        "containing_data_start": "00E01CF8",
+        "containing_data_length": 36,
+        "defined": true,
+        "unit_at": false,
+        "instruction_function_flow_targets_absent": true
+      }
+    ],
+    "listing_defined_data_coverage": true,
+    "explicit_memory_block_backing_or_type_proof": false,
+    "initial_instruction_text_queries": 0,
+    "first_gate_data_bytes": 0,
+    "next_admission": {
+      "exact_data_range": "00E01CF8..00E01D03",
+      "bytes": 12,
+      "scope": "Only firstthree little-endian DWORDraw values under fresh unchangedall12typed/count/identity bookends; successful exactread establishes these12memorybytes only",
+      "excluded": "No remaining24bytes of36Bunit, pointer/target/neighbor/body/proto/stack/funclet expansion, guessedformat/FH3/cleanup/authenticity/type/backing/Source/runtime action"
+    }
+  },
+  "Native_data_review": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "actual_typed_responses": 36,
+    "allthree_batches_raw_equal_per_byte": true,
+    "data_CLI_reads": 2,
+    "data_bytes_per_read": 12,
+    "raw_HTTP_read_memory_capture": false,
+    "exact_hex": "2205931902000000e81ce000",
+    "three_little_endian_raw_DWORDs": [
+      "19930522",
+      "00000002",
+      "00E01CE8"
+    ],
+    "containing_listing_defined_data_length": 36,
+    "remaining24_data_bytes_read": false,
+    "encoded_pointer_followed": false,
+    "explicit_memory_block_backing_type_format_FH3_cleanup_authenticity": false,
+    "instruction_text_queries": 0,
+    "Native_closed": true,
+    "pins": [
+      {
+        "path": "pre_data_gate.json",
+        "bytes": 31021,
+        "sha256": "438597bf594e2f09fd7ed23fc30588b58279f9ce72142c2cba8029f65edf53b6"
+      },
+      {
+        "path": "closing_gate.json",
+        "bytes": 31021,
+        "sha256": "a86374303a4f6a644660d13f318b3f07387419617d79ed687f1b70b4e472aa43"
+      },
+      {
+        "path": "data_primary.stdout.txt",
+        "bytes": 61,
+        "sha256": "f954a32059ff098bf0641c0447d8fd1ca2b96927551b24602e4d952cfac9a26e"
+      },
+      {
+        "path": "data_closing.stdout.txt",
+        "bytes": 61,
+        "sha256": "f954a32059ff098bf0641c0447d8fd1ca2b96927551b24602e4d952cfac9a26e"
+      },
+      {
+        "path": "data_schedule.json",
+        "bytes": 1739,
+        "sha256": "865277b7806f89a66c55f3082611704e3f1381c78372e2879d64a1ffb2b69650"
+      }
+    ]
+  },
+  "actual_membership": {
+    "objects": 4,
+    "prerequisite_inputs": 10,
+    "outputs": 2,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_content_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_OPERAND_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_failure_handler_operand_primary.json"
+    ],
+    "exact_stage_final_tree_outputs_equal": true
+  },
+  "physically_retained_helpers": 12,
+  "strict_guard": {
+    "single_ZIP_reads_only": true,
+    "no_post_preload_imports": true,
+    "no_process_network_dynamic_library_directory_or_mutation": true
+  },
+  "qualified_format_comparison": {
+    "reference": "Existing CC12_APPLICATION_DESCRIPTOR_PRIMARY classic MSVC x86 nonrelative FuncInfo comparison",
+    "conditional": "If the same candidate format applies, raw second DWORD2 selects two 8-byte map entries and raw third DWORDE01CE8 selects E01CE8..E01CF7",
+    "Original_compiler_runtime_and_FH3_authenticity": false
+  },
+  "next_admission": {
+    "packet": "cc12_application_ordinary_retirement_unwind_map_readiness",
+    "initial_scope": "Only typed listing/function/flow metadata for every exact16bytes E01CE8..E01CF7 at the raw candidate pointer",
+    "required": "Fresh bsp project/program identity/count98/64730; return pinned actual metadata to Root before any data read",
+    "conditional_data_scope": "Separate Root review may admit only sixteen candidate bytes and four raw little-endian DWORDs; declared state/action interpretation stays conditional on qualified format comparison",
+    "excluded": [
+      "No remaining descriptor bytes, action target following, guessed hardware EH frame or cleanup authority",
+      "No GPR mutation, Source census, C++/test/build/probe/runtime"
+    ]
+  },
+  "unknowns": [
+    "Data backing and type, Original FH3 authenticity",
+    "Candidate map entries, action addresses and actual EH invocation/frame binding",
+    "Ordinary retirement failure policy and Application owner/lifetimes/quiescence",
+    "ABI/startup/gameplay"
+  ],
+  "overall_goal_complete": false
+}
