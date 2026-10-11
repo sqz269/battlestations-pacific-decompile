@@ -1,0 +1,87 @@
+{
+  "schema": "bsp.cc12.locale-exit-target-entry-operand.Root-primary.v1",
+  "status": "accepted_conditional_entry_instruction_only",
+  "worker_commit": "8249586cd021271e14c3007234e1902282586571",
+  "worker_frozen_HEAD": "febb7a6be871e15092832d58ad68a5717e246f48",
+  "Root_review_HEAD": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+  "copied_core": {
+    "path": "local/cc12_locale_exit_target_entry_operand_primary/evidence.zip",
+    "bytes": 284915822,
+    "sha256": "2c5388ba9651c57307d03417d63fc5c6ed3d56cac376014882a6f66b32f91174"
+  },
+  "copied_delivery": {
+    "path": "local/cc12_locale_exit_target_entry_operand_primary/delivery_git.zip",
+    "bytes": 660307,
+    "sha256": "0ef8d3eb77bbd5968d09a7e9474928d31f1b04b5f41eb8258bf43724f0435abd"
+  },
+  "Root_core_guard": {
+    "path": "local/cc12_locale_exit_target_entry_operand_primary/Root_core_guard.json",
+    "bytes": 33056,
+    "sha256": "57759440726f814a2d5a3d3cc5275f7b2bae070332f90042a539efd80a00f730"
+  },
+  "Root_delivery_guard": {
+    "path": "local/cc12_locale_exit_target_entry_operand_primary/Root_delivery_guard.json",
+    "bytes": 5804,
+    "sha256": "09604fa8daa7cdd757e2c995db6a13076d70d5bc1133bb44792091baebf0691e"
+  },
+  "Root_actual_Git_and_Source": {
+    "path": "local/cc12_locale_exit_target_entry_operand_primary/Root_actual_review.json",
+    "bytes": 2407790,
+    "sha256": "bc2a6b76005dfd1af8f7faf30f74cb2e4ba35d2303d3fa99a017fcd74bf278cb"
+  },
+  "physical_execution_helpers": 24,
+  "guard_active_before_helper_execution": true,
+  "actual_Git_blob_occurrences": 4294,
+  "actual_frozen_commit_tree_objects": 11,
+  "actual_Source_epoch_comparison_objects": 2,
+  "actual_delivery_objects": 8,
+  "actual_output_blobs": 2,
+  "closed_Source_paths": 4217,
+  "later_Root_Source_paths": [
+    "include/bsp/native_render_service_base.hpp",
+    "src/native_render_service_base.cpp"
+  ],
+  "later_Source_commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+  "predecessor_archives_exact": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_exit_target_metadata_primary\\evidence.zip",
+      "bytes": 259858593,
+      "sha256": "e9a5dd0ee4a443c8a28680cd243b13f839a057ae2044fdc92f3f6013369bd22f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_exit_target_metadata_primary\\delivery_git.zip",
+      "bytes": 646114,
+      "sha256": "c84861df8f72cb114f5bb7eeaf0a02486984e42b7d1f2d230f497cc559a3189a"
+    }
+  ],
+  "fresh_GPR_epoch": 98,
+  "function_count": 64730,
+  "exact_code_range": [
+    "00bf6ff5",
+    "00bf6ff8"
+  ],
+  "code_hex": "ff742404",
+  "decoded_instruction": "PUSH dword ptr [ESP + 0x4]",
+  "unique_code_bytes": 4,
+  "unique_data_bytes": 0,
+  "count_code_text_equal_pairs": 3,
+  "typed_raw_response_equal_pairs": 1,
+  "conditional_transfer": {
+    "entry_ESP": "W, unknown",
+    "source": "K=DWORD at SS:((W+4) modulo2^32) using pre-decrementESP; memory not fetched by analysis",
+    "ESP": "(W-4) modulo2^32",
+    "stack_store": "DWORD at SS:((W-4) modulo2^32)=K",
+    "next_EIP": "00bf6ff9",
+    "other_GPRs": "Preserved relative unknown entry",
+    "EFLAGS": "Unmodified",
+    "precondition": "Successful ordinary decoded32-bit operand/address mode with normal32-bit stack"
+  },
+  "unchanged_unknowns": "No concreteW/K, earlierEAXE1768C, callback identity, callee return, post-callee state, ABI/argument cleanup, registration or initializer completion.",
+  "prior_prototype_scope_qualification": "Full unsolicited raw body metadata retained opaque; previous whole capture was not strictly entry-only and has no semantic or target-admission credit.",
+  "next_candidate": "Metadata only at BF6FF9 after separate Root admission and fresh identity/lease. No bytes/text, remaining body, callers/targets, IAT/data or prototype.",
+  "Root_live_Native_queries": 0,
+  "GPR_mutations": 0,
+  "Source_CMake_changes": 0,
+  "tests_probes_builds_game_OS_audio_actions": 0,
+  "semantic_full_callee_ABI_runtime_credit": false
+}
