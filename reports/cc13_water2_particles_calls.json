@@ -220,6 +220,36 @@
       "native": "00affa70",
       "function": "00b08950",
       "note": "Size curve (kind 1)"
+    },
+    {
+      "address": "00af88c6",
+      "native": "00af8500",
+      "function": "00af85b0",
+      "note": "ECX = [state+30h], compose rotation"
+    },
+    {
+      "address": "00af858a",
+      "native": "00b64780",
+      "function": "00af8500",
+      "note": "Rz(angle)"
+    },
+    {
+      "address": "00af8597",
+      "native": "00413920",
+      "function": "00af8500",
+      "note": "M' * Rz"
+    },
+    {
+      "address": "00af859e",
+      "native": "00413920",
+      "function": "00af8500",
+      "note": "(M' * Rz) * M'"
+    },
+    {
+      "address": "00af82da",
+      "native": "00affa70",
+      "function": "00af82b0",
+      "note": "Size curve +84h (kind 1)"
     }
   ]
 }

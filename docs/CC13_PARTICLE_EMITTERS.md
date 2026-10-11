@@ -227,6 +227,42 @@ xyz[3])`, RET 4.
 - There is no rel32 or absolute reference to it. 00B09510 inlines the same three stores at
   00B09B76..00B09B83.
 
+### The Object and Tracer types
+
+The particle types have six vtables in all. Each has ClampRecordRange 00B00920 at +0Ch, except Tracer:
+
+| Type | Table | +24h bounds | +28h per-frame |
+| --- | --- | --- | --- |
+| Object | D5DB00 | **00AF82B0 BSP_ParticleObject_ComputeBoundingSphere** | **00AF85B0 BSP_ParticleObject_UpdateModel** |
+| Tracer | D5E048 | **00B0A3F0 BSP_ParticleTracer_ComputeBoundingSphere** | 00B0A110 BSP_NativeParticleTracer_Update (existing) |
+| base | D5DDC0, D5DF30, D5DFB0, D5DFF4 | pure / per type | pure |
+
+**00AF85B0 BSP_ParticleObject_UpdateModel** — `int __thiscall(def, state, t, 0, matrix, float)`, RET 14h,
+returning 0.
+- **No quads.** It does nothing when state+34h (the model instance) is null.
+- **Angle** as in 00B08210, but RotationSpeed is def+80h.
+- **Position** as in 00B09510: the shared `full_position` helper, same order and spills, stored to
+  state+0..8.
+- **Node.** node = [state+34h]+0Ch. It calls node vtable +38h (00B6DB10 SetLocalMatrix in the model table
+  D5DA50) with 00AF8500([state+30h], angle), then +2Ch (00B6DAB0 SetLocalPosition) with the state pointer.
+- There is no fade gate, colour, texture frame or RNG draw.
+
+**00AF8500 BSP_ParticleObject_ComposeRotation** — `__thiscall(matrix, destination, angle)`, RET 8.
+- It transposes the matrix **in place**, then computes destination = (M' · Rz(angle)) · M'. Rz is 00B64780;
+  the products are 00413920.
+- Its only caller passes the state's own 40h matrix (state+30h, built by 00AF8440
+  ParticleObject_ConstructRandomMatrix, docs/NATIVE_PARTICLE_OBJECT_STATE.md). So the stored matrix
+  flips between M and Mᵀ on every frame. That is what the bytes do; whether it is intended is open.
+
+**Bounds.**
+- Object: radius = state+58h · curve(def+84h) · 0.5.
+- Tracer: radius = 100.0f [00CE3D08], centred on the state position.
+
+**Tracer resources.** These are name-only:
+- 00B0ACA0 BSP_NativeParticleTracerResources_Destruct releases the refcounted +8 and +4 and clears the
+  singleton 00F8D38C.
+- 00B0A420 ..._DestructSingletonBase is the same tail, reached only from the unwind funclets.
+
 ## 4. Handoff
 
 - Leases are released. The work is committed on `agent/cc13-water2`.

@@ -19,6 +19,8 @@
 
 #include <cstdint>
 
+#include "bsp/camera_projection.hpp"
+
 namespace bsp {
 struct CameraAxesCrtAccess;
 }
@@ -202,6 +204,44 @@ float* sprite_bounding_sphere_00b08950(const void* definition, float sphere[4], 
 //    writer exists.
 //  * 00B007A0 Floating: [00F8D384] -= 1, incremented by 00B077D0 at 00B07BBA
 //    and 00B07BD6. (Sprite's slot is the existing 00B007F0, counter 00F8D388.)
+// 00AF82B0 Object (vtable D5DB00 slot 9) and 00B0A3F0 Tracer (D5E048 slot 9)
+// bounding spheres, same ABI as above; both defined by cc13_particles1.
+// Object: radius = +58h * curve(+84h) * 0.5 [00D7A280]. Tracer: radius =
+// 100.0f [00CE3D08]; definition and t unread.
+float* object_bounding_sphere_00af82b0(const void* definition, float sphere[4], const void* state, float t,
+                                       ParticleCurves& curves);
+float* tracer_bounding_sphere_00b0a3f0(float sphere[4], const void* state);
+
+// 00AF8500 `CameraMatrix* __thiscall(matrix ECX, CameraMatrix* destination,
+// float angle)`, RET 8, EAX = destination. Transposes *matrix IN PLACE (the
+// six off-diagonal swaps of all 16 entries), then destination = (M' *
+// Rz(angle)) * M' with 00B64780 and two 00413920 products. Its only caller
+// passes the Object state's own 40h matrix (state+30h, from 00AF8440), so the
+// stored matrix alternates between M and its transpose on every call. That is
+// what the bytes do; whether it is intended is unknown.
+CameraMatrix& compose_object_rotation_00af8500(CameraMatrix& matrix, CameraMatrix& destination, float angle);
+
+// What 00AF85B0 calls on the model node ([state+34h]+0Ch), through the node's
+// own vtable.
+class ObjectParticleHost {
+public:
+    virtual ~ObjectParticleHost() = default;
+    // node vtable +38h (00B6DB10 BSP_Transform_SetLocalMatrix in the model table D5DA50).
+    virtual void node_set_local_matrix_slot38(void* node, const CameraMatrix& matrix) = 0;
+    // node vtable +2Ch (00B6DAB0 BSP_Node_SetLocalPosition in D5DA50), passed the state (xyz at +0).
+    virtual void node_set_local_position_slot2c(void* node, const float* position) = 0;
+};
+
+// 00AF85B0 `int __thiscall(object definition, state, float t, int, const float
+// matrix[16], float)`, RET 14h, vtable D5DB00 slot 10 (+28h). Writes no quads
+// and returns 0. Nothing when state+34h (model instance) is null. Otherwise
+// angle as 00B08210 but with RotationSpeed at def+80h; position as 00B09510
+// (speed, gravity along matrix row 1, wind, optional def+48h, origin), stored
+// to state+0..8; then node +38h(00AF8500([state+30h], angle)) and node
+// +2Ch(state). No fade gate, no colour, no texture frames, no draw.
+std::int32_t emit_object_00af85b0(const void* definition, void* state, float t, const float matrix[16],
+                                  const float wind_e13028[3], ParticleCurves& curves, ObjectParticleHost& host);
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380);
 void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384);
 

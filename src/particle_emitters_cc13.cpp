@@ -1,6 +1,6 @@
 // Particle geometry pass and quad emitters, segment 82 (packet cc13_water2
 // particles, cc13_particles1). Addresses 00B057C0, 00B06A90, 00B0C8B0, 00B05420,
-// 00B05550, 00B06B10, 00B08210 and 00B09510. Evidence, ABI and uncertainty: include/bsp/particle_emitters_cc13.hpp
+// 00B05550, 00B06B10, 00B08210, 00B09510, the slot +24h/+1Ch bodies, 00AF8500 and 00AF85B0. Evidence, ABI and uncertainty: include/bsp/particle_emitters_cc13.hpp
 // and docs/CC13_PARTICLE_EMITTERS.md.
 
 #include "bsp/particle_emitters_cc13.hpp"
@@ -8,8 +8,11 @@
 #include <array>
 #include <cmath>
 #include <cstring>
+#include <utility>
 
 #include "bsp/camera_affine.hpp"
+#include "bsp/camera_multiply.hpp"
+#include "bsp/gui_widget_owner.hpp"
 #include "bsp/system_camera_axes.hpp"
 
 namespace bsp::particle_emitters {
@@ -63,6 +66,51 @@ std::int32_t random_frame(const void* definition, ParticleRandom& random) {
     const std::int32_t hi = rd<std::int32_t>(definition, 0x54);
     const std::uint32_t span = static_cast<std::uint32_t>(hi - lo) + 1u;
     return static_cast<std::int32_t>(random.next_u32_stream0() % span) + lo;
+}
+
+// B095EE..B09872 (Sprite) and AF863E..AF88B0 (Object): speed, gravity along
+// matrix row 1, wind, optional def+48h along state+24h..2Ch, then the origin.
+// Every product is spilled to float; the sum is stored to state+0..8.
+void full_position(const void* definition, void* state, float t, const float matrix[16],
+                   const float wind_e13028[3], ParticleCurves& curves, float scale, float p[3]) {
+    // B095EE..B0965C: speed term, stored to state+0..8 first.
+    const float ks = static_cast<float>(integrate(curves, ptr(definition, 0x2c), t) * scale);
+    p[0] = rd<float>(state, 0x18) * ks;
+    p[1] = rd<float>(state, 0x1c) * ks;
+    p[2] = ks * rd<float>(state, 0x20);
+    // B09669..B09741: gravity along matrix row 1, each product spilled.
+    {
+        const float g = static_cast<float>(integrate(curves, ptr(definition, 0x30), t));
+        const float gx = static_cast<float>(g * matrix[4]);
+        const float gy = static_cast<float>(matrix[5] * g);
+        const float gz = static_cast<float>(g * matrix[6]);
+        const float sx = gx * scale, sy = gy * scale, sz = gz * scale;
+        const float weight = rd<float>(state, 0x48);
+        p[0] = p[0] + sx * weight;
+        p[1] = p[1] + sy * weight;
+        p[2] = p[2] + weight * sz;
+    }
+    // B0974E..B097CC: wind [00E13028..30] times +4Ch.
+    {
+        const float ws = static_cast<float>(integrate(curves, ptr(definition, 0x34), t) * scale *
+                                            rd<float>(state, 0x4c));
+        p[0] = p[0] + ws * wind_e13028[0];
+        p[1] = p[1] + ws * wind_e13028[1];
+        p[2] = p[2] + ws * wind_e13028[2];
+    }
+    // B097D4..B09855: optional parameter +48h along the state vector +24h..2Ch.
+    if (const void* extra = ptr(definition, 0x48); extra != nullptr) {
+        const float v = static_cast<float>(scale * integrate(curves, extra, t));
+        p[0] = p[0] + v * rd<float>(state, 0x24);
+        p[1] = p[1] + rd<float>(state, 0x28) * v;
+        p[2] = p[2] + v * rd<float>(state, 0x2c);
+    }
+    p[0] = p[0] + rd<float>(state, 0x0c);
+    p[1] = rd<float>(state, 0x10) + p[1];
+    p[2] = rd<float>(state, 0x14) + p[2];
+    wr<float>(state, 0x00, p[0]);
+    wr<float>(state, 0x04, p[1]);
+    wr<float>(state, 0x08, p[2]);
 }
 
 }  // namespace
@@ -504,42 +552,9 @@ std::int32_t emit_sprite_quad_00b09510(const void* definition, void* state, floa
         rd<float>(state, 0x54) * (integrate(curves, ptr(definition, 0x84), t) * 0.017453288659453392) * scale +
         rd<float>(state, 0x50));  // [00D5DAF8]
 
-    // B095EE..B0965C: speed term, stored to state+0..8 first.
-    const float ks = static_cast<float>(integrate(curves, ptr(definition, 0x2c), t) * scale);
-    float p[3] = {rd<float>(state, 0x18) * ks, rd<float>(state, 0x1c) * ks, ks * rd<float>(state, 0x20)};
-    // B09669..B09741: gravity along matrix row 1, each product spilled.
-    {
-        const float g = static_cast<float>(integrate(curves, ptr(definition, 0x30), t));
-        const float gx = static_cast<float>(g * matrix[4]);
-        const float gy = static_cast<float>(matrix[5] * g);
-        const float gz = static_cast<float>(g * matrix[6]);
-        const float sx = gx * scale, sy = gy * scale, sz = gz * scale;
-        const float weight = rd<float>(state, 0x48);
-        p[0] = p[0] + sx * weight;
-        p[1] = p[1] + sy * weight;
-        p[2] = p[2] + weight * sz;
-    }
-    // B0974E..B097CC: wind [00E13028..30] times +4Ch.
-    {
-        const float ws = static_cast<float>(integrate(curves, ptr(definition, 0x34), t) * scale *
-                                            rd<float>(state, 0x4c));
-        p[0] = p[0] + ws * wind_e13028[0];
-        p[1] = p[1] + ws * wind_e13028[1];
-        p[2] = p[2] + ws * wind_e13028[2];
-    }
-    // B097D4..B09855: optional parameter +48h along the state vector +24h..2Ch.
-    if (const void* extra = ptr(definition, 0x48); extra != nullptr) {
-        const float v = static_cast<float>(scale * integrate(curves, extra, t));
-        p[0] = p[0] + v * rd<float>(state, 0x24);
-        p[1] = p[1] + rd<float>(state, 0x28) * v;
-        p[2] = p[2] + v * rd<float>(state, 0x2c);
-    }
-    p[0] = p[0] + rd<float>(state, 0x0c);
-    p[1] = rd<float>(state, 0x10) + p[1];
-    p[2] = rd<float>(state, 0x14) + p[2];
-    wr<float>(state, 0x00, p[0]);
-    wr<float>(state, 0x04, p[1]);
-    wr<float>(state, 0x08, p[2]);
+    // B095EE..B09872: position, as 00AF85B0 (same order and spills).
+    float p[3];
+    full_position(definition, state, t, matrix, wind_e13028, curves, scale, p);
     // B09879..B0987F: frame advance, result popped.
     if (rd<std::uint8_t>(definition, 0x4c) != 0) {
         float ignored;
@@ -737,6 +752,65 @@ float* sprite_bounding_sphere_00b08950(const void* definition, float sphere[4], 
     // Same body as 00B07BF0 byte for byte except the rel32 displacements of the
     // two curve calls, which reach the same 00AFFA70/00AFFAE0.
     return floating_bounding_sphere_00b07bf0(definition, sphere, state, t, curves);
+}
+
+float* object_bounding_sphere_00af82b0(const void* definition, float sphere[4], const void* state, float t,
+                                       ParticleCurves& curves) {
+    sphere[0] = rd<float>(state, 0x00);
+    sphere[1] = rd<float>(state, 0x04);
+    sphere[2] = rd<float>(state, 0x08);
+    sphere[3] = static_cast<float>(rd<float>(state, 0x58) * evaluate(curves, ptr(definition, 0x84), t) *
+                                   0.5);  // [00D7A280]
+    return sphere;
+}
+
+float* tracer_bounding_sphere_00b0a3f0(float sphere[4], const void* state) {
+    sphere[0] = rd<float>(state, 0x00);
+    sphere[1] = rd<float>(state, 0x04);
+    sphere[2] = rd<float>(state, 0x08);
+    sphere[3] = 100.0f;  // [00CE3D08]
+    return sphere;
+}
+
+CameraMatrix& compose_object_rotation_00af8500(CameraMatrix& matrix, CameraMatrix& destination, float angle) {
+    // AF8500..AF8585: transpose in place (the state's matrix itself).
+    std::swap(matrix[1], matrix[4]);
+    std::swap(matrix[2], matrix[8]);
+    std::swap(matrix[3], matrix[12]);
+    std::swap(matrix[6], matrix[9]);
+    std::swap(matrix[7], matrix[13]);
+    std::swap(matrix[11], matrix[14]);
+    // AF858A..AF859E: destination = (M' * Rz(angle)) * M'.
+    CameraMatrix rotation;
+    build_gui_rotation_z_00b64780(rotation, angle);
+    CameraMatrix temporary;
+    multiply_camera_matrices_00413920(temporary, matrix, rotation);
+    multiply_camera_matrices_00413920(destination, temporary, matrix);
+    return destination;
+}
+
+std::int32_t emit_object_00af85b0(const void* definition, void* state, float t, const float matrix[16],
+                                  const float wind_e13028[3], ParticleCurves& curves, ObjectParticleHost& host) {
+    // AF85B5..AF85BF: nothing without the model instance at state+34h.
+    void* instance = rd<void*>(state, 0x34);
+    if (instance == nullptr) {
+        return 0;
+    }
+    const float scale = static_cast<float>(rd<float>(state, 0x44) / 100.0);  // [00D7A220]
+    // AF85DF..AF863A: angle with RotationSpeed at def+80h (Object layout).
+    const float angle = static_cast<float>(
+        rd<float>(state, 0x54) * (integrate(curves, ptr(definition, 0x80), t) * 0.017453288659453392) * scale +
+        rd<float>(state, 0x50));  // [00D5DAF8]
+    float p[3];
+    full_position(definition, state, t, matrix, wind_e13028, curves, scale, p);
+    // AF88B4..AF88DE: node = instance+0Ch; node vtable +38h with the composed
+    // matrix, then +2Ch with the state (its position xyz at +0).
+    void* node = rd<void*>(instance, 0x0c);
+    CameraMatrix composed;
+    compose_object_rotation_00af8500(*rd<CameraMatrix*>(state, 0x30), composed, angle);
+    host.node_set_local_matrix_slot38(node, composed);
+    host.node_set_local_position_slot2c(node, static_cast<const float*>(state));
+    return 0;
 }
 
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380) {
