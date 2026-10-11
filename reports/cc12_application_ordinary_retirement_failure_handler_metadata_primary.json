@@ -1,0 +1,221 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-handler-metadata.Root.v1",
+  "status": "bounded_typed_metadata_accepted",
+  "worker_commit": "ed3ae49f744b3558a24928eb1dee385912e335b3",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/evidence.zip",
+      "bytes": 13648840,
+      "sha256": "fd640176da978246e3b4ed1c0efe545b77651fd72b552726d99ebc974d73c42e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/portable_replay.py",
+      "bytes": 10967,
+      "sha256": "7226ee34e4c9495257483757d723ebf335b65fc67f2a42d821177d304919fbaa"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/guard_replay.py",
+      "bytes": 1774,
+      "sha256": "4d59514b9ac1abb50bd86f0b95f95f51bc704557cda62d96042c8a461d6232f4"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/final_delivery.json",
+      "bytes": 4443,
+      "sha256": "351128bbc028c9858ebb6ad3a9cd8e410a627fcc6eaa8b249aa5c2badb1c6beb"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Root_guard.json",
+      "bytes": 2100,
+      "sha256": "23b0cc3d7ee7f192ec48fdcf712ef5952f4e1883370d14a2840bba84cced7553"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Root_initial_gate.json",
+      "bytes": 424,
+      "sha256": "793a67672de1aded28fd8cc086da6632242d855412dad1b3d6ca4ab3fe1b340c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Root_second_gate.json",
+      "bytes": 632,
+      "sha256": "d5d2a287d3c949504d77ec9ee22cc9ad2da9b9f5665c131b569f3226c316f90c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Root_second_qualified.json",
+      "bytes": 1171,
+      "sha256": "636da7edb916297d797148fd0cc78bd8f37c24291d50a9ca630243bc4ba6d1e8"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Root_actual_review.json",
+      "bytes": 1908,
+      "sha256": "e0c4242525dafd70b19234f04967cc3b1098cdca82af64ae06b7559b7c0d45c4"
+    }
+  ],
+  "physically_retained_helpers": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/capture_metadata.py",
+      "bytes": 1250,
+      "sha256": "bfbb15355d4a8ba70ce560d50a8f3030aa024d24ae0cd5073a4441dd34e9c4e9"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/capture_tool_sources/tools/bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/capture_tool_sources/tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/capture_tool_sources/tools/ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/capture_tool_sources/tools/workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/freeze_inputs.py",
+      "bytes": 3772,
+      "sha256": "f8097f5dba21bc5b3bbd84a49eeaa3209d9f213d256a8b9a08395b42bb30b986"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/git_receipt.py",
+      "bytes": 3971,
+      "sha256": "a8efb8ce0e2e2fbfb30cd00f1d1ca1d7492d2802e62b38eaa4f7eee658c64cb7"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/guard_replay.py",
+      "bytes": 1774,
+      "sha256": "4d59514b9ac1abb50bd86f0b95f95f51bc704557cda62d96042c8a461d6232f4"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/portable_replay.py",
+      "bytes": 10967,
+      "sha256": "7226ee34e4c9495257483757d723ebf335b65fc67f2a42d821177d304919fbaa"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_failure_handler_metadata_primary/Tools/seal_packet.py",
+      "bytes": 3245,
+      "sha256": "ea8c17daa4cd7dcdbe57e86dd7f6c22335a6d70e8709f57d3466e7c46ebc34d0"
+    }
+  ],
+  "actual_membership": {
+    "status": "PASS",
+    "worker_commit": "ed3ae49f744b3558a24928eb1dee385912e335b3",
+    "frozen": "1332c453de9235fb263ff1a8e2eb1b4b5d4261db",
+    "Root_current": "54f0b7d14b6ce5e6fb0aa43df5ca3818d80aef81",
+    "actual_frozen_final_members": 4231,
+    "actual_final_outputs": 2,
+    "actual_unique_blobs": 4233,
+    "actual_retained_bytes": 39877732,
+    "Source4217_current_Git_equal": true,
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "Native_bytes_text_data": 0,
+    "first_gate": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "site": "00CC7260",
+      "instruction_bytes_length_only": 5,
+      "function_owner": null,
+      "flow": "FALL_THROUGH",
+      "successor_address_only": "00CC7265",
+      "Native_bytes_text_or_data_queried": 0,
+      "conditional_next_admission": "typed metadata only at separately selected positive fallthrough CC7265; no code/text/data/target query or repair"
+    },
+    "second_gate": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "site": "00CC7265",
+      "instruction_bytes_length_only": 5,
+      "function_owner": null,
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR",
+      "override": "CALL_RETURN",
+      "address_only_target": "00BF6B43",
+      "incidental_target_objects": 1,
+      "qualified_target_function_objects": 0,
+      "whole_capture_strict_site_only": false,
+      "Native_bytes_text_or_data_queried": 0,
+      "qualification": "Saved override metadata does not prove physical opcode/operand, target identity/behavior or actual reach; preserve without repair."
+    },
+    "qualification": "Five CC7260 metadata observations plus one CC7265 observation, secondgate bookends CC7260; both sites unowned and extent unresolved. Entire automatically supplied target-function object remains opaque; no code, target behavior, FH3, cleanup, Source or runtime credit."
+  },
+  "Native": {
+    "epoch": 98,
+    "count": 64730,
+    "successful_exact_CLI_calls": 10,
+    "typed_captures": 6,
+    "observations": {
+      "CC7260": 5,
+      "CC7265": 1
+    },
+    "second_gate_bookends": "CC7260 only",
+    "first_site": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "site": "00CC7260",
+      "instruction_bytes_length_only": 5,
+      "function_owner": null,
+      "flow": "FALL_THROUGH",
+      "successor_address_only": "00CC7265",
+      "Native_bytes_text_or_data_queried": 0,
+      "conditional_next_admission": "typed metadata only at separately selected positive fallthrough CC7265; no code/text/data/target query or repair"
+    },
+    "second_site": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "site": "00CC7265",
+      "instruction_bytes_length_only": 5,
+      "function_owner": null,
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "effective_flow": "CALL_TERMINATOR",
+      "override": "CALL_RETURN",
+      "address_only_target": "00BF6B43",
+      "incidental_target_objects": 1,
+      "qualified_target_function_objects": 0,
+      "whole_capture_strict_site_only": false,
+      "Native_bytes_text_or_data_queried": 0,
+      "qualification": "Saved override metadata does not prove physical opcode/operand, target identity/behavior or actual reach; preserve without repair."
+    },
+    "qualified_target_function_objects": 0,
+    "entire_automatic_target_object_opaque": true,
+    "whole_second_capture_strict_site_only": false,
+    "code_bytes_or_text_or_data_read": 0
+  },
+  "Source": {
+    "current4217_Git_equal": true,
+    "prior3356_Git_and_LF_equal": true,
+    "prior3356_raw_equal": 3350,
+    "prior3356_raw_CRLF_variants": 6,
+    "no_inherited_graph_replay_or_artifact_transfer": true
+  },
+  "unknowns": [
+    "Physical opcode/operands and complete handler extent",
+    "Authentic FH3 metadata and exceptional cleanup/failure behavior",
+    "BF6B43 target identity/behavior, caller reach, stack contract",
+    "Actual owner/cells, Source lifetime/failure/retirement/quiescence and ABI/startup/game"
+  ],
+  "next_admission": {
+    "packet": "cc12_application_ordinary_retirement_failure_handler_operand",
+    "initial_gate": "Fresh unchanged98/64730 project/program/identity/count and typed metadata for every byte CC7260..CC7269; all function-at/containing/containing-functions absent; containing InstructionDB units exactly CC7260 length5 and CC7265 length5, wholly within ten bytes; interiors have no instructionAt or flow object",
+    "required_starts": {
+      "CC7260": "NONE override, no fallthrough override, default/effective FALL_THROUGH to CC7265, empty targets",
+      "CC7265": "saved CALL_RETURN, no fallthrough override, default UNCONDITIONAL_JUMP and effective CALL_TERMINATOR, both fallthroughs null, address-only BF6B43 targets with whole automatic target-function objects opaque"
+    },
+    "conditional_operand_scope": "Only after all actual ten-byte ownership/flow gates pass: exact ten code bytes CC7260..CC7269 plus context-zero text at the two unit starts; close with unchanged same-site metadata/count/identity",
+    "excluded": [
+      "No extent inference, GPR repair or annotation",
+      "No BF6B43 target, neighbor/caller/prototype/data/funclet/stack query or successor expansion",
+      "No FH3/cleanup/authenticity policy inferred from override metadata",
+      "No C++/tests/build/probes/process/game/OS/audio action"
+    ]
+  },
+  "overall_goal_complete": false
+}
