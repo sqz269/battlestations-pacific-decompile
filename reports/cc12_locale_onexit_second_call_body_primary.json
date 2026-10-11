@@ -1,0 +1,453 @@
+{
+  "schema": 1,
+  "status": "reviewed_Native_full_body_conditional_operands",
+  "address": "00BFBA68",
+  "worker_commit": "56cd269bc414a4c7b228473e8a9e3cd945c7be5f",
+  "Native_epoch": 98,
+  "function_count": 64730,
+  "reviews": {
+    "Root_actual_review.json": {
+      "status": "PASS",
+      "worker_commit": "56cd269bc414a4c7b228473e8a9e3cd945c7be5f",
+      "frozen_HEAD": "b1591d875a4fe995c60b6def77b7768af306477d",
+      "Root_HEAD": "2d09bdf6818ff586524f431f2e81358cefa0fe8f",
+      "proof_pins": [
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/evidence.zip",
+          "bytes": 419656,
+          "sha256": "f3a180cd1d32ed661cfd269c7bd8d3c1d0e3e44e5e648af880d8e057ed0cd4e0"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/delivery_git.zip",
+          "bytes": 590036,
+          "sha256": "93de05bab9678085527cd51cd1f60215d1d2f89ae004aad8b22b22aef1f4530f"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/next_worker_handoff.json",
+          "bytes": 5060,
+          "sha256": "7b4a96ae181fda6a0fc6e608c563510a5df1de01f03d24972741785ef2c6d260"
+        }
+      ],
+      "physical_helpers": [
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/common.py",
+          "bytes": 5942,
+          "sha256": "53d69e5893fd34f80fc2d5654800af31c1dbeb1e207a4a02eca89a0bb9aeb296"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/delivery_verifier.py",
+          "bytes": 3647,
+          "sha256": "0cfd04b4f87682496e78f3d2fa23f200f2c39b3ae6815123375c468a7479bd1c"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/guarded_replay.py",
+          "bytes": 4090,
+          "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/verifier.py",
+          "bytes": 9806,
+          "sha256": "9abcf643c850cc237e4b471069a0bfffc5696d0f81dead358aa8a8713b669fe4"
+        }
+      ],
+      "physically_retained_producers": 9,
+      "actual_frozen_objects": 6,
+      "actual_delivery_objects": 8,
+      "actual_prerequisite_inputs": 9,
+      "actual_outputs": [
+        {
+          "bytes": 3650,
+          "entry": "Outputs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+          "oid": "af95b6fa5b6f794bae9a277ae134f1ac56a2b949",
+          "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+          "sha256": "9489a9e76d716c157a21a48a0f64e851bf24a5e16beaab49b5d3ffc28c214b46"
+        },
+        {
+          "bytes": 20025,
+          "entry": "Outputs/reports/cc12_locale_onexit_second_call_body.json",
+          "oid": "446b713464651c99bcca040796dd6009300f1b5b",
+          "path": "reports/cc12_locale_onexit_second_call_body.json",
+          "sha256": "1292c273f75334fce8dffd14d5a823a46c7d5291c3d153717123d1a69a8c255c"
+        }
+      ],
+      "Root_CRLF_only_variants": [
+        "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_PRIMARY.md",
+        "reports/cc12_locale_onexit_second_call_entry_primary.json"
+      ],
+      "Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Root_current_Source_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "current_Root_Source_equality_claimed": false,
+      "Source_census": false,
+      "complete_body": true,
+      "body_ABI_CRT_owner_status_runtime_credit": false
+    },
+    "Root_listing_gate.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "function_count": 64730,
+      "typed_response_count": 18,
+      "all_9_raw_pairs_equal": true,
+      "qualified_units": [
+        {
+          "start": "00BFBA68",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba6a"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba6a"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00BFBA6A",
+          "length": 5,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba6f"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba6f"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c11c21"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c11c21"
+              }
+            ]
+          }
+        },
+        {
+          "start": "00BFBA6F",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba70"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bfba70"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00BFBA70",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        }
+      ],
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "name": "LIBCRT_unmatched_00bfba68",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "9",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bfba68"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bfba70"
+              },
+              "length": "9"
+            }
+          ]
+        }
+      },
+      "automatic_target_objects_opaque": true,
+      "raw_capture_pins": [
+        {
+          "path": "typed_before.json",
+          "bytes": 45106,
+          "sha256": "6ba755e4ad762e43653395ce64040873c8ecd646447e36eeebfec8c7f0e03729"
+        },
+        {
+          "path": "typed_after.json",
+          "bytes": 45106,
+          "sha256": "222042251bb3ba8a20ad67ea4038cddf55d02811e6d46c998e3fa52bbf7fd94d"
+        }
+      ],
+      "next_admission": {
+        "code": "Only two exact9byte reads BFBA68..BFBA70",
+        "texts": "Only contextzero starts BFBA68 BFBA6A BFBA6F BFBA70",
+        "required": "Fresh all9address/countbookends equal this gate; manual opcode/ModRM/relative + actual detailedCapstone + savedtexts",
+        "excluded": "No callee C11C21 body, literals/data/stack, prototype, decompile, disasm, GPR mutation, Source or runtime"
+      },
+      "Source_OR_ABI_runtime_credit": false
+    },
+    "Root_core_guard.json": {
+      "status": "PASS",
+      "frozen_HEAD": "b1591d875a4fe995c60b6def77b7768af306477d",
+      "Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "finite_inputs": 9,
+      "actual_frozen_Git_objects": 6,
+      "metadata_raw_responses": 18,
+      "epoch": 98,
+      "function_count": 64730,
+      "whole_units": 4,
+      "interior_addresses": 5,
+      "operand_bookend_raw_responses": 18,
+      "complete_raw_responses_total": 36,
+      "fresh_unique_code_bytes": 9,
+      "code": {
+        "bytes": 9,
+        "sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d"
+      },
+      "context0_text_pairs": 4,
+      "manual_detailed_Capstone_saved_text_agreement": true,
+      "Native_closed": true,
+      "physical_target": "00C11C21",
+      "target_followed": false,
+      "external_returned_state": "wholly unknown",
+      "automatic_target_objects": "wholly opaque",
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "f3a180cd1d32ed661cfd269c7bd8d3c1d0e3e44e5e648af880d8e057ed0cd4e0"
+      }
+    },
+    "Root_delivery_guard.json": {
+      "status": "PASS",
+      "commit": "56cd269bc414a4c7b228473e8a9e3cd945c7be5f",
+      "frozen_HEAD": "b1591d875a4fe995c60b6def77b7768af306477d",
+      "actual_delivery_Git_objects": 8,
+      "actual_output_blobs": 2,
+      "exact_output_paths": [
+        "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+        "reports/cc12_locale_onexit_second_call_body.json"
+      ],
+      "current_staged_committed_bytes_equal": true,
+      "worker_base_final_Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "clean_final_status": true,
+      "core_archive_pin": {
+        "bytes": 419656,
+        "sha256": "f3a180cd1d32ed661cfd269c7bd8d3c1d0e3e44e5e648af880d8e057ed0cd4e0"
+      },
+      "Native_closed": true,
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "93de05bab9678085527cd51cd1f60215d1d2f89ae004aad8b22b22aef1f4530f"
+      }
+    },
+    "Root_operand_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "function_count": 64730,
+      "typed_metadata_and_operand_responses": 36,
+      "code_bytes": 9,
+      "code_sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d",
+      "instructions": 4,
+      "Root_manual_relative_and_opcode_check": true,
+      "Root_actual_detailed_Capstone_version": "5.0.7",
+      "paired_saved_texts": 4,
+      "contract": {
+        "entry_ESP": "S",
+        "push": "SS:[S-4]=8",
+        "call": "SS:[S-8]=BFBA6F then physical CALL C11C21",
+        "external_return": "ESP=U; all returned registers/flags/memory unknown",
+        "pop": "ECX=then-current SS:[U]; ESP=U+4",
+        "ret": "EIP=then-current SS:[U+4]; final ESP=U+8 if completed",
+        "Original_return_target_stack_balance_or_lock_meaning": false
+      },
+      "target_body_data_stack_queries": 0,
+      "Original_CRT_callback_status_ABI_or_runtime_credit": false
+    }
+  },
+  "scope": "Complete9B/4instructions only, physical CALL target C11C21 address only; no successor body admission",
+  "proofs": {
+    "evidence.zip": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/evidence.zip",
+      "bytes": 419656,
+      "sha256": "f3a180cd1d32ed661cfd269c7bd8d3c1d0e3e44e5e648af880d8e057ed0cd4e0"
+    },
+    "delivery_git.zip": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/delivery_git.zip",
+      "bytes": 590036,
+      "sha256": "93de05bab9678085527cd51cd1f60215d1d2f89ae004aad8b22b22aef1f4530f"
+    },
+    "next_worker_handoff.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/next_worker_handoff.json",
+      "bytes": 5060,
+      "sha256": "7b4a96ae181fda6a0fc6e608c563510a5df1de01f03d24972741785ef2c6d260"
+    },
+    "Root_actual_review.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_actual_review.json",
+      "bytes": 3154,
+      "sha256": "181606d1c849a51fe83ee23d77c9d604c76e5da2d4091500a385c6f9ea0d5894"
+    },
+    "Root_listing_gate.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_listing_gate.json",
+      "bytes": 5434,
+      "sha256": "824f8dcb9f15f59c73a832317be1a657d6ab95a387d8e7ddd688f1f2c775d5b2"
+    },
+    "Root_core_guard.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_core_guard.json",
+      "bytes": 1307,
+      "sha256": "d48b1a0eacc60c408684ba5f47cc017e6b58d009c4ba1ea8fbfd405dbb3032e7"
+    },
+    "Root_delivery_guard.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_delivery_guard.json",
+      "bytes": 1144,
+      "sha256": "fdad9497476a818e447d01ee858b42f39dc6cf6c4775aa5a8c9e5692ed2aa0d1"
+    },
+    "Root_operand_review.json": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_operand_review.json",
+      "bytes": 880,
+      "sha256": "385f01763b6a9241dd60cf0979b36f29a09335c392ae3125e3370244e6b5c813"
+    },
+    "Root_exact_code.bin": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Root_exact_code.bin",
+      "bytes": 9,
+      "sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d"
+    },
+    "Tools/common.py": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/common.py",
+      "bytes": 5942,
+      "sha256": "53d69e5893fd34f80fc2d5654800af31c1dbeb1e207a4a02eca89a0bb9aeb296"
+    },
+    "Tools/verifier.py": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/verifier.py",
+      "bytes": 9806,
+      "sha256": "9abcf643c850cc237e4b471069a0bfffc5696d0f81dead358aa8a8713b669fe4"
+    },
+    "Tools/delivery_verifier.py": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/delivery_verifier.py",
+      "bytes": 3647,
+      "sha256": "0cfd04b4f87682496e78f3d2fa23f200f2c39b3ae6815123375c468a7479bd1c"
+    },
+    "Tools/guarded_replay.py": {
+      "path": "local/cc12_locale_onexit_second_call_body_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    }
+  },
+  "qualification": "No actual stack, external return/lock meaning, OS/CRT identity, callback/status, ABI, Source activation or gameplay validation"
+}
