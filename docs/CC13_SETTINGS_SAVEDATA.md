@@ -1,6 +1,6 @@
 # CC13 settings and mission save data (segment 29)
 
-Addresses: 006a5640, 006ad470, 006ad8d0, 006addc0, 006ae120, 006ae280, 006ae400, 006ae730,
+Addresses: 0069e300, 0069e9e0, 006a5640, 006a9850, 006ad470, 006ad8d0, 006addc0, 006ae120, 006ae280, 006ae400, 006ae730,
 006ae870, 006aea00, 006aebf0, 006aedc0, 006aef70, 006af120, 006af2b0, 006af420, 006af870,
 006af8b0, 006afb00, 006afe80, 006afec0, 006aff20, 006aff90, 006b0020, 006b0650, 006b0be0,
 006b1190, 006b1490, 006b17b0, 006b1870, 006b1e40, 006b23e0, 006b2d30, 006b2e90, 006b2fc0,
@@ -33,6 +33,7 @@ document or source covered, plus the control-preset writer.
 | Item | Exported | Reconstructed | Build-tested | Fixture/game validated |
 | --- | --- | --- | --- | --- |
 | `006A5640` control preset writer | yes | `src/control_preset_archive.cpp` | yes | no |
+| `0069E300`, `0069E9E0`, `006A9850` binding display text | yes | `src/input_binding_text.cpp` | yes | `0069E300` probed with the real `GetKeyNameTextA` |
 | Lua pickler encode/decode (`006ADDC0..006B68C0`, 26 routines) | yes | `src/mission_savedata_lua.cpp` | yes | host round-trip probe only (below) |
 | `006B7710` save tail (register, encode, emit, restore) | yes | wrapper only | yes | no |
 | `006B7710` archive header, `006B5960` load tail, `006AF8B0`, `006AFB00` | yes / disk | documented only | n/a | no |
@@ -228,6 +229,39 @@ After `decode_mission_lua_state_006b23e0` every identity was restored, `anon` wa
 or `_R_` remained in the trees, and `_G.__ == ""`. This checks the host implementation against
 its own reading of the assembly; it is not a native differential run.
 
+## Binding display text `0069E300`, `0069E9E0`, `006A9850`
+
+These build the label the control-binding screens show for one input slot. Host:
+`include/bsp/input_binding_text.hpp` over the existing `InputSettings` model.
+
+`0069E300` (`__fastcall`, `ECX` = out string, `EDX` = DirectInput code, `RET`) returns
+`"^." + GetKeyNameTextA(lParam)` (import slot `00CE2354`), or `""` for an empty name. `lParam` is
+`(code << 16) + 1` unless the code is one of the 20 extended keys in `00CF7F48`, whose lParam
+comes from `00CF7F98` (for example `C8h` Up -> `01480001h`, `B8h` Right Alt -> `21380001h`).
+Code `0Eh` (Backspace) first reads the name of `1Ch` (Return) through itself and returns
+`"^.INDIETRO"` when that is `"^.INVIO"` (case-insensitive), the Italian layout. Native passes an
+uninitialised 100h-byte buffer; the host zero-fills it. A local probe with the real API on this
+machine returned `^.A`, `^.Up`, `^.Backspace`, `^.Enter`, `^.Right Alt`, `^.Num Lock` and `""`
+for `FFh`.
+
+`0069E9E0` (`__thiscall`, `ECX` = settings, out string, binding; `RET 8`) appends
+`"." + (index + 1) + "#|"` when the device index is non-zero. For class 2 with a device returned
+by `004BA6D0(2, index)` it appends the `ControllerInputNames` label (settings+60h, device name
+from virtual `+0Ch`, inner map keyed by code) or the device's virtual `+3Ch` label, and returns.
+Otherwise it appends the `0069E300` name for class 0 and then the key of every `InputNames`
+entry (settings+24h) whose value+0 equals the binding class and value+0Ch equals its code
+(`0069EDBB..0069EDCC`). This is the first consumer evidence for the two `InputNameRecord` fields
+that `include/bsp/input_settings.hpp` marks provisional: `primary` is a device class and
+`secondary` a key code.
+
+`006A9850` (`__thiscall`, `ECX` = settings, out string, device name, input name, slot;
+`RET 10h`) returns `(DEVINPUTS)` when settings+50h is set, `FE_pc.cs_na` for a slot whose class
+is `-1`, and otherwise the `0069E9E0` text plus, for axes (class 1 code >= 8, class 2 code >=
+3Ch), `|.+`/`|.-` or, for class 1 code 0Ah, `|. |^globals.down`/`|. |^globals.up`, chosen by the
+slot's bit in the device's runtime reverse vector. An empty result becomes `FE_pc.cs_unknown`.
+Native uses map `operator[]` (`0055C110`, `006A45C0`, `006A4CA0`), so it inserts missing entries
+before failing the checked index; the host throws `std::out_of_range` instead.
+
 ## Divergences and uncertainty
 
 - Indexing a non-table (a `thisTable` member that is not a table, a missing `_t_` path step,
@@ -275,8 +309,9 @@ The call sites cited above are listed in `reports/cc13_settings_savedata.json` f
 ## Handoff
 
 Done: segment survey, the whole mission Lua pickler (encode, naming, strip, restore, resolve),
-control preset writer, 42 ledger names applied to Ghidra with plate comments, report rows
-verified by `tools/verify_report_calls.py` (45 rows, 0 failed).
+control preset writer, binding display text (`0069E300`, `0069E9E0`, `006A9850`), 45 ledger
+names applied to Ghidra with plate comments, report rows verified by
+`tools/verify_report_calls.py` (52 rows, 0 failed).
 
 Open, in priority order:
 
@@ -287,8 +322,8 @@ Open, in priority order:
 3. The hidden adapters `006AD4D0`, `006AD530`, `006AD560` and the twins `00951820`/`00951940`
    (entity-id registry archive read/write, segment of `00951xxx`).
 4. Remaining raw functions in `00696470..006AD3F0` are mostly `std::_Tree`/vector
-   instantiations; the key-name formatters `0069E300` (`^.INDIETRO`/`^.INVIO`), `0069E9E0`,
-   `006A33F0` and `006A9850` (`FE_pc.cs_unknown`, `globals.up/down`) are the next string-anchored
-   targets there.
+   instantiations. `006A33F0` (the other `0069E9E0` caller, from `008CC030`), `006A9A40` and
+   `006AAC50` (`|. (|||.)|`, called from the binding screens) are the next string-anchored
+   targets.
 5. Whether anything reaches `006B7710`/`006B5960` at run time; a breakpoint on either during a
    mission would settle it.
