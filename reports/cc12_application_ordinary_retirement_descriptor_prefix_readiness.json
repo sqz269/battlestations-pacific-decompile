@@ -1,0 +1,314 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-descriptor-prefix-readiness.v1",
+  "status": "exact_twelve_candidate_data_bytes_and_raw_LE_DWORDs_verified_Native_only",
+  "worker_base_commit": "9044d060a475140c73486987befbd07d7f87114e",
+  "worker_base_tree": "082c434b24636b14f3996dbafbb3f78b02eff4e1",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_DESCRIPTOR_PREFIX_READINESS.md",
+    "reports/cc12_application_ordinary_retirement_descriptor_prefix_readiness.json"
+  ],
+  "native_scope": {
+    "interval_inclusive": [
+      "00E01CF8",
+      "00E01D03"
+    ],
+    "explicit_queried_metadata_sites": [
+      "00E01CF8",
+      "00E01CF9",
+      "00E01CFA",
+      "00E01CFB",
+      "00E01CFC",
+      "00E01CFD",
+      "00E01CFE",
+      "00E01CFF",
+      "00E01D00",
+      "00E01D01",
+      "00E01D02",
+      "00E01D03"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730,
+    "metadata_batches": 3,
+    "typed_responses": 36,
+    "data_read_count": 2,
+    "data_bytes_per_read": 12,
+    "metadata_identity_count_data_closed_unchanged": true,
+    "instruction_text_queries": 0,
+    "other_Native_queries": false
+  },
+  "listing_observation": {
+    "all_twelve_bytes_covered_by_defined_DataDB": true,
+    "unit_start": "00E01CF8",
+    "reported_unit_length": 36,
+    "unit_at_query": [
+      "00E01CF8"
+    ],
+    "other_eleven_unit_at_queries": null,
+    "instruction_at_and_containing": null,
+    "function_at_and_containing": null,
+    "instruction_flow": null,
+    "functions": [],
+    "direct_call_targets": [],
+    "read_length": 12,
+    "remaining_unit_bytes_read": 0,
+    "explicit_memory_block_backing_or_type_proof": false,
+    "coverage_basis": "listing metadata only; two successful exact read-only memory requests establish these twelve returned bytes"
+  },
+  "raw_data": {
+    "hex": "22 05 93 19 02 00 00 00 E8 1C E0 00",
+    "capture_form": "complete BSP CLI formatted stdout and stderr; not raw HTTP response",
+    "raw_LE_DWORDs": [
+      {
+        "offset": 0,
+        "address": "00E01CF8",
+        "hex": "19930522"
+      },
+      {
+        "offset": 4,
+        "address": "00E01CFC",
+        "hex": "00000002"
+      },
+      {
+        "offset": 8,
+        "address": "00E01D00",
+        "hex": "00E01CE8"
+      }
+    ],
+    "format_field_magic_state_map_pointer_or_cleanup_meaning": false
+  },
+  "prerequisite": {
+    "current_Root_contract_docs_and_report": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_FAILURE_HANDLER_OPERAND_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_failure_handler_operand_primary.json"
+    ],
+    "handler_worker_commit": "3b952d7b1a230ddcd247ed3e59d7d1409b7d189b",
+    "handler_Root_commit": "b195a4fc2499dd4ee7ee21c5c1bf866bb0154d02",
+    "admission_receipt": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/Root_initial_gate.json",
+      "bytes": 3529,
+      "sha256": "c2613ee0b889849a0150dc498d40f26c41b21dffa0e2507d2187c98585fd41c9"
+    },
+    "predecessor_facts_opaque": true,
+    "recursive_predecessor_archives_copied_or_replayed": false
+  },
+  "Source_Git_identity_only": {
+    "frozen_HEAD": "9044d060a475140c73486987befbd07d7f87114e",
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "actual_immediate_prerequisite_input_blobs": 10,
+    "Source_content_census_or_semantic_claim": false,
+    "Old3356_or_Source4217_credit_transfer": false
+  },
+  "exclusions": [
+    "remaining 24 bytes of the reported 36-byte listing unit",
+    "encoded pointer or target following, including 00E01CE8 and 00BF6B43",
+    "neighbor, caller, body, prototype, stack, or funclet queries",
+    "descriptor format, field labels, magic, states, maps, FH3 authenticity, or cleanup inference",
+    "Ghidra mutation, repair, rename, or analysis",
+    "C++ implementation, tests, build, probes, process, game, OS or audio action",
+    "Source content census, historical archive replay, artifact or runtime credit transfer"
+  ],
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/evidence.zip",
+      "bytes": 193280,
+      "sha256": "39aadf90d8b8e73803b3f47953ccbb7f0211a36c249a72d9640c47dcc41c8a17"
+    },
+    "manifest": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/manifest.json",
+      "bytes": 10634,
+      "sha256": "06c3b661e8413fa7ea42b9b58c83af7d1add66d8a547dc4c82bafdbe220ac8ef"
+    },
+    "replay_helper": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/portable_replay.py",
+      "bytes": 10755,
+      "sha256": "f430fb00e2274ffded3ab09dc64b508cee813016cd69da918a52749b42d54190"
+    },
+    "guard_helper": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/guard_replay.py",
+      "bytes": 2134,
+      "sha256": "91fb00d230454f8b63a8c2ed01ed4cca9885c305f76fdadb26fe5ff9241e77bb"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/capture_gate.py",
+        "bytes": 1826,
+        "sha256": "a6d6fd5f2c5b31fde0e0acf17abc41e9b5ae277efc1985cf3d78997328ea7371"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/capture_data.py",
+        "bytes": 1810,
+        "sha256": "cda3729f5cc0b11b9b5a04754d78505204fb7dcbd703a280b1bdaef6424710dd"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/portable_replay.py",
+        "bytes": 10755,
+        "sha256": "f430fb00e2274ffded3ab09dc64b508cee813016cd69da918a52749b42d54190"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/guard_replay.py",
+        "bytes": 2134,
+        "sha256": "91fb00d230454f8b63a8c2ed01ed4cca9885c305f76fdadb26fe5ff9241e77bb"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/packet_tool.py",
+        "bytes": 17520,
+        "sha256": "182ba5fff910b5659f623915e4995e14bf16aa8cba0a4db1bc702d0435ee5172"
+      }
+    ],
+    "physical_copy_distinct": true,
+    "copy_zip": {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/distinct_copy/evidence.zip",
+      "bytes": 193280,
+      "sha256": "39aadf90d8b8e73803b3f47953ccbb7f0211a36c249a72d9640c47dcc41c8a17"
+    },
+    "replay_equal": true,
+    "replay_result": {
+      "status": "PASS",
+      "zip_entries": 61,
+      "payload_members": 60,
+      "payload_bytes": 579796,
+      "Native_CLI_calls": 11,
+      "metadata_batches": 3,
+      "typed_responses": 36,
+      "unique_sites": 12,
+      "epoch": 98,
+      "count": 64730,
+      "listing_coverage": {
+        "start": "00E01CF8",
+        "length": 36,
+        "defined": true
+      },
+      "data_reads": 2,
+      "bytes_per_read": 12,
+      "hex": "22 05 93 19 02 00 00 00 E8 1C E0 00",
+      "raw_LE_DWORDs": [
+        "19930522",
+        "00000002",
+        "00E01CE8"
+      ],
+      "frozen_HEAD": "9044d060a475140c73486987befbd07d7f87114e",
+      "Source_subtree_identities": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "frozen_input_blobs": 10,
+      "explicit_memory_block_backing_or_type_proof": false,
+      "schema_field_pointer_or_cleanup_meaning": false,
+      "external_inputs": false
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/original_replay.json",
+        "bytes": 893,
+        "sha256": "eefa23a9e479edd388bd456452641a174a684ad87fe175a09108eacda73dd368"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/original_guard.json",
+        "bytes": 428,
+        "sha256": "26c14ad300470d5baa86951c2d1440fa38ddf05dc85e2a150776c488df427e00"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/original_replay_command.json",
+        "bytes": 601,
+        "sha256": "67d65c29ffe72b8ff05c99c359ef6128d4f98dd8062c50515342bcfa36049da8"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/distinct_copy_replay.json",
+        "bytes": 893,
+        "sha256": "eefa23a9e479edd388bd456452641a174a684ad87fe175a09108eacda73dd368"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/distinct_copy_guard.json",
+        "bytes": 443,
+        "sha256": "1cb916930c30e894c6983bc78aba3a5942358a25f2ab94604f675f02d91890c3"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/distinct_copy_replay_command.json",
+        "bytes": 616,
+        "sha256": "084c82971622ce154fe4744a6cf3360e958b3715edd9039bc97dd43682cbfba5"
+      }
+    ]
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/frozen_git.json",
+      "bytes": 6783,
+      "sha256": "e8a59d5b6f4e87a866181167ec21542beab815aa3a7cfc135922c6b49c834951"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/Root_initial_gate.json",
+      "bytes": 3529,
+      "sha256": "c2613ee0b889849a0150dc498d40f26c41b21dffa0e2507d2187c98585fd41c9"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/seal.json",
+      "bytes": 4690,
+      "sha256": "0ec4213311ce57968fbb3790b1ad64b226e81969de4198a0f5fe6499ca4d5e76"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/manifest.json",
+      "bytes": 10634,
+      "sha256": "06c3b661e8413fa7ea42b9b58c83af7d1add66d8a547dc4c82bafdbe220ac8ef"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/initial_gate.json",
+      "bytes": 31021,
+      "sha256": "5b872dc698bc93461c383d05f5787c40fd241d289ef8fcfce402f8199242bfcc"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/pre_data_gate.json",
+      "bytes": 31021,
+      "sha256": "438597bf594e2f09fd7ed23fc30588b58279f9ce72142c2cba8029f65edf53b6"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/closing_gate.json",
+      "bytes": 31021,
+      "sha256": "a86374303a4f6a644660d13f318b3f07387419617d79ed687f1b70b4e472aa43"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/initial_gate_schedule.json",
+      "bytes": 2610,
+      "sha256": "105d57e9958547ca1995df4debbd40e6cbab23aea3ef651d4d5452017f89d96d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/pre_data_gate_schedule.json",
+      "bytes": 2617,
+      "sha256": "74a56ba7757963d7832ba72665bc0969676fbd2f8078f735f49781c3b84aa420"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/closing_gate_schedule.json",
+      "bytes": 2610,
+      "sha256": "ba2cd68a9da50f387a19bcd9033b5f5fb7d2d6b8983c9cfacfd790f2543ffd49"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/data_schedule.json",
+      "bytes": 1739,
+      "sha256": "865277b7806f89a66c55f3082611704e3f1381c78372e2879d64a1ffb2b69650"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/data_primary.stdout.txt",
+      "bytes": 61,
+      "sha256": "f954a32059ff098bf0641c0447d8fd1ca2b96927551b24602e4d952cfac9a26e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/data_closing.stdout.txt",
+      "bytes": 61,
+      "sha256": "f954a32059ff098bf0641c0447d8fd1ca2b96927551b24602e4d952cfac9a26e"
+    }
+  ],
+  "git_delivery_receipts": {
+    "staged": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/staged_git_receipt.json",
+    "final": "local/cc12_application_ordinary_retirement_descriptor_prefix_readiness/final_git_receipt.json",
+    "note": "External post-generation receipts check actual frozen/final inputs and exactly two staged/final output Git objects; no self-referential output hash is embedded."
+  },
+  "next_gate": "No target, format, or additional data is admitted. Any continuation requires a separately bounded Root packet.",
+  "validation_boundary": "Captured and independently replay-checked Native listing/data only; no reconstruction, build, fixture, ABI, or game validation."
+}
