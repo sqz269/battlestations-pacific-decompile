@@ -1,0 +1,641 @@
+{
+  "schema": 1,
+  "packet": "cc12_c1711f_direct_target_entry",
+  "status": "bounded entry metadata and six-byte physical evidence; no Source reconstruction",
+  "frozen_actual_Main": "5122687cac595819d4fb517b319e68a6a3b6cf3f",
+  "Main_observed_after_freeze": "5122687cac595819d4fb517b319e68a6a3b6cf3f",
+  "frozen_is_ancestor_of_observed_Main": true,
+  "positive_inputs": [
+    {
+      "path": "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_BODY_METADATA.md",
+      "git_blob": "76b29ae7aa49948b8a17d9b796182895648ac68a",
+      "working_payload": "captures/input_0.working_raw",
+      "working_file": {
+        "size": 11218,
+        "sha256": "c3570dc9f4f2f2a0eaf772753025df854454d6e53fbfa574d2cae2f95732dd06"
+      },
+      "working_LF": {
+        "size": 11218,
+        "sha256": "c3570dc9f4f2f2a0eaf772753025df854454d6e53fbfa574d2cae2f95732dd06"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "76b29ae7aa49948b8a17d9b796182895648ac68a",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "reports/cc12_findhandler_terminal_direct_callee_body_metadata.json",
+      "git_blob": "1963d589406f13d8f4943aca73a7d9929ad61d12",
+      "working_payload": "captures/input_1.working_raw",
+      "working_file": {
+        "size": 259538,
+        "sha256": "28f4c2b7c203285ed38c23f2c2f558bdbd62b1c24b0f7de0d181f78c6f763dba"
+      },
+      "working_LF": {
+        "size": 259538,
+        "sha256": "28f4c2b7c203285ed38c23f2c2f558bdbd62b1c24b0f7de0d181f78c6f763dba"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "1963d589406f13d8f4943aca73a7d9929ad61d12",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_BODY_METADATA_PRIMARY.md",
+      "git_blob": "2da24ab917bba54787a2f4d231494b01a958d2f6",
+      "working_payload": "captures/input_2.working_raw",
+      "working_file": {
+        "size": 4175,
+        "sha256": "185407bee5c8bedb368ecb52ce0b8902036784373600997e7e6fa4528eea8802"
+      },
+      "working_LF": {
+        "size": 4175,
+        "sha256": "185407bee5c8bedb368ecb52ce0b8902036784373600997e7e6fa4528eea8802"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "2da24ab917bba54787a2f4d231494b01a958d2f6",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "reports/cc12_findhandler_terminal_direct_callee_body_metadata_primary.json",
+      "git_blob": "d9aef8cb462bb3f4a3120dafd32b780afc64d45d",
+      "working_payload": "captures/input_3.working_raw",
+      "working_file": {
+        "size": 9206,
+        "sha256": "da532b92b69aa359e19257ce6406cf22d89029e5ad4a9c337e4259c0462e73ab"
+      },
+      "working_LF": {
+        "size": 9206,
+        "sha256": "da532b92b69aa359e19257ce6406cf22d89029e5ad4a9c337e4259c0462e73ab"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "d9aef8cb462bb3f4a3120dafd32b780afc64d45d",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_payload": "captures/input_4.working_raw",
+      "working_file": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_payload": "captures/input_5.working_raw",
+      "working_file": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_payload": "captures/input_6.working_raw",
+      "working_file": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_payload": "captures/input_7.working_raw",
+      "working_file": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true,
+      "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "index_mode": "100644",
+      "index_stage": 0
+    }
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_edge": {
+    "address": "00C04E0F",
+    "length": 5,
+    "hex": "e80b230100",
+    "mode": "x86-32 interpretation; live segment attributes unestablished",
+    "prefixes": [],
+    "modrm": null,
+    "sib": null,
+    "fields": [
+      {
+        "field": "opcode",
+        "offset": 0,
+        "size": 1,
+        "hex": "e8",
+        "value": 232
+      },
+      {
+        "field": "relative_displacement",
+        "offset": 1,
+        "size": 4,
+        "hex": "0b230100",
+        "value": 74507
+      }
+    ],
+    "mnemonic": "call",
+    "operands": [
+      {
+        "kind": "imm",
+        "size": 4,
+        "value": 12677407
+      }
+    ],
+    "operand_access": [
+      0
+    ],
+    "regs_read": [
+      "eip",
+      "esp"
+    ],
+    "regs_written": [
+      "esp"
+    ],
+    "eflag_effects": [],
+    "transfer": {
+      "kind": "direct_near_call",
+      "signed_displacement": 74507,
+      "numeric_target": "00C1711F",
+      "next_address": "00C04E14",
+      "encoded_return_address": "00C04E14"
+    },
+    "numeric_next_address": "00C04E14"
+  },
+  "metadata": {
+    "address": "00C1711F",
+    "unit": {
+      "address": {
+        "space": "ram",
+        "offset": "00c1711f"
+      },
+      "length": 6,
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "defined": null
+    },
+    "all_four_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1711f"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1711f"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1711f"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c1711f"
+        },
+        "length": 6,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "complete_saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c1711f"
+      },
+      "name": "___get_sigabrt",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "13",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c1711f"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c1712b"
+            },
+            "length": "13"
+          }
+        ]
+      }
+    },
+    "saved_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c17125"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c17125"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "direct_call_targets": [],
+    "raw": {
+      "size": 2147,
+      "sha256": "898975115e9009e7bdad8cc9bc59c3abff9d50a4ab28c4228bed92934d2f1e33"
+    },
+    "paired_raws_equal": true,
+    "unqueried_next_cursor": "00C17125",
+    "bytes_text_proto_target_provider_cell_queries": false
+  },
+  "physical": {
+    "physical": {
+      "address": "00C1711F",
+      "length": 6,
+      "hex": "ff3544e40901",
+      "mode": "x86-32 interpretation; live execution mode and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "opcode_group": "FF /6 PUSH r/m32",
+      "modrm": {
+        "value": 53,
+        "mod": 0,
+        "reg_opcode": 6,
+        "rm": 5
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "35",
+          "value": 53
+        },
+        {
+          "field": "displacement",
+          "offset": 2,
+          "size": 4,
+          "hex": "44e40901",
+          "value": 17425476
+        }
+      ],
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 17425476
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflags": 0,
+      "eflag_effects": [],
+      "implicit_stack_segment": "ss",
+      "source_read_precedes_this_instruction_stack_write": true,
+      "immediate": null,
+      "relative_displacement": null,
+      "transfer": null,
+      "numeric_next_address_unqueried": "00C17125"
+    },
+    "byte_pin": {
+      "size": 6,
+      "sha256": "fa125b9d58042ba09cd3db1e66e1465a59467aeb3980040fe382e7e7021d6e06"
+    },
+    "paired_exact_bytes_equal": true,
+    "saved_text": {
+      "address": "00c1711f",
+      "instruction": "PUSH dword ptr [0x0109e444]",
+      "context_before": [],
+      "context_after": [],
+      "mnemonic": "PUSH",
+      "patterns_detected": [
+        "stack_operation"
+      ]
+    },
+    "paired_context_equal": true,
+    "manual_completed_before_Capstone_import": true
+  },
+  "actual_detailed_Capstone": {
+    "version": "5.0.7",
+    "arch": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "import_and_construction_after_manual_artifact": true,
+    "instruction": {
+      "address": "00C1711F",
+      "size": 6,
+      "hex": "ff3544e40901",
+      "mnemonic": "push",
+      "op_str": "dword ptr [0x109e444]",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 17425476
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        255,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 53,
+      "sib": 0,
+      "disp": 17425476,
+      "encoding": {
+        "modrm_offset": 1,
+        "disp_offset": 2,
+        "disp_size": 4,
+        "imm_offset": 0,
+        "imm_size": 0
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflags": 0,
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ]
+    }
+  },
+  "decoder_comparison": {
+    "status": "PASS",
+    "instructions": 1,
+    "bytes": 6,
+    "all_fields_operands_access_registers_eflags_compared": true,
+    "differences": []
+  },
+  "state_and_ABI_limits": {
+    "mode": "Physical decoding uses x86-32. Live execution mode, segment descriptors, mappings, permissions and memory values are unqueried.",
+    "normal_completion": "On normal completion under the decoded operand/address-size interpretation, read the four-byte source through current DS at offset 0109E444 before this PUSH performs its own implicit stack write.",
+    "stack": "Renew the predicate current SS.B=1. Under that predicate, let S be current ESP and V be the source value just read; the instruction sets ESP to (S-4) modulo 2^32 and writes V through current SS at that new offset. No linear address or flat-segment equality is inferred.",
+    "alias": "Current DS source and current SS stack storage may alias. The source read precedes this instruction's own write, but the earlier incoming CALL stack write occurred before this source read and could alias it. Neither a value nor a non-alias property is established.",
+    "flags_registers": "The memory operand is explicit read access. ESP is the implicit register read and write; no other GPR is read by the absolute addressing form. Normal instruction completion leaves arithmetic/status flags unchanged. Fault, interrupt and other exceptional transitions are outside that normal-completion statement.",
+    "incoming_call": "The previously accepted E8 at C04E0F has encoded return offset C04E14 and numeric target C1711F. Optional two-instruction composition requires a normal uninterrupted direct CALL-to-entry transition and the relevant current segment/stack predicates; no aggregate stack delta is asserted without them.",
+    "meaning": "The dword is not authenticated as an argument, function pointer, service value, library state or provider binding. The saved owner name ___get_sigabrt and no_return=false are metadata, not a recovered prototype, calling convention or proof of return.",
+    "stop": "Numeric next cursor C17125 and remaining seven saved-owner bytes C17125..C1712B are unqueried and unclassified."
+  },
+  "Native": {
+    "commands": 11,
+    "HTTP_responses": 39,
+    "phase1_commands": 4,
+    "phase2_commands": 7,
+    "epoch": 98,
+    "function_count": 64730,
+    "original_typed_responses_equal": 3,
+    "three_CLI_physical_reads_before_after_every_command": true,
+    "CLI_payload_storage": "Original identical raw bytes retained once per digest; separate observations for every actual read.",
+    "paired_exact_six_bytes": true,
+    "paired_context_zero_only_entry": true
+  },
+  "Root_gate": {
+    "status": "PASS first execution",
+    "actual_copied_artifacts": 213,
+    "metadata_preimages": 206,
+    "receipt": {
+      "size": 2255963,
+      "sha256": "27e70a8e44039aa5cac836bab5d6999aaaf8b522f7a100eac43faf1c782ff267"
+    }
+  },
+  "failures": {
+    "worker_Native": 0,
+    "worker_decoder": 0,
+    "worker_process": 0,
+    "Root_gate": 0,
+    "Root_inspection": 0,
+    "Root_display_truncations": 0
+  },
+  "evidence_pins": {
+    "finite_git.json": {
+      "size": 10556,
+      "sha256": "5bf0b0f8d467908130ab1bc4c4e1aafc6b5d0adc3b8e011bb926addd86967f92"
+    },
+    "positive_edge.json": {
+      "size": 938,
+      "sha256": "408d670e3f82ec9aab90e6ac7eed0509b48f8680703c03a2f7388a44bf93a183"
+    },
+    "entry_metadata.json": {
+      "size": 2902,
+      "sha256": "89e10aa1c3581fbae5c3c6dd00c1c24ef785b381053d13e356dc25849b9e4d1f"
+    },
+    "metadata_capture_manifest.json": {
+      "size": 92986,
+      "sha256": "e86e415bba89712272d564856efe488a733eeae08e33501fa5112a7c64b0b17d"
+    },
+    "metadata_first.stdout": {
+      "size": 501,
+      "sha256": "a767d4705bed9a23d54acacbad4f5d34e713d3a54e14b3df42ea8a3d883bbe8f"
+    },
+    "metadata_first.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "metadata_first.command.json": {
+      "size": 821,
+      "sha256": "2bdf0f449756006fb2a45e70be5eb393f90e8d6867ddbc12aa8591132b9becd5"
+    },
+    "Root_gate_admission.json": {
+      "size": 1318,
+      "sha256": "83328a193c5d8e998b02ffd039fddb6cd50c26ab601f7e8fd321f441fc0340ca"
+    },
+    "Root_gate_copy_manifest.json": {
+      "size": 35474,
+      "sha256": "03b0cf9e2acfdfb7e04c6283bf4b218f94d3deef08f388e45c48094e04937d1a"
+    },
+    "Root_gate/Root_listing_gate.json": {
+      "size": 2255963,
+      "sha256": "27e70a8e44039aa5cac836bab5d6999aaaf8b522f7a100eac43faf1c782ff267"
+    },
+    "entry_capture_manifest.json": {
+      "size": 41681,
+      "sha256": "90004e7293893664e70948a84c0006c81c5218f9f80ce7dd7f1de737696524c9"
+    },
+    "entry_first.stdout": {
+      "size": 257,
+      "sha256": "7ac9e9a15dfdffc136b98d00f70e153930baf80cbbe5f31ab69d53cd2e02e519"
+    },
+    "entry_first.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "entry_first.command.json": {
+      "size": 809,
+      "sha256": "f2aab9863a9e741975aa26f87180cf4e8876a8930588c2a356458e25323f33b1"
+    },
+    "physical_decode.json": {
+      "size": 2020,
+      "sha256": "4b2a5f55f19412f293933ecfc438995d688159ada211f43eeda36f2ca77174b7"
+    },
+    "capstone_detail.json": {
+      "size": 1183,
+      "sha256": "755a2969ba20b5f813eb3349b1ae2c4285fc86e971c1f2d43865b44b16f248aa"
+    },
+    "decoder_comparison.json": {
+      "size": 143,
+      "sha256": "6fd969d787c16bd398584eaf84a4e40d60c34f1e629696f189f8a807b9aff4fa"
+    },
+    "decoder_first.command.json": {
+      "size": 812,
+      "sha256": "9d9c86acf22a2c8a950d4c7644b338686ca2d55d63c55427d867ed7fe87eebf5"
+    },
+    "physical_fields.py": {
+      "size": 1692,
+      "sha256": "f891f8178447ecbe021a5989c785e548f20eb161e3f9e75dfb0c3ab4b42af57b"
+    },
+    "decode_entry.py": {
+      "size": 4953,
+      "sha256": "bbfbfa2a7cba49214a3591fd2a1d1b98632f483a504df9e426ac6ad39cd3ce27"
+    },
+    "write_outputs.py": {
+      "size": 11054,
+      "sha256": "bf90efc89556bdb8054202432220d8976a2b0f2105a6416709750ffc2618c9ba"
+    },
+    "outputs_before_execution.json": {
+      "size": 588,
+      "sha256": "c7a66fd092d7cd351bc5b11ac06d0f2361a2f395ceecdbc4c032e7cce404017b"
+    }
+  },
+  "validation_boundary": {
+    "Source_changes": false,
+    "Source_payloads_read": false,
+    "GPR_writes": 0,
+    "Original_binary_reads": false,
+    "new_tests": false,
+    "builds": false,
+    "probe_execution": false,
+    "game_or_OS_audio_runtime": false,
+    "live_ABI_compatible": false,
+    "game_validated": false,
+    "unread_saved_owner_bytes": 7,
+    "cell_read": false,
+    "next_cursor_read": false,
+    "strict_proof_receipts": "Separate private receipts bind actual final Git and independent original/copy ZIP replays; archived code is never executed."
+  }
+}
