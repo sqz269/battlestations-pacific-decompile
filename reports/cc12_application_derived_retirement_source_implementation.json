@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_derived_retirement_source",
+  "address": "00BEA990",
+  "status": "dormant_source_implementation_build_tested",
+  "base_commit": "62e4722fd991544de6f0fc8d82d8ae74b6d330c8",
+  "Source_Git_tree_IDs": {
+    "": "97d3b1e3aae8ae8f94b503c680c6ebbb73c08895",
+    "src": "5f538f3833c3d9c62f6331e92be66f437a8f0fb4",
+    "include": "b7c8e373ded962fa2fe9efafcf94136d7a1fd0d2",
+    "include/bsp": "e44dbfd9b68ab03c54beff0d497a304e030b0f13"
+  },
+  "baseline": {
+    "entry": "blobs/66d687c9e2a172a0c45cb89c48c0ceee2d0f61c1565e0461fa7c9c619146d814",
+    "bytes": 6898,
+    "sha256": "66d687c9e2a172a0c45cb89c48c0ceee2d0f61c1565e0461fa7c9c619146d814"
+  },
+  "immediate_inputs": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "git_blob": "916586a9f6c88a95c51e77d637136ca730defc48",
+      "committed": {
+        "entry": "blobs/4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f",
+        "bytes": 10233,
+        "sha256": "4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f"
+      },
+      "working": {
+        "entry": "blobs/4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f",
+        "bytes": 10233,
+        "sha256": "4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f"
+      },
+      "LF_sha256": "4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "git_blob": "06a3aa5a53072d64c1730bc2ded762f0dc6e36e1",
+      "committed": {
+        "entry": "blobs/dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb",
+        "bytes": 8704,
+        "sha256": "dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb"
+      },
+      "working": {
+        "entry": "blobs/dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb",
+        "bytes": 8704,
+        "sha256": "dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb"
+      },
+      "LF_sha256": "dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_BASE_RETIREMENT_READINESS.md",
+      "git_blob": "b4775a2efb1851e2957bf7c8b83038d4e8142846",
+      "committed": {
+        "entry": "blobs/fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+        "bytes": 7796,
+        "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf"
+      },
+      "working": {
+        "entry": "blobs/fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+        "bytes": 7796,
+        "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf"
+      },
+      "LF_sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf"
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "git_blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "committed": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      },
+      "working": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      },
+      "LF_sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_SOURCE_PRIMARY.md",
+      "git_blob": "70dad9373f47723aa0a1051a35ade1f454a95e91",
+      "committed": {
+        "entry": "blobs/3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9",
+        "bytes": 3042,
+        "sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+      },
+      "working": {
+        "entry": "blobs/3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9",
+        "bytes": 3042,
+        "sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+      },
+      "LF_sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+    },
+    {
+      "path": "reports/cc12_application_ordinary_retirement_source_primary.json",
+      "git_blob": "19ed1ddfe3808a0309024a64e7ff67449043efa2",
+      "committed": {
+        "entry": "blobs/49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40",
+        "bytes": 9682,
+        "sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+      },
+      "working": {
+        "entry": "blobs/49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40",
+        "bytes": 9682,
+        "sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+      },
+      "LF_sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "git_blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+      "committed": {
+        "entry": "blobs/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      "working": {
+        "entry": "blobs/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      "LF_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "e1ed7c82d212343521dabfa68632fd8318797313",
+      "committed": {
+        "entry": "blobs/3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      },
+      "working": {
+        "entry": "blobs/3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      },
+      "LF_sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+      "committed": {
+        "entry": "blobs/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      "working": {
+        "entry": "blobs/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      "LF_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    }
+  ],
+  "Source_append": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "old": {
+        "entry": "blobs/4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f",
+        "bytes": 10233,
+        "sha256": "4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f"
+      },
+      "appended": {
+        "entry": "blobs/c64b8795ea6426f229142f4c19469f8e73787c758c5a6c221bf3cb19e508553b",
+        "bytes": 1022,
+        "sha256": "c64b8795ea6426f229142f4c19469f8e73787c758c5a6c221bf3cb19e508553b"
+      },
+      "current": {
+        "entry": "blobs/a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52",
+        "bytes": 11255,
+        "sha256": "a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52"
+      },
+      "append_lines": 16,
+      "old_raw_prefix_unchanged": true,
+      "first_appended_line": 163
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "old": {
+        "entry": "blobs/dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb",
+        "bytes": 8704,
+        "sha256": "dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb"
+      },
+      "appended": {
+        "entry": "blobs/506b75c089c99402e6f61d004302b7e333c7e7b05b2e9d97e0737a0b19ea19c0",
+        "bytes": 307,
+        "sha256": "506b75c089c99402e6f61d004302b7e333c7e7b05b2e9d97e0737a0b19ea19c0"
+      },
+      "current": {
+        "entry": "blobs/44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8",
+        "bytes": 9011,
+        "sha256": "44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8"
+      },
+      "append_lines": 8,
+      "old_raw_prefix_unchanged": true,
+      "first_appended_line": 212
+    }
+  ],
+  "native_contract": {
+    "bytes": "C701C88BD600E915FFFFFF",
+    "byte_count": 11,
+    "instructions": 2,
+    "receiver": "ECX",
+    "operation": "DWORD[ECX]=D68BC8; physical tail JMP BEA8B0",
+    "preserved_before_child": [
+      "ESP",
+      "registers",
+      "arithmetic flags"
+    ],
+    "own_RET": false,
+    "semantic_EAX": false,
+    "qualification": "Accepted existing positive body; no fresh Native query. New explicit-context C++ call is not Original tail-transfer ABI."
+  },
+  "Source_schedule": [
+    "one volatile Word D68BC8 store to actual_receiver+0",
+    "exactly one accepted BEA8B0 Source call with same actual_receiver/context"
+  ],
+  "old_raw_prefixes_unchanged": true,
+  "child_contract": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_SOURCE_PRIMARY.md at accepted baseline",
+  "inherited_failure_policy": "Unchanged ordinary Source C++ child policy: guard411EE0 before base412430 only if guard returns; guard armed through normal Leave permits repeated decrement/Leave; existing second MSVC C++ cleanup escape terminates. Wrapper adds no RAII/rollback.",
+  "borrowed_domains": "Same actual stable aligned uint32 receiver+0, valid1C preimages/access, fixed actual cells, disjoint context/manager/vector/section/depth/private-guard bindings and provider lifetimes as accepted BEA8B0.",
+  "review": {
+    "entry": "blobs/c940740420a910d6475e460ee38e3ceb1b339b2951fc21a2f22293daae48660e",
+    "bytes": 4018,
+    "sha256": "c940740420a910d6475e460ee38e3ceb1b339b2951fc21a2f22293daae48660e"
+  },
+  "minimal_Source_diff": {
+    "entry": "blobs/d5fa79bb961f529b9dd115fc75278284bb1e9374550ce9dd16ff22bbb4f6d7fa",
+    "bytes": 2111,
+    "sha256": "d5fa79bb961f529b9dd115fc75278284bb1e9374550ce9dd16ff22bbb4f6d7fa"
+  },
+  "build": {
+    "receipt": {
+      "entry": "blobs/ae9e51697692bb6c38c9dd7529b29c0ef219d433169db472584b1e5ae1f6afad",
+      "bytes": 613,
+      "sha256": "ae9e51697692bb6c38c9dd7529b29c0ef219d433169db472584b1e5ae1f6afad"
+    },
+    "details": {
+      "schema": 1,
+      "status": "pass",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release MSVC Win32",
+      "cached_tree": "build/win32",
+      "start_UTC": "2026-10-11T05:19:43.010135+00:00",
+      "end_UTC": "2026-10-11T05:20:08.205987+00:00",
+      "log": {
+        "path": "build.log",
+        "bytes": 5731,
+        "sha256": "e15173824b42d1bda4daece6a32f58ac4d5efd2a295343946d54a545de4ca925"
+      },
+      "qualification": "One existing cached Win32 build and registered checks. No new test/probe/Native/GPR/original-exe/game/OS/audio action; compilation is not retirement runtime, Original FH3 or ABI proof."
+    },
+    "log": {
+      "entry": "blobs/e15173824b42d1bda4daece6a32f58ac4d5efd2a295343946d54a545de4ca925",
+      "bytes": 5731,
+      "sha256": "e15173824b42d1bda4daece6a32f58ac4d5efd2a295343946d54a545de4ca925"
+    },
+    "registered_CTests": 2,
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "result": "Passed",
+        "seconds": 0.21
+      },
+      {
+        "name": "tool_tests",
+        "result": "Passed",
+        "seconds": 6.84
+      }
+    ],
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "native_differential_enabled": false,
+    "qualification": "Compilation and existing checks; no dormant-wrapper fixture, provider runtime, Original FH3 or ABI acceptance."
+  },
+  "helper_bodies": [
+    {
+      "path": "prepare.py",
+      "pin": {
+        "entry": "blobs/4ad04477ccdf612a76e8dbe577e325a91b487953c44d2d9bc3079f284e3b4f81",
+        "bytes": 4545,
+        "sha256": "4ad04477ccdf612a76e8dbe577e325a91b487953c44d2d9bc3079f284e3b4f81"
+      }
+    },
+    {
+      "path": "build_once.py",
+      "pin": {
+        "entry": "blobs/7ceeb076b204567460926e4ca03c645ca6a8b9a6610af73521fe8ba0b96d0350",
+        "bytes": 1088,
+        "sha256": "7ceeb076b204567460926e4ca03c645ca6a8b9a6610af73521fe8ba0b96d0350"
+      }
+    },
+    {
+      "path": "publish.py",
+      "pin": {
+        "entry": "blobs/67f24aa598b19b449781c7da2b36a0bab7c4ca2ba363a75b641e66808536db98",
+        "bytes": 12848,
+        "sha256": "67f24aa598b19b449781c7da2b36a0bab7c4ca2ba363a75b641e66808536db98"
+      }
+    },
+    {
+      "path": "package.py",
+      "pin": {
+        "entry": "blobs/dc9b92dbaf5e1c87b356343905cbea8a55eaf051daea7eb7488ca436d38bb569",
+        "bytes": 4113,
+        "sha256": "dc9b92dbaf5e1c87b356343905cbea8a55eaf051daea7eb7488ca436d38bb569"
+      }
+    },
+    {
+      "path": "guard.py",
+      "pin": {
+        "entry": "blobs/480800bacf6473d293ca594b54607a93874cbe375415b5919b7a5378c5bb3419",
+        "bytes": 5296,
+        "sha256": "480800bacf6473d293ca594b54607a93874cbe375415b5919b7a5378c5bb3419"
+      }
+    },
+    {
+      "path": "correct_seal.py",
+      "pin": {
+        "entry": "blobs/1bb9b4340fcc6628af8d42643585a46e0517d42ad2d8e7d9bcde5a827da4b04c",
+        "bytes": 5545,
+        "sha256": "1bb9b4340fcc6628af8d42643585a46e0517d42ad2d8e7d9bcde5a827da4b04c"
+      }
+    }
+  ],
+  "constraints": {
+    "new_Native_queries": 0,
+    "GPR_mutations": 0,
+    "whole_Source_membership_walks": 0,
+    "Source_content_censuses": 0,
+    "recursive_old_archive_proofs": 0,
+    "new_CMake": 0,
+    "new_ledgers": 0,
+    "new_tests": 0,
+    "new_probes": 0,
+    "local_other_writes": 0,
+    "local_RAII": 0,
+    "semantic_return_value": false,
+    "owner_or_callable_table_or_activation": false,
+    "free_payload_outer7379A0_or_scalar_delete_authority": false,
+    "original_game_OS_audio_runs": 0
+  },
+  "qualification": "Dormant Source implementation/static/build evidence only. Actual caller/owner/storage/lifetime/quiescence, Original FH3/frame/invocation, hardware/foreign exceptions, external ABI and game/runtime equivalence remain unproved.",
+  "delivery": "External local delivery/finalpins receipts capture exact four staged/final objects and small guarded physically copied proof without self-hash cycles; no push.",
+  "proof_closure_correction": "Own review receipt dependency now physically retained; six actual saved helpers including corrective seal body. Source and one passing build unchanged; old failed seal excluded from acceptance."
+}

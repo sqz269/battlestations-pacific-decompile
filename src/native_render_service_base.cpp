@@ -209,3 +209,11 @@ void retire_native_application_singleton_base_00bea8b0(
     base_cleanup.armed = false;
 }
 } // namespace bsp
+
+namespace bsp {
+void retire_native_application_base_00bea990(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc8u;
+    retire_native_application_singleton_base_00bea8b0(actual_receiver, context);
+}
+} // namespace bsp

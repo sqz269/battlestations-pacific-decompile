@@ -160,3 +160,19 @@ namespace bsp {
 void retire_native_application_singleton_base_00bea8b0(
     void* actual_receiver, NativeApplicationSingletonBaseContext& context);
 } // namespace bsp
+
+namespace bsp {
+// Dormant borrowed BEA990 derived Application-base retirement; descriptive name.
+// Original ECX DWORD store D68BC8, then physical tail JMP BEA8B0; no own RET or
+// semantic EAX, and ESP/registers/arithmetic flags unchanged before the child.
+// This explicit-context void C++ call does not preserve that tail-transfer ABI.
+// Borrow the same actual stable aligned uint32 receiver+0, valid1C preimages /
+// access domains, fixed actual cells and disjoint manager/vector/section/depth /
+// guard/provider domains and lifetimes required by BEA8B0. Inherit its qualified
+// ordinary C++ cleanup, repeated decrement/Leave and termination hazards.
+// No local RAII, invented owner/callable table/activation, free/payload cleanup,
+// outer7379A0 or scalar-delete authority. Original FH3/frame/invocation,
+// hardware/foreign exceptions and external ABI remain excluded.
+void retire_native_application_base_00bea990(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context);
+} // namespace bsp
