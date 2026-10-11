@@ -396,3 +396,76 @@ Open questions:
 3. What record +68h means to 005C4080 (the third `date` component per the schema).
 4. Whether the odd screen vectors +80h..+100h of the main menu hold the flag icons (0058D9E0
    does not write them).
+
+# Second packet (2026-10-11): segments 17 and 23
+
+Leases: 00554680..00568930 and 005E09A0..00604A50 (`cc13_frontend_menus2`).
+
+Skipped: 005EF4D0..005F7310 (the options screens of docs/OPTIONS_MENU_SCREENS.md, edited
+2026-10-10, and cc12's options audio/sound-copy reviews of the same week); the functions that
+docs/OPTIONS_MENU_SCREENS.md already names for the PC controls screen (00555770, 00555800,
+00555C40, 00555C60, 00555DC0, 00558680, 0055FA80, 00560430, 00551B90, 0055D180); 005EC990,
+005EAC60 and 005E6F00, which docs/SHIP_AI_OPEN_ITEMS.md (cc9) analyses; 005F9B20..005F9BA2
+(docs/SCRIPTED_HELM.md).
+
+## PC controls screen (screen 0Fh): the options_pc_controls_screen follow-up, partly
+
+The controls screen (constructor 00555770, size 250h) has three vtables: primary 00CEE524, a
+listbox listener at +08h (00CEE510: 00555810, 0055FCA0 in the activate slot, 0055D180, the
+shared no-op) and a widget listener at +0Ch (00CEE4F0: 0055D330 at +00h, 00560BF0 at +04h, which
+has no Ghidra function, 005539E0 at +0Ch, 00551BC0 at +18h).
+
+| Address | Name | Coverage |
+|---|---|---|
+| 0055CCC0 | `BSP_ControlBindingScreen_AdjustSetting` | reconstructed, complete, build-tested |
+| 0055D330 | `BSP_ControlBindingScreen_OnSliderChanged` | reconstructed, complete, build-tested |
+| 0055C200 | `BSP_ControlBindingScreen_ShowConflictText` (provisional) | named |
+| 0055C5A0 | `BSP_ControlBindingScreen_UpdateBindingRowText` (provisional) | named |
+| 0055CEC0 | `BSP_ControlBindingScreen_ScrollToSelection` (provisional) | named |
+| 0055D380 | `BSP_ControlBindingScreen_BuildSettingsList` (provisional) | named |
+| 0055E3A0 | `BSP_ControlBindingScreen_RefreshPage` (provisional) | named |
+| 0055F710 | `BSP_ControlBindingScreen_LoadSelectedPreset` (provisional) | named |
+| 0055FCA0 | `BSP_ControlBindingScreen_ListboxListener04` | named |
+| 00560210 | `BSP_ControlBindingScreen_ConfirmOrNextDevice` (provisional) | named |
+
+0055CCC0, `__thiscall`(screen, int delta), RET 4: the setting is the one named at screen+184h
+in the device entry screen+16Ch indexes (input settings 005547D0, +18h vector, 8-byte stride;
+per-device record through 0055C110). Its kind comes from 0055A9A0 and its float value from
+00444BE0.
+
+- Kinds 3 and 4 (the inversion toggles): `value = -0.0f - value` (SSE, 0055CD58), written
+  through 006A9E70, and the row's `var_Text` gets `FE.opt_normal` when the result is above 0.0f,
+  else `FE.opt_inverted`.
+- Other kinds: `value = float(delta * 0.25 + value)` (x87 FILD/FMUL double/FADD/FSTP), clamped
+  to [0.25 (00CE3868), 2.75 (00CEE668)], written, re-read and turned into the slider position
+  `-1 - trunc(value * -4.0)` (00CEE4E0, `_ftol`), so 0..10, passed in EDX to 005F3750.
+- Both paths set +19Ch, the unsaved-changes byte 00560210 tests before raising
+  `FE.opt_acceptchanges` (cancel / discard / accept).
+
+0055D330 forwards a slider click: outside page 3 (+168h), a widget whose +D8h id is 1..FFFFh and
+whose low byte equals the selected list index (00A9C920 on screen+20h) passes 005F2290's
+non-zero delta to 0055CCC0. 005F2290 and 005F3750 are in the options range and were not named.
+
+## Screen vtables named in segments 23 and 17
+
+Slot layout as in the base 00CEAE54 (+10h register, +14h layout, +18h enter, +1Ch exit, +20h
+update, +24h child collection); widget-listener slots named Current<slot> after the main menu's
+00CEFC04 convention; listbox-listener slot +04h is the activate slot (00598B60 on the main menu)
+and +08h the selection-changed slot (005966F0).
+
+| Screen (primary vtable) | Named here |
+|---|---|
+| multiplayer game lobby (00CF23E4) | enter 005E51D0, update 005E5B30, collect 005E10F0; listbox +08h 005E19E0 `ShowSelectionHint` (mode/map hint text, weather and victory-point descriptions) |
+| multiplayer main menu (00CF2708) | layout 005E7B10, enter 005E8B20, exit 005E6B60; widget listener 00CF26D4 +0Ch 005E6E20, +18h 005E6B80, +1Ch 005EA700 |
+| multiplayer mode selector (00CF2B44) | layout 005EADC0, update 005ECD80, collect 005ECB70 (enter 005EC5B0 and exit 005EA960 have no Ghidra function); widget listener 00CF2B10 +0Ch 005EA990, +18h 005EAAC0 |
+| HUD objectives (00CF2D20) | enter 005EEA00, update 005EEF60 (005ED5C0 and 005EE510 have no Ghidra function) |
+| HUD orders (00CF3B7C) | layout 005FA0F0, enter 005FAD70, update 005F9DD0 (exit 005F9480 has no Ghidra function) |
+| HUD pause (00CF3EF4) | enter 00603120, update 00603CA0, collect 005FFAC0 (exit 005FD880 has none); listbox 00CF3EE0 +04h 00604190, +08h 006003A0 |
+| leaderboards (00CEE9CC) | register 00564220, enter 00562750, update 00565540 (exit 00560FE0, collect 00563430 have none); widget listener 00CEE998 +04h 00565190, +0Ch 00561320, +18h 00560FF0, +1Ch 00563400; helpers 005638F0 (Leaderboards.lua reader), 00561EB0 (rank rows) |
+| HUD limbo (00CEEBAC) | enter 00566080 (exit/update/collect 00565D70/00565E00/00565FA0 have none) |
+
+These names rest on the vtable slot and the strings each body references; none of the bodies
+was reconstructed. The multiplayer enters and updates are the `multi_menu_screen_enter` and
+`multi_menu_screen_update` follow-ups of docs/MULTI_MENU_SCREENS.md and remain open.
+
+docs/HUD_MINIMAP.md got a dated correction for its +6Ch..+7Ch row.

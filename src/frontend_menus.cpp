@@ -407,4 +407,40 @@ bool advance_campaign_selection_005c3de0(MissionTreeScreenState& state,
     return found_mission < selected;
 }
 
+float adjusted_control_value_0055ccc0(std::int32_t kind, float old_value, std::int32_t delta) noexcept {
+    if (kind == 3 || kind == 4) return -0.0f - old_value;  // 0055CD58..0055CD60, SSE
+    // 0055CE0E..0055CE1C: FILD, FMUL double 0.25, FADD float, FSTP float.
+    float value = static_cast<float>(static_cast<double>(delta) * 0.25 + old_value);
+    if (kControlSensitivityMin > value) value = kControlSensitivityMin;   // FCOMIP / JBE
+    else if (value > kControlSensitivityMax) value = kControlSensitivityMax;  // COMISS / JBE
+    return value;
+}
+
+std::int32_t control_slider_position_0055ccc0(float value) noexcept {
+    // 0055CE62..0055CE72: _ftol truncates; EDX = -1 - result.
+    return -1 - static_cast<std::int32_t>(static_cast<double>(value) * kControlSliderScale);
+}
+
+void adjust_control_setting_0055ccc0(std::int32_t delta, ControlSettingHost& host) {
+    const std::int32_t kind = host.setting_kind_0055a9a0();
+    const float old_value = host.setting_value_00444be0();
+    const float value = adjusted_control_value_0055ccc0(kind, old_value, delta);
+    host.set_setting_value_006a9e70(value);
+    if (kind == 3 || kind == 4) {
+        host.set_row_label_00abbe50(value > 0.0f ? kControlNormalLabel : kControlInvertedLabel);
+    } else {
+        host.set_row_slider_005f3750(control_slider_position_0055ccc0(host.setting_value_00444be0()));
+    }
+    host.mark_changed_19c();
+}
+
+void control_slider_changed_0055d330(ControlSliderListenerHost& host) {
+    if (host.page_168() == 3) return;
+    const std::uint32_t id = host.widget_id_d8();
+    if (id == 0 || (id & 0xFFFF0000u) != 0) return;
+    if (host.list_selected_index_00a9c920() != static_cast<std::int32_t>(id & 0xFFu)) return;
+    const std::int32_t delta = host.slider_delta_005f2290();
+    if (delta != 0) host.adjust_0055ccc0(delta);
+}
+
 } // namespace bsp
