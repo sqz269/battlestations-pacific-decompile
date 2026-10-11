@@ -1,0 +1,13 @@
+# Root review of the Application parent descriptor candidate prefix
+
+Root accepted worker `d0f9a44c28e3b644b102d545039ac4350b384c76` for exactly12 bytes at `00DB57B8..00DB57C3`. Actual Git checks matched22 frozen/staged/final objects, ten finite positive inputs and exactly two owned outputs. Eleven physical helper/producer/preimage bodies and all77 archive entries are pinned. Source identities belong to the frozen worker revisions only.
+
+Three12-address typed batches agree at epoch98/count64730. All twelve addresses are contained by the same defined DataDB at `00DB57B8`, saved length36. Exact-at exists only at the first address; instruction and function references are null, function lists empty and flow absent. Root independently admitted only the first12 bytes; the remaining24 bytes `00DB57C4..00DB57DB` were not read.
+
+Both exact reads give `22 05 93 19 01 00 00 00 B0 57 DB 00`, SHA256 `f739968ba1ecaa1310f01fdbc561487a62ea03c389bc22582ca82714940100ec`. Root independently decoded the three raw little-endian words using two methods: `19930522`, `00000001`, `00DB57B0`. Their field meanings, state count and possible map-pointer interpretation remain provisional candidates; no word was dereferenced. Saved DataDB definition/length and these numeric values authenticate no Original FH3 layout.
+
+The finite carrier context is positively supplied by the accepted MOV EAX immediate, physical JMP to `00BF6B43`, and accepted54-byte shared wrapper carrying incoming D to the physical dispatcher-call stack. The wrapper did not dereference D and does not establish a returned frame, action invocation or Original action-frame mapping.
+
+Root reviewed the pure replay's complete224-line semantic changes and ran independent strict replay. It passed with one supplied ZIP read, one declared receipt write and one retained code execution; imports, directory/process/network operations and other audited mutations were denied after bootstrap. Producer bodies were retained and pinned without Root execution. An offline decoder formatting guard failed on CRLF versus LF in derived JSON; its preimage/failure are retained, parsed values are unchanged and Root verified the normalization. Native evidence was unchanged.
+
+The [Root report](../reports/cc12_application_vector_retirement_descriptor_prefix_primary.json) records actual Git objects, pins, gate, independent decoding, normalization and audit receipt. This is numeric prefix evidence only. No tail/map/action following, Source/build/test/probe/GPR change, FH3 or ABI authentication, ownership/activation, runtime or gameplay credit follows. The parent Source remains blocked on direct state0 cleanup-action evidence.

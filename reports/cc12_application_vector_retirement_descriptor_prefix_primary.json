@@ -1,0 +1,316 @@
+{
+  "packet": "cc12_application_vector_retirement_descriptor_prefix_primary",
+  "status": "Root_reviewed_numeric_12B_prefix_only",
+  "worker_commit": "d0f9a44c28e3b644b102d545039ac4350b384c76",
+  "actual_Git_finite_inputs": {
+    "status": "PASS",
+    "worker_commit": "d0f9a44c28e3b644b102d545039ac4350b384c76",
+    "frozen_base": "754024453cfcbe06fb9bf932f0ba14ccef6571e6",
+    "archive_sha256": "5dbe11ff79d040fbcd01ad8e5dcfd3c7f7ae1aa7d101b1862d0be08ff582efbd",
+    "archive_bytes": 1847633,
+    "entries": 77,
+    "actual_Git_objects": {
+      "a951e4e57aa711411e85f36371d869780dd8c4b1": "tree",
+      "754024453cfcbe06fb9bf932f0ba14ccef6571e6": "commit",
+      "d365302547a4c16902f218081de672a0054cf86d": "tree",
+      "b39608451679b1285fa653784e1780b7b4260ece": "blob",
+      "2816241348d608b233bbe3e1378ad85919cc8e11": "tree",
+      "0514231501e1098a8f8b35b22c9de55a42a683af": "blob",
+      "115b34f7d3c55ea381ccee4c544971adeba92c81": "blob",
+      "65e1c55bb5b11b68c7225e9526a8627be6129d2e": "blob",
+      "af544287f2f59c76e4ecd550137823beb14cd944": "blob",
+      "b1cf36a4be8d767949728c37f4b3c020e55b802c": "blob",
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+      "a46b97705f35162ba70bfbd4909788d11bb188b4": "blob",
+      "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+      "ba90f058569106f62c72dc9f9d72de205772fc7c": "blob",
+      "0056201883c1594d9267d2fcf4990385461f0857": "blob",
+      "4f73269e25719493aefe1d7f0111b8bbb6b62619": "blob",
+      "392e0dc3b1830e79ab46e963231bcf44d97bcddd": "tree",
+      "41e94add9b73b035e9c75588c1c5de6e6b67f23b": "tree",
+      "bbc419642e010cb507200cdbf95a08e2b8c889d8": "tree",
+      "093945fd2901c617665e5582b7d1ee8c07df18f2": "blob",
+      "af60a15497b7e9a9571e80d34bc4171805025e15": "blob",
+      "d0f9a44c28e3b644b102d545039ac4350b384c76": "commit"
+    },
+    "actual_finite_inputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY_PRIMARY.md",
+        "blob": "b39608451679b1285fa653784e1780b7b4260ece",
+        "sha256": "734aa97b455212dab59a011c68443877e4509a350ef20ede7e2181bec8f274db",
+        "length": 2371
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+        "blob": "0514231501e1098a8f8b35b22c9de55a42a683af",
+        "sha256": "75ea3b4b8591de7fd360191fec59ee18354d678790f30daee1dc3ea29100e281",
+        "length": 16354
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_SUCCESSOR_PRIMARY.md",
+        "blob": "115b34f7d3c55ea381ccee4c544971adeba92c81",
+        "sha256": "0b853d3a5c07de43d56b17f1337f51fc204c2ddafeb8d17ba949ef52d6a014f1",
+        "length": 2193
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_handler_successor_primary.json",
+        "blob": "65e1c55bb5b11b68c7225e9526a8627be6129d2e",
+        "sha256": "5d14b32d14c47ec3f93490a4eb25a6532c351db29dcdfea56a9885e2ba8b9d38",
+        "length": 11968
+      },
+      {
+        "path": "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+        "blob": "af544287f2f59c76e4ecd550137823beb14cd944",
+        "sha256": "4ebd3afd0b453db0d7b74c869d9e3915c1355484cc015826db487d689ed0c984",
+        "length": 2021
+      },
+      {
+        "path": "reports/cc12_application_crt_handler_body_primary.json",
+        "blob": "b1cf36a4be8d767949728c37f4b3c020e55b802c",
+        "sha256": "e80fa2a9c031ab65212591e2ef70d3008df101ebd4b873c3fe25bc92dcdff373",
+        "length": 10155
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "length": 455
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "length": 73311
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "length": 14411
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "length": 20048
+      }
+    ],
+    "actual_owned_outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX.md",
+        "blob": "093945fd2901c617665e5582b7d1ee8c07df18f2",
+        "sha256": "9fa18ce993ef3faa3c175fb37fe1ffaedb6e5789fdf631d4d2b167fa9cb425fb",
+        "length": 3995
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_descriptor_prefix.json",
+        "blob": "af60a15497b7e9a9571e80d34bc4171805025e15",
+        "sha256": "63ed03771662bf21103e020791a116b92d3550fa2318c21dec0986dcea653e41",
+        "length": 13066
+      }
+    ],
+    "physical_helpers": [
+      {
+        "path": "collect.py",
+        "bytes": 2476,
+        "sha256": "19e1a7504f66346d4e03ac971f8c48d38b6521b84bb5390e3aa50e27e7d84f67"
+      },
+      {
+        "path": "gate.py",
+        "bytes": 2998,
+        "sha256": "0e67060d886e0a2a3d470e51e6744f0a35950742571cc45ceb57977dd46ed5d3"
+      },
+      {
+        "path": "prepare_helpers.py",
+        "bytes": 3193,
+        "sha256": "d650062acd3711d7d0bfb5b530ebc747733b0530c52e2637b4bdeb29c3d0da39"
+      },
+      {
+        "path": "seal.py",
+        "bytes": 7088,
+        "sha256": "071ec0fa006a8c69726be34bcbba1285742e5b173dc71e5fa493b793230646ad"
+      },
+      {
+        "path": "seal_freeze.py",
+        "bytes": 6972,
+        "sha256": "a10d40741752c3c6df769f8259c502e2d74ff84c2e8ba921e303fc4062b1898f"
+      },
+      {
+        "path": "replay.py",
+        "bytes": 17538,
+        "sha256": "c7486cafbb1a9603d4abca6f888ff397fbc4c71b1fcdc693d1d2258556dda3d9"
+      },
+      {
+        "path": "audit_replay.py",
+        "bytes": 2322,
+        "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+      },
+      {
+        "path": "report.py",
+        "bytes": 14244,
+        "sha256": "b4555a38f319f3fe9830ad6adce24787adcad6549075d5c41753371954683c60"
+      },
+      {
+        "path": "decode_words.py",
+        "bytes": 1172,
+        "sha256": "9a2c4fc5149a2d62875817beb315e285fdf42f10f716b384a92298d966026ae4"
+      },
+      {
+        "path": "Root_prefix_gate.py",
+        "bytes": 2865,
+        "sha256": "82927246cde75df34fe416948bd63177c1fc8dbbef546fe6387657e9cdf4ddb9"
+      },
+      {
+        "path": "decode_words_initial.py",
+        "bytes": 1172,
+        "sha256": "d94a795875b3995e233d7267e035295b9b18be7ca8a5c40920829668800a27f5"
+      }
+    ],
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY_PRIMARY.md",
+      "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+      "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_SUCCESSOR_PRIMARY.md",
+      "reports/cc12_application_vector_retirement_handler_successor_primary.json",
+      "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+      "reports/cc12_application_crt_handler_body_primary.json"
+    ],
+    "frozen_worker_Source_IDs": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "current_Source_equality_claimed": false,
+    "new_Source_content_census": false,
+    "Original_FH3_ABI_activation_runtime_or_gameplay_credit": false
+  },
+  "independent_Root_native": {
+    "status": "PASS",
+    "three12recordtypedcaptures_equal": true,
+    "typed_response_count": 36,
+    "epoch": 98,
+    "count": 64730,
+    "exact_prefix_hex": "2205931901000000b057db00",
+    "exact_prefix_sha256": "f739968ba1ecaa1310f01fdbc561487a62ea03c389bc22582ca82714940100ec",
+    "Root_independent_LE_methods": [
+      "int.from_bytes(little)",
+      "struct.unpack(<III)"
+    ],
+    "raw_words_hex": [
+      "19930522",
+      "00000001",
+      "00DB57B0"
+    ],
+    "containing_DataDB_length_metadata_only": 36,
+    "unread_tail": "00DB57C4..00DB57DB (24B)",
+    "field_layout_maxstate_map_action_not_authenticated": true,
+    "offline_failure": "Retained initial derived JSON was CRLF; exact formatting guard failed. Initial helper and failure retained; parsed values unchanged and derived LF normalization verified.",
+    "Native_evidence_loss_or_mutation": false,
+    "Original_FH3_ABI_ownership_activation_runtime_or_gameplay_credit": false
+  },
+  "Root_strict_replay": {
+    "status": "PASS",
+    "packet": "cc12_application_vector_retirement_descriptor_prefix",
+    "zip_sha256": "5dbe11ff79d040fbcd01ad8e5dcfd3c7f7ae1aa7d101b1862d0be08ff582efbd",
+    "entries": 77,
+    "final_commit": "d0f9a44c28e3b644b102d545039ac4350b384c76",
+    "frozen_commit": "754024453cfcbe06fb9bf932f0ba14ccef6571e6",
+    "staged_and_final_tree": "392e0dc3b1830e79ab46e963231bcf44d97bcddd",
+    "owned_outputs": [
+      "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX.md",
+      "reports/cc12_application_vector_retirement_descriptor_prefix.json"
+    ],
+    "typed_response_count": 36,
+    "per_address_raw_sha256": {
+      "00db57b8": "e87a635cfc2c600fc9404486e2f3a1d271ac377437dd04ec286ca7cb3eb862b3",
+      "00db57b9": "12f80c441e1be6e88e8e4cb6ce44017987d4cc6a784307047eef7358ddb21154",
+      "00db57ba": "9cbeef1281a86042df8d8b610ba3909b68ddbcd84590cfca5f72bb9b2b4d5ceb",
+      "00db57bb": "b7839438a37b4b80990ae9dea2266498a572eb8db99a888abce963b49e56095a",
+      "00db57bc": "070a5246632efe19c92c695a4a86ddf4d8383fa8f15accfd4508942986000c27",
+      "00db57bd": "e5268518399195d29b7a09b9be1a53a72ba79116a9afa23a71e9786607bdb05a",
+      "00db57be": "2a91c2cffbc82cb9c61cbd467e33f374004e8ac059413bdf5d035e9d123f50e7",
+      "00db57bf": "4a15edd8e52a12de07a5a02eacb2d7a79be7cceb64a8041bb479ebf0b2f4d4de",
+      "00db57c0": "e28949dc9a35b59662c67395ee356bba0316a5b3cf478acfcd471bf300610826",
+      "00db57c1": "32d2da141a9b4f0fa85d251713126b6158b4dc9967a6c4a1d010f33219cde208",
+      "00db57c2": "0be5741325f9f6d043b977c360011c4121361adc29dc10fb667271fa05a2c5d0",
+      "00db57c3": "11a100a00f0f7cdbd5e013a1373f5761b6f363860f75a90412cd3c8a48f029ac"
+    },
+    "prefix_hex": "2205931901000000b057db00",
+    "prefix_sha256": "f739968ba1ecaa1310f01fdbc561487a62ea03c389bc22582ca82714940100ec",
+    "raw_DWORDs_hex": [
+      "19930522",
+      "00000001",
+      "00DB57B0"
+    ],
+    "saved_DataDB_length_metadata_only": 36,
+    "prefix_bytes_read_per_call": 12,
+    "offline_formatting_failure_retained": true,
+    "boundary": "Numeric prefix evidence only. No field-layout authentication, maxstate classification, map/action/tail/target dereference, Source census, Original/FH3/ABI/ownership/activation/runtime credit.",
+    "Root_strict_audit": {
+      "state": {
+        "reads": 1,
+        "writes": 1,
+        "exec": 1
+      },
+      "only_supplied_ZIP_read_and_declared_receipt_write": true,
+      "post_bootstrap_import_directory_process_network_or_other_mutations": false
+    }
+  },
+  "pins": [
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/proof.zip",
+      "bytes": 1847633,
+      "sha256": "5dbe11ff79d040fbcd01ad8e5dcfd3c7f7ae1aa7d101b1862d0be08ff582efbd"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/handoff.json",
+      "bytes": 1332,
+      "sha256": "521eae803ce1f5f93e47796f86fc2e76d20aaa9bd176678d1e1b0e3f16eec317"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_prefix_gate.json",
+      "bytes": 6309,
+      "sha256": "e6114bc914dc88929c6d39703d751c802471088103c74c033a8dddc9335c9c8d"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_prefix_gate.py",
+      "bytes": 2865,
+      "sha256": "82927246cde75df34fe416948bd63177c1fc8dbbef546fe6387657e9cdf4ddb9"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_actual_review.json",
+      "bytes": 7124,
+      "sha256": "6b578c73e096b37f0a9bd51b1c9c1e413e104529e0df2009f1d37ea1d94d6e9b"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_native_review.json",
+      "bytes": 938,
+      "sha256": "fcce82b5d25d2fd5ab3f7c4f939ded3e7c6bfa2b3179917ee6387978ca9d454f"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_guard_receipt.json",
+      "bytes": 2414,
+      "sha256": "ea0db510f45656d5a788a444a316537833eb245b1c3e82940f9afb82df9f9bf8"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/replay_review.diff",
+      "bytes": 23221,
+      "sha256": "d711d26166b1574f86da84b3d6e0796c57781244354ed856d9ab2e7b7f47b2cf"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/copy_and_actual.py",
+      "bytes": 3371,
+      "sha256": "4978a682b5503f9e29fbc8a2e136d5a9d5f84476328199b7f28b968410019edf"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/Root_guard_runner.py",
+      "bytes": 1879,
+      "sha256": "9b10f8f2fb6b00f7751309bf8b979ff65cb6e5e436252edda4590ff1e40ac05f"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_descriptor_prefix_primary/publish_review.py",
+      "bytes": 7267,
+      "sha256": "21cdde8d81620eafd84ea72cf87e1d07f5e17cc85d2a0cbad881ae10c2af727c"
+    }
+  ],
+  "helper_review": "Full224-line pure replay semanticdiff read against previously reviewed helper; unchanged prefix/Git validation and unchanged2322B audit helper already fully reviewed. Eleven physical producer/replay/preimage bodies pinned; only pure replay executed by Root under independentstrictaudit.",
+  "boundary": "Exact12B prefix within defined36B DataDB. Three rawDWORDs only; no layout/maxstate/map/action/tail classification or following, Source/build/test/probe/GPR changes, OriginalFH3/ABI/ownership/activation/runtime/gameplay credit."
+}
