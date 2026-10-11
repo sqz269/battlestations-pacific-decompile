@@ -1,0 +1,1558 @@
+{
+  "packet": "cc12_crt_dispatch_zero_edge_direct_target_entry_primary",
+  "status": "independently_reviewed_exact_entry_and_metadata",
+  "worker_commit": "cc41bfd72afb24c014594f0cb41e63ef5f75ce5c",
+  "worker_parent": "31724cf2e22da8fd78bc65951381712371b895bd",
+  "worker_tree": "856fb06fed1fd840eae5493e6daf11e5ad389d77",
+  "Root_merge_commit": "2ba7bf7c143b23f7a9466996da14634406729371",
+  "Root_metadata_gate": {
+    "status": "PASS",
+    "admitted_address": "00BFBA09",
+    "admitted_exact_entry_bytes": 5,
+    "closing_exact_unit_metadata_required": true,
+    "body_remaining31bytes_unadmitted": true,
+    "no_proto_admitted": true,
+    "no_target_neighbor_or_body_queries_admitted": true,
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "paired_original_raw_pin": {
+      "length": 2501,
+      "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+    },
+    "four_exact_InstructionDB_aliases": true,
+    "saved_owner_metadata": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba09"
+      },
+      "name": "__amsg_exit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba09"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba2c"
+            },
+            "length": "36"
+          }
+        ]
+      }
+    },
+    "flow_metadata": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ]
+    },
+    "automatic_companion_target_objects": "opaque; not queried or interpreted",
+    "positive_caller_fields": {
+      "address": "00C0523C",
+      "hex": "e8c867ffff",
+      "signed_displacement": -38968,
+      "encoded_return": "00C05241",
+      "numeric_target": "00BFBA09"
+    },
+    "actual_Git_objects_verified": {
+      "31724cf2e22da8fd78bc65951381712371b895bd": "commit",
+      "3f80f1d39396f4d26157dabce6de33e7e256fcbe": "tree",
+      "f182abb6177f7f3106b1d63aaecdf8eb729c385f": "tree",
+      "7cf8c16d398756fb1a8629a93191ccc68dd7507e": "blob",
+      "ebbad7c891b291aa126423a3096dce0735ad0373": "tree",
+      "bf18b387ae13b309585f45bda342785e654f4a87": "blob",
+      "384225584e6f1a4ac55d58c0280c29d476761cfb": "blob",
+      "8dd4726afd762ca7e62aa91eac0efbcfc29fa089": "blob",
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+      "a46b97705f35162ba70bfbd4909788d11bb188b4": "blob",
+      "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+      "ba90f058569106f62c72dc9f9d72de205772fc7c": "blob",
+      "0056201883c1594d9267d2fcf4990385461f0857": "blob",
+      "4f73269e25719493aefe1d7f0111b8bbb6b62619": "blob"
+    },
+    "finite8inputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA.md",
+        "blob": "7cf8c16d398756fb1a8629a93191ccc68dd7507e",
+        "length": 5924,
+        "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata.json",
+        "blob": "bf18b387ae13b309585f45bda342785e654f4a87",
+        "length": 30362,
+        "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+      },
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA_PRIMARY.md",
+        "blob": "384225584e6f1a4ac55d58c0280c29d476761cfb",
+        "length": 3377,
+        "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata_primary.json",
+        "blob": "8dd4726afd762ca7e62aa91eac0efbcfc29fa089",
+        "length": 31056,
+        "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    ],
+    "frozen_Source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "all34_preimages_copied": {
+      "capture_entry_metadata.py": {
+        "length": 12016,
+        "sha256": "8bbbff5cd4f01c96091ef77cd7d7c82c476c6d335b5bfa5167818600d281a0ed"
+      },
+      "phase1_preexecution_pins.json": {
+        "length": 149,
+        "sha256": "97c9b2cba6bbe7452cdfb722502d9d2113119075e8675ca6336355b175fa5173"
+      },
+      "git/frozen.json": {
+        "length": 2967,
+        "sha256": "c0948c13472a1df2be0305b4d68df05769f1d4759c19505c4fcd1b0bae0c8fe8"
+      },
+      "git/frozen.commands.json": {
+        "length": 1034201,
+        "sha256": "563570acb8e78c709cb0e58178a62ebad7d7c9508644f9d7e0f753b19e588323"
+      },
+      "metadata_gate.json": {
+        "length": 5097,
+        "sha256": "71a58f2b3763fed050da0c45aa7cc5a86b99cddac1dc000f52a667686f3f0dee"
+      },
+      "original_direct_raw_pins.json": {
+        "length": 365,
+        "sha256": "924cf3743ff5ffe7f2e00efef23a955553fbf65efea5b9f2686723ffe1c723c9"
+      },
+      "objects/31724cf2e22da8fd78bc65951381712371b895bd": {
+        "length": 304,
+        "sha256": "dd6cabea02c5490f7bba224225a18b8fbaa27f41bcc9ee3f33483ac0c0be7915"
+      },
+      "objects/3f80f1d39396f4d26157dabce6de33e7e256fcbe": {
+        "length": 563,
+        "sha256": "f580e3fabcaa2723cac69d42403f1d20679f472ebcbf88e81b710df7cbd6a0ba"
+      },
+      "objects/f182abb6177f7f3106b1d63aaecdf8eb729c385f": {
+        "length": 232717,
+        "sha256": "ab44a76808de7d3573849ffdac2cd2b1922f9a36b60cac8dbe53ecca04f2acd9"
+      },
+      "objects/7cf8c16d398756fb1a8629a93191ccc68dd7507e": {
+        "length": 5924,
+        "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+      },
+      "objects/ebbad7c891b291aa126423a3096dce0735ad0373": {
+        "length": 357680,
+        "sha256": "c294ddd212c11099a7fe5dc89dfaa81698fa8a64c453e877ccb5afd9ad24e857"
+      },
+      "objects/bf18b387ae13b309585f45bda342785e654f4a87": {
+        "length": 30362,
+        "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+      },
+      "objects/384225584e6f1a4ac55d58c0280c29d476761cfb": {
+        "length": 3377,
+        "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+      },
+      "objects/8dd4726afd762ca7e62aa91eac0efbcfc29fa089": {
+        "length": 31056,
+        "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+      },
+      "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25": {
+        "length": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      "objects/a46b97705f35162ba70bfbd4909788d11bb188b4": {
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "objects/fa269934679ee43da523f7bf9c369e4e27d83531": {
+        "length": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      "objects/ba90f058569106f62c72dc9f9d72de205772fc7c": {
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "objects/0056201883c1594d9267d2fcf4990385461f0857": {
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "objects/4f73269e25719493aefe1d7f0111b8bbb6b62619": {
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "captures/count_metadata_before.command.json": {
+        "length": 260,
+        "sha256": "35665dd32f57ec232cdc66d2e6cc071afd57f3a0b1e3d1dec4d19ae12e2d264c"
+      },
+      "captures/count_metadata_before.stdout": {
+        "length": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "captures/count_metadata_before.stderr": {
+        "length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "captures/entry_a.command.json": {
+        "length": 414,
+        "sha256": "ab4c64ef35db1206ab28ef3c9e4852bae2378c436a1fd79518aa3f68d28262b2"
+      },
+      "captures/entry_a.stdout": {
+        "length": 213,
+        "sha256": "fdae471e6b34662c0b2877a8172f252219af96d61762d39a0e117378642f54c7"
+      },
+      "captures/entry_a.stderr": {
+        "length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "captures/entry_b.command.json": {
+        "length": 414,
+        "sha256": "a771e95fdbc0dc331227805a0f00c1d41d13e21162cbe59b5896115493e318c7"
+      },
+      "captures/entry_b.stdout": {
+        "length": 213,
+        "sha256": "9ab0d4c798f3eb4c07e0dd0752755d2412d5820c6caef0af1bf5a1afc904643a"
+      },
+      "captures/entry_b.stderr": {
+        "length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "captures/count_metadata_after.command.json": {
+        "length": 260,
+        "sha256": "35665dd32f57ec232cdc66d2e6cc071afd57f3a0b1e3d1dec4d19ae12e2d264c"
+      },
+      "captures/count_metadata_after.stdout": {
+        "length": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "captures/count_metadata_after.stderr": {
+        "length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "captures/entry_a.raw.json": {
+        "length": 9703,
+        "sha256": "dddf496d18ef3531edd558ed988363161e84caaed6fc262bbfc9a1c8b5810e22"
+      },
+      "captures/entry_b.raw.json": {
+        "length": 9703,
+        "sha256": "9ba3d9895dacdc09a10322e3bc2b3a35a3c60b1175978bed99606dbe96bd3d79"
+      }
+    },
+    "Native_commands": 4,
+    "Root_fresh_Native_queries": 0,
+    "Native_or_GPR_mutations": 0,
+    "failure_accounting": {
+      "offline_inspection_failures": 2,
+      "attempt01": "FileNotFoundError: inspected count_before.command.json; actual filename count_metadata_before.command.json",
+      "attempt02": "KeyError raw_base64; actual key raw_response_base64",
+      "producers": "Root_inspection_attempt01.py and Root_inspection_attempt02.py are retrospective exact executed stdin copies, not originally file-launched",
+      "original_streams": "Original tool transcripts in conversation; first combined output was truncated. Complete first stdout is not retained locally. These copies do not invent complete original streams.",
+      "Native_effects": 0,
+      "GPR_effects": 0,
+      "metadata_gate_executions_failed": 1,
+      "gate_attempt01": "AssertionError: incorrectly assumed top-level program string; actual program is structured identity object. Exact file preimage retained; stdout empty and stderr transcribed from complete tool output. No gate admission or copies written in failed execution.",
+      "corrected_schema_inspection": "PASS before this gate"
+    }
+  },
+  "Root_actual_Git_archive_and_copies_review": {
+    "status": "PASS",
+    "worker_commit": "cc41bfd72afb24c014594f0cb41e63ef5f75ce5c",
+    "worker_parent": "31724cf2e22da8fd78bc65951381712371b895bd",
+    "worker_tree": "856fb06fed1fd840eae5493e6daf11e5ad389d77",
+    "archives": {
+      "core": {
+        "archive": "core.zip",
+        "distinct_copy": "core_distinct_copy.zip",
+        "pin": {
+          "length": 1537083,
+          "sha256": "e2988a46d6701e18b8dbdcf6f7ebf7a600bc97bf10f14be4b65e6e92337f4da5"
+        },
+        "members": 118
+      },
+      "delivery": {
+        "archive": "proof.zip",
+        "distinct_copy": "delivery_distinct_copy.zip",
+        "pin": {
+          "length": 2264869,
+          "sha256": "2f3473cd64b9586094461db60c6997b689bed54152f9871a2558e7fbe0fa666f"
+        },
+        "members": 150
+      }
+    },
+    "actual20Git_objects": {
+      "31724cf2e22da8fd78bc65951381712371b895bd": "commit",
+      "3f80f1d39396f4d26157dabce6de33e7e256fcbe": "tree",
+      "f182abb6177f7f3106b1d63aaecdf8eb729c385f": "tree",
+      "7cf8c16d398756fb1a8629a93191ccc68dd7507e": "blob",
+      "ebbad7c891b291aa126423a3096dce0735ad0373": "tree",
+      "bf18b387ae13b309585f45bda342785e654f4a87": "blob",
+      "384225584e6f1a4ac55d58c0280c29d476761cfb": "blob",
+      "8dd4726afd762ca7e62aa91eac0efbcfc29fa089": "blob",
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": "tree",
+      "a46b97705f35162ba70bfbd4909788d11bb188b4": "blob",
+      "fa269934679ee43da523f7bf9c369e4e27d83531": "tree",
+      "ba90f058569106f62c72dc9f9d72de205772fc7c": "blob",
+      "0056201883c1594d9267d2fcf4990385461f0857": "blob",
+      "4f73269e25719493aefe1d7f0111b8bbb6b62619": "blob",
+      "cc41bfd72afb24c014594f0cb41e63ef5f75ce5c": "commit",
+      "856fb06fed1fd840eae5493e6daf11e5ad389d77": "tree",
+      "07181b51f2aad60653bf8a2d1e38be0a313ae618": "tree",
+      "2b4ffc890842b0564fb9f10fa347d05fb001c371": "tree",
+      "52d24478e5ecd3801e4f7631f2d5ec8e3aa02dd1": "blob",
+      "6710915f46a988cf2906426a7158dbd8254f7140": "blob"
+    },
+    "finite8inputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA.md",
+        "blob": "7cf8c16d398756fb1a8629a93191ccc68dd7507e",
+        "length": 5924,
+        "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata.json",
+        "blob": "bf18b387ae13b309585f45bda342785e654f4a87",
+        "length": 30362,
+        "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+      },
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA_PRIMARY.md",
+        "blob": "384225584e6f1a4ac55d58c0280c29d476761cfb",
+        "length": 3377,
+        "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata_primary.json",
+        "blob": "8dd4726afd762ca7e62aa91eac0efbcfc29fa089",
+        "length": 31056,
+        "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    ],
+    "Source_frozen_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "actual2outputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_ENTRY.md",
+        "blob": "52d24478e5ecd3801e4f7631f2d5ec8e3aa02dd1",
+        "length": 5837,
+        "sha256": "b183108883e217c094dd0e2b1aead78d36e8a7fbaa6df33ad93093ecf0374612"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_entry.json",
+        "blob": "6710915f46a988cf2906426a7158dbd8254f7140",
+        "length": 16408,
+        "sha256": "2d9958858d8fa5476466f9f6207a8b4f37b4529db5e590f059c166f50bd8e73f"
+      }
+    ],
+    "all45Root_gate_artifacts_equal": true,
+    "helpers": {
+      "replay.py": [
+        23884,
+        "f51b4f3cc12c61d55c1784020fac2ad297ee89e8b58b51b057e7cb2b103f1bef"
+      ],
+      "audit_replay.py": [
+        2285,
+        "6bfef48d6f4c89c87d875a3348a3dcc26d4aea852ba754eec169acac31aa3b43"
+      ]
+    },
+    "Root_fresh_Native_queries": 0,
+    "executed_evidence_helpers": 0
+  },
+  "Root_core_strict_audit": {
+    "Root_audit_status": "PASS",
+    "guard_active_before_exec": true,
+    "denies_every_other_audit_event": true,
+    "audit": {
+      "ZIP_reads": 1,
+      "helper_execs": 1,
+      "exclusive_receipt_writes": 1,
+      "denied": []
+    },
+    "phase": "core",
+    "optional_Cython_accelerator": "absent; pre-audit package attribute None preserves genuine default decoder fallback"
+  },
+  "Root_delivery_strict_audit": {
+    "Root_audit_status": "PASS",
+    "guard_active_before_exec": true,
+    "denies_every_other_audit_event": true,
+    "audit": {
+      "ZIP_reads": 1,
+      "helper_execs": 1,
+      "exclusive_receipt_writes": 1,
+      "denied": []
+    },
+    "phase": "delivery",
+    "optional_Cython_accelerator": "absent; pre-audit package attribute None preserves genuine default decoder fallback"
+  },
+  "Root_core_accepted_replay": {
+    "schema": "cc12.bfba09.replay.v1",
+    "status": "PASS",
+    "phase": "core",
+    "archive_pin": {
+      "length": 1537083,
+      "sha256": "e2988a46d6701e18b8dbdcf6f7ebf7a600bc97bf10f14be4b65e6e92337f4da5"
+    },
+    "archive_entries": 118,
+    "frozen_actual_Git_commit": "31724cf2e22da8fd78bc65951381712371b895bd",
+    "frozen_tree": "3f80f1d39396f4d26157dabce6de33e7e256fcbe",
+    "finite_actual_Git_inputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA.md",
+        "blob": "7cf8c16d398756fb1a8629a93191ccc68dd7507e",
+        "length": 5924,
+        "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata.json",
+        "blob": "bf18b387ae13b309585f45bda342785e654f4a87",
+        "length": 30362,
+        "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+      },
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA_PRIMARY.md",
+        "blob": "384225584e6f1a4ac55d58c0280c29d476761cfb",
+        "length": 3377,
+        "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata_primary.json",
+        "blob": "8dd4726afd762ca7e62aa91eac0efbcfc29fa089",
+        "length": 31056,
+        "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    ],
+    "source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "original_typed_responses": [
+      {
+        "label": "entry_a",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_b",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_close",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      }
+    ],
+    "Native_commands": 11,
+    "Native_count_checkpoints": 4,
+    "modification_number": 98,
+    "function_count": 64730,
+    "GPR_mutations": 0,
+    "accepted_caller_call": {
+      "manual": {
+        "address": "00C0523C",
+        "hex": "e8c867ffff",
+        "length": 5,
+        "opcode": "E8",
+        "prefixes": [],
+        "modrm": null,
+        "sib": null,
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "signed_rel32": -38968,
+        "encoded_next_address": "00C05241",
+        "numeric_target": "00BFBA09",
+        "mnemonic": "CALL",
+        "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+      },
+      "Capstone": {
+        "version": "5.0.7",
+        "architecture": "CS_ARCH_X86",
+        "mode": "CS_MODE_32",
+        "address": "00C0523C",
+        "bytes": "e8c867ffff",
+        "size": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xbfba09",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "access": 0,
+            "numeric_value": "00BFBA09"
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0
+      }
+    },
+    "physical": {
+      "manual": {
+        "address": "00BFBA09",
+        "hex": "e85aa10000",
+        "length": 5,
+        "opcode": "E8",
+        "prefixes": [],
+        "modrm": null,
+        "sib": null,
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "signed_rel32": 41306,
+        "encoded_next_address": "00BFBA0E",
+        "numeric_target": "00C05B68",
+        "mnemonic": "CALL",
+        "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+      },
+      "Capstone": {
+        "version": "5.0.7",
+        "architecture": "CS_ARCH_X86",
+        "mode": "CS_MODE_32",
+        "address": "00BFBA09",
+        "bytes": "e85aa10000",
+        "size": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xc05b68",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "access": 0,
+            "numeric_value": "00C05B68"
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0
+      },
+      "code_sha256": "4da2a8079983ae3f5a4d05195cd685a8e389faed9eba0a4b13460017a6211271",
+      "paired_bytes_identical": true,
+      "paired_context0_text_identical": true,
+      "initial_pair_and_closing_typed_identical": true
+    },
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba09"
+      },
+      "name": "__amsg_exit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba09"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba2c"
+            },
+            "length": "36"
+          }
+        ]
+      }
+    },
+    "flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ]
+    },
+    "cpu_contract": {
+      "qualification": "Instruction reached and completed without fault under x86-32 decoding. Runtime CPU state and segment descriptors are not observed.",
+      "stack_qualification": "Every ESP formula additionally requires the current SS stack-address attribute to be 32-bit; x86:LE:32 program metadata does not establish live SS. With 16-bit SS, no stated ESP formula is asserted. Qualified arithmetic wraps modulo 2^32.",
+      "current_memory": "Every load/store refers to memory at that instruction execution time; no validity, disjointness, frame identity, or value persistence across opaque calls is assumed.",
+      "entry_call": "For current entry ESP=T, the local unprefixed E8 stores the 32-bit return address 00BFBA0E at current SS:[T-4], leaves ESP=T-4, and transfers EIP to numeric 00C05B68. This one instruction preserves other general registers, including EBP, and arithmetic flags. This says nothing about the callee.",
+      "opaque_callee": "No target bytes, prototype, service, data, or ownership are authenticated. Return is not established. If control later resumes at 00BFBA0E, every returned register including EAX, ESI, EBP and ESP, all flags, and memory are unconstrained. No preservation or stack restoration is propagated.",
+      "accepted_caller_zero_edge": "After the earlier opaque call resumes at C05234, let current EAX=A1 and ESP=Q1; all other returned state is unknown. The accepted local MOV ESI,EAX and TEST ESI,ESI reach the zero edge only when A1=0. PUSH 16 at C0523A and E8 at C0523C then enter BFBA09 with T=Q1-8 and EAX=ESI=0. Their stores write 16 at SS:[Q1-4] and C05241 at SS:[Q1-8] at their own execution times. The new entry E8 then writes BFBA0E at SS:[Q1-12] and enters C05B68 with ESP=Q1-12 and EAX=ESI=0. Other registers remain the unknown current values through these local instructions. None of these relations extend across either opaque callee.",
+      "flags_on_local_zero_path": "The caller TEST of zero clears CF/OF/SF, sets ZF/PF, and leaves AF undefined. Local MOV/PUSH/CALL do not change these arithmetic flags before entry into C05B68. All flags become unconstrained across the opaque C05B68 call.",
+      "scope": "No argument count/type, convention, service identity, nonreturn, TLS behavior, body remainder, source implementation, binary replacement, ABI compatibility, or game/runtime validation."
+    },
+    "failures": {
+      "worker_Native": 0,
+      "worker_capture_producer": 0,
+      "Root_offline_inspection": 2,
+      "Root_offline_gate": 1,
+      "Root_initial_complete_stdout_retained": false
+    },
+    "final_Git": null,
+    "scope": "Finite metadata and exact entry physical evidence only; no Source/ABI/runtime/build/game credit."
+  },
+  "Root_delivery_accepted_replay": {
+    "schema": "cc12.bfba09.replay.v1",
+    "status": "PASS",
+    "phase": "delivery",
+    "archive_pin": {
+      "length": 2264869,
+      "sha256": "2f3473cd64b9586094461db60c6997b689bed54152f9871a2558e7fbe0fa666f"
+    },
+    "archive_entries": 150,
+    "frozen_actual_Git_commit": "31724cf2e22da8fd78bc65951381712371b895bd",
+    "frozen_tree": "3f80f1d39396f4d26157dabce6de33e7e256fcbe",
+    "finite_actual_Git_inputs": [
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA.md",
+        "blob": "7cf8c16d398756fb1a8629a93191ccc68dd7507e",
+        "length": 5924,
+        "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata.json",
+        "blob": "bf18b387ae13b309585f45bda342785e654f4a87",
+        "length": 30362,
+        "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+      },
+      {
+        "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA_PRIMARY.md",
+        "blob": "384225584e6f1a4ac55d58c0280c29d476761cfb",
+        "length": 3377,
+        "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+      },
+      {
+        "path": "reports/cc12_crt_dispatch_first_call_body_metadata_primary.json",
+        "blob": "8dd4726afd762ca7e62aa91eac0efbcfc29fa089",
+        "length": 31056,
+        "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+      },
+      {
+        "path": "config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "length": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "length": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "length": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "length": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    ],
+    "source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "original_typed_responses": [
+      {
+        "label": "entry_a",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_b",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_close",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      }
+    ],
+    "Native_commands": 11,
+    "Native_count_checkpoints": 4,
+    "modification_number": 98,
+    "function_count": 64730,
+    "GPR_mutations": 0,
+    "accepted_caller_call": {
+      "manual": {
+        "address": "00C0523C",
+        "hex": "e8c867ffff",
+        "length": 5,
+        "opcode": "E8",
+        "prefixes": [],
+        "modrm": null,
+        "sib": null,
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "signed_rel32": -38968,
+        "encoded_next_address": "00C05241",
+        "numeric_target": "00BFBA09",
+        "mnemonic": "CALL",
+        "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+      },
+      "Capstone": {
+        "version": "5.0.7",
+        "architecture": "CS_ARCH_X86",
+        "mode": "CS_MODE_32",
+        "address": "00C0523C",
+        "bytes": "e8c867ffff",
+        "size": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xbfba09",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "access": 0,
+            "numeric_value": "00BFBA09"
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0
+      }
+    },
+    "physical": {
+      "manual": {
+        "address": "00BFBA09",
+        "hex": "e85aa10000",
+        "length": 5,
+        "opcode": "E8",
+        "prefixes": [],
+        "modrm": null,
+        "sib": null,
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "signed_rel32": 41306,
+        "encoded_next_address": "00BFBA0E",
+        "numeric_target": "00C05B68",
+        "mnemonic": "CALL",
+        "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+      },
+      "Capstone": {
+        "version": "5.0.7",
+        "architecture": "CS_ARCH_X86",
+        "mode": "CS_MODE_32",
+        "address": "00BFBA09",
+        "bytes": "e85aa10000",
+        "size": 5,
+        "id": 62,
+        "mnemonic": "call",
+        "op_str": "0xc05b68",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "access": 0,
+            "numeric_value": "00C05B68"
+          }
+        ],
+        "regs_read_implicit": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp",
+          "eip"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "eflags": 0
+      },
+      "code_sha256": "4da2a8079983ae3f5a4d05195cd685a8e389faed9eba0a4b13460017a6211271",
+      "paired_bytes_identical": true,
+      "paired_context0_text_identical": true,
+      "initial_pair_and_closing_typed_identical": true
+    },
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba09"
+      },
+      "name": "__amsg_exit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba09"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba2c"
+            },
+            "length": "36"
+          }
+        ]
+      }
+    },
+    "flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ]
+    },
+    "cpu_contract": {
+      "qualification": "Instruction reached and completed without fault under x86-32 decoding. Runtime CPU state and segment descriptors are not observed.",
+      "stack_qualification": "Every ESP formula additionally requires the current SS stack-address attribute to be 32-bit; x86:LE:32 program metadata does not establish live SS. With 16-bit SS, no stated ESP formula is asserted. Qualified arithmetic wraps modulo 2^32.",
+      "current_memory": "Every load/store refers to memory at that instruction execution time; no validity, disjointness, frame identity, or value persistence across opaque calls is assumed.",
+      "entry_call": "For current entry ESP=T, the local unprefixed E8 stores the 32-bit return address 00BFBA0E at current SS:[T-4], leaves ESP=T-4, and transfers EIP to numeric 00C05B68. This one instruction preserves other general registers, including EBP, and arithmetic flags. This says nothing about the callee.",
+      "opaque_callee": "No target bytes, prototype, service, data, or ownership are authenticated. Return is not established. If control later resumes at 00BFBA0E, every returned register including EAX, ESI, EBP and ESP, all flags, and memory are unconstrained. No preservation or stack restoration is propagated.",
+      "accepted_caller_zero_edge": "After the earlier opaque call resumes at C05234, let current EAX=A1 and ESP=Q1; all other returned state is unknown. The accepted local MOV ESI,EAX and TEST ESI,ESI reach the zero edge only when A1=0. PUSH 16 at C0523A and E8 at C0523C then enter BFBA09 with T=Q1-8 and EAX=ESI=0. Their stores write 16 at SS:[Q1-4] and C05241 at SS:[Q1-8] at their own execution times. The new entry E8 then writes BFBA0E at SS:[Q1-12] and enters C05B68 with ESP=Q1-12 and EAX=ESI=0. Other registers remain the unknown current values through these local instructions. None of these relations extend across either opaque callee.",
+      "flags_on_local_zero_path": "The caller TEST of zero clears CF/OF/SF, sets ZF/PF, and leaves AF undefined. Local MOV/PUSH/CALL do not change these arithmetic flags before entry into C05B68. All flags become unconstrained across the opaque C05B68 call.",
+      "scope": "No argument count/type, convention, service identity, nonreturn, TLS behavior, body remainder, source implementation, binary replacement, ABI compatibility, or game/runtime validation."
+    },
+    "failures": {
+      "worker_Native": 0,
+      "worker_capture_producer": 0,
+      "Root_offline_inspection": 2,
+      "Root_offline_gate": 1,
+      "Root_initial_complete_stdout_retained": false
+    },
+    "final_Git": {
+      "commit": "cc41bfd72afb24c014594f0cb41e63ef5f75ce5c",
+      "tree": "856fb06fed1fd840eae5493e6daf11e5ad389d77",
+      "outputs": [
+        {
+          "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_ENTRY.md",
+          "blob": "52d24478e5ecd3801e4f7631f2d5ec8e3aa02dd1",
+          "length": 5837,
+          "sha256": "b183108883e217c094dd0e2b1aead78d36e8a7fbaa6df33ad93093ecf0374612"
+        },
+        {
+          "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_entry.json",
+          "blob": "6710915f46a988cf2906426a7158dbd8254f7140",
+          "length": 16408,
+          "sha256": "2d9958858d8fa5476466f9f6207a8b4f37b4529db5e590f059c166f50bd8e73f"
+        }
+      ],
+      "exactly_two_outputs": true
+    },
+    "scope": "Finite metadata and exact entry physical evidence only; no Source/ABI/runtime/build/game credit."
+  },
+  "Root_own_manual_and_actual_Capstone": {
+    "status": "PASS",
+    "Root_own_manual_fields": [
+      {
+        "address": "00BFBA09",
+        "opcode": 232,
+        "signed_rel32": 41306,
+        "encoded_return": "00BFBA0E",
+        "numeric_target": "00C05B68",
+        "prefix_ModRM_SIB_displacement_absent": true
+      },
+      {
+        "address": "00C0523C",
+        "opcode": 232,
+        "signed_rel32": -38968,
+        "encoded_return": "00C05241",
+        "numeric_target": "00BFBA09",
+        "prefix_ModRM_SIB_displacement_absent": true
+      }
+    ],
+    "Root_actual_detailed_Capstone": [
+      {
+        "address": "00BFBA09",
+        "hex": "e85aa10000",
+        "mnemonic": "call",
+        "operand": "0xc05b68",
+        "length": 5,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operand_width": 4,
+        "address_size": 4,
+        "eflags": 0
+      },
+      {
+        "address": "00C0523C",
+        "hex": "e8c867ffff",
+        "mnemonic": "call",
+        "operand": "0xbfba09",
+        "length": 5,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "operand_width": 4,
+        "address_size": 4,
+        "eflags": 0
+      }
+    ],
+    "version": "5.0.7",
+    "manual_Capstone_agreement": true,
+    "CPU_qualification": "Reached, fault-free x86-32 local CALL; every ESP formula additionally requires actual32bitSS stack-address attribute at that instruction. No live segment descriptor authenticated.",
+    "entry_CPU": "currentT -> ESP=T-4; SS[T-4]=BFBA0E; transfer C05B68; other GPR includingEBP and flags unchanged over this single instruction. Target body and return opaque.",
+    "accepted_zero_edge_composition": "After first opaque return currentA1=EAX,currentQ1=ESP. MOV/TEST zero path requiresA1=0; PUSH16/CALL BFBA09 then entryCALL C05B68 produces entryESP Q1-12, EAX=ESI=0. Writes SS[Q1-4]=16,SS[Q1-8]=C05241,SS[Q1-12]=BFBA0E occur at their respective instruction times; aliasing/stability not authenticated. TEST zero setsZF/PF,clearsCF/OF/SF,AFundefined; localMOV/PUSH/CALL do not change arithmeticflags.",
+    "after_any_opaque_return": "all returned GPR/EBP/ESP/flags/segments/memory unconstrained; no stack balance, nonreturn, service or OriginalABI inference",
+    "remaining31body_bytes_and_any_target_body_not_read": true,
+    "Root_fresh_Native_queries": 0
+  },
+  "Root_bootstrap_dependency": {
+    "package_path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+    "package_pin": {
+      "length": 43729,
+      "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+    },
+    "actual_constructor_optional_import_lines": [
+      {
+        "line": 924,
+        "text": "        try:"
+      },
+      {
+        "line": 925,
+        "text": "            from . import ccapstone"
+      },
+      {
+        "line": 926,
+        "text": "            # rewire disasm to use the faster version"
+      },
+      {
+        "line": 927,
+        "text": "            self.disasm = ccapstone.Cs(self).disasm"
+      },
+      {
+        "line": 928,
+        "text": "        except:"
+      },
+      {
+        "line": 929,
+        "text": "            pass"
+      }
+    ],
+    "bootstrap": "Actual absent optional capstone.ccapstone module confirmed before hook. Package attribute set to None only in guarded child, causing unchanged installed constructor broad-except to keep genuine default DLL-backed disasm. No source/DLL file modification or fake disassembler/callback. Negative sys.modules cache attempt failed and retained.",
+    "decoder_version": "5.0.7"
+  },
+  "private_physical_pins": {
+    "Root_entry_gate.py": {
+      "length": 9025,
+      "sha256": "ca5729a028bf4c23a35f36c7f2e8920ce4920f060e4d8b2541d119f50a99b4a5"
+    },
+    "Root_entry_gate.json": {
+      "length": 12115,
+      "sha256": "5f8d5ede7e95c6cf7a1ae63df2ce4551e4d6e0a1e4e61b699014a0da34f02b4a"
+    },
+    "Root_entry_gate_attempt01.py": {
+      "length": 8559,
+      "sha256": "ad0f2e30b0a9baa92d935911a480f47a9558a80a1a273ef82d52c6fff35e2bf8"
+    },
+    "Root_entry_gate_attempt01.stdout.txt": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_entry_gate_attempt01.stderr.txt": {
+      "length": 421,
+      "sha256": "55570d13929bc34b40b51b164b7f80128685c7fc09761281663217fadcb3e1ff"
+    },
+    "Root_entry_gate_attempt02.stdout": {
+      "length": 293,
+      "sha256": "2d8909112c4b1baa2cc559715180e0edc678122d97291d2730273456208da20b"
+    },
+    "Root_entry_gate_attempt02.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_inspection_attempt01.py": {
+      "length": 486,
+      "sha256": "525e989b8d2fde5958163f3f549219767b74282a4b7cd95a1d3018d4eb710689"
+    },
+    "Root_inspection_attempt02.py": {
+      "length": 578,
+      "sha256": "96920eb23ed1e8765ece3c4e7f9936eddb97d49fc3fb01713a8da883186a07be"
+    },
+    "Root_offline_inspection_failures.json": {
+      "length": 1030,
+      "sha256": "3c00e63185373bf07983bc80e8fe62eb0342aa27011999873f18c5d2dbfcd867"
+    },
+    "Root_actual_review.py": {
+      "length": 4341,
+      "sha256": "a79883d739fb9ec960d951e6e93a85d36de7dca69f41b67e12e5cf08ebeb3ace"
+    },
+    "Root_actual_review.json": {
+      "length": 4961,
+      "sha256": "ebe44b646e1550dddc07d36c4a6246196bc7ee09c570365c26ca11d04d3d34f9"
+    },
+    "Root_actual_review.stdout": {
+      "length": 491,
+      "sha256": "0889d5619045102f189e16f17c851f29944340d8f5631198701fadf926d038f5"
+    },
+    "Root_actual_review.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "replay.py": {
+      "length": 23884,
+      "sha256": "f51b4f3cc12c61d55c1784020fac2ad297ee89e8b58b51b057e7cb2b103f1bef"
+    },
+    "audit_replay.py": {
+      "length": 2285,
+      "sha256": "6bfef48d6f4c89c87d875a3348a3dcc26d4aea852ba754eec169acac31aa3b43"
+    },
+    "core.zip": {
+      "length": 1537083,
+      "sha256": "e2988a46d6701e18b8dbdcf6f7ebf7a600bc97bf10f14be4b65e6e92337f4da5"
+    },
+    "core_distinct_copy.zip": {
+      "length": 1537083,
+      "sha256": "e2988a46d6701e18b8dbdcf6f7ebf7a600bc97bf10f14be4b65e6e92337f4da5"
+    },
+    "proof.zip": {
+      "length": 2264869,
+      "sha256": "2f3473cd64b9586094461db60c6997b689bed54152f9871a2558e7fbe0fa666f"
+    },
+    "delivery_distinct_copy.zip": {
+      "length": 2264869,
+      "sha256": "2f3473cd64b9586094461db60c6997b689bed54152f9871a2558e7fbe0fa666f"
+    },
+    "worker_handoff.json": {
+      "length": 7075,
+      "sha256": "465c5547286e0980f8620b865270ff8533f72821bd0ebb0cb75fdce0fa9995d2"
+    },
+    "Root_strict_replay.py": {
+      "length": 2207,
+      "sha256": "0bd3874c0c529730ed013b2902f5cd26c4c4955bdec77fa9095814e110b9c33b"
+    },
+    "Root_core_audit.json": {
+      "length": 377,
+      "sha256": "f6e489a32ed2474f11f740e74f254f6dfbd15a358683ef74ea0dceea2699792a"
+    },
+    "Root_delivery_audit.json": {
+      "length": 381,
+      "sha256": "62e1c250a339a260a08991e07e288c4a8595de70f9d2342f674d45891e48d956"
+    },
+    "Root_core_replay_receipt_accepted_v2.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "Root_delivery_replay_receipt_accepted_v2.json": {
+      "length": 11302,
+      "sha256": "282a3b6d87bdff47b9b7b1fb668f66f80a945284bb9f7c3db0b16da04c70cc4c"
+    },
+    "Root_core_strict_final.stdout": {
+      "length": 452,
+      "sha256": "723762341bcdaf9bc03c14af72a376380757f24ecf2cc97b60ff76793e1833fb"
+    },
+    "Root_core_strict_final.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_delivery_strict_final.stdout": {
+      "length": 460,
+      "sha256": "d7f36b8992c20361acec2b8e64708e4640b641e2a9a594cdf16512556b7a3845"
+    },
+    "Root_delivery_strict_final.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_native_decode.py": {
+      "length": 4119,
+      "sha256": "d03fe8df7f6caf731161bce7ab946a5ccf0035025d172d2774bc4ff0f0db041b"
+    },
+    "Root_native_decode.json": {
+      "length": 2226,
+      "sha256": "f45bb3b59d01eb9d316088159e6333c4e6193089838003324fa887360b25af51"
+    },
+    "Root_native_decode.stdout": {
+      "length": 59,
+      "sha256": "ac51e6288e9bb70be9c6fd657af245202bd50e27be0f9a9ebd85de23520bce88"
+    },
+    "Root_native_decode.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_installed_capstone_package_preimage.py": {
+      "length": 43729,
+      "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+    },
+    "Root_decoder_bootstrap_dependency.json": {
+      "length": 1194,
+      "sha256": "195f2cad0536590b8c74a408b829f508fd6fca5dc4bf36d3ae0fa261cf57629b"
+    },
+    "Root_core_strict_attempt01.stdout": {
+      "length": 121,
+      "sha256": "7597c8fcf2136f8d0d425f92ef6ff7c4bb0d2cd41b662f7c595dacb044c668ea"
+    },
+    "Root_core_strict_attempt01.stderr": {
+      "length": 538,
+      "sha256": "7c7e5880ec1815c060f59e41935eae4ee9ffd0b8b0b66dd8c5fd211e7d00b855"
+    },
+    "Root_core_strict_attempt02.stdout": {
+      "length": 264,
+      "sha256": "5f67849597a154e5c44e109b43de328f0d34423f897e089c722746265c6704e7"
+    },
+    "Root_core_strict_attempt02.stderr": {
+      "length": 558,
+      "sha256": "45ffb524cd0ae16c6e15c31123153277e457c71db7b802c8ec464c6e648e3ab6"
+    },
+    "Root_core_strict_attempt03.stdout": {
+      "length": 1884,
+      "sha256": "0c11d124465f6d56b8761cd52357cb7e372c985704aba0bb335e76ffb726cb96"
+    },
+    "Root_core_strict_attempt03.stderr": {
+      "length": 558,
+      "sha256": "5d389d54fe5e5170d046741d8bb502f8307b16e252d81a6525e33d729f987ff9"
+    },
+    "Root_core_strict_accepted.stdout": {
+      "length": 121,
+      "sha256": "7597c8fcf2136f8d0d425f92ef6ff7c4bb0d2cd41b662f7c595dacb044c668ea"
+    },
+    "Root_core_strict_accepted.stderr": {
+      "length": 538,
+      "sha256": "d9a427c0fd298ade49477f6acbdd1f43c1f80bae8f8e69df39adad325746edc6"
+    },
+    "Root_core_replay_receipt.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "Root_core_replay_receipt_attempt02.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "Root_core_replay_receipt_attempt03.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "Root_core_replay_receipt_accepted.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "Root_strict_replay_attempt01.py": {
+      "length": 1787,
+      "sha256": "628cb2b604f525fb6c0e9256f6739efef2e0647fa1a3726b07f4dcf8740d4d2d"
+    },
+    "Root_strict_replay_attempt01.failure.json": {
+      "length": 460,
+      "sha256": "f867ea1ad09d7671df81cda240d3c1462efcae4f91dea568efc46a509f26d33a"
+    },
+    "Root_strict_replay_attempt02.py": {
+      "length": 1887,
+      "sha256": "7d1fe01831953e41208dc1d8c9cae56234a18d22bd906b426b3f87bebdec23a8"
+    },
+    "Root_strict_replay_attempt02.failure.json": {
+      "length": 531,
+      "sha256": "981a9218d86c11b8a89c6f27a0981cbcc04d257e8aa5f0ad3e7c54adc467aec3"
+    },
+    "Root_strict_replay_attempt03.py": {
+      "length": 1980,
+      "sha256": "5454422da5095f50b243bd1d66ace259bfe6e52d1c7a30e4dcedbe14fd875545"
+    },
+    "Root_strict_replay_attempt03.failure.json": {
+      "length": 608,
+      "sha256": "4678900b7ea1ff8d6996e77d3711c53bbbce94b773c45b90b83614d7e631d749"
+    },
+    "Root_strict_replay_attempt04.py": {
+      "length": 2175,
+      "sha256": "b19bb6af6d6a5d8785fcb8339de8da7414faba2636449754398a89582a4f8b4f"
+    },
+    "Root_strict_replay_attempt04.failure.json": {
+      "length": 551,
+      "sha256": "ba443fdbdd91178916901cb7a58a3e7835c25416e34736bb6f5a74627505b0f1"
+    }
+  },
+  "failures": {
+    "worker_Native_capture_or_helper_exit_failures": 0,
+    "worker_audit_telemetry_limit": "Worker guard does not collect denied events; Capstone broad-except suppresses optional import denial. Worker three successful counters do not independently prove no denied audit events. Root stronger audit supersedes that no-denial claim.",
+    "Root_offline_inspection_failures": 2,
+    "Root_metadata_gate_failures": 1,
+    "Root_strict_guard_failures": 4,
+    "Root_strict_guard_retained_failures": [
+      {
+        "status": "Root guard failed after helper produced a PASS receipt",
+        "phase": "core",
+        "producer": "Root_strict_replay_attempt01.py",
+        "complete_original_streams": [
+          "Root_core_strict_attempt01.stdout",
+          "Root_core_strict_attempt01.stderr"
+        ],
+        "retained_unaccepted_helper_receipt": "Root_core_replay_receipt.json",
+        "failure": "Final exact audit-counter assertion failed; counter diagnosis pending; no fresh Native/GPR effects."
+      },
+      {
+        "status": "Root guard failed despite helper internal PASS",
+        "reason": "Exactly two import audit events were denied inside helper but internally suppressed; exact ZIP/exec/receipt counters each1. Import names not recorded by initial guard.",
+        "producer": "Root_strict_replay_attempt02.py",
+        "complete_original_streams": [
+          "Root_core_strict_attempt02.stdout",
+          "Root_core_strict_attempt02.stderr"
+        ],
+        "unaccepted_helper_receipt": "Root_core_replay_receipt_attempt02.json",
+        "Native_or_GPR_effects": 0
+      },
+      {
+        "status": "failed diagnostic replay",
+        "producer": "Root_strict_replay_attempt03.py",
+        "complete_original_streams": [
+          "Root_core_strict_attempt03.stdout",
+          "Root_core_strict_attempt03.stderr"
+        ],
+        "unaccepted_helper_receipt": "Root_core_replay_receipt_attempt03.json",
+        "cause": "Two capstone.ccapstone optional-extension import attempts suppressed by installed Capstone Cs constructor broad except. Guard correctly denied them, then failed exact no-denial assertion. Exception rendering produced later denied events, not additional helper access.",
+        "Native_or_GPR_effects": 0
+      },
+      {
+        "status": "Root guard final no-denial assertion failed",
+        "producer": "Root_strict_replay_attempt04.py",
+        "complete_original_streams": [
+          "Root_core_strict_accepted.stdout",
+          "Root_core_strict_accepted.stderr"
+        ],
+        "unaccepted_helper_receipt": "Root_core_replay_receipt_accepted.json",
+        "reason": "Negative sys.modules entry did not prevent the optional import audit attempts; Python reports attempted imports before raising missing-module error. Original helper PASS is not Root acceptance.",
+        "Native_or_GPR_effects": 0
+      }
+    ],
+    "Root_actual_final_Git_review_failures": 0,
+    "Root_own_manual_and_Capstone_failures": 0,
+    "complete_initial_inspection_stdout_retained": false,
+    "inspection_producer_copies_retrospective": true,
+    "gate_attempt01_streams_transcribed": true
+  },
+  "limits": {
+    "Root_fresh_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "new_builds": 0,
+    "new_tests_probes": 0,
+    "Original_game_OS_audio_runtime_runs": 0,
+    "remaining31body_bytes_and_target_body_unread": true,
+    "Original_ABI_service_nonreturn_authenticated": false
+  }
+}
