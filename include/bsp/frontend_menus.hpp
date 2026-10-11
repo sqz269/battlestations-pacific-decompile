@@ -816,5 +816,247 @@ struct MultiGameLobbyEnterHost {
 // throughout; EBP is 1 from 005E57E3.
 void multi_game_lobby_enter_005e51d0(MultiGameLobbyEnterState& screen, MultiGameLobbyEnterHost& host);
 
+// ---------------------------------------------------------------------------
+// Multiplayer game lobby update (005E5B30)
+// ---------------------------------------------------------------------------
+
+inline constexpr double kLobbySessionRefreshPeriod = 100.0;  // 00D7A220, against +2D0h
+inline constexpr std::size_t kLobbySettingsDwords = 14;      // +284h -> 00E1955C.. and game+2020h..
+inline constexpr std::uint8_t kLobbyBackCommand = 0xA3;      // pushed as -5Dh
+
+// The two option scrollers (+158h outside skirmish, +CCh in skirmish) and
+// the one at +30h; each has floats +0Ch and +1Ch.
+enum class LobbyScroller : std::uint8_t { Options158, SkirmishCC, Players30 };
+
+// Widgets read for sizes or cleared: the scroller contents +134h/+B4h and
+// the viewports +1B8h/+12Ch; +1B4h/+128h go to 005D0C60 with the contents.
+enum class LobbyUpdateWidget : std::uint8_t { Content134, ContentB4, Viewport1B8, Viewport12C, Key1B4, Key128 };
+
+// A player-slot record, *(game+18CCh + 4*slot): +09h, +0Ah, +0Ch (ready),
+// +28h and the XUID at +80h.
+struct LobbySlotRecord {
+    bool byte9{};
+    bool byte_a{};
+    bool ready_c{};
+    std::uint32_t field28{};
+    std::uint64_t xuid80{};
+};
+
+struct MultiGameLobbyUpdateState {
+    std::int32_t field10{};
+    // +1Ch is the focused widget; the others are widget pointers compared
+    // with it (005D67E0 stores its argument at +1Ch, 005D6833).
+    std::uint32_t focus_1c{};
+    std::uint32_t target_20{};
+    std::uint32_t target_28{};   // nose art
+    std::uint32_t target_8c{};   // settings
+    std::uint32_t target_a4{};   // the player list (listbox at +A8h)
+    std::uint32_t target_c4{};   // skirmish options
+    std::uint32_t target_150{};  // options
+    bool scroll_8a{};
+    bool scroll_126{};
+    bool scroll_1b2{};
+    bool waiting_270{};
+    bool leave_pending_271{};
+    bool field280{};
+    bool ready_281{};
+    bool spectating_282{};
+    std::array<std::uint32_t, kLobbySettingsDwords> settings_284{};
+    std::int32_t scene_2bc{};
+    std::uint64_t mode_mask_2c0{};
+    std::int32_t field2f0{};
+    std::int32_t field2f4{};
+    std::int32_t field2f8{};
+    std::int32_t field2fc{};
+    float refresh_timer_2d0{};
+    bool unlock_2dc{};
+};
+
+struct MultiGameLobbyUpdateHost {
+    virtual ~MultiGameLobbyUpdateHost() = default;
+    virtual bool interface_busy_e198ac() = 0;                     // *(*(00E198AC)+60h)+4
+    virtual std::int32_t poll_leave_0076f400() = 0;               // ECX = game+1EF0h
+    virtual void session_virtual_174(std::int32_t arg) = 0;       // *(00F8A2FC)
+    virtual bool session_virtual_180() = 0;
+    virtual bool session_virtual_198() = 0;
+    virtual bool session_virtual_19c() = 0;
+    virtual bool session_byte_4d() = 0;
+    // Slot +17Ch(game+2020h, (int)(char)game+201Ch, (int)(char)game+201Dh,
+    // game+2060h, +2064h, +2068h, +206Ch).
+    virtual void session_publish_17c() = 0;
+    virtual void interface_virtual_0c() = 0;                      // *(00E198B4) slot +0Ch
+    virtual void game_004d7940() = 0;
+    virtual std::int32_t game_dword(std::uint32_t offset) = 0;    // *(00E188A8)+offset
+    virtual bool game_byte(std::uint32_t offset) = 0;
+    virtual float game_float(std::uint32_t offset) = 0;
+    virtual void metrics_00753810(std::int32_t event, std::int32_t arg) = 0;  // ECX = *(00E1AED4)
+    virtual void option_panel_005cfb80() = 0;                     // ECX = *(00E198B4)+54h
+    virtual bool option_panel_changed_005d0c60(LobbyUpdateWidget key, LobbyUpdateWidget content) = 0;
+    virtual void option_panel_005d11f0(std::int32_t arg) = 0;
+    virtual void option_panel_sub8_virtual_0c() = 0;              // ECX = *(00E198B4)+54h+8
+    virtual bool option_panel_byte_64() = 0;
+    virtual void widget_00aa83f0(LobbyUpdateWidget widget) = 0;
+    virtual float widget_height_00aa6740(LobbyUpdateWidget widget) = 0;  // size +4
+    virtual void scroller_set_range_006834a0(LobbyScroller scroller, float range) = 0;
+    virtual void scroller_attach_content_00683790(LobbyScroller scroller, std::uint32_t content) = 0;
+    virtual void scroller_sync_thumb_00683440(LobbyScroller scroller) = 0;
+    virtual void scroller_update_00683820(LobbyScroller scroller) = 0;   // (1)
+    virtual float scroller_float_0c(LobbyScroller scroller) = 0;
+    virtual void scroller_set_float_1c(LobbyScroller scroller, float value) = 0;
+    virtual bool settings_open_005d5490() = 0;                    // (+18h) slot +38h and (+228h)+85h
+    virtual bool action_004d92b0(std::int32_t action) = 0;        // ECX = *(00E188A8)
+    virtual void set_focus_005d67e0(std::uint32_t target) = 0;
+    virtual void input_context_level_00a933f0(std::int32_t level, std::int32_t arg) = 0;  // 004BEC00 owner
+    virtual void input_owner_update_00a92c40(float seconds) = 0;  // 004BEC00 owner
+    virtual void lobby_005da210() = 0;
+    virtual void lobby_005d8410() = 0;
+    virtual void lobby_005d9f90() = 0;
+    virtual void lobby_005d5870(std::int32_t arg) = 0;
+    virtual bool lobby_005d71b0() = 0;
+    virtual void lobby_005d62b0() = 0;
+    virtual void lobby_005e1cf0(std::int32_t direction) = 0;
+    virtual void lobby_005da530() = 0;
+    virtual void lobby_005e3580() = 0;
+    virtual void lobby_005d9f50() = 0;
+    virtual bool lobby_005d5260() = 0;
+    virtual bool lobby_005d4a10() = 0;
+    virtual void lobby_005d9660(bool action52, bool action51) = 0;
+    virtual void lobby_005e4fc0() = 0;
+    virtual void lobby_005d73a0() = 0;
+    virtual void lobby_005deca0() = 0;
+    virtual std::uint64_t mode_mask_005d9c50(std::int32_t mode) = 0;
+    // 005D5160(+2FCh) then 00427AE0 on its +4: a C string (00E19605 if null),
+    // passed to 004C8950 on the game.
+    virtual void select_named_entry_005d5160(std::int32_t index) = 0;
+    // Both copies of the settings block: 00E1955C.. and game+2020h..
+    virtual void store_settings(const std::array<std::uint32_t, kLobbySettingsDwords>& settings) = 0;
+    virtual void set_game_mode_004bc890(std::uint32_t mode) = 0;  // (mode, 0)
+    virtual void set_global(std::uint32_t address, std::int32_t value) = 0;  // 00E19594, 00E08958
+    virtual std::int32_t global_e08958() = 0;
+    virtual float global_e19598() = 0;
+    virtual std::uint8_t global_e1960a() = 0;
+    virtual void set_global_e1960a(std::uint8_t value) = 0;
+    virtual void select_scene_record_004c6890(std::int32_t scene) = 0;
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+    virtual void clear_e19698_byte4() = 0;
+    virtual void widget_listener_activate(std::uint32_t row) = 0;  // (screen+8) slot +4
+    virtual std::uint32_t player_list_selected_row_00425e50() = 0;  // listbox +A8h
+    virtual std::int32_t player_list_selected_index_00a9c920() = 0;
+    virtual bool player_list_byte_85() = 0;
+    // game+18CCh[index]; 0 when empty. Slot 0..7 of game+18ECh is the local one.
+    virtual std::uint32_t slot_record(std::int32_t index) = 0;
+    virtual LobbySlotRecord slot_record_fields(std::uint32_t record) = 0;
+    virtual std::uint32_t local_slot_record_005d5130() = 0;       // ECX = game
+    virtual bool local_slot_valid_005d51f0() = 0;
+    virtual bool local_ready_005d5220() = 0;
+    virtual void slot_record_toggle_005d8530(std::uint32_t record) = 0;
+    virtual bool input_device_action_d3() = 0;                    // 004BA6D0(0, 0) slot +20h(0D3h)
+    virtual void noseart_request_prepare() = 0;                   // *(00E198AC)+70h: +98h, +94h = 8
+    virtual void push_request_interface_logged_00688ad0(std::int32_t id) = 0;
+    virtual bool signed_into_live_004b44f0() = 0;                 // ECX = *(00F8ABE8)
+    virtual void show_gamer_card(std::uint64_t xuid) = 0;         // 00A4D440(00A3EAC0(), xuid)
+    virtual bool session_counts_mission_004b6260() = 0;           // ECX = game+1EF0h
+    // 0054B530, ECX = *(00E1930C).
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual void profile_hints_00427190(std::int32_t hint) = 0;   // 004C1E90 singleton
+    // +220h/+224h keep X and Z and take (+228h)+F4h as Y (00AA6750 / 00AA8240).
+    virtual void align_rows_to_list_y() = 0;
+};
+
+// (multi_game_lobby_update_005e5b30 is declared below the main-menu block.)
+
+// ---------------------------------------------------------------------------
+// Multiplayer main menu enter (005E8B20)
+// ---------------------------------------------------------------------------
+
+inline constexpr std::array<std::string_view, 2> kMultiMenuRankedRows = {
+    "FE.multi_ranked", "FE.multi_player"};                      // 00E08964
+inline constexpr std::array<std::string_view, 3> kMultiMenuQuickRows = {
+    "FE.multi_quick", "FE.multi_custom", "FE.multi_create"};    // 00E08974
+inline constexpr std::size_t kPlayerRankCount = 20;             // FE.playerrank_01..20, 00E08E00
+inline constexpr std::uint8_t kPlayerRankMax = 0x14;
+inline constexpr double kMultiMenuRowMarginA = 0.005208333333333333;  // 00CF2958
+inline constexpr double kMultiMenuRowMarginB = 0.019999999552965164;  // 00D7A2F8 (0.02f widened)
+inline constexpr float kMultiMenuWidthFloor = 1.17549435e-38F;         // 00CF2960, FLT_MIN
+inline constexpr double kMultiMenuBarInset = 0.00625;                  // 00CF2920
+inline constexpr double kGuiTextWidthScale = 960.0;                    // 00CEC380
+
+enum class MultiMenuWidget : std::uint8_t {
+    RankedList20,   // +20h listbox
+    QuickList24,    // +24h listbox
+    AnchorD0,       // +D0h, its X bounds the row text
+    NameLabel30,    // +30h
+    NameText34,     // +34h
+    Hidden38,       // +38h
+    ScoreText3C,    // +3Ch
+    RankText44,     // +44h
+    Text48,         // +48h
+    Text4C,         // +4Ch
+    RankIcon50,     // +50h
+    PreviousBar54,  // +54h
+    CurrentBar58,   // +58h
+    BarFrame5C,     // +5Ch
+};
+
+// One node of the list at *(screen+D8h)+64h: byte +76h marks an
+// achievement-gated widget, slot +28h gives its key.
+struct MultiMenuGatedWidget {
+    bool gated{};
+    std::string key;
+};
+
+struct MultiMainMenuEnterState {
+    bool live_14{};                 // +14h, session slot +198h
+    std::int32_t selected_f4{-1};   // +F4h, the remembered row of +24h
+};
+
+struct MultiMainMenuEnterHost {
+    virtual ~MultiMainMenuEnterHost() = default;
+    virtual bool session_virtual_198() = 0;                       // *(00F8A2FC)
+    virtual bool session_byte_4c() = 0;
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;  // ECX = game+1EF0h
+    virtual void set_frame_title_00518d60(std::string_view title) = 0;  // ECX = EDX = 0, stack 0
+    virtual void frame_00518b90(std::int32_t arg) = 0;            // ECX = 2
+    virtual float widget_x_00aa6750(MultiMenuWidget widget) = 0;  // position +0
+    virtual GuiWidgetSize widget_size_00aa6740(MultiMenuWidget widget) = 0;
+    virtual void widget_set_size_58(MultiMenuWidget widget, GuiWidgetSize size) = 0;
+    virtual void widget_virtual(MultiMenuWidget widget, std::uint16_t slot, std::int32_t arg) = 0;  // +60h/+34h
+    virtual void widget_set_state_88(MultiMenuWidget widget, std::int32_t state) = 0;  // (state, 0, 1.0f)
+    virtual void list_set_byte_77(MultiMenuWidget list, bool value) = 0;
+    virtual void list_set_listener_00a9ac40(MultiMenuWidget list) = 0;  // screen+8
+    // "MainListbox_Text" under the list (00AA7E00, 1), cloned (00AAB4C0(0)),
+    // appended with 00A9DA30(row, data, 0, 0); returns the row's handle.
+    virtual void* list_append_row(MultiMenuWidget list, std::int32_t data) = 0;
+    virtual void row_set_ellipsized_00abb000(void* row, std::string_view key, float width) = 0;  // flag 1
+    virtual float row_text_width_114(void* row) = 0;
+    virtual void list_00a9cf30(MultiMenuWidget list, std::int32_t a, std::int32_t b) = 0;
+    virtual void list_00a9ceb0(MultiMenuWidget list, float value, std::int32_t arg) = 0;
+    virtual void list_select_first_00a9c310(MultiMenuWidget list) = 0;
+    virtual void list_select_index_00a9c7c0(MultiMenuWidget list, std::int32_t index) = 0;
+    virtual bool live_enabled_account_00a3e520() = 0;             // ECX = *(00F8ABE8)
+    virtual void set_text_localised(MultiMenuWidget widget, std::string_view key) = 0;  // 00ABBE50, 1
+    virtual void set_text_source(MultiMenuWidget widget, std::string_view text, bool localise) = 0;  // 00ABAED0
+    // The profile is *(00E188A8)+650h: name +50h when its length is nonzero,
+    // else +3Ch; rank 00574050; score 0090BF50 on +64h; last score +30h;
+    // achievement counters in the case-insensitive map +A0h.
+    virtual std::string profile_name() = 0;
+    virtual std::uint8_t profile_rank_00574050() = 0;
+    virtual std::int32_t profile_score_0090bf50() = 0;
+    virtual std::int32_t profile_last_score_30() = 0;
+    virtual void profile_set_last_score_30(std::int32_t score) = 0;
+    virtual std::int32_t profile_achievement_count(std::string_view key) = 0;  // 0 when absent
+    // 0050FC30(&"RANK") on *(00E19900)+10h, then its vector +48h at index.
+    virtual std::int32_t rank_threshold(std::uint32_t index) = 0;
+    virtual std::vector<MultiMenuGatedWidget> gated_widgets() = 0;
+    virtual void gated_widget_lock_icon_show(std::size_t index, bool show) = 0;  // "achievement_lock_Icon" +34h
+};
+
+// 005E8B20: slot +18h of vtable 00CF2708, __thiscall(screen), RET.
+void multi_main_menu_enter_005e8b20(MultiMainMenuEnterState& screen, MultiMainMenuEnterHost& host);
+
+// 005E5B30: slot +20h of vtable 00CF23E4, __thiscall(screen, float seconds), RET 4.
+void multi_game_lobby_update_005e5b30(MultiGameLobbyUpdateState& screen, float seconds,
+    MultiGameLobbyUpdateHost& host);
+
 } // namespace bsp
 #endif
