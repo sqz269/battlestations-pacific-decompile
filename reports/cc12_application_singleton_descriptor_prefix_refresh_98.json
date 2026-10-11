@@ -1,0 +1,347 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_singleton_descriptor_prefix_refresh_98",
+  "status": "exact_12_data_bytes_observed_no_semantic_type",
+  "decision": "NO_CPP_GO; NO_FRAME_ACTIVATION_GO",
+  "refresh_qualification": "Administrative provenance correction only, zero new Native queries. Legacy Native88/Source4210/MSVC14.51.36231 qualified-layout/map evidence remains byte/Git-exact; no erasure, rebasing or transferred proof.",
+  "superseded_draft_consistency_only": "evidence/superseded_draft_consistency.json",
+  "legacy_record_preservation": {
+    "document": "docs/CC12_APPLICATION_SINGLETON_DESCRIPTOR_PREFIX_READINESS.md",
+    "report": "reports/cc12_application_singleton_descriptor_prefix_readiness.json",
+    "frozen_commit": "dd1ce37f90b228575d6a91f59aabe43c76f26039",
+    "native_epoch": 88,
+    "source_epoch_file_count_historical_only": 4210,
+    "compiler_comparison_historical_only": "14.51.36231",
+    "raw_values_agree_with_Native98": true,
+    "qualified_conditional_layout_and_map_proposal": "Preserved unchanged, not re-proven by this refresh."
+  },
+  "scope": {
+    "addresses": [
+      "00e01cc4",
+      "00e01cc5",
+      "00e01cc6",
+      "00e01cc7",
+      "00e01cc8",
+      "00e01cc9",
+      "00e01cca",
+      "00e01ccb",
+      "00e01ccc",
+      "00e01ccd",
+      "00e01cce",
+      "00e01ccf"
+    ],
+    "data_range": [
+      "00e01cc4",
+      "00e01ccf"
+    ],
+    "distinct_data_bytes": 12,
+    "repeated_returned_data_bytes": 24,
+    "semantic_type_admitted": false,
+    "remaining_listing_unit_bytes_read": 0,
+    "pointer_following": false
+  },
+  "native_epoch": {
+    "project": "bsp",
+    "marker": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "modification": 98,
+    "function_count": 64730
+  },
+  "native_listing": {
+    "unit_start": "00e01cc4",
+    "unit_length": 36,
+    "kind": "data",
+    "defined": true,
+    "java_class": "ghidra.program.database.code.DataDB",
+    "exact_unit_at": [
+      "00e01cc4"
+    ],
+    "containing_unit_for_all_twelve": true,
+    "instruction_and_function_ownership": null,
+    "flow": null,
+    "explicit_memory_block_proof": false,
+    "backing_file_proof": false,
+    "semantic_type_or_authenticity_proof": false
+  },
+  "native_data": {
+    "hex": "2205931902000000b41ce000",
+    "sha256": "e8281ec217a6733159b8180f15f97ff9245d2d30ddc3409167e2c68769bd2846",
+    "raw_little_endian_dwords": [
+      "19930522",
+      "00000002",
+      "00e01cb4"
+    ],
+    "evidence_kind": "Complete CLI stdout twice; not raw read_memory HTTP/JSON",
+    "field_interpretations": null
+  },
+  "query_accounting": {
+    "typed_batches": 4,
+    "typed_address_responses": 48,
+    "context_zero_batches": 1,
+    "negative_instruction_records": 12,
+    "instruction_opcode_credit": 0,
+    "count_calls": 4,
+    "data_calls": 2,
+    "identity_queries_additional": true,
+    "qualification": "Initial negative context-zero request exceeded typed-only brief; Root reviewed it as opaque. No subsequent instruction-text query."
+  },
+  "capture_order": {
+    "typed": [
+      "evidence/typed_initial.json",
+      "evidence/typed_initial_after.json",
+      "evidence/typed_data_before.json",
+      "evidence/typed_data_after.json"
+    ],
+    "context_zero": [
+      "evidence/context_zero_initial.json"
+    ],
+    "counts": [
+      "evidence/count_initial_before.txt",
+      "evidence/count_initial_after.txt",
+      "evidence/count_data_before.txt",
+      "evidence/count_data_after.txt"
+    ],
+    "data": [
+      "evidence/data_first_cli.txt",
+      "evidence/data_second_cli.txt"
+    ],
+    "journal": "evidence/command_journal.json"
+  },
+  "git_epoch": {
+    "head": "dd1ce37f90b228575d6a91f59aabe43c76f26039",
+    "src_tree": "405897b6b5d8720b023862bddeb44e463a56a37b",
+    "include_tree": "a58d44af6071fee132ec49fdda541182d7ece633"
+  },
+  "source_qualification": "Git tree identities only; no Source census or authority claim.",
+  "opaque_predecessors": {
+    "git_blobs": {
+      "docs/CC12_APPLICATION_SINGLETON_HANDLER_LISTING_CONTRACT_READINESS.md": "08f45bf8b33f15ed62d1d66972b5a49341e3c2c4",
+      "reports/cc12_application_singleton_handler_listing_contract_readiness.json": "071ee71fcb30c673ed65e0e93f3d8ac1cbfbf714",
+      "docs/CC12_APPLICATION_SINGLETON_DESCRIPTOR_PREFIX_READINESS.md": "075d752989b3cef0728c7e6b85a9a447f571fa6e",
+      "reports/cc12_application_singleton_descriptor_prefix_readiness.json": "60ca11d57d59e9ded36fa8e0b83de932c6370eea"
+    },
+    "historical_source_epochs_not_replayed": [
+      3348,
+      3356,
+      4210,
+      4217
+    ],
+    "recursive_evidence_import": false,
+    "artifact_build_ABI_runtime_credit_transfer": false
+  },
+  "unresolved": [
+    "descriptor type and field semantics",
+    "FH3 or other frame authority",
+    "BF6B43 target ABI and behavior",
+    "raw Application owner and cleanup authority",
+    "cleanup/destructor relationships and retained failure policy"
+  ],
+  "excluded": [
+    "remaining24 listing-unit bytes",
+    "encoded-value targets",
+    "E01CF8",
+    "CC7260",
+    "BF6B43",
+    "prototype/caller/stack/body/neighbor queries",
+    "Ghidra mutation",
+    "C++/CMake/ledger edits",
+    "tests/build/probe/process/OS/audio/game/runtime"
+  ],
+  "git_outputs": [
+    "docs/CC12_APPLICATION_SINGLETON_DESCRIPTOR_PREFIX_REFRESH_98.md",
+    "reports/cc12_application_singleton_descriptor_prefix_refresh_98.json"
+  ],
+  "proof": {
+    "local_root": "local/cc12_application_singleton_descriptor_prefix_refresh_98/bundle",
+    "verifier": "helpers/local/verify_bundle.py",
+    "pins": [
+      {
+        "path": "docs/CC12_APPLICATION_SINGLETON_DESCRIPTOR_PREFIX_REFRESH_98.md",
+        "size": 6520,
+        "sha256": "005a910efc9766b6dfec613ce13488e84ca9d50aa62882df8497b1953749d052"
+      },
+      {
+        "path": "evidence/Root_data_review.json",
+        "size": 1388,
+        "sha256": "cb430636aae464b523351e83289b8728c8c17d251829f6681d34ebc4566d867d"
+      },
+      {
+        "path": "evidence/Root_initial_gate.json",
+        "size": 3725,
+        "sha256": "417945b23fa690a72d8a893159e77cf5ae73d9384dd00409b5b6bcc9c9fda9e1"
+      },
+      {
+        "path": "evidence/command_journal.json",
+        "size": 1751,
+        "sha256": "13affb3cdbb5cc1bf3f5524de3809fff91748b34b82993d6737403fdd54db5d7"
+      },
+      {
+        "path": "evidence/context_zero_initial.json",
+        "size": 841,
+        "sha256": "359afd195c0e543d42851c8978261ffef9b27a5d3f0140e4243d778ec22cb14b"
+      },
+      {
+        "path": "evidence/count_data_after.txt",
+        "size": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "path": "evidence/count_data_before.txt",
+        "size": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "path": "evidence/count_initial_after.txt",
+        "size": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "path": "evidence/count_initial_before.txt",
+        "size": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "path": "evidence/data_first_cli.txt",
+        "size": 61,
+        "sha256": "8ab600ab47135767085a60599234b359f1c91188e6a0826b390d30ff6bb31b84"
+      },
+      {
+        "path": "evidence/data_second_cli.txt",
+        "size": 61,
+        "sha256": "8ab600ab47135767085a60599234b359f1c91188e6a0826b390d30ff6bb31b84"
+      },
+      {
+        "path": "evidence/git_freeze.json",
+        "size": 872,
+        "sha256": "58bafd60989fd1298c64f0caaaa0d33d991475cb05f807ffa64ebed83e797067"
+      },
+      {
+        "path": "evidence/initial_review.json",
+        "size": 13414,
+        "sha256": "c9dbb6c6670628c7b8c8ed81409d2a589aded2f0156a04f78aab9ecc9faa6d5a"
+      },
+      {
+        "path": "evidence/prepare_initial.py",
+        "size": 4336,
+        "sha256": "ce28da05f3fce1d8ee05c4e0eb64d185ab72967a161e80dd6e864deea3b8d35a"
+      },
+      {
+        "path": "evidence/root_data_approval.json",
+        "size": 667,
+        "sha256": "cf1a469ccdbbb125c94309319e707136c753347b31ab81f34e2c05d878dd278e"
+      },
+      {
+        "path": "evidence/stage_names.txt",
+        "size": 133,
+        "sha256": "30be70d0b6a86b9e138d15ad0265f3b856592fa2c560eaa38f38c15d59e52fdd"
+      },
+      {
+        "path": "evidence/superseded_draft_consistency.json",
+        "size": 773,
+        "sha256": "b916db925ac525ee828fd31597eb746e9357fe9cb5292806eb3b0bb6474ae900"
+      },
+      {
+        "path": "evidence/typed_data_after.json",
+        "size": 30910,
+        "sha256": "c9081356228a2d4d94e5fbe20d2e65dc8e420089d87b02337bc3b472c643dcf5"
+      },
+      {
+        "path": "evidence/typed_data_before.json",
+        "size": 30910,
+        "sha256": "b3528f027f105ccb4b0b452a7dc470817debe0181aebd2eebd15769547c904f3"
+      },
+      {
+        "path": "evidence/typed_initial.json",
+        "size": 30910,
+        "sha256": "5cf822d438c10d04b6bf9e62d133c47cd75c6ec68c9cb72a2faed7c735459bc6"
+      },
+      {
+        "path": "evidence/typed_initial_after.json",
+        "size": 30910,
+        "sha256": "40b864678743db4dc35d2c1ad3c6769ad986aa1483d1feb6baca749aa3a57b01"
+      },
+      {
+        "path": "helpers/config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "helpers/local/prepare_bundle.py",
+        "size": 9318,
+        "sha256": "27155f78ba354231193eb3fea7e2681bf32a8ece37faabf3ff023a2e3ad07cb6"
+      },
+      {
+        "path": "helpers/local/seal_bundle.py",
+        "size": 2217,
+        "sha256": "646665bccfee31392eeb773da93e09028a8c2c217b5a27e5b21a5797d991283a"
+      },
+      {
+        "path": "helpers/local/verify_actual_git.py",
+        "size": 2800,
+        "sha256": "932c84496419b15cfdbf8a607787ff527fdb46f127c1e4b000c45493266d8694"
+      },
+      {
+        "path": "helpers/local/verify_bundle.py",
+        "size": 8192,
+        "sha256": "176a78dc4a06f92258252394c3e836911d8b5de6aca5ef6378777460e4956319"
+      },
+      {
+        "path": "helpers/tools/branch_sync.py",
+        "size": 3532,
+        "sha256": "274a868ce73e272fbfaae77affba83f50cf57b213e37d87ae3cbd2fee09eb149"
+      },
+      {
+        "path": "helpers/tools/bsp.py",
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "helpers/tools/coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "path": "helpers/tools/ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "helpers/tools/ghidra_typed_flow.py",
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "helpers/tools/ledger.py",
+        "size": 7610,
+        "sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9"
+      },
+      {
+        "path": "helpers/tools/workspace.py",
+        "size": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      {
+        "path": "provenance/docs/CC12_APPLICATION_SINGLETON_DESCRIPTOR_PREFIX_READINESS.md",
+        "size": 8333,
+        "sha256": "db02122a099225fe3d5b2fecb224d4ce9faa93aa7b3cb97bf6b59fb378875798"
+      },
+      {
+        "path": "provenance/docs/CC12_APPLICATION_SINGLETON_HANDLER_LISTING_CONTRACT_READINESS.md",
+        "size": 8147,
+        "sha256": "cb87d877265ec5e3addb1ef874f9f844b927f1c254499c9e8d7f352981a39efc"
+      },
+      {
+        "path": "provenance/reports/cc12_application_singleton_descriptor_prefix_readiness.json",
+        "size": 103839,
+        "sha256": "e8e33baf2fc1cb45b64ba613401c3956119730ca705112bc7bdf4f46f61b5d38"
+      },
+      {
+        "path": "provenance/reports/cc12_application_singleton_handler_listing_contract_readiness.json",
+        "size": 83177,
+        "sha256": "8e710fb68aa9842bd50a8b96fbc7971fd142ddfd152495e8391f45d60ff1dc51"
+      }
+    ],
+    "replay": "Original plus isolated copy extracted from one ZIP; exact declared inventory.",
+    "actual_git": "Separate retained actual stage/final Git verification; exactly two outputs."
+  }
+}
