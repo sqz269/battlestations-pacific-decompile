@@ -1,0 +1,265 @@
+{
+  "schema": "bsp.cc12.winmain-storage.Root.v1",
+  "status": "caller_stack_provenance_accepted_producer_NO_GO",
+  "worker_commit": "49e8eb6b52c8abc4aa829a610650d69342e41818",
+  "Root_actual": {
+    "status": "PASS",
+    "worker_commit": "49e8eb6b52c8abc4aa829a610650d69342e41818",
+    "frozen": "9bf7f4b857b1a448b2e68c20705c320f973fb4ce",
+    "Root_current": "bf8663140362f6eff1e3e25284d672ba92747c3e",
+    "actual_frozen_final_members": 4227,
+    "actual_final_outputs": 2,
+    "actual_unique_blobs": 4229,
+    "retained_actual_bytes": 39789743,
+    "Root_current_Source_equal": 4217,
+    "prior_actual_Source3356_equal": 3356,
+    "stored_body_bytes": 665,
+    "supplement_bytes": 16,
+    "decoded_instructions": 201,
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "qualifications": [
+      "Separate unowned supplement only",
+      "R=S-C34 conditional on normal balanced preceding returns",
+      "Inherited compiler/constructor contracts qualified, no predecessor graph replay",
+      "No owner/cell/failure/retirement/ABI/startup/game credit"
+    ],
+    "delivery_pins": [
+      {
+        "path": "final_git.json",
+        "bytes": 1302,
+        "sha256": "a76bcf57b08bba7ca8fe58a083864e436c630130df601948fd0b7dab3e48a8bb"
+      },
+      {
+        "path": "final_delivery.json",
+        "bytes": 2384,
+        "sha256": "770559ea5f8a69a900308246e343f48e6badc90bec59995e0574eedea436cde4"
+      },
+      {
+        "path": "lease_release.json",
+        "bytes": 325,
+        "sha256": "4d572ec8554481d160ad6871877da14929fbb3cf54bc61ec56df853805cf2639"
+      },
+      {
+        "path": "Root_offline_decode.json",
+        "bytes": 29861,
+        "sha256": "6f9cfd789091a84f88e3e78b3f59fbe2d52b206bf07d21b42f7946c55d0301ea"
+      }
+    ]
+  },
+  "guard_result": {
+    "supplied_zip": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_winmain_storage_provenance_primary\\evidence.zip",
+    "supplied_helper": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_winmain_storage_provenance_primary\\portable_replay.py",
+    "zip_bytes": 12846880,
+    "zip_sha256": "f7f7e1dab6d57230027d6859ea52d4aef06783548896cfa1ce2b57f7f88b358e",
+    "helper_bytes": 13969,
+    "helper_sha256": "0a2a3a0fcc670e6468ce8654c911166911bf6e64dba26e06edc0da827711c56c",
+    "pre_execution_pin_check": true,
+    "supplied_zip_physical_reads": 1,
+    "result": {
+      "schema": "bsp.cc12.winmain.storage.replay.v1",
+      "status": "PASS",
+      "zip_entries": 4315,
+      "checked_payloads": 4314,
+      "retained_payload_bytes": 43898421,
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "typed_responses": 28,
+      "stored_body_bytes": 665,
+      "successful_exact_Native_CLI_calls": 25,
+      "envelope_bytes": 681,
+      "gap_bytes": 16,
+      "gap_ownership": "unowned_complete_typed_coverage_only",
+      "gap_semantics": "three_exact_instructions_separate_conditional_supplement_no_execution_or_callee_semantics",
+      "offline_byte_coverage_instructions": 201,
+      "positive_stored_body_opcode_checks": 27,
+      "direct_call_destination_checks": 11,
+      "Source3356_raw_equal_count": 3350,
+      "Source3356_raw_different_paths": [
+        "include/bsp/sound_configuration.hpp",
+        "include/bsp/sound_startup.hpp",
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "src/game_sound_runtime.cpp",
+        "src/sound_configuration.cpp",
+        "src/sound_startup.cpp"
+      ],
+      "Source3356_LF_equal_count": 3356,
+      "prior_actual_Git_Source3356_equal_count": 3356,
+      "frozen_union_blobs": 4217,
+      "prior_contract": "inherited_qualified_no_predecessor_graph_replay",
+      "producer_readiness": "NO_GO",
+      "callee_semantics_proved": false,
+      "runtime_executed": false
+    },
+    "post_pin_forbidden_events": [],
+    "post_pin_external_reads": 0,
+    "post_pin_writes": 0,
+    "post_pin_process_or_network_calls": 0,
+    "post_pin_dynamic_libraries": 0,
+    "post_pin_imports": 0
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/evidence.zip",
+      "bytes": 12846880,
+      "sha256": "f7f7e1dab6d57230027d6859ea52d4aef06783548896cfa1ce2b57f7f88b358e"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/portable_replay.py",
+      "bytes": 13969,
+      "sha256": "0a2a3a0fcc670e6468ce8654c911166911bf6e64dba26e06edc0da827711c56c"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/guard_replay.py",
+      "bytes": 1748,
+      "sha256": "0be17732866faae0e4239a351cdc5e1bdb8051c3386e59ed5e3d30d7a2e63441"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/manifest.json",
+      "bytes": 740687,
+      "sha256": "f30487d250f3833e34ef1e522046c3150325781aa34503f3e7283b6441fa3734"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Root_copy_core.json",
+      "bytes": 4155,
+      "sha256": "05026f17b3b58ace926d9276d4468d1dc195d38f17ee32441d1b8a1a6875bdbb"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Root_guard.json",
+      "bytes": 2227,
+      "sha256": "cb2355fbda2a543cf2184b8f6ed3ace196167f08565c2c14e861bf37b9efadeb"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Root_actual_review.json",
+      "bytes": 1516,
+      "sha256": "dbd577a1f0657c66bc3c481e2ffb20d6ba5b738fc4286cdbbc2b2580576431a0"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Root_offline_decode.json",
+      "bytes": 29861,
+      "sha256": "6f9cfd789091a84f88e3e78b3f59fbe2d52b206bf07d21b42f7946c55d0301ea"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/final_git.json",
+      "bytes": 1302,
+      "sha256": "a76bcf57b08bba7ca8fe58a083864e436c630130df601948fd0b7dab3e48a8bb"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/final_delivery.json",
+      "bytes": 2384,
+      "sha256": "770559ea5f8a69a900308246e343f48e6badc90bec59995e0574eedea436cde4"
+    }
+  ],
+  "physically_retained_helpers": [
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/capture_native.py",
+      "bytes": 2431,
+      "sha256": "53ecf0e69663085e4be7f4ecfe5d2fdd4bb922de5a9415b12b8832f1708ced19"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/capture_tool_sources/tools/bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/capture_tool_sources/tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/capture_tool_sources/tools/ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/capture_tool_sources/tools/workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/failed_replay_helper_unboundlocal.py",
+      "bytes": 12320,
+      "sha256": "98687e977b4b8224a6edb19afe1f588bcc9839aec100cb9cea2cfa41e2d38af6"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/final_git_check.py",
+      "bytes": 2865,
+      "sha256": "929289117035cb22c9fba583948316f8d449c7defebc80be355ffa1d5712cea8"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/freeze_inputs.py",
+      "bytes": 5135,
+      "sha256": "021ddc540ea2b0741c362a78cecb5697d1a228c14ac21567c8fd7935bcacc3b4"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/guard_replay.py",
+      "bytes": 1748,
+      "sha256": "0be17732866faae0e4239a351cdc5e1bdb8051c3386e59ed5e3d30d7a2e63441"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/portable_replay.py",
+      "bytes": 13969,
+      "sha256": "0a2a3a0fcc670e6468ce8654c911166911bf6e64dba26e06edc0da827711c56c"
+    },
+    {
+      "path": "local/cc12_application_winmain_storage_provenance_primary/Tools/seal_packet.py",
+      "bytes": 2935,
+      "sha256": "1989ff80625c3ec14ffdcbe93a43dbb828697233ae5d1957ab59513f0a17444d"
+    }
+  ],
+  "Source": {
+    "selected3356_actual_Git_equal": true,
+    "selected3356_LF_equal": true,
+    "selected3356_raw_equal": 3350,
+    "selected3356_raw_CRLF_variants": [
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "currentRoot4217_Git_equal": true,
+    "no_source_or_build_rebase": true
+  },
+  "receiver": {
+    "at_LEA_008F8410": "R=C+20h, C=current ESP",
+    "at_CALL_008F8419": "ECX=R, returnsite008F841E",
+    "conditional_entry_relation": "R=S-C34h, only normal reached path with correctly balanced preceding external returns",
+    "constructor_EAX": "not consumed by caller",
+    "later_calls": "recompute same receiver conditional on correctly balanced returns",
+    "destructor_edge": "007379A0 requested only"
+  },
+  "ownership": {
+    "stored_body_ranges": [
+      "008F81F0..008F845F",
+      "008F846D..008F8482",
+      "008F8486..008F8498"
+    ],
+    "stored_body_bytes": 665,
+    "separate_envelope_bytes": 681,
+    "supplement_ranges": [
+      "008F8460..008F846C",
+      "008F8483..008F8485"
+    ],
+    "supplement_bytes": 16,
+    "supplement_units": 3,
+    "supplement_gate": "All16bytes nofunctionAt/containing, three bounded InstructionDB units; starts NONE/noFTOverride/FALL_THROUGH/emptytargets; interiors instruction-at/flow null",
+    "supplement_credit": "Separate exact already captured bytes, conditional decode/continuation only; no stored-body ownership or repair"
+  },
+  "limits": [
+    "No proved entry alignment, exact object extent, live Source fields or valid/untouched preimages",
+    "No Source actual owner, canonical-cell producer, provider lifetimes, failure cleanup, retirement or quiescence",
+    "No callee/body/prototype/pointee query or free-semantics credit",
+    "Inherited full constructor/compiler evidence qualified only; no predecessor graph replay",
+    "No GPR mutation, C++ change, new build/test/probe/runtime/ABI/game credit"
+  ],
+  "next_admission": {
+    "packet": "cc12_application_ordinary_retirement_failure_handler_metadata",
+    "reason": "Existing complete BEA8B0 normal retirement audit identifies local handlerCC7260 but explicitly holds failure handling; this is a separate Root admission after caller review.",
+    "address": "00CC7260",
+    "scope": "Fresh unchanged project/program/identity/count98/64730 bookends and typed metadata at onlyCC7260; no bytes/text/data/target/callee/funclet query until Root reviews actual gate.",
+    "Source_prerequisites": "Keep existing BEA8B0 normal audit and genuine getter/removal Source qualified; no invented exception unlock/rollback/final-table/free or owner interface."
+  },
+  "overall_goal_complete": false
+}
