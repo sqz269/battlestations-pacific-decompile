@@ -84,7 +84,7 @@ void append_binding_display_text_0069e9e0(const InputSettings& settings,
 
     // 0069ED75..0069EE16: every InputNames entry bound to this (class, key).
     for (const auto& [name, record] : settings.input_names)
-        if (record.primary == binding.device_type && record.secondary == binding.key) out += name;
+        if (record.device_type == binding.device_type && record.key == binding.key) out += name;
 }
 
 namespace {
