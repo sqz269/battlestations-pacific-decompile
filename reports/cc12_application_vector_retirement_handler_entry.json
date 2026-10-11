@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_handler_entry",
+  "status": "bounded_entry_metadata_established_saved_function_absent",
+  "verdict": "C86208 is the positively linked handler literal in the retained Application parent shell. Saved listing has one whole 5-byte MOV EAX,00DB57B8 entry instruction, ordinary fall-through and no flow override. No saved function or prototype exists there. No handler body or state-0 action established.",
+  "base_commit": "184cf9919a6432c80de99b51a8345635ad2a4e94",
+  "frozen_tree": "960c98913d6979c37dfb83d18672749bcc5c125c",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_BASE_RETIREMENT_READINESS.md",
+      "blob": "b4775a2efb1851e2957bf7c8b83038d4e8142846",
+      "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+      "length": 7796
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "length": 34569
+    },
+    {
+      "path": "docs/CC12_APPLICATION_DERIVED_RETIREMENT_SOURCE_PRIMARY.md",
+      "blob": "a6a35c975a83e6a2d972c1d3c06a50d738555474",
+      "sha256": "f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3",
+      "length": 2149
+    },
+    {
+      "path": "reports/cc12_application_derived_retirement_source_primary.json",
+      "blob": "0766130775b1ea1c2c12d11a764a0bf330c6635f",
+      "sha256": "d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c",
+      "length": 10360
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY.md",
+    "reports/cc12_application_vector_retirement_handler_entry.json"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "modification_number": 98,
+    "function_counts": [
+      64730,
+      64730,
+      64730
+    ],
+    "autostart": false,
+    "verification": "Each bsp CLI query verifies project/program/language/image base. Each retained typed capture includes verified-before/after identity plus exact runtime GPR marker and equal epoch98."
+  },
+  "positive_predecessor": {
+    "report": "reports/cc12_application_base_retirement_readiness.json",
+    "selector": "native_evidence.reused_parent",
+    "address": "007379A0",
+    "length": 93,
+    "instructions": 28,
+    "end_inclusive": "007379FC",
+    "sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+    "site": "007379A2",
+    "instruction_hex": "680862c800",
+    "literal": "00C86208",
+    "relation": "PUSH immediate precedes FS:0 registration; retained report bytes only, no fresh parent/body/installed-PE read."
+  },
+  "saved_function": {
+    "at": null,
+    "containing": null,
+    "functions": [],
+    "ranges": null,
+    "name": null,
+    "is_thunk": null,
+    "no_return": null,
+    "qualification": "Unavailable because both saved function references are explicitly null. Do not infer false flag values or invent a body range."
+  },
+  "prototype": {
+    "available": false,
+    "whole_cli_stream": "No function found for 00c86208\r\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00c86208'})\r\n",
+    "stderr_bytes": 0,
+    "command_exit": 0,
+    "qualification": "CLI catches signature-endpoint error and exits0; this is a negative saved-prototype observation, not a prototype."
+  },
+  "entry": {
+    "address": "00C86208",
+    "length": 5,
+    "end_inclusive": "00C8620C",
+    "extent_kind": "whole exact saved InstructionDB unit; not a function-body extent",
+    "listing_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c86208"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c86208"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c86208"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c86208"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "hex": "b8b857db00",
+    "sha256": "2d47015699b22273a3fc9edde9e4870b2739603a34aef58417a01066704a9f0b",
+    "static_decode": "MOV EAX,00DB57B8",
+    "decode_basis": "x86 B8+r imm32 with r=0 and little-endian immediate",
+    "immediate_policy": "Opaque numeric immediate; not dereferenced, classified, or followed.",
+    "local_effect": "Loads EAX. This unit has no explicit memory access or control transfer. No complete-handler register ABI or state-0 action follows from this entry alone."
+  },
+  "entry_flow": {
+    "flow_override": "NONE",
+    "default_flow": {
+      "name": "FALL_THROUGH",
+      "is_call": false,
+      "is_jump": false,
+      "is_conditional": false,
+      "is_computed": false,
+      "is_terminal": false
+    },
+    "effective_flow": {
+      "name": "FALL_THROUGH",
+      "is_call": false,
+      "is_jump": false,
+      "is_conditional": false,
+      "is_computed": false,
+      "is_terminal": false
+    },
+    "fallthrough_overridden": false
+  },
+  "capture_integrity": {
+    "initial_raw_available": false,
+    "initial_helper_preimage_available": false,
+    "initial_failure": "The initial collector used label + .json for command metadata, overwriting typed.json after the typed CLI had written its raw capture there.",
+    "initial_failed_attempt": "failed_initial_capture.json",
+    "retained_raw_files": [
+      "typed_before.raw.json",
+      "typed_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "paired_and_closing_raw_sha256": "1d8828c8435ba6816facb988be049c4b8aa5ca818449a353a987a15161cf0b8b",
+    "paired_bytes_equal": true,
+    "whole_automatic_companion_target_objects": "Retained opaque in raw response; no packet field traversal, interpretation or target query.",
+    "producer_validation_qualification": "The existing typed-flow producer automatically validates its complete response schema, including automatic fields. This packet replay accesses only allowed query/function/entry/flow flags and keeps target/companion objects opaque."
+  },
+  "query_order": [
+    "count_before",
+    "typed (initial raw lost to filename collision)",
+    "prototype",
+    "count_after",
+    "typed_before",
+    "typed_after",
+    "entry_bytes length5 after positive typed extent",
+    "typed_close",
+    "count_close"
+  ],
+  "Source_context": {
+    "positive_inputs": [
+      "docs/CC12_APPLICATION_DERIVED_RETIREMENT_SOURCE_PRIMARY.md",
+      "reports/cc12_application_derived_retirement_source_primary.json"
+    ],
+    "status": "Accepted Source BEA8B0/BEA990 retirement remains dormant; retained derived Root review supplies context only.",
+    "boundary": "No Source content census or source file read. src/include tree IDs are identity only; no future Root source equality constraint."
+  },
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_handler_entry",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Physical pure replay and audit wrapper; final archive contains actual frozen/staged/final Git objects, retained streams/raw/failure and helper bodies. Replay reads one supplied ZIP and writes one declared receipt under audit.",
+    "self_reference_boundary": "Final commit/tree/ZIP pins and observed replay receipts live outside the two committed outputs and are delivered with handoff. This report does not self-assert an eventual ZIP digest."
+  },
+  "credit": {
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "state0_action": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false
+  },
+  "continuation": "Return entry metadata to Root. Any finite listing continuation needs a separate explicit decision; no full body, text/decompile/disassembly, xrefs, stack, descriptor/data or target expansion in this packet."
+}
