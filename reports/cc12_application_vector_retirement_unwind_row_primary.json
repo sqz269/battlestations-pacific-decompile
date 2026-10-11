@@ -1,0 +1,148 @@
+{
+  "status": "Root_reviewed_numeric_8B_row_only",
+  "worker_commit": "49e7a7cf4282a86faa0eb062a944e022259f96cc",
+  "Root_checks": {
+    "status": "PASS",
+    "worker_commit": "49e7a7cf4282a86faa0eb062a944e022259f96cc",
+    "ZIP_sha256": "981d5f5fd6fe587043b91431b5cd5a6d6cc15dc1152201a82fa995b075cf01b5",
+    "ZIP_entries": 71,
+    "actual_Git_objects": 20,
+    "finite_inputs": 8,
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_UNWIND_ROW.md",
+        "blob": "f3f71cf5736745ece4aa1d63d14af78bf3c94a07",
+        "sha256": "75783be9e57eb374e8d4ade31d35f85215bd45275ba1a5ea98d6ce8179d944f1",
+        "length": 3583
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_unwind_row.json",
+        "blob": "e299673b8a573e611d44d04d6e28af2ef0a8e9b6",
+        "sha256": "8c88b53a71fecd71c7f8b90385d80ff1e82b584e5571927876561302f22bb1f6",
+        "length": 11585
+      }
+    ],
+    "helper_pins": {
+      "collect.py": {
+        "bytes": 2467,
+        "sha256": "7643ee747d14bbde2a136c5009df90ec541a06ef435a2515366c74c06bdab27b"
+      },
+      "gate.py": {
+        "bytes": 2997,
+        "sha256": "79a7c683e305336abdc606f77fad479b3a638525c76cec28f9085f63b8e9d50d"
+      },
+      "prepare_helpers.py": {
+        "bytes": 4259,
+        "sha256": "937adcaddde2cb65ab3b45ec05c2574f03343ead35776aea93efa3bf430ae69f"
+      },
+      "seal.py": {
+        "bytes": 6820,
+        "sha256": "866728c09ef976179ed59f35bcd95f5cccbffdd31e7e7c842f1df93228b38177"
+      },
+      "replay.py": {
+        "bytes": 16261,
+        "sha256": "4b0f416c4b8b67571076c58fe810240a005d4fa7e085ed8a24c73f968561476c"
+      },
+      "audit_replay.py": {
+        "bytes": 2322,
+        "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+      },
+      "report.py": {
+        "bytes": 13572,
+        "sha256": "f86160bba4fac1fa63fb4911be94240c7e9815fedcab09fce183d27248108401"
+      },
+      "decode_words.py": {
+        "bytes": 1219,
+        "sha256": "c47f389e8e8ea7c46d64da51ff41bc667305d01fa880108dad12751c7634ad35"
+      },
+      "Root_row_gate.py": {
+        "bytes": 2691,
+        "sha256": "2dc361a7cc839026ff4a5589a3f84737f16e3d4ef0daf219b8d85fde9d00b24c"
+      }
+    },
+    "row_hex": "ffffffff0062c800",
+    "row_SHA256": "cfa35011665839ef6c0c3aab2f144f09b31c86c04a4d0bd8d25e8e763bdbd923",
+    "unsigned_words": [
+      4294967295,
+      13132288
+    ],
+    "signed_word0": -1,
+    "original_copy_equal_and_distinct": true,
+    "conditional_EH_layout_only": true,
+    "action_target_read": false,
+    "Original_FH3_authenticated": false,
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "strict_audit": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "pins": [
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/proof.zip",
+      "bytes": 1833372,
+      "sha256": "981d5f5fd6fe587043b91431b5cd5a6d6cc15dc1152201a82fa995b075cf01b5"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/replay.py",
+      "bytes": 16261,
+      "sha256": "4b0f416c4b8b67571076c58fe810240a005d4fa7e085ed8a24c73f968561476c"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/audit_replay.py",
+      "bytes": 2322,
+      "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_review.py",
+      "bytes": 3785,
+      "sha256": "0ee99c455cd42e0b5122765989da1d79df66cbd4f84bc803da06c2ab687f74f1"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_actual_review.json",
+      "bytes": 2394,
+      "sha256": "4fe6372246ee70512756255876f0def70e39ccad68ce25adeda7eac6090cd65a"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_strict_replay.py",
+      "bytes": 2353,
+      "sha256": "dd0e39a0502ac4c57dbf33dfa2bf1331278a1378a5276a3a20cc85c68a71d8c8"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_guard_receipt.json",
+      "bytes": 3364,
+      "sha256": "425a08d082e351b801061176112feb4fb047f3e9002c30f242456438304e91e5"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_row_gate.py",
+      "bytes": 2691,
+      "sha256": "2dc361a7cc839026ff4a5589a3f84737f16e3d4ef0daf219b8d85fde9d00b24c"
+    },
+    {
+      "path": "local/cc12_application_vector_retirement_unwind_row_primary/Root_row_gate.json",
+      "bytes": 4658,
+      "sha256": "292084fed8222def41ca95365c3f61bdd85325e88135b7097bff51107305521f"
+    }
+  ],
+  "qualifications": [
+    "Defined saved8B DataDB at DB57B0 independently gated before two exact8B reads.",
+    "Raw numeric words FFFFFFFF/C86200 and signed word0=-1; predecessor sentinel and action-address field roles remain conditional on unverified classic absolute layout.",
+    "All24 raw typed responses agree epoch98/count64730; no action-target, map-tail, descriptor-tail or Original-FH3 traversal.",
+    "Actual finite Git and exact2ownedoutput closure checked; no Source census/current Root Source equality."
+  ],
+  "credit": {
+    "numeric_data_evidence": true,
+    "authenticated_layout": false,
+    "state0_action": false,
+    "actual_receiver": false,
+    "Original_FH3": false,
+    "Source": false,
+    "build": false,
+    "ABI": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
