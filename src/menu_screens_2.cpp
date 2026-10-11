@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 
 namespace bsp {
 
@@ -2001,4 +2002,638 @@ void tactical_library_enter_00511f40(TacticalLibraryEnterState& screen, Tactical
     screen.field_5b4 = -1.0F;                                            // 00514BB1..00514BC0
 }
 
+// ---------------------------------------------------------------------------
+// Tactical library Update 005162B0, carousel step 00516010, nose-art apply 005161C0 (cc13-menus6)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 00516639..005166A9 and its copies: virtual +94h is read twice; a frame outside 1..2 is reset to 0.
+void tactical_library_settle_arrow(std::uintptr_t widget, TacticalLibraryUpdateHost& host) {
+    if (host.widget_frame_94(widget) < 1 || host.widget_frame_94(widget) > 2) {
+        host.widget_virtual_88(widget, kTacticalLibraryArrowNormal, 0, 1.0F);
+    }
+}
+
+void tactical_library_set_arrow(std::uintptr_t widget, std::uint16_t frame, TacticalLibraryUpdateHost& host) {
+    host.widget_virtual_88(widget, frame, 0, 1.0F);   // FLD1 / FSTP [esp], push 0, push frame
+}
+
+// The left arrow sits left of the row origin by its own width / 1.2 (FDIV qword 00CEC160, FSUBR the
+// origin x spilled as a double), the right arrow at origin x + the highlight widget's width (FADD of
+// two floats); both drop by a double constant. Kind 5 forces z = -10, kind 6 keeps the origin z.
+std::array<float, 3> tactical_library_left_arrow_position(const std::array<float, 3>& origin, float arrow_width,
+    double drop, float z) noexcept {
+    return {static_cast<float>(static_cast<double>(origin[0]) -
+                static_cast<double>(arrow_width) / kTacticalLibraryArrowWidthDivisor),
+        static_cast<float>(static_cast<double>(origin[1]) - drop), z};
+}
+
+std::array<float, 3> tactical_library_right_arrow_position(const std::array<float, 3>& origin, float highlight_width,
+    double drop, float z) noexcept {
+    return {highlight_width + origin[0], static_cast<float>(static_cast<double>(origin[1]) - drop), z};
+}
+
+std::array<MainMenuCommandArgument, 5> tactical_library_continue_bar(bool change) {
+    if (change) {
+        // 00516F64..00516FFD: continue / change / navigate / 3dview / back.
+        return {{{0xA2, "globals.continue", 0}, {0xAF, "globals.change", 1}, {0xB3, "globals.navigate", 1},
+            {0xA7, "globals.3dview", 1}, {0xA3, "globals.back", 2}}};
+    }
+    // 00516DFE..00516E97: continue / (empty) / navigate / back / (empty).
+    return {{{0xA2, "globals.continue", 0}, {0x00, "", 1}, {0xB3, "globals.navigate", 1},
+        {0xA3, "globals.back", 2}, {0x00, "", 1}}};
+}
+
+// 00516481..00516849: order-of-battle rows. EDI is the record index parsed from the row's data
+// text, [esp+10h] the row counter; arrows are indexed by the record, not by the row.
+bool tactical_library_place_order_of_battle_rows(TacticalLibraryUpdateState& screen,
+    TacticalLibraryUpdateHost& host) {
+    auto& records = screen.order_of_battle_460;
+    for (std::int32_t row_index = 0; static_cast<std::size_t>(row_index) < records.size(); ++row_index) {
+        const std::uintptr_t row = host.list_row_at_00a9be00(screen.list_b8, row_index);
+        const auto index = static_cast<std::uint32_t>(std::atol(host.row_data_text_28(row).c_str()));
+        if (index >= records.size()) {
+            host.invalid_parameter_00bf6713();   // 0051650A, the CRT's range check
+            return false;
+        }
+        host.order_of_battle_row_004fb090(records[index].key_00);
+        const std::uintptr_t left = screen.rows_1d8[index];
+        const std::uintptr_t right = screen.rows_278[index];
+        if (records[index].flag_0c == 0) {                                   // 0051681E
+            host.widget_show_34(left, false);
+            host.widget_show_34(right, false);
+            continue;
+        }
+        const float highlight_width = host.group_size_00aa6740(host.gui_highlight_widget_00aa0f50(1))[0];
+        const auto origin = host.group_origin_00aa6750(row);
+        host.set_resolved_position_00aa8240(left, tactical_library_left_arrow_position(origin,
+            host.group_size_00aa6740(left)[0], kTacticalLibraryArrowDropOob, kTacticalLibraryArrowZOob));
+        host.widget_show_34(left, true);
+        host.widget_set_dword_d8(left, row_index);
+        const std::size_t children = records[index].child_count_18;    // 004F9360 re-reads the record
+        if (children == 0 && records[index].flag_0c == 1) {
+            tactical_library_set_arrow(left, kTacticalLibraryArrowLocked, host);
+        } else if (screen.sub_index_138[index] == 0) {
+            tactical_library_set_arrow(left, kTacticalLibraryArrowDisabled, host);
+        } else {
+            tactical_library_settle_arrow(left, host);
+        }
+        const auto origin_right = host.group_origin_00aa6750(row);      // 005166AB, read again
+        host.set_resolved_position_00aa8240(right, tactical_library_right_arrow_position(origin_right,
+            highlight_width, kTacticalLibraryArrowDropOob, kTacticalLibraryArrowZOob));
+        host.widget_show_34(right, true);
+        host.widget_set_dword_d8(right, row_index);
+        if (children == 0 && records[index].flag_0c == 1) {
+            tactical_library_set_arrow(right, kTacticalLibraryArrowLocked, host);
+        } else if (screen.sub_index_138[index] == static_cast<std::int32_t>(children)) {
+            tactical_library_set_arrow(right, kTacticalLibraryArrowDisabled, host);
+        } else {
+            tactical_library_settle_arrow(right, host);
+        }
+    }
+    return true;
+}
+
+// 0051685B..00516B10: unlock rows. EBP is the row and record index, EDI walks +1D8h (EDI-0A0h =
+// +138h, EDI+0A0h = +278h), [esp+10h] the record byte offset; the image never bounds the arrays.
+void tactical_library_place_unlock_rows(TacticalLibraryUpdateState& screen, TacticalLibraryUpdateHost& host) {
+    const auto& records = screen.unlocks_470;
+    for (std::size_t i = 0; i < records.size() && i < kTacticalLibraryRowPairs; ++i) {
+        const std::uintptr_t left = screen.rows_1d8[i];
+        const std::uintptr_t right = screen.rows_278[i];
+        const std::size_t children = records[i].child_count_18;
+        if (children == 0) {                                              // 00516AEB
+            host.widget_show_34(left, false);
+            host.widget_show_34(right, false);
+            continue;
+        }
+        const std::uintptr_t row = host.list_row_at_00a9be00(screen.list_b8, static_cast<std::int32_t>(i));
+        const float highlight_width = host.group_size_00aa6740(host.gui_highlight_widget_00aa0f50(1))[0];
+        const auto origin = host.group_origin_00aa6750(row);
+        host.set_resolved_position_00aa8240(left, tactical_library_left_arrow_position(origin,
+            host.group_size_00aa6740(left)[0], kTacticalLibraryArrowDropUnlocks, origin[2]));
+        host.widget_show_34(left, true);
+        if (screen.sub_index_138[i] == 0) {
+            tactical_library_set_arrow(left, kTacticalLibraryArrowDisabled, host);
+        } else {
+            tactical_library_settle_arrow(left, host);
+        }
+        const auto origin_right = host.group_origin_00aa6750(row);
+        host.set_resolved_position_00aa8240(right, tactical_library_right_arrow_position(origin_right,
+            highlight_width, kTacticalLibraryArrowDropUnlocks, origin_right[2]));
+        host.widget_show_34(right, true);
+        if (screen.sub_index_138[i] == static_cast<std::int32_t>(children) - 1) {   // ADD EAX,-1
+            tactical_library_set_arrow(right, kTacticalLibraryArrowDisabled, host);
+        } else {
+            tactical_library_settle_arrow(right, host);
+        }
+    }
+}
+
+}  // namespace
+
+void tactical_library_update_005162b0(TacticalLibraryUpdateState& screen, float dt,
+    TacticalLibraryUpdateHost& host) {
+    host.scroller_update_00683820(1);                                    // 005162CC..005162D4
+    if (screen.carousel_timer_8c > 0.0F) {                               // COMISS 00D7A218 (0.0)
+        screen.carousel_timer_8c -= dt;
+    }
+    // 00516300..00516387: a pending launch counts down and then plays the selected mission.
+    if (screen.countdown_5b4 != kTacticalLibraryNoCountdown) {
+        screen.countdown_5b4 -= dt;
+        if (screen.countdown_5b4 <= 0.0F) {
+            host.loading_queue_stop_and_wait_005092e0();
+            host.gui_reset_screens_00aa0f70();
+            host.set_game_selection_6ac(host.list_selected_index_00a9c920(screen.list_c4));
+            host.play_selected_mission_005922f0();
+            screen.countdown_5b4 = kTacticalLibraryNoCountdown;
+        }
+    }
+    // 0051638B..00516434: kind 3 skips a playing movie and restarts the menu stream (empty name 00E18D78).
+    if (screen.kind_94 == TlKind::Movies && host.movie_playing_004f89a0() && host.action_004d92b0(0x4B)) {
+        host.movie_stop_004f8ac0();
+        host.menu_stream_start_00a867b0("");
+        host.menu_stream_fade_in_00a85c20();
+        return;
+    }
+    if (screen.kind_94 == TlKind::OrderOfBattle) {                      // 00516437..0051647E
+        host.profile_hints_00427190(6);
+        if (host.action_004d92b0(0x4A)) {
+            host.order_of_battle_cancel_004ff6f0();
+            return;
+        }
+        if (!tactical_library_place_order_of_battle_rows(screen, host)) {
+            return;   // the CRT range-check abort (00BF6713) stands here
+        }
+    }
+    if (screen.kind_94 == TlKind::Unlocks) {
+        tactical_library_place_unlock_rows(screen, host);
+    }
+    if (screen.kind_94 == TlKind::None) {                                // 00516B15..00516B8D
+        if (host.action_004d92b0(0x4B)) {
+            host.kind7_activate_00514fb0();
+            return;
+        }
+        if (host.action_004d92b0(0x4A) && screen.countdown_5b4 == kTacticalLibraryNoCountdown) {
+            screen.countdown_5b4 = kTacticalLibraryCountdownStart;
+        }
+        host.profile_hints_00427190(7);
+    }
+    // 00516B92..00516D6E: in the 3D view, 4Bh leaves it.
+    if (screen.view_90 == 1 && host.action_004d92b0(0x4B)) {
+        host.toggle_view_00511b40();
+        if (screen.kind_94 == TlKind::OrderOfBattle) {
+            host.show_order_of_battle_page_004fff20();
+        } else if (screen.kind_94 == TlKind::Unlocks) {
+            host.show_unlocks_page_004ffd00();
+        } else if (screen.kind_94 == TlKind::UnitsWeapons) {
+            host.rebuild_command_bar_0054b530({{{0x00, "", 0}, {0xA7, "globals.3dview", 1},
+                {0xB3, "globals.navigate", 1}, {0xB2, "globals.scroll_menu", 1}, {0xA3, "globals.back", 2}}});
+        }
+        return;
+    }
+    // 00516D71..0051714B: the rest of the input chain; every branch joins at 0051714B.
+    const bool unit_kind = screen.kind_94 == TlKind::UnitsWeapons || screen.kind_94 == TlKind::OrderOfBattle ||
+        screen.kind_94 == TlKind::Unlocks;
+    if (host.console_flag_f88a30() && host.action_004d92b0(0x50) && unit_kind) {
+        host.switch_view_00514c20();
+    } else if (screen.view_90 == 0 && host.action_004d92b0(0x4B)) {   // 00516DAC
+        if (host.list_byte_85(screen.list_b8)) {
+            host.back_00515e00();                                        // 00517104
+        } else {
+            host.widget_virtual_60(screen.list_b8, 1);
+            if (screen.kind_94 == TlKind::OrderOfBattle) {
+                host.show_order_of_battle_page_004fff20();
+            } else {
+                host.rebuild_command_bar_0054b530(tactical_library_continue_bar(false));
+            }
+        }
+    } else if (host.action_004d92b0(0x50) && screen.kind_94 == TlKind::OrderOfBattle) {  // 00516F11
+        const std::uintptr_t row = host.list_selected_row_00a9ca00(screen.list_b8);
+        host.show_selection_00511bf0(static_cast<std::int32_t>(std::atol(host.row_data_text_28(row).c_str())));
+        host.rebuild_command_bar_0054b530(tactical_library_continue_bar(true));
+    } else if (host.action_004d92b0(0x4A)) {                             // 005170C1
+        if (screen.kind_94 == TlKind::Movies) {
+            host.movies_cancel_004ff580();
+        } else if (screen.kind_94 == TlKind::NoseArt) {
+            host.nose_art_apply_005161c0();
+        } else if (screen.kind_94 == TlKind::Unlocks && host.unlocks_cancel_004fc9d0()) {
+            host.back_00515e00();
+        }
+    } else if (host.action_004d92b0(0x4C) && screen.kind_94 != TlKind::None) {  // 0051710D
+        host.carousel_step_00516010(true);
+    } else if (host.action_004d92b0(0x4D) && screen.kind_94 != TlKind::None) {
+        host.carousel_step_00516010(false);
+    }
+    if (screen.kind_94 != TlKind::None) {                                // 0051714B..0051715E
+        host.carousel_animate_00515050(dt);
+    }
+    if (screen.kind_94 != TlKind::NoseArt) {
+        return;
+    }
+    // 00517170..00517262: kind 8 lights the keret frame of the panel showing the profile's nose art.
+    const std::uint32_t current = host.profile_field_28() ? host.game_nose_art_730() : host.game_nose_art_734();
+    for (const std::uintptr_t frame : screen.frames_5a0) {
+        host.widget_virtual_84(frame, false);
+    }
+    std::uintptr_t lit = 0;
+    if (host.widget_virtual_38(screen.panels_508[0]) && screen.scroll_value_438 > 1.0F &&   // 00D7A24C
+        host.selector_record_48_004fa8f0() == current) {
+        lit = screen.frames_5a0[0];
+    } else if (host.widget_virtual_38(screen.panels_508[1]) && host.selector_record_48_004fa960() == current) {
+        lit = screen.frames_5a0[1];
+    } else if (host.widget_virtual_38(screen.panels_508[2]) && host.selector_record_48_004faa00() == current) {
+        lit = screen.frames_5a0[2];
+    }
+    if (lit != 0) {
+        host.widget_virtual_84(lit, true);
+    }
+}
+
+void tactical_library_carousel_step_00516010(TacticalLibraryCarouselState& screen, bool forward,
+    TacticalLibraryCarouselHost& host) {
+    if (screen.kind_94 == TlKind::None) {
+        return;
+    }
+    if (screen.kind_94 == TlKind::NavalAcademy && screen.carousel_timer_8c > 0.0F) {   // 0051602F..0051603E
+        return;
+    }
+    screen.carousel_timer_8c = kTacticalLibraryCarouselTime;
+    if (forward) {
+        host.selector_step_004fc720();
+    } else {
+        host.selector_step_004fc7a0();
+    }
+    host.refresh_entry_00510c20();
+    if (screen.kind_94 == TlKind::OrderOfBattle) {
+        host.order_of_battle_refresh_00506550();
+    } else if (screen.kind_94 == TlKind::Unlocks) {
+        host.unlocks_refresh_00504c60();
+    }
+    host.carousel_animate_00515050(kTacticalLibraryCarouselSettleDt);
+    const double pad = screen.kind_94 == TlKind::NavalAcademy ? kTacticalLibraryAcademyScrollPad : 0.0;
+    host.scroller_attach_00683790(0);
+    // 005160CD..00516102: the pad is narrowed to float in the argument slot, added to the x87 text
+    // height, spilled as a double, then the view height is subtracted and the result narrowed.
+    const double total = host.text_normalized_height_00ab6bd0() + static_cast<double>(static_cast<float>(pad));
+    const float view_height = host.group_size_00aa6740(screen.scroll_view_5ac)[1];
+    host.scroller_set_range_006834a0(static_cast<float>(total - static_cast<double>(view_height)));
+}
+
+void tactical_library_apply_nose_art_005161c0(std::uint32_t selector_index, TacticalLibraryNoseArtHost& host) {
+    if (selector_index >= host.nose_art_count_448()) {                   // 005161C7..005161F4
+        host.invalid_parameter_00bf6713();
+        return;
+    }
+    const std::uint32_t value = host.nose_art_value_48(selector_index);
+    // 00516215..00516250: row "0" of the library list sets game+734h, any other row game+730h.
+    if (std::atol(host.library_selected_row_text().c_str()) == 0) {
+        host.set_game_nose_art_734(value);
+    } else {
+        host.set_game_nose_art_730(value);
+    }
+    host.profile_store_nose_art_007f8690({host.game_nose_art_734(), host.game_nose_art_730(), 0});
+    host.back_00515e00();
+}
+
+// ---------------------------------------------------------------------------
+// Credits ReadItemStyle 0052D9C0 and Register 0052FFC0 (cc13-menus6)
+// ---------------------------------------------------------------------------
+
+void credits_read_item_style_0052d9c0(CreditsItem& item, CreditsLuaReader& reader) {
+    // 0052D9CE..0052DA49: defaults (the white static 00E18E50 is built once, guard 00E18E60 bit 0).
+    item.type = CreditsItemType::Person;
+    item.colour = {1.0F, 1.0F, 1.0F, 1.0F};
+    item.align = static_cast<std::int32_t>(CreditsAlign::Centre);
+    item.offset = 0.0F;
+    if (reader.has_key_00bd5eb0("Type")) {
+        auto type = static_cast<std::int32_t>(item.type);
+        reader.read_int_00bd6830("Type", type);
+        item.type = static_cast<CreditsItemType>(type);
+    }
+    if (reader.has_key_00bd5eb0("Text")) reader.read_string_00bd6830("Text", item.text);
+    if (reader.has_key_00bd5eb0("Offset")) reader.read_float_00bd6830("Offset", item.offset);
+    if (reader.has_key_00bd5eb0("Color")) reader.read_vec4_00bd6830("Color", item.colour);
+    if (reader.has_key_00bd5eb0("Align")) reader.read_int_00bd6830("Align", item.align);  // 0052DB84: [esp+10h] = item+20h
+}
+
+void credits_register_0052ffc0(CreditsLayoutState& screen, std::uintptr_t& page_0c, float& base_speed_3c,
+    CreditsRegisterHost& host) {
+    host.register_front_end_screen_004f71d0();                          // 0052FFE1
+    page_0c = host.load_page_00aa5840(kCreditsPage);                     // 0052FFEA..00530036
+    screen.category_template_10 = host.find_child_00aa7e00(page_0c, "category_template_Text");
+    host.widget_show_34(screen.category_template_10, false);
+    screen.person_template_14 = host.find_child_00aa7e00(page_0c, "person_template_Text");
+    host.widget_show_34(screen.person_template_14, false);
+    screen.frame_18 = host.find_child_00aa7e00(page_0c, "clipbox_Clipbox");            // 005301B1
+    screen.moving_group_1c = host.find_child_00aa7e00(screen.frame_18, "moving_Group"); // 0053020D..00530227
+    // 00530250..0053036B: Credits.lua's global table Credits.
+    CreditsLuaReader& reader = host.open_credits_table(kCreditsScript, "Credits");
+    if (reader.has_key_00bd5eb0("Speed")) reader.read_float_00bd6830("Speed", base_speed_3c);       // +3Ch
+    if (reader.has_key_00bd5eb0("StartY")) reader.read_float_00bd6830("StartY", screen.start_y_40);
+    if (reader.has_key_00bd5eb0("RowSpace")) reader.read_float_00bd6830("RowSpace", screen.row_space_44);
+    // 00530464..00530563: Credits_Items[1..n] while the index exists; each row is pushed (0052FF10)
+    // with an empty text, then filled in place through back().
+    reader.enter_key_00bd8e20("Credits_Items");
+    for (std::int32_t index = 1; reader.has_index_00bd5eb0(index); ++index) {
+        screen.items_4c.push_back(CreditsItem{});
+        reader.enter_index_4(index);
+        credits_read_item_style_0052d9c0(screen.items_4c.back(), reader);
+        reader.leave_8();
+    }
+    reader.leave_key_00bd7a20();
+    host.close_credits_table();                                          // 00530568..005305DC
+}
+
+// ---------------------------------------------------------------------------
+// Session browser 00579980 (cc13-menus6): uncalled row appender (E8/E9 rel32 and absolute-dword
+// scans of the image find no reference; the same scan finds BuildRows' 8 call sites).
+// ---------------------------------------------------------------------------
+
+void session_browser_append_record_rows_00579980(const SessionRowState& screen, SessionRowHost& host) {
+    for (const SessionJoinRecord& record : screen.records_2a0) {        // 005799C0..0057A0AF
+        const std::uintptr_t row = host.clone_subtree_00aab4c0(screen.row_template_e8, 0);  // 00579A21..00579A2C
+        const std::uintptr_t server = host.find_child_00aa7e00(row, "server_Text");
+        const std::uintptr_t mode = host.find_child_00aa7e00(row, "mode_Text");
+        const std::uintptr_t players = host.find_child_00aa7e00(row, "players_Text");
+        const std::uintptr_t connection = host.find_child_00aa7e00(row, "Connection_Group");
+        host.text_set_00abaed0(server, narrow_low_bytes(record.name_08));  // 00579C16..00579C43
+        host.text_set_ellipsized_00abb000(mode,                          // 00579C6E..00579CF7
+            host.lobby_option_text(kLobbyOptionGameMode, record.lobby_options_4c[2]), -1.0F);
+        host.text_set_00abaed0(players,                                  // 00579D36..00579DB3
+            std::to_string(record.players_28) + "/" + std::to_string(record.max_players_2c));
+        session_row_set_connection_icons_00578320(connection, record.connection_38, host);  // 00579E55..00579E5C
+        const bool allowed = (host.content_mask_728() & record.required_mask_88) == record.required_mask_88
+            && (host.content_mask_72c() & record.required_mask_8c) == record.required_mask_8c;
+        const GuiColour& colour = allowed ? kSessionRowJoinable : kSessionRowLocked;  // 00579E61..0057A083
+        host.widget_set_colour_50(server, colour);
+        host.widget_set_colour_50(mode, colour);
+        host.widget_set_colour_50(players, colour);
+        host.list_append_row_00a9d750(screen.session_list_30, row);      // 0057A085..0057A093
+        host.widget_set_byte_77(row, false);                             // 0057A0A8
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Session browser RefreshRowDetails 00577650 (cc13-menus6)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 005779CE..00577BC9: game mode record+54h (jump table 005782E4); modes 0..3 pick by record+58h
+// (table 00578304). Each case reads one 18h-byte extent of the map definition (+364h + 18h*j)
+// and adds a frame offset to the icon base.
+struct SessionMapExtentPick {
+    std::uint16_t offset;
+    std::int32_t frame_add;
+};
+
+bool session_map_extent_pick(std::uint32_t mode, std::uint32_t sub_mode, SessionMapExtentPick& pick) noexcept {
+    static constexpr std::array<SessionMapExtentPick, 4> kBySubMode{{{0x364, 6}, {0x37C, 5}, {0x394, 4}, {0x3AC, 3}}};
+    switch (mode) {
+    case 0: case 1: case 2: case 3:
+        if (sub_mode > 3) return false;
+        pick = kBySubMode[sub_mode];
+        return true;
+    case 4: pick = {0x3F4, 1}; return true;
+    case 5: pick = {0x40C, 2}; return true;
+    case 6: pick = {0x3C4, 7}; return true;
+    case 7: pick = {0x3DC, 0}; return true;
+    default: return false;
+    }
+}
+
+// 00577DC2..00577E9E: a rank byte in 1..20 shows icon frame rank-1, otherwise the text shows "-".
+void session_details_rank(std::uint8_t rank, std::uintptr_t icon, std::uintptr_t text, SessionDetailsHost& host) {
+    if (rank > 0 && rank <= 0x14) {
+        host.widget_set_state_88(icon, static_cast<std::uint16_t>(rank - 1), 0, 1.0F);
+        host.widget_show_34(icon, 1);
+        host.widget_show_34(text, 0);
+    } else {
+        host.text_set_localised_00abbe50(text, kSessionDetailsBlank, 1);
+        host.widget_show_34(icon, 0);
+        host.widget_show_34(text, 1);
+    }
+}
+
+}  // namespace
+
+void session_browser_refresh_row_details_00577650(const SessionRowState& screen,
+    const SessionDetailsWidgets& widgets, bool& content_allowed_264, SessionDetailsHost& host) {
+    const auto& records = screen.records_2a0;
+    const std::int32_t index = host.list_selected_index_00a9c920(screen.session_list_30) +
+        host.list_scroll_offset_164(screen.session_list_30);
+    if (records.empty() || index < 0 || static_cast<std::size_t>(index) >= records.size()) {
+        // 00578199..005782CF: no record; the UV store is 00568290 inlined.
+        host.text_set_localised_00abbe50(widgets.map_name_text_d0, kSessionDetailsBlank, 1);
+        host.widget_set_state_88(widgets.map_icon_a0, 0, 0, 1.0F);
+        host.icon_set_uv_rect_00568290(widgets.map_icon_a0, {0.0F, 0.0F, 1.0F, 1.0F});
+        host.widget_show_34(widgets.tilt_icon_9c, 1);
+        host.text_set_localised_00abbe50(widgets.rank_min_text_c4, kSessionDetailsBlank, 1);
+        host.widget_show_34(widgets.rank_min_icon_dc, 0);
+        host.widget_show_34(widgets.rank_min_text_c4, 1);
+        host.text_set_localised_00abbe50(widgets.rank_max_text_cc, kSessionDetailsBlank, 1);
+        host.widget_show_34(widgets.rank_max_icon_e0, 0);
+        host.widget_show_34(widgets.rank_max_text_cc, 1);
+        host.text_set_localised_00abbe50(widgets.ratio_text_d8, kSessionDetailsBlank, 1);
+        host.widget_show_34(widgets.ratio_icon_e4, 0);
+        host.widget_show_34(widgets.ratio_text_d8, host.session_client_virtual_198());
+        return;
+    }
+    const SessionJoinRecord& record = records[static_cast<std::size_t>(index)];
+    const auto map_value = record.open_slots_24;   // used here as the map option value (see the doc)
+    // 005776F6..005777F3: the map's localisation key from registry option 1 (searched on a copy of
+    // the inner map, read through operator[]), else FE.unknown_mapname.
+    const std::string map_name = host.lobby_option_text_known_34(kLobbyOptionMap, map_value)
+        ? host.lobby_option_text_34(kLobbyOptionMap, map_value) : std::string(kSessionUnknownMapName);
+    // 005777F8..0057783B: the record is fetched again with a fresh selection read.
+    const std::int32_t again = host.list_selected_index_00a9c920(screen.session_list_30) +
+        host.list_scroll_offset_164(screen.session_list_30);
+    if (again < 0 || static_cast<std::size_t>(again) >= records.size()) {
+        host.invalid_parameter_00bf6713();   // 005663B0's range check
+        return;
+    }
+    content_allowed_264 = host.content_allowed_00568490(records[static_cast<std::size_t>(again)]);
+    host.text_submit_00abaed0(widgets.map_name_text_d0, map_name, 1);
+    if (!host.map_icon_known_1c(kLobbyOptionMap, map_value)) {
+        // 00577D66..00577DC0: no icon entry: frame 0, the whole texture, tilt icon shown.
+        host.widget_set_state_88(widgets.map_icon_a0, 0, 0, 1.0F);
+        host.icon_set_uv_rect_00568290(widgets.map_icon_a0, {0.0F, 0.0F, 1.0F, 1.0F});
+        host.widget_show_34(widgets.tilt_icon_9c, 1);
+    } else {
+        std::int32_t frame = host.map_icon_index_1c(kLobbyOptionMap, map_value) * 8 - 7;   // LEA ebp*8-7
+        // 005778F2..005779C9: find the map definition whose name parses to the map value.
+        std::size_t found = host.map_definition_count();
+        for (std::size_t i = 0; i < host.map_definition_count(); ++i) {
+            if (std::atol(host.map_definition_name(i).c_str()) == map_value) {
+                found = i;
+                break;
+            }
+        }
+        SessionMapExtentPick pick{};
+        if (found < host.map_definition_count() &&
+            session_map_extent_pick(static_cast<std::uint32_t>(record.lobby_options_4c[2]),
+                static_cast<std::uint32_t>(record.lobby_options_4c[3]), pick)) {
+            frame += pick.frame_add;
+            // [0] = x0, [1] = z0, [2] = x1, [3] = z1.
+            const auto e = host.map_definition_extent(found, pick.offset);
+            auto uv_of = [](float world) {
+                return static_cast<float>((static_cast<double>(world) - kSessionMapWorldOrigin) / kSessionMapWorldSize);
+            };
+            // 00577BE3..00577C72: u from x, v flipped from z; 00577C76..00577CB4: width / height.
+            const float v0 = uv_of(e[1]);
+            const float v1 = uv_of(e[3]);
+            host.icon_set_uv_rect_00568290(widgets.map_icon_a0, {uv_of(e[0]),
+                static_cast<float>(1.0 - static_cast<double>(v0)), uv_of(e[2]),
+                static_cast<float>(1.0 - static_cast<double>(v1))});
+            const float width = std::fabs(static_cast<float>(static_cast<double>(e[0]) - e[2]));
+            const float height = std::fabs(static_cast<float>(static_cast<double>(e[1]) - e[3]));
+            const float aspect = static_cast<float>(static_cast<double>(width) / height);
+            // 00577CBD..00577D3A: fit the icon into a 150-pixel box of the 960x720 screen.
+            std::array<float, 2> size{kSessionMapIconWidth, kSessionMapIconHeight};
+            if (1.0F > aspect) {
+                size[0] = static_cast<float>(static_cast<double>(aspect) * kSessionMapIconPixels / kSessionScreenWidth);
+            } else if (aspect > 1.0F) {
+                size[1] = static_cast<float>(kSessionMapIconPixels / static_cast<double>(aspect) / kSessionScreenHeight);
+            }
+            host.widget_set_size_58(widgets.map_icon_a0, size);
+        }
+        // An unknown mode leaves the extent registers uninitialised in the image (see the doc);
+        // the reconstruction skips the UV and size update there.
+        host.widget_show_34(widgets.tilt_icon_9c, 0);                    // 00577D3C
+        host.widget_set_state_88(widgets.map_icon_a0, frame, 0, 1.0F);
+    }
+    session_details_rank(record.rank_min_48, widgets.rank_min_icon_dc, widgets.rank_min_text_c4, host);
+    session_details_rank(record.rank_max_49, widgets.rank_max_icon_e0, widgets.rank_max_text_cc, host);
+    // 00577EA0..0057811E: the +94h/+90h ratio (unsigned FILD fix-ups, x87 at 53-bit precision).
+    if (record.ratio_den_90 > host.ratio_minimum_b8()) {
+        host.widget_show_34(widgets.ratio_icon_e4, 0);
+        const double ratio = static_cast<double>(record.ratio_num_94) / static_cast<double>(record.ratio_den_90);
+        const auto percent = static_cast<std::int32_t>(ratio * 100.0);   // _ftol2, truncation
+        host.text_submit_00abaed0(widgets.ratio_text_d8, std::to_string(percent) + std::string(kSessionRatioSuffix), 0);
+        host.widget_show_34(widgets.ratio_text_d8, host.session_client_virtual_198());
+        // FCOMI ratio, registry+BCh; JBE keeps the joinable colour.
+        host.widget_set_colour_50(widgets.ratio_text_d8,
+            ratio > static_cast<double>(host.ratio_maximum_bc()) ? kSessionRowLocked : kSessionRowJoinable);
+    } else {
+        host.text_set_localised_00abbe50(widgets.ratio_text_d8, kSessionDetailsBlank, 1);
+        host.widget_show_34(widgets.ratio_icon_e4, 0);
+        host.widget_show_34(widgets.ratio_text_d8, host.session_client_virtual_198());
+        host.widget_set_colour_50(widgets.ratio_text_d8, kSessionRowJoinable);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Menu prompt Exit 00530970, HUD formation Enter 0053A4D0 / Exit 00536800 (cc13-menus6)
+// ---------------------------------------------------------------------------
+
+void menu_prompt_exit_00530970(MenuPromptExitState& screen, MenuPromptExitHost& host) {
+    host.widget_show_34(screen.panel_18, false);                         // 00530974..0053098A
+    host.widget_show_34(screen.panel_24, false);
+    // 0053098C..005309CD: any of the four managers with byte +3Ch set raises the command bar's +4.
+    bool any = false;
+    for (const auto which : {InterfaceManagerGlobal::FrontEnd, InterfaceManagerGlobal::Interface,
+             InterfaceManagerGlobal::Manager198b8, InterfaceManagerGlobal::Title}) {
+        if (host.manager_present(which) && host.manager_byte_3c(which)) {
+            any = true;
+            break;
+        }
+    }
+    if (any && host.command_bar_present_e1930c()) host.set_command_bar_byte_4();
+    screen.flag_288 = false;                                             // 005309D1..005309D7
+    screen.selection_284 = -1;
+}
+
+void hud_formation_enter_0053a4d0(HudFormationState& screen, HudFormationHost& host) {
+    if (host.group_owner_present_e188d8()) {
+        screen.group_138 = host.group_owner_284();                       // 0053A501..0053A509
+        if (screen.group_138 == 0) {
+            host.collapse_overlays_0068ab80(1, 1);                       // 0053A511..0053A532
+            return;
+        }
+        // 0053A533..0053A5E7: the leader's world x/z place the two markers (y from +18Ch/+188h).
+        const std::uintptr_t leader = host.group_leader_14(screen.group_138);
+        if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+        screen.leader_x_17c = host.unit_matrix_x_fc(leader);
+        if (!host.unit_pose_fresh_c8(leader)) host.unit_refresh_pose_00414db0(leader);
+        screen.leader_z_180 = host.unit_matrix_z_104(leader);
+        host.widget_virtual_30(screen.marker_178, {screen.leader_x_17c, screen.marker_y_18c, screen.leader_z_180});
+        host.widget_virtual_30(screen.marker_174, {screen.leader_x_17c, screen.marker_y_188, screen.leader_z_180});
+        if (screen.group_138 != 0) {                                     // 0053A5E9, re-tested
+            host.award_tracker_0068e420();
+            host.hud_refresh_0054e610();
+            host.trigger_hint_00690fd0(kFormationHint, 0);               // 0053A612..0053A636
+            const std::int32_t count = host.group_member_count_4f8(screen.group_138);
+            for (std::int32_t i = 0; i < count; ++i) {                   // 0053A680..0053A89B
+                const std::uintptr_t member = host.group_member_at_0070d060(screen.group_138, i);
+                if (member == 0) continue;
+                host.register_observer_pair_00694a60(member);
+                host.add_member_marker_00538d60(0x110, member, 1.0F);
+                host.add_member_marker_00538d60(0x11C, member, 1.0F);
+                const std::uintptr_t row = host.clone_subtree_00aab4c0(screen.row_template_b0, 0);
+                const std::uintptr_t icon = host.find_child_00aa7e00(row, "icon_Icon");
+                host.widget_virtual_88(icon, host.icon_frame_00653200(host.unit_icon_key_538(member)), 0, 1.0F);
+                host.widget_show_34(icon, true);
+                host.list_append_row_00a9d750(screen.member_list_ac, row);
+                if (member == leader) host.list_select_row_00a9c740(screen.member_list_ac, icon);  // the icon, as pushed
+                // 0053A781..0053A885: one curve widget per member under +98h, kept in +128h.
+                const std::uintptr_t link = host.create_widget_00aa6640(kFormationLinkWidgetType, "");
+                host.widget_set_local_z_00aa7d40(link, kFormationLinkDepth);
+                host.widget_show_34(link, true);
+                host.curve_set_texture_00abdd80(link, host.link_texture_e08694());
+                host.widget_set_colour_50(link, kFormationLinkColour);
+                host.append_child_00aaa5a0(screen.link_parent_98, link);
+                screen.links_12c.push_back(link);                        // 005389D0
+            }
+        }
+    }
+    // 0053A8A1..0053A8C7: reached with whatever +138h holds when *(00E188D8) is null.
+    screen.leader_value_13c = host.unit_738_virtual_50(host.group_leader_14(screen.group_138));
+    screen.flag_7c = false;
+    screen.flag_7d = false;
+    host.screen_refresh_00533a30();
+}
+
+void hud_formation_exit_00536800(HudFormationState& screen, HudFormationHost& host) {
+    host.hud_refresh_0054e610();                                         // 00536809..0053681A
+    host.screen_refresh_00533a30();
+    // 00536826..00536914: +110h markers: unregister the screen's observer pair from a marker's
+    // registrar (+4), delete the marker (virtual +0), then the tree is cleared.
+    for (const std::uintptr_t marker : screen.markers_110) {
+        if (host.marker_registrar_4(marker) != 0) host.unregister_pair_006952a0(host.marker_registrar_4(marker));  // +4 read unguarded
+        if (marker != 0) host.delete_virtual_0(marker);
+    }
+    screen.markers_110.clear();
+    for (const std::uintptr_t marker : screen.markers_11c) {             // 00536917..005369C3
+        if (marker != 0) host.delete_virtual_0(marker);
+    }
+    screen.markers_11c.clear();
+    host.list_clear_rows_00a9bec0(screen.member_list_ac);                // 005369C6..005369CC
+    for (std::uintptr_t& link : screen.links_12c) {                      // 005369D1..00536A26
+        if (link != 0) {
+            host.delete_virtual_4(link);
+            link = 0;
+        }
+    }
+    screen.links_12c.clear();                                            // 00536A28..00536A73 (erase all)
+}
+void frame_stats_register_0053c740(FrameStatsState& screen, FrameStatsRegisterHost& host) {
+    host.register_front_end_screen_004f71d0();                          // 0053C763
+    screen.page_0c = host.load_page_00aa5840("_Fps");                    // 0053C768..0053C7B5
+    static constexpr std::array<std::array<std::string_view, 3>, 6> kGroups{{
+        {"PG_1p_Text", "PG_1_Text", "PG_1s_Text"}, {"PG_2p_Text", "PG_2_Text", "PG_2s_Text"},
+        {"PG_3p_Text", "PG_3_Text", "PG_3s_Text"}, {"PG_4p_Text", "PG_4_Text", "PG_4s_Text"},
+        {"PG_5p_Text", "PG_5_Text", "PG_5s_Text"}, {"PG_6p_Text", "PG_6_Text", "PG_6s_Text"}}};
+    for (std::size_t g = 0; g < kGroups.size(); ++g) {                   // 0053C7E0..0053CF98, +20h..+64h
+        for (std::size_t k = 0; k < 3; ++k) screen.groups_20[g][k] = host.find_child_00aa7e00(screen.page_0c, kGroups[g][k]);
+    }
+    screen.fps_10 = host.find_child_00aa7e00(screen.page_0c, "Fps_Text");           // 0053D008
+    screen.min_fps_18 = host.find_child_00aa7e00(screen.page_0c, "MinFps_Text");    // 0053D078
+    screen.max_fps_1c = host.find_child_00aa7e00(screen.page_0c, "MaxFps_Text");    // 0053D0E8
+    screen.warning_14 = host.find_child_00aa7e00(screen.page_0c, "Warning_Text");   // 0053D158
+    // 0053D180..0053D1D9: Fingerprint_Text is looked up and given the payload, not stored.
+    const std::string payload = host.fingerprint_payload_text();         // read before the lookup
+    host.text_set_localised_00abbe50(host.find_child_00aa7e00(screen.page_0c, "Fingerprint_Text"), payload, 1);
+}
 }  // namespace bsp
