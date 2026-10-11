@@ -1,0 +1,981 @@
+{
+  "schema": 1,
+  "packet": "cc12_c04fd5_body_physical_01",
+  "status": "CAPTURE_AND_CONDITIONAL_MANUAL_CAPSTONE_COMPARISON_COMPLETE_PENDING_ROOT_REVIEW",
+  "address_scope": [
+    "00C04FD5",
+    "00C04FD6",
+    "00C04FD7",
+    "00C04FD8",
+    "00C04FD9",
+    "00C04FDA",
+    "00C04FDB",
+    "00C04FDC",
+    "00C04FDD"
+  ],
+  "frozen_Main": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+  "frozen_Git_objects": 16,
+  "positive_LF_index_blob_files": 10,
+  "frozen_inputs": {
+    "bytes": 52791,
+    "sha256": "2c4a66762608053e2520f12d0f5042347b2648d8ca3173f65057db4235762698"
+  },
+  "Source_subtree_identity_only": {
+    "src": "01614b9fcb7660481e1e7130a4563ee378655337",
+    "include": "ae7196607ba2e3915302f2c5fa5f1299555c51dc"
+  },
+  "actual_ref_observations": {
+    "opening": {
+      "worktree_HEAD": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "main_HEAD": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "worktree_origin_main": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "main_origin_main": "f7fb43633f7082f188a13abe75042d41c29c1e8f"
+    },
+    "closing": {
+      "worktree_HEAD": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "main_HEAD": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "worktree_origin_main": "f7fb43633f7082f188a13abe75042d41c29c1e8f",
+      "main_origin_main": "f7fb43633f7082f188a13abe75042d41c29c1e8f"
+    },
+    "origin_is_observed_identity_only_not_frozen_baseline": true
+  },
+  "plan": {
+    "schema": 1,
+    "packet": "cc12_c04fd5_body_physical_01",
+    "status": "PREPARATION_ONLY_NOT_EXECUTED",
+    "sequence": [
+      {
+        "label": "count_open",
+        "kind": "count"
+      },
+      {
+        "label": "entry_a",
+        "kind": "typed_ENTRY",
+        "address": "00C04FD5"
+      },
+      {
+        "label": "entry_b",
+        "kind": "typed_ENTRY",
+        "address": "00C04FD5"
+      },
+      {
+        "label": "count_after_entry",
+        "kind": "count"
+      },
+      {
+        "label": "walk_a_count_before",
+        "kind": "count"
+      },
+      {
+        "label": "walk_a_unit_0..8",
+        "kind": "independent_adaptive_typed_walk",
+        "max_units": 9
+      },
+      {
+        "label": "walk_a_count_after",
+        "kind": "count"
+      },
+      {
+        "label": "walk_b_count_before",
+        "kind": "count"
+      },
+      {
+        "label": "walk_b_unit_0..8",
+        "kind": "independent_adaptive_typed_walk",
+        "max_units": 9
+      },
+      {
+        "label": "walk_b_count_after",
+        "kind": "count"
+      },
+      {
+        "label": "bytes_count_before",
+        "kind": "count"
+      },
+      {
+        "label": "bytes_a",
+        "kind": "bytes",
+        "address": "00C04FD5",
+        "length": 9
+      },
+      {
+        "label": "bytes_b",
+        "kind": "bytes",
+        "address": "00C04FD5",
+        "length": 9
+      },
+      {
+        "label": "entry_after_bytes",
+        "kind": "typed_ENTRY_epoch_closure",
+        "address": "00C04FD5"
+      },
+      {
+        "label": "bytes_count_after",
+        "kind": "count"
+      }
+    ],
+    "command_templates": {
+      "count": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "typed": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "<exact owner unit start>",
+        "--max-ranges",
+        "16",
+        "--output",
+        "<capture label>.raw.json"
+      ],
+      "bytes": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00C04FD5",
+        "--length",
+        "9"
+      ]
+    },
+    "Root_launch_argv_example": [
+      "C:\\ProgramData\\miniconda3\\python.exe",
+      "local/cc12_c04fd5_body_physical_01/capture_driver.py",
+      "--ready-file",
+      "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_entry_body_physical_batch_01/Root_window_01_ready.json"
+    ],
+    "Root_launch_cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01",
+    "ready_file_interface": "--ready-file <absolute Root_window_NN_ready.json>",
+    "Root_ready_schema": {
+      "window_name": "nonempty string",
+      "claimed_at_utc": "UTC ISO timestamp",
+      "expires_at_utc": "UTC ISO timestamp",
+      "maximum_hold_seconds": 120,
+      "root_native_count": 0,
+      "gpr_writes": 0
+    },
+    "readiness_original_copied_and_rechecked_before_Native": true,
+    "abort_on_expiry_before_every_Native": true,
+    "standby_or_wait_loop": false,
+    "Native_command_maximum": 31,
+    "dynamic_controls": "Opening live/snapshot/comparison and first typed epoch are fresh observations; all later controls must agree. No fixed 64927/4984 requirement.",
+    "entry_comparison": {
+      "whole_prior_payload": true,
+      "excluded_top_level_fields_only": [
+        "modification_number_before",
+        "modification_number_after"
+      ]
+    },
+    "walk_contract": {
+      "first": "00C04FD5",
+      "last_inclusive": "00C04FDD",
+      "owner_bytes": 9,
+      "complete_owner_record_must_equal_accepted_ENTRY": true,
+      "four_exact_InstructionDB_aliases_required": true,
+      "unit_length_in_owner_required": true,
+      "derive_each_walk_independently": true,
+      "complete_payload_walk_equality": true,
+      "independent_default_effective_flags_targets_companions": true,
+      "end_plus_one_00C04FDE_never_queried": true
+    },
+    "bytes_condition": "Only after paired ENTRY and two complete equal independent owner walks pass every control.",
+    "physical_CLI_retention": "All three complete physical source files copied and pinned before and after every Native command; separate driver readiness copies also retained.",
+    "context_policy": {
+      "per_address_CPU_context_queried": false,
+      "rendered_listing_queries": 0,
+      "default_mode": "x86:LE:32:default",
+      "later_decode_is_conditional_on_default_32_bit_mode": true
+    },
+    "after_capture": "Stop for manual byte analysis and Root review. Commit a retained manual decode record before any fresh Capstone import. No parent decoder/helper execution.",
+    "archives_or_guarded_final_proof_prepared": false,
+    "GPR_writes": 0,
+    "Source_bodies_or_absence_census": false,
+    "tests_probes_game_OS_audio_runtime": false,
+    "new_baseline_or_body_admission": false
+  },
+  "physical_source_review": {
+    "capture_body.py": {
+      "bytes": 17949,
+      "sha256": "6528bc83dbe297ef929ad0f30b46a0efae3fd341f737f4eb3ad8d90c74352130",
+      "line_count": 305,
+      "AST_parse": "PASS",
+      "imports": [
+        "base64",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "subprocess",
+        "sys"
+      ],
+      "full_physical_source_review": "All source contents read in bounded physical file pages; final edited blocks read after changes.",
+      "executed_or_imported": false
+    },
+    "capture_driver.py": {
+      "bytes": 5240,
+      "sha256": "8d731c94b0a653d25f57a81104f6f99ef6381f7e31863466df039338a41438c4",
+      "line_count": 99,
+      "AST_parse": "PASS",
+      "imports": [
+        "argparse",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "subprocess",
+        "sys"
+      ],
+      "full_physical_source_review": "All source contents read in bounded physical file pages; final edited blocks read after changes.",
+      "executed_or_imported": false
+    }
+  },
+  "retained_history": {
+    "manifest": {
+      "bytes": 390209,
+      "sha256": "ea3d55497b522e0ddcec8c84a5749bb0c095d875daa9620ece5fcdfb1b3b1f41"
+    },
+    "original_count": 140,
+    "prior_worker_originals": 108,
+    "Root_review_originals": 32,
+    "excluded_prior_worker_originals": 251,
+    "excluded_Root_batch_artifacts": 2319
+  },
+  "historical_states": {
+    "accepted_ENTRY_historical_state": {
+      "function_count": 64730,
+      "modification_number": 98
+    },
+    "accepted_BODY_stop": {
+      "status": "STOP_BEFORE_FIRST_TYPED_QUERY",
+      "packet": "cc12_c04fd5_direct_target_body_metadata",
+      "reasons": [
+        "opening_count_differs_from_proposed_diagnostic_baseline"
+      ],
+      "original_stdout_text": "live function count 64747; snapshot 64730; changed\r\n",
+      "original_stderr_text": "",
+      "Native_returncode": 0,
+      "expected_diagnostic_control": {
+        "live_function_count": 64742,
+        "snapshot_function_count": 64730,
+        "comparison": "changed",
+        "diagnosed_epoch_not_queried_or_accepted_here": 1614
+      },
+      "observed_count_control": {
+        "live_function_count": 64747,
+        "snapshot_function_count": 64730,
+        "comparison": "changed"
+      },
+      "actual_epoch": null,
+      "actual_epoch_queried": false,
+      "count_matches_proposed_diagnostic_baseline": false,
+      "Native_commands": 1,
+      "typed_flow_queries": 0,
+      "completed_walks": 0,
+      "physical_bytes_queries": 0,
+      "context_queries": 0,
+      "CLI_physical_before_reads": 3,
+      "CLI_physical_after_reads": 3,
+      "producer_unchanged": true,
+      "control_validation_stops": 1,
+      "current_Native_subprocess_failures": 0,
+      "current_offline_helper_failures": 0,
+      "current_inspection_failures": 0,
+      "current_display_truncations": 0,
+      "baseline_retries": 0,
+      "new_baseline_accepted": false,
+      "whole_body_admission": false,
+      "manual_body_decode_completed": false,
+      "fresh_body_Capstone_executed": false,
+      "strict_body_proof_executed": false,
+      "Source_contents_read": false,
+      "GPR_writes": 0,
+      "parent_capture_and_failure_history_not_relabelled": true,
+      "original_command_record_pin": {
+        "bytes": 1628,
+        "sha256": "e296c3ca01692a078eec382f2e6274d1d653dc630198d85f39e9f3a27e7ed2e9"
+      }
+    },
+    "accepted_rebaseline": {
+      "address": "00C04FD5",
+      "commit": "91bc6523c44b72f1c72af0bc825e690c29a51cb0",
+      "count": 64927,
+      "epoch": 4984,
+      "unit_length": 2,
+      "owner_length": 9,
+      "owner_last": "00C04FDD",
+      "next_cursor_unqueried": "00C04FD7",
+      "end_plus_one_unqueried": "00C04FDE",
+      "current_packet_Native_total": 4,
+      "controlled_capture_Native": 4,
+      "post_seal_inspection_incidents": 1
+    }
+  },
+  "failure_scopes": {
+    "current_preparation": {
+      "inspection_failures": 0,
+      "inspection_display_truncations": 1,
+      "Native_failures": 0,
+      "offline_helper_failures": 0,
+      "setup_command_failures": 1,
+      "events": [
+        {
+          "phase": "initial_inline_setup",
+          "original": "setup_failure_01_original_tool.json",
+          "minimal_retry": "setup_retry_01.py",
+          "classification": "setup_command_failure"
+        },
+        {
+          "phase": "Root_original_copies_shape_inspection",
+          "original": "inspection_display_01.json",
+          "classification": "inspection_display_truncation",
+          "count": 1
+        }
+      ],
+      "scope": "Current cc12_c04fd5_body_physical_01 preparation; inherited failures remain separate."
+    },
+    "accepted_ENTRY": {
+      "worker_Native": 0,
+      "worker_offline_helpers": 0,
+      "worker_setup": 0,
+      "worker_inspection": 1,
+      "worker_inspection_display_truncations": 1,
+      "separate_pre_packet_routing_inspection": 0,
+      "separate_pre_packet_routing_display_truncations": 1,
+      "Root_gate": 1,
+      "Root_pre_gate_inspection": 3,
+      "Root_pre_gate_display_truncations": 0,
+      "separate_Root_driver_preparation": 1,
+      "prior_accepted_Root_IMUL_SF_comparison": 1,
+      "Root_postadmission_inspection": 1,
+      "Root_postadmission_display_truncations": 0,
+      "Root_final_preparation": 1,
+      "Root_own_manual_decoder": 0,
+      "Root_own_fresh_Capstone": 0,
+      "Root_actual_final_review": 0,
+      "Root_strict_replay": 0,
+      "Root_publication": 0
+    },
+    "accepted_BODY_control_stops": 1,
+    "accepted_rebaseline_post_seal_inspection": 1,
+    "Root_checkpoint_handoff_only": {
+      "integrated_Main": "f2e9f28b9229d69150237075855843aa03e65674",
+      "Root_inspection_failures": 1,
+      "Root_verifier_first_failure_missing_assumed_CLI_after_file": 1,
+      "minimal_retry": "PASS",
+      "scope": "Root message provenance only; no claim of copying or reexecuting those distinct checkpoint originals."
+    },
+    "Root_rebaseline_batch": {
+      "C04EF3_first_offline_readiness_envelope_assertion": 1,
+      "C11C21_first_publication_review_missing_two_handoff_blob_copies": 1,
+      "FD_publication_plan_inline_authoring_SyntaxError": 1,
+      "FD_dependent_driver_preflight_missing_plan": 1,
+      "FD_inline_authoring_display_truncation": 1,
+      "Root_Native_failures": 0,
+      "Root_GPR_writes": 0,
+      "original_inline_failure_full_stderr_retained": false,
+      "inline_failure_retention_note": "Original tool input and returned errors remain in the conversation. The inline preparation had no prepinned file or full physical stderr capture; its tool output was truncated. The separately named file-based correction passed. The dependent driver failed while constructing its invocation before any child ran."
+    },
+    "current_capture": {
+      "Native_subprocess_failures": 0,
+      "offline_helper_failures": 0,
+      "control_validation_stops": 0,
+      "baseline_retries": 0
+    },
+    "current_manual_and_decoder": {
+      "manual_offline_helper_failures": 0,
+      "decoder_preparation_helper_failures": 0,
+      "decoder_driver_failures": 0,
+      "decoder_process_failures": 0,
+      "decoder_comparison_failures": 0,
+      "Native_commands": 0,
+      "fresh_decoder_executions": 1
+    }
+  },
+  "Root_inline_failure_retention_limit": "Original tool input and returned errors remain in the conversation. The inline preparation had no prepinned file or full physical stderr capture; its tool output was truncated. The separately named file-based correction passed. The dependent driver failed while constructing its invocation before any child ran.",
+  "ready_manifest_local_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\ready_preparation.json",
+  "Native_commands": 21,
+  "capture_driver_executed": true,
+  "manual_decode_completed": true,
+  "Capstone_imported": true,
+  "body_admission": false,
+  "new_baseline_accepted": false,
+  "Source_contents_read": false,
+  "GPR_writes": 0,
+  "preparation_record": {
+    "copy": {
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\publication\\public_preimages\\reports\\cc12_c04fd5_body_physical_01.json",
+      "bytes": 13927,
+      "sha256": "a730fcc125b7181a9992af38e694db0fc7c02b35e5edde5bf73860ccdfc87533"
+    },
+    "original_status": "READY_PREPARATION_ONLY_PENDING_ROOT_SCOPED_ADMISSION",
+    "original_plan_is_historical_preparation": true
+  },
+  "capture_result": {
+    "count": 65052,
+    "snapshot_count": 65052,
+    "epoch": 7572,
+    "count_brackets": [
+      {
+        "label": "count_open",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "count_after_entry",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "walk_a_count_before",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "walk_a_count_after",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "walk_b_count_before",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "walk_b_count_after",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "bytes_count_before",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      },
+      {
+        "label": "bytes_count_after",
+        "live_function_count": 65052,
+        "snapshot_function_count": 65052,
+        "comparison": "same"
+      }
+    ],
+    "Native_commands": 21,
+    "exact_ENTRY_metadata_reads": 3,
+    "independent_walks": 2,
+    "units_per_walk": 4,
+    "complete_typed_reads": 11,
+    "exact_nine_byte_reads": 2,
+    "CLI_physical_before_after_copies": 126,
+    "bytes_hex": "6a00e88bffffff59c3",
+    "control_validation_stops": 0,
+    "Native_subprocess_failures": 0,
+    "offline_helper_failures": 0,
+    "baseline_retries": 0
+  },
+  "manual": {
+    "schema": 1,
+    "packet": "cc12_c04fd5_body_physical_01",
+    "status": "MANUAL_COMPLETE_BEFORE_FRESH_CAPSTONE_PENDING_ROOT_REVIEW",
+    "authored_at_utc": "2026-10-11T19:36:57.198075+00:00",
+    "body_address": "00C04FD5",
+    "body_last_inclusive": "00C04FDD",
+    "length": 9,
+    "bytes_hex": "6a00e88bffffff59c3",
+    "body_pin": {
+      "bytes": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+    },
+    "units": [
+      {
+        "address": "00C04FD5",
+        "offset": 0,
+        "length": 2,
+        "bytes_hex": "6a00",
+        "mnemonic": "push",
+        "opcode": "6A",
+        "prefixes": [],
+        "ModRM": null,
+        "SIB": null,
+        "ModRM_memory_displacement": null,
+        "operand_bits": 32,
+        "operand": {
+          "kind": "immediate",
+          "encoded_bits": 8,
+          "encoded_unsigned": 0,
+          "signed_value": 0,
+          "sign_extended_operand_u32": 0
+        },
+        "immediate_offset": 1,
+        "immediate_size": 1,
+        "next_instruction": "00C04FD7",
+        "direct_target": null,
+        "flow": "fallthrough",
+        "normal_instruction_effect": "Push sign-extended imm8 zero as a 32-bit stack value.",
+        "full_ESP_effect_only_if_SS_B_1": "ESP_after = (ESP_before - 4) mod 2^32; M32[SS:ESP_after] = 0.",
+        "explicit_GPR_result": null,
+        "arithmetic_flags_written_by_this_instruction": [],
+        "captured_saved_metadata_observation": {
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fd7"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fd7"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        }
+      },
+      {
+        "address": "00C04FD7",
+        "offset": 2,
+        "length": 5,
+        "bytes_hex": "e88bffffff",
+        "mnemonic": "call",
+        "opcode": "E8",
+        "prefixes": [],
+        "ModRM": null,
+        "SIB": null,
+        "ModRM_memory_displacement": null,
+        "operand_bits": 32,
+        "operand": {
+          "kind": "relative_immediate",
+          "encoded_bits": 32,
+          "encoded_little_endian_hex": "8bffffff",
+          "encoded_unsigned": 4294967179,
+          "signed_value": -117,
+          "next_EIP_u32": 12603356,
+          "target_hex": "00C04F67"
+        },
+        "immediate_offset": 1,
+        "immediate_size": 4,
+        "next_instruction": "00C04FDC",
+        "direct_target": "00C04F67",
+        "flow": "unconditional_near_relative_call",
+        "normal_instruction_effect": "Transfer EIP to (00C04FDC + signed32(FFFFFF8B)) mod 2^32 = 00C04F67; push return EIP 00C04FDC.",
+        "full_ESP_effect_only_if_SS_B_1": "ESP_after = (ESP_before - 4) mod 2^32; M32[SS:ESP_after] = 00C04FDC.",
+        "explicit_GPR_result": null,
+        "arithmetic_flags_written_by_this_instruction": [],
+        "callee_effects_return_behavior_ABI_and_semantics": "Unqueried and unproven; no conclusions follow from CALL or a saved target name.",
+        "captured_saved_metadata_observation": {
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "UNCONDITIONAL_CALL",
+              "is_call": true,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fdc"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fdc"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [
+              {
+                "space": "ram",
+                "offset": "00c04f67"
+              }
+            ],
+            "effective_targets": [
+              {
+                "space": "ram",
+                "offset": "00c04f67"
+              }
+            ]
+          },
+          "direct_call_targets": [
+            {
+              "address": {
+                "space": "ram",
+                "offset": "00c04f67"
+              },
+              "default_target": true,
+              "effective_target": true,
+              "function_at_target": {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00c04f67"
+                },
+                "name": "BSP_CRT_EncodePointerCurrentState",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null
+              }
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C04FDC",
+        "offset": 7,
+        "length": 1,
+        "bytes_hex": "59",
+        "mnemonic": "pop",
+        "opcode": "59",
+        "prefixes": [],
+        "ModRM": null,
+        "SIB": null,
+        "ModRM_memory_displacement": null,
+        "operand_bits": 32,
+        "operand": {
+          "kind": "register",
+          "register": "ecx",
+          "opcode_register_selector": 1
+        },
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "next_instruction": "00C04FDD",
+        "direct_target": null,
+        "flow": "fallthrough",
+        "normal_instruction_effect": "Read one 32-bit stack value into ECX.",
+        "full_ESP_effect_only_if_SS_B_1": "ECX = M32[SS:ESP_before]; ESP_after = (ESP_before + 4) mod 2^32.",
+        "explicit_GPR_result": "ECX receives the current stack value; its value is not inferred from the earlier PUSH across the opaque CALL.",
+        "arithmetic_flags_written_by_this_instruction": [],
+        "captured_saved_metadata_observation": {
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fdd"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c04fdd"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        }
+      },
+      {
+        "address": "00C04FDD",
+        "offset": 8,
+        "length": 1,
+        "bytes_hex": "c3",
+        "mnemonic": "ret",
+        "opcode": "C3",
+        "prefixes": [],
+        "ModRM": null,
+        "SIB": null,
+        "ModRM_memory_displacement": null,
+        "operand_bits": 32,
+        "operand": null,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "next_instruction": "00C04FDE",
+        "direct_target": null,
+        "flow": "near_return_indirect_stack_target",
+        "normal_instruction_effect": "Load the near return EIP from the current 32-bit stack value; C3 has no immediate extra stack adjustment.",
+        "full_ESP_effect_only_if_SS_B_1": "EIP = M32[SS:ESP_before]; ESP_after = (ESP_before + 4) mod 2^32.",
+        "explicit_GPR_result": null,
+        "arithmetic_flags_written_by_this_instruction": [],
+        "next_instruction_qualification": "C04FDE is the arithmetic byte end only, not a fallthrough or queried address.",
+        "captured_saved_metadata_observation": {
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        }
+      }
+    ],
+    "conditions": {
+      "default_code_and_operand_mode": "x86 32-bit, no operand/address override prefixes in these bytes",
+      "per_address_CPU_context_queried": false,
+      "CS_D_or_SS_B_context_verified": false,
+      "all_effect_descriptions_require_normal_instruction_completion": true,
+      "full_ESP_stack_expressions_require_SS_B_1": true,
+      "SS_B_0_qualification": "A 16-bit stack uses SP addressing/updates; the full-ESP equations above are not asserted for that context.",
+      "CALL_is_opaque": true,
+      "callee_returns_or_preserves_stack_or_registers_assumed": false
+    },
+    "scope": {
+      "explicit_local_arithmetic_flags_written": [],
+      "call_may_change_registers_flags_memory_or_control": true,
+      "whole_routine_stack_balance_or_EAX_result_contract_proven": false,
+      "callee_body_read_or_queried": false,
+      "target_00C04F67_new_query": false,
+      "end_plus_one_00C04FDE_queried": false,
+      "Source_contents_read": false,
+      "GPR_writes": 0,
+      "ABI_compatible": false,
+      "game_validated": false,
+      "physical_or_body_admission": false,
+      "Capstone_imported_or_executed_in_packet": false
+    },
+    "capture_evidence": {
+      "capture_observed.json": {
+        "bytes": 164052,
+        "sha256": "d33a74687cb145243a0e638b30f732c74c7f55565e9b01e9338e9442b2d23916"
+      },
+      "driver_preexecution.json": {
+        "bytes": 2899,
+        "sha256": "ac7dc1ab9cb7b34b447fac2b8c324df0a2590642e050605b3b037c477e100a9f"
+      },
+      "driver_execution.json": {
+        "bytes": 587,
+        "sha256": "0e32981ba96e6f651276fa14ddf988244ec9094de7d05ba8acb9b10e75990707"
+      },
+      "producer.stdout.bin": {
+        "bytes": 299,
+        "sha256": "5a960c721e0c66d336b49b776a80912c93f4b94286aba2556373a5de60a655b0"
+      },
+      "producer.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Root_ready_original.json": {
+        "bytes": 428,
+        "sha256": "59145fea9168eb94f8142577b269a4af77c4869c50ed125290f4811746b8f1e6"
+      },
+      "bytes_a.bin": {
+        "bytes": 9,
+        "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+      },
+      "bytes_b.bin": {
+        "bytes": 9,
+        "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+      },
+      "bytes_a.stdout.bin": {
+        "bytes": 49,
+        "sha256": "fbb9dafa2e3945730ef20f509811ae94311d37ab98eaa1b580ea0f042afed125"
+      },
+      "bytes_b.stdout.bin": {
+        "bytes": 49,
+        "sha256": "fbb9dafa2e3945730ef20f509811ae94311d37ab98eaa1b580ea0f042afed125"
+      },
+      "bytes_a.command.json": {
+        "bytes": 3002,
+        "sha256": "39aef9ed0d0f6412a879fc9b87e39ee8ef29f7969b0f43437b9cdc2e3978fb7a"
+      },
+      "bytes_b.command.json": {
+        "bytes": 3002,
+        "sha256": "d5c3ee035315bbdbcd71ac73b124916bf8ef52dd2c008e05830762d29892f65e"
+      },
+      "walk_a.json": {
+        "bytes": 15411,
+        "sha256": "f1a5493b3eb9443d1191c4296930a0e2b8fe78691952afd0df2c2ada1ad45358"
+      },
+      "walk_b.json": {
+        "bytes": 15411,
+        "sha256": "e80ba5b93f9354e6ad3c5a89759752242c697b196f47baefa7477f514a83c81e"
+      }
+    },
+    "capture_count": {
+      "live_function_count": 65052,
+      "snapshot_function_count": 65052,
+      "comparison": "same"
+    },
+    "capture_epoch": 7572,
+    "capture_Native_commands": 21,
+    "capture_independent_Root_review": "Proceeds separately; this manual record does not claim its completion."
+  },
+  "fresh_Capstone": {
+    "schema": 1,
+    "status": "PASS",
+    "differences": [],
+    "decoded_units": 4,
+    "body_length": 9,
+    "Capstone_imported_once_in_fresh_process": true,
+    "manual_created_before_first_import": true,
+    "per_address_CPU_context_queried": false,
+    "full_ESP_effects_require_SS_B_1_and_normal_completion": true,
+    "callee_semantics_or_ABI_inferred": false,
+    "target_queried": false,
+    "Native_commands": 0,
+    "physical_body_admitted": false,
+    "game_validated": false,
+    "raw_register_group_observations_are_library_metadata_not_complete_architectural_effect_proof": true,
+    "raw_pin": {
+      "bytes": 6101,
+      "sha256": "d3ea54bf8053a73e9471e90d79ae615fb1814f1a22c83e992c4ba472dd8e5fcf"
+    }
+  },
+  "Root_independent_decoder_review": {
+    "status": "PASS",
+    "first_execution": true,
+    "provenance": "Root message; separate Root-owned original receipt, not copied or reexecuted here",
+    "receipt": "Root local/cc12_entry_body_physical_batch_01/Root_FD_decoder_review/receipt.json"
+  },
+  "current_packet_evidence": {
+    "capture/capture_observed.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capture\\capture_observed.json",
+      "bytes": 164052,
+      "sha256": "d33a74687cb145243a0e638b30f732c74c7f55565e9b01e9338e9442b2d23916"
+    },
+    "capture/driver_execution.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capture\\driver_execution.json",
+      "bytes": 587,
+      "sha256": "0e32981ba96e6f651276fa14ddf988244ec9094de7d05ba8acb9b10e75990707"
+    },
+    "capture/bytes_a.bin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capture\\bytes_a.bin",
+      "bytes": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+    },
+    "capture/bytes_b.bin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capture\\bytes_b.bin",
+      "bytes": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+    },
+    "manual_body.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\manual_body.json",
+      "bytes": 12408,
+      "sha256": "3695cf2f6d0f29bb8f60ee6f0c9693ba41b6b6178451f4206037273660ce471d"
+    },
+    "manual_before_capstone.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\manual_before_capstone.json",
+      "bytes": 806,
+      "sha256": "6af0cc26f24548a70074e73c9f2764d1b273b012eb7b85d07410a6a5f6e0ac57"
+    },
+    "decoder_ready.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\decoder_ready.json",
+      "bytes": 27074,
+      "sha256": "090fc6607e198b298b18e0fe7f1317d3106d70bb4544ea05e06f61d5efb7f3d4"
+    },
+    "capstone_decode/driver_execution.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capstone_decode\\driver_execution.json",
+      "bytes": 2012,
+      "sha256": "daae03d3467c7377ff1cdb760ab7e157a076b821e6f6f9e79c894fe1f3d44e1f"
+    },
+    "capstone_decode/decoder_identity.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capstone_decode\\decoder_identity.json",
+      "bytes": 5359,
+      "sha256": "616af9363f1783fc3ea7a172c7b928afecc297c1e84f4b1a43df2d510c3b12e1"
+    },
+    "capstone_decode/raw_instructions.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capstone_decode\\raw_instructions.json",
+      "bytes": 6101,
+      "sha256": "d3ea54bf8053a73e9471e90d79ae615fb1814f1a22c83e992c4ba472dd8e5fcf"
+    },
+    "capstone_decode/comparison.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capstone_decode\\comparison.json",
+      "bytes": 689,
+      "sha256": "4a3a956111604df69b58ebd755b1f85525f7a3aa8166cb94ddcfc893e123143b"
+    },
+    "capstone_decode/before_import.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\capstone_decode\\before_import.json",
+      "bytes": 674,
+      "sha256": "6f41e1d25965f1ea9842fb68683dea1489d804b9839044539b8736e4244214a4"
+    }
+  },
+  "publication": {
+    "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\publication\\original_artifact_manifest.json",
+    "finite_original_count": 632,
+    "two_public_paths_only": [
+      "docs/CC12_C04FD5_BODY_PHYSICAL_01.md",
+      "reports/cc12_c04fd5_body_physical_01.json"
+    ],
+    "handoff_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_body_physical_01\\local\\cc12_c04fd5_body_physical_01\\final_handoff.json",
+    "commit_binding_is_in_handoff": true,
+    "publisher_failure_count_at_report_write": 0,
+    "publisher_completion_receipt_is_external": true
+  },
+  "interpretation_limits": {
+    "default_x86_32_mode_is_conditional": true,
+    "per_address_CPU_context_queried": false,
+    "CS_D_or_SS_B_verified": false,
+    "full_ESP_formulas_require_SS_B_1_and_normal_completion": true,
+    "direct_call_target": "00C04F67",
+    "direct_call_target_queried": false,
+    "callee_semantics_ABI_or_return_behavior_inferred": false,
+    "C04FDE_queried": false,
+    "physical_body_admission": false,
+    "ABI_admission": false,
+    "runtime_admission": false,
+    "Root_independent_final_review_in_progress_at_publication": true,
+    "Source_contents_read": false,
+    "tests_or_probe_or_runtime_executed": false,
+    "GPR_writes": 0,
+    "archive_created": false,
+    "guarded_final_proof_executed": false
+  }
+}
