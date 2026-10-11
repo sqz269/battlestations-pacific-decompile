@@ -16265,3 +16265,38 @@ Run: JM08 + `cc9-lua47\local\l47_j8_g9.txt`, 10000 frames, `-Traj`, on `56441071
   - Unread: which of the two `+324h` stores comes last for mode 3 in the image (`009ED947` against the
     `009EE5xx` navigation arm), and what `nested+120Ch` is aiming at (`009E76D0` slot choice). Binding waits on that
     read. A wrong guess would change every attackmove ship.
+
+### 208.4 Mode-3 steering: the host's store order is the image's; the boats' half throttle is faithful (cc9-ships42, 2026-10-11; a read)
+
+The whole `009ED6B0..009EF228` listing (`local\s42_9ed6b0.asm`, 1629 lines from the disk bytes), filtered for `+324h`,
+`+1C4h` and `+1D8h`.
+
+- **The direct arm.**
+  - `009ED7D8..009ED7FC` reads the mode `blk+1C4h`, latches `mode == 3` into BL (`009ED7E9`, saved at `[ESP+4Fh]`), and
+    skips the direct arm only for mode 2, Navigate (`JE 009ED9FF`).
+  - So modes 0, 1 and 3 run `009ED802..009ED9F9`. For mode 3, `+324h` = `blk+1D8h`, the desired heading, at
+    `009ED947`/`009ED9F9`.
+- **The navigation arm.** After the `+3F5h` early-out (`009ED9FF`) and the `+3A5h`/`+3A6h` block, `009EE580` tests
+  `mode == 2`, or BL (mode 3) at `009EE59D`. Only modes 0 and 1 leave for `009EF206`.
+  - **Mode 3 therefore runs the path arm as well.** Its `+324h` store at `009EE818` (the waypoint bearing, `00414EB0`)
+    runs only when `blk+32Ch > 0.1` (`00D7A3A0`, `009EE7FB`) and the path point's steer byte `[ESP+99h]` is set
+    (`009EE809`).
+  - Otherwise the direct arm's copy of the desired heading stands. The later stores at `009EE9D2` adjust whichever
+    value is there.
+  - The host has the same order: `src/ship_ai_states.cpp:185` (`009ED947`), then `src/ship_ai_navigation.cpp:223`
+    under `kShipAiNavBearingDeadzone` and `steer_enabled`. That matches the step log, where `heading_target` is the path
+    bearing and `desired_heading` is not.
+- **The commanded heading.** In `009E5E90`, the add arm stores the bearing itself only when `-0.1 < bearing - heading <
+  150 deg` (`009E5F1F..009E5F4C`). Otherwise it stores `heading + 150 deg` (`009E6035..009E6050`, `00438AA0` with
+  `00D1FED0` = 2.618). The subtract arm (`009E5FD3`/`009E600F`) is the mirror image.
+  `ship_ai_approach_commanded_heading_009e5e90` matches this.
+  - Y4's `desired_heading` of 2.55 rad is exactly its heading (-0.04 rad) + 2.618, the add arm's "turn the long way"
+    store. The ring's chosen bearing lies more than 0.1 rad on the other side of the committed arm.
+- **Verdict: no host gap in the steering or the commanded heading.** With the same ring choice the image also seeds the
+  boat at half throttle, because the error is at least 70 degrees, and steers it by the path. The Gyoraitei's slow
+  approach is image behaviour for these inputs. What is left to compare is the ring scan's inputs (`009E76D0`'s slot
+  scores, which pick the bearing on the far side), not its control flow. No binding, so no pair.
+- **The `+A8h` records** (206 item 3, lead's note). The assignment erase `006C7540` (`006C7540..006C7670`) neither
+  registers nor unregisters an observer (its only calls are the lock pair and the CRT range checks). So the `+A8h`
+  records most likely have no Kill observer of their own. They leave only through `006C7680` (a live retire) and
+  `006CC9F0` (`006CCD5A`).
