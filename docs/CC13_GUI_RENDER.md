@@ -164,6 +164,41 @@ Icon-derived; `+138h` current value, `+13Ch` DefaultValue.
 - `00AC7B80` TypeIdInit: type record named `cGuiProgressbar`, parent chain from the Icon
   record (`00AB3180`, `cGuiIcon`).
 
+## Movie subtitles (type 0Ah)
+
+These are the bodies behind `prepare_movie_subtitles` / `update_movie_subtitles` /
+`clear_movie_subtitles` in `include/bsp/movie_player.hpp`, which the game host still logs as
+unimplemented. Code: `include/bsp/movie_subtitles.hpp`, `src/movie_subtitles.cpp`
+(build-tested only; the host is not wired).
+
+- `00AB0520` LoadSubtitles (`ECX` movie, stack path, `RET 4`): `00AB00C0` first; the
+  script path is the movie path minus its last four characters plus `.mws` (`00D5C330`,
+  `00AB0571..00AB05B5`); the file store at `[0109CEEC]` vtable +8 decides `+104h`. The Text
+  child is `SubtitlesWideScreen_Text` or `SubtitlesNormal_Text` by `[0109CF04]+0Dh`, kept
+  at `+108h`. Each `subtitles` row is read as `[1]` string, `[2]`/`[3]` numbers stored as
+  float at `+08h`/`+0Ch` (`00AB08E0`, `00AB0912`), `[4]`/`[5]` booleans with default false
+  (`00B662F0` with `PUSH 0`) at `+10h`/`+11h` (`00AB094A`, `00AB097E`). `extratitles` rows
+  (24h records at `+124h`, numbers, a string naming a widget that is cloned, a boolean and
+  a number with default) are only partly read here; no `.mws` file in this installation
+  has `extratitles`.
+- `00AADBA0` UpdateSubtitles: time is `FrameNum * FrameRateDiv / FrameRate` from
+  `BinkGetRealtime` (`[00CE23B8]`, struct at `[ESP+30h]`; IMUL low dword, both FILDs
+  corrected to unsigned with `00CE3978`). With the cursor at `+11Ch`: when `t > end`
+  (`00AADC47`), the Text is cleared and the cursor advances (one line per frame). Then
+  when `t >= start` (`00AADCA5`, unordered skips): clear when `!always_show` and the
+  subtitles option `004C1710()+14h` (`docs/OPTIONS_SETTINGS_COMMIT.md`) is off, or when
+  `hide_for_english` and the language NativeString at `[00F8BC4C]+4018h` equals `english`
+  (`00D15B14`, case-insensitive); otherwise show the row through `00ABAED0` with
+  localisation flag 1. The show repeats every frame while the row is current.
+  Extratitles: visible while `start < t < end` with ordered compares (`00AADD65..00AADD81`),
+  passed to the cloned widget's +34h; when visible the widget's +54h/+50h are called with
+  `end` and `t` (not reconstructed).
+- Data in this installation: `movies/*.mws` and `movies/campaigns/*/*.mws` (33 files). In
+  `m0101.mws` the narrator lines carry `false, true` (hidden in English, shown only with
+  subtitles on in other languages) and the dialogue lines omit both flags; `us_outro.mws`
+  uses a lockit key (`usn14.outro`) as the text.
+- `00AAD9A0` DescribeProperties writes `MovieName` (`+100h`) when it is not empty.
+
 ## Unreferenced code in the segment
 
 A rel32 and absolute-dword scan of the PE (`local/r1_rel32.py`) finds no caller of:
@@ -184,6 +219,7 @@ as unreferenced, not as dead.
   Catmull-Rom sums) are not reproduced bit for bit, and there is no fixture.
 - Renderer objects (buffer creation, locks, draw sections, materials) are host contracts,
   not reproduced.
-- Open: `00AB0520` (Movie subtitles, 2448 bytes of Lua and STL) remains evidence-only, as in
-  `docs/GAME_MOVIE_PLAYER.md`; `00AC8320`; the ten-sample arc weight when the buffers are
+- Open: wiring `src/movie_subtitles.cpp` into the game host's movie callbacks
+  (`src/game_hosts_mission_result.cpp`, not touched here); the extratitles half of
+  `00AB0520`/`00AADBA0`; `00AC8320`; the ten-sample arc weight when the buffers are
   not rebuilt; whether layouts in this installation use `Curve` with `PosArray` at all.
