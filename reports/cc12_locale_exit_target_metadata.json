@@ -1,0 +1,554 @@
+{
+  "Native_scope": {
+    "Root_instruction": "Preserve raw proto stdout and disclose endpoint expansion. Accept exact typed entry/prototype subset with qualification. No repeat proto/body/target query.",
+    "actual_epoch": "98",
+    "actualscope": "Typed target metadata plus proto CLI metadata with unsolicited body-derived summary. Whole capture is NOT strictly entry-only.",
+    "closed": true,
+    "commands_in_order": [
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "BF6FF5",
+        "--output",
+        "local/cc12_locale_exit_target_metadata/Native_before/typed.json"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "BF6FF5",
+        "--lines",
+        "70"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "BF6FF5",
+        "--output",
+        "local/cc12_locale_exit_target_metadata/Native_after/typed.json"
+      ]
+    ],
+    "count": 64730,
+    "count_pair_equal": true,
+    "fresh_code_bytes": 0,
+    "fresh_data_bytes": 0,
+    "prototype_repeat": false,
+    "qualifiedsubset": "Exact typed response and prototype first four summary lines only; database claims, no semantics/ABI proof.",
+    "quarantine_semantic_credit": false,
+    "quarantined_fields": [
+      "instruction_count",
+      "basic_block_count",
+      "edge_count",
+      "call_count",
+      "string_ref_count",
+      "param_count",
+      "cyclomatic_complexity",
+      "prologue_stripped",
+      "epilogue_stripped",
+      "callee_names",
+      "string_constants",
+      "immediate_values",
+      "basic_block_hashes"
+    ],
+    "requested_target": "BF6FF5",
+    "typed_raw_response_pair_equal": true
+  },
+  "archive": {
+    "bytes": 259858593,
+    "entries": 8587,
+    "path": "local/cc12_locale_exit_target_metadata/evidence.zip",
+    "sha256": "e9a5dd0ee4a443c8a28680cd243b13f839a057ae2044fdc92f3f6013369bd22f"
+  },
+  "finite_proof": {
+    "Root_Application_manifest": {
+      "build_runtime_credit": false,
+      "bytes": 1267925,
+      "entry": "Root/Source3356_application_singleton_base_Root_frozen.json",
+      "normalization": "CRLF pairs to LF only; raw bytes retained",
+      "normalized_equal_closed_Source_paths": 3351,
+      "opaque_named_input_and_artifact_pins": [
+        "reports/cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "scripts/build.ps1",
+        "tests/math_tests.cpp",
+        "build/win32/Release/bsp_core.lib",
+        "build/win32/Release/bsp_game.exe",
+        "build/win32/bsp_game.map",
+        "build/win32/Testing/Temporary/LastTest.log"
+      ],
+      "opaque_paths_read": false,
+      "raw_EOL_variants": [
+        {
+          "CRLF_pairs": 149,
+          "entry": "RootPhysicalSource/include/bsp/sound_configuration.hpp",
+          "normalized_bytes": 6844,
+          "normalized_git_oid": "6d2426030df6599109025bbac5f9b1fdc38c52d9",
+          "normalized_sha256": "89ad2c31804663917ed4e76ec3b3fcfa89f008b0a284b858832617be4e60afa1",
+          "path": "include/bsp/sound_configuration.hpp",
+          "raw_bytes": 6993,
+          "raw_sha256": "00cad7773dc92f8ab944d8079769d9f1e51347e4d0f2f3b97bf5eed0d9aad5ea"
+        },
+        {
+          "CRLF_pairs": 40,
+          "entry": "RootPhysicalSource/include/bsp/sound_startup.hpp",
+          "normalized_bytes": 2200,
+          "normalized_git_oid": "89c690e9df2b56c42d5bcb10adc83a97bf266657",
+          "normalized_sha256": "0dbc3e1d2c3bae88035a2e6e328bc0f2a1cceae89431dc6e04a01a493ec25c7c",
+          "path": "include/bsp/sound_startup.hpp",
+          "raw_bytes": 2240,
+          "raw_sha256": "5f5d682f9d6e793a16f9f132025a1b2d0b242ad1a64371ecf6fc5fcbb735a50c"
+        },
+        {
+          "CRLF_pairs": 383,
+          "entry": "RootPhysicalSource/src/game_sound_runtime.cpp",
+          "normalized_bytes": 20101,
+          "normalized_git_oid": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+          "normalized_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+          "path": "src/game_sound_runtime.cpp",
+          "raw_bytes": 20484,
+          "raw_sha256": "fd9efd3561f2d4d6f57e497f5ed13f19c9ad6d9daf34535d66fe79d06b627d56"
+        },
+        {
+          "CRLF_pairs": 382,
+          "entry": "RootPhysicalSource/src/sound_configuration.cpp",
+          "normalized_bytes": 17067,
+          "normalized_git_oid": "b9116987ebcf7884a3425f4744a9b2106ce05f43",
+          "normalized_sha256": "6976313f1026b79a0c605b68278ad697349da94c705614367f0b096dffd6ff85",
+          "path": "src/sound_configuration.cpp",
+          "raw_bytes": 17449,
+          "raw_sha256": "dcf9ca25d3d019352849a59c1891a26cb96477c059a8b8974e28db5c7f64b506"
+        },
+        {
+          "CRLF_pairs": 48,
+          "entry": "RootPhysicalSource/src/sound_startup.cpp",
+          "normalized_bytes": 2221,
+          "normalized_git_oid": "21801a5d338081a3c31daf77014fd8753b6384a4",
+          "normalized_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+          "path": "src/sound_startup.cpp",
+          "raw_bytes": 2269,
+          "raw_sha256": "bc4d830bf30d3173d59fd696850cb3e4d08e596d36ebbe8eff7543a850164aee"
+        }
+      ],
+      "raw_equal_closed_Source_paths": 3346,
+      "sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a"
+    },
+    "Source_delta": {
+      "changed_paths": [
+        {
+          "new_bytes": 4418,
+          "new_git_oid": "0442ebf610c1c7eaa3332c12c0fcea477e218b13",
+          "new_sha256": "7965939f3472377db4345dac6f9cc822142e3573f8b83030af3dfa7e17178ecc",
+          "old_bytes": 2361,
+          "old_git_oid": "ee7f5b12da69a44a80bf2dc460509a084af5b3c6",
+          "old_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+          "path": "include/bsp/native_render_service_base.hpp"
+        },
+        {
+          "new_bytes": 5882,
+          "new_git_oid": "b0ded28076a353b02be07b49087d846d0db45511",
+          "new_sha256": "3f5cc2e3c9810bbcd4720310b99d2d1d2222049a265481a0ab95446c2c53bde0",
+          "old_bytes": 4563,
+          "old_git_oid": "f7d944a729cbb580238bc7d9719fb535a86ad1e9",
+          "old_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+          "path": "src/native_render_service_base.cpp"
+        }
+      ],
+      "current_head": "9316daef07de49f6f0637442c435e990d15e83d0",
+      "equal_paths": 4215,
+      "independently_accepted_Application_commit": "770c31f60f4d9876fe7df02f37eecb41ea5366b8",
+      "interpretation": "Exact independently accepted Application Source pair only; no evidence rebase, no sound Source delta, no historical build/runtime transfer.",
+      "prior_head": "639ba6fa83343dcfa263676b8a0f3d9aa903c5aa"
+    },
+    "actual_Git_blob_occurrences": 4294,
+    "actual_commit_tree_objects": 11,
+    "closed_Source_paths": 4217,
+    "complete_search_records": "Source_searches.json",
+    "current_Source_raw_equal_to_Git": 4294,
+    "named_dependencies": 77,
+    "physical_raw_EOL_policy": "Only CRLF pairs to LF normalized for comparison; all differing raw bytes and original pins retained. No sound Source delta or historical build/runtime credit.",
+    "query_limit": "Finite case-sensitive/insensitive regular expressions as retained; matches include comments and unrelated call sites. Negative matches are scoped textual facts, not global implementation absence.",
+    "scope": [
+      "src/",
+      "include/",
+      "cmake/",
+      "CMakeLists.txt"
+    ],
+    "search_counts": {
+      "exit_target_metadata_tokens": 120,
+      "exit_target_prototype_tokens": 52,
+      "head_storage_and_reference": 13,
+      "locale_authority_and_bookend_tokens": 3,
+      "locale_recycling_entry": 5,
+      "locale_storage_declaration_tokens": 3,
+      "post_pop_metadata_scope_tokens": 0,
+      "post_pop_operand_scope_tokens": 0,
+      "return_site_and_prior_call_tokens": 120,
+      "same_process_head_accessor": 23,
+      "string_service_context": 1033
+    }
+  },
+  "fresh_typed_database_claims": {
+    "complete": true,
+    "direct_call_targets": [],
+    "function_at_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "function_containing_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "functions": [
+      {
+        "body": {
+          "address_count": "18",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00bf7006",
+                "space": "ram"
+              },
+              "length": "18",
+              "start": {
+                "offset": "00bf6ff5",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "_atexit",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    ],
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00bf6ff9",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00bf6ff9",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 4
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 4
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 4
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 4
+      }
+    },
+    "modification_number_after": "98",
+    "modification_number_before": "98",
+    "program": {
+      "default_address_space": "ram",
+      "image_base": {
+        "offset": "00400000",
+        "space": "ram"
+      },
+      "language": "x86:LE:32:default",
+      "path": "/battlestationspacific.exe",
+      "project": {
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr",
+        "name": "bsp"
+      }
+    },
+    "query_address": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "schema": 1
+  },
+  "frozen_Source_HEAD": "9316daef07de49f6f0637442c435e990d15e83d0",
+  "inherited_boundary": {
+    "CALL": "CC8D3F E8B1E2F2FF targets BF6FF5 and encodes CC8D44 as its next/return address; no actual target-return event follows from that encoding.",
+    "CD9410_hypotheses": "ECX=CD9410 requires BOTH returnedESP=S-4 AND an unchanged DWORD[SS:(S-4)]=CD9410. Plain return/zero argument cleanup alone does not establish stackword contents.",
+    "POP": "Accepted CC8D44 byte59. Conditional on ordinary successful decoded32-bit execution with entryESP=U and normal32-bit stack: ECX=DWORD[SS:U], ESP=U+4 modulo2^32, nextEIP=CC8D45; other GPRs/EFLAGS preserved from POP entry.",
+    "RET": "Accepted CC8D45 C3. Conditional on reaching this instruction and ordinary successful decoded32-bit near-return execution with entryESP=V and normal32-bit stack: EIP=DWORD[SS:V], ESP=V+4 modulo2^32; other GPRs/EFLAGS preserved from that unknown entry. C3 does not establish caller cleanup policy or a function signature.",
+    "name_and_no_return_limit": "_atexit and no_return=false are saved-database metadata. Neither proves CRT identity, library semantics, successful registration, return behavior, calling convention or cleanup.",
+    "post_callee_unknown": "Post-BF6FF5 ESP/GPRs/EFLAGS/stackword remain UNKNOWN. Earlier EAX=E1768C credit ends at BF6FF5 entry. No actual target return, callback registration, initializer completion, runtime reachability or concrete RET target is established."
+  },
+  "next_scope_requires_Root_admission": {
+    "automatic_permission": false,
+    "candidate": "BF6FF5..BF6FF8 inclusive, exactly4 code bytes and context0 instruction text at BF6FF5 only, after a separately admitted packet and fresh typed length/ownership/identity gate.",
+    "excluded": [
+      "BF6FF9 or any adjacent instruction",
+      "remaining body BF6FF9..BF7006",
+      "callee label or any extra target",
+      "IAT or data dereference",
+      "caller reads",
+      "decompilation",
+      "GPR mutation or repair"
+    ],
+    "reason": "Current typed metadata says exact entry instruction length4. No opcode or operand has been read by this packet.",
+    "unchanged_unknowns": "All post-callee state and actual return/registration/completion remain unknown."
+  },
+  "packet": "cc12_locale_exit_target_metadata",
+  "prototype_database_claim": {
+    "calling_convention": "__cdecl",
+    "function_name": "_atexit",
+    "interpretation": "Database declaration only; _func_4879 definition was not read. No recovered ABI, argument cleanup, callback type, return value or CRT authenticity claim.",
+    "parameters": [
+      {
+        "name": "param_1",
+        "type": "_func_4879 *"
+      }
+    ],
+    "raw_path": "Native_before/prototype.txt",
+    "return_type": "int",
+    "signature": "int __cdecl _atexit(_func_4879 * param_1)"
+  },
+  "recursive_proof": {
+    "core_original_and_physical_copy": "PASS",
+    "guard": "After physical helper pin verification, the audit is active before any helper execution. Helpers execute verified in-memory bytes only; replay reads supplied ZIP only, writes designated result only, and denies external files/processes/network/native loads. No producer executes during replay.",
+    "helper_pins": [
+      {
+        "bytes": 2466,
+        "name": "call_delivery_replay.py",
+        "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+      },
+      {
+        "bytes": 12906,
+        "name": "call_replay.py",
+        "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+      },
+      {
+        "bytes": 2881,
+        "name": "delivery_verifier.py",
+        "sha256": "776c0015d590f9bc481eaee59ed4d084c25db1c5ce6a54eda65d2aba7971bb5b"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 2467,
+        "name": "metadata_delivery_replay.py",
+        "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+      },
+      {
+        "bytes": 9853,
+        "name": "metadata_replay.py",
+        "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+      },
+      {
+        "bytes": 2480,
+        "name": "operand_delivery_replay.py",
+        "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+      },
+      {
+        "bytes": 10585,
+        "name": "operand_replay.py",
+        "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+      },
+      {
+        "bytes": 2462,
+        "name": "post_metadata_delivery_replay.py",
+        "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+      },
+      {
+        "bytes": 12435,
+        "name": "post_metadata_replay.py",
+        "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+      },
+      {
+        "bytes": 2408,
+        "name": "post_pop_metadata_delivery_replay.py",
+        "sha256": "19afc228d031f2df2ee44dea72d2c0029638950238853c123600b95614978e87"
+      },
+      {
+        "bytes": 12097,
+        "name": "post_pop_metadata_replay.py",
+        "sha256": "022a113ea89a32f9e80a10aca6cb9df296c08c1d59d6f198797f2056db466665"
+      },
+      {
+        "bytes": 2668,
+        "name": "post_pop_operand_delivery_replay.py",
+        "sha256": "a7ffa62372070cc42f504a8b48ef55b596b92929287ff253ce53addf4edbc205"
+      },
+      {
+        "bytes": 15964,
+        "name": "post_pop_operand_replay.py",
+        "sha256": "cc5a8f5f70a642e6eb1ae7c90450ad123cca63f5f5643979505c319452dfac9b"
+      },
+      {
+        "bytes": 2465,
+        "name": "prefix_delivery_replay.py",
+        "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+      },
+      {
+        "bytes": 10761,
+        "name": "prefix_replay.py",
+        "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+      },
+      {
+        "bytes": 5817,
+        "name": "prior_replay.py",
+        "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+      },
+      {
+        "bytes": 2453,
+        "name": "return_metadata_delivery_replay.py",
+        "sha256": "977f708c138accaf6692198296378067f1478642401b092f3f2b73bbe72cddbd"
+      },
+      {
+        "bytes": 10363,
+        "name": "return_metadata_replay.py",
+        "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+      },
+      {
+        "bytes": 2563,
+        "name": "return_operand_delivery_replay.py",
+        "sha256": "8024b7026c805e2ddd5d1b439b5309fdbba69e23797bd6778aef45bd7a3f2fed"
+      },
+      {
+        "bytes": 13268,
+        "name": "return_operand_replay.py",
+        "sha256": "c47081e1a52c18656155650973251acfa2018b0817d5389135ae95a002da687a"
+      },
+      {
+        "bytes": 11337,
+        "name": "verifier.py",
+        "sha256": "0e365b15191d65f5d740edde87e976c0f924f75dadfdef563c0294f8abda9770"
+      }
+    ],
+    "predecessor_commit": "3a0eb8914f4e40aaeba43677a9e48475d1794583",
+    "predecessor_core": {
+      "bytes": 235172237,
+      "sha256": "776103644e42a5d6f16a96386e3a0359629b7c191c5ab2aa8be6552eada4cf82"
+    },
+    "predecessor_delivery": {
+      "bytes": 296862,
+      "sha256": "baff473461a41b32cda4402968fc3c9028ffa28f895df317f44a4a57928f3c4c"
+    },
+    "prior_core_and_delivery_recursively_replayed": "PASS",
+    "prior_helper_pins": "All19 core plus3 delivery helper pins retained; shared prior_replay.py means21 unique original helper files. All22 execution/bootstrap helper files are physically beside each delivered ZIP and verified before imports execute.",
+    "replay_command": "python Tools/guarded_replay.py evidence.zip --output replay_result.json"
+  },
+  "schema": "bsp.cc12.locale-exit-target-metadata-report.v1",
+  "scope_qualification": {
+    "Root_review_decision": "Accept the exact independently bounded typed entry/prototype metadata subset with this disclosure. The read-only oversupply does not widen the next query scope.",
+    "actual_endpoints": [
+      "get_function_by_address",
+      "get_function_signature"
+    ],
+    "raw_prototype_pin": {
+      "bytes": 648,
+      "sha256": "bff96563e25fc8c51248bf2b5b65f6bf7298ee883ee657ad1176ffe805556d65"
+    },
+    "requested_cli": [
+      "python",
+      "tools/bsp.py",
+      "ghidra",
+      "proto",
+      "BF6FF5",
+      "--lines",
+      "70"
+    ],
+    "unexpected_response": "The second endpoint returned function-body metrics, basic-block hash and callee label. Full raw stdout is preserved. Those fields were not repeated, interpreted, used to admit another target, or given semantic/ABI credit.",
+    "whole_capture_strict_entry_only": false
+  },
+  "validation_credit": {
+    "ABI_compatible": false,
+    "CMake_changes": 0,
+    "GPR_mutations": 0,
+    "actual_output_delivery": "Captured after immutable exact-two-output commit; pin is externally reported to avoid circular self-hashing.",
+    "count_equal_pairs": 1,
+    "epoch": 98,
+    "fresh_Native_bytes": 0,
+    "fresh_Native_data_bytes": 0,
+    "function_count": 64730,
+    "game_validated": false,
+    "prototype_captures": 1,
+    "qualified_typed_entry_and_prototype_subset": true,
+    "quarantined_body_metadata_semantic_credit": false,
+    "source_changes": 0,
+    "tests_probes_builds_game_OS_audio_actions": 0,
+    "typed_raw_response_equal_pairs": 1,
+    "whole_capture_strict_entry_only": false
+  }
+}
