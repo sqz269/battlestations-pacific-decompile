@@ -1,0 +1,234 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-source.Root.v1",
+  "status": "dormant_Source_implementation_and_Win32_build_accepted",
+  "worker_commit": "20814725d4ec2c459dc279d1ccb08d0bdb800e03",
+  "frozen_worker_base": "5af77761890d02c76a548dcf5da0cf074df6147a",
+  "Root_merged_build_HEAD": "540a0f55d8f1fbee543930773da774ab6e0d0e43",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/proof.zip",
+      "bytes": 1900666,
+      "sha256": "aeb433996633748e67ad4a77cd6ac1e7889e1b30fba0fb2f41b28ee817066df8"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/proof_manifest.json",
+      "bytes": 23866,
+      "sha256": "7a367d42560f68c2282a115b1f3b84d5759680477156910b62913fa26017a71d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/finalpins.json",
+      "bytes": 9659,
+      "sha256": "1ab37930793edaa1a6dba7a9bdd81ac046e8190c5772b05fb3926b244a76a799"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/delivery_guard.py",
+      "bytes": 8459,
+      "sha256": "8108fbadc7b085546a6f5c392aba602bc4cd28570da9b9801a0c09e90cdb9d57"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/copy_and_actual.py",
+      "bytes": 5319,
+      "sha256": "70fc383e000a0f83cbb3c39f5541028d7532642a4e3fef6e09fbb36f582e958a"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_actual_review.json",
+      "bytes": 4343,
+      "sha256": "de9015cb7e725e8ba2adef9de61952a2c7f667a6212df99b1e3748a6b52d1d4c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_guard_runner.py",
+      "bytes": 1785,
+      "sha256": "d591103b22f3a7106434fa7751febbfccb1b7f695d5ded7dd4539a6437631d8c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_guard_receipt.json",
+      "bytes": 876,
+      "sha256": "c33b252a973d8766538d0a623b0e3ccf3b6ef9cacd9923a942d5ca86dd3d0a48"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_guard.stderr.json",
+      "bytes": 506,
+      "sha256": "7477f6fbc45aed91fdee04f74b61ff0aa0d485e071c91c92d9981941c6aed58c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/run_Root_build.py",
+      "bytes": 1229,
+      "sha256": "cd3ad63e85f256c3bfe82b699365b1973eb2f577f9f7a19d7f73f301038b40d3"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_build_receipt.json",
+      "bytes": 887,
+      "sha256": "2d081b1bbf54d8f01a953ab85255f8b903c0196ae77591137993bae0b7be9032"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_build.log",
+      "bytes": 3885,
+      "sha256": "04fb84fcb5e9323cea0e1a5944f7b6ba312cd733c0db271de16bc30d65d7410f"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/review_compiled_object.py",
+      "bytes": 2557,
+      "sha256": "f726a9023a4c7e1e24d29b39754f0ef6ce74c663ae8ba283cd5886fcd47623c0"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_compiled_object_review.json",
+      "bytes": 1736,
+      "sha256": "814939a63a0fe9848d6e948fe55c9e6e2f3856dfcde252b4f280c46de99e5313"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_worker_object_correspondence.json",
+      "bytes": 520,
+      "sha256": "a2515b3cd4506e308e7eb3e4ebbb46e92b80c6e1c7eb1cc0293c1c20e156bc33"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_native_render_service_base.obj",
+      "bytes": 14003,
+      "sha256": "93efa557aec515a12f12ff3f9abee7b84d9d57084875ccb6461844a679bc50f0"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_retirement_text.bin",
+      "bytes": 197,
+      "sha256": "4382d4624c75996e371619fdccb290ad68ce40c7719192811c6c31e9e120c2c3"
+    }
+  ],
+  "actual_membership": {
+    "commit_objects": 3,
+    "unique_tree_objects": 9,
+    "bounded_inputs": 17,
+    "accepted_later_action_inputs": 2,
+    "outputs": 4,
+    "helpers": 15,
+    "old_complete_Source_prefixes_unchanged": true,
+    "Source_Git_membership_identity_only": 4210,
+    "new_Source_content_census": false
+  },
+  "strict_guard": {
+    "supplied_ZIP_only_input": true,
+    "declared_receipt_only_output": true,
+    "no_post_preload_imports_or_external_effects": true
+  },
+  "worker_build": {
+    "configuration": "MSVC Win32 Release",
+    "registered_CTests": 2,
+    "passed": 2
+  },
+  "Root_build": {
+    "status": "PASS",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release MSVC Win32",
+    "Root_HEAD": "540a0f55d8f1fbee543930773da774ab6e0d0e43",
+    "start_UTC": "2026-10-11T05:12:32.294387+00:00",
+    "end_UTC": "2026-10-11T05:12:57.236942+00:00",
+    "exit_code": 0,
+    "registered_CTests": 3,
+    "test_lines": [
+      "1/3 Test #1: reconstructed_math ...............   Passed    0.22 sec",
+      "2/3 Test #2: native_math_differential .........   Passed    0.03 sec",
+      "3/3 Test #3: tool_tests .......................   Passed    6.75 sec"
+    ],
+    "log": {
+      "path": "local/cc12_application_ordinary_retirement_source_primary/Root_build.log",
+      "bytes": 3885,
+      "sha256": "04fb84fcb5e9323cea0e1a5944f7b6ba312cd733c0db271de16bc30d65d7410f"
+    },
+    "new_tests_or_probes": false,
+    "retirement_path_fixture_ABI_Original_FH3_or_game_runtime_credit": false
+  },
+  "positive_compiler_evidence": {
+    "status": "PASS",
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_render_service_base.obj",
+      "bytes": 14003,
+      "sha256": "93efa557aec515a12f12ff3f9abee7b84d9d57084875ccb6461844a679bc50f0",
+      "machine": "MSVC Win32 x86 COFF"
+    },
+    "function_symbol": {
+      "name": "?retire_native_application_singleton_base_00bea8b0@bsp@@YAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+      "value": 0,
+      "section": 26,
+      "type": 32,
+      "storage_class": 2
+    },
+    "section": {
+      "number": 26,
+      "bytes": 197,
+      "sha256": "4382d4624c75996e371619fdccb290ad68ce40c7719192811c6c31e9e120c2c3"
+    },
+    "relocations": [
+      {
+        "offset": 6,
+        "type": 6,
+        "target": "__ehhandler$?retire_native_application_singleton_base_00bea8b0@bsp@@YAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+      },
+      {
+        "offset": 24,
+        "type": 6,
+        "target": "___security_cookie"
+      },
+      {
+        "offset": 69,
+        "type": 20,
+        "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+      },
+      {
+        "offset": 96,
+        "type": 6,
+        "target": "__imp__EnterCriticalSection@4"
+      },
+      {
+        "offset": 124,
+        "type": 20,
+        "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+      },
+      {
+        "offset": 142,
+        "type": 20,
+        "target": "?unregister_native_singleton_object_00bcfca0@bsp@@YIXPAX00@Z"
+      },
+      {
+        "offset": 169,
+        "type": 6,
+        "target": "__imp__LeaveCriticalSection@4"
+      }
+    ],
+    "compiler_inlined_base_profile_reset_after_Leave_site": true,
+    "positive_compiler_evidence_only": true,
+    "Original_ECX_RET0_ABI_or_reachability_or_runtime_credit": false
+  },
+  "Root_worker_object_correspondence": {
+    "status": "PASS",
+    "Root_object_bytes": 14003,
+    "Root_object_sha256": "93efa557aec515a12f12ff3f9abee7b84d9d57084875ccb6461844a679bc50f0",
+    "worker_object_bytes": 14027,
+    "worker_object_sha256": "073478344ba1065d3247c1edaaa23b06eb76f6435391c7325e8b6c746d7c3918",
+    "matched_by_decorated_symbol": true,
+    "new_function_text_and_symbolic_relocations_equal": true,
+    "whole_objects_equal": false,
+    "whole_object_difference_not_automatically_classified": true,
+    "no_Original_ABI_runtime_credit": true
+  },
+  "normal_policy": {
+    "receiver_profile": "D68BC4 before Source state0",
+    "manager_getters": "Two genuine415350 invocations; unguarded M1+10 captured section",
+    "state1": "After conditional Enter/current-depth increment, including null section",
+    "publication": "Reload current E1AE90 only after getter2; genuine BCFCA0 unconditionally including nullP; then literal null store even after callback mutation",
+    "normal_release": "Decrement current captured-section depth then Leave; guard remains armed through normal Leave",
+    "normal_return": "After release, genuine base reset to CE3818; void explicit-context Source API, not Original ECX/RET0"
+  },
+  "failure_boundaries": {
+    "Source_Cpp_only": true,
+    "genuine_guard_cleanup_then_base_if_guard_returns": true,
+    "Leave_escape_may_release_again": true,
+    "cleanup_Cpp_escape_termination_reused": true,
+    "actual_Original_FH3_frame_invocation_or_hardware_foreign_exception_equivalence": false
+  },
+  "requirements": "Actual borrowed stable receiver/preimages/live+0 uint32, fixed distinct actual shared manager and Application cells, genuine valid managers/vectors/captured section/current depth/providers and escaped-reference lifetimes; disjoint receiver/context/cells/privateguard domains",
+  "activation_owner_callable_table_free_payload_cleanup_quiescence_storage_return_or_runtime_credit": false,
+  "existing_LNK4006_warning_retained": true,
+  "next_candidate": {
+    "address": "00BEA990",
+    "contract": "Existing complete11-byte base-retirement prerequisite: D68BC8 receiver profile store then physical tailJMPBEA8B0",
+    "scope": "Separate tiny dormant explicit-context Source wrapper only, after this Main integration"
+  },
+  "overall_goal_complete": false
+}

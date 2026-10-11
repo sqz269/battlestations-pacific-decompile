@@ -1,0 +1,740 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_ordinary_retirement_source",
+  "address": "00BEA8B0",
+  "status": "dormant_source_implementation_build_tested",
+  "descriptive_name": "retire_native_application_singleton_base_00bea8b0",
+  "base_commit": "5af77761890d02c76a548dcf5da0cf074df6147a",
+  "source_normal_contract": {
+    "bytes": 153,
+    "instructions": 40,
+    "receiver": "Original ECX A",
+    "return_abi": "RET0, no semantic EAX",
+    "new_api": "void with actual_receiver and explicit NativeApplicationSingletonBaseContext",
+    "qualification": "Source C++ API is not an external ABI replacement."
+  },
+  "baseline": {
+    "receipt": {
+      "path": "baseline.json",
+      "bytes": 656539,
+      "sha256": "f2e39cb3bccf3189cae67f387ab10160b327e1b979271b6b7e26d5236e347314"
+    },
+    "commit": {
+      "entry": "blobs/51689c0690523e2f5c34c54ad6be5790d5357d60b53a3b5c114845ec6dae6562",
+      "bytes": 421,
+      "sha256": "51689c0690523e2f5c34c54ad6be5790d5357d60b53a3b5c114845ec6dae6562"
+    },
+    "actual_tree_listing": {
+      "entry": "blobs/4f9e093af00171ae76c141ad8085762d87c36f691dc95b06b6478d062013074e",
+      "bytes": 1299374,
+      "sha256": "4f9e093af00171ae76c141ad8085762d87c36f691dc95b06b6478d062013074e"
+    },
+    "trees": [
+      {
+        "path": "",
+        "oid": "f5ac5b8d3178bfd056ecfa3862595b192bc11a3a",
+        "pin": {
+          "entry": "blobs/5ffbc6af149ca28f68a27d0fd507d5809601ba8438da04dd9d6c79f74b4f6544",
+          "bytes": 563,
+          "sha256": "5ffbc6af149ca28f68a27d0fd507d5809601ba8438da04dd9d6c79f74b4f6544"
+        }
+      },
+      {
+        "path": "src",
+        "oid": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "pin": {
+          "entry": "blobs/ee54eddafff745ac36af25c19b18d531404052883ce2141dadb17989e376c1ae",
+          "bytes": 120641,
+          "sha256": "ee54eddafff745ac36af25c19b18d531404052883ce2141dadb17989e376c1ae"
+        }
+      },
+      {
+        "path": "include",
+        "oid": "a58d44af6071fee132ec49fdda541182d7ece633",
+        "pin": {
+          "entry": "blobs/41e561e73faff671d0304651d58fbf7a84665dbf24b46b5dd12eccda64c33c12",
+          "bytes": 30,
+          "sha256": "41e561e73faff671d0304651d58fbf7a84665dbf24b46b5dd12eccda64c33c12"
+        }
+      },
+      {
+        "path": "include/bsp",
+        "oid": "41b00410a459f789dda997b3ea6bf5cbce122cfb",
+        "pin": {
+          "entry": "blobs/dd8fd793c5225bf9f2adcc7136a7cb67f668295a9400720b348d1cebb2c65e7e",
+          "bytes": 119109,
+          "sha256": "dd8fd793c5225bf9f2adcc7136a7cb67f668295a9400720b348d1cebb2c65e7e"
+        }
+      }
+    ],
+    "src_include_git_entries": 4210,
+    "qualification": "Actual Git identity set plus 17 physically retained bounded input pairs, not a complete physical Source-content census."
+  },
+  "bounded_inputs": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "mode": "100644",
+      "git_blob": "5cf1f934c9934594038534102151be989988cdd7",
+      "committed": {
+        "entry": "blobs/a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7",
+        "bytes": 8085,
+        "sha256": "a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7"
+      },
+      "working": {
+        "entry": "blobs/a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7",
+        "bytes": 8085,
+        "sha256": "a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7"
+      }
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "mode": "100644",
+      "git_blob": "2afe14c8ccc0199d752e501c0680224809e9ebf2",
+      "committed": {
+        "entry": "blobs/9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a",
+        "bytes": 7349,
+        "sha256": "9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a"
+      },
+      "working": {
+        "entry": "blobs/9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a",
+        "bytes": 7349,
+        "sha256": "9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a"
+      }
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "mode": "100644",
+      "git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+      "committed": {
+        "entry": "blobs/0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      "working": {
+        "entry": "blobs/0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      }
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "mode": "100644",
+      "git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+      "committed": {
+        "entry": "blobs/db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      "working": {
+        "entry": "blobs/db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      }
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "mode": "100644",
+      "git_blob": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+      "committed": {
+        "entry": "blobs/289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+      },
+      "working": {
+        "entry": "blobs/289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+      }
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "mode": "100644",
+      "git_blob": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+      "committed": {
+        "entry": "blobs/9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      "working": {
+        "entry": "blobs/9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      }
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "mode": "100644",
+      "git_blob": "cb799f9f8f1d9f2e0635406a70258ea80d40761a",
+      "committed": {
+        "entry": "blobs/bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "bytes": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      "working": {
+        "entry": "blobs/bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "bytes": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      }
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "mode": "100644",
+      "git_blob": "b7ae3cbf7f826434f012caf9bff91bf9aad98fb0",
+      "committed": {
+        "entry": "blobs/20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "bytes": 5460,
+        "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+      },
+      "working": {
+        "entry": "blobs/20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "bytes": 5460,
+        "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+      }
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "mode": "100644",
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "committed": {
+        "entry": "blobs/04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      "working": {
+        "entry": "blobs/04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      }
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "mode": "100644",
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "committed": {
+        "entry": "blobs/cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      "working": {
+        "entry": "blobs/cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_READINESS.md",
+      "mode": "100644",
+      "git_blob": "7fe8bfa18570bb44e883a39b9b9bca374a809c3d",
+      "committed": {
+        "entry": "blobs/3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6",
+        "bytes": 9198,
+        "sha256": "3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6"
+      },
+      "working": {
+        "entry": "blobs/3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6",
+        "bytes": 9198,
+        "sha256": "3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6"
+      }
+    },
+    {
+      "path": "reports/cc12_application_ordinary_retirement_readiness.json",
+      "mode": "100644",
+      "git_blob": "872fc8b4ac701c0073dc2b0c0f51d17aa0a9bd71",
+      "committed": {
+        "entry": "blobs/2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69",
+        "bytes": 70939,
+        "sha256": "2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69"
+      },
+      "working": {
+        "entry": "blobs/2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69",
+        "bytes": 70939,
+        "sha256": "2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_UNWIND_TARGETS_BODY_CONTRACT_READINESS.md",
+      "mode": "100644",
+      "git_blob": "47ae275e356fdd109793fcc7fe6483662e20a972",
+      "committed": {
+        "entry": "blobs/645920fe38c5fa6d7e7e0ce70e8886529cfdc9869f2bb590dd1df3ced8cfea74",
+        "bytes": 9150,
+        "sha256": "645920fe38c5fa6d7e7e0ce70e8886529cfdc9869f2bb590dd1df3ced8cfea74"
+      },
+      "working": {
+        "entry": "blobs/645920fe38c5fa6d7e7e0ce70e8886529cfdc9869f2bb590dd1df3ced8cfea74",
+        "bytes": 9150,
+        "sha256": "645920fe38c5fa6d7e7e0ce70e8886529cfdc9869f2bb590dd1df3ced8cfea74"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_unwind_targets_body_contract_readiness.json",
+      "mode": "100644",
+      "git_blob": "c3df3edb707b31f22c956e54a99fcfab0ebcd1fc",
+      "committed": {
+        "entry": "blobs/109597b0deb4dd1d94278f9efbe27dc932353a2e1f1d5c57d780dc087a81e0e0",
+        "bytes": 241100,
+        "sha256": "109597b0deb4dd1d94278f9efbe27dc932353a2e1f1d5c57d780dc087a81e0e0"
+      },
+      "working": {
+        "entry": "blobs/109597b0deb4dd1d94278f9efbe27dc932353a2e1f1d5c57d780dc087a81e0e0",
+        "bytes": 241100,
+        "sha256": "109597b0deb4dd1d94278f9efbe27dc932353a2e1f1d5c57d780dc087a81e0e0"
+      }
+    },
+    {
+      "path": "scripts/build.ps1",
+      "mode": "100644",
+      "git_blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+      "committed": {
+        "entry": "blobs/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      "working": {
+        "entry": "blobs/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      }
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "mode": "100644",
+      "git_blob": "e1ed7c82d212343521dabfa68632fd8318797313",
+      "committed": {
+        "entry": "blobs/3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      },
+      "working": {
+        "entry": "blobs/3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      }
+    },
+    {
+      "path": "CMakeLists.txt",
+      "mode": "100644",
+      "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+      "committed": {
+        "entry": "blobs/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      "working": {
+        "entry": "blobs/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      }
+    }
+  ],
+  "Source_append": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "old": {
+        "entry": "blobs/a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7",
+        "bytes": 8085,
+        "sha256": "a2ef2caabc72637c28454ac20df107fb12d1fbe90dc40c6604d26e471a2a49c7"
+      },
+      "current": {
+        "entry": "blobs/4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f",
+        "bytes": 10233,
+        "sha256": "4cb29871301d77a292e9ac4ff2dc82456484811fc061d2b382399f4455e6986f"
+      },
+      "appended": {
+        "entry": "blobs/9614d7a03072cf6bde00fb44efab1e430ffe51bec67bc3352e3e12732405781f",
+        "bytes": 2148,
+        "sha256": "9614d7a03072cf6bde00fb44efab1e430ffe51bec67bc3352e3e12732405781f"
+      },
+      "old_raw_prefix_unchanged": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "old": {
+        "entry": "blobs/9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a",
+        "bytes": 7349,
+        "sha256": "9ec4c0205b40454eaaa6b0f1d1c99b8c58cbaf307e2ba00406890da640a3888a"
+      },
+      "current": {
+        "entry": "blobs/dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb",
+        "bytes": 8704,
+        "sha256": "dccbc1b9b2f085a2cfef8a9ddd5aaee48abd2034248eea9f36e75d6ed58cf4bb"
+      },
+      "appended": {
+        "entry": "blobs/965894e04338bf81e52e6c5f89d59e471da5b1d536516fde2914e7c6aed2d769",
+        "bytes": 1355,
+        "sha256": "965894e04338bf81e52e6c5f89d59e471da5b1d536516fde2914e7c6aed2d769"
+      },
+      "old_raw_prefix_unchanged": true
+    }
+  ],
+  "old_Source_raw_prefix_unchanged": true,
+  "appended_lines": {
+    "header": 31,
+    "translation_unit": 30
+  },
+  "normal_schedule": [
+    {
+      "order": 1,
+      "term": "*static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;",
+      "appended_line": 5
+    },
+    {
+      "order": 2,
+      "term": "BaseCleanup base_cleanup{actual_receiver};",
+      "appended_line": 6
+    },
+    {
+      "order": 3,
+      "term": "void* const first_manager = get_native_singleton_manager_00415350(",
+      "appended_line": 7
+    },
+    {
+      "order": 4,
+      "term": "static_cast<std::byte*>(first_manager) + 0x10);",
+      "appended_line": 10
+    },
+    {
+      "order": 5,
+      "term": "NativeGuard guard{0x00ce37fcu, section};",
+      "appended_line": 11
+    },
+    {
+      "order": 6,
+      "term": "EnterCriticalSection(section);",
+      "appended_line": 13
+    },
+    {
+      "order": 7,
+      "term": "depth(section) = depth(section) + 1u;",
+      "appended_line": 14
+    },
+    {
+      "order": 8,
+      "term": "GuardCleanup guard_cleanup{guard};",
+      "appended_line": 16
+    },
+    {
+      "order": 9,
+      "term": "void* const manager = get_native_singleton_manager_00415350(",
+      "appended_line": 17
+    },
+    {
+      "order": 10,
+      "term": "void* const current_application = context.actual_application_e1ae90;",
+      "appended_line": 19
+    },
+    {
+      "order": 11,
+      "term": "unregister_native_singleton_object_00bcfca0(manager, nullptr, current_application);",
+      "appended_line": 20
+    },
+    {
+      "order": 12,
+      "term": "context.actual_application_e1ae90 = nullptr;",
+      "appended_line": 21
+    },
+    {
+      "order": 13,
+      "term": "depth(section) = depth(section) - 1u;",
+      "appended_line": 23
+    },
+    {
+      "order": 14,
+      "term": "LeaveCriticalSection(section);",
+      "appended_line": 24
+    },
+    {
+      "order": 15,
+      "term": "guard_cleanup.armed = false;",
+      "appended_line": 26
+    },
+    {
+      "order": 16,
+      "term": "destroy_native_generic_singleton_base_00412430(actual_receiver);",
+      "appended_line": 27
+    },
+    {
+      "order": 17,
+      "term": "base_cleanup.armed = false;",
+      "appended_line": 28
+    }
+  ],
+  "failure_boundaries": [
+    {
+      "boundary": "Receiver profile write",
+      "state": "not armed before successful D68BC4 store",
+      "behavior": "After store, unchanged BaseCleanup is armed as Source state0. Hardware faults are excluded."
+    },
+    {
+      "boundary": "First getter / unguarded manager+10 load / Enter / depth increment",
+      "state": "base only",
+      "behavior": "A Source C++ escape calls genuine receiver reset412430. Guard cleanup is not armed until Enter/depth has completed."
+    },
+    {
+      "boundary": "After Enter/depth, including null section",
+      "state": "guard then base",
+      "behavior": "Source state1 exists even nullS. Reverse destructor order calls genuine411EE0 before412430 if guard cleanup returns."
+    },
+    {
+      "boundary": "Second getter / currentP reload / unregister",
+      "state": "guard then base",
+      "behavior": "No cached first manager or pre-getter publication. A/P and M1/M2 may differ; nullP still enters genuine unregister. No publication compensation."
+    },
+    {
+      "boundary": "After unregister returns",
+      "state": "guard then base",
+      "behavior": "Literal null is stored to actual Application cell, even if removal changed its value. No identity check or old-value restoration."
+    },
+    {
+      "boundary": "Normal depth decrement / Leave",
+      "state": "guard stays armed through Leave",
+      "behavior": "Leave Source C++ escape can invoke411EE0 and decrement/Leave capturedS again. Cleanup is not promised safe or balanced."
+    },
+    {
+      "boundary": "Guard cleanup escapes",
+      "state": "existing termination policy",
+      "behavior": "Existing MSVC C++ exception code E06D7363 during cleanup terminates; base reset does not continue if guard cleanup fails to return. Hardware/foreign exceptions remain excluded."
+    },
+    {
+      "boundary": "Normal Leave returns",
+      "state": "guard disarmed, then receiver reset, then base disarmed",
+      "behavior": "Genuine412430 writes CE3818. Void Source return carries no semantic EAX. No deallocation/payload cleanup/owner handoff or replacement lock."
+    }
+  ],
+  "accepted_action_gate": {
+    "status": "pass",
+    "commit": "754dfd8087c4a9df134c2a671c4b9fed66610b54",
+    "receipt": {
+      "path": "accepted_actions.json",
+      "bytes": 2538,
+      "sha256": "798abd370b7dcfa457790e693ab6fe2982ed5ccc7310cc41b5b7397300d788ae"
+    },
+    "commit_object": {
+      "entry": "blobs/28afa0ca321d39878b0f50eae43bac4bf1d838a9a5e6f7525591b8adb368c7d1",
+      "bytes": 391,
+      "sha256": "28afa0ca321d39878b0f50eae43bac4bf1d838a9a5e6f7525591b8adb368c7d1"
+    },
+    "inputs": [
+      {
+        "path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_ACTIONS_PRIMARY.md",
+        "git_blob": "f420f0eb455eeb4256f4b2dc985349c0b5f75091",
+        "committed": {
+          "entry": "blobs/067e7b34136f7eb77d3bfb3a880c0ad6e67618de26b3905a1bed4d07464114a0",
+          "bytes": 2122,
+          "sha256": "067e7b34136f7eb77d3bfb3a880c0ad6e67618de26b3905a1bed4d07464114a0"
+        },
+        "accepted_Root_raw": {
+          "entry": "blobs/5683da980a334f041035f894c403d894563f5c865f76799224f5424a1b42b210",
+          "bytes": 2131,
+          "sha256": "5683da980a334f041035f894c403d894563f5c865f76799224f5424a1b42b210"
+        },
+        "Main_working": {
+          "entry": "blobs/067e7b34136f7eb77d3bfb3a880c0ad6e67618de26b3905a1bed4d07464114a0",
+          "bytes": 2122,
+          "sha256": "067e7b34136f7eb77d3bfb3a880c0ad6e67618de26b3905a1bed4d07464114a0"
+        },
+        "LF_sha256": "067e7b34136f7eb77d3bfb3a880c0ad6e67618de26b3905a1bed4d07464114a0"
+      },
+      {
+        "path": "reports/cc12_application_ordinary_retirement_actions_primary.json",
+        "git_blob": "0c531397cfbd7d52bfc86947d5d99901f0b8080a",
+        "committed": {
+          "entry": "blobs/ce465fa3a7de3474a80e7394c88b5a1ca62686ae75cb60aeac4e5a9c831b16e5",
+          "bytes": 16731,
+          "sha256": "ce465fa3a7de3474a80e7394c88b5a1ca62686ae75cb60aeac4e5a9c831b16e5"
+        },
+        "accepted_Root_raw": {
+          "entry": "blobs/49afa4e952a759b349389b22146a94b74246d58d4314c7c5d49ef86412fa86a9",
+          "bytes": 17241,
+          "sha256": "49afa4e952a759b349389b22146a94b74246d58d4314c7c5d49ef86412fa86a9"
+        },
+        "Main_working": {
+          "entry": "blobs/ce465fa3a7de3474a80e7394c88b5a1ca62686ae75cb60aeac4e5a9c831b16e5",
+          "bytes": 16731,
+          "sha256": "ce465fa3a7de3474a80e7394c88b5a1ca62686ae75cb60aeac4e5a9c831b16e5"
+        },
+        "LF_sha256": "ce465fa3a7de3474a80e7394c88b5a1ca62686ae75cb60aeac4e5a9c831b16e5"
+      }
+    ],
+    "Root_operand_receipt": {
+      "entry": "blobs/47664780c172ede6e7d5640514c6b7f4fe1013b7370a571ebd6184949e7e75f8",
+      "bytes": 1806,
+      "sha256": "47664780c172ede6e7d5640514c6b7f4fe1013b7370a571ebd6184949e7e75f8"
+    },
+    "qualification": "Accepted immutable later Main Root action contract, retained separately from frozen 5af777 Source baseline. No rebase, Source normalization, GPR query or compiler/runtime evidence transfer. Conditional classic-x86 map/action semantics do not establish Original FH3, frame, invocation or ABI.",
+    "conditional_receiver": "EBP=ESP_R+20h and suitable [ESP_R+8h] contents",
+    "conditional_guard": "EBP=ESP_G+20h; common EBP additionally requires ESP_R=ESP_G",
+    "candidate_pending_annotation": "Historical semantic receipt recorded pending delivery; later accepted Root action contract closes final Source gate."
+  },
+  "borrowed_domain_requirements": [
+    "actual stable aligned live uint32 receiver+0 with valid1C preimages and access domains",
+    "real actual Application cell and shared GameNativeStringProcess/GameSingletonHost manager cell",
+    "fixed distinct cell bindings and disjoint receiver/context/section/private guard domains",
+    "valid M1/M2 manager and vector domains, captured section/current DWORD+18 and provider lifetimes through normal calls and cleanup",
+    "no new owner, fallback/projection, invented global, overlay, alias repair or lifetime guarantee"
+  ],
+  "review": {
+    "semantic": {
+      "path": "semantic_review.json",
+      "bytes": 6835,
+      "sha256": "39fef43d9c3636d6f48440fc0a83d96d81100dc30f77e76142fcbd6f59c42c49"
+    },
+    "completion": {
+      "path": "completion_review.json",
+      "bytes": 6264,
+      "sha256": "254130190ffc7bc4a13b3aa733ce54b39bebb165ea811b612adb660fbdb29287"
+    },
+    "minimal_Source_diff": {
+      "entry": "blobs/d7216086eade32ab204f318313e892333aadd95f4384a987e6ae9f23b8539f41",
+      "bytes": 4298,
+      "sha256": "d7216086eade32ab204f318313e892333aadd95f4384a987e6ae9f23b8539f41"
+    },
+    "diff_check": {
+      "exit_code": 0,
+      "output": {
+        "entry": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "ordered_steps": 17,
+    "unchanged_bounded_other_inputs": 15,
+    "Source_bytes_equal_to_built_candidate": true
+  },
+  "build": {
+    "receipt": {
+      "path": "build_receipt.json",
+      "bytes": 553,
+      "sha256": "d55003141d90ff1857b7f4184c1c987bc31a32125952495fbe0eee4d2f92d71e"
+    },
+    "details": {
+      "schema": 1,
+      "status": "pass",
+      "start_UTC": "2026-10-11T04:48:21.715491+00:00",
+      "end_UTC": "2026-10-11T05:01:10.675348+00:00",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "target": "MSVC Win32",
+      "log": {
+        "path": "build.log",
+        "bytes": 79350,
+        "sha256": "3fc9fe99f642ed39ef5a571b575cad2a4e097f43f289a87994115a43ef004938"
+      },
+      "qualification": "One candidate Source build and existing CTest invocation. No new tests, ad hoc probe, game/OS/audio runtime, ABI or Original FH3 acceptance."
+    },
+    "log": {
+      "entry": "blobs/3fc9fe99f642ed39ef5a571b575cad2a4e097f43f289a87994115a43ef004938",
+      "bytes": 79350,
+      "sha256": "3fc9fe99f642ed39ef5a571b575cad2a4e097f43f289a87994115a43ef004938"
+    },
+    "artifacts": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_service_base.obj",
+        "pin": {
+          "entry": "blobs/073478344ba1065d3247c1edaaa23b06eb76f6435391c7325e8b6c746d7c3918",
+          "bytes": 14027,
+          "sha256": "073478344ba1065d3247c1edaaa23b06eb76f6435391c7325e8b6c746d7c3918"
+        },
+        "qualification": "Physically retained candidate compiler/test artifact; no runtime or ABI acceptance."
+      },
+      {
+        "path": "build/win32/CTestTestfile.cmake",
+        "pin": {
+          "entry": "blobs/dffeeba0f10253b6d8d2c4c33d189443856771a786bbfe49fa9ce799f1cef99d",
+          "bytes": 5029,
+          "sha256": "dffeeba0f10253b6d8d2c4c33d189443856771a786bbfe49fa9ce799f1cef99d"
+        },
+        "qualification": "Physically retained candidate compiler/test artifact; no runtime or ABI acceptance."
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "pin": {
+          "entry": "blobs/c3319f96e94b22f97d1ee2c0d229b4141a643db4033ce33909163b2fa7b47be2",
+          "bytes": 1687,
+          "sha256": "c3319f96e94b22f97d1ee2c0d229b4141a643db4033ce33909163b2fa7b47be2"
+        },
+        "qualification": "Physically retained candidate compiler/test artifact; no runtime or ABI acceptance."
+      }
+    ],
+    "registered_CTests": 2,
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "result": "Passed",
+        "seconds": 0.24
+      },
+      {
+        "name": "tool_tests",
+        "result": "Passed",
+        "seconds": 7.56
+      }
+    ],
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "native_differential_enabled": false,
+    "new_tests": 0,
+    "new_probes": 0,
+    "qualification": "Compilation and existing checks only; dormant retirement path not fixture-exercised. Root existing test configuration is separately qualified."
+  },
+  "helper_bodies": [
+    {
+      "path": "capture_baseline.py",
+      "bytes": 2668,
+      "sha256": "17ae1e9de82357c4650f1a9aadd26c8bad2c676cdc2489b08c9e246a4ad01681"
+    },
+    {
+      "path": "append_candidate.py",
+      "bytes": 4082,
+      "sha256": "e57497a374d625a4ca3f7041e895a4a53e6d6185e7dcee349fd8bb8aa7f72c50"
+    },
+    {
+      "path": "review_candidate.py",
+      "bytes": 4033,
+      "sha256": "fc3946fcb22f8694320e29edbbbfd735bc2cadaae3e9c99a778f12a88b3b53a5"
+    },
+    {
+      "path": "run_build.py",
+      "bytes": 1003,
+      "sha256": "629f3adc0135fabc2a77401a43aef30f91d564aa6872c5a8468ad981913c7b86"
+    },
+    {
+      "path": "retain_actions.py",
+      "bytes": 2074,
+      "sha256": "4d2ea053ae9fe86d425df3233d45b083993489c391fbb1cd450638105287c4e7"
+    },
+    {
+      "path": "capture_completion.py",
+      "bytes": 5194,
+      "sha256": "68b775429203e3c1f50a4d0b90989afdcaeacf16cf4adaaf4eb338f6e5666a9c"
+    }
+  ],
+  "constraints": {
+    "new_Native_queries": 0,
+    "GPR_mutations": 0,
+    "new_CMake_entries": 0,
+    "new_ledgers": 0,
+    "active_callers": 0,
+    "new_owner_or_tables": 0,
+    "process_activation": false,
+    "game_original_exe_OS_audio_runs": 0
+  },
+  "qualification": {
+    "accepted": "Dormant explicit-context Source policy and build/static evidence under accepted positive normal/action/target contracts.",
+    "unproved": [
+      "actual caller/owner/storage producer admission",
+      "provider execution and lifetime/quiescence",
+      "Original FH3 frame/invocation/authenticity/cleanup authority",
+      "hardware and foreign exception behavior",
+      "external ABI compatibility",
+      "gameplay/runtime equivalence"
+    ],
+    "cleanup_hazards": "Guard armed through Leave; Source escape may repeat decrement/Leave. Genuine guard cleanup must return before base cleanup; existing second MSVC C++ cleanup escape terminates. No rollback or safe-cleanup promise."
+  },
+  "delivery": {
+    "receipt": "local/cc12_application_ordinary_retirement_source/final_delivery.json",
+    "pins": "local/cc12_application_ordinary_retirement_source/finalpins.json",
+    "qualification": "External final receipt avoids self-hash cycles and captures actual staged/final commit objects and exact four-file membership. Worker does not push."
+  }
+}
