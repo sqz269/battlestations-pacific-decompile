@@ -14503,8 +14503,17 @@ So the four Gyoraitei's `mask=3` is the image's. There is nothing to bind. The e
 
 ### Item 2: JM08 strike runs (`local\l49_j8gen.py`, l48's generator plus `--end` and `--boat-start`)
 
-**What moved on this main:** the AI tubes now fire. On the g10 orders, the torpedo gate reads `targeted=8398
-sent=5434 shots=18`, where l48's runs had `targeted=0`. The `+7Dh` hold of GUNNERY 161.4 is gone.
+**What moved on this main: the AI tubes now launch.**
+- On the g10 orders the torpedo gate reads `targeted=8398 sent=5434 shots=18`.
+- l48's g10 on `62988a6fa` already targeted (`targeted=12095`), but had `accepted=0 sent=0 shots=0`.
+  - Only l48's g5 and g9 (boats sent at the landships) have `targeted=0`. That is GUNNERY 161.4's `+7Dh` hold, and
+    it is order-dependent.
+  - 5fg's "`targeted=0` on every JM08 run" holds for those two runs only.
+- Sent at Nevada, the boats open `+7Dh` (`pass byte 7d ... final=1`).
+- An export of `060c4b712` (cc9-gunnery34: `kTorpedoBotReadyGateBound` and `kShipyardDeathReleaseBound` ON) gives
+  `targeted=4648 sent=3581 shots=12` on these orders at 9000 frames. HEAD gives 4485 / 3602 / 12.
+- So the launches come from `kTorpedoBotReadyGateBound`: the zero-speed tubes now pass the image's 1-degree test
+  (GUNNERY 161).
 
 | run | frames | Hosho first | Isokaze/Fubuki first | boats first | outcome |
 | --- | --- | --- | --- | --- | --- |
@@ -14518,6 +14527,15 @@ sent=5434 shots=18`, where l48's runs had `targeted=0`. The `+7Dh` hold of GUNNE
 
 - **Bullet 66** is the Gyoraitei torpedo. It does 1370 hp to Missouri (11000 hp, armour 130). About one launch in six
   hits. Missouri repairs about 22 hp/s, so one or two hits a minute never add up.
+- **The 22 hp/s is the image's rate.** In `0093C770` the heal is `task+28h x dt x settings+3B4h x max x rate`.
+  - `settings+3B4h` is `BodyRepairTickPercentage / 100` (`0083E243`, default 0.2).
+  - At task kind 0, `rate` is `settings+3D4h` = `BodyRepairMultiplier` (`0083E4AF`, default 2.0) times the gameplay
+    modifier. Otherwise it is 1.0.
+  - `task+28h` is 1.0 from `0093BD06`, and only `SetRepairEffectivity` (`008AD8D0`) changes it. `prcpjm08.lua`
+    never calls it.
+  - `dt` is the frame step (`0093CA20` <- `008160B0` <- `00826B84`).
+  - This installation's `shipglobals.lua` (2024-07-13) authors 0.1 and 2 (lines 79 and 88; the 0.05 at line 749 is
+    inside `if FailureDebug`). So the rate is 0.002 x 11000 = 22 hp/s, as the host logs.
 - **The shipyard builds in fours.** The next four appear only after the previous boats die, and the 12 boats are spent
   by about 730 s.
 - **Isokaze and Fubuki never launch.** Their scene `Ship` group carries `TorpedoDirector = false`. In the image too,
@@ -14570,29 +14588,46 @@ turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
   up, too late. The release gate (25 m, `00CE3880`) is never met.
 
 **Why the stick is zero.**
-- `usn_19_coralus.lua` gives every striker `SetSkillLevel(.., 2)`, and `kSkillLevelBound` applies it, so
-  `009F9D22` captures row 2, SPVeteran.
-- This installation's `robots.lua` (2025-06-01) authors `DiveBombAimPrecPullPlus`/`Minus` = 0.0 for SPVeteran
-  (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same (1134-1135).
-- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic on the authored
-  row.
+- **The strikers fly row 2, SPVeteran.** They are carrier launches, not script `SetSkillLevel` targets:
+  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1, the
+    host's `game+6ACh` (lines 66-82, 156, 195).
+  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
+    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
+  - `009F9D22` captures that row. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
+    Japanese Zuikaku strikers.
+- **This installation's `robots.lua` (2025-06-01) zeroes the row.** Its SPVeteran PilotBot row authors
+  `DiveBombAimPrecPullPlus`/`Minus` = 0.0 (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same
+  (1134-1135).
+- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic, applied to the
+  row as this installation authors it.
+
+**The zero row is the mod's, not retail's.**
+- `robots.lua` is dated 2025-06-01, after the 2024 bulk. Beside it sits `robots__.lua.bak`, of the same date. The two
+  files differ on 719 lines.
+- The `.bak`'s SPVeteran row has non-zero values where `robots.lua` has zeros:
+
+  | field | `.bak` | `robots.lua` |
+  | --- | --- | --- |
+  | `DiveBombAimPrecPullPlus` / `Minus` | 0.014 / 0.018 | 0 / 0 |
+  | `DiveBombAimPrecDist` / `Mul` | 35 / 0.24 | 0 / 0 |
+  | `DiveBombAimPitchRatio` | 3.0 | 0 |
+  | `DiveBombTargetHError` / `VError` / `CalcTargetPosError` | 25 / 4 / 3 | 0 / 0 / 0 |
+  | `TorpReleaseAlt` | 10 | 5 |
+  | `TorpTargetHError` / `VError` / `CalcTargetPosError` | 5 / 10 / 6 | 0 / 0 / 1 |
+  | `LevelBombTargetHError` / `VError` | 15 / 40 | 0 / 0 |
+
+- The installed row reads as a "perfect aim" edit: every error and precision field is zeroed. A zero pull gain,
+  though, is not perfect aim in the image's law. It only removes the correction.
+- No other copy of `robots.lua` (packed or bulk) is in the installation. Whether the `.bak` is retail is not known.
+- So the zero stick is this installation's behaviour. It is not evidence about the retail game.
 
 **Where this leaves the "no release".**
-- If the image also captures row 2, the dive has no aim feedback, and the release rests on the turndown hand-over
-  alone.
+- With the installed row, the dive has no aim feedback. The release then rests on the turndown hand-over alone.
 - The roll-in point is already the image's: `S = 0.7h + 200` (`009C65C1`; `thr` 929.5 at h 1042 in the trace), with
   completion `009C7EA0` at pitch < -1.0 inverted or < -1.3. TURNDOWN_HEADING and GUNNERY 150/157 read the rest of the
   steering and the hand-over against the image.
 - What remains is the airframe's pull-through: how far a split-S moves the aircraft and how much the nose
   overshoots once the stick is neutral. That is the flight model.
-- **The row is settled for the US strikers.** They are carrier launches, not script `SetSkillLevel` targets.
-  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1,
-    the host's `game+6ACh` (lines 66-82, 156, 195).
-  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
-    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
-  - So row 2 is the image's row too. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
-    Japanese Zuikaku strikers.
-  - **The zero-gain dive is this installation's authored behaviour at difficulty 1.**
 
 **USNOS f7** (`s41_os_f7`, 60000 frames, `local\l49_main_osf7.log`) **gives no carrier strike to read on this
 main.**
