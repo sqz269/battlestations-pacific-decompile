@@ -527,6 +527,294 @@ struct ControlSliderListenerHost {
 // index forwards the slider's non-zero delta to 0055CCC0.
 void control_slider_changed_0055d330(ControlSliderListenerHost& host);
 
-} // namespace bsp
+// ---------------------------------------------------------------------------
+// Controls screen update, 00560430 (cc13-frontend2)
+// ---------------------------------------------------------------------------
 
+// The raw input event 00A90530 fills on *(00F8BBF4): kind at +0, +4 and the
+// code at +0Ch are written, +8 is not; +10h is a byte the caller sets for an
+// unchanged slider. Kind 0 is a keyboard key (codes are DirectInput scan
+// codes: D3h Delete, 1Ch Return), kind 2 an axis named through 0069E500.
+struct ControlInputEvent {
+    std::int32_t kind{-1};
+    std::int32_t field04{};
+    std::int32_t field08{};
+    std::int32_t code{};
+    bool flag10{};
+};
+inline constexpr std::int32_t kControlKeyDelete = 0xD3;
+inline constexpr std::int32_t kControlKeyReturn = 0x1C;
+inline constexpr std::int32_t kControlActionBack = 0x4B;
+inline constexpr std::int32_t kControlActionLeft = 0x4C;
+inline constexpr std::int32_t kControlActionRight = 0x4D;
+inline constexpr std::string_view kControlPresetDirectory = "Presets";        // 00CEE76C
+inline constexpr std::string_view kControlPresetPathFormat = "Presets/%S.preset";  // 00CEE8C8
+inline constexpr std::string_view kControlPresetRoot = "CONTROL_PRESET";       // 00CEE75C
+inline constexpr std::string_view kControlSliderEventName = "Slider";         // 00CEE8C0
+
+struct ControlBindingUpdateState {
+    float hint_timer{};                // +10h
+    bool keyboard_pending{};           // +E4h, XOVERLAPPED at +44h
+    std::u16string preset_name;        // +60h, wide, zero-terminated in place
+    std::int32_t page{};               // +168h
+    std::array<std::int32_t, 5> device_selection{};  // +16Ch..+17Ch, +16Ch the device index
+    std::int32_t binding_slot{};       // +180h, 0 or 1
+    bool editing_setting{};            // +18Ch
+    bool input_seen{};                 // +194h
+    bool skip_next_update{};           // +195h
+    float input_hold{};                // +198h
+    bool unsaved_changes{};            // +19Ch
+    std::int32_t scroll_target{};      // +1C0h
+    bool scroll_dragging{};            // +1E8h
+    float last_slider_value{};         // +24Ch
+};
+
+using ControlBindingKey = std::uintptr_t;  // 00427AE0's tree node for the device
+
+struct ControlBindingUpdateHost {
+    virtual ~ControlBindingUpdateHost() = default;
+    virtual float game_frame_seconds_21ec() = 0;                     // *(00E188A8)+21ECh
+    virtual bool overlapped_pending_is_io_pending() = 0;              // +44h == 3E5h
+    virtual std::uint32_t xget_overlapped_result_00a4d42e() = 0;      // (+44h, 0, 1)
+    // 005EF500 on *(*(00E198B8)+40h) with a pointer to one name character.
+    virtual void filter_name_char_005ef500(char16_t& c) = 0;
+    virtual bool directory_exists_0109ceec_8(std::string_view path) = 0;  // *0109CEEC slot +8
+    virtual void make_directory_00bf94c6(std::string_view path) = 0;
+    virtual std::string format_preset_path_sprintf_s(std::u16string_view name) = 0;  // %S, 100h buffer
+    virtual void preset_writer_open_00bd5d60(const std::string& path) = 0;
+    virtual void preset_writer_root_00bd6db0(std::string_view root) = 0;
+    virtual void write_control_preset_006a5640() = 0;                 // 005547D0 singleton
+    virtual void preset_writer_close_00bd5860() = 0;
+    virtual bool input_pending_00a90f90() = 0;                        // *(00F8BBF4)
+    virtual bool action_004d92b0(std::int32_t action) = 0;
+    virtual void set_global_e19650(std::int32_t value) = 0;
+    virtual void push_interface_request_004cc460(std::int32_t id, std::int32_t arg) = 0;  // *(00E198B8)
+    virtual bool x360comp_00f88a30() = 0;
+    virtual void input_action_configuration_00698a10() = 0;           // *(00E188A8)+3Ch
+    virtual void page_widget_virtual_34(std::int32_t arg) = 0;        // *(screen+210h) slot +34h
+    virtual void refresh_page_0055e3a0(std::int32_t page) = 0;
+    virtual void read_input_event_00a90530(ControlInputEvent& event, float& value) = 0;
+    virtual std::string input_event_name_0069e500(const ControlInputEvent& event) = 0;
+    virtual ControlBindingKey binding_key_00427ae0(std::int32_t device) = 0;  // settings+14h
+    virtual void device_tree_index_0055c110(ControlBindingKey key) = 0;       // settings+8, result unused
+    virtual void set_binding_006a9a40(ControlBindingKey key, std::int32_t slot,
+        const ControlInputEvent& event, float value) = 0;           // name screen+184h
+    virtual std::string binding_slot_text_006a9850(ControlBindingKey key, std::int32_t slot) = 0;
+    virtual void binding_text_submit_00abaed0(const std::string& text) = 0;  // *(screen+190h), flag 1
+    virtual void update_binding_row_text_0055c5a0() = 0;
+    virtual void begin_edit_0055c3b0() = 0;
+    virtual void confirm_or_next_device_00560210() = 0;
+    virtual void adjust_setting_0055ccc0(std::int32_t delta) = 0;
+    virtual void scroller_update_00683820() = 0;                      // screen+1A0h, arg 1
+    virtual void scroll_to_selection_0055cec0(std::int32_t arg) = 0;
+    virtual void focus_00553b00(bool binding_text_widget) = 0;        // *(screen+190h) or null
+    virtual bool input_device_present_004ba6d0(std::int32_t device_class, std::int32_t index) = 0;
+    virtual void set_global_e19428(bool value) = 0;
+    virtual void dismiss_prompt_slot_00532a20(std::int32_t slot) = 0;   // 00425D10 singleton
+};
+
+// 00560430: slot +20h of the controls screen vtable 00CEE524,
+// __thiscall(screen, float seconds), RET 4; the argument slot is overwritten
+// with *(00E188A8)+21ECh before use. Provisional page meanings (+168h): 0 device
+// list, 1 waiting for back, 2 setting list, 3 capturing a binding, 4 waiting
+// for a class-2 device.
+void control_binding_screen_update_00560430(ControlBindingUpdateState& screen,
+    ControlBindingUpdateHost& host);
+
+// ---------------------------------------------------------------------------
+// Multiplayer mode selector enter (005EC5B0) and update (005ECD80)
+// ---------------------------------------------------------------------------
+
+// Row labels: the .data pointer table 00E0898C (initial values), rows enabled
+// by the byte table 00CF2B00 (all 1 in the image). Row 5 is enabled only when
+// 00E19610 == 2.
+inline constexpr std::array<std::string_view, 6> kMultiModeLabels{{
+    "globals.gamemode_escort", "globals.gamemode_siege", "globals.gamemode_competitive",
+    "globals.gamemode_duel", "globals.gamemode_islandcapture", "globals.gamemode_any"}};
+inline constexpr std::array<std::uint8_t, 6> kMultiModeRowFlags{{1, 1, 1, 1, 1, 1}};  // 00CF2B00
+inline constexpr std::string_view kMultiModeSelectorTitle = "globals.multimodeselector_title";  // 00CF2CC0
+inline constexpr std::string_view kMultiSkirmishTitle = "FE.main_skirmish_title";               // 00CF2CE0
+
+// Widgets addressed through the screen: +1Ch, the mode list +20h, the option
+// list +A8h, and +B0h/+B4h which follow the option list's +F4h height.
+enum class MultiModeWidget : std::uint8_t { Panel1C, ModeList20, OptionListA8, FollowerB0, FollowerB4 };
+
+struct MultiModeSelectorState {
+    bool option_list_active{};     // +E0h
+    std::int32_t field_e4{};       // +E4h..+F0h set by enter to 8, 0, 13h, 0
+    std::int32_t field_e8{};
+    std::int32_t field_ec{};
+    std::int32_t field_f0{};
+    std::int32_t pending_selection{-1};  // +F4h
+    std::int32_t session_stage{};  // +F8h: 3 idle; 0, 1, 2 run the +FCh timer
+    float session_timer{};         // +FCh
+    std::uint32_t qos_handle{};    // +10h, XNQOS*
+};
+
+struct MultiModeSelectorHost {
+    virtual ~MultiModeSelectorHost() = default;
+    // Enter.
+    virtual bool interface_query_00687860() = 0;  // *(00E198B4), (4, 0)
+    virtual bool skirmish_218c() = 0;             // *(00E188A8)+218Ch
+    // 00518D60: ECX = 0, EDX = 0, stack 0 and the title, as frontend_menus' list pages.
+    virtual void set_frame_title_00518d60(std::string_view title) = 0;
+    virtual void set_frame_flag_00518b90(std::uint32_t flag) = 0;  // ECX = 2
+    virtual std::int32_t global_e19610() = 0;
+    virtual void widget_virtual(MultiModeWidget widget, std::uint16_t slot, std::int32_t arg) = 0;  // +34h/+60h/+80h
+    virtual void set_byte_77(MultiModeWidget widget, bool value) = 0;
+    virtual void listbox_set_listener_00a9ac40(MultiModeWidget list, bool screen_plus_8) = 0;
+    virtual void listbox_set_widget_listener_00aa6bc0(MultiModeWidget list, bool screen_plus_c) = 0;  // (ptr, 0)
+    virtual void listbox_clear_rows_00a9bec0() = 0;                      // mode list
+    // Clone of the mode list's "MainListbox_Text" child (00AA7E00 name, 1;
+    // 00AAB4C0(0)), appended with 00A9D750(row, 0, 0).
+    virtual MainMenuWidgetRef add_mode_row() = 0;
+    virtual void row_set_label_00abbe50(MainMenuWidgetRef row, std::string_view label) = 0;  // localise 1
+    virtual void row_virtual_34(MainMenuWidgetRef row, bool enabled) = 0;
+    virtual void row_set_byte_77(MainMenuWidgetRef row, bool value) = 0;
+    virtual std::int32_t global_e19614() = 0;
+    virtual void set_global_e19614(std::int32_t value) = 0;
+    virtual void listbox_call_00a9cf30(bool a, bool b) = 0;              // mode list (1, 1)
+    virtual void listbox_select_index_00a9c7c0(MultiModeWidget list, std::int32_t index) = 0;
+    virtual void listbox_select_first_selectable_00a9c310() = 0;         // mode list
+    virtual void input_owner_update_00a92c40(float seconds) = 0;         // 004BEC00 singleton
+    virtual bool restore_options_e08700() = 0;
+    virtual void open_options_005ec250() = 0;
+    virtual void layout_options_005ebdd0() = 0;
+    virtual bool session_present_f8a2fc() = 0;
+    virtual bool session_virtual(std::uint16_t slot, std::int32_t arg) = 0;  // *(00F8A2FC) +170h/+180h/+198h
+    virtual void xnet_qos_release_00a4d45e(std::uint32_t handle) = 0;
+    virtual std::int32_t xnet_qos_service_lookup_00a4d458(std::uint32_t& handle) = 0;  // (0, 0, &handle)
+    virtual void xnet_get_opt_00a4d452() = 0;                            // (6, buffer, &size = 8)
+    // Update.
+    virtual bool main_menu_child_blocked_60_4() = 0;                     // *(*(00E198AC)+60h)+4
+    virtual bool action_004d92b0(std::int32_t action) = 0;
+    virtual void back_005eca90() = 0;
+    virtual void scroller_update_00683820() = 0;                         // screen+3Ch, arg 1
+    virtual bool scroller_has_range_96() = 0;                            // screen+96h
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual std::int32_t option_list_selected_00a9c920() = 0;
+    virtual void change_option_005ecba0(std::int32_t delta) = 0;
+    virtual void poll_session_005eac60() = 0;
+    virtual void cancel_session_00688c70() = 0;                          // *(00E198B4)
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;       // *(00E188A8)+1EF0h
+    virtual void push_request_interface_logged_00688ad0(std::int32_t id) = 0;
+    virtual float option_list_height_f4() = 0;                           // *(screen+A8h)+F4h
+    // 00AA6750 position read and 00AA8240 resolved-position write on +B0h/+B4h.
+    virtual std::array<float, 3> widget_position_00aa6750(MultiModeWidget widget) = 0;
+    virtual void widget_set_position_00aa8240(MultiModeWidget widget, const std::array<float, 3>& position) = 0;
+    virtual void profile_hints_00427190(std::int32_t hint) = 0;          // 004C1E90 singleton
+};
+
+// 005EC5B0: slot +18h of vtable 00CF2B44, __thiscall(screen), RET.
+void multi_mode_selector_enter_005ec5b0(MultiModeSelectorState& screen, MultiModeSelectorHost& host);
+
+// 005ECD80: slot +20h of vtable 00CF2B44, __thiscall(screen, float seconds), RET 4.
+void multi_mode_selector_update_005ecd80(MultiModeSelectorState& screen, float seconds,
+    MultiModeSelectorHost& host);
+
+// ---------------------------------------------------------------------------
+// Multiplayer game lobby enter (005E51D0)
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kLobbySkirmishTitlePrefix = "FE.main_skirmish_title|. - |";  // 00CF2554
+inline constexpr std::uint32_t kLobbyModeOptionCategory = 2;  // 00575E80 key on the option registry
+inline constexpr std::size_t kLobbyPlayerRows = 8;            // +250h..+26Ch
+inline constexpr double kLobbyRowStepX = 0.0;                 // 00D7A258, used for X and Z
+inline constexpr float kLobbyListScrollA = -0.0020833334F;    // 00CF254C -> list +12Ch
+inline constexpr float kLobbyListScrollB = 0.0055555557F;     // 00CF2548 -> list +130h and +128h
+inline constexpr float kLobbyListValue = 0.4875F;             // 00CF2550, 00A9CEB0's float
+inline constexpr float kLobbyRowField30 = -0.011458334F;      // 00CF2534 -> row +30h
+inline constexpr float kLobbyField2D0 = 100.0F;               // 00CF208C
+inline constexpr float kLobbyNoseArtWidth = 0.13333334F;      // 00CF2318
+
+// Widgets the lobby enter touches: screen+130h, +B0h, the player list (found
+// as "Players_Listbox" under +14h and stored at +A8h), its "Player1_Group"
+// row template, +94h, the three arrows +144h/+148h/+14Ch and the
+// noseart_Group/New_5_Text text under +14h.
+enum class LobbyWidget : std::uint8_t {
+    Panel130, PanelB0, PlayerList, RowTemplate, Panel94, Arrow144, Arrow148, Arrow14C, NoseArtText
+};
+
+struct GuiPoint3 {
+    float x;
+    float y;
+    float z;
+};
+
+struct MultiGameLobbyEnterState {
+    std::int32_t field10{};          // +10h: 0 while entering, 1 at the end
+    std::uint32_t field1c{};         // +1Ch, else +A4h, passed to 005D67E0
+    std::uint32_t field_a4{};
+    std::int32_t field278{};         // +278h
+    bool field280{};
+    bool field281{};
+    bool spectating282{};            // +282h, copy of *(00E188A8)+2164h
+    std::uint64_t mode_mask_2c0{};   // +2C0h, 005D9C50
+    std::uint64_t mode_mask_2c8{};   // +2C8h, 005DF510
+    float field2d0{};
+    std::int32_t field2d4{};
+};
+
+struct MultiGameLobbyEnterHost {
+    virtual ~MultiGameLobbyEnterHost() = default;
+    virtual bool session_present_f8a2fc() = 0;
+    virtual void session_clear_byte_75() = 0;                     // *(00F8A2FC)+75h = 0
+    virtual bool interface_query_00687860() = 0;                  // *(00E198B4), (4, 0)
+    virtual bool skirmish_218c() = 0;                             // *(00E188A8)+218Ch
+    virtual std::int32_t global_e19564() = 0;
+    // 00576B10 singleton +10h: 00575E80(&category, &value) then 005732C0, a C string.
+    virtual std::string option_label_00575e80(std::uint32_t category, std::int32_t value) = 0;
+    // 00518D60: ECX = 0Ah, EDX = 0, stack 0 and the title.
+    virtual void set_frame_title_00518d60(std::string_view title) = 0;
+    virtual void widget_virtual(LobbyWidget widget, std::uint16_t slot, std::int32_t arg) = 0;  // +34h/+60h
+    virtual void widget_virtual_88(LobbyWidget widget, std::int32_t state) = 0;  // (state, 0, 1.0f)
+    virtual void option_panel_005ce750() = 0;                     // *(00E198B4)+54h
+    virtual void session_00771dd0() = 0;                          // game+1EF0h, (game+18C8h, 1, 1)
+    virtual void bind_player_list() = 0;                          // 00AA7E00 "Players_Listbox" -> +A8h
+    virtual void player_list_set_byte(std::uint16_t offset, std::uint8_t value) = 0;  // +149h, +14Ah
+    virtual void player_list_set_float(std::uint16_t offset, float value) = 0;        // +128h..+134h
+    virtual void player_list_00a9ceb0(float value, std::int32_t arg) = 0;
+    virtual void bind_row_template() = 0;                         // "Player1_Group" in the list
+    virtual float row_template_height_00aa6740() = 0;             // size +4
+    virtual GuiPoint3 row_template_position_00aa67f0() = 0;
+    // One cloned row (00AAB4C0(0) into +250h + 4*index).
+    virtual void clone_row(std::size_t index) = 0;
+    virtual void row_set_position_00aa7dc0(std::size_t index, GuiPoint3 position) = 0;
+    virtual void row_set_byte_78(std::size_t index, bool value) = 0;
+    virtual void row_set_floats_30_34(std::size_t index, float field30, float field34) = 0;
+    // 00AA7E00 child by name, then 00ABBE50(text, localise 0).
+    virtual void row_child_set_text(std::size_t index, std::string_view child, std::string_view text) = 0;
+    virtual void player_list_append_row_00a9d750(std::size_t index) = 0;   // (row, 0, 0)
+    virtual void row_set_widget_listener_00aa6bc0(std::size_t index) = 0;  // (screen+0Ch, 1)
+    virtual void row_set_index_d8(std::size_t index, std::int32_t value) = 0;
+    virtual void player_list_select_index_00a9c7c0(std::int32_t index) = 0;
+    virtual void player_list_clear_listener_00a9ac40() = 0;
+    virtual bool option_panel_byte_8c() = 0;                      // *(*(00E198B4)+54h)+8Ch
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+    virtual void set_global(std::uint32_t address, std::int32_t value) = 0;  // 00E19564/68/94, 00E08958
+    virtual std::int32_t game_dword(std::uint32_t offset) = 0;    // *(00E188A8)+offset
+    virtual void game_set_dword(std::uint32_t offset, std::uint32_t value) = 0;
+    virtual void lobby_005e20a0() = 0;
+    virtual void lobby_005e3580() = 0;
+    virtual void lobby_005d5870(std::int32_t arg) = 0;
+    virtual void lobby_005d67e0(std::uint32_t arg) = 0;
+    virtual std::uint64_t mode_mask_005df510(std::int32_t mode) = 0;
+    virtual std::uint64_t mode_mask_005d9c50(std::int32_t mode) = 0;
+    virtual void session_virtual_174(std::int32_t arg) = 0;       // *(00F8A2FC)
+    virtual void media_00a4c2d0() = 0;                            // 004C1710 singleton, 0 pushed
+    virtual bool game_byte(std::uint32_t offset) = 0;
+    virtual void set_e19698_byte4(bool value) = 0;
+    virtual void lobby_005d6c10() = 0;
+    virtual void set_help_variant_00549620(std::int32_t variant) = 0;  // *(00E1930C)
+    virtual void nose_art_set_text_00abbe50(std::string_view text) = 0;
+    virtual void nose_art_set_ellipsized_00abb000(std::string_view key, float width) = 0;  // flag 1
+    virtual void lobby_005d5340() = 0;
+    virtual void game_004bb3e0() = 0;
+};
+
+// 005E51D0: slot +18h of vtable 00CF23E4, __thiscall(screen), RET. EBX = 0
+// throughout; EBP is 1 from 005E57E3.
+void multi_game_lobby_enter_005e51d0(MultiGameLobbyEnterState& screen, MultiGameLobbyEnterHost& host);
+
+} // namespace bsp
 #endif
