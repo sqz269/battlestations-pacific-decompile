@@ -346,4 +346,39 @@ HudUnitRef pick_nearest_map_unit_005a1310(const HudMapPickView& view,
     return {};
 }
 
+MinimapIconEntry construct_minimap_icon_entry_005bd590(HudUnitRef unit, MinimapIconHost& host) {
+    MinimapIconEntry entry{unit, {}};
+    MinimapField template_field = MinimapField::BuildingTemplate;
+    if (host.unit_is_kind_5c(unit, 0x08)) template_field = MinimapField::SubTemplate;
+    else if (host.unit_is_kind_5c(unit, 0x06)) template_field = MinimapField::ShipTemplate;
+    else if (host.unit_is_kind_5c(unit, 0x0F)) template_field = MinimapField::PlaneTemplate;
+    entry.widget = host.clone_template_00aab4c0(template_field);
+    switch (host.unit_side_54(unit)) {
+    case 0: host.widget_set_colour_50(entry.widget, MinimapField::BlueColour); break;
+    case 1: host.widget_set_colour_50(entry.widget, MinimapField::RedColour); break;
+    case 2: host.widget_set_colour_50(entry.widget, MinimapField::GreyColour); break;
+    default: break;
+    }
+    host.attach_to_unit_marker_group_00aaa5a0(entry.widget);
+    host.widget_set_visible_34(entry.widget, true);
+    return entry;
+}
+
+HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& controlled_position,
+    const std::vector<CapturePointCandidate>& points) {
+    for (const CapturePointCandidate& point : points) {
+        const float dx = controlled_position[0] - point.position[0];
+        const float dy = controlled_position[1] - point.position[1];
+        const float dz = controlled_position[2] - point.position[2];
+        // 005BD4D0..005BD516.
+        const float radius = static_cast<float>(point.radius_7c4);
+        const float sum = static_cast<float>(
+            (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) +
+            static_cast<double>(dz) * dz);
+        const float radius_squared = static_cast<float>(static_cast<double>(radius) * radius);
+        if (!(sum > radius_squared) && point.side_54 == 2) return point.point;
+    }
+    return {};
+}
+
 } // namespace bsp

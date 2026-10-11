@@ -385,6 +385,73 @@ struct HudMapPickHost {
 HudUnitRef pick_nearest_map_unit_005a1310(const HudMapPickView& view,
     const std::vector<HudMapPickIcon>& icons, bool skip_own_group, HudMapPickHost& host);
 
+// ---------------------------------------------------------------------------
+// Minimap icon entries and the nearby capture point (005BD590, 005BD420)
+// ---------------------------------------------------------------------------
+
+// The minimap screen's templates and colours, bound by 005BE240 from
+// `minimap_units_white_Group` (templates) and each colour group's
+// `item_ship_Icon` (16-byte colours). This corrects docs/HUD_MINIMAP.md, which
+// lists +6Ch..+7Ch as "the six groups' item_ship_Icon".
+enum class MinimapField : std::uint16_t {
+    ShipTemplate = 0x6C,       // item_ship_Icon      005BE397
+    PlaneTemplate = 0x70,      // item_plane_Icon     005BE406
+    SubTemplate = 0x74,        // item_sub_Icon       005BE475
+    BuildingTemplate = 0x78,   // item_building_Icon  005BE4E4
+    MarkerTemplate = 0x7C,     // item_marker_Icon    005BE553
+    RedColour = 0x80,          // 005BE6A2
+    BlueColour = 0x90,         // 005BE7BA
+    YellowColour = 0xA0,       // 005BE9EA
+    SilverColour = 0xB0,       // 005BEB02
+    GreyColour = 0xC0,         // 005BE8D2
+    WhiteColour = 0xD0,        // 005BE58A
+    UnitMarkerGroup = 0xF0,    // unit_marker_Group, the entries' parent
+    NearbyCapturePoint = 0xF4,
+};
+
+// 0Ch bytes: vtable 00CF1158 (one slot, the scalar deleting destructor
+// 005BDB10, which deletes `widget` through its virtual +4(1)), +4h the unit,
+// +8h the cloned icon.
+struct MinimapIconEntry {
+    HudUnitRef unit;
+    MainMenuWidgetRef widget;
+};
+
+struct MinimapIconHost {
+    virtual ~MinimapIconHost() = default;
+    virtual bool unit_is_kind_5c(HudUnitRef unit, int class_id) = 0;
+    virtual std::int32_t unit_side_54(HudUnitRef unit) = 0;
+    // 00AAB4C0 on the template, parent 0. The minimap screen is *(00E198C4)+58h.
+    virtual MainMenuWidgetRef clone_template_00aab4c0(MinimapField template_field) = 0;
+    virtual void widget_set_colour_50(MainMenuWidgetRef widget, MinimapField colour_field) = 0;
+    virtual void attach_to_unit_marker_group_00aaa5a0(MainMenuWidgetRef widget) = 0;  // (widget, 0)
+    virtual void widget_set_visible_34(MainMenuWidgetRef widget, bool visible) = 0;
+};
+
+// 005BD590: __thiscall(entry, unit), RET 4, EAX = entry. Template by
+// IsKindOf: submarine 08h, ship 06h, plane 0Fh, otherwise the building icon.
+// Colour by unit+54h: 0 blue, 1 red, 2 grey; any other side keeps the
+// template's own colour.
+MinimapIconEntry construct_minimap_icon_entry_005bd590(HudUnitRef unit, MinimapIconHost& host);
+
+struct CapturePointCandidate {
+    HudUnitRef point;
+    std::array<float, 3> position{};   // point+FCh..+104h after a pose refresh
+    std::int32_t radius_7c4{};         // point+7C4h, an int
+    std::int32_t side_54{};            // point+54h; 2 is the neutral side
+};
+
+// 005BD420: __fastcall(ECX = minimap screen), RET. +F4h = 0, then when the
+// controlled unit 00E188D8 is a ship (06h) and the capture-point list at
+// *(*(00E188A8)+19CCh)+16Ch is non-empty, the first point (list order, next at
+// node+4h, point at node+8h) whose squared distance to the controlled unit is
+// not above float(radius)^2 and whose side is 2 becomes +F4h. Both poses are
+// refreshed first (00414DB0 when +C8h is clear), the point's before the unit's.
+// The sum is (dx*dx + dy*dy) + dz*dz in x87 double precision, stored to float,
+// as is float(radius)*float(radius); an unordered compare selects (JA only).
+HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& controlled_position,
+    const std::vector<CapturePointCandidate>& points);
+
 } // namespace bsp
 
 #endif

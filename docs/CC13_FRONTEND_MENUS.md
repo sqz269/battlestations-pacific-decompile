@@ -315,3 +315,37 @@ The arithmetic is x87 with a float store after every step; `dx*dx` is stored bef
 to the stored `dy*dy` (005A14B7..005A14C9). The reconstruction replays it in double, narrowing at
 the same points, which equals the native result if the process runs at the MSVC CRT's default
 53-bit precision control. That precision setting is an assumption, not read from this binary.
+
+## Minimap icon entries and the nearby capture point
+
+This takes the `hud_minimap_icon_entries` follow-up of docs/HUD_MINIMAP.md for its three
+routines in segment 20.
+
+**The templates are five, not six.** 005BE240 binds `item_ship_Icon` (+6Ch), `item_plane_Icon`
+(+70h), `item_sub_Icon` (+74h), `item_building_Icon` (+78h) and `item_marker_Icon` (+7Ch), all
+under `minimap_units_white_Group`. From each colour group it reads only `item_ship_Icon`'s
+16-byte colour: white +D0h (005BE58A), red +80h (005BE6A2), blue +90h (005BE7BA), grey +C0h
+(005BE8D2), yellow +A0h (005BE9EA), silver +B0h (005BEB02). docs/HUD_MINIMAP.md's row "+6Ch..+7Ch
+the six groups' `item_ship_Icon`" should read as above.
+
+**005BD590** (`BSP_HudMinimapIconEntry_Construct`, reconstructed, complete): the 0Ch entry is
+{vtable 00CF1158, unit, icon}. The icon is cloned (00AAB4C0, parent 0) from the sub template for
+IsKindOf(8), the ship template for 6, the plane template for 0Fh and the building template
+otherwise. Its colour is set through virtual +50h from blue (side 0), red (side 1) or grey
+(side 2) by unit+54h; any other side keeps the template colour. It is then attached under
+`unit_marker_Group` (+F0h, 00AAA5A0 with (icon, 0)) and shown (virtual +34h(1)). The entry's only
+virtual, 005BDB10, deletes the icon through its virtual +4(1). The marker template (+7Ch) is not
+used here.
+
+**005C0700** (`STL_HudMinimapIconMap_Subscript_005c0700`): `std::map<unit*, entry*>::operator[]`
+(lower_bound on node+0Ch, 005C01D0 inserts a null value, returns node+10h). Named, not
+reconstructed.
+
+**005BD420** (`BSP_HudMinimapScreen_SelectNearbyCapturePoint`, coverage partial: the loop and
+compare; the +F4h clear and store, the preconditions and the pose refreshes are host-side):
+clears +F4h; when the controlled unit 00E188D8 answers IsKindOf(6) and the capture-point list at
+*(*(00E188A8)+19CCh)+16Ch is non-empty, walks it (point at node+8h, next at node+4h), refreshing
+the point's pose and then the unit's (00414DB0 when +C8h is clear), and stores the first point
+whose squared distance is not above `float(+7C4h)^2` and whose side (+54h) is 2. The x87 sum is
+`(dx*dx + dy*dy) + dz*dz` stored to float, compared with `float(r)*float(r)` stored to float, by
+`FCOMIP`/`JA`, so an unordered result counts as inside.
