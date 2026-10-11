@@ -1,0 +1,113 @@
+{
+  "status": "Root_REVIEWED_EXACT_NATIVE_ENTRY",
+  "worker_commit": "65b1445b785dc80960e8e51af764a568c793f306",
+  "entry": "00C05070",
+  "Root_checks": {
+    "status": "PASS",
+    "worker_commit": "65b1445b785dc80960e8e51af764a568c793f306",
+    "ZIP_sha256": "6e0575ada3c432bd47202ca6c05e3276891ff6a77ac09faa8615fff02b9a3740",
+    "manifest_members": 79,
+    "actual_frozen_Git_objects": 8,
+    "finite_inputs": 12,
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_CRT_GETPTD_FIRST_DIRECT_TARGET_ENTRY.md",
+        "mode": "100644",
+        "git_blob": "358cb01e87cd674f220e2528ed84b2ebdb347965",
+        "bytes": 4987,
+        "sha256": "e1e9eef77a60330e962b772dfab4eb97561525b02647d5eddb8c86ebb6558f4f"
+      },
+      {
+        "path": "reports/cc12_application_crt_getptd_first_direct_target_entry.json",
+        "mode": "100644",
+        "git_blob": "2de170c74cd447588dfc93637618d666ed62c99a",
+        "bytes": 14652,
+        "sha256": "b4d65916a8f80faba63380d273c6821df9ad14110c7d507381ed6006b31d3a4f"
+      }
+    ],
+    "independent_Root_entry_decode": {
+      "bytes": "56",
+      "address": "00C05070",
+      "length": 1,
+      "mnemonic": "PUSH ESI",
+      "Capstone_version": "5.0.7"
+    },
+    "whole_body_read": false,
+    "current_Root_Source_equality": false,
+    "Source_census": false
+  },
+  "strict_audit": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "pins": [
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/evidence.zip",
+      "bytes": 507239,
+      "sha256": "6e0575ada3c432bd47202ca6c05e3276891ff6a77ac09faa8615fff02b9a3740"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/entry_parser.py",
+      "bytes": 19238,
+      "sha256": "93071d5e8ab93520dbfb37f85c8b051f1dd23dd7bdd7a68b231e52d357591dc9"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_review.py",
+      "bytes": 3971,
+      "sha256": "0cf910f59460e2523c819c5d4cd3f4c67ecb60556a50c9086a2db7f8f04077d6"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_actual_review.json",
+      "bytes": 1102,
+      "sha256": "4160b63ff7102a3711ec3fa0959acd96e6959a8a5d73535c020d842b36b6a4c2"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_strict_replay.py",
+      "bytes": 2162,
+      "sha256": "85ab3cffd59d5b2bd21067f48ae07d5e74256b4f9707d0542299b34106295bdf"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_guard_receipt.json",
+      "bytes": 3479,
+      "sha256": "6619dd3053bf6e4be1d795403d1129c8a8bfbe4752d28e7448d52322130bbcbe"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_entry_gate.py",
+      "bytes": 4032,
+      "sha256": "746e727e6e04e012f0221b0bd9c73fbc152a7b557aecc038b15bc5c73da6e03a"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/Root_entry_gate.json",
+      "bytes": 1164,
+      "sha256": "e1197886d764dad4e74f9c438d12b8ea240936227dc2de63b35c22d9b230f5b2"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/staged_git_receipt.json",
+      "bytes": 3900,
+      "sha256": "5a7d82eb2069f06839fbb349199691d8cbdb0df49ffc77e4e772057fc0490201"
+    },
+    {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry_primary/final_git_receipt.json",
+      "bytes": 3764,
+      "sha256": "3287dd91b70c7ede707d430d3914aa528a6eb7f2d9bb42449513855277e6048f"
+    }
+  ],
+  "qualifications": [
+    "Positive physical CALL C051C7 selects C05070 from immediate accepted caller report; no ancestor archives reopened.",
+    "Exact56/PUSH ESI only; C05071 and remaining49 body bytes unread; saved50B range metadata only.",
+    "Prototype interpretation restricted to four metadata prefix lines; automatic companion suffix opaque.",
+    "Normal local effect uses current ESI, pushes through current SS after ESP-4; aliases and faults retained; no frame/return/ABI/TLS inference.",
+    "Actual finite Git objects and immediate inputs checked without Source census or current Root Source equality."
+  ],
+  "credit": {
+    "static_Native_entry": true,
+    "Source": false,
+    "build": false,
+    "fixture": false,
+    "original_ABI": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
