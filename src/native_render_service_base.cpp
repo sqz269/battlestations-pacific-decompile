@@ -179,3 +179,41 @@ void* construct_native_application_00737970(
     return original_receiver;
 }
 } // namespace bsp
+
+namespace bsp {
+void retire_native_application_singleton_base_00bea8b0(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;
+    BaseCleanup base_cleanup{actual_receiver}; // Source state0 after profile.
+    void* const first_manager = get_native_singleton_manager_00415350(
+        context.actual_manager_01090aa0);
+    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
+        static_cast<std::byte*>(first_manager) + 0x10);
+    NativeGuard guard{0x00ce37fcu, section};
+    if (section) {
+        EnterCriticalSection(section);
+        depth(section) = depth(section) + 1u;
+    }
+    GuardCleanup guard_cleanup{guard}; // Source state1, including null section.
+    void* const manager = get_native_singleton_manager_00415350(
+        context.actual_manager_01090aa0);
+    void* const current_application = context.actual_application_e1ae90;
+    unregister_native_singleton_object_00bcfca0(manager, nullptr, current_application);
+    context.actual_application_e1ae90 = nullptr;
+    if (section) {
+        depth(section) = depth(section) - 1u;
+        LeaveCriticalSection(section);
+    }
+    guard_cleanup.armed = false;
+    destroy_native_generic_singleton_base_00412430(actual_receiver);
+    base_cleanup.armed = false;
+}
+} // namespace bsp
+
+namespace bsp {
+void retire_native_application_base_00bea990(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc8u;
+    retire_native_application_singleton_base_00bea8b0(actual_receiver, context);
+}
+} // namespace bsp
