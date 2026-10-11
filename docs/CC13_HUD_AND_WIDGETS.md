@@ -282,3 +282,95 @@ Open, in order of value:
    once their owners are known.
 5. Unreferenced Ghidra-less code is listed in the two "Unreferenced" sections above; it was left
    undefined on purpose.
+
+## The plane-spawn camera (second packet, cc13-hud1)
+
+Lease `cc13_hud1_camera` (0060C7D0..0060D130). Conventions follow docs/CC13_CAMERA_CONTROLLERS.md:
+x87 chains in double with a float cast at every native FSTP. Correction to the first packet:
+slot +28h 0060CA20 returns an entity pointer (0060CF90 observes it and passes it to 006BCD20),
+so it is now `BSP_HudPlaneSpawnScreen_GetHomeEntity`; the C++ keeps `plane_spawn_target_id_0060ca20`.
+
+| Address | Name | ABI | Status |
+| --- | --- | --- | --- |
+| 0060CF90 | `BSP_HudPlaneSpawnScreen_AttachPlane` | thiscall(plane), RET 4 | reconstructed, build-tested |
+| 0060CD50 | `BSP_PlaneSpawnCamera_SetTargets` | thiscall(home, plane), RET 8 | reconstructed, build-tested |
+| 0060CC90 | `BSP_PlaneSpawnCamera_UpdatePose` (vtable 00CF4930 +DCh) | thiscall(float dt), RET 4 | reconstructed, build-tested |
+| 0060CB60 | `BSP_PlaneSpawnCamera_GetTargetPosition` | thiscall(Vec3* out), EAX, RET 4 | reconstructed, build-tested |
+
+- **Attach** (from 0068ACA0): +20h = plane, observed through screen+8; the home entity (slot
+  +28h) is observed and its AirOps block (006BCD20, DL = 0) goes to +24h. The first attach
+  creates the 3CCh-byte camera at +1Ch (operator new, memset, 00432750, vtables 00CF4930 /
+  00CF4914 / 00CF490C / 00CF48F4), runs 00923870(camera, 0, game+19CCh, identity) even when the
+  allocation failed, and observes it. Then SetTargets(camera, block ? block+7Ch : 0, plane) and
+  `BSP_Game_SetCameraMover(camera)`.
+- **SetTargets** swaps the observed pair +384h (home) / +388h (plane). With an AirOps block the
+  seed matrix +38Ch is the block's vtable +18h matrix; otherwise it is the plane pose (+CCh) and
+  the translation row +3BCh..+3C4h gets the eye offset, with t = game-tuning +7Ch:
+  `x = f(f(f(r2x*t)*1.5) + f(-r0x*t))`, `y = f(t*1.2 + f(f(f(0*t)*1.5) + f(0*t)))`,
+  `z = f(f(1.5*f(r2z*t)) + f(-r0z*t))` (rows r0 = +CCh, r2 = +ECh; constants 00D7A258 = 0.0,
+  00CE3D78 = 1.5, 00CEC160 = 1.2000000476837158, all doubles). Then camera vtable +ACh(home)
+  and +74h = +38Ch.
+- **UpdatePose**: eye = +3BCh..+3C4h, forward = target - eye, up = (0,1,0), 0085DC80, then
+  `BSP_CameraMover_ApplyShakeAndPublishPose(dt)`.
+- **Target**: a kind-9 home gives *(home+538h)+808h; a parked plane (byte +5Ch clear and +900h
+  == 1) asks the block's +3Ch object (vtable +40h, translation at +30h), or (0,0,0) without a
+  block; a plane parented to the home (or no home) gives plane+A4h; otherwise plane+FCh in the
+  home's frame (00414E10, 00414D10).
+
+Uncertainty: what kind 9 and +900h == 1 mean; camera vtable +ACh and 00923870 were not read.
+
+## Segment 22: in-game chat messages, the error dialog, the multiplayer pause menu (cc13-hud1)
+
+Lease `cc13_hud1_seg22` (005CD070..005DF510). The movie screens at the start of the segment
+(005CD9C0..005CE5D0) are cc9's in-game movie wiring and were not touched; the lobby block
+(005D4910..005DF510, including 005D73A0 and the 3C50h-byte 005DB050) belongs with the lobby work
+in docs/CC13_FRONTEND_MENUS.md and was left for that lane. Five vtable targets had no Ghidra
+function and were defined: 005CE740 (chat +18h, a lone RET), 005CFE50 (chat +04h, MOV AL,1),
+005D1460 (chat listener +00h), 005D3580 (pause-multi +00h, id 19h) and 005D50E0 (a 7-byte
+`MOV AL,[ECX+274h]; RET` slot of a lobby vtable at 00D32DE8, left unnamed).
+
+### The chat screen's message logs
+
+`BSP_MultiChatScreen_AddMessage` 005D0050, `__thiscall(screen, NativeString* sender, int type,
+NativeString* message, NativeString* second)`, `RET 10h`, reconstructed and build-tested
+(`chat_add_message_005d0050`). Its one caller is 005D0770, which drops the message when 007786E0
+on game+2080h mutes the sender's xuid (the last two of its seven stack dwords) for the local
+player (game+18ECh; -1:-1 outside 0..7) and otherwise forwards (sender, type, message, second);
+005D0770 is called by the session message handlers 00772020, 00772170 and 007722E0.
+
+1. Online (game+1FE4h) with the Lua dispatcher 00F8A0C4 present, it fires the `chat` event
+   00985F30(sender, type, message) first (docs/MISSION_EVENTS_UPDATE.md lists 005D0050 as that
+   channel's producer).
+2. The text: type 6 sets Lua globals `SwapPlayer1` = message and `SwapPlayer2` = second and
+   resolves `globals.swapmessage`; 7, 8, 9, 10 set `SwapPlayer1` and resolve
+   `globals.joinmessage`, `globals.leftmessage`, `ingame.multi_surrender`,
+   `ingame.multi_notsurrender`; type 5 resolves the second string as a key, narrows the text to
+   its low bytes into `lostunitplayername`, then resolves the message as a key. Any other type
+   resolves the message as a key when the sender is empty (case-insensitive compare with
+   00CE3A0C) and shows it verbatim otherwise.
+3. Logs (all `std::list`, 20h/1Ch-byte nodes): the overlay +68h is front-inserted with a 6.0 s
+   timer (00CE6630) after erasing its back while size > 6; the history +74h is front-inserted
+   after the same trim at size > 14; the lobby log +80h is appended after erasing its front at
+   size > 42. Byte +8Dh is then set.
+
+`BSP_MultiChatScreen_OnKey` 005D1460 (listener 00CF19C0 +00h, `RET 8`): key 26h going down
+outside a mission (00E198C4 == 0) opens chat mode 1; key 9 coming up opens mode 3 in a mission
+and 1 otherwise (005D11F0); AL reports handled. Reconstructed (`chat_key_mode_005d1460`).
+
+Named only: chat layout 005D14D0, exit 005CFF40, destructor body 005CFE60, mode switch 005D11F0,
+row rebuild 005D0C60 (shared with the lobby update 005E5B30), log clear 005CFB80 and the
+`STL_Chat*List_*` node routines; error screen enter 005D26D0, update 005D2240, message text
+005D24F0, error-code setter 005D2E70 (code 5 when the online client's vtable +14h answers false;
+code 1 clears +58h), dismiss 005D2010; pause-multi update 005D3F20, row builder 005D39A0,
+confirmation listener 005D43C0, constructor 005D3540, destructor 005D3710.
+
+Uncertainty: the key codes 26h/9 are probably VK_UP/VK_TAB but the listener's caller was not
+read; what modes 1 and 3 select in 005D11F0; 005D07E0 (sends the typed line) was not named.
+
+## Handoff update (cc13-hud1, second packet)
+
+Commits after d425f766b: 8f15e962d (plane-spawn camera) and the segment 22 commit. Totals now:
+190 ledger names, 32 defined functions, 45 reconstruction records, 347 verified report rows, build
+passing. Segment 22 next steps, by value: the chat update 005D18A0 with the overlay timers and
+005D0C60's row layout; the error dialog enter/update and the full code-to-key table in 005D24F0;
+the pause-multi update 005D3F20; then the lobby block (coordinate with the lobby lane).

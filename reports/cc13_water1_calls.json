@@ -2,22 +2,336 @@
   "packet": "cc13_water1",
   "doc": "docs/CC13_WATER_RENDER.md",
   "call_sites": [
-    {"address": "0078d19d", "native": "00ba0090", "function": "0078cff0", "note": "ECX = [world+A8h]; ocean per-frame update"},
-    {"address": "0078d02c", "native": "00ba2ff0", "function": "0078cff0", "note": "beam system update"},
-    {"address": "0078d00d", "native": "00ba40f0", "function": "0078cff0", "note": "water particle update"},
-    {"address": "00ba0b2d", "native": "00b9cb80", "function": "00ba0090"},
-    {"address": "00ba0b70", "native": "00ba70f0", "function": "00ba0090"},
-    {"address": "00ba0b83", "native": "00ba8ee0", "function": "00ba0090"},
-    {"address": "00ba0b8b", "native": "00b9f0a0", "function": "00ba0090"},
-    {"address": "00ba0bb0", "native": "00b9ab60", "function": "00ba0090"},
-    {"address": "00b99cde", "native": "00b62d10", "function": "00b99c80"},
-    {"address": "00b99d14", "native": "00b62d10", "function": "00b99c80"},
-    {"address": "00b99c34", "native": "00b62d10", "function": "00b99bf0"},
-    {"address": "00880029", "native": "00bb0a90", "function": "00880000", "note": "landscape+3D4h, null-checked"},
-    {"address": "00880046", "native": "00baec50", "function": "00880000", "note": "landscape+3D8h, null-checked"},
-    {"address": "008830aa", "native": "00ba1370", "function": "00882ac0"},
-    {"address": "0086df76", "native": "00badc70", "function": "0086d180"},
-    {"address": "0086e504", "native": "00bae2e0", "function": "0086d180"},
-    {"address": "00ba3275", "native": "00ba2c20", "function": "00ba2ff0", "note": "ECX = 00E130C0 private Mersenne state"}
+    {
+      "address": "0078d19d",
+      "native": "00ba0090",
+      "function": "0078cff0",
+      "note": "ECX = [world+A8h]; ocean per-frame update"
+    },
+    {
+      "address": "0078d02c",
+      "native": "00ba2ff0",
+      "function": "0078cff0",
+      "note": "beam system update"
+    },
+    {
+      "address": "0078d00d",
+      "native": "00ba40f0",
+      "function": "0078cff0",
+      "note": "water particle update"
+    },
+    {
+      "address": "00ba0b2d",
+      "native": "00b9cb80",
+      "function": "00ba0090"
+    },
+    {
+      "address": "00ba0b70",
+      "native": "00ba70f0",
+      "function": "00ba0090"
+    },
+    {
+      "address": "00ba0b83",
+      "native": "00ba8ee0",
+      "function": "00ba0090"
+    },
+    {
+      "address": "00ba0b8b",
+      "native": "00b9f0a0",
+      "function": "00ba0090"
+    },
+    {
+      "address": "00ba0bb0",
+      "native": "00b9ab60",
+      "function": "00ba0090"
+    },
+    {
+      "address": "00b99cde",
+      "native": "00b62d10",
+      "function": "00b99c80"
+    },
+    {
+      "address": "00b99d14",
+      "native": "00b62d10",
+      "function": "00b99c80"
+    },
+    {
+      "address": "00b99c34",
+      "native": "00b62d10",
+      "function": "00b99bf0"
+    },
+    {
+      "address": "00880029",
+      "native": "00bb0a90",
+      "function": "00880000",
+      "note": "landscape+3D4h, null-checked"
+    },
+    {
+      "address": "00880046",
+      "native": "00baec50",
+      "function": "00880000",
+      "note": "landscape+3D8h, null-checked"
+    },
+    {
+      "address": "008830aa",
+      "native": "00ba1370",
+      "function": "00882ac0"
+    },
+    {
+      "address": "0086df76",
+      "native": "00badc70",
+      "function": "0086d180"
+    },
+    {
+      "address": "0086e504",
+      "native": "00bae2e0",
+      "function": "0086d180"
+    },
+    {
+      "address": "00ba3275",
+      "native": "00ba2c20",
+      "function": "00ba2ff0",
+      "note": "ECX = 00E130C0 private Mersenne state"
+    },
+    {
+      "address": "00b9ae74",
+      "native": "00b6fbb0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b13a",
+      "native": "00b642f0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b148",
+      "native": "00b632d0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b1a6",
+      "native": "00b62d10",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b39d",
+      "native": "004142e0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b409",
+      "native": "00b9a8a0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b44d",
+      "native": "00b9a8a0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b5ff",
+      "native": "00b642f0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b852",
+      "native": "00bf7030",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9b8ce",
+      "native": "00bf7030",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9bb65",
+      "native": "00b999f0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9bd41",
+      "native": "00b63f10",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c58e",
+      "native": "00413920",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c59c",
+      "native": "00b632d0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c5b1",
+      "native": "00413920",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c625",
+      "native": "00b632d0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c6c7",
+      "native": "00b63b30",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c6ec",
+      "native": "00413920",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c6f3",
+      "native": "00413920",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c9bf",
+      "native": "00b6fbb0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9c9eb",
+      "native": "00b6fbb0",
+      "function": "00b9ae00",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9daf3",
+      "native": "00b9a990",
+      "function": "00b9d7b0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9d835",
+      "native": "00bf6713",
+      "function": "00b9d7b0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9d869",
+      "native": "00bf6713",
+      "function": "00b9d7b0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9aaca",
+      "native": "005803e0",
+      "function": "00b9a990",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00b9aad3",
+      "native": "00419440",
+      "function": "00b9a990",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3013",
+      "native": "00b6db70",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3044",
+      "native": "00b6fc60",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3062",
+      "native": "00b6da70",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba30c5",
+      "native": "00bf6713",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba30db",
+      "native": "00419510",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba311b",
+      "native": "00bf7030",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3148",
+      "native": "00419260",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3194",
+      "native": "00bf7030",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba32c3",
+      "native": "00ba2c20",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3429",
+      "native": "00bfa910",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3442",
+      "native": "00bfeeec",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba3472",
+      "native": "00ba2c20",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba339f",
+      "native": "00b6da70",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    },
+    {
+      "address": "00ba34c1",
+      "native": "00b6db70",
+      "function": "00ba2ff0",
+      "note": "cc13-water2"
+    }
   ]
 }

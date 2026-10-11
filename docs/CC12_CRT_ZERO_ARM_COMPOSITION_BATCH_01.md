@@ -1,0 +1,13 @@
+# Conditional CRT zero-arm and five-word caller composition
+
+The historical Native36 dispatcher schedule is now composed with the admitted eight-byte clear body. With a compatible first-provider return selecting EAX=0, a valid CALL mapping, and preservation of the nominated return word through the AND, the zero branch reaches its two POPs and direct tail with EAX=0 and CF=OF=SF=0, ZF=PF=1, AF undefined. ESP returns to dispatcher-entry S. ECX and EBP are late reads from S-8 and S-4; clearing data that aliases either slot can change those values while preserving control flow.
+
+The exact return-preservation condition is that every return byte overlapped by the clear write was already zero. Disjointness is sufficient. A successful RET with a changed offset does not establish the recorded caller continuation. Ordinary RAM, stable mappings/descriptors and instruction fetches, complete successful accesses and SS.B=1 are explicit conditions. CPU offsets remain distinct from saved listing coordinates. The 16-bit stack case is outside the full ESP equations.
+
+The historical Native16 caller supplies five zero words initially. With its entry U, dispatcher-entry S=U-24 and the deepest owned CALL return slot is U-36. Unopened providers may use additional stack. Those initial values need not survive provider writes. The final tail target is unopened: its compatible return is required before the caller can reach ADD ESP,20 and RET. The zero-branch register/flag facts do not certify the final target's outputs, termination policy, a handler ABI or a Source UCRT substitution.
+
+The direct branch, outer caller and independent alias models are published as separate reviewed packets. Models are symbolic paper countermodels, not executed tests or runtime observations. Historical Native16/36 and the epoch10371 callee admission do not become a fresh joint caller/callee capture through composition.
+
+The inherited audit documents also contain historical Source sections. A worker incidentally displayed an embedded member-body excerpt; another displayed Source-boundary prose. Root preserved the original freeze and added a separate scope qualification. Those excerpts supply no composition or current Source facts. Source files and absence censuses were not queried, and further Source-section reads were stopped.
+
+No C++ edits, new Native/decoder queries, builds, tests, probes, runtime actions or GPR writes occurred in this batch. The earlier Source/build/runtime scope question remains unanswered. The separate final handoff records integration, one batch push, exact public Git bindings and lease release. Startup, gameplay and Original ABI remain unvalidated; the reconstruction goal stays active.
