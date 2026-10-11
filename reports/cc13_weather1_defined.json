@@ -1,0 +1,323 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bbe2b0",
+    "end_address": "00bbe2b6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bbe2b0",
+    "end_address": "00bbe2b5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bbe2b0",
+    "disassemble_first": false,
+    "name": "BSP_CloudInstance_GetRuntimeTypeToken"
+   },
+   "result": {
+    "success": true,
+    "address": "00bbe2b0",
+    "function_name": "BSP_CloudInstance_GetRuntimeTypeToken",
+    "entry_point": "00bbe2b0",
+    "body_size": 6,
+    "message": "Function created successfully at 00bbe2b0",
+    "warnings": [
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeToken' \u2014 main part 'CloudInstance_GetRuntimeTypeToken' is not PascalCase. Expected: CloudinstanceGetruntimetypetoken",
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeToken' \u2014 main part 'CloudInstance_GetRuntimeTypeToken' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeToken' does not start with a recognized verb. First word 'Cloud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bbe2b0",
+   "end": "00bbe2b6",
+   "name": "BSP_CloudInstance_GetRuntimeTypeToken",
+   "after": "Function: BSP_CloudInstance_GetRuntimeTypeToken at 00bbe2b0\nSignature: undefined BSP_CloudInstance_GetRuntimeTypeToken(void)\nEntry: 00bbe2b0\nBody: 00bbe2b0 - 00bbe2b5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bbe2c0",
+    "end_address": "00bbe2c6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bbe2c0",
+    "end_address": "00bbe2c5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bbe2c0",
+    "disassemble_first": false,
+    "name": "BSP_CloudInstance_GetRuntimeTypeNameAddress"
+   },
+   "result": {
+    "success": true,
+    "address": "00bbe2c0",
+    "function_name": "BSP_CloudInstance_GetRuntimeTypeNameAddress",
+    "entry_point": "00bbe2c0",
+    "body_size": 6,
+    "message": "Function created successfully at 00bbe2c0",
+    "warnings": [
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeNameAddress' \u2014 main part 'CloudInstance_GetRuntimeTypeNameAddress' is not PascalCase. Expected: CloudinstanceGetruntimetypenameaddress",
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeNameAddress' \u2014 main part 'CloudInstance_GetRuntimeTypeNameAddress' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CloudInstance_GetRuntimeTypeNameAddress' does not start with a recognized verb. First word 'Cloud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bbe2c0",
+   "end": "00bbe2c6",
+   "name": "BSP_CloudInstance_GetRuntimeTypeNameAddress",
+   "after": "Function: BSP_CloudInstance_GetRuntimeTypeNameAddress at 00bbe2c0\nSignature: undefined BSP_CloudInstance_GetRuntimeTypeNameAddress(void)\nEntry: 00bbe2c0\nBody: 00bbe2c0 - 00bbe2c5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bbe2e0",
+    "end_address": "00bbe308"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bbe2e0",
+    "end_address": "00bbe307",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bbe2e0",
+    "disassemble_first": false,
+    "name": "BSP_CloudInstance_AcceptsRuntimeTypeToken"
+   },
+   "result": {
+    "success": true,
+    "address": "00bbe2e0",
+    "function_name": "BSP_CloudInstance_AcceptsRuntimeTypeToken",
+    "entry_point": "00bbe2e0",
+    "body_size": 40,
+    "message": "Function created successfully at 00bbe2e0",
+    "warnings": [
+     "Function name 'BSP_CloudInstance_AcceptsRuntimeTypeToken' \u2014 main part 'CloudInstance_AcceptsRuntimeTypeToken' is not PascalCase. Expected: CloudinstanceAcceptsruntimetypetoken",
+     "Function name 'BSP_CloudInstance_AcceptsRuntimeTypeToken' \u2014 main part 'CloudInstance_AcceptsRuntimeTypeToken' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CloudInstance_AcceptsRuntimeTypeToken' does not start with a recognized verb. First word 'Cloud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bbe2e0",
+   "end": "00bbe308",
+   "name": "BSP_CloudInstance_AcceptsRuntimeTypeToken",
+   "after": "Function: BSP_CloudInstance_AcceptsRuntimeTypeToken at 00bbe2e0\nSignature: undefined BSP_CloudInstance_AcceptsRuntimeTypeToken(void)\nEntry: 00bbe2e0\nBody: 00bbe2e0 - 00bbe307"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bc1230",
+    "end_address": "00bc124a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bc1230",
+    "end_address": "00bc1249",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bc1230",
+    "disassemble_first": false,
+    "name": "BSP_Waterdrops_AcceptRender"
+   },
+   "result": {
+    "success": true,
+    "address": "00bc1230",
+    "function_name": "BSP_Waterdrops_AcceptRender",
+    "entry_point": "00bc1230",
+    "body_size": 26,
+    "message": "Function created successfully at 00bc1230",
+    "warnings": [
+     "Function name 'BSP_Waterdrops_AcceptRender' \u2014 main part 'Waterdrops_AcceptRender' is not PascalCase. Expected: WaterdropsAcceptrender",
+     "Function name 'BSP_Waterdrops_AcceptRender' \u2014 main part 'Waterdrops_AcceptRender' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Waterdrops_AcceptRender' does not start with a recognized verb. First word 'Waterdrops_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bc1230",
+   "end": "00bc124a",
+   "name": "BSP_Waterdrops_AcceptRender",
+   "after": "Function: BSP_Waterdrops_AcceptRender at 00bc1230\nSignature: undefined BSP_Waterdrops_AcceptRender(void)\nEntry: 00bc1230\nBody: 00bc1230 - 00bc1249"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bc2340",
+    "end_address": "00bc27b1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bc2340",
+    "end_address": "00bc27b0",
+    "bytes_disassembled": 1137,
+    "message": "Successfully disassembled 1137 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bc2340",
+    "disassemble_first": false,
+    "name": "BSP_Waterdrops_FillVertices"
+   },
+   "result": {
+    "success": true,
+    "address": "00bc2340",
+    "function_name": "BSP_Waterdrops_FillVertices",
+    "entry_point": "00bc2340",
+    "body_size": 1131,
+    "message": "Function created successfully at 00bc2340",
+    "warnings": [
+     "Function name 'BSP_Waterdrops_FillVertices' \u2014 main part 'Waterdrops_FillVertices' is not PascalCase. Expected: WaterdropsFillvertices",
+     "Function name 'BSP_Waterdrops_FillVertices' \u2014 main part 'Waterdrops_FillVertices' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Waterdrops_FillVertices' does not start with a recognized verb. First word 'Waterdrops_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bc2340",
+   "end": "00bc27b1",
+   "name": "BSP_Waterdrops_FillVertices",
+   "after": "Function: BSP_Waterdrops_FillVertices at 00bc2340\nSignature: undefined BSP_Waterdrops_FillVertices(void)\nEntry: 00bc2340\nBody: 00bc2340 - 00bc27b0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bc7170",
+    "end_address": "00bc7190"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bc7170",
+    "end_address": "00bc718f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bc7170",
+    "disassemble_first": false,
+    "name": "BSP_LightningModel_TickAndFill"
+   },
+   "result": {
+    "success": true,
+    "address": "00bc7170",
+    "function_name": "BSP_LightningModel_TickAndFill",
+    "entry_point": "00bc7170",
+    "body_size": 32,
+    "message": "Function created successfully at 00bc7170",
+    "warnings": [
+     "Function name 'BSP_LightningModel_TickAndFill' \u2014 main part 'LightningModel_TickAndFill' is not PascalCase. Expected: LightningmodelTickandfill",
+     "Function name 'BSP_LightningModel_TickAndFill' \u2014 main part 'LightningModel_TickAndFill' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LightningModel_TickAndFill' does not start with a recognized verb. First word 'Lightning' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bc7170",
+   "end": "00bc7190",
+   "name": "BSP_LightningModel_TickAndFill",
+   "after": "Function: BSP_LightningModel_TickAndFill at 00bc7170\nSignature: undefined BSP_LightningModel_TickAndFill(void)\nEntry: 00bc7170\nBody: 00bc7170 - 00bc718f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bc4d20",
+    "end_address": "00bc4fa9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bc4d20",
+    "end_address": "00bc4fa8",
+    "bytes_disassembled": 649,
+    "message": "Successfully disassembled 649 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bc4d20",
+    "disassemble_first": false,
+    "name": "BSP_CloudRenderModel_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "00bc4d20",
+    "function_name": "BSP_CloudRenderModel_Update",
+    "entry_point": "00bc4d20",
+    "body_size": 649,
+    "message": "Function created successfully at 00bc4d20",
+    "warnings": [
+     "Function name 'BSP_CloudRenderModel_Update' \u2014 main part 'CloudRenderModel_Update' is not PascalCase. Expected: CloudrendermodelUpdate",
+     "Function name 'BSP_CloudRenderModel_Update' \u2014 main part 'CloudRenderModel_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CloudRenderModel_Update' does not start with a recognized verb. First word 'Cloud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bc4d20",
+   "end": "00bc4fa9",
+   "name": "BSP_CloudRenderModel_Update",
+   "after": "Function: BSP_CloudRenderModel_Update at 00bc4d20\nSignature: undefined BSP_CloudRenderModel_Update(void)\nEntry: 00bc4d20\nBody: 00bc4d20 - 00bc4fa8"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
