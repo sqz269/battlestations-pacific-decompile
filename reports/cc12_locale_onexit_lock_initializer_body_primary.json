@@ -1,0 +1,272 @@
+{
+  "packet": "cc12_locale_onexit_lock_initializer_body_primary",
+  "status": "Root accepted bounded Native body evidence",
+  "worker_commit": "8c5fe18e359fad8bbe99b8abd28cf136137cbe73",
+  "private_directory": "local\\cc12_locale_onexit_lock_initializer_body_primary",
+  "pins": {
+    "Root_listing_gate.py": {
+      "bytes": 7654,
+      "sha256": "3416beb13765f3100ea189c281b624d19c5c50c421b827f3fb071c754cb1e432"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 76438,
+      "sha256": "52258d5e52b8061eca00d607721213564b3f1c1d24ab2ce16071187c6b6b36c0"
+    },
+    "Root_core_review.py": {
+      "bytes": 4964,
+      "sha256": "34975d78bc52656b7c229c30c3497b0f209ffcce685f01e91271cf0190f09eab"
+    },
+    "Root_core_actual_review.json": {
+      "bytes": 1633,
+      "sha256": "c57f6b9f5ae81ffed6ad0cc36d2787492791e981d96517be3cda47191d5dc583"
+    },
+    "Root_core_guard.json": {
+      "bytes": 5799,
+      "sha256": "a185eefef192d08fea146b486c39e1aa739deaedf65f43c7217a0862059aff1e"
+    },
+    "Root_delivery_review.py": {
+      "bytes": 3213,
+      "sha256": "5b149eb76b64e97ab37cb232db3e274d605027adbebb48073976b00588d1f429"
+    },
+    "Root_delivery_actual_review.json": {
+      "bytes": 1452,
+      "sha256": "e57ceeb51098a1da37210adcb1f7a38a7b9bdedad3bf0d3a69dc37584e64c56a"
+    },
+    "Root_delivery_guard.json": {
+      "bytes": 1758,
+      "sha256": "9e0bc0fd4689f126b2db30b6cfe1dbb9fe0608521209e84a9bf8889f81cde786"
+    },
+    "metadata_replay.py": {
+      "bytes": 5329,
+      "sha256": "7d16558f0de4edc34346a524b79fb0a6f302d4ad3a5a6d43e7324f8282d442d1"
+    },
+    "manual_decode.py": {
+      "bytes": 6269,
+      "sha256": "4a056f43ba7d57d2c1ee795a2e630c644b4e24a22f782c7dc122351bf7cce3fd"
+    },
+    "replay.py": {
+      "bytes": 16267,
+      "sha256": "fea0040238fd7781933c50a2bc443ea25a173e1c72910763b0ccbaec07512091"
+    },
+    "guarded_replay.py": {
+      "bytes": 3304,
+      "sha256": "0f468c7089ceb3e3e86d8e4b8f09da42ea6b4f7fe48aaa41d59dad4b91ed6985"
+    }
+  },
+  "core_actual_review": {
+    "status": "PASS",
+    "archive_sha256": "c92d5d9e6d3eddb1b02b071cf1c46525614088a65eccd87a3c959128d93e7610",
+    "manifest_members": 130,
+    "actual_frozen_Git_objects": 6,
+    "finite_inputs": 9,
+    "helper_pins": {
+      "metadata_replay.py": {
+        "bytes": 5329,
+        "sha256": "7d16558f0de4edc34346a524b79fb0a6f302d4ad3a5a6d43e7324f8282d442d1"
+      },
+      "manual_decode.py": {
+        "bytes": 6269,
+        "sha256": "4a056f43ba7d57d2c1ee795a2e630c644b4e24a22f782c7dc122351bf7cce3fd"
+      },
+      "replay.py": {
+        "bytes": 16267,
+        "sha256": "fea0040238fd7781933c50a2bc443ea25a173e1c72910763b0ccbaec07512091"
+      },
+      "guarded_replay.py": {
+        "bytes": 3304,
+        "sha256": "0f468c7089ceb3e3e86d8e4b8f09da42ea6b4f7fe48aaa41d59dad4b91ed6985"
+      }
+    },
+    "actual_Root_Capstone_version": "5.0.7",
+    "Root_operand_and_encoding_comparisons": 56,
+    "ranges": [
+      {
+        "base": "00C11B5E",
+        "bytes": 137,
+        "instructions": 47,
+        "sha256": "59b43ed2d0a803f184d62b1693e2665db0c65bc14e2eb80a75a0a793001831e9"
+      },
+      {
+        "base": "00C11BF8",
+        "bytes": 10,
+        "instructions": 4,
+        "sha256": "035fbf7597268b84bd455fa666c16813a1cb04bc69f80a3b319530fd3f69aae2"
+      },
+      {
+        "base": "00C11C03",
+        "bytes": 21,
+        "instructions": 5,
+        "sha256": "8d54729695865f6cd05314336c39f7ac611508cd7c5867edee6537f3259d23d1"
+      }
+    ],
+    "paired_reads_equal": true,
+    "worker_copies_equal_and_distinct": true,
+    "manual_decoder_fully_reviewed": true,
+    "Root_independent_manual_decoder_claim": false,
+    "excluded_gaps_read": false,
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "delivery_actual_review": {
+    "status": "PASS",
+    "archive_sha256": "435a0cd2012d3fed5c8ba8f52585eded9ab5f7ff9b4dcbb06ed0a8085c5f06ec",
+    "manifest_members": 74,
+    "object_records": 12,
+    "distinct_actual_Git_objects": 10,
+    "finite_inputs": 9,
+    "outputs": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "oid": "d08c5922aff7d5781aa9ce1c2e5942e4c4f2a369",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md",
+        "bytes": 11169,
+        "sha256": "390e7346d047d2f2d4a227720b1e0e894272e9db75d6c0771b59e0d6738b2c13",
+        "staged_member": "staged/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_BODY.md"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_body.json",
+        "oid": "a9803cb94208f74a4cf048d9253ad8c7d3d9cb47",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_body.json",
+        "bytes": 42153,
+        "sha256": "ff60700724b0d66876292b9f2f4b675d4489b18b7149f0365a8625b521d7c30b",
+        "staged_member": "staged/reports/cc12_locale_onexit_lock_initializer_body.json"
+      }
+    ],
+    "four_reviewed_helpers_unchanged": true,
+    "worker_copies_equal_and_distinct": true,
+    "Source_census": false,
+    "current_Root_Source_equality": false,
+    "worker_commit": "8c5fe18e359fad8bbe99b8abd28cf136137cbe73"
+  },
+  "guard_results": {
+    "Root_core_guard.json": {
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 3,
+        "unexpected_denials": []
+      }
+    },
+    "Root_delivery_guard.json": {
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 3,
+        "unexpected_denials": []
+      }
+    }
+  },
+  "Native_contract": {
+    "bytes": 168,
+    "instructions": 56,
+    "physical_direct_calls": [
+      {
+        "address": "00C11B65",
+        "physical_target": "00C07C00",
+        "physical_pushed_return_address": "00C11B6A",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11B7A",
+        "physical_target": "00C05B68",
+        "physical_pushed_return_address": "00C11B7F",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11B81",
+        "physical_target": "00C059A8",
+        "physical_pushed_return_address": "00C11B86",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11B8B",
+        "physical_target": "00BFBA53",
+        "physical_pushed_return_address": "00C11B90",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BA6",
+        "physical_target": "00C0481A",
+        "physical_pushed_return_address": "00C11BAB",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BB2",
+        "physical_target": "00BFFB8B",
+        "physical_pushed_return_address": "00C11BB7",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BC3",
+        "physical_target": "00C11C21",
+        "physical_pushed_return_address": "00C11BC8",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BD6",
+        "physical_target": "00C17653",
+        "physical_pushed_return_address": "00C11BDB",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BE2",
+        "physical_target": "00BF9DC8",
+        "physical_pushed_return_address": "00C11BE7",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11BFD",
+        "physical_target": "00BF9DC8",
+        "physical_pushed_return_address": "00C11C02",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11C0A",
+        "physical_target": "00C11C18",
+        "physical_pushed_return_address": "00C11C0F",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      },
+      {
+        "address": "00C11C12",
+        "physical_target": "00C07C45",
+        "physical_pushed_return_address": "00C11C17",
+        "returned_state": "entire registers/ESP/EBP/flags/memory unknown if it returns"
+      }
+    ],
+    "excluded_ranges": [
+      "00C11BE7..00C11BF7",
+      "00C11C02"
+    ],
+    "gap_returns": [
+      "00C11BE7",
+      "00C11C02"
+    ],
+    "all_external_return_state_unknown": true,
+    "all_memory_reads_at_instruction_time": true,
+    "whole_actual_control_flow_closed": false,
+    "CALL_RETURN_proves_nonreturn": false,
+    "provider_type_CRT_locking_semantics_authenticated": false
+  },
+  "failure_retention": {
+    "authoritative_raw_responses": 504,
+    "abandoned_successful_chunk": 64,
+    "failed_partial_complete_responses": 46,
+    "all_retained_raw_responses": 614,
+    "CLI_commands": 23,
+    "local_atomic_replace_WinError5": true,
+    "Native_identity_mismatch": false
+  },
+  "credit": {
+    "Native_saved_ranges": true,
+    "Source_implemented": false,
+    "build": false,
+    "fixture": false,
+    "Original_ABI": false,
+    "startup_gameplay": false,
+    "Source_census_or_current_Root_equality": false
+  }
+}
