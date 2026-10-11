@@ -252,3 +252,27 @@ Ghidra has no instructions at 006316A3..006316C6 and 00632A5C..00632A7F (the L3 
 Uncertain: the meaning of +10h (the voice gate), record+1E4h, row+5Ch (an AI slot is a guess);
 the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
 byte +22Fh+count has no bound against the eight bytes cleared.
+
+Helpers named by cc13-rewards1 (ledger + Ghidra, provisional; RET immediates checked against the
+disk image): 0062A0B0 `BSP_RewardsScreen_BuildScoreRows`, 00625D10 `STL_RewardsScoreRows_Sort`,
+00A9CEB0 `BSP_GuiListbox_SetField124`, 0061EB80 `BSP_Profile_HasPendingAwards`, 004FB150
+`BSP_IconAtlas_ApplyById`, 004FC070 `BSP_IconAtlas_ApplyByName`, 0090C000
+`BSP_ScoreTable_IsBadgeEarned`, 0050FC30 `BSP_AwardTable_FindRecord`, 0050A210
+`BSP_AwardRecord_CopyConstruct`, 00911CE0 `BSP_ScoreTable_DamagePoints` (RET 18h), 00911C00
+`BSP_ScoreTable_KillPoints` (RET 18h), 00910500 `BSP_ScoreTable_RemainingUnitPoints` (RET 8),
+00910570 `BSP_ScoreTable_SuicidePoints` (RET 0Ch), 009064D0 `BSP_ScoreTable_MapUsagePoints`
+(RET 4), 00AA67F0 `BSP_GuiWidget_GetLocalPosition`. Not named: 00574050 (the profile "RANK" low
+byte; leased to cc13-menus5), 00622E00 (the voice callback; no Ghidra function), and the STL
+helpers 0061EC70, 0061F340, 0052ED20, 0057F010, 0057F350/0057F430/0057F4A0, 00593480/00593180,
+0062C170/0062BB60/00625900, 006277C0.
+
+Status: exported (capstone listing), reconstructed, build-tested; not fixture-tested, not
+ABI-compatible (host-interface projection), not game-validated; no host wiring.
+
+### Handoff (cc13-rewards1)
+
+The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) a Ghidra listing
+repair for 006316A3..006316C6 and 00632A5C..00632A7F (then re-add the two 0057F4A0 rows and
+re-export the body); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
+(3) the bodies of 0062A0B0, the 00625D10 predicate and the score-table formulas; (4) host wiring
+of `RewardsEnterHost` (none exists).
