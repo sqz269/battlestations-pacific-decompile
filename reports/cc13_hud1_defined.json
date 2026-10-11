@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0060d560",
+    "end_address": "0060d570"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0060d560",
+    "end_address": "0060d56f",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0060d560",
+    "disassemble_first": false,
+    "name": "BSP_PleaseWaitScreen_CollectChildren"
+   },
+   "result": {
+    "success": true,
+    "address": "0060d560",
+    "function_name": "BSP_PleaseWaitScreen_CollectChildren",
+    "entry_point": "0060d560",
+    "body_size": 16,
+    "message": "Function created successfully at 0060d560",
+    "warnings": [
+     "Function name 'BSP_PleaseWaitScreen_CollectChildren' \u2014 main part 'PleaseWaitScreen_CollectChildren' is not PascalCase. Expected: PleasewaitscreenCollectchildren",
+     "Function name 'BSP_PleaseWaitScreen_CollectChildren' \u2014 main part 'PleaseWaitScreen_CollectChildren' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PleaseWaitScreen_CollectChildren' does not start with a recognized verb. First word 'Please' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0060d560",
+   "end": "0060d570",
+   "name": "BSP_PleaseWaitScreen_CollectChildren",
+   "after": "Function: BSP_PleaseWaitScreen_CollectChildren at 0060d560\nSignature: undefined BSP_PleaseWaitScreen_CollectChildren(void)\nEntry: 0060d560\nBody: 0060d560 - 0060d56f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
