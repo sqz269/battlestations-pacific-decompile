@@ -99,3 +99,33 @@ namespace bsp {
 void* construct_native_application_loop_base_00bea970(
     void* actual_receiver, NativeApplicationSingletonBaseContext& context);
 } // namespace bsp
+
+namespace bsp {
+// Dormant borrowed 737970 full shell; descriptive name, Original ECX receiver,
+// no stack arguments, EAX original receiver and RET0. This explicit-context
+// Source API is not the Original binary ABI. Entry requires stable aligned
+// actual enclosing 1Ch storage with already-live uint32 profile at +0, actual
+// NativeApplicationPointerVectorStorage at +08 (live void** data and signed
+// int32 count/capacity members), and a distinct live void* Game object at +14.
+// These objects and valid byte access must exist before the child call; this
+// helper starts no lifetime. Prior ownership must permit overwriting their
+// preimages without freeing or resetting them. Retain all BEA970/BEA810 actual
+// cell, shared-manager, provider, captured-section, current-depth, disjointness,
+// reentrancy and escaped-reference lifetime prerequisites. The new outer stores
+// touch only the specified fields, preserving +05..07 and +1B themselves;
+// genuine child/provider effects remain governed by the inherited contract.
+// Call genuine BEA970 once on the captured original receiver and same context,
+// ignore its result, then after normal return store CFEAB0 at +0, typed null
+// data at +08, signed zero count/capacity at +0C/+10, typed null Game at +14,
+// and bytes +19=0, +1A=0, +18=1, in that order; return the original receiver.
+// Child escape/nonreturn reaches no outer store. Its ordinary C++ cleanup,
+// null-section branch, Leave uncertainty and second-cleanup termination stay
+// unchanged. Escaped publication/registry references may survive; CE3818 reset
+// can reach generic flags1 drain/free and grants no storage-return authority.
+// No owner/cell producer, caller, activation, callable profile, outer cleanup,
+// rollback, retain, free, retirement or storage-return policy. Volatile is not
+// synchronization; invalid storage, hardware/foreign exceptions and Original
+// FH3/private-frame behavior remain outside this Source contract.
+void* construct_native_application_00737970(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context);
+} // namespace bsp
