@@ -519,9 +519,76 @@ void session_browser_bind_layout_0056bda0(SessionBrowserLayout& layout, SessionB
 void session_browser_build_rows_005789c0(const SessionBrowserState& filters, SessionRowState& screen,
     SessionSortReverseFlags& reverse, std::int32_t sort_key, SessionRowHost& host);
 
+// 00579980: __thiscall(screen), RET; SEH 00C6F62F. No caller or data reference in the image: appends
+// one row per +2A0h record to the list +30h, as BuildRows' row body does, without clearing,
+// filtering, sorting or the selected-row match.
+void session_browser_append_record_rows_00579980(const SessionRowState& screen, SessionRowHost& host);
+
 // 00576D20: __thiscall(screen), returns int (1 on one path, otherwise the colour virtual's
 // result; SetPage ignores it); SEH 00C6F43B.
 void session_browser_update_selected_row_00576d20(SessionRowState& screen, SessionRowHost& host);
+
+// RefreshRowDetails 00577650 (packet cc13-menus6): the settings panel for the selected record.
+inline constexpr std::string_view kSessionDetailsBlank = "-";                         // 00CEED40
+inline constexpr std::string_view kSessionUnknownMapName = "FE.unknown_mapname";      // 00CEF1D8
+inline constexpr std::string_view kSessionRatioSuffix = " %";                        // 00CEF1AC
+inline constexpr std::int32_t kLobbyOptionMap = 1;     // the key 00575E80/00575FD0 take with record+24h
+inline constexpr double kSessionMapWorldOrigin = -15000.0;   // 00CEF1D0
+inline constexpr double kSessionMapWorldSize = 30000.0;      // 00CEF1C8
+inline constexpr double kSessionMapIconPixels = 150.0;       // 00CE3DD8
+inline constexpr double kSessionScreenWidth = 960.0;         // 00CEC380
+inline constexpr double kSessionScreenHeight = 720.0;        // 00CEF1B8
+inline constexpr float kSessionMapIconWidth = 0.15625F;      // 00CEF1C0 (150 / 960)
+inline constexpr float kSessionMapIconHeight = 0.20833333F;  // 00CEF1B0 (150 / 720)
+inline constexpr std::size_t kSessionMapDefinitionSize = 0x434;  // *(00E198AC)+5Ch, vector +24h
+
+// Widgets of the details panel (BindLayout names).
+struct SessionDetailsWidgets {
+    std::uintptr_t tilt_icon_9c{};        // +9Ch
+    std::uintptr_t map_icon_a0{};         // +A0h
+    std::uintptr_t rank_min_text_c4{};    // +C4h
+    std::uintptr_t rank_max_text_cc{};    // +CCh
+    std::uintptr_t map_name_text_d0{};    // +D0h (game_mode_var_Text in BindLayout's map)
+    std::uintptr_t ratio_text_d8{};       // +D8h
+    std::uintptr_t rank_min_icon_dc{};    // +DCh
+    std::uintptr_t rank_max_icon_e0{};    // +E0h
+    std::uintptr_t ratio_icon_e4{};       // +E4h
+};
+
+struct SessionDetailsHost {
+    virtual ~SessionDetailsHost() = default;
+    virtual std::int32_t list_selected_index_00a9c920(std::uintptr_t list) = 0;
+    virtual std::int32_t list_scroll_offset_164(std::uintptr_t list) = 0;  // list+148h ? list+164h : 0
+    // Lobby option registry 00576B10: +34h option -> (value -> localisation key), +1Ch option ->
+    // (value -> map icon index), +B8h/+BCh the ratio bounds.
+    virtual bool lobby_option_text_known_34(std::int32_t option, std::int32_t value) = 0;  // on a copy (00573340)
+    virtual std::string lobby_option_text_34(std::int32_t option, std::int32_t value) = 0;  // 005732C0
+    virtual bool map_icon_known_1c(std::int32_t option, std::int32_t value) = 0;            // 0056B930
+    virtual std::int32_t map_icon_index_1c(std::int32_t option, std::int32_t value) = 0;    // 00573410
+    virtual std::uint32_t ratio_minimum_b8() = 0;
+    virtual float ratio_maximum_bc() = 0;
+    // Map definitions *(00E198AC)+5Ch, vector +24h of 434h-byte records (name string at +00h).
+    virtual std::size_t map_definition_count() = 0;
+    virtual std::string map_definition_name(std::size_t index) = 0;   // null buffer = "" (00E194AC)
+    // {x, z} at +offset and +offset+0Ch: the two corners of one world extent.
+    virtual std::array<float, 4> map_definition_extent(std::size_t index, std::uint16_t offset) = 0;
+    virtual bool content_allowed_00568490(const SessionJoinRecord& record) = 0;
+    virtual std::int32_t session_client_virtual_198() = 0;            // *(00F8A2FC) vtable +198h
+    virtual void invalid_parameter_00bf6713() = 0;
+    // Widgets.
+    virtual void text_submit_00abaed0(std::uintptr_t text, const std::string& source, std::int32_t arg) = 0;
+    virtual void text_set_localised_00abbe50(std::uintptr_t text, std::string_view key, std::int32_t arg) = 0;
+    virtual void widget_show_34(std::uintptr_t widget, std::int32_t shown) = 0;
+    virtual void widget_set_state_88(std::uintptr_t widget, std::int32_t state, std::int32_t arg, float weight) = 0;
+    virtual void widget_set_size_58(std::uintptr_t widget, const std::array<float, 2>& size) = 0;
+    virtual void widget_set_colour_50(std::uintptr_t widget, const GuiColour& colour) = 0;
+    // 00568290: stores the four floats at widget+118h..+124h and calls virtual +8Ch.
+    virtual void icon_set_uv_rect_00568290(std::uintptr_t icon, const std::array<float, 4>& uv) = 0;
+};
+
+// 00577650: __thiscall(screen), RET; SEH 00C6F480; 8-aligned frame. Writes screen+264h.
+void session_browser_refresh_row_details_00577650(const SessionRowState& screen,
+    const SessionDetailsWidgets& widgets, bool& content_allowed_264, SessionDetailsHost& host);
 
 // ---------------------------------------------------------------------------
 // Credits screen (constructor 0052FCE0, primary vtable 00CED200)
@@ -591,8 +658,8 @@ inline constexpr wchar_t kCreditsPercentArgument = 0x2122;      // TRADE MARK SI
 struct CreditsLayoutState {
     std::uintptr_t category_template_10{};  // +10h
     std::uintptr_t person_template_14{};    // +14h
-    std::uintptr_t frame_18{};              // +18h, origin/size reference and vtable +70h after layout
-    std::uintptr_t moving_group_1c{};       // +1Ch, parent of every clone, scrolled by the update
+    std::uintptr_t frame_18{};              // +18h clipbox_Clipbox (Register 0052FFC0); origin/size reference, vtable +70h after layout
+    std::uintptr_t moving_group_1c{};       // +1Ch moving_Group (child of +18h), parent of every clone, scrolled by the update
     float speed_offset_20{};                // +20h
     std::vector<std::uintptr_t> widgets_24; // +24h (begin +28h), deleted by the exit 0052E150
     float scroll_y_34{};                    // +34h
@@ -633,6 +700,46 @@ struct CreditsEnterHost {
 
 // 0052EE30: slot +18h of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BD92; frame 89Ch.
 void credits_enter_0052ee30(CreditsLayoutState& screen, CreditsEnterHost& host);
+
+// Credits Register 0052FFC0 and ReadItemStyle 0052D9C0 (packet cc13-menus6). The Lua reader keys
+// are (kind, value) pairs: kind 0 a field name, kind 1 an array index. Read types follow
+// GuiLuaFieldType (0 string, 1 int, 2 float, 8 vec4).
+struct CreditsLuaReader {
+    virtual ~CreditsLuaReader() = default;
+    virtual bool has_key_00bd5eb0(std::string_view key) = 0;           // vtable +14h
+    virtual bool has_index_00bd5eb0(std::int32_t index) = 0;
+    virtual void read_int_00bd6830(std::string_view key, std::int32_t& out) = 0;   // vtable +10h, type 1
+    virtual void read_string_00bd6830(std::string_view key, std::string& out) = 0; // type 0
+    virtual void read_float_00bd6830(std::string_view key, float& out) = 0;        // type 2
+    virtual void read_vec4_00bd6830(std::string_view key, GuiColour& out) = 0;     // type 8
+    virtual void enter_key_00bd8e20(std::string_view key) = 0;
+    virtual void enter_index_4(std::int32_t index) = 0;                // vtable +4h, (1, index)
+    virtual void leave_8() = 0;                                        // vtable +8h
+    virtual void leave_key_00bd7a20() = 0;
+};
+
+// 0052D9C0: __thiscall(item, reader*), RET 4. Every default is written before any read; Align is
+// read through a pointer to item+20h spilled at [esp+10h] (Ghidra lost the spill and shows 0).
+void credits_read_item_style_0052d9c0(CreditsItem& item, CreditsLuaReader& reader);
+
+inline constexpr std::string_view kCreditsPage = "FE_credits";                         // 00CED2C4
+inline constexpr std::string_view kCreditsScript = "Scripts/datatables/Credits.lua";   // 00CED254
+
+struct CreditsRegisterHost {
+    virtual ~CreditsRegisterHost() = default;
+    virtual void register_front_end_screen_004f71d0() = 0;             // ECX = screen
+    virtual std::uintptr_t load_page_00aa5840(std::string_view name) = 0;  // ECX = 004C12B0(), (name, 1, 0)
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t parent, std::string_view name) = 0;  // (name, 1)
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    // 00B66BD0 construct, 00B6A020 open, 00B69D40 run (path, 0), 00B67980 globals, 00B67800
+    // "Credits", then a reader (004425C0) over that table; closed (00B669A0) on return.
+    virtual CreditsLuaReader& open_credits_table(std::string_view script, std::string_view table) = 0;
+    virtual void close_credits_table() = 0;
+};
+
+// 0052FFC0: slot +10h of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BEB5; frame 534h.
+void credits_register_0052ffc0(CreditsLayoutState& screen, std::uintptr_t& page_0c, float& base_speed_3c,
+    CreditsRegisterHost& host);
 
 // 0052E150: slot +1Ch of vtable 00CED200, __thiscall(screen), RET; SEH 00C6BC48.
 // `items` is the pointer vector +28h..+2Ch; entries are deleted and nulled in place.
@@ -1009,5 +1116,147 @@ void tactical_library_enter_00511f40(TacticalLibraryEnterState& screen, Tactical
 void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
 // 00515E00: __thiscall(screen), RET; SEH 00C6A748. Leaves the 3D view, or the screen through 00515BC0.
 void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
+
+// ---------------------------------------------------------------------------
+// Tactical library Update 005162B0, carousel step 00516010 and nose-art apply 005161C0
+// (packet cc13-menus6). Reconstructed from the listing; the row loops' registers (ESI = screen,
+// EDI = record index, EBP = vector/byte offset, [esp+10h] = row counter) were traced there.
+// ---------------------------------------------------------------------------
+
+inline constexpr float kTacticalLibraryNoCountdown = -1.0F;           // 00D7A260, +5B4h idle value
+inline constexpr float kTacticalLibraryCountdownStart = 0.5F;         // 00CE3800 (kind 7 continue)
+inline constexpr float kTacticalLibraryCarouselTime = 0.5F;           // 00CE3800 -> +8Ch
+inline constexpr double kTacticalLibraryArrowWidthDivisor = 1.2000000476837158;  // 00CEC160
+inline constexpr double kTacticalLibraryArrowDropOob = 0.017999999225139618;     // 00CEC158 (kind 5)
+inline constexpr double kTacticalLibraryArrowDropUnlocks = 0.023000000044703484; // 00CEC150 (kind 6)
+inline constexpr float kTacticalLibraryArrowZOob = -10.0F;            // 00CE6848 (kind 5 only)
+inline constexpr float kTacticalLibraryCarouselSettleDt = 0.001F;     // 00D7A23C
+inline constexpr double kTacticalLibraryAcademyScrollPad = 0.013888888888888888;  // 00CEBDD0 (kind 4)
+
+// Arrow frames passed to widget virtual +88h(frame, 0, 1.0f).
+inline constexpr std::uint16_t kTacticalLibraryArrowNormal = 0;
+inline constexpr std::uint16_t kTacticalLibraryArrowDisabled = 3;
+inline constexpr std::uint16_t kTacticalLibraryArrowLocked = 4;
+
+// 2Ch records of the order-of-battle (+45Ch, begin +460h) and unlocks (+46Ch, begin +470h) vectors.
+struct TacticalLibraryRowRecord {
+    std::uint32_t key_00{};          // +00h, handed to 004FB090 (kind 5)
+    std::uint8_t flag_0c{};          // +0Ch, kind 5: 0 hides the row's arrows, 1 locks a childless row
+    std::size_t child_count_18{};    // vector +18h (+1Ch begin, +20h end, 4-byte elements); null = 0
+};
+
+struct TacticalLibraryUpdateState {
+    TacticalLibraryKind kind_94{TacticalLibraryKind::None};
+    std::int32_t view_90{};                                    // 0 = 2D list, 1 = 3D model view
+    float carousel_timer_8c{};                                 // +8Ch
+    float countdown_5b4{kTacticalLibraryNoCountdown};          // +5B4h
+    float scroll_value_438{};                                  // +438h (selector +434h's value)
+    std::uintptr_t list_b8{};                                  // +B8h
+    std::uintptr_t list_c4{};                                  // +C4h
+    std::array<std::int32_t, kTacticalLibraryRowPairs> sub_index_138{};  // +138h, per-row child index
+    std::array<std::uintptr_t, kTacticalLibraryRowPairs> rows_1d8{};     // +1D8h, left arrows
+    std::array<std::uintptr_t, kTacticalLibraryRowPairs> rows_278{};     // +278h, right arrows
+    std::vector<TacticalLibraryRowRecord> order_of_battle_460;
+    std::vector<TacticalLibraryRowRecord> unlocks_470;
+    std::array<std::uintptr_t, 3> panels_508{};                // +508h, +50Ch, +510h
+    std::array<std::uintptr_t, 3> frames_5a0{};                // +5A0h, +5A4h, +5A8h
+};
+
+struct TacticalLibraryUpdateHost : TacticalLibraryNavHost {
+    virtual void scroller_update_00683820(std::int32_t arg) = 0;      // ECX = screen+CCh
+    virtual void loading_queue_stop_and_wait_005092e0() = 0;           // ECX = 004FDE20()
+    virtual void gui_reset_screens_00aa0f70() = 0;                     // ECX = 004C12B0()
+    virtual std::int32_t list_selected_index_00a9c920(std::uintptr_t list) = 0;
+    virtual void set_game_selection_6ac(std::int32_t index) = 0;       // game+6B0h, then game+6ACh
+    virtual void play_selected_mission_005922f0() = 0;                 // ECX = *(*(00E198AC)+58h)
+    virtual bool movie_playing_004f89a0() = 0;                         // ECX = *(00E18D48)
+    virtual void movie_stop_004f8ac0() = 0;
+    virtual void menu_stream_start_00a867b0(std::string_view name) = 0; // ECX = *(*(00E198AC)+50h)
+    virtual void menu_stream_fade_in_00a85c20() = 0;
+    virtual bool action_004d92b0(std::int32_t action) = 0;             // ECX = *(00E188A8)
+    virtual void profile_hints_00427190(std::int32_t scene) = 0;       // ECX = 004C1E90()
+    virtual void order_of_battle_cancel_004ff6f0() = 0;                // ECX = screen
+    virtual std::uintptr_t list_row_at_00a9be00(std::uintptr_t list, std::int32_t index) = 0;
+    virtual std::uintptr_t list_selected_row_00a9ca00(std::uintptr_t list) = 0;
+    virtual std::string row_data_text_28(std::uintptr_t row) = 0;      // virtual +28h, then +4 (null = "")
+    virtual void order_of_battle_row_004fb090(std::uint32_t key) = 0;  // ECX = screen
+    virtual std::uintptr_t gui_highlight_widget_00aa0f50(std::int32_t arg) = 0;  // ECX = 004C12B0()
+    virtual std::array<float, 2> group_size_00aa6740(std::uintptr_t widget) = 0;
+    virtual std::array<float, 3> group_origin_00aa6750(std::uintptr_t widget) = 0;
+    virtual void set_resolved_position_00aa8240(std::uintptr_t widget, const std::array<float, 3>& position) = 0;
+    virtual void widget_show_34(std::uintptr_t widget, bool shown) = 0;
+    virtual void widget_set_dword_d8(std::uintptr_t widget, std::int32_t value) = 0;
+    virtual std::int16_t widget_frame_94(std::uintptr_t widget) = 0;
+    virtual void widget_virtual_88(std::uintptr_t widget, std::uint16_t frame, std::int32_t arg, float value) = 0;
+    virtual void widget_virtual_60(std::uintptr_t widget, std::int32_t arg) = 0;
+    virtual void widget_virtual_84(std::uintptr_t widget, bool value) = 0;
+    virtual bool widget_virtual_38(std::uintptr_t widget) = 0;
+    virtual bool list_byte_85(std::uintptr_t list) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void kind7_activate_00514fb0() = 0;                        // ECX = screen
+    virtual void switch_view_00514c20() = 0;                           // ECX = screen
+    virtual void back_00515e00() = 0;                                  // ECX = screen
+    virtual bool console_flag_f88a30() = 0;                            // byte 00F88A30
+    virtual void show_selection_00511bf0(std::int32_t value) = 0;
+    virtual void movies_cancel_004ff580() = 0;
+    virtual void nose_art_apply_005161c0() = 0;
+    virtual bool unlocks_cancel_004fc9d0() = 0;
+    virtual void carousel_step_00516010(bool forward) = 0;
+    virtual void carousel_animate_00515050(float dt) = 0;
+    // Kind 8: the current profile (game+18CCh[game+18ECh]) and its nose art (game+734h / +730h).
+    virtual bool profile_field_28() = 0;
+    virtual std::uint32_t game_nose_art_734() = 0;
+    virtual std::uint32_t game_nose_art_730() = 0;
+    virtual std::uint32_t selector_record_48_004fa8f0() = 0;   // ECX = screen+434h (+508h panel)
+    virtual std::uint32_t selector_record_48_004fa960() = 0;   // +50Ch panel
+    virtual std::uint32_t selector_record_48_004faa00() = 0;   // +510h panel
+};
+
+// 005162B0: slot +20h of vtable 00CEB9B4, __thiscall(screen, float dt), RET 4; SEH 00C6A7E0.
+void tactical_library_update_005162b0(TacticalLibraryUpdateState& screen, float dt,
+    TacticalLibraryUpdateHost& host);
+
+struct TacticalLibraryCarouselHost {
+    virtual ~TacticalLibraryCarouselHost() = default;
+    virtual void selector_step_004fc720() = 0;      // ECX = screen+434h, forward (action 4Ch)
+    virtual void selector_step_004fc7a0() = 0;      // ECX = screen+434h, backward (action 4Dh)
+    virtual void refresh_entry_00510c20() = 0;      // ECX = screen
+    virtual void order_of_battle_refresh_00506550() = 0;
+    virtual void unlocks_refresh_00504c60() = 0;
+    virtual void carousel_animate_00515050(float dt) = 0;
+    virtual void scroller_attach_00683790(std::int32_t content) = 0;     // ECX = screen+CCh
+    virtual double text_normalized_height_00ab6bd0() = 0;                // ECX = screen+A8h, x87 result
+    virtual std::array<float, 2> group_size_00aa6740(std::uintptr_t widget) = 0;
+    virtual void scroller_set_range_006834a0(float range) = 0;           // ECX = screen+CCh
+};
+
+struct TacticalLibraryCarouselState {
+    TacticalLibraryKind kind_94{TacticalLibraryKind::None};
+    float carousel_timer_8c{};
+    std::uintptr_t scroll_view_5ac{};   // +5ACh, its size.y is subtracted from the range
+};
+
+// 00516010: __thiscall(screen, bool forward), RET 4.
+void tactical_library_carousel_step_00516010(TacticalLibraryCarouselState& screen, bool forward,
+    TacticalLibraryCarouselHost& host);
+
+struct TacticalLibraryNoseArtHost {
+    virtual ~TacticalLibraryNoseArtHost() = default;
+    virtual std::size_t nose_art_count_448() = 0;                 // vector +448h..+44Ch, 6Ch records
+    virtual std::uint32_t nose_art_value_48(std::size_t index) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    // *(*(00E198AC)+70h)+B8h: the selected row of the library's list, virtual +28h text.
+    virtual std::string library_selected_row_text() = 0;
+    virtual void set_game_nose_art_734(std::uint32_t value) = 0;
+    virtual void set_game_nose_art_730(std::uint32_t value) = 0;
+    virtual std::uint32_t game_nose_art_734() = 0;
+    virtual std::uint32_t game_nose_art_730() = 0;
+    // 007F8690, ECX = the current profile game+18CCh[game+18ECh], arg = {734h, 730h, 0}.
+    virtual void profile_store_nose_art_007f8690(const std::array<std::uint32_t, 3>& record) = 0;
+    virtual void back_00515e00() = 0;
+};
+
+// 005161C0: __thiscall(screen), RET. `selector_index` is screen+434h.
+void tactical_library_apply_nose_art_005161c0(std::uint32_t selector_index, TacticalLibraryNoseArtHost& host);
 
 }  // namespace bsp
