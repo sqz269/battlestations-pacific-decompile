@@ -16227,3 +16227,41 @@ OFF is `b89b3d537` (tree build). ON is the same commit exported with the switch 
     mission fails at 1574.51 s.
   - With f17 as written, DM1, parked 45 m from the Enterprise, sinks it at 1553.34 s while firing at Shima4 about
     2 km out. That friendly-fire case is gunnery35's (lead, 2026-10-11). The re-plan waits for it.
+
+### 208.3 JM08's Gyoraitei: the destination follows the target; the half throttle is the open question (cc9-ships42, 2026-10-11; lead item 2, a read plus one traced run)
+
+Run: JM08 + `cc9-lua47\local\l47_j8_g9.txt`, 10000 frames, `-Traj`, on `564410718` (`local\s42_jt_j8g9s.log`, CSVs
+`local\s42_jt_j8g9s.*.csv`; table by `local\s42_pursuit.py`).
+
+- **The destination follows the target, in both the image and the host.**
+  - The boats are sent by the helm `attack` form. The command descriptor carries the target object.
+  - In the image, `009F1420` re-resolves the goal every 2 s (`brain+0B54h`/`+0B58h`). `009DBCC0` carries the latched
+    point out through the object's matrix (`object+0CCh`), so `brain+0B2Ch` moves with the target (SHIP_AI_GOAL_VECTOR
+    steps 6-10).
+  - The host does the same: `Gyoraitei #Y4`'s `d32c` tracks its distance to `USTroopTransport 04` (8495 m at 119.55 s,
+    1308 m at 404.72 s), and the boat's CSV heading stays within about 1 degree of the bearing to it.
+  - So `+127Ch` (207.2) is the distance to the moving target, and 161.4's 1486 m and the goal ranges are one quantity.
+- **The standoff is inside the gate.** In `g34_t2off_j8.log`, every boat ends its standoff choice (`009E6E80`) at
+  669.8 m, with clearance `+12B4h` at 919.8 m. So `+7Dh` would pass at about 970 m, and the boats would close to about
+  670 m. They never get there.
+- **What stops them is speed.** From about 4500 m (254 s), Y4's throttle falls from 1.0 to 0.5 and its speed from 23.84
+  to 11.86 m/s. It holds that until death, still pointing at the target (heading error under 1 degree):
+  - Y3 dies at 369.68 s, Y2 at 395.83 s, Y4 at 399.73 s (`Missouri`, 844 m off) and Y1 at 444.42 s.
+  - Most are killed by `Stephen Potter` at 637-1059 m.
+- **Where the 0.5 comes from (host).**
+  - `ship_ai_approach_limit_throttle_009e6a90` seeds the command from `|unit heading - nested+120Ch|`: 1.0 below 30
+    degrees, 0.5 from 70 degrees (`00CEC724`, `00CE3988`, `00CE3800`). No limit arm gives 0.5 here.
+  - The step log's `heading=` field is `blk.desired_heading` (brain `+1E0h` = `sub+1214h` = `nested+120Ch`, stored at
+    `009F335C`). It swings from 0.10 rad at step 4200 to 2.55 rad by step 5800, while the steering target `+324h` stays
+    at -0.07 rad.
+  - So the approach's commanded heading points about 146 degrees off the course the boat actually steers. The seed then
+    halves the throttle, and nothing steers the boat to that heading.
+- **The question for the image.** In `009ED6B0` the image copies `blk+1D8h` (that same desired heading) into `+324h`
+  whenever the mode is not Navigate (`009ED938`/`009ED947`; `src/ship_ai_states.cpp:185`). The attackmove step writes
+  mode 3 (`009F3375`).
+  - If the image steers mode 3 by that heading, its boat would turn to the approach heading. The throttle seed would
+    then see a small error and run at full.
+  - In the host, a later navigation-arm store wins (`desired 2.55` against `target 6.21` in the same sample).
+  - Unread: which of the two `+324h` stores comes last for mode 3 in the image (`009ED947` against the
+    `009EE5xx` navigation arm), and what `nested+120Ch` is aiming at (`009E76D0` slot choice). Binding waits on that
+    read. A wrong guess would change every attackmove ship.
