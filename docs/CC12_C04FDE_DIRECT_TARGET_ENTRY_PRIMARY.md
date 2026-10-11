@@ -1,0 +1,11 @@
+# C04FDE entry: independent primary review
+
+The one admitted byte at C04FDE is 56, PUSH ESI. Root independently completed its manual fields before fresh actual Capstone 5.0.7; physical fields, explicit ESI read, implicit ESP read/update, operand access, groups and flag effects agree. With renewed actual current SS.B=1 and normal completion, decrement current ESP by four modulo 2^32 and write the unknown current ESI dword through current SS. No caller-frame, argument, convention, mapping or fault outcome follows.
+
+The accepted incoming CALL at C17125 uses signed rel32 −74060 from encoded return C1712A to numeric C04FDE. The complete saved owner is 110 addresses, C04FDE–C0504B, but only the first byte was admitted. Its saved label, no-return and thunk flags remain metadata. C04FDF and the remaining 109 owner addresses were not queried.
+
+Root verified 20 actual Git objects, eight accepted inputs and two exact outputs against current working/LF/index identities, all 615 archive member pins and all 223 previously copied Root artifacts, including 208 original preimages. The Root-copied finite proof passed strict replay on the first actual execution: one ZIP read, one exact helper-code execution, one exclusive receipt and no denied events. Root matches both worker receipts except the physical helper/archive path fields. No archived code, earlier accepted archive or Capstone execution occurred under the audit hook.
+
+The initial Root metadata gate retained an obsolete literal response pin from a prior packet and failed offline. Its exact producer, preexecution pin, original stdout/stderr and execution record were preserved before correcting only that pin; the corrected gate passed. Worker bootstrap and display incidents remain separate, with combined-tool-only provenance stated accurately. Root physical decoder, final Git/archive review, strict replay and post-strict comparison each passed first execution.
+
+Only documentation and evidence reports changed. Source identities are unchanged; no new test, build, probe, Ghidra mutation or game/OS/audio run occurred. This conditional entry contract establishes neither complete-owner behavior, ABI compatibility, runtime validation nor overall reconstruction completion.
