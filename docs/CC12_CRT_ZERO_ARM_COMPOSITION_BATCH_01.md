@@ -10,4 +10,6 @@ The direct branch, outer caller and independent alias models are published as se
 
 The inherited audit documents also contain historical Source sections. A worker incidentally displayed an embedded member-body excerpt; another displayed Source-boundary prose. Root preserved the original freeze and added a separate scope qualification. Those excerpts supply no composition or current Source facts. Source files and absence censuses were not queried, and further Source-section reads were stopped.
 
-No C++ edits, new Native/decoder queries, builds, tests, probes, runtime actions or GPR writes occurred in this batch. The earlier Source/build/runtime scope question remains unanswered. The separate final handoff records integration, one batch push, exact public Git bindings and lease release. Startup, gameplay and Original ABI remain unvalidated; the reconstruction goal stays active.
+No C++ edits, new Native/decoder queries, builds, tests, probes, runtime actions or GPR writes occurred in this batch. The separate final handoff records integration, one batch push, exact public Git bindings and lease release. Startup, gameplay and Original ABI remain unvalidated; the reconstruction goal stays active.
+
+Scope correction: Unverified assistant scope note removed at the user request on 2026-10-11. Source reconstruction, MSVC Win32 builds/checks and runtime validation follow the user goal and repository instructions; this old note imposes no restriction.
