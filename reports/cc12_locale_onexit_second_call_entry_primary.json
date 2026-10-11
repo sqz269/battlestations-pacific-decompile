@@ -1,0 +1,342 @@
+{
+  "schema": 1,
+  "status": "reviewed_Native_entry_only",
+  "address": "00BFBA68",
+  "worker_commit": "73769a54a4850ca4aca931b09c944f456fb69a7c",
+  "Native_epoch": 98,
+  "function_count": 64730,
+  "reviews": {
+    "Root_actual_review.json": {
+      "status": "PASS",
+      "worker_commit": "73769a54a4850ca4aca931b09c944f456fb69a7c",
+      "frozen_HEAD": "e461a37e8e9c0b07412eea97828da9d03b7f7416",
+      "Root_HEAD": "99ddd66c16f354ff7056fda42a669ab7ce957832",
+      "proof_pins": [
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/evidence.zip",
+          "bytes": 382438,
+          "sha256": "ac179e952f3ba509198828d9669677f58c93f5ef3abd978414bc5195c87fb0c7"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/delivery_git.zip",
+          "bytes": 579175,
+          "sha256": "d6de9a034c83b88b0fa7c89e4ff46f4c85bb8aa3334546da259cdbf3a9785bdf"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/next_worker_handoff.json",
+          "bytes": 4986,
+          "sha256": "65983927b4c01b4f191fed17d69ca0b15d7d06b14d6b4b34bdbc6ceb8b54cfa0"
+        }
+      ],
+      "physical_helpers": [
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/common.py",
+          "bytes": 4903,
+          "sha256": "d5aa065cee68a8ebaf239f15b2fb70f3146b23e255c48619dacf4200c97bfd0f"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/delivery_verifier.py",
+          "bytes": 3642,
+          "sha256": "da91eb7207b16b5977eea80b4196e14563aaf09e2decba4e20dab6ff1f3d7728"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/guarded_replay.py",
+          "bytes": 4090,
+          "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+        },
+        {
+          "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/verifier.py",
+          "bytes": 5485,
+          "sha256": "2e170dd0e6b1b5c1389d0480655c6de1577140d8a4f6761c53a67a3e3a7c4602"
+        }
+      ],
+      "physically_retained_producers": 7,
+      "actual_frozen_objects": 6,
+      "actual_delivery_objects": 8,
+      "actual_prerequisite_inputs": 7,
+      "actual_outputs": [
+        {
+          "bytes": 2537,
+          "entry": "Outputs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+          "oid": "71b5968f3895d8c607172e4e367645ef88ca1f11",
+          "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+          "sha256": "cb98fa9777b62a948238415582190e1eb26d0cb70a89daee5eafdc489b346fdc"
+        },
+        {
+          "bytes": 11736,
+          "entry": "Outputs/reports/cc12_locale_onexit_second_call_entry_metadata.json",
+          "oid": "255aebda50c2f24b89c55b21e56ffa1c057bfe96",
+          "path": "reports/cc12_locale_onexit_second_call_entry_metadata.json",
+          "sha256": "680e1965d3aa45ff1f074763c8e96d9fbed859601a4e65eab027e19b399c18d6"
+        }
+      ],
+      "Root_CRLF_only_variants": [
+        "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "reports/cc12_locale_onexit_body_primary.json"
+      ],
+      "Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Root_current_Source_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "current_Root_Source_equality_claimed": false,
+      "Source_census": false,
+      "entry_gate_only": true,
+      "body_ABI_CRT_owner_status_runtime_credit": false
+    },
+    "Root_initial_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "typed_captures": 2,
+      "raw_capture_bytes_equal": true,
+      "raw_gate_sha256": "69ce2b38013f9e982589e1c0dbd3e6a580f70fbd03d2d112b02e1047e052f7d0",
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "name": "LIBCRT_unmatched_00bfba68",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "9",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bfba68"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bfba70"
+              },
+              "length": "9"
+            }
+          ]
+        }
+      },
+      "entry_listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00bfba68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00bfba68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00bfba68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00bfba68"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "entry_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00bfba6a"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00bfba6a"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "saved_entry_prototype": "undefined LIBCRT_unmatched_00bfba68(void)",
+      "automatic_proto_companion_summary_wholly_opaque": true,
+      "instruction_texts_or_code_data_bytes_read": 0,
+      "Original_SEH4_CRT_register_ABI_and_invocation_authenticated": false,
+      "next_admission": {
+        "scope": "Only direct typed listing/function/flow metadata for exact9savedbodyaddresses BFBA68..BFBA70 under98/64730 closure",
+        "required": "Return raw perbyte coverage/units/flows to Root before any codebytes/text",
+        "excluded": "No proto repetition/decompile/disasm/opcodes/text/data/stack/targets/callers/GPRrepair/Source/runtime"
+      }
+    },
+    "Root_core_guard.json": {
+      "status": "PASS",
+      "frozen_HEAD": "e461a37e8e9c0b07412eea97828da9d03b7f7416",
+      "Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "finite_inputs": 7,
+      "actual_frozen_Git_objects": 6,
+      "typed_responses": 2,
+      "raw_pair_equal": true,
+      "epoch": 98,
+      "function_count": 64730,
+      "entry": "00BFBA68",
+      "entry_unit_bytes": 2,
+      "entry_hex": "6a08",
+      "saved_body_range_only": [
+        "00BFBA68",
+        "00BFBA70"
+      ],
+      "Native_closed": true,
+      "full_body_admitted": false,
+      "prototype_companion_and_target_objects": "wholly opaque",
+      "semantic_or_runtime_credit": false,
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "ac179e952f3ba509198828d9669677f58c93f5ef3abd978414bc5195c87fb0c7"
+      }
+    },
+    "Root_delivery_guard.json": {
+      "status": "PASS",
+      "commit": "73769a54a4850ca4aca931b09c944f456fb69a7c",
+      "frozen_HEAD": "e461a37e8e9c0b07412eea97828da9d03b7f7416",
+      "actual_delivery_Git_objects": 8,
+      "actual_output_blobs": 2,
+      "exact_output_paths": [
+        "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+        "reports/cc12_locale_onexit_second_call_entry_metadata.json"
+      ],
+      "current_staged_committed_bytes_equal": true,
+      "worker_base_final_Source_tree_ids": {
+        "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "include": "09add3be594e63edcce6a16ec041ed965441e898"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "clean_final_status": true,
+      "core_archive_pin": {
+        "bytes": 382438,
+        "sha256": "ac179e952f3ba509198828d9669677f58c93f5ef3abd978414bc5195c87fb0c7"
+      },
+      "Native_closed": true,
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "d6de9a034c83b88b0fa7c89e4ff46f4c85bb8aa3334546da259cdbf3a9785bdf"
+      }
+    }
+  },
+  "qualified_entry_bytes": "6A08",
+  "saved_prototype": "undefined LIBCRT_unmatched_00bfba68(void)",
+  "next_admission": {
+    "scope": "Paired direct typed listing/function/flow metadata for exactly nine saved-body addresses 00BFBA68..00BFBA70",
+    "gate": "Return complete per-byte coverage, units and flows to Root before code/text operands",
+    "excluded": "No callee/body bytes, text, data, stack, prototype repetition, decompile, disasm, targets, Source or GPR mutation, execution"
+  },
+  "proofs": {
+    "evidence.zip": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/evidence.zip",
+      "bytes": 382438,
+      "sha256": "ac179e952f3ba509198828d9669677f58c93f5ef3abd978414bc5195c87fb0c7"
+    },
+    "delivery_git.zip": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/delivery_git.zip",
+      "bytes": 579175,
+      "sha256": "d6de9a034c83b88b0fa7c89e4ff46f4c85bb8aa3334546da259cdbf3a9785bdf"
+    },
+    "next_worker_handoff.json": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/next_worker_handoff.json",
+      "bytes": 4986,
+      "sha256": "65983927b4c01b4f191fed17d69ca0b15d7d06b14d6b4b34bdbc6ceb8b54cfa0"
+    },
+    "Root_actual_review.json": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Root_actual_review.json",
+      "bytes": 3177,
+      "sha256": "6e7e13d8775300ea39996bf12d9624c013927d0430265adfdd2845be0ec1f211"
+    },
+    "Root_initial_review.json": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Root_initial_review.json",
+      "bytes": 3346,
+      "sha256": "2d40461434f09fd89b3399fefec35938c7e7dbeb597faac6e7f3535dcf90ab10"
+    },
+    "Root_core_guard.json": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Root_core_guard.json",
+      "bytes": 1078,
+      "sha256": "699d4575b167fdfb0d6c23d8748ddbb0234486be572463046bd28b85add2cf13"
+    },
+    "Root_delivery_guard.json": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Root_delivery_guard.json",
+      "bytes": 1164,
+      "sha256": "ac61d3c9ddd9b0d64dfd89b6c1d54c7db7b28785a799d7340dac4a9eec0a907e"
+    },
+    "Tools/common.py": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/common.py",
+      "bytes": 4903,
+      "sha256": "d5aa065cee68a8ebaf239f15b2fb70f3146b23e255c48619dacf4200c97bfd0f"
+    },
+    "Tools/verifier.py": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/verifier.py",
+      "bytes": 5485,
+      "sha256": "2e170dd0e6b1b5c1389d0480655c6de1577140d8a4f6761c53a67a3e3a7c4602"
+    },
+    "Tools/delivery_verifier.py": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/delivery_verifier.py",
+      "bytes": 3642,
+      "sha256": "da91eb7207b16b5977eea80b4196e14563aaf09e2decba4e20dab6ff1f3d7728"
+    },
+    "Tools/guarded_replay.py": {
+      "path": "local/cc12_locale_onexit_second_call_entry_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    }
+  },
+  "qualification": "Saved name/prototype and two-byte instruction evidence only. Whole automatic target/prototype companion opaque; no OS/CRT function meaning, returned state, SEH, ABI, status, callback or runtime authentication"
+}
