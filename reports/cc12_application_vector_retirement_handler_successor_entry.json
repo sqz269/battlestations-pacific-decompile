@@ -1,0 +1,264 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_handler_successor_entry",
+  "status": "bounded_successor_instruction_evidence_only",
+  "verdict": "The whole saved five-byte InstructionDB unit at C8620D physically encodes E9 rel32 JMP to numeric BF6B43. Saved exact text also says JMP. The existing CALL_RETURN override separately yields effective CALL_TERMINATOR flow. Function-at and function-containing are null; no saved body is inferred.",
+  "base_commit": "6e973b3dd35c0fad2db953e2a595fc7aaceeba74",
+  "frozen_tree": "1a819d736780ba91aef4aff1bcdb5764ad0127a6",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY.md",
+      "blob": "6bcabe7856aad4ff7f76ced8b932c7a4dfb68c1d",
+      "sha256": "92013ea62a09da4ab90d287cfe188e212b20a13aa78f76a02eb994ef1d7b513f",
+      "length": 3821
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_handler_entry.json",
+      "blob": "4e21210b65eb5823a1d0fd716ebfaa1216c75a0b",
+      "sha256": "dcd849f5407320fdb115b39262e34c7c31e694dbdb92060af4b46f0ba740f3f0",
+      "length": 10030
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY_PRIMARY.md",
+      "blob": "b39608451679b1285fa653784e1780b7b4260ece",
+      "sha256": "734aa97b455212dab59a011c68443877e4509a350ef20ede7e2181bec8f274db",
+      "length": 2371
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+      "blob": "0514231501e1098a8f8b35b22c9de55a42a683af",
+      "sha256": "75ea3b4b8591de7fd360191fec59ee18354d678790f30daee1dc3ea29100e281",
+      "length": 16354
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_SUCCESSOR_ENTRY.md",
+    "reports/cc12_application_vector_retirement_handler_successor_entry.json"
+  ],
+  "positive_predecessor": {
+    "worker_report": "reports/cc12_application_vector_retirement_handler_entry.json",
+    "Root_report": "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+    "accepted_worker": "9a935791fc384a0bdc797659c7b17c31c23eb0cb",
+    "entry": "00C86208",
+    "length": 5,
+    "hex": "b8b857db00",
+    "physical": "MOV EAX,00DB57B8",
+    "saved_default_and_effective_flow": "FALL_THROUGH",
+    "saved_override": "NONE",
+    "candidate_arithmetic": "00C86208 + 5 = 00C8620D",
+    "boundary": "Immediate prior positive doc/report pairs only; no recursive archive or prior Native re-query."
+  },
+  "Root_gate": {
+    "file": "Root_C8620D_gate.json",
+    "sha256": "147b170a2848a33b8ec9fb17344ba1664db8ff05a78f6823224a881918e6f15c",
+    "status": "Root_METADATA_GATE",
+    "address": "00C8620D",
+    "complete_entry_bytes_admitted": 5,
+    "scope": "Paired typed exact metadata first; Root independently admitted exactly this complete5B unit twice and its exact context0 saved text. No descriptor or target following or continuation."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_counts": [
+      64730,
+      64730,
+      64730,
+      64730
+    ],
+    "autostart": false,
+    "verification": "Every bsp CLI query verifies project/program/language/image base; each retained typed capture carries before/after verified identity and exact GPR marker at epoch98."
+  },
+  "saved_function": {
+    "at": null,
+    "containing": null,
+    "functions": [],
+    "ranges": null,
+    "name": null,
+    "is_thunk": null,
+    "no_return": null,
+    "prototype": null,
+    "prototype_query_performed": false,
+    "qualification": "Typed function references are explicitly null. Missing flags/ranges/name/prototype are not replaced by invented false values or a function extent."
+  },
+  "entry": {
+    "address": "00C8620D",
+    "length": 5,
+    "end_inclusive": "00C86211",
+    "extent_kind": "Complete exact saved InstructionDB unit only; not a handler/function-body extent.",
+    "listing_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c8620d"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c8620d"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c8620d"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c8620d"
+        },
+        "length": 5,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "hex": "e93109f7ff",
+    "sha256": "97ff3d67d2edd2fe219bac6df7c8292def19b83e23e125e161caa07deebb5731",
+    "whole_unit_reads": 2,
+    "reads_equal": true
+  },
+  "physical_decode": {
+    "opcode": "E9",
+    "operation": "JMP rel32",
+    "displacement_hex_little_endian": "3109f7ff",
+    "signed_displacement": -587471,
+    "next_instruction_arithmetic": "00C86212",
+    "relative_target": "00BF6B43",
+    "arithmetic": "(00C8620D + 5 + (-587471)) mod 2^32 = 00BF6B43",
+    "effects": "Direct unconditional near relative jump. This instruction does not push a return address and has no explicit data-memory operand. It does not alter the EAX value loaded by the accepted predecessor along this physical path.",
+    "boundary": "Numeric relative target derived solely from admitted opcode bytes; target object metadata, body and descriptor are not read or classified."
+  },
+  "saved_text": {
+    "file": "saved_text.raw.json",
+    "sha256": "1ce4c266cbc5f6985bad5869b6621c7aa1d3e76e8191d9889ff27399aab56b81",
+    "address": "00c8620d",
+    "instruction": "JMP 0x00bf6b43",
+    "mnemonic": "JMP",
+    "context_before": [],
+    "context_after": [],
+    "context_instructions": 0
+  },
+  "saved_flow": {
+    "flow_override": "CALL_RETURN",
+    "default_flow": {
+      "name": "UNCONDITIONAL_JUMP",
+      "is_call": false,
+      "is_jump": true,
+      "is_conditional": false,
+      "is_computed": false,
+      "is_terminal": false
+    },
+    "effective_flow": {
+      "name": "CALL_TERMINATOR",
+      "is_call": true,
+      "is_jump": false,
+      "is_conditional": false,
+      "is_computed": false,
+      "is_terminal": true
+    },
+    "fallthrough_overridden": false
+  },
+  "flow_qualification": "Physical E9/JMP does not become a CALL because the saved database has CALL_RETURN. The saved override, default UNCONDITIONAL_JUMP and effective CALL_TERMINATOR are all reported separately and left unchanged.",
+  "capture_integrity": {
+    "all_this_packet_attempts_retained": true,
+    "failed_attempts": [],
+    "raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "all_raw_sha256": "645af50b3017737382038c15a8ac401e8692952d383a2ddd02e4b206aeac0b90",
+    "paired_and_close_raw_equal": true,
+    "capture_safety": "Before each CLI call the collector rejects any existing command/stdout/stderr/raw destination and checks distinct filenames.",
+    "physical_helper_history": "collect_gate.py preserves the actual gate collector preimage; collect.py removes an unexecuted prototype-query branch before the narrower admitted phase. seal_freeze.py preserves the actual freeze helper before the package inventory was finalized.",
+    "automatic_companions": "Whole raw responses retained; automatic target and direct-call-target companion objects remain opaque and unfollowed.",
+    "producer_validation": "Existing typed-flow producer automatically validates its full schema; this packet accesses only exact query/function/listing/flow flags.",
+    "predecessor_limitation": "The earlier packet had a disclosed lost initial raw response. Its accepted corrected evidence is the positive predecessor; no claim is made to recover that lost response."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before",
+    "typed_gate_after",
+    "count_gate_after",
+    "Root gate admission",
+    "count_admitted_before",
+    "unit_bytes_first length5",
+    "unit_bytes_second length5",
+    "saved_text context0",
+    "typed_close",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_handler_successor_entry",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Finite eight positive Git input blobs, exact two output blobs and actual frozen/staged/final commit/tree objects. Physical pure replay and audit wrapper read one supplied ZIP and write one declared receipt.",
+    "self_reference_boundary": "Observed final commit/tree/ZIP pins and audited replay receipts are delivered outside the committed outputs; no self-referential ZIP or final-commit claim.",
+    "Source_boundary": "src/include tree IDs are identity only. No Source contents or census, no recursive previous archive, no future Root equality requirement."
+  },
+  "credit": {
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "state0_action": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false
+  },
+  "continuation": "DB57B8 stays opaque and unfollowed. BF6B43 is only a decoded numeric jump destination in this packet. Descriptor headers, map/action records, full handler/body or target traversal require separate Root scope."
+}
