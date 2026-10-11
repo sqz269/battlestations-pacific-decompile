@@ -781,6 +781,29 @@ void idle_camera_load_shots_00551440(IdleCameraShotArray& allied_e19328, IdleCam
     }
 }
 
+// 004E7220..004E7407, read whole from the listing (SSE conversions, no x87).
+void scene_load_cloud_areas_004e7220(SceneCloudRecord& record, SceneCloudHost& host, const ScenePropertyTable& cloud) {
+    record.area_count_c84 = 0;  // 004E722F
+    const auto number = [](const ScenePropertyValue& v) {  // 004E72AE..004E72BB
+        return v.kind == 0 ? static_cast<float>(v.int_value) : v.float_value;
+    };
+    for (std::int32_t slot = 0; slot < kCloudAreaSlots; ++slot) {
+        char key[16];
+        std::snprintf(key, sizeof key, "Area%02d", slot);  // 004E7240 (004E60E0)
+        const ScenePropertyTable* area = cloud.table(key);  // 004E7251..004E726F
+        if (area == nullptr) continue;
+        if (area->value("Num").int_value == 0) continue;   // 004E727A, raw +0Ch test
+        SceneCloudArea& out = record.areas[static_cast<std::size_t>(record.area_count_c84++)];  // 004E7289..004E72A3
+        out.box_min = {number(area->value("BoxMinX")), number(area->value("BoxMinY")), number(area->value("BoxMinZ"))};
+        out.box_max = {number(area->value("BoxMaxX")), number(area->value("BoxMaxY")), number(area->value("BoxMaxZ"))};
+        out.num = area->value("Num").int_value;             // 004E7389, raw copy
+        out.small_weight = number(area->value("SmallWeight"));
+        out.medium_weight = number(area->value("MediumWeight"));
+        out.big_weight = number(area->value("BigWeight"));   // 004E73E9
+    }
+    host.scatter_clouds_004ba870();  // 004E7403 JMP
+}
+
 // 004D9830..004D9B30, read from the listing. Hiding stores each node's factor through
 // operator[] (004D9AEE), so hiding twice overwrites the saved factors with the zeros of the
 // first hide; the image has the same property (004DC020 restores with the saved +61Eh value).

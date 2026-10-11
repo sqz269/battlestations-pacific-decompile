@@ -512,6 +512,52 @@ void game_set_gui_layers_visible_004d9830(GuiLayerVisibilityState& game, GuiLaye
                                           bool visible);
 
 // ---------------------------------------------------------------------------
+// 004E7220: scene header "Cloud" areas (004F1D70 at 004F2368 with the "Cloud" table 00CE7524,
+// and 004EE450 at 004EE481 passing its own table). Fills record+C84h/+C88h, then tail-calls
+// 004BA870 BSP_SceneRecord_ScatterClouds (docs/SCENE_CONTENTS_HOSTS.md calls +C84h a gate; it
+// is this area count).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kCloudAreaFormat = "Area%02d";  // 00CE8B98
+inline constexpr std::int32_t kCloudAreaSlots = 5;                 // 004E73F1 CMP EBP,5
+
+// One 28h-byte area at record+C88h + n*28h.
+struct SceneCloudArea {
+    std::array<float, 3> box_min{};  // +00h BoxMinX/Y/Z (00CE8B8C, 00CE8B84, 00CE8B7C)
+    std::array<float, 3> box_max{};  // +0Ch BoxMaxX/Y/Z (00CE8B74, 00CE8B6C, 00CE8B64)
+    std::int32_t num{};              // +18h Num (00CE8B94), copied raw
+    float small_weight{};            // +1Ch SmallWeight (00CE8B58)
+    float medium_weight{};           // +20h MediumWeight (00CE8B48)
+    float big_weight{};              // +24h BigWeight (00CE8B3C)
+};
+
+struct SceneCloudRecord {
+    std::int32_t area_count_c84{};                          // +C84h
+    std::array<SceneCloudArea, kCloudAreaSlots> areas{};    // +C88h
+};
+
+// A scene property node as 004E7220 reads it: kind +4 (0 int, else float bits; 6 table) and
+// the value +0Ch. find() is 008F2260 on a table.
+struct ScenePropertyValue {
+    std::int32_t kind{};
+    std::int32_t int_value{};
+    float float_value{};
+};
+struct ScenePropertyTable {
+    virtual ~ScenePropertyTable() = default;
+    virtual ScenePropertyValue value(std::string_view key) const = 0;        // unchecked find
+    virtual const ScenePropertyTable* table(std::string_view key) const = 0;  // kind 6 and +0Ch != 0, else null
+};
+
+struct SceneCloudHost {
+    virtual ~SceneCloudHost() = default;
+    virtual void scatter_clouds_004ba870() = 0;  // ECX = record, tail call at 004E7403
+};
+
+// 004E7220: __fastcall(table /*ECX*/, record /*EDX*/), RET (the tail JMP).
+void scene_load_cloud_areas_004e7220(SceneCloudRecord& record, SceneCloudHost& host, const ScenePropertyTable& cloud);
+
+// ---------------------------------------------------------------------------
 // HintSystem mission-Lua wrappers (binding table 00E0B7B8, rows at 00E0B7F0..00E0B830; the
 // host registration list is src/mission_lua_host.cpp, owned by cc9). Every wrapper is
 // __fastcall(lua_State* L /*ECX*/) returning the number of results: it borrows L

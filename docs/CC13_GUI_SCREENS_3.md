@@ -465,3 +465,45 @@ Helpers named: `00551390` push_back, `00550390` shot destructor, `00550E70` eras
 `0076F9E0` message 34 string constructor.
 
 Report: `reports/cc13_gui5.json` now 482 call rows, `tools/verify_report_calls.py` 0 failed.
+
+### Segment 10 leftovers (cc13-hints1)
+
+Re-triaged with `local/hi1_prio.py 004D0920 004E7DB0` (functions with no reconstruction record and
+no doc citation, library/STL/CG/EH tags dropped, ranked by size; `local/hi1_prio10.txt`): 121
+remain. Most are std::map/list/deque node helpers called from one container method (004D3F50,
+004D3CD0, 004D4270, 004D1840, 004D1D00, ...), so I took only the ones with string, vtable or
+property anchors:
+
+- `004E7220 BSP_SceneRecord_LoadCloudAreas` (reconstructed, build-tested): `__fastcall(table, record)`,
+  called by 004F1D70 for the header property `Cloud` (00CE7524) and by 004EE450 with its own table;
+  writes the area count +C84h and up to five 28h-byte areas at +C88h (`Area00`..`Area04`: BoxMin and
+  BoxMax XYZ, `Num` raw, Small/Medium/BigWeight; kind 0 values are converted from int), then
+  tail-jumps to `004BA870 ScatterClouds`. docs/SCENE_CONTENTS_HOSTS.md calls +C84h a gate; it is this
+  count, and ScatterClouds as documented there reads only the first area.
+- `004DD7C0 BSP_Game_CompleteLeaderboardRead` (named only): the leaderboard screen's poll of the
+  overlapped stats read (game+7038h overlapped, +7054h results, +7058h state); raises
+  `FE_pc.xsm_requireslive` when no view came back. Left for the front-end lane.
+- `004E1A50 BSP_AwardTracker_DestroyMembers` (named only): the tracker's member teardown, read with
+  `disasm-raw` because Ghidra cuts it at the no-return `_free`; it shows a map at tracker+88h that
+  docs/GAME_AWARD_TRACKERS.md does not list.
+- `004D4BB0 BSP_SessionMessageE4_Read` (named only): read slot of message E4h (vtable 00CE7608).
+- `004E5D20` is a four-float scale (`v *= s`); not named.
+
+## Handoff (cc13-hints1, 2026-10-11)
+
+Commits on agent/cc13-hints1: 8b5fed59d (Lua wrappers, 004D9830, idle-camera shot loader) and the
+segment-10 commit. 11 functions reconstructed and build-tested this turn (`./scripts/build.ps1`
+passes, 2/2 tests), none wired or run; 20 ledger names applied to Ghidra (prior values in
+`local/ghidra-annotations-20261011T2343*.json` and `..T2352*.json`); `reports/cc13_gui5.json` 495
+call rows, 0 failed.
+
+Open:
+
+1. Binding the eight HintSystem handlers into the mission Lua host is cc9's call
+   (`src/mission_lua_host.cpp`); ShowHint's session copy (00770870) must stay behind session mode 1.
+2. `00690B00` is named `BSP_AwardTracker_IsActiveHintBlocking` but answers for any name
+   (IsHintCritical); a rename belongs to whoever leases segment 28.
+3. The receive side of session message 34 (the hint name) on clients was not read.
+4. Segment 10: the remaining 117 uncited functions are container internals and session-message
+   pieces; `004DD7C0` (leaderboards) and the message E4h read could go to the front-end and
+   session lanes.
