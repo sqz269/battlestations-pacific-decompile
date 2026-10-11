@@ -16507,6 +16507,176 @@
           "ABI_qualification": false,
           "game_qualification": false,
           "boundary": "The actual ordinary startup report, all 85 independent predicates and 10,452 current pins were consumed without predicate-name deduplication. Source01's blanket foreign readonly assumption was repaired through an exact five-span derivative; direct controls remain readonly/single-link and foreign allowances are restricted to the exact accepted pin book with stable actual metadata and whole-file hashes. Fresh formal authority permits only separately gated Native Dispatch. No Native recipe, clock, compiler, target, fixture, ABI or game qualification is claimed."
+        },
+        "fresh_F6_native01_actual_timed_attempt_original_600_deadline_HOLD_checkpoint": {
+          "schema": "Root_F6_native01_actual_timed_attempt_HOLD_checkpoint_v1",
+          "Source_credit": 0,
+          "Root_joint_DATA_acceptance_issued": true,
+          "new_native_clock_started": true,
+          "status": "HOLD_CLOSING_ORIGINAL_600_DEADLINE",
+          "actual_Dispatch_executed": true,
+          "original_T0": 11478351103388,
+          "original_F": 10000000,
+          "original_deadline_QPC": 11484351103388,
+          "deadline_seconds": 600,
+          "original_clock_reused_or_reset": false,
+          "actual_Dispatch_genuine_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_actual_execution_tool_evidence_DATA01.json",
+            "bytes": 5593,
+            "sha256": "fe347c5b2d87989eab4b970da2f141081d4170183e4e67183ca560610fc85fe3"
+          },
+          "actual_execution_recorder_genuine_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_actual_execution_recorder_tool_evidence_DATA01.json",
+            "bytes": 4322,
+            "sha256": "36d4c58d48f004efbbadcfcfa847601d58133f84fa740c63b51684d4eee414c8"
+          },
+          "actual_failed_Closing_genuine_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_actual_closing_tool_evidence_DATA01.json",
+            "bytes": 7434,
+            "sha256": "b115bb522b75b8948592577095d4248aaabeacc44ba1c67a4fc60a57f8052de7",
+            "readonly": true
+          },
+          "complete_partial_timed_attempt_genuine_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_partial_timed_attempt_original_genuine_native_HOLD_DATA01.json",
+            "bytes": 17375,
+            "sha256": "61e59577ae6f7be26f8f1e3598faf1b2656316ba1833e79aa5674ab9329da8c5"
+          },
+          "Root_complete_original_capture_comparison": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_failure_whole_current_capture_comparison_DATA01.json",
+            "bytes": 8819,
+            "sha256": "860f2342ebb635e92d6962094536887ee48dc8e44ca90b52c698e2f91456e5c3"
+          },
+          "Root_capture_comparison_chunk_id": "0d2099",
+          "required_tool_calls": [
+            {
+              "ordinal": 1,
+              "kind": "Dispatch",
+              "genuine_turns": 8,
+              "terminal_chunk": "1d2b69",
+              "exit_code": 0,
+              "session_id": 95026
+            },
+            {
+              "ordinal": 2,
+              "kind": "execution_recorder",
+              "genuine_turns": 1,
+              "terminal_chunk": "d83734",
+              "exit_code": 0,
+              "session_id": null
+            },
+            {
+              "ordinal": 3,
+              "kind": "Closing",
+              "genuine_turns": 4,
+              "terminal_chunk": "0f52b1",
+              "exit_code": 1,
+              "session_id": 53933
+            },
+            {
+              "ordinal": 4,
+              "kind": "closing_recorder",
+              "executed": false,
+              "genuine_terminal": null
+            }
+          ],
+          "executed_auxiliary_calls": [
+            {
+              "kind": "execution_event_writer",
+              "genuine_terminal_chunk_id": "9ee6bd",
+              "exit_code": 0
+            }
+          ],
+          "actual_execution_event": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\root_observer\\type1011_f6_native01\\execution_raw_API_event.json",
+            "bytes": 2184,
+            "sha256": "4de636f1ae1534e87f933f34273c2ed7d4b1edb0337061d9fff89d7f86faf36b"
+          },
+          "original_origin_context": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\root_observer\\type1011_f6_native01\\origin_context.json",
+            "bytes": 6334,
+            "sha256": "91c3a759d9c4a3eceed8d77e25ffc4a07509b5a4b12faac1f4e9f0687b204a82"
+          },
+          "execution_witness": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011observe07\\root_observer\\type1011_f6_native01\\execution_tool_terminal.json",
+            "bytes": 2612,
+            "sha256": "a307ce70e4964667114101c562e59865a9d9e5ff00465f59b7e21d18ead26e58"
+          },
+          "actual_formal_authority": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_actual_F6_native01_Dispatch_authorization.json",
+            "bytes": 471057,
+            "sha256": "e0c4a4fb06aa0fac3e234caf99468e6656da07ca45e9f2d96ce690dde3f00a31"
+          },
+          "closing_event_writer_executed": false,
+          "fourth_recorder_executed": false,
+          "after_fourth_QPC_observer_executed": false,
+          "observed_native_products": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\original10.bin",
+              "bytes": 116,
+              "sha256": "00c1508701d10a6508b556eff0feb4737f51a4ec289059dce77a796cc571919b"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\original11.bin",
+              "bytes": 119,
+              "sha256": "fdb6bb6f351939abd63f85028eea15df069113701aba2de727bb9a16393978da"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\native_before.json",
+              "bytes": 7946,
+              "sha256": "0fe8b24ec787323b79a1fb460f4c56b5febda6e74a45b21ac07190b29b4cff05"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\attempts\\native_before.json",
+              "bytes": 329,
+              "sha256": "8cca3dfab2cbab39a67c3717505af5650d1ccabcb790e5921e666a14f300b2a8"
+            }
+          ],
+          "native_product_attributes": 32,
+          "native_products_readonly": false,
+          "native_product_count": 4,
+          "current_observer_file_count": 8,
+          "final_required_observer_file_count": 17,
+          "missing_observer_files": [
+            "closing_verification.json",
+            "closing_verification_completion.json",
+            "verifier.stdout",
+            "verifier.stderr",
+            "parent_closing_result.json",
+            "parent_closing_completion.json",
+            "closing_raw_API_event.json",
+            "verifier_tool_terminal.json",
+            "verifier_tool_terminal_completion.json"
+          ],
+          "observed_process_absence": {
+            "worker": "command_target_initialize",
+            "observation_UTC": "2026-10-11T11:42:34Z",
+            "actual_tool_chunk": "083c5f",
+            "original_parent_PID": 116008,
+            "guard_PID": 29040,
+            "exact_PIDs_and_direct_children_absent": true,
+            "proves_original_Closing_cleanup": false
+          },
+          "recorded_timing_seconds_after_original_T0": {
+            "supervisor_pre_resume": 131.5820779,
+            "selected_child_exit": 388.8580782,
+            "natural_zero": 388.8815353,
+            "supervisor_postflight": 404.7470705,
+            "parent_guard_completion": 418.5729029,
+            "execution_witness_upper": 469.6116982,
+            "execution_recorder_completion": 469.6381242
+          },
+          "timing_attribution": "Finite worker read of original retained QPC records; Closing entry QPC and last verifier stage are not serialized.",
+          "exact_Closing_entry_QPC": null,
+          "remaining_seconds_after_execution_recorder": 130.3618758,
+          "after_deadline_status_sample_seconds": 624.5226258,
+          "Native_DATA_acceptance": false,
+          "Native_to_build_transition": false,
+          "allow_compiler_execution": false,
+          "allow_target_launch": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "boundary": "Native01 is preserved as a failed actual attempt. Two required genuine calls closed zero, Closing failed, and the fourth was not run. Product existence and current process absence do not establish the required original closure. A fresh label cannot replay the populated exclusive Native slots; retry requires a reviewed fresh fixture/product layout and fresh selection/startup/formal authority."
         }
       }
     }
