@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_shared_epilogue_entry_primary",
+  "worker_commit": "48b9d743333ada7c3e8e73d63afdd7edec6f54c1",
+  "worker_frozen_commit": "21ea7e481395deddab245033008a746af2b6b5f1",
+  "Root_actual_Git_archive_review": {
+    "status": "PASS",
+    "worker_commit": "48b9d743333ada7c3e8e73d63afdd7edec6f54c1",
+    "worker_base": "21ea7e481395deddab245033008a746af2b6b5f1",
+    "phases": {
+      "core": {
+        "archive_sha256": "5a7e82744a384fda3fb13c344dedd13a9bc5cf7eee6e7dddc0e196fa5db1e497",
+        "entries": 90,
+        "actual_Git_objects": 6,
+        "input_blobs": 8,
+        "output_blobs": 0,
+        "physical_copy_ids": [
+          281475006148674,
+          281475006148675
+        ]
+      },
+      "delivery": {
+        "archive_sha256": "d831757b5bcf4e5afc2527127b756a36ed14eea48cfea46817436b8fe0a92f58",
+        "entries": 79,
+        "actual_Git_objects": 10,
+        "input_blobs": 8,
+        "output_blobs": 2,
+        "physical_copy_ids": [
+          281475006162652,
+          281475006162653
+        ]
+      }
+    },
+    "Root_gate_preimages_equal": true,
+    "Source_boundary": "Actual worker revision tree IDs only; no current Root Source equality assertion or Source census."
+  },
+  "Root_manual_and_actual_Capstone": {
+    "status": "PASS",
+    "entry": "00C07C45",
+    "hex": "8b4df0",
+    "manual": {
+      "opcode": 139,
+      "mod": 1,
+      "reg": 1,
+      "rm": 5,
+      "displacement": -16,
+      "default_segment": "SS"
+    },
+    "Capstone_version": "5.0.7",
+    "actual_operand": "ECX <- DWORD current SS:[current EBP-16], width4",
+    "encoding_fields": {
+      "modrm_offset": 1,
+      "disp_offset": 2,
+      "disp_size": 1
+    },
+    "closing_raw_payload_sha256": "34d015074d21d280378b1c2865c3725c4a04a1f32a61e89f22b5dd5fa310af5a",
+    "successful_effect": "Only ECX changes; ESP, EBP and flags unchanged. Instruction-time memory may alias prior writes.",
+    "boundary": "No stable parent frame, loaded value meaning, exception-registration interpretation, SEH restoration, ABI or remaining17-byte behavior."
+  },
+  "Root_pins": {
+    "Root_entry_gate.py": {
+      "bytes": 4003,
+      "sha256": "0da30a0ec179fdc03da9c55013a094466d698a10bee825543bb901c036600d49"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 817,
+      "sha256": "e0950bb69c7da8dfb142b65cf6a8799a6ce0bbdda8dfb2ae4d9d285946186079"
+    },
+    "Root_gate_adaptation.json": {
+      "bytes": 309,
+      "sha256": "f4a721bcede0d2fa6c315f5ca133eb17571078f34ba2f0c5f6b7d7540f9d6282"
+    },
+    "Root_actual_review.py": {
+      "bytes": 4326,
+      "sha256": "480841c4e98eccc2fda33ca057adfeea21ae37e83fed2eb0507b78ef96496909"
+    },
+    "Root_actual_review.json": {
+      "bytes": 960,
+      "sha256": "08f187c3f20745d22488434458b8e0f90070798e5ec839d4b107ee87b81457cc"
+    },
+    "Root_native_decode.py": {
+      "bytes": 2133,
+      "sha256": "510ee8538149254761750ba6404c9fe82a14f55f200a68aef68c13a2c1dac4f3"
+    },
+    "Root_native_decode.json": {
+      "bytes": 790,
+      "sha256": "828643d093ff6583ec2884e0099dcb506f64c84502e798a08d8f6660f83fbfb3"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2100,
+      "sha256": "7c9b0c754d0b0d95b4ffddc395a4d08fb5de580201ec577a6d5c4a029e1e7e26"
+    },
+    "Root_core_strict_replay.json": {
+      "bytes": 7238,
+      "sha256": "2c0575a5b09a050cd5b04d2ab1da068172d23f9e4f2c817b9950004cafb9584e"
+    },
+    "Root_delivery_strict_replay.json": {
+      "bytes": 1084,
+      "sha256": "e61fb42a268a98aaf55d0117cc87b9b6c2540b36d21b31a0b3b4334cebb82490"
+    },
+    "Root_core_proof.zip": {
+      "bytes": 1095572,
+      "sha256": "5a7e82744a384fda3fb13c344dedd13a9bc5cf7eee6e7dddc0e196fa5db1e497"
+    },
+    "Root_delivery_proof.zip": {
+      "bytes": 2098840,
+      "sha256": "d831757b5bcf4e5afc2527127b756a36ed14eea48cfea46817436b8fe0a92f58"
+    },
+    "replay.py": {
+      "bytes": 15702,
+      "sha256": "9b43bea988b03a929681f5ef394770dae5a0fb7246631ec65fb71b8cd1eabbea"
+    },
+    "guarded_replay.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    }
+  },
+  "whole_replay_body_reviewed": {
+    "bytes": 15702,
+    "sha256": "9b43bea988b03a929681f5ef394770dae5a0fb7246631ec65fb71b8cd1eabbea"
+  },
+  "Root_core_audit": {
+    "state": {
+      "reads": 1,
+      "writes": 1,
+      "exec": 1
+    },
+    "denials": [],
+    "policy": "Deny every event except one pinned execution, one exact ZIP read, one exclusive receipt write."
+  },
+  "Root_delivery_audit": {
+    "state": {
+      "reads": 1,
+      "writes": 1,
+      "exec": 1
+    },
+    "denials": [],
+    "policy": "Deny every event except one pinned execution, one exact ZIP read, one exclusive receipt write."
+  },
+  "prototype_prefix_only": [
+    "Function: __SEH_epilog4 at 00c07c45",
+    "Signature: undefined __SEH_epilog4(void)",
+    "Entry: 00c07c45",
+    "Body: 00c07c45 - 00c07c58"
+  ],
+  "opaque_prototype_suffix": {
+    "bytes": 158,
+    "sha256": "46a65195f5f05f24ca989816a3804bca87b3131652b40c8a75052184625bb560"
+  },
+  "opaque_suffix_parsed": false,
+  "accepted_saved_metadata": {
+    "name": "__SEH_epilog4",
+    "range": "00C07C45..00C07C58",
+    "address_units": 20,
+    "Native_bytes_read": 3,
+    "remaining17B_unread": true,
+    "nonThunk_noReturnFalse": true,
+    "epoch": 98,
+    "function_count": 64730
+  },
+  "failure_disclosure": {
+    "worker_Native_or_helper_failures": 0,
+    "Root_gate_review_decode_replay_failures": 0
+  },
+  "credit": {
+    "physical_entry_evidence": true,
+    "Source_implemented": false,
+    "complete_body": false,
+    "loaded_value_meaning": false,
+    "caller_frame_or_SEH_restoration": false,
+    "Original_ABI": false,
+    "runtime": false,
+    "build_this_packet": false,
+    "tests_probes_runs_GPRmutation": false
+  },
+  "Source_boundary": "Actual worker frozen identities only, no equality to current Source asserted. No Source content or absence census and no earlier archive traversal."
+}
