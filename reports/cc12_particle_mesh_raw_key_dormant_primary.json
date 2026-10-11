@@ -1,0 +1,130 @@
+{
+  "schema": "bsp.cc12.particle-mesh-raw-key-primary.v1",
+  "status": "dormant_raw_key_Source_fresh_Root_Win32_and_complete_static_review_PASS",
+  "worker_commit": "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3",
+  "Root_worker_review": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_worker_review.json",
+    "bytes": 2364,
+    "sha256": "ff57e9b94a4807e3c2bc89bf3ba805150136ebb92646ecc88537e025aef3643f"
+  },
+  "Root_final_delivery_review": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_final_delivery_review.json",
+    "bytes": 2541,
+    "sha256": "b42416946330c572f89fd0e87228f7494587962b23d7a92f2b6faffa24a0c694"
+  },
+  "Root_before": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_before.json",
+    "bytes": 5090494,
+    "sha256": "a0cc951f9017eeb0621f17c0e528fc441872a533e7bad0775f61ed07480a2fbb"
+  },
+  "initial_before_preserved": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_before_initial_unselected.json",
+    "bytes": 5083982,
+    "sha256": "5428e1ee26c26435e88eeec28fb24487c4e218cea95458135308d89b0a482083"
+  },
+  "Root_after": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_after.json",
+    "bytes": 5086179,
+    "sha256": "ccacd9627b4cd0fc4d3d231113a51206556e6a7a35a29ef5baea12ab053b9244"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_compiled_review.json",
+    "bytes": 190145,
+    "sha256": "c45178bac405feeed63fa97d4a5058b43a8197ca614511b0c19221f6da8ce72b"
+  },
+  "Root_compiler_cohorts": {
+    "before": {
+      "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_before_compiler_cohort.json",
+      "bytes": 40967,
+      "sha256": "d38541417f8a824d35edabc9627b62826a2e3a210d4934fd3a5e377122089525"
+    },
+    "after": {
+      "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_after_compiler_cohort.json",
+      "bytes": 40870,
+      "sha256": "67eafd91d033e84e02ef3f4177c62b2cb540f5166dae85307b5dbfc1e16530ac"
+    }
+  },
+  "Source_epoch": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Source3356_particle_mesh_raw_key_Root_frozen.json",
+    "bytes": 1271280,
+    "sha256": "e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "actual_Root_Git": 4217,
+    "worker_closed_Source": 4228,
+    "worker_frozen_and_staged_Git_rows": 4241,
+    "worker_final_Git_rows": 4243,
+    "worker_final_trees": 10,
+    "changes": [
+      "include/bsp/native_particle_model_construction.hpp",
+      "src/native_particle_model_construction.cpp"
+    ],
+    "new_files": []
+  },
+  "Root_build": {
+    "receipt": {
+      "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_after_build_receipt.json",
+      "bytes": 895,
+      "sha256": "d75052cb4c9fbcc500d5c8850d51556f315fc7a0d9cb69edf64aa4d0331bf066"
+    },
+    "log": {
+      "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_after_build.log",
+      "bytes": 3501,
+      "sha256": "c229e560a4f48ad3581bc26097254b0af01bc179513ad194643027e797dd6eb8"
+    },
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0,
+    "baseline": "Exact accepted Application3356 artifacts retained before merge, Core1990/App80; no fresh Root before build claimed."
+  },
+  "compiled_counts": {
+    "old_code_exact": 174397,
+    "new_code_sections": 2,
+    "new_bytes": 232,
+    "whole_Core_object_drift": 7,
+    "whole_App_object_drift": 0,
+    "physical_indices": 20,
+    "header_consumers": 7,
+    "selected_TUs": 10,
+    "Root_tlogs_retained_per_phase": 56,
+    "private_positive_code_definition_pairs": 44,
+    "private_positive_data_definition_pairs": 20,
+    "finite_lambda_pairs": 4,
+    "module_EH_SEH_data_records": 34,
+    "noncode_added": 2,
+    "noncode_changed": 2,
+    "noncode_removed": 0,
+    "added_vtables": 0,
+    "external_callers": 0,
+    "Game_map_symbols": 0,
+    "Game_text_exact": true
+  },
+  "compiled_scope_qualification": "Normal203B plus EHhandler29B. Selector0 arms immediately before provider call+108; it remains through supported-noexcept closed transition+133. Ordinary C++ cannot escape that transition; this does not prove hardware/foreign-exception or original private FH3 behavior. Catchbody+148 calls same pool return+156 then rethrows+165; domain mismatch path+170 and allocator+56 are outside Source preparation catch.",
+  "contract": {
+    "required_provider": "Real throwing preparation over genuine raw C0 slot, same environment/registry, persistent stable record/callback/admission; cancel metadata and leave unconstructed before throw.",
+    "entry": "Validate shared domain before one genuine allocation; null bypass; catch preparation only and preserve raw-return failure behavior; success invokes only record noexcept construct_and_publish; pointer mismatch terminates.",
+    "custody": "Published record survives later resource failure; real independent all-path reuse exclusion and later callback/borrower quiescence are required external obligations."
+  },
+  "finite_lambda_pair_receipt": {
+    "path": "local/cc12_particle_mesh_raw_key_dormant_primary/Root_positive_lambda_callsite_pairs.json",
+    "bytes": 8665,
+    "sha256": "c20bee9fa3f044344f9868282be0eb33ac2075eff13a6d643503c6c704083ce4"
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "new_tests": 0,
+    "new_probes": 0,
+    "helper_or_provider_execution": 0,
+    "game_OS_audio_runs": 0
+  },
+  "limits": [
+    "No concrete provider/current factory/hook/callee-vtable/caller is introduced.",
+    "New provider destructor/vtable definition count is zero in worker full census, with no added Root vtable.",
+    "Only positively defined symbols are paired across worktrees; four lambda tokens are proven through exact enclosing Source and corresponding CALL/tailJMP sites. No blanket hash stripping or undefined-symbol mapping.",
+    "All actual EH/SEH offsets are checked, including new data at0/16/32/52 and nonzero catch-code labels.",
+    "Source/build/static evidence supplies no actual allocation authenticity, OriginalABI/FH3, persistent custody, all-path reuse exclusion, quiescence, startup or gameplay proof."
+  ]
+}
