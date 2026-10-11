@@ -1,0 +1,432 @@
+{
+  "schema": "bsp.cc12.locale-after-call-operand.Root.v1",
+  "status": "exact_operand_conditional_decode_accepted",
+  "worker_commit": "b5d57f94aa74078a310f1dc8c6d8fb65bb3bbdf4",
+  "proof_pins": [
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/evidence.zip",
+      "bytes": 381224735,
+      "sha256": "440bb0aef3f8fb5643062c97edfa759b02eba8f4c5d1b156b9867154ebc7ae21"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/delivery_git.zip",
+      "bytes": 674115,
+      "sha256": "2fabaaf40fe0938c9feb93e58e25a7f0ddb48c0d602270fd17cbe11fe265ca5e"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/worker_handoff.json",
+      "bytes": 22119,
+      "sha256": "3d53ab18a27ab60b423f71e80c6d5dc175999e90b655b3c384454cfd1143eab3"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_copy.json",
+      "bytes": 6139,
+      "sha256": "c6715db079a926a2e122dc38ce8e8ca428f8d2b77966b0e4155093647ac49de0"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_core_guard.json",
+      "bytes": 49474,
+      "sha256": "98d9c6ee6c407b119deba7d233023fc3dccf430aeb22e12069dae09596a353a1"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_delivery_guard.json",
+      "bytes": 7097,
+      "sha256": "348aebc30fd76d98c146d84d9aec2ebccf0823b74dc3fa7e6adb8fe03a2b961d"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_actual_review.json",
+      "bytes": 1224021,
+      "sha256": "ff63b31d8f05d89787c79b1b59ec8592152451ac61fbc39264c2d8d434752548"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_qualified_site.json",
+      "bytes": 3236,
+      "sha256": "a5aa68880847bf72e55f9e8f5c4ccd41fb09669e32e88f195f0f41ae35a44c60"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Root_instruction_decode.json",
+      "bytes": 506,
+      "sha256": "d6bb7d6adda06750e4f2f2727c30ce4c9abe472a6c84490483de765131a38b48"
+    }
+  ],
+  "physically_retained_helpers": [
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/after_call_metadata_delivery_replay.py",
+      "bytes": 2893,
+      "sha256": "b8bbe2ec8b4e38b3d2d953e0d092c139d905096c33665708bcd38a7dfcb99739"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/after_call_metadata_replay.py",
+      "bytes": 14920,
+      "sha256": "2a925803bddb93a5f8b124c3222f63eaa7fea259f015a867ccaa7318cd160224"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/after_push_metadata_delivery_replay.py",
+      "bytes": 2914,
+      "sha256": "cfd5544bbfa2f46178c66ed4a00f47cf0b4586f6415c3429cab0c84dcd444626"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/after_push_metadata_replay.py",
+      "bytes": 19458,
+      "sha256": "6bf8528889b880404881e196f0ae91f245939743fd80649ff10540504e453bf1"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/call_delivery_replay.py",
+      "bytes": 2466,
+      "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/call_operand_delivery_replay.py",
+      "bytes": 2949,
+      "sha256": "87776dea498812a1a48dea88f2b3a2e17af91bce906cb4e01879373458fa481e"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/call_operand_replay.py",
+      "bytes": 15469,
+      "sha256": "2d0082ad8b72b1c56d621bbe08b85ebdde861b05739efc82dd2457a65414826b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/call_replay.py",
+      "bytes": 12906,
+      "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/delivery_verifier.py",
+      "bytes": 2890,
+      "sha256": "803f8b1d65942df0eb18d83c6d9e45f2c7bb80982b7753b81a80b42e842de717"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/entry_operand_delivery_replay.py",
+      "bytes": 2895,
+      "sha256": "5bf2c653b06fb7aab7bcb5ac1a7f9f3b1add5eaa996b61bc32fb9b1358e94eba"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/entry_operand_replay.py",
+      "bytes": 15018,
+      "sha256": "acdadd99adfd86aef5e522dbcda05f9d7be6582dc662fa7f9ee344ac0c45c9a7"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/exit_metadata_delivery_replay.py",
+      "bytes": 2881,
+      "sha256": "776c0015d590f9bc481eaee59ed4d084c25db1c5ce6a54eda65d2aba7971bb5b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/exit_metadata_replay.py",
+      "bytes": 11337,
+      "sha256": "0e365b15191d65f5d740edde87e976c0f924f75dadfdef563c0294f8abda9770"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/metadata_delivery_replay.py",
+      "bytes": 2467,
+      "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/metadata_replay.py",
+      "bytes": 9853,
+      "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/operand_delivery_replay.py",
+      "bytes": 2480,
+      "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/operand_replay.py",
+      "bytes": 10585,
+      "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_metadata_delivery_replay.py",
+      "bytes": 2462,
+      "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_metadata_replay.py",
+      "bytes": 12435,
+      "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_pop_metadata_delivery_replay.py",
+      "bytes": 2408,
+      "sha256": "19afc228d031f2df2ee44dea72d2c0029638950238853c123600b95614978e87"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_pop_metadata_replay.py",
+      "bytes": 12097,
+      "sha256": "022a113ea89a32f9e80a10aca6cb9df296c08c1d59d6f198797f2056db466665"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_pop_operand_delivery_replay.py",
+      "bytes": 2668,
+      "sha256": "a7ffa62372070cc42f504a8b48ef55b596b92929287ff253ce53addf4edbc205"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/post_pop_operand_replay.py",
+      "bytes": 15964,
+      "sha256": "cc5a8f5f70a642e6eb1ae7c90450ad123cca63f5f5643979505c319452dfac9b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/prefix_delivery_replay.py",
+      "bytes": 2465,
+      "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/prefix_replay.py",
+      "bytes": 10761,
+      "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/prior_replay.py",
+      "bytes": 5817,
+      "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/return_metadata_delivery_replay.py",
+      "bytes": 2453,
+      "sha256": "977f708c138accaf6692198296378067f1478642401b092f3f2b73bbe72cddbd"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/return_metadata_replay.py",
+      "bytes": 10363,
+      "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/return_operand_delivery_replay.py",
+      "bytes": 2563,
+      "sha256": "8024b7026c805e2ddd5d1b439b5309fdbba69e23797bd6778aef45bd7a3f2fed"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/return_operand_replay.py",
+      "bytes": 13268,
+      "sha256": "c47081e1a52c18656155650973251acfa2018b0817d5389135ae95a002da687a"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_operand_primary/Tools/verifier.py",
+      "bytes": 15043,
+      "sha256": "6d451466115bbf5a4e5d5f146287989546968fc6037278678774f531fc31da60"
+    }
+  ],
+  "actual_membership": {
+    "frozen_blobs": 4302,
+    "frozen_objects": 11,
+    "delivery_objects": 8,
+    "outputs": 2,
+    "Source": 4217
+  },
+  "qualified_metadata": {
+    "complete": true,
+    "direct_call_targets": [],
+    "function_at_query": null,
+    "function_containing_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "functions": [
+      {
+        "body": {
+          "address_count": "18",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00bf7006",
+                "space": "ram"
+              },
+              "length": "18",
+              "start": {
+                "offset": "00bf6ff5",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "_atexit",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    ],
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00bf7000",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00bf7000",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      }
+    },
+    "modification_number_after": "98",
+    "modification_number_before": "98",
+    "program": {
+      "default_address_space": "ram",
+      "image_base": {
+        "offset": "00400000",
+        "space": "ram"
+      },
+      "language": "x86:LE:32:default",
+      "path": "/battlestationspacific.exe",
+      "project": {
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr",
+        "name": "bsp"
+      }
+    },
+    "query_address": {
+      "offset": "00bf6ffe",
+      "space": "ram"
+    },
+    "schema": 1
+  },
+  "Native": {
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "count_code_text_equal_pairs": 3,
+    "epoch": 98,
+    "fresh_capture_strict_site_only": true,
+    "fresh_code_bytes": 2,
+    "fresh_data_bytes": 0,
+    "function_count": 64730,
+    "gate": "PASS",
+    "identity_bookends_equal": true,
+    "inherited_target_objects_entirely_quarantined": true,
+    "instruction_text_queries": 2,
+    "mutations": 0,
+    "neighbor_target_caller_body_proto_data_pointer_stack_queries": 0,
+    "process_status_queries": 0,
+    "queried_addresses": [
+      "BF6FFE"
+    ],
+    "target_objects_in_qualified_subset": false,
+    "text_context": 0,
+    "typed_raw_pair_equal": true,
+    "whole_capture_strict_site_only": false
+  },
+  "conditional_decode": {
+    "address": "00BF6FFE",
+    "bytes_hex": "F7 D8",
+    "length": 2,
+    "mnemonic": "NEG EAX",
+    "incoming_EAX": "unknown",
+    "conditional_result": "0 minus entryEAX modulo2^32",
+    "CF": "entryEAX!=0",
+    "OF": "entryEAX==0x80000000",
+    "AF": "lowNibble(entryEAX)!=0",
+    "SF": "result bit31",
+    "ZF": "result==0",
+    "PF": "resultLowByte even parity",
+    "explicit_memory_operand": false,
+    "instruction_local_ESP_change": false,
+    "next_address_only": "00BF7000",
+    "actual_execution": false
+  },
+  "whole_capture_strict_site_only": false,
+  "fresh_capture_strict_site_only": true,
+  "entire_inherited_target_objects_quarantined": true,
+  "Source": {
+    "frozen": "bf8663140362f6eff1e3e25284d672ba92747c3e",
+    "Root_current": "1332c453de9235fb263ff1a8e2eb1b4b5d4261db",
+    "current4217_equal": true,
+    "original575_changed_only_accepted_fullshell_pair": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "inherited_Root_CRLF_variants": 5,
+    "no_rebase_or_build_runtime_transfer": true
+  },
+  "unknowns": [
+    "Actual reach afterCALL, callee return/cleanup, postcalleeESP and caller stack",
+    "EntryEAX, W/K and resulting flags/status",
+    "CRT authenticity, callback acceptance, initializedlocaleowner, actualSourceABI/startup/game"
+  ],
+  "review_housekeeping": [
+    "Initial filename-only predecessor comparison corrected to explicit prior verifier/delivery role aliases; all30 exact predecessor bodies checked before replay",
+    "Private copy helper renamed copy_proof.py to avoid standard-library copy-module shadowing; final independent actual review repeated and passed; ZIP bytes/pins unchanged"
+  ],
+  "next_admission": {
+    "packet": "cc12_locale_exit_tail_metadata",
+    "scope": "Only typed metadata at exact remaining stored-body bytes BF7000..BF7006, individually covering seven addresses after fresh unchanged98/64730 identity/count gate",
+    "required": "Preserve BF6FF5 containingowner nonThunk/noReturnfalse and exact one-range18B bodyBF6FF5..BF7006; resolve exact at/containing units/default-effective flows/overrides/targets, allbytes owner and boundaries",
+    "excluded": [
+      "No code/data/text until separate Root review",
+      "No targetBF6FB9 or any neighbor/caller/body/prototype/data/pointer/stack query",
+      "No GPR repair/mutation, C++/tests/builds/probes/process action",
+      "No automatic instruction/successor or actualexecution/return/ABI/owner credit"
+    ]
+  },
+  "overall_goal_complete": false
+}
