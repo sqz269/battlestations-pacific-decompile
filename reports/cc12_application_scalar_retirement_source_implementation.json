@@ -1,0 +1,700 @@
+{
+  "packet": "cc12_application_scalar_retirement_source_implementation",
+  "address": "00737E00",
+  "status": "PASS_qualified_dormant_Source",
+  "Root_integration": "Pending independent Source/proof review and normal Root build",
+  "Source_name": {
+    "name": "retire_native_application_scalar_00737e00",
+    "kind": "Descriptive reconstruction hypothesis, not recovered Original symbol"
+  },
+  "interface": {
+    "return": "void* captured address",
+    "parameters": [
+      "void* actual_receiver",
+      "NativeApplicationPointerVectorStorage& actual_rows",
+      "const NativeApplicationPointerVectorAllocation& allocation",
+      "NativeApplicationSingletonBaseContext& context",
+      "const volatile std::uint8_t& actual_selector",
+      "void (*free_object_00bf65ac)(void*)"
+    ],
+    "default_provider": false
+  },
+  "frozen_Git": {
+    "status": "PASS",
+    "commit": "9de2a9991b4355c3c83b4d51eae782b219de1d93",
+    "trees": {
+      "": "6d3401989fe2e20d7b2a2e66cc730481ceba45da",
+      "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+      "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+    },
+    "inputs": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "git_blob": "66f2836056aae1c6e129be91a7b46f8d81b0ec86",
+        "bytes": 12440,
+        "sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "working_bytes": 12440,
+        "working_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "lf_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "git_blob": "5743ebaaa1fbe3521a662db57df2710cfecc29c4",
+        "bytes": 10396,
+        "sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "working_bytes": 10396,
+        "working_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "lf_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION.md",
+        "git_blob": "9bcbe40b99bec0547c12f6ccdc973d42b56f76c4",
+        "bytes": 6445,
+        "sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418",
+        "working_bytes": 6464,
+        "working_sha256": "1bbbb3aed7c8fa639fcc5bfef421a804d7cb3b543c3568bf5740ace7c929b904",
+        "lf_sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation.json",
+        "git_blob": "206576177a1c9bd8005da03439e3b770d9a09c9e",
+        "bytes": 29621,
+        "sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1",
+        "working_bytes": 30267,
+        "working_sha256": "1edce5ada80639df36b6baed83c5cb176a1bc6f2526fe360ca03d7a88cc80c19",
+        "lf_sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION_PRIMARY.md",
+        "git_blob": "e3aec5f920336cf7977989b889d04c17dc680696",
+        "bytes": 3331,
+        "sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e",
+        "working_bytes": 3331,
+        "working_sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e",
+        "lf_sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation_primary.json",
+        "git_blob": "fa5e03ceb5aab0e76fe947ee5fd958bc1df51751",
+        "bytes": 11734,
+        "sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b",
+        "working_bytes": 11734,
+        "working_sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b",
+        "lf_sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+        "git_blob": "09e676baad335d7db5c894fa3026d81dbf49671a",
+        "bytes": 5246,
+        "sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "working_bytes": 5246,
+        "working_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_readiness.json",
+        "git_blob": "61412a36ff96686d2e8e6072d536f9b7b7d1d69e",
+        "bytes": 11864,
+        "sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "working_bytes": 11864,
+        "working_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_STORAGE_PROVIDER_PRIMARY.md",
+        "git_blob": "9af4cf38085c4f6dc404af9650f5ccc2b8c82853",
+        "bytes": 2794,
+        "sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263",
+        "working_bytes": 2794,
+        "working_sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263",
+        "lf_sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_storage_provider_primary.json",
+        "git_blob": "f5224567af643c8df3dece0fcde349e151f5cfd7",
+        "bytes": 20252,
+        "sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b",
+        "working_bytes": 20252,
+        "working_sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b",
+        "lf_sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_TABLE_ENTRY_READINESS.md",
+        "git_blob": "9557b120f5ae3d01c610be5a78a987fff3aa6a6f",
+        "bytes": 4753,
+        "sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c",
+        "working_bytes": 4753,
+        "working_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c",
+        "lf_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c"
+      },
+      {
+        "path": "reports/cc12_application_scalar_table_entry_readiness.json",
+        "git_blob": "80dbd8d7eabd87ea7edd3e38539664e7f7877937",
+        "bytes": 11358,
+        "sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a",
+        "working_bytes": 11358,
+        "working_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a",
+        "lf_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "working_bytes": 4372,
+        "working_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "working_bytes": 13257,
+        "working_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "docs/SINGLETON_LIFETIME.md",
+        "git_blob": "fdc81ab12fda7d0f7a1651c208d901ef586156a7",
+        "bytes": 8640,
+        "sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f",
+        "working_bytes": 8640,
+        "working_sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f",
+        "lf_sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f"
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "git_blob": "d52f6a8e6dbbab41c89787606cb8ca23349f767b",
+        "bytes": 28284,
+        "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "working_bytes": 28284,
+        "working_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+      },
+      {
+        "path": "include/bsp/native_shader_binary_cache.hpp",
+        "git_blob": "c622171df4c13d649f850b11900921ec95ead010",
+        "bytes": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "working_bytes": 4300,
+        "working_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      {
+        "path": "include/bsp/native_shader_preload.hpp",
+        "git_blob": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+        "bytes": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "working_bytes": 3737,
+        "working_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_STORAGE_PROVIDER_READINESS.md",
+        "git_blob": "e2d2bff863597544f8778e0de28bc42c37c48763",
+        "bytes": 8012,
+        "sha256": "ac6971b781951c1420e5e9cbe193ba782c4ba1bc1f25e45baa9467a9fecc8230",
+        "working_bytes": 8043,
+        "working_sha256": "ba7f9ee58edb5fcadb2c08751577da0e9fcfca1b6246df3e65dbc3cb191730b5",
+        "lf_sha256": "ac6971b781951c1420e5e9cbe193ba782c4ba1bc1f25e45baa9467a9fecc8230"
+      },
+      {
+        "path": "reports/cc12_application_scalar_retirement_storage_provider_readiness.json",
+        "git_blob": "2d33a23ac687f3c9a95955b02cce052a77edab7a",
+        "bytes": 25941,
+        "sha256": "fa0db50c10ccfbe5a4dbf5cfdd84d0dbd58e9de2c9679f0ff3fe42ec5c909dc5",
+        "working_bytes": 26402,
+        "working_sha256": "2d17c91fd76fcbfc1a6d6e048ace45c10385499d7745f77edc7638cad874d9ff",
+        "lf_sha256": "fa0db50c10ccfbe5a4dbf5cfdd84d0dbd58e9de2c9679f0ff3fe42ec5c909dc5"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_STORAGE_PROVIDER_READINESS_PRIMARY.md",
+        "git_blob": "a7b7bb0910e719450b1ac6da83d7507ff6965314",
+        "bytes": 2905,
+        "sha256": "09588209820b39839bf1314fbf25c4a878eeb2746f1a65b7e0a9aed31a468148",
+        "working_bytes": 2905,
+        "working_sha256": "09588209820b39839bf1314fbf25c4a878eeb2746f1a65b7e0a9aed31a468148",
+        "lf_sha256": "09588209820b39839bf1314fbf25c4a878eeb2746f1a65b7e0a9aed31a468148"
+      },
+      {
+        "path": "reports/cc12_application_scalar_retirement_storage_provider_readiness_primary.json",
+        "git_blob": "f5245af87e78565cf5dc751b17a60442d0cd447b",
+        "bytes": 17907,
+        "sha256": "6adb08c73d1e01555ed27a878b5220a72dea7a4cf7f5f99390c5311167b717ce",
+        "working_bytes": 17907,
+        "working_sha256": "6adb08c73d1e01555ed27a878b5220a72dea7a4cf7f5f99390c5311167b717ce",
+        "lf_sha256": "6adb08c73d1e01555ed27a878b5220a72dea7a4cf7f5f99390c5311167b717ce"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "git_blob": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "working_bytes": 1820,
+        "working_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "working_bytes": 20149,
+        "working_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "lf_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "git_blob": "e1ed7c82d212343521dabfa68632fd8318797313",
+        "bytes": 202544,
+        "sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "working_bytes": 202544,
+        "working_sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392",
+        "lf_sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      }
+    ],
+    "boundary": "25 finite immediate actual Git inputs only; no Source census or compiler/archive dependency closure."
+  },
+  "normal_Source_schedule": [
+    "retain actual A",
+    "genuine parent once with same A/rows/allocation/context",
+    "one late volatile uint8 selector read after successful parent return",
+    "bit0 only",
+    "selected explicitly supplied BF65AC(A)",
+    "return retained address without dereference"
+  ],
+  "retained_Native": {
+    "entry": {
+      "address": "00737E00",
+      "bytes": 30,
+      "hex": "568bf1e898fbfffff644240801740956e897e74b0083c4048bc65ec20400",
+      "sha256": "df7c5e8e769109da1b0c6187ead9fe97cd0037bf3b9d6eaaaf61e67d0c3fef17",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": [
+        {
+          "address": "00737E00",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E01",
+          "bytes": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00737E03",
+          "bytes": 5,
+          "hex": "e898fbffff",
+          "text": "call 0x7379a0"
+        },
+        {
+          "address": "00737E08",
+          "bytes": 5,
+          "hex": "f644240801",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00737E0D",
+          "bytes": 2,
+          "hex": "7409",
+          "text": "je 0x737e18"
+        },
+        {
+          "address": "00737E0F",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E10",
+          "bytes": 5,
+          "hex": "e897e74b00",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00737E15",
+          "bytes": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00737E18",
+          "bytes": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00737E1A",
+          "bytes": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00737E1B",
+          "bytes": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      ],
+      "ordinary_child": "007379A0"
+    },
+    "source": "reports/cc12_application_scalar_table_entry_readiness.json",
+    "qualification_PRIMARY": "docs/CC12_APPLICATION_SCALAR_RETIREMENT_STORAGE_PROVIDER_READINESS_PRIMARY.md",
+    "historical_PE_equality_not_refreshed": true
+  },
+  "Original_operand_qualification": {
+    "physical_selector": "TEST BYTE SS:[current post-parent ESP+8],1.",
+    "physical_free_return": "PUSH current ESI before BF65AC; after call MOV EAX,current ESI; saved ESI restored; RET4.",
+    "entry_receiver_and_entryESP_plus4": "Conditional only on actual normal callee stack balance and ESI preservation across7379A0/BF65AC.",
+    "callee_stack_ESI_preservation_authenticated": false,
+    "Source_model": "Explicit captured A value and actual late byte reference under accepted dormant C++ model; no Original ECX/stack/RET4/table/FH3 ABI or invocation identity."
+  },
+  "required_actual_domains": [
+    "Actual stable borrowed A with valid1Ch preimages/access domains and live aligned uint32 at+0; no invented DWORD at+4.",
+    "Actual already-live0Ch rows exactly A+8; same existing typed row/allocation/context objects. Intentional containment and all inherited disjoint bindings remain.",
+    "Existing signed/live735F30 resize0 may preserve wrapping/reserve/growth routes for negative count/capacity. Parent reloads current data and calls BF6989 on that data, never A.",
+    "Actual shared GameNativeStringProcess/GameSingletonHost manager/Application cells, manager/vector/section/depth, element-reference and provider lifetimes remain valid through normal or C++ cleanup parent.",
+    "M1/M2 and A/current P may differ; null P does not skip unregister. Guard remains armed through normal Leave; an escape may decrement/Leave again.",
+    "Actual selector byte location is live/readable through its one post-parent read. No native-stack mapping, cached early value, provider/cell acquisition or lifetime extension is supplied.",
+    "Selected free requires captured A to be start of a compatible still-live allocation from the explicitly supplied genuine host CRT family, not stack/interior/vector-data/foreign/already-freed storage.",
+    "The matching raw malloc allocator service alone does not create Application/row field objects or ownership. After selected outer free, no A/row access is permitted by this wrapper; captured return address implies no live ownership.",
+    "Parent may leave data field dangling after array free if provider does not mutate it. Remaining aliases and retirement quiescence stay external, unproved active-use obligations."
+  ],
+  "provider": {
+    "type": "void (*)(void*)",
+    "existing_genuine_candidate": "singleton_lifetime_free(void*) noexcept",
+    "Source": "src/singleton_lifetime.cpp",
+    "body": "actual std::free(pointer)",
+    "scope": "Explicit matching host CRT service boundary only; caller must supply it. No default std::free binding or Original static CRT heap/exception identity.",
+    "family_separation": "BF6989 array data free remains in parent; selected BF65AC outer free operates on captured A. No substitution or repeat data free."
+  },
+  "failure_boundaries": [
+    "Parent escape prevents selector/free/return; qualified parent C++ cleanup remains inherited.",
+    "No scalar local guard, catch, reset, compensation, retry or double parent cleanup.",
+    "The explicit callback type permits ordinary C++ propagation; supplied genuine singleton_lifetime_free itself is noexcept host CRT service. No safe cleanup or rollback is promised.",
+    "Hardware/foreign/Original FH3 and invalid actual domains are outside this qualified C++ model."
+  ],
+  "inherited_parent_cleanup": "C++ resize/free escape invokes BEA990 with same A/context; cleanup C++ escape terminates under unchanged E06D7363 policy. Normal child starts after parent cleanup disarm. Scalar adds no local cleanup or compensation.",
+  "parent_Original_frame_qualification": "Action invocation/frame remains conditional. Same-SS address equality requires actionEBP=storeESP+18h=entryESP plus preserved/reestablished A spill; ordinary+20h equation does not apply.",
+  "preservation": {
+    "raw_old_Source_prefix": {
+      "include/bsp/native_render_service_base.hpp": {
+        "bytes": 12440,
+        "sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "append_bytes": 1204
+      },
+      "src/native_render_service_base.cpp": {
+        "bytes": 10396,
+        "sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "append_bytes": 695
+      }
+    },
+    "no_existing_API_CMake_ledger_or_GPR_change": true
+  },
+  "build": {
+    "status": "PASS",
+    "exit_code": 0,
+    "elapsed_seconds": 24.919,
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\scripts\\build.ps1",
+      "-Configuration",
+      "Release"
+    ],
+    "configuration": "Release",
+    "architecture": "Win32",
+    "cached_tree": "build/win32",
+    "registered_passed_tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "registered_test_count": 3,
+    "log": {
+      "path": "build.log",
+      "bytes": 4242,
+      "sha256": "4dd2b969b03248e8495a2a4bb70e1b4b1594deffae633499e2dc972e5de43195"
+    },
+    "before_sha256": {
+      "include/bsp/native_render_service_base.hpp": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
+      "src/native_render_service_base.cpp": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+      "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "after_sha256": {
+      "include/bsp/native_render_service_base.hpp": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
+      "src/native_render_service_base.cpp": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+      "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "warning_lines": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "prepared_seed": {
+      "status": "PASS",
+      "kind": "Existing accepted physical local seed fixture, not Git or newly generated Native input",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\local\\seed_reference.hpp",
+      "retained": "local_inputs/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "producer": "prepare.py copied existing physical bytes; no seed generation or Native query",
+      "inherited_COFF_reference": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\local\\cc12_application_vector_retirement_source_implementation\\coff_review.py",
+        "retained": "inherited_coff_review.py",
+        "bytes": 3976,
+        "sha256": "4b9c9f876f2e9367125d43e1c6a72d0fd5b9e968f8f29783a8fabe6e4b6843cd",
+        "use": "Retained parser reference only; adapted scalar COFF review is separate and no old archive is opened."
+      }
+    },
+    "boundary": "Existing compilation/fixture/tool checks only. No Native query, Original/GPR/PE/game/OS/audio action, ABI or runtime acceptance."
+  },
+  "positive_COFF": {
+    "status": "PASS",
+    "input_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\build\\win32\\bsp_core.dir\\Release\\native_render_service_base.obj",
+    "retained": "artifacts/native_render_service_base.obj",
+    "bytes": 20074,
+    "sha256": "35591524fe54468e8fd128b1f760ca77135538f3711523cce61835b800d1e9cc",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "scalar": {
+      "symbol": {
+        "index": 91,
+        "name": "?retire_native_application_scalar_00737e00@bsp@@YAPAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@ADEP6AX0@Z@Z",
+        "value": 0,
+        "section": 32,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0
+      },
+      "section": {
+        "name": ".text$mn",
+        "raw_size": 147,
+        "raw_pointer": 6066,
+        "relocation_pointer": 6213,
+        "relocation_count": 4,
+        "characteristics": 1615859744
+      },
+      "raw_section_bytes": 147,
+      "raw_section_hex": "558bec6aff680000000064a1000000005083ec0c535657a10000000033c5508d45f464a3000000008b45088b5d148945e8895decc645f0018b7d108b750c576a0056c745fc00000000e8000000008b068b4f0450ffd1538b5d0853c645f000e8000000008b4d1883c418c745fcffffffff8a09f6c101740753ff551c83c4048bc38b4df464890d00000000595f5e5b8be55dc3",
+      "raw_section_sha256": "bee9d619325c8ef1d2f5b4bad3f115c79a11bf8503129f03691dd25691439c31",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol_index": 135,
+          "decorated_target": "__ehhandler$?retire_native_application_scalar_00737e00@bsp@@YAPAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@ADEP6AX0@Z@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol_index": 189,
+          "decorated_target": "___security_cookie"
+        },
+        {
+          "offset": 74,
+          "type": 20,
+          "symbol_index": 104,
+          "decorated_target": "?resize_native_application_pointer_vector_00735f30@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z"
+        },
+        {
+          "offset": 96,
+          "type": 20,
+          "symbol_index": 89,
+          "decorated_target": "?retire_native_application_base_00bea990@bsp@@YAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+        }
+      ]
+    },
+    "direct_parent_relocation_present": false,
+    "parent_defined_symbol": {
+      "index": 90,
+      "name": "?retire_native_application_007379a0@bsp@@YAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@@Z",
+      "value": 0,
+      "section": 28,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0
+    },
+    "parser_reference": {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_ordinary_retirement_source\\local\\cc12_application_vector_retirement_source_implementation\\coff_review.py",
+      "retained": "inherited_coff_review.py",
+      "bytes": 3976,
+      "sha256": "4b9c9f876f2e9367125d43e1c6a72d0fd5b9e968f8f29783a8fabe6e4b6843cd",
+      "use": "Retained parser reference only; adapted scalar COFF review is separate and no old archive is opened."
+    },
+    "boundary": "Actual compiler section extent and decorated symbol/relocation positives only. A direct parent relocation is reported only if present; Source direct-call semantics do not require compiler preservation of that boundary. No Original instruction count, whole-object identity, Original inlining/ABI or runtime equivalence."
+  },
+  "compiler_operand_review": {
+    "status": "PASS",
+    "late_tail_offset": 113,
+    "late_tail_hex": "8a09f6c101740753ff551c83c4048bc3",
+    "selected_instruction_fields": [
+      {
+        "offset": 113,
+        "hex": "8a09",
+        "text": "MOV CL,[ECX]: one late byte value read"
+      },
+      {
+        "offset": 115,
+        "hex": "f6c101",
+        "text": "TEST CL,1: bit0 only"
+      },
+      {
+        "offset": 118,
+        "hex": "7407",
+        "text": "JE skips selected free to MOV EAX,EBX"
+      },
+      {
+        "offset": 120,
+        "hex": "53",
+        "text": "PUSH EBX: retained Source receiver argument"
+      },
+      {
+        "offset": 121,
+        "hex": "ff551c",
+        "text": "CALL DWORD[EBP+1Ch]: explicitly supplied sixth Source parameter"
+      },
+      {
+        "offset": 124,
+        "hex": "83c404",
+        "text": "ADD ESP,4: callback argument cleanup"
+      },
+      {
+        "offset": 127,
+        "hex": "8bc3",
+        "text": "MOV EAX,EBX: retained Source address return"
+      }
+    ],
+    "late_read_after_last_genuine_parent_child_call": true,
+    "parent_defined_symbol": {
+      "index": 90,
+      "name": "?retire_native_application_007379a0@bsp@@YAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@@Z",
+      "value": 0,
+      "section": 28,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0
+    },
+    "direct_parent_relocation_present": false,
+    "compiler_boundary": "Compiler incorporated the accepted parent schedule into scalar section. Positive genuine resize/BEA990 relocations and late-byte/callback/return fields are retained; no direct parent machine-call relocation or Original inlining/ABI equivalence is claimed."
+  },
+  "rejected_expectation": {
+    "status": "REJECTED_NO_ACCEPTANCE",
+    "path": "superseded_direct_parent_relocation_expectation/",
+    "reason": "Initial helper incorrectly required direct parent relocation. Preserved rejected body/receipt; actual compiler parent incorporation reviewed instead. No Source/compiler change or rebuild."
+  },
+  "private_directory": "local/cc12_application_scalar_retirement_source_implementation/",
+  "private_references": [
+    {
+      "path": "prepare.py",
+      "bytes": 6735,
+      "sha256": "86fcfc3d297d4a9c8c8368d442c7f3a6c13797f0ff1d780f6a599577693e0bb5"
+    },
+    {
+      "path": "build_once.py",
+      "bytes": 2565,
+      "sha256": "f4c4494fb29c71c28709d7ba5da48d672d8403ebec98136808fe3cbdc71625d8"
+    },
+    {
+      "path": "coff_review.py",
+      "bytes": 3823,
+      "sha256": "1f26f932e751cc7d61c9823b413540c30667bd7394f3b65d060ab7edb0e9f70b"
+    },
+    {
+      "path": "guard.py",
+      "bytes": 9935,
+      "sha256": "d13de2b624c854bcec5ec55582c47133305bef30277f4da623278d2e4ee81576"
+    },
+    {
+      "path": "write_report.py",
+      "bytes": 18163,
+      "sha256": "264af44bc991d8858da3d8642157fbea158667040bf9fca5a7bc07cfa2b70017"
+    },
+    {
+      "path": "seal.py",
+      "bytes": 11356,
+      "sha256": "f7c8c49e9fadb7c07ecdda13d522865b473fc0218b51cbeaca2ba5f035042e3d"
+    },
+    {
+      "path": "inherited_coff_review.py",
+      "bytes": 3976,
+      "sha256": "4b9c9f876f2e9367125d43e1c6a72d0fd5b9e968f8f29783a8fabe6e4b6843cd"
+    },
+    {
+      "path": "baseline.json",
+      "bytes": 12059,
+      "sha256": "551b692401ee8cb931170980b88d04e6ae53f2cc8b4fb423c460fd592d8a1d58"
+    },
+    {
+      "path": "local_input_receipt.json",
+      "bytes": 990,
+      "sha256": "94480db1ed70709a351a1e0709d28f8fa250c95b8ddde071d47436ad026a639e"
+    },
+    {
+      "path": "local_inputs/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "append_receipt.json",
+      "bytes": 268,
+      "sha256": "b93d404808f760ed6bc5214add575a5bfdb5bdba20bbebb833330d4f784efc6d"
+    },
+    {
+      "path": "build_attempt.json",
+      "bytes": 658,
+      "sha256": "9762b941006fcd3bf7a47c33a1d1274e73d94250c8edce31f404f4281186563c"
+    },
+    {
+      "path": "build.log",
+      "bytes": 4242,
+      "sha256": "4dd2b969b03248e8495a2a4bb70e1b4b1594deffae633499e2dc972e5de43195"
+    },
+    {
+      "path": "build_receipt.json",
+      "bytes": 3239,
+      "sha256": "fdd5a636326c62654e1e62088dc6e4a83aa0f1715661b170535a7890deb0c6de"
+    },
+    {
+      "path": "coff_receipt.json",
+      "bytes": 3655,
+      "sha256": "8559216d3fca953b2779067be79205463b79b9bf6edf71ec1217a5aa355319bc"
+    },
+    {
+      "path": "artifacts/native_render_service_base.obj",
+      "bytes": 20074,
+      "sha256": "35591524fe54468e8fd128b1f760ca77135538f3711523cce61835b800d1e9cc"
+    },
+    {
+      "path": "semantic_review.json",
+      "bytes": 1639,
+      "sha256": "afc6a0707d6a8022097d85d33e39470d550754aec68e636fd663d5a759402642"
+    },
+    {
+      "path": "compiler_operand_review.json",
+      "bytes": 1707,
+      "sha256": "01fb9b4cf2ac07364b0b259b8cd3a69fa0b75a12b21382e66915394ba3140b3f"
+    },
+    {
+      "path": "source.diff",
+      "bytes": 2602,
+      "sha256": "94ce86792776ad4a4175f2925b153e332a606a91057c19977fb2d5248f2a3eda"
+    },
+    {
+      "path": "superseded_direct_parent_relocation_expectation/coff_review.py",
+      "bytes": 3358,
+      "sha256": "29e2978658001ef2999f268423711f4109a39772256531676c5034e2076ea920"
+    },
+    {
+      "path": "superseded_direct_parent_relocation_expectation/rejection.json",
+      "bytes": 442,
+      "sha256": "9f253ed30a44de8ddc486c92cddf61b45cc5eda48cd292f60305c09615afb0ce"
+    }
+  ],
+  "delivery": "Exactly four owned outputs; actual frozen/staged/final Git and raw stage-to-final equality, closed finite original and physically distinct copied ZIPs. Guard CLI takes ZIP, manifest SHA, fresh receipt path and performs one ZIP file read/one helper execution/one exclusive receipt write.",
+  "limits": "Dormant Source/build/fixture/compiler evidence only. No active caller, actual allocation/selector/owner/lifetime/quiescence acquisition, callable table, Native/GPR/PE query, Original/game/OS/audio run, new test/probe or Original ABI/runtime credit."
+}

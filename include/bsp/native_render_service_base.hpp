@@ -199,3 +199,27 @@ void retire_native_application_007379a0(
     NativeApplicationSingletonBaseContext& context);
 
 } // namespace bsp
+
+#include <cstdint>
+
+namespace bsp {
+
+// Dormant descriptive reconstruction of 00737E00 (30 bytes, 11 instructions).
+// Qualified C++ captured-receiver model: genuine parent once, then one actual
+// late volatile selector byte read; bit0 selects the explicit BF65AC provider.
+// All accepted parent A+8 row/context/allocation domains and C++ cleanup remain.
+// Selector must remain live through its post-parent read. Selected outer free
+// requires actual A at a compatible live allocation START in the supplied host
+// CRT family; BF6989 data free is distinct. Return is an address, not ownership.
+// Original TEST uses current SS:[post-parent ESP+8] and MOV EAX uses current ESI;
+// entry-frame/captured-A interpretations require callee balance/preservation.
+// No default heap, owner, overlay, table, activation or Original ABI is supplied.
+void* retire_native_application_scalar_00737e00(
+    void* actual_receiver,
+    NativeApplicationPointerVectorStorage& actual_rows,
+    const NativeApplicationPointerVectorAllocation& allocation,
+    NativeApplicationSingletonBaseContext& context,
+    const volatile std::uint8_t& actual_selector,
+    void (*free_object_00bf65ac)(void*));
+
+} // namespace bsp

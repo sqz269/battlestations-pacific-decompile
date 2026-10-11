@@ -258,3 +258,23 @@ void retire_native_application_007379a0(
 }
 
 } // namespace bsp
+
+namespace bsp {
+
+void* retire_native_application_scalar_00737e00(
+    void* actual_receiver,
+    NativeApplicationPointerVectorStorage& actual_rows,
+    const NativeApplicationPointerVectorAllocation& allocation,
+    NativeApplicationSingletonBaseContext& context,
+    const volatile std::uint8_t& actual_selector,
+    void (*free_object_00bf65ac)(void*)) {
+    void* const captured_receiver = actual_receiver;
+    retire_native_application_007379a0(captured_receiver, actual_rows, allocation, context);
+    const std::uint8_t selector = actual_selector;
+    if ((selector & 1u) != 0) {
+        free_object_00bf65ac(captured_receiver);
+    }
+    return captured_receiver;
+}
+
+} // namespace bsp
