@@ -1,0 +1,13 @@
+# Dormant mesh prepared record: primary acceptance
+
+The record precreates admission and callback before Native construction, keeps its inline companion empty, and closes construction/publication in one noexcept method. The supplied genuine slot, same canonical registry and domain remain explicit caller obligations; extent/profile checks do not authenticate allocation.
+
+The existing companion terminal physically returns the slot before the callback removes the exact saved key. The callback neither reads returned bytes nor disposes the still-active record. The caller must exclude reuse through entry removal and prove terminal/callback/borrower quiescence before explicit disposal.
+
+Root reviewed the complete Source diff and verified the immutable pair against retained provisional preimages. Its physically copied ZIP/helper replay passed, with 4235 actual frozen and staged Git rows, ten trees per snapshot and the complete 4228-path worker Source closure. The copied proof recomputes compiler selection, positive providers and retained physical code/data/VT/link evidence; build receipts are separate execution evidence.
+
+Root retained the unchanged saved-renderer baseline Core1990/App80 before merge, then ran fresh normal MSVC Win32 scripts/build.ps1 and all three existing checks. All 174357 old executable sections remain exact bytes plus symbolic relocations. The 38 added sections total 2304 bytes, all in native_mesh_owner.obj. Full physical indices cover all245 selected TUs in both phases. Whole-object drift243 including17 App is distinct from old code equality. Selected noncode has28 added/52 changed/0 removed, zero added vtables. Complete new decodes and finite positive function-definition cross-worktree correspondence are retained; same-worktree comparison uses exact names. The one private-destructor EH metadata correspondence is separately validated through the paired destructor and exact data bytes/relocations, with no undefined symbol normalization.
+
+All record references remain in the owning module; the game map contains no record symbol and linked .text remains exact. Other image/data drift is disclosed; whole-image equality is not claimed. Source3356 mesh epoch pins all3356 inputs plus four current artifacts.
+
+This is dormant Source/build/static evidence. No new test, probe, Native/GPR query/write, helper fixture/runtime, original ABI/FH3, game startup or gameplay validation occurred. Raw-key caller, genuine allocation provenance, reuse exclusion, quiescence, material/section/stream/full-resource custody and persistent Application custodian remain incomplete.
