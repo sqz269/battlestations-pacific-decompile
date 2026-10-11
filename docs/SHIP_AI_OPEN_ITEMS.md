@@ -16227,3 +16227,140 @@ OFF is `b89b3d537` (tree build). ON is the same commit exported with the switch 
     mission fails at 1574.51 s.
   - With f17 as written, DM1, parked 45 m from the Enterprise, sinks it at 1553.34 s while firing at Shima4 about
     2 km out. That friendly-fire case is gunnery35's (lead, 2026-10-11). The re-plan waits for it.
+
+### 208.3 JM08's Gyoraitei: the destination follows the target; the half throttle is the open question (cc9-ships42, 2026-10-11; lead item 2, a read plus one traced run)
+
+Run: JM08 + `cc9-lua47\local\l47_j8_g9.txt`, 10000 frames, `-Traj`, on `564410718` (`local\s42_jt_j8g9s.log`, CSVs
+`local\s42_jt_j8g9s.*.csv`; table by `local\s42_pursuit.py`).
+
+- **The destination follows the target, in both the image and the host.**
+  - The boats are sent by the helm `attack` form. The command descriptor carries the target object.
+  - In the image, `009F1420` re-resolves the goal every 2 s (`brain+0B54h`/`+0B58h`). `009DBCC0` carries the latched
+    point out through the object's matrix (`object+0CCh`), so `brain+0B2Ch` moves with the target (SHIP_AI_GOAL_VECTOR
+    steps 6-10).
+  - The host does the same: `Gyoraitei #Y4`'s `d32c` tracks its distance to `USTroopTransport 04` (8495 m at 119.55 s,
+    1308 m at 404.72 s), and the boat's CSV heading stays within about 1 degree of the bearing to it.
+  - So `+127Ch` (207.2) is the distance to the moving target, and 161.4's 1486 m and the goal ranges are one quantity.
+- **The standoff is inside the gate.** In `g34_t2off_j8.log`, every boat ends its standoff choice (`009E6E80`) at
+  669.8 m, with clearance `+12B4h` at 919.8 m. So `+7Dh` would pass at about 970 m, and the boats would close to about
+  670 m. They never get there.
+- **What stops them is speed.** From about 4500 m (254 s), Y4's throttle falls from 1.0 to 0.5 and its speed from 23.84
+  to 11.86 m/s. It holds that until death, still pointing at the target (heading error under 1 degree):
+  - Y3 dies at 369.68 s, Y2 at 395.83 s, Y4 at 399.73 s (`Missouri`, 844 m off) and Y1 at 444.42 s.
+  - Most are killed by `Stephen Potter` at 637-1059 m.
+- **Where the 0.5 comes from (host).**
+  - `ship_ai_approach_limit_throttle_009e6a90` seeds the command from `|unit heading - nested+120Ch|`: 1.0 below 30
+    degrees, 0.5 from 70 degrees (`00CEC724`, `00CE3988`, `00CE3800`). No limit arm gives 0.5 here.
+  - The step log's `heading=` field is `blk.desired_heading` (brain `+1E0h` = `sub+1214h` = `nested+120Ch`, stored at
+    `009F335C`). It swings from 0.10 rad at step 4200 to 2.55 rad by step 5800, while the steering target `+324h` stays
+    at -0.07 rad.
+  - So the approach's commanded heading points about 146 degrees off the course the boat actually steers. The seed then
+    halves the throttle, and nothing steers the boat to that heading.
+- **The question for the image.** In `009ED6B0` the image copies `blk+1D8h` (that same desired heading) into `+324h`
+  whenever the mode is not Navigate (`009ED938`/`009ED947`; `src/ship_ai_states.cpp:185`). The attackmove step writes
+  mode 3 (`009F3375`).
+  - If the image steers mode 3 by that heading, its boat would turn to the approach heading. The throttle seed would
+    then see a small error and run at full.
+  - In the host, a later navigation-arm store wins (`desired 2.55` against `target 6.21` in the same sample).
+  - Unread: which of the two `+324h` stores comes last for mode 3 in the image (`009ED947` against the
+    `009EE5xx` navigation arm), and what `nested+120Ch` is aiming at (`009E76D0` slot choice). Binding waits on that
+    read. A wrong guess would change every attackmove ship.
+
+### 208.4 Mode-3 steering: the host's store order is the image's; the boats' half throttle is faithful (cc9-ships42, 2026-10-11; a read)
+
+The whole `009ED6B0..009EF228` listing (`local\s42_9ed6b0.asm`, 1629 lines from the disk bytes), filtered for `+324h`,
+`+1C4h` and `+1D8h`.
+
+- **The direct arm.**
+  - `009ED7D8..009ED7FC` reads the mode `blk+1C4h`, latches `mode == 3` into BL (`009ED7E9`, saved at `[ESP+4Fh]`), and
+    skips the direct arm only for mode 2, Navigate (`JE 009ED9FF`).
+  - So modes 0, 1 and 3 run `009ED802..009ED9F9`. For mode 3, `+324h` = `blk+1D8h`, the desired heading, at
+    `009ED947`/`009ED9F9`.
+- **The navigation arm.** After the `+3F5h` early-out (`009ED9FF`) and the `+3A5h`/`+3A6h` block, `009EE580` tests
+  `mode == 2`, or BL (mode 3) at `009EE59D`. Only modes 0 and 1 leave for `009EF206`.
+  - **Mode 3 therefore runs the path arm as well.** Its `+324h` store at `009EE818` (the waypoint bearing, `00414EB0`)
+    runs only when `blk+32Ch > 0.1` (`00D7A3A0`, `009EE7FB`) and the path point's steer byte `[ESP+99h]` is set
+    (`009EE809`).
+  - Otherwise the direct arm's copy of the desired heading stands. The later stores at `009EE9D2` adjust whichever
+    value is there.
+  - The host has the same order: `src/ship_ai_states.cpp:185` (`009ED947`), then `src/ship_ai_navigation.cpp:223`
+    under `kShipAiNavBearingDeadzone` and `steer_enabled`. That matches the step log, where `heading_target` is the path
+    bearing and `desired_heading` is not.
+- **The commanded heading.** In `009E5E90`, the add arm stores the bearing itself only when `-0.1 < bearing - heading <
+  150 deg` (`009E5F1F..009E5F4C`). Otherwise it stores `heading + 150 deg` (`009E6035..009E6050`, `00438AA0` with
+  `00D1FED0` = 2.618). The subtract arm (`009E5FD3`/`009E600F`) is the mirror image.
+  `ship_ai_approach_commanded_heading_009e5e90` matches this.
+  - Y4's `desired_heading` of 2.55 rad is exactly its heading (-0.04 rad) + 2.618, the add arm's "turn the long way"
+    store. The ring's chosen bearing lies more than 0.1 rad on the other side of the committed arm.
+- **Verdict: no host gap in the steering or the commanded heading.** With the same ring choice the image also seeds the
+  boat at half throttle, because the error is at least 70 degrees, and steers it by the path. The Gyoraitei's slow
+  approach is image behaviour for these inputs. What is left to compare is the ring scan's inputs (`009E76D0`'s slot
+  scores, which pick the bearing on the far side), not its control flow. No binding, so no pair.
+- **The `+A8h` records** (206 item 3, lead's note). The assignment erase `006C7540` (`006C7540..006C7670`) neither
+  registers nor unregisters an observer (its only calls are the lock pair and the CRT range checks). So the `+A8h`
+  records most likely have no Kill observer of their own. They leave only through `006C7680` (a live retire) and
+  `006CC9F0` (`006CCD5A`).
+
+### 208.5 The `00980E50` baseline question is already settled: the image re-notifies every pass (cc9-ships42, 2026-10-11; a read)
+
+- LUA_BINDING_MISSION "Why LOMP06's seaplane listener was silent" (packet `cc9_recon_level_step_check`) read the image:
+  - `008073C0` resets every record at each pass start (`00807490` -> `00805BE0`), notifying `old -> 0`.
+  - `00805AF0` then notifies `0 -> new` when the pass publishes again (`00805B98..00805BD8`).
+  - A forced record keeps its level and does not cycle.
+- So a listener with `oldLevel {0,1} -> newLevel {2}` fires on the first pass after its registration for every
+  non-forced record identified at that pass, whatever happened before.
+- The host binds that: `kReconListenerResetCycleBound` is ON (`include/bsp/game_hosts_lua.hpp:180`), and the LOMP06 and
+  JM06 pairs back it. `dispatch_recon_listeners_00980e50` emits the `0 -> 2` pair each pass.
+- **For USNOS:** the "baseline starts at 0" reading and the "real transition" reading give the same answer, because
+  the image itself cycles through 0 on every pass. Both listeners register on one frame (208.2). Shimotsuke and
+  ToSpawnShima are both Allied-identified on the next pass (857.91 s), so both fire there. **No host gap, nothing to
+  bind.** The double sighting is image behaviour for this recon state.
+- **What could still stagger them.** ToSpawnShima would have to be unidentified on that first pass and identified at
+  least a fade later. That depends on which Allied sensor identifies each of them at 7.6-12 km (Portland1, at 7627 m
+  from Shimotsuke and 11919 m from ToSpawnShima, is the nearest surface unit). The pass's per-sensor ranges are not
+  traced here. Unless a sensor that sees only Shimotsuke can be placed, primary 3 is not recoverable by routing.
+
+### 208.6 The live retire: `kLandTaskRetireQueueEraseBound`, committed OFF (cc9-ships42, 2026-10-11; 206 item 3)
+
+- **Reachable now.** On current main, USNOS f12 retires seven Enterprise land tasks through `009B34D0` at
+  1401.14-1401.84 s (`local\s42_cpoff_osf12.log`), right after the `28000 order Enterprise <slot> 2` lines. The
+  squadrons are `Enterprise_sqn03`, `sqn04` and `sqn05`; the unsuffixed `sqn04` and `sqn05` are their leaders. ESMP08 p3
+  logs two retreat installs.
+- **The image** (`009B3F50` read in 204; `006C8800`/`006C7680` here):
+  - The destructor calls `006C8800(plane+9D4h)` only for the task's plane that is its squadron's flight leader
+    (`007B8AD0` at `009B3F9E`).
+  - `006C8800` walks the `00E19948` block list and calls `006C7680(block, squadron)`.
+  - Only at a block whose queue holds the squadron (`006C76B6` find, else skip), `006C7680`:
+    - erases that queue record with `006BF7F0` (the last record moved into its place);
+    - erases every `+A8h` record whose plane's `+9D4h` is the squadron, in order (`006C7540`);
+    - for each slot (`block+4Ch`, 58h stride) whose `+28h` is the squadron: `+0Ch = +8h` when the state is 2, then
+      state 3, timer 0, or `00CE3850` (5.0) with `+34h` cleared when `+34h` is set, then `006BF150`.
+- **The binding** (`src/game_hosts_units.cpp`, `land_task_retire_006c8800`) runs at the host's two live-retire sites:
+  the retreat install (before it clears the land task) and `009B34D0`'s invalid-command arm.
+  - **LABELLED:** `006BF150`'s slot publication is not carried. Squadron membership stands in for the record plane's
+    `+9D4h`.
+  - OFF logs the `land task retire:` line ("kept, unbound") and changes nothing. Census: `summary land task retire queue
+    erase`.
+
+**Predictions (OFF -> ON), written before the pairs.**
+- **USNOS f12, 32000 frames:** two leader calls at 1401.79/1401.84 s (`sqn05`, `sqn04`). If the Enterprise deck queues
+  them at that moment, the records are erased and the Enterprise's landing timing moves after 1401 s (exit 3).
+  Otherwise the census shows calls with no erase (exit 0/1).
+- **ESMP08 p3 (72000):** the two retreat installs erase only if a retreating leader's squadron is queued. Expect
+  identity or late landing-timing moves.
+- **Flip rule:** ON on a mechanism match: every erase follows a leader's live retire, and nothing else moves first.
+
+#### 208.6.1 Pairs and the flip (cc9-ships42, 2026-10-11)
+
+OFF is `7107b671b` (tree build). ON is the same commit exported with the switch true (`local\s42_lr`). Logs are
+`local\s42_r{off,on}_<row>.log`. The smoke ran clean (exit 0, `leader_calls=0`).
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| USNOS f12, 32000 | 1 | `leader_calls=1`: `Enterprise_sqn05` (`009B34D0` invalid, 1401.79 s) has a queue record at the Enterprise deck, and ON erases it. The deck ends `queue 1 -> 0`, with its passes 199 -> 5. Death rows (255) and unit table identical. The run fails at 1510.10 s on both sides. `sqn04`'s leader retire found no queued record |
+| ESMP08 p3, 72000 | 1 | `leader_calls=0`: neither retreat install retires a squadron leader's land task. It completes at 2777.98 s both ways, 582 deaths. The exec guard logged its `sus_prog.exe` refusal |
+
+- **Mechanism.** The one erase follows a leader's live retire, it is the record the destructor's `006C7680` would
+  take, and nothing else moves.
+- **Verdict: ON.**
+- **Not exercised by these rows:** the `+A8h` erase (0 records) and the slot-state arm (0 slots).

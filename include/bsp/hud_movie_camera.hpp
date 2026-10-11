@@ -45,7 +45,7 @@ inline constexpr std::size_t kMovieNoParent = ~std::size_t{0};
 // tracks, whose 0078E630 fires and deletes a triggered event. `gamecamera` and
 // `fpscamera` stay unsupported (they need 0079CBD0's game cameras). OFF: both
 // keys are counted as unsupported, as before.
-inline constexpr bool kMovieKeyframeModifierBound = false;
+inline constexpr bool kMovieKeyframeModifierBound = true;   // ON: SQUADRON_LAND_TASK 5fj.1
 
 // 00799B00, 104h bytes. Field comments name the image offset.
 struct MovieKeyframe {
