@@ -1,0 +1,857 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_canonical_unlock_source_readiness_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "3e89468f82637c87fdb25491fd505ad6eede5701",
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_onexit_canonical_unlock_source_readiness_primary",
+  "artifact_pins": {
+    "Root_actual_review.py": {
+      "bytes": 10020,
+      "sha256": "90995a8f0ff468a4b57e40da7512184a31789362959cb7f4d6f38571bffb0427"
+    },
+    "Root_actual_review.json": {
+      "bytes": 9673,
+      "sha256": "2017698adf2f64089597ddbbc37c64910a421f2a8d777f5884735e82432a3734"
+    },
+    "Root_actual_review.stdout": {
+      "bytes": 172,
+      "sha256": "a99d7938f1935d6421f3db33b7ae09771bed6ddbf4e6df5b7b58974dda6fa731"
+    },
+    "Root_actual_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_proof.zip": {
+      "bytes": 4153528,
+      "sha256": "d286d4e516dea094efab85127dcead7c88284161daa62e6f7790006f9b7fc206"
+    },
+    "Root_reviewed_replay.py": {
+      "bytes": 9253,
+      "sha256": "deb70ed931e2b6946e4e121b9d50299249acf4713f2b02b6510889a41d662295"
+    },
+    "Root_reviewed_worker_guard.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "Root_native_crt_canonical_unlock.obj": {
+      "bytes": 778,
+      "sha256": "87ee84bbeb1ca73c4f03ceb336c9eaa77b0288fa3d2e28249bfbf7adaca6fb89"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 1942,
+      "sha256": "91f48e248e1e87e963cdf92a85873f6ba53d8e7425c679afe7650b6b7b4fa8e7"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 11360,
+      "sha256": "baa73da39bda4eb3185bace363de59724f956ae4f4d3a1728716343fc31b8437"
+    },
+    "Root_strict_replay.stdout": {
+      "bytes": 140,
+      "sha256": "7f3317da68f5934e0fd431d4079ff1db0e522af8bb0f58d469d6826c47e5fa6f"
+    },
+    "Root_strict_replay.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "commit.json": {
+      "bytes": 7974,
+      "sha256": "15d015c10de81c49ab6d79561638ac084d6f04a3cee588de05df8e8d14506adc"
+    }
+  },
+  "worker_outputs": [
+    {
+      "path": "docs/CC12_LOCALE_ONEXIT_CANONICAL_UNLOCK_SOURCE_READINESS.md",
+      "bytes": 8499,
+      "sha256": "9b17e1e0e1142fd15343de4eb3fb1e944d43a71f4b776d74d36d145b53e1ade2"
+    },
+    {
+      "path": "reports/cc12_locale_onexit_canonical_unlock_source_readiness.json",
+      "bytes": 38031,
+      "sha256": "f39cf8ef8e737131990e16ae4c6807a45bd781032b66b1ebd9354b1a12afe151"
+    }
+  ],
+  "Root_actual_positive_Git_and_complete_COFF_review": {
+    "status": "PASS",
+    "worker_commit": "3e89468f82637c87fdb25491fd505ad6eede5701",
+    "base_commit": "d040b4a6d424765e07ce089ab674c7fc1a359bae",
+    "Main_at_capture": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+    "positive_inputs": 11,
+    "actual_Git_objects": 24,
+    "captured_Git_commands": 97,
+    "archive_members": 248,
+    "public_outputs": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_CANONICAL_UNLOCK_SOURCE_READINESS.md",
+        "bytes": 8499,
+        "sha256": "9b17e1e0e1142fd15343de4eb3fb1e944d43a71f4b776d74d36d145b53e1ade2"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_canonical_unlock_source_readiness.json",
+        "bytes": 38031,
+        "sha256": "f39cf8ef8e737131990e16ae4c6807a45bd781032b66b1ebd9354b1a12afe151"
+      }
+    ],
+    "Source_identity": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "object_pin": {
+      "bytes": 778,
+      "sha256": "87ee84bbeb1ca73c4f03ceb336c9eaa77b0288fa3d2e28249bfbf7adaca6fb89"
+    },
+    "complete_COFF_sections": [
+      {
+        "index": 1,
+        "name": ".drectve",
+        "size": 47,
+        "offset": 180,
+        "flags": 1051136,
+        "header_hex": "2e6472656374766500000000000000002f000000b4000000000000000000000000000000000a1000",
+        "data_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+        "relocations": []
+      },
+      {
+        "index": 2,
+        "name": ".debug$S",
+        "size": 188,
+        "offset": 227,
+        "flags": 1108344896,
+        "header_hex": "2e646562756724530000000000000000bc000000e300000000000000000000000000000040001042",
+        "data_hex": "04000000f1000000ae00000070000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c655c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f6372745f63616e6f6e6963616c5f756e6c6f636b2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c6572000000",
+        "relocations": []
+      },
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 21,
+        "offset": 415,
+        "flags": 1615859744,
+        "header_hex": "2e74657874246d6e0000000000000000150000009f010000b4010000000000000100000020105060",
+        "data_hex": "558bec8b4508ff34c57864e100ff15000000005dc3",
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol_index": 9,
+            "type": 6,
+            "symbol_name": "__imp__LeaveCriticalSection@4",
+            "raw_hex": "0f000000090000000600"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "name": ".chks64",
+        "size": 32,
+        "offset": 446,
+        "flags": 2560,
+        "header_hex": "2e63686b73363400000000000000000020000000be010000000000000000000000000000000a0000",
+        "data_hex": "76f6abfb5648dec7761f451400bb090308d601e12a0fd1c90000000000000000",
+        "relocations": []
+      }
+    ],
+    "complete_COFF_primary_symbols": [
+      {
+        "index": 0,
+        "name": "@comp.id",
+        "value": 17141140,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40636f6d702e6964948d0501ffff00000300",
+        "auxiliary_hex": []
+      },
+      {
+        "index": 1,
+        "name": "@feat.00",
+        "value": 2147549585,
+        "section": -1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "40666561742e303091010180ffff00000300",
+        "auxiliary_hex": []
+      },
+      {
+        "index": 2,
+        "name": ".drectve",
+        "value": 0,
+        "section": 1,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6472656374766500000000010000000301",
+        "auxiliary_hex": [
+          "2f0000000000000000000000000000000000"
+        ]
+      },
+      {
+        "index": 4,
+        "name": ".debug$S",
+        "value": 0,
+        "section": 2,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e6465627567245300000000020000000301",
+        "auxiliary_hex": [
+          "bc0000000000000000000000000000000000"
+        ]
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 3,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e74657874246d6e00000000030000000301",
+        "auxiliary_hex": [
+          "15000000010000005686e959000001000000"
+        ]
+      },
+      {
+        "index": 8,
+        "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "000000000400000000000000030020000200",
+        "auxiliary_hex": []
+      },
+      {
+        "index": 9,
+        "name": "__imp__LeaveCriticalSection@4",
+        "value": 0,
+        "section": 0,
+        "type": 0,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "000000003600000000000000000000000200",
+        "auxiliary_hex": []
+      },
+      {
+        "index": 10,
+        "name": ".chks64",
+        "value": 0,
+        "section": 4,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 1,
+        "raw_hex": "2e63686b7336340000000000040000000301",
+        "auxiliary_hex": [
+          "200000000000000000000000000000000000"
+        ]
+      }
+    ],
+    "sole_relocation": {
+      "offset": 15,
+      "symbol_index": 9,
+      "type": 6,
+      "symbol_name": "__imp__LeaveCriticalSection@4",
+      "raw_hex": "0f000000090000000600"
+    },
+    "actual_Capstone_5_0_7": [
+      {
+        "offset": 0,
+        "size": 1,
+        "hex": "55",
+        "mnemonic": "push",
+        "operands": "ebp",
+        "detailed_operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ebp"
+          }
+        ],
+        "modrm": 0,
+        "sib": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "eflags": 0
+      },
+      {
+        "offset": 1,
+        "size": 2,
+        "hex": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp",
+        "detailed_operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "esp"
+          }
+        ],
+        "modrm": 236,
+        "sib": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "eflags": 0
+      },
+      {
+        "offset": 3,
+        "size": 3,
+        "hex": "8b4508",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 8]",
+        "detailed_operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "eax"
+          },
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment": null,
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": 8
+            }
+          }
+        ],
+        "modrm": 69,
+        "sib": 0,
+        "displacement_offset": 2,
+        "displacement_size": 1,
+        "eflags": 0
+      },
+      {
+        "offset": 6,
+        "size": 7,
+        "hex": "ff34c57864e100",
+        "mnemonic": "push",
+        "operands": "dword ptr [eax*8 + 0xe16478]",
+        "detailed_operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment": null,
+              "base": null,
+              "index": "eax",
+              "scale": 8,
+              "displacement": 14771320
+            }
+          }
+        ],
+        "modrm": 52,
+        "sib": 197,
+        "displacement_offset": 3,
+        "displacement_size": 4,
+        "eflags": 0
+      },
+      {
+        "offset": 13,
+        "size": 6,
+        "hex": "ff1500000000",
+        "mnemonic": "call",
+        "operands": "dword ptr [0]",
+        "detailed_operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment": null,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0
+            }
+          }
+        ],
+        "modrm": 21,
+        "sib": 0,
+        "displacement_offset": 2,
+        "displacement_size": 4,
+        "eflags": 0
+      },
+      {
+        "offset": 19,
+        "size": 1,
+        "hex": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp",
+        "detailed_operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          }
+        ],
+        "modrm": 0,
+        "sib": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "eflags": 0
+      },
+      {
+        "offset": 20,
+        "size": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": "",
+        "detailed_operands": [],
+        "modrm": 0,
+        "sib": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "eflags": 0
+      }
+    ],
+    "Native_operand_only_difference": {
+      "offset": 15,
+      "bytes": 4,
+      "Native_hex": "1022ce00",
+      "COFF_hex": "00000000"
+    },
+    "Root_actual_review_failures": 0,
+    "Root_GPR_or_Native_queries": 0,
+    "current_Source_compilation_provenance": false,
+    "current_link_or_provider_resolution": false,
+    "Native_provider_identity": false,
+    "Original_ABI_or_runtime_credit": false,
+    "worker_preliminary_incidents": [
+      "Initial new-worktree lookup and docs-for each exited nonzero: No index; run: python tools/bsp.py index. Retained original combined tool output in conversation; no separately captured streams.",
+      "One read of guessed private strict_guard.py failed with path-not-found; exact private *guard*.py discovery routed guarded_replay.py. No execution or Native effect.",
+      "Two initial contract-read tool outputs were truncated; no evidence conclusion depends on their missing tails."
+    ]
+  },
+  "Root_strict_replay": {
+    "status": "PASS",
+    "helper_sha256": "deb70ed931e2b6946e4e121b9d50299249acf4713f2b02b6510889a41d662295",
+    "audit_counts": {
+      "archive_read": 1,
+      "helper_exec": 1,
+      "receipt_write": 1
+    },
+    "denied_events": [],
+    "result": {
+      "base_commit": "d040b4a6d424765e07ce089ab674c7fc1a359bae",
+      "main_commit_at_capture": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+      "source_tree": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include_tree": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9",
+      "positive_files": 11,
+      "physical_git_objects": 24,
+      "captured_git_commands": 97,
+      "object_pin": {
+        "bytes": 778,
+        "sha256": "87ee84bbeb1ca73c4f03ceb336c9eaa77b0288fa3d2e28249bfbf7adaca6fb89"
+      },
+      "coff": {
+        "machine": "I386",
+        "bytes": 778,
+        "symbol_record_count": 12,
+        "primary_symbol_count": 8,
+        "sections": [
+          {
+            "index": 1,
+            "name": ".drectve",
+            "size": 47,
+            "offset": 180,
+            "flags": 1051136,
+            "header_hex": "2e6472656374766500000000000000002f000000b4000000000000000000000000000000000a1000",
+            "data_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+            "relocations": []
+          },
+          {
+            "index": 2,
+            "name": ".debug$S",
+            "size": 188,
+            "offset": 227,
+            "flags": 1108344896,
+            "header_hex": "2e646562756724530000000000000000bc000000e300000000000000000000000000000040001042",
+            "data_hex": "04000000f1000000ae00000070000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c655c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f6372745f63616e6f6e6963616c5f756e6c6f636b2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c6572000000",
+            "relocations": []
+          },
+          {
+            "index": 3,
+            "name": ".text$mn",
+            "size": 21,
+            "offset": 415,
+            "flags": 1615859744,
+            "header_hex": "2e74657874246d6e0000000000000000150000009f010000b4010000000000000100000020105060",
+            "data_hex": "558bec8b4508ff34c57864e100ff15000000005dc3",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol_index": 9,
+                "type": 6,
+                "symbol_name": "__imp__LeaveCriticalSection@4",
+                "raw_hex": "0f000000090000000600"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "name": ".chks64",
+            "size": 32,
+            "offset": 446,
+            "flags": 2560,
+            "header_hex": "2e63686b73363400000000000000000020000000be010000000000000000000000000000000a0000",
+            "data_hex": "76f6abfb5648dec7761f451400bb090308d601e12a0fd1c90000000000000000",
+            "relocations": []
+          }
+        ],
+        "symbols": [
+          {
+            "index": 0,
+            "name": "@comp.id",
+            "value": 17141140,
+            "section": -1,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 0,
+            "raw_hex": "40636f6d702e6964948d0501ffff00000300",
+            "auxiliary_hex": []
+          },
+          {
+            "index": 1,
+            "name": "@feat.00",
+            "value": 2147549585,
+            "section": -1,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 0,
+            "raw_hex": "40666561742e303091010180ffff00000300",
+            "auxiliary_hex": []
+          },
+          {
+            "index": 2,
+            "name": ".drectve",
+            "value": 0,
+            "section": 1,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "raw_hex": "2e6472656374766500000000010000000301",
+            "auxiliary_hex": [
+              "2f0000000000000000000000000000000000"
+            ]
+          },
+          {
+            "index": 4,
+            "name": ".debug$S",
+            "value": 0,
+            "section": 2,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "raw_hex": "2e6465627567245300000000020000000301",
+            "auxiliary_hex": [
+              "bc0000000000000000000000000000000000"
+            ]
+          },
+          {
+            "index": 6,
+            "name": ".text$mn",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "raw_hex": "2e74657874246d6e00000000030000000301",
+            "auxiliary_hex": [
+              "15000000010000005686e959000001000000"
+            ]
+          },
+          {
+            "index": 8,
+            "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "raw_hex": "000000000400000000000000030020000200",
+            "auxiliary_hex": []
+          },
+          {
+            "index": 9,
+            "name": "__imp__LeaveCriticalSection@4",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage_class": 2,
+            "auxiliary_count": 0,
+            "raw_hex": "000000003600000000000000000000000200",
+            "auxiliary_hex": []
+          },
+          {
+            "index": 10,
+            "name": ".chks64",
+            "value": 0,
+            "section": 4,
+            "type": 0,
+            "storage_class": 3,
+            "auxiliary_count": 1,
+            "raw_hex": "2e63686b7336340000000000040000000301",
+            "auxiliary_hex": [
+              "200000000000000000000000000000000000"
+            ]
+          }
+        ],
+        "code_section": 3,
+        "code_hex": "558bec8b4508ff34c57864e100ff15000000005dc3",
+        "native_hex": "558bec8b4508ff34c57864e100ff151022ce005dc3",
+        "only_difference": {
+          "offset": 15,
+          "bytes": 4,
+          "object_hex": "00000000",
+          "native_hex": "1022ce00",
+          "relocation": {
+            "offset": 15,
+            "symbol_index": 9,
+            "type": 6,
+            "symbol_name": "__imp__LeaveCriticalSection@4",
+            "raw_hex": "0f000000090000000600"
+          }
+        },
+        "function_symbol": {
+          "index": 8,
+          "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "raw_hex": "000000000400000000000000030020000200",
+          "auxiliary_hex": []
+        },
+        "import_symbol": {
+          "index": 9,
+          "name": "__imp__LeaveCriticalSection@4",
+          "value": 0,
+          "section": 0,
+          "type": 0,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "raw_hex": "000000003600000000000000000000000200",
+          "auxiliary_hex": []
+        },
+        "native_provider_identity_established": false,
+        "current_source_compilation_established": false
+      },
+      "source_asm": [
+        "push ebp",
+        "mov ebp, esp",
+        "mov eax, dword ptr [ebp + 8]",
+        "push dword ptr [eax * 8 + 00e16478h]",
+        "call LeaveCriticalSection",
+        "pop ebp",
+        "ret"
+      ],
+      "actual_capstone": [
+        {
+          "offset": 0,
+          "size": 1,
+          "hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp",
+          "detailed_operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "ebp"
+            }
+          ],
+          "modrm": 0,
+          "sib": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "eflags": 0
+        },
+        {
+          "offset": 1,
+          "size": 2,
+          "hex": "8bec",
+          "mnemonic": "mov",
+          "operands": "ebp, esp",
+          "detailed_operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebp"
+            },
+            {
+              "type": 1,
+              "size": 4,
+              "access": 1,
+              "register": "esp"
+            }
+          ],
+          "modrm": 236,
+          "sib": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "eflags": 0
+        },
+        {
+          "offset": 3,
+          "size": 3,
+          "hex": "8b4508",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp + 8]",
+          "detailed_operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "eax"
+            },
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment": null,
+                "base": "ebp",
+                "index": null,
+                "scale": 1,
+                "displacement": 8
+              }
+            }
+          ],
+          "modrm": 69,
+          "sib": 0,
+          "displacement_offset": 2,
+          "displacement_size": 1,
+          "eflags": 0
+        },
+        {
+          "offset": 6,
+          "size": 7,
+          "hex": "ff34c57864e100",
+          "mnemonic": "push",
+          "operands": "dword ptr [eax*8 + 0xe16478]",
+          "detailed_operands": [
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment": null,
+                "base": null,
+                "index": "eax",
+                "scale": 8,
+                "displacement": 14771320
+              }
+            }
+          ],
+          "modrm": 52,
+          "sib": 197,
+          "displacement_offset": 3,
+          "displacement_size": 4,
+          "eflags": 0
+        },
+        {
+          "offset": 13,
+          "size": 6,
+          "hex": "ff1500000000",
+          "mnemonic": "call",
+          "operands": "dword ptr [0]",
+          "detailed_operands": [
+            {
+              "type": 3,
+              "size": 4,
+              "access": 1,
+              "memory": {
+                "segment": null,
+                "base": null,
+                "index": null,
+                "scale": 1,
+                "displacement": 0
+              }
+            }
+          ],
+          "modrm": 21,
+          "sib": 0,
+          "displacement_offset": 2,
+          "displacement_size": 4,
+          "eflags": 0
+        },
+        {
+          "offset": 19,
+          "size": 1,
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp",
+          "detailed_operands": [
+            {
+              "type": 1,
+              "size": 4,
+              "access": 2,
+              "register": "ebp"
+            }
+          ],
+          "modrm": 0,
+          "sib": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "eflags": 0
+        },
+        {
+          "offset": 20,
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "detailed_operands": [],
+          "modrm": 0,
+          "sib": 0,
+          "displacement_offset": 0,
+          "displacement_size": 0,
+          "eflags": 0
+        }
+      ],
+      "credit": "Source contract and observed relocatable COFF; no Native provider, Original ABI, current compile, link or runtime admission.",
+      "archive_members": 248
+    }
+  },
+  "failure_history": {
+    "worker_capture_COFF_package_strict_publication_commit": 0,
+    "Root_actual_COFF_manual_and_strict": 0,
+    "worker_preliminary_incidents": [
+      "Initial new-worktree lookup and docs-for each exited nonzero: No index; run: python tools/bsp.py index. Retained original combined tool output in conversation; no separately captured streams.",
+      "One read of guessed private strict_guard.py failed with path-not-found; exact private *guard*.py discovery routed guarded_replay.py. No execution or Native effect.",
+      "Two initial contract-read tool outputs were truncated; no evidence conclusion depends on their missing tails."
+    ],
+    "Root_output_truncations": 1,
+    "Root_truncation_detail": "Initial worker document read exceeded the output cap; its missing relocation/provider paragraph was separately paged before assessment. No claim of complete initial output is made."
+  },
+  "validation_credit": {
+    "existing_Source_contract_reviewed": true,
+    "observed_relocatable_object": true,
+    "complete_COFF_physically_verified": true,
+    "Source_changes": false,
+    "current_Source_compilation": false,
+    "current_link_resolution": false,
+    "Native_provider_identity": false,
+    "Original_ABI": false,
+    "runtime_game_OS_audio": false,
+    "new_build_tests_probes": false
+  },
+  "next_boundary": "Separately authenticated saved Native import-cell metadata/provider/caller and fixed-domain ownership evidence; no activation or Original execution is admitted here."
+}
