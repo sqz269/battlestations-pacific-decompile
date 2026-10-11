@@ -1,0 +1,368 @@
+{
+  "schema": "bsp.cc12.getptd-first-direct-entry.v1",
+  "status": "Native_ENTRY_EVIDENCE_CLOSED",
+  "address": "00C05070",
+  "frozen_worker_HEAD": "9e501691f109f8387d69014dfce06f9afe74f5d4",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_GETPTD_FIRST_DIRECT_TARGET_ENTRY.md",
+    "reports/cc12_application_crt_getptd_first_direct_target_entry.json"
+  ],
+  "Native": {
+    "status": "PASS",
+    "address": "00C05070",
+    "metadata": {
+      "status": "PASS",
+      "address": "00C05070",
+      "epoch": 98,
+      "function_count": 64730,
+      "paired_raw_equal": true,
+      "typed_calls": 2,
+      "count_calls": 3,
+      "failed_calls": 0,
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c05070"
+        },
+        "name": "LIBCRT_unmatched_00c05070",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "50",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c05070"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c050a1"
+              },
+              "length": "50"
+            }
+          ]
+        }
+      },
+      "saved_listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05070"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05070"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05070"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c05070"
+          },
+          "length": 1,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "saved_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05071"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05071"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "raw_response_bytes": 2158,
+      "raw_response_sha256": "e5416201e9877bca3a12bac06f1f5177a0b06bf519332f77468cbb8f59d85695",
+      "opaque_automatic_target_object_count": 0,
+      "body_range_is_saved_metadata_only": true,
+      "callee_data_body_bytes_or_text_admitted_by_metadata": false
+    },
+    "caller": {
+      "positive_caller": "00C051C7",
+      "retained_physical_call_bytes": "e8a4feffff",
+      "rel32_target": "00C05070",
+      "evidence": "Immediate frozen body report and Root PRIMARY acceptance; no referenced archive opened",
+      "caller_return_address_arithmetic": "00C051CC",
+      "caller_ABI_not_authenticated": true
+    },
+    "Native_CLI_calls": 9,
+    "typed_calls": 2,
+    "count_calls": 3,
+    "one_byte_reads": 2,
+    "context_zero_text_queries": 1,
+    "prototype_queries": 1,
+    "failed_Native_calls": 0,
+    "paired_one_byte_equal": true,
+    "one_byte_sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+    "manual_decode": {
+      "address": "00C05070",
+      "size": 1,
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "type": "reg",
+          "size": 4,
+          "reg": "esi"
+        }
+      ]
+    },
+    "actual_detailed_Capstone_version": "5.0.7",
+    "manual_listing_text_Capstone_agree": true,
+    "prototype_metadata_prefix_only": [
+      "Function: LIBCRT_unmatched_00c05070 at 00c05070",
+      "Signature: undefined LIBCRT_unmatched_00c05070(void)",
+      "Entry: 00c05070",
+      "Body: 00c05070 - 00c050a1"
+    ],
+    "opaque_prototype_companion_suffix": {
+      "bytes": 170,
+      "sha256": "ea598ed1fbf1123e8215e7500db2e637b9603050696a91a5eb477dea624e2c79",
+      "semantically_inspected": false
+    },
+    "conditional_contract": "If this captured one-byte instruction executes normally in an appropriate 32-bit x86 environment: v := entry ESI; ESP := entry ESP-4 modulo 2^32; M32[SS:ESP] := v; ESI and flags unchanged. The store may alias other linear memory, including partially overlapping cells. The arithmetic fallthrough is 00C05071; its instruction and subsequent body behavior are unread. No frame, restoration, arguments, return type, original ABI, TLS or getptd semantics follow.",
+    "body_bounds_metadata_only": "00C05070..00C050A1 / 50 bytes; only first byte admitted and decoded",
+    "name_and_signature_saved_annotations_only": true,
+    "body_continuation_data_or_callee_queries": false,
+    "Source_build_ABI_runtime_or_gameplay_credit": false
+  },
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry/evidence.zip",
+      "bytes": 507239,
+      "sha256": "6e0575ada3c432bd47202ca6c05e3276891ff6a77ac09faa8615fff02b9a3740"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry/distinct_copy/evidence.zip",
+      "bytes": 507239,
+      "sha256": "6e0575ada3c432bd47202ca6c05e3276891ff6a77ac09faa8615fff02b9a3740"
+    },
+    "manifest": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry/manifest.json",
+      "bytes": 13706,
+      "sha256": "c0088178bc18e1cd013d63df105439f1f105915d31a214e52343f0f91be6e526"
+    },
+    "physical_copy_proof": {
+      "samefile": false,
+      "different_resolved_paths": true,
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_first_direct_target_entry\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006146822
+      },
+      "copy": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_first_direct_target_entry\\distinct_copy\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006146824
+      }
+    },
+    "physical_copy_proof_pin": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry/distinct_copy_proof.json",
+      "bytes": 591,
+      "sha256": "c2b6614501ae28816663e6cb2fe2e04f4c0bd1255643d80065af8432a87948dd"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/capture_entry.py",
+        "bytes": 4236,
+        "sha256": "91242f5e04708f4058d5d46b6c083ca82b28e18bcb2d1c4de176b5c987822aac"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/entry_parser.py",
+        "bytes": 19238,
+        "sha256": "93071d5e8ab93520dbfb37f85c8b051f1dd23dd7bdd7a68b231e52d357591dc9"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/guard_replay.py",
+        "bytes": 3245,
+        "sha256": "eb6917766de21d9142dbbdce69c6864054a5711d9d346f3f99eda1d1c2653d89"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/packet_tool.py",
+        "bytes": 21459,
+        "sha256": "123ba700d5a9c22fc0d313e74bcde44e3b716977439b0f7df52524054808d71d"
+      }
+    ],
+    "preexecution_pins": {
+      "path": "local/cc12_application_crt_getptd_first_direct_target_entry/replay_preexecution_pins.json",
+      "bytes": 2254,
+      "sha256": "94c90df830d3f68c63def59e97cacc12a52e166175da357860cbb5ba9d2a7f3c"
+    },
+    "replay_equal": true,
+    "replay_result": {
+      "all_hashes_checked_before_semantic_replay": true,
+      "all_helper_and_Root_producer_bodies_retained": true,
+      "entry": {
+        "Native_CLI_calls": 9,
+        "Source_build_ABI_runtime_or_gameplay_credit": false,
+        "actual_detailed_Capstone_version": "5.0.7",
+        "address": "00C05070",
+        "body_bounds_metadata_only": "00C05070..00C050A1 / 50 bytes; only first byte admitted and decoded",
+        "body_continuation_data_or_callee_queries": false,
+        "caller": {
+          "caller_ABI_not_authenticated": true,
+          "caller_return_address_arithmetic": "00C051CC",
+          "evidence": "Immediate frozen body report and Root PRIMARY acceptance; no referenced archive opened",
+          "positive_caller": "00C051C7",
+          "rel32_target": "00C05070",
+          "retained_physical_call_bytes": "e8a4feffff"
+        },
+        "conditional_contract": "If this captured one-byte instruction executes normally in an appropriate 32-bit x86 environment: v := entry ESI; ESP := entry ESP-4 modulo 2^32; M32[SS:ESP] := v; ESI and flags unchanged. The store may alias other linear memory, including partially overlapping cells. The arithmetic fallthrough is 00C05071; its instruction and subsequent body behavior are unread. No frame, restoration, arguments, return type, original ABI, TLS or getptd semantics follow.",
+        "context_zero_text_queries": 1,
+        "count_calls": 3,
+        "failed_Native_calls": 0,
+        "manual_decode": {
+          "address": "00C05070",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "reg": "esi",
+              "size": 4,
+              "type": "reg"
+            }
+          ],
+          "size": 1
+        },
+        "manual_listing_text_Capstone_agree": true,
+        "name_and_signature_saved_annotations_only": true,
+        "one_byte_reads": 2,
+        "one_byte_sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+        "opaque_prototype_companion_suffix": {
+          "bytes": 170,
+          "semantically_inspected": false,
+          "sha256": "ea598ed1fbf1123e8215e7500db2e637b9603050696a91a5eb477dea624e2c79"
+        },
+        "paired_one_byte_equal": true,
+        "prototype_metadata_prefix_only": [
+          "Function: LIBCRT_unmatched_00c05070 at 00c05070",
+          "Signature: undefined LIBCRT_unmatched_00c05070(void)",
+          "Entry: 00c05070",
+          "Body: 00c05070 - 00c050a1"
+        ],
+        "prototype_queries": 1,
+        "status": "PASS",
+        "typed_calls": 2
+      },
+      "entry_findings_sha256": "39716ad98a001f2fab1e8df5ccc767a7e4105518fa1d551c57dbda9352fafa16",
+      "git": {
+        "Source_content_census": false,
+        "Source_subtree_identities": {
+          "include": "09add3be594e63edcce6a16ec041ed965441e898",
+          "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+        },
+        "actual_commit_to_positive_input_paths_proved": true,
+        "actual_object_payloads": 8,
+        "current_Root_Source_equality": false,
+        "finite_immediate_positive_paths": 12,
+        "frozen_HEAD": "9e501691f109f8387d69014dfce06f9afe74f5d4",
+        "inherited_archive_recursion": false,
+        "root_tree": "90762c17979868a685192e836e5e623ca0e7d992"
+      },
+      "manifest_members": 79,
+      "metadata_raw_response_sha256": "e5416201e9877bca3a12bac06f1f5177a0b06bf519332f77468cbb8f59d85695",
+      "status": "PASS"
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/original_replay.json",
+        "bytes": 2802,
+        "sha256": "94eac0c9fa9eb6376a52a5d067b06dbdbfc2fa453c1f1462c1f3668afcb1e4cf"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/original_guard.json",
+        "bytes": 561,
+        "sha256": "e447750379a29119027d3d84341ef0673bc933cd7742dab26ae02d00cec916eb"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/original_command.json",
+        "bytes": 577,
+        "sha256": "e3e6a07af420b642516547c7c5392d2d871a02005430c42dbb24a1dc5baa11e4"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/distinct_copy_replay.json",
+        "bytes": 2802,
+        "sha256": "94eac0c9fa9eb6376a52a5d067b06dbdbfc2fa453c1f1462c1f3668afcb1e4cf"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/distinct_copy_guard.json",
+        "bytes": 576,
+        "sha256": "988302ff677aa88e0d7b74cdb293a847f4509e6983d6191e78f6da10bdc654f3"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_first_direct_target_entry/distinct_copy_command.json",
+        "bytes": 592,
+        "sha256": "780e647867804ef8fb3777af7a3fff9a1972b35371c08815850261f72f6c2817"
+      }
+    ]
+  },
+  "Source_subtree_identities": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "scope": "First saved entry instruction and four prototype metadata prefix lines only. Names and signature are saved annotations. The 50-byte range is function metadata; no remaining body, continuation, data or callee content was queried. Source IDs identify worker base/delivery revisions only; no Source census or equality to current Root Source.",
+  "credit": {
+    "Source_changes": false,
+    "build_or_new_tests": false,
+    "original_ABI": false,
+    "runtime_or_gameplay": false,
+    "GPR_mutation": false,
+    "inherited_archive_recursion": false
+  },
+  "delivery_receipts": {
+    "staged": "local/cc12_application_crt_getptd_first_direct_target_entry/staged_git_receipt.json",
+    "final": "local/cc12_application_crt_getptd_first_direct_target_entry/final_git_receipt.json",
+    "meaning": "Actual Git receipts outside the sealed ZIP avoid circular hashes and pin exactly two outputs."
+  }
+}
