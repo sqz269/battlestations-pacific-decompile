@@ -14482,3 +14482,259 @@ leases are held. No switch was added. The g12-g14 runs finished before the pause
 - `l48_diag_hq.py` makes the diagnostic export `local\l48_D0` (main `62988a6fa`). It adds an `l48diag hit` line per
   hit, and the env var `BSP_L48_VICTIMS=|A|B|` adds victims to it.
 - `l48_hqdmg.py` gives per-shooter damage to one victim, and `l48_j8sum.py` gives a run's deaths and its outcome.
+
+## 5fi. JM08 on the moved main, the shipyard director question, `Scoring_SetMissionCompleted`, and USN04's silent dive stick (cc9-lua49, 2026-10-11, reads and runs only)
+
+No switch was added and no source changed. All runs are on `10bef4a99` (a clean build of this branch; the USNOS
+300-frame smoke exits 0 and ctest passes), in 5fd's launch form (`local\l49_lane.ps1`, a copy of `l48_lane.ps1`).
+No run completed a mission, so the exec guard had nothing to refuse.
+
+### Item 1: does a shipyard boat inherit `TorpedoDirector = false`? No
+
+cc11 had already answered it (docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md). Spot-checked from disk:
+- `00845001..00845014` pushes owner 0 into `008F41A0`, which builds an empty bag. The launch writes only `Type`,
+  `Skill`, `Race`, `Party`, `OwnerPlayer` and `ShipYardLaunch` (plus the aircraft and submarine keys). There is no
+  `Ship`-group merge, and the clone `008F41F0` adds nothing.
+- In `00822C20`, the `TorpedoDirector` find at `00823932` (`008F2260`) is followed by `TEST EAX,EAX` /
+  `JE 00823955`, which stores 1 when the key is absent.
+
+So the four Gyoraitei's `mask=3` is the image's. There is nothing to bind. The explicit-false class-8 promotion
+(`00823941..00823955`) is cc11's `kShipDirectorClass8Bound`, already ON.
+
+### Item 2: JM08 strike runs (`local\l49_j8gen.py`, l48's generator plus `--end` and `--boat-start`)
+
+**What moved on this main: the AI tubes now launch.**
+- On the g10 orders the torpedo gate reads `targeted=8398 sent=5434 shots=18`.
+- l48's g10 on `62988a6fa` already targeted (`targeted=12095`), but had `accepted=0 sent=0 shots=0`.
+  - Only l48's g5 and g9 (boats sent at the landships) have `targeted=0`. That is GUNNERY 161.4's `+7Dh` hold, and
+    it is order-dependent.
+  - 5fg's "`targeted=0` on every JM08 run" holds for those two runs only.
+- Sent at Nevada, the boats open `+7Dh` (`pass byte 7d ... final=1`).
+- An export of `060c4b712` (cc9-gunnery34: `kTorpedoBotReadyGateBound` and `kShipyardDeathReleaseBound` ON) gives
+  `targeted=4648 sent=3581 shots=12` on these orders at 9000 frames. HEAD gives 4485 / 3602 / 12.
+- So the launches come from `kTorpedoBotReadyGateBound`: the zero-speed tubes now pass the image's 1-degree test
+  (GUNNERY 161).
+
+| run | frames | Hosho first | Isokaze/Fubuki first | boats first | outcome |
+| --- | --- | --- | --- | --- | --- |
+| g10 | 24000 | Nevada | Nevada | Nevada | 14 tube launches at Nevada; Nevada dies 482.16 (`Gyoraitei #Y1` cat 6); **HQ falls 1062.11** |
+| g15 | 24000 | Nevada | Missouri | Missouri | 27 launches at Missouri, 4 hits; Missouri min 8832 hp; Nevada dies 529.84 (Hosho Kates); **no end in 1200 s** |
+| g16 | 24000 | Missouri | Missouri | Missouri | 31 launches, 5 hits, Missouri min 5705 hp; Kates never hit Missouri; HQ falls 1005.08 |
+| g18 | 48000 | as g15 | as g15 | as g15 | HQ falls 1331.22 |
+| g19 | 48000 | as g16 | as g16 | as g16 | HQ falls 1005.08 |
+| g20 | 30000 | Missouri | landships | landships | **7 of 11 landships dead**; HQ falls 1027.88 |
+| g21 | 30000 | Nevada | landships | Missouri | 20 launches at Missouri; Missouri min 7787 hp; HQ falls 1234.23 |
+
+- **Bullet 66** is the Gyoraitei torpedo. It does 1370 hp to Missouri (11000 hp, armour 130). About one launch in six
+  hits. Missouri repairs about 22 hp/s, so one or two hits a minute never add up.
+- **The 22 hp/s is the image's rate.** In `0093C770` the heal is `task+28h x dt x settings+3B4h x max x rate`.
+  - `settings+3B4h` is `BodyRepairTickPercentage / 100` (`0083E243`, default 0.2).
+  - At task kind 0, `rate` is `settings+3D4h` = `BodyRepairMultiplier` (`0083E4AF`, default 2.0) times the gameplay
+    modifier. Otherwise it is 1.0.
+  - `task+28h` is 1.0 from `0093BD06`, and only `SetRepairEffectivity` (`008AD8D0`) changes it. `prcpjm08.lua`
+    never calls it.
+  - `dt` is the frame step (`0093CA20` <- `008160B0` <- `00826B84`).
+  - This installation's `shipglobals.lua` (2024-07-13) authors 0.1 and 2 (lines 79 and 88; the 0.05 at line 749 is
+    inside `if FailureDebug`). So the rate is 0.002 x 11000 = 22 hp/s, as the host logs.
+- **The shipyard builds in fours.** The next four appear only after the previous boats die, and the 12 boats are spent
+  by about 730 s.
+- **Isokaze and Fubuki never launch.** Their scene `Ship` group carries `TorpedoDirector = false`. In the image too,
+  only the player's director toggle or `TorpedoEnable` reopens it. Their guns (cat 1 and 6) are what kill transports
+  in g19 and g20.
+- **The HQ falls between 1000 and 1330 s on every run but g15.** A win needs all 11 landships and Missouri before
+  that. That is out of reach without more torpedo weight: the player's `torpedo` line for Isokaze/Fubuki, which is
+  cc9-ships42's.
+
+### Item 4: `Scoring_SetMissionCompleted` `008B8AD0` (read; not bound)
+
+**What it does.**
+- It resolves the slot: `[game+18ECh]`, or argument 0 when `game+1FE4h != 0` (`008B8BB8`, `008B8BC7`).
+- It reads the boolean argument; the default is 1 (`008B8C02`, `008B8C0C`).
+- It calls `00906460` (`RET 8`, `009064C0`), which:
+  - stores the record word `+4+slot*284h+0` (`0090648D`);
+  - stores the clock `00F876A4` at `+10h`, only on the 0 -> set edge (`0090647D..00906485`);
+  - walks `[[game+19CCh]+28h]` and calls `00927F60` for every entity whose `+180h <= 7` (`009064AA..009064B3`).
+- `00927F60` (`RET`, `0092802A`):
+  - stamps `entity+1D0h` with the clock, and copies it to the formation members when `entity+9D4h` is a flight
+    leader;
+  - for `+1ACh <= 7` and `vtable[5Ch](5)`, calls `0090ED40`.
+- `0090ED40` (`RET 0Ch`) is skipped in mode 2. Otherwise it adds the elapsed seconds into the record's `+118h` map
+  under the key that the entity's `+170h` sub-object returns through its `vtable[0]`.
+
+**Who calls it.** Only `luaMissionCompletedNew`, `luaMissionFailedNew` and the F2/F4 cheats, in this installation's
+`commandhelpers.lua` (2024-10-29).
+
+**Verdict.** It reaches no gameplay and no `DisplayScores` line. Its readers are the score record and the
+mission-progress save (`src/mission_progress.cpp`). It is left unbound, on purpose: binding it would only feed the
+profile commit at `EndScene`.
+
+### Item 3: USN04 phase 2. The US dive bombers fly a neutral stick in `aimdive`
+
+**Run.** `s39_u4_p1` (`local\l49_ord_u4p1.txt`), `0.0222` s frames with `--frame-jitter '20,3'`, 45000 frames,
+`local\l49_main_u4p2.log`.
+- Dive-bomb releases: 0 of 33.
+- Torpedo releases: 3 of 36, all Kates. No US TBD released.
+
+**Diagnostic.** The diagnostic export `local\l49_T1` (`kHullAimTrace` flipped, plus `l49_diag_dive.py` and
+`l49_diag_dive2.py`, never committed) logs the pitch slot through the planner, the slew and `0099BF30` on every
+turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
+
+**What the trace shows** (`Lexington-class01_sqn05`):
+- The turndown pulls `+0.99` while inverted. It hands over at tick 4411, at pitch -1.01 rad, range 879 m and height
+  915 m: a 46-degree sight line.
+- From tick 4413 the **task itself** writes `+29Ch = 0.000` (`d_in=0.000 act=1 mode=0`). The planner, the slew and
+  the repair pass it through. The nose drifts to -1.226 rad (70 degrees).
+- The CCIP error grows to 570 m. Only the terrain band's repair (`repaired` > 0 from tick 4476, about 330 m) pulls
+  up, too late. The release gate (25 m, `00CE3880`) is never met.
+
+**Why the stick is zero.**
+- **The strikers fly row 2, SPVeteran.** They are carrier launches, not script `SetSkillLevel` targets:
+  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1, the
+    host's `game+6ACh` (lines 66-82, 156, 195).
+  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
+    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
+  - `009F9D22` captures that row. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
+    Japanese Zuikaku strikers.
+- **This installation's `robots.lua` (2025-06-01) zeroes the row.** Its SPVeteran PilotBot row authors
+  `DiveBombAimPrecPullPlus`/`Minus` = 0.0 (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same
+  (1134-1135).
+- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic, applied to the
+  row as this installation authors it.
+
+**The zero row is the mod's, not retail's.**
+- `robots.lua` is dated 2025-06-01, after the 2024 bulk. Beside it sits `robots__.lua.bak`, of the same date. The two
+  files differ on 719 lines.
+- The `.bak`'s SPVeteran row has non-zero values where `robots.lua` has zeros:
+
+  | field | `.bak` | `robots.lua` |
+  | --- | --- | --- |
+  | `DiveBombAimPrecPullPlus` / `Minus` | 0.014 / 0.018 | 0 / 0 |
+  | `DiveBombAimPrecDist` / `Mul` | 35 / 0.24 | 0 / 0 |
+  | `DiveBombAimPitchRatio` | 3.0 | 0 |
+  | `DiveBombTargetHError` / `VError` / `CalcTargetPosError` | 25 / 4 / 3 | 0 / 0 / 0 |
+  | `TorpReleaseAlt` | 10 | 5 |
+  | `TorpTargetHError` / `VError` / `CalcTargetPosError` | 5 / 10 / 6 | 0 / 0 / 1 |
+  | `LevelBombTargetHError` / `VError` | 15 / 40 | 0 / 0 |
+
+- The installed row reads as a "perfect aim" edit: every error and precision field is zeroed. A zero pull gain,
+  though, is not perfect aim in the image's law. It only removes the correction.
+- No other copy of `robots.lua` (packed or bulk) is in the installation. Whether the `.bak` is retail is not known.
+- So the zero stick is this installation's behaviour. It is not evidence about the retail game.
+
+**Where this leaves the "no release".**
+- With the installed row, the dive has no aim feedback. The release then rests on the turndown hand-over alone.
+- The roll-in point is already the image's: `S = 0.7h + 200` (`009C65C1`; `thr` 929.5 at h 1042 in the trace), with
+  completion `009C7EA0` at pitch < -1.0 inverted or < -1.3. TURNDOWN_HEADING and GUNNERY 150/157 read the rest of the
+  steering and the hand-over against the image.
+- What remains is the airframe's pull-through: how far a split-S moves the aircraft and how much the nose
+  overshoots once the stick is neutral. That is the flight model.
+
+**USNOS f7** (`s41_os_f7`, 60000 frames, `local\l49_main_osf7.log`) **gives no carrier strike to read on this
+main.**
+- The mission fails at 1554.69 s with `Game Over` on `HQ1`. The cause is Enterprise's death at 1553.34 s, with
+  `killer=DM1 killer_cat=3 killer_range=52` and no counted hits. Enterprise's first damage is at 1516.75 s.
+- The order file's class-331 strike on `Shima6` (`Enterprise_sqn27`) launches only at 1601.29 s, after the end.
+- l47's `D1` run of the same orders had no end. So the early loss is new on this main, and it is for the gunnery
+  and ships lanes to triage.
+- The run has no dive-bomb or torpedo task at all. Its 51 level bombers (Japanese `plane #n`) do release: 24 drops
+  each, misses of 3-17 m.
+
+### Scripts (`local\`, prefix `l49_`, none for commit)
+
+| script | what it does |
+| --- | --- |
+| `l49_lane.ps1` | launches runs, with the new row `u4p2` |
+| `l49_j8gen.py` | writes JM08 order files |
+| `l49_j8sum.py` | summarizes a run's deaths and outcome |
+| `l49_dispscan.py <disp> [lo hi]` | lists every operand with that displacement, swept from the function starts |
+| `l49_diag_dive.py`, `l49_diag_dive2.py` | the diagnostic patches |
+
+## 5fj. The movie camera's `goaround` modifier and keyframe events, `kMovieKeyframeModifierBound` (packet `cc9_lua49_movie_modifier`, cc9-lua49, 2026-10-11)
+
+cc13-camera1 reconstructed the keyframe modifiers and events (docs/CC13_CAMERA_CONTROLLERS.md sections 2, 4, 7 and
+12; `src/cc13_camera_controllers.cpp`). Until now `src/hud_movie_camera.cpp` counted the `modifier` and `event` keys
+as unsupported. This packet wires them in behind one switch, committed OFF.
+
+**Does the in-engine path run?** cc13 found that the host never loads a movie page (`MovieBridge`). The keyframe
+camera is a different object, and it does run:
+- `movie camera 005CC170 built and installed as the mover`, then `movie camera pose ...` every 40 frames, in every
+  JM08 log;
+- the mission-end camera of `commandhelpers.lua` (2024-10-29), `luaMissionFailedNew`/`luaMissionCompletedNew` ->
+  `luaInitMissionEnd`, passes `goaround` modifiers (lines 10280-10305, 10787-10828), and for a dead ship or plane a
+  `sunk` event whose function is `luaMissionEnd_FadeAway` (10795);
+- before this packet, `MovieKeyframe::unsupported_key` counted 4 calls on JM08 g10.
+
+**The wiring, address by address.**
+
+| image | what | where |
+| --- | --- | --- |
+| `007A1631..007A163C` | the modifier block runs only for a camera key or a named `postype` (the same gate as `pos`/`polar`) | `parse_007a0eb0` |
+| `007A1A29..007A1BB2` | `position.modifier` is a table. Its `name` picks the class: `goaround` is 007A0650 (64h bytes), and `gamecamera`/`fpscamera` are 007A06D0. 00799DE0 stores it at `+E4h`, and slot `+1Ch` parses the same table | `goaround_construct_007a0650`, `goaround_parse_007a3100`; gamecamera stays unsupported |
+| `00795C89..00795CB7` | in 00795C10, after begin and before 00795650: slot `+Ch` with `(clock - start, &pose, dt)` | `modifier_evaluate` copies the four goaround fields in and out |
+| `007A1F94..007A22EE` | the `event`, for a camera key or a named postype, watches the parent `+1Ch` | `keyframe_event_parse_007a1f94` |
+| `00798D38..00798D59` | 00798C80's tail: 00797ED0 over the look-at track, then the camera track. 0078E630 fires a triggered event once and deletes it | `movie_camera_key_ticks_00797ed0`; the hud host runs it after the fixed step |
+| `00791540` -> `00887E50` | `_G[function]()` | `MovieParentBinding::run_script_00887e50`, through the script-orders host |
+
+**Labelled.**
+- **Event order:** the event is taken off the key before its script runs, because the script can destroy the camera.
+  The image fires first and deletes after.
+- **Event entity:** `noentity` never fires, because the host has no entity deletion. `killed` and `sunk` read the
+  destroyed byte, and `sunk` reads the parent's world y.
+- **Script-orders counters:** the script runs through the script-orders host's 00887E50, which also counts it among
+  its blackout callbacks.
+
+**Predictions (before any run).**
+- **LOMP10 3000** (control): no mission end, so no modifier is parsed. Exit 0 or 1.
+- **USN02 3000:** the mission fails at about 74.30 s, `luaMissionFailedNew` on a random live ally.
+  - `luaInitMissionEnd` builds a `goaround` camera keyframe, with no event because the ally is alive.
+  - ON, the camera poses after the end orbit the ally, and the unsupported count drops.
+  - Gameplay is identical to the end. pair_diff 1, or 3 only through the end-of-mission camera lines.
+- **JM08 g10 orders, 24000:** the HQ falls at 1062.11 s, and the same end path runs on the HQ (a building, so no
+  event). Same expectation as USN02.
+- **No reference row reaches a `sunk` event.** That needs a mission ending on a dead ship or plane. The event arm is
+  therefore build-tested only, unless a row reaches it.
+
+### 5fj.1 Pairs on `1115e208c` and the verdict
+
+**Setup.** OFF is the branch build (and its export `local\l49_C0`); ON is `local\l49_M1`
+(`--flip kMovieKeyframeModifierBound=true`). Launch form of 5fd. Logs are `local\l49_M<0|1>_<row>.log`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP10 3000 | 1 | `unsupported_key` 4 -> 2. One `gamecamera` modifier is now counted by name (`MovieKeyframe::gamecamera_modifier`, 1 call). `key_ticks_00797ed0` runs 2959 times. |
+| USN02 3000 | 1 | Fails at the same time with the same deaths (3). After the end, the OFF camera sits on the ally with `position == look-at` and `forward (0,0,1)`, a degenerate pose. ON orbits it at 30.6 m height, -0.2588 pitch (15 degrees), sweeping the heading. |
+| JM08 g10 orders, 24000 | 1 | Failed at 1062.11 s on both sides, deaths 171 = 171. After the end, OFF holds the same degenerate pose on the HQ, and ON orbits. The unit-pick, minimap and landscape-attach counters move with the camera (presentation). |
+
+- No row reached a keyframe event. `events_fired=0`, because no mission ended on a dead ship or plane. The event arm
+  stays build-tested.
+- **Verdict: ON.** The mechanism matches 5fj's predictions on every row: the modifier is parsed on the camera key,
+  the orbit replaces the degenerate pose, and gameplay is identical.
+
+## 5fk. `SaveCheckpoint` / `LoadCheckpoint`, `kMissionCheckpointBound` (packet `cc9_lua49_checkpoint`, cc9-lua49, 2026-10-11)
+
+cc13 reconstructed the checkpoint save, load and archive writer (docs/CC13_PROFILE_SAVE.md;
+`src/profile_checkpoint.cpp`). The two script bindings, `SaveCheckpoint` (`008ACB70`) and `LoadCheckpoint`
+(`008ACA30`), were unimplemented records in the mission Lua host (`src/mission_lua_host.cpp` 305-306). This packet
+binds them in `src/game_hosts_lua.cpp` behind `kMissionCheckpointBound`, committed OFF.
+
+| image | what | host |
+| --- | --- | --- |
+| `008ACB70` | the binding; argument 0 goes to `00438A00` on the profile manager (`00425C20`), then `PushBoolean(1)` and the result count | `GameMissionLuaHost::mission_checkpoint_binding(state, true)` |
+| `00438A00` -> `00438020` | `BSP_Chk_Save[id]` = the five fields plus a copy of the table; the archive text when `00A3E540` is set | `save_checkpoint_00438020` with an `ArchiveTextWriter` over an `ArchiveStringSink` |
+| `008ACA30` | `004379C0` on the calling context (`008ACB22`): the entry's copy or nil, then the result count | `load_checkpoint_004379c0` |
+
+**Substitutions, labelled in the source.**
+- **The id** is the mission script's file stem, not `game+2198h`.
+- **The record** is `00436690`'s defaults (unlock -1/-1/""), with the difficulty from `game+6ACh`.
+- **The play time** is 0.0.
+- **The archive** is written only beside the executable, as `checkpoint_<id>.txt` in the build or export tree. It is
+  never written to the game installation or a user profile, and nothing is written when the executable path is
+  unknown. `00A3E540` is treated as set.
+- **Not run:** `008ACB70`'s gamepad-force and input-manager calls.
+
+**Reach.** No installed script calls either binding.
+- The only caller is `luaWriteCheckpointData` in this installation's `commandhelpers.lua` (2024-10-29, line 16291).
+- No mission script calls `luaWriteCheckpointData`, `luaInitCheckpointSystem` or `LoadCheckpoint` (a whole
+  `scripts/` search).
+- So the binding is build-tested only, and every reference row is identical by construction. No pair is run beyond
+  the 300-frame smoke.

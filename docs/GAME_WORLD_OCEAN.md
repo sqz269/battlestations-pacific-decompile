@@ -370,3 +370,16 @@ only the touched fields and the host methods take `void*` because the classes ar
 - 00867790's child virtuals `+0x08`, `+0x28`, `+0x30` and the refcount protocol at `child+0x04`.
 - 0081B010, the array erase, treated here as a shift-down erase from its use.
 - The identity of `game+0x650`, `game+0x624` and `session+0xF4`/`+0x29C`.
+
+
+## Correction (2026-10-11, cc13-weather1)
+
+The object at `[game+19E8h]+3Ch` described above is the cloud manager, not the ocean
+(evidence in `docs/CC13_WEATHER_RENDER.md`). `00BBDDD0` is now `BSP_Atmosphere_UpdateClouds`
+(game+19E8h is the atmosphere built by `00BBDFF0`), `00BBD310` is
+`BSP_CloudManager_UpdateFrameAndInstances`, and the "shore-wave layers" at `+18h` are CloudInstance
+models updated by `00BBE8B0` (`BSP_CloudInstance_Update`); the "scroll" is their wind drift. The
+arithmetic recorded here stays valid. The real shore-wave resources (`ShoreWaveTextureSource0..2`,
+`00BBC740..00BBC900`) are a separate segment-93 path and are not affected. A scan of every literal
+`game+19E8h` load found no gameplay reader (buoyancy, ship motion, torpedo or depth-charge code) of
+this object. The C++ identifiers in `world_ocean.*` are kept unchanged; only comments were added.

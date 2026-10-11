@@ -278,10 +278,10 @@ bool load_input_names(lua_State* state, InputSettings& out, std::string& error) 
     while (lua_next(state, -2)) {
         InputNameRecord record;
         push_index(state, -1, 1);
-        record.primary = read_int(state, -1);
+        record.device_type = read_int(state, -1);
         lua_pop(state, 1);
         push_index(state, -1, 2);
-        record.secondary = read_int(state, -1);
+        record.key = read_int(state, -1);
         lua_pop(state, 1);
         out.input_names[read_string(state, -2)] = record;
         lua_pop(state, 1);

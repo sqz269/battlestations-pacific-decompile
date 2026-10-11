@@ -22,6 +22,8 @@
 // - Ground clearance: +4FCh is 0 from the constructor and nothing here sets it,
 //   so 0078FAF0 runs on a zero state and the height offset stays 0 (applied).
 
+#include "bsp/cc13_camera_controllers.hpp"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -33,6 +35,17 @@
 namespace bsp {
 
 inline constexpr std::size_t kMovieNoParent = ~std::size_t{0};
+
+// Packet cc9_lua49_movie_modifier (docs/CC13_CAMERA_CONTROLLERS.md 2, 4, 7, 12;
+// docs/SQUADRON_LAND_TASK.md 5fj). ON: 007A0EB0 builds a keyframe's `goaround`
+// modifier (007A1A29..007A1BB2, gated with `pos`/`polar` on camera key or named
+// postype at 007A1631..007A163C) and its `event` (007A1F94); 00795C10 calls the
+// modifier's slot +Ch at 00795CB7 with (clock - start, pose, dt) before 00795650;
+// 00798C80's tail 00798D38..00798D59 runs 00797ED0 over the look-at and camera
+// tracks, whose 0078E630 fires and deletes a triggered event. `gamecamera` and
+// `fpscamera` stay unsupported (they need 0079CBD0's game cameras). OFF: both
+// keys are counted as unsupported, as before.
+inline constexpr bool kMovieKeyframeModifierBound = true;   // ON: SQUADRON_LAND_TASK 5fj.1
 
 // 00799B00, 104h bytes. Field comments name the image offset.
 struct MovieKeyframe {
@@ -60,6 +73,10 @@ struct MovieKeyframe {
     float blend_f4{0.0f};
     int state_f8{0};                  // 0 waiting, 1 blending, 2 held, 3 retired
     std::size_t parent_1c{kMovieNoParent};
+    // +E4h, the modifier 00799DE0 stores; only `goaround` is built here.
+    std::shared_ptr<cc13cam::GoAroundModifier> modifier_e4;
+    // +ECh, the keyframe event 0078E540 stores and 0078E630 deletes once fired.
+    std::optional<cc13cam::KeyframeEvent> event_ec;
 };
 
 // One track, 84h bytes at camera+414h (look-at) or camera+498h (camera).
@@ -108,6 +125,14 @@ struct MovieCameraParentHost {
     // false when no Landscape answers. Read only for a `terrainavoid` keyframe.
     virtual bool ground_height_00903860(const std::array<float, 3>& point, float& out) = 0;
     virtual void unsupported(const char* what, std::uint32_t address) = 0;
+    // The keyframe events (kMovieKeyframeModifierBound). 00923810(entity, 1),
+    // the entity's +3Ch scene parent; the default answers "present".
+    virtual bool has_scene_parent_3c(std::size_t) { return true; }
+    // 00887E50(world+1A08h, 0, &name, 0, 0, -1): `_G[name]()`. The default
+    // records the call and runs nothing.
+    virtual void run_script_00887e50(const std::string&) {
+        unsupported("MovieKeyframeEvent::run_script", 0x00887e50u);
+    }
 };
 
 // One MovCamNew_AddPosition table as 007A0EB0 reads it.
@@ -125,6 +150,11 @@ struct MovieKeyframeInput {
     // Lua parse fills it only under kMovieTerrainAvoidBound; OFF lists the key
     // in unsupported_keys instead.
     std::optional<bool> terrainavoid;
+    // `position.modifier` and the table's `event`, as 007A0EB0's LuaObject
+    // wrappers see them. The Lua parse fills them only under
+    // kMovieKeyframeModifierBound; OFF lists both keys in unsupported_keys.
+    std::optional<cc13cam::ModifierLuaValue> modifier;
+    std::optional<cc13cam::ModifierLuaValue> event;
     std::vector<std::string> unsupported_keys;
 };
 
@@ -146,6 +176,12 @@ bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept
 // on entry to 00798C80.
 void movie_camera_store_step_draw_00798cd9(HudMovieCamera& camera, float dt,
                                            float draw) noexcept;
+// 00798D38..00798D59, the tail of 00798C80 on every step: 00797ED0 over the
+// look-at track (+414h) then the camera track (+498h). For each key not in
+// state 0 or 3, 0078E630 (the modifier's slot +14h is a no-op in every table).
+// Returns the events fired. Keys an event's script appends are visited too.
+int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
+                                    MovieCameraParentHost& host);
 // 0079A3B0 up to 0079B866. Returns false when a track is empty (0079BBD5).
 // On true, `world` is +74h after the 004134F0 copy and `fov` is 00B6FBB0's
 // argument, +410h / zoom.

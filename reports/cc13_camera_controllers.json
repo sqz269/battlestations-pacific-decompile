@@ -1,0 +1,205 @@
+{
+  "packet": "cc13_camera_controllers",
+  "doc": "docs/CC13_CAMERA_CONTROLLERS.md",
+  "steps": [
+    {
+      "address": "007a1b03",
+      "native": "007a0650",
+      "function": "007a0eb0",
+      "note": "goaround construct"
+    },
+    {
+      "address": "007a1b41",
+      "native": "007a06d0",
+      "function": "007a0eb0",
+      "note": "gamecamera construct(0)"
+    },
+    {
+      "address": "007a1b78",
+      "native": "007a06d0",
+      "function": "007a0eb0",
+      "note": "fpscamera construct(1)"
+    },
+    {
+      "address": "007a1ba1",
+      "native": "00799de0",
+      "function": "007a0eb0",
+      "note": "SetModifier"
+    },
+    {
+      "address": "0079cf8b",
+      "native": "0079cbd0",
+      "function": "0079cf80",
+      "note": "gamecamera Begin -> EnsureCamera"
+    },
+    {
+      "address": "00795fa6",
+      "native": "00792500",
+      "function": "00795ee0",
+      "note": "theta key in the scan"
+    },
+    {
+      "address": "00796008",
+      "native": "0078fcf0",
+      "function": "00795ee0",
+      "note": "ease"
+    },
+    {
+      "address": "007960c6",
+      "native": "00792610",
+      "function": "00795ee0",
+      "note": "rho key in the scan"
+    },
+    {
+      "address": "00796345",
+      "native": "0042aa00",
+      "function": "00795ee0",
+      "note": "fps angles"
+    },
+    {
+      "address": "0079639a",
+      "native": "007c7800",
+      "function": "00795ee0",
+      "note": "fps attach"
+    },
+    {
+      "address": "007a0572",
+      "native": "00605070",
+      "function": "007a0340",
+      "note": "wrap yaw"
+    },
+    {
+      "address": "007a0579",
+      "native": "00605070",
+      "function": "007a0340",
+      "note": "wrap pitch"
+    },
+    {
+      "address": "007a04e5",
+      "native": "005cd640",
+      "function": "007a0340",
+      "note": "deck array resize"
+    },
+    {
+      "address": "007a31b4",
+      "native": "007a0a30",
+      "function": "007a3100",
+      "note": "radius key push"
+    },
+    {
+      "address": "00791725",
+      "native": "00413920",
+      "function": "007916c0",
+      "note": "camera pose times parent inverse"
+    },
+    {
+      "address": "007a211b",
+      "native": "00799fa0",
+      "function": "007a0eb0",
+      "note": "noentity ctor"
+    },
+    {
+      "address": "007a21a1",
+      "native": "0079a040",
+      "function": "007a0eb0",
+      "note": "killed ctor"
+    },
+    {
+      "address": "007a222b",
+      "native": "0079a0e0",
+      "function": "007a0eb0",
+      "note": "sunk ctor"
+    },
+    {
+      "address": "007a20ef",
+      "native": "0079c000",
+      "function": "007a0eb0",
+      "note": "SetFunction"
+    },
+    {
+      "address": "0078e69a",
+      "native": "0078e540",
+      "function": "0078e630",
+      "note": "SetEvent(null) after fire"
+    },
+    {
+      "address": "00791561",
+      "native": "00887e50",
+      "function": "00791540",
+      "note": "script runner"
+    },
+    {
+      "address": "0079731a",
+      "native": "007b0610",
+      "function": "007972f0",
+      "note": "segment index"
+    },
+    {
+      "address": "0079747b",
+      "native": "007ad180",
+      "function": "007972f0",
+      "note": "set control point"
+    },
+    {
+      "address": "00797494",
+      "native": "007af150",
+      "function": "007972f0",
+      "note": "derive knots"
+    },
+    {
+      "address": "00797586",
+      "native": "007b04c0",
+      "function": "007972f0",
+      "note": "sample +464h path"
+    },
+    {
+      "address": "007975be",
+      "native": "00794070",
+      "function": "007972f0",
+      "note": "aim at point"
+    },
+    {
+      "address": "00797737",
+      "native": "007954a0",
+      "function": "007972f0",
+      "note": "record mode s"
+    },
+    {
+      "address": "007977b3",
+      "native": "0078fcf0",
+      "function": "007972f0",
+      "note": "ease"
+    },
+    {
+      "address": "00794b3a",
+      "native": "00794750",
+      "function": "00794910",
+      "note": "aim delta"
+    },
+    {
+      "address": "007951d1",
+      "native": "00794130",
+      "function": "00795180"
+    },
+    {
+      "address": "007951f8",
+      "native": "00794910",
+      "function": "00795180"
+    },
+    {
+      "address": "00794c16",
+      "native": "00793730",
+      "function": "00794b80"
+    },
+    {
+      "address": "00794deb",
+      "native": "00793800",
+      "function": "00794d60"
+    },
+    {
+      "address": "00790555",
+      "native": "00903860",
+      "function": "00790540"
+    }
+  ]
+}

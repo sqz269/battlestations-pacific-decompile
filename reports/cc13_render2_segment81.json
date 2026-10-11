@@ -1,0 +1,15 @@
+{
+ "packet": "cc13_render2_segment81",
+ "doc": "docs/CC13_TERRAIN_RENDER.md",
+ "steps": [
+  {"address": "00ae2acf", "native": "00ae0f10", "function": "00ae2450", "note": "bush quadtree root load"},
+  {"address": "00ae10c6", "native": "00ae0f10", "function": "00ae0f10", "note": "child 0 recursion"},
+  {"address": "00ae128a", "native": "00ae0f10", "function": "00ae0f10", "note": "child 3 recursion"},
+  {"address": "00ae56a2", "native": "00ae5550", "function": "00ae5550", "note": "child 0 recursion"},
+  {"address": "00ae580f", "native": "00ae5550", "function": "00ae5550", "note": "child 3 recursion"},
+  {"address": "00ae4046", "native": "00ae37f0", "function": "00ae4040", "note": "debug draw from the root"},
+  {"address": "00ae3eba", "native": "00ae37f0", "function": "00ae37f0", "note": "debug draw recursion"},
+  {"address": "00add8fa", "native": "00ada600", "function": "00add3f0", "note": "patch box to sphere"},
+  {"address": "00add6e5", "native": "00aedac0", "function": "00add3f0", "note": "33x33 patch grid"}
+ ]
+}
