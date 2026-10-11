@@ -1,0 +1,840 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abc020",
+    "end_address": "00abc026"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abc020",
+    "end_address": "00abc025",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abc020",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_GetTypeChain"
+   },
+   "result": {
+    "success": true,
+    "address": "00abc020",
+    "function_name": "BSP_GuiCurve_GetTypeChain",
+    "entry_point": "00abc020",
+    "body_size": 6,
+    "message": "Function created successfully at 00abc020",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_GetTypeChain' \u2014 main part 'GuiCurve_GetTypeChain' is not PascalCase. Expected: GuicurveGettypechain",
+     "Function name 'BSP_GuiCurve_GetTypeChain' \u2014 main part 'GuiCurve_GetTypeChain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_GetTypeChain' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abc020",
+   "end": "00abc026",
+   "name": "BSP_GuiCurve_GetTypeChain",
+   "after": "Function: BSP_GuiCurve_GetTypeChain at 00abc020\nSignature: undefined BSP_GuiCurve_GetTypeChain(void)\nEntry: 00abc020\nBody: 00abc020 - 00abc025"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abc030",
+    "end_address": "00abc036"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abc030",
+    "end_address": "00abc035",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abc030",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_GetTypeId"
+   },
+   "result": {
+    "success": true,
+    "address": "00abc030",
+    "function_name": "BSP_GuiCurve_GetTypeId",
+    "entry_point": "00abc030",
+    "body_size": 6,
+    "message": "Function created successfully at 00abc030",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_GetTypeId' \u2014 main part 'GuiCurve_GetTypeId' is not PascalCase. Expected: GuicurveGettypeid",
+     "Function name 'BSP_GuiCurve_GetTypeId' \u2014 main part 'GuiCurve_GetTypeId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_GetTypeId' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abc030",
+   "end": "00abc036",
+   "name": "BSP_GuiCurve_GetTypeId",
+   "after": "Function: BSP_GuiCurve_GetTypeId at 00abc030\nSignature: undefined BSP_GuiCurve_GetTypeId(void)\nEntry: 00abc030\nBody: 00abc030 - 00abc035"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abdfe0",
+    "end_address": "00abe008"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abdfe0",
+    "end_address": "00abe007",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abdfe0",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00abdfe0",
+    "function_name": "BSP_GuiCurve_IsKindOf",
+    "entry_point": "00abdfe0",
+    "body_size": 40,
+    "message": "Function created successfully at 00abdfe0",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_IsKindOf' \u2014 main part 'GuiCurve_IsKindOf' is not PascalCase. Expected: GuicurveIskindof",
+     "Function name 'BSP_GuiCurve_IsKindOf' \u2014 main part 'GuiCurve_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_IsKindOf' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abdfe0",
+   "end": "00abe008",
+   "name": "BSP_GuiCurve_IsKindOf",
+   "after": "Function: BSP_GuiCurve_IsKindOf at 00abdfe0\nSignature: undefined BSP_GuiCurve_IsKindOf(void)\nEntry: 00abdfe0\nBody: 00abdfe0 - 00abe007"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abcbd0",
+    "end_address": "00abcc17"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abcbd0",
+    "end_address": "00abcc16",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abcbd0",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_TypeIdInit_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00abcbd0",
+    "function_name": "BSP_GuiCurve_TypeIdInit_Provisional",
+    "entry_point": "00abcbd0",
+    "body_size": 71,
+    "message": "Function created successfully at 00abcbd0",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_TypeIdInit_Provisional' \u2014 main part 'GuiCurve_TypeIdInit_Provisional' is not PascalCase. Expected: GuicurveTypeidinitProvisional",
+     "Function name 'BSP_GuiCurve_TypeIdInit_Provisional' \u2014 main part 'GuiCurve_TypeIdInit_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_TypeIdInit_Provisional' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abcbd0",
+   "end": "00abcc17",
+   "name": "BSP_GuiCurve_TypeIdInit_Provisional",
+   "after": "Function: BSP_GuiCurve_TypeIdInit_Provisional at 00abcbd0\nSignature: undefined BSP_GuiCurve_TypeIdInit_Provisional(void)\nEntry: 00abcbd0\nBody: 00abcbd0 - 00abcc16"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abcc20",
+    "end_address": "00abcc69"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abcc20",
+    "end_address": "00abcc68",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abcc20",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_TypeIdInitReturn_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00abcc20",
+    "function_name": "BSP_GuiCurve_TypeIdInitReturn_Provisional",
+    "entry_point": "00abcc20",
+    "body_size": 73,
+    "message": "Function created successfully at 00abcc20",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_TypeIdInitReturn_Provisional' \u2014 main part 'GuiCurve_TypeIdInitReturn_Provisional' is not PascalCase. Expected: GuicurveTypeidinitreturnProvisional",
+     "Function name 'BSP_GuiCurve_TypeIdInitReturn_Provisional' \u2014 main part 'GuiCurve_TypeIdInitReturn_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_TypeIdInitReturn_Provisional' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abcc20",
+   "end": "00abcc69",
+   "name": "BSP_GuiCurve_TypeIdInitReturn_Provisional",
+   "after": "Function: BSP_GuiCurve_TypeIdInitReturn_Provisional at 00abcc20\nSignature: undefined BSP_GuiCurve_TypeIdInitReturn_Provisional(void)\nEntry: 00abcc20\nBody: 00abcc20 - 00abcc68"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00abcc70",
+    "end_address": "00abcecc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00abcc70",
+    "end_address": "00abcecb",
+    "bytes_disassembled": 604,
+    "message": "Successfully disassembled 604 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00abcc70",
+    "disassemble_first": false,
+    "name": "BSP_GuiCurve_CreateGeometry"
+   },
+   "result": {
+    "success": true,
+    "address": "00abcc70",
+    "function_name": "BSP_GuiCurve_CreateGeometry",
+    "entry_point": "00abcc70",
+    "body_size": 604,
+    "message": "Function created successfully at 00abcc70",
+    "warnings": [
+     "Function name 'BSP_GuiCurve_CreateGeometry' \u2014 main part 'GuiCurve_CreateGeometry' is not PascalCase. Expected: GuicurveCreategeometry",
+     "Function name 'BSP_GuiCurve_CreateGeometry' \u2014 main part 'GuiCurve_CreateGeometry' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiCurve_CreateGeometry' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00abcc70",
+   "end": "00abcecc",
+   "name": "BSP_GuiCurve_CreateGeometry",
+   "after": "Function: BSP_GuiCurve_CreateGeometry at 00abcc70\nSignature: undefined BSP_GuiCurve_CreateGeometry(void)\nEntry: 00abcc70\nBody: 00abcc70 - 00abcecb"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac1b90",
+    "end_address": "00ac1b96"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac1b90",
+    "end_address": "00ac1b95",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac1b90",
+    "disassemble_first": false,
+    "name": "BSP_GuiLine_GetTypeChain"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac1b90",
+    "function_name": "BSP_GuiLine_GetTypeChain",
+    "entry_point": "00ac1b90",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac1b90",
+    "warnings": [
+     "Function name 'BSP_GuiLine_GetTypeChain' \u2014 main part 'GuiLine_GetTypeChain' is not PascalCase. Expected: GuilineGettypechain",
+     "Function name 'BSP_GuiLine_GetTypeChain' \u2014 main part 'GuiLine_GetTypeChain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLine_GetTypeChain' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac1b90",
+   "end": "00ac1b96",
+   "name": "BSP_GuiLine_GetTypeChain",
+   "after": "Function: BSP_GuiLine_GetTypeChain at 00ac1b90\nSignature: undefined BSP_GuiLine_GetTypeChain(void)\nEntry: 00ac1b90\nBody: 00ac1b90 - 00ac1b95"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac1ba0",
+    "end_address": "00ac1ba6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac1ba0",
+    "end_address": "00ac1ba5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac1ba0",
+    "disassemble_first": false,
+    "name": "BSP_GuiLine_GetTypeId"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac1ba0",
+    "function_name": "BSP_GuiLine_GetTypeId",
+    "entry_point": "00ac1ba0",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac1ba0",
+    "warnings": [
+     "Function name 'BSP_GuiLine_GetTypeId' \u2014 main part 'GuiLine_GetTypeId' is not PascalCase. Expected: GuilineGettypeid",
+     "Function name 'BSP_GuiLine_GetTypeId' \u2014 main part 'GuiLine_GetTypeId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLine_GetTypeId' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac1ba0",
+   "end": "00ac1ba6",
+   "name": "BSP_GuiLine_GetTypeId",
+   "after": "Function: BSP_GuiLine_GetTypeId at 00ac1ba0\nSignature: undefined BSP_GuiLine_GetTypeId(void)\nEntry: 00ac1ba0\nBody: 00ac1ba0 - 00ac1ba5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac2920",
+    "end_address": "00ac2948"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac2920",
+    "end_address": "00ac2947",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac2920",
+    "disassemble_first": false,
+    "name": "BSP_GuiLine_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac2920",
+    "function_name": "BSP_GuiLine_IsKindOf",
+    "entry_point": "00ac2920",
+    "body_size": 40,
+    "message": "Function created successfully at 00ac2920",
+    "warnings": [
+     "Function name 'BSP_GuiLine_IsKindOf' \u2014 main part 'GuiLine_IsKindOf' is not PascalCase. Expected: GuilineIskindof",
+     "Function name 'BSP_GuiLine_IsKindOf' \u2014 main part 'GuiLine_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLine_IsKindOf' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac2920",
+   "end": "00ac2948",
+   "name": "BSP_GuiLine_IsKindOf",
+   "after": "Function: BSP_GuiLine_IsKindOf at 00ac2920\nSignature: undefined BSP_GuiLine_IsKindOf(void)\nEntry: 00ac2920\nBody: 00ac2920 - 00ac2947"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7c00",
+    "end_address": "00ac7c06"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7c00",
+    "end_address": "00ac7c05",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7c00",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_GetTypeChain"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7c00",
+    "function_name": "BSP_GuiScrollbar_GetTypeChain",
+    "entry_point": "00ac7c00",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac7c00",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_GetTypeChain' \u2014 main part 'GuiScrollbar_GetTypeChain' is not PascalCase. Expected: GuiscrollbarGettypechain",
+     "Function name 'BSP_GuiScrollbar_GetTypeChain' \u2014 main part 'GuiScrollbar_GetTypeChain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_GetTypeChain' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7c00",
+   "end": "00ac7c06",
+   "name": "BSP_GuiScrollbar_GetTypeChain",
+   "after": "Function: BSP_GuiScrollbar_GetTypeChain at 00ac7c00\nSignature: undefined BSP_GuiScrollbar_GetTypeChain(void)\nEntry: 00ac7c00\nBody: 00ac7c00 - 00ac7c05"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7c10",
+    "end_address": "00ac7c16"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7c10",
+    "end_address": "00ac7c15",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7c10",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_GetTypeId"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7c10",
+    "function_name": "BSP_GuiScrollbar_GetTypeId",
+    "entry_point": "00ac7c10",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac7c10",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_GetTypeId' \u2014 main part 'GuiScrollbar_GetTypeId' is not PascalCase. Expected: GuiscrollbarGettypeid",
+     "Function name 'BSP_GuiScrollbar_GetTypeId' \u2014 main part 'GuiScrollbar_GetTypeId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_GetTypeId' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7c10",
+   "end": "00ac7c16",
+   "name": "BSP_GuiScrollbar_GetTypeId",
+   "after": "Function: BSP_GuiScrollbar_GetTypeId at 00ac7c10\nSignature: undefined BSP_GuiScrollbar_GetTypeId(void)\nEntry: 00ac7c10\nBody: 00ac7c10 - 00ac7c15"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7c60",
+    "end_address": "00ac7c88"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7c60",
+    "end_address": "00ac7c87",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7c60",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7c60",
+    "function_name": "BSP_GuiScrollbar_IsKindOf",
+    "entry_point": "00ac7c60",
+    "body_size": 40,
+    "message": "Function created successfully at 00ac7c60",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_IsKindOf' \u2014 main part 'GuiScrollbar_IsKindOf' is not PascalCase. Expected: GuiscrollbarIskindof",
+     "Function name 'BSP_GuiScrollbar_IsKindOf' \u2014 main part 'GuiScrollbar_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_IsKindOf' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7c60",
+   "end": "00ac7c88",
+   "name": "BSP_GuiScrollbar_IsKindOf",
+   "after": "Function: BSP_GuiScrollbar_IsKindOf at 00ac7c60\nSignature: undefined BSP_GuiScrollbar_IsKindOf(void)\nEntry: 00ac7c60\nBody: 00ac7c60 - 00ac7c87"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7c90",
+    "end_address": "00ac7c91"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7c90",
+    "end_address": "00ac7c90",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7c90",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_CreateGeometryNoOp"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7c90",
+    "function_name": "BSP_GuiScrollbar_CreateGeometryNoOp",
+    "entry_point": "00ac7c90",
+    "body_size": 1,
+    "message": "Function created successfully at 00ac7c90",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_CreateGeometryNoOp' \u2014 main part 'GuiScrollbar_CreateGeometryNoOp' is not PascalCase. Expected: GuiscrollbarCreategeometrynoop",
+     "Function name 'BSP_GuiScrollbar_CreateGeometryNoOp' \u2014 main part 'GuiScrollbar_CreateGeometryNoOp' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_CreateGeometryNoOp' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7c90",
+   "end": "00ac7c91",
+   "name": "BSP_GuiScrollbar_CreateGeometryNoOp",
+   "after": "Function: BSP_GuiScrollbar_CreateGeometryNoOp at 00ac7c90\nSignature: undefined BSP_GuiScrollbar_CreateGeometryNoOp(void)\nEntry: 00ac7c90\nBody: 00ac7c90 - 00ac7c90"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac77a0",
+    "end_address": "00ac77a6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac77a0",
+    "end_address": "00ac77a5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac77a0",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_GetTypeChain"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac77a0",
+    "function_name": "BSP_GuiProgbar_GetTypeChain",
+    "entry_point": "00ac77a0",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac77a0",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_GetTypeChain' \u2014 main part 'GuiProgbar_GetTypeChain' is not PascalCase. Expected: GuiprogbarGettypechain",
+     "Function name 'BSP_GuiProgbar_GetTypeChain' \u2014 main part 'GuiProgbar_GetTypeChain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_GetTypeChain' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac77a0",
+   "end": "00ac77a6",
+   "name": "BSP_GuiProgbar_GetTypeChain",
+   "after": "Function: BSP_GuiProgbar_GetTypeChain at 00ac77a0\nSignature: undefined BSP_GuiProgbar_GetTypeChain(void)\nEntry: 00ac77a0\nBody: 00ac77a0 - 00ac77a5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac77b0",
+    "end_address": "00ac77b6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac77b0",
+    "end_address": "00ac77b5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac77b0",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_GetTypeId"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac77b0",
+    "function_name": "BSP_GuiProgbar_GetTypeId",
+    "entry_point": "00ac77b0",
+    "body_size": 6,
+    "message": "Function created successfully at 00ac77b0",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_GetTypeId' \u2014 main part 'GuiProgbar_GetTypeId' is not PascalCase. Expected: GuiprogbarGettypeid",
+     "Function name 'BSP_GuiProgbar_GetTypeId' \u2014 main part 'GuiProgbar_GetTypeId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_GetTypeId' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac77b0",
+   "end": "00ac77b6",
+   "name": "BSP_GuiProgbar_GetTypeId",
+   "after": "Function: BSP_GuiProgbar_GetTypeId at 00ac77b0\nSignature: undefined BSP_GuiProgbar_GetTypeId(void)\nEntry: 00ac77b0\nBody: 00ac77b0 - 00ac77b5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac77f0",
+    "end_address": "00ac7818"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac77f0",
+    "end_address": "00ac7817",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac77f0",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac77f0",
+    "function_name": "BSP_GuiProgbar_IsKindOf",
+    "entry_point": "00ac77f0",
+    "body_size": 40,
+    "message": "Function created successfully at 00ac77f0",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_IsKindOf' \u2014 main part 'GuiProgbar_IsKindOf' is not PascalCase. Expected: GuiprogbarIskindof",
+     "Function name 'BSP_GuiProgbar_IsKindOf' \u2014 main part 'GuiProgbar_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_IsKindOf' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac77f0",
+   "end": "00ac7818",
+   "name": "BSP_GuiProgbar_IsKindOf",
+   "after": "Function: BSP_GuiProgbar_IsKindOf at 00ac77f0\nSignature: undefined BSP_GuiProgbar_IsKindOf(void)\nEntry: 00ac77f0\nBody: 00ac77f0 - 00ac7817"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7820",
+    "end_address": "00ac7827"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7820",
+    "end_address": "00ac7826",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7820",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_GetValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7820",
+    "function_name": "BSP_GuiProgbar_GetValue",
+    "entry_point": "00ac7820",
+    "body_size": 7,
+    "message": "Function created successfully at 00ac7820",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_GetValue' \u2014 main part 'GuiProgbar_GetValue' is not PascalCase. Expected: GuiprogbarGetvalue",
+     "Function name 'BSP_GuiProgbar_GetValue' \u2014 main part 'GuiProgbar_GetValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_GetValue' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7820",
+   "end": "00ac7827",
+   "name": "BSP_GuiProgbar_GetValue",
+   "after": "Function: BSP_GuiProgbar_GetValue at 00ac7820\nSignature: undefined BSP_GuiProgbar_GetValue(void)\nEntry: 00ac7820\nBody: 00ac7820 - 00ac7826"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7830",
+    "end_address": "00ac783b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7830",
+    "end_address": "00ac783a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7830",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_DestroyThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7830",
+    "function_name": "BSP_GuiProgbar_DestroyThunk",
+    "entry_point": "00ac7830",
+    "body_size": 11,
+    "message": "Function created successfully at 00ac7830",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_DestroyThunk' \u2014 main part 'GuiProgbar_DestroyThunk' is not PascalCase. Expected: GuiprogbarDestroythunk",
+     "Function name 'BSP_GuiProgbar_DestroyThunk' \u2014 main part 'GuiProgbar_DestroyThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_DestroyThunk' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7830",
+   "end": "00ac783b",
+   "name": "BSP_GuiProgbar_DestroyThunk",
+   "after": "Function: BSP_GuiProgbar_DestroyThunk at 00ac7830\nSignature: undefined BSP_GuiProgbar_DestroyThunk(void)\nEntry: 00ac7830\nBody: 00ac7830 - 00ac783a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7870",
+    "end_address": "00ac78d6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7870",
+    "end_address": "00ac78d5",
+    "bytes_disassembled": 102,
+    "message": "Successfully disassembled 102 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7870",
+    "disassemble_first": false,
+    "name": "BSP_GuiProgbar_SetValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7870",
+    "function_name": "BSP_GuiProgbar_SetValue",
+    "entry_point": "00ac7870",
+    "body_size": 102,
+    "message": "Function created successfully at 00ac7870",
+    "warnings": [
+     "Function name 'BSP_GuiProgbar_SetValue' \u2014 main part 'GuiProgbar_SetValue' is not PascalCase. Expected: GuiprogbarSetvalue",
+     "Function name 'BSP_GuiProgbar_SetValue' \u2014 main part 'GuiProgbar_SetValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiProgbar_SetValue' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7870",
+   "end": "00ac78d6",
+   "name": "BSP_GuiProgbar_SetValue",
+   "after": "Function: BSP_GuiProgbar_SetValue at 00ac7870\nSignature: undefined BSP_GuiProgbar_SetValue(void)\nEntry: 00ac7870\nBody: 00ac7870 - 00ac78d5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac7ca0",
+    "end_address": "00ac7cab"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac7ca0",
+    "end_address": "00ac7caa",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac7ca0",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_DestroyThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac7ca0",
+    "function_name": "BSP_GuiScrollbar_DestroyThunk",
+    "entry_point": "00ac7ca0",
+    "body_size": 11,
+    "message": "Function created successfully at 00ac7ca0",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_DestroyThunk' \u2014 main part 'GuiScrollbar_DestroyThunk' is not PascalCase. Expected: GuiscrollbarDestroythunk",
+     "Function name 'BSP_GuiScrollbar_DestroyThunk' \u2014 main part 'GuiScrollbar_DestroyThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_DestroyThunk' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac7ca0",
+   "end": "00ac7cab",
+   "name": "BSP_GuiScrollbar_DestroyThunk",
+   "after": "Function: BSP_GuiScrollbar_DestroyThunk at 00ac7ca0\nSignature: undefined BSP_GuiScrollbar_DestroyThunk(void)\nEntry: 00ac7ca0\nBody: 00ac7ca0 - 00ac7caa"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "packet": "cc13_gui_render",
+ "doc": "docs/CC13_GUI_RENDER.md",
+ "steps": [
+  {"address": "00abe5cf", "native": "00abdd80", "function": "00abe1d0", "note": "Curve ReadProperties applies the texture"},
+  {"address": "00abe2e9", "native": "004222c0", "function": "00abe1d0", "note": "PosArray x,y pushed into the +130h vector"},
+  {"address": "00abe234", "native": "00818030", "function": "00abe1d0", "note": "width list +F8h resized to 0"},
+  {"address": "00abd23e", "native": "00bf7030", "function": "00abced0", "note": "chord square root"},
+  {"address": "00abd129", "native": "00533fa0", "function": "00abced0", "note": "draw section created on rebuild"},
+  {"address": "005a3a52", "native": "00abca10", "note": "gameplay rebuild of the curve control points"},
+  {"address": "005a3955", "native": "00abc920", "note": "gameplay clear"},
+  {"address": "005a39a3", "native": "00abc970", "note": "gameplay add point"},
+  {"address": "00ac2a03", "native": "00ac2690", "function": "00ac29d0", "note": "Line flush grows the buffers"},
+  {"address": "00ac2c88", "native": "00b865a0", "function": "00ac29d0", "note": "vertex layout rebuild after the flush"},
+  {"address": "00ac8623", "native": "00bf7fbf", "function": "00ac85a0", "note": "Alignment vs Vertical"},
+  {"address": "00ac86e7", "native": "00ac7d80", "function": "00ac85a0", "note": "SetMinimum after the read"},
+  {"address": "00ac8718", "native": "00ac7d00", "function": "00ac85a0", "note": "SetValue(max) clamp"},
+  {"address": "00ac8a63", "native": "00ac7d00", "function": "00ac8890", "note": "OnLoaded resets to the minimum"},
+  {"address": "00ac8ae4", "native": "00aaa2b0", "function": "00ac8a80", "note": "_BackArrow_Icon lookup"},
+  {"address": "00ac8c81", "native": "00aa7d00", "function": "00ac8a80", "note": "back arrow placed at 0"}
+ ]
+}
