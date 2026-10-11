@@ -52,7 +52,7 @@ a neutral name. The session-message vtable 00CEB138 (type 0DDh = 221, writer: by
 library 00517280/00515B40/00517300/00509D70, menu prompt 00532D70/00530640, formation 00533B30,
 control layout 00527E30, credits 0052D200, three observer `OnReleased` slots), the shared
 `BSP_GuiWidgetListener_Empty1C` (004FA170), the browser's `SetPage` 0057A0F0 and `PollSessionList`
-0057B530. 0056BDA0 (browser BindLayout) lies in segment 18 and was named without a lease
+0057B530 (its evidence was corrected later, see below). 0056BDA0 (browser BindLayout) lies in segment 18 and was named without a lease
 conflict (unleased).
 
 ## Session browser (screen 1Ch)
@@ -98,6 +98,12 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   request and pushes 14h; mode 6 with 00A39750 == 217h calls 0076A7A0(+24h) and SetPage(2).
 - **0057AE50 JoinSelected** and **0057AEF0 OnListboxActivate** (reconstructed, build-tested): online
   only, a selected index inside the record vector, 0057A9C0(record, 0).
+- **0057B530 PollSessionList** (reconstructed, build-tested): takes the client's +94h result vector.
+  When the dirty byte 00E08701 was set (it is cleared) and the vector is non-empty it joins result 0
+  (00566370(0), 0057A9C0(record, 0)). Otherwise, with 00E08700 set, it resets +274h, clears the
+  `std::list` at +278h (0056A090, relink, +280h = 0) and +288h and tail-jumps 0057AC10; otherwise it
+  clears 00E08702 and shows the results (SetPage 1). This corrects docs/MULTI_MENU_SCREENS.md, which
+  read the function as rebuilding the screen's own record list.
 
 - **0056EE00 FilterValueDown / 0056EFB0 FilterValueUp / 0056ED20 SetFilterValueText** (reconstructed,
   build-tested): the selected row of the filter list +34h picks the edit byte +19h+row. Rows <= 4 (a
@@ -144,15 +150,24 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   every non-null entry of the +14h array (+18h count) and +10h with 0052B080, then 00529810.
 - **00517280** tactical-library list activate: a row whose +28h text equals `99999`
   (00425850, case-insensitive) opens 00515E00; otherwise the float +438h is pulled to within
-  0.0021 (00CEC168) of the row count +434h.
+  0.0021 (00CEC168) of the index word +434h (the first dword of the +434h selector, whose
+  0x6C-byte records 004FA890 indexes).
 
-- **00515BC0 Leave / 00515E00 Back** (tactical library, reconstructed, build-tested): online with both
-  front-end managers present the screen acts only when 00687860(0Bh, 0) is true. An open view
-  (+90h == 1) is closed through 00511B40 plus the order-of-battle (kind 5, 004FFF20) or unlocks (kind
-  6, 004FFD00) page refresh or, for kind 2, the command bar (0, "", 0), (0A7h, `globals.3dview`, 1),
-  (0B3h, `globals.navigate`, 1), (0B2h, `globals.scroll_menu`, 1), (0A3h, `globals.back`, 2). Back
-  stops there; Leave (and Back with no open view) then pops the request interface online, or offline
-  sets 00E08874 = 0Bh + (+9Ch != 0) and pushes interface request (1, 0).
+Tactical-library view mode: +90h is 0 for the 2D information panel and 1 for the 3D model view.
+
+- **00511B40 ToggleView / 00514C20 SwitchView** (reconstructed, build-tested): 00511B40 flips +90h,
+  hiding the panel widgets +508h/+50Ch/+510h/+518h for the model view and showing them again (then
+  tail-jumping 00510C20) for the panel. 00514C20 toggles and refreshes the new mode: kinds 5/6 store
+  the selected record's +48h field (004FA890 on +434h) in +4B0h and redraw the order-of-battle or
+  unlocks page; kind 2 rebuilds the command bar with `globals.2dview` in the model view and
+  `globals.3dview` in the panel; the model view then loads the vehicle model (0050AA10).
+- **00515BC0 Leave / 00515E00 Back** (reconstructed, build-tested): online with both front-end
+  managers present the screen acts only when 00687860(0Bh, 0) is true. In the model view (+90h == 1)
+  they switch back to the panel through 00511B40 plus the order-of-battle (kind 5, 004FFF20) or
+  unlocks (kind 6, 004FFD00) page or, for kind 2, the command bar (0, "", 0), (0A7h,
+  `globals.3dview`, 1), (0B3h, `globals.navigate`, 1), (0B2h, `globals.scroll_menu`, 1), (0A3h,
+  `globals.back`, 2). Back stops there; Leave (and Back in the panel) then pops the request interface
+  online, or offline sets 00E08874 = 0Bh + (+9Ch != 0) and pushes interface request (1, 0).
 
 ## Front-end frame setters (segment 12)
 
@@ -177,7 +192,7 @@ library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model p
 0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
 the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
 
-Call sites: `reports/cc13_menu_screens_2.json`, 213 rows, `tools/verify_report_calls.py`: 0 failed.
+Call sites: `reports/cc13_menu_screens_2.json`, 233 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 
@@ -186,3 +201,33 @@ Call sites: `reports/cc13_menu_screens_2.json`, 213 rows, `tools/verify_report_c
 - The browser's row builders (00576D20, 005789C0, 00579980, 00577650), 0056DD80, 0056E3E0,
   0057A9C0, 0057AC10 and the HandleGuiEvent 0057AF20 were not read in full.
 - Screen 23h is not in any interface list of docs/IN_MISSION_INTERFACE_MANAGER.md's table.
+
+## Handoff (cc13-menus4, 2026-10-11)
+
+Commits on agent/cc13-menus4 (see `git log`): slot definitions and 108 names, 35 helper names plus
+the frame setters, the browser filter/command-bar work, HandleGuiEvent/credits exit, and the poll and
+view-toggle batch, with origin/main merged once. `scripts/build.ps1` passes; 233 call rows, 0 failed.
+30 functions reconstructed and build-tested in `src/menu_screens_2.cpp` (12 browser, 2 credits, 4
+observed-unit screens, 3 HUD counters, 5 tactical library, 4 front-end frame); none ran in `bsp_game`.
+Helper scripts are in the worktree's `local/` with the `m4_` prefix (`m4_scan.py`, `m4_batch.py`,
+`m4_ctor.py` vtables per constructor, `m4_info.py` one-line function summaries, `m4_holes.py`,
+`m4_rd.py` image constants, `m4_names1.py`/`m4_names2.py`).
+
+Open, in order of value:
+
+1. Session browser: JoinSession 0057A9C0 (lobby options copy, the `sessionname` Lua global, a
+   session block copied into *(game+207Ch)+96Ch..+9A4h, mode changes) and FinishJoin 0057AC10; the row
+   builders 00576D20/005789C0/00579980/00577650; filter rows 0056D9A0/0056DD80; PrepareEnter 00570300;
+   selection-changed 005787E0. The browser's segment-18 helpers (00568930 layout, 00568CB0 back from
+   results, 00568D40 XUID, 00568DF0, 0056AAD0, 0056AA70, 0056AC40, 0056B610, BindLayout 0056BDA0) are
+   outside these leases; segment 18 (00568CB0..0056D660) is unassigned. The widget-listener slots
+   00568A30 (+0Ch) and 00568B60 (+18h) of vtable 00CEF100 lie inside Ghidra's body of 00568930: check
+   containment (two checks: range and padding) before defining them.
+2. Tactical library: Register 0050FDB0, Enter 00511F40 (11488 bytes), Update 005162B0 (4048),
+   HandleGuiEvent 00517300 (six-way switch at 00517600), selection changed 00515B40, the loaders.
+3. Credits Enter 0052EE30 and Register 0052FFC0 (Credits.lua, item styles 0052D9C0).
+4. HUD screens: formation Enter/Exit/Update (0053A4D0, 00536800, 0053A8E0, 4333 bytes), frame-stats
+   Register 0053C740, menu-prompt Exit 00530970. The free-camera Enter/Update (0053DD90, 00540390)
+   build camera matrices; coordinate with the camera lane first.
+5. Left unnamed: 005347F0 (vtable 00CED548 slot +0Ch, tests 78h/49h/46h), 00519340 (unit vtables
+   +130h, returns +3ACh), 0057D3E0 (00CEFC24 run, `XOR AL,AL; RET 8`).

@@ -202,7 +202,29 @@ void session_browser_join_selected_0057ae50(SessionBrowserState&, SessionBrowser
     // 0057AEB9..0057AEC4: the unsigned compare JAE.
     if (static_cast<std::uint32_t>(host.list_selected_index_00a9c920()) >= count) return;
     const std::int32_t index = host.list_absolute_selection_005661c0();  // 0057AECB
-    host.join_session_0057a9c0(static_cast<std::size_t>(index), 0);  // 0057AEDB, RET 8
+    host.join_session_0057a9c0(false, static_cast<std::size_t>(index), 0);  // 0057AEDB, RET 8
+}
+
+// 0057B530, EDI = screen, EBX = 0.
+void session_browser_poll_session_list_0057b530(SessionBrowserState& screen, SessionBrowserHost& host) {
+    host.session_call(0x94);                                         // 0057B535..0057B543, keeps the vector
+    SessionSearchRequest& request = host.search_request_e08700();
+    if (request.dirty_e08701) {                                      // 0057B547..0057B574
+        request.dirty_e08701 = false;
+        if (host.client_result_count_94() != 0) {
+            host.join_session_0057a9c0(true, 0, 0);                  // 0057B576..0057B580: 00566370(0)
+            return;
+        }
+    }
+    if (request.flag_e08700) {                                       // 0057B589..0057B5D5
+        screen.field_274 = -1;
+        host.clear_search_list_0056a090();
+        screen.join_cancel_requested = false;                        // +288h
+        host.join_finished_0057ac10();                               // tail JMP
+        return;
+    }
+    request.refresh_target_e08702 = false;                           // 0057B5DA..0057B5E2
+    session_browser_set_page_0057a0f0(screen, 1, host);              // 0057B5E8..0057B5EC
 }
 
 // 0057AEF0, listbox-listener slot +04h, ECX = screen+8, RET 8.
@@ -314,7 +336,7 @@ void session_browser_update_0057b600(SessionBrowserState& screen, float seconds,
             screen.poll_timer = remaining;
             if (!(0.0F < remaining)) host.session_call(0x8C);        // FCOMIP, JC skips
         }
-        if (!host.session_query(0x90)) host.poll_session_list_0057b530();
+        if (!host.session_query(0x90)) session_browser_poll_session_list_0057b530(screen, host);
         return;
     }
 
@@ -740,7 +762,7 @@ void tactical_library_on_listbox_activate_00517280(TacticalLibraryScrollState& s
     }
     // 005172B3..005172E9: the count is FILD-ed and rounded to float in the
     // argument slot; FCOMI decides each store.
-    const float count = static_cast<float>(screen.row_count);
+    const float count = static_cast<float>(screen.current_index);
     if (count > screen.scroll_value) screen.scroll_value = static_cast<float>(count - kTacticalLibraryScrollStep);
     if (screen.scroll_value > count) screen.scroll_value = static_cast<float>(count + kTacticalLibraryScrollStep);
 }
@@ -823,8 +845,8 @@ bool tactical_library_may_navigate(TacticalLibraryNavHost& host) {
 }
 
 // 00515C1A..00515CF0 (00515BC0) and the same block in 00515E00.
-void tactical_library_close_view(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
-    host.close_view_00511b40();
+void tactical_library_leave_3d_view(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
+    host.toggle_view_00511b40();
     if (screen.entry_kind_94 == 5) host.show_order_of_battle_page_004fff20();
     if (screen.entry_kind_94 == 6) host.show_unlocks_page_004ffd00();
     if (screen.entry_kind_94 == 2) {
@@ -841,9 +863,45 @@ void tactical_library_close_view(const TacticalLibraryNavState& screen, Tactical
 
 }  // namespace
 
+void tactical_library_toggle_view_00511b40(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host) {
+    constexpr std::array<std::uint16_t, 4> kPanels{0x508, 0x50C, 0x510, 0x518};
+    if (screen.view_90 == 0) {                                       // 00511B43..00511B91
+        screen.view_90 = 1;
+        for (const std::uint16_t offset : kPanels) host.panel_widget_virtual_34(offset, 0);
+        return;
+    }
+    if (screen.view_90 != 1) return;                                 // 00511B95..00511B98
+    screen.view_90 = 0;                                              // 00511B9A..00511BDE
+    for (const std::uint16_t offset : kPanels) host.panel_widget_virtual_34(offset, 1);
+    host.refresh_entry_00510c20();                                   // 00511BE3 tail JMP
+}
+
+void tactical_library_switch_view_00514c20(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host) {
+    tactical_library_toggle_view_00511b40(screen, host);             // 00514C41
+    const bool model_view = screen.view_90 == 1;                     // 00514C4C / 00514E3B
+    if (!model_view && screen.view_90 != 0) return;
+    if (screen.entry_kind_94 == 5 || screen.entry_kind_94 == 6) {   // 00514C5B..00514CB2, 00514E49..00514E92
+        host.set_field_4b0(host.selector_434_field_48_004fa890());
+        if (screen.entry_kind_94 == 5) host.show_order_of_battle_page_004fff20();
+        else host.show_unlocks_page_004ffd00();
+        if (model_view) host.load_vehicle_model_0050aa10();
+        return;
+    }
+    if (screen.entry_kind_94 == 2) {                                 // 00514CC7..00514D68, 00514EA7..00514F48
+        host.rebuild_command_bar_0054b530({{
+            {0x00, "", 0},
+            {0xA7, model_view ? "globals.2dview" : "globals.3dview", 1},
+            {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1},
+            {0xA3, "globals.back", 2},
+        }});
+    }
+    if (model_view) host.load_vehicle_model_0050aa10();              // 00514E24..00514E26
+}
+
 void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
     if (!tactical_library_may_navigate(host)) return;
-    if (screen.view_90 == 1) tactical_library_close_view(screen, host);
+    if (screen.view_90 == 1) tactical_library_leave_3d_view(screen, host);
     // 00515D9F..00515DE6.
     if (host.online_1fe4()) {
         host.pop_request_interface_006881f0();
@@ -856,7 +914,7 @@ void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, Tact
 void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
     if (!tactical_library_may_navigate(host)) return;
     if (screen.view_90 == 1) {
-        tactical_library_close_view(screen, host);
+        tactical_library_leave_3d_view(screen, host);
         return;
     }
     tactical_library_leave_00515bc0(screen, host);                   // 00515FEF

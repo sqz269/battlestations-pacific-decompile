@@ -73,6 +73,7 @@ struct SessionBrowserState {
 // The global block 00E08700.. handed to the session client's +88h virtual.
 struct SessionSearchRequest {
     bool flag_e08700{};              // 00E08700, tested by the join wait
+    bool dirty_e08701{};             // 00E08701, set when the client's result list changed
     bool refresh_target_e08702{};    // 00E08702
     std::uint32_t target_e08710{};   // 00E08710
     std::uint32_t target_e08714{};   // 00E08714
@@ -155,14 +156,17 @@ struct SessionBrowserHost {
     virtual void select_first_0056aa70() = 0;              // arg = list +30h
     virtual void reset_search_0056ac40() = 0;              // ECX = screen+278h
     virtual void scroll_follow_0056b610() = 0;             // (screen+1E4h, list +30h, widget +84h, 0)
-    virtual void poll_session_list_0057b530() = 0;
     virtual void back_from_results_00568cb0() = 0;
     virtual void list_action_00568df0(std::int32_t arg) = 0;
     virtual void filter_left_0056ee00() = 0;
     virtual void filter_right_0056efb0() = 0;
     virtual void list_left_0056aad0() = 0;
     virtual std::uint64_t selected_player_xuid_00568d40() = 0;
-    virtual void join_session_0057a9c0(std::size_t record_index, std::int32_t arg) = 0;
+    // 0057A9C0(record, arg): the record comes from the screen's vector +2A0h (005663B0) or from the
+    // client's +94h result vector (00566370).
+    virtual void join_session_0057a9c0(bool from_client_results, std::size_t index, std::int32_t arg) = 0;
+    virtual std::size_t client_result_count_94() = 0;     // size of the vector the last +94h call returned
+    virtual void clear_search_list_0056a090() = 0;        // list +278h: erase all, relink, +280h = 0
     virtual void join_finished_0057ac10() = 0;
 };
 
@@ -174,6 +178,8 @@ void session_browser_exit_0056dcb0(SessionBrowserState& screen, SessionBrowserHo
 void session_browser_set_page_0057a0f0(SessionBrowserState& screen, std::int32_t page, SessionBrowserHost& host);
 // 0057B600: slot +20h, __thiscall(screen, float seconds), RET 4.
 void session_browser_update_0057b600(SessionBrowserState& screen, float seconds, SessionBrowserHost& host);
+// 0057B530: __thiscall(screen), RET; the page-0 poll once the client reports idle.
+void session_browser_poll_session_list_0057b530(SessionBrowserState& screen, SessionBrowserHost& host);
 // 0057AE50: __thiscall(screen), RET; joins the selected listed session.
 void session_browser_join_selected_0057ae50(SessionBrowserState& screen, SessionBrowserHost& host);
 // 0057AEF0: slot +04h of the listbox listener 00CEF120 (ECX = screen+8), RET 8.
@@ -356,7 +362,7 @@ inline constexpr std::string_view kTacticalLibrarySpecialRow = "99999";  // 00CE
 inline constexpr double kTacticalLibraryScrollStep = 0.0020999999251216650;  // 00CEC168
 
 struct TacticalLibraryScrollState {
-    std::int32_t row_count{};        // screen+434h (listener+3D0h), loaded with FILD
+    std::int32_t current_index{};    // screen+434h (listener+3D0h): index word of the +434h selector, FILD
     float scroll_value{};            // screen+438h (listener+3D4h)
 };
 
@@ -374,7 +380,7 @@ void tactical_library_on_listbox_activate_00517280(TacticalLibraryScrollState& s
 
 // Tactical library back/leave (00515E00 / 00515BC0).
 struct TacticalLibraryNavState {
-    std::int32_t view_90{};          // +90h, 1 while an entry view is open
+    std::int32_t view_90{};          // +90h, 0 = 2D panel, 1 = 3D model view (00511B40 toggles)
     std::int32_t entry_kind_94{};    // +94h, 2/5/6 tested
     std::int32_t field_9c{};         // +9Ch, picks 0Bh or 0Ch for 00E08874
 };
@@ -385,7 +391,7 @@ struct TacticalLibraryNavHost {
     virtual bool front_end_manager_present_e198ac() = 0;    // *(00E198AC) != 0
     virtual bool interface_manager_present_e198b4() = 0;    // *(00E198B4) != 0
     virtual bool interface_query_00687860(std::int32_t id, std::int32_t arg) = 0;  // ECX = *(00E198B4)
-    virtual void close_view_00511b40() = 0;                 // ECX = screen
+    virtual void toggle_view_00511b40() = 0;                // ECX = screen
     virtual void show_order_of_battle_page_004fff20() = 0;                // ECX = screen
     virtual void show_unlocks_page_004ffd00() = 0;                // ECX = screen
     virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
@@ -454,9 +460,24 @@ void front_end_frame_set_flag_00518b90(std::uint32_t flag, FrontEndFrameHost& ho
 // 005189B0: ECX = const string*, RET; SEH 00C6A980.
 void front_end_frame_set_title_005189b0(std::string_view text, FrontEndFrameHost& host);
 
-// 00515BC0: __thiscall(screen), RET; SEH 00C6A708. Closes an open view, then leaves the screen.
+// 00514C20 view toggle (2D panel <-> 3D model) and its mode switch 00511B40.
+struct TacticalLibraryViewHost : TacticalLibraryNavHost {
+    virtual std::uint32_t selector_434_field_48_004fa890() = 0;   // *(&records[+434h index].+48h)
+    virtual void set_field_4b0(std::uint32_t value) = 0;           // screen+4B0h
+    virtual void load_vehicle_model_0050aa10() = 0;                // ECX = screen
+    virtual void panel_widget_virtual_34(std::uint16_t screen_offset, std::int32_t shown) = 0;  // +508h..+518h
+    virtual void refresh_entry_00510c20() = 0;                     // ECX = screen, tail JMP
+};
+
+// 00511B40: __thiscall(screen), RET. 0 -> 1 hides +508h/+50Ch/+510h/+518h; 1 -> 0 shows them and
+// tail-jumps 00510C20.
+void tactical_library_toggle_view_00511b40(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host);
+// 00514C20: __thiscall(screen), RET; SEH 00C6A670. Toggles, then refreshes the page of the new mode.
+void tactical_library_switch_view_00514c20(TacticalLibraryNavState& screen, TacticalLibraryViewHost& host);
+
+// 00515BC0: __thiscall(screen), RET; SEH 00C6A708. Leaves the 3D view if active, then the screen.
 void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
-// 00515E00: __thiscall(screen), RET; SEH 00C6A748. Closes an open view, or leaves through 00515BC0.
+// 00515E00: __thiscall(screen), RET; SEH 00C6A748. Leaves the 3D view, or the screen through 00515BC0.
 void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
 
 }  // namespace bsp
