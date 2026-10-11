@@ -1,0 +1,155 @@
+{
+  "packet": "cc12_locale_onexit_lock_initializer_cleanup_body_primary",
+  "status": "Root accepted complete saved9B physical body",
+  "worker_commit": "69b5786b2bb278d679b8b3a54fd8c4b8757f5e4c",
+  "private_directory": "local\\cc12_locale_onexit_lock_initializer_cleanup_body_primary",
+  "pins": {
+    "Root_listing_gate.py": {
+      "bytes": 4664,
+      "sha256": "3134adfb01dc4f2d6699f1873933a385b344adf9645d0469f676fd3d67becb84"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 7124,
+      "sha256": "93477cd22c35a48011595d990a6b1924c020b724140773b7fc872b528849591d"
+    },
+    "Root_core_review.py": {
+      "bytes": 4282,
+      "sha256": "df9f2fb68edb57236a754d1e8f4bf45cba9c9ccb82ccdecc32c2fafd934680b0"
+    },
+    "Root_core_actual_review.json": {
+      "bytes": 919,
+      "sha256": "f04a0ed90d88b7eac269c887520ce95117becdb12249835c551b715134d8380d"
+    },
+    "Root_core_strict_replay.py": {
+      "bytes": 2235,
+      "sha256": "c3657c5beb21641fb23e29d218a21fbd5a68c18d37bc9dce636b9913def8c324"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 14525,
+      "sha256": "7de12714570ae033ab0fa02804a0a608ad652f14b12cf40df04605d6c6250314"
+    },
+    "Root_delivery_review.py": {
+      "bytes": 3220,
+      "sha256": "bb7ae211bf2c1b456d6aafbf5a39b27917a738c7d57559a710ace24692493f40"
+    },
+    "Root_delivery_actual_review.json": {
+      "bytes": 1514,
+      "sha256": "52fa0e825a3d1a17a22ac1b52c00b11c34ef56612fef3b0290ed97d0ed79f364"
+    },
+    "Root_delivery_strict_replay.py": {
+      "bytes": 2248,
+      "sha256": "5f1c5c9ddd8a204438799a1bd9227076532966c8e6ca977ce100c90ff9c51e41"
+    },
+    "Root_delivery_guard_receipt.json": {
+      "bytes": 1114,
+      "sha256": "82bffce033acb3038aa2cc8881b21f2a4ad92306cadf9a0a02c50082d0e54932"
+    },
+    "replay.py": {
+      "bytes": 17405,
+      "sha256": "d37935b7392333753ad28835193405216645b1d6205e9312e88a3602ce9671d0"
+    },
+    "guarded_replay.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    }
+  },
+  "core_review": {
+    "status": "PASS",
+    "archive_sha256": "1e958734366ccc067ea1256192a2d4806790679eecc0763fe91e400ec63b8d16",
+    "manifest_members": 81,
+    "actual_frozen_Git_objects": 6,
+    "finite_inputs": 8,
+    "helper_pins": {
+      "replay.py": {
+        "bytes": 17405,
+        "sha256": "d37935b7392333753ad28835193405216645b1d6205e9312e88a3602ce9671d0"
+      },
+      "guarded_replay.py": {
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    },
+    "paired_9B_equal": true,
+    "body_hex": "6a0ae812ffffff59c3",
+    "Root_manual_signed_imm8": 10,
+    "Root_manual_E8_displacement": -238,
+    "Root_manual_target": "00C11B31",
+    "Root_actual_Capstone_version": "5.0.7",
+    "whole_body_instructions": 4,
+    "worker_copies_equal_and_distinct": true,
+    "Root_gate_compared_before_copy": true,
+    "whole_saved9B_body_read": true,
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "delivery_review": {
+    "status": "PASS",
+    "archive_sha256": "e29b6fa611c71a32208a0f51628b0ee681ea5f0d21594d7698049162b99fa128",
+    "manifest_members": 73,
+    "object_records": 12,
+    "distinct_actual_Git_objects": 10,
+    "finite_inputs": 8,
+    "outputs": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "oid": "5369a339a80b06005d898f5c059f60fb21d0026e",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+        "bytes": 4347,
+        "sha256": "f0d2fb60b60805688cc1a50e2b8bebdd71d50fe92643e97f9a6447cbbefeb185",
+        "staged_member": "staged/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "oid": "5e43471cf4a33caa5e914f2155553e2ed675971c",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "bytes": 27705,
+        "sha256": "e68a6a20f7641cd831b90325e469aa86ef1e9666534986859a1cbf1d7c927224",
+        "staged_member": "staged/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json"
+      }
+    ],
+    "two_reviewed_helpers_unchanged": true,
+    "worker_copies_equal_and_distinct": true,
+    "Source_census": false,
+    "current_Root_Source_equality": false,
+    "worker_commit": "69b5786b2bb278d679b8b3a54fd8c4b8757f5e4c"
+  },
+  "guards": {
+    "Root_guard_receipt.json": {
+      "ZIP_reads": 1,
+      "receipt_writes": 1,
+      "helper_execs": 1,
+      "denials": []
+    },
+    "Root_delivery_guard_receipt.json": {
+      "ZIP_reads": 1,
+      "receipt_writes": 1,
+      "helper_execs": 1,
+      "denials": []
+    }
+  },
+  "Native_contract": {
+    "body_hex": "6a0ae812ffffff59c3",
+    "instructions": [
+      "PUSH10",
+      "CALL C11B31",
+      "POP ECX",
+      "RET"
+    ],
+    "CALL_target_address_only": "00C11B31",
+    "CALL_pushed_return": "00C11C1F",
+    "after_actual_return": "Entire returnedstate unknown; POP currentSS[Q], RET currentSS[Q+4], finalESP Q+8; target/entry relation unknown.",
+    "argument_cleanup_or_unlock_proved": false,
+    "raw_responses": 27,
+    "CLI_commands": 10,
+    "epoch": 98,
+    "function_count": 64730
+  },
+  "credit": {
+    "saved_body_Native": true,
+    "callee_provider_semantics_ABI": false,
+    "Source_build_fixture_runtime_gameplay": false,
+    "Source_census_current_Root_equality": false
+  }
+}
