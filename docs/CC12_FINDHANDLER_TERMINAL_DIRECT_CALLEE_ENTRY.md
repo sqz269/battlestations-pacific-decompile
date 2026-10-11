@@ -8,7 +8,7 @@ The accepted incoming edge is physical `E8 3A D3 FF FF` at `00C07AA3`: signed re
 
 Phase one issued only count, exact typed metadata twice at C04DE2, and count. Both original 2140-byte raw responses agree, including all four one-byte InstructionDB aliases, the complete saved owner 243-byte range `C04DE2..C04ED4`, and the entry flow. Root admitted exactly this first byte before phase two. The paired one-byte reads, paired context-zero text, and closing exact typed response agree. Total 11 Native CLI commands and 39 original HTTP responses retain epoch 98/count 64730 and the existing `C:/Users/sqz269/bsp.gpr` / `/battlestationspacific.exe` identity. Each CLI batch has the three CLI source files pinned before and after.
 
-The physical field is opcode `50+rd`, register index 5, selecting 32-bit EBP. There are no prefixes, ModRM/SIB bytes, displacement, immediate, or relative operand. Detailed actual Capstone 5.0.7 agrees on length, all fields, explicit operand access, implicit ESP/EBP reads, ESP write, and unchanged EFLAGS. Capstone was constructed only for offline capture before the replay audit hook.
+The physical field is opcode `50+rd`, register index 5, selecting 32-bit EBP. There are no prefixes, ModRM/SIB bytes, displacement, immediate, or relative operand. Detailed actual Capstone 5.0.7 agrees on length, all fields, explicit EBP read, implicit ESP read/update, and unchanged EFLAGS. Capstone was constructed only for offline capture before the replay audit hook.
 
 The admitted unprefixed byte55 is 50+rd with rd=5: PUSH EBP under the saved x86-32 interpretation. There is no ModRM, SIB, displacement, immediate, relative field, explicit memory operand, or transfer target in this unit.
 

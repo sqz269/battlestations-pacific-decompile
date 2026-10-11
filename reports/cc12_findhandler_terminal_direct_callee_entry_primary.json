@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_terminal_direct_callee_entry_primary",
+  "status": "primary_reviewed_strict_replay_pass",
+  "worker_commit": "b4c00d6eb7bacfa98a67e4eae05c8dbff808fa97",
+  "frozen_parent": "890ec4360efbff598b6cd923b0eabbd0c6140cb9",
+  "Root_checked": {
+    "archive_members": 679,
+    "actual_Git_objects": 20,
+    "positive_inputs": [
+      {
+        "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_BODY_METADATA.md",
+        "git_blob": "12e2342dd93cb79b4aab6f5faa60609282ba34a2",
+        "working_payload": "captures/input_0.working_raw",
+        "working_file": {
+          "size": 10974,
+          "sha256": "1e1cd27015327c89425090f6c86a4a36c6efb4885e18aaea3e08a14b581ccd32"
+        },
+        "working_LF": {
+          "size": 10974,
+          "sha256": "1e1cd27015327c89425090f6c86a4a36c6efb4885e18aaea3e08a14b581ccd32"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "12e2342dd93cb79b4aab6f5faa60609282ba34a2"
+      },
+      {
+        "path": "reports/cc12_findhandler_outbound_jump_target_body_metadata.json",
+        "git_blob": "508ebcacf7b53ca240156b35c2dc70159ab2861f",
+        "working_payload": "captures/input_1.working_raw",
+        "working_file": {
+          "size": 94258,
+          "sha256": "324e6137bb63df5fe3c4c3d168561aa610231049c1b6accddf20ffb4adacec59"
+        },
+        "working_LF": {
+          "size": 94258,
+          "sha256": "324e6137bb63df5fe3c4c3d168561aa610231049c1b6accddf20ffb4adacec59"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "508ebcacf7b53ca240156b35c2dc70159ab2861f"
+      },
+      {
+        "path": "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_BODY_METADATA_PRIMARY.md",
+        "git_blob": "1a1398f20ad5aa93b46c34a8bb9a8bb3e5544e19",
+        "working_payload": "captures/input_2.working_raw",
+        "working_file": {
+          "size": 3485,
+          "sha256": "4f4e8fdb8067628326a29fc421d03b97da346db01084b66a7ed612c60f18d612"
+        },
+        "working_LF": {
+          "size": 3485,
+          "sha256": "4f4e8fdb8067628326a29fc421d03b97da346db01084b66a7ed612c60f18d612"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "1a1398f20ad5aa93b46c34a8bb9a8bb3e5544e19"
+      },
+      {
+        "path": "reports/cc12_findhandler_outbound_jump_target_body_metadata_primary.json",
+        "git_blob": "6d240bfa6732499dcc4cb13c510d24e7f3a8bb06",
+        "working_payload": "captures/input_3.working_raw",
+        "working_file": {
+          "size": 16966,
+          "sha256": "a517a860133982140ff1d7e42c3cdb3ba294f467aaef53ac2bf641212a745628"
+        },
+        "working_LF": {
+          "size": 16966,
+          "sha256": "a517a860133982140ff1d7e42c3cdb3ba294f467aaef53ac2bf641212a745628"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "6d240bfa6732499dcc4cb13c510d24e7f3a8bb06"
+      },
+      {
+        "path": "config/target.json",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "working_payload": "captures/input_4.working_raw",
+        "working_file": {
+          "size": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working_LF": {
+          "size": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "working_payload": "captures/input_5.working_raw",
+        "working_file": {
+          "size": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working_LF": {
+          "size": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "working_payload": "captures/input_6.working_raw",
+        "working_file": {
+          "size": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "working_LF": {
+          "size": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "0056201883c1594d9267d2fcf4990385461f0857"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "working_payload": "captures/input_7.working_raw",
+        "working_file": {
+          "size": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "working_LF": {
+          "size": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "working_LF_equals_blob": true,
+        "index_mode": "100644",
+        "index_stage": 0,
+        "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619"
+      }
+    ],
+    "exact_original_worker_outputs": [
+      {
+        "path": "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_ENTRY.md",
+        "blob": "36a54680a058717c0c2d133ef5c91cc9b3462ccb",
+        "size": 6528,
+        "sha256": "ddd9fc6ccb3ca5a078eb085031408d3ed5933718d14e0d50ab93a5a4eadce6ae"
+      },
+      {
+        "path": "reports/cc12_findhandler_terminal_direct_callee_entry.json",
+        "blob": "83620d2ee648a0eb19624831d6a9ea497ca3186e",
+        "size": 23180,
+        "sha256": "39af464cd238f8ef52abcd5e4e5bbe1bb11ee8076eacdde8127e93ee0fc6a08e"
+      }
+    ],
+    "Root_original_artifacts_equal": 233,
+    "Root_original_preimages_equal": 227,
+    "own_manual_actual_Capstone": {
+      "hex": "55",
+      "opcode_plus_register": {
+        "base": 80,
+        "register_index": 5,
+        "register": "ebp"
+      },
+      "prefixes": [],
+      "ModRM_SIB_displacement_immediate_relative": null,
+      "operand_size": 4,
+      "address_size": 4,
+      "explicit_operand_access": "EBP read",
+      "implicit_register_reads": [
+        "esp"
+      ],
+      "implicit_register_writes": [
+        "esp"
+      ],
+      "all_register_reads": [
+        "esp",
+        "ebp"
+      ],
+      "all_register_writes": [
+        "esp"
+      ],
+      "eflags": 0,
+      "successful_current_SS32": "Write instruction-time EBP through current SS at (current ESP-4) mod2^32; no stable frame or inherited segment attributes."
+    },
+    "strict": {
+      "accepted": true,
+      "archive_members": 679,
+      "actual_Git_objects": 20,
+      "finite_inputs": 8,
+      "exact_final_outputs": [
+        "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_ENTRY.md",
+        "reports/cc12_findhandler_terminal_direct_callee_entry.json"
+      ],
+      "final_commit": "b4c00d6eb7bacfa98a67e4eae05c8dbff808fa97",
+      "final_tree": "b8619d13dcf9f4f7afc864a4f883225e7ff188bf",
+      "Root_preimages_equal": 227,
+      "Root_artifacts_pinned": 233,
+      "original_typed_raws_equal": 3,
+      "Native_commands": 11,
+      "HTTP_responses": 39,
+      "CLI_three_before_after_checks": 11,
+      "physical": {
+        "address": "00C04DE2",
+        "length": 1,
+        "hex": "55",
+        "mode": "x86-32 interpretation; live segment attributes unestablished",
+        "prefixes": [],
+        "opcode": 85,
+        "opcode_base": 80,
+        "opcode_register_index": 5,
+        "modrm": null,
+        "sib": null,
+        "fields": [
+          {
+            "field": "opcode_plus_register",
+            "offset": 0,
+            "size": 1,
+            "hex": "55",
+            "value": 85
+          }
+        ],
+        "displacement": null,
+        "immediate": null,
+        "relative_displacement": null,
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "reg",
+            "size": 4,
+            "name": "ebp"
+          }
+        ],
+        "operand_access": [
+          1
+        ],
+        "eflags": 0,
+        "eflag_effects": [],
+        "regs_read": [
+          "esp",
+          "ebp"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "implicit_stack_segment": "ss",
+        "transfer": null,
+        "numeric_next_address_unqueried": "00C04DE3"
+      },
+      "unread_owner_bytes": 242,
+      "unqueried_next_cursor": "00C04DE3",
+      "epoch": 98,
+      "count": 64730,
+      "worker_offline_inspection_failures_retained": 1,
+      "Root_offline_inspection_failures_retained": 1,
+      "Root_gate_failures": 0,
+      "worker_Native_failures": 0,
+      "worker_decoder_failures": 0,
+      "archive_contained_code_executions": 0,
+      "earlier_archives_opened": 0,
+      "fresh_Native_queries": 0,
+      "audit": {
+        "zip_reads": 1,
+        "helper_execs": 1,
+        "receipt_writes": 1,
+        "denied": []
+      },
+      "supplied_zip": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_findhandler_terminal_direct_callee_entry_primary\\Root_delivery.zip",
+        "size": 8444754,
+        "sha256": "f24060d960e8975d5c5a06daf06236959acae01298a4dc4b7473239c83eaa177"
+      },
+      "helper": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_findhandler_terminal_direct_callee_entry_primary\\Root_reviewed_replay.py",
+        "size": 20555,
+        "sha256": "7ef790cfb7d50946fbd9d32ee95146fad4327b6a1bbb50a80fdcfa5c017221c5"
+      }
+    }
+  },
+  "separate_primary_documentation_correction": {
+    "path": "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_ENTRY.md",
+    "old_phrase": "explicit operand access, implicit ESP/EBP reads, ESP write",
+    "new_phrase": "explicit EBP read, implicit ESP read/update",
+    "new_raw_pin": {
+      "bytes": 6513,
+      "sha256": "55220edb23f8739a7b26c38794dd5b05e1b7e26e8ace5f5b932aa7e6e3b0964d"
+    },
+    "original_worker_proof_immutable": true
+  },
+  "failures": {
+    "Root_metadata_gate": 0,
+    "Root_preliminary_inspection": 1,
+    "worker_preliminary_inspection": 1,
+    "worker_Native_decoder_strict": 0,
+    "Root_actual_final_Git_archive_manual": 0,
+    "Root_strict": 0
+  },
+  "inspection_stream_limit": "Combined original tool outputs in conversation; worker transcription provenance is labeled. No separate original local streams claimed.",
+  "scope": {
+    "admitted_bytes": 1,
+    "unread_owner_bytes": 242,
+    "unqueried_next_cursor": "00C04DE3",
+    "saved_name_no_return_authenticated": false,
+    "Source_changes": false,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "build_tests_probes": false,
+    "Original_game_OS_audio_runtime_execution": false
+  },
+  "private_evidence_directory": "local/cc12_findhandler_terminal_direct_callee_entry_primary",
+  "evidence_pins": {
+    "Root_listing_gate.py": {
+      "bytes": 8463,
+      "sha256": "fa8cde3c1a90655510ea7004de3b1e9dbc0ac8cbaff7149c6a53c82c44a5103f"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 1505438,
+      "sha256": "22da168cd62bd7a79b40baac67291c5fd9a63590512f836884fa417ddc1f486e"
+    },
+    "Root_gate_preexecution.json": {
+      "bytes": 104,
+      "sha256": "aa3788a173a3f5d59356ac7a945101ca778120444907bcab352b475b57275725"
+    },
+    "Root_listing_gate.stdout": {
+      "bytes": 147,
+      "sha256": "820bf6b45588fa4e4d38ea8354d5c4c14c592ebc208dc88eac76322b677e9919"
+    },
+    "Root_listing_gate.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_reviewed_replay.py": {
+      "bytes": 20555,
+      "sha256": "7ef790cfb7d50946fbd9d32ee95146fad4327b6a1bbb50a80fdcfa5c017221c5"
+    },
+    "Root_reviewed_audit_replay.py": {
+      "bytes": 2727,
+      "sha256": "bdb93a8fc36e01313d9e56785e304e182a575fa95e0c0a27f942fcc3664a5521"
+    },
+    "Root_final_review.py": {
+      "bytes": 7440,
+      "sha256": "9c2d787ba84bbd2a8e50825f58007a22e5434f9f110692f759f98ce99b16fc37"
+    },
+    "Root_final_review_preexecution.json": {
+      "bytes": 104,
+      "sha256": "8dc4cc7edeae29ebc4fe435a4b07a3dba87aa0283b2511a7a066d0b329d8f137"
+    },
+    "Root_final_review.stdout": {
+      "bytes": 220,
+      "sha256": "52362502c282c0c800624cafb97fad62dc712a318ee1666c95ed591a6ec4b156"
+    },
+    "Root_final_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_actual_final_review.json": {
+      "bytes": 2328786,
+      "sha256": "0d9e2644f75beebc1d6a0f17530d154155acc9ebbdd209e6f6afb975459d891b"
+    },
+    "Root_delivery.zip": {
+      "bytes": 8444754,
+      "sha256": "f24060d960e8975d5c5a06daf06236959acae01298a4dc4b7473239c83eaa177"
+    },
+    "Root_strict_preexecution.json": {
+      "bytes": 426,
+      "sha256": "0190d8681c96d4f22f0214bc7e775be4b7e4c3ebae893da1cddc2c50bee9b8c5"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 2580,
+      "sha256": "e07b830fe5b8bd2bad84f2d393372ebeb8642e702ac9f74b5dcc4addaaf814d0"
+    },
+    "Root_strict.stdout": {
+      "bytes": 269,
+      "sha256": "a23bda83137994d3c97a24715483c40895f58bfbe9e5a20a619f565b54506998"
+    },
+    "Root_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
