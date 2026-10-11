@@ -100,6 +100,13 @@ Placement: ApplyAtBottomOnly takes x = a*1.4142, y = 1.4142*(1-b^2) rotated by t
 (`-asin(m01)`, mirrored through 3.14 when `m11 < 0`, matrix at camera `+F0h`); StartTopOffScreen
 puts y in [1, 1.1]; ApplyAtTopOnly in [0.5, 0.8]; otherwise y in [-1, 1].
 
+Geometry (`00BC2340`, waterdrops vtable +60h, reached through `00BC1230` only while drops are
+alive; analysed from the decompiler, provisional): one quad per live drop, 18h-byte vertices
+(x, y, z = 0.5, ARGB, u, v), oriented by the normalised negation of `+24h/+28h` (so the
+per-tick (0, -1) points the quad down the screen), half extents `size` across and `height`
+along; `u` spans `cell * step .. cell * step + step` (`+1D0h`), `v` 0..1; colour white with alpha
+`trunc(life_left / life_total * 204)`, so a drop starts at 80% opacity and fades out.
+
 Global budget `010909B8`: spawn caps requested so the total stays at most 3000 (unsigned
 compare); the destructor body `00BC1F30` subtracts requested, floored at 0.
 
@@ -317,3 +324,29 @@ The weather link in this segment, `004BA870` `BSP_SceneRecord_ScatterClouds` (`C
 - `00BC3580` (cloud sphere coverage query, sqrt against `radius * 00CEC160`) has no reference; not
   analysed further.
 - `00BBE380` also calls `00BC33B0` (the class `+1A8h` model upload); both are unnamed.
+
+## Handoff (cc13-weather1, 2026-10-11)
+
+State: segment 94's weather part is named end to end except the per-family container helpers
+and the render-model vertex fills; the timing, spawn, scatter, fade, colour and lighting logic is
+reconstructed in `src/weather_render.cpp` (build-tested, no fixtures). Segment 9 is triaged; only
+`004BFFA0` was worth reconstructing (`src/game_mission_kind.cpp`).
+
+Next steps, in value order:
+
+1. Integrator: apply the cloud-manager correction to `docs/GAME_WORLD_OCEAN.md`,
+   `src/world_ocean.cpp`, `docs/GAME_WORLD_CONSTRUCT.md` / `world_construct.cpp` ("ocean owner" is
+   the atmosphere `00BBDFF0`; `ocean_set_scalar` are `BSP_SkyBox_SetRotationDegrees` and
+   `BSP_SkyBox_SetLuminance`) and rename `00BBD310`/`00BBDDD0` (segment 93, not leased here).
+2. Define and name the atmosphere methods in `00BBDDF0..00BBDEC0` (`00BBDE00`, `00BBDE10`,
+   `00BBDE50`, `00BBDE90`); Ghidra currently has a 3-byte `TRIV_body_00bbddf0` there.
+3. Reconstruct `00BC2340` (water-drop quads, layout above) and `00BC4D20` (cloud puff cull/sort
+   per frame); both need the renderer vertex-stream types.
+4. `00BC84A0` lightning strand bursts: an assembly pass and a host for the strand vectors; it
+   draws from stream 0 whenever its timer expires.
+5. A fixture for `waterdrops_update_00bc12f0` against the native body would settle the double
+   versus x87 rounding question for the whole file.
+
+Leases released at the end of this packet. Scripts used: `local/w1_*.py` in this worktree
+(constants with widths, vtable dump, function ends, absolute/rel32 reference scan, call-site
+report builder).

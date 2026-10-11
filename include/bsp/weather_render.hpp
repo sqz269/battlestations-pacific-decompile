@@ -97,8 +97,8 @@ struct Waterdrop {               // 34h bytes
     float dir_y{};               // +18
     float life_total{};          // +1C
     float life_left{};           // +20
-    float field_24{};            // +24 rewritten 0 every tick
-    float field_28{};            // +28 rewritten -1 every tick
+    float field_24{};            // +24 quad orientation x, rewritten 0 every tick (00BC2340 uses -v)
+    float field_28{};            // +28 quad orientation y, rewritten -1 every tick
     float stick{1.0f};           // +2C 1 normal, 1000 sticky, decays 0.2/s
     std::uint32_t variant{};     // +30 texture cell
 };
