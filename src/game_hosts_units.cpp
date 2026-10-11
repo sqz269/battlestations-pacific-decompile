@@ -5355,7 +5355,7 @@ struct GameUnitsHost::Impl {
     // order), and sends each launch slot holding it to state 3 (+0Ch = +8h from state 2,
     // timer 0, or 5.0 with +34h cleared). 006BF150's slot publication is not carried.
     // False: the retire leaves the deck's records as they were.
-    static constexpr bool kLandTaskRetireQueueEraseBound = false;
+    static constexpr bool kLandTaskRetireQueueEraseBound = true;   // ON by its pairs (SHIP_AI 208.6.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its

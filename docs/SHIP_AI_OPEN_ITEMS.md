@@ -16349,3 +16349,18 @@ The whole `009ED6B0..009EF228` listing (`local\s42_9ed6b0.asm`, 1629 lines from 
 - **ESMP08 p3 (72000):** the two retreat installs erase only if a retreating leader's squadron is queued. Expect
   identity or late landing-timing moves.
 - **Flip rule:** ON on a mechanism match: every erase follows a leader's live retire, and nothing else moves first.
+
+#### 208.6.1 Pairs and the flip (cc9-ships42, 2026-10-11)
+
+OFF is `7107b671b` (tree build). ON is the same commit exported with the switch true (`local\s42_lr`). Logs are
+`local\s42_r{off,on}_<row>.log`. The smoke ran clean (exit 0, `leader_calls=0`).
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| USNOS f12, 32000 | 1 | `leader_calls=1`: `Enterprise_sqn05` (`009B34D0` invalid, 1401.79 s) has a queue record at the Enterprise deck, and ON erases it. The deck ends `queue 1 -> 0`, with its passes 199 -> 5. Death rows (255) and unit table identical. The run fails at 1510.10 s on both sides. `sqn04`'s leader retire found no queued record |
+| ESMP08 p3, 72000 | 1 | `leader_calls=0`: neither retreat install retires a squadron leader's land task. It completes at 2777.98 s both ways, 582 deaths. The exec guard logged its `sus_prog.exe` refusal |
+
+- **Mechanism.** The one erase follows a leader's live retire, it is the record the destructor's `006C7680` would
+  take, and nothing else moves.
+- **Verdict: ON.**
+- **Not exercised by these rows:** the `+A8h` erase (0 records) and the slot-state arm (0 slots).
