@@ -308,21 +308,51 @@ This chain explains where emitter+24h (the alpha that every quad emitter gates o
   BSP_FoliageGroups_BuildVisibleSet (segment 81, not leased here). That name looks wrong for a routine
   that drives particle models; it is open.
 
+### The model's frame geometry driver
+
+**00AF63A0 BSP_NativeParticleModel_BuildFrameGeometry** — `__thiscall(model, camera)`, RET 4, with an
+SEH frame. It owns the buffers that the quad emitters write into; emitter+8 is this model.
+- **Visibility.** +1D8h = 00AF6300 · +1DCh. The cursors +1C0h and +1D0h are cleared.
+- **Lock.** Under the device lock (EnterCriticalSection([[00F8C274]+30h]), depth word +18h):
+  - mesh A (+1B4h) is locked for +1F4h·4 vertices into +1C0h;
+  - mesh B (+1C8h) is locked for +1F0h·4 vertices into +1D0h, then 00B0D170([00F8D39C], model, B) runs.
+  The lock is 00B73260(mesh, 0) → stream vtable +10h(count, 0, 0).
+- **Floating buffer and rooms.** The floating cursor +1C4h is the shared scratch [00F8C274]+28h. The
+  rooms are +1B8h/+1CCh/+1BCh = the capacities.
+- **Build.** view = 00B6FCB0(camera), or world (+F0h) · view when +1B0h is set. Then 00AF5E90(view,
+  float(1 / camera+1C4h)). **That second argument is the Sprite emitter's view_size_scale**, so the
+  near-camera fade ratio is size / (fov · z). Then +1D4h = 1.
+- **Unlock and counts.**
+  - Both streams are unlocked under the lock (vtable +14h).
+  - +1F8h is overwritten with the floating count used, flushed through 00AF0540(used·4).
+  - Element 0 of each mesh gets vertices = used·4 (+10h) and primitives = used·2 (+18h).
+
 ## 4. Handoff
 
-- Leases are released. The work is committed on `agent/cc13-water2`.
-- Next targets:
-  - 00B08210, the Floating emitter: same caller and similar shape, 0x5A0 bytes.
-  - 00B09510, the Sprite emitter: it needs a Ghidra function first.
-  - The +24h slots 00B05DD0, 00B07BF0 and 00B08950 (undefined).
-  - The +1Ch slots 00B00750 and 00B007A0 (undefined).
-- Other unnamed functions in the segment, by size:
-  - 00AF63A0 (foliage visibility caller), 00AF85B0/00AF8500, 00AFDCF0/00AFD820, 00B05550's callers
-    00AFF7F0/00AF5E90.
-  - The 00AFEB60..00AFF290 string/pool group.
-  - The render-side half of the segment (00B0D020..00B1BD20: settings, material records, the scene
-    render 00B156C0).
-- Identified CRT routines, not renamed (outside this lease):
-  - 00BF85B0 = floor
-  - 00BFA910 = _CIlog
-  - 00BFEEEC = _CIexp
+- **State.** Leases are released and the work is committed on `agent/cc13-particles1`. Everything in
+  section 3 is reconstructed and build-tested; none of it is wired into the host, fixture-tested or
+  game-validated. All draws stay inside 00B0C8B0, on the caller's `ParticleRandom`.
+- **The render half 00B0CF80..00B1BD20 is not particle code.** It is the scene-renderer object: setters on
+  this+21Ah..268h are called from HUD screens, Settings_ApplyAll and OptionsScreen; 00B0D190 is called by
+  BSP_Game_Render and DestroyWorld; 00B156C0 is the scene render. It has about 50 unnamed FUN_. Its
+  ownership was asked of the lead (cc13-render1/render2?) and not answered before this handoff.
+- **Next particle targets.**
+  - 00AF0C50 BSP_FoliageGroups_BuildVisibleSet (segment 81) is already reconstructed in
+    `src/render_tail.cpp`, with this = [00F8C274]. It calls 00AF6360 and 00AF63A0, and [00F8C274] is the
+    object whose +28h scratch and +30h lock 00AF63A0 uses, so it is the particle manager's visible-set
+    pass and the "Foliage" name looks wrong. Its host calls for 00AF6360/00AF63A0 can now use the ports
+    here.
+  - 00B0D170, the renderer hook that 00AF63A0 hands mesh B to.
+  - 00AF0540, the scratch flush.
+  - The consumer of slot +24h (bounding spheres), which a MOV/CALL-reg scan of segment 82 did not find.
+  - 00AF6B90's caller chain (type registration).
+- **Unreferenced bodies with no rel32 or absolute reference.** Possibly dead code: 00AF3E60, 00AF5B70,
+  00AF5D80, 00AF61E0, 00AF6820, 00AF6B30, 00AF81A0, 00AF81C0, 00AF8400, 00AF88F0, 00AFB790, 00AFB7C0,
+  00AFB7F0, 00AFBA40, 00AFBE90, 00AFD820 (local p1_rel32/p1_vtref scans over the image). 00AF5EE0, the
+  emitter Update loop reconstructed above, is also unreferenced, so the live update path for emitters is open.
+- **Generic containers.** 00AFEB60..00AFF290 is a string/tree container group, and 00B0A710 is a
+  dword-vector assign whose `_free` call site Ghidra marks no-return. Both are low value.
+- **Tool.** `tools/x87_sym.py` (single-path, opcode-decoded x87) does not model fmod (00BF857A), FYL2X or
+  F2XM1, or partial-register stores. Read those from the listing.
+- **Identified CRT routines**, not renamed (outside this lease): 00BF85B0 = floor, 00BFA910 = _CIlog,
+  00BFEEEC = _CIexp.

@@ -338,6 +338,40 @@ void particle_model_update_emitters_00af5ee0(void* model, void* context, Particl
 void particle_model_build_geometry_00af5e90(void* model, const float view[16], float argument,
                                             ParticleGeometryHost& host);
 
+class ParticleModelFrameHost : public ParticleModelLodHost, public ParticleGeometryHost {
+public:
+    // EnterCriticalSection([[00F8C274]+30h]) then its depth word +18h += 1;
+    // leave reverses it. Both are skipped natively when the pointer is null.
+    virtual void device_lock_enter() = 0;
+    virtual void device_lock_leave() = 0;
+    // 00B73260(mesh, 0) -> stream vtable +10h(vertex count, 0, 0): the cursor.
+    virtual void* lock_vertex_stream(void* mesh, std::int32_t vertex_count) = 0;
+    // 00B73260(mesh, 0) -> stream vtable +14h().
+    virtual void unlock_vertex_stream(void* mesh) = 0;
+    // 00B0D170(ECX = [00F8D39C], model, mesh B); render-half routine, not reconstructed.
+    virtual void renderer_attach_00b0d170(void* model, void* mesh) = 0;
+    virtual void* scratch_cursor_00f8c274_28() = 0;                    // [[00F8C274]+28h]
+    virtual const CameraMatrix& camera_view_00b6fcb0(void* camera) = 0;  // 00B6FCB0
+    virtual void flush_scratch_00af0540(std::int32_t bytes) = 0;         // 00AF0540, ECX = [00F8C274]
+    virtual void* mesh_element_00b732c0(void* mesh, std::int32_t index) = 0;
+};
+
+// 00AF63A0 `void __thiscall(model, camera)`, RET 4, SEH frame (states 0..5
+// guard the device lock). Per-frame geometry of one particle model:
+//  * +1D8h = 00AF6300 * +1DCh; cursors +1C0h/+1D0h = 0.
+//  * Under the device lock: lock mesh A (+1B4h) for +1F4h*4 vertices into
+//    +1C0h and mesh B (+1C8h) for +1F0h*4 into +1D0h, then 00B0D170(model, B).
+//  * +1C4h = [00F8C274]+28h when +1F8h is set, else 0; rooms +1B8h = +1F4h,
+//    +1CCh = +1F0h, +1BCh = +1F8h. These are the cursors and rooms the quad
+//    emitters write through (emitter+8 is this model).
+//  * view = 00B6FCB0(camera), or model world +F0h * view when +1B0h; then
+//    00AF5E90(view, float(1 / camera+1C4h)); +1D4h = 1.
+//  * Unlock both streams under the lock; +1F8h becomes the floating count used
+//    (flushed through 00AF0540 with used*4); element 0 of A and of B gets
+//    vertex count used*4 at +10h and primitive count used*2 at +18h.
+void particle_model_build_frame_geometry_00af63a0(void* model, void* camera, ParticleModelFrameHost& host,
+                                                  const CameraAxesCrtAccess& crt);
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380);
 void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384);
 

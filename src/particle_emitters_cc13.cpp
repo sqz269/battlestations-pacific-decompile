@@ -958,6 +958,75 @@ void particle_model_build_geometry_00af5e90(void* model, const float view[16], f
     }
 }
 
+void particle_model_build_frame_geometry_00af63a0(void* model, void* camera, ParticleModelFrameHost& host,
+                                                  const CameraAxesCrtAccess& crt) {
+    // AF63BE..AF63E7: visibility (00AF6360's store, without its compare) and cursor reset.
+    wr<float>(model, 0x1d8, static_cast<float>(particle_model_lod_fade_00af6300(model, camera, host, crt) *
+                                               rd<float>(model, 0x1dc)));
+    wr<void*>(model, 0x1c0, nullptr);
+    wr<void*>(model, 0x1d0, nullptr);
+    const std::int32_t capacity_a = rd<std::int32_t>(model, 0x1f4);
+    const std::int32_t capacity_b = rd<std::int32_t>(model, 0x1f0);
+    void* mesh_a = rd<void*>(model, 0x1b4);
+    void* mesh_b = rd<void*>(model, 0x1c8);
+    // AF63ED..AF652A: lock the vertex streams (4 vertices per quad) under the
+    // device lock; B is also handed to the renderer [00F8D39C] through 00B0D170.
+    if (capacity_a != 0 || capacity_b != 0) {
+        host.device_lock_enter();
+        if (capacity_a != 0) {
+            wr<void*>(model, 0x1c0, host.lock_vertex_stream(mesh_a, capacity_a * 4));
+        }
+        if (capacity_b != 0) {
+            wr<void*>(model, 0x1d0, host.lock_vertex_stream(mesh_b, capacity_b * 4));
+            host.renderer_attach_00b0d170(model, mesh_b);
+        }
+        host.device_lock_leave();
+    }
+    // AF652A..AF6569: the floating cursor (shared scratch [00F8C274]+28h) and the room counts.
+    const std::int32_t capacity_c = rd<std::int32_t>(model, 0x1f8);
+    wr<void*>(model, 0x1c4, capacity_c != 0 ? host.scratch_cursor_00f8c274_28() : nullptr);
+    wr<std::int32_t>(model, 0x1cc, rd<std::int32_t>(model, 0x1f0));
+    wr<std::int32_t>(model, 0x1b8, rd<std::int32_t>(model, 0x1f4));
+    wr<std::int32_t>(model, 0x1bc, capacity_c);
+    // AF654B..AF65E8: view = camera view (00B6FCB0), or model world (+F0h) *
+    // view when +1B0h is set; argument = float(1 / camera+1C4h) (Sprite's
+    // view_size_scale). Then the emitters build their geometry.
+    const float inverse_fov = static_cast<float>(1.0 / rd<float>(camera, 0x1c4));
+    CameraMatrix view;
+    if (rd<std::uint8_t>(model, 0x1b0) == 0) {
+        view = host.camera_view_00b6fcb0(camera);
+    } else {
+        if ((rd<std::uint8_t>(model, 0x5c) & 2) == 0) {
+            host.refresh_world_00b6db70(model);
+        }
+        CameraMatrix world;
+        std::memcpy(world.data(), static_cast<const std::uint8_t*>(model) + 0xf0, sizeof world);
+        multiply_camera_matrices_00413920(view, world, host.camera_view_00b6fcb0(camera));
+    }
+    particle_model_build_geometry_00af5e90(model, view.data(), inverse_fov, host);
+    wr<std::uint8_t>(model, 0x1d4, 1);
+    // AF65ED..AF66DE: unlock the streams under the device lock.
+    if (capacity_a != 0 || capacity_b != 0) {
+        host.device_lock_enter();
+        if (capacity_a != 0) host.unlock_vertex_stream(mesh_a);
+        if (capacity_b != 0) host.unlock_vertex_stream(mesh_b);
+        host.device_lock_leave();
+    }
+    // AF66E0..AF6779: used counts. +1F8h is overwritten with the floating count
+    // used and flushed through 00AF0540 ([00F8C274], bytes = used * 4); each
+    // mesh's element 0 gets vertices (+10h) = used * 4 and primitives (+18h) = used * 2.
+    const std::int32_t used_a = rd<std::int32_t>(model, 0x1f4) - rd<std::int32_t>(model, 0x1b8);
+    const std::int32_t used_b = rd<std::int32_t>(model, 0x1f0) - rd<std::int32_t>(model, 0x1cc);
+    wr<std::int32_t>(model, 0x1f8, rd<std::int32_t>(model, 0x1f8) - rd<std::int32_t>(model, 0x1bc));
+    if (rd<std::int32_t>(model, 0x1f8) != 0) {
+        host.flush_scratch_00af0540(rd<std::int32_t>(model, 0x1f8) * 4);
+    }
+    wr<std::int32_t>(host.mesh_element_00b732c0(mesh_a, 0), 0x10, used_a * 4);
+    wr<std::int32_t>(host.mesh_element_00b732c0(mesh_a, 0), 0x18, used_a * 2);
+    wr<std::int32_t>(host.mesh_element_00b732c0(mesh_b, 0), 0x10, used_b * 4);
+    wr<std::int32_t>(host.mesh_element_00b732c0(mesh_b, 0), 0x18, used_b * 2);
+}
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380) {
     axial_count_00f8d380 = axial_count_00f8d380 - 1;
 }
