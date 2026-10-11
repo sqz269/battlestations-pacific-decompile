@@ -464,3 +464,12 @@ The joint producer records five fields in each own-API stamp; the Source-staging
 The reviewed constructor completed successfully: `24f907/85757` → `635f24/0`. Its original native capture preserves both full argument/result tuples and the complete actual stdout. It produced the frozen selected-input book (17 pins) and prestartup binding (seven prerequisites, three complete contract pairs). Root consumed both outputs (`d35eed/0`); independent review confirmed the full literal mapping and current physical identities (`a42dea/0`).
 
 The probe and admission consume these two DATA outputs directly; neither requires a constructor-native schema or session rule. The separate genuine constructor capture remains forensic provenance. Ordinary startup, startup admission, selected phase Source execution, dispatch, a new native clock, runtime, fixture, ABI and game qualification remain unissued.
+
+
+### Fresh F6 Native actual ordinary startup and formal Dispatch authorization (2026-10-11)
+
+The genuine ordinary-host probe closed under RemoteSigned with all 15 environment values matching; the original guard was not replayed. The guard inventory contains only its 24,630-byte `:$DATA` stream. Actual startup admission closed with 10,369 current pins. The independent review closed with all 85 predicate rows and 10,452 current pins per bookend; repeated predicate names were retained.
+
+Root consumed the complete peer report, readonly seal and genuine five-turn inspector capture, then issued the startup acceptance and authority binding through the corrected consumer. The original unexecuted consumer remains preserved. Its derivative restricts readonly/single-link checks to direct controls and permits only the exact pinned foreign inventory with stable actual metadata and whole-file hashes; 10,461 per-read physical measurements were checked without claiming serialized individual physical rows.
+
+The actual formal authorizer closed through three genuine tool turns and permits the separately gated Native Dispatch mode. Its current receipt and all three runtime Source pins were consumed. The Native recipe and clock remain unstarted. Compiler execution, target launch, fixture, ABI and game qualification remain unavailable. This additive checkpoint preserves the complete prior ordered JSON and documentation prefix.
