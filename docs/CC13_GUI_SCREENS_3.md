@@ -22,7 +22,13 @@ offset of the full listener interface (the first entry is slot 08h, `BSP_GuiWidg
   (MultiMenu, HudWarningScreen, FrontEndManager). What was left is the hint tracker (the
   `BSP_AwardTracker_*` object of docs/GAME_AWARD_TRACKERS.md, which feeds the hints screen) and
   the observer plumbing. Small tracker helpers and the deque instantiations are named.
-- Segment 4. Not reached in this turn; see the handoff.
+- Segment 4. The `panel`/`sequence`/`setpanel`/`suppressinterruptmsg` keywords are the mission
+  dialog sequencer: 004507D0 parses a dialog table (`priority`, `requestTime`,
+  `suppressInterruptMsg`, `defaultPause`, `nextUnit`, `sequence`, `breakRequested`, `lastPanel`,
+  `panelStates`) and 0044BE50 builds one command per `sequence` element. Both are cited by cc9's
+  docs/SQUADRON_LAND_TASK.md and hosted by cc9's packet `cc9_dialog_sequencer`
+  (`src/game_hosts_script_orders.cpp`), as are 00452360 and 00452BD0, so nothing there was
+  reconstructed. Only the uncited command-class slots were named (below).
 
 ## Functions Ghidra lacked
 
@@ -36,7 +42,7 @@ the record is `reports/cc13_gui5_defined.json`: 00547370, 00547380, 00549200, 00
 00551BC0, 005539E0, 00689BD0, 006935B0, 00694250, 00449A30, 00449A50, 00449AB0, 0044B380, 0044B3B0,
 0044B3E0, 0044C220, 0044C270, 0044C2F0, 0044C340, 0044CCD0. 0054ED00 took its existing ledger name
 `BSP_FrontEndScreen_Register` (a 5-byte `JMP 004F71D0` in vtable 00CEE408 +10h). The segment-28 and
-segment-4 definitions are not yet named.
+segment-4 definitions were named in the second batch (below).
 
 ## HUD hints screen (id 34h)
 
@@ -134,3 +140,49 @@ TriggerHint 00690FD0, whose callers were not surveyed in this packet.
 - Game mode 8 read as the tutorial mode is a hypothesis from the BASIC* chain it gates.
 - Floating-point: the reconstruction computes in float/double as the listing's stores do, not in
   x87 extended precision.
+
+## Second batch: segment-4 command slots, session message E1h, segment-28 slots (names only)
+
+The dialog command classes behind 0044BE50 (base vtable 00CE4940; msg 00CE49CC, setpanel 00CE49DC,
+hidepanel 00CE4950, pause 00CE4960, callback 00CE49EC; type ids 0..4 from slot +04h, hidepanel's
+and pause's getters 004483A0/004483C0 lie below the lease and were not defined). Slot +08h reads
+and +0Ch writes through tagged values `{kind 0 string, 1 int, 2 float; payload}`; the reader's
++0Ch is read-with-default and +10h a plain read, the writer's +0Ch writes one key. Named:
+
+- 0044C060 `BSP_DialogCommand_WriteBase` (`panel` = index + 1, then `type`), 0044C220/0044C270/
+  0044C2F0/0044C340 the msg/setpanel/pause/callback writers (`message`; `name` + `character`;
+  `time`; `callback`), 0044A3F0 `BSP_DialogCommand_ReadBase`, 0044A4C0 `..SetPanel_Read`, the three
+  type getters 0044B380/0044B3B0/0044B3E0 and the two 8/0Ch-byte scalar deletes 00449A30/00449A50.
+- Behaviour cc9 may want (Lua-visible through the dialog tables): every command that reads
+  `panel` (default 1) stores 0 over the value right after the read (0044A42F..0044A431,
+  0044A507), and pause/callback set panel 0 without reading, so the authored `panel` key never
+  reaches the command object. A `type` string other than the five names leaves the factory's
+  object null and the original then calls through it (0044BFBB), i.e. it crashes.
+- Session message type E1h (vtable 00CE4B30): 00449A70 write body (byte +10h in 8 bits, string
+  +18h, byte +20h in 2 bits, string +24h), 00449AB0 read body, 0044CCD0 type test.
+- Segment 28: 00689BD0 attract-screen no-op slot, 006935B0 observer no-op slot, 00694250 the
+  scalar delete of the class whose singleton is 00E198E0.
+
+## Handoff (cc13-gui5, 2026-10-11)
+
+Commits on agent/cc13-gui5: 10c567ae9 (hints screen reconstruction, 31 definitions, 35 names) and
+the handoff commit (18 more names, this section). 10 functions reconstructed and build-tested
+(`./scripts/build.ps1` passes, 2/2 tests), none wired or run in `bsp_game`; 53 ledger names applied
+to Ghidra with evidence comments (prior values in the worktree's
+`local/ghidra-annotations-20261011T2221*.json` and `..T2233*.json`); `reports/cc13_gui5.json` has 101
+call rows, `tools/verify_report_calls.py` 101 checked, 0 failed. Scripts are in the worktree's
+`local/` with the `g5_` prefix (copies of the menus5/menus6 helpers, paths fixed to `local/g5_*`).
+
+Open, in order of value:
+
+1. `00690FD0 BSP_AwardTracker_TriggerHint` (1284 instructions, RET 8): the producer of every hint
+   and the only caller of ShowHint 0054E020; it decides pausing/text/title/seconds. Reconstructing
+   it would complete the hint path; the tracker's other unnamed helpers are 0068EE00, 0068F030 (1813 instructions, RET 18h), 00690B20, 00690C30, 00690CA0, 00690CD0 (the
+   `flush_award_tracker` host stub in `src/game_hosts_mission.cpp`), 006921B0. Check
+   docs/GAME_AWARD_TRACKERS.md and `src/award_trackers.cpp` first.
+2. Screen 2Ch Enter/Exit/Update (0054F900, 0054EFC0, 00550410): camera work for the idle-camera
+   interface; give it to a camera worker with x87 support.
+3. `004D94F0` (game, segment 10) reads as "set hint pause"; rename under a segment-10 lease.
+4. Weapon-group screen leftovers in segment 16 (00544E60, 00544FA0, 00545270, ...): check for
+   0077D600 unit commands before taking them; 00549200 steps the group on observer kind 5.
+5. Segment 4's dialog sequencer stays with cc9 (packet `cc9_dialog_sequencer`).
