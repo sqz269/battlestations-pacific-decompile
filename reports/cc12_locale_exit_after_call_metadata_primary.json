@@ -1,0 +1,420 @@
+{
+  "schema": "bsp.cc12.locale-after-call-metadata.Root.v1",
+  "status": "exact_site_typed_metadata_accepted",
+  "worker_commit": "102283915398f7158581ea1f70d07e0b320a99a6",
+  "proof_pins": [
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/evidence.zip",
+      "bytes": 356836579,
+      "sha256": "857dfe41027dfc6a7b959700d8a63d8b9f8e3cb96cca386d1f89df1ff795e580"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/delivery_git.zip",
+      "bytes": 659779,
+      "sha256": "dc3d59e108fc635fd8277ec4a26535417211ef07626f39369bf8715f593c3e2a"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/worker_handoff.json",
+      "bytes": 19963,
+      "sha256": "012c6f56c513129b5fd2d33c08fe11a3dcb3f69930345b7e5a3f77325e730889"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_core_guard.json",
+      "bytes": 45732,
+      "sha256": "caafade56eaeb0500d234cdd3eeb5117e9154e81593f55b4620ac0708740ac57"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_delivery_guard.json",
+      "bytes": 6765,
+      "sha256": "034ab870e43243c2ed74d5ae328e558066276cffe5d4e379b810f81655ca8c6a"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_actual_review.json",
+      "bytes": 1897073,
+      "sha256": "2038d130a5ba94dc4374fd09bff5869c7dc74c3bd6c76f750f2f0814278ce5c3"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_site_raw_retained.json",
+      "bytes": 8846,
+      "sha256": "b1c17b7c5a9bb8b5fe6f3e30cb0b6855140166c95d739d9ec8b7692b7c2383c9"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_qualified_site.json",
+      "bytes": 3236,
+      "sha256": "a5aa68880847bf72e55f9e8f5c4ccd41fb09669e32e88f195f0f41ae35a44c60"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Root_accepted_ledger_diff.txt",
+      "bytes": 2344,
+      "sha256": "c5d03a4a5bcbc5afee0c4990c4c88fbe0813728f464fc900090759e376006a8a"
+    }
+  ],
+  "helpers": [
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/after_push_metadata_delivery_replay.py",
+      "bytes": 2914,
+      "sha256": "cfd5544bbfa2f46178c66ed4a00f47cf0b4586f6415c3429cab0c84dcd444626"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/after_push_metadata_replay.py",
+      "bytes": 19458,
+      "sha256": "6bf8528889b880404881e196f0ae91f245939743fd80649ff10540504e453bf1"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/call_delivery_replay.py",
+      "bytes": 2466,
+      "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/call_operand_delivery_replay.py",
+      "bytes": 2949,
+      "sha256": "87776dea498812a1a48dea88f2b3a2e17af91bce906cb4e01879373458fa481e"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/call_operand_replay.py",
+      "bytes": 15469,
+      "sha256": "2d0082ad8b72b1c56d621bbe08b85ebdde861b05739efc82dd2457a65414826b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/call_replay.py",
+      "bytes": 12906,
+      "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/delivery_verifier.py",
+      "bytes": 2893,
+      "sha256": "b8bbe2ec8b4e38b3d2d953e0d092c139d905096c33665708bcd38a7dfcb99739"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/entry_operand_delivery_replay.py",
+      "bytes": 2895,
+      "sha256": "5bf2c653b06fb7aab7bcb5ac1a7f9f3b1add5eaa996b61bc32fb9b1358e94eba"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/entry_operand_replay.py",
+      "bytes": 15018,
+      "sha256": "acdadd99adfd86aef5e522dbcda05f9d7be6582dc662fa7f9ee344ac0c45c9a7"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/exit_metadata_delivery_replay.py",
+      "bytes": 2881,
+      "sha256": "776c0015d590f9bc481eaee59ed4d084c25db1c5ce6a54eda65d2aba7971bb5b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/exit_metadata_replay.py",
+      "bytes": 11337,
+      "sha256": "0e365b15191d65f5d740edde87e976c0f924f75dadfdef563c0294f8abda9770"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/metadata_delivery_replay.py",
+      "bytes": 2467,
+      "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/metadata_replay.py",
+      "bytes": 9853,
+      "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/operand_delivery_replay.py",
+      "bytes": 2480,
+      "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/operand_replay.py",
+      "bytes": 10585,
+      "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_metadata_delivery_replay.py",
+      "bytes": 2462,
+      "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_metadata_replay.py",
+      "bytes": 12435,
+      "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_pop_metadata_delivery_replay.py",
+      "bytes": 2408,
+      "sha256": "19afc228d031f2df2ee44dea72d2c0029638950238853c123600b95614978e87"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_pop_metadata_replay.py",
+      "bytes": 12097,
+      "sha256": "022a113ea89a32f9e80a10aca6cb9df296c08c1d59d6f198797f2056db466665"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_pop_operand_delivery_replay.py",
+      "bytes": 2668,
+      "sha256": "a7ffa62372070cc42f504a8b48ef55b596b92929287ff253ce53addf4edbc205"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/post_pop_operand_replay.py",
+      "bytes": 15964,
+      "sha256": "cc5a8f5f70a642e6eb1ae7c90450ad123cca63f5f5643979505c319452dfac9b"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/prefix_delivery_replay.py",
+      "bytes": 2465,
+      "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/prefix_replay.py",
+      "bytes": 10761,
+      "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/prior_replay.py",
+      "bytes": 5817,
+      "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/return_metadata_delivery_replay.py",
+      "bytes": 2453,
+      "sha256": "977f708c138accaf6692198296378067f1478642401b092f3f2b73bbe72cddbd"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/return_metadata_replay.py",
+      "bytes": 10363,
+      "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/return_operand_delivery_replay.py",
+      "bytes": 2563,
+      "sha256": "8024b7026c805e2ddd5d1b439b5309fdbba69e23797bd6778aef45bd7a3f2fed"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/return_operand_replay.py",
+      "bytes": 13268,
+      "sha256": "c47081e1a52c18656155650973251acfa2018b0817d5389135ae95a002da687a"
+    },
+    {
+      "path": "local/cc12_locale_exit_after_call_metadata_primary/Tools/verifier.py",
+      "bytes": 14920,
+      "sha256": "2a925803bddb93a5f8b124c3222f63eaa7fea259f015a867ccaa7318cd160224"
+    }
+  ],
+  "actual_membership": {
+    "frozen_blobs": 4298,
+    "frozen_objects": 11,
+    "later_objects": 17,
+    "later_full_blobs": 8,
+    "opaque_ledger_oid_size_and_bounded_diff": true,
+    "delivery_objects": 8,
+    "outputs": 2,
+    "Source": 4217
+  },
+  "Source": {
+    "frozen": "575e7fd047615c30cf324369e84bd3630fd35c7e",
+    "later": "f2030981871a23a7f24413d672c661f83d49ce76",
+    "Root_current": "9bf7f4b857b1a448b2e68c20705c320f973fb4ce",
+    "changed": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "no_rebase_or_build_runtime_transfer": true
+  },
+  "qualified_metadata": {
+    "complete": true,
+    "direct_call_targets": [],
+    "function_at_query": null,
+    "function_containing_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "functions": [
+      {
+        "body": {
+          "address_count": "18",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00bf7006",
+                "space": "ram"
+              },
+              "length": "18",
+              "start": {
+                "offset": "00bf6ff5",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "_atexit",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    ],
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00bf7000",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00bf7000",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00bf6ffe",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 2
+      }
+    },
+    "modification_number_after": "98",
+    "modification_number_before": "98",
+    "program": {
+      "default_address_space": "ram",
+      "image_base": {
+        "offset": "00400000",
+        "space": "ram"
+      },
+      "language": "x86:LE:32:default",
+      "path": "/battlestationspacific.exe",
+      "project": {
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr",
+        "name": "bsp"
+      }
+    },
+    "query_address": {
+      "offset": "00bf6ffe",
+      "space": "ram"
+    },
+    "schema": 1
+  },
+  "Native": {
+    "Native_closed": true,
+    "count_pair_equal": true,
+    "epoch": 98,
+    "fresh_code_bytes": 0,
+    "fresh_data_bytes": 0,
+    "function_count": 64730,
+    "gate": "PASS",
+    "gate_qualified_pair_equal": true,
+    "identity_bookends_equal": true,
+    "mutations": 0,
+    "process_status_queries": 0,
+    "quarantined_fields": [
+      {
+        "capture": "gate_before.json",
+        "entire_object_opaque": true,
+        "field": "direct_call_targets[0].function_at_target"
+      },
+      {
+        "capture": "gate_after.json",
+        "entire_object_opaque": true,
+        "field": "direct_call_targets[0].function_at_target"
+      }
+    ],
+    "queried_addresses": [
+      "BF6FF9",
+      "BF6FFE"
+    ],
+    "site_raw_pair_equal": true,
+    "target_objects_in_qualified_subset": false,
+    "target_queries": 0,
+    "text_queries": 0,
+    "whole_capture_strict_site_only": false
+  },
+  "whole_capture_strict_site_only": false,
+  "entire_gate_target_objects_quarantined": true,
+  "boundary": "Instruction unit length2 and FALL_THROUGH edge are typed database facts only. No opcode/operand/effects, actual reach, target return/cleanup/registration, stack preservation, initialized locale owner, Source ABI, startup or game credit.",
+  "next_admission": {
+    "packet": "cc12_locale_exit_after_call_operand",
+    "address": "00BF6FFE",
+    "code_range": [
+      "00BF6FFE",
+      "00BF6FFF"
+    ],
+    "fresh_unique_code_bytes": 2,
+    "text_context": 0,
+    "gate": "Fresh unchanged project/program/identity/count/epoch at98/64730, exact BF6FFE at/containing InstructionDB length2, functionAtQuery null, containing BF6FF5 owner nonThunk/noReturn false, NONE/no override, default/effective FALL_THROUGH to address-only BF7000 and empty targets. Match typed/count bookends before and after.",
+    "excluded": [
+      "No BF7000 query or any neighbor",
+      "No BF6FB9 target body/prototype/caller/data/pointer/stack query",
+      "No GPR repairs/mutations",
+      "No C++/CMake/tests/builds/probes/process actions",
+      "No actual execution/return/ABI or automatic successor credit"
+    ],
+    "preserve_all_predecessor_epochs": true
+  },
+  "GPR_mutations": 0,
+  "Original_code_or_data_in_this_packet": 0,
+  "Original_instruction_text_in_this_packet": 0,
+  "Cpp_changes": 0,
+  "builds": 0,
+  "runtime": false
+}
