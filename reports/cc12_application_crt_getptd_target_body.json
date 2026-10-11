@@ -1,0 +1,1239 @@
+{
+  "schema": "bsp.cc12.getptd.disjoint-body.v1",
+  "status": "Native_OFFLINE_EVIDENCE_CLOSED",
+  "address": "00C051B7",
+  "frozen_worker_HEAD": "5a47b51a151b70259880597d519486d7889c8bb9",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_GETPTD_TARGET_BODY.md",
+    "reports/cc12_application_crt_getptd_target_body.json"
+  ],
+  "immediate_input_contract": "Twelve finite positive frozen inputs and eight actual Git object payloads. No inherited archive recursion, Source content census or current Root Source equality.",
+  "Source_subtree_identities": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_getptd_target_body/evidence.zip",
+      "bytes": 645339,
+      "sha256": "0e03ef428bfc130cd420f7cd5edba6e2af96c4fa228373318efaa6a9f1d7e19f"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_getptd_target_body/distinct_copy/evidence.zip",
+      "bytes": 645339,
+      "sha256": "0e03ef428bfc130cd420f7cd5edba6e2af96c4fa228373318efaa6a9f1d7e19f"
+    },
+    "physical_copy_distinct": true,
+    "copy_proof": {
+      "samefile": false,
+      "different_resolved_paths": true,
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_target_body\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006146264
+      },
+      "copy": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_handler_entry_metadata\\local\\cc12_application_crt_getptd_target_body\\distinct_copy\\evidence.zip",
+        "device": 16434406700183562694,
+        "inode": 281475006146266
+      }
+    },
+    "copy_proof_pin": {
+      "path": "local/cc12_application_crt_getptd_target_body/distinct_copy_proof.json",
+      "bytes": 563,
+      "sha256": "08e92984f7f72d9cfa2996aa50f5db0f66889ca6bc74eb0abe64ba674671d484"
+    },
+    "preexecution_pins": {
+      "path": "local/cc12_application_crt_getptd_target_body/replay_preexecution_pins.json",
+      "bytes": 2129,
+      "sha256": "e69ece5b44ada750ddd707c7ae6bf01d254ed10dac290d48b1fe91b6582ea854"
+    },
+    "manifest": {
+      "path": "local/cc12_application_crt_getptd_target_body/manifest.json",
+      "bytes": 20741,
+      "sha256": "bc977fcb8c5d73c5498962fb79ba7481dfe8dde244c7bf0766a6c49d1e19d6e8"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/capture_body.py",
+        "bytes": 5409,
+        "sha256": "adc0ef6328a8c6553542f9fd8f5f39dc820e133af4faa8b8d274ba812d8e6ca1"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/metadata_parser.py",
+        "bytes": 33160,
+        "sha256": "7f53ae32764194ac1cac23e9479656bd248fa8a32ee3b9c7e81c70bf1de86d41"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/guard_replay.py",
+        "bytes": 3104,
+        "sha256": "e313ea5590e9489cbb83d29842f48154e721213fc504fc59046e02d3ff015d0a"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/packet_tool.py",
+        "bytes": 23717,
+        "sha256": "556b5c966d78d53be909218efc14b6fbc7651b6acb3ad317c3e4ea399827f900"
+      }
+    ],
+    "replay_equal": true,
+    "replay_result": {
+      "Native": {
+        "Capstone_version": "5.0.7",
+        "Native_CLI_calls": 25,
+        "all_four_116_address_sweeps_equal": true,
+        "call_override": {
+          "actual_no_return_not_authenticated": true,
+          "default_fallthrough": null,
+          "default_flow": "UNCONDITIONAL_CALL",
+          "effective_fallthrough": null,
+          "effective_flow": "CALL_TERMINATOR",
+          "length": 5,
+          "next_address_arithmetic_only": "00C0521F",
+          "next_address_in_unqueried_gap": true,
+          "override": "CALL_RETURN",
+          "site": "00C0521A"
+        },
+        "code_reads": 4,
+        "computed_dispatch_cells_contents_unread": [
+          "00CE2258",
+          "00CE223C",
+          "00CE22BC"
+        ],
+        "context_zero_sweeps": 1,
+        "count_calls": 12,
+        "epoch": 98,
+        "excluded_unqueried_gap": "00C0521F..00C05221",
+        "failed_Native_calls": 0,
+        "function_count": 64730,
+        "gap_queried": false,
+        "manual_Capstone_and_listing_boundaries_agree": true,
+        "opaque_automatic_target_objects_per_sweep": 8,
+        "other_data_cells_contents_unread": [
+          "00E15AFC",
+          "0109DE3C"
+        ],
+        "ranges": [
+          {
+            "bytes": 104,
+            "end_inclusive": "00C0521E",
+            "instructions": 37,
+            "paired_equal": true,
+            "sha256": "129e55689a2a866bc6d492e76bd3b4e0624a57273f2cfc2210c99f0d665c0aa2",
+            "start": "00C051B7"
+          },
+          {
+            "bytes": 12,
+            "end_inclusive": "00C0522D",
+            "instructions": 6,
+            "paired_equal": true,
+            "sha256": "0696a0a5b3e4feb323050302fcad557e9861683d8826b5425aa4a463d8341005",
+            "start": "00C05222"
+          }
+        ],
+        "raw_typed_responses": 464,
+        "saved_external_annotations": [
+          {
+            "default_targets": [],
+            "effective_targets": [
+              {
+                "offset": "0000016b",
+                "space": "EXTERNAL"
+              }
+            ],
+            "site": "00C051B9"
+          },
+          {
+            "default_targets": [],
+            "effective_targets": [
+              {
+                "offset": "00000164",
+                "space": "EXTERNAL"
+              }
+            ],
+            "site": "00C0520B"
+          },
+          {
+            "default_targets": [],
+            "effective_targets": [
+              {
+                "offset": "00000184",
+                "space": "EXTERNAL"
+              }
+            ],
+            "site": "00C05223"
+          }
+        ],
+        "status": "PASS",
+        "typed_calls": 8
+      },
+      "Scope": "Stored Native evidence and offline decoder/metadata replay only; no Source/build/ABI/runtime/gameplay credit.",
+      "all_member_hashes_checked_before_semantic_replay": true,
+      "body_findings_sha256": "f41436f834066fbbdb5c26f9b28c4d6081c79d661f855b8db7cfe46c17087201",
+      "git": {
+        "Source_content_census": false,
+        "Source_subtree_identities": {
+          "include": "09add3be594e63edcce6a16ec041ed965441e898",
+          "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+        },
+        "actual_objects": 8,
+        "current_Root_Source_equality": false,
+        "finite_immediate_inputs": 12,
+        "frozen_HEAD": "5a47b51a151b70259880597d519486d7889c8bb9",
+        "inherited_archives_opened": false,
+        "positive_paths_connected_to_actual_commit": true,
+        "root_tree": "41c504e576333c56d57b9f15eea9e16bdbfd676a"
+      },
+      "manifest_members": 120,
+      "producer_and_preimage_bodies_present": true,
+      "semantic_instruction_count": 43,
+      "status": "PASS"
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/original_replay.json",
+        "bytes": 2576,
+        "sha256": "5bd34e47dcfb67e2bb71737ac29e5fe14c210a78faf6f6165d499cd8e66a59c7"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/original_guard.json",
+        "bytes": 513,
+        "sha256": "ef992bec23744988402a57f285998c834a93ed80b278b13b107c4898a5e6b6ab"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/original_command.json",
+        "bytes": 549,
+        "sha256": "c8c8c081b46fe6b1f73b6d3c15f1d74917d1a847d3cdea36337385b6124929a2"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/distinct_copy_replay.json",
+        "bytes": 2576,
+        "sha256": "5bd34e47dcfb67e2bb71737ac29e5fe14c210a78faf6f6165d499cd8e66a59c7"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/distinct_copy_guard.json",
+        "bytes": 528,
+        "sha256": "024f214c382d89fad070e110b3766ae90918e0cd24f9314a00dbf922c96be86b"
+      },
+      {
+        "path": "local/cc12_application_crt_getptd_target_body/distinct_copy_command.json",
+        "bytes": 564,
+        "sha256": "d40f5ec2af7cd79c6cee81932bcc83fa933a0de231d9d58069023ee6e3315a5c"
+      }
+    ]
+  },
+  "Native": {
+    "status": "PASS",
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_CLI_calls": 25,
+    "raw_typed_responses": 464,
+    "count_calls": 12,
+    "typed_calls": 8,
+    "code_reads": 4,
+    "context_zero_sweeps": 1,
+    "failed_Native_calls": 0,
+    "all_four_116_address_sweeps_equal": true,
+    "saved_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c051b7"
+      },
+      "name": "LIBCRT_unmatched_00c051b7",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "116",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c051b7"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c0521e"
+            },
+            "length": "104"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c05222"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c0522d"
+            },
+            "length": "12"
+          }
+        ]
+      }
+    },
+    "ranges": [
+      {
+        "start": "00C051B7",
+        "end_inclusive": "00C0521E",
+        "bytes": 104,
+        "instructions": 37,
+        "sha256": "129e55689a2a866bc6d492e76bd3b4e0624a57273f2cfc2210c99f0d665c0aa2",
+        "paired_equal": true
+      },
+      {
+        "start": "00C05222",
+        "end_inclusive": "00C0522D",
+        "bytes": 12,
+        "instructions": 6,
+        "sha256": "0696a0a5b3e4feb323050302fcad557e9861683d8826b5425aa4a463d8341005",
+        "paired_equal": true
+      }
+    ],
+    "manual_decode": [
+      {
+        "address": "00C051B7",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C051B8",
+        "size": 1,
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "edi"
+          }
+        ]
+      },
+      {
+        "address": "00C051B9",
+        "size": 6,
+        "bytes": "ff155822ce00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 13509208
+          }
+        ]
+      },
+      {
+        "address": "00C051BF",
+        "size": 6,
+        "bytes": "ff35fc5ae100",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 14768892
+          }
+        ]
+      },
+      {
+        "address": "00C051C5",
+        "size": 2,
+        "bytes": "8bf8",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "edi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051C7",
+        "size": 5,
+        "bytes": "e8a4feffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603504
+          }
+        ]
+      },
+      {
+        "address": "00C051CC",
+        "size": 2,
+        "bytes": "ffd0",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051CE",
+        "size": 2,
+        "bytes": "8bf0",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051D0",
+        "size": 2,
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C051D2",
+        "size": 2,
+        "bytes": "754e",
+        "mnemonic": "jne",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603938
+          }
+        ]
+      },
+      {
+        "address": "00C051D4",
+        "size": 5,
+        "bytes": "6814020000",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 532
+          }
+        ]
+      },
+      {
+        "address": "00C051D9",
+        "size": 2,
+        "bytes": "6a01",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 1
+          }
+        ]
+      },
+      {
+        "address": "00C051DB",
+        "size": 5,
+        "bytes": "e87af6ffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12601434
+          }
+        ]
+      },
+      {
+        "address": "00C051E0",
+        "size": 2,
+        "bytes": "8bf0",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051E2",
+        "size": 2,
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C051E4",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ]
+      },
+      {
+        "address": "00C051E5",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ]
+      },
+      {
+        "address": "00C051E6",
+        "size": 2,
+        "bytes": "743a",
+        "mnemonic": "je",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603938
+          }
+        ]
+      },
+      {
+        "address": "00C051E8",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C051E9",
+        "size": 6,
+        "bytes": "ff35fc5ae100",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 14768892
+          }
+        ]
+      },
+      {
+        "address": "00C051EF",
+        "size": 6,
+        "bytes": "ff353cde0901",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 17423932
+          }
+        ]
+      },
+      {
+        "address": "00C051F5",
+        "size": 5,
+        "bytes": "e8e4fdffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603358
+          }
+        ]
+      },
+      {
+        "address": "00C051FA",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ]
+      },
+      {
+        "address": "00C051FB",
+        "size": 2,
+        "bytes": "ffd0",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051FD",
+        "size": 2,
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C051FF",
+        "size": 2,
+        "bytes": "7418",
+        "mnemonic": "je",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603929
+          }
+        ]
+      },
+      {
+        "address": "00C05201",
+        "size": 2,
+        "bytes": "6a00",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 0
+          }
+        ]
+      },
+      {
+        "address": "00C05203",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C05204",
+        "size": 5,
+        "bytes": "e8effeffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603640
+          }
+        ]
+      },
+      {
+        "address": "00C05209",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ]
+      },
+      {
+        "address": "00C0520A",
+        "size": 1,
+        "bytes": "59",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "ecx"
+          }
+        ]
+      },
+      {
+        "address": "00C0520B",
+        "size": 6,
+        "bytes": "ff153c22ce00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 13509180
+          }
+        ]
+      },
+      {
+        "address": "00C05211",
+        "size": 4,
+        "bytes": "834e04ff",
+        "mnemonic": "or",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "esi",
+            "index": "",
+            "scale": 1,
+            "disp": 4
+          },
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 4294967295
+          }
+        ]
+      },
+      {
+        "address": "00C05215",
+        "size": 2,
+        "bytes": "8906",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "esi",
+            "index": "",
+            "scale": 1,
+            "disp": 0
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          }
+        ]
+      },
+      {
+        "address": "00C05217",
+        "size": 2,
+        "bytes": "eb09",
+        "mnemonic": "jmp",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12603938
+          }
+        ]
+      },
+      {
+        "address": "00C05219",
+        "size": 1,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C0521A",
+        "size": 5,
+        "bytes": "e8a94bffff",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "imm",
+            "size": 4,
+            "imm": 12557768
+          }
+        ]
+      },
+      {
+        "address": "00C05222",
+        "size": 1,
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "edi"
+          }
+        ]
+      },
+      {
+        "address": "00C05223",
+        "size": 6,
+        "bytes": "ff15bc22ce00",
+        "mnemonic": "call",
+        "operands": [
+          {
+            "type": "mem",
+            "size": 4,
+            "segment": "",
+            "base": "",
+            "index": "",
+            "scale": 1,
+            "disp": 13509308
+          }
+        ]
+      },
+      {
+        "address": "00C05229",
+        "size": 1,
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "edi"
+          }
+        ]
+      },
+      {
+        "address": "00C0522A",
+        "size": 2,
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "eax"
+          },
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C0522C",
+        "size": 1,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": [
+          {
+            "type": "reg",
+            "size": 4,
+            "reg": "esi"
+          }
+        ]
+      },
+      {
+        "address": "00C0522D",
+        "size": 1,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": []
+      }
+    ],
+    "manual_Capstone_and_listing_boundaries_agree": true,
+    "Capstone_version": "5.0.7",
+    "excluded_unqueried_gap": "00C0521F..00C05221",
+    "gap_queried": false,
+    "opaque_automatic_target_objects_per_sweep": 8,
+    "computed_dispatch_cells_contents_unread": [
+      "00CE2258",
+      "00CE223C",
+      "00CE22BC"
+    ],
+    "other_data_cells_contents_unread": [
+      "00E15AFC",
+      "0109DE3C"
+    ],
+    "saved_external_annotations": [
+      {
+        "site": "00C051B9",
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000016b"
+          }
+        ]
+      },
+      {
+        "site": "00C0520B",
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000164"
+          }
+        ]
+      },
+      {
+        "site": "00C05223",
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000184"
+          }
+        ]
+      }
+    ],
+    "call_override": {
+      "site": "00C0521A",
+      "length": 5,
+      "override": "CALL_RETURN",
+      "default_flow": "UNCONDITIONAL_CALL",
+      "effective_flow": "CALL_TERMINATOR",
+      "default_fallthrough": null,
+      "effective_fallthrough": null,
+      "next_address_arithmetic_only": "00C0521F",
+      "next_address_in_unqueried_gap": true,
+      "actual_no_return_not_authenticated": true
+    },
+    "contract": {
+      "scope": "32-bit local instruction semantics only; each instruction must execute normally in an appropriate x86 environment; faults, asynchronous interference and changed execution environments are not modeled. Memory addresses retain DS/SS segment roles; overlapping linear locations alias, including all partial overlaps. No flat-segment equality is assumed.",
+      "memory_model": "Every read uses memory at that instruction, after all preceding writes on that path. Do not cache data-cell or stack loads. External calls reset all state facts; their return continuations are conditional.",
+      "instruction_effects": [
+        {
+          "address": "00C051B7",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051B8",
+          "instruction": "push EDI",
+          "conditional_effect": "v := EDI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051B9",
+          "instruction": "call M32[0x00CE2258]",
+          "conditional_effect": "target := M32[0x00CE2258] in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051BF; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051BF",
+          "instruction": "push M32[0x00E15AFC]",
+          "conditional_effect": "v := M32[0x00E15AFC] evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051C5",
+          "instruction": "mov EDI, EAX",
+          "conditional_effect": "EDI := EAX evaluated now; flags unchanged."
+        },
+        {
+          "address": "00C051C7",
+          "instruction": "call 0x00C05070",
+          "conditional_effect": "target := 0x00C05070 in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051CC; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051CC",
+          "instruction": "call EAX",
+          "conditional_effect": "target := EAX in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051CE; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051CE",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX evaluated now; flags unchanged."
+        },
+        {
+          "address": "00C051D0",
+          "instruction": "test ESI, ESI",
+          "conditional_effect": "t := ESI & ESI; ZF/SF/PF := predicates of t; CF=OF=0; AF undefined. No register/memory write. Flags survive intervening POP instructions."
+        },
+        {
+          "address": "00C051D2",
+          "instruction": "jne 0x00C05222",
+          "conditional_effect": "If ZF is 0, go to 0x00C05222; otherwise go to 0x00C051D4. State unchanged."
+        },
+        {
+          "address": "00C051D4",
+          "instruction": "push 0x00000214",
+          "conditional_effect": "v := 0x00000214 evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051D9",
+          "instruction": "push 0x00000001",
+          "conditional_effect": "v := 0x00000001 evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051DB",
+          "instruction": "call 0x00C0485A",
+          "conditional_effect": "target := 0x00C0485A in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051E0; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051E0",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX evaluated now; flags unchanged."
+        },
+        {
+          "address": "00C051E2",
+          "instruction": "test ESI, ESI",
+          "conditional_effect": "t := ESI & ESI; ZF/SF/PF := predicates of t; CF=OF=0; AF undefined. No register/memory write. Flags survive intervening POP instructions."
+        },
+        {
+          "address": "00C051E4",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C051E5",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C051E6",
+          "instruction": "je 0x00C05222",
+          "conditional_effect": "If ZF is 1, go to 0x00C05222; otherwise go to 0x00C051E8. State unchanged."
+        },
+        {
+          "address": "00C051E8",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051E9",
+          "instruction": "push M32[0x00E15AFC]",
+          "conditional_effect": "v := M32[0x00E15AFC] evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051EF",
+          "instruction": "push M32[0x0109DE3C]",
+          "conditional_effect": "v := M32[0x0109DE3C] evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C051F5",
+          "instruction": "call 0x00C04FDE",
+          "conditional_effect": "target := 0x00C04FDE in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051FA; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051FA",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C051FB",
+          "instruction": "call EAX",
+          "conditional_effect": "target := EAX in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C051FD; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C051FD",
+          "instruction": "test EAX, EAX",
+          "conditional_effect": "t := EAX & EAX; ZF/SF/PF := predicates of t; CF=OF=0; AF undefined. No register/memory write. Flags survive intervening POP instructions."
+        },
+        {
+          "address": "00C051FF",
+          "instruction": "je 0x00C05219",
+          "conditional_effect": "If ZF is 1, go to 0x00C05219; otherwise go to 0x00C05201. State unchanged."
+        },
+        {
+          "address": "00C05201",
+          "instruction": "push 0x00000000",
+          "conditional_effect": "v := 0x00000000 evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C05203",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C05204",
+          "instruction": "call 0x00C050F8",
+          "conditional_effect": "target := 0x00C050F8 in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C05209; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C05209",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0520A",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0520B",
+          "instruction": "call M32[0x00CE223C]",
+          "conditional_effect": "target := M32[0x00CE223C] in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C05211; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C05211",
+          "instruction": "or M32[ESI+0x00000004], 0xFFFFFFFF",
+          "conditional_effect": "M32[ESI+0x00000004] is read now, ORed with 0xFFFFFFFF, then written as 0xFFFFFFFF; CF=OF=ZF=0, SF=PF=1, AF undefined. The read can fault; this is not a write-only store."
+        },
+        {
+          "address": "00C05215",
+          "instruction": "mov M32[ESI+0x00000000], EAX",
+          "conditional_effect": "M32[ESI+0x00000000] := EAX evaluated now; flags unchanged."
+        },
+        {
+          "address": "00C05217",
+          "instruction": "jmp 0x00C05222",
+          "conditional_effect": "Go to 0x00C05222; state unchanged."
+        },
+        {
+          "address": "00C05219",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C0521A",
+          "instruction": "call 0x00BF9DC8",
+          "conditional_effect": "target := 0x00BF9DC8 in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0521F; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred. STOP the possible continuation at 00C0521F: it is outside the admitted ranges."
+        },
+        {
+          "address": "00C05222",
+          "instruction": "push EDI",
+          "conditional_effect": "v := EDI evaluated in pre-instruction state; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any admitted data address or earlier stack slot; flags unchanged."
+        },
+        {
+          "address": "00C05223",
+          "instruction": "call M32[0x00CE22BC]",
+          "conditional_effect": "target := M32[0x00CE22BC] in pre-call state (computed memory operand uses DS); ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C05229; transfer to target. The target is resolved before the return-address push, even if the write aliases its dispatch cell. If control later resumes at the arithmetic return address: all EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No callee preservation, success, termination or identity is inferred."
+        },
+        {
+          "address": "00C05229",
+          "instruction": "pop EDI",
+          "conditional_effect": "EDI := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0522A",
+          "instruction": "mov EAX, ESI",
+          "conditional_effect": "EAX := ESI evaluated now; flags unchanged."
+        },
+        {
+          "address": "00C0522C",
+          "instruction": "pop ESI",
+          "conditional_effect": "ESI := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0522D",
+          "instruction": "ret",
+          "conditional_effect": "target := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; transfer to target; flags unchanged. Neither caller identity nor restoration of entry stack/register values is proved."
+        }
+      ],
+      "calls": [
+        "00C051B9",
+        "00C051C7",
+        "00C051CC",
+        "00C051DB",
+        "00C051F5",
+        "00C051FB",
+        "00C05204",
+        "00C0520B",
+        "00C0521A",
+        "00C05223"
+      ],
+      "suffix_limit": "00C05222 pushes current EDI; 00C05223 resolves M32[DS:00CE22BC] and calls it. If it returns to 00C05229, POP EDI reads returned ESP/memory; 00C0522A MOV EAX,ESI copies returned unknown ESI, not any earlier pointer. POP ESI and RET use subsequent current stack loads.",
+      "name_and_ABI_limits": "No TLS, allocation, error-state, free or termination semantics; no authenticated original type, calling convention or ABI. Saved function and EXTERNAL annotations do not authenticate providers."
+    }
+  },
+  "validation_scope": {
+    "stored_Native_evidence": true,
+    "independent_manual_decode": true,
+    "actual_detailed_Capstone": true,
+    "strict_original_and_distinct_copy_ZIP_replay": true,
+    "Source_changes": false,
+    "builds_or_tests": false,
+    "original_ABI_authenticated": false,
+    "game_runtime_or_gameplay_validated": false,
+    "saved_GPR_mutations": false,
+    "new_Native_queries_during_offline_closure": false
+  },
+  "delivery_receipts": {
+    "staged": "local/cc12_application_crt_getptd_target_body/staged_git_receipt.json",
+    "final": "local/cc12_application_crt_getptd_target_body/final_git_receipt.json",
+    "meaning": "Post-report actual Git receipts are outside the sealed ZIP to avoid circular hashes; they pin exact two-output blobs, unchanged twelve inputs, and worker Source subtree IDs."
+  }
+}
