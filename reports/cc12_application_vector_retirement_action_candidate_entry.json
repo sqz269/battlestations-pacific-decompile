@@ -1,0 +1,512 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_action_candidate_entry",
+  "status": "physical_candidate_receiver_load_and_tail_jump_with_conditional_frame_equation",
+  "verdict": "Paired exact8B reads atC86200 agree: 8b4df0e98847f6ff. Manual and actual detailed Capstone decode MOV ECX,current DWORD SS:[EBP-10h]; physical E9 JMP BEA990, without a return-address push. Parent actual receiver spill establishes only the conditional same-cell equation actionEBP=storeESP+18h=parentEntryESP under the same SS, plus current-cell preservation/reestablishment. Original FH3 invocation, frame binding and destination behavior remain unproved.",
+  "base_commit": "e09849bdb6db6c3b4d4d32fb951dea998f2895c1",
+  "frozen_tree": "83380c1e69445f3fb85fa5ce21ad4ed662d4921e",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_UNWIND_ROW.md",
+      "blob": "f3f71cf5736745ece4aa1d63d14af78bf3c94a07",
+      "sha256": "75783be9e57eb374e8d4ade31d35f85215bd45275ba1a5ea98d6ce8179d944f1",
+      "length": 3583
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_unwind_row.json",
+      "blob": "e299673b8a573e611d44d04d6e28af2ef0a8e9b6",
+      "sha256": "8c88b53a71fecd71c7f8b90385d80ff1e82b584e5571927876561302f22bb1f6",
+      "length": 11585
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_UNWIND_ROW_PRIMARY.md",
+      "blob": "772fc782e6c963f012dcae3a688a3a50e0efe530",
+      "sha256": "274576770225ba73aaffeedda8bc7945fd8104b0a2ba15c3fdf3694a6ea83c51",
+      "length": 2081
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_unwind_row_primary.json",
+      "blob": "eea6bbc402e44a856deea46ef90a74ff1fd8818f",
+      "sha256": "7be329c849076ae253bc1e5bb475ad1743ee3ae602ab6adea29c41026c676f35",
+      "length": 5507
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "length": 34569
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_ACTION_CANDIDATE_ENTRY.md",
+    "reports/cc12_application_vector_retirement_action_candidate_entry.json"
+  ],
+  "positive_candidate": {
+    "worker_report": "reports/cc12_application_vector_retirement_unwind_row.json",
+    "Root_report": "reports/cc12_application_vector_retirement_unwind_row_primary.json",
+    "row_address": "00DB57B0",
+    "row_hex": "ffffffff0062c800",
+    "raw_words": [
+      "FFFFFFFF",
+      "00C86200"
+    ],
+    "selection": "Root explicitly admitted numeric word1=C86200 as a possible action only under the conditional classic absolute EH-row layout. No action role or original dispatcher behavior is authenticated by the row.",
+    "parent_input_expansion": "The retained positive 93B parent report is the sole ninth immediate Git input, explicitly admitted to derive the actual receiver-spill condition. The original eight-input freeze and executed sealer preimages are retained."
+  },
+  "Root_gates": {
+    "entry": {
+      "evidence": {
+        "file": "Root_entry_gate.json",
+        "length": 1330,
+        "sha256": "79a7d0edc4d680cfe58e7808e80e46d9108cdd786bde7904824ba9231405bfb0"
+      },
+      "producer": {
+        "file": "Root_entry_gate.py",
+        "length": 4071,
+        "sha256": "4f5141e48591eba18e90f20481677c88fea0c15654e0f0f257f744c03fca0716"
+      },
+      "admission": "Paired exact-entry typed metadata only, then paired eight-address metadata sweep over the actual saved body."
+    },
+    "whole_body": {
+      "evidence": {
+        "file": "Root_whole_gate.json",
+        "length": 4255,
+        "sha256": "3c56c155aad08fd04458afc1b3cee49ec724cf7e68938959c8bcaa74ae337053"
+      },
+      "producer": {
+        "file": "Root_whole_gate.py",
+        "length": 5469,
+        "sha256": "a7eb9b9ae4b2ee6649a4b30cad3fff2209f91fde509522716e638ae1b6ca8c40"
+      },
+      "admission": {
+        "admitted": true,
+        "address": "00C86200",
+        "length": 8,
+        "saved_text": true,
+        "prototype": true,
+        "prototype_prefix_lines_used": 4,
+        "context0_addresses": [
+          "00C86200",
+          "00C86203"
+        ],
+        "Root_whole_gate_sha256": "3c56c155aad08fd04458afc1b3cee49ec724cf7e68938959c8bcaa74ae337053",
+        "Root_whole_producer_sha256": "a7eb9b9ae4b2ee6649a4b30cad3fff2209f91fde509522716e638ae1b6ca8c40",
+        "scope": "Two exact8B reads; context0 both actualunits; firstfourprototype metadata lines only; closing8addressmetadata. No target/data/callee/descriptor queries."
+      }
+    },
+    "producer_boundary": "Root physical producer bodies are retained and pinned opaque; the worker did not execute them."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "modification_number": "98",
+    "function_count": 64730,
+    "capture_mode": "Read-only live saved-analysis metadata and admitted byte/text queries; no PE reread, Native execution or Ghidra mutation."
+  },
+  "saved_analysis": {
+    "owner": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c86200"
+        },
+        "name": "Unwind@00c86200",
+        "no_return": false,
+        "is_thunk": false,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "8",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c86200"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c86207"
+              },
+              "length": "8"
+            }
+          ]
+        }
+      }
+    ],
+    "saved_range": [
+      "00C86200",
+      "00C86207"
+    ],
+    "complete_saved_range_bytes": 8,
+    "instruction_units": [
+      {
+        "unit": {
+          "address": {
+            "space": "ram",
+            "offset": "00c86200"
+          },
+          "length": 3,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "flow_flags": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "fallthrough_overridden": false
+        }
+      },
+      {
+        "unit": {
+          "address": {
+            "space": "ram",
+            "offset": "00c86203"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "flow_flags": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "fallthrough_overridden": false
+        }
+      }
+    ],
+    "prototype_prefix_only": [
+      "Function: Unwind@00c86200 at 00c86200",
+      "Signature: undefined Unwind@00c86200(void)",
+      "Entry: 00c86200",
+      "Body: 00c86200 - 00c86207"
+    ],
+    "prototype_boundary": "Only these first four metadata prefix lines were used. Remaining automatically returned prototype text is retained opaque.",
+    "context_zero_text": {
+      "00c86200": {
+        "address": "00c86200",
+        "instruction": "MOV ECX,dword ptr [EBP + -0x10]",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00c86203": {
+        "address": "00c86203",
+        "instruction": "JMP 0x00bea990",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "JMP",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    },
+    "flow_distinction": "Saved C86203 has default UNCONDITIONAL_JUMP with CALL_RETURN override producing effective CALL_TERMINATOR. Actual E9 bytes remain a physical near relative JMP and push no return address. This packet does not repair saved analysis."
+  },
+  "physical_body": {
+    "address": "00C86200",
+    "length": 8,
+    "hex": "8b4df0e98847f6ff",
+    "sha256": "2c08320829fdef733253cdfa9bbf17d2f4a0f6a6e69eab756c032554f9f5d910",
+    "paired_bytes_equal": true,
+    "manual": {
+      "first_opcode": "8B",
+      "modrm_hex": "4D",
+      "mod": 1,
+      "reg": 1,
+      "rm": 5,
+      "destination_register": "ecx",
+      "memory_base_register": "ebp",
+      "displacement": -16,
+      "memory_width": 4,
+      "first_size": 3,
+      "jump_opcode": "E9",
+      "jump_size": 5,
+      "relative_unsigned": 4294330248,
+      "relative_signed": -637048,
+      "next_address": "00C86208",
+      "target": "00BEA990",
+      "return_address_push_bytes": 0,
+      "implicit_memory_segment": "ss",
+      "semantics": "ECX := current DWORD SS:[EBP-0x10]; EIP := 0x00BEA990. ESP unchanged; no return address is pushed."
+    },
+    "capstone": {
+      "version": "5.0.7",
+      "mode": "x86 32-bit detail=True",
+      "instructions": [
+        {
+          "address": "00C86200",
+          "size": 3,
+          "hex": "8b4df0",
+          "mnemonic": "mov",
+          "op_str": "ecx, dword ptr [ebp - 0x10]",
+          "operands": [
+            {
+              "size": 4,
+              "access": 2,
+              "type": "reg",
+              "reg": "ecx"
+            },
+            {
+              "size": 4,
+              "access": 1,
+              "type": "mem",
+              "segment": null,
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "disp": -16
+            }
+          ],
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ],
+          "groups": [],
+          "eflags": 0,
+          "modrm": 77,
+          "sib": 0,
+          "displacement": -16
+        },
+        {
+          "address": "00C86203",
+          "size": 5,
+          "hex": "e98847f6ff",
+          "mnemonic": "jmp",
+          "op_str": "0xbea990",
+          "operands": [
+            {
+              "size": 4,
+              "access": 0,
+              "type": "imm",
+              "imm": 12495248
+            }
+          ],
+          "registers_read": [],
+          "registers_written": [],
+          "groups": [
+            "branch_relative",
+            "jump"
+          ],
+          "eflags": 0,
+          "modrm": 0,
+          "sib": 0,
+          "displacement": 0
+        }
+      ]
+    }
+  },
+  "parent_frame_condition": {
+    "definitions": {
+      "A": "parent entry ECX",
+      "Q": "parent entry ESP",
+      "P": "ESP at parent MOV [ESP+8],ESI",
+      "B": "candidate entry EBP"
+    },
+    "parent_push_count_before_spill": 6,
+    "P_equals": "Q-0x18",
+    "parent_receiver_copy": "007379B7: ESI := entry ECX=A",
+    "parent_spill_address": "007379BA",
+    "parent_spill_hex": "89742408",
+    "parent_spill_cell": "P+8 = Q-0x10",
+    "parent_spill_value": "A at time of store",
+    "action_load_cell": "B-0x10",
+    "same_cell_requires": "B=P+0x18=Q (modulo 2^32), under the same SS segment",
+    "same_cell_EBP_minus_P": 24,
+    "receiver_A_requires": "The actual action frame supplies B=P+0x18=Q under the same SS segment, and that memory cell still contains A when loaded (preserved or reestablished).",
+    "ordinary_target_same_numeric": {
+      "address": "007379E7",
+      "hex": "e8a42f4b00",
+      "target": "00BEA990"
+    },
+    "boundary": "Actual FH3 action invocation, action EBP binding, memory lifetime and destination behavior remain unproved. The candidate uses current memory, not a historical spill value by assumption."
+  },
+  "positive_parent": {
+    "input": {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "length": 34569
+    },
+    "selector": "native_evidence.reused_parent",
+    "address": "007379A0",
+    "length": 93,
+    "sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+    "offline_decode": "All 28 retained parent instructions were actually redecoded with detailed Capstone and matched addresses, sizes, bytes and normalized text. No fresh parent or destination query.",
+    "spill": "Instruction start7379BA, bytes89742408, stores incoming receiver A (copied ECX->ESI at7379B7) to SS:[P+8] after six pushes. P=Q-18h, so the spill cell is SS:[Q-10h].",
+    "target_match": "The retained ordinary parent E8 at7379E7 and candidate E9 atC86203 compute the same numeric target BEA990. Numeric equality does not establish target behavior or unwind safety."
+  },
+  "capture_integrity": {
+    "typed_raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_whole_before.raw.json",
+      "typed_whole_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "typed_response_count": 26,
+    "whole_body_address_count": 8,
+    "per_address_raw_sha256": {
+      "00c86200": "409be2f15ba752757c27fa620c8888ea9b84ca2f501ca53ca2b9f0334b11e8fb",
+      "00c86201": "95d10561c5d49379d66e8db42119d2aa5abd8f83a91f2d0ff2d00047069e8834",
+      "00c86202": "62147255b0f7c44cc37b4eb4d332d4257c341668f49158a4bdef0e77cd0637ce",
+      "00c86203": "fa3745ac8ce9ad1391b6bd7792a79aece462897010569a8c55050f22de67d9fc",
+      "00c86204": "d05716d964c4e8b6e4a2ccad2fd12ef0a00bd7ea7078fb9fde4fc3d90524c5f4",
+      "00c86205": "02dd0b54d39af34658303b037c864d74ea6ca1683a0248c234ca017e696c7997",
+      "00c86206": "c3a7a7bedbc3d5c98c6b8404dd7d1000aa2ac8d508861a6d9d23a59eeb93206a",
+      "00c86207": "f1129051301d5d75711f97c56455567098e085504aad81f6bdcefcec4eec26d2"
+    },
+    "paired_and_closing_equal": true,
+    "count_bookends": 6,
+    "all_counts": 64730,
+    "all_epochs": "98",
+    "Native_failures": [],
+    "helper_failures": [
+      {
+        "stage": "offline decoder assertion before decoded_body.json output",
+        "argv": [
+          "python",
+          "local/cc12_application_vector_retirement_action_candidate_entry/decode_body.py"
+        ],
+        "returncode": 1,
+        "retained_producer": "decode_body_failed_prefix.py",
+        "observed_error": "AssertionError at line79: 30-byte parent prefix compared against a literal containing two extra following bytes (8d7e).",
+        "raw_stream_boundary": "First helper failure surfaced through exec_command combined tool output; separate original OS stdout/stderr streams were not captured. Failure is disclosed, original executed producer retained. No Native query failed.",
+        "repair": "Correct the prefix literal to exactly 30 bytes; parent byte hash and actual detailed Capstone comparisons remain unchanged."
+      }
+    ],
+    "all_Native_raw_and_streams_retained": true,
+    "automatic_object_boundary": "Whole typed raw responses are retained. Automatic destination, companion and target objects were not traversed or followed. Offline replay examines only admitted query/listing/owner/flow-flag metadata.",
+    "preimages": [
+      "collect_entry_gate.py",
+      "collect_whole_gate.py",
+      "seal_eight_inputs.py",
+      "git/frozen_eight_inputs.json",
+      "git/frozen_eight_inputs.commands.json",
+      "decode_body_failed_prefix.py"
+    ],
+    "offline_failure_boundary": "One failed prefix-length assertion is disclosed with its executed producer retained; no Native failure or evidence overwrite occurred."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before1",
+    "typed_gate_after1",
+    "count_gate_after",
+    "Root exact-entry gate",
+    "count_whole_before",
+    "typed_whole_before8",
+    "typed_whole_after8",
+    "count_whole_after",
+    "Root whole-body gate",
+    "count_admitted_before",
+    "body_bytes_first8",
+    "body_bytes_second8",
+    "context_zero_C86200_C86203",
+    "prototype_first_four_prefix_lines_only",
+    "typed_close8",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_action_candidate_entry",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Nine explicit immediate positive Git blobs, actual frozen/staged/final commit and tree objects, and exactly two output blobs; full physical helpers and raw Native captures. Pure supplied-ZIP replay validates actual Git closure, complete admitted metadata aliases, paired bytes, manual physical decode, retained actual Capstone results and conditional parent frame arithmetic.",
+    "audit": "After bootstrap each replay permits exactly one supplied archive read, one declared receipt write and one retained replay-code execution; no other imports, file reads, directory traversal, process, network or Native access.",
+    "counts": "Object and ZIP entry counts are measured, never inherited.",
+    "self_reference_boundary": "Final commit/tree/ZIP pins and actual receipt paths are provided separately in the handoff.",
+    "Source_boundary": "Source subtree IDs are revision identity only. No Source content/census, preceding ZIP recursion or future Root Source-equality constraint."
+  },
+  "credit": {
+    "Native_physical_candidate_bytes": true,
+    "manual_decode": true,
+    "actual_detailed_Capstone": true,
+    "conditional_same_cell_equation": true,
+    "Original": false,
+    "Original_ABI": false,
+    "Original_FH3": false,
+    "authenticated_EH_layout": false,
+    "actual_action_invocation": false,
+    "actual_action_EBP_binding": false,
+    "actual_action_receiver_A": false,
+    "destination_behavior": false,
+    "state0_cleanup_behavior": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false,
+    "OS_audio_execution": false
+  },
+  "continuation": "Root must accept this evidence before any parent Source authorization. No Source change is authorized by this packet. Original dispatcher invocation, action-frame binding, preserved/current receiver value and target behavior remain separate open contracts."
+}
