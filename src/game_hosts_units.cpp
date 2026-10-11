@@ -5343,7 +5343,7 @@ struct GameUnitsHost::Impl {
     // all of that squadron's records in order (006C06A0) and unregisters (006952A0).
     // LABELLED: the host erases at the leave sweep, one frame boundary before the image's
     // flush. False: a shot-down squadron's record stays and keeps the largest n.
-    static constexpr bool kSquadronKillQueueEraseBound = false;
+    static constexpr bool kSquadronKillQueueEraseBound = true;   // ON by its pairs (SHIP_AI 208.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its

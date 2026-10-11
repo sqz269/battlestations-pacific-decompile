@@ -16169,3 +16169,26 @@ OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_
   moves (exit 3). Deaths are equal or close.
 - **Flip rule.** ON if every erase follows a squadron's last death and the queue order of the survivors is unchanged.
   Spread in landing timing does not block the flip.
+
+### 208.1 Pairs and the flip (cc9-ships42, 2026-10-11)
+
+OFF is `b89b3d537` (tree build). ON is the same commit exported with the switch true (`local\s42_ke`). Logs are
+`local\s42_k{off,on}_<row>.log`. The 300-frame smoke ran clean (exit 0, `kills=0`).
+
+| row | pair_diff | kills / erases (ON) | result |
+| --- | --- | --- | --- |
+| USNOS f3 (`s40_os_f3`, 40000) | 3 | 25 / 6 | Airfield3 erases `#1.4`, `#1.6`, `#4.4` and `#4.5`; Airfield2 erases two of its own. Airfield3 ends `queue=1` instead of 6 and `records=14` instead of 18, with `releases=13` instead of 16. The first moved death row is `plane #4.4` at 792.43 -> 805.88 s, after the wave-1 erases. The run fails on both sides ("Game Over"), at 1733.07 s OFF and 1510.10 s ON |
+| ESMP08 + `s38_e8_p3` (72000) | 3 | 187 / 4 | it completes at 2777.98 s on both sides; deaths 582 = 582. 148 death rows move, the first at 1761.59 s (`Chitose_sqn36\|.-2`). Zuikaku, Zuiho, Chiyoda and Chitose end `queue=0` instead of 1. The exec guard logged `refused a mission script's process launch: sus_prog.exe` |
+| USN01 + `s38_u1_p8` (22000) | 1 | 14 / 1 | gameplay identical. It fails at 920.60 s on both sides (current main; see 207.3) |
+
+- **Mechanism.** Every erase follows the last member's leave. The survivors' records keep their order.
+  - USNOS f3 shows the predicted wave-2 effect: smaller n and an earlier landing turn-around.
+  - The 202 loop's releases drop by 3 but do not reach 0. That fits the prediction, because the radius factor runs on the
+    `+A8h` records, which this binding does not touch.
+- **USNOS f3 fails 223 s earlier ON.** Airfield1/2/3's squadrons are no longer held behind dead records, so they cycle
+  faster against the troop transports. It is the same failure, reached sooner. f3 is an idle-side plan that fails on
+  both sides.
+- **Verdict: ON.** The mechanism matches the listing, and the moves are landing-timing spread.
+- **Still open from 206 item 3:**
+  - the live-retire `006C8800` call at the host's retire sites (reference rows never reach them);
+  - whether the `+A8h` assignment records have a Kill observer of their own.
