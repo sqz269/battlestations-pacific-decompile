@@ -1,0 +1,280 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_descriptor_prefix",
+  "status": "bounded_numeric_prefix_evidence_only",
+  "verdict": "Two exact twelve-byte reads at DB57B8 agree. Three raw little-endian DWORDs are 19930522,00000001,00DB57B0. Saved metadata identifies a defined36B DataDB, but only its first12B were read. No field layout, maxstate, map/action or Original FH3 interpretation is authenticated.",
+  "base_commit": "754024453cfcbe06fb9bf932f0ba14ccef6571e6",
+  "frozen_tree": "a951e4e57aa711411e85f36371d869780dd8c4b1",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_ENTRY_PRIMARY.md",
+      "blob": "b39608451679b1285fa653784e1780b7b4260ece",
+      "sha256": "734aa97b455212dab59a011c68443877e4509a350ef20ede7e2181bec8f274db",
+      "length": 2371
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+      "blob": "0514231501e1098a8f8b35b22c9de55a42a683af",
+      "sha256": "75ea3b4b8591de7fd360191fec59ee18354d678790f30daee1dc3ea29100e281",
+      "length": 16354
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_HANDLER_SUCCESSOR_PRIMARY.md",
+      "blob": "115b34f7d3c55ea381ccee4c544971adeba92c81",
+      "sha256": "0b853d3a5c07de43d56b17f1337f51fc204c2ddafeb8d17ba949ef52d6a014f1",
+      "length": 2193
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_handler_successor_primary.json",
+      "blob": "65e1c55bb5b11b68c7225e9526a8627be6129d2e",
+      "sha256": "5d14b32d14c47ec3f93490a4eb25a6532c351db29dcdfea56a9885e2ba8b9d38",
+      "length": 11968
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_HANDLER_BODY_PRIMARY.md",
+      "blob": "af544287f2f59c76e4ecd550137823beb14cd944",
+      "sha256": "4ebd3afd0b453db0d7b74c869d9e3915c1355484cc015826db487d689ed0c984",
+      "length": 2021
+    },
+    {
+      "path": "reports/cc12_application_crt_handler_body_primary.json",
+      "blob": "b1cf36a4be8d767949728c37f4b3c020e55b802c",
+      "sha256": "e80fa2a9c031ab65212591e2ef70d3008df101ebd4b873c3fe25bc92dcdff373",
+      "length": 10155
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX.md",
+    "reports/cc12_application_vector_retirement_descriptor_prefix.json"
+  ],
+  "positive_carrier": {
+    "entry": {
+      "report": "reports/cc12_application_vector_retirement_handler_entry_primary.json",
+      "physical_bytes": "b8b857db00",
+      "address": "00C86208",
+      "operation": "MOV EAX,00DB57B8",
+      "flow": "Accepted ordinary fall-through gives sequential candidate C8620D."
+    },
+    "successor": {
+      "report": "reports/cc12_application_vector_retirement_handler_successor_primary.json",
+      "physical_bytes": "e93109f7ff",
+      "address": "00C8620D",
+      "operation": "Physical E9 JMP to00BF6B43",
+      "qualification": "No return-address push. Authentic saved CALL_RETURN override is distinct from the physical opcode; no function was invented."
+    },
+    "shared_wrapper": {
+      "report": "reports/cc12_application_crt_handler_body_primary.json",
+      "address": "00BF6B43",
+      "accepted_length": 54,
+      "accepted_instructions": 27,
+      "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+      "carrier": "For entryEAX=D and unknown entryESP=S, wrapper savesD atS-8 and physically CALLsC07991 atBF6B64. At target entryT=S-3Ch, D is atT+14h. The wrapper does not dereferenceD.",
+      "return_qualification": "If external control returns, ESP=Q, EBP=F, EAX=A and memoryM remain unknown. Normal restoration requires explicit conditions and is not target ABI evidence. Own handlerEBP does not bind the Original action frame."
+    },
+    "scope": "Immediate accepted Root doc/report bytes only. No previous archive reopened, no wrapper/dispatcher body re-query, no target behavior inference."
+  },
+  "Root_gate": {
+    "file": "Root_prefix_gate.json",
+    "sha256": "e6114bc914dc88929c6d39703d751c802471088103c74c033a8dddc9335c9c8d",
+    "producer": "Root_prefix_gate.py",
+    "producer_sha256": "82927246cde75df34fe416948bd63177c1fc8dbbef546fe6387657e9cdf4ddb9",
+    "producer_policy": "Physical producer retained and pinned opaque; not executed by this worker.",
+    "admitted": "Only two12B prefix reads DB57B8..DB57C3, after paired twelve-address listing gate; not the complete36B saved data unit."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_counts": [
+      64730,
+      64730,
+      64730,
+      64730
+    ],
+    "autostart": false,
+    "verification": "Each bsp CLI query verifies project/program/language/image base. Each of36 retained per-address typed responses carries exact GPR identity and unchanged epoch98; batch before/after identities are retained."
+  },
+  "saved_listing": {
+    "queried_addresses": [
+      "00DB57B8",
+      "00DB57B9",
+      "00DB57BA",
+      "00DB57BB",
+      "00DB57BC",
+      "00DB57BD",
+      "00DB57BE",
+      "00DB57BF",
+      "00DB57C0",
+      "00DB57C1",
+      "00DB57C2",
+      "00DB57C3"
+    ],
+    "containing_DataDB": {
+      "address": {
+        "space": "ram",
+        "offset": "00db57b8"
+      },
+      "length": 36,
+      "java_class": "ghidra.program.database.code.DataDB",
+      "kind": "data",
+      "defined": true
+    },
+    "unit_length_metadata_only": true,
+    "exact_code_unit_at": "Only00DB57B8 has exact code_unit_at; the other11 queries are interior addresses with code_unit_at=null.",
+    "code_unit_containing": "All12 queries report the same defined36B DataDB starting00DB57B8.",
+    "instruction_at_and_containing": "Both null for every query.",
+    "function_at_and_containing": "Both null for every query; every functions list is empty.",
+    "instruction_flow": "Explicitly null for every query.",
+    "containment_verified": true,
+    "undefined_distinction": "Observed kind=data, java_class=DataDB and defined=true; no undefined or instruction surrogate substituted.",
+    "saved_function_name_ranges_thunk_noreturn_prototype": null,
+    "qualification": "Saved definition and36B length are metadata only. They do not authenticate field layout, complete descriptor semantics or Original FH3."
+  },
+  "prefix": {
+    "start": "00DB57B8",
+    "end_inclusive": "00DB57C3",
+    "length": 12,
+    "reads": 2,
+    "reads_equal": true,
+    "hex": "2205931901000000b057db00",
+    "sha256": "f739968ba1ecaa1310f01fdbc561487a62ea03c389bc22582ca82714940100ec",
+    "saved_unit_tail_bytes_unread": 24,
+    "read_boundary": "Exactly12B in each byte request; no bytes atDB57C4..DB57DB were read despite saved unit length36."
+  },
+  "raw_DWORDs": [
+    {
+      "offset": 0,
+      "hex": "19930522",
+      "unsigned": 429065506
+    },
+    {
+      "offset": 4,
+      "hex": "00000001",
+      "unsigned": 1
+    },
+    {
+      "offset": 8,
+      "hex": "00DB57B0",
+      "unsigned": 14374832
+    }
+  ],
+  "decode": {
+    "methods": [
+      "int.from_bytes(little)",
+      "struct.unpack(<III)"
+    ],
+    "agree": true,
+    "pure_replay": "Recomputes all3 raw words with int.from_bytes and explicit shifts/sums, checking the retained struct.unpack result.",
+    "meaning": "Numeric raw words only. Word1 is not accepted as maxstate or a state count; word2 is not accepted as a map pointer and is not dereferenced.",
+    "conditional_candidate": "The requested classic absolute FH3 prefix remains a conditional candidate. No field-layout authentication or Original compiler/FH3/handler semantics follows from these12B or DataDB metadata."
+  },
+  "capture_integrity": {
+    "native_failed_attempts": [],
+    "all_Native_raw_and_streams_retained": true,
+    "typed_raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "typed_response_count": 36,
+    "per_address_raw_sha256": {
+      "00db57b8": "e87a635cfc2c600fc9404486e2f3a1d271ac377437dd04ec286ca7cb3eb862b3",
+      "00db57b9": "12f80c441e1be6e88e8e4cb6ce44017987d4cc6a784307047eef7358ddb21154",
+      "00db57ba": "9cbeef1281a86042df8d8b610ba3909b68ddbcd84590cfca5f72bb9b2b4d5ceb",
+      "00db57bb": "b7839438a37b4b80990ae9dea2266498a572eb8db99a888abce963b49e56095a",
+      "00db57bc": "070a5246632efe19c92c695a4a86ddf4d8383fa8f15accfd4508942986000c27",
+      "00db57bd": "e5268518399195d29b7a09b9be1a53a72ba79116a9afa23a71e9786607bdb05a",
+      "00db57be": "2a91c2cffbc82cb9c61cbd467e33f374004e8ac059413bdf5d035e9d123f50e7",
+      "00db57bf": "4a15edd8e52a12de07a5a02eacb2d7a79be7cceb64a8041bb479ebf0b2f4d4de",
+      "00db57c0": "e28949dc9a35b59662c67395ee356bba0316a5b3cf478acfcd471bf300610826",
+      "00db57c1": "32d2da141a9b4f0fa85d251713126b6158b4dc9967a6c4a1d010f33219cde208",
+      "00db57c2": "0be5741325f9f6d043b977c360011c4121361adc29dc10fb667271fa05a2c5d0",
+      "00db57c3": "11a100a00f0f7cdbd5e013a1373f5761b6f363860f75a90412cd3c8a48f029ac"
+    },
+    "paired_and_closing_metadata_equal": true,
+    "automatic_companion_target_objects": "Whole responses retained opaque; no packet traversal or following of automatic target objects.",
+    "producer_validation": "The existing typed-flow producer validates the complete schema. Packet replay inspects only admitted query/listing/function metadata.",
+    "offline_decoder_failure": {
+      "file": "decoder_failure.json",
+      "returncode": 1,
+      "preimage": "decode_words_initial.py",
+      "initial_result": "decoded_words_informal.json",
+      "cause": "An offline byte-equality guard rejected identical numeric JSON serialized with CRLF versus LF.",
+      "correction": "Preserve original helper/result/failure; compare parsed JSON values then canonicalize only derived output. No Native raw or CLI stream was altered."
+    },
+    "helper_preimages": "seal_freeze.py preserves the executed freeze helper before failure-evidence inventory additions."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before12",
+    "typed_gate_after12",
+    "count_gate_after",
+    "Root prefix admission",
+    "count_admitted_before",
+    "prefix_bytes_first12",
+    "prefix_bytes_second12",
+    "typed_close12",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_descriptor_prefix",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Ten finite immediate positive Git inputs, actual frozen/staged/final Git objects and exactly two owned output blobs. Full physical pure replay, audit and producer/helper preimages retained. Strict original/copy replays allow one supplied ZIP read and one declared receipt write.",
+    "self_reference_boundary": "Final commit/tree/ZIP pins and observed receipts are supplied separately in the handoff; these outputs do not self-assert eventual hashes.",
+    "Source_boundary": "Source subtree IDs are identity only. No Source content/census or future Root equality condition, no earlier archive recursion."
+  },
+  "credit": {
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "authenticated_layout": false,
+    "maxstate_interpretation": false,
+    "map_pointer_interpretation": false,
+    "state0_action": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false,
+    "OS_audio_execution": false
+  },
+  "continuation": "No map/action word, data outside the12B header, target body or descriptor tail was read or followed. All layout/frame/map/action interpretations remain provisional. Parent Source is not unlocked without positive actual state0 action evidence and any other outstanding contracts."
+}
