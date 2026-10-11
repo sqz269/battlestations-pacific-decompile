@@ -473,6 +473,60 @@ struct MissionAdvanceHost : FrontEndMenuFailureHost {
 bool advance_campaign_selection_005c3de0(MissionTreeScreenState& state,
     std::string_view current_mission_key, MissionAdvanceHost& host);
 
+// ---------------------------------------------------------------------------
+// PC controls screen (screen 0Fh, constructor 00555770): sensitivity rows
+// ---------------------------------------------------------------------------
+
+// 0055CCC0 reads the current device entry (input settings 005547D0 +18h
+// vector, 8-byte stride, index screen+16Ch), its per-device record (0055C110
+// on the map at settings+8h) and, keyed by the selected setting name at
+// screen+184h, the setting kind (0055A9A0, map at record+18h) and float value
+// (00444BE0, map at record+24h). Kinds 3 and 4 are the inversion toggles.
+inline constexpr float kControlSensitivityStep = 0.25f;   // 00D7A348, a double
+inline constexpr float kControlSensitivityMin = 0.25f;    // 00CE3868
+inline constexpr float kControlSensitivityMax = 2.75f;    // 00CEE668
+inline constexpr double kControlSliderScale = -4.0;       // 00CEE4E0
+inline constexpr std::string_view kControlNormalLabel = "FE.opt_normal";      // 00CEE688
+inline constexpr std::string_view kControlInvertedLabel = "FE.opt_inverted";  // 00CEE678
+
+struct ControlSettingHost : FrontEndMenuFailureHost {
+    virtual std::int32_t setting_kind_0055a9a0() = 0;
+    virtual float setting_value_00444be0() = 0;
+    // 006A9E70(device entry, &name, value): writes the value back.
+    virtual void set_setting_value_006a9e70(float value) = 0;
+    // 00ABBE50 on the `var_Text` child (00AA7E00) of the row at *(screen+190h)+70h.
+    virtual void set_row_label_00abbe50(std::string_view label) = 0;
+    // 005F3750 on the same row, EDX = the slider position.
+    virtual void set_row_slider_005f3750(std::int32_t position) = 0;
+    virtual void mark_changed_19c() = 0;   // screen+19Ch = 1
+};
+
+// 0055CCC0: __thiscall(screen, int delta), RET 4. Inversion kinds negate the
+// value (SSE `-0.0 - v`) and label the row normal when the result is above
+// 0.0f. Other kinds add delta * 0.25 (x87, stored to float), clamp to
+// [0.25, 2.75], write it, then re-read it and set the slider to
+// -1 - trunc(value * -4.0), i.e. 0..10. Both paths set +19Ch.
+void adjust_control_setting_0055ccc0(std::int32_t delta, ControlSettingHost& host);
+
+// The new value alone (both branches), for hosts that only model the data.
+float adjusted_control_value_0055ccc0(std::int32_t kind, float old_value, std::int32_t delta) noexcept;
+std::int32_t control_slider_position_0055ccc0(float value) noexcept;
+
+struct ControlSliderListenerHost {
+    virtual ~ControlSliderListenerHost() = default;
+    virtual std::int32_t page_168() = 0;                         // screen+168h
+    virtual std::uint32_t widget_id_d8() = 0;                    // widget+D8h
+    virtual std::int32_t list_selected_index_00a9c920() = 0;     // list at screen+20h
+    virtual std::int32_t slider_delta_005f2290() = 0;            // ECX = widget
+    virtual void adjust_0055ccc0(std::int32_t delta) = 0;
+};
+
+// 0055D330: slot +00h of the controls screen's widget-listener vtable
+// 00CEE4F0 (ECX = screen+0Ch), stdcall widget, RET 4. Outside page 3, a widget
+// whose +D8h id is in 1..FFFFh and whose low byte equals the list's selected
+// index forwards the slider's non-zero delta to 0055CCC0.
+void control_slider_changed_0055d330(ControlSliderListenerHost& host);
+
 } // namespace bsp
 
 #endif
