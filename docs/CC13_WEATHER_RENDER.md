@@ -262,6 +262,37 @@ slots, vtables `00D64528` and `00D64878`), `00BC1230` (waterdrops vtable +58h) a
 `00BBE5B0` (returns 2.0f), `00BBE5D0` (component multiply), `00BC1250..00BC1290`, `00BC1850`,
 `00BC4A10` (name-string copy of the cloud class).
 
+## Segment 9 triage (`004BA290-004D0860`)
+
+Segment 9 is the tail of the `GGame` translation unit (strings `GGame::OnInitTitle`,
+`GGame::Render`): 395 candidates, 133 already reconstructed and 171 reviewed names before this
+packet, almost all documented elsewhere (`docs/GAME_FRAME_CONTROL.md`, `GAME_RENDER_FRAME.md`,
+`FRONTEND_MANAGERS.md`, `APP_FRAME_GAME_STATE.md`, `CONTROLLED_UNIT.md`, `GAME_EXECUTABLE.md`,
+`ENTITY_LIFECYCLE_TAILS.md`, `CC13_SCENE_BROWSER.md`). The 269 remaining `FUN_` entries were
+triaged with their callers, callees and string references:
+
+| Cluster | Addresses | Disposition |
+| --- | --- | --- |
+| Xbox LIVE lobby, friends, leaderboards | `004BB3E0..004BC7F0` (`XUserReadStats`, `XEnumerate`, `XFriendsCreateEnumerator`, `XCancelOverlapped`, `XUserSetContext`) | multiplayer/LIVE session, skipped |
+| Online stats | `004C04C0` (`XSessionWriteStats`), `004C5F10`, `004C9780`, `004CAA90` ("- - ONLINE - - WriteStats userleft %d") | multiplayer, skipped |
+| Network bit writer use | `004C60E0` (`BSP_BitCursor_Write*`), `004CA120` (`ingame.multi_highlatency`) | multiplayer, skipped |
+| Session/player/unit glue | `004C3A80`, `004C5070..004C5140` (input contexts), `004BFED0`, `004C4900` | gameplay, covered by cc9/cc12 docs or callers already named; skipped |
+| Border-zone and segment geometry | `004BBDD0`, `004BC120`, `004C7AA0`, `004CA760..004CA930` | gameplay world queries; `004BC120`, `004C7AA0`, `004CA930` already cited by other docs; skipped |
+| Containers, observers, EH helpers | `004BA290..004BA570`, `004BD350..004BF8A0`, `004C1630..004C2AD0`, `004C8070..004C9A60`, `004CC390..004CCAB0` | MSVC container/observer instantiations and unwind helpers, no anchors; left raw |
+| STL instantiations | `004CDEC0..004D0570` | `xlen` throw strings; left as instantiations |
+
+Named here: `004BFFA0` `BSP_Game_GetMissionCampaignKind` (reconstructed in
+`src/game_mission_kind.cpp`: campaign kind from the mission path at `[[game+5FCh]+910h]`, IJN 1,
+USN 2, TrainingGrounds 3, Multi 4, tested in the native order with case-sensitive `strstr`; sole
+call `004C0343` in the LIVE presence refresh), `004CACA0` `BSP_NativeString_AppendInt`,
+`004CD450` (picks the first unused `c:\screenshot_<n>.png`, counter `game+1940h`, then renderer
+vtable+110h; unreferenced debug code), and the two `"white.dds"` default constructors
+`004C62A0`/`004C63E0` called by `BSP_SceneRecord_Construct` (500, 1.0, white.dds, four 1.0s,
+zeros; field meanings unknown).
+
+The weather link in this segment, `004BA870` `BSP_SceneRecord_ScatterClouds` (`Cloud`,
+`CloudSmall`), was already reconstructed (`docs/GAME_EXECUTABLE.md`).
+
 ## Open
 
 - Render-model bodies not reconstructed: `00BC4D20` cloud puff sort/cull, `00BC5300`,
