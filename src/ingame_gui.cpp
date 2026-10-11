@@ -145,4 +145,228 @@ void rewards_screen_update_0062b640(RewardsScreenUpdateState& screen, RewardsScr
     }
 }
 
+namespace {
+
+using SW = SupportInfoWidget;
+
+// CVTTSS2SI: out-of-range and NaN give the integer-indefinite INT_MIN.
+std::int32_t truncate_cvttss2si(float value) noexcept {
+    if (!(value > -2147483904.0f && value < 2147483648.0f)) return INT32_MIN;
+    return static_cast<std::int32_t>(value);
+}
+
+// The checked form: 00614060 find, 00611C80 against the end, then 006171B0.
+void set_type_icon_checked(SupportManagerInfoHost& host, SupportObject record) {
+    host.widget_set_state(SW::TypeIcon,
+        host.icon_map_contains(record) ? host.icon_map_subscript(record) : 0);
+}
+
+void show_detail(SupportManagerInfoHost& host, bool detail) {
+    host.widget_show(SW::DetailF0, !detail);
+    host.widget_show(SW::DetailF4, detail);
+}
+
+// e.g. 0066B950..0066BA49: the loadout's device icon in state 3, or state
+// 0/1 by flag 17h when there is no loadout.
+void show_loadout_icon(SupportManagerInfoHost& host, SupportObject class_record, std::int32_t loadout,
+    bool flag17) {
+    if (loadout == 0) {
+        host.widget_set_state(SW::LoadoutIcon, flag17 ? 1 : 0);
+        return;
+    }
+    host.loadout_icon_set_texture(host.loadout_icon(class_record, loadout));
+    host.widget_set_state(SW::LoadoutIcon, 0);
+    host.widget_set_state(SW::LoadoutIcon, 3);
+}
+
+void support_info_page0(SupportManagerInfoState& screen, SupportManagerInfoHost& host) {
+    screen.detail70 = false;
+    // 0066B6FD..0066B775: list +3E0h at the clamped selection (unsigned JB).
+    if (screen.list_b_count != 0) {
+        host.rebuild_list_c_0066a8a0();
+        const std::uint32_t count = host.list_c_count_3e8();
+        if (count != 0) {
+            if (screen.selection_2c4 >= count) screen.selection_2c4 = count - 1;
+            const SupportListCEntry entry = host.list_c_entry(screen.selection_2c4);
+            if (entry.live_unit) {
+                const SupportObject unit = entry.unit;
+                if (host.unit_is_kind(unit, 6)) {
+                    // 0066B7A5..0066B86C
+                    host.set_text_localised(SW::NameText, host.unit_name(unit));
+                    host.layout_name_label_0065bbc0();
+                    set_type_icon_checked(host, host.unit_class_538(unit));
+                    show_detail(host, false);
+                } else {
+                    // 0066B871..0066BA49: kind 18h shows its owner's class and loadout.
+                    const SupportObject owner = host.unit_is_kind(unit, 0x18) ? host.unit_owner_3d0(unit) : unit;
+                    host.set_text_localised(SW::NameText, host.unit_name(unit));
+                    screen.detail70 = true;
+                    host.layout_name_label_0065bbc0();
+                    set_type_icon_checked(host, host.unit_class_538(owner));
+                    show_detail(host, true);
+                    const std::int32_t loadout = host.unit_loadout_c54(owner);
+                    show_loadout_icon(host, host.unit_class_538(owner), loadout,
+                        loadout == 0 && host.unit_is_kind(owner, 0x17));
+                }
+            } else {
+                // 0066BA4E..0066BCB3: a class record; +0Ch is the loadout.
+                const SupportObject record = entry.record;
+                const bool flag6 = host.record_has_flag(record, 6);
+                host.set_text_localised(SW::NameText, host.record_name_54(record));
+                if (!flag6) screen.detail70 = true;
+                host.layout_name_label_0065bbc0();
+                set_type_icon_checked(host, record);
+                show_detail(host, !flag6);
+                if (!flag6) {
+                    show_loadout_icon(host, record, entry.loadout,
+                        entry.loadout == 0 && host.record_has_flag(record, 0x17));
+                }
+            }
+        }
+    }
+
+    // 0066BCB5..0066BCFA: the unit selected in list +1ECh.
+    if (screen.list_a_count == 0) return;
+    const SupportObject unit = host.selected_unit_a();
+    const bool hangar = host.unit_is_kind(unit, 0x45) || host.unit_is_kind(unit, 9);
+    if (!hangar) {
+        // 0066BD62..0066BF53: 00846FD0's slot object, destroyed by 0065BB00.
+        const SupportSlotEntry slot = host.unit_slot_00846fd0(unit, screen.slot_324);
+        if (slot.record == 0) return;
+        host.set_text_localised(SW::NameText, host.record_name_54(slot.record));
+        host.layout_name_label_0065bbc0();
+        host.widget_set_state(SW::TypeIcon, host.icon_map_subscript(slot.record));  // no find first
+        const bool flag_f = host.record_has_flag(slot.record, 0xF);
+        if (flag_f) screen.detail70 = true;
+        show_detail(host, flag_f);
+        if (flag_f) {
+            show_loadout_icon(host, slot.record, slot.loadout,
+                slot.loadout == 0 && host.record_has_flag(slot.record, 0x17));
+        }
+        return;
+    }
+    // 0066BF6E..0066C205: the 58h-byte hangar record under +72Ch (kind 45h,
+    // queried again) or +1188h.
+    const SupportSlotEntry slot = host.hangar_slot(unit, host.unit_is_kind(unit, 0x45), screen.slot_324);
+    screen.detail70 = true;
+    host.set_text_localised(SW::NameText, host.record_name_54(slot.record));
+    host.layout_name_label_0065bbc0();
+    host.widget_set_state(SW::TypeIcon, host.icon_map_subscript(slot.record));
+    if (slot.loadout == -1) {
+        show_detail(host, false);
+        return;
+    }
+    show_detail(host, true);
+    show_loadout_icon(host, slot.record, slot.loadout,
+        slot.loadout == 0 && host.record_has_flag(slot.record, 0x17));
+}
+
+// 0066C206..0066C400: the type icon is 1 unless the front object's unit is
+// kind 9 and +08h is empty.
+void support_info_page1(const SupportManagerInfoState& screen, SupportManagerInfoHost& host) {
+    if (screen.list_b_count == 0) return;
+    const SupportListBEntry entry = host.selected_list_b();
+    if (entry.node_value8 != 0) {
+        host.widget_set_state(SW::TypeIcon, 1);
+        return;
+    }
+    const bool kind9 = entry.front_unit3c != 0 && host.unit_is_kind(entry.front_unit3c, 9);
+    host.widget_set_state(SW::TypeIcon, kind9 ? 0 : 1);
+}
+
+void show_catalog_name_and_icon(SupportManagerInfoHost& host, SupportObject record) {
+    host.set_text_localised(SW::NameText, host.record_name_54(record));
+    host.layout_name_label_0065bbc0();
+    set_type_icon_checked(host, record);
+}
+
+void support_info_page2(SupportManagerInfoState& screen, SupportManagerInfoHost& host) {
+    if (screen.list_b_count == 0) {
+        // 0066C99C..0066CC1C: stock of the catalog entry for the selected unit.
+        if (screen.list_a_count == 0) return;
+        host.sync_cursor_0065a2b0();
+        const SupportObject unit = host.selected_unit_a();
+        SupportObject record;
+        if (host.unit_is_kind(unit, 0x45) || host.unit_is_kind(unit, 9)) {
+            record = screen.catalog_2a0 = host.catalog_0065ae90();
+        } else if (host.unit_is_kind(unit, 0x46)) {
+            record = screen.catalog_3a4 = host.catalog_0065ab40();
+        } else {
+            return;
+        }
+        show_catalog_name_and_icon(host, record);
+        host.set_text_source(SW::CostText,
+            std::string(kSupportInfoStockPrefix) + std::to_string(host.stock_count_0065ac30()));
+        return;
+    }
+
+    // 0066C417..0066C522
+    host.sync_cursor_0065a2b0();
+    const SupportObject record = screen.catalog_3a4 = host.catalog_0065ab40();
+    if (screen.field164 == 0) {
+        screen.field2b0 = true;
+        host.rebuild_00665f30();
+    }
+    show_catalog_name_and_icon(host, record);
+    show_detail(host, !host.record_has_flag(record, 6));
+
+    // 0066C520..0066C5C0: modes 0..3 and 8 show the price unless +66h is set.
+    const float cp = host.party_cp_00946f00();
+    const float cap = host.party_cp_cap_00942130();
+    const std::int32_t cost = host.record_cost_124(record);
+    const std::int32_t mode = host.effective_game_mode_004bca50();
+    const bool priced_mode = mode == 0 || host.effective_game_mode_004bca50() == 1 ||
+        host.effective_game_mode_004bca50() == 2 || host.effective_game_mode_004bca50() == 3 ||
+        host.effective_game_mode_004bca50() == 8;
+    if (!priced_mode || screen.flag66) {
+        // 0066C5C6..0066C73B (two copies differing only in the EH state).
+        host.set_text_source(SW::CostText, kSupportInfoSupportKey);
+        host.widget_set_size(SW::BarAfford, {screen.bar_width_1ac, host.widget_height(SW::BarRemain)});
+        host.widget_show(SW::BarCp, false);
+        host.widget_show(SW::BarRemain, false);
+        host.widget_show(SW::BarAfford, true);
+        return;
+    }
+
+    // 0066C73C..0066C838: "sm_cp|.: <cp> / |sm_cost|.: <cost>".
+    host.set_text_source(SW::CostText, std::string(kSupportInfoCpPrefix) +
+        std::to_string(truncate_cvttss2si(cp)) + std::string(kSupportInfoCostSeparator) +
+        std::to_string(cost));
+
+    // 0066C83D..0066C851: FILD/FSTP rounds the cost to float; FCOMI then JB,
+    // so an unordered compare also takes the unaffordable side.
+    const float cost_f = static_cast<float>(cost);
+    const double width = screen.bar_width_1ac;
+    if (!(cp >= cost_f)) {
+        // 0066C914..0066C99B
+        if (!screen.field2c1) {
+            host.widget_set_size(SW::BarCp,
+                {static_cast<float>(width * cp / cap), host.widget_height(SW::BarRemain)});
+            host.widget_show(SW::BarCp, true);
+        }
+        host.widget_show(SW::BarAfford, false);
+        host.widget_show(SW::BarRemain, false);
+        return;
+    }
+    // 0066C857..0066C913: what is left after the purchase fills +188h.
+    host.widget_set_size(SW::BarAfford,
+        {static_cast<float>(width * cp / cap), host.widget_height(SW::BarRemain)});
+    host.widget_set_size(SW::BarRemain,
+        {static_cast<float>((static_cast<double>(cp) - cost_f) * width / cap), host.widget_height(SW::BarRemain)});
+    host.widget_show(SW::BarCp, false);
+    host.widget_show(SW::BarAfford, true);
+    host.widget_show(SW::BarRemain, true);
+}
+
+} // namespace
+
+void support_manager_refresh_info_0066b6c0(SupportManagerInfoState& screen, SupportManagerInfoHost& host) {
+    switch (screen.page) {
+    case 0: support_info_page0(screen, host); break;
+    case 1: support_info_page1(screen, host); break;
+    case 2: support_info_page2(screen, host); break;
+    default: break;
+    }
+}
+
 } // namespace bsp

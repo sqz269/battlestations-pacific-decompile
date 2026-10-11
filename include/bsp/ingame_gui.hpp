@@ -183,6 +183,124 @@ struct RewardsScreenUpdateHost {
 
 void rewards_screen_update_0062b640(RewardsScreenUpdateState& screen, RewardsScreenUpdateHost& host);
 
+// ---------------------------------------------------------------------------
+// Support-manager info panel refresh (0066B6C0)
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kSupportInfoSupportKey = "ingame.sm_support";       // 00CF69F8
+inline constexpr std::string_view kSupportInfoCpPrefix = "ingame.sm_cp|.: ";          // 00CF69CC
+inline constexpr std::string_view kSupportInfoCostSeparator = " / |ingame.sm_cost|.: ";  // 00CF69E0
+inline constexpr std::string_view kSupportInfoStockPrefix = "ingame.sm_stock|.: ";    // 00CF69B8
+
+// Opaque pointers to a unit (vtable query slot +5Ch, name slot +10h) or a
+// class record (flag query slot +18h, name +54h, icon key +70h, cost +124h).
+using SupportObject = std::uintptr_t;
+
+// Widgets of the support-manager screen this routine touches.
+enum class SupportInfoWidget : std::uint8_t {
+    NameText,     // +170h, text set with 00ABBE50(name, 1)
+    TypeIcon,     // +1CCh, slot +88h(state, 0, 1.0f)
+    DetailF0,     // +F0h, slot +34h(show)
+    DetailF4,     // +F4h, slot +34h(show)
+    LoadoutIcon,  // +158h, 00AB2690 state texture and slot +88h
+    CostText,     // +1A8h, text set with 00ABAED0(source, 1)
+    BarCp,        // +180h, slot +58h(size) and +34h
+    BarAfford,    // +184h
+    BarRemain,    // +188h, also the height source (00AA6740 size +4)
+};
+
+struct SupportManagerInfoState {
+    std::int32_t page{};             // +5Ch: 0, 1 or 2; any other value does nothing
+    bool detail70{};                 // +70h: cleared on page 0, set when a detail is shown
+    bool flag66{};                   // +66h: forces the sm_support text on page 2
+    std::uint32_t list_a_count{};    // +1F4h, list +1ECh, iterator +300h/+304h
+    std::uint32_t list_b_count{};    // +34Ch, list +344h, iterator +350h/+354h
+    std::uint32_t selection_2c4{};   // +2C4h, clamped to list_c_count - 1
+    std::int32_t slot_324{};         // +324h, slot index on the selected unit
+    std::int32_t field164{};         // +164h
+    bool field2b0{};                 // +2B0h
+    bool field2c1{};                 // +2C1h: keeps the CP bar hidden when unaffordable
+    float bar_width_1ac{};           // +1ACh
+    SupportObject catalog_3a4{};     // +3A4h, 0065AB40's answer
+    SupportObject catalog_2a0{};     // +2A0h, 0065AE90's answer
+};
+
+// One node of list +3E0h: byte +14h picks the live unit (+18h) over the class
+// record (+08h); +0Ch is the loadout id passed to 009552E0.
+struct SupportListCEntry {
+    bool live_unit{};
+    SupportObject unit{};
+    SupportObject record{};
+    std::int32_t loadout{};
+};
+
+// A unit slot: the class record and loadout id. 00846FD0's out object (+08h,
+// +0Ch; vtable 00CF6544, destroyed by 0065BB00) or a 58h-byte hangar record
+// (+04h, +10h; -1 = no loadout).
+struct SupportSlotEntry {
+    SupportObject record{};
+    std::int32_t loadout{};
+};
+
+// Page 1: the selected node of list +344h. +08h, and the unit at +3Ch of the
+// object at the front of the node's list +0Ch (0 when absent).
+struct SupportListBEntry {
+    SupportObject node_value8{};
+    SupportObject front_unit3c{};
+};
+
+// The loadout's device icon: 009552E0(id) on the class, then +4 -> +8 -> +4
+// resolved by 00443490 (DL = 0); +74h -> +34h gives the texture (+7Ch) and
+// the UV rectangle (+90h..+9Ch).
+struct SupportLoadoutIcon {
+    void* texture{};
+    std::array<float, 4> uv{};
+};
+
+struct SupportManagerInfoHost {
+    virtual ~SupportManagerInfoHost() = default;
+    virtual void rebuild_list_c_0066a8a0() = 0;                   // ECX = screen
+    virtual std::uint32_t list_c_count_3e8() = 0;                 // list +3E0h (head +3E4h)
+    virtual void sync_cursor_0065a2b0() = 0;                      // wraps +308h, places +300h/+350h
+    virtual SupportListCEntry list_c_entry(std::uint32_t index) = 0;
+    virtual SupportObject selected_unit_a() = 0;                  // *(+304h)+8 (00658A60 on page 2)
+    virtual SupportListBEntry selected_list_b() = 0;
+    virtual SupportObject catalog_0065ab40() = 0;                 // list +37Ch at index +310h
+    virtual SupportObject catalog_0065ae90() = 0;                 // list +2E4h at index +310h
+    virtual std::int32_t stock_count_0065ac30() = 0;              // -1 when unknown
+    virtual void rebuild_00665f30() = 0;
+    virtual SupportSlotEntry unit_slot_00846fd0(SupportObject unit, std::int32_t index) = 0;
+    // (unit ? unit + (kind45 ? 72Ch : 1188h) : 0)+4Ch, record index*58h.
+    virtual SupportSlotEntry hangar_slot(SupportObject unit, bool kind45, std::int32_t index) = 0;
+    virtual bool unit_is_kind(SupportObject unit, std::int32_t kind) = 0;      // slot +5Ch
+    virtual bool record_has_flag(SupportObject record, std::int32_t flag) = 0; // slot +18h
+    virtual const char* unit_name(SupportObject unit) = 0;        // slot +10h(1)
+    virtual SupportObject unit_owner_3d0(SupportObject unit) = 0;
+    virtual SupportObject unit_class_538(SupportObject unit) = 0;
+    virtual std::int32_t unit_loadout_c54(SupportObject unit) = 0;
+    virtual const char* record_name_54(SupportObject record) = 0;
+    virtual std::int32_t record_cost_124(SupportObject record) = 0;
+    // The type-icon map at +42Ch keyed by the record's +70h string: 00614060
+    // find against the end at +430h (with 00611C80), 006171B0 subscript.
+    virtual bool icon_map_contains(SupportObject record) = 0;
+    virtual std::uint16_t icon_map_subscript(SupportObject record) = 0;  // inserts 0 if absent
+    virtual SupportLoadoutIcon loadout_icon(SupportObject class_record, std::int32_t loadout) = 0;
+    virtual void set_text_localised(SupportInfoWidget widget, const char* text) = 0;  // 00ABBE50
+    virtual void set_text_source(SupportInfoWidget widget, std::string_view text) = 0; // 00ABAED0
+    virtual void layout_name_label_0065bbc0() = 0;
+    virtual void widget_show(SupportInfoWidget widget, bool show) = 0;            // +34h
+    virtual void widget_set_state(SupportInfoWidget widget, std::int32_t state) = 0;  // +88h
+    virtual void loadout_icon_set_texture(const SupportLoadoutIcon& icon) = 0;     // 00AB2690(3, ...)
+    virtual float widget_height(SupportInfoWidget widget) = 0;                     // 00AA6740 +4
+    virtual void widget_set_size(SupportInfoWidget widget, GuiSize2 size) = 0;     // +58h
+    virtual float party_cp_00946f00() = 0;                        // ECX = *(00E188A8)+18ECh
+    virtual float party_cp_cap_00942130() = 0;
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+};
+
+// 0066B6C0: __thiscall(screen), RET; callers 0066D020 and 00675C40.
+void support_manager_refresh_info_0066b6c0(SupportManagerInfoState& screen, SupportManagerInfoHost& host);
+
 } // namespace bsp
 
 #endif

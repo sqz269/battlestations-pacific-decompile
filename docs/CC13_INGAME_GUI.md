@@ -131,3 +131,50 @@ The rewards enter 0062C2C0 was not reconstructed: a recursive descent over the d
 
 The Ghidra-less slots listed above are now Ghidra functions and named; see the third-packet section
 of docs/CC13_FRONTEND_MENUS.md for the method and the table of kinds.
+
+## Support-manager info panel 0066B6C0 (cc13-frontend3, reconstructed, complete, build-tested)
+
+`support_manager_refresh_info_0066b6c0` in `src/ingame_gui.cpp`, Ghidra
+`BSP_HudSupportManager_RefreshInfoPanel`. `__thiscall`(screen), RET. Callers: 0066D020 (itself called
+by the enter 00674B80 and by 00675C40) and cc9's support-manager update 00675C40. Not a purchase-menu
+builder: it refreshes the panel that describes the entry under the cursor. Evidence: a full pass
+over the listing (1601 instructions); the pseudocode drops the hidden ECX arguments and garbles the
+bar arithmetic and the 0/1/2/3/8 mode test, so the reconstruction follows the listing. Call rows
+in `reports/cc13_ingame_gui.json` (167 rows, 0 failed).
+
+Common steps: the name goes to +170h (00ABBE50, localise 1) followed by 0065BBC0
+(`BSP_HudSupportManager_LayoutNameLabel`); the type icon +1CCh takes state `map[key]` from the
+icon map +42Ch keyed by the record's +70h string (checked form: 00614060 find + 00611C80 against the
+end +430h, else state 0; unchecked form: 006171B0 alone, which inserts a 0 entry); detail widgets
++F0h/+F4h are shown one or the other; the loadout icon +158h gets 00AB2690(3, texture, UV) from
+009552E0(loadout) on the class record -> +4 -> +8 -> +4 resolved by 00443490 (DL = 0) -> +74h ->
++34h (texture +7Ch, UV +90h..+9Ch; resolved twice natively), then slot +88h states 0 and 3, or
+state 0/1 by record flag 17h when there is no loadout.
+
+- Page 0 (+5Ch = 0): +70h = 0. With +34Ch nonzero, 0066A8A0 rebuilds list +3E0h, the selection
+  +2C4h is clamped to size - 1 (unsigned JB) and the node at it is shown: a live unit (byte +14h,
+  unit +18h; kind 6 shows its class icon and +F0h; otherwise kind 18h redirects to the owner +3D0h
+  for class, icon and loadout +C54h) or a class record (+08h; flag 6 shows +F0h, otherwise +F4h and
+  the loadout +0Ch). Then, with +1F4h nonzero, the unit at *(+304h)+8: kinds 45h/9 read the 58h-byte
+  hangar record +324h under +72Ch (kind 45h, queried again) or +1188h (record +4, loadout +10h, -1 =
+  none shows +F0h and returns); other units use 00846FD0(&out, +324h) (record +08h, loadout +0Ch,
+  flag 0Fh gates the detail; destroyed by 0065BB00).
+- Page 1: with +34Ch nonzero the type icon is 1 when the node at +350h/+354h has +08h set, else 0
+  when the unit at +3Ch of the front object of the node's list +0Ch is kind 9, else 1. The two
+  list copies (005AAAF0) and front() checks are debug-iterator noise and are not modelled.
+- Page 2 with +34Ch: 0065A2B0 syncs the cursors, 0065AB40 gives the catalog record (+3A4h); +164h
+  == 0 sets +2B0h and calls 00665F30; flag 6 picks +F0h. CP = 00946F00, cap = 00942130 (ECX =
+  *(00E188A8)+18ECh), cost = record+124h. In modes 0..3 and 8 with +66h clear, +1A8h shows
+  `ingame.sm_cp|.: <CVTTSS2SI(CP)> / |ingame.sm_cost|.: <cost>`; FILD/FSTP rounds the cost to float
+  and FCOMI/JB sends CP < cost (or NaN) to the unaffordable side: +180h (unless +2C1h) gets width
+  +1ACh * CP / cap and the others hide; otherwise +184h gets that width, +188h gets (CP - cost) *
+  +1ACh / cap, +180h hides. All heights are +188h's (00AA6740 +4). Other modes or +66h set show
+  `ingame.sm_support` with +184h at full width (two copies differing only in the EH state).
+- Page 2 without +34Ch, with +1F4h: unit kinds 45h/9 take 0065AE90 (+2A0h), kind 46h 0065AB40
+  (+3A4h), anything else returns; then name, checked icon and `ingame.sm_stock|.: <0065AC30>`.
+
+Host wiring: none, by instruction (00675C40 is cc9's). Wiring would mean 00675C40's host (and the
+0066D020 path) calling `support_manager_refresh_info_0066b6c0` through an adapter that exposes the
+screen offsets above; no edit was made on that path. The x87 bar widths are computed in double,
+which can differ from the extended-precision result in the last float bit in rare cases.
+Named alongside (provisional): 0065A2B0, 0065AB40, 0065AE90, 0065AC30, 0065BBC0, 0065BB00.

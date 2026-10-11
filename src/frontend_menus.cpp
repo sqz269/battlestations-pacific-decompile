@@ -868,4 +868,511 @@ void multi_game_lobby_enter_005e51d0(MultiGameLobbyEnterState& screen, MultiGame
     host.game_004bb3e0();
 }
 
+namespace {
+
+// 005E5CB1..005E5D27 / 005E5D37..005E5DAD: when the option panel reports a
+// change, the range is content height minus viewport height (x87, stored as
+// float) and the scroller's +1Ch becomes -0.0 - +0Ch (00D7A208).
+void lobby_refit_scroller(MultiGameLobbyUpdateHost& host, LobbyScroller scroller, LobbyUpdateWidget key,
+    LobbyUpdateWidget content, LobbyUpdateWidget viewport) {
+    if (!host.option_panel_changed_005d0c60(key, content)) return;
+    const float content_height = host.widget_height_00aa6740(content);
+    const float viewport_height = host.widget_height_00aa6740(viewport);
+    host.scroller_set_range_006834a0(scroller, content_height - viewport_height);
+    host.scroller_set_float_1c(scroller, -0.0f - host.scroller_float_0c(scroller));
+    host.scroller_sync_thumb_00683440(scroller);
+}
+
+// 005E5FE5..005E5FFC: entered from the up action on +20h and from 47h.
+void lobby_open_options(MultiGameLobbyUpdateState& screen, MultiGameLobbyUpdateHost& host) {
+    host.set_focus_005d67e0(screen.target_150);
+    screen.focus_1c = screen.target_150;
+    host.option_panel_005d11f0(2);
+    host.input_context_level_00a933f0(0x1E, 0);
+}
+
+void lobby_focus(MultiGameLobbyUpdateState& screen, MultiGameLobbyUpdateHost& host, std::uint32_t target) {
+    host.set_focus_005d67e0(target);
+    screen.focus_1c = target;
+}
+
+// 005E5F77..005E6283. Returns false when 005D71B0 asks for an early return.
+bool lobby_dispatch_actions(MultiGameLobbyUpdateState& screen, MultiGameLobbyUpdateHost& host) {
+    const std::uint32_t focus = screen.focus_1c;
+    if (host.action_004d92b0(0x4C)) {
+        if (focus == screen.target_8c) {
+            lobby_focus(screen, host, screen.target_a4);
+        } else if (focus == screen.target_28) {
+            lobby_focus(screen, host, screen.target_20);
+        } else if (focus == screen.target_20) {
+            if (!host.game_byte(0x218C)) lobby_open_options(screen, host);
+            else lobby_focus(screen, host, screen.target_c4);
+        }
+        return true;
+    }
+    if (host.action_004d92b0(0x4D)) {
+        if (focus == screen.target_a4) {
+            lobby_focus(screen, host, screen.target_8c);
+        } else if (focus == screen.target_20) {
+            lobby_focus(screen, host, screen.target_28);
+        } else if (focus == screen.target_150) {
+            lobby_focus(screen, host, screen.target_20);
+            host.option_panel_sub8_virtual_0c();
+        } else if (focus == screen.target_c4) {
+            lobby_focus(screen, host, screen.target_20);
+        }
+        return true;
+    }
+    if (host.action_004d92b0(0x46)) {
+        // 005E60AD..005E6113: +1Ch is re-read after the first move.
+        if (screen.focus_1c == screen.target_20 || screen.focus_1c == screen.target_28) {
+            lobby_focus(screen, host, screen.target_8c);
+        }
+        if (screen.focus_1c == screen.target_150) {
+            lobby_focus(screen, host, screen.target_a4);
+            host.option_panel_sub8_virtual_0c();
+        } else if (screen.focus_1c == screen.target_c4) {
+            lobby_focus(screen, host, screen.target_a4);
+        }
+        return true;
+    }
+    if (host.action_004d92b0(0x47)) {
+        if (focus == screen.target_8c) {
+            lobby_focus(screen, host, screen.target_20);
+        } else if (focus == screen.target_a4 && host.player_list_selected_index_00a9c920() == 7) {
+            if (!host.game_byte(0x218C)) lobby_open_options(screen, host);
+            else lobby_focus(screen, host, screen.target_c4);
+        }
+        return true;
+    }
+    if (host.action_004d92b0(0x4A)) {
+        if (focus == screen.target_20) {
+            host.lobby_005d9f90();
+        } else if (focus == screen.target_8c) {
+            host.input_owner_update_00a92c40(0.0f);
+            host.lobby_005d5870(1);
+        } else if (focus == screen.target_28) {
+            host.noseart_request_prepare();
+            host.push_request_interface_logged_00688ad0(0xB);
+        } else if (focus == screen.target_a4) {
+            host.widget_listener_activate(host.player_list_selected_row_00425e50());
+        }
+        return true;
+    }
+    if (host.action_004d92b0(0x124) && host.lobby_005d71b0()) return false;
+    return true;
+}
+
+struct LobbyCommandBar {
+    std::uint8_t command_a{0xB1};
+    std::uint8_t command_b{};
+    std::uint8_t command_c{};
+    std::uint8_t command_d{};
+    std::uint32_t placement_b{1};
+    std::string label_a;     // esp+54h
+    std::string label_b;     // esp+30h
+    std::string label_c;     // esp+38h
+    std::string label_d;     // esp+4Ch
+    std::string label_back{"globals.back"};  // esp+5Ch
+};
+
+// 005E65A1..005E65C7 / 005E699B..005E69FB: B2h with "globals.scroll_menu",
+// or command 0 with an empty label.
+void lobby_scroll_command(LobbyCommandBar& bar, bool scrolls) {
+    bar.command_d = scrolls ? 0xB2 : 0;
+    bar.label_d = scrolls ? "globals.scroll_menu" : "";
+}
+
+void lobby_navigate_command(LobbyCommandBar& bar) {
+    bar.command_b = 0xB3;
+    bar.label_b = "globals.navigate";  // 00425F40 copy of the esp+40h string
+}
+
+// 005E6641..005E68B5: the player list.
+void lobby_player_list_commands(MultiGameLobbyUpdateHost& host, LobbyCommandBar& bar) {
+    std::uint32_t row = 0;
+    if (host.player_list_selected_index_00a9c920() > -1) row = host.slot_record(host.player_list_selected_index_00a9c920());
+    const bool is_local = row != 0 && row == host.slot_record(host.game_dword(0x18EC));
+    const LobbySlotRecord fields = row != 0 ? host.slot_record_fields(row) : LobbySlotRecord{};
+    const bool open_slot = row == 0 || fields.byte9;   // BL
+    const bool byte_a = row != 0 && fields.byte_a;
+
+    if (host.player_list_byte_85() && row != 0) {
+        if (host.game_dword(0x1FE4) == 1) {
+            if (open_slot) {
+                const bool action52 = host.action_004d92b0(0x52);
+                const bool action51 = host.action_004d92b0(0x51);
+                host.lobby_005d9660(action52, action51);
+            } else if (row != host.local_slot_record_005d5130()) {
+                if (host.input_device_action_d3() || host.action_004d92b0(0x50)) {
+                    host.slot_record_toggle_005d8530(row);
+                }
+            }
+        }
+        if (host.action_004d92b0(0x4F) && !open_slot && host.signed_into_live_004b44f0() &&
+            !host.session_virtual_19c()) {
+            host.show_gamer_card(fields.xuid80);
+        }
+    }
+
+    bool swap = false;
+    if (host.game_dword(0x1FE4) == 1) {
+        if (!is_local) {
+            const bool answer = host.lobby_005d4a10();
+            if (open_slot) {
+                bool change_ai = !answer;
+                if (!change_ai) {
+                    const std::int32_t index = host.player_list_selected_index_00a9c920();
+                    change_ai = (index == 4 || host.player_list_selected_index_00a9c920() == 0) && byte_a;
+                }
+                if (change_ai && (!host.session_virtual_198() || !host.session_byte_4d())) {
+                    bar.command_c = 1;
+                    bar.label_c = "FE.multi_lobby_change_ai";
+                }
+            } else {
+                bar.command_d = 0xA7;
+                bar.label_d = "FE.multi_lobby_kickplayer_help";
+            }
+            swap = true;
+        }
+    } else if (!is_local) {
+        swap = true;
+    }
+    if (swap) {
+        bar.command_b = 0xA2;
+        bar.label_b = "FE.multi_lobby_swapslot_help";
+    }
+    // 005E686F..005E68B0
+    if (!open_slot && host.signed_into_live_004b44f0() && !host.session_virtual_19c()) {
+        bar.command_c = 0xA5;
+        bar.label_c = "globals.showgamercard";
+    }
+}
+
+// _stricmp in the C locale, for ASCII keys.
+bool ascii_iequals(std::string_view a, std::string_view b) {
+    if (a.size() != b.size()) return false;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        const auto lower = [](char c) { return c >= 'A' && c <= 'Z' ? static_cast<char>(c + 32) : c; };
+        if (lower(a[i]) != lower(b[i])) return false;
+    }
+    return true;
+}
+
+// 005E8D69..005E8DAB and 005E8F27..005E8F69: max(running, min(width,
+// limit)); the running maximum ends up unused (its slot is reused at 005E92A1).
+float multi_menu_track_width(float running, float width, float limit) {
+    const float clamped = limit > width ? width : limit;
+    return clamped > running ? clamped : running;
+}
+
+// 005E94A9..005E94F2: COMISS against 0 and 1.0; NaN is kept.
+float multi_menu_clamp_fraction(float value) {
+    if (0.0f > value) return 0.0f;
+    if (value > 1.0f) return 1.0f;
+    return value;
+}
+
+} // namespace
+
+void multi_main_menu_enter_005e8b20(MultiMainMenuEnterState& screen, MultiMainMenuEnterHost& host) {
+    using W = MultiMenuWidget;
+    // 005E8B49..005E8BC6
+    screen.live_14 = host.session_virtual_198();
+    host.set_frame_title_00518d60(screen.live_14 ? "FE_pc.main_live_title" : "FE_pc.main_lan_title");
+    host.frame_00518b90(2);
+
+    // 005E8BCB..005E8C1D: rows are ellipsized to the gap between +24h and +D0h.
+    const float anchor_x = host.widget_x_00aa6750(W::AnchorD0);
+    const float list_x = host.widget_x_00aa6750(W::QuickList24);
+    const float limit = static_cast<float>(
+        static_cast<double>(anchor_x) - list_x - kMultiMenuRowMarginA - kMultiMenuRowMarginB);
+    float widest = kMultiMenuWidthFloor;
+
+    // 005E8C21..005E8DB1: the ranked list, shown when live.
+    host.list_set_listener_00a9ac40(W::RankedList20);
+    host.widget_virtual(W::RankedList20, 0x60, screen.live_14 ? 1 : 0);
+    host.widget_virtual(W::RankedList20, 0x34, screen.live_14 ? 1 : 0);
+    host.list_set_byte_77(W::RankedList20, !screen.live_14);
+    for (std::size_t index = 0; index < kMultiMenuRankedRows.size(); ++index) {
+        void* row = host.list_append_row(W::RankedList20, static_cast<std::int32_t>(index));
+        host.row_set_ellipsized_00abb000(row, kMultiMenuRankedRows[index], limit);
+        const float width = static_cast<float>(host.row_text_width_114(row) / kGuiTextWidthScale);
+        widest = multi_menu_track_width(widest, width, limit);
+    }
+
+    // 005E8DB7..005E8F6F: the quick list; "FE.multi_quick" only when live.
+    host.list_set_listener_00a9ac40(W::QuickList24);
+    host.widget_virtual(W::QuickList24, 0x60, screen.live_14 ? 0 : 1);
+    host.widget_virtual(W::QuickList24, 0x34, screen.live_14 ? 0 : 1);
+    host.list_set_byte_77(W::QuickList24, screen.live_14);
+    for (std::size_t index = screen.live_14 ? 0 : 1; index < kMultiMenuQuickRows.size(); ++index) {
+        void* row = host.list_append_row(W::QuickList24, static_cast<std::int32_t>(index));
+        host.row_set_ellipsized_00abb000(row, kMultiMenuQuickRows[index], limit);
+        const float width = static_cast<float>(host.row_text_width_114(row) / kGuiTextWidthScale);
+        widest = multi_menu_track_width(widest, width, limit);
+    }
+    static_cast<void>(widest);
+
+    // 005E8F75..005E8FD1
+    const float list_width = static_cast<float>(static_cast<double>(limit) + kMultiMenuRowMarginB);
+    host.list_00a9cf30(W::QuickList24, 1, 1);
+    host.list_00a9ceb0(W::RankedList20, list_width, 0);
+    host.list_select_first_00a9c310(W::RankedList20);
+    host.list_00a9ceb0(W::QuickList24, list_width, 0);
+    if (screen.selected_f4 != -1) host.list_select_index_00a9c7c0(W::QuickList24, screen.selected_f4);
+    else host.list_select_first_00a9c310(W::QuickList24);
+
+    // 005E8FD6..005E9086: the player name is localised only when it is the
+    // "globals.newplayer" placeholder (_stricmp; a null name never is).
+    host.set_text_localised(W::NameLabel30,
+        host.live_enabled_account_00a3e520() ? "FE.multi_gamertag" : "FE.multi_playername");
+    const std::string name = host.profile_name();
+    host.set_text_source(W::NameText34, name, !name.empty() && ascii_iequals(name, "globals.newplayer"));
+
+    // 005E908B..005E9106: rank 1..20 -> FE.playerrank_01..20 and icon state.
+    const std::uint8_t rank = host.profile_rank_00574050();
+    std::int32_t rank_index = static_cast<std::int32_t>(rank) - 1;
+    if (rank_index < 0) rank_index = 0;
+    else if (rank_index > 0x13) rank_index = 0x13;
+    char rank_key[] = "FE.playerrank_00";
+    rank_key[14] = static_cast<char>('0' + (rank_index + 1) / 10);
+    rank_key[15] = static_cast<char>('0' + (rank_index + 1) % 10);
+    host.set_text_localised(W::RankText44, rank_key);
+    host.widget_set_state_88(W::RankIcon50, rank_index);
+    for (const W hidden : {W::Hidden38, W::ScoreText3C, W::PreviousBar54, W::CurrentBar58, W::BarFrame5C}) {
+        host.widget_virtual(hidden, 0x34, 0);
+    }
+
+    // 005E9108..005E924E: the RANK thresholds around the current rank.
+    const std::int32_t next = host.profile_rank_00574050() == kPlayerRankMax
+        ? 0 : host.rank_threshold(static_cast<std::uint32_t>(rank_index) + 1);
+    const std::int32_t current = host.profile_rank_00574050() > 1
+        ? host.rank_threshold(static_cast<std::uint32_t>(rank_index)) : 0;
+
+    // 005E9278..005E92F9: progress before (+30h) and now, as FILD/FIDIV
+    // fractions of the step; the old score seeds itself on first use.
+    const std::int32_t score = host.profile_score_0090bf50();
+    if (host.profile_last_score_30() == -1) host.profile_set_last_score_30(score);
+    float previous_fraction = 1.0f;
+    float current_fraction = 1.0f;
+    if (next != 0) {
+        const std::int32_t last = host.profile_last_score_30();
+        previous_fraction = last < current ? 0.0f
+            : static_cast<float>(static_cast<double>(last - current) / static_cast<double>(next - current));
+        current_fraction = static_cast<float>(
+            static_cast<double>(score - current) / static_cast<double>(next - current));
+    }
+    host.profile_set_last_score_30(score);
+
+    // 005E92FC..005E9477: "<score> / <next>", or the score alone at the top rank.
+    host.set_text_source(W::ScoreText3C,
+        next != 0 ? std::to_string(score) + " / " + std::to_string(next) : std::to_string(score), false);
+
+    // 005E947C..005E953E
+    const float height = host.widget_size_00aa6740(W::PreviousBar54).height;
+    const float full = static_cast<float>(
+        static_cast<double>(host.widget_size_00aa6740(W::BarFrame5C).width) - kMultiMenuBarInset);
+    previous_fraction = multi_menu_clamp_fraction(previous_fraction);
+    current_fraction = multi_menu_clamp_fraction(current_fraction);
+    host.widget_set_size_58(W::PreviousBar54, {full * previous_fraction, height});
+    host.widget_set_size_58(W::CurrentBar58, {full * current_fraction, height});
+    host.set_text_localised(W::Text48, "");
+    host.set_text_localised(W::Text4C, "");
+
+    // 005E955E..005E9770: a gated widget's lock shows while its counter <= 0.
+    const std::vector<MultiMenuGatedWidget> gated = host.gated_widgets();
+    for (std::size_t index = 0; index < gated.size(); ++index) {
+        if (!gated[index].gated) continue;
+        host.gated_widget_lock_icon_show(index, host.profile_achievement_count(gated[index].key) <= 0);
+    }
+    if (!host.session_byte_4c()) host.session_set_mode_0076fad0(0);
+}
+
+void multi_game_lobby_update_005e5b30(MultiGameLobbyUpdateState& screen, float seconds,
+    MultiGameLobbyUpdateHost& host) {
+    if (host.interface_busy_e198ac()) return;
+
+    // 005E5B66..005E5C71: a pending leave is polled until it answers 0 or 1.
+    if (screen.leave_pending_271) {
+        const std::int32_t answer = host.poll_leave_0076f400();
+        if (answer == 1) {
+            screen.leave_pending_271 = false;
+            host.session_virtual_174(0);
+            host.interface_virtual_0c();
+            host.game_004d7940();
+            if (host.game_dword(0x1FE4) == 1) host.metrics_00753810(9, 0);
+            host.option_panel_005cfb80();
+            for (const auto [content, scroller] : {std::pair{LobbyUpdateWidget::Content134, LobbyScroller::Options158},
+                     std::pair{LobbyUpdateWidget::ContentB4, LobbyScroller::SkirmishCC}}) {
+                host.widget_00aa83f0(content);
+                host.scroller_set_range_006834a0(scroller, 0.0f);
+                host.scroller_attach_content_00683790(scroller, 0);
+            }
+        } else if (answer == 0) {
+            screen.leave_pending_271 = false;
+            host.lobby_005da210();
+        }
+        return;
+    }
+
+    // 005E5C74..005E5DC4: the option scrollers run while the settings are closed.
+    if (!host.settings_open_005d5490()) {
+        if (!host.game_byte(0x218C)) {
+            lobby_refit_scroller(host, LobbyScroller::Options158, LobbyUpdateWidget::Key1B4,
+                LobbyUpdateWidget::Content134, LobbyUpdateWidget::Viewport1B8);
+            host.scroller_update_00683820(LobbyScroller::Options158);
+        } else {
+            lobby_refit_scroller(host, LobbyScroller::SkirmishCC, LobbyUpdateWidget::Key128,
+                LobbyUpdateWidget::ContentB4, LobbyUpdateWidget::Viewport12C);
+            host.scroller_update_00683820(LobbyScroller::SkirmishCC);
+        }
+        host.scroller_update_00683820(LobbyScroller::Players30);
+    }
+
+    if (screen.waiting_270) {
+        if (!host.session_virtual_180()) host.lobby_005d8410();
+        return;
+    }
+
+    // 005E5E05..005E5F1D: back. With the settings open the edited block is
+    // committed first; JBE, so modes 0..3 take the 00E19568 copy.
+    if (host.action_004d92b0(0x4B)) {
+        if (host.settings_open_005d5490()) {
+            host.store_settings(screen.settings_284);
+            const std::uint32_t mode = screen.settings_284[2] <= 3 ? screen.settings_284[3] : screen.settings_284[2];
+            host.set_game_mode_004bc890(mode);
+            host.set_global(0x00E19594, screen.scene_2bc);
+            screen.field10 = 1;
+            host.select_scene_record_004c6890(screen.scene_2bc);
+            screen.mode_mask_2c0 = host.mode_mask_005d9c50(host.effective_game_mode_004bca50());
+            screen.field2f0 = screen.field2f8;
+            screen.field2f4 = screen.field2fc;
+            if (screen.field2f8 != -1 && screen.field2fc != -1) host.select_named_entry_005d5160(screen.field2fc);
+        }
+        host.lobby_005da210();
+        return;
+    }
+
+    if (screen.spectating_282) {
+        if (host.game_byte(0x2164)) return;
+        screen.spectating_282 = false;
+        host.clear_e19698_byte4();
+    }
+
+    const bool session_1fe4 = host.game_dword(0x1FE4) == 1;  // BL, kept across the dispatch
+    if (!host.settings_open_005d5490()) {
+        if (!lobby_dispatch_actions(screen, host)) return;
+        // 005E6289..005E6322: the session publish runs every 100 s (the enter
+        // sets 100, so the first update publishes); FCOMI/JB, so NaN adds.
+        if (!(static_cast<double>(screen.refresh_timer_2d0) >= kLobbySessionRefreshPeriod)) {
+            screen.refresh_timer_2d0 = static_cast<float>(static_cast<double>(screen.refresh_timer_2d0) + seconds);
+        } else {
+            if (session_1fe4) {
+                if (host.session_virtual_198()) host.session_publish_17c();
+                host.lobby_005d62b0();
+            }
+            screen.refresh_timer_2d0 = 0.0f;
+        }
+    } else {
+        // 005E6327..005E63E8: with the settings open, 4Ch/4Dh step the
+        // setting and 4Ah closes it; otherwise the rows follow the list.
+        if (host.action_004d92b0(0x4C)) {
+            host.lobby_005e1cf0(-1);
+        } else if (host.action_004d92b0(0x4D)) {
+            host.lobby_005e1cf0(1);
+        } else if (host.action_004d92b0(0x4A)) {
+            host.lobby_005da530();
+            return;
+        }
+        host.align_rows_to_list_y();
+    }
+
+    // 005E63ED..005E6458
+    if (screen.field10 != 0) host.lobby_005e3580();
+    const bool ready = host.local_ready_005d5220();
+    if (screen.ready_281 != ready) {
+        screen.field280 = false;
+        screen.ready_281 = ready;
+    }
+    if (host.global_e08958() != -1 && host.game_float(0x64C) >= host.global_e19598()) {
+        host.set_global(0x00E08958, -1);
+    }
+    const bool slot_valid = host.local_slot_valid_005d51f0();
+    if (!slot_valid) return;
+    if (host.global_e1960a() != 1) host.set_global_e1960a(1);
+    if (session_1fe4 && host.input_device_action_d3() && host.player_list_selected_index_00a9c920() != 0) {
+        host.lobby_005d9f50();
+    }
+
+    // 005E649B..005E6A58: the command bar.
+    LobbyCommandBar bar;
+    const LobbySlotRecord local = host.slot_record_fields(host.slot_record(host.game_dword(0x18EC)));
+    bar.label_a = local.ready_c && host.game_dword(0x1FE4) == 1 ? "FE.start" : "FE.ready";
+    if (!host.session_counts_mission_004b6260() && !host.lobby_005d5260()) {
+        bar.label_a.clear();
+        bar.command_a = 0;
+        bar.placement_b = 0;
+    }
+    if (host.option_panel_byte_64()) {
+        if (screen.focus_1c != 0) {
+            lobby_focus(screen, host, screen.target_150);
+            lobby_navigate_command(bar);
+            lobby_scroll_command(bar, screen.scroll_1b2);
+        }
+    } else {
+        if (screen.focus_1c == screen.target_150) lobby_focus(screen, host, screen.target_a4);
+        const std::uint32_t focus = screen.focus_1c;
+        if (focus == screen.target_a4) {
+            lobby_player_list_commands(host, bar);
+        } else if (focus == screen.target_8c) {
+            if (host.settings_open_005d5490()) {
+                bar.command_a = 0xA2;
+                bar.label_a = "globals.accept";
+                bar.command_c = 0xAF;
+                bar.label_c = "globals.change";
+                bar.label_back = "globals.cancel";
+            } else {
+                if (host.game_dword(0x1FE4) == 1) {
+                    bar.command_c = 0xA2;
+                    bar.label_c = "FE.settings";
+                }
+                lobby_scroll_command(bar, screen.scroll_8a);
+            }
+            lobby_navigate_command(bar);
+        } else if (focus == screen.target_20) {
+            lobby_navigate_command(bar);
+            if (screen.unlock_2dc) {
+                bar.command_c = 0xA2;
+                bar.label_c = "FE.unlock";
+            }
+        } else if (focus == screen.target_28) {
+            bar.command_c = 0xA2;
+            bar.label_c = "FE.noseart";
+            lobby_navigate_command(bar);
+        } else if (focus == screen.target_150) {
+            lobby_scroll_command(bar, screen.scroll_1b2);
+            lobby_navigate_command(bar);
+        } else if (focus == screen.target_c4) {
+            lobby_scroll_command(bar, screen.scroll_126);
+            lobby_navigate_command(bar);
+        }
+    }
+    host.rebuild_command_bar_0054b530({{
+        {bar.command_a, bar.label_a, 0},
+        {bar.command_b, bar.label_b, bar.placement_b},
+        {bar.command_c, bar.label_c, 1},
+        {bar.command_d, bar.label_d, 1},
+        {kLobbyBackCommand, bar.label_back, 2},
+    }});
+    host.lobby_005e4fc0();
+    host.lobby_005d73a0();
+    host.lobby_005deca0();
+    if (!host.settings_open_005d5490()) {
+        host.profile_hints_00427190(9);
+    } else if (screen.focus_1c == screen.target_8c) {
+        host.profile_hints_00427190(10);
+    }
+}
+
 } // namespace bsp

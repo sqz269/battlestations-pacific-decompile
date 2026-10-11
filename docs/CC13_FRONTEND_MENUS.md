@@ -649,3 +649,99 @@ slot +180h; back (4Bh) with 005D5490 copies +284h.. into 00E1955C.. and game+202
 mode and scene record, then 005DA210; then actions 4Ch/4Dh/46h/47h/4Ah/124h dispatch on the
 focused widget +1Ch against +20h/+8Ch/+28h...), the multi main-menu enter 005E8B20 (1028), and the
 rewards enter 0062C2C0. The pseudocode of 005E5B30 is exported (`bsp.py show 005e5b30`).
+
+## Lobby update 005E5B30 (cc13-frontend3, reconstructed, complete, build-tested)
+
+`multi_game_lobby_update_005e5b30` in `src/frontend_menus.cpp`. `__thiscall`(screen, float seconds),
+RET 4. Full listing pass (1060 instructions); the pseudocode drops ECX on the scroller calls and
+merges the 47h branch, so the reconstruction follows the listing. "Settings open" below is
+005D5490 (`BSP_MultiGameLobby_IsSettingsOpen`: (+18h) slot +38h and (+228h)+85h).
+
+- Returns at once while *(*(00E198AC)+60h)+4 is set.
+- +271h (pending leave): 0076F400 on game+1EF0h; 1 clears it, calls session +174h(0),
+  *(00E198B4) slot +0Ch, 004D7940, metrics 00753810(9, 0) when game+1FE4h == 1, 005CFB80 on the
+  option panel, and empties both scrollers (00AA83F0 on +134h/+B4h, range 0.0, content 0); 0 clears
+  it and calls 005DA210; anything else waits.
+- Settings closed: outside skirmish (game+218Ch) 005D0C60(+1B4h, +134h) on a change sets the
+  +158h scroller range to height(+134h) - height(+1B8h) and its +1Ch to -0.0 - +0Ch (00D7A208 is
+  -0.0), then syncs the thumb; skirmish does the same on +CCh with +128h/+B4h/+12Ch. Both paths
+  update their scroller and then +30h.
+- +270h: waits while session slot +180h answers, else 005D8410; returns either way.
+- Back (4Bh): with the settings open the 14 dwords at +284h go to 00E1955C.. and game+2020h..,
+  the game mode becomes 00E19568 when 00E19564 <= 3 (CMOVBE) else 00E19564, 00E19594 = +2BCh,
+  +10h = 1, scene record +2BCh, +2C0h = 005D9C50(mode) as a 64-bit store, +2F0h/+2F4h = +2F8h/+2FCh
+  and, when both are not -1, 005D5160(+2FCh) feeds 004C8950 a name (00E19605 if null). Then
+  005DA210 in both cases.
+- +282h (spectating) returns while game+2164h is set, else clears itself and *(00E19698)+4.
+- Settings closed, actions on the focus +1Ch (focus changes go through 005D67E0, which stores +1Ch):
+  4Ch: +8Ch -> +A4h, +28h -> +20h, +20h -> +150h with 005D11F0(2) and input context level 1Eh
+  (skirmish: +C4h). 4Dh: +A4h -> +8Ch, +20h -> +28h, +150h -> +20h with the option panel's +8
+  slot +0Ch, +C4h -> +20h. 46h: +20h/+28h -> +8Ch, then (re-read) +150h -> +A4h with the +8 call,
+  +C4h -> +A4h. 47h: +8Ch -> +20h; +A4h with list row 7 -> +150h as for 4Ch (skirmish +C4h).
+  4Ah: +20h 005D9F90, +8Ch input owner update(0.0) and 005D5870(1), +28h sets *(00E198AC)+70h
+  +98h = local record +28h, +94h = 8 and pushes interface 0Bh, +A4h passes the selected row to
+  (screen+8) slot +4. 124h: return when 005D71B0 answers. Then the refresh timer +2D0h: below
+  100.0 (FCOMI/JB) it adds the seconds; else, when game+1FE4h == 1, session +17Ch(game+2020h,
+  sign-extended +201Ch/+201Dh, +2060h..+206Ch) if slot +198h answers and 005D62B0; then 0.
+- Settings open: 4Ch 005E1CF0(-1), 4Dh 005E1CF0(1), 4Ah 005DA530 and return; then +220h/+224h take
+  (+228h)+F4h as Y.
+- 005E3580 when +10h; +281h mirrors 005D5220 (local ready) and a change clears +280h; 00E08958 =
+  -1 once game+64Ch >= 00E19598; return unless 005D51F0 (local slot valid, keeps ECX); 00E1960A =
+  1; with game+1FE4h == 1, device action D3h and list row != 0 call 005D9F50.
+- Command bar (0054B530, ECX = *(00E1930C)), five triples: (B1h, "FE.start" when the local record
+  +0Ch and game+1FE4h == 1 else "FE.ready", 0), (B, "", 1), (C, "", 1), (D, "", 1), (A3h,
+  "globals.back", 2). When neither 004B6260 nor 005D5260 answers, the first triple becomes (0, "")
+  and the second's placement 0. With the option panel's +64h byte and a focus, focus +150h and B =
+  (B3h, navigate), D = scroll. Otherwise +150h focus moves to +A4h, and by focus: +A4h the player
+  list (below); +8Ch with the settings open (A2h "globals.accept", C AFh "globals.change", back
+  label "globals.cancel"), else C A2h "FE.settings" when game+1FE4h == 1 and D = scroll(+8Ah); +20h
+  C A2h "FE.unlock" when +2DCh; +28h C A2h "FE.noseart"; +150h D = scroll(+1B2h); +C4h D =
+  scroll(+126h); all but +A4h also set B = (B3h, "globals.navigate"). scroll(b) is (B2h,
+  "globals.scroll_menu") or (0, "").
+- Player list (+A4h): row = game+18CCh[list index] (0 when the index is -1); local = row is the
+  local record; open = !row or row+9; with list +85h and a row: as host (1FE4h) an open slot
+  calls 005D9660(action 52h, action 51h), another player's slot (row != 005D5130) toggles with
+  005D8530 on device D3h or action 50h; action 4Fh on an occupied slot while signed in and session
+  +19Ch is clear shows the gamer card for row+80h. Commands, unless local: as host, 005D4A10 and
+  then for an open slot C = (1, "FE.multi_lobby_change_ai") when (!005D4A10 or ((row 4 or 0) and
+  row+0Ah)) and (session +198h clear or session+4Dh clear), for an occupied slot D = (A7h,
+  "FE.multi_lobby_kickplayer_help"); B = (A2h, "FE.multi_lobby_swapslot_help") as host or not.
+  Occupied, signed in and +19Ch clear: C = (A5h, "globals.showgamercard").
+- Then 005E4FC0, 005D73A0, 005DECA0 and the help hint 9 (settings closed) or 10 (settings open on
+  +8Ch).
+
+## Multi main-menu enter 005E8B20 (cc13-frontend3, reconstructed, complete, build-tested)
+
+`multi_main_menu_enter_005e8b20` in `src/frontend_menus.cpp`. `__thiscall`(screen), RET. Full
+listing pass (1028 instructions); Ghidra's pseudocode loses the stack frame (unaff_EBX/unaff_ESI
+as floats) and is not usable here.
+
+- +14h = session slot +198h; frame title "FE_pc.main_live_title" / "FE_pc.main_lan_title" through
+  00518D60 (ECX = EDX = 0), then 00518B90 with ECX = 2.
+- Row text limit = float(x(+D0h) - x(+24h) - 0.0052083 (00CF2958) - 0.02f (00D7A2F8)) in x87.
+- +20h (ranked list): listener screen+8, slots +60h/+34h with +14h, +77h = !+14h; rows
+  "FE.multi_ranked"/"FE.multi_player" (00E08964) with data 0, 1. +24h: the same with !+14h and
+  +77h = +14h; rows "FE.multi_quick" (live only), "FE.multi_custom", "FE.multi_create" (00E08974).
+  Each row is a clone of "MainListbox_Text" appended by 00A9DA30 and ellipsized at the limit. A
+  running max(min(width/960, limit)) starting at FLT_MIN is kept and never used: its slot is
+  overwritten at 005E92A1.
+- +24h 00A9CF30(1, 1); both lists 00A9CEB0(limit + 0.02f, 0); +20h selects its first row, +24h
+  the remembered +F4h or its first row.
+- +30h "FE.multi_gamertag" (live-enabled account) or "FE.multi_playername"; +34h the profile name
+  (profile = game+650h, name +50h when nonzero length else +3Ch), localised only when it is
+  "globals.newplayer" (_stricmp).
+- Rank r = 00574050; index clamp(r - 1, 0, 19) picks FE.playerrank_01..20 (00E08E00) for +44h and
+  the +50h icon state. +38h, +3Ch, +54h, +58h, +5Ch are hidden.
+- RANK thresholds: next = table[index + 1] unless r == 20, current = table[index] when r > 1
+  (0050FC30("RANK") on *(00E19900)+10h, vector +48h). score = 0090BF50 on profile+64h; profile+30h
+  seeds itself when -1. With next: previous = (last < current) ? 0 : (last - current)/(next -
+  current), now = (score - current)/(next - current) (FILD/FIDIV); without next both are 1.0. +30h
+  = score. +3Ch shows "<score> / <next>" or "<score>", not localised.
+- +54h/+58h sizes: (width(+5Ch) - 0.00625) * fraction, height of +54h, fractions clamped to [0, 1]
+  by COMISS (NaN kept). +48h/+4Ch cleared.
+- Each widget of *(+D8h)+64h with byte +76h: its "achievement_lock_Icon" shows while the
+  profile's case-insensitive counter (+A0h) for its key (slot +28h) is <= 0 (absent = 0).
+- Session +4Ch clear: 0076FAD0(0) on game+1EF0h.
+
+Named alongside: 005D5490, 005D51F0, 005D5220, 005D5130, 005D67E0 (see the ledger evidence). Report
+rows: `reports/cc13_frontend_menus.json` (415 rows, 0 failed). Nothing was run in `bsp_game`.
