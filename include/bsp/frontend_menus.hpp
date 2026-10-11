@@ -712,5 +712,109 @@ void multi_mode_selector_enter_005ec5b0(MultiModeSelectorState& screen, MultiMod
 void multi_mode_selector_update_005ecd80(MultiModeSelectorState& screen, float seconds,
     MultiModeSelectorHost& host);
 
+// ---------------------------------------------------------------------------
+// Multiplayer game lobby enter (005E51D0)
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kLobbySkirmishTitlePrefix = "FE.main_skirmish_title|. - |";  // 00CF2554
+inline constexpr std::uint32_t kLobbyModeOptionCategory = 2;  // 00575E80 key on the option registry
+inline constexpr std::size_t kLobbyPlayerRows = 8;            // +250h..+26Ch
+inline constexpr double kLobbyRowStepX = 0.0;                 // 00D7A258, used for X and Z
+inline constexpr float kLobbyListScrollA = -0.0020833334F;    // 00CF254C -> list +12Ch
+inline constexpr float kLobbyListScrollB = 0.0055555557F;     // 00CF2548 -> list +130h and +128h
+inline constexpr float kLobbyListValue = 0.4875F;             // 00CF2550, 00A9CEB0's float
+inline constexpr float kLobbyRowField30 = -0.011458334F;      // 00CF2534 -> row +30h
+inline constexpr float kLobbyField2D0 = 100.0F;               // 00CF208C
+inline constexpr float kLobbyNoseArtWidth = 0.13333334F;      // 00CF2318
+
+// Widgets the lobby enter touches: screen+130h, +B0h, the player list (found
+// as "Players_Listbox" under +14h and stored at +A8h), its "Player1_Group"
+// row template, +94h, the three arrows +144h/+148h/+14Ch and the
+// noseart_Group/New_5_Text text under +14h.
+enum class LobbyWidget : std::uint8_t {
+    Panel130, PanelB0, PlayerList, RowTemplate, Panel94, Arrow144, Arrow148, Arrow14C, NoseArtText
+};
+
+struct GuiPoint3 {
+    float x;
+    float y;
+    float z;
+};
+
+struct MultiGameLobbyEnterState {
+    std::int32_t field10{};          // +10h: 0 while entering, 1 at the end
+    std::uint32_t field1c{};         // +1Ch, else +A4h, passed to 005D67E0
+    std::uint32_t field_a4{};
+    std::int32_t field278{};         // +278h
+    bool field280{};
+    bool field281{};
+    bool spectating282{};            // +282h, copy of *(00E188A8)+2164h
+    std::uint64_t mode_mask_2c0{};   // +2C0h, 005D9C50
+    std::uint64_t mode_mask_2c8{};   // +2C8h, 005DF510
+    float field2d0{};
+    std::int32_t field2d4{};
+};
+
+struct MultiGameLobbyEnterHost {
+    virtual ~MultiGameLobbyEnterHost() = default;
+    virtual bool session_present_f8a2fc() = 0;
+    virtual void session_clear_byte_75() = 0;                     // *(00F8A2FC)+75h = 0
+    virtual bool interface_query_00687860() = 0;                  // *(00E198B4), (4, 0)
+    virtual bool skirmish_218c() = 0;                             // *(00E188A8)+218Ch
+    virtual std::int32_t global_e19564() = 0;
+    // 00576B10 singleton +10h: 00575E80(&category, &value) then 005732C0, a C string.
+    virtual std::string option_label_00575e80(std::uint32_t category, std::int32_t value) = 0;
+    // 00518D60: ECX = 0Ah, EDX = 0, stack 0 and the title.
+    virtual void set_frame_title_00518d60(std::string_view title) = 0;
+    virtual void widget_virtual(LobbyWidget widget, std::uint16_t slot, std::int32_t arg) = 0;  // +34h/+60h
+    virtual void widget_virtual_88(LobbyWidget widget, std::int32_t state) = 0;  // (state, 0, 1.0f)
+    virtual void option_panel_005ce750() = 0;                     // *(00E198B4)+54h
+    virtual void session_00771dd0() = 0;                          // game+1EF0h, (game+18C8h, 1, 1)
+    virtual void bind_player_list() = 0;                          // 00AA7E00 "Players_Listbox" -> +A8h
+    virtual void player_list_set_byte(std::uint16_t offset, std::uint8_t value) = 0;  // +149h, +14Ah
+    virtual void player_list_set_float(std::uint16_t offset, float value) = 0;        // +128h..+134h
+    virtual void player_list_00a9ceb0(float value, std::int32_t arg) = 0;
+    virtual void bind_row_template() = 0;                         // "Player1_Group" in the list
+    virtual float row_template_height_00aa6740() = 0;             // size +4
+    virtual GuiPoint3 row_template_position_00aa67f0() = 0;
+    // One cloned row (00AAB4C0(0) into +250h + 4*index).
+    virtual void clone_row(std::size_t index) = 0;
+    virtual void row_set_position_00aa7dc0(std::size_t index, GuiPoint3 position) = 0;
+    virtual void row_set_byte_78(std::size_t index, bool value) = 0;
+    virtual void row_set_floats_30_34(std::size_t index, float field30, float field34) = 0;
+    // 00AA7E00 child by name, then 00ABBE50(text, localise 0).
+    virtual void row_child_set_text(std::size_t index, std::string_view child, std::string_view text) = 0;
+    virtual void player_list_append_row_00a9d750(std::size_t index) = 0;   // (row, 0, 0)
+    virtual void row_set_widget_listener_00aa6bc0(std::size_t index) = 0;  // (screen+0Ch, 1)
+    virtual void row_set_index_d8(std::size_t index, std::int32_t value) = 0;
+    virtual void player_list_select_index_00a9c7c0(std::int32_t index) = 0;
+    virtual void player_list_clear_listener_00a9ac40() = 0;
+    virtual bool option_panel_byte_8c() = 0;                      // *(*(00E198B4)+54h)+8Ch
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+    virtual void set_global(std::uint32_t address, std::int32_t value) = 0;  // 00E19564/68/94, 00E08958
+    virtual std::int32_t game_dword(std::uint32_t offset) = 0;    // *(00E188A8)+offset
+    virtual void game_set_dword(std::uint32_t offset, std::uint32_t value) = 0;
+    virtual void lobby_005e20a0() = 0;
+    virtual void lobby_005e3580() = 0;
+    virtual void lobby_005d5870(std::int32_t arg) = 0;
+    virtual void lobby_005d67e0(std::uint32_t arg) = 0;
+    virtual std::uint64_t mode_mask_005df510(std::int32_t mode) = 0;
+    virtual std::uint64_t mode_mask_005d9c50(std::int32_t mode) = 0;
+    virtual void session_virtual_174(std::int32_t arg) = 0;       // *(00F8A2FC)
+    virtual void media_00a4c2d0() = 0;                            // 004C1710 singleton, 0 pushed
+    virtual bool game_byte(std::uint32_t offset) = 0;
+    virtual void set_e19698_byte4(bool value) = 0;
+    virtual void lobby_005d6c10() = 0;
+    virtual void set_help_variant_00549620(std::int32_t variant) = 0;  // *(00E1930C)
+    virtual void nose_art_set_text_00abbe50(std::string_view text) = 0;
+    virtual void nose_art_set_ellipsized_00abb000(std::string_view key, float width) = 0;  // flag 1
+    virtual void lobby_005d5340() = 0;
+    virtual void game_004bb3e0() = 0;
+};
+
+// 005E51D0: slot +18h of vtable 00CF23E4, __thiscall(screen), RET. EBX = 0
+// throughout; EBP is 1 from 005E57E3.
+void multi_game_lobby_enter_005e51d0(MultiGameLobbyEnterState& screen, MultiGameLobbyEnterHost& host);
+
 } // namespace bsp
 #endif

@@ -763,4 +763,109 @@ void multi_mode_selector_update_005ecd80(MultiModeSelectorState& screen, float s
     host.profile_hints_00427190(8);
 }
 
+void multi_game_lobby_enter_005e51d0(MultiGameLobbyEnterState& screen, MultiGameLobbyEnterHost& host) {
+    using W = LobbyWidget;
+    if (host.session_present_f8a2fc()) host.session_clear_byte_75();  // 005E51EB..005E51FF
+
+    // 005E5202..005E5349: "<skirmish prefix><mode label>" unless the query answers.
+    if (!host.interface_query_00687860()) {
+        std::string title = host.skirmish_218c() ? std::string(kLobbySkirmishTitlePrefix) : std::string();
+        title += host.option_label_00575e80(kLobbyModeOptionCategory, host.global_e19564());
+        host.set_frame_title_00518d60(title);
+    }
+    // 005E534E..005E537D: one of +130h / +B0h is shown, by skirmish.
+    const bool skirmish = host.skirmish_218c();
+    host.widget_virtual(W::Panel130, 0x34, skirmish ? 0 : 1);
+    host.widget_virtual(W::PanelB0, 0x34, skirmish ? 1 : 0);
+    host.option_panel_005ce750();
+    if (host.skirmish_218c()) host.session_00771dd0();
+
+    // 005E53B0..005E548C: the player list.
+    host.bind_player_list();
+    host.player_list_set_byte(0x149, 0);
+    host.player_list_set_float(0x12C, kLobbyListScrollA);
+    host.player_list_set_float(0x130, kLobbyListScrollB);
+    host.player_list_set_float(0x134, 0.0f);
+    host.player_list_00a9ceb0(kLobbyListValue, 0);
+    host.player_list_set_float(0x128, kLobbyListScrollB);
+
+    // 005E54BF..005E56F4: eight rows stacked under the template by its height.
+    host.bind_row_template();
+    host.widget_virtual(W::RowTemplate, 0x34, 1);
+    for (std::size_t index = 0; index < kLobbyPlayerRows; ++index) {
+        host.clone_row(index);
+        const float height = host.row_template_height_00aa6740();
+        const float row = static_cast<float>(static_cast<std::int32_t>(index));
+        const float step_x = static_cast<float>(kLobbyRowStepX * row);
+        const float step_y = static_cast<float>(static_cast<double>(row) * height);
+        const GuiPoint3 base = host.row_template_position_00aa67f0();
+        host.row_set_position_00aa7dc0(index, {
+            static_cast<float>(static_cast<double>(step_x) + base.x),
+            static_cast<float>(static_cast<double>(base.y) + step_y),
+            static_cast<float>(static_cast<double>(base.z) + step_x)});
+        host.row_set_byte_78(index, true);
+        host.row_set_floats_30_34(index, kLobbyRowField30, 0.0f);
+        host.row_child_set_text(index, "player_name_Text", "");
+        host.row_child_set_text(index, "player_tag_Text", "");
+        host.player_list_append_row_00a9d750(index);
+        host.row_set_widget_listener_00aa6bc0(index);
+        host.row_set_index_d8(index, static_cast<std::int32_t>(index));
+    }
+    host.widget_virtual(W::RowTemplate, 0x34, 0);
+    host.player_list_select_index_00a9c7c0(0);
+    host.player_list_clear_listener_00a9ac40();
+    host.player_list_set_byte(0x14A, 0);
+
+    // 005E571D..005E57AE: arrow states by the option panel's +8Ch byte.
+    const bool panel_byte = host.option_panel_byte_8c();
+    host.widget_virtual_88(W::Arrow144, panel_byte ? 0 : 2);
+    host.widget_virtual_88(W::Arrow148, panel_byte ? 2 : 0);
+    host.widget_virtual_88(W::Arrow14C, panel_byte ? 2 : 0);
+
+    // 005E57B0..005E5804: JA, so modes 0..3 are also remembered in 00E19568.
+    const std::int32_t mode = host.effective_game_mode_004bca50();
+    host.set_global(0x00E19564, mode);
+    if (static_cast<std::uint32_t>(mode) <= 3) host.set_global(0x00E19568, mode);
+    host.set_global(0x00E19594, host.game_dword(0x60C));
+    screen.field278 = 1;
+    screen.field280 = false;
+    screen.field281 = false;
+    host.set_global(0x00E08958, -1);
+    screen.field2d0 = kLobbyField2D0;
+    if (host.game_dword(0x1FE4) == 1) host.lobby_005e20a0();
+    screen.field10 = 0;
+    host.lobby_005e3580();
+    host.lobby_005d5870(0);
+    host.lobby_005d67e0(screen.field1c != 0 ? screen.field1c : screen.field_a4);
+
+    // 005E5848..005E58DA: the stored masks are the new values (Ghidra's
+    // pseudocode ORs the old +2C0h; the listing stores first).
+    if (host.game_dword(0x1FE4) == 1) {
+        screen.mode_mask_2c8 = host.mode_mask_005df510(host.effective_game_mode_004bca50());
+        screen.mode_mask_2c0 = host.mode_mask_005d9c50(host.effective_game_mode_004bca50());
+        const std::uint64_t mask = screen.mode_mask_2c8 | screen.mode_mask_2c0;
+        host.game_set_dword(0x2060, static_cast<std::uint32_t>(mask));
+        host.game_set_dword(0x2064, static_cast<std::uint32_t>(mask >> 32));
+        if (host.game_dword(0x1FE4) == 1) host.session_virtual_174(1);
+    }
+    host.media_00a4c2d0();
+
+    screen.spectating282 = host.game_byte(0x2164);
+    if (screen.spectating282) {
+        host.set_e19698_byte4(true);
+        host.widget_virtual(W::PlayerList, 0x60, 0);
+        host.widget_virtual(W::Panel94, 0x60, 0);
+    }
+    const std::int32_t slot = host.game_dword(0x18EC);
+    if (slot >= 0 && slot <= 7) host.lobby_005d6c10();
+    screen.field2d4 = 0;
+    screen.field10 = 1;
+    host.set_help_variant_00549620(0);
+    // 005E5955..005E5A8C: noseart_Group/New_5_Text under +14h.
+    host.nose_art_set_text_00abbe50(" ");  // 00CE3A90
+    host.nose_art_set_ellipsized_00abb000("FE.multi_lobby_noseart", kLobbyNoseArtWidth);
+    host.lobby_005d5340();
+    host.game_004bb3e0();
+}
+
 } // namespace bsp
