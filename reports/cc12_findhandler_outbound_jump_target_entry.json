@@ -1,0 +1,519 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_outbound_jump_target_entry",
+  "status": "exact two-byte entry physical closure; remaining owner and service semantics unestablished",
+  "frozen_commit": "5bf637888ab41abff1da77d0335c7a467c59dfa3",
+  "finite_Git_inputs": [
+    {
+      "path": "docs/CC12_FINDHANDLER_FIRST_DIRECT_CALL_BODY_METADATA.md",
+      "git_blob": "831d46822cd96ea739fee5cec169463bda3e54c8",
+      "working_file": {
+        "size": 7236,
+        "sha256": "491352d66f280ddd2ccb9d3cc5037fc991b0cff7620c9cceb35f82e5689a243e"
+      },
+      "working_LF": {
+        "size": 7236,
+        "sha256": "491352d66f280ddd2ccb9d3cc5037fc991b0cff7620c9cceb35f82e5689a243e"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "reports/cc12_findhandler_first_direct_call_body_metadata.json",
+      "git_blob": "cd1fd4101cae58f1659bac0643cdeb2d2ebfd3db",
+      "working_file": {
+        "size": 80543,
+        "sha256": "d9c4365f0aa67b7b46769bc652e43f9ffd037b59d25ecefc8ae89dc67abfc67e"
+      },
+      "working_LF": {
+        "size": 80543,
+        "sha256": "d9c4365f0aa67b7b46769bc652e43f9ffd037b59d25ecefc8ae89dc67abfc67e"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "docs/CC12_FINDHANDLER_FIRST_DIRECT_CALL_BODY_METADATA_PRIMARY.md",
+      "git_blob": "163bdb4cf766c142317e47e19a6d5f49fb6fa651",
+      "working_file": {
+        "size": 4252,
+        "sha256": "bca22ff5a80ee86103db3dd715fca963eb9e5c8840f2901a400f65ff095966c5"
+      },
+      "working_LF": {
+        "size": 4252,
+        "sha256": "bca22ff5a80ee86103db3dd715fca963eb9e5c8840f2901a400f65ff095966c5"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "reports/cc12_findhandler_first_direct_call_body_metadata_primary.json",
+      "git_blob": "a30d676024e9af948f58910e3d768aa5750867ad",
+      "working_file": {
+        "size": 148649,
+        "sha256": "ec04f975cf252caf793c82f4dd0b8d8e47bd45fe02f636b491db5d6f8d3f572d"
+      },
+      "working_LF": {
+        "size": 148649,
+        "sha256": "ec04f975cf252caf793c82f4dd0b8d8e47bd45fe02f636b491db5d6f8d3f572d"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_file": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_file": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_file": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_file": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true
+    }
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_edge": {
+    "address": "00C07AF3",
+    "hex": "e97dffffff",
+    "opcode": 233,
+    "signed_displacement": -131,
+    "next_address": "00C07AF8",
+    "numeric_target": "00C07A75",
+    "return_address_push": false,
+    "origin": "immediate accepted BODY report; no new source-edge query"
+  },
+  "metadata": {
+    "query": "00C07A75",
+    "instruction_length": 2,
+    "all_four_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07a75"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07a75"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07a75"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07a75"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "actual_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "name": "terminate",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "44",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a75"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07a94"
+            },
+            "length": "32"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07a9c"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07aa7"
+            },
+            "length": "12"
+          }
+        ]
+      }
+    },
+    "saved_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c07a77"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c07a77"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "original_direct_raws": 2,
+    "closing_direct_raws": 1,
+    "all_three_raws_equal": true,
+    "raw_pin": {
+      "size": 2254,
+      "sha256": "23cb77b0a2e1ab56c765f4194671d8f00fbd66d6b8a4d6c3006794d613b703d5"
+    },
+    "saved_owner_extent_only": true,
+    "remaining_owner_bytes_read": 0
+  },
+  "Root_gate": {
+    "producer": "Root_gate/Root_entry_gate.py",
+    "receipt": "Root_gate/Root_entry_gate.json",
+    "original_metadata_preimages": 156,
+    "total_distinct_copied_artifacts": 167,
+    "admission": "Exact C07A75 two-byte unit, paired context-zero at that address, closing exact metadata and count/identity bookends only",
+    "failure_history": "Root_gate/Root_review_failure_history.json"
+  },
+  "Native": {
+    "commands": 11,
+    "phase_one": 4,
+    "phase_two": 7,
+    "HTTP_responses": 39,
+    "GET_responses": 37,
+    "POST_responses": 2,
+    "count_checkpoints": 4,
+    "count": 64730,
+    "epoch": 98,
+    "GPR": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_metadata_raws": 3,
+    "byte_reads": 2,
+    "context_zero_reads": 2,
+    "complete_commands_methods_request_bodies_raw_responses_and_streams_retained": true
+  },
+  "physical": {
+    "manual_edge": {
+      "address": "00C07AF3",
+      "length": 5,
+      "hex": "e97dffffff",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "e9",
+          "value": 233
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 4,
+          "hex": "7dffffff",
+          "value": -131
+        }
+      ],
+      "mnemonic": "jmp",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12614261
+        }
+      ],
+      "signed_displacement": -131,
+      "numeric_next_address": "00C07AF8",
+      "numeric_target": "00C07A75",
+      "return_address_push": false,
+      "flags_written": []
+    },
+    "manual_entry": {
+      "address": "00C07A75",
+      "length": 2,
+      "hex": "6a08",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "6a",
+          "value": 106
+        },
+        {
+          "field": "immediate",
+          "offset": 1,
+          "size": 1,
+          "hex": "08",
+          "value": 8
+        }
+      ],
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 8
+        }
+      ],
+      "sign_extended_32": 8,
+      "numeric_next_address": "00C07A77",
+      "implicit_memory": "dword write through current SS stack",
+      "flags_written": []
+    },
+    "edge_source": "accepted immediate BODY report; no fresh edge query",
+    "entry_sha256": "8d38f9f0b8aaf50c1b5a8db595dc1e9dbab0ce00381920e869144cbfbbcfa034",
+    "paired_entry_bytes_equal": true,
+    "paired_context_equal": true,
+    "saved_entry_text": "PUSH 0x8",
+    "manual_detailed_Capstone_agreement": true
+  },
+  "actual_detailed_Capstone": {
+    "version": "5.0.7",
+    "arch": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "instructions": 2,
+    "scope": "exact entry 2B plus supplied accepted E9 edge 5B",
+    "output": "capstone_detail.json",
+    "constructed_or_imported_during_pure_replay": false
+  },
+  "local_CPU_contract": {
+    "conditions": "Conditional on the observed encoding being reached and completing fault-free under the x86-32 interpretation. No execution or reachability is established.",
+    "incoming_edge": "The supplied E9 at C07AF3 has signed displacement -131 from numeric next C07AF8 to C07A75. This near JMP does not push a return address or change current ESP. No original caller frame, call argument or preserved prior stack identity follows.",
+    "entry_fields": "Opcode6A followed by imm8=08, with no prefix, ModRM, SIB or displacement, sign-extends the immediate to 32-bit value00000008.",
+    "renewed_stack_condition": "The entry PUSH requires a separately imposed actual32-bit SS stack-address-size condition for ESP algebra. Operand width and decoder mode do not establish live SS.B; prior opaque calls leave segments and stack state unknown. A16-bit stack uses SP semantics.",
+    "entry_stack": "With actual32-bit SS stack and entry ESP=T, the reached PUSH leaves ESP=(T-4) modulo2^32 and writes dword8 at the resulting current SS stack address. The numeric next EIP is C07A77; that address was not queried.",
+    "edge_to_entry": "If the supplied E9 and exact entry execute consecutively, current ESP=S at the E9 remains S on entering C07A75. Under the renewed32-bit SS condition the entry then writes8 at SS:[S-4] and leaves ESP=S-4. The E9 contributed no extra return-address word.",
+    "other_local_state": "The JMP and PUSH do not locally change EFLAGS; PUSH changes ESP and stack memory, not the other general registers. These local effects prove no preservation by the remaining owner.",
+    "opaque_boundary": "All registers including EBP/ESP, all segments, flags and memory originating from prior opaque calls remain unconstrained. Remaining owner instructions, possible calls, return/nonreturn behavior, providers and meaning are unexamined. No typed frame, handler, EH/FH3/TLS/type or original ABI interpretation is established.",
+    "saved_labels": "Saved terminate name, no_return=false, nonthunk flag, complete two-range extent and fall-through are metadata only."
+  },
+  "evidence_pins": {
+    "capture_metadata.py": {
+      "size": 9048,
+      "sha256": "bdece18a8a7edf9ab6b1908c7da0b9a045463f1ce5706f297d37173fdfb16826"
+    },
+    "transport/sitecustomize.py": {
+      "size": 1879,
+      "sha256": "87ce73de0c983f8e12e8a41f580729d6000c774a3f7d04e7b2e16d32e454ca00"
+    },
+    "producer_before_execution.json": {
+      "size": 575,
+      "sha256": "0a5fad75220d36119b408450d90c1b93c9fb79d1be62878ef40ef9140449c255"
+    },
+    "finite_git.json": {
+      "size": 8993,
+      "sha256": "7939005ce426b6a4f8b8fded1108f2fae1fa35e508dcff1e3cb3bbf012c003d2"
+    },
+    "positive_edge.json": {
+      "size": 265,
+      "sha256": "80ee988c33d8b11990fccbc5b09cb89d1635f1960bc4e989831f5ffd19756daf"
+    },
+    "metadata_result.json": {
+      "size": 4121,
+      "sha256": "59bf79e64062298a2a073d0d16b7350a7dd3efc46c2de331238ad3396b9e0818"
+    },
+    "metadata_capture_manifest.json": {
+      "size": 64027,
+      "sha256": "be5a38da1c7e69935c8f13c3dc3bba0fb92d692a5d3e913e409e91a59e295d55"
+    },
+    "capture_entry.py": {
+      "size": 5029,
+      "sha256": "06155cce547f6b26c11335fca009b6ec3c20a4ab73879cd44b47856186a1d236"
+    },
+    "entry_producer_before_execution.json": {
+      "size": 508,
+      "sha256": "994e101a0139364d198d6cfcc27168b789000baa27e32c9797df9c85d83c6f9f"
+    },
+    "entry_capture_manifest.json": {
+      "size": 17792,
+      "sha256": "3632afc6a08887e3799c4ce1a73a07c9e8177b6a79a6be6abbaf7a3ee0924ce5"
+    },
+    "Root_gate_copy_manifest.json": {
+      "size": 27574,
+      "sha256": "703ee31433145d9b2aea1760c5150347f08ca6b7abdcc67e5c2b7cf2186f07ca"
+    },
+    "Root_gate/Root_entry_gate.py": {
+      "size": 10116,
+      "sha256": "8ba0df1fb51e7a4bbf2359d8eb1d08dc5a144d66bfe757d3cbe2ead692e8ec00"
+    },
+    "Root_gate/Root_entry_gate.json": {
+      "size": 4972,
+      "sha256": "5e0e5f412170f9965f69a49ce45679e009fc6cace4ed6c09c346a2a45b236349"
+    },
+    "Root_gate/Root_review_failure_history.json": {
+      "size": 728,
+      "sha256": "676bec9c531e57e389f652f692c8a83c5cc8de0b11fd2e79d0b3167b9eeff860"
+    },
+    "physical_fields.py": {
+      "size": 1698,
+      "sha256": "fae0da96e1828b786d350da49d56ef3d8f50604d76f8f8ef0bfbba9843d6d6be"
+    },
+    "decode_entry.py": {
+      "size": 4381,
+      "sha256": "1ac8a3419aae1a92cd24b8a6fe49c2637e99d016da46d6fcdb7bdde1b98d3ff8"
+    },
+    "decoder_before_execution.json": {
+      "size": 451,
+      "sha256": "3f876fe64a2b79c0a17ca3056f931e11f1248ad580b950cb0c11a8abd33646b9"
+    },
+    "physical_decode.json": {
+      "size": 1776,
+      "sha256": "c7bdb72dcc9f584ec24ac089583491a78351f581779e96d943add8778c944131"
+    },
+    "capstone_detail.json": {
+      "size": 1652,
+      "sha256": "521f740032919fee13efabe2ca40e5fb47fc7e8e879f13d69c958374ad496d4b"
+    },
+    "replay.py": {
+      "size": 18958,
+      "sha256": "86583964e3d77192578a2b5585caf20027a89d0058979e774fdcba933cdcc87a"
+    },
+    "replay_tail.py": {
+      "size": 17258,
+      "sha256": "c0993d6f7246e7b1a38ef12875134ea2c50c9e66f830d0676e2a5cff2be67318"
+    },
+    "audit_replay.py": {
+      "size": 2351,
+      "sha256": "8deb67ea53026ce6da9f1c0feae2d4cba092c2b0e967f467a73d95bc4d90f032"
+    }
+  },
+  "failures": {
+    "Root_gate": 2,
+    "Root_offline_inspection": 3,
+    "worker_Native": 0,
+    "worker_decoder": 0,
+    "Root_history": {
+      "inspection_failures": [
+        "FileNotFoundError guessed git/frozen.json; actual finite_git.json",
+        "KeyError guessed files; actual inputs",
+        "PowerShell quoting parser error; command not started"
+      ],
+      "gate_failures": [
+        "AST Request expected attribute but actual imported name",
+        "formatted positive doc searched for contiguous E97DFFFFFF"
+      ],
+      "attempt01_producer": "exact reconstruction from original tool-call code before correction",
+      "attempt01_streams": "complete original tool output in conversation; overwritten locally by attempt02, no separate local originals claimed",
+      "attempt02_streams": "complete actual original local stdout/stderr retained",
+      "Native_or_GPR_effects": 0
+    },
+    "attempt01_original_separate_local_streams_available": false,
+    "attempt01_producer_provenance": "Exact reconstruction from original tool-call code, as disclosed by Root; not claimed as an untouched original file.",
+    "attempt01_streams_limit": "Root reports the complete original first-failure tool output remains in the conversation. The separate local streams were overwritten by attempt02; no complete original separate local copies are claimed or synthesized here.",
+    "attempt02_streams": "Actual original local stdout/stderr copied unchanged.",
+    "effects": "Root offline errors caused no Native query or GPR mutation. Worker captures and decoder passed first execution. Any later replay failure is retained in its own attempt streams."
+  },
+  "proof_delivery": {
+    "archive": "proof.zip",
+    "distinct_physical_copy": "proof.copy.zip",
+    "receipt": "replay_receipt.json",
+    "copy_receipt": "copy_replay_receipt.json",
+    "policy": "Strict audit permits one supplied ZIP read, one physically reviewed pinned local helper execution and one exclusive receipt write; it records denied events and rejects every other event. No archive-contained code is executed.",
+    "Capstone": "Pure replay compares captured detailed output to recomputed manual fields; no Capstone construction/import occurs inside the audit.",
+    "actual_final_Git": "actual_final_git.json retains actual final commit/root/parent directories/two output blobs. Final IDs, physical-copy identity and receipt pins accompany handoff outside this report."
+  },
+  "validation_boundary": {
+    "Source_changes": false,
+    "build": false,
+    "tests": false,
+    "probes": false,
+    "GPR_writes": 0,
+    "Original_reads_or_execution": false,
+    "game_OS_audio_runtime": false,
+    "C07A77_or_body_gap_proto_target_provider_queries": false,
+    "original_ABI_established": false,
+    "whole_owner_or_service_semantics_established": false,
+    "exact_entry_physical_only": true
+  },
+  "next_scope": "No remaining owner instruction is admitted; any continuation needs a new bounded gate and explicit scope."
+}
