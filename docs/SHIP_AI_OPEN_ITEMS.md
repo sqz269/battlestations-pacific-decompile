@@ -16022,3 +16022,76 @@ The work stopped at the lead's PAUSE after f17. Neither small edit was started; 
    - The player-side fix: delay or reroute the spotting units so Shimotsuke is sighted at least one
      refresh before the Blockade. Then primary 3 should be added.
 4. Since DisplayScores is ON (lua47), `Bases captured: N` lines track the capture progress in the log.
+
+## 207. `kCaptureStatePartyFromUnitBound` after the health-callback guard (cc9-ships42, 2026-10-11; 206.1 item 1)
+
+**The `00877B90` guard is already in.** cc11's `kUnitHealthCallbackGuardBound` (ON on main, `src/game_hosts_gunnery.cpp`,
+`docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md`) carries `00877B90`'s equal-health early return
+(`00877BAB..00877BC1`, `FUCOMIP; LAHF; TEST AH,44h; JNP`) to all five health-driven death endpoints, the direct hit
+(`Impl::apply_hit`) and the blast (`Impl::apply_gunless_blast_hit`) among them. It is a superset of the
+`applied != 0.0f` edit 206.1 item 1 proposed, so `kUnchangedHealthNoDeathBound` is not added. cc11's own pair ran f12
+with the capture switch ON on both sides (prior-party-0 neutralizations 45 -> 0).
+
+**Pair.** OFF is this branch's tip after the torpedo line (`f9fde7416` plus this doc commit); ON is the same commit
+exported with `kCaptureStatePartyFromUnitBound=true` (`local\s42_cp`). Launch form of reference AF (`local\s42_rows.ps1`,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05).
+
+**Predictions (OFF -> ON), written before any run.**
+- USNOS f12 (80000, `s41_os_f12.txt`): exactly one `command building capture: ... party 2 -> 0` resync for HQ2 (about
+  1703 s) and one for HQ1 (about 2386 s); no "neutralized (prior party=0)". The neutralization times (HQ2 1484.75 s,
+  HQ1 1885.30 s, CB2 2047.15 s) are equal on both sides. Gameplay moves after the first resync (exit 3), because the
+  refreshed gunnery side changes who the HQ shoots and who shoots it. With the switch OFF the state stays neutral, the
+  countdown keeps running on a party-0 HQ, and `Bases captured` reaches the same count by a different path, so deaths
+  may differ after 1703 s.
+- USN02 + `g32_ord_u2.txt` (16000, control with ordinary sinkings): gameplay identical (exit 0/1). No SetParty runs on
+  a capture building, so the loop body never fires.
+- **Flip rule.** ON if the resync count is one per SetParty and no prior-party-0 neutralization appears; the control
+  must not move. A spread in deaths after the resync with the mechanism matching may flip.
+
+### 207.1 The pair: f12 no longer reaches a SetParty on current main (cc9-ships42, 2026-10-11)
+
+OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_<row>.log` (`local\s42_cp`, export of
+`ba9800cf0` with the switch true).
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| USN02 + `g32_ord_u2` 16000 (control) | 1 | gameplay identical, as predicted |
+| USNOS f12 80000 | 1 | gameplay identical: 271 death rows, 452 unit rows, native table equal. **No resync line on either side** |
+
+- **The f12 prediction was not tested.** On current main the f12 helm file no longer reaches a capture SetParty:
+  - HQ2 is neutralized once (prior party 1) at 1456.20 s, not 1484.75 s. HQ1 and CB2 are never neutralized
+    (`health_zero=1 neutralized=1`, `Bases captured: 0.00`). The one `party_sets` is the neutralization's own mirror write.
+  - TroopTrans3 dies at 1490.08 s (killer `Airfield3_sqn18|.-3`), before it reaches HQ2. In `s41_g12` it lived to 2828.28 s.
+  - **The Enterprise dies at 1553.34 s** (killer DM1, first damage 1516.75 s), and the mission fails at 1554.69 s
+    (`Mission.MissionStatus`, "Game Over"). 205's f7-f17 plan rested on the Enterprise surviving phase 2.
+- **Where it moves.** Against `s41_g12_osf12.log` (ships41's OFF), the first 76 death rows are equal. The first difference
+  is an AA kill of `plane #1.1|.-2` at 114.85 s against 115.05 s, and the plane kills drift from there.
+  Among the gameplay lane files, `git log f6c6d992a..10bef4a99` touches only `src/game_hosts_gunnery.cpp`
+  (`ac2c85217`, the guard flip). cc11's pair at `f6c6d992a` still had HQ2 neutralized at 1484.75 s. Not bisected.
+- **Verdict:** `kCaptureStatePartyFromUnitBound` stays **OFF**, untested rather than failed. The mechanism needs a row
+  that reaches a SetParty on an HQ. Either the USNOS helm files are re-planned on current main, or the move is bisected first.
+
+### 207.2 Is the host's `+127Ch` the image's? Yes (gunnery 163.2 item 1; cc9-ships42, 2026-10-11; a read)
+
+- **The image** (`009F1BC0` ApproachFrameState, body `009F1BC0..009F3083`, `__thiscall`, ECX = the nested approach object
+  in EBP):
+  - `009F1C45..009F1CDE`: `+11E0h` = the horizontal distance from the unit (`unit+0FCh`, `+104h`) to the brain's goal
+    (`brain+0B2Ch`, `+0B34h`), with a zero dy term (`FLDZ; FMUL ST0,ST0`) and `sqrt` only above the `00CE3820` floor.
+  - `009F2A04..009F2A0A`: `+127Ch` = `+11E0h`. The same block zeroes `+12B4h` at `009F2A10`.
+  - `009F2FDB..009F3016`: on the unit's `+6DCh` weapons object, `00863780(+12BAh && +12B4h + 50.0 > +127Ch)`.
+- **Writers.** `+11E0h` is stored only at `009F1CDE`, and `+127Ch` only at `009F2A0A`, in this function and in the
+  `009E..009F` ship AI band. The scans were `F3 0F 11 ?? E0 11 00 00`, `D9 ?? E0 11 00 00`, `F3 0F 11 ?? 7C 12 00 00`
+  and `D9 ?? 7C 12 00 00`, all with `--limit 4000`. The other hits are `0085xxxx`/`0088xxxx`/`0089xxxx` stores on the
+  submarine's own `+127Ch` "air". The `LEA ESI,[EBP+11E0h]` at `009F1FB3` feeds `00415510`, a read-only min.
+- **The host.** `ship_ai_approach_frame_state_009f1bc0` (`src/ship_ai_approach_update.cpp:1085`) computes
+  `goal_range_11e0` from `ctl.goal_vector.goal_x_0b2c/z_0b34` (the `009F1420` chain, SHIP_AI_GOAL_VECTOR). The `+7Dh`
+  gate (`src/game_hosts_ship_ai.cpp:6196`) compares against that same value, which is what `+127Ch` holds at
+  `009F2FF7`. So the quantity is the image's.
+- **Why the boats never pass.** In `attackmove` the goal is the command's destination point, not the target. The 1486 m
+  in 161.4 is the target distance `00863990` accepted, a different quantity. At death, the end-of-run table in
+  `g34_t2off_j8.log` gives the Gyoraitei goal ranges 2369.6 (Y1, `stop`), 2058.8, 2735.4 and 1341.5 m (Y2-Y4,
+  `attackmove`), all above the 970 m (`920 + 50`) bound. In both builds, a boat sets `+7Dh` only once it is within
+  `clearance + 50` m of its own destination. If JM08's boats should torpedo earlier, the question is their ordered
+  destination (shipyard rally / script), not `+127Ch`.
+- **Uncertainty.** The table gives each boat's last value, not its minimum. A per-frame minimum needs a traced run.
+  This read was not run on JM08 here.
