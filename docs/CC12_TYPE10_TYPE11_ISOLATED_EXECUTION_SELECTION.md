@@ -388,3 +388,16 @@ The actual Review-to-native transition and inert assembly plan are issued. Indep
 New Source/transport and terminal-utility staging controls are issued and independently accepted: 3,957 checks / 39 pins, final closure 5,194 / 40. Generic Source and transport contracts retain their complete original counts and nested selectors. The formal baseline is accepted Review DATA01 (46,896 bytes); the accepted Source02 derivative is a separate gate. All three utility copies match their TEXT byte-for-byte.
 
 The old startup inspector had Prepare-to-Review assumptions. A native inspector derivative is now authored with exact helper provenance; both Source body reviews passed and the exact inert alias is staged; final independent closure and Root Source acceptance remain pending. The DATA assembler completed with original terminal f8974d/0; its unadopted generation and empty native observer directory await independent review and adoption. Native adoption, ordinary startup, formal Dispatch, a new phase clock and ABI/game qualification remain pending. All earlier HOLD and accepted Source-only snapshots are preserved.
+
+
+### Native DATA adoption and remaining Source reviews
+
+The complete native unadopted graph is now Root accepted: 48 direct checks / 11 current pins, consuming the whole independent 1,609,846-check / 33,270-pin review. The nine-binding DATA-only authorization was issued and the unchanged adopter completed its original session 81954 with terminal 976a6e/0. Its final immutable Root seal is 711,938 bytes, SHA256 367c6b77851689fbce1539791b2027a9d7031501dddb62199e67c94f794f9a30. The failed relative-plan invocation is retained separately; it failed before plan opening.
+
+The ordinary-startup inspector has complete Root Source-only acceptance (339 / 24) and independent acceptance closure (5,158 / 27, final 6,023 / 28). The prestartup constructor has Root Source-only acceptance and an exact inert alias: 545 checks / 29 current pins. Its copied 16-helper namespace, 24-edit inverse, 15 unchanged functions and 67 lexical scopes were reviewed without executing the constructor. Further independent acceptance review is active.
+
+The native primary adopted-graph reviewer Source family is closed (150 / 6); its independent body review passed and final independent closure remains pending. The Root joint and peer consumer Source family is closed (1,389 / 14, 27 readonly members), with complete raw/AST inverses independently under final review.
+
+Independent review caught an unbound members helper in the native compact inspector Source02 before execution. The immutable HOLD is preserved. Additive Source03 adds the members-to-v.walk bridge; its 2,209-check / 37-pin Source packet is closed and independent final approval is active. The unchanged eight formal helpers and 156 assertion transformations are preserved.
+
+The actual DATA adoption is complete. Whole adopted-graph review execution, ordinary startup, formal native Dispatch and a new native clock remain pending. Source credit stays zero; fixture, ABI and game qualification remain false. Earlier ordered snapshots, including pending and HOLD states, are preserved verbatim.
