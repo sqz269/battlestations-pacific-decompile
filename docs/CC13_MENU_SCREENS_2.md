@@ -604,3 +604,32 @@ Reconstructed and build-tested (`menu_prompt_exit_00530970`, `hud_formation_ente
 
 Uncertainty: 0054E610, 00533A30, 0068E420, 005A6AD0 and 00653200 are unexamined; the formation maps
 are modelled as value lists in key order.
+
+## Handoff (cc13-menus6, 2026-10-11)
+
+Commits on agent/cc13-menus6 (menus5's 6cb50d7aa merged first): 591095127 (tactical library Update,
+carousel step, nose-art apply, browser RefreshRowDetails and 00579980, credits Register and
+ReadItemStyle), d5719b414 (MenuPrompt Exit, HudFormation Enter/Exit, FrameStats Register), and the
+handoff commit. 11 functions reconstructed and build-tested, none run in `bsp_game`; 14 ledger names
+(6 newly named in Ghidra: 00516010, 005161C0, 00579980, 00568290, 00568220, 00538D60; refreshed
+evidence on the rest); 271 report call rows added, 884 checked, 0 failed. Scripts in the worktree's
+`local/` with the `m6_` prefix: `m6_consts.py` (float/double/string constants from the PE),
+`m6_rel32.py` (E8/E9 and absolute-dword reference scan), `m6_rows.py` (now takes `*` for every
+direct call, skipping string-pool and CRT plumbing), `m6_names1.py`/`m6_names2.py`.
+
+Open, in order of value:
+
+1. HudFormation Update 0053A8E0 (4333 bytes, `__thiscall(screen, float)`, RET 4, SEH 00C6C666): x87
+   and matrix heavy (camera matrices 004134F0/00413920, look-at 00B63F10, view 00B71490, curve points
+   00ABC970/00ABCA10 on the +128h link widgets, 00439820 projection), the `MAPPERMANENT` hint, input
+   axes from the input manager singleton (+4, then +2994h/+29C4h), and it issues unit commands
+   (0077D600 with 00465080 targets) for the selected member, so the command path touches gameplay;
+   read the listing (`m6_m4dis.py 0053A8E0:0053B9D7`, 1093 lines) rather than the pseudocode, and
+   spawn it on a model suited to x87 recovery.
+2. Record+24h: RefreshRowDetails reads it as the map option value (registry key 1, map definition
+   names); recheck IsJoinable 00574100 and the filters before renaming `open_slots_24`.
+3. Tactical library callees named only by use: 004FB090 (per-row, kind 5), 004FF6F0, 00514FB0,
+   00515050 (per-frame carousel animation), 004FF580, 004FC9D0, 004FC720/004FC7A0, the selector
+   record readers 004FA8F0/004FA960/004FAA00, 00511BF0.
+4. Session browser PrepareEnter 00570300, selection changed 005787E0, 0056D660, 0056B610 (from the
+   menus5 list, untouched here).
