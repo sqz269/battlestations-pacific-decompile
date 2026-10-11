@@ -1,0 +1,396 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_first_direct_call_entry",
+  "status": "exact one-instruction entry physical closure; callee behavior and ABI unresolved",
+  "frozen_commit": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+  "finite_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_FINDHANDLER_BODY_LISTING_METADATA.md",
+      "git_blob": "912daa473d02084c0a92101ed642c751ef4d8744",
+      "working_file": {
+        "size": 6256,
+        "sha256": "b7d3069237b4dec5adcbfaf27d358393e30e6c8335dc28ccc0ff21aef89509e4"
+      }
+    },
+    {
+      "path": "reports/cc12_application_crt_findhandler_body_listing_metadata.json",
+      "git_blob": "9fc2e527b1b679dfd43e93f41e6bb391f095da29",
+      "working_file": {
+        "size": 395850,
+        "sha256": "314f14ac04980e14d4b6145d7805b76f82783fe262a0056edaec85f14b0c904f"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_FINDHANDLER_BODY_LISTING_METADATA_PRIMARY.md",
+      "git_blob": "d26cbba63f473b6aa4c566cff00c2036b4341f9f",
+      "working_file": {
+        "size": 3150,
+        "sha256": "e67e0b0f86562d84653338f9f9b29cb29e3a8bece00134e820947ecaeb6d9b6b"
+      }
+    },
+    {
+      "path": "reports/cc12_application_crt_findhandler_body_listing_metadata_primary.json",
+      "git_blob": "e1d941655d20f0cd54f3653788ef6ea7ea16580f",
+      "working_file": {
+        "size": 115269,
+        "sha256": "09b7e3c8b6f6e819001ebd2fa65731c7fc0e7fef99139e26581a96a8e95e14be"
+      }
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_file": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_file": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_file": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_file": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    }
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_basis": {
+    "origin": "accepted immediate FindHandler BODY and PRIMARY pairs only",
+    "body_start": "00C07623",
+    "body_end_inclusive": "00C07978",
+    "body_size": 854,
+    "body_sha256": "81e644d42d247ba81c41ca69869f6c871666f51884cf0e23af28c2e5521cda66",
+    "caller": "00C07655",
+    "hex": "e867040000",
+    "numeric_target": "00C07AC1",
+    "encoded_return": "00C0765A"
+  },
+  "Root_gate": {
+    "receipt": "Root_gate/Root_entry_gate.json",
+    "producer": "Root_gate/Root_entry_gate.py",
+    "original_preimage_count": 136,
+    "admission": "paired exact two-byte entry, context-zero entry, closing exact-entry metadata/counts only; no proto"
+  },
+  "metadata": {
+    "entry": "00C07AC1",
+    "instruction_length": 2,
+    "all_four_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07ac1"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07ac1"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07ac1"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c07ac1"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "complete_saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c07ac1"
+      },
+      "name": "_inconsistency",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 2,
+        "returned_range_count": 2,
+        "address_count": "48",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07ac1"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07ae4"
+            },
+            "length": "36"
+          },
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c07aec"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c07af7"
+            },
+            "length": "12"
+          }
+        ]
+      }
+    },
+    "saved_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c07ac3"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c07ac3"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "three_original_raws_equal": true,
+    "raw_http_size": 2259,
+    "raw_http_sha256": "2d9f4f83f30dac584984032cb7482ef1994a8a4e8edae1d1e874e61e74f4e8eb",
+    "name_and_ranges_are_saved_metadata_only": true
+  },
+  "Native": {
+    "commands": 10,
+    "phase_one_commands": 4,
+    "phase_two_commands": 6,
+    "typed_responses": 3,
+    "paired_byte_reads": 2,
+    "context_zero_reads": 1,
+    "count_checkpoints": 4,
+    "count": 64730,
+    "epoch": 98,
+    "GPR": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "failures": [],
+    "phase_two_raw_HTTP_responses": 20,
+    "transport": "unchanged bsp.py CLI with pinned passive urlopen response recorder; no additional endpoint requests"
+  },
+  "physical": {
+    "manual_entry": {
+      "address": "00C07AC1",
+      "length": 2,
+      "hex": "6a08",
+      "opcode": {
+        "offset": 0,
+        "size": 1,
+        "hex": "6a",
+        "value": 106
+      },
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "hex": "08",
+        "encoded_unsigned": 8,
+        "signed_value": 8,
+        "sign_extended_32": 8
+      },
+      "prefixes": [],
+      "ModRM": null,
+      "SIB": null,
+      "displacement": null,
+      "mnemonic": "push",
+      "operand_size": 4,
+      "numeric_next_address": "00C07AC3",
+      "flags_written": [],
+      "memory": "one implicit dword stack write through SS"
+    },
+    "manual_caller": {
+      "address": "00C07655",
+      "length": 5,
+      "hex": "e867040000",
+      "opcode": {
+        "offset": 0,
+        "size": 1,
+        "hex": "e8",
+        "value": 232
+      },
+      "relative_displacement": {
+        "offset": 1,
+        "size": 4,
+        "hex": "67040000",
+        "signed": 1127
+      },
+      "prefixes": [],
+      "ModRM": null,
+      "SIB": null,
+      "mnemonic": "call",
+      "encoded_return_address": "00C0765A",
+      "numeric_target": "00C07AC1",
+      "origin": "accepted immediate input report physical record; no new caller query"
+    },
+    "paired_entry_equal": true,
+    "entry_sha256": "8d38f9f0b8aaf50c1b5a8db595dc1e9dbab0ce00381920e869144cbfbbcfa034",
+    "saved_text": "PUSH 0x8",
+    "manual_Capstone_saved_text_agreement": true
+  },
+  "actual_detailed_Capstone": {
+    "version": "5.0.7",
+    "arch": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "instructions": 2,
+    "output": "capstone_detail.json",
+    "scope": "exact admitted two-byte entry and the five-byte positive caller copied from the accepted immediate report"
+  },
+  "local_CPU_contract": {
+    "prerequisites": "Conditional on the encoded instruction being reached and completing fault-free under the x86-32 interpretation. This is not execution evidence.",
+    "operand_width": "No 66 prefix; the imm8 08 is sign-extended to a 32-bit operand value 00000008.",
+    "entry": "With actual 32-bit SS stack-address size and entry ESP=T, PUSH makes ESP=(T-4) mod 2^32 and writes dword 8 at the resulting SS stack address. Numeric next EIP is C07AC3. No bytes at that next address were queried.",
+    "entry_other_state": "This one PUSH does not change EFLAGS or other general registers. That local effect proves no whole-callee preservation.",
+    "stack_size_limit": "The byte-decoder mode and operand width do not establish live SS.B or stack-address size. The ESP algebra explicitly assumes a 32-bit SS stack; a 16-bit stack uses SP semantics.",
+    "caller_composition": "If the physical E8 at C07655 is reached with ESP=S and both instructions complete under a 32-bit SS stack, it first writes encoded return C0765A at SS:[S-4] and enters numeric C07AC1 with ESP=S-4. The entry PUSH writes dword 8 at SS:[S-8] and leaves ESP=S-8. These are separate instruction-time accesses, not a claim that earlier memory remains unaliased or unchanged.",
+    "opaque_call_boundary": "Whether the callee reaches any further instruction or returns is unknown. At any resumed C0765A, every returned register including EBP/ESP, EFLAGS and memory is unconstrained. No cleanup, nonreturn, caller restoration or argument identity follows.",
+    "semantic_limit": "Saved _inconsistency, no_return=false, owner ranges and flow are metadata. No inconsistency service, EH/TLS/FH3/type identity, handler meaning, provider, reachability or original ABI is established."
+  },
+  "proof_delivery": {
+    "archive": "proof.zip",
+    "distinct_physical_copy": "proof.copy.zip",
+    "receipt": "replay_receipt.json",
+    "copy_receipt": "copy_replay_receipt.json",
+    "auditor": "audit_replay.py",
+    "pure_replay": "replay.py",
+    "policy": "Each replay performs one supplied ZIP physical read, one pre-reviewed local helper exec and one exclusive receipt write. No archive-contained code execution.",
+    "final_Git": "actual_final_git.json retains actual final commit/root/parent directories and two output blobs. Final commit IDs and replay receipt pins accompany handoff outside the self-referential report."
+  },
+  "evidence_pins": {
+    "capture_metadata.py": {
+      "size": 4844,
+      "sha256": "e6dc665bd2df952f26eabdd2485ecc4493d267a720ebce93066cc8441a4999f2"
+    },
+    "metadata_capture_manifest.json": {
+      "size": 57173,
+      "sha256": "97ff7c81c54350ca849eacb716b9fe046ca73ff510170377a8664374cbd6f930"
+    },
+    "finite_git.json": {
+      "size": 7691,
+      "sha256": "7c8efe6892af2c18f2560d9388868f929e0a9019ede6f6887a2db31287a2cec5"
+    },
+    "capture_entry.py": {
+      "size": 3741,
+      "sha256": "274aa21e45208f3750255cf3fd816c487c77fe4edcac3589c42acde02edb409b"
+    },
+    "transport/sitecustomize.py": {
+      "size": 1754,
+      "sha256": "4c0f61c436ce5d79db36f6b7aa7abab977c5b6d9a81d6a675e902450debe598b"
+    },
+    "entry_capture_manifest.json": {
+      "size": 14677,
+      "sha256": "9b63b05ada154739832ef8ad07800d9e422bb7d8e6a7b92bdcb8e5e25a0cbf23"
+    },
+    "Root_gate_copy_manifest.json": {
+      "size": 23069,
+      "sha256": "641a02d9c76c3a0b5183e0171130842a907519365b32cdfa4061f08a5c57c9be"
+    },
+    "Root_gate/Root_entry_gate.py": {
+      "size": 6766,
+      "sha256": "9f92db59300b1f885e13eaa7bf2c23746f133e588569e1e9ad4a7f7fd5cc8b88"
+    },
+    "Root_gate/Root_entry_gate.json": {
+      "size": 2443,
+      "sha256": "f7398886a8df394ee944e8fc84f22566842c06752dec2dc6bfc1b9db1f7f5633"
+    },
+    "decode_entry.py": {
+      "size": 5371,
+      "sha256": "fae17c053c9f09afa03329d411a2adbfe49e0b12b1cfe4276be4043b1a6fd4a9"
+    },
+    "physical_decode.json": {
+      "size": 1348,
+      "sha256": "979e5f2b2ebd06c16d2c658d50a29e38436ce8a18329d7dc110da5287509d21c"
+    },
+    "capstone_detail.json": {
+      "size": 1776,
+      "sha256": "1560971db91aacc46fd1132a19dc4a7aa6b9e4b524fc2ac9d3748a1cafe171b5"
+    },
+    "replay.py": {
+      "size": 15290,
+      "sha256": "280fc384d7450c19f00af9d05a4462d7c9c3ae9dafeb265c17a6d5651cd94f96"
+    },
+    "audit_replay.py": {
+      "size": 2703,
+      "sha256": "0ba19887d529423384674d978a9a267fca1955603cddf73c499b6dfbea5e3de8"
+    }
+  },
+  "failures_and_preimages": {
+    "Native_failures": [],
+    "decoder_failures": [],
+    "preexecution_drafts": "Retained replay.initial.py and replay.before_post_method.py; corrected the endpoint label and POST method from actual context response metadata before any replay execution. Retained audit_replay.initial.py and audit_replay.before_cp437.py; restricted exclusive receipt flags and minimal builtins and preloaded the standard ZIP filename codec before installing the audit hook.",
+    "scope": "No draft correction changed captures or caused another Native query. Any replay failure is retained as an attempt stream and disclosed in final handoff."
+  },
+  "validation_boundary": {
+    "exported_physical_entry_only": true,
+    "Source_changes": false,
+    "build": false,
+    "tests": false,
+    "probe_execution": false,
+    "GPR_writes": 0,
+    "Original_reads_or_execution": false,
+    "game_OS_audio_runtime": false,
+    "Original_ABI_established": false,
+    "provider_or_type_identity_established": false,
+    "whole_callee_reconstructed": false,
+    "body_neighbor_target_data_or_proto_queries": false
+  },
+  "next_scope": "No further instruction read is admitted. Any continuation needs a fresh bounded metadata gate and explicit scope."
+}
