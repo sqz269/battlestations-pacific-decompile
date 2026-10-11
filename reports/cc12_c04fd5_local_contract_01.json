@@ -1,0 +1,527 @@
+{
+  "schema": 1,
+  "packet": "cc12_c04fd5_local_contract_01",
+  "status": "OFFLINE_CONDITIONAL_LOCAL_CONTRACT_WITH_OPAQUE_CALL",
+  "base_commit": "3eb329e7e9844d3ed8a75f04bd576bf25e8217e5",
+  "scope": {
+    "first": "00C04FD5",
+    "last_inclusive": "00C04FDD",
+    "bytes": 9
+  },
+  "conditions": {
+    "code_operand_mode": "Conditional ordinary IA-32 32-bit code/default operand mode; no operand/address override prefix in the captured bytes.",
+    "instruction_identity": "The captured bytes must be the executed bytes at the relevant continuation; runtime identity was not checked.",
+    "listing_to_runtime_linear_identity": "Separate unverified assumption I: each saved listing coordinate L equals the runtime linear instruction address.",
+    "CS_base_mapping": "Separate unverified mapping: under I, rho(L) = (L - CS.base) mod 2^32. CS.base=0 is sufficient for rho(L)=L.",
+    "nonidentity_mapping": "Without I, require an established runtime linear mapping lambda(L), then rho(L)=(lambda(L)-CS.base) mod 2^32.",
+    "stack_address_size": "The main equations additionally require SS.B=1 at each relevant instruction; code/default operand size does not establish SS.B.",
+    "normal_completion": "Each stated transition requires normal instruction completion, valid segment/stack accesses and no intervening external state change.",
+    "segmented_memory": "Read32(M,SS,a) and Write32(M,SS,a,v) use the current stack segment and address translation; SS.base=0 is not assumed.",
+    "call_boundary": "No return, stack, memory, register, segment or mode preservation is assumed across C04F67.",
+    "suffix_reestablishes_conditions": "If the callee reaches the captured POP, apply the code/stack/normal-completion conditions afresh to that continuation state.",
+    "CPU_context_queried": false,
+    "runtime_linear_identity_verified": false,
+    "CS_base_verified": false,
+    "SS_B_verified": false
+  },
+  "initial_state": {
+    "location": "saved listing 00C04FD5",
+    "ESP": "S (an arbitrary 32-bit value)",
+    "SS": "SS0",
+    "CS": "CS0",
+    "memory": "M0",
+    "other_registers_and_flags": "arbitrary initial values",
+    "initial_top_word": "R0 := Read32(M0,SS0,S), only when that access is valid; R0 is not presumed to be a real caller return address.",
+    "return_offset_symbol": "rho := rho(00C04FDC), conditional on an established listing-to-runtime mapping and current CS0.base.",
+    "addition_convention": "u32 arithmetic for ESP/EIP expressions; each memory access still must be valid."
+  },
+  "prefix": [
+    {
+      "listing": "00C04FD5",
+      "encoded_fact": "6A 00 sign-extends immediate 0 from 8 to 32 bits.",
+      "stack_transition": "S1 = u32(S - 4); M1 = Write32(M0,SS0,S1,0).",
+      "next_listing": "00C04FD7",
+      "callee_argument_semantics": "No argument type or calling convention follows from the push alone."
+    },
+    {
+      "listing": "00C04FD7",
+      "encoded_fact": "E8 8B FF FF FF has signed rel32 displacement -117.",
+      "stack_transition": "S2 = u32(S - 8); M2 = Write32(M1,SS0,S2,rho).",
+      "EIP_transition": "EIP_target = u32(rho - 117).",
+      "listing_target_arithmetic": "00C04FDC - 0x75 = 00C04F67, in saved listing coordinates.",
+      "flat_numeric_EIP_special_case": "Only under listing/runtime identity and CS0.base=0: pushed EIP=00C04FDC and target EIP=00C04F67.",
+      "callee_entry_layout": [
+        "[SS0:S-8] = rho",
+        "[SS0:S-4] = 0",
+        "[SS0:S] = R0 if initially readable"
+      ],
+      "layout_qualification": "Valid ordinary sequential nonoverlapping stack accesses; no external state change between the two instructions.",
+      "argument_position": "Zero is at callee-entry ESP+4, after the pushed near-return offset; recognizing it as a formal argument requires a callee ABI."
+    }
+  ],
+  "opaque_call": {
+    "callee_listing": "00C04F67",
+    "relation": "Opaque(M2,S2,registers,segments,modes,flags) may fault, diverge, transfer elsewhere, or reach a continuation state C.",
+    "continuation": {
+      "listing": "00C04FDC only if actually reached",
+      "ESP": "T",
+      "SS": "SSc",
+      "CS": "CSc",
+      "memory": "Mc",
+      "EAX": "Ac",
+      "arithmetic_flags": "Fc",
+      "other_state": "arbitrary callee poststate"
+    },
+    "no_relation_assumed": [
+      "T versus S or S2",
+      "Mc versus M2",
+      "Ac versus entry EAX",
+      "SSc/CSc versus entry segments",
+      "callee modes versus entry modes",
+      "return occurrence"
+    ]
+  },
+  "suffix_relation": {
+    "premise": "The captured 59 C3 pair is reached and both instructions normally complete with default 32-bit operands and SS.B=1.",
+    "pop": {
+      "V": "Read32(Mc,SSc,T)",
+      "ECX_after": "V",
+      "ESP_after": "u32(T+4)"
+    },
+    "ret": {
+      "Q": "Read32(Mc,SSc,u32(T+4))",
+      "EIP_after": "Q",
+      "ESP_after": "u32(T+8)",
+      "CS_after": "CSc (near return)",
+      "runtime_linear_destination": "Derived from CSc.base and Q if valid; not recovered here."
+    },
+    "composition": "ECX_final=V; EIP_final=Q; ESP_final=u32(T+8).",
+    "EAX_final": "Ac; these two local instructions do not assign EAX, but Ac has no established return-value meaning.",
+    "other_GPRs": "Unchanged from C except ECX and ESP; this says nothing about preservation from function entry.",
+    "arithmetic_flags": "Unchanged from Fc by the pair; flags may already have been changed by the opaque call.",
+    "explicit_ordinary_memory_effects": "The pair reads the two stack words and performs no explicit data-memory store.",
+    "no_continuation": "If the callee does not reach this pair, no suffix postcondition is asserted.",
+    "C04FDE": "Unqueried arithmetic end-plus-one only; C3 has no fallthrough and has no immediate cleanup operand."
+  },
+  "SS_B_0_relation": {
+    "condition": "The code/default operand width remains 32 bits but SS.B=0 at the relevant instruction.",
+    "addressing": "Use p=SP with u16 pointer updates and four-byte operands/accesses; each full access must be valid.",
+    "prefix": "PUSH: SP=u16(SP-4), store zero; CALL: SP=u16(SP-4), store rho.",
+    "suffix": "At continuation SP=p: ECX=Read32(Mc,SSc,p); Q=Read32(Mc,SSc,u16(p+4)); SP_final=u16(p+8).",
+    "upper_ESP": "The suffix SP updates preserve the continuation upper 16 bits of ESP; no carry into that half is asserted.",
+    "EIP_operand": "The near return still loads a 32-bit EIP under the separately assumed 32-bit operand mode.",
+    "cross_call": "The continuation upper ESP half and stack mode need not equal their entry values.",
+    "full_ESP_equations": "The SS.B=1 full-ESP equations are not valid substitutes for this SP relation."
+  },
+  "unproven_claims": {
+    "ECX_equals_zero": "Requires the continuation read V=0; the earlier push neither fixes T nor preserves Mc at that location across the call.",
+    "whole_function_stack_balance": "Only ESP_final=T+8 is derived. A one-near-return caller relation ESP_final=S+4 additionally needs T=S-4.",
+    "original_return_destination": "Requires Q=R0 and appropriate code-segment mapping plus proof that initial R0 was the intended caller return offset.",
+    "return_value": "No local EAX assignment establishes the callee EAX value, its type, or a return convention.",
+    "Cxx_callable_ABI": "No parameter/register convention, hidden inputs, stack cleanup, nonvolatile preservation, types, global effects or unwind contract is recovered.",
+    "saved_no_return_false": "A saved analysis flag is not an execution guarantee and does not discharge any opaque-call obligation."
+  },
+  "hypothetical_counterexamples": [
+    {
+      "name": "argument word changed",
+      "hypothetical_callee": "Returns to the POP with T=S-4 but changes Read32(Mc,SSc,T) to nonzero X.",
+      "suffix_result": "ECX=X, not zero; the captured prefix alone does not exclude this.",
+      "observed_behavior": false
+    },
+    {
+      "name": "callee consumes argument",
+      "hypothetical_callee": "A balanced callee near-return with imm16=4 could reach the POP with T=S, preserving other words and segments.",
+      "suffix_result": "ECX=R0; EIP=Read32(M0,SS0,S+4); ESP=S+8 when valid. This differs from caller cleanup.",
+      "observed_behavior": false
+    },
+    {
+      "name": "does not return",
+      "hypothetical_callee": "The target does not reach C04FDC.",
+      "suffix_result": "No POP/RET postcondition applies, regardless of saved no_return=false.",
+      "observed_behavior": false
+    }
+  ],
+  "minimum_unasserted_callee_obligations": [
+    {
+      "purpose": "Use the local suffix relation",
+      "minimum": "Establish arrival at the captured POP in compatible executable-byte, code-mode, segment and valid-stack conditions."
+    },
+    {
+      "purpose": "Use a conventional one-near-return caller stack relation",
+      "minimum": "Establish T=u32(S-4); this is an obligation, not a derived callee cleanup policy."
+    },
+    {
+      "purpose": "Return to the original caller",
+      "minimum": "Establish Q=R0, valid target mapping/segments and that R0 was the intended caller return offset."
+    },
+    {
+      "purpose": "Conclude ECX=0",
+      "minimum": "Establish V=Read32(Mc,SSc,T)=0; stack-position restoration alone is insufficient."
+    },
+    {
+      "purpose": "Implement a typed C++ callable wrapper",
+      "minimum": "Independently recover target parameter/hidden-register inputs, result convention and type, callee effects, cleanup, required preserved registers/flags, stack alignment and any required exceptional/unwind behavior."
+    },
+    {
+      "purpose": "Treat EAX as the wrapper result",
+      "minimum": "Establish the target poststate Ac and an EAX result convention; the local suffix merely carries Ac through."
+    }
+  ],
+  "saved_metadata_observations_only": {
+    "00C04FD5": {
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fd7"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fd7"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "direct_call_targets": []
+    },
+    "00C04FD7": {
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fdc"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fdc"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04f67"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00c04f67"
+          }
+        ]
+      },
+      "direct_call_targets": [
+        {
+          "address": {
+            "space": "ram",
+            "offset": "00c04f67"
+          },
+          "default_target": true,
+          "effective_target": true,
+          "function_at_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00c04f67"
+            },
+            "name": "BSP_CRT_EncodePointerCurrentState",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null
+          }
+        }
+      ]
+    },
+    "00C04FDC": {
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fdd"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fdd"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "direct_call_targets": []
+    },
+    "00C04FDD": {
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "effective_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "direct_call_targets": []
+    }
+  },
+  "saved_metadata_is_not_machine_effect_or_runtime_proof": true,
+  "saved_flow_summary": "FD5/FDC FALL_THROUGH; FD7 UNCONDITIONAL_CALL to F67 with saved continuation FDC; FDD TERMINATOR. All default/effective records agree, override NONE.",
+  "new_scope_qualification": {
+    "kind": "new scope qualification; original first-pass artifacts unchanged",
+    "finding": "Accepted manual gives numeric return/target EIP values but did not explicitly state listing-to-runtime identity or CS.base mapping.",
+    "resolution": "Interpret those values only under the two separate assumptions; preserve the numeric saved-coordinate decoder/control graph.",
+    "Root_response": "Accepted by Root message before publication; no target/context query authorized or performed."
+  },
+  "evidence": {
+    "manual_body.json": {
+      "member": "accepted_originals/prior_manifest_originals/manual_body.json",
+      "bytes": 12408,
+      "sha256": "3695cf2f6d0f29bb8f60ee6f0c9693ba41b6b6178451f4206037273660ce471d"
+    },
+    "manual_before_capstone.json": {
+      "member": "accepted_originals/prior_manifest_originals/manual_before_capstone.json",
+      "bytes": 806,
+      "sha256": "6af0cc26f24548a70074e73c9f2764d1b273b012eb7b85d07410a6a5f6e0ac57"
+    },
+    "capture/bytes_a.bin": {
+      "member": "accepted_originals/prior_manifest_originals/capture/bytes_a.bin",
+      "bytes": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+    },
+    "capture/bytes_b.bin": {
+      "member": "accepted_originals/prior_manifest_originals/capture/bytes_b.bin",
+      "bytes": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3"
+    },
+    "capture/capture_observed.json": {
+      "member": "accepted_originals/prior_manifest_originals/capture/capture_observed.json",
+      "bytes": 164052,
+      "sha256": "d33a74687cb145243a0e638b30f732c74c7f55565e9b01e9338e9442b2d23916"
+    },
+    "capstone_decode/raw_instructions.json": {
+      "member": "accepted_originals/prior_manifest_originals/capstone_decode/raw_instructions.json",
+      "bytes": 6101,
+      "sha256": "d3ea54bf8053a73e9471e90d79ae615fb1814f1a22c83e992c4ba472dd8e5fcf"
+    },
+    "capstone_decode/comparison.json": {
+      "member": "accepted_originals/prior_manifest_originals/capstone_decode/comparison.json",
+      "bytes": 689,
+      "sha256": "4a3a956111604df69b58ebd755b1f85525f7a3aa8166cb94ddcfc893e123143b"
+    },
+    "capstone_decode/before_import.json": {
+      "member": "accepted_originals/prior_manifest_originals/capstone_decode/before_import.json",
+      "bytes": 674,
+      "sha256": "6f41e1d25965f1ea9842fb68683dea1489d804b9839044539b8736e4244214a4"
+    },
+    "capstone_decode/decoder_identity.json": {
+      "member": "accepted_originals/prior_manifest_originals/capstone_decode/decoder_identity.json",
+      "bytes": 5359,
+      "sha256": "616af9363f1783fc3ea7a172c7b928afecc297c1e84f4b1a43df2d510c3b12e1"
+    }
+  },
+  "frozen_inputs": {
+    "member": "frozen_inputs.json",
+    "bytes": 366763,
+    "sha256": "fdf8deabbdb02ab4599d97f43f6e56f4397980515109484ced57701c47d1f3c7"
+  },
+  "positive_public_Git_LF_bindings": {
+    "docs/CC12_C04FD5_BODY_PHYSICAL_01.md": {
+      "git_blob": "58d9b0e4f8500a00315676686e3445f3ff25e5ec",
+      "index_original": "100644 58d9b0e4f8500a00315676686e3445f3ff25e5ec 0\tdocs/CC12_C04FD5_BODY_PHYSICAL_01.md",
+      "positive_LF_index_blob_binding": true,
+      "member": "frozen_public/docs/CC12_C04FD5_BODY_PHYSICAL_01.md",
+      "bytes": 3819,
+      "sha256": "d32c4c2a91f89d34a0e0d0339462ff288cda6752e8bf175013b9cab328dabffe"
+    },
+    "reports/cc12_c04fd5_body_physical_01.json": {
+      "git_blob": "f392d0c73be156e5ae1ef4c67a2b8d03da291bff",
+      "index_original": "100644 f392d0c73be156e5ae1ef4c67a2b8d03da291bff 0\treports/cc12_c04fd5_body_physical_01.json",
+      "positive_LF_index_blob_binding": true,
+      "member": "frozen_public/reports/cc12_c04fd5_body_physical_01.json",
+      "bytes": 36079,
+      "sha256": "f2bed56099e80a89677e2a7df2e851ce4a158910b91be73ce05668a47127bc22"
+    }
+  },
+  "actual_Git_object_count": 6,
+  "selected_original_count": 698,
+  "original_incident_scopes": {
+    "accepted_physical_packet": {
+      "current_preparation": {
+        "inspection_failures": 0,
+        "inspection_display_truncations": 1,
+        "Native_failures": 0,
+        "offline_helper_failures": 0,
+        "setup_command_failures": 1,
+        "events": [
+          {
+            "phase": "initial_inline_setup",
+            "original": "setup_failure_01_original_tool.json",
+            "minimal_retry": "setup_retry_01.py",
+            "classification": "setup_command_failure"
+          },
+          {
+            "phase": "Root_original_copies_shape_inspection",
+            "original": "inspection_display_01.json",
+            "classification": "inspection_display_truncation",
+            "count": 1
+          }
+        ],
+        "scope": "Current cc12_c04fd5_body_physical_01 preparation; inherited failures remain separate."
+      },
+      "accepted_ENTRY": {
+        "worker_Native": 0,
+        "worker_offline_helpers": 0,
+        "worker_setup": 0,
+        "worker_inspection": 1,
+        "worker_inspection_display_truncations": 1,
+        "separate_pre_packet_routing_inspection": 0,
+        "separate_pre_packet_routing_display_truncations": 1,
+        "Root_gate": 1,
+        "Root_pre_gate_inspection": 3,
+        "Root_pre_gate_display_truncations": 0,
+        "separate_Root_driver_preparation": 1,
+        "prior_accepted_Root_IMUL_SF_comparison": 1,
+        "Root_postadmission_inspection": 1,
+        "Root_postadmission_display_truncations": 0,
+        "Root_final_preparation": 1,
+        "Root_own_manual_decoder": 0,
+        "Root_own_fresh_Capstone": 0,
+        "Root_actual_final_review": 0,
+        "Root_strict_replay": 0,
+        "Root_publication": 0
+      },
+      "accepted_BODY_control_stops": 1,
+      "accepted_rebaseline_post_seal_inspection": 1,
+      "Root_checkpoint_handoff_only": {
+        "integrated_Main": "f2e9f28b9229d69150237075855843aa03e65674",
+        "Root_inspection_failures": 1,
+        "Root_verifier_first_failure_missing_assumed_CLI_after_file": 1,
+        "minimal_retry": "PASS",
+        "scope": "Root message provenance only; no claim of copying or reexecuting those distinct checkpoint originals."
+      },
+      "Root_rebaseline_batch": {
+        "C04EF3_first_offline_readiness_envelope_assertion": 1,
+        "C11C21_first_publication_review_missing_two_handoff_blob_copies": 1,
+        "FD_publication_plan_inline_authoring_SyntaxError": 1,
+        "FD_dependent_driver_preflight_missing_plan": 1,
+        "FD_inline_authoring_display_truncation": 1,
+        "Root_Native_failures": 0,
+        "Root_GPR_writes": 0,
+        "original_inline_failure_full_stderr_retained": false,
+        "inline_failure_retention_note": "Original tool input and returned errors remain in the conversation. The inline preparation had no prepinned file or full physical stderr capture; its tool output was truncated. The separately named file-based correction passed. The dependent driver failed while constructing its invocation before any child ran."
+      },
+      "current_capture": {
+        "Native_subprocess_failures": 0,
+        "offline_helper_failures": 0,
+        "control_validation_stops": 0,
+        "baseline_retries": 0
+      },
+      "current_manual_and_decoder": {
+        "manual_offline_helper_failures": 0,
+        "decoder_preparation_helper_failures": 0,
+        "decoder_driver_failures": 0,
+        "decoder_process_failures": 0,
+        "decoder_comparison_failures": 0,
+        "Native_commands": 0,
+        "fresh_decoder_executions": 1
+      }
+    },
+    "accepted_physical_publication_failures": 0,
+    "current_local_contract": {
+      "Native_commands": 0,
+      "Capstone_imports_or_runs": 0,
+      "setup_failures": 0,
+      "inspection_failures": 0,
+      "display_truncations": 0,
+      "offline_helper_failures_at_authoring": 0,
+      "scope_qualification_is_not_a_process_retry": true
+    }
+  },
+  "prior_inline_failure_full_stderr_limit": "Original tool input and returned errors remain in the conversation. The inline preparation had no prepinned file or full physical stderr capture; its tool output was truncated. The separately named file-based correction passed. The dependent driver failed while constructing its invocation before any child ran.",
+  "boundaries": {
+    "physical_body_admission": false,
+    "callee_contract_admission": false,
+    "Cxx_callable_ABI_admission": false,
+    "runtime_or_game_validation": false,
+    "Native_or_other_query_commands": 0,
+    "Capstone_imports_or_runs": 0,
+    "Source_bodies_or_census": false,
+    "Cxx_edits_build_tests_probes": false,
+    "GPR_writes": 0,
+    "archive_created": false,
+    "guarded_final_proof_executed": false
+  },
+  "publication": {
+    "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_local_contract_01\\local\\cc12_c04fd5_local_contract_01\\publication\\original_artifact_manifest.json",
+    "finite_original_count": 797,
+    "public_paths": [
+      "docs/CC12_C04FD5_LOCAL_CONTRACT_01.md",
+      "reports/cc12_c04fd5_local_contract_01.json"
+    ],
+    "handoff_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04fd5_local_contract_01\\local\\cc12_c04fd5_local_contract_01\\final_handoff.json",
+    "commit_and_manifest_bindings_are_in_handoff": true,
+    "current_publication_failures_at_write": 0,
+    "completion_stdio_and_result_bound_after_publisher_returns": true
+  }
+}
