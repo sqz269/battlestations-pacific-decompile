@@ -1,0 +1,3021 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_full_borrowed_shell_readiness",
+  "status": "conditional_dormant_borrowed_Source_admission",
+  "utc": "2026-10-11T02:02:03.165688+00:00",
+  "baseline": "bab6547b6df0ca96acf531fa8e071bdcf56174f0",
+  "contract": {
+    "decision": {
+      "dormant_737970_borrowed_Source_GO": true,
+      "current_737970_Source_implemented": false,
+      "raw_byte_extent_alone_GO": false,
+      "raw_Application_owner_GO": false,
+      "canonical_Application_name_cell_production_GO": false,
+      "frame_name_handoff_GO": false,
+      "caller_startup_activation_GO": false,
+      "retirement_storage_return_GO": false,
+      "Original_FH3_external_ABI_GO": false
+    },
+    "admission_meaning": "A next dormant Source implementation is supportable under the complete precondition contract below. This packet adds no C++, proves no actual producer satisfying those preconditions, and supplies no fresh build or runtime evidence.",
+    "next_packet": {
+      "address": "00737970",
+      "accepted_body_bytes": 42,
+      "accepted_instructions": 15,
+      "suggested_descriptive_API": "void* construct_native_application_00737970(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+      "provider": "construct_native_application_loop_base_00bea970",
+      "provider_contract": "The exact accepted Source BEA970 declaration/definition from edc97a7f6, already composed over genuine BEA810 with the same context and original receiver. Exactly one genuine child call; ignore its returned pointer. Do not invent a callback, alternate constructor, null fallback or noinline requirement.",
+      "existing_field_type": "NativeApplicationPointerVectorStorage from native_shader_preload.hpp, with existing Source static_asserts for size12 and member offsets0/4/8 in native_application_pointer_vector_resize.cpp.",
+      "existing_Game_cell_type": "An actual void* object at original+0x14, accessed as void* volatile&, matching GameNativeGameApplicationFrame's real borrowed cell interface. It is not a NativeGameStorage* object, a copied pointer or a projection boolean.",
+      "no_added_services": "Do not call reserve, resize, preload or construct a Game frame. The Original shell calls only BEA970; those services can allocate, free, publish, throw or change counts and are not zero-initialization substitutes.",
+      "postnormal_schedule": [
+        {
+          "offset": 0,
+          "bytes": 4,
+          "value_hex": "00cfeab0",
+          "Source_access": "volatile uint32 object assignment"
+        },
+        {
+          "offset": 8,
+          "bytes": 4,
+          "value_hex": "00000000",
+          "Source_access": "volatile access to existing vector.data_00 void** pointer object; assign nullptr"
+        },
+        {
+          "offset": 12,
+          "bytes": 4,
+          "value_hex": "00000000",
+          "Source_access": "volatile access to existing vector.count_04 int32 object; assign zero"
+        },
+        {
+          "offset": 16,
+          "bytes": 4,
+          "value_hex": "00000000",
+          "Source_access": "volatile access to existing vector.capacity_08 int32 object; assign zero"
+        },
+        {
+          "offset": 20,
+          "bytes": 4,
+          "value_hex": "00000000",
+          "Source_access": "actual void* volatile Game cell; assign nullptr"
+        },
+        {
+          "offset": 25,
+          "bytes": 1,
+          "value_hex": "00",
+          "Source_access": "volatile unsigned char access"
+        },
+        {
+          "offset": 26,
+          "bytes": 1,
+          "value_hex": "00",
+          "Source_access": "volatile unsigned char access"
+        },
+        {
+          "offset": 24,
+          "bytes": 1,
+          "value_hex": "01",
+          "Source_access": "volatile unsigned char access"
+        }
+      ],
+      "return": "Return the captured original receiver, independently of the child return.",
+      "excluded_changes": "No new layout/owner/context struct, virtual table object, profile dispatch binding, allocator/free binding, placement construction, aggregate value initialization, memset, prezero, copied vector, cleanup, catch, rollback, retained storage, ownership reset or caller. Preserve exact prior Source bodies; implementation file placement remains a future bounded packet choice."
+    },
+    "complete_entry_preconditions": [
+      "Target the existing MSVC Win32 Source domain, not a portable host ABI. Stable suitably aligned actual enclosing 1Ch storage must remain byte-addressable through offset1Bh for the whole admitted call and every escaped reference's lifetime. Receiver identity is the exact existing actual Application domain.",
+      "A live valid uint32 object exists at +0 before entry. The actual 12-byte NativeApplicationPointerVectorStorage object and its pointer/int32 members already have begun lifetimes at +08/+0C/+10. A distinct live void* object exists at +14. Deriving addresses from a void* or matching Native byte sizes/names does not establish those lifetimes or types.",
+      "Those actual objects have the existing declared member offsets and sufficient alignment. Their storage is disjoint except the explicit enclosing byte view. The receiver region and its typed fields do not overlap the context object, actual manager cell, actual E1AE90 cell, section/depth or manager/vector bookkeeping required by the child. Do not treat matching pointer representations as permission to alias a void* object through a uint32 or NativeGameStorage* lvalue.",
+      "The object lifetimes exist without the new shell executing initialization or replacing incoming bytes before BEA970. The shell performs no preimage loads from the vector/Game fields: existing values may be overwritten, but their validity for any earlier provider observation remains an external obligation. There is no all-zero incoming preimage assumption. Starting typed lifetimes on raw Native bytes is not proven by this packet.",
+      "External ownership obligations must permit overwriting the vector header and Game cell without releasing prior storage, entries or Game. The constructor cannot be used as reset/clear/retirement of a live owner. This contract adds no test, free, per-element release or hidden policy for prior bits.",
+      "All BEA970/BEA810 prerequisites remain in force: exact actual shared-manager and E1AE90 cell references, real provider bindings and allocation domains, actual captured section identity, current-depth semantics, guard storage, reentrancy/alias obligations and sufficient lifetimes after partial publication/registration. Do not equate projected startup state or frame parameters with a proven owner/producer.",
+      "Valid storage permits each built-in typed/byte store after normal child return; these operations introduce no ordinary C++ throw. No hardware-fault, signal, asynchronous exception, invalid pointer, stale object or data-race guarantee is supplied. Unsupported concurrent observers are not made safe by volatile.",
+      "Use actual typed null assignments for pointer members. Native parity requires the MSVC Win32 output to emit exact four-byte zero pointer stores, in the accepted order. Native DWORD-zero bytes alone are not a portable C++ null-representation proof; the future implementation's compiled output is an explicit acceptance gate."
+    ],
+    "failure_boundary": {
+      "child_throws_or_does_not_return": "No shell poststore or normal return is reached. Inherited child provider effects and partial publication/registration remain; this is not a claim that all receiver bytes or external cells stayed unchanged.",
+      "normal_child_return": "BEA970 completed its D68BC8/+04 stores before the shell's CFEAB0/vector/Game/flag schedule. The child had published/registered under D68BC4 earlier. Preserve all other bytes, including +05..+07 and +1B; the child supplies the separate exact +04 store.",
+      "cleanup": "No new outer cleanup. Keep the accepted ordinary C++ child domain, conditional null-section behavior, captured-section/current-depth roles, state0/state1 ordering, normal-Leave failure qualification and second-cleanup C++ termination. Compiler inlining is allowed and must be described honestly.",
+      "escaped_drain_hazard": "CE3818 reset is not lifetime resolution or storage-return permission: existing manager drain uses flags1 and its concrete CE3818 generic deletion path can free the original receiver. Do not rely on rejection of other unmatched profiles as universal failure protection.",
+      "poststore_fault": "No Original FH3/private-frame or hardware-fault equivalence is admitted for the derived stores. Do not add a compensating handler or rollback to invent one."
+    },
+    "future_implementation_acceptance": [
+      "Exact old Source prefixes plus only the admitted declaration/definition and necessary existing-type include; no new owner struct or callback.",
+      "Fresh bounded normal MSVC Win32 before/after build and existing checks in a separately authorized implementation packet. Inspect actual emitted pointer zero stores, all eight store widths/order, original receiver/return, real child provider or honest inline composition, full EH/SEH symbol offsets and existing body preservation.",
+      "Keep exact caller absence and no activation/profile binding. Any actual owner, lifetime-start producer, canonical cell/name handoff, retirement or startup wiring requires a separate readiness contract and positive evidence."
+    ],
+    "missing_for_actual_owner_or_activation": [
+      "A concrete Source producer that creates and retains the true enclosing Application domain and starts the required typed lifetimes while preserving the required incoming preimages.",
+      "Actual canonical E1AE90/E1AE78 authority and publication/name handoff composed with caller/storage lifetime and all existing manager/string domains.",
+      "Complete safe retirement/escaped-reference disposition and any required Original caller/FH3/private-frame behavior; current borrowed APIs and field labels do not establish these."
+    ]
+  },
+  "Source_evidence": {
+    "closed_Source_paths": 4228,
+    "src_include": 4210,
+    "actual_Git_rows": 4270,
+    "tree_objects": 11,
+    "queries": [
+      {
+        "id": "full_shell_names",
+        "pattern": "00737970|737970|cfeab0",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/app_frame.hpp",
+            "line": 8,
+            "text": "// Constructor 00737970 stores 1 at +18h and 0 at +19h and +1Ah. This is not the"
+          },
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 96,
+            "text": "// No owner/cell producer, full 737970, caller, activation, callable profile,"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1836,
+            "text": "    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1838,
+            "text": "    log_.implemented(\"StartupHost::application_construct\", \"00737970\");"
+          }
+        ]
+      },
+      {
+        "id": "real_loop_provider",
+        "pattern": "construct_native_application_loop_base_00bea970",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 99,
+            "text": "void* construct_native_application_loop_base_00bea970("
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 152,
+            "text": "void* construct_native_application_loop_base_00bea970("
+          }
+        ]
+      },
+      {
+        "id": "real_base_provider",
+        "pattern": "construct_native_application_singleton_base_00bea810",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 76,
+            "text": "void* construct_native_application_singleton_base_00bea810("
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 122,
+            "text": "void* construct_native_application_singleton_base_00bea810("
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 155,
+            "text": "    (void)construct_native_application_singleton_base_00bea810(original_receiver, context);"
+          }
+        ]
+      },
+      {
+        "id": "typed_vector",
+        "pattern": "NativeApplicationPointerVectorStorage",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+            "line": 29,
+            "text": "    NativeApplicationPointerVectorStorage& actual_rows,"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 11,
+            "text": "struct NativeApplicationPointerVectorStorage {"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 15,
+            "text": "static_assert(sizeof(NativeApplicationPointerVectorStorage)==12);"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 26,
+            "text": "    NativeApplicationPointerVectorStorage&,std::int32_t,"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 10,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, data_00) == 0);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 11,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, count_04) == 4);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 12,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 18,
+            "text": "    NativeApplicationPointerVectorStorage* actual_rows,"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 29,
+            "text": "    NativeApplicationPointerVectorStorage*,"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 81,
+            "text": "    NativeApplicationPointerVectorStorage& actual_rows,"
+          },
+          {
+            "path": "src/native_shader_preload.cpp",
+            "line": 24,
+            "text": "    NativeApplicationPointerVectorStorage& rows,I requested,"
+          },
+          {
+            "path": "src/native_shader_preload.cpp",
+            "line": 137,
+            "text": "            auto& rows=*reinterpret_cast<NativeApplicationPointerVectorStorage*>(static_cast<char*>(application)+8);"
+          }
+        ]
+      },
+      {
+        "id": "vector_reserve",
+        "pattern": "reserve_native_application_pointer_vector_00735ec0",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 25,
+            "text": "void reserve_native_application_pointer_vector_00735ec0("
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 21,
+            "text": "    reserve_native_application_pointer_vector_00735ec0("
+          },
+          {
+            "path": "src/native_shader_preload.cpp",
+            "line": 23,
+            "text": "void reserve_native_application_pointer_vector_00735ec0("
+          },
+          {
+            "path": "src/native_shader_preload.cpp",
+            "line": 142,
+            "text": "                a.site=0x0073c14a;reserve_native_application_pointer_vector_00735ec0(rows,doubled>1?doubled:1,allocation);"
+          }
+        ]
+      },
+      {
+        "id": "vector_resize",
+        "pattern": "resize_native_application_pointer_vector_00735f30",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+            "line": 28,
+            "text": "void resize_native_application_pointer_vector_00735f30("
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 80,
+            "text": "__declspec(noinline) void resize_native_application_pointer_vector_00735f30("
+          }
+        ]
+      },
+      {
+        "id": "actual_game_cell",
+        "pattern": "actual_application_game_14|application_game_14_",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 43,
+            "text": "        void* volatile& actual_application_game_14,"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 73,
+            "text": "    void* volatile& application_game_14_;"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 18,
+            "text": "    :runtime_(runtime),application_game_14_(application),"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 69,
+            "text": "        native_site_=0x73e1af;application_game_14_=result;application_published_=true;"
+          }
+        ]
+      },
+      {
+        "id": "Application_publication",
+        "pattern": "actual_application_e1ae90",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 55,
+            "text": "    void* volatile& actual_application_e1ae90;"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 136,
+            "text": "    context.actual_application_e1ae90 = actual_receiver;"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 139,
+            "text": "    void* const current_application = context.actual_application_e1ae90;"
+          }
+        ]
+      },
+      {
+        "id": "canonical_name",
+        "pattern": "actual_duplicate_name_00e1ae78|duplicate_name_00e1ae78_",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 44,
+            "text": "        char* volatile& actual_duplicate_name_00e1ae78,"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 74,
+            "text": "    char* volatile& duplicate_name_00e1ae78_;"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 19,
+            "text": "     duplicate_name_00e1ae78_(duplicate),strings_(strings) {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 61,
+            "text": "        captured_name_=duplicate_name_00e1ae78_;"
+          }
+        ]
+      },
+      {
+        "id": "process_manager",
+        "pattern": "manager_01090aa0",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/game_native_string_process.hpp",
+            "line": 15,
+            "text": "    void* volatile& manager_01090aa0() noexcept { return manager_; }"
+          },
+          {
+            "path": "include/bsp/native_allocation_stats_constructor.hpp",
+            "line": 12,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_entity_registry_lifetime.hpp",
+            "line": 76,
+            "text": "    void* volatile& manager_01090aa0, NativeEntityRegistryLockOwner* volatile& publication_00f899e4);"
+          },
+          {
+            "path": "include/bsp/native_entity_registry_lifetime.hpp",
+            "line": 78,
+            "text": "    void* volatile& manager_01090aa0, NativeEntityRegistryLockOwner* volatile& publication_00f899fc);"
+          },
+          {
+            "path": "include/bsp/native_entity_registry_lifetime.hpp",
+            "line": 95,
+            "text": "    void* actual_entity_root, void* volatile& manager_01090aa0);"
+          },
+          {
+            "path": "include/bsp/native_game_singleton_lifetime.hpp",
+            "line": 16,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_material_descriptor_samplers.hpp",
+            "line": 28,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_network_console_owner.hpp",
+            "line": 12,
+            "text": "    void* volatile& singleton_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_online_manager_owner.hpp",
+            "line": 14,
+            "text": "    void* volatile& singleton_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_particle_emission_state.hpp",
+            "line": 20,
+            "text": "    void* volatile& actual_manager_01090aa0,"
+          },
+          {
+            "path": "include/bsp/native_particle_emission_state.hpp",
+            "line": 33,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_particle_object_state.hpp",
+            "line": 23,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_particle_sprite_state.hpp",
+            "line": 17,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_particle_tracer_state.hpp",
+            "line": 87,
+            "text": "    void* volatile* actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_platform_focus_owners.hpp",
+            "line": 14,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_render_batch_preparation_actual.hpp",
+            "line": 10,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_render_entry_cache.hpp",
+            "line": 13,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_render_job_publication.hpp",
+            "line": 16,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 12,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "line": 54,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_renderer_base_lifetime.hpp",
+            "line": 15,
+            "text": "    void* volatile& singleton_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_renderer_constructor.hpp",
+            "line": 23,
+            "text": "    void* volatile& singleton_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_renderer_destructor.hpp",
+            "line": 40,
+            "text": "    void* volatile& singleton_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_renderer_generated_model.hpp",
+            "line": 24,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_renderer_record_guard.hpp",
+            "line": 13,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_resource_manager_lifetime.hpp",
+            "line": 29,
+            "text": "    void* volatile& actual_lifetime_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_sampler_cache_operation.hpp",
+            "line": 12,
+            "text": "    void* volatile& actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_sampler_loader_context.hpp",
+            "line": 38,
+            "text": "    void* volatile& actual_manager_01090aa0, void* volatile& actual_owner_00f8d420,"
+          },
+          {
+            "path": "include/bsp/native_sampler_loader_context.hpp",
+            "line": 47,
+            "text": "    const void* unused_options, void* volatile& actual_manager_01090aa0,"
+          },
+          {
+            "path": "include/bsp/native_shadow_depth_target_owner.hpp",
+            "line": 35,
+            "text": "    void* volatile& manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_system_constant_gather.hpp",
+            "line": 15,
+            "text": "    void* volatile* actual_manager_01090aa0;"
+          },
+          {
+            "path": "include/bsp/native_vfs_owner_services.hpp",
+            "line": 18,
+            "text": "    void* volatile& manager_01090aa0;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 19,
+            "text": "    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),"
+          },
+          {
+            "path": "src/game_native_entity_registry_process.cpp",
+            "line": 7,
+            "text": "      manager_(game_native_string_process().manager_01090aa0()) {}"
+          },
+          {
+            "path": "src/game_native_input_settings_process.cpp",
+            "line": 7,
+            "text": "    :manager_(game_native_string_process().manager_01090aa0()){}"
+          },
+          {
+            "path": "src/game_native_particle_runtime.cpp",
+            "line": 59,
+            "text": "    if (!same_cell(inputs.resource_manager.actual_lifetime_manager_01090aa0,"
+          },
+          {
+            "path": "src/game_native_particle_runtime.cpp",
+            "line": 197,
+            "text": "          resource_cache{inputs.resource_manager.actual_lifetime_manager_01090aa0,"
+          },
+          {
+            "path": "src/game_native_renderer_lifetime.inc",
+            "line": 91,
+            "text": "   destructor{c.current_renderer_00f8d394,c.singleton_manager_01090aa0,c.string_pool_01090aa8,"
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 60,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_allocation_stats_constructor.cpp",
+            "line": 71,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_allocation_stats_lifecycle.cpp",
+            "line": 61,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_allocation_stats_lifecycle.cpp",
+            "line": 71,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_game_lifetime.cpp",
+            "line": 28,
+            "text": "    if(&resources->actual_lifetime_manager_01090aa0!=&p.actual_manager_publication_01090aa0||"
+          },
+          {
+            "path": "src/native_game_singleton_lifetime.cpp",
+            "line": 26,
+            "text": "            void* manager=c.singleton_manager_00415350(x.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_game_singleton_lifetime.cpp",
+            "line": 36,
+            "text": "                o.native_site=sites.get_second;manager=c.singleton_manager_00415350(x.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_gui_scene_acquisition_storage.cpp",
+            "line": 71,
+            "text": "        &c.manager.actual_manager_01090aa0 != &node.strings.actual_manager_publication_01090aa0)"
+          },
+          {
+            "path": "src/native_material_descriptor_samplers.cpp",
+            "line": 68,
+            "text": "                    c.actual_manager_01090aa0,c.actual_loader_00f8d420,*s.singleton);"
+          },
+          {
+            "path": "src/native_network_console_owner.cpp",
+            "line": 90,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_network_console_owner.cpp",
+            "line": 95,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_network_console_owner.cpp",
+            "line": 108,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_network_console_owner.cpp",
+            "line": 112,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_online_manager_owner.cpp",
+            "line": 90,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_online_manager_owner.cpp",
+            "line": 95,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_online_manager_owner.cpp",
+            "line": 108,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_online_manager_owner.cpp",
+            "line": 112,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_particle_emission_state.cpp",
+            "line": 142,
+            "text": "        access->actual_manager_01090aa0,access->actual_lock_0108ff50);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 48,
+            "text": "    void* volatile& actual_manager_01090aa0, const volatile std::uint32_t& one) noexcept"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 49,
+            "text": "    : manager_00f8c274(publication), lifetime_01090aa0(actual_manager_01090aa0), one_00d7a24c(one) {}"
+          },
+          {
+            "path": "src/native_particle_object_state.cpp",
+            "line": 39,
+            "text": "        get_native_particle_population_lock_0072b740(a.actual_manager_01090aa0,a.actual_lock_0108ff50)->section_04) {"
+          },
+          {
+            "path": "src/native_particle_sprite_state.cpp",
+            "line": 62,
+            "text": "        light_access.actual_manager_01090aa0, light_access.actual_lock_0108ff50);"
+          },
+          {
+            "path": "src/native_particle_tracer_state.cpp",
+            "line": 158,
+            "text": "    auto* owner=get_native_particle_population_lock_0072b740(*a.actual_manager_01090aa0,*a.actual_lock_0108ff50);"
+          },
+          {
+            "path": "src/native_particle_tracer_state.cpp",
+            "line": 217,
+            "text": "    void* manager=get_native_singleton_manager_00415350(*a.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_particle_tracer_state.cpp",
+            "line": 226,
+            "text": "            manager=get_native_singleton_manager_00415350(*a.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_particle_type_state_dispatch.cpp",
+            "line": 46,
+            "text": "                &light.actual_manager_01090aa0==&emission.actual_manager_01090aa0 &&"
+          },
+          {
+            "path": "src/native_particle_type_state_dispatch.cpp",
+            "line": 56,
+            "text": "            &d.object->actual_manager_01090aa0==&emission.actual_manager_01090aa0 &&"
+          },
+          {
+            "path": "src/native_particle_type_state_dispatch.cpp",
+            "line": 64,
+            "text": "            d.tracer->actual_manager_01090aa0==&emission.actual_manager_01090aa0 &&"
+          },
+          {
+            "path": "src/native_platform_focus_owners.cpp",
+            "line": 95,
+            "text": "    void* const first_manager = get_native_singleton_manager_00415350(context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_platform_focus_owners.cpp",
+            "line": 115,
+            "text": "        void* const manager = get_native_singleton_manager_00415350(context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_batch_preparation_actual.cpp",
+            "line": 58,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_batch_preparation_actual.cpp",
+            "line": 83,
+            "text": "            context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_command_execution.cpp",
+            "line": 53,
+            "text": "        same_cell(c.preparation->actual_manager_01090aa0,c.actual_strings.actual_manager_publication_01090aa0) &&"
+          },
+          {
+            "path": "src/native_render_command_execution.cpp",
+            "line": 60,
+            "text": "        same_cell(c.jobs->actual_manager_01090aa0,c.actual_strings.actual_manager_publication_01090aa0) &&"
+          },
+          {
+            "path": "src/native_render_command_execution.cpp",
+            "line": 120,
+            "text": "        c.system->actual_manager_01090aa0==&c.actual_strings.actual_manager_publication_01090aa0 &&"
+          },
+          {
+            "path": "src/native_render_entry_cache.cpp",
+            "line": 72,
+            "text": "    void* const manager = get_native_singleton_manager_00415350(context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_entry_cache.cpp",
+            "line": 142,
+            "text": "    void* const manager = get_native_singleton_manager_00415350(context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_entry_cache.cpp",
+            "line": 165,
+            "text": "    void* const manager = get_native_singleton_manager_00415350(context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_job_publication.cpp",
+            "line": 31,
+            "text": "    void* const manager=get_native_singleton_manager_00415350(c.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_job_publication.cpp",
+            "line": 77,
+            "text": "            void* const manager=get_native_singleton_manager_00415350(c.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_job_publication.cpp",
+            "line": 104,
+            "text": "            void* const manager=get_native_singleton_manager_00415350(c.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_resources_construction.cpp",
+            "line": 127,
+            "text": "    if (&c.base.actual_manager_01090aa0 != &strings.actual_manager_publication_01090aa0 ||"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 60,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 71,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 88,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 98,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 127,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "line": 138,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_base_lifetime.cpp",
+            "line": 124,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_base_lifetime.cpp",
+            "line": 131,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_base_lifetime.cpp",
+            "line": 144,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_base_lifetime.cpp",
+            "line": 150,
+            "text": "        context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 91,
+            "text": "        context->singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 93,
+            "text": "        context->small_returns_disabled_01090aa4, context->singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 95,
+            "text": "        context->small_returns_disabled_01090aa4, context->singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 96,
+            "text": "    NativeRendererLuaOwnerContext lua{context->singleton_manager_01090aa0,"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 102,
+            "text": "        context->singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_renderer_constructor.cpp",
+            "line": 266,
+            "text": "        if (captured_child) construct_native_shader_state_definitions_00b585a0(captured_child, context->state_definitions_0108fe90, SoundLifetimeAccess(context->singleton_manager_01090aa0), strings); // 00b32824"
+          },
+          {
+            "path": "src/native_renderer_debug_records24.cpp",
+            "line": 41,
+            "text": "    require(&pool.actual_manager_publication_01090aa0==&c.actual_manager_01090aa0,"
+          },
+          {
+            "path": "src/native_renderer_debug_records40.cpp",
+            "line": 256,
+            "text": "        &names.actual_manager_publication_01090aa0 == &c.generated.actual_manager_01090aa0 &&"
+          },
+          {
+            "path": "src/native_renderer_debug_records40.cpp",
+            "line": 266,
+            "text": "        &c.entry_cache.actual_manager_01090aa0 == &c.generated.actual_manager_01090aa0,"
+          },
+          {
+            "path": "src/native_renderer_debug_records40.cpp",
+            "line": 275,
+            "text": "        c.generated.actual_manager_01090aa0) &&"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 154,
+            "text": "        &names.actual_manager_publication_01090aa0 == &c.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 269,
+            "text": "    NativeRendererBaseContext base{c.current_renderer_00f8d394, c.singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 271,
+            "text": "        c.small_returns_disabled_01090aa4, c.singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 273,
+            "text": "        c.small_returns_disabled_01090aa4, c.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 274,
+            "text": "    NativeRendererLuaOwnerContext lua{c.singleton_manager_01090aa0,"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 320,
+            "text": "                    c.state_definitions_0108fe90, SoundLifetimeAccess(c.singleton_manager_01090aa0), strings, 1);"
+          },
+          {
+            "path": "src/native_renderer_destructor.cpp",
+            "line": 325,
+            "text": "                    c.state_definitions_0108fe90, SoundLifetimeAccess(c.singleton_manager_01090aa0), 1);"
+          },
+          {
+            "path": "src/native_renderer_generated_model.cpp",
+            "line": 63,
+            "text": "            &context.actual_manager_01090aa0;"
+          },
+          {
+            "path": "src/native_renderer_generated_model.cpp",
+            "line": 106,
+            "text": "            context.actual_manager_01090aa0) &&"
+          },
+          {
+            "path": "src/native_renderer_record_guard.cpp",
+            "line": 64,
+            "text": "        context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_renderer_record_guard.cpp",
+            "line": 89,
+            "text": "                context.actual_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_resource_manager_lifetime.cpp",
+            "line": 45,
+            "text": "    NativeResourceParserSingletonContext parser{context.actual_lifetime_manager_01090aa0, publication};"
+          },
+          {
+            "path": "src/native_resource_manager_lifetime.cpp",
+            "line": 110,
+            "text": "    void* const first_manager = get_native_singleton_manager_00415350(context.actual_lifetime_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_resource_manager_lifetime.cpp",
+            "line": 128,
+            "text": "            void* const second_manager = get_native_singleton_manager_00415350(context.actual_lifetime_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_resource_manager_lifetime.cpp",
+            "line": 173,
+            "text": "        NativeResourceParserSingletonContext binding{context.actual_lifetime_manager_01090aa0, publication};"
+          },
+          {
+            "path": "src/native_sampler_cache_operation.cpp",
+            "line": 211,
+            "text": "        a.context->actual_manager_01090aa0, a.context->actual_factory_registry_00f8d41c,"
+          },
+          {
+            "path": "src/native_shadow_depth_target_owner.cpp",
+            "line": 51,
+            "text": "    void* manager=get_native_singleton_manager_00415350(b.manager_01090aa0);"
+          },
+          {
+            "path": "src/native_shadow_depth_target_owner.cpp",
+            "line": 55,
+            "text": "    a.native_site=0x00a8a87c;manager=get_native_singleton_manager_00415350(b.manager_01090aa0);"
+          },
+          {
+            "path": "src/native_shadow_depth_target_owner.cpp",
+            "line": 64,
+            "text": "    void* manager=get_native_singleton_manager_00415350(b.manager_01090aa0);"
+          },
+          {
+            "path": "src/native_shadow_depth_target_owner.cpp",
+            "line": 67,
+            "text": "    a.native_site=0x00a8a916;manager=get_native_singleton_manager_00415350(b.manager_01090aa0);"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 163,
+            "text": "            SoundLifetimeAccess lifetime(context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 169,
+            "text": "                    context.small_returns_disabled_01090aa4, context.singleton_manager_01090aa0);"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 181,
+            "text": "                context.small_returns_disabled_01090aa4, context.singleton_manager_01090aa0};"
+          },
+          {
+            "path": "src/native_system_constant_gather.cpp",
+            "line": 39,
+            "text": "    return get_native_sampler_loader_singleton_004de4b0(*c->actual_manager_01090aa0,"
+          },
+          {
+            "path": "src/native_vfs_owner_services.cpp",
+            "line": 10,
+            "text": "      lifetime_(cells_.manager_01090aa0),"
+          },
+          {
+            "path": "src/native_vfs_owner_services.cpp",
+            "line": 12,
+            "text": "          cells_.manager_01090aa0),"
+          }
+        ]
+      },
+      {
+        "id": "frame_users",
+        "pattern": "GameNativeGameApplicationFrame",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 16,
+            "text": "class GameNativeGameApplicationFrame final {"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 42,
+            "text": "    GameNativeGameApplicationFrame(GameNativeGameRuntime&,"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 46,
+            "text": "    ~GameNativeGameApplicationFrame();"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 47,
+            "text": "    GameNativeGameApplicationFrame(const GameNativeGameApplicationFrame&)=delete;"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 48,
+            "text": "    GameNativeGameApplicationFrame& operator=(const GameNativeGameApplicationFrame&)=delete;"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 49,
+            "text": "    GameNativeGameApplicationFrame(GameNativeGameApplicationFrame&&)=delete;"
+          },
+          {
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "line": 50,
+            "text": "    GameNativeGameApplicationFrame& operator=(GameNativeGameApplicationFrame&&)=delete;"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 15,
+            "text": "GameNativeGameApplicationFrame::GameNativeGameApplicationFrame("
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 27,
+            "text": "GameNativeGameApplicationFrame::~GameNativeGameApplicationFrame() {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 34,
+            "text": "bool GameNativeGameApplicationFrame::active() const noexcept {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 37,
+            "text": "bool GameNativeGameApplicationFrame::name_resolved() const noexcept {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 40,
+            "text": "bool GameNativeGameApplicationFrame::runtime_retired() const noexcept {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 46,
+            "text": "void GameNativeGameApplicationFrame::record_failure() noexcept {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 50,
+            "text": "NativeGameStorage* GameNativeGameApplicationFrame::construct() {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 77,
+            "text": "NativeGameStorage* GameNativeGameApplicationFrame::scalar_delete(std::uint32_t flags) {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 95,
+            "text": "void GameNativeGameApplicationFrame::free_retained_storage() {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 102,
+            "text": "void GameNativeGameApplicationFrame::acknowledge_name_resolution() {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 107,
+            "text": "void GameNativeGameApplicationFrame::acknowledge_diagnostic_retirement(DiagnosticDisposition disposition) {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 121,
+            "text": "GameNativeGameApplicationFrame::Status GameNativeGameApplicationFrame::status() const noexcept {"
+          },
+          {
+            "path": "src/game_native_game_application_frame.cpp",
+            "line": 128,
+            "text": "void* GameNativeGameApplicationFrame::name_header_for_diagnostics() noexcept {"
+          }
+        ]
+      },
+      {
+        "id": "projected_startup",
+        "pattern": "application_construct|application_destruct",
+        "corpus_count": 4210,
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts.hpp",
+            "line": 639,
+            "text": "    void application_construct() override;"
+          },
+          {
+            "path": "include/bsp/game_hosts.hpp",
+            "line": 643,
+            "text": "    void application_destruct() override;"
+          },
+          {
+            "path": "include/bsp/winmain_startup.hpp",
+            "line": 169,
+            "text": "    // stack object: BSP_Application_Construct, BSP_Application_Initialize(flags, mode),"
+          },
+          {
+            "path": "include/bsp/winmain_startup.hpp",
+            "line": 170,
+            "text": "    // BSP_Platform_RunLoopDispatch, BSP_Application_Shutdown, BSP_Application_Destruct."
+          },
+          {
+            "path": "include/bsp/winmain_startup.hpp",
+            "line": 171,
+            "text": "    virtual void application_construct() = 0;"
+          },
+          {
+            "path": "include/bsp/winmain_startup.hpp",
+            "line": 175,
+            "text": "    virtual void application_destruct() = 0;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1835,
+            "text": "void GameStartupHost::application_construct() {"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1838,
+            "text": "    log_.implemented(\"StartupHost::application_construct\", \"00737970\");"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2514,
+            "text": "void GameStartupHost::application_destruct() {"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2515,
+            "text": "    log_.implemented(\"StartupHost::application_destruct\", \"008f8444\");"
+          },
+          {
+            "path": "src/winmain_startup.cpp",
+            "line": 228,
+            "text": "    host.application_construct();"
+          },
+          {
+            "path": "src/winmain_startup.cpp",
+            "line": 232,
+            "text": "    host.application_destruct();"
+          }
+        ]
+      },
+      {
+        "id": "typed_offsets_and_widths",
+        "pattern": "static_assert|offsetof|void\\*|std::int32_t",
+        "paths": [
+          "include/bsp/native_shader_preload.hpp",
+          "src/native_application_pointer_vector_resize.cpp"
+        ],
+        "corpus_count": 2,
+        "hits": [
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 12,
+            "text": "    void** data_00;"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 13,
+            "text": "    std::int32_t count_04,capacity_08;"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 15,
+            "text": "static_assert(sizeof(NativeApplicationPointerVectorStorage)==12);"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 17,
+            "text": "    void* (*allocate_00bf55be)(std::uint32_t);"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 18,
+            "text": "    void (*free_00bf6989)(void*);"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 26,
+            "text": "    NativeApplicationPointerVectorStorage&,std::int32_t,"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 38,
+            "text": "    void* const volatile& actual_renderer_00f8d394;"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 60,
+            "text": "    void* unpublished_material_result() const noexcept;"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 65,
+            "text": "        void*,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);"
+          },
+          {
+            "path": "include/bsp/native_shader_preload.hpp",
+            "line": 74,
+            "text": "    void* actual_application,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 8,
+            "text": "static_assert(sizeof(void*) == 4);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 9,
+            "text": "static_assert(sizeof(std::int32_t) == 4);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 10,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, data_00) == 0);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 11,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, count_04) == 4);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 12,
+            "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8);"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 20,
+            "text": "    std::int32_t requested) {"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 30,
+            "text": "    const NativeApplicationPointerVectorAllocation*, std::int32_t) {"
+          },
+          {
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "line": 82,
+            "text": "    std::int32_t requested,"
+          }
+        ]
+      },
+      {
+        "id": "drain_generic_profile_free",
+        "pattern": "ce3818|delete_native_singleton_base_00412440|delete_current_profile|singleton_lifetime_free|push 1",
+        "paths": [
+          "src/native_singleton_destruction.cpp"
+        ],
+        "corpus_count": 1,
+        "hits": [
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 74,
+            "text": "__declspec(noinline) void __fastcall delete_current_profile(void* owner,"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 314,
+            "text": "    case 0x00ce3818:"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 315,
+            "text": "        delete_native_singleton_base_00412440(owner, nullptr, flags);"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 622,
+            "text": "        push 1"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 626,
+            "text": "        call delete_current_profile"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 640,
+            "text": "        call singleton_lifetime_free"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 665,
+            "text": "__declspec(naked) void* __fastcall delete_native_singleton_base_00412440("
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 671,
+            "text": "        mov dword ptr [esi], 00ce3818h"
+          },
+          {
+            "path": "src/native_singleton_destruction.cpp",
+            "line": 674,
+            "text": "        call singleton_lifetime_free"
+          }
+        ]
+      },
+      {
+        "id": "platform_borrow_projection",
+        "pattern": "application=this|application = this|application_constructed_|application_frame_state_|reset_for_application_constructor",
+        "paths": [
+          "src/game_hosts.cpp",
+          "include/bsp/game_hosts.hpp"
+        ],
+        "corpus_count": 2,
+        "hits": [
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2130,
+            "text": "    request.application = this;"
+          }
+        ]
+      }
+    ],
+    "excerpts": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "start": 37,
+        "end": 101,
+        "requested_end": 101,
+        "text": "\n// This source API adds context arguments; it is not a drop-in original ABI.\n// Actual raw manager, registration/removal, guard and Win32 section providers\n// are required. Numeric profile DWORDs retain identity, not callable host\n// vtables. First-enter failures arm only base cleanup; state1 unwind runs full\n// 411EE0 before 412430. A second escaping MSVC C++ cleanup exception terminates.\n// Private original EH spills, hardware-fault cleanup, invalid storage, original\n// CRT exception identity and concurrent access are outside the proved domain.\n// No service initialization, full derived destruction or game validation claim.\n} // namespace bsp\n\nnamespace bsp {\n// Dormant BEA810 singleton-base interface over borrowed actual Application\n// storage. Both bindings are fixed, distinct actual cells, disjoint from the\n// receiver, context and private guard. Their values remain live. The manager\n// authority must be the GameNativeStringProcess/GameSingletonHost domain.\nstruct NativeApplicationSingletonBaseContext {\n    void* volatile& actual_manager_01090aa0;\n    void* volatile& actual_application_e1ae90;\n};\n\n// BEA810 singleton-base body: original ECX receiver, no stack arguments, EAX receiver,\n// RET. This explicit-context Source API is not the original binary ABI.\n// Caller retains stable aligned actual storage, valid uint32 access at +0 and\n// the enclosing 1Ch preimages/domains. No direct stores affect +04..+1B. Actual\n// manager results/vector, captured native section and its depth DWORD at +18\n// remain valid through providers/cleanup; no null-manager fallback, EH-stack\n// aliases, concurrent invalidation or SystemSingletonCriticalSection projection.\n// State0 precedes D68BC4; state1 follows Enter/current-depth increment and stays\n// armed through normal Leave. C++ escape uses genuine 411EE0 then 412430 only\n// if guard cleanup returns. A second escaping MSVC C++ cleanup exception takes\n// the existing termination boundary; original FH3/hardware faults are unproved.\n// Normal-Leave escape may decrement/Leave again, with no safe disposition claim.\n// Publish original receiver unconditionally; second getter precedes selecting\n// current E1AE90 for BD0C30 (including null). Return original receiver after\n// successful release. Publication/registration effects persist on failure:\n// no clear, restore, unregister, free, retry, retain or counter compensation.\n// This creates no owner, actual-cell producer, outer constructor/destructor,\n// callable profile, startup activation, +14 lifetime or E1AE78 retirement right.\nvoid* construct_native_application_singleton_base_00bea810(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context);\n} // namespace bsp\n\nnamespace bsp {\n// Dormant borrowed BEA970 loop-base shell; descriptive name, original ECX\n// receiver/no stack arguments/EAX original receiver/RET0. This explicit-context\n// Source API is not the original binary ABI. Retain stable aligned actual 1Ch\n// enclosing storage, valid uint32 object/access at +0, BYTE access at +04, and\n// all BEA810 actual-cell/shared-manager/section/provider/disjointness/lifetime\n// prerequisites. Preserve every other incoming byte and owner domain.\n// Call genuine BEA810 once on the original receiver with the same context;\n// ignore its return value. Only after normal return store DWORD D68BC8 at +0,\n// then exactly BYTE zero at +04, and return the original receiver.\n// Child escape/nonreturn reaches neither store. Reuse its ordinary C++ cleanup\n// unchanged, including conditional null-section handling, current-depth and\n// captured-section roles, normal-Leave uncertainty and second-cleanup termination.\n// Publication/registration occur under D68BC4 before these stores. Escaped\n// references retain their lifetime obligations; CE3818 reset can reach the\n// generic flags1 drain/free path and is not storage-return authority.\n// No owner/cell producer, full 737970, caller, activation, callable profile,\n// outer cleanup, rollback, retain, free, retirement or storage-return policy.\n// Hardware faults, Original FH3/private frame and external ABI remain unproved.\nvoid* construct_native_application_loop_base_00bea970(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context);\n} // namespace bsp\n"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "start": 16,
+        "end": 51,
+        "requested_end": 51,
+        "text": "using Word = std::uint32_t;\nstruct NativeGuard {\n    Word profile_00;\n    CRITICAL_SECTION* section_04;\n};\nstatic_assert(sizeof(void*) == 4 && sizeof(NativeGuard) == 8);\nstatic_assert(offsetof(NativeGuard, section_04) == 4);\nstatic_assert(sizeof(CRITICAL_SECTION) == 0x18);\nvolatile Word& depth(CRITICAL_SECTION* section) noexcept {\n    return *reinterpret_cast<volatile Word*>(\n        reinterpret_cast<std::byte*>(section) + 0x18);\n}\nint cleanup_exception(unsigned long code) noexcept {\n    if (code == 0xe06d7363u) std::terminate();\n    return EXCEPTION_CONTINUE_SEARCH;\n}\nvoid unwind_guard(NativeGuard& guard) noexcept {\n    __try {\n        destroy_native_singleton_guard_00411ee0(&guard);\n    } __except (cleanup_exception(GetExceptionCode())) { __assume(0); }\n}\nstruct BaseCleanup {\n    void* receiver;\n    bool armed = true;\n    ~BaseCleanup() noexcept {\n        if (armed) destroy_native_generic_singleton_base_00412430(receiver);\n    }\n};\nstruct GuardCleanup {\n    NativeGuard& guard;\n    bool armed = true;\n    ~GuardCleanup() noexcept { if (armed) unwind_guard(guard); }\n};\n} // namespace\n\nvoid destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept {\n"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "start": 121,
+        "end": 160,
+        "requested_end": 160,
+        "text": "namespace bsp {\nvoid* construct_native_application_singleton_base_00bea810(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {\n    BaseCleanup base_cleanup{actual_receiver}; // Source state0 before profile.\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    NativeGuard guard{0x00ce37fcu, section};\n    if (section) {\n        EnterCriticalSection(section);\n        depth(section) = depth(section) + 1u;\n    }\n    GuardCleanup guard_cleanup{guard}; // Source state1 after Enter/depth.\n    context.actual_application_e1ae90 = actual_receiver;\n    void* const manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    void* const current_application = context.actual_application_e1ae90;\n    register_native_singleton_object_00bd0c30(manager, nullptr, current_application);\n    if (section) {\n        depth(section) = depth(section) - 1u;\n        LeaveCriticalSection(section);\n    }\n    guard_cleanup.armed = false;\n    base_cleanup.armed = false;\n    return actual_receiver;\n}\n} // namespace bsp\n\nnamespace bsp {\nvoid* construct_native_application_loop_base_00bea970(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {\n    void* const original_receiver = actual_receiver;\n    (void)construct_native_application_singleton_base_00bea810(original_receiver, context);\n    *static_cast<volatile Word*>(original_receiver) = 0x00d68bc8u;\n    static_cast<volatile unsigned char*>(original_receiver)[0x04] = 0;\n    return original_receiver;\n}\n} // namespace bsp\n"
+      },
+      {
+        "path": "include/bsp/native_shader_preload.hpp",
+        "start": 8,
+        "end": 27,
+        "requested_end": 27,
+        "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n    const NativeApplicationPointerVectorAllocation&);\n"
+      },
+      {
+        "path": "src/native_shader_preload.cpp",
+        "start": 23,
+        "end": 41,
+        "requested_end": 41,
+        "text": "void reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage& rows,I requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    if(requested<1)requested=1;\n    if(read<I>(&rows,8)>=requested)return;\n    void* const fresh=allocation.allocate_00bf55be(static_cast<U>(requested)*4u);\n    auto cursor=reinterpret_cast<std::uintptr_t>(fresh);\n    U index=0;\n    while(signed_bits(index)<read<I>(&rows,4)) {\n        if(cursor) {\n            const auto source=read<std::uintptr_t>(&rows);\n            put<U>(reinterpret_cast<void*>(cursor),0,\n                read<U>(reinterpret_cast<const void*>(source+index*4u)));\n        }\n        ++index;cursor+=4u;\n    }\n    allocation.free_00bf6989(read<void*>(&rows));\n    put<void*>(&rows,0,fresh);put<I>(&rows,8,requested);\n}\n"
+      },
+      {
+        "path": "src/native_shader_preload.cpp",
+        "start": 129,
+        "end": 147,
+        "requested_end": 147,
+        "text": "            a.materials.emplace_back();auto& step=a.materials.back();\n            step.renderer=c.actual_renderer_00f8d394;a.site=0x0073c12f;\n            if(read<U>(step.renderer)!=0x00d5f0a8||!c.actual_renderer_profile_00d5f0a8\n                ||c.actual_renderer_profile_00d5f0a8[0x48/4]!=0x00b318b0)\n                throw std::logic_error(\"shader preload requires the current native renderer+48 material loader\");\n            step.result=load_native_renderer_material_effect_00b318b0(\n                step.renderer,&a.name,c.materials,&step.acquisition);step.returned=true;\n            a.phase=NativeShaderPreloadPhase::append;\n            auto& rows=*reinterpret_cast<NativeApplicationPointerVectorStorage*>(static_cast<char*>(application)+8);\n            const I capacity=read<I>(&rows,8);\n            if(read<I>(&rows,4)==capacity) {\n                const I doubled=signed_bits(static_cast<U>(capacity)*2u);\n                const NativeApplicationPointerVectorAllocation allocation{c.cache.allocate_array_00bf55be,c.cache.free_array_00bf6989};\n                a.site=0x0073c14a;reserve_native_application_pointer_vector_00735ec0(rows,doubled>1?doubled:1,allocation);\n            }\n            const U count=read<U>(&rows,4);const auto data=read<std::uintptr_t>(&rows);\n            void* const output=reinterpret_cast<void*>(data+count*4u);\n            if(output)put<void*>(output,0,step.result);\n            put<U>(&rows,4,read<U>(&rows,4)+1u);step.appended=true;++a.appended;\n"
+      },
+      {
+        "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+        "start": 11,
+        "end": 31,
+        "requested_end": 31,
+        "text": "// Complete ordinary 00735F30..00735F7F schedule, 80 bytes/31 instructions.\n// This public C++ interface borrows the EXISTING actual 0Ch vector header and\n// allocation binding; it is distinct from native ECX/header, stack signed\n// request and RET4. There is no established semantic native EAX result.\n// Compare signed capacity first and call the concrete 735EC0 reserve service\n// only when required. Growth reloads data each iteration, tests the calculated\n// low32 slot address, and writes a zero DWORD there only when that address is\n// nonzero. Its index wraps; growth makes no direct count-field publication.\n// Shrink decrements the actual count field each iteration and compares its\n// current signed value again. Always finish by storing the requested count.\n// Preserve signed negative inputs, wrapping arithmetic, aliases and cycles;\n// do not replace request0 with clear, free or per-element release. The actual\n// reached storage and allocation/free services must satisfy their existing\n// contracts. Invalid accesses may fault with preceding stores/effects retained.\n// No validation, noexcept promise, catch, rollback or new cleanup is added.\n// Original CRT/FH3/fault/service-register identity, callable Application tables,\n// common owner construction and production wiring remain separate boundaries.\nvoid resize_native_application_pointer_vector_00735f30(\n    NativeApplicationPointerVectorStorage& actual_rows,\n    std::int32_t requested,\n    const NativeApplicationPointerVectorAllocation& allocation);\n"
+      },
+      {
+        "path": "src/native_application_pointer_vector_resize.cpp",
+        "start": 8,
+        "end": 22,
+        "requested_end": 22,
+        "text": "static_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(std::int32_t) == 4);\nstatic_assert(offsetof(NativeApplicationPointerVectorStorage, data_00) == 0);\nstatic_assert(offsetof(NativeApplicationPointerVectorStorage, count_04) == 4);\nstatic_assert(offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8);\n\n// Private Source ABI: ECX actual header, EDX borrowed allocation binding,\n// stack signed request, RET4. Forward the same objects to the real reserve\n// service; no copied binding, default callback or alternate allocation domain.\n__declspec(noinline) void __fastcall reserve_for_resize(\n    NativeApplicationPointerVectorStorage* actual_rows,\n    const NativeApplicationPointerVectorAllocation* allocation,\n    std::int32_t requested) {\n    reserve_native_application_pointer_vector_00735ec0(\n        *actual_rows, requested, *allocation);\n"
+      },
+      {
+        "path": "src/native_application_pointer_vector_resize.cpp",
+        "start": 80,
+        "end": 85,
+        "requested_end": 85,
+        "text": "__declspec(noinline) void resize_native_application_pointer_vector_00735f30(\n    NativeApplicationPointerVectorStorage& actual_rows,\n    std::int32_t requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    resize_body(&actual_rows, &allocation, requested);\n}\n"
+      },
+      {
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "start": 7,
+        "end": 16,
+        "requested_end": 16,
+        "text": "namespace bsp::game {\n// Retained Source composition of 73E150..73E1D9, not an Original FH3 frame.\n// Requires an exclusive fresh runtime with every construction/lifetime service\n// composed, the genuine Application+14 and current E1AE78 cells, and the SAME\n// canonical raw string domain used by that runtime. These borrowed objects and\n// the captured nonnull C string must remain valid through their last use.\n// Lifetime free_00bf6989 must match canonical malloc and actually free on a\n// successful flags&1 call. A throwing override can leave disposition unknown.\n// No automatic cleanup, publication rollback, operation replay or pool owner.\nclass GameNativeGameApplicationFrame final {\n"
+      },
+      {
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "start": 42,
+        "end": 52,
+        "requested_end": 52,
+        "text": "    GameNativeGameApplicationFrame(GameNativeGameRuntime&,\n        void* volatile& actual_application_game_14,\n        char* volatile& actual_duplicate_name_00e1ae78,\n        NativeStringRawPoolContext& canonical_strings);\n    ~GameNativeGameApplicationFrame();\n    GameNativeGameApplicationFrame(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame& operator=(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame(GameNativeGameApplicationFrame&&)=delete;\n    GameNativeGameApplicationFrame& operator=(GameNativeGameApplicationFrame&&)=delete;\n    NativeGameStorage* construct();\n    NativeGameStorage* scalar_delete(std::uint32_t flags);\n"
+      },
+      {
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "start": 68,
+        "end": 82,
+        "requested_end": 82,
+        "text": "    bool active() const noexcept;\n    bool name_resolved() const noexcept;\n    bool runtime_retired() const noexcept;\n    void record_failure() noexcept;\n    GameNativeGameRuntime& runtime_;\n    void* volatile& application_game_14_;\n    char* volatile& duplicate_name_00e1ae78_;\n    NativeStringRawPoolContext& strings_;\n    alignas(4) std::byte name_header_[8]; // Callee initializes; no preimage claim.\n    NativeGameStorage* retained_{};\n    Phase phase_{Phase::fresh};\n    Stage active_stage_{Stage::none}, failed_stage_{Stage::none};\n    Allocation allocation_{Allocation::absent};\n    Name name_{Name::unprepared};\n    std::uintptr_t allocation_address_{}, constructor_result_address_{},\n"
+      },
+      {
+        "path": "src/game_native_game_application_frame.cpp",
+        "start": 15,
+        "end": 26,
+        "requested_end": 26,
+        "text": "GameNativeGameApplicationFrame::GameNativeGameApplicationFrame(\n    GameNativeGameRuntime& runtime,void* volatile& application,\n    char* volatile& duplicate,NativeStringRawPoolContext& strings)\n    :runtime_(runtime),application_game_14_(application),\n     duplicate_name_00e1ae78_(duplicate),strings_(strings) {\n    static_assert(sizeof(NativeGameStorage)==0x71a0);\n    static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);\n    static_assert(std::is_trivially_destructible_v<NativeGameStorage>);\n    static_assert(sizeof(void*)==4&&sizeof(name_header_)==8);\n    if(runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::invalid_argument(\"Application frame requires an exclusive fresh native game runtime\");\n}\n"
+      },
+      {
+        "path": "src/game_native_game_application_frame.cpp",
+        "start": 50,
+        "end": 75,
+        "requested_end": 75,
+        "text": "NativeGameStorage* GameNativeGameApplicationFrame::construct() {\n    if(phase_!=Phase::fresh||runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::logic_error(\"Application frame construction is one-shot\");\n    phase_=Phase::constructing;active_stage_=Stage::allocation;native_site_=0x73e150;\n    try {\n        void* block=singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0});\n        allocation_address_=reinterpret_cast<std::uintptr_t>(block);\n        retained_=static_cast<NativeGameStorage*>(block);allocation_=Allocation::retained;\n        ::new (block) NativeGameStorage;\n        std::memset(block,0,0x71a0);\n        parent_cleanup_state_=0x27;parent_state_recorded_=true;\n        captured_name_=duplicate_name_00e1ae78_;\n        active_stage_=Stage::name_preparation;native_site_=0x73e188;name_=Name::preparing;\n        construct_native_string_header_0041e870(name_header_,strings_,captured_name_);\n        name_=Name::complete;observed_name_mask_|=0x2;\n        parent_cleanup_state_=0x28;\n        active_stage_=Stage::game_construction;native_site_=0x73e1a1;constructor_entered_=true;\n        auto* result=runtime_.construct(*retained_,name_header_);\n        constructor_completed_=true;constructor_result_address_=reinterpret_cast<std::uintptr_t>(result);\n        native_site_=0x73e1af;application_game_14_=result;application_published_=true;\n        parent_cleanup_state_=-1;\n        active_stage_=Stage::name_return;native_site_=0x73e1ce;name_=Name::return_attempted;\n        destroy_native_string_header_0041dd20(name_header_,strings_);\n        name_=Name::returned;active_stage_=Stage::none;phase_=Phase::live;\n        return result;\n    } catch(...) {record_failure();throw;}\n"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "start": 306,
+        "end": 321,
+        "requested_end": 321,
+        "text": "    case 0x00d5d7f8:\n        if (bindings.particle_manager != nullptr) {\n            delete_native_particle_model_manager_00af1080(\n                static_cast<NativeParticleModelManagerStorage*>(owner), flags,\n                *bindings.particle_manager);\n            return;\n        }\n        break;\n    case 0x00ce3818:\n        delete_native_singleton_base_00412440(owner, nullptr, flags);\n        return;\n    case 0x00d0da64:\n        if (bindings.actual_effect_publication_00f87664 != nullptr) {\n            delete_native_gameplay_effect_manager_008703e0(\n                owner, *bindings.actual_effect_publication_00f87664, flags);\n            return;\n"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "start": 550,
+        "end": 576,
+        "requested_end": 576,
+        "text": "            delete_native_game_resource_factory_secondary_00716520(owner, flags,\n                *bindings.game_resource_factory);\n            return;\n        }\n        break;\n    case 0x00d5b56c:\n        if (bindings.shadow_job != nullptr) {\n            delete_native_shadow_job_secondary_00a8ddb0(\n                owner, *bindings.shadow_job, flags);\n            return;\n        }\n        break;\n    case 0x00ce44dc:\n        delete_native_device_registry_00441840(\n            static_cast<NativeDeviceRegistryStorage*>(owner), flags,\n            process_native_device_registry_00e17bf4());\n        return;\n    }\n    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");\n}\n\n__declspec(naked) void __fastcall destroy_manager_body(\n    void*, const NativeSingletonDeletionBindings&) {\n    __asm {\n        // Replace native FH3 registration/scratch with24bytes of padding.\n        // The source outer scope owns EH. Its stable binding replaces the\n        // native unwind-only owner spill; normal iterator scratch stays +14h.\n"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "start": 604,
+        "end": 632,
+        "requested_end": 632,
+        "text": "        jb slot_valid\n        call current_crt_invalid_parameter\n    slot_valid:\n        mov eax, dword ptr [esi + 4]\n        cmp eax, ebx\n        mov ecx, dword ptr [edi]\n        je popped\n        mov edx, dword ptr [esi + 8]\n        mov edi, edx\n        sub edi, eax\n        sar edi, 2\n        je popped\n        add edx, -4\n        mov dword ptr [esi + 8], edx\n    popped:\n        cmp ecx, ebx\n        je recount\n        mov eax, dword ptr [ecx]\n        push 1\n        push eax\n        // +8 binding spill +4 savedEDI +8 source arguments = +14h.\n        mov edx, dword ptr [esp + 14h]\n        call delete_current_profile\n    recount:\n        mov ecx, esi\n        call count_native_singleton_slots_00bcf910\n        test eax, eax\n        jne next_owner\n        pop edi\n"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "start": 665,
+        "end": 680,
+        "requested_end": 680,
+        "text": "__declspec(naked) void* __fastcall delete_native_singleton_base_00412440(\n    void*, void*, std::uint32_t) {\n    __asm {\n        test byte ptr [esp + 4], 1\n        push esi\n        mov esi, ecx\n        mov dword ptr [esi], 00ce3818h\n        je keep_owner\n        push esi\n        call singleton_lifetime_free\n        add esp, 4\n    keep_owner:\n        mov eax, esi\n        pop esi\n        ret 4\n    }\n"
+      },
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "start": 6,
+        "end": 34,
+        "requested_end": 34,
+        "text": "namespace bsp {\n// Projection of the two per-frame flag bytes of the native application object.\n// Constructor 00737970 stores 1 at +18h and 0 at +19h and +1Ah. This is not the\n// full native layout; +4h..+14h hold unreconstructed subsystem pointers and\n// +14h is the game object passed to the update in ECX.\nstruct ApplicationFrameState {\n    bool first_update{true}; // +18h, cleared after the game update at 00737b2b\n    bool input_action_latch{false}; // +19h, cleared at 00737ac0 and set at 00737af2\n};\n\n// One-time initialisation of the PERF_APP_UPDATE bar colour at 00e1ae94, guarded\n// by bit 0 of 00e1ae98 (00737a6c..00737a98). Bytes 94h/95h/96h are cleared and\n// 97h becomes FFh, so the little-endian dword is FF000000h.\nstruct FrameMarkerColor {\n    bool initialized{false};\n    std::uint32_t argb{0};\n};\nstd::uint32_t frame_marker_color_00737a6c(FrameMarkerColor& color) noexcept;\n\n// Game states 1, 2 and 4 read from *(00e188a8)+5D4h. The same three values gate\n// the close policy in 004ca2f0. docs/APP_INIT_GAME_ENTRY.md establishes 1 as the\n// logo sequence and 2 as the title screen, so this is the front-end set; the\n// input edge test in the frame runs only outside it (in-mission states).\nbool is_front_end_game_state(int game_state) noexcept;\n\n// Input action index pushed to 004c43c0 at 00737ae7. The action table entry is\n// not identified, so this is a raw index rather than a named control.\ninline constexpr int kApplicationFrameInputAction = 0x0E;\n\n"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "start": 1832,
+        "end": 1849,
+        "requested_end": 1849,
+        "text": "    log_.implemented(\"StartupHost::publish_game_resource_factory\", \"008f840b\");\n}\n\nvoid GameStartupHost::application_construct() {\n    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's\n    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.\n    log_.implemented(\"StartupHost::application_construct\", \"00737970\");\n    frame_state_ = ApplicationFrameState{};\n    constructed_ = true;\n}\n\nvoid GameStartupHost::application_initialize(int flags, const char* mode) {\n    if (mode == nullptr) throw std::invalid_argument(\"application initialization requires its native mode string\");\n    log_.implemented(\"StartupHost::application_initialize\", \"0073d410\");\n    log_.notef(\"initialize flags=%d mode=%s\", flags, mode != nullptr ? mode : \"(null)\");\n    run_initialize_phases(mode);\n}\n\n"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "start": 2127,
+        "end": 2139,
+        "requested_end": 2139,
+        "text": "    request.width = settings_view_.options_file.width_14;\n    request.height = settings_view_.options_file.height_18;\n    request.renderer_option = static_cast<std::uint32_t>(settings_view_.options_file.antialias_58);\n    request.application = this;\n    request.instance = instance_;\n    request.procedure = &game_window_procedure;\n    if (request.width <= 0 || request.height <= 0) {\n        // 008d841f's literal pair, the fallback the loader itself uses when a parsed\n        // resolution is not in the supported table.\n        request.width = kFallbackResolution.width;\n        request.height = kFallbackResolution.height;\n        log_.notef(\"settings gave no usable resolution; using the 008d841f fallback %dx%d\",\n            request.width, request.height);\n"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "start": 2506,
+        "end": 2521,
+        "requested_end": 2521,
+        "text": "    if (device_ != nullptr) device_->release();\n    // Native 0073830F is step 19 of the broader 00737F30 teardown. The other\n    // recovered steps remain unbound above, but this explicit owner retirement\n    // must precede application destruction and the shared raw-manager drain.\n    destroy_native_diagnostic_sink_007363b0(\n        singletons_->diagnostic_publication_0109cf14(), singletons_->sound_lifetime());\n}\n\nvoid GameStartupHost::application_destruct() {\n    log_.implemented(\"StartupHost::application_destruct\", \"008f8444\");\n    constructed_ = false;\n}\n\nvoid GameStartupHost::destroy_singleton_lifetime_manager() {\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "start": 15,
+        "end": 36,
+        "requested_end": 36,
+        "text": "\nnamespace bsp::game {\n\nGameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()),\n      allocation_stats_context_{manager_publication_01090aa0_,\n          game_native_string_process().allocation_stats_0109cefc()} {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n    deletion_bindings_.allocation_stats = &allocation_stats_context_;\n}\n\nGameSingletonHost::~GameSingletonHost() {\n    // Normal WinMain shutdown has already drained this owner. All publication\n"
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "start": 25,
+        "end": 52,
+        "requested_end": 52,
+        "text": "    bool claim_particle_manager_domain() noexcept;\n    NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }\n    volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }\n    NativeStringRawPoolContext& raw_context() noexcept { return raw_; }\n    ActualNativeStringPoolStorage& strings() noexcept { return strings_; }\n    // Distinct permanent Source authorities for the two Original initial-NUL\n    // roles. Only const pointers escape; Original's writable .data is not\n    // claimed universally immutable. Shader E17654 borrowers use this SAME byte.\n    const char* property_empty_00e177e4() const noexcept;\n    const char* query_empty_00e17654() const noexcept;\nprivate:\n    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n    // Append after every established authority; do not reuse another raw8 owner.\n    void* volatile pending_registry_00f878cc_{};\n    void* volatile allocation_stats_0109cefc_{};\n    NativeParticleModelManagerStorage* volatile particle_manager_00f8c274_{};\n    bool particle_manager_domain_claimed_{};\n};\n\n"
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "start": 24,
+        "end": 61,
+        "requested_end": 61,
+        "text": "static_assert(sizeof(NativeGuard) == 8);\nstatic_assert(offsetof(NativeGuard, section_04) == 4);\nstatic_assert(sizeof(CRITICAL_SECTION) == 0x18);\n\nvolatile std::uint32_t& tracked_counter(CRITICAL_SECTION* section) noexcept {\n    return *reinterpret_cast<volatile std::uint32_t*>(\n        reinterpret_cast<std::byte*>(section) + 0x18);\n}\n\n} // namespace\n\n__declspec(noinline) void* get_native_singleton_manager_00415350(\n    void* volatile& actual_manager_publication_01090aa0) {\n    void* const initial = actual_manager_publication_01090aa0;\n    if (initial) {\n        return initial;\n    }\n\n    // Allocation occurs before native state0 is armed. The saved allocation\n    // remains the cleanup target even if construction changes publication.\n    void* const allocation = singleton_lifetime_allocate({\n        SingletonAllocationKind::manager, 0x14, 0x14});\n    try {\n        void* const result = allocation\n            ? construct_native_singleton_manager_00bd0960(allocation, nullptr)\n            : nullptr;\n        actual_manager_publication_01090aa0 = result;\n        return result;\n    } catch (...) {\n        singleton_lifetime_free(allocation);\n        throw;\n    }\n}\n\n__declspec(noinline) void* get_native_resource_registry_00b1b730(\n    void* volatile& actual_manager_publication_01090aa0,\n    void* volatile& actual_registry_publication_00f8d41c) {\n    void* const initial = actual_registry_publication_00f8d41c;\n"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "start": 47,
+        "end": 72,
+        "requested_end": 72,
+        "text": "        SingletonAllocationKind::pointer_slots, count * 4U, count * sizeof(void*)}));\n}\n} // namespace\n\nvoid* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}\n\nstruct ConcreteSingletonLifetimeManager::OwnedCriticalSection {\n    CRITICAL_SECTION native;\n    std::uint32_t recursion_18;\n    SystemSingletonCriticalSection projection{&native, recursion_18};\n"
+      }
+    ],
+    "query_spec": {
+      "path": "query_spec.json",
+      "bytes": 4339,
+      "sha256": "80c2c49d7d5cf178aa8f7677347ebc0afb958064cbe193d22a91946336530a2a"
+    },
+    "complete_query_receipt": {
+      "path": "source_queries.json",
+      "bytes": 81267,
+      "sha256": "189d9f528877724d7a694eace78f941206656527b2deba808a80c629ce85ccee"
+    }
+  },
+  "named_dependencies": [
+    {
+      "path": "docs/CC12_APPLICATION_ALLOCATOR_POLICY_READINESS.md",
+      "git_blob": "c3137efcb95abf5302c0009e2b103c96185f59ea",
+      "committed": {
+        "entry": "blobs/a03bc06cf6370316744a18f7383c3665d4f5e8ec9ac11708094889ff08e06ebb",
+        "bytes": 9779,
+        "sha256": "a03bc06cf6370316744a18f7383c3665d4f5e8ec9ac11708094889ff08e06ebb"
+      },
+      "working": {
+        "entry": "blobs/a03bc06cf6370316744a18f7383c3665d4f5e8ec9ac11708094889ff08e06ebb",
+        "bytes": 9779,
+        "sha256": "a03bc06cf6370316744a18f7383c3665d4f5e8ec9ac11708094889ff08e06ebb"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_BASE_RETIREMENT_READINESS.md",
+      "git_blob": "b4775a2efb1851e2957bf7c8b83038d4e8142846",
+      "committed": {
+        "entry": "blobs/fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+        "bytes": 7796,
+        "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf"
+      },
+      "working": {
+        "entry": "blobs/fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf",
+        "bytes": 7796,
+        "sha256": "fc664d3a112f7e6c6f274e3264fd739b1edb21fb2c560afadc7573eb908e2baf"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md",
+      "git_blob": "6c745be4a7499d320625c2a06969f444d668530d",
+      "committed": {
+        "entry": "blobs/09e0f70f0e8c5a9ec0d1fcbfbc03699d76c45a3bf3cfab4cf1f1d2ede6373f27",
+        "bytes": 9545,
+        "sha256": "09e0f70f0e8c5a9ec0d1fcbfbc03699d76c45a3bf3cfab4cf1f1d2ede6373f27"
+      },
+      "working": {
+        "entry": "blobs/b8afedf1a0a14230ac231af79c206dd9e03baff64780a3f7e5cc05146dc6f824",
+        "bytes": 9584,
+        "sha256": "b8afedf1a0a14230ac231af79c206dd9e03baff64780a3f7e5cc05146dc6f824"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_ORDINARY_CONSTRUCTION_READINESS.md",
+      "git_blob": "062a677d929d5c3655c0cc2ea2c8a81c149b148c",
+      "committed": {
+        "entry": "blobs/2a6a7d00acf2b3fa86891061227740f032db8de630523f2b84ac9fe8a94c4792",
+        "bytes": 9558,
+        "sha256": "2a6a7d00acf2b3fa86891061227740f032db8de630523f2b84ac9fe8a94c4792"
+      },
+      "working": {
+        "entry": "blobs/2a6a7d00acf2b3fa86891061227740f032db8de630523f2b84ac9fe8a94c4792",
+        "bytes": 9558,
+        "sha256": "2a6a7d00acf2b3fa86891061227740f032db8de630523f2b84ac9fe8a94c4792"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_READINESS.md",
+      "git_blob": "7fe8bfa18570bb44e883a39b9b9bca374a809c3d",
+      "committed": {
+        "entry": "blobs/3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6",
+        "bytes": 9198,
+        "sha256": "3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6"
+      },
+      "working": {
+        "entry": "blobs/3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6",
+        "bytes": 9198,
+        "sha256": "3557c030878b895c11675fccb7634e0cb7aa4759357bea2722313d87d97fbdf6"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_POINTER_VECTOR_CRT_BOUNDARY_READINESS.md",
+      "git_blob": "0420ca531d5e9b17f5b0525e5d22a89a421fbd32",
+      "committed": {
+        "entry": "blobs/6bc272494d202509d0c5bc1ba51a9103edce2b9fc8958db70dc07925af250221",
+        "bytes": 8461,
+        "sha256": "6bc272494d202509d0c5bc1ba51a9103edce2b9fc8958db70dc07925af250221"
+      },
+      "working": {
+        "entry": "blobs/6bc272494d202509d0c5bc1ba51a9103edce2b9fc8958db70dc07925af250221",
+        "bytes": 8461,
+        "sha256": "6bc272494d202509d0c5bc1ba51a9103edce2b9fc8958db70dc07925af250221"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_POINTER_VECTOR_RESERVE_NATIVE_READINESS.md",
+      "git_blob": "5d128ab92798c74c1115225f0584bda10d31e13e",
+      "committed": {
+        "entry": "blobs/0e6ca7debae9d0f8a18423b9f44688c6bbba702ca082a97e358f93b9d7697006",
+        "bytes": 9479,
+        "sha256": "0e6ca7debae9d0f8a18423b9f44688c6bbba702ca082a97e358f93b9d7697006"
+      },
+      "working": {
+        "entry": "blobs/0e6ca7debae9d0f8a18423b9f44688c6bbba702ca082a97e358f93b9d7697006",
+        "bytes": 9479,
+        "sha256": "0e6ca7debae9d0f8a18423b9f44688c6bbba702ca082a97e358f93b9d7697006"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_PUBLICATION_AUTHORITY_READINESS.md",
+      "git_blob": "5663db350a6ccf0f8e69338b0b4aaf83bd66af6c",
+      "committed": {
+        "entry": "blobs/991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca",
+        "bytes": 14656,
+        "sha256": "991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca"
+      },
+      "working": {
+        "entry": "blobs/991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca",
+        "bytes": 14656,
+        "sha256": "991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_RAW_STORAGE_CONSTRUCTOR_READINESS.md",
+      "git_blob": "70f6ffcb6d39f1c5912c6b781cf4cf56dac9e595",
+      "committed": {
+        "entry": "blobs/6adbc66ccb3fa04c533be2169d0065300c4b3db7ca205712a24dc91d8cb80df2",
+        "bytes": 8861,
+        "sha256": "6adbc66ccb3fa04c533be2169d0065300c4b3db7ca205712a24dc91d8cb80df2"
+      },
+      "working": {
+        "entry": "blobs/6adbc66ccb3fa04c533be2169d0065300c4b3db7ca205712a24dc91d8cb80df2",
+        "bytes": 8861,
+        "sha256": "6adbc66ccb3fa04c533be2169d0065300c4b3db7ca205712a24dc91d8cb80df2"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_BASE_SOURCE_IMPLEMENTATION.md",
+      "git_blob": "c840b5e4a7c0e5ac7ed5cbfc4395c198cd905f2c",
+      "committed": {
+        "entry": "blobs/feb7a5c705310da794af5f4eb9055885448a0d2563c5fd9eecb9718b82790cf1",
+        "bytes": 5955,
+        "sha256": "feb7a5c705310da794af5f4eb9055885448a0d2563c5fd9eecb9718b82790cf1"
+      },
+      "working": {
+        "entry": "blobs/26211c9825d7ca589cc3a1ba4777e33992e0d36b471add7012809d906cf2c71f",
+        "bytes": 6042,
+        "sha256": "26211c9825d7ca589cc3a1ba4777e33992e0d36b471add7012809d906cf2c71f"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_EXCEPTIONAL_SOURCE_COMPOSITION_READINESS.md",
+      "git_blob": "ff180c70c26dcf08232e8ff374d0da3155ec53d9",
+      "committed": {
+        "entry": "blobs/38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975",
+        "bytes": 13902,
+        "sha256": "38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975"
+      },
+      "working": {
+        "entry": "blobs/38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975",
+        "bytes": 13902,
+        "sha256": "38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_EXCEPTIONAL_SOURCE_PRIMARY.md",
+      "git_blob": "257e5f857bd493ccc8dd0b3631033b5945a09692",
+      "committed": {
+        "entry": "blobs/ceaa9bdc88c9d9970da607dab1b587750040a067ab4da9cf8f2735424ae0376e",
+        "bytes": 3097,
+        "sha256": "ceaa9bdc88c9d9970da607dab1b587750040a067ab4da9cf8f2735424ae0376e"
+      },
+      "working": {
+        "entry": "blobs/ceaa9bdc88c9d9970da607dab1b587750040a067ab4da9cf8f2735424ae0376e",
+        "bytes": 3097,
+        "sha256": "ceaa9bdc88c9d9970da607dab1b587750040a067ab4da9cf8f2735424ae0376e"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_OUTER_ADMISSION_READINESS.md",
+      "git_blob": "e69d0aed8a0a16d12d1158412d7f8ffe1bd54a2b",
+      "committed": {
+        "entry": "blobs/4a6ea05a4e69153d02c95cfad26aa30250087e1501ed055a42fedd93ad7f3336",
+        "bytes": 11945,
+        "sha256": "4a6ea05a4e69153d02c95cfad26aa30250087e1501ed055a42fedd93ad7f3336"
+      },
+      "working": {
+        "entry": "blobs/94a8f1ab6e2871a6bac5057fa2a2ca80b6ca2e936354a443df34f8c40ca1fec2",
+        "bytes": 12113,
+        "sha256": "94a8f1ab6e2871a6bac5057fa2a2ca80b6ca2e936354a443df34f8c40ca1fec2"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_OUTER_PRIMARY.md",
+      "git_blob": "673a57c5ba502ecb591edccf65d6006f4ceb5c3c",
+      "committed": {
+        "entry": "blobs/7183db8eec58eda4ab184d99aaeaff73359193d899ca3222b2a2fe0a0c8e3947",
+        "bytes": 2517,
+        "sha256": "7183db8eec58eda4ab184d99aaeaff73359193d899ca3222b2a2fe0a0c8e3947"
+      },
+      "working": {
+        "entry": "blobs/7183db8eec58eda4ab184d99aaeaff73359193d899ca3222b2a2fe0a0c8e3947",
+        "bytes": 2517,
+        "sha256": "7183db8eec58eda4ab184d99aaeaff73359193d899ca3222b2a2fe0a0c8e3947"
+      }
+    },
+    {
+      "path": "docs/CC12_GAME_APPLICATION_NAME_CELL_PRODUCER_READINESS.md",
+      "git_blob": "3e89843416bec459b8df7c0be6eb94371975040a",
+      "committed": {
+        "entry": "blobs/0d3e2b7b613f352f24fda01ec2cbd7aaceeb79f15e14c998ab64a0f203c5af91",
+        "bytes": 11007,
+        "sha256": "0d3e2b7b613f352f24fda01ec2cbd7aaceeb79f15e14c998ab64a0f203c5af91"
+      },
+      "working": {
+        "entry": "blobs/0d3e2b7b613f352f24fda01ec2cbd7aaceeb79f15e14c998ab64a0f203c5af91",
+        "bytes": 11007,
+        "sha256": "0d3e2b7b613f352f24fda01ec2cbd7aaceeb79f15e14c998ab64a0f203c5af91"
+      }
+    },
+    {
+      "path": "docs/CC12_NATIVE_APPLICATION_POINTER_VECTOR_RESIZE_SOURCE.md",
+      "git_blob": "c7b65132be70cadf6135e74a89f0bbf12c72e992",
+      "committed": {
+        "entry": "blobs/69309fa49788b967e38feb10571494e7e11a0490d7e2071079784c478b3792d7",
+        "bytes": 8932,
+        "sha256": "69309fa49788b967e38feb10571494e7e11a0490d7e2071079784c478b3792d7"
+      },
+      "working": {
+        "entry": "blobs/69309fa49788b967e38feb10571494e7e11a0490d7e2071079784c478b3792d7",
+        "bytes": 8932,
+        "sha256": "69309fa49788b967e38feb10571494e7e11a0490d7e2071079784c478b3792d7"
+      }
+    },
+    {
+      "path": "reports/cc12_application_allocator_policy_readiness.json",
+      "git_blob": "c2661f5c539ac7d821351507a8612f627b92fa21",
+      "committed": {
+        "entry": "blobs/8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+        "bytes": 53841,
+        "sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9"
+      },
+      "working": {
+        "entry": "blobs/8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+        "bytes": 53841,
+        "sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9"
+      }
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "git_blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "committed": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      },
+      "working": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      }
+    },
+    {
+      "path": "reports/cc12_application_loop_base_dormant_source.json",
+      "git_blob": "c4bb707ca77b0a1679a432bdccb91242b22160fc",
+      "committed": {
+        "entry": "blobs/6df8d2873259f3a0b8fe81f93419d96ba3ab01f2e28a2a90a43f3401de5c089a",
+        "bytes": 132675,
+        "sha256": "6df8d2873259f3a0b8fe81f93419d96ba3ab01f2e28a2a90a43f3401de5c089a"
+      },
+      "working": {
+        "entry": "blobs/5cfc8d5a507ed5a65126aa4868cb0ee6f42a00359d3ff1723903f57a5cf76825",
+        "bytes": 136358,
+        "sha256": "5cfc8d5a507ed5a65126aa4868cb0ee6f42a00359d3ff1723903f57a5cf76825"
+      }
+    },
+    {
+      "path": "reports/cc12_application_ordinary_construction_readiness.json",
+      "git_blob": "afede5d5e6c5a441520bb43bc76d0726bec09462",
+      "committed": {
+        "entry": "blobs/4aa0619d23c9f60b85a74c09f65985c6e427c5c0ad2c7a07584349be473cd5b9",
+        "bytes": 86775,
+        "sha256": "4aa0619d23c9f60b85a74c09f65985c6e427c5c0ad2c7a07584349be473cd5b9"
+      },
+      "working": {
+        "entry": "blobs/4aa0619d23c9f60b85a74c09f65985c6e427c5c0ad2c7a07584349be473cd5b9",
+        "bytes": 86775,
+        "sha256": "4aa0619d23c9f60b85a74c09f65985c6e427c5c0ad2c7a07584349be473cd5b9"
+      }
+    },
+    {
+      "path": "reports/cc12_application_ordinary_retirement_readiness.json",
+      "git_blob": "872fc8b4ac701c0073dc2b0c0f51d17aa0a9bd71",
+      "committed": {
+        "entry": "blobs/2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69",
+        "bytes": 70939,
+        "sha256": "2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69"
+      },
+      "working": {
+        "entry": "blobs/2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69",
+        "bytes": 70939,
+        "sha256": "2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69"
+      }
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_crt_boundary_readiness.json",
+      "git_blob": "baed503972d5d180db2f51202a470a8b4589a4db",
+      "committed": {
+        "entry": "blobs/4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+        "bytes": 46765,
+        "sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e"
+      },
+      "working": {
+        "entry": "blobs/4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+        "bytes": 46765,
+        "sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e"
+      }
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "git_blob": "3d277a536262fa29c00ef012907844fd1cb9961f",
+      "committed": {
+        "entry": "blobs/466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+        "bytes": 81357,
+        "sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa"
+      },
+      "working": {
+        "entry": "blobs/466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+        "bytes": 81357,
+        "sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa"
+      }
+    },
+    {
+      "path": "reports/cc12_application_publication_authority_readiness.json",
+      "git_blob": "fe0a26d1246b233ce2ab377c7f1e0f8438993578",
+      "committed": {
+        "entry": "blobs/11acc0a87ec2593ed19a8392c0e7ce6c42515f7f64d57fac31026949a90d0e59",
+        "bytes": 96192,
+        "sha256": "11acc0a87ec2593ed19a8392c0e7ce6c42515f7f64d57fac31026949a90d0e59"
+      },
+      "working": {
+        "entry": "blobs/11acc0a87ec2593ed19a8392c0e7ce6c42515f7f64d57fac31026949a90d0e59",
+        "bytes": 96192,
+        "sha256": "11acc0a87ec2593ed19a8392c0e7ce6c42515f7f64d57fac31026949a90d0e59"
+      }
+    },
+    {
+      "path": "reports/cc12_application_raw_storage_constructor_readiness.json",
+      "git_blob": "2f9b0ce7ba01e3b6a4d802ab3023fb928a3cc8e0",
+      "committed": {
+        "entry": "blobs/ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50",
+        "bytes": 52342,
+        "sha256": "ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50"
+      },
+      "working": {
+        "entry": "blobs/ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50",
+        "bytes": 52342,
+        "sha256": "ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_base_source_implementation.json",
+      "git_blob": "6174b0317f3a33f0b928fc33e90b59c9004a6326",
+      "committed": {
+        "entry": "blobs/7329ef4fcdc8e712be8c776019b1710babbf80e56411e132830c53130a16efae",
+        "bytes": 42630,
+        "sha256": "7329ef4fcdc8e712be8c776019b1710babbf80e56411e132830c53130a16efae"
+      },
+      "working": {
+        "entry": "blobs/fd61c687c7b148cafa6ef1dae89b86d33da9d6975928ff04f96715387a812d9f",
+        "bytes": 43792,
+        "sha256": "fd61c687c7b148cafa6ef1dae89b86d33da9d6975928ff04f96715387a812d9f"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_exceptional_source_composition_readiness.json",
+      "git_blob": "8346413bbd176b02ba5db6ab45b1198cbb69a219",
+      "committed": {
+        "entry": "blobs/e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4",
+        "bytes": 279834,
+        "sha256": "e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4"
+      },
+      "working": {
+        "entry": "blobs/e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4",
+        "bytes": 279834,
+        "sha256": "e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_exceptional_source_primary.json",
+      "git_blob": "e0f36a095bb93c84d39bcc7d8ee50bf6bbfc8cb1",
+      "committed": {
+        "entry": "blobs/8e36e1d5095f8c7dd416ef0311d0b4a24725cb94349293c060dbc27e494b6213",
+        "bytes": 19452,
+        "sha256": "8e36e1d5095f8c7dd416ef0311d0b4a24725cb94349293c060dbc27e494b6213"
+      },
+      "working": {
+        "entry": "blobs/8e36e1d5095f8c7dd416ef0311d0b4a24725cb94349293c060dbc27e494b6213",
+        "bytes": 19452,
+        "sha256": "8e36e1d5095f8c7dd416ef0311d0b4a24725cb94349293c060dbc27e494b6213"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_outer_admission_readiness.json",
+      "git_blob": "c42d18648dc5c92f36be43ebfb2dc90aa7e443b6",
+      "committed": {
+        "entry": "blobs/e39cea7a2ce5f2b5fd4a2b37d6fd9b09745d74de2fd79a43658afb87925eaebd",
+        "bytes": 90768,
+        "sha256": "e39cea7a2ce5f2b5fd4a2b37d6fd9b09745d74de2fd79a43658afb87925eaebd"
+      },
+      "working": {
+        "entry": "blobs/a965bbec5f15a1c4d2986c816d6bc88384c4112ce18dea679626977058fff939",
+        "bytes": 92185,
+        "sha256": "a965bbec5f15a1c4d2986c816d6bc88384c4112ce18dea679626977058fff939"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_outer_primary.json",
+      "git_blob": "82969bfeac43f08c60ac48df449be8dcd07a4c4d",
+      "committed": {
+        "entry": "blobs/d2911ee048b5efa7c8e4ae91733204d96a818ad1ed0303c3e8356c307dcd2b71",
+        "bytes": 13096,
+        "sha256": "d2911ee048b5efa7c8e4ae91733204d96a818ad1ed0303c3e8356c307dcd2b71"
+      },
+      "working": {
+        "entry": "blobs/d2911ee048b5efa7c8e4ae91733204d96a818ad1ed0303c3e8356c307dcd2b71",
+        "bytes": 13096,
+        "sha256": "d2911ee048b5efa7c8e4ae91733204d96a818ad1ed0303c3e8356c307dcd2b71"
+      }
+    },
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "git_blob": "564df6292574b373cbe4d07f35042d20041f6276",
+      "committed": {
+        "entry": "blobs/5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+        "bytes": 92258,
+        "sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1"
+      },
+      "working": {
+        "entry": "blobs/5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+        "bytes": 92258,
+        "sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1"
+      }
+    },
+    {
+      "path": "reports/cc12_native_application_pointer_vector_resize_source.json",
+      "git_blob": "9257fef888c0c2f1c95bf5118fac20afaba094b7",
+      "committed": {
+        "entry": "blobs/c154243fc1d1b318c369d5dffe74d00a42d1a18f698298063dfb7abeb18c9bc2",
+        "bytes": 39480,
+        "sha256": "c154243fc1d1b318c369d5dffe74d00a42d1a18f698298063dfb7abeb18c9bc2"
+      },
+      "working": {
+        "entry": "blobs/c154243fc1d1b318c369d5dffe74d00a42d1a18f698298063dfb7abeb18c9bc2",
+        "bytes": 39480,
+        "sha256": "c154243fc1d1b318c369d5dffe74d00a42d1a18f698298063dfb7abeb18c9bc2"
+      }
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SINGLETON_BASE_SOURCE_PRIMARY.md",
+      "git_blob": "5ee4b086145d678e289c4a5296434e40f9e90878",
+      "committed": {
+        "entry": "blobs/286246bb26ac157446f0a2ddfaeabc80f78958c7c090aaef3210ac06f92d2d32",
+        "bytes": 3219,
+        "sha256": "286246bb26ac157446f0a2ddfaeabc80f78958c7c090aaef3210ac06f92d2d32"
+      },
+      "working": {
+        "entry": "blobs/286246bb26ac157446f0a2ddfaeabc80f78958c7c090aaef3210ac06f92d2d32",
+        "bytes": 3219,
+        "sha256": "286246bb26ac157446f0a2ddfaeabc80f78958c7c090aaef3210ac06f92d2d32"
+      }
+    },
+    {
+      "path": "reports/cc12_application_singleton_base_source_primary.json",
+      "git_blob": "a3bbd19e17717012223956da45c3333e1d462241",
+      "committed": {
+        "entry": "blobs/626679de14f241ac8a670d8dd0620963378f26a33e814affb209e3d65f5304b0",
+        "bytes": 12551,
+        "sha256": "626679de14f241ac8a670d8dd0620963378f26a33e814affb209e3d65f5304b0"
+      },
+      "working": {
+        "entry": "blobs/626679de14f241ac8a670d8dd0620963378f26a33e814affb209e3d65f5304b0",
+        "bytes": 12551,
+        "sha256": "626679de14f241ac8a670d8dd0620963378f26a33e814affb209e3d65f5304b0"
+      }
+    },
+    {
+      "path": "docs/NATIVE_SHADER_PRELOAD_R99.md",
+      "git_blob": "87545d5415fe88fd0187bf518ab34e3f7c0d5160",
+      "committed": {
+        "entry": "blobs/860c9d79aa6115d0d18a7e19bb5f8dfb57114e2ade158f5d142ef6f91f69e981",
+        "bytes": 4858,
+        "sha256": "860c9d79aa6115d0d18a7e19bb5f8dfb57114e2ade158f5d142ef6f91f69e981"
+      },
+      "working": {
+        "entry": "blobs/860c9d79aa6115d0d18a7e19bb5f8dfb57114e2ade158f5d142ef6f91f69e981",
+        "bytes": 4858,
+        "sha256": "860c9d79aa6115d0d18a7e19bb5f8dfb57114e2ade158f5d142ef6f91f69e981"
+      }
+    },
+    {
+      "path": "reports/native_shader_preload_r99.json",
+      "git_blob": "6c06afc8127d985afa5c4623e85a5cbb486e6514",
+      "committed": {
+        "entry": "blobs/26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+        "bytes": 197548,
+        "sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc"
+      },
+      "working": {
+        "entry": "blobs/26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+        "bytes": 197548,
+        "sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc"
+      }
+    },
+    {
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "git_blob": "627b2a9a0f94e2597320fc3ba7669e4d5898dd7c",
+      "committed": {
+        "entry": "blobs/9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+        "bytes": 11904,
+        "sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38"
+      },
+      "working": {
+        "entry": "blobs/9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+        "bytes": 11904,
+        "sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38"
+      }
+    }
+  ],
+  "accepted_bodies": {
+    "record": {
+      "report": {
+        "entry": "blobs/ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50",
+        "bytes": 52342,
+        "sha256": "ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50"
+      },
+      "input": {
+        "entry": "blobs/19b251cf297e364be1199c6e0db8f6d0e859a896f3891e57ead35a82cb632bdb",
+        "bytes": 130087,
+        "sha256": "19b251cf297e364be1199c6e0db8f6d0e859a896f3891e57ead35a82cb632bdb"
+      },
+      "retained_records": [
+        {
+          "name": "application_listing.stdout",
+          "accepted": {
+            "path": "frozen/049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a_application_listing.stdout",
+            "bytes": 492,
+            "sha256": "049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a"
+          },
+          "retained": {
+            "entry": "blobs/049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a",
+            "bytes": 492,
+            "sha256": "049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a"
+          }
+        },
+        {
+          "name": "base_listing.stdout",
+          "accepted": {
+            "path": "frozen/07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31_base_listing.stdout",
+            "bytes": 215,
+            "sha256": "07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31"
+          },
+          "retained": {
+            "entry": "blobs/07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31",
+            "bytes": 215,
+            "sha256": "07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31"
+          }
+        },
+        {
+          "name": "application_bytes.stdout",
+          "accepted": {
+            "path": "frozen/01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097_application_bytes.stdout",
+            "bytes": 207,
+            "sha256": "01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097"
+          },
+          "retained": {
+            "entry": "blobs/01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097",
+            "bytes": 207,
+            "sha256": "01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097"
+          }
+        },
+        {
+          "name": "base_bytes.stdout",
+          "accepted": {
+            "path": "frozen/12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4_base_bytes.stdout",
+            "bytes": 114,
+            "sha256": "12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4"
+          },
+          "retained": {
+            "entry": "blobs/12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4",
+            "bytes": 114,
+            "sha256": "12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4"
+          }
+        }
+      ],
+      "accepted_decoded": [
+        {
+          "address": "00737970",
+          "bytes": 42,
+          "instructions": 15,
+          "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d",
+          "instructions_decoded": [
+            {
+              "address": "00737970",
+              "bytes": "56",
+              "text": "push esi"
+            },
+            {
+              "address": "00737971",
+              "bytes": "8bf1",
+              "text": "mov esi, ecx"
+            },
+            {
+              "address": "00737973",
+              "bytes": "e8f82f4b00",
+              "text": "call 0xbea970"
+            },
+            {
+              "address": "00737978",
+              "bytes": "33c0",
+              "text": "xor eax, eax"
+            },
+            {
+              "address": "0073797a",
+              "bytes": "c706b0eacf00",
+              "text": "mov dword ptr [esi], 0xcfeab0"
+            },
+            {
+              "address": "00737980",
+              "bytes": "894608",
+              "text": "mov dword ptr [esi + 8], eax"
+            },
+            {
+              "address": "00737983",
+              "bytes": "89460c",
+              "text": "mov dword ptr [esi + 0xc], eax"
+            },
+            {
+              "address": "00737986",
+              "bytes": "894610",
+              "text": "mov dword ptr [esi + 0x10], eax"
+            },
+            {
+              "address": "00737989",
+              "bytes": "894614",
+              "text": "mov dword ptr [esi + 0x14], eax"
+            },
+            {
+              "address": "0073798c",
+              "bytes": "884619",
+              "text": "mov byte ptr [esi + 0x19], al"
+            },
+            {
+              "address": "0073798f",
+              "bytes": "88461a",
+              "text": "mov byte ptr [esi + 0x1a], al"
+            },
+            {
+              "address": "00737992",
+              "bytes": "c6461801",
+              "text": "mov byte ptr [esi + 0x18], 1"
+            },
+            {
+              "address": "00737996",
+              "bytes": "8bc6",
+              "text": "mov eax, esi"
+            },
+            {
+              "address": "00737998",
+              "bytes": "5e",
+              "text": "pop esi"
+            },
+            {
+              "address": "00737999",
+              "bytes": "c3",
+              "text": "ret "
+            }
+          ]
+        },
+        {
+          "address": "00bea970",
+          "bytes": 22,
+          "instructions": 8,
+          "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd",
+          "instructions_decoded": [
+            {
+              "address": "00bea970",
+              "bytes": "56",
+              "text": "push esi"
+            },
+            {
+              "address": "00bea971",
+              "bytes": "8bf1",
+              "text": "mov esi, ecx"
+            },
+            {
+              "address": "00bea973",
+              "bytes": "e898feffff",
+              "text": "call 0xbea810"
+            },
+            {
+              "address": "00bea978",
+              "bytes": "c706c88bd600",
+              "text": "mov dword ptr [esi], 0xd68bc8"
+            },
+            {
+              "address": "00bea97e",
+              "bytes": "c6460400",
+              "text": "mov byte ptr [esi + 4], 0"
+            },
+            {
+              "address": "00bea982",
+              "bytes": "8bc6",
+              "text": "mov eax, esi"
+            },
+            {
+              "address": "00bea984",
+              "bytes": "5e",
+              "text": "pop esi"
+            },
+            {
+              "address": "00bea985",
+              "bytes": "c3",
+              "text": "ret "
+            }
+          ]
+        }
+      ],
+      "qualification": "Retained accepted body evidence only. Zero new Native query/export/body read or external validation."
+    },
+    "current_body_pins": {
+      "application_listing.stdout": {
+        "entry": "blobs/049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a",
+        "bytes": 492,
+        "sha256": "049fc3c1a787b2b57e5612a2c72b6f9e74bae8fd34bc9866ce22b85d81c0ad1a"
+      },
+      "base_listing.stdout": {
+        "entry": "blobs/07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31",
+        "bytes": 215,
+        "sha256": "07e01383238fcb463fd922774037f504261abf9b8ac07eadb45f7315ed818a31"
+      },
+      "application_bytes.stdout": {
+        "entry": "blobs/01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097",
+        "bytes": 207,
+        "sha256": "01dee3f2f4a24b79e8344faa02d4126d2529c27744ac0121f74bb6294682c097"
+      },
+      "base_bytes.stdout": {
+        "entry": "blobs/12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4",
+        "bytes": 114,
+        "sha256": "12be82dd0dc7afa6f487a98b5363f25cce32eaf6ff0c8905e291b7ae52a218a4"
+      }
+    },
+    "qualification": "Exact accepted full 42-byte/15-instruction 737970 and 22-byte/8-instruction BEA970 records copied only from the immutable accepted outer ZIP nested in loop proof. No new Native query."
+  },
+  "accepted_loop_and_outer_proof": {
+    "commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+    "commit_object": {
+      "entry": "blobs/9e1d4be5dfd4a4ba3cb8424737a1e831736786cf16978215e9072b0d3e3b524f",
+      "bytes": 728,
+      "sha256": "9e1d4be5dfd4a4ba3cb8424737a1e831736786cf16978215e9072b0d3e3b524f"
+    },
+    "files": {
+      "evidence.zip": {
+        "entry": "blobs/f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3",
+        "bytes": 609067675,
+        "sha256": "f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3"
+      },
+      "portable_replay.py": {
+        "entry": "blobs/47c684ab6ecec880e9109bb35cce5cc02b673bdaa52b218ddc2d3a956d6f4b41",
+        "bytes": 8595,
+        "sha256": "47c684ab6ecec880e9109bb35cce5cc02b673bdaa52b218ddc2d3a956d6f4b41"
+      },
+      "manifest.json": {
+        "entry": "blobs/f88fb2782b9af2a5809c1a657494a081e0fbadbeedc023d9a91f0c4295abcc0e",
+        "bytes": 1282868,
+        "sha256": "f88fb2782b9af2a5809c1a657494a081e0fbadbeedc023d9a91f0c4295abcc0e"
+      },
+      "committed_final_check.json": {
+        "entry": "blobs/f306ce2c214bef07c889ef9182d81214df9b7aa83fc6323df3c36c6d8a7fd71c",
+        "bytes": 3949,
+        "sha256": "f306ce2c214bef07c889ef9182d81214df9b7aa83fc6323df3c36c6d8a7fd71c"
+      },
+      "replay_in_place.json": {
+        "entry": "blobs/b8b1f3cac2803caf72b251162fe0dafdf5fafbcce53f2c2e5f5e1c914c243c5c",
+        "bytes": 13539,
+        "sha256": "b8b1f3cac2803caf72b251162fe0dafdf5fafbcce53f2c2e5f5e1c914c243c5c"
+      },
+      "replay_copied.json": {
+        "entry": "blobs/b8b1f3cac2803caf72b251162fe0dafdf5fafbcce53f2c2e5f5e1c914c243c5c",
+        "bytes": 13539,
+        "sha256": "b8b1f3cac2803caf72b251162fe0dafdf5fafbcce53f2c2e5f5e1c914c243c5c"
+      },
+      "physical_copy_receipt.json": {
+        "entry": "blobs/090a4f043fb59c07d1e0476400da5518929ece4ddeffb78734bdb02233791a07",
+        "bytes": 1705,
+        "sha256": "090a4f043fb59c07d1e0476400da5518929ece4ddeffb78734bdb02233791a07"
+      },
+      "bundle_receipt.json": {
+        "entry": "blobs/defb8afe66969b316417989f3d70c89f97ec216268edf9088c2173d0343bacdb",
+        "bytes": 710,
+        "sha256": "defb8afe66969b316417989f3d70c89f97ec216268edf9088c2173d0343bacdb"
+      },
+      "final_delivery.json": {
+        "entry": "blobs/2bb347b5d4842d3b04fac9e3d86fac5566b9afa051b82aa0b4bf3fc383f68732",
+        "bytes": 6689,
+        "sha256": "2bb347b5d4842d3b04fac9e3d86fac5566b9afa051b82aa0b4bf3fc383f68732"
+      }
+    },
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_LOOP_BASE_DORMANT_SOURCE.md",
+        "git_blob": "6c745be4a7499d320625c2a06969f444d668530d",
+        "committed": {
+          "entry": "blobs/09e0f70f0e8c5a9ec0d1fcbfbc03699d76c45a3bf3cfab4cf1f1d2ede6373f27",
+          "bytes": 9545,
+          "sha256": "09e0f70f0e8c5a9ec0d1fcbfbc03699d76c45a3bf3cfab4cf1f1d2ede6373f27"
+        },
+        "expected_working": {
+          "bytes": 9584,
+          "sha256": "b8afedf1a0a14230ac231af79c206dd9e03baff64780a3f7e5cc05146dc6f824"
+        }
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "git_blob": "3b813c887fa8673d4b018ede337cfbf0f5d4281b",
+        "committed": {
+          "entry": "blobs/61bc0da69ffaf5bdad65c25eb16a4017e0ced9748447085a89640ff1f2b1415c",
+          "bytes": 5976,
+          "sha256": "61bc0da69ffaf5bdad65c25eb16a4017e0ced9748447085a89640ff1f2b1415c"
+        },
+        "expected_working": {
+          "bytes": 6031,
+          "sha256": "7c36b1600393ffee4463de5539590f5b3b7e4312bc00635ba01b300cfe9e7fc5"
+        }
+      },
+      {
+        "path": "reports/cc12_application_loop_base_dormant_source.json",
+        "git_blob": "c4bb707ca77b0a1679a432bdccb91242b22160fc",
+        "committed": {
+          "entry": "blobs/6df8d2873259f3a0b8fe81f93419d96ba3ab01f2e28a2a90a43f3401de5c089a",
+          "bytes": 132675,
+          "sha256": "6df8d2873259f3a0b8fe81f93419d96ba3ab01f2e28a2a90a43f3401de5c089a"
+        },
+        "expected_working": {
+          "bytes": 136358,
+          "sha256": "5cfc8d5a507ed5a65126aa4868cb0ee6f42a00359d3ff1723903f57a5cf76825"
+        }
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "git_blob": "3ffd8ad1846f3c8d77b84ba920a6d83893da0631",
+        "committed": {
+          "entry": "blobs/6b6b323f1f2493e84a3d449c83cc0e1ee650e901dfd5cfdec5ce52dbbe32ac1c",
+          "bytes": 6365,
+          "sha256": "6b6b323f1f2493e84a3d449c83cc0e1ee650e901dfd5cfdec5ce52dbbe32ac1c"
+        },
+        "expected_working": {
+          "bytes": 6406,
+          "sha256": "377e8c11bf1036b57836587c6ec7dc7214ae0e7da76c8235825bdc0b90a8c3bb"
+        }
+      }
+    ],
+    "outer_nested": {
+      "container": {
+        "entry": "blobs/f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3",
+        "bytes": 609067675,
+        "sha256": "f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3"
+      },
+      "accepted_contract_entry": "accepted_contract.json",
+      "outer_ZIP": {
+        "entry": "blobs/e5e33f635fb902712e619717d6d7b6d96c4c92e962b40a067a4636aee46fa269",
+        "bytes": 512526951,
+        "sha256": "e5e33f635fb902712e619717d6d7b6d96c4c92e962b40a067a4636aee46fa269"
+      },
+      "outer_helper": {
+        "entry": "blobs/4fff1de59794b97518cfd62d0edd11e371b6f0fe46b165deda5fab042e4d80c6",
+        "bytes": 4952,
+        "sha256": "4fff1de59794b97518cfd62d0edd11e371b6f0fe46b165deda5fab042e4d80c6"
+      },
+      "outer_manifest": {
+        "entry": "blobs/2d6f171038e7e22dc109d65025931bfc27ee6507d6a4071af2a1b4f0f78f2309",
+        "bytes": 1294439,
+        "sha256": "2d6f171038e7e22dc109d65025931bfc27ee6507d6a4071af2a1b4f0f78f2309"
+      }
+    },
+    "qualification": "Complete immutable final loop proof/helper/actual Git/delivery retained; it physically contains and strictly replays the accepted outer readiness ZIP and all earlier evidence. No historical build transfer to current Source-only epoch."
+  },
+  "Root_e89_epoch": {
+    "manifest": {
+      "entry": "blobs/e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a",
+      "bytes": 1271280,
+      "sha256": "e89f7488238a451562d922dba4ecba2e05dba3bb6dc0093fdb5e5a98eb4c8c6a"
+    },
+    "project_rows": 3356,
+    "raw_deltas": [
+      "include/bsp/native_render_service_base.hpp",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/native_render_service_base.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "LF_deltas": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "qualification": "Accepted Root raw-key e89 Source3356 epoch has exactly the accepted loop wrapper header/TU delta in this merged worker. Raw EOL variants are separate. Four artifact declarations remain historical; this Source-only packet performs no build or runtime test."
+  },
+  "later_Main": {
+    "commit": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+    "Source_changes": [],
+    "metadata_rows": [
+      {
+        "path": "config/reconstruction/00be0000.jsonl",
+        "mode": "100644",
+        "git_blob": "ac5fc4a576e658f720d3a2432fefd13af36e1e48",
+        "committed": {
+          "entry": "blobs/7233fa1c45947042135af4a099ed2bf163c97e5d84bdb637273c6259bf45cdc4",
+          "bytes": 344922,
+          "sha256": "7233fa1c45947042135af4a099ed2bf163c97e5d84bdb637273c6259bf45cdc4"
+        }
+      },
+      {
+        "path": "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+        "mode": "100644",
+        "git_blob": "0c062e3d881595e5e075b95f06a549bf2990f5b8",
+        "committed": {
+          "entry": "blobs/6b2df0a882e3a822edc21febdd2e78d4e18375c09061a0e048d533e79329f53f",
+          "bytes": 3219,
+          "sha256": "6b2df0a882e3a822edc21febdd2e78d4e18375c09061a0e048d533e79329f53f"
+        }
+      },
+      {
+        "path": "reports/cc12_application_loop_base_source_primary.json",
+        "mode": "100644",
+        "git_blob": "87d7805af66cb51ba82b34c2a0f548bcd5dbd374",
+        "committed": {
+          "entry": "blobs/8ec364b098b93d7297da2be3c2a545e2da849e3df6a9f879c82f5af8b7f07347",
+          "bytes": 6705,
+          "sha256": "8ec364b098b93d7297da2be3c2a545e2da849e3df6a9f879c82f5af8b7f07347"
+        }
+      }
+    ],
+    "Root_manifest": {
+      "entry": "blobs/c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2",
+      "bytes": 1267920,
+      "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+    },
+    "Root3356_all_LF_equal": true,
+    "Root_raw_EOL_variants": [
+      "include/bsp/native_render_service_base.hpp",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/native_render_service_base.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "qualification": "Read-only later Main observation. Current worker Source-only epoch remains frozen at bab6547. Later integrated Root Main is exactly Source-equivalent and adds only the named Root metadata and reconstruction shard. Root build evidence remains separately scoped."
+  },
+  "portable_proof": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_singleton_source_cpp\\local\\cc12_application_full_borrowed_shell_readiness",
+    "bundle": {
+      "schema": 1,
+      "utc": "2026-10-11T01:56:10.014012+00:00",
+      "ZIP": {
+        "entry": "evidence.zip",
+        "bytes": 623967609,
+        "sha256": "04bac7ff9c77bfc0d045b874de232c1173e573416f78b928e522e34a05f89671"
+      },
+      "helper": {
+        "entry": "portable_replay.py",
+        "bytes": 5158,
+        "sha256": "267088b3ba3084fe5a7f00168fc55dfa6dc12c5b8a70da8ec26e0f2e13ed1866"
+      },
+      "manifest": {
+        "entry": "manifest.json",
+        "bytes": 1214910,
+        "sha256": "444ec44c845ce8faae759f370fb90217414c570255eb0c091ae394a8e9c93335"
+      },
+      "zip_members": 4345,
+      "retained_bytes": 667524655,
+      "boundary": "Packaging only; original/copy strict replays and final live Git checks have separate receipts."
+    },
+    "replay_in_place": {
+      "path": "replay_in_place.json",
+      "bytes": 6942,
+      "sha256": "a1a84b2a20a01c5ffb4b3aed2b9a21cca8d62b1a55ecfff574a4f2b66399beee"
+    },
+    "replay_copied": {
+      "path": "replay_copied.json",
+      "bytes": 6942,
+      "sha256": "a1a84b2a20a01c5ffb4b3aed2b9a21cca8d62b1a55ecfff574a4f2b66399beee"
+    },
+    "physical_copy": {
+      "path": "physical_copy_receipt.json",
+      "bytes": 1737,
+      "sha256": "3aef0a2feafcb60ed4ea1f4ca27a545ec4320d53a33e4cb2c5ad90322a4e2cba"
+    },
+    "helper_graph": {
+      "current_helpers": [
+        {
+          "path": "freeze.py",
+          "pin": {
+            "entry": "freeze.py",
+            "bytes": 5155,
+            "sha256": "d5b80c1b46f556f4feb9bf7de4bcb775024399f554b22cf899627f4607a6be89"
+          },
+          "imports": [
+            "argparse",
+            "datetime",
+            "hashlib",
+            "json",
+            "pathlib",
+            "subprocess"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "retain_priors.py",
+          "pin": {
+            "entry": "retain_priors.py",
+            "bytes": 2943,
+            "sha256": "3ab69b28e91ac241fe341016c51a746c615c498493e478c9816d39509c575587"
+          },
+          "imports": [
+            "hashlib",
+            "io",
+            "json",
+            "pathlib",
+            "subprocess",
+            "zipfile"
+          ],
+          "literal_helper_edges": [
+            "portable_replay.py"
+          ]
+        },
+        {
+          "path": "capture_queries.py",
+          "pin": {
+            "entry": "capture_queries.py",
+            "bytes": 1238,
+            "sha256": "c3620e49128f74d146a2a4837306fb19ef666ed9d2cebe25d6835317e0d4b231"
+          },
+          "imports": [
+            "hashlib",
+            "json",
+            "pathlib",
+            "re"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "audit_tools.py",
+          "pin": {
+            "entry": "audit_tools.py",
+            "bytes": 7554,
+            "sha256": "a4bc8617a0d2ca27f595dcc80e4763f2107a3e1bed2cb00063d8ff08f9ed783b"
+          },
+          "imports": [
+            "ast",
+            "base64",
+            "capstone",
+            "codecs",
+            "collections",
+            "difflib",
+            "gzip",
+            "hashlib",
+            "io",
+            "json",
+            "pathlib",
+            "re",
+            "struct",
+            "tarfile",
+            "textwrap",
+            "types",
+            "zipfile"
+          ],
+          "literal_helper_edges": [
+            "replay_body.py",
+            "retained/loop_replay.py"
+          ]
+        },
+        {
+          "path": "git_tools.py",
+          "pin": {
+            "entry": "git_tools.py",
+            "bytes": 2841,
+            "sha256": "9299dde96ca235bec79a8229c01ac30dd3b1b303e4294ef5258fb74f7f320c29"
+          },
+          "imports": [
+            "hashlib",
+            "pathlib"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "graph_tools.py",
+          "pin": {
+            "entry": "graph_tools.py",
+            "bytes": 1919,
+            "sha256": "7f502f0e02c362b20bddb9ea5186b6cc59dc2ec4b0f1c7ee5defc7f59eb36072"
+          },
+          "imports": [
+            "ast",
+            "json"
+          ],
+          "literal_helper_edges": [
+            ".py"
+          ]
+        },
+        {
+          "path": "capture_main_delta.py",
+          "pin": {
+            "entry": "capture_main_delta.py",
+            "bytes": 4150,
+            "sha256": "52a6854237d46bb99de114f49b1e33a084d60c8e596d0e2b0851c960e5f5d59d"
+          },
+          "imports": [
+            "datetime",
+            "hashlib",
+            "json",
+            "pathlib",
+            "subprocess"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "physical_copy.py",
+          "pin": {
+            "entry": "physical_copy.py",
+            "bytes": 1278,
+            "sha256": "d2130c69a410317cf7c2bcad366e909d18ed170406d1372a8d098fc4fcecfcb3"
+          },
+          "imports": [
+            "datetime",
+            "hashlib",
+            "json",
+            "pathlib",
+            "shutil"
+          ],
+          "literal_helper_edges": [
+            "portable_replay.py"
+          ]
+        },
+        {
+          "path": "final_check.py",
+          "pin": {
+            "entry": "final_check.py",
+            "bytes": 2741,
+            "sha256": "71401e85c0b3ded692c38cbdf2a541eaabe7df192841e56c479452d9c556e6b1"
+          },
+          "imports": [
+            "datetime",
+            "hashlib",
+            "json",
+            "pathlib",
+            "subprocess"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "publish.py",
+          "pin": {
+            "entry": "publish.py",
+            "bytes": 13664,
+            "sha256": "0dc7cbce9fd16e768921e5901268f7c6bd77e0c0e059e4e7fd423548309e9a90"
+          },
+          "imports": [
+            "datetime",
+            "hashlib",
+            "json",
+            "pathlib"
+          ],
+          "literal_helper_edges": []
+        },
+        {
+          "path": "replay_body.py",
+          "pin": {
+            "entry": "replay_body.py",
+            "bytes": 3433,
+            "sha256": "7b0149b09563fe2faee3168977046f940a87400af42e584c58f1f9e7f70ffe67"
+          },
+          "imports": [],
+          "literal_helper_edges": [
+            ".py",
+            "audit_tools.py",
+            "git_tools.py",
+            "graph_tools.py"
+          ]
+        },
+        {
+          "path": "package.py",
+          "pin": {
+            "entry": "package.py",
+            "bytes": 3937,
+            "sha256": "c4b687a239709f4f1298aba5d31bdf1fec658fa4a91752bcf669150037621606"
+          },
+          "imports": [
+            "datetime",
+            "graph_tools",
+            "hashlib",
+            "json",
+            "pathlib",
+            "zipfile"
+          ],
+          "literal_helper_edges": [
+            ".py",
+            "audit_tools.py",
+            "capture_main_delta.py",
+            "capture_queries.py",
+            "final_check.py",
+            "freeze.py",
+            "git_tools.py",
+            "graph_tools.py",
+            "package.py",
+            "physical_copy.py",
+            "portable_replay.py",
+            "publish.py",
+            "replay_body.py",
+            "retain_priors.py"
+          ]
+        }
+      ],
+      "accepted_graphs": "The accepted loop ZIP physically retains and replays 29 loop, 11 outer, 108 earlier readiness and 23 earlier implementation helper records."
+    },
+    "audit_result": {
+      "Source": {
+        "Git": {
+          "Source_paths": 4228,
+          "actual_git_rows": 4270,
+          "root": "f7eaf21d9bde5b48b79ec1784851e83dedf75f6a",
+          "trees": 11
+        },
+        "Root_LF_deltas": [
+          "include/bsp/native_render_service_base.hpp",
+          "src/native_render_service_base.cpp"
+        ],
+        "Root_Source3356": 3356,
+        "Root_cross_EOL_only": [
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "Root_historical_artifacts_not_replayed": 4,
+        "Root_raw_deltas": [
+          "include/bsp/native_render_service_base.hpp",
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/native_render_service_base.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "Source": 4228,
+        "excerpts": 26,
+        "hits": {
+          "Application_publication": 3,
+          "actual_game_cell": 4,
+          "canonical_name": 4,
+          "drain_generic_profile_free": 9,
+          "frame_users": 20,
+          "full_shell_names": 4,
+          "platform_borrow_projection": 1,
+          "process_manager": 126,
+          "projected_startup": 12,
+          "real_base_provider": 3,
+          "real_loop_provider": 2,
+          "typed_offsets_and_widths": 18,
+          "typed_vector": 12,
+          "vector_reserve": 4,
+          "vector_resize": 2
+        },
+        "queries": 15,
+        "src_include": 4210,
+        "status": "pass"
+      },
+      "Source_unchanged": true,
+      "accepted_bodies": {
+        "bytes": 64,
+        "full_shell_bytes": 42,
+        "full_shell_instructions": 15,
+        "instructions": 23,
+        "loop_bytes": 22,
+        "loop_instructions": 8
+      },
+      "accepted_loop": {
+        "Source_delta_from_loop": [
+          "include/bsp/native_particle_model_construction.hpp",
+          "src/native_particle_model_construction.cpp"
+        ],
+        "ZIP": {
+          "bytes": 609067675,
+          "entry": "blobs/f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3",
+          "sha256": "f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3"
+        },
+        "accepted_outer_replay": {
+          "Ghidra_mutations": 0,
+          "Source": {
+            "Git": {
+              "Source_paths": 4228,
+              "actual_git_rows": 4255,
+              "root": "0e7fdcecd84ec8083b7ca4520e933a5c1d94552f",
+              "trees": 11
+            },
+            "Root_Source3356": 3356,
+            "Root_manifest_sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a",
+            "Root_raw_variants": 8,
+            "excerpts": 32,
+            "hits": {
+              "actual_game_cell": 4,
+              "actual_vector": 12,
+              "allocation_policy": 20,
+              "application_profiles": 2,
+              "application_publication": 8,
+              "base_entry": 2,
+              "canonical_duplicate": 6,
+              "name_publication": 8,
+              "outer_entries": 3,
+              "projected_application_identity": 5,
+              "raw_deletion_profile_gate": 9,
+              "retained_frame": 20,
+              "shared_manager_authority": 4,
+              "startup_shells": 8
+            },
+            "queries": 14,
+            "src_include": 4210,
+            "status": "pass"
+          },
+          "Source_only": true,
+          "accepted_outer_bodies": {
+            "Ghidra_mutations": 0,
+            "accepted_bodies": [
+              {
+                "address": "00737970",
+                "bytes": 42,
+                "instructions": 15,
+                "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d"
+              },
+              {
+                "address": "00bea970",
+                "bytes": 22,
+                "instructions": 8,
+                "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd"
+              }
+            ],
+            "fresh_Native_bytes": 0,
+            "fresh_Native_queries": 0,
+            "status": "pass"
+          },
+          "baseline_commit": "c02232befa117182c0536d6e60dbaedeedddff58",
+          "boundary": "Dormant borrowed BEA970 Source admission only; no owner, cell producer, startup, retirement, storage return, Original FH3 or current external ABI closure.",
+          "checked_members": 4627,
+          "decision": {
+            "Original_FH3_or_current_external_ABI_GO": false,
+            "actual_E1AE90_authority_producer_GO": false,
+            "automatic_storage_return_GO": false,
+            "combined_Game_frame_factory_GO": false,
+            "dormant_BEA970_borrowed_Source_GO": true,
+            "full_737970_Source_GO": false,
+            "implemented_by_this_packet": false,
+            "raw_Application_owner_GO": false,
+            "retirement_GO": false,
+            "startup_activation_GO": false
+          },
+          "helper_graph": {
+            "current": 11,
+            "implementation": 23,
+            "readiness": 108
+          },
+          "new_Cpp_changes": 0,
+          "new_Native_bytes": 0,
+          "new_Native_queries": 0,
+          "new_builds_tests_probes": 0,
+          "packet": "cc12_application_singleton_outer_admission_readiness",
+          "prior_evidence": {
+            "Source_delta_from_prior_implementation": [
+              "include/bsp/native_mesh_owner.hpp",
+              "src/native_mesh_owner.cpp"
+            ],
+            "historical_compiled_evidence_only": true,
+            "prior_implementation_ZIP_sha256": "2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e",
+            "prior_implementation_helpers": 23,
+            "prior_implementation_outputs": 4,
+            "prior_implementation_replayed": true,
+            "prior_readiness_helpers": 108,
+            "prior_readiness_pins": 853,
+            "prior_readiness_replayed": true,
+            "status": "pass"
+          },
+          "retained_bytes": 596929030,
+          "status": "pass",
+          "zip_members": 4628
+        },
+        "commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+        "loop_checked_members": 4602,
+        "loop_zip_members": 4603
+      },
+      "baseline_commit": "bab6547b6df0ca96acf531fa8e071bdcf56174f0",
+      "boundary": "Conditional dormant full-shell Source admission only. Already-live actual typed objects are prerequisites, not produced evidence. No owner/cell producer/activation/retirement/storage return/Original FH3/current external ABI or runtime credit.",
+      "checked_members": 4344,
+      "decision": {
+        "Original_FH3_external_ABI_GO": false,
+        "caller_startup_activation_GO": false,
+        "canonical_Application_name_cell_production_GO": false,
+        "current_737970_Source_implemented": false,
+        "dormant_737970_borrowed_Source_GO": true,
+        "frame_name_handoff_GO": false,
+        "raw_Application_owner_GO": false,
+        "raw_byte_extent_alone_GO": false,
+        "retirement_storage_return_GO": false
+      },
+      "guard": {
+        "active_after_preload": true,
+        "allowed_zip_reads": 1,
+        "blocked": "other opens, writes, process creation, networking, new dynamic library loads and directory enumeration",
+        "only_input": "the supplied ZIP"
+      },
+      "helper_graph": {
+        "current": 12,
+        "earlier_implementation": 23,
+        "earlier_readiness": 108,
+        "loop": 29,
+        "outer": 11
+      },
+      "later_Main": {
+        "Source_paths": 4228,
+        "changed": [],
+        "frozen_worker_baseline": "bab6547b6df0ca96acf531fa8e071bdcf56174f0",
+        "later_Root3356_LF_equal": true,
+        "later_Root_raw_EOL_variants": [
+          "include/bsp/native_render_service_base.hpp",
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/native_render_service_base.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ],
+        "metadata_paths": [
+          "config/reconstruction/00be0000.jsonl",
+          "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+          "reports/cc12_application_loop_base_source_primary.json"
+        ],
+        "observed_Main": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+        "qualification": "Read-only later Main observation. Current worker Source-only epoch remains frozen at bab6547. Later integrated Root Main is exactly Source-equivalent and adds only the named Root metadata and reconstruction shard. Root build evidence remains separately scoped.",
+        "status": "pass"
+      },
+      "new_Cpp": 0,
+      "new_Native_queries": 0,
+      "new_builds_tests_probes": 0,
+      "packet": "cc12_application_full_borrowed_shell_readiness",
+      "retained_bytes": 667524655,
+      "status": "pass",
+      "zip_members": 4345
+    },
+    "final_commit_check": "committed_final_check.json is produced after the immutable two-output commit; exact committed and working pins are external to the ZIP to avoid circularity"
+  },
+  "boundaries": {
+    "new_Native_queries": 0,
+    "new_Native_bytes": 0,
+    "Ghidra_mutations": 0,
+    "new_exports": 0,
+    "ledger_changes": 0,
+    "Cpp_changes": 0,
+    "CMake_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_probes": 0,
+    "new_runtime_OS_audio": 0,
+    "historical_build_transfer": false,
+    "current_source_unchanged": true
+  }
+}
