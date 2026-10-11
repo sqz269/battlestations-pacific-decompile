@@ -615,3 +615,27 @@ Open, in order of value:
 4. The same undefined-slot scan outside these leases: 00568930..00584000, 005C5600..005E09A0,
    00604A50..0061F000 and the 0068xxxx overlay slots (0068A320, 0068A400, 0068A5D0, ...).
 5. The twelve defined-but-unnamed functions listed in the third-packet section.
+
+## Lobby enter 005E51D0 (cc13-frontend2, reconstructed, complete, build-tested)
+
+`multi_game_lobby_enter_005e51d0` in `src/frontend_menus.cpp`; 42 more call rows (230 total, 0
+failed). `__thiscall`(screen), RET. EBX = 0 throughout; EBP is the saved frame pointer reused as
+a register (template row, then 1 from 005E57E3) and restored before `MOV ESP,EBP`.
+
+- Frame title (when 00687860(4, 0) answers false): `FE.main_skirmish_title|. - |` in skirmish,
+  else empty, followed by the label the lobby option registry (00576B10 +10h, 00575E80 with
+  category 2 and value 00E19564, then 005732C0) gives for the current mode; 00518D60 with ECX = 0Ah.
+- +130h is shown outside skirmish and +B0h in skirmish; skirmish also calls 00771DD0 on game+1EF0h.
+- `Players_Listbox` (under +14h, stored at +A8h): +149h = 0, +12Ch/+130h/+134h = -0.0020833,
+  0.0055556, 0, 00A9CEB0(0.4875, 0), +128h = 0.0055556. Its `Player1_Group` template is cloned
+  eight times into +250h..+26Ch; row i is placed at the template position plus (0, i * height, 0)
+  (the X/Z step 00D7A258 is 0.0), gets +78h = 1, +30h = -0.0114583, empty `player_name_Text` and
+  `player_tag_Text` (localise 0), the widget listener screen+0Ch and +D8h = i.
+- Arrows +144h/+148h/+14Ch get slot +88h state 0/2/2 when *(*(00E198B4)+54h)+8Ch is set, else 2/0/0.
+- 00E19564 = effective game mode (00E19568 too when it is 0..3), 00E19594 = game+60Ch, +278h = 1,
+  00E08958 = -1, +2D0h = 100.0. With game+1FE4h == 1 the masks 005DF510/005D9C50 for the mode go to
+  +2C8h/+2C0h and their OR to game+2060h/+2064h. The pseudocode ORs the old +2C0h; the listing
+  stores the new mask first, so the reconstruction uses the new one.
+- game+2164h set (+282h): *(00E19698)+4 = 1 and the list and +94h are hidden (slot +60h(0)).
+- `noseart_Group`/`New_5_Text` gets " " and the ellipsized `FE.multi_lobby_noseart` at width
+  0.1333 (00ABB000).
