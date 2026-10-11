@@ -252,7 +252,7 @@ as unreferenced, not as dead.
 
 ## Handoff (cc13-render1, 2026-10-11)
 
-State: 77 ledger names in the segment (two of them renames), 21 functions defined in Ghidra
+State: 76 ledger names in the segment (two of them renames), 21 functions defined in Ghidra
 from disk bounds, 16 reconstruction records across `src/gui_render.cpp` and
 `src/movie_subtitles.cpp`, all build-tested only. 196 functions in the range still carry
 raw `FUN_` names with no ledger name; most are STL template instances (vector/string
