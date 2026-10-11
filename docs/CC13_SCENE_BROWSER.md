@@ -236,7 +236,7 @@ file parser (`ActionList`, `PointList`, `Entitypath`, `Animations`, `Movielen`, 
 Its action reader `0045E5E0` reads `Action`, `ActivateTime`, `Type`, `Num1..3`, `Enum`,
 `ReferPath`, `OffsetX/Y` and `Comment`, matches the action name against the table names
 (record +4, `_stricmp`) and passes the index to the factory `0045DE50`, a switch that allocates
-44h bytes (48h for type 20) and calls the type's constructor; the name is then copied to action+8.
+44h bytes (48h for type 20) and calls the type's constructor; the `Comment` token is then copied to action+8.
 These callers are in segment 5 and were read, not renamed.
 
 `00460B80` pushes 32 records (`00460AD0` calls at `00460E37` .. `00464285`); the authored
@@ -250,9 +250,9 @@ case 4. Each record also carries parameter labels and option lists (`Destroy|Blo
 
 Every constructor is `__thiscall(this, float activate time)`, `RET 4`, calls the base
 `BSP_MovieAction_ConstructBase` (`00465B60`) and stores its vtable. The base calls
-`BSP_MovieTimedItem_Construct` (`00465850`: +4 time, +8 name), writes the base vtable
+`BSP_MovieTimedItem_Construct` (`00465850`: +4 time, +8 string, which the factory fills with the comment), writes the base vtable
 `00CE5498` {`_purecall`, `004656C0`}, and clears +14h, the strings at +18h and +2Ch, +20h..+28h
-and +34h..+3Ch. `cBlackOut` reads its `Time:` and `Alpha:` from +20h and +24h, so +20h..+28h are
+and +34h..+3Ch. `cBlackOut` passes +20h and +24h to the blackout arm, so +20h..+28h are
 the three numeric parameters. Action vtables have two slots: slot 0 runs the action, slot 1 is
 the no-op `004656C0` except for `aParticleEffect`.
 
@@ -364,3 +364,136 @@ Open, in priority order:
 6. A Lua implementation of `SceneClassLuaTables` over the existing GUI/mission Lua readers would
    let the scene hosts call the loaders (`BSP_SceneCloud_RegisterClass`/`Instantiate` already
    reach `00479970` in `docs/ENTITY_IDENTITY.md`).
+
+## Engine-movie actions: file format, parser and run bodies (segment 5)
+
+Second packet (`cc13_settings2_movie`). Host: `include/bsp/engine_movie_actions.hpp`,
+`src/engine_movie_actions.cpp`: the type table, the `Action` block reader and four run-body
+decisions. Status: reconstructed, build-tested, not ABI-compatible, not wired into any host (the
+movie actions drive mission cutscenes, so wiring is left to the owner of the mission flow).
+
+### The `.ema` files
+
+The parser `BSP_EngineMovie_ParseFile` (`004602C0`, only caller `BSP_Game_BeginEngineMovie`)
+reads the engine-movie files. This installation has 39 of them under `universe\` (`*.ema`, for
+example `scenes\missions\COTP-IJN\PRCPIJN\ijn_02_force_z.ema`, dated 2024-07-13 like the rest
+of the bulk content). Grammar from the string pushes of `004602C0` and the files themselves:
+
+```
+Animations {
+  Movielen: 50.0100
+  AspectR: "1.78:1"
+  Animation {
+    Entitypath: "CameraLookat 01"
+    PointList { Point { PointType: 1 ActivateTime: ... Comment: "" PointPos: x y z Alpha: ... } ... }
+    ActionList {
+      Action { Type: cSetParent ActivateTime: 1.0100 Comment: "" ReferPath : "EngineBetty2|"
+               Num1 : 0.0000 OffsetX : 0.0000 OffsetY : 0.0000 OffsetZ : 0.0000 }
+    }
+  }
+}
+```
+
+### `0045E5E0` `BSP_MovieAnimation_ReadAction`
+
+`__thiscall`, `ECX` = owner, `[ESP+4]` = tokenizer, `[ESP+8]` not traced, `RET 8`
+(`0045EC94`). Token calls in order: `expect("Action")` `0045E626`, `expect("{")`, `expect("Type")`,
+`read` (the `:`), `read` (the type name, kept), `expect("ActivateTime")`, `read`, `read_float`,
+`expect("Comment")`, `read`, `read` (the comment). The type name is matched against the 32 table
+records (`_stricmp` at `0045E7A0`; a record with an empty name matches only a null token), and the
+index, time and comment go to `BSP_MovieAction_Create` (`0045DE50`, `__stdcall`, `RET 10h`),
+which allocates, constructs and copies the comment to action+8. The optional groups follow, each
+gated by a flag of the type record (record offset in brackets): `ReferPath` [+10h] to +18h,
+`Enum` [+48h] to +2Ch (both through `ReadNonemptyString`), `Num1`/`Num2`/`Num3`
+[+1Ch/+28h/+34h] to +20h/+24h/+28h, and `OffsetX`/`OffsetY`/`OffsetZ` [+54h] to
++34h/+3Ch/+38h: the second float read is stored after the third. Then `expect("}")` and
+`0045A210` appends the action to the owner. An unmatched type leaves the action pointer null,
+which the field reads then dereference; the host returns no action instead.
+
+### The type table `00460B80` `BSP_MovieActionTypes_Build`
+
+Each record is built by `BSP_MovieActionType_Construct` (`0045D480`) from the name, then a label
+and a flag per field (ReferPath, Num1, Num2, Num3), the Enum option list, the Enum label and flag,
+and the Offset label and flag. The arguments are built right to left, so the eight string pushes
+before each `00460AD0` call give the fields in reverse. In every record a field's flag is set
+exactly when its label is non-empty, and the field sets used by the 39 `.ema` files agree with
+that reading for every type they use:
+
+| id | type | ReferPath | Num1 / Num2 / Num3 | Enum (label: options) | Offset | uses in `.ema` |
+| --- | --- | --- | --- | --- | --- | --- |
+| 0 | `sSetTarget` | Target: | | | | 0 |
+| 1 | `cSetParent` | Parent: | ConvTime: | | Offset: | 34 |
+| 2 | `pEngineFailure` | | | Type: Destroy\|Blown\|Kill | | 8 |
+| 3 | `pForceRelease` | | | | | 7 |
+| 4 | (empty) | | | | | — |
+| 5 | `cUnParent` | | ConvTime: | | | 34 |
+| 6 | `sForceDepthCharge` | | PlatfrmID: | | | 0 |
+| 7 | `pSetGunFire` | | | On/Off: OpenFire\|HoldFire | | 0 |
+| 8 | `uTogglePeriscope` | | | In/out: Out\|In | | 0 |
+| 9 | `sForceArtilleryAngle` | | V.angle: / H.angle: | | | 0 |
+| 10 | `sForceArtilleryTarget` | Target: | | | | 6 |
+| 11 | `uForceTorpedo` | | PlatfrmID: | | | 0 |
+| 12 | `aSetGunFireEnabled` | | | Weapon: All\|AA_Flak\|Artillery\|Torpedo\|DC | | 26 |
+| 13 | `aSetGunFireDisabled` | | | Weapon: (same) | | 26 |
+| 14 | `aSetGunFireTargetOnly` | | | On/Off: TargetOnly\|AllEnemy | | 0 |
+| 15 | `aTurnGun` | | GunID: / H.Angle / V.Angle | | | 0 |
+| 16 | `uSetDepth` | | | Depth: Surface\|Periscope\|Underwater\|Maxdepth | | 4 |
+| 17 | `sForceAAFlak` | | PlatfrmID: | | | 1 |
+| 18 | `cFOV` | | FOV: | | | 24 |
+| 19 | `cBlackOut` | | Alpha: / Time: | | | 158 |
+| 20 | `aParticleEffect` | | StartTime: | Name: JetEngineBig\|RealGiantSmoke\|GiantSmoke | Offset: | 1 |
+| 21 | `aDont_Move` | | | Stay/Go: Stay\|Move | | 3 |
+| 22 | `cFOV_Now` | | FOV: | | | 0 |
+| 23 | `pSetGear` | | | Gear: Auto\|Down\|Up | | 34 |
+| 24 | `cCameraShake` | | Frequency: | ShakeIt: CameraPos\|LookAtPos\|CameraAndLookAt | Max: | 10 |
+| 25 | `cBinocular` | | | Action: Binocular\|Periscope\|OFF | | 30 |
+| 26 | `pTakeOffHack` | | Angle: | | | 22 |
+| 27 | `pWingTipEffect` | | | Effect: On\|Off | | 0 |
+| 28 | `sMoveToPoint` | | | MoveTP: Enable\|Disable | | 64 |
+| 29 | `cWideBlackBars` | | | Bar: Enable\|Disable | | 62 |
+| 30 | `sUseCatapult` | | Dir: | | | 0 |
+| 31 | `aHideEntity` | | | H/S: Hide\|Show | | 74 |
+
+This corrects the previous section: `cBlackOut`'s Num1 is `Alpha:` and Num2 `Time:`, matching
+`BSP_HudNarrativeScreen_ArmBlackoutFade(level, duration, callback)` (`005B9BA0`,
+`include/bsp/mission_blackout.hpp`); a typical movie opens with `cBlackOut Num1 1.0 Num2 0.0`.
+
+### Run bodies
+
+The 18 run bodies Ghidra had not defined were defined from the disk listing with
+`tools/ghidra_define_function.py` (record `reports/cc13_settings2_defined_functions.json`). Each
+run takes the entity in `[ESP+4]` and `RET 4`; `ECX` is the action.
+
+| type | run | effect |
+| --- | --- | --- |
+| `sSetTarget` | `004650F0` | when the resolved target (+14h) is set, `BSP_Entity_IssueCommand(00E08F78 for IsKindOf(6), else 00E08EF8, ..., 1)` |
+| `cSetParent` | `00464870` | movie player `[00E188A8]+38h`: tracks of the entity and of the ReferPath target (`0045C690`, track+11Ch), then `00458D50(track, ConvTime, target track, offset)` |
+| `pEngineFailure` | `00465D00` | `entity->vtable[194h]("explosion_delayed")`; the Enum is ignored |
+| `pForceRelease` | `004648F0` | `BSP_Unit_RequestOrdnanceRelease` when plane byte +9C0h+[00F876B8]*8 is set |
+| `cUnParent` | `00464350` | `00458A70(track, ConvTime)` |
+| `sForceDepthCharge` | `00465180` | parts (+48h list, next +44h) with IsKindOf(1Eh) and (24h), launcher type 8 and id +38Ch == Num1 (or Num1 0): `vtable+1F0h()` |
+| `pSetGunFire` | `00464910` | squadron (IsKindOf 18h): each plane (+3CCh count, +3D0h array, at most 5) byte +9B0h = OpenFire ? 1 : -1; plane (0Fh): its own |
+| `uTogglePeriscope` | `004649B0` | byte +1235h = (Enum == Out) |
+| `sForceArtilleryAngle`, `cFOV`, `cFOV_Now` | `00464390`, `004643D0`, `004643E0` | `RET 4`: no effect here; the camera FOV types are presumably read by the player itself (not traced) |
+| `sForceArtilleryTarget` | `004643A0` | already named `BSP_FireTargetHolder_Apply` |
+| `uForceTorpedo` | `00465210` | parts with IsKindOf(1Eh) and (20h): every barrel's reload timer to 0 (`BSP_Gun_SetBarrelReloadTimer`), then `vtable+1D8h(0, [00CE5444], [00CE5444])` |
+| `aSetGunFireEnabled` / `Disabled` | `00465290` / `00465350` | IsKindOf(5): the disabled-category mask at unit+634h, AA_Flak 1, Artillery 2, Torpedo 4, DC 8; All clears the low byte / ORs FFh (reconstructed) |
+| `aSetGunFireTargetOnly` | `00465410` | `[unit+6DCh]+59h` = (Enum == TargetOnly) |
+| `aTurnGun` | `00465450` | matching parts (id == Num1 or Num1 0): `BSP_TurningGun_SetTargetAngles(Num2, Num3)` |
+| `uSetDepth` | `004654D0` | already named `BSP_EntityCommand_SetSubmarineDepth` |
+| `sForceAAFlak` | `00465570` | parts with IsKindOf(1Eh) and (20h), type 5 or 1, id match: `vtable+1D8h(0, 0, 0)` |
+| `cBlackOut` | `004660B0` | blackout arm (level Num1, duration Num2) (reconstructed as data) |
+| `aParticleEffect` | `004656D0` / `004661A0` | see the previous section |
+| `aDont_Move` | `004649F0` | byte +62h = (Enum == Stay) |
+| `pSetGear` | `00464A30` | Auto `007B8CE0(0,0)`, Down `(1,1)`, Up `(2,1)`; `007B8CE0` stores plane+C08h and, for a non-zero mode, plane+C1Ch = (mode == 1) (reconstructed) |
+| `cCameraShake` | `00464AB0` | the Enum selects position, look-at or both; reads Num1 and the Offset triple on the player track from `0045DCA0`; read only in part |
+| `cBinocular` | `00464C40` | three overlay toggles on `[00E198C4]+84h` (+20h, +6Ch, +70h, `vtable+34h`) for Binocular / Periscope / OFF |
+| `pTakeOffHack` | `00464D70` | entity+64h = Num1 |
+| `pWingTipEffect` | `00464D80` | byte +96Ah = (Enum == On) |
+| `sMoveToPoint` | `00464DC0` | byte +748h = (Enum == Enable) |
+| `cWideBlackBars` | `00464E00` | Enable `005CB0F0`, else `005CB130` |
+| `sUseCatapult` | `00464E50` | session message 7Bh with Num1 * [00CE3D28] / [00CE3D20], `BSP_Session_RouteMessage(msg, 2, 0)` |
+| `aHideEntity` | `00464EE0` | IsKindOf(5): byte +68h = (Enum == Hide) |
+
+Who calls slot 0 and slot 1, and when relative to `ActivateTime`, was not traced; the movie player
+tick in segment 5 (`0045xxxx`, around `0045DCA0`/`0045C690`) is the place to look.
