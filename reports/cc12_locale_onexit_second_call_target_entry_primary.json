@@ -1,0 +1,442 @@
+{
+  "packet": "cc12_locale_onexit_second_call_target_entry_primary",
+  "status": "Root_reviewed_exact_entry_only",
+  "worker_commit": "e152d07ac715dcf4e5d5fa1f3260f875f45347e0",
+  "actual_Git_and_finite_inputs": {
+    "status": "PASS",
+    "worker_commit": "e152d07ac715dcf4e5d5fa1f3260f875f45347e0",
+    "frozen_HEAD": "d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8",
+    "Root_HEAD": "6e973b3dd35c0fad2db953e2a595fc7aaceeba74",
+    "proof_pins": [
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/evidence.zip",
+        "bytes": 399034,
+        "sha256": "0cb2f724290176ddb207b96e6ac38e359fae0309e147e819a12f3b5401ea515b"
+      },
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/delivery_git.zip",
+        "bytes": 582360,
+        "sha256": "8857760d3bfabc35120f721c3931404642ba8161ea5cd875bfcacab0dfe402a5"
+      },
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/next_worker_handoff.json",
+        "bytes": 5021,
+        "sha256": "0dcca322ce848547bba3435eda5ef805a79422e295fe0d23ebd679b74604cd64"
+      }
+    ],
+    "physical_helpers": [
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Tools/common.py",
+        "bytes": 5017,
+        "sha256": "a1350196d5106e62d11bd19fcc03904ee5552ad9579feb3535c75605ad2dee15"
+      },
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Tools/delivery_verifier.py",
+        "bytes": 3649,
+        "sha256": "41b0f1d58f1a4d1307ba9a321cfdfd909948ca94fcf94d8327170cb5be5acf1e"
+      },
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Tools/guarded_replay.py",
+        "bytes": 4090,
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Tools/verifier.py",
+        "bytes": 5917,
+        "sha256": "1cc62a1a18904f30926c272212b84d4136a65ea897ff73536b14d901da821581"
+      }
+    ],
+    "physically_retained_producers": 7,
+    "actual_frozen_objects": 6,
+    "actual_delivery_objects": 8,
+    "actual_prerequisite_inputs": 9,
+    "actual_outputs": [
+      {
+        "bytes": 2760,
+        "entry": "Outputs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+        "oid": "846a6f3cf6d1cea02b1bb50fc64d8e4a8121bc07",
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+        "sha256": "989a1ad71ac5f3863b05477df6e384c61a07d67def7eef92399b3df957f4d51f"
+      },
+      {
+        "bytes": 13749,
+        "entry": "Outputs/reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+        "oid": "83835e8900a08e006adaaa333af3cdb1ae0fe9fd",
+        "path": "reports/cc12_locale_onexit_second_call_target_entry_metadata.json",
+        "sha256": "fae343a0ead4c4eb0bdf608307d22437ed5e0e843badd389ee2ff11c2f2c2be6"
+      }
+    ],
+    "Root_CRLF_only_variants": [
+      "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY_PRIMARY.md",
+      "reports/cc12_locale_onexit_second_call_body_primary.json"
+    ],
+    "Source_tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "Root_current_Source_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "current_Root_Source_equality_claimed": false,
+    "Source_census": false,
+    "entry_gate_only": true,
+    "body_ABI_CRT_owner_status_runtime_credit": false
+  },
+  "independent_Root_Native": {
+    "status": "PASS",
+    "epoch": 98,
+    "function_count": 64730,
+    "paired_raw_sha256": "d419a5b2f6a20dcbe810b9c4eb12e4b9efbf3eaea32ec4511106d3ab365652d8",
+    "metadata": [
+      {
+        "function": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11c21"
+          },
+          "name": "__lock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "49",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11c21"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11c51"
+                },
+                "length": "49"
+              }
+            ]
+          }
+        },
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      },
+      {
+        "function": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11c21"
+          },
+          "name": "__lock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "49",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11c21"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11c51"
+                },
+                "length": "49"
+              }
+            ]
+          }
+        },
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11c21"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11c22"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        }
+      }
+    ],
+    "exact_entry_hex": "55",
+    "manual_opcode_decode": "55 PUSH EBP",
+    "actual_capstone_version": "5.0.7",
+    "actual_capstone_decode": "push ebp",
+    "saved_prototype_prefix": [
+      "Function: __lock at 00c11c21",
+      "Signature: void __cdecl __lock(int _File)",
+      "Entry: 00c11c21",
+      "Body: 00c11c21 - 00c11c51"
+    ],
+    "saved_name_and_prototype_metadata_only": true,
+    "automatic_companion_and_target_objects_opaque": true,
+    "body49_not_admitted": true,
+    "Original_CRT_ABI_locking_FH3_ownership_activation_runtime_or_gameplay_credit": false
+  },
+  "Root_core_guard": {
+    "status": "PASS",
+    "frozen_HEAD": "d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8",
+    "Source_tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "Source_census_performed": false,
+    "current_Root_Source_equality_claimed": false,
+    "finite_inputs": 9,
+    "actual_frozen_Git_objects": 6,
+    "typed_responses": 2,
+    "raw_pair_equal": true,
+    "epoch": 98,
+    "function_count": 64730,
+    "entry": "00C11C21",
+    "entry_unit_bytes": 1,
+    "entry_hex": "55",
+    "saved_body_range_only": [
+      "00C11C21",
+      "00C11C51"
+    ],
+    "Native_closed": true,
+    "full_body_admitted": false,
+    "prototype_companion_and_target_objects": "wholly opaque",
+    "semantic_or_runtime_credit": false,
+    "Root_guard": {
+      "status": "PASS",
+      "single_ZIP_reads_only": true,
+      "post_preload_imports": false,
+      "process_network_dynamic_library_directory_or_mutation": false,
+      "read_opens": 1,
+      "archive_sha256": "0cb2f724290176ddb207b96e6ac38e359fae0309e147e819a12f3b5401ea515b"
+    }
+  },
+  "Root_delivery_guard": {
+    "status": "PASS",
+    "commit": "e152d07ac715dcf4e5d5fa1f3260f875f45347e0",
+    "frozen_HEAD": "d42a7d4f8f6318b9bfa07edf95b0f13dc86d6db8",
+    "actual_delivery_Git_objects": 8,
+    "actual_output_blobs": 2,
+    "exact_output_paths": [
+      "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_TARGET_ENTRY_METADATA.md",
+      "reports/cc12_locale_onexit_second_call_target_entry_metadata.json"
+    ],
+    "current_staged_committed_bytes_equal": true,
+    "worker_base_final_Source_tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "Source_census_performed": false,
+    "current_Root_Source_equality_claimed": false,
+    "clean_final_status": true,
+    "core_archive_pin": {
+      "bytes": 399034,
+      "sha256": "0cb2f724290176ddb207b96e6ac38e359fae0309e147e819a12f3b5401ea515b"
+    },
+    "Native_closed": true,
+    "Root_guard": {
+      "status": "PASS",
+      "single_ZIP_reads_only": true,
+      "post_preload_imports": false,
+      "process_network_dynamic_library_directory_or_mutation": false,
+      "read_opens": 1,
+      "archive_sha256": "8857760d3bfabc35120f721c3931404642ba8161ea5cd875bfcacab0dfe402a5"
+    }
+  },
+  "pins": [
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/evidence.zip",
+      "bytes": 399034,
+      "sha256": "0cb2f724290176ddb207b96e6ac38e359fae0309e147e819a12f3b5401ea515b"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/delivery_git.zip",
+      "bytes": 582360,
+      "sha256": "8857760d3bfabc35120f721c3931404642ba8161ea5cd875bfcacab0dfe402a5"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/next_worker_handoff.json",
+      "bytes": 5021,
+      "sha256": "0dcca322ce848547bba3435eda5ef805a79422e295fe0d23ebd679b74604cd64"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_actual_review.json",
+      "bytes": 3278,
+      "sha256": "03290c0d1d3c2f24fa22646b5a3945e94297548c0f44f6c7d61e59f9bf8168f4"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_native_review.json",
+      "bytes": 6496,
+      "sha256": "25b8c4878c48ec8d67a44b6202241dbbc86d7fc23f36fdbb421b1d199aa9ff0e"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_core_guard.json",
+      "bytes": 1076,
+      "sha256": "41f42e57e3cee0904b28d92f468a2f63aabed66630e7473d3103164b9559f211"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_delivery_guard.json",
+      "bytes": 1178,
+      "sha256": "bc99b3f7220dedd66e5808440907cc16b0699ec541c0564edae663e8ee826c00"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/copy_and_actual.py",
+      "bytes": 4083,
+      "sha256": "acd8c176df1b73bc6cd38a8e8ef2f355379f46d6f6ecedebe63e149689c60f8e"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_native_review.py",
+      "bytes": 3551,
+      "sha256": "80f787cd252c6a15f9448a1009b745a69bb4e6d105244c2a4099eb76bb28c650"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/Root_guard_runner.py",
+      "bytes": 2419,
+      "sha256": "03ba982fb156aad0a831caba4d4bee6016962d47e8337142cdee6f7c322b9641"
+    },
+    {
+      "path": "local/cc12_locale_onexit_second_call_target_entry_primary/publish_review.py",
+      "bytes": 4210,
+      "sha256": "4aa0f66d81bf12fdc8805a8bb9c36a365b8f1db8607a31f291c192a5be379187"
+    }
+  ],
+  "helper_review": "All four pure helpers physically read before Root replay. Common/core/delivery executed from pinned bytes under independent strict audit; worker guard and seven producer bodies retained but not executed by Root.",
+  "boundary": "C11C21 complete1B entry only; saved49B range/name/prototype metadata. Body/targets/automatic companions opaque; no Source/build/test/probe/GPR changes, locking/CRT/ABI/FH3/ownership/activation/runtime/gameplay credit."
+}
