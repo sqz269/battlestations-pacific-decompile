@@ -1,0 +1,29 @@
+# CRT dispatch zero-edge direct target entry at `00BFBA09`
+
+The exact five-byte entry is `E8 5A A1 00 00`: an unprefixed x86-32 near relative `CALL` to numeric address `00C05B68`. The signed displacement is `+41306` (`0xA15A`) from encoded next address `00BFBA0E`. This establishes one local instruction; the callee and the remaining 31 bytes of the saved body are outside the packet.
+
+## Evidence and scope
+
+The accepted caller report at frozen commit `31724cf2e22da8fd78bc65951381712371b895bd` supplies the bounded positive edge `C0523C: E8 C8 67 FF FF`, displacement `-38968`, numeric target `BFBA09`, encoded return `C05241`. Both caller and new-entry E8 fields were decoded manually and checked with actual detailed Capstone 5.0.7 output. This packet does not acquire fresh bytes at the caller or any callee.
+
+Phase one captured original paired exact-entry typed metadata before any byte/text access. Root admitted only the five-byte unit after reviewing all 34 preimages and the finite actual Git objects. Phase two made exactly two five-byte reads, two context-zero listing-text reads, one closing typed-entry query, and two count queries. Across both phases there are 11 Native commands and four count checkpoints. All three original typed response bodies are byte-identical (2,501 bytes; SHA-256 `b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd`). Epoch remains 98 and function count 64,730 in `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
+
+All four listing aliases identify exact `InstructionDB` entry `BFBA09`, length five. The complete saved owner has one 36-byte range `BFBA09..BFBA2C`; owner entry and query entry match. Saved `no_return=false`, `is_thunk=false`, flow override `NONE`, default/effective `UNCONDITIONAL_CALL`, and unoverridden fallthrough `BFBA0E` agree with the physical unit. The saved label `__amsg_exit` and automatic companion objects remain metadata, without authenticated service, type or return behavior. No prototype, neighboring instruction, remaining body, target body, provider, external data or runtime descriptor was queried.
+
+## Qualified local CPU behavior
+
+Each statement assumes the instruction is reached and completes without a fault under the x86-32 decoding model. **Every ESP equation also requires the current SS stack-address attribute to be 32-bit.** The program language does not establish live SS. With a 16-bit stack address attribute these ESP equations are not asserted. Qualified arithmetic wraps modulo 2^32; memory refers to its value at each instruction's execution time.
+
+For current entry `ESP=T`, the new E8 writes the 32-bit return address `BFBA0E` to current `SS:[T-4]`, leaves `ESP=T-4`, and transfers EIP to numeric `C05B68`. This single instruction preserves other general registers, including EBP, and arithmetic flags. No preservation is asserted for the callee. If execution later resumes at `BFBA0E`, **all returned registers, including EAX/ESI/EBP/ESP, flags and memory are unconstrained**. Return itself is not established.
+
+For the accepted caller's zero edge, name the first opaque return's current `EAX=A1` and `ESP=Q1`. The local MOV/TEST takes this edge only for `A1=0`. The local PUSH 16 and CALL at `C0523C` enter `BFBA09` with `T=Q1-8` and `EAX=ESI=0`; their own stores write 16 at `SS:[Q1-4]` and `C05241` at `SS:[Q1-8]`. The new E8 writes `BFBA0E` at `SS:[Q1-12]` and enters numeric `C05B68` with `ESP=Q1-12`, still `EAX=ESI=0` before that opaque callee executes. TEST of zero sets ZF/PF, clears CF/OF/SF and leaves AF undefined; these local MOV/PUSH/CALL instructions do not modify those arithmetic flags. None of these relationships survives an opaque call without new evidence. Argument count/type, convention, frame identity, stack restoration, service and nonreturn remain unproved.
+
+## Reproducible closure
+
+The finite input set is exactly the accepted caller BODY doc/report and PRIMARY doc/report, `config/target.json`, and `tools/bsp.py`, `tools/ghidra_export.py`, `tools/ghidra_typed_flow.py`. Actual commit/root/directory/blob payloads establish these paths; `src` and `include` tree IDs are identity-only and their payloads are excluded. Original captures, producer pins, all 45 Root gate files, all 34 Root metadata preimages and available failure records are retained without importing prior archives.
+
+The sealed core and its distinct copy passed on their first execution. Each audited run performed exactly one supplied ZIP read, one pinned pure helper execution and one exclusive receipt write, with all member/Git/metadata/manual/Capstone checks in memory. Archived producers are never executed by replay. After this public commit, the separate delivery proof adds actual final Git objects and both public outputs, checks exactly two changed paths and unchanged input/Source identities, and repeats original/copy replay. Evidence and receipts are under `local/cc12_crt_dispatch_zero_edge_direct_target_entry/`.
+
+Worker capture and core replay failures: zero. Root retained two offline inspection failures (wrong filename and Base64 key) plus one gate schema failure (program string versus structured identity), corrected before admission with no extra Native/GPR effects. Exact producer preimages and available streams are included. The first combined inspection output was tool-truncated; complete initial stdout is not locally retained. Inspection producer files are retrospective exact stdin copies; gate attempt01 streams are transcribed from the complete tool output. No complete initial stdout claim is made.
+
+Exactly this document and its [JSON report](../reports/cc12_crt_dispatch_zero_edge_direct_target_entry.json) are public outputs. No Source implementation, C++ build, test, probe, GPR write, original ABI compatibility, game validation, OS audio or runtime acceptance is claimed.

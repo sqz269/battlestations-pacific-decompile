@@ -1,0 +1,465 @@
+{
+  "schema": "cc12.crt-dispatch-zero-edge-direct-target-entry.v1",
+  "packet": "cc12_crt_dispatch_zero_edge_direct_target_entry",
+  "status": "bounded exact-entry metadata and physical instruction evidence; no Source/runtime credit",
+  "frozen_actual_Git_commit": "31724cf2e22da8fd78bc65951381712371b895bd",
+  "frozen_tree": "3f80f1d39396f4d26157dabce6de33e7e256fcbe",
+  "finite_actual_Git_inputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA.md",
+      "blob": "7cf8c16d398756fb1a8629a93191ccc68dd7507e",
+      "length": 5924,
+      "sha256": "eee3daaa455405acc52050c7782c274dc7c933b4257cd7b6c25b93f56b50ead9"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_first_call_body_metadata.json",
+      "blob": "bf18b387ae13b309585f45bda342785e654f4a87",
+      "length": 30362,
+      "sha256": "7c4e380dfdcfb7dc2f360fa3386ff1e70e30e94d81e70705e52f9f7fb0a21741"
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_FIRST_CALL_BODY_METADATA_PRIMARY.md",
+      "blob": "384225584e6f1a4ac55d58c0280c29d476761cfb",
+      "length": 3377,
+      "sha256": "5f60fa754a99156ea25886275814291673b9ba34d62d3f72be167e582a44a367"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_first_call_body_metadata_primary.json",
+      "blob": "8dd4726afd762ca7e62aa91eac0efbcfc29fa089",
+      "length": 31056,
+      "sha256": "b351f7b0f53dc85b25bbee6cc6b644360158d4db4d71f56dfc225dbf32df9375"
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    }
+  ],
+  "source_tree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "positive_accepted_caller": {
+    "manual": {
+      "address": "00C0523C",
+      "hex": "e8c867ffff",
+      "length": 5,
+      "opcode": "E8",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "immediate_offset": 1,
+      "immediate_size": 4,
+      "signed_rel32": -38968,
+      "encoded_next_address": "00C05241",
+      "numeric_target": "00BFBA09",
+      "mnemonic": "CALL",
+      "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+    },
+    "Capstone": {
+      "version": "5.0.7",
+      "architecture": "CS_ARCH_X86",
+      "mode": "CS_MODE_32",
+      "address": "00C0523C",
+      "bytes": "e8c867ffff",
+      "size": 5,
+      "id": 62,
+      "mnemonic": "call",
+      "op_str": "0xbfba09",
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        232,
+        0,
+        0,
+        0
+      ],
+      "address_size": 4,
+      "modrm_offset": 0,
+      "modrm": 0,
+      "sib": 0,
+      "disp_offset": 0,
+      "disp_size": 0,
+      "displacement": 0,
+      "imm_offset": 1,
+      "imm_size": 4,
+      "operands": [
+        {
+          "type": "imm",
+          "size": 4,
+          "access": 0,
+          "numeric_value": "00BFBA09"
+        }
+      ],
+      "regs_read_implicit": [
+        "esp",
+        "eip"
+      ],
+      "regs_written_implicit": [
+        "esp"
+      ],
+      "regs_read_all": [
+        "esp",
+        "eip"
+      ],
+      "regs_written_all": [
+        "esp"
+      ],
+      "groups": [
+        "call",
+        "branch_relative",
+        "not64bitmode"
+      ],
+      "eflags": 0
+    }
+  },
+  "metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "modification_number": 98,
+    "function_count": 64730,
+    "Native_commands": 11,
+    "count_checkpoints": 4,
+    "original_typed_responses": [
+      {
+        "label": "entry_a",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_b",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      },
+      {
+        "label": "entry_close",
+        "length": 2501,
+        "sha256": "b456fed78c7ede313261f41fb839b25766d7fbe76a47f3942d33494d863a73bd"
+      }
+    ],
+    "four_exact_InstructionDB_aliases": true,
+    "entry_length": 5,
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba09"
+      },
+      "name": "__amsg_exit",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "36",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba09"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba2c"
+            },
+            "length": "36"
+          }
+        ]
+      }
+    },
+    "flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "UNCONDITIONAL_CALL",
+        "is_call": true,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba0e"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ],
+      "effective_targets": [
+        {
+          "space": "ram",
+          "offset": "00c05b68"
+        }
+      ]
+    },
+    "saved_names_types_service_and_return_behavior_authenticated": false,
+    "automatic_companion_objects_interpreted": false
+  },
+  "physical": {
+    "manual": {
+      "address": "00BFBA09",
+      "hex": "e85aa10000",
+      "length": 5,
+      "opcode": "E8",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "immediate_offset": 1,
+      "immediate_size": 4,
+      "signed_rel32": 41306,
+      "encoded_next_address": "00BFBA0E",
+      "numeric_target": "00C05B68",
+      "mnemonic": "CALL",
+      "encoding": "unprefixed near relative CALL rel32 under x86-32 decode"
+    },
+    "Capstone": {
+      "version": "5.0.7",
+      "architecture": "CS_ARCH_X86",
+      "mode": "CS_MODE_32",
+      "address": "00BFBA09",
+      "bytes": "e85aa10000",
+      "size": 5,
+      "id": 62,
+      "mnemonic": "call",
+      "op_str": "0xc05b68",
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        232,
+        0,
+        0,
+        0
+      ],
+      "address_size": 4,
+      "modrm_offset": 0,
+      "modrm": 0,
+      "sib": 0,
+      "disp_offset": 0,
+      "disp_size": 0,
+      "displacement": 0,
+      "imm_offset": 1,
+      "imm_size": 4,
+      "operands": [
+        {
+          "type": "imm",
+          "size": 4,
+          "access": 0,
+          "numeric_value": "00C05B68"
+        }
+      ],
+      "regs_read_implicit": [
+        "esp",
+        "eip"
+      ],
+      "regs_written_implicit": [
+        "esp"
+      ],
+      "regs_read_all": [
+        "esp",
+        "eip"
+      ],
+      "regs_written_all": [
+        "esp"
+      ],
+      "groups": [
+        "call",
+        "branch_relative",
+        "not64bitmode"
+      ],
+      "eflags": 0
+    },
+    "code_sha256": "4da2a8079983ae3f5a4d05195cd685a8e389faed9eba0a4b13460017a6211271",
+    "paired_bytes_identical": true,
+    "paired_context0_text_identical": true,
+    "initial_pair_and_closing_typed_identical": true
+  },
+  "cpu_contract": {
+    "qualification": "Instruction reached and completed without fault under x86-32 decoding. Runtime CPU state and segment descriptors are not observed.",
+    "stack_qualification": "Every ESP formula additionally requires the current SS stack-address attribute to be 32-bit; x86:LE:32 program metadata does not establish live SS. With 16-bit SS, no stated ESP formula is asserted. Qualified arithmetic wraps modulo 2^32.",
+    "current_memory": "Every load/store refers to memory at that instruction execution time; no validity, disjointness, frame identity, or value persistence across opaque calls is assumed.",
+    "entry_call": "For current entry ESP=T, the local unprefixed E8 stores the 32-bit return address 00BFBA0E at current SS:[T-4], leaves ESP=T-4, and transfers EIP to numeric 00C05B68. This one instruction preserves other general registers, including EBP, and arithmetic flags. This says nothing about the callee.",
+    "opaque_callee": "No target bytes, prototype, service, data, or ownership are authenticated. Return is not established. If control later resumes at 00BFBA0E, every returned register including EAX, ESI, EBP and ESP, all flags, and memory are unconstrained. No preservation or stack restoration is propagated.",
+    "accepted_caller_zero_edge": "After the earlier opaque call resumes at C05234, let current EAX=A1 and ESP=Q1; all other returned state is unknown. The accepted local MOV ESI,EAX and TEST ESI,ESI reach the zero edge only when A1=0. PUSH 16 at C0523A and E8 at C0523C then enter BFBA09 with T=Q1-8 and EAX=ESI=0. Their stores write 16 at SS:[Q1-4] and C05241 at SS:[Q1-8] at their own execution times. The new entry E8 then writes BFBA0E at SS:[Q1-12] and enters C05B68 with ESP=Q1-12 and EAX=ESI=0. Other registers remain the unknown current values through these local instructions. None of these relations extend across either opaque callee.",
+    "flags_on_local_zero_path": "The caller TEST of zero clears CF/OF/SF, sets ZF/PF, and leaves AF undefined. Local MOV/PUSH/CALL do not change these arithmetic flags before entry into C05B68. All flags become unconstrained across the opaque C05B68 call.",
+    "scope": "No argument count/type, convention, service identity, nonreturn, TLS behavior, body remainder, source implementation, binary replacement, ABI compatibility, or game/runtime validation."
+  },
+  "Root_gate": {
+    "phase_one_required_explicit_admission": true,
+    "admitted_length": 5,
+    "all_45_Root_files_copied": true,
+    "all_34_metadata_preimages_retained": true,
+    "no_prototype_admitted": true,
+    "body_remainder_31_bytes_unadmitted": true,
+    "gate_pin": {
+      "length": 12115,
+      "sha256": "5f8d5ede7e95c6cf7a1ae63df2ce4551e4d6e0a1e4e61b699014a0da34f02b4a"
+    }
+  },
+  "failures": {
+    "worker_Native": 0,
+    "worker_capture_producer": 0,
+    "worker_core_replay": 0,
+    "Root_offline_inspection": 2,
+    "Root_offline_gate": 1,
+    "Root_failure_detail": "Wrong initial filename, then wrong Base64 field; first gate attempt assumed a program string instead of the structured identity object. All exact producer preimages and available streams are retained. Root corrected the gate before admission; no extra Native/GPR effects.",
+    "Root_stream_limit": "Initial combined inspection stdout was tool-truncated and complete local stdout was not retained. Inspection producer files are retrospective exact stdin copies. Gate attempt01 stdout/stderr are transcribed from the complete tool result. No complete initial stdout claim."
+  },
+  "verification": {
+    "core_original": "PASS first execution",
+    "core_distinct_copy": "PASS first execution",
+    "audit_each_run": {
+      "ZIP_reads": 1,
+      "helper_executions": 1,
+      "exclusive_receipt_writes": 1
+    },
+    "core_archive_pin": {
+      "length": 1537083,
+      "sha256": "e2988a46d6701e18b8dbdcf6f7ebf7a600bc97bf10f14be4b65e6e92337f4da5"
+    },
+    "delivery": "After the public commit, delivery proof includes actual final Git commit/root/directory/blob objects and both output bytes. A separate receipt verifies exactly two changes, unchanged finite inputs and Source tree identities, and repeats the pure replay on the original and a distinct copy.",
+    "executable_scope": "Only the supplied pinned pure replay helper executes. Archived capture/gate/report/seal producer bodies are data. No repository/Git/GPR/network/process/source census access during replay."
+  },
+  "private_evidence_directory": "local/cc12_crt_dispatch_zero_edge_direct_target_entry/",
+  "private_evidence_pins": {
+    "capture_entry_metadata.py": {
+      "length": 12016,
+      "sha256": "8bbbff5cd4f01c96091ef77cd7d7c82c476c6d335b5bfa5167818600d281a0ed"
+    },
+    "capture_admitted_entry.py": {
+      "length": 4250,
+      "sha256": "91759af5239c8e25c7c0e189bf52491bf96157dd6c036bfbe1cc3145468e101e"
+    },
+    "metadata_capture_manifest.json": {
+      "length": 7569,
+      "sha256": "4f00cc2bc44c1cec2cbf749f94ee5dfdaebe298cb3648787f5eb24cfc89a33bf"
+    },
+    "entry_capture_manifest.json": {
+      "length": 12698,
+      "sha256": "92bd39c6986d165b656a06918f5e113ac1df4391ff73f8eee286637f65a8c989"
+    },
+    "root_gate_copy_pins.json": {
+      "length": 7498,
+      "sha256": "b3a35a7459b3f9f9898335c34574d16f40a7b8b53fd0bd8e8e6538c8c007820a"
+    },
+    "root_gate/Root_entry_gate.py": {
+      "length": 9025,
+      "sha256": "ca5729a028bf4c23a35f36c7f2e8920ce4920f060e4d8b2541d119f50a99b4a5"
+    },
+    "root_gate/Root_entry_gate.json": {
+      "length": 12115,
+      "sha256": "5f8d5ede7e95c6cf7a1ae63df2ce4551e4d6e0a1e4e61b699014a0da34f02b4a"
+    },
+    "root_gate/Root_offline_inspection_failures.json": {
+      "length": 1030,
+      "sha256": "3c00e63185373bf07983bc80e8fe62eb0342aa27011999873f18c5d2dbfcd867"
+    },
+    "replay.py": {
+      "length": 23884,
+      "sha256": "f51b4f3cc12c61d55c1784020fac2ad297ee89e8b58b51b057e7cb2b103f1bef"
+    },
+    "audit_replay.py": {
+      "length": 2285,
+      "sha256": "6bfef48d6f4c89c87d875a3348a3dcc26d4aea852ba754eec169acac31aa3b43"
+    },
+    "prepare_core.py": {
+      "length": 1855,
+      "sha256": "26b78034eed6c58c550a33b6d7a4aa8565b26649bc060c236f21f7eae4ace338"
+    },
+    "run_replays.py": {
+      "length": 2750,
+      "sha256": "7c3f4354da4ef054d03d54daeb4637674a0aba2bba3bf4f5c6c1a89d62355691"
+    },
+    "replay_preexecution_pins.json": {
+      "length": 513,
+      "sha256": "30da0b7cee0808e893f739de6b6979ce9d83a3716956d21bf66b3a7c4210d893"
+    },
+    "seal_preexecution_pins.json": {
+      "length": 264,
+      "sha256": "86a8b48caf1754b1d88c9188f3ec83765394a36c3409a3659f61fad4e17ad5a3"
+    },
+    "write_outputs.py": {
+      "length": 11870,
+      "sha256": "5217acc25d5d6956fc02998c7cb550ed74352392a931182651a99f203b3feb12"
+    },
+    "seal_delivery.py": {
+      "length": 6580,
+      "sha256": "d74dd8ae19cb36d96b0869ec93eb097f1ad41e3ef5b6e91e83c5565b0940d428"
+    },
+    "core_manifest.json": {
+      "length": 19291,
+      "sha256": "c53ca73a527d466d6de2199e00496bffc59ecd908a5b58f0ebd7cd909dfe254d"
+    },
+    "core_receipt.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "core_copy_receipt.json": {
+      "length": 10600,
+      "sha256": "7c159263973a70f4dee1f772c4ea089bb36f1749db4d64238ac42a2ca7b4b061"
+    },
+    "core_replays.json": {
+      "length": 600,
+      "sha256": "03625937c7772b9a74b2462fa60541c166b8364fed5d285e80aa99d710eb994f"
+    }
+  },
+  "boundaries": {
+    "new_code_bytes": 5,
+    "new_instruction_starts": 1,
+    "body_remainder_bytes_read": 0,
+    "new_prototypes": 0,
+    "target_or_neighbor_queries": 0,
+    "external_data_reads": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "builds_tests_probes": 0,
+    "ABI_or_game_runtime_acceptance": false,
+    "OS_audio_runtime_work": false,
+    "saved_name": "The saved owner label __amsg_exit is metadata only; this packet authenticates no service identity or nonreturn behavior."
+  }
+}
