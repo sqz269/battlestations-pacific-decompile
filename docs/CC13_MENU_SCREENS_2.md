@@ -358,8 +358,8 @@ in double (the original keeps an 80-bit intermediate); `std::sort` stands in for
 - After the loop +38h = y (the update's scroll limit), frame +18h vtable +70h, +20h = 0.
 
 Uncertainty: 004C5E60's narrow-to-wide rule was not traced (modelled as byte zero-extension); the
-`%` formatter models only `%c` and `%%`; +18h is named "frame" by use only (Register binds
-`clipbox_Clipbox` and `moving_Group`; which lands at +18h was not checked).
+`%` formatter models only `%c` and `%%`. (Resolved by cc13-menus6: Register stores
+`clipbox_Clipbox` at +18h and its child `moving_Group` at +1Ch.)
 
 ## Tactical library Enter (cc13-menus5)
 
@@ -392,7 +392,7 @@ matched in the listing.
 Uncertainty: the list builders (005012F0, 00500E90, 00500860, 00500450, 005010C0, 00506660, 005001A0,
 00500640) are named from their single call sites only; 00502480 (HDR_, ReflectionCubeMap) is the 3D
 preview setup shared with the front-end preview and Register; 00B33AC0 (ECX = *(00F8D394), arg 1) is
-unexamined. The Update 005162B0 was decompiled but not reconstructed (register-dependent loop bodies,
+unexamined. The Update 005162B0 was reconstructed by cc13-menus6 (see below); menus5 left it at (register-dependent loop bodies,
 `unaff_ESI`/`unaff_EDI`, x87 row placement); see the handoff.
 
 ## HUD free camera Enter and Update (cc13-menus5)
@@ -451,3 +451,185 @@ Open, in order of value:
    writing through a null pointer (check the listing).
 4. HUD screens from menus4's list: formation Enter/Exit/Update (0053A4D0, 00536800, 0053A8E0), frame
    stats Register 0053C740, menu-prompt Exit 00530970.
+
+## Tactical library Update, carousel step and nose-art apply (cc13-menus6, 2026-10-11)
+
+Reconstructed and build-tested in `src/menu_screens_2.cpp` (`tactical_library_update_005162b0`,
+`tactical_library_carousel_step_00516010`, `tactical_library_apply_nose_art_005161c0`); none ran in
+`bsp_game`. Evidence is the listing, read whole (`m6_m4dis.py` 005162B0..00517276, 00516010..005161B6,
+005161C0..005162A0); the pseudocode was used only for the block order.
+
+| Address | Name (hypothesis) | ABI | Evidence |
+|---|---|---|---|
+| 005162B0 | BSP_TacticalLibraryScreen_Update | slot +20h of 00CEB9B4, `__thiscall(screen, float dt)`, RET 4, SEH 00C6A7E0 | listing; ESI = screen throughout |
+| 00516010 | BSP_TacticalLibraryScreen_StepCarousel | `__thiscall(screen, bool forward)`, RET 4 | listing; called on actions 4Ch (1) / 4Dh (0) |
+| 005161C0 | BSP_TacticalLibraryScreen_ApplyNoseArt | `__thiscall(screen)`, RET | listing; called on 4Ah in kind 8 |
+
+Register and stack recovery (what the decompiler lost):
+
+- Kind 5 (order of battle) row loop 00516481..00516849: `[esp+10h]` is the row counter (the value the
+  pseudocode shows as `unaff_ESI` written to widget+D8h), EDI the record index parsed by `_atol` from
+  the row's data text (row virtual +28h, then +4), EBP = screen+45Ch (the vector object; begin +460h,
+  end +464h, 2Ch records). The arrow widgets +1D8h/+278h are indexed by the record, not by the row.
+  004FB090 gets record+00h for every row.
+- Kind 6 (unlocks) loop 0051685B..00516B10: EBP is the row and record index, EDI walks screen+1D8h
+  (EDI-0A0h = +138h, EDI+0A0h = +278h) and `[esp+10h]` is the byte offset into the +470h records.
+  The image does not bound the 40-entry widget arrays; the reconstruction stops at 40.
+- x87: dt stays in ST0 from 005162D9 until the +5B4h test consumes it (FSUBR/FSTP, or FSTP ST0 at
+  00516389). Left arrow x = origin.x (spilled as a double at `[esp+34h]`) - own width / 1.2
+  (00CEC160); right arrow x = origin.x + the GUI manager's highlight widget width (00AA0F50(1), then
+  00AA6740); y = origin.y - 0.018 (00CEC158, kind 5) or 0.023 (00CEC150, kind 6); z = -10 (00CE6848)
+  in kind 5, the origin z in kind 6. The origin is fetched twice per row (once per arrow).
+- Arrow frames through virtual +88h(frame, 0, 1.0f): 4 locked (kind 5, record without children and
+  +0Ch == 1), 3 disabled (left: +138h[i] == 0; right: == child count in kind 5, == count - 1 in kind 6),
+  otherwise virtual +94h is read twice and a frame outside 1..2 is reset to 0. Record +0Ch == 0 hides
+  both arrows in kind 5; an empty child vector (record +18h, begin +1Ch, end +20h) hides them in kind 6.
+
+Control flow: +8Ch counts down while positive; +5B4h (-1 = idle, 00D7A260) counts down and at <= 0
+stops the loading queue, resets the GUI screens, stores the +C4h list selection in game+6B0h and
++6ACh and calls 005922F0 (ECX = *(*(00E198AC)+58h)). Kind 3 with a playing movie and action 4Bh stops
+it, restarts the menu stream +50h with the empty name 00E18D78 and returns. Kind 5 runs
+`profile_hints(6)` and returns through 004FF6F0 on 4Ah. Kind 7 runs 00514FB0 on 4Bh, arms +5B4h = 0.5
+on 4Ah (only when idle), then `profile_hints(7)`. In the 3D view (+90h == 1) 4Bh toggles back and shows
+the kind 5/6 page or, for kind 2, the bar (0,"",0)(A7h 3dview)(B3h navigate)(B2h scroll_menu)(A3h back).
+Otherwise one of: console flag 00F88A30 + action 50h in kinds 2/5/6 -> 00514C20; +90h == 0 and 4Bh ->
+Back when list byte +85h is set, else list virtual +60h(1) and the kind 5 page or the bar
+(A2h continue,0)(0,"",1)(B3h navigate)(A3h back)(0,"",1); 50h in kind 5 -> 00511BF0(atol of the selected
+row) and the bar (A2h continue,0)(AFh change)(B3h navigate)(A7h 3dview)(A3h back); 4Ah -> 004FF580
+(kind 3), 005161C0 (kind 8), Back when 004FC9D0 is true (kind 6); 4Ch / 4Dh -> 00516010(1 / 0) unless
+kind 7. Every non-returning branch then runs 00515050(dt) unless kind 7, and kind 8 hides the three
+keret frames +5A0h..+5A8h (virtual +84h(0)) and shows the one whose panel (+508h/+50Ch/+510h,
+virtual +38h) shows the profile's nose art: game+730h when the current profile's +28h is non-zero,
+else +734h, compared with record +48h from 004FA8F0 / 004FA960 / 004FAA00 on the +434h selector; the
+left panel also needs +438h > 1.0.
+
+00516010: returns for kind 7 and, in kind 4, while +8Ch > 0; sets +8Ch = 0.5, steps the selector
+(004FC720 forward, 004FC7A0 back), 00510C20, 00506550 (kind 5) or 00504C60 (kind 6), 00515050(0.001),
+detaches the scroller content and sets its range to (text height of +A8h + (float)(1/72 in kind 4,
+else 0)) - +5ACh height, the pad narrowed to float in the argument slot first.
+
+005161C0: record +434h of the 6Ch-byte nose-art vector +448h, field +48h, goes to game+734h when the
+library list row (*(*(00E198AC)+70h)+B8h) parses to 0, else game+730h; then 007F8690 on the current
+profile game+18CCh[game+18ECh] with {+734h, +730h, 0} and Back.
+
+Uncertainty: the precision of the x87 arithmetic is taken as the CRT's 53-bit default, so double
+arithmetic stands in for it; 00AA0F50(1) is named "highlight widget" only by its existing ledger name;
+the callees 004FB090, 004FF6F0, 00514FB0, 00515050, 004FF580, 004FC9D0, 004FC720/004FC7A0 and the
+selector record readers are unexamined. The `invalid_parameter` checks return in the reconstruction
+where the CRT handler aborts.
+
+## Session browser RefreshRowDetails and the uncalled row appender (cc13-menus6)
+
+`session_browser_refresh_row_details_00577650` and `session_browser_append_record_rows_00579980`,
+reconstructed and build-tested. Evidence: listing 00577650..005782E3 and 00579980..0057A0C9, read whole
+(the decompile of 00577650 fails to track the stack).
+
+- Record: list +30h selected index + (list byte +148h ? list+164h : 0) into +2A0h. Out of range ->
+  map text "-", map icon frame 0 with UV (0,0,1,1) (00568290 inlined), tilt icon +9Ch shown, rank texts
+  "-" with their icons hidden, ratio text "-", icon +E4h hidden, ratio text shown by
+  `*(00F8A2FC)->vtable+198h()`.
+- Map name: registry 00576B10 +34h, option key 1 (`[esp+18h] = 1` before 00575E80), inner map copied
+  (00573340) and searched (0056B8C0) for record+24h; found -> 005732C0's string, else
+  `FE.unknown_mapname`; submitted to +D0h with arg 1. screen+264h = 00568490 on the record re-fetched
+  with a second selection read.
+- Map icon: registry +1Ch option 1 (00575FD0, 0056B930); missing -> frame 0, UV (0,0,1,1), tilt shown.
+  Present -> frame = index*8 - 7; the 434h-byte map definitions (*(00E198AC)+5Ch, vector +24h) are
+  searched for the one whose name string (+00h) `_atol`s to record+24h. Game mode record+54h (jump
+  table 005782E4) picks an extent and a frame offset: modes 0..3 by record+58h (table 00578304:
+  +364h/+6, +37Ch/+5, +394h/+4, +3ACh/+3), 4 +3F4h/+1, 5 +40Ch/+2, 6 +3C4h/+7, 7 +3DCh/+0. UV =
+  ((x0+15000)/30000, 1-(z0+15000)/30000, (x1+15000)/30000, 1-(z1+15000)/30000) from the extent's
+  corners (+0/+8 and +0Ch/+14h); aspect = |x0-x1| / |z0-z1|; size (aspect*150/960, 150/720) below 1,
+  (150/960, 150/aspect/720) above 1, (0.15625, 0.2083) at 1. Then tilt hidden and frame applied.
+- Ranks +48h/+49h: 1..20 -> icon +DCh/+E0h frame rank-1 shown, text +C4h/+CCh hidden; else text "-".
+- Ratio: when record+90h > registry+B8h, "N %" (N = `_ftol2`(+94h/+90h*100), unsigned FILD fix-ups)
+  in +D8h, red (00568220, static 00E19498) when +94h/+90h > registry+BCh, else the joinable colour;
+  otherwise "-" in the joinable colour.
+- 00579980 has no caller: E8/E9 rel32 and absolute-dword scans of the image find nothing (the same
+  scan finds BuildRows' 8 call sites). It appends one row per +2A0h record exactly as BuildRows' row
+  body, without clearing, filtering, sorting, the +30h/+34h floats or the selected-row match.
+
+Finding: 00577650 uses record+24h as the map option value (registry key 1 and the map definitions'
+names), so the field menus5 labelled "open slots (> 0)" from IsJoinable is more likely the map id;
+the field keeps its name in the header until the join path is rechecked.
+
+Uncertainty: modes outside the tables reach 00577BE3 with the extent locals uninitialised (stack
+slots last holding iterators); the reconstruction skips the UV and size update there. Whether the
+map-name lookup inserts key 1 (00575E80 may be `operator[]`) is not modelled.
+
+## Credits Register and ReadItemStyle (cc13-menus6)
+
+`credits_register_0052ffc0` and `credits_read_item_style_0052d9c0`, reconstructed and build-tested;
+evidence listing 0052FFC0..005305F9 and 0052D9C0..0052DBB2.
+
+- Register: 004F71D0, page `FE_credits` -> +0Ch, `category_template_Text` (+10h) and
+  `person_template_Text` (+14h) found recursively in the page and hidden, `clipbox_Clipbox` -> +18h,
+  `moving_Group` (searched under +18h) -> +1Ch. `Scripts/datatables/Credits.lua`, global `Credits`:
+  `Speed` -> +3Ch, `StartY` -> +40h, `RowSpace` -> +44h (floats, type 2). `Credits_Items[i]` for
+  i = 1.. while the index exists: 0052FF10 pushes a row with an empty text onto +4Ch, the reader
+  enters index i (virtual +4h), 0052D9C0 fills `back()`, the reader leaves (virtual +8h).
+- ReadItemStyle writes every default first (Type 1, colour from the white static 00E18E50, Align 2,
+  Offset 0), then reads Type (int), Text (string), Offset (float), Color (vec4) and Align (int).
+- Align correction: the pseudocode's null destination for `Align` is a decompiler artefact. The
+  listing stores `lea eax,[edi+20h]` to the `push ecx` slot `[esp+10h]` at 0052DA3B and reloads it at
+  0052DB84 for the read; every reader call is callee-cleaned, so the slot is intact. Align is read into
+  item+20h; CreditsItem::align and the Enter's placement already assume this.
+
+## Menu prompt Exit, HUD formation Enter/Exit, frame stats Register (cc13-menus6)
+
+Reconstructed and build-tested (`menu_prompt_exit_00530970`, `hud_formation_enter_0053a4d0`,
+`hud_formation_exit_00536800`, `frame_stats_register_0053c740`); evidence the listings, read whole.
+
+- 00530970 (MenuPrompt Exit): hides +18h and +24h; if any of 00E198AC, 00E198B4, 00E198B8, 00E198C8
+  exists with byte +3Ch set and *(00E1930C) exists, *(00E1930C)+4 = 1; +288h = 0, +284h = -1.
+- 0053A4D0 (HudFormation Enter): *(00E188D8) null jumps straight to the tail (0053A8A1) with whatever
+  +138h holds. Otherwise +138h = *(00E188D8)+284h (null: 0068AB80(1, 1) on *(00E198C4) and return).
+  The leader (group+14h, pose refreshed by 00414DB0 when byte +C8h is clear, before each read)
+  gives +17Ch = matrix x (+FCh) and +180h = matrix z (+104h); +178h and +174h get position
+  (x, +18Ch, z) and (x, +188h, z) through virtual +30h. Then 0068E420, 0054E610, hint
+  `FORMATIONPERMANENT` (00690FD0(hint, 0)). For each member 0..group+4F8h-1 (0070D060, nulls
+  skipped): observer pair (00694A60, EDX = screen+64h), 00538D60 into map +110h and map +11Ch (scale
+  1.0), a clone of +B0h with `icon_Icon` set to frame 00653200(member+538h) and shown, appended to list
+  +ACh; for the leader 00A9C740 selects the icon widget (the value pushed is the icon, not the row);
+  a type-0Dh widget (00AA6640, empty name) at local z -1000 (00D7A240), shown, texture
+  *(00E08694), colour (0.5, 1, 0.5, 0.5), appended under +98h and pushed onto +128h (005389D0). Tail:
+  +13Ch = *(leader+738h) virtual +50h, +7Ch = +7Dh = 0, 00533A30.
+- 00536800 (HudFormation Exit): 0054E610, 00533A30; map +110h: each marker's +4 (read unguarded)
+  unregisters the screen pair (006952A0, EDX = screen+64h), the marker is deleted through virtual +0;
+  map +11Ch markers deleted; both trees freed (005356E0) and reset; list +ACh cleared; each +12Ch link
+  widget deleted through virtual +4 and nulled, then the vector is emptied.
+- 0053C740 (FrameStats Register): 004F71D0; page `_Fps` -> +0Ch; `PG_<n>p_Text`, `PG_<n>_Text`,
+  `PG_<n>s_Text` for n = 1..6 -> +20h..+64h; `Fps_Text` +10h, `MinFps_Text` +18h, `MaxFps_Text` +1Ch,
+  `Warning_Text` +14h; `Fingerprint_Text` is looked up after the payload (0053BC00 singleton, 00BE9620
+  returns singleton+4) and set through 00ABBE50(payload, 1); it is not stored.
+
+Uncertainty: 0054E610, 00533A30, 0068E420, 005A6AD0 and 00653200 are unexamined; the formation maps
+are modelled as value lists in key order.
+
+## Handoff (cc13-menus6, 2026-10-11)
+
+Commits on agent/cc13-menus6 (menus5's 6cb50d7aa merged first): 591095127 (tactical library Update,
+carousel step, nose-art apply, browser RefreshRowDetails and 00579980, credits Register and
+ReadItemStyle), d5719b414 (MenuPrompt Exit, HudFormation Enter/Exit, FrameStats Register), and the
+handoff commit. 11 functions reconstructed and build-tested, none run in `bsp_game`; 14 ledger names
+(6 newly named in Ghidra: 00516010, 005161C0, 00579980, 00568290, 00568220, 00538D60; refreshed
+evidence on the rest); 271 report call rows added, 884 checked, 0 failed. Scripts in the worktree's
+`local/` with the `m6_` prefix: `m6_consts.py` (float/double/string constants from the PE),
+`m6_rel32.py` (E8/E9 and absolute-dword reference scan), `m6_rows.py` (now takes `*` for every
+direct call, skipping string-pool and CRT plumbing), `m6_names1.py`/`m6_names2.py`.
+
+Open, in order of value:
+
+1. HudFormation Update 0053A8E0 (4333 bytes, `__thiscall(screen, float)`, RET 4, SEH 00C6C666): x87
+   and matrix heavy (camera matrices 004134F0/00413920, look-at 00B63F10, view 00B71490, curve points
+   00ABC970/00ABCA10 on the +128h link widgets, 00439820 projection), the `MAPPERMANENT` hint, input
+   axes from the input manager singleton (+4, then +2994h/+29C4h), and it issues unit commands
+   (0077D600 with 00465080 targets) for the selected member, so the command path touches gameplay;
+   read the listing (`m6_m4dis.py 0053A8E0:0053B9D7`, 1093 lines) rather than the pseudocode, and
+   spawn it on a model suited to x87 recovery.
+2. Record+24h: RefreshRowDetails reads it as the map option value (registry key 1, map definition
+   names); recheck IsJoinable 00574100 and the filters before renaming `open_slots_24`.
+3. Tactical library callees named only by use: 004FB090 (per-row, kind 5), 004FF6F0, 00514FB0,
+   00515050 (per-frame carousel animation), 004FF580, 004FC9D0, 004FC720/004FC7A0, the selector
+   record readers 004FA8F0/004FA960/004FAA00, 00511BF0.
+4. Session browser PrepareEnter 00570300, selection changed 005787E0, 0056D660, 0056B610 (from the
+   menus5 list, untouched here).

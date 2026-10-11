@@ -1,0 +1,793 @@
+{
+  "schema": "cc12.same-epoch-body-and-contract-batch-01.v1",
+  "status": "REVIEWED_PENDING_GIT_INTEGRATION",
+  "authored_at_utc": "2026-10-11T21:48:49.308508+00:00",
+  "packet": "cc12_same_epoch_body_and_contract_batch_01",
+  "frozen_commit": "900e0e1d5e45ec27721b8a0fd1fdf9f555231005",
+  "frozen_Source_identities_only": {
+    "src": "5b4c4ae8359835b5fd9e56b0e9fd4dc839288a79",
+    "include": "e5c174553b669e588381310b9c8cf9a418f9f392"
+  },
+  "physical_result": {
+    "dynamic_count": 65174,
+    "dynamic_epoch": "10371",
+    "Native_commands": 12,
+    "HTTP_records": 52,
+    "typed_payloads": 8,
+    "CLI_physical_source_reads": 72,
+    "paired_bytes_hex": "8325a8ee090100c3",
+    "full_count_stdio": {
+      "count_open": "live function count 65174; snapshot 65149; changed\r\n",
+      "count_close": "live function count 65174; snapshot 65149; changed\r\n"
+    }
+  },
+  "whole_body_gate": "Current paired eight-byte physical body admitted after fresh manual and one detailed decoder comparison; prior seven-plus-one cross-epoch records stay historical.",
+  "contract": "Conditional ordered DS read-modify-write then SS return-offset read; explicit partial/full backing-byte alias, code-fetch validity, SS.B and listing/CPU mapping conditions. No inferred ABI, EAX result or caller preservation.",
+  "peer_review_scope": "Fixed pre-fresh conditional candidate only; peer did not certify fresh capture, decoder, publication or runtime.",
+  "original_transport_scope": "Sealed original remained unexecuted; separately named minimal redirect-rejection refinement launched once. Prelaunch finding was not a Native failure.",
+  "current_incidents": {
+    "Root_inspection_command_errors": 2,
+    "Root_tool_output_truncations": 2,
+    "Root_PowerShell_formatting_ellipsis": 1,
+    "prelaunch_transport_review_findings": 1,
+    "precommit_epoch_prose_findings": 1,
+    "Root_offline_helper_failures": 1,
+    "A_tool_output_truncations": 1,
+    "A_PowerShell_table_abbreviations": 1,
+    "B_display_truncations": 2,
+    "worker_helper_failures": 0,
+    "Native_failures": 0,
+    "decoder_failures": 0
+  },
+  "integration_plan": {
+    "worker_commits": {
+      "body": "b780edc1ff000243db38dfa88d2512b595387b21",
+      "contract": "fe7cbde47eafdd06d24ac0991fa2c610d8f1f9b6"
+    },
+    "contract_immediate_integration": "5cbdb4b6077c129817be47dec3e32cc9e1d48be5",
+    "prepublication_Git_identities_only": {
+      "HEAD": "d4760fcf61f44c2aaee0c93e6c7c8667df7d1948",
+      "HEAD:src": "1675cac97b4bf563487d622e2f2e250c8bf8ceb5",
+      "HEAD:include": "19a8a8be76884be1211981fe316ff56816c7de55"
+    },
+    "worker_frozen_baseline": "900e0e1d5e45ec27721b8a0fd1fdf9f555231005",
+    "final_Git_readback": "Will be retained separately after owned Root commit, Main integration and one batch push.",
+    "Source_payloads_read": false
+  },
+  "selected_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_initial_state.json",
+      "bytes": 1698,
+      "sha256": "2cf6cba7b366d3957e40614338b5886459dad73760a0f9e000e5345ba74c42b4",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_0.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_conditions.json",
+      "bytes": 2837,
+      "sha256": "721350a489d7f26005e4d678e19101c37c3fc07016b20eb06dbd7427fd0fb7d7",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_1.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_inspection_incidents_01.json",
+      "bytes": 883,
+      "sha256": "358a85e82123f70a2e0bc92871d7a37132728bbc8a87cab20fdd750e8d8ad817",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_2.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_transport_review_finding_01.json",
+      "bytes": 1205,
+      "sha256": "9f90dc7d20bc3f8c4f9a31ec4a0bc8cd6823c4fe331fe9bc067720054251416d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_3.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_display_incident_01.json",
+      "bytes": 649,
+      "sha256": "08772a45980de007271f4fb162434a18042c47ccf277259a773ca33a0f4644ac",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_4.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_inspection_incidents_addendum_02.json",
+      "bytes": 966,
+      "sha256": "bae2b604da2a02b32a28a570e69f452b13f22a0b6a86d36c86ca2f72ff8a330d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_5.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_upstream_sync_01.json",
+      "bytes": 919,
+      "sha256": "241a2998489a7d473d3affbf2dc27cf39b305ca674893a0c2137f4438fe51131",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_6.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_freeze_review\\receipt.json",
+      "bytes": 71387,
+      "sha256": "380d4c3f6b3eb5bdfe7176ab9ca40343e42b997f65366b1028390a6f859e11cf",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_7.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_candidate_review\\receipt.json",
+      "bytes": 3915,
+      "sha256": "2cc7230fbb885fd87a2db910ce61fe7064eba40a12772d49c51b18219aa13b5c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_8.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_review\\receipt.json",
+      "bytes": 246701,
+      "sha256": "c6c939f24320a00d82930a2c7c711b4d60774ac9f823545814466fed388098b0",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_9.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_capture_review\\receipt.json",
+      "bytes": 72271,
+      "sha256": "03096272639b2d3356fd75a9dc2c225eb5bc5fb2c9fcbbed2dedba3b5c817ee6",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_10.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_decoder_review\\receipt.json",
+      "bytes": 6090,
+      "sha256": "0a4212ed6dc4a2b4c8610713ea655a9b3260b186110eef4705d46ed597d49d48",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_11.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window.py",
+      "bytes": 1939,
+      "sha256": "9c59365f25434a7a4cb9cf92ec46ff5e80214857a037d1eeb1dc9fcebc16711a",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_12.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_run_window.py",
+      "bytes": 1655,
+      "sha256": "e6ad728088cad9cf8de2df31a83a69d6ab89af93099fa9038f7f453cb78f2b65",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_13.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_run_capture.py",
+      "bytes": 1938,
+      "sha256": "cdfd5afab75ba6a8021bf64114356a54f441a98e19524c4401fb7fb81c99b138",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_14.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_decoder.py",
+      "bytes": 1991,
+      "sha256": "4f42b1cd992f99106d417869383b421c4ff63298fba02ae344bb0a2efd76aa74",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_15.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_run_offline.py",
+      "bytes": 1642,
+      "sha256": "556f6414c1cc7a45f361b5f9a44dee6a5962f4032e58931b2c4de11b62e0cd9c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_16.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_prepin.json",
+      "bytes": 28680,
+      "sha256": "76f95cea9ead7dda3adeac2ec0ae7c38a8b6116590f535a193b964810b3da459",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_17.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_invocation.json",
+      "bytes": 391,
+      "sha256": "51c1069104bf674558db41aaba1e4ad4f618d6b0835ddfb4c3387c1f87dc25ea",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_18.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_stdout.bin",
+      "bytes": 375,
+      "sha256": "39333654b1e3546c28360317d77385769cbe53336a7cd2222dad139ca8cf2d69",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_19.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_20.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_result.json",
+      "bytes": 1175,
+      "sha256": "02e441f86651abc16136bbea712cf661879088026b177bead0ed147987b43d49",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_21.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_ready.json",
+      "bytes": 444,
+      "sha256": "8c50c13678ffdcef539190a7321b03a27ce3501f7c4509f30cf0c7b426c7f7ac",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_22.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_released.json",
+      "bytes": 237,
+      "sha256": "a26aec6c714da0cb21d82b572eb79ebe1cce88fb763af8a428d5e38dfcdf0ceb",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_23.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_window_01_stop.json",
+      "bytes": 61,
+      "sha256": "ddab31f3a40eb60d62eaf6ca43dd079730414fc2506b2a0a400a625c81077daf",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_24.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_capture_launch\\preexecution.json",
+      "bytes": 1483,
+      "sha256": "cbf065239ecb01032b8b40156cf98a19e9abc4d16f8a0de5177b1c608834e9c0",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_25.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_capture_launch\\execution.json",
+      "bytes": 643,
+      "sha256": "300cb61e6d313338772d016720db0c5aeb436dcf9ed8c56f3289ffa9bb151715",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_26.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_capture_launch\\stdout.bin",
+      "bytes": 560,
+      "sha256": "b27784d1f065638693a494b39d81bc5d5f2f43a1be569703cdd14cb08c439f30",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_27.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_capture_launch\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_28.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_decoder_launch\\preexecution.json",
+      "bytes": 3724,
+      "sha256": "25b40249fab93e728db5a1261d714222827b57a75fd7aba557db0e82e1521691",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_29.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_decoder_launch\\execution.json",
+      "bytes": 46,
+      "sha256": "87f14c263f2882053311cd94045d18b6af0209968abb1f224c02e23c6ce13131",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_30.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_decoder_launch\\decoder_prepin.original.json",
+      "bytes": 2268,
+      "sha256": "cdec3cf5bfef0905154cc0d2aa3188d7ae1dbccd7d31b943701a2fa0e092618b",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_31.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_freezes_execution\\preexecution.json",
+      "bytes": 9654,
+      "sha256": "f5aace3fdc214524e30c6b718db13ac0dd421c06d5343ef5892d0a2ea99c39be",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_32.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_freezes_execution\\execution.json",
+      "bytes": 1313,
+      "sha256": "8976100b49348121e79403e182a371d7a74ca7d04deb22949f6b444718c7a445",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_33.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_freezes_execution\\stdout.bin",
+      "bytes": 455,
+      "sha256": "eefc1d204853d107219c671a3e659f03a11b8a2cc690dc8f8cb60e2a588f4116",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_34.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_freezes_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_35.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_pin_candidate_execution\\preexecution.json",
+      "bytes": 5658,
+      "sha256": "d1ad73d0c9e0c69a0442576ddae0823e652619813c7462b54df22ab2ce11df59",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_36.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_pin_candidate_execution\\execution.json",
+      "bytes": 832,
+      "sha256": "edfa45d8e53b4db28ab558423ba5709eda1050933a4c87cf3700c98cce9b7257",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_37.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_pin_candidate_execution\\stdout.bin",
+      "bytes": 96,
+      "sha256": "df496a88cdccdc69f90fc1ae98ca36ab69a68aa1fd8daf7164a6068c863a6401",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_38.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_pin_candidate_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_39.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_launch_execution\\preexecution.json",
+      "bytes": 7302,
+      "sha256": "3889a24dc40cb9c0fbfdfc01ac3a9424d61844792a110ff1c89edb11958a9118",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_40.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_launch_execution\\execution.json",
+      "bytes": 1389,
+      "sha256": "7678e01f0a181cd7b942ddcc1ec6f1ae029812a79c915d595b7d755b3a503e16",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_41.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_launch_execution\\stdout.bin",
+      "bytes": 512,
+      "sha256": "222211b57d1b91eb7bae32cba70d4b771338e54db4fe2d6ac7216a1fd4e1ca86",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_42.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_launch_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_43.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_capture_execution\\preexecution.json",
+      "bytes": 15878,
+      "sha256": "9ca3fc5ccc47ced77fa0b6664c1e1b61a1884d82f66d7e897f8e1202f414ffdf",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_44.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_capture_execution\\execution.json",
+      "bytes": 1613,
+      "sha256": "a239e91378e2d92d544557b8b635e33bbf68bce476064decb495e21a5f32cb39",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_45.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_capture_execution\\stdout.bin",
+      "bytes": 681,
+      "sha256": "6b0915fa24ac4cc6ce5f65a61ac0fd1c39af2cfde5b4b3cc95fb25e7ad46781a",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_46.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_capture_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_47.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_decoder_execution\\preexecution.json",
+      "bytes": 5844,
+      "sha256": "93949c8a3c25db7594108203e236a66d8f8d0d4a76ffc935d006de14e060210a",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_48.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_decoder_execution\\execution.json",
+      "bytes": 1487,
+      "sha256": "f20179e6ec998446950bd7b22c31a3277fb33ddc48f66af690b280072d447f1d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_49.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_decoder_execution\\stdout.bin",
+      "bytes": 585,
+      "sha256": "51ddb944a9861ead02847f685a24276afc40ad58224963600c85b28bd462172e",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_50.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_launch_decoder_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_51.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_decoder_execution\\preexecution.json",
+      "bytes": 9062,
+      "sha256": "d6a1464c52a1505cf5f51a8052f0c74274e0bf5de7e07e7498ab3821ec6f2b06",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_52.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_decoder_execution\\execution.json",
+      "bytes": 1557,
+      "sha256": "ccd2be50054a2766f1250df6148592249f4b7b49791521d083c75ddff8606568",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_53.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_decoder_execution\\stdout.bin",
+      "bytes": 637,
+      "sha256": "aa12c45c8896a5a28c87dfb758200363993525cce572ac38e0154c7f7788a3b3",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_54.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_audit_decoder_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_55.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_current_originals_selection.json",
+      "bytes": 20100,
+      "sha256": "5da3362c6e829ad899f2474915d93c3b9e8bd48ddd1e10cf667d499f44fc20d5",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_56.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication_findings_and_failure_addendum_01.json",
+      "bytes": 2216,
+      "sha256": "aca30e8c30eadedfcec7dbbe284f500ab283434b690b49fc27b524b30550f4fe",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_57.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication.py",
+      "bytes": 3096,
+      "sha256": "a52d6baaf765940d95f31d5091f20189b5216e35b844c1dc128bf796e5283a7c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_58.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_execution\\preexecution.json",
+      "bytes": 7342,
+      "sha256": "66340a0da1929d5929bf867006a15f25e584a67b85d25b9ba189cfa80b37fa0d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_59.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_execution\\execution.json",
+      "bytes": 1149,
+      "sha256": "3609909c189ae7ffbbc50a23a45791eaf7399dd3aab6f4b98be75545e0cb2f16",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_60.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_execution\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_61.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_execution\\stderr.bin",
+      "bytes": 311,
+      "sha256": "a189ceeee9409be937f84293560d4c23ed3b74a3d0ef0767fcd1a11696376d33",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_62.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_refinement_01.py",
+      "bytes": 3150,
+      "sha256": "ba754d577c55687e9a3dff03d31e05000ca6e90a0e638c7309f90ce4af88d384",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_63.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_refinement_01_execution\\preexecution.json",
+      "bytes": 7442,
+      "sha256": "cbbdf2b699fa49050921d2e85a673d5ec60de376d64dcc3e34229f6206817026",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_64.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_refinement_01_execution\\execution.json",
+      "bytes": 1397,
+      "sha256": "a6e80e5895eba9f4a98e8e429ae471edae3a5e9b14694e82fe506c3c8ef4243d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_65.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_refinement_01_execution\\stdout.bin",
+      "bytes": 475,
+      "sha256": "ac3ff1f10baa3c7f1b8a032c96623e943c9a4db3dc80b3687abebccfabf19bb9",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_66.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_contract_publication_refinement_01_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_67.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_contract_publication_review_refinement_01\\receipt.json",
+      "bytes": 42723,
+      "sha256": "56829750604c9c0c77a6df454212660cf4473bf6405b6d1ae9ad87859cc4b84b",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_68.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_body_publication_review\\receipt.json",
+      "bytes": 441538,
+      "sha256": "3904d3c9d2a75a7dd6568bc4eb0ac981f82b50b63a6a13903cfa0189b7c6ab54",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_69.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_contract_integration\\receipt.json",
+      "bytes": 5197,
+      "sha256": "98bbb7a3e5924747159a480f64de62f2ad19992136a1018f40346baf3da95f99",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_70.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_body_integration\\receipt.json",
+      "bytes": 5154,
+      "sha256": "dedd4d5cb9d151024e98b261005c157e5715b353cfba6c5e485c158673a2a3b4",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_71.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_body.py",
+      "bytes": 2311,
+      "sha256": "4e2d1ae4c0a9c6eaed93cdb4ee6156e090d50db467059602ff95ceab51583c28",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_72.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_contract.py",
+      "bytes": 2398,
+      "sha256": "b95e2eb85db416956ad8c4164a1d009adf7c59503801f43c65fd00f8e4fb833c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_73.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_body_publication.py",
+      "bytes": 5848,
+      "sha256": "fb835ad91400b962ce2d6c74f933fbce419aff3f95143fd11959acd51d2cd723",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_74.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publish_batch.py",
+      "bytes": 6601,
+      "sha256": "6ef60b88a5b7e3b2e26c625289cbf1ef84e0629944e3cb791aeb9d02c16df69d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_75.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_final_readback.py",
+      "bytes": 3638,
+      "sha256": "94cdab22ce3fb6f0a77a1879c7683e08a31d0c358b401a133a9969583d866699",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_76.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_prepare_publication_plan.py",
+      "bytes": 5219,
+      "sha256": "e88c3922f87749094c27eb08a417e304f291b17320415a753459e191fa2797e5",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_77.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_worker_commit_inputs.json",
+      "bytes": 762,
+      "sha256": "275bdfeb5c1e5ce91eb16b3f3c59c93219d10407ee2901a1831c7d794d1c326d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_78.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_contract_execution\\preexecution.json",
+      "bytes": 6396,
+      "sha256": "3f3c403a3634c5fcab7e87de833f43137460c43f5347ecfa8db808c597a1bbaf",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_79.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_contract_execution\\execution.json",
+      "bytes": 834,
+      "sha256": "6de787ba9b4c0e1e96b8a72717f2854dc7b7eef3931ad9050c6fe5443dba8fa3",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_80.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_contract_execution\\stdout.bin",
+      "bytes": 88,
+      "sha256": "17b813472d1000aa8dff445c3d7381f4c4e0568b4479cae893404184a534dbd4",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_81.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_contract_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_82.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_body_execution\\preexecution.json",
+      "bytes": 6272,
+      "sha256": "a3e3dda231d4487417c3124f5d013d6b3cfe903452249107410bb64647d72239",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_83.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_body_execution\\execution.json",
+      "bytes": 826,
+      "sha256": "c9b01f93b16c68d07cab4f5ef79b6e2731b34655afe72e1145b665be0220786b",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_84.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_body_execution\\stdout.bin",
+      "bytes": 88,
+      "sha256": "a0e7b9f3d58cf900a2ec943ea562f6e095730575a24747f4eea5a86334ffcd1c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_85.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_integrate_body_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_86.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_body_publication_execution\\preexecution.json",
+      "bytes": 11006,
+      "sha256": "d8e3325a342b157083039ed4200148a7fec9712da49288f601be6d32f45cc4c5",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_87.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_body_publication_execution\\execution.json",
+      "bytes": 808,
+      "sha256": "344626f9dfbf974e41f61d1d075bb89eaf9a521726bb7b6fa430e2954fd77070",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_88.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_body_publication_execution\\stdout.bin",
+      "bytes": 63,
+      "sha256": "00e285b5c82aeaf63a2a70c80c042515f493173c00cfb3776e5966f1a8143fd5",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_89.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_review_body_publication_execution\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_90.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01_manifest.json",
+      "bytes": 225029,
+      "sha256": "aba3494f7736516c9c75fe63916761bf3efd420a8dd6990c0af3f5a6840e2c2c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_91.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01\\receipt.json",
+      "bytes": 16066,
+      "sha256": "134c6957bfac05491c99fa4cf47e6c70081523bf5ab1211459c7bdc088b6629c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_92.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01\\byte_diff.json",
+      "bytes": 3308,
+      "sha256": "405f96dadeb5aea7215719651bf6df2f52617167555124f511163eea3e54d097",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_93.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01.py",
+      "bytes": 7420,
+      "sha256": "88321dd21a5a66d6e83521b6c31fcf69146e0d1f6d34b54f81b686b1ff7dc21a",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_94.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\run_publication_review_refinement_01.py",
+      "bytes": 1751,
+      "sha256": "901a2e1e6a6a43e1a411d957f81bd5047509eab556c4763e58b7d32390d663cb",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_95.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01_prepin.json",
+      "bytes": 8294,
+      "sha256": "ab5e9f217caee28b188d929ab31b4b4eea50b8673df5059caa40337f8a96a495",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_96.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication.invocation.json",
+      "bytes": 467,
+      "sha256": "0737b6016d5e546f7cc0a708d1d5662f2423ca3b102e7605bab7ceb88894ebae",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_97.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication.execution.json",
+      "bytes": 592,
+      "sha256": "50a0b04fdd2bc69271a67402116e72dce4e070318645ae56a5a5c5c321eccfb6",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_98.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication.stdout",
+      "bytes": 415,
+      "sha256": "474b348129ad07a8e6656990c0d8010647d24ac3864bd4add30f5b960378669d",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_99.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_100.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01.invocation.json",
+      "bytes": 478,
+      "sha256": "c4e2133690e4ae07cc51b52f8b53083f588306ba22593193e95227f4fa935867",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_101.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01.execution.json",
+      "bytes": 615,
+      "sha256": "95760357f371ca565b79d0f40bcaa90b5078b18d821748efe3363f412e58b42f",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_102.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01.stdout",
+      "bytes": 752,
+      "sha256": "95bb91823f46476b8596d061876768c6f1719d57846a8ac4bf967968c2613562",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_103.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\publication_review_refinement_01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_104.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\candidate_semantics.json",
+      "bytes": 11344,
+      "sha256": "e5020545ed15a3373b4245a91684dc4519c6ad23780c0ae564be7c6b9fc24c72",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_105.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\candidate_contract.md",
+      "bytes": 6782,
+      "sha256": "de93b6f8b94ace0c1e0ded7ff6866a6ef418ca9fe63f13f937c65cb76290e5f0",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_106.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\candidate_pin.json",
+      "bytes": 2685,
+      "sha256": "ba622e7c793c2df3c6889459bb1209000aa40ca267b6b6745fc8650d5935749a",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_107.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\admission_01\\capture_only_qualification.json",
+      "bytes": 16934,
+      "sha256": "f0a7de1254199f24ae141636a7f3c5193e874383acc050a937080e221628e704",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_108.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\admission_01\\final_admission.json",
+      "bytes": 15359,
+      "sha256": "dc5a87e13ed872e4960e83152e02e450d85a5eb3cf91238f19265b78cbeb39f8",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_109.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\admission_01\\precommit_handoff.json",
+      "bytes": 31645,
+      "sha256": "e835ca818d5d6c1703f759a296d076e38d62b3337991f9e321ba748867f28d03",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_110.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\closing_01\\commit_readback.json",
+      "bytes": 41835,
+      "sha256": "63042b74598c1cf054423bec9cb92390b0b59a280fd5574724999b432c4ee748",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_111.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_c04ef3_joined_body_contract_01\\closing_01\\lease_release.json",
+      "bytes": 837,
+      "sha256": "e4152a6531aa9e1eaa388415b40983f5a1cf5b91b12bf2ef2ba77709b9e72aa5",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_112.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\closing\\receipt.json",
+      "bytes": 40719,
+      "sha256": "bd3f8736c98e13df27021cfcdee01fd6d4522cd6149d73c7e6d28ac19ef29f72",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_113.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\local\\cc12_c04ef3_same_epoch_body_01\\lease_release\\receipt.json",
+      "bytes": 1608,
+      "sha256": "2077a4147305cfbdbfaa9c43945b3dd0c687e0187d0616da9fcc695c3a71c483",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_114.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\docs\\CC12_C04EF3_SAME_EPOCH_BODY_01.md",
+      "bytes": 11216,
+      "sha256": "c607467ede9fd86346dc76c1a6184d7952e32ce631b5996f07e6fcd1224decbf",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_115.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_same_epoch_body_01\\reports\\cc12_c04ef3_same_epoch_body_01.json",
+      "bytes": 881752,
+      "sha256": "9d7ff6a8222d31c3778fc6ac822fd1905e3da9353b21d5f806755db97f88b58f",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_116.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\docs\\CC12_C04EF3_JOINED_BODY_CONTRACT_01.md",
+      "bytes": 7513,
+      "sha256": "e7c59ccaeb2e79ed57e6220293073fc6bc0863fd0c36f68803bf7c3f87154891",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_117.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\reports\\cc12_c04ef3_joined_body_contract_01.json",
+      "bytes": 116908,
+      "sha256": "89442af897f38a76cc22c91786204ef2e360ea2ba5b17914057d23b1bb7844d2",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_118.raw"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_prepublication_Git_identities.json",
+      "bytes": 1192,
+      "sha256": "a2be4e040c800dfa88b0df851086e2f0c3a0248f34b1c4ef80c56d3c7ac49f4c",
+      "Root_retained": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_same_epoch_body_and_contract_batch_01\\Root_publication\\selected_119.raw"
+    }
+  ],
+  "Source_payloads_read": 0,
+  "Source_absence_census": false,
+  "C_plus_plus_edits": 0,
+  "builds": 0,
+  "tests": 0,
+  "probes": 0,
+  "runtime_validation": false,
+  "GPR_mutations": 0,
+  "ABI_compatible": false,
+  "startup_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "Active; faithful startup and gameplay remain unachieved",
+  "scope_question": "Earlier Source/build/runtime clarification remains unanswered; silence is not authorization",
+  "qualification": "Finite selected evidence and positive Git bindings only; no recursive historical-manifest expansion or Source inventory."
+}
