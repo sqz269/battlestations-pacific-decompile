@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_dispatch_second_direct_callee_entry_primary",
+  "status": "bounded_entry_independently_reviewed",
+  "worker_commit": "6058cfdc691fdb4308695ed3b1275dbfd18b97ff",
+  "frozen_commit": "3c85f1c584331ddffd68b31d2f4305c735c15209",
+  "worker_outputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_ENTRY.md",
+      "member": "outputs/docs/CC12_CRT_DISPATCH_SECOND_DIRECT_CALLEE_ENTRY.md",
+      "blob": "76e53068f763e489cccf947337844f3e9ce87756",
+      "index_blob": "76e53068f763e489cccf947337844f3e9ce87756",
+      "working_raw": {
+        "bytes": 7937,
+        "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 7937,
+      "sha256": "50bc3fc62c70e77a32f0bac13fe2af877d7c496a86e302cfac2b4f3ef83b94ca"
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_second_direct_callee_entry.json",
+      "member": "outputs/reports/cc12_crt_dispatch_second_direct_callee_entry.json",
+      "blob": "c18b16266f8fa7ed89b22f083a776c2022362ca3",
+      "index_blob": "c18b16266f8fa7ed89b22f083a776c2022362ca3",
+      "working_raw": {
+        "bytes": 47705,
+        "sha256": "06554e34c704ef2c20b612a08777982c592d88cd801f04a7c6cfedb6022ea1d3"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 47705,
+      "sha256": "06554e34c704ef2c20b612a08777982c592d88cd801f04a7c6cfedb6022ea1d3"
+    }
+  ],
+  "Root_evidence_pins": {
+    "Root_listing_gate.py": {
+      "bytes": 9631,
+      "sha256": "8a68b0ecf27ffd1bec4b7cd6b8764d437290fb2c72476def1a6ee3ae95bde442"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 1797876,
+      "sha256": "64c0aed1518d7b7a1dedb49f970f97a274eb2c38f42ae31cb6b27d7ccf5a71de"
+    },
+    "Root_actual_final_review.py": {
+      "bytes": 7295,
+      "sha256": "2842330c897826de6e89eda04473438294ab1c289b0bf4bcd8f960a81015fde7"
+    },
+    "Root_actual_final_preexecution.json": {
+      "bytes": 104,
+      "sha256": "c07b7461d66c013e8148e98d2a0bcf8638171f21dc14151345fa711b2ba5f46d"
+    },
+    "Root_actual_final_execution.json": {
+      "bytes": 500,
+      "sha256": "4c38f0fcdbf182345f3c783ffb7ac7f179dccff7502688b8c5dca44c3e89b80d"
+    },
+    "Root_actual_final_review.json": {
+      "bytes": 2132044,
+      "sha256": "d0541afb594e421a6e80b2f00f156a7c0a2a8df8053ae5c91e86b9b0e2b294d5"
+    },
+    "Root_actual_final_review.stdout": {
+      "bytes": 196,
+      "sha256": "875e5b82a1d772987826deb76fe30c829d656642e6b50eba3dd1c4c35718dd71"
+    },
+    "Root_actual_final_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_preexecution.json": {
+      "bytes": 398,
+      "sha256": "1913f2a48d15defc4a2828192794b839ee282456e119a4be2bc904e6bc2b980b"
+    },
+    "Root_strict_execution.json": {
+      "bytes": 868,
+      "sha256": "b6ed561ac0df2c132ddeeb770dcf9579f45a2f774844cd8e34518aaea7b8e53b"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 2431,
+      "sha256": "94f032b706ad2a49037c30bc6dbf8c3945e63e8322fbdd6f0fbf2b6c33323851"
+    },
+    "Root_strict.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "archive": {
+    "bytes": 8460064,
+    "sha256": "24f960aec7d0a1e1c4a2d3c868505bf53f17cd1e7bb9fced51358a3e323828de"
+  },
+  "archive_members": 481,
+  "pinned_entries": 480,
+  "actual_Git_objects_independently_compared": 20,
+  "positive_inputs": 8,
+  "outputs": 2,
+  "current_working_index_LF_files": 10,
+  "Root_artifact_copies_checked": 170,
+  "Root_manual_fields": {
+    "opcode": 81,
+    "opcode_base": 80,
+    "register_code": 1,
+    "register": "ECX",
+    "operand_bits": 32,
+    "prefixes": [],
+    "length": 1,
+    "implicit_register_read": "ESP",
+    "implicit_register_write": "ESP",
+    "explicit_operand_read": "ECX",
+    "arithmetic_flags_changed": false,
+    "conditional_effect": "Only on successful PUSH with renewed actual current SS.B=1: ESP=S-4 modulo 2^32; current SS:newESP receives LE32(current ECX). No inherited descriptor, frame, argument or returned-call state."
+  },
+  "Root_fresh_actual_Capstone": {
+    "address": 12605864,
+    "size": 1,
+    "hex": "51",
+    "mnemonic": "push",
+    "op_str": "ecx",
+    "prefix": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "opcode": [
+      81,
+      0,
+      0,
+      0
+    ],
+    "modrm": 0,
+    "sib": 0,
+    "disp": 0,
+    "modrm_offset": 0,
+    "disp_offset": 0,
+    "disp_size": 0,
+    "imm_offset": 0,
+    "imm_size": 0,
+    "eflags": 0,
+    "registers_read": [
+      "esp",
+      "ecx"
+    ],
+    "registers_written": [
+      "esp"
+    ],
+    "operands": [
+      {
+        "type": 1,
+        "register": "ecx",
+        "size": 4,
+        "access": 1
+      }
+    ]
+  },
+  "strict_audit": {
+    "first_execution": "PASS",
+    "archive_reads": 1,
+    "result_writes": 1,
+    "helper_execs": 1,
+    "unexpected_denials": [],
+    "receipt_equal_both_worker_delivery_receipts": true,
+    "complete_physical_helper_guard_read_before_execution": true
+  },
+  "failure_history": {
+    "Root_gate": 0,
+    "Root_inspection": 0,
+    "Root_final_review": 0,
+    "Root_strict": 0,
+    "worker": {
+      "Native": 0,
+      "admission_helper_before_Native": 1,
+      "inspection_shell": 1,
+      "inspection_tool_display_truncations": 1
+    }
+  },
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "remaining398B_all_gaps_C059A9_unqueried": true,
+  "Root_Native_queries": 0,
+  "GPR_writes": 0,
+  "new_build_tests_runtime_runs": 0,
+  "not_established": [
+    "rest of owner",
+    "library service/prototype authenticity",
+    "Source implementation",
+    "ABI compatibility",
+    "startup/gameplay/runtime equivalence"
+  ],
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_dispatch_second_direct_callee_entry_primary"
+}
