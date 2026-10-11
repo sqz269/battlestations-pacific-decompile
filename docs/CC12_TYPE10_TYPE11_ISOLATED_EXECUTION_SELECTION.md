@@ -401,3 +401,16 @@ The native primary adopted-graph reviewer Source family is closed (150 / 6); its
 Independent review caught an unbound members helper in the native compact inspector Source02 before execution. The immutable HOLD is preserved. Additive Source03 adds the members-to-v.walk bridge; its 2,209-check / 37-pin Source packet is closed and independent final approval is active. The unchanged eight formal helpers and 156 assertion transformations are preserved.
 
 The actual DATA adoption is complete. Whole adopted-graph review execution, ordinary startup, formal native Dispatch and a new native clock remain pending. Source credit stays zero; fixture, ABI and game qualification remain false. Earlier ordered snapshots, including pending and HOLD states, are preserved verbatim.
+
+
+### Native Source approvals, primary DATA PASS and actual compact HOLD
+
+All three independent Source packets are closed and Root accepted: 2,991 direct checks / 145 complete current physical books. They consume the compact Source approval (11,366 / 55), prestartup Source approval (8,147 / 33), and combined primary/joint Source review (5,515 / 47), closure (7,384 / 57) and external verification (15,339 / 61). The three executed or staged Root aliases match the approved Source bytes. Independent review of this gate and alias composition is closed at 10,731 / 152, with 12,383 closing checks. This is Source-only acceptance.
+
+The actual primary adopted-graph reviewer completed its original session 53855 at d633c2/0, with five genuine tool turns. All 360,024 distinct checks passed across 8,107,154 invocations and 34,819 current physical pins. Its 130,363,993-byte report and original native capture are pinned in the additive report checkpoint. The whole report and native execution chain were consumed; they establish the primary DATA review, while the joint Root acceptance remains pending.
+
+The accepted compact inspector Source03 actually ran once at 043158/1 and produced a structural KeyError for allow_dispatch after 2,259 positive trace invocations, 20 physical openings and no closing book. It stopped before scanning the adopted graph. Its complete nine-leaf readonly HOLD family, eight sealed incoming/result files, original native capture and lossless trace are preserved. The PASS sealer did not run and the candidate was not retried.
+
+The missing field belongs to the actual DATA-adoption native capture; the separate authorization already contains allow_dispatch:false. Read-only diagnosis found 16 legacy native-capture field expectations, two legacy stdout names, command/capture conventions, and one absent authorization provenance field. The actual completed producer records remain unchanged. A distinct Source04 derivative is authorized for this bounded reader contract repair and must receive fresh independent and Root Source review before execution.
+
+Whole joint adopted-DATA acceptance, ordinary startup, formal Dispatch and a new native execution clock remain pending. Source credit stays zero; fixture, ABI and game qualification remain false. All earlier ordered JSON snapshots and document bytes are preserved.
