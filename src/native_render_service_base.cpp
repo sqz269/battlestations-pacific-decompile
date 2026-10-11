@@ -158,3 +158,24 @@ void* construct_native_application_loop_base_00bea970(
     return original_receiver;
 }
 } // namespace bsp
+
+#include "bsp/native_shader_preload.hpp"
+
+namespace bsp {
+void* construct_native_application_00737970(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    void* const original_receiver = actual_receiver;
+    (void)construct_native_application_loop_base_00bea970(original_receiver, context);
+    *static_cast<volatile Word*>(original_receiver) = 0x00cfeab0u;
+    auto* const bytes = static_cast<unsigned char*>(original_receiver);
+    auto* const systems = reinterpret_cast<volatile NativeApplicationPointerVectorStorage*>(bytes + 0x08);
+    systems->data_00 = nullptr;
+    systems->count_04 = 0;
+    systems->capacity_08 = 0;
+    *reinterpret_cast<void* volatile*>(bytes + 0x14) = nullptr;
+    static_cast<volatile unsigned char*>(original_receiver)[0x19] = 0;
+    static_cast<volatile unsigned char*>(original_receiver)[0x1a] = 0;
+    static_cast<volatile unsigned char*>(original_receiver)[0x18] = 1;
+    return original_receiver;
+}
+} // namespace bsp
