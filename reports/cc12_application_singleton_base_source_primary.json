@@ -29,8 +29,8 @@
   },
   "Root_compiled_review": {
     "path": "local/cc12_application_singleton_source_primary/Root_compiled_review.json",
-    "bytes": 45745,
-    "sha256": "740c6e3bf9edfef1e8d5c2ee749443b25b19d8633a178554a2385990b018360d"
+    "bytes": 50633,
+    "sha256": "514d6a5293358394bd066d0c33461b0435b4b73b08ce8671808be85a33277b80"
   },
   "Source_epoch": {
     "path": "local/cc12_application_singleton_source_primary/Source3356_application_singleton_base_Root_frozen.json",
@@ -92,28 +92,130 @@
     "positively_identified_EH_tables_equal_worker": [
       {
         "Root_positive_label": {
+          "name": "__ehfuncinfo$?publish_native_render_service_base_00b0f020@bsp@@YAPAXPAXAAUNativeRenderServiceBaseContext@1@@Z",
+          "value": 16,
+          "section": 21,
+          "type": 0,
+          "storage": 3
+        },
+        "worker_positive_label": {
+          "name": "__ehfuncinfo$?publish_native_render_service_base_00b0f020@bsp@@YAPAXPAXAAUNativeRenderServiceBaseContext@1@@Z",
+          "value": 16,
+          "section": 21,
+          "type": 0,
+          "storage": 3
+        },
+        "bytes": 52,
+        "hex": "ffffffff000000000000000000000000220593190200000000000000000000000000000000000000000000000000000001000000",
+        "ordered_symbolic_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "__unwindfunclet$?publish_native_render_service_base_00b0f020@bsp@@YAPAXPAXAAUNativeRenderServiceBaseContext@1@@Z$0"
+          },
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__unwindfunclet$?publish_native_render_service_base_00b0f020@bsp@@YAPAXPAXAAUNativeRenderServiceBaseContext@1@@Z$1"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "__unwindtable$?publish_native_render_service_base_00b0f020@bsp@@YAPAXPAXAAUNativeRenderServiceBaseContext@1@@Z"
+          }
+        ],
+        "Root_section": 21,
+        "worker_section": 21
+      },
+      {
+        "Root_positive_label": {
+          "name": "__ehfuncinfo$?destroy_native_render_service_base_00b0f0c0@bsp@@YAXPAXAAUNativeRenderServiceBaseContext@1@@Z",
+          "value": 16,
+          "section": 22,
+          "type": 0,
+          "storage": 3
+        },
+        "worker_positive_label": {
+          "name": "__ehfuncinfo$?destroy_native_render_service_base_00b0f0c0@bsp@@YAXPAXAAUNativeRenderServiceBaseContext@1@@Z",
+          "value": 16,
+          "section": 22,
+          "type": 0,
+          "storage": 3
+        },
+        "bytes": 52,
+        "hex": "ffffffff000000000000000000000000220593190200000000000000000000000000000000000000000000000000000001000000",
+        "ordered_symbolic_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "__unwindfunclet$?destroy_native_render_service_base_00b0f0c0@bsp@@YAXPAXAAUNativeRenderServiceBaseContext@1@@Z$0"
+          },
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__unwindfunclet$?destroy_native_render_service_base_00b0f0c0@bsp@@YAXPAXAAUNativeRenderServiceBaseContext@1@@Z$1"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "__unwindtable$?destroy_native_render_service_base_00b0f0c0@bsp@@YAXPAXAAUNativeRenderServiceBaseContext@1@@Z"
+          }
+        ],
+        "Root_section": 22,
+        "worker_section": 22
+      },
+      {
+        "Root_positive_label": {
+          "name": "__ehfuncinfo$?construct_native_application_singleton_base_00bea810@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+          "value": 16,
+          "section": 23,
+          "type": 0,
+          "storage": 3
+        },
+        "worker_positive_label": {
+          "name": "__ehfuncinfo$?construct_native_application_singleton_base_00bea810@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+          "value": 16,
+          "section": 23,
+          "type": 0,
+          "storage": 3
+        },
+        "bytes": 52,
+        "hex": "ffffffff000000000000000000000000220593190200000000000000000000000000000000000000000000000000000001000000",
+        "ordered_symbolic_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "__unwindfunclet$?construct_native_application_singleton_base_00bea810@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$0"
+          },
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__unwindfunclet$?construct_native_application_singleton_base_00bea810@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$1"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "__unwindtable$?construct_native_application_singleton_base_00bea810@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+          }
+        ],
+        "Root_section": 23,
+        "worker_section": 23
+      },
+      {
+        "Root_positive_label": {
           "name": "__sehtable$?unwind_guard@?A0x02c0f4c0@bsp@@YAXAAUNativeGuard@12@@Z",
           "value": 0,
           "section": 24,
           "type": 0,
           "storage": 3
         },
-        "worker_positive_labels": [
-          {
-            "name": ".xdata$x",
-            "value": 0,
-            "section": 24,
-            "type": 0,
-            "storage": 3
-          },
-          {
-            "name": "__sehtable$?unwind_guard@?A0x6744bbec@bsp@@YAXAAUNativeGuard@12@@Z",
-            "value": 0,
-            "section": 24,
-            "type": 0,
-            "storage": 3
-          }
-        ],
+        "worker_positive_label": {
+          "name": "__sehtable$?unwind_guard@?A0x6744bbec@bsp@@YAXAAUNativeGuard@12@@Z",
+          "value": 0,
+          "section": 24,
+          "type": 0,
+          "storage": 3
+        },
         "bytes": 28,
         "hex": "feffffff00000000d0ffffff00000000feffffff0000000000000000",
         "ordered_symbolic_relocations": [
@@ -127,7 +229,9 @@
             "type": 6,
             "symbol": "$LN6"
           }
-        ]
+        ],
+        "Root_section": 24,
+        "worker_section": 24
       }
     ],
     "complete_provider_TU_code_and_symbolic_relocations_equal_worker_under_finite_positive_bijection": true,
@@ -143,6 +247,14 @@
     }
   },
   "historical_provider_scope": "Preserve accepted generic reset reconstructed/build/fixture evidence and guard strict Win32/original-byte FH3 fixture record with their own bridges/domain qualifications; no transfer to Application frame.",
+  "data_review_qualification": {
+    "prior_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\Root_compiled_review_before_nonzero_EH_label_review.json",
+      "bytes": 45745,
+      "sha256": "740c6e3bf9edfef1e8d5c2ee749443b25b19d8633a178554a2385990b018360d"
+    },
+    "qualification": "Earlier complete physical indices retained every byte, but targeted EH-table selection admitted only the private offset0 table. Focused actual positive labels now include all three public FH information records at offset16; full52-byte table sections and mapped symbolic relocations equal worker. No C++ change or repeated build/code census."
+  },
   "scope": {
     "Native_queries": 0,
     "GPR_writes": 0,
