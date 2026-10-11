@@ -262,7 +262,26 @@ start, `+44h` the `+4D0h` value, `+48h` mode.
 This is the second blend in the segment that the partition's `theta`/`rho` keywords point at:
 the modifiers blend authored curves, this blends the record modes' angles.
 
-## 9. Function table
+## 9. Aim deltas, 00794750 and 00794910
+
+The look modes of the path camera call these (00794B50, 00795180, 0079D870, 0079DA90,
+0079F710, 008C0560 call one or both; the editor body near 007A9xxx calls the look modes).
+
+- **00794750 `BSP_Camera_DirectionAngleDelta`** (ECX out, two by-value vectors, RET 18h, EAX
+  out). Each vector is scaled by `1/|v|` (00419440; 0 unless the length is above 0; FDIVRP and
+  each product stored). `out[1] = 00438B10(yaw_b, yaw_a)` with `yaw = atan2(x, z)`;
+  `out[0] = -00438B10(pitch_b, pitch_a)` with `pitch = 0042CF10(y)` (the clamped asin of
+  `docs/CAMERA_POSITION_MODES.md`). A component whose two angles are not both finite (00BFA4EC
+  on the double) is 0.
+- **00794910 `BSP_CameraPosition_AimDeltaToTarget`** (ECX camera; out, target, scale; RET 0Ch).
+  A negative scale takes `[+4D0h]+54h`. With `+4B4h` the aim point is `+4B8h` through the
+  target's world `+CCh` (004142E0); otherwise it is the target position `+FCh` plus
+  `velocity(+ECh) * |target - camera(+A4h)| * scale / divisor(+460h)` (0042B2F0 for the
+  distance, three stored products/quotients per component). It returns
+  00794750(camera forward `+94h`, aim point - camera). It is 00794130's (`aim_camera_at_target`)
+  sibling: the same lead, returned as a delta instead of written into theta/rho.
+
+## 10. Function table
 
 | address | name | status |
 | --- | --- | --- |
@@ -307,13 +326,15 @@ the modifiers blend authored curves, this blends the record modes' angles.
 | 0078E630 | BSP_MovieKeyframe_Tick | reconstructed |
 | 007A1F94 (fragment of 007A0EB0) | keyframe_event_parse_007a1f94 | reconstructed |
 | 007972F0 | BSP_CameraPosition_UpdatePath | reconstructed over a host |
+| 00794750 | BSP_Camera_DirectionAngleDelta | reconstructed |
+| 00794910 | BSP_CameraPosition_AimDeltaToTarget | reconstructed |
 
 "Defined" means the function did not exist in Ghidra and was created by
 `tools/ghidra_define_function.py` (record kept in the worktree's `local/c1_defined_functions.json`): 007918B0 and
 00795EE0 lay inside the bodies Ghidra had given 00791360 and 00795D90, 0079CF80 inside 0079CBD0,
 00792710 after 007926F0.
 
-## 10. Status and uncertainty
+## 11. Status and uncertainty
 
 - **Reconstructed, build-tested.** Not ABI-compatible: curves are `std::vector`, entities and
   cameras are host handles, the Lua table is a value tree. No fixture or game run exercises the
@@ -329,4 +350,27 @@ the modifiers blend authored curves, this blends the record modes' angles.
   argument (`camera_arg + 3B8h`).
 
 Call-site rows for `tools/verify_report_calls.py`: `reports/cc13_camera_controllers.json`
-(28 rows, 0 failed on 2026-10-11).
+(29 rows, 0 failed on 2026-10-11).
+
+## 12. Handoff
+
+Done in this packet (branch `agent/cc13-camera1`): the four modifier classes, keyframe events,
+the path camera's update and the aim deltas; 46 ledger names (one replacing the cc8 provisional name of 0079CBD0), 26 function records, one fragment;
+17 functions defined in Ghidra (`local/c1_defined_functions.json` in the worktree). Build
+passes; nothing is bound into a host, so no game run exercises any of it.
+
+Left in segment 45, in rough order of value:
+
+1. **Binding.** `src/hud_movie_camera.cpp` (cc9) counts `modifier` and `event` as unsupported;
+   `goaround_*`, `gamecamera_*`, `keyframe_event_*` and `keyframe_tick_0078e630` are ready for
+   that lane to call. `gamecamera` needs the game camera classes 0079CBD0 picks.
+2. **The look modes** that call 00794910/00794750: 00794B50, 00795180, 0079D870, 0079DA90,
+   and the editor helpers called from 007A9xxx (segment 46): 007943D0, 00794B80, 00794D60,
+   00794F70, 00795300, 0079D960, 007A01F0, 007901D0, 00790540, 00793CD0. They are float-heavy
+   and have no Ghidra callers because the editor body is not a function in the index.
+3. **0079F9E0**, the `mov.cam.pos.` keyframe dump (log `moviecamera.log`, 007996C0).
+4. **007900B0**, the free-camera input binding record: names `turnHInput`, `turnVInput`,
+   `walkHInput`, `walkVInput`, `zoomInput`, `moveSpeed`, `rotSpeed`, `zoom` map to ids 1..8, plus
+   four argument words; an unknown name leaves the id unwritten.
+5. Destructors 0079DB90/0079DC40 and the remaining STL instantiations (about 120 of the 218
+   `FUN_` in the range are vector/list/tree helpers, already tagged by the partition).

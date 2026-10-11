@@ -3,8 +3,13 @@
 #include <cmath>
 #include <cstring>
 
+#include "bsp/camera_affine.hpp"
+#include "bsp/camera_position_modes.hpp"
+#include "bsp/gamepad_force_events.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
+#include "bsp/unit_rudder.hpp"
+#include "bsp/world_ocean.hpp"
 
 // Evidence for every routine is in docs/CC13_CAMERA_CONTROLLERS.md. Names are
 // hypotheses. x87 sequences are written as double expressions with a float
@@ -710,6 +715,54 @@ void path_camera_update_007972f0(PathCamera& c, PathCameraHost& h) {
     const float r1 = static_cast<float>(static_cast<double>(a1) * w);
     c.theta_3c4 = static_cast<float>(static_cast<double>(r0) + p0);
     c.rho_3c8 = static_cast<float>(static_cast<double>(r1) + p1);
+}
+
+// ---------------------------------------------------------------------------
+// aim deltas
+
+namespace {
+// 0079475A..007947A8 (and 007947AC..007947F6 for b).
+std::array<float, 3> unit_or_zero(const std::array<float, 3>& v) {
+    const float len = length_00419440(OceanVec3{v[0], v[1], v[2]});
+    const float inv = len > 0.0f ? static_cast<float>(1.0 / len) : 0.0f;
+    return {v[0] * inv, v[1] * inv, v[2] * inv};
+}
+}  // namespace
+
+std::array<float, 2> camera_direction_delta_00794750(const std::array<float, 3>& a,
+                                                     const std::array<float, 3>& b) {
+    const std::array<float, 3> an = unit_or_zero(a);
+    const std::array<float, 3> bn = unit_or_zero(b);
+    const float yaw_a = static_cast<float>(std::atan2(static_cast<double>(an[0]), static_cast<double>(an[2])));
+    const float yaw_b = static_cast<float>(std::atan2(static_cast<double>(bn[0]), static_cast<double>(bn[2])));
+    std::array<float, 2> out{};
+    out[1] = std::isfinite(yaw_a) && std::isfinite(yaw_b) ? wrapped_angle_subtract_00438b10(yaw_b, yaw_a) : 0.0f;
+    const float pitch_a = camera_asin_clamped_0042cf10(an[1]);
+    const float pitch_b = camera_asin_clamped_0042cf10(bn[1]);
+    out[0] = std::isfinite(pitch_a) && std::isfinite(pitch_b)
+                 ? -wrapped_angle_subtract_00438b10(pitch_b, pitch_a) : 0.0f;
+    return out;
+}
+
+std::array<float, 2> camera_aim_delta_00794910(const AimCameraView& c, const AimTargetView& t, float scale) {
+    if (0.0f > scale) scale = c.default_scale_4d0_54;
+    std::array<float, 3> d{};
+    if (c.use_local_point_4b4) {
+        std::array<float, 3> p{};
+        transform_point_004142e0(c.local_point_4b8, t.world_cc, p);
+        for (int i = 0; i < 3; ++i) d[i] = p[i] - c.position_a4[i];
+    } else {
+        std::array<float, 3> r{};
+        for (int i = 0; i < 3; ++i) r[i] = t.position_fc[i] - c.position_a4[i];
+        const float dist = force_event_vector_length_0042b2f0(r);
+        const float div = c.divisor_460;
+        for (int i = 0; i < 3; ++i) {
+            const float lead = ((dist * t.velocity_ec[i]) * scale) / div;   // three FSTPs
+            const float aim = t.position_fc[i] + lead;                       // FSTP
+            d[i] = aim - c.position_a4[i];                                   // FSTP
+        }
+    }
+    return camera_direction_delta_00794750(c.forward_94, d);
 }
 
 }  // namespace bsp::cc13cam

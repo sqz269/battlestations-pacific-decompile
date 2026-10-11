@@ -363,4 +363,39 @@ struct PathCameraHost {
 
 void path_camera_update_007972f0(PathCamera& camera, PathCameraHost& host);
 
+// ---------------------------------------------------------------------------
+// Aim deltas for the path camera's look modes (callers 00794B50, 00795180,
+// 0079D870, 0079DA90, 0079F710, 008C0560).
+
+// 00794750: ECX = out (two floats), stack a.xyz then b.xyz by value, RET 18h,
+// EAX = out. Both vectors are normalised (0 when the length is not > 0); out[1]
+// is 00438B10(yaw b, yaw a) with yaw = atan2(x, z), out[0] is
+// -00438B10(pitch b, pitch a) with pitch = 0042CF10(y). A non-finite angle
+// (00BFA4EC) gives 0 for that component.
+std::array<float, 2> camera_direction_delta_00794750(const std::array<float, 3>& a,
+                                                     const std::array<float, 3>& b);
+
+struct AimCameraView {
+    std::array<float, 3> forward_94{};
+    std::array<float, 3> position_a4{};
+    float divisor_460{1.0f};
+    bool use_local_point_4b4{false};
+    std::array<float, 3> local_point_4b8{};
+    float default_scale_4d0_54{0.0f};    // [camera+4D0h]+54h
+};
+
+// The target entity after 00414DB0 (pose refreshed).
+struct AimTargetView {
+    std::array<float, 16> world_cc{};
+    std::array<float, 3> velocity_ec{};
+    std::array<float, 3> position_fc{};
+};
+
+// 00794910: ECX camera, stack (out, target, scale), RET 0Ch, EAX = out. A
+// negative scale takes +4D0h's +54h. With +4B4h the aim point is +4B8h through
+// the target's world; otherwise it is the target position led by
+// velocity * distance * scale / divisor. Returns 00794750(forward, point - camera).
+std::array<float, 2> camera_aim_delta_00794910(const AimCameraView& camera,
+                                               const AimTargetView& target, float scale);
+
 }  // namespace bsp::cc13cam
