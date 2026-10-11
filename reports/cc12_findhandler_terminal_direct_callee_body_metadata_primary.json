@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_terminal_direct_callee_body_metadata_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "be32b361919952c348bb82d93823da6c1fee801e",
+  "frozen_commit": "d84ba6573158785940cc2a865b891e93c5503223",
+  "worker_tree": "8b7ea1134510c826632be5eaf7c6ce9b1a85fb49",
+  "worker_outputs": [
+    {
+      "path": "docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_BODY_METADATA.md",
+      "working_payload": "outputs/docs/CC12_FINDHANDLER_TERMINAL_DIRECT_CALLEE_BODY_METADATA.md",
+      "working_file": {
+        "size": 11218,
+        "sha256": "c3570dc9f4f2f2a0eaf772753025df854454d6e53fbfa574d2cae2f95732dd06"
+      },
+      "working_LF": {
+        "size": 11218,
+        "sha256": "c3570dc9f4f2f2a0eaf772753025df854454d6e53fbfa574d2cae2f95732dd06"
+      },
+      "index_blob": "76b29ae7aa49948b8a17d9b796182895648ac68a",
+      "index_mode": "100644",
+      "index_stage": 0
+    },
+    {
+      "path": "reports/cc12_findhandler_terminal_direct_callee_body_metadata.json",
+      "working_payload": "outputs/reports/cc12_findhandler_terminal_direct_callee_body_metadata.json",
+      "working_file": {
+        "size": 259538,
+        "sha256": "28f4c2b7c203285ed38c23f2c2f558bdbd62b1c24b0f7de0d181f78c6f763dba"
+      },
+      "working_LF": {
+        "size": 259538,
+        "sha256": "28f4c2b7c203285ed38c23f2c2f558bdbd62b1c24b0f7de0d181f78c6f763dba"
+      },
+      "index_blob": "1963d589406f13d8f4943aca73a7d9929ad61d12",
+      "index_mode": "100644",
+      "index_stage": 0
+    }
+  ],
+  "Root_evidence_pins": {
+    "Root_listing_gate.py": {
+      "size": 11045,
+      "sha256": "39b17a0a11cc08779c09802c51db7da9f3e62d532d10f9c284ed99bbcc4cfa62"
+    },
+    "Root_listing_gate.json": {
+      "size": 1769080,
+      "sha256": "3ed6bb89a480f060c1bb0bd3c0fb3fc54ce23056462f1e81c0045aafda081e0c"
+    },
+    "Root_gate_attempt01/Root_listing_gate.py": {
+      "size": 9802,
+      "sha256": "6ba9b17dd0f803b9b4bf2e92bbffe755e8ccdea08cf84983906edb2a836a8f3c"
+    },
+    "Root_gate_attempt01/Root_gate_preexecution.json": {
+      "size": 104,
+      "sha256": "d2bd8b58fc5fef972315044397607185ea5a45321eea9234d72f7fa22adfed91"
+    },
+    "Root_gate_attempt01/Root_listing_gate.stdout": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_gate_attempt01/Root_listing_gate.stderr": {
+      "size": 743,
+      "sha256": "dd0523b5ce85437c078f0146549fcc2ddc476f261aa0d8e3c55f48457acde794"
+    },
+    "Root_independent_decode.py": {
+      "size": 10319,
+      "sha256": "6d77b4195680dc038fc7612f4284a09a089d41ca4abb6da0e632e8bb835c8b84"
+    },
+    "Root_decoder_preexecution.json": {
+      "size": 104,
+      "sha256": "dd99fa45a6e0744dd5e22c90302ceecfe0243f7cba1593666048f44991b9504b"
+    },
+    "Root_decoder_execution.json": {
+      "size": 632,
+      "sha256": "8f4873654a916ed244f105433ed8346556e9e0fa1fb525551a2b32b1895d1071"
+    },
+    "Root_decoder.stdout": {
+      "size": 291,
+      "sha256": "3d37f06b6168804b31c9ba74ecbe437a6130c7adaa5381d7f303423f6fd2d30b"
+    },
+    "Root_decoder.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_own_manual.json": {
+      "size": 81096,
+      "sha256": "a1fe043955dfa298b91f1eb6b64f23b401de38518fc2343749afddc05d06f6fd"
+    },
+    "Root_fresh_Capstone.json": {
+      "size": 71008,
+      "sha256": "8b59f7df43857552a7b78ecd844510a1e8076b1ddb992116acd5fdd3add2c034"
+    },
+    "Root_actual_final_review.py": {
+      "size": 8102,
+      "sha256": "8797e3c4568cd53c461e06414688e211ee21e9c1024fd9d8f6215f15b692c016"
+    },
+    "Root_actual_final_preexecution.json": {
+      "size": 103,
+      "sha256": "d3c80de2bb6851f5e11dd79933926e11dd45f4f53b5b7970f509b800db5cf039"
+    },
+    "Root_actual_final_execution.json": {
+      "size": 509,
+      "sha256": "f587c717b691cecc024f0616a6feab90074105f89852c4eb6c7b68a507415524"
+    },
+    "Root_actual_final_review.json": {
+      "size": 2763901,
+      "sha256": "f968f92dfdb0aeefd9d9e13a74c0bebc280a68d1a62be7aee5a10bd137cdc92a"
+    },
+    "Root_actual_final_review.stdout": {
+      "size": 197,
+      "sha256": "dcbe2ba7f4229322e37c40db30af3681441893b941e56b5eb5eab1479bf65296"
+    },
+    "Root_actual_final_review.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_final_inspection_incidents.json": {
+      "size": 2131,
+      "sha256": "36216e065b037a14cb0ca38289ee40641657c9678f485c617d2dc70c1a09efb5"
+    },
+    "Root_strict_preexecution.json": {
+      "size": 391,
+      "sha256": "4778826a94f206e91d8b0ff9d374d30970927cc416a671351e74b44c6a035435"
+    },
+    "Root_strict_execution.json": {
+      "size": 1221,
+      "sha256": "1c78c2b4ba9f2658781937481a73208ac2bc52c8e5e7308bd35919197962afcf"
+    },
+    "Root_strict_receipt.json": {
+      "size": 2717,
+      "sha256": "8c828294250b3617f9c9e29bcd57819e912474940890c9af5af4a1b9af045000"
+    },
+    "Root_strict.stdout": {
+      "size": 277,
+      "sha256": "1bcc1c59bd741dd994682c4325361d9e89b726bb60ad9a6be0dc30db58743933"
+    },
+    "Root_strict.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "archive": {
+    "size": 15438105,
+    "sha256": "a742f8918c52d66794a10583bb1da26ca618e612f67c98c912350045d4b6c146"
+  },
+  "archive_members": 3352,
+  "pinned_entries": 3351,
+  "actual_Git_objects_independently_compared": 20,
+  "positive_inputs": 8,
+  "outputs": 2,
+  "current_working_index_LF_files": 10,
+  "Root_artifact_copies_checked": 1553,
+  "original_typed_responses": 183,
+  "Native_commands": 133,
+  "original_HTTP_responses": 705,
+  "physical": {
+    "start": "00C04DE2",
+    "end_inclusive": "00C04ED4",
+    "bytes": 243,
+    "units": 61,
+    "code_hex": "558dac2458fdffff81ec28030000a19055e10033c58985a4020000f605f85ae100015674086a0ae89a0b000059e80b23010085c074086a16e85c25010059f605f85ae100020f84a0000000898588000000898d84000000899580000000895d7c897578897d74668c95a0000000668c8d94000000668c5d70668c456c668c6568668c6d649c8f85980000008bb5ac0200008d85ac02000089859c000000c745d80100010089b5900000008b40fc6a5089858c0000008d45806a0050e84e2bffff8d458083c40c8945d08d45d86a00c745801500004089758c8945d4ff152c22ce008d45d050ff150c21ce006a03e8f86effffcc",
+    "code_pin": {
+      "size": 243,
+      "sha256": "ecd008f38bff942c072f9f922e2ea0dbc45150149d39ce8052233f42ae42c36d"
+    },
+    "last_opcode": "CC",
+    "last_mnemonic": "INT3"
+  },
+  "Root_independent_manual": {
+    "units": 61,
+    "completed_before_fresh_Capstone_import": true,
+    "comparison_differences": 0,
+    "manual_pin": {
+      "size": 81096,
+      "sha256": "a1fe043955dfa298b91f1eb6b64f23b401de38518fc2343749afddc05d06f6fd"
+    },
+    "actual_detail_pin": {
+      "size": 71008,
+      "sha256": "8b59f7df43857552a7b78ecd844510a1e8076b1ddb992116acd5fdd3add2c034"
+    },
+    "cpu_contract": "Every implicit stack effect needs renewed actual SS.B=1 and normal completion; every opaque-call return gives newly unknown registers/flags/memory/segments. LEA never dereferences, subsequent EAX dereference uses current DS. 16bit selector stores do not copy descriptors. PUSHFD image is mode/privilege limited and not identical to all raw EFLAGS bits. INT3 vector3 transition/handler/continuation is unqueried."
+  },
+  "strict_audit": {
+    "Root_first_execution": "PASS",
+    "zip_reads": 1,
+    "helper_execs": 1,
+    "receipt_writes": 1,
+    "denied": [],
+    "content_equal_both_worker_receipts_except_archive_and_helper_paths": true,
+    "complete_physical_helper_and_guard_read_before_execution": true
+  },
+  "failures": {
+    "Root_gate": 1,
+    "Root_gate_failed_in_memory_Git_streams_separately_retained": false,
+    "Root_gate_inspection": 0,
+    "Root_final_inspection_command": 1,
+    "Root_final_inspection_display_truncations": 2,
+    "Root_final_review": 0,
+    "Root_manual_decoder_process": 0,
+    "Root_manual_decoder_comparison": 0,
+    "Root_strict": 0,
+    "worker_Native": 0,
+    "worker_process": 0,
+    "worker_successful_process_comparison_corrections": 1
+  },
+  "inspection_original_stream_provenance": "Exact command transcriptions and visible combined conversation output; no separate original local stdout/stderr claim. Complete physical artifacts later checked.",
+  "direct_numeric_targets_unqueried": [
+    "00C059A8",
+    "00C1711F",
+    "00C1737B",
+    "00BF79F0",
+    "00BFBDCC"
+  ],
+  "computed_cells_unread": [
+    "00CE222C",
+    "00CE210C"
+  ],
+  "unqueried_end_cursor": "00C04ED5",
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "Root_Native_queries": 0,
+  "GPR_writes": 0,
+  "new_build_tests_runtime_runs": 0,
+  "not_established": [
+    "saved library identity",
+    "prototype/convention",
+    "semantic nonreturn behavior",
+    "provider/cell contents",
+    "Source implementation",
+    "ABI compatibility",
+    "startup/gameplay/runtime equivalence"
+  ],
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_findhandler_terminal_direct_callee_body_metadata_primary"
+}
