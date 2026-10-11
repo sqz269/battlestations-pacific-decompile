@@ -1,0 +1,3111 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_full_shell_producer_admission_readiness",
+  "frozen_baseline": "f2030981871a23a7f24413d672c661f83d49ce76",
+  "decision": {
+    "schema": 1,
+    "packet": "cc12_application_full_shell_producer_admission_readiness",
+    "frozen_baseline": "f2030981871a23a7f24413d672c661f83d49ce76",
+    "outcome": "NO-GO",
+    "scope": "Actual concrete full-shell Application owner/caller admission",
+    "typed_precondition_evidence": {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "pin": {
+        "entry": "blobs/9dc40b06a5e28614f430053eee4526e9cc0abfe19ce593de6029df164a73f0c5",
+        "bytes": 8170,
+        "sha256": "9dc40b06a5e28614f430053eee4526e9cc0abfe19ce593de6029df164a73f0c5"
+      },
+      "anchors": [
+        {
+          "term": "enclosing storage, valid uint32 object/access at +0, BYTE access at +04,",
+          "line": 84
+        },
+        {
+          "term": "then exactly BYTE zero at +04, and return the original receiver.",
+          "line": 89
+        },
+        {
+          "term": "actual enclosing 1Ch storage with already-live uint32 profile at +0,",
+          "line": 107
+        }
+      ],
+      "qualification": "Actual frozen header requires a live uint32 profile at +0 and valid BYTE access at +04. It imposes no DWORD object or extent at +04."
+    },
+    "positive_edges": [
+      {
+        "id": "entry_to_host",
+        "facts": [
+          "entry_concrete_host",
+          "ordered_abstract_dispatch",
+          "actual_host_projection"
+        ]
+      },
+      {
+        "id": "manager_to_factory",
+        "facts": [
+          "real_manager_cell",
+          "retained_process",
+          "same_manager_alias",
+          "distinct_factory_cells",
+          "factory_is_eight_byte_owner"
+        ]
+      },
+      {
+        "id": "manager_to_native_section",
+        "facts": [
+          "manager_provider",
+          "manager_section_provider",
+          "section_actual_creator"
+        ]
+      },
+      {
+        "id": "active_projection_frame",
+        "facts": [
+          "active_projected_frame_producer",
+          "runtime_injection_is_assignment",
+          "projection_identity_binding"
+        ]
+      },
+      {
+        "id": "borrowed_game_frame",
+        "facts": [
+          "frame_borrows_exact_pointer_type",
+          "frame_owns_other_game_storage",
+          "game_runtime_borrows_storage"
+        ]
+      },
+      {
+        "id": "child_and_drain_escape",
+        "facts": [
+          "child_escape_exposure",
+          "drain_before_host_services_retire",
+          "shared_manager_retirement",
+          "CE3818_flags1_free"
+        ]
+      }
+    ],
+    "requirements": [
+      {
+        "id": "concrete_startup_edge",
+        "status": "satisfied",
+        "requirement": "Identify the existing concrete entry and host dispatch.",
+        "evidence": [
+          {
+            "fact_id": "entry_concrete_host",
+            "path": "src/game_main.cpp",
+            "anchors": [
+              {
+                "term": "host = std::make_unique<bsp::game::GameStartupHost>(",
+                "line": 1202
+              },
+              {
+                "term": "result = bsp::run_win_main(arguments, *host);",
+                "line": 1220
+              }
+            ]
+          },
+          {
+            "fact_id": "ordered_abstract_dispatch",
+            "path": "src/winmain_startup.cpp",
+            "anchors": [
+              {
+                "term": "host.publish_game_resource_factory();",
+                "line": 227
+              },
+              {
+                "term": "host.application_construct();",
+                "line": 228
+              },
+              {
+                "term": "host.application_initialize(kApplicationInitializeFlags, kApplicationInitializeMode);",
+                "line": 229
+              },
+              {
+                "term": "host.application_destruct();",
+                "line": 232
+              },
+              {
+                "term": "host.destroy_singleton_lifetime_manager();",
+                "line": 233
+              }
+            ]
+          },
+          {
+            "fact_id": "actual_host_projection",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "void GameStartupHost::application_construct() {",
+                "line": 1835
+              },
+              {
+                "term": "frame_state_ = ApplicationFrameState{};",
+                "line": 1839
+              },
+              {
+                "term": "constructed_ = true;",
+                "line": 1840
+              },
+              {
+                "term": "request.application = this;",
+                "line": 2130
+              },
+              {
+                "term": "constructed_ = false;",
+                "line": 2516
+              }
+            ]
+          },
+          {
+            "fact_id": "host_members",
+            "path": "include/bsp/game_hosts.hpp",
+            "anchors": [
+              {
+                "term": "class GameStartupHost final : public StartupHost",
+                "line": 613
+              },
+              {
+                "term": "ApplicationFrameState frame_state_;",
+                "line": 721
+              },
+              {
+                "term": "GameStateSlot game_state_;",
+                "line": 739
+              },
+              {
+                "term": "GameSingletonHost* singletons_{};",
+                "line": 742
+              },
+              {
+                "term": "bool constructed_{};",
+                "line": 749
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "WinMain creates GameStartupHost and dispatches construction, loop, destruction and drain. This establishes the existing active graph only."
+      },
+      {
+        "id": "application_owner_receiver",
+        "status": "missing",
+        "requirement": "Identify the concrete full 0x1C Application receiver owner and caller before the genuine child.",
+        "evidence": [
+          {
+            "fact_id": "actual_host_projection",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "void GameStartupHost::application_construct() {",
+                "line": 1835
+              },
+              {
+                "term": "frame_state_ = ApplicationFrameState{};",
+                "line": 1839
+              },
+              {
+                "term": "constructed_ = true;",
+                "line": 1840
+              },
+              {
+                "term": "request.application = this;",
+                "line": 2130
+              },
+              {
+                "term": "constructed_ = false;",
+                "line": 2516
+              }
+            ]
+          },
+          {
+            "fact_id": "host_members",
+            "path": "include/bsp/game_hosts.hpp",
+            "anchors": [
+              {
+                "term": "class GameStartupHost final : public StartupHost",
+                "line": 613
+              },
+              {
+                "term": "ApplicationFrameState frame_state_;",
+                "line": 721
+              },
+              {
+                "term": "GameStateSlot game_state_;",
+                "line": 739
+              },
+              {
+                "term": "GameSingletonHost* singletons_{};",
+                "line": 742
+              },
+              {
+                "term": "bool constructed_{};",
+                "line": 749
+              }
+            ]
+          },
+          {
+            "fact_id": "factory_is_eight_byte_owner",
+            "path": "src/native_game_resource_factory.cpp",
+            "anchors": [
+              {
+                "term": "SingletonAllocationKind::object, 8, 8",
+                "line": 41
+              },
+              {
+                "term": "context.actual_factory_publication_00e19b90 = allocation;",
+                "line": 48
+              },
+              {
+                "term": "void* const captured_secondary = current ? at(current, 4) : nullptr;",
+                "line": 50
+              }
+            ]
+          },
+          {
+            "fact_id": "frame_owns_other_game_storage",
+            "path": "src/game_native_game_application_frame.cpp",
+            "anchors": [
+              {
+                "term": ":runtime_(runtime),application_game_14_(application),",
+                "line": 18
+              },
+              {
+                "term": "SingletonAllocationKind::object,0x71a0,0x71a0",
+                "line": 55
+              },
+              {
+                "term": "::new (block) NativeGameStorage;",
+                "line": 58
+              },
+              {
+                "term": "std::memset(block,0,0x71a0);",
+                "line": 59
+              },
+              {
+                "term": "application_game_14_=result;application_published_=true;",
+                "line": 69
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "GameStartupHost has projection state; the concrete resource factory owns eight bytes and the frame owns a distinct 0x71A0 Game object. None is admitted as the enclosing Application owner."
+      },
+      {
+        "id": "profile_00_and_byte_04",
+        "status": "missing",
+        "requirement": "Prove a live aligned uint32 profile object at +0 and valid BYTE-access domain/preimage at +4 before child entry; no DWORD+4 object requirement.",
+        "evidence": [
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          },
+          {
+            "fact_id": "actual_host_projection",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "void GameStartupHost::application_construct() {",
+                "line": 1835
+              },
+              {
+                "term": "frame_state_ = ApplicationFrameState{};",
+                "line": 1839
+              },
+              {
+                "term": "constructed_ = true;",
+                "line": 1840
+              },
+              {
+                "term": "request.application = this;",
+                "line": 2130
+              },
+              {
+                "term": "constructed_ = false;",
+                "line": 2516
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "start": 103,
+            "end": 131,
+            "captured_start": 103,
+            "captured_end": 131
+          }
+        ],
+        "conclusion": "The dormant borrowed helper requires the uint32 object at +0 and BYTE access at +4 and starts no lifetime; active host construction supplies no demonstrated 0x1C receiver."
+      },
+      {
+        "id": "vector_08_actual_object",
+        "status": "missing",
+        "requirement": "Prove the actual live NativeApplicationPointerVectorStorage object at receiver+8, its alignment and member preimages.",
+        "evidence": [
+          {
+            "fact_id": "existing_vector_type",
+            "path": "include/bsp/native_shader_preload.hpp",
+            "anchors": [
+              {
+                "term": "void** data_00;",
+                "line": 12
+              },
+              {
+                "term": "std::int32_t count_04,capacity_08;",
+                "line": 13
+              },
+              {
+                "term": "sizeof(NativeApplicationPointerVectorStorage)==12",
+                "line": 15
+              }
+            ]
+          },
+          {
+            "fact_id": "vector_current_offsets",
+            "path": "src/native_application_pointer_vector_resize.cpp",
+            "anchors": [
+              {
+                "term": "sizeof(void*) == 4",
+                "line": 8
+              },
+              {
+                "term": "sizeof(std::int32_t) == 4",
+                "line": 9
+              },
+              {
+                "term": "offsetof(NativeApplicationPointerVectorStorage, data_00) == 0",
+                "line": 10
+              },
+              {
+                "term": "offsetof(NativeApplicationPointerVectorStorage, count_04) == 4",
+                "line": 11
+              },
+              {
+                "term": "offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8",
+                "line": 12
+              }
+            ]
+          },
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "start": 103,
+            "end": 131,
+            "captured_start": 103,
+            "captured_end": 131
+          }
+        ],
+        "conclusion": "The 12-byte type and Win32 offsets exist. Borrowed uses and casts do not construct that type inside a concrete Application owner."
+      },
+      {
+        "id": "pointer_14_actual_object",
+        "status": "missing",
+        "requirement": "Prove the distinct live void* object at receiver+0x14 and valid pointer preimage.",
+        "evidence": [
+          {
+            "fact_id": "frame_borrows_exact_pointer_type",
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_application_game_14",
+                "line": 43
+              },
+              {
+                "term": "void* volatile& application_game_14_;",
+                "line": 73
+              },
+              {
+                "term": "char* volatile& duplicate_name_00e1ae78_;",
+                "line": 74
+              }
+            ]
+          },
+          {
+            "fact_id": "frame_owns_other_game_storage",
+            "path": "src/game_native_game_application_frame.cpp",
+            "anchors": [
+              {
+                "term": ":runtime_(runtime),application_game_14_(application),",
+                "line": 18
+              },
+              {
+                "term": "SingletonAllocationKind::object,0x71a0,0x71a0",
+                "line": 55
+              },
+              {
+                "term": "::new (block) NativeGameStorage;",
+                "line": 58
+              },
+              {
+                "term": "std::memset(block,0,0x71a0);",
+                "line": 59
+              },
+              {
+                "term": "application_game_14_=result;application_published_=true;",
+                "line": 69
+              }
+            ]
+          },
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "start": 103,
+            "end": 131,
+            "captured_start": 103,
+            "captured_end": 131
+          }
+        ],
+        "conclusion": "The frame borrows an actual pointer reference, but its identity as an enclosing Application+0x14 object has not been established."
+      },
+      {
+        "id": "byte_18_1b_domains",
+        "status": "missing",
+        "requirement": "Prove byte access domains and enclosing receiver+0x18..0x1B preimages; preserve untouched +0x1B.",
+        "evidence": [
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "start": 103,
+            "end": 131,
+            "captured_start": 103,
+            "captured_end": 131
+          },
+          {
+            "path": "src/native_render_service_base.cpp",
+            "start": 150,
+            "end": 181,
+            "captured_start": 121,
+            "captured_end": 181
+          }
+        ],
+        "conclusion": "Outer stores are conditional on child normal return and require pre-existing valid byte access, not prezero or placement construction."
+      },
+      {
+        "id": "canonical_application_cell",
+        "status": "missing",
+        "requirement": "Produce the actual canonical E1AE90 cell before child entry with fixed identity and timing.",
+        "evidence": [
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          },
+          {
+            "fact_id": "child_escape_exposure",
+            "path": "src/native_render_service_base.cpp",
+            "anchors": [
+              {
+                "term": "BaseCleanup base_cleanup{actual_receiver};",
+                "line": 57
+              },
+              {
+                "term": "GuardCleanup guard_cleanup{guard};",
+                "line": 68
+              },
+              {
+                "term": "context.actual_application_e1ae90 = actual_receiver;",
+                "line": 136
+              },
+              {
+                "term": "void* const current_application = context.actual_application_e1ae90;",
+                "line": 139
+              },
+              {
+                "term": "register_native_singleton_object_00bd0c30(manager, nullptr, current_application);",
+                "line": 140
+              }
+            ]
+          },
+          {
+            "fact_id": "actual_host_projection",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "void GameStartupHost::application_construct() {",
+                "line": 1835
+              },
+              {
+                "term": "frame_state_ = ApplicationFrameState{};",
+                "line": 1839
+              },
+              {
+                "term": "constructed_ = true;",
+                "line": 1840
+              },
+              {
+                "term": "request.application = this;",
+                "line": 2130
+              },
+              {
+                "term": "constructed_ = false;",
+                "line": 2516
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "The context borrows E1AE90; request.application=this is host identity. Child unconditional publication is not cell-object production."
+      },
+      {
+        "id": "canonical_name_cell",
+        "status": "missing",
+        "requirement": "Produce actual E1AE78 duplicate-name cell with valid lifetime, identity, timing and ownership.",
+        "evidence": [
+          {
+            "fact_id": "frame_borrows_exact_pointer_type",
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_application_game_14",
+                "line": 43
+              },
+              {
+                "term": "void* volatile& application_game_14_;",
+                "line": 73
+              },
+              {
+                "term": "char* volatile& duplicate_name_00e1ae78_;",
+                "line": 74
+              }
+            ]
+          },
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "The frame borrows a name-cell reference. No admitted enclosing owner/name producer or disposition follows from that borrow."
+      },
+      {
+        "id": "context_cell_disjointness",
+        "status": "missing",
+        "requirement": "Prove fixed distinct canonical/manager cells disjoint from receiver, context and private guard.",
+        "evidence": [
+          {
+            "fact_id": "context_is_borrowed",
+            "path": "include/bsp/native_render_service_base.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_manager_01090aa0;",
+                "line": 12
+              },
+              {
+                "term": "void* volatile& actual_application_e1ae90;",
+                "line": 55
+              },
+              {
+                "term": "These objects and valid byte access must exist before the child call; this",
+                "line": 110
+              },
+              {
+                "term": "helper starts no lifetime.",
+                "line": 111
+              }
+            ]
+          },
+          {
+            "fact_id": "distinct_factory_cells",
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& manager_publication_01090aa0_;",
+                "line": 134
+              },
+              {
+                "term": "void* volatile game_resource_factory_publication_00e19b90_{nullptr};",
+                "line": 137
+              },
+              {
+                "term": "void* volatile game_resource_factory_alias_00f8d31c_{nullptr};",
+                "line": 139
+              },
+              {
+                "term": "manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_",
+                "line": 141
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "include/bsp/native_render_service_base.hpp",
+            "start": 49,
+            "end": 77,
+            "captured_start": 49,
+            "captured_end": 77
+          }
+        ],
+        "conclusion": "Factory E19B90/F8D31C cells are distinct actual cells in a different owner domain. They do not discharge Application context-cell disjointness."
+      },
+      {
+        "id": "manager_provider_identity",
+        "status": "partial",
+        "requirement": "Bind manager authority to the same actual GameNativeStringProcess/GameSingletonHost cell.",
+        "evidence": [
+          {
+            "fact_id": "real_manager_cell",
+            "path": "include/bsp/game_native_string_process.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& manager_01090aa0() noexcept { return manager_; }",
+                "line": 15
+              },
+              {
+                "term": "void* volatile manager_{};",
+                "line": 38
+              }
+            ]
+          },
+          {
+            "fact_id": "retained_process",
+            "path": "src/game_native_string_process.cpp",
+            "anchors": [
+              {
+                "term": "static auto* const process = new GameNativeStringProcess;",
+                "line": 32
+              },
+              {
+                "term": "return *process;",
+                "line": 33
+              }
+            ]
+          },
+          {
+            "fact_id": "same_manager_alias",
+            "path": "src/game_hosts_singletons.cpp",
+            "anchors": [
+              {
+                "term": "manager_publication_01090aa0_(game_native_string_process().manager_01090aa0())",
+                "line": 19
+              },
+              {
+                "term": "deletion_bindings_.game_resource_factory = &game_resource_factory_context_;",
+                "line": 27
+              },
+              {
+                "term": "get_native_game_resource_factory_007175d0(game_resource_factory_context_)",
+                "line": 151
+              }
+            ]
+          },
+          {
+            "fact_id": "manager_provider",
+            "path": "src/native_singleton_publication.cpp",
+            "anchors": [
+              {
+                "term": "SingletonAllocationKind::manager, 0x14, 0x14",
+                "line": 45
+              },
+              {
+                "term": "construct_native_singleton_manager_00bd0960(allocation, nullptr)",
+                "line": 48
+              },
+              {
+                "term": "actual_manager_publication_01090aa0 = result;",
+                "line": 50
+              },
+              {
+                "term": "singleton_lifetime_free(allocation);",
+                "line": 53
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "An actual retained process manager cell and shared aliases/provider exist. No admitted Application caller binds the borrowed context into that domain."
+      },
+      {
+        "id": "captured_section_lifetime",
+        "status": "partial",
+        "requirement": "Keep both manager results, manager vectors, first-getter captured section and +0x18 depth valid through cleanup.",
+        "evidence": [
+          {
+            "fact_id": "manager_section_provider",
+            "path": "src/native_singleton_vector_reserve_construct.cpp",
+            "anchors": [
+              {
+                "term": "reserve_native_singleton_slots_00bd0600(owner, nullptr, 256);",
+                "line": 118
+              },
+              {
+                "term": "create_native_tracked_critical_section_00bd1860();",
+                "line": 119
+              },
+              {
+                "term": "store_word(owner, 0x10, reinterpret_cast<std::uint32_t>(section));",
+                "line": 120
+              }
+            ]
+          },
+          {
+            "fact_id": "section_actual_creator",
+            "path": "src/native_renderer_worker_lifetime.cpp",
+            "anchors": [
+              {
+                "term": "create_native_tracked_critical_section_00bd1860()",
+                "line": 74
+              },
+              {
+                "term": "push 1Ch",
+                "line": 77
+              },
+              {
+                "term": "call dword ptr [InitializeCriticalSection]",
+                "line": 84
+              },
+              {
+                "term": "mov dword ptr [esi + 18h], 0",
+                "line": 85
+              }
+            ]
+          },
+          {
+            "fact_id": "child_escape_exposure",
+            "path": "src/native_render_service_base.cpp",
+            "anchors": [
+              {
+                "term": "BaseCleanup base_cleanup{actual_receiver};",
+                "line": 57
+              },
+              {
+                "term": "GuardCleanup guard_cleanup{guard};",
+                "line": 68
+              },
+              {
+                "term": "context.actual_application_e1ae90 = actual_receiver;",
+                "line": 136
+              },
+              {
+                "term": "void* const current_application = context.actual_application_e1ae90;",
+                "line": 139
+              },
+              {
+                "term": "register_native_singleton_object_00bd0c30(manager, nullptr, current_application);",
+                "line": 140
+              }
+            ]
+          },
+          {
+            "fact_id": "drain_before_host_services_retire",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "if (native_renderer_) native_renderer_->drain_singletons();",
+                "line": 1601
+              },
+              {
+                "term": "else singletons_->shutdown();",
+                "line": 1602
+              },
+              {
+                "term": "delete singletons_;",
+                "line": 1619
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "Concrete manager and lock-section construction and existing host service retention exist. Application-specific disjointness, captured-section lifetime and concurrent invalidation exclusion remain unproved."
+      },
+      {
+        "id": "frame_consumer_same_14",
+        "status": "missing",
+        "requirement": "Prove the actual active frame consumer uses the same receiver+0x14 object.",
+        "evidence": [
+          {
+            "fact_id": "active_projected_frame_producer",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,",
+                "line": 2373
+              },
+              {
+                "term": "loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,",
+                "line": 2384
+              },
+              {
+                "term": "run_application_frame(frame_state_, color_, frame_host_);",
+                "line": 1184
+              },
+              {
+                "term": "if (menu_ != nullptr) menu_->frame(seconds, frame_index_);",
+                "line": 1108
+              }
+            ]
+          },
+          {
+            "fact_id": "frame_borrows_exact_pointer_type",
+            "path": "include/bsp/game_native_game_application_frame.hpp",
+            "anchors": [
+              {
+                "term": "void* volatile& actual_application_game_14",
+                "line": 43
+              },
+              {
+                "term": "void* volatile& application_game_14_;",
+                "line": 73
+              },
+              {
+                "term": "char* volatile& duplicate_name_00e1ae78_;",
+                "line": 74
+              }
+            ]
+          },
+          {
+            "fact_id": "frame_owns_other_game_storage",
+            "path": "src/game_native_game_application_frame.cpp",
+            "anchors": [
+              {
+                "term": ":runtime_(runtime),application_game_14_(application),",
+                "line": 18
+              },
+              {
+                "term": "SingletonAllocationKind::object,0x71a0,0x71a0",
+                "line": 55
+              },
+              {
+                "term": "::new (block) NativeGameStorage;",
+                "line": 58
+              },
+              {
+                "term": "std::memset(block,0,0x71a0);",
+                "line": 59
+              },
+              {
+                "term": "application_game_14_=result;application_published_=true;",
+                "line": 69
+              }
+            ]
+          },
+          {
+            "fact_id": "runtime_injection_is_assignment",
+            "path": "src/game_hosts_fixed_step.cpp",
+            "anchors": [
+              {
+                "term": "void GameFixedStepHost::attach_native_game(GameNativeGameRuntime* game) noexcept {",
+                "line": 281
+              },
+              {
+                "term": "native_game_=game;",
+                "line": 282
+              }
+            ]
+          },
+          {
+            "fact_id": "projection_identity_binding",
+            "path": "src/platform_services.cpp",
+            "anchors": [
+              {
+                "term": ": application_(application), frame_(frame), marker_(marker), host_(host) {}",
+                "line": 76
+              },
+              {
+                "term": "if (!application || application != application_)",
+                "line": 78
+              },
+              {
+                "term": "run_application_frame(frame_, marker_, host_);",
+                "line": 80
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "The active frame path consumes separately held projection references. Pointer injection and opaque binding do not establish canonical +0x14 field identity."
+      },
+      {
+        "id": "outer_store_escape",
+        "status": "partial",
+        "requirement": "Preserve child-first order and outer-store-only escape guarantee.",
+        "evidence": [
+          {
+            "fact_id": "child_escape_exposure",
+            "path": "src/native_render_service_base.cpp",
+            "anchors": [
+              {
+                "term": "BaseCleanup base_cleanup{actual_receiver};",
+                "line": 57
+              },
+              {
+                "term": "GuardCleanup guard_cleanup{guard};",
+                "line": 68
+              },
+              {
+                "term": "context.actual_application_e1ae90 = actual_receiver;",
+                "line": 136
+              },
+              {
+                "term": "void* const current_application = context.actual_application_e1ae90;",
+                "line": 139
+              },
+              {
+                "term": "register_native_singleton_object_00bd0c30(manager, nullptr, current_application);",
+                "line": 140
+              }
+            ]
+          }
+        ],
+        "excerpts": [
+          {
+            "path": "src/native_render_service_base.cpp",
+            "start": 150,
+            "end": 181,
+            "captured_start": 121,
+            "captured_end": 181
+          }
+        ],
+        "conclusion": "The dormant full shell calls the genuine child first; on child escape its postnormal outer stores are skipped. This does not roll back child publication, registration or provider effects."
+      },
+      {
+        "id": "partial_publication_registration",
+        "status": "partial",
+        "requirement": "Account for first/second getter ordering, current E1AE90 reload and persistent partial effects.",
+        "evidence": [
+          {
+            "fact_id": "child_escape_exposure",
+            "path": "src/native_render_service_base.cpp",
+            "anchors": [
+              {
+                "term": "BaseCleanup base_cleanup{actual_receiver};",
+                "line": 57
+              },
+              {
+                "term": "GuardCleanup guard_cleanup{guard};",
+                "line": 68
+              },
+              {
+                "term": "context.actual_application_e1ae90 = actual_receiver;",
+                "line": 136
+              },
+              {
+                "term": "void* const current_application = context.actual_application_e1ae90;",
+                "line": 139
+              },
+              {
+                "term": "register_native_singleton_object_00bd0c30(manager, nullptr, current_application);",
+                "line": 140
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "BaseCleanup is armed before D68BC4 and GuardCleanup before publication. The second getter precedes current-cell registration. Existing ordinary C++ cleanup supplies no Original FH3, hardware-unwind or second-cleanup authority."
+      },
+      {
+        "id": "flags1_drain_receiver_free",
+        "status": "missing",
+        "requirement": "Resolve CE3818 flags-1 generic deletion and receiver-free policy for normal and failed construction.",
+        "evidence": [
+          {
+            "fact_id": "CE3818_flags1_free",
+            "path": "src/native_singleton_destruction.cpp",
+            "anchors": [
+              {
+                "term": "case 0x00ce3818:",
+                "line": 314
+              },
+              {
+                "term": "delete_native_singleton_base_00412440(owner, nullptr, flags);",
+                "line": 315
+              },
+              {
+                "term": "mov eax, dword ptr [ecx]",
+                "line": 621
+              },
+              {
+                "term": "push 1",
+                "line": 622
+              },
+              {
+                "term": "test byte ptr [esp + 4], 1",
+                "line": 668
+              },
+              {
+                "term": "call singleton_lifetime_free",
+                "line": 640
+              }
+            ]
+          },
+          {
+            "fact_id": "shared_manager_retirement",
+            "path": "src/game_hosts_singletons.cpp",
+            "anchors": [
+              {
+                "term": "destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);",
+                "line": 169
+              },
+              {
+                "term": "singleton_lifetime_free(manager);",
+                "line": 172
+              },
+              {
+                "term": "manager_publication_01090aa0_ = nullptr;",
+                "line": 173
+              }
+            ]
+          },
+          {
+            "fact_id": "drain_before_host_services_retire",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "if (native_renderer_) native_renderer_->drain_singletons();",
+                "line": 1601
+              },
+              {
+                "term": "else singletons_->shutdown();",
+                "line": 1602
+              },
+              {
+                "term": "delete singletons_;",
+                "line": 1619
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "CE3818 reaches flags-1 base deletion and receiver free. Existing manager drain/free/reset is not Application retirement or stack/heap receiver disposition authority."
+      },
+      {
+        "id": "retirement_quiescence",
+        "status": "missing",
+        "requirement": "Prove Application owner retirement guard, quiescence, name/runtime disposition and post-failure manager handoff.",
+        "evidence": [
+          {
+            "fact_id": "actual_host_projection",
+            "path": "src/game_hosts.cpp",
+            "anchors": [
+              {
+                "term": "void GameStartupHost::application_construct() {",
+                "line": 1835
+              },
+              {
+                "term": "frame_state_ = ApplicationFrameState{};",
+                "line": 1839
+              },
+              {
+                "term": "constructed_ = true;",
+                "line": 1840
+              },
+              {
+                "term": "request.application = this;",
+                "line": 2130
+              },
+              {
+                "term": "constructed_ = false;",
+                "line": 2516
+              }
+            ]
+          },
+          {
+            "fact_id": "shared_manager_retirement",
+            "path": "src/game_hosts_singletons.cpp",
+            "anchors": [
+              {
+                "term": "destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);",
+                "line": 169
+              },
+              {
+                "term": "singleton_lifetime_free(manager);",
+                "line": 172
+              },
+              {
+                "term": "manager_publication_01090aa0_ = nullptr;",
+                "line": 173
+              }
+            ]
+          },
+          {
+            "fact_id": "CE3818_flags1_free",
+            "path": "src/native_singleton_destruction.cpp",
+            "anchors": [
+              {
+                "term": "case 0x00ce3818:",
+                "line": 314
+              },
+              {
+                "term": "delete_native_singleton_base_00412440(owner, nullptr, flags);",
+                "line": 315
+              },
+              {
+                "term": "mov eax, dword ptr [ecx]",
+                "line": 621
+              },
+              {
+                "term": "push 1",
+                "line": 622
+              },
+              {
+                "term": "test byte ptr [esp + 4], 1",
+                "line": 668
+              },
+              {
+                "term": "call singleton_lifetime_free",
+                "line": 640
+              }
+            ]
+          }
+        ],
+        "excerpts": [],
+        "conclusion": "Clearing constructed_, draining the manager, freeing it and resetting the cell do not establish an Application owner retirement guard or safe storage return."
+      }
+    ],
+    "activation_authority": false,
+    "Source_dormant_wrapper_credit_only": true,
+    "new_Native_queries": 0,
+    "new_Cpp": 0,
+    "new_builds_tests_probes": 0,
+    "missing_dependency": {
+      "id": "cc12_application_winmain_owner_cell_lifetime_provenance",
+      "condition": "Root must supply positive Original WinMain owner/frame identity, actual storage/class/alignment/lifetimes including uint32 profile+0 and valid BYTE-access domain+4 (no DWORD+4 object requirement), canonical E1AE90/E1AE78 timing, same actual +0x14 object and normal/exceptional ownership/disposition. Reuse accepted bytes before any separately Root-admitted exact Native/EH/data range.",
+      "accepted_first_evidence": [
+        {
+          "start": "008F8410",
+          "end": "008F8448",
+          "bytes": 57
+        },
+        {
+          "start": "00737970",
+          "bytes": 42
+        },
+        {
+          "start": "00BEA970",
+          "bytes": 22
+        },
+        {
+          "start": "00BEA810",
+          "bytes": 145
+        }
+      ],
+      "automatic_packet_creation": false,
+      "forbidden_substitutes": [
+        "another absence-only census",
+        "a default-null interface",
+        "manufactured layout or field lifetime",
+        "new allocation or cleanup",
+        "caller wiring or startup activation"
+      ]
+    },
+    "qualification": "Finite frozen Source proof and conditional dependency. Original load/store bytes alone do not begin new C++ object lifetimes. No new owner, callable ABI, activation, allocator/free, storage return, retirement/quiescence, Original FH3 or game/runtime authority."
+  },
+  "core_proof": {
+    "schema": 1,
+    "ZIP": {
+      "entry": "evidence.zip",
+      "bytes": 773186982,
+      "sha256": "4b1b3d6b6539d298e7582a8d60fc9d692549e2046cc33b6b424c2df646665931"
+    },
+    "helper": {
+      "entry": "portable_replay.py",
+      "bytes": 2471,
+      "sha256": "d6f3a51fe70974dc0e7bd7ca49608f81deeb05bb4c854df3f31426c4607efa8b"
+    },
+    "manifest": {
+      "entry": "manifest.json",
+      "bytes": 1225663,
+      "sha256": "a59b3cc0aa7c3ae70d7f0d61fb363fbf929a61c6df726ba97191a572a778ff14"
+    },
+    "zip_members": 4393,
+    "retained_bytes": 816928612,
+    "qualification": "Closed frozen Source admission core only; original/copied strict replay and final actual Git delivery provenance have separate receipts."
+  },
+  "strict_replay_receipt": {
+    "Source": {
+      "Git": {
+        "Source_paths": 4228,
+        "actual_git_rows": 4280,
+        "root": "8022405d08ba46ab43fefd1e4b27de69eb59d330",
+        "trees": 11
+      },
+      "Root_LF_deltas": [],
+      "Root_Source3356": 3356,
+      "Root_historical_artifacts_not_replayed": 4,
+      "Root_raw_deltas": [
+        "include/bsp/native_render_service_base.hpp",
+        "include/bsp/sound_configuration.hpp",
+        "include/bsp/sound_startup.hpp",
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "src/game_sound_runtime.cpp",
+        "src/native_render_service_base.cpp",
+        "src/sound_configuration.cpp",
+        "src/sound_startup.cpp"
+      ],
+      "Source": 4228,
+      "excerpts": 53,
+      "hits": {
+        "active_frame_host": 29,
+        "application_binding": 2,
+        "application_cell": 8,
+        "base_context": 7,
+        "candidate_layouts": 49,
+        "duplicate_leaf": 6,
+        "escape_drain": 89,
+        "factory_context": 16,
+        "factory_getter": 4,
+        "frame": 20,
+        "frame_injection": 11,
+        "frame_service_binding": 4,
+        "full_shell": 2,
+        "host_raw_creation": 16,
+        "loop_shell": 3,
+        "name_cell": 8,
+        "profile_identities": 3,
+        "retirement_entry": 0,
+        "runtime": 35,
+        "shared_manager": 30,
+        "shutdown_projection": 4,
+        "startup_dispatch": 18,
+        "tracked_section": 23,
+        "typed_game_cell": 4,
+        "vector_type": 14,
+        "xlive_game_profile": 5
+      },
+      "positive_facts": [
+        {
+          "anchors": [
+            {
+              "line": 1202,
+              "term": "host = std::make_unique<bsp::game::GameStartupHost>("
+            },
+            {
+              "line": 1220,
+              "term": "result = bsp::run_win_main(arguments, *host);"
+            }
+          ],
+          "id": "entry_concrete_host",
+          "path": "src/game_main.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 227,
+              "term": "host.publish_game_resource_factory();"
+            },
+            {
+              "line": 228,
+              "term": "host.application_construct();"
+            },
+            {
+              "line": 229,
+              "term": "host.application_initialize(kApplicationInitializeFlags, kApplicationInitializeMode);"
+            },
+            {
+              "line": 232,
+              "term": "host.application_destruct();"
+            },
+            {
+              "line": 233,
+              "term": "host.destroy_singleton_lifetime_manager();"
+            }
+          ],
+          "id": "ordered_abstract_dispatch",
+          "path": "src/winmain_startup.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 1835,
+              "term": "void GameStartupHost::application_construct() {"
+            },
+            {
+              "line": 1839,
+              "term": "frame_state_ = ApplicationFrameState{};"
+            },
+            {
+              "line": 1840,
+              "term": "constructed_ = true;"
+            },
+            {
+              "line": 2130,
+              "term": "request.application = this;"
+            },
+            {
+              "line": 2516,
+              "term": "constructed_ = false;"
+            }
+          ],
+          "id": "actual_host_projection",
+          "path": "src/game_hosts.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 613,
+              "term": "class GameStartupHost final : public StartupHost"
+            },
+            {
+              "line": 721,
+              "term": "ApplicationFrameState frame_state_;"
+            },
+            {
+              "line": 739,
+              "term": "GameStateSlot game_state_;"
+            },
+            {
+              "line": 742,
+              "term": "GameSingletonHost* singletons_{};"
+            },
+            {
+              "line": 749,
+              "term": "bool constructed_{};"
+            }
+          ],
+          "id": "host_members",
+          "path": "include/bsp/game_hosts.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 15,
+              "term": "void* volatile& manager_01090aa0() noexcept { return manager_; }"
+            },
+            {
+              "line": 38,
+              "term": "void* volatile manager_{};"
+            }
+          ],
+          "id": "real_manager_cell",
+          "path": "include/bsp/game_native_string_process.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 32,
+              "term": "static auto* const process = new GameNativeStringProcess;"
+            },
+            {
+              "line": 33,
+              "term": "return *process;"
+            }
+          ],
+          "id": "retained_process",
+          "path": "src/game_native_string_process.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 19,
+              "term": "manager_publication_01090aa0_(game_native_string_process().manager_01090aa0())"
+            },
+            {
+              "line": 27,
+              "term": "deletion_bindings_.game_resource_factory = &game_resource_factory_context_;"
+            },
+            {
+              "line": 151,
+              "term": "get_native_game_resource_factory_007175d0(game_resource_factory_context_)"
+            }
+          ],
+          "id": "same_manager_alias",
+          "path": "src/game_hosts_singletons.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 134,
+              "term": "void* volatile& manager_publication_01090aa0_;"
+            },
+            {
+              "line": 137,
+              "term": "void* volatile game_resource_factory_publication_00e19b90_{nullptr};"
+            },
+            {
+              "line": 139,
+              "term": "void* volatile game_resource_factory_alias_00f8d31c_{nullptr};"
+            },
+            {
+              "line": 141,
+              "term": "manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_"
+            }
+          ],
+          "id": "distinct_factory_cells",
+          "path": "include/bsp/game_hosts_singletons.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 41,
+              "term": "SingletonAllocationKind::object, 8, 8"
+            },
+            {
+              "line": 48,
+              "term": "context.actual_factory_publication_00e19b90 = allocation;"
+            },
+            {
+              "line": 50,
+              "term": "void* const captured_secondary = current ? at(current, 4) : nullptr;"
+            }
+          ],
+          "id": "factory_is_eight_byte_owner",
+          "path": "src/native_game_resource_factory.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 45,
+              "term": "SingletonAllocationKind::manager, 0x14, 0x14"
+            },
+            {
+              "line": 48,
+              "term": "construct_native_singleton_manager_00bd0960(allocation, nullptr)"
+            },
+            {
+              "line": 50,
+              "term": "actual_manager_publication_01090aa0 = result;"
+            },
+            {
+              "line": 53,
+              "term": "singleton_lifetime_free(allocation);"
+            }
+          ],
+          "id": "manager_provider",
+          "path": "src/native_singleton_publication.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 118,
+              "term": "reserve_native_singleton_slots_00bd0600(owner, nullptr, 256);"
+            },
+            {
+              "line": 119,
+              "term": "create_native_tracked_critical_section_00bd1860();"
+            },
+            {
+              "line": 120,
+              "term": "store_word(owner, 0x10, reinterpret_cast<std::uint32_t>(section));"
+            }
+          ],
+          "id": "manager_section_provider",
+          "path": "src/native_singleton_vector_reserve_construct.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 74,
+              "term": "create_native_tracked_critical_section_00bd1860()"
+            },
+            {
+              "line": 77,
+              "term": "push 1Ch"
+            },
+            {
+              "line": 84,
+              "term": "call dword ptr [InitializeCriticalSection]"
+            },
+            {
+              "line": 85,
+              "term": "mov dword ptr [esi + 18h], 0"
+            }
+          ],
+          "id": "section_actual_creator",
+          "path": "src/native_renderer_worker_lifetime.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 12,
+              "term": "void* volatile& actual_manager_01090aa0;"
+            },
+            {
+              "line": 55,
+              "term": "void* volatile& actual_application_e1ae90;"
+            },
+            {
+              "line": 110,
+              "term": "These objects and valid byte access must exist before the child call; this"
+            },
+            {
+              "line": 111,
+              "term": "helper starts no lifetime."
+            }
+          ],
+          "id": "context_is_borrowed",
+          "path": "include/bsp/native_render_service_base.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 12,
+              "term": "void** data_00;"
+            },
+            {
+              "line": 13,
+              "term": "std::int32_t count_04,capacity_08;"
+            },
+            {
+              "line": 15,
+              "term": "sizeof(NativeApplicationPointerVectorStorage)==12"
+            }
+          ],
+          "id": "existing_vector_type",
+          "path": "include/bsp/native_shader_preload.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 8,
+              "term": "sizeof(void*) == 4"
+            },
+            {
+              "line": 9,
+              "term": "sizeof(std::int32_t) == 4"
+            },
+            {
+              "line": 10,
+              "term": "offsetof(NativeApplicationPointerVectorStorage, data_00) == 0"
+            },
+            {
+              "line": 11,
+              "term": "offsetof(NativeApplicationPointerVectorStorage, count_04) == 4"
+            },
+            {
+              "line": 12,
+              "term": "offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8"
+            }
+          ],
+          "id": "vector_current_offsets",
+          "path": "src/native_application_pointer_vector_resize.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 43,
+              "term": "void* volatile& actual_application_game_14"
+            },
+            {
+              "line": 73,
+              "term": "void* volatile& application_game_14_;"
+            },
+            {
+              "line": 74,
+              "term": "char* volatile& duplicate_name_00e1ae78_;"
+            }
+          ],
+          "id": "frame_borrows_exact_pointer_type",
+          "path": "include/bsp/game_native_game_application_frame.hpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 18,
+              "term": ":runtime_(runtime),application_game_14_(application),"
+            },
+            {
+              "line": 55,
+              "term": "SingletonAllocationKind::object,0x71a0,0x71a0"
+            },
+            {
+              "line": 58,
+              "term": "::new (block) NativeGameStorage;"
+            },
+            {
+              "line": 59,
+              "term": "std::memset(block,0,0x71a0);"
+            },
+            {
+              "line": 69,
+              "term": "application_game_14_=result;application_published_=true;"
+            }
+          ],
+          "id": "frame_owns_other_game_storage",
+          "path": "src/game_native_game_application_frame.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 2373,
+              "term": "frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,"
+            },
+            {
+              "line": 2384,
+              "term": "loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,"
+            },
+            {
+              "line": 1184,
+              "term": "run_application_frame(frame_state_, color_, frame_host_);"
+            },
+            {
+              "line": 1108,
+              "term": "if (menu_ != nullptr) menu_->frame(seconds, frame_index_);"
+            }
+          ],
+          "id": "active_projected_frame_producer",
+          "path": "src/game_hosts.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 49,
+              "term": "NativeGameStorage* GameNativeGameRuntime::construct(NativeGameStorage& game,const void* name)"
+            },
+            {
+              "line": 51,
+              "term": "i.owner=&game;i.phase=Phase::constructing;"
+            }
+          ],
+          "id": "game_runtime_borrows_storage",
+          "path": "src/game_native_game_runtime.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 281,
+              "term": "void GameFixedStepHost::attach_native_game(GameNativeGameRuntime* game) noexcept {"
+            },
+            {
+              "line": 282,
+              "term": "native_game_=game;"
+            }
+          ],
+          "id": "runtime_injection_is_assignment",
+          "path": "src/game_hosts_fixed_step.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 76,
+              "term": ": application_(application), frame_(frame), marker_(marker), host_(host) {}"
+            },
+            {
+              "line": 78,
+              "term": "if (!application || application != application_)"
+            },
+            {
+              "line": 80,
+              "term": "run_application_frame(frame_, marker_, host_);"
+            }
+          ],
+          "id": "projection_identity_binding",
+          "path": "src/platform_services.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 57,
+              "term": "BaseCleanup base_cleanup{actual_receiver};"
+            },
+            {
+              "line": 68,
+              "term": "GuardCleanup guard_cleanup{guard};"
+            },
+            {
+              "line": 136,
+              "term": "context.actual_application_e1ae90 = actual_receiver;"
+            },
+            {
+              "line": 139,
+              "term": "void* const current_application = context.actual_application_e1ae90;"
+            },
+            {
+              "line": 140,
+              "term": "register_native_singleton_object_00bd0c30(manager, nullptr, current_application);"
+            }
+          ],
+          "id": "child_escape_exposure",
+          "path": "src/native_render_service_base.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 1601,
+              "term": "if (native_renderer_) native_renderer_->drain_singletons();"
+            },
+            {
+              "line": 1602,
+              "term": "else singletons_->shutdown();"
+            },
+            {
+              "line": 1619,
+              "term": "delete singletons_;"
+            }
+          ],
+          "id": "drain_before_host_services_retire",
+          "path": "src/game_hosts.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 169,
+              "term": "destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);"
+            },
+            {
+              "line": 172,
+              "term": "singleton_lifetime_free(manager);"
+            },
+            {
+              "line": 173,
+              "term": "manager_publication_01090aa0_ = nullptr;"
+            }
+          ],
+          "id": "shared_manager_retirement",
+          "path": "src/game_hosts_singletons.cpp"
+        },
+        {
+          "anchors": [
+            {
+              "line": 314,
+              "term": "case 0x00ce3818:"
+            },
+            {
+              "line": 315,
+              "term": "delete_native_singleton_base_00412440(owner, nullptr, flags);"
+            },
+            {
+              "line": 621,
+              "term": "mov eax, dword ptr [ecx]"
+            },
+            {
+              "line": 622,
+              "term": "push 1"
+            },
+            {
+              "line": 668,
+              "term": "test byte ptr [esp + 4], 1"
+            },
+            {
+              "line": 640,
+              "term": "call singleton_lifetime_free"
+            }
+          ],
+          "id": "CE3818_flags1_free",
+          "path": "src/native_singleton_destruction.cpp"
+        }
+      ],
+      "qualification": "Complete finite textual Source searches and positive concrete caller/field/provider excerpts in this actual Git corpus. Lexical absence is not a universal foreign-binary or alternate-build absence proof.",
+      "queries": 26,
+      "src_include": 4210,
+      "status": "pass"
+    },
+    "Source_unchanged": true,
+    "accepted_full_wrapper": {
+      "all_4228_current_Source_bytes_equal_accepted_wrapper": true,
+      "complete_full_wrapper_replay": {
+        "App_objects": 80,
+        "Core_COFF_members": 1990,
+        "Source_Git": {
+          "actual_staged": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4253,
+            "root": "0b8ce77800e19d7f5a55900732d1b9822e80d728",
+            "trees": 11
+          },
+          "baseline": {
+            "Source_paths": 4228,
+            "actual_git_rows": 4253,
+            "root": "a9b70d001d6a2c8d96697255cdc1b6d30922f8c6",
+            "trees": 11
+          },
+          "baseline_commit": "f56daf8e390f3e3e0737ba77aa4a1a8857ab7579",
+          "boundary": "Portable verification of retained real Git objects and actual staged Source receipt; final committed Source equality is checked separately in the repository.",
+          "staged_Source_roots": {
+            "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+            "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+            "include": "a58d44af6071fee132ec49fdda541182d7ece633",
+            "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+            "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+            "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68"
+          },
+          "status": "pass"
+        },
+        "Source_paths": 4228,
+        "accepted_contract": {
+          "Source": {
+            "Git": {
+              "Source_paths": 4228,
+              "actual_git_rows": 4270,
+              "root": "f7eaf21d9bde5b48b79ec1784851e83dedf75f6a",
+              "trees": 11
+            },
+            "Root_LF_deltas": [
+              "include/bsp/native_render_service_base.hpp",
+              "src/native_render_service_base.cpp"
+            ],
+            "Root_Source3356": 3356,
+            "Root_cross_EOL_only": [
+              "include/bsp/sound_configuration.hpp",
+              "include/bsp/sound_startup.hpp",
+              "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+              "src/game_sound_runtime.cpp",
+              "src/sound_configuration.cpp",
+              "src/sound_startup.cpp"
+            ],
+            "Root_historical_artifacts_not_replayed": 4,
+            "Root_raw_deltas": [
+              "include/bsp/native_render_service_base.hpp",
+              "include/bsp/sound_configuration.hpp",
+              "include/bsp/sound_startup.hpp",
+              "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+              "src/game_sound_runtime.cpp",
+              "src/native_render_service_base.cpp",
+              "src/sound_configuration.cpp",
+              "src/sound_startup.cpp"
+            ],
+            "Source": 4228,
+            "excerpts": 26,
+            "hits": {
+              "Application_publication": 3,
+              "actual_game_cell": 4,
+              "canonical_name": 4,
+              "drain_generic_profile_free": 9,
+              "frame_users": 20,
+              "full_shell_names": 4,
+              "platform_borrow_projection": 1,
+              "process_manager": 126,
+              "projected_startup": 12,
+              "real_base_provider": 3,
+              "real_loop_provider": 2,
+              "typed_offsets_and_widths": 18,
+              "typed_vector": 12,
+              "vector_reserve": 4,
+              "vector_resize": 2
+            },
+            "queries": 15,
+            "src_include": 4210,
+            "status": "pass"
+          },
+          "Source_unchanged": true,
+          "accepted_bodies": {
+            "bytes": 64,
+            "full_shell_bytes": 42,
+            "full_shell_instructions": 15,
+            "instructions": 23,
+            "loop_bytes": 22,
+            "loop_instructions": 8
+          },
+          "accepted_loop": {
+            "Source_delta_from_loop": [
+              "include/bsp/native_particle_model_construction.hpp",
+              "src/native_particle_model_construction.cpp"
+            ],
+            "ZIP": {
+              "bytes": 609067675,
+              "entry": "blobs/f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3",
+              "sha256": "f7605a8d1619c61bb656f1364c4917b8151ff2f136ad4cbaff4e55060ccb86a3"
+            },
+            "accepted_outer_replay": {
+              "Ghidra_mutations": 0,
+              "Source": {
+                "Git": {
+                  "Source_paths": 4228,
+                  "actual_git_rows": 4255,
+                  "root": "0e7fdcecd84ec8083b7ca4520e933a5c1d94552f",
+                  "trees": 11
+                },
+                "Root_Source3356": 3356,
+                "Root_manifest_sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a",
+                "Root_raw_variants": 8,
+                "excerpts": 32,
+                "hits": {
+                  "actual_game_cell": 4,
+                  "actual_vector": 12,
+                  "allocation_policy": 20,
+                  "application_profiles": 2,
+                  "application_publication": 8,
+                  "base_entry": 2,
+                  "canonical_duplicate": 6,
+                  "name_publication": 8,
+                  "outer_entries": 3,
+                  "projected_application_identity": 5,
+                  "raw_deletion_profile_gate": 9,
+                  "retained_frame": 20,
+                  "shared_manager_authority": 4,
+                  "startup_shells": 8
+                },
+                "queries": 14,
+                "src_include": 4210,
+                "status": "pass"
+              },
+              "Source_only": true,
+              "accepted_outer_bodies": {
+                "Ghidra_mutations": 0,
+                "accepted_bodies": [
+                  {
+                    "address": "00737970",
+                    "bytes": 42,
+                    "instructions": 15,
+                    "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d"
+                  },
+                  {
+                    "address": "00bea970",
+                    "bytes": 22,
+                    "instructions": 8,
+                    "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd"
+                  }
+                ],
+                "fresh_Native_bytes": 0,
+                "fresh_Native_queries": 0,
+                "status": "pass"
+              },
+              "baseline_commit": "c02232befa117182c0536d6e60dbaedeedddff58",
+              "boundary": "Dormant borrowed BEA970 Source admission only; no owner, cell producer, startup, retirement, storage return, Original FH3 or current external ABI closure.",
+              "checked_members": 4627,
+              "decision": {
+                "Original_FH3_or_current_external_ABI_GO": false,
+                "actual_E1AE90_authority_producer_GO": false,
+                "automatic_storage_return_GO": false,
+                "combined_Game_frame_factory_GO": false,
+                "dormant_BEA970_borrowed_Source_GO": true,
+                "full_737970_Source_GO": false,
+                "implemented_by_this_packet": false,
+                "raw_Application_owner_GO": false,
+                "retirement_GO": false,
+                "startup_activation_GO": false
+              },
+              "helper_graph": {
+                "current": 11,
+                "implementation": 23,
+                "readiness": 108
+              },
+              "new_Cpp_changes": 0,
+              "new_Native_bytes": 0,
+              "new_Native_queries": 0,
+              "new_builds_tests_probes": 0,
+              "packet": "cc12_application_singleton_outer_admission_readiness",
+              "prior_evidence": {
+                "Source_delta_from_prior_implementation": [
+                  "include/bsp/native_mesh_owner.hpp",
+                  "src/native_mesh_owner.cpp"
+                ],
+                "historical_compiled_evidence_only": true,
+                "prior_implementation_ZIP_sha256": "2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e",
+                "prior_implementation_helpers": 23,
+                "prior_implementation_outputs": 4,
+                "prior_implementation_replayed": true,
+                "prior_readiness_helpers": 108,
+                "prior_readiness_pins": 853,
+                "prior_readiness_replayed": true,
+                "status": "pass"
+              },
+              "retained_bytes": 596929030,
+              "status": "pass",
+              "zip_members": 4628
+            },
+            "commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+            "loop_checked_members": 4602,
+            "loop_zip_members": 4603
+          },
+          "baseline_commit": "bab6547b6df0ca96acf531fa8e071bdcf56174f0",
+          "boundary": "Conditional dormant full-shell Source admission only. Already-live actual typed objects are prerequisites, not produced evidence. No owner/cell producer/activation/retirement/storage return/Original FH3/current external ABI or runtime credit.",
+          "checked_members": 4344,
+          "decision": {
+            "Original_FH3_external_ABI_GO": false,
+            "caller_startup_activation_GO": false,
+            "canonical_Application_name_cell_production_GO": false,
+            "current_737970_Source_implemented": false,
+            "dormant_737970_borrowed_Source_GO": true,
+            "frame_name_handoff_GO": false,
+            "raw_Application_owner_GO": false,
+            "raw_byte_extent_alone_GO": false,
+            "retirement_storage_return_GO": false
+          },
+          "helper_graph": {
+            "current": 12,
+            "earlier_implementation": 23,
+            "earlier_readiness": 108,
+            "loop": 29,
+            "outer": 11
+          },
+          "later_Main": {
+            "Source_paths": 4228,
+            "changed": [],
+            "frozen_worker_baseline": "bab6547b6df0ca96acf531fa8e071bdcf56174f0",
+            "later_Root3356_LF_equal": true,
+            "later_Root_raw_EOL_variants": [
+              "include/bsp/native_render_service_base.hpp",
+              "include/bsp/sound_configuration.hpp",
+              "include/bsp/sound_startup.hpp",
+              "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+              "src/game_sound_runtime.cpp",
+              "src/native_render_service_base.cpp",
+              "src/sound_configuration.cpp",
+              "src/sound_startup.cpp"
+            ],
+            "metadata_paths": [
+              "config/reconstruction/00be0000.jsonl",
+              "docs/CC12_APPLICATION_LOOP_BASE_SOURCE_PRIMARY.md",
+              "reports/cc12_application_loop_base_source_primary.json"
+            ],
+            "observed_Main": "3c3c469d85f9c6b3c85116991df346b95028bd74",
+            "qualification": "Read-only later Main observation. Current worker Source-only epoch remains frozen at bab6547. Later integrated Root Main is exactly Source-equivalent and adds only the named Root metadata and reconstruction shard. Root build evidence remains separately scoped.",
+            "status": "pass"
+          },
+          "new_Cpp": 0,
+          "new_Native_queries": 0,
+          "new_builds_tests_probes": 0,
+          "packet": "cc12_application_full_borrowed_shell_readiness",
+          "retained_bytes": 667524655,
+          "status": "pass",
+          "zip_members": 4345
+        },
+        "added_code_sections": 3,
+        "baseline_commit": "f56daf8e390f3e3e0737ba77aa4a1a8857ab7579",
+        "before_after_TUs": [
+          20,
+          20
+        ],
+        "before_after_code_sections": [
+          174401,
+          174404
+        ],
+        "before_after_header_consumers": [
+          17,
+          17
+        ],
+        "boundary": "Static Source/COFF replay only. New constructor stays dormant; no raw owner/cell producer, startup activation, retirement, original FH3, external runtime ABI, Native or game validation.",
+        "changed_code_sections": 0,
+        "checked_members": 4703,
+        "data": {
+          "EH_SEH_tables_exact": 122,
+          "actual_new_funcinfo_offset": 16,
+          "added_noncode": 3,
+          "changed_noncode": 3,
+          "current_provider_table_bytes": 288,
+          "exact_noncode": 1041,
+          "new_wrapper_table_bytes": 52,
+          "old_provider_table_bytes": 236,
+          "vtables_exact": 27
+        },
+        "extra_material": {
+          "UUID_directive_counts": {
+            "after": 685,
+            "before": 684
+          },
+          "new_definitions": 3,
+          "old_definitions_exact": 2531,
+          "old_references_exact": 67,
+          "own_TU_references": 0,
+          "peer_counts": [
+            {
+              "exact": 976,
+              "old": 976,
+              "symbol": "??$_Digit_pairs@D@std@@3U?$_Digit_pair_table@D@1@B"
+            },
+            {
+              "exact": 976,
+              "old": 976,
+              "symbol": "??$_Digit_pairs@_W@std@@3U?$_Digit_pair_table@_W@1@B"
+            },
+            {
+              "exact": 579,
+              "old": 579,
+              "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z"
+            }
+          ]
+        },
+        "helper_graph": {
+          "accepted_full_readiness": 12,
+          "accepted_loop": 29,
+          "accepted_outer": 11,
+          "current": 49,
+          "prior_implementation": 23,
+          "prior_readiness": 108
+        },
+        "later_Main": {
+          "Source_paths": 4228,
+          "changed": [],
+          "frozen_worker_baseline": "f56daf8e390f3e3e0737ba77aa4a1a8857ab7579",
+          "metadata_paths": [
+            "docs/CC12_LOCALE_EXIT_TARGET_AFTER_PUSH_METADATA.md",
+            "docs/CC12_LOCALE_EXIT_TARGET_AFTER_PUSH_METADATA_PRIMARY.md",
+            "docs/CC12_MESH_RECORD_CUSTODY_EXCLUSION_PRIMARY.md",
+            "docs/CC12_MESH_RECORD_CUSTODY_EXCLUSION_READINESS.md",
+            "reports/cc12_locale_exit_target_after_push_metadata.json",
+            "reports/cc12_locale_exit_target_after_push_metadata_primary.json",
+            "reports/cc12_mesh_record_custody_exclusion_primary.json",
+            "reports/cc12_mesh_record_custody_exclusion_readiness.json"
+          ],
+          "observed_Main": "8268054c5c7b990f3fa51641d7d9240833e902d5",
+          "qualification": "Read-only later Main observation. Worker before/after evidence stays at its frozen f56daf8 c491 Application3356 baseline. No later Source delta is admitted; Root independently rebuilds any later integrated epoch.",
+          "status": "pass"
+        },
+        "old_Source_bytes_preserved": true,
+        "old_code_sections_exact": 174401,
+        "providers": {
+          "after": {
+            "direct_relocations": 81,
+            "helper_decodes": 2,
+            "positive_provider_sections": 28,
+            "selected": 23
+          },
+          "before": {
+            "direct_relocations": 69,
+            "helper_decodes": 0,
+            "positive_provider_sections": 26,
+            "selected": 20
+          }
+        },
+        "removed_code_sections": 0,
+        "retained_bytes": 1641594273,
+        "semantics": {
+          "Game_map_symbols": 0,
+          "Source_callers": 0,
+          "boundary": "Ordinary borrowed Source construction and static inlined body/table evidence only; no live Application execution, owner or external runtime disposition.",
+          "checked_machine_schedule": [
+            {
+              "mnemonic": "mov",
+              "offset": 40,
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 43,
+              "operands": "dword ptr [ebp - 0x1c], esi"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 46,
+              "operands": "byte ptr [ebp - 0x18], 1"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 53,
+              "operands": "dword ptr [esi], 0xd68bc4"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 59,
+              "operands": "dword ptr [ebp - 4], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 76,
+              "operands": "edi, dword ptr [eax + 0x10]"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 79,
+              "operands": "dword ptr [ebp - 0x14], 0xce37fc"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 86,
+              "operands": "dword ptr [ebp - 0x10], edi"
+            },
+            {
+              "mnemonic": "je",
+              "offset": 91,
+              "operands": "0x6b"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 100,
+              "operands": "eax, dword ptr [edi + 0x18]"
+            },
+            {
+              "mnemonic": "inc",
+              "offset": 103,
+              "operands": "eax"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 104,
+              "operands": "dword ptr [edi + 0x18], eax"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 120,
+              "operands": "byte ptr [ebp - 4], 1"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 124,
+              "operands": "dword ptr [eax], esi"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 141,
+              "operands": "ecx, dword ptr [ecx]"
+            },
+            {
+              "mnemonic": "push",
+              "offset": 143,
+              "operands": "ecx"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 144,
+              "operands": "ecx, eax"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 155,
+              "operands": "eax, dword ptr [edi + 0x18]"
+            },
+            {
+              "mnemonic": "dec",
+              "offset": 158,
+              "operands": "eax"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 160,
+              "operands": "dword ptr [edi + 0x18], eax"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 169,
+              "operands": "dword ptr [esi], 0xd68bc8"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 175,
+              "operands": "eax, esi"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 177,
+              "operands": "byte ptr [esi + 4], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 181,
+              "operands": "dword ptr [esi], 0xcfeab0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 187,
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 194,
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 201,
+              "operands": "dword ptr [esi + 0x10], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 208,
+              "operands": "dword ptr [esi + 0x14], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 215,
+              "operands": "byte ptr [esi + 0x19], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 219,
+              "operands": "byte ptr [esi + 0x1a], 0"
+            },
+            {
+              "mnemonic": "mov",
+              "offset": 223,
+              "operands": "byte ptr [esi + 0x18], 1"
+            },
+            {
+              "mnemonic": "ret",
+              "offset": 244,
+              "operands": ""
+            }
+          ],
+          "child_byte_equality_claim": false,
+          "child_instruction_roles_exact": [
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 40,
+              "roles": "RECEIVER, dword ptr [ebp + 8]"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 43,
+              "roles": "dword ptr [ebp - 0x1c], RECEIVER"
+            },
+            {
+              "bytes": 4,
+              "mnemonic": "mov",
+              "offset": 46,
+              "roles": "byte ptr [ebp - 0x18], 1"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 50,
+              "roles": "ebx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "bytes": 6,
+              "mnemonic": "mov",
+              "offset": 53,
+              "roles": "dword ptr [RECEIVER], 0xd68bc4"
+            },
+            {
+              "bytes": 7,
+              "mnemonic": "mov",
+              "offset": 59,
+              "roles": "dword ptr [ebp - 4], 0"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "push",
+              "offset": 66,
+              "roles": "dword ptr [ebx]"
+            },
+            {
+              "bytes": 5,
+              "mnemonic": "call",
+              "offset": 68,
+              "roles": "0x49"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "add",
+              "offset": 73,
+              "roles": "esp, 4"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 76,
+              "roles": "SECTION, dword ptr [eax + 0x10]"
+            },
+            {
+              "bytes": 7,
+              "mnemonic": "mov",
+              "offset": 79,
+              "roles": "dword ptr [ebp - 0x14], 0xce37fc"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 86,
+              "roles": "dword ptr [ebp - 0x10], SECTION"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "test",
+              "offset": 89,
+              "roles": "SECTION, SECTION"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "je",
+              "offset": 91,
+              "roles": "0x6b"
+            },
+            {
+              "bytes": 1,
+              "mnemonic": "push",
+              "offset": 93,
+              "roles": "SECTION"
+            },
+            {
+              "bytes": 6,
+              "mnemonic": "call",
+              "offset": 94,
+              "roles": "dword ptr [0]"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 100,
+              "roles": "eax, dword ptr [SECTION + 0x18]"
+            },
+            {
+              "bytes": 1,
+              "mnemonic": "inc",
+              "offset": 103,
+              "roles": "eax"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 104,
+              "roles": "dword ptr [SECTION + 0x18], eax"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "lea",
+              "offset": 107,
+              "roles": "eax, [ebp - 0x14]"
+            },
+            {
+              "bytes": 4,
+              "mnemonic": "mov",
+              "offset": 110,
+              "roles": "byte ptr [ebp - 0x20], 1"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 114,
+              "roles": "dword ptr [ebp - 0x24], eax"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 117,
+              "roles": "eax, dword ptr [ebx + 4]"
+            },
+            {
+              "bytes": 4,
+              "mnemonic": "mov",
+              "offset": 120,
+              "roles": "byte ptr [ebp - 4], 1"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "mov",
+              "offset": 124,
+              "roles": "dword ptr [eax], RECEIVER"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "push",
+              "offset": 126,
+              "roles": "dword ptr [ebx]"
+            },
+            {
+              "bytes": 5,
+              "mnemonic": "call",
+              "offset": 128,
+              "roles": "0x85"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 133,
+              "roles": "ecx, dword ptr [ebx + 4]"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "add",
+              "offset": 136,
+              "roles": "esp, 4"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "xor",
+              "offset": 139,
+              "roles": "edx, edx"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "mov",
+              "offset": 141,
+              "roles": "ecx, dword ptr [ecx]"
+            },
+            {
+              "bytes": 1,
+              "mnemonic": "push",
+              "offset": 143,
+              "roles": "ecx"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "mov",
+              "offset": 144,
+              "roles": "ecx, eax"
+            },
+            {
+              "bytes": 5,
+              "mnemonic": "call",
+              "offset": 146,
+              "roles": "0x97"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "test",
+              "offset": 151,
+              "roles": "SECTION, SECTION"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "je",
+              "offset": 153,
+              "roles": "0xa9"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 155,
+              "roles": "DEPTH_TEMP, dword ptr [SECTION + 0x18]"
+            },
+            {
+              "bytes": 1,
+              "mnemonic": "dec",
+              "offset": 158,
+              "roles": "DEPTH_TEMP"
+            },
+            {
+              "bytes": 1,
+              "mnemonic": "push",
+              "offset": 159,
+              "roles": "SECTION"
+            },
+            {
+              "bytes": 3,
+              "mnemonic": "mov",
+              "offset": 160,
+              "roles": "dword ptr [SECTION + 0x18], DEPTH_TEMP"
+            },
+            {
+              "bytes": 6,
+              "mnemonic": "call",
+              "offset": 163,
+              "roles": "dword ptr [0]"
+            },
+            {
+              "bytes": 6,
+              "mnemonic": "mov",
+              "offset": 169,
+              "roles": "dword ptr [RECEIVER], 0xd68bc8"
+            },
+            {
+              "bytes": 2,
+              "mnemonic": "mov",
+              "offset": 175,
+              "roles": "eax, RECEIVER"
+            },
+            {
+              "bytes": 4,
+              "mnemonic": "mov",
+              "offset": 177,
+              "roles": "byte ptr [RECEIVER + 4], 0"
+            }
+          ],
+          "child_transition_byte_offset": 181,
+          "cleanup_body_equal_to_current_child": true,
+          "cleanup_handler_code_bytes": 50,
+          "cleanup_handler_relocations": [
+            {
+              "offset": 4,
+              "symbol": "??1BaseCleanup@?A0x6744bbec@bsp@@QAE@XZ",
+              "type": 20
+            },
+            {
+              "offset": 12,
+              "symbol": "??1GuardCleanup@?A0x6744bbec@bsp@@QAE@XZ",
+              "type": 20
+            },
+            {
+              "offset": 36,
+              "symbol": "@__security_check_cookie@4",
+              "type": 20
+            },
+            {
+              "offset": 41,
+              "symbol": "__ehfuncinfo$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+              "type": 6
+            },
+            {
+              "offset": 46,
+              "symbol": "___CxxFrameHandler3",
+              "type": 20
+            }
+          ],
+          "cleanup_targets": {
+            "genuine_generic_provider": "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+            "guard_call": "?unwind_guard@?A0x6744bbec@bsp@@YAXAAUNativeGuard@12@@Z",
+            "state0": "??1BaseCleanup@?A0x6744bbec@bsp@@QAE@XZ",
+            "state1": "??1GuardCleanup@?A0x6744bbec@bsp@@QAE@XZ"
+          },
+          "compiled_child_inlined": true,
+          "compiler_qualification": "The genuine single Source child call is inlined with its ordinary C++ cleanup. Source lifetime/base armed byte precede D68BC4; /EHsc state0 selector follows that non-C++-throwing profile store and precedes the first provider. State1 covers conditional Enter/depth completion through normal Leave; emitted disarm/selector-clear stores are elided and selector1 remains through the eight non-C++-throwing full-shell poststores. This adds no Source outer cleanup and proves no hardware-fault, Original FH3/private-frame or external ABI equivalence.",
+          "complete_new_code_sections": 3,
+          "constructor_family_code_bytes": 295,
+          "direct_entry_relocations": 0,
+          "exact_typed_pointer_zero_stores_4B": true,
+          "game_text_exact": true,
+          "genuine_Source_child_calls": 1,
+          "handler_funcinfo_symbol_byte_offset": 16,
+          "handler_table": {
+            "declared_size": 52,
+            "flags": 1076891712,
+            "index": 32,
+            "labels": [
+              {
+                "name": ".xdata$x",
+                "section": 32,
+                "storage": 3,
+                "type": 0,
+                "value": 0
+              },
+              {
+                "name": "__ehfuncinfo$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "section": 32,
+                "storage": 3,
+                "type": 0,
+                "value": 16
+              },
+              {
+                "name": "__unwindtable$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "section": 32,
+                "storage": 3,
+                "type": 0,
+                "value": 0
+              }
+            ],
+            "name": ".xdata$x",
+            "payload_bytes": 52,
+            "payload_hex": "ffffffff000000000000000000000000220593190200000000000000000000000000000000000000000000000000000001000000",
+            "payload_sha256": "903a4ce296519d1ce0feb3463220c1e3055bcc980d5189c0e48e581379268465",
+            "raw_header_hex": "2e78646174612478000000000000000034000000a3140000d7140000000000000300000040103040",
+            "raw_pointer": 5283,
+            "relocations": [
+              {
+                "offset": 4,
+                "symbol": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$0",
+                "type": 6
+              },
+              {
+                "offset": 12,
+                "symbol": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$1",
+                "type": 6
+              },
+              {
+                "offset": 24,
+                "symbol": "__unwindtable$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "type": 6
+              }
+            ]
+          },
+          "handler_table_bytes": 52,
+          "header_generated_helper_bytes": 38,
+          "helper_family_internal_references": [
+            {
+              "code": true,
+              "group": "Core",
+              "object": "native_render_service_base.obj",
+              "relocation": {
+                "offset": 6,
+                "symbol": "__ehhandler$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "type": 6
+              },
+              "section": 12,
+              "section_name": ".text$mn"
+            },
+            {
+              "code": true,
+              "group": "Core",
+              "object": "native_render_service_base.obj",
+              "relocation": {
+                "offset": 41,
+                "symbol": "__ehfuncinfo$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "type": 6
+              },
+              "section": 13,
+              "section_name": ".text$x"
+            },
+            {
+              "code": false,
+              "group": "Core",
+              "object": "native_render_service_base.obj",
+              "relocation": {
+                "offset": 4,
+                "symbol": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$0",
+                "type": 6
+              },
+              "section": 32,
+              "section_name": ".xdata$x"
+            },
+            {
+              "code": false,
+              "group": "Core",
+              "object": "native_render_service_base.obj",
+              "relocation": {
+                "offset": 12,
+                "symbol": "__unwindfunclet$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z$1",
+                "type": 6
+              },
+              "section": 32,
+              "section_name": ".xdata$x"
+            },
+            {
+              "code": false,
+              "group": "Core",
+              "object": "native_render_service_base.obj",
+              "relocation": {
+                "offset": 24,
+                "symbol": "__unwindtable$?construct_native_application_00737970@bsp@@YAPAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z",
+                "type": 6
+              },
+              "section": 32,
+              "section_name": ".xdata$x"
+            }
+          ],
+          "map_changes": "Timestamp only",
+          "normal_bytes": 245,
+          "out_of_line_child_calls": 0,
+          "postnormal_instructions": [
+            {
+              "bytes": 6,
+              "hex": "c706b0eacf00",
+              "mnemonic": "mov",
+              "offset": 181,
+              "operands": "dword ptr [esi], 0xcfeab0"
+            },
+            {
+              "bytes": 7,
+              "hex": "c7460800000000",
+              "mnemonic": "mov",
+              "offset": 187,
+              "operands": "dword ptr [esi + 8], 0"
+            },
+            {
+              "bytes": 7,
+              "hex": "c7460c00000000",
+              "mnemonic": "mov",
+              "offset": 194,
+              "operands": "dword ptr [esi + 0xc], 0"
+            },
+            {
+              "bytes": 7,
+              "hex": "c7461000000000",
+              "mnemonic": "mov",
+              "offset": 201,
+              "operands": "dword ptr [esi + 0x10], 0"
+            },
+            {
+              "bytes": 7,
+              "hex": "c7461400000000",
+              "mnemonic": "mov",
+              "offset": 208,
+              "operands": "dword ptr [esi + 0x14], 0"
+            },
+            {
+              "bytes": 4,
+              "hex": "c6461900",
+              "mnemonic": "mov",
+              "offset": 215,
+              "operands": "byte ptr [esi + 0x19], 0"
+            },
+            {
+              "bytes": 4,
+              "hex": "c6461a00",
+              "mnemonic": "mov",
+              "offset": 219,
+              "operands": "byte ptr [esi + 0x1a], 0"
+            },
+            {
+              "bytes": 4,
+              "hex": "c6461801",
+              "mnemonic": "mov",
+              "offset": 223,
+              "operands": "byte ptr [esi + 0x18], 1"
+            }
+          ],
+          "provider_call_order": [
+            {
+              "offset": 69,
+              "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 96,
+              "symbol": "__imp__EnterCriticalSection@4",
+              "type": 6
+            },
+            {
+              "offset": 129,
+              "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 147,
+              "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+              "type": 20
+            },
+            {
+              "offset": 165,
+              "symbol": "__imp__LeaveCriticalSection@4",
+              "type": 6
+            }
+          ],
+          "state_map": [
+            {
+              "action": "BaseCleanup",
+              "predecessor": -1,
+              "state": 0
+            },
+            {
+              "action": "GuardCleanup",
+              "predecessor": 0,
+              "state": 1
+            }
+          ],
+          "status": "pass",
+          "total_new_code_bytes": 333,
+          "whole_object_drifts": 17
+        },
+        "src_include": 4210,
+        "staged_Source_tree": "0b8ce77800e19d7f5a55900732d1b9822e80d728",
+        "status": "pass",
+        "superseded_header": {
+          "TU_exact": true,
+          "all_superseded_174404_code_sections_exact": true,
+          "header_comment_only": true,
+          "old_ZIP_replayed": false,
+          "qualification": "Superseded provisional raw pair/build captures and full indices remain retained. Its separately preserved ZIP was not strict-replayed and supplies no final acceptance; final current evidence uses the refreshed after build and independent strict replays.",
+          "status": "pass",
+          "superseded_builds_three_checks_pass": true,
+          "superseded_changed_path": "include/bsp/native_render_service_base.hpp"
+        },
+        "tests": "three existing checks passed on each retained fresh build receipt; replay does not execute them",
+        "whole_changed_objects": 17,
+        "zip_members": 4704
+      },
+      "current_wrapper_helpers": 49,
+      "full_wrapper_ZIP": {
+        "bytes": 758285682,
+        "entry": "blobs/42276412a00147d925010643f126de4270516a82810302c58fea079484b9f440",
+        "sha256": "42276412a00147d925010643f126de4270516a82810302c58fea079484b9f440"
+      },
+      "full_wrapper_commit": "0b77ccca09b874c15a510d0369b2da1e42ebb1e8",
+      "nested_helpers": {
+        "accepted_full_readiness": 12,
+        "accepted_loop": 29,
+        "accepted_outer": 11,
+        "current": 49,
+        "prior_implementation": 23,
+        "prior_readiness": 108
+      },
+      "qualification": "Complete immutable current full-wrapper proof/helper/actual Git/delivery retained and replayed. Nested earlier layers retain their original scopes. This new Source-only producer admission performs no build, test or runtime and transfers no historical build credit.",
+      "status": "pass"
+    },
+    "admission": {
+      "activation_authority": false,
+      "missing_dependency": "cc12_application_winmain_owner_cell_lifetime_provenance",
+      "outcome": "NO-GO",
+      "positive_edges": 6,
+      "qualification": "Finite frozen Source proof and conditional dependency. Original load/store bytes alone do not begin new C++ object lifetimes. No new owner, callable ABI, activation, allocator/free, storage return, retirement/quiescence, Original FH3 or game/runtime authority.",
+      "requirements": {
+        "missing": 11,
+        "partial": 4,
+        "satisfied": 1
+      }
+    },
+    "baseline_commit": "f2030981871a23a7f24413d672c661f83d49ce76",
+    "boundary": "Finite frozen Source proof and conditional dependency. Original load/store bytes alone do not begin new C++ object lifetimes. No new owner, callable ABI, activation, allocator/free, storage return, retirement/quiescence, Original FH3 or game/runtime authority.",
+    "checked_members": 4392,
+    "guard": {
+      "active_after_preload": true,
+      "allowed_zip_reads": 1,
+      "blocked": "other opens, writes, process creation, networking, new dynamic library loads, directory enumeration and filesystem mutations",
+      "only_input": "the supplied ZIP"
+    },
+    "helper_graph": {
+      "current": 37,
+      "dependency_edges": 29,
+      "replay_allowlist": [
+        "admission_tools.py",
+        "audit_tools.py",
+        "git_tools.py",
+        "graph_tools.py",
+        "replay_body.py"
+      ],
+      "retained_stale_templates": 9
+    },
+    "later_Main": {
+      "Source_changes": [],
+      "Source_paths": 4228,
+      "all_changed_paths": [
+        "docs/CC12_LOCALE_EXIT_AFTER_CALL_METADATA.md",
+        "docs/CC12_LOCALE_EXIT_AFTER_CALL_METADATA_PRIMARY.md",
+        "docs/CC12_MESH_PROCESS_LIFECYCLE_ADMISSION_READINESS.md",
+        "docs/CC12_MESH_PROCESS_LIFECYCLE_PRIMARY.md",
+        "reports/cc12_locale_exit_after_call_metadata.json",
+        "reports/cc12_locale_exit_after_call_metadata_primary.json",
+        "reports/cc12_mesh_process_lifecycle_admission_readiness.json",
+        "reports/cc12_mesh_process_lifecycle_primary.json"
+      ],
+      "frozen_worker_baseline": "f2030981871a23a7f24413d672c661f83d49ce76",
+      "observed_Main": "bf8663140362f6eff1e3e25284d672ba92747c3e",
+      "qualification": "Separate read-only later Main Git observation. No rebase, later Source substitution, fresh compiler/runtime/ABI/build acceptance or transfer of dormant historical build evidence.",
+      "status": "pass"
+    },
+    "new_Cpp": 0,
+    "new_Native_queries": 0,
+    "new_builds_tests_probes": 0,
+    "packet": "cc12_application_full_shell_producer_admission_readiness",
+    "retained_bytes": 816928612,
+    "status": "pass",
+    "zip_members": 4393
+  },
+  "physical_copy_receipt": {
+    "status": "pass",
+    "files": [
+      {
+        "name": "evidence.zip",
+        "bytes": 773186982,
+        "sha256": "4b1b3d6b6539d298e7582a8d60fc9d692549e2046cc33b6b424c2df646665931",
+        "original": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_producer_finish\\local\\cc12_application_full_shell_producer_admission_readiness\\evidence.zip",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_producer_finish\\local\\cc12_application_full_shell_producer_admission_readiness\\physical_copy\\evidence.zip",
+        "original_identity": [
+          16434406700183562694,
+          281475005968905
+        ],
+        "copy_identity": [
+          16434406700183562694,
+          281475005990663
+        ],
+        "distinct_physical_files": true
+      },
+      {
+        "name": "portable_replay.py",
+        "bytes": 2471,
+        "sha256": "d6f3a51fe70974dc0e7bd7ca49608f81deeb05bb4c854df3f31426c4607efa8b",
+        "original": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_producer_finish\\local\\cc12_application_full_shell_producer_admission_readiness\\portable_replay.py",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_producer_finish\\local\\cc12_application_full_shell_producer_admission_readiness\\physical_copy\\portable_replay.py",
+        "original_identity": [
+          16434406700183562694,
+          562949982666475
+        ],
+        "copy_identity": [
+          16434406700183562694,
+          281475005990664
+        ],
+        "distinct_physical_files": true
+      }
+    ],
+    "qualification": "Actual distinct file identities and recomputed full byte length/SHA; supplied copied ZIP replay is separate."
+  },
+  "Root_epoch": {
+    "entry": "blobs/27c1cc3c96925ebcb273bf5e5a194eb107eac90fa538e39b83e0cc04148f8783",
+    "bytes": 1251121,
+    "sha256": "27c1cc3c96925ebcb273bf5e5a194eb107eac90fa538e39b83e0cc04148f8783"
+  },
+  "Root_epoch_qualification": "Accepted Root full-shell 27c1c Source3356 epoch is LF-equal in this frozen worker. Raw EOL variants are separate. Four artifact declarations remain historical; this Source-only packet performs no build or runtime test.",
+  "predecessor_commit": "0b77ccca09b874c15a510d0369b2da1e42ebb1e8",
+  "historical_build_evidence_only": {
+    "Root_manifest_sha256": "27c1cc3c96925ebcb273bf5e5a194eb107eac90fa538e39b83e0cc04148f8783",
+    "reported_start_UTC": "2026-10-11T02:43:55.231432Z",
+    "reported_end_UTC": "2026-10-11T02:44:23.512259Z",
+    "checks": 3,
+    "new_acceptance": false,
+    "qualification": "Inherited dormant full-shell compiler proofs and opaque historical artifact declarations only; no compiler/build/runtime experiment in this packet."
+  },
+  "fresh_worktree_Source_provenance": "Exact frozen raw4228 inputs retained. Fresh-worktree CRLF-only variants are separately derived with frozen/raw/LF pins. Require actual Source Git identity and fresh stage-to-final raw equality; no normalization or artifact/build rebasing or transfer.",
+  "final_delivery_provenance": "Separate ignored final_delivery.json/final_delivery.zip and original/copied strict receipts are captured after this exact two-file commit; omitted from their own hashed deliverables to avoid a cycle."
+}
