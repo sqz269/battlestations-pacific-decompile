@@ -1,0 +1,11 @@
+# Independent C05070 body review
+
+Worker commit `92baed23a98059b6cd15af674feb0f555e7478d9` records 16 complete x86-32 instructions across C05070–C050A1 (50 bytes). Root verified 20 actual Git objects, all ten LF/index/blob file identities, all 305 immutable metadata-admission copies and every sealed archive member. The independent Root manual was saved before its first fresh actual Capstone execution; all 16 detailed field records agree.
+
+C05077 and C05098 read computed near-call offsets from current DS:[CE20BC] and DS:[CE20B4]. Their saved EXTERNAL companions remain separately retained metadata, without runtime destination or service proof. C05089 encodes rel32 −176 to numeric C04FDE with return cursor C0508E. C05081 conditionally selects the local C0509E cursor using current ZF. No callee state or register preservation is inferred. Each of the eleven PUSH, POP, CALL and RET operations independently renews current SS.B=1; descriptors, memory aliases, completion, return-slot identities and actual return destinations remain unknown.
+
+Root strict replay passed on its first execution, matched both worker receipt bytes, and admitted exactly one ZIP read, one exact helper execution and one exclusive receipt write with no denials. The separate Root final delivery review passed after two preserved failures from stale ENTRY ZIP and commit/parent constants. Both original producers, complete streams, executions and copies remain unchanged; separate minimal retries corrected only those values and the cumulative count. Capstone and strict replay were not rerun.
+
+Initial Root admission inspection/display counts remain 1/1 in the original 305 copies. A later Root helper-diff preparation inspection failure is separate. Worker inspection/display counts remain 1/2, with the original phase-one 0/1 preserved separately. Earlier accepted packet histories retain their own scopes. The companion report pins the original files and detailed evidence.
+
+Source and include subtree identities are unchanged. C050A2, all cells, callees, providers and prototypes remain unqueried. This is captured, independently decoded and replay-checked instruction evidence. No new build, tests, probe, Ghidra mutation, runtime execution, ABI compatibility, startup or gameplay validation is claimed.
