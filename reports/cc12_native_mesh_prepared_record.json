@@ -1,0 +1,317 @@
+{
+  "schema": "bsp.cc12.native_mesh_prepared_record.worker.v1",
+  "packet": "cc12_mesh_prepared_record_cpp",
+  "utc": "2026-10-11T00:10:14.518870+00:00",
+  "baseline_commit": "a5351f3e6711f1990c30566a1db30fa8623c82b4",
+  "actual_staged_Source_tree": "3b0877c7da79155e0151946db2be83015cda2a35",
+  "Source_roots": {
+    "src": "597d31e25cf0ae0c47f3b2de27608a9fac3a1a48",
+    "include": "053e10d974d4c812562c787a216fd14d613681b0",
+    "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+    "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+    "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+    "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+  },
+  "status": "bounded_dormant_Source_implemented_and_fresh_existing_build_checks_passed",
+  "accepted_readiness_worker_commit": "2aed64d3cd4d218c6f7a85a0f0de2892f18a7ae1",
+  "delivery_Source": [
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\include\\bsp\\native_mesh_owner.hpp",
+        "bytes": 9476,
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636"
+      }
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\src\\native_mesh_owner.cpp",
+        "bytes": 12622,
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe"
+      }
+    }
+  ],
+  "current_Source3356_epoch_manifest": {
+    "bytes": 1251131,
+    "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+  },
+  "Source": {
+    "closed_paths": 4228,
+    "actual_Git_rows": 4235,
+    "actual_real_trees": 10,
+    "extra_epoch_metadata": 3,
+    "current_prerequisites": 4,
+    "changes": [
+      "include/bsp/native_mesh_owner.hpp",
+      "src/native_mesh_owner.cpp"
+    ],
+    "all_other_closed_Source_paths_exact": 4226,
+    "old_Source_bodies_preserved": true,
+    "epochs": [
+      {
+        "name": "Root_current_saved_renderer_Source3356",
+        "retained_paths": 3356,
+        "before_LF_differences": [],
+        "after_LF_differences": [
+          "include/bsp/native_mesh_owner.hpp",
+          "src/native_mesh_owner.cpp"
+        ],
+        "before_raw_differences": [
+          "include/bsp/sound_configuration.hpp",
+          "include/bsp/sound_startup.hpp",
+          "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "src/game_sound_runtime.cpp",
+          "src/sound_configuration.cpp",
+          "src/sound_startup.cpp"
+        ]
+      }
+    ],
+    "finite_lexical_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\source_evidence.json",
+      "bytes": 434644,
+      "sha256": "96ea9683db1315f1da165e7abb4118b6209ef5b7ba86264b738870a1977aa670"
+    }
+  },
+  "API": {
+    "class_name": "NativeMeshPreparedRecord",
+    "constructor": "void* actual_slot, size_t slot_bytes, NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&",
+    "closed_transition": "NativeMeshStorage& construct_and_publish(NativeMeshConstants) noexcept",
+    "retirement_query": "bool retired() const noexcept",
+    "explicit_disposal": "void dispose_retired_at_quiescence() noexcept",
+    "noncopyable": true,
+    "nonmovable": true,
+    "borrows_actual_C0h_slot": true,
+    "initial_inline_companion_disengaged": true,
+    "precreated_callback_shape": "NativeMeshCompanionDisposal: context and noexcept function pointer; std::move into emplace",
+    "exact_key_admission_before_B73D70": true,
+    "preconstruction_actual_count_read": false,
+    "checks_initial_count_after_B73D70_equals_one": true,
+    "valid_transition_host_allocation_added": false,
+    "valid_transition_Native_callback_added": false,
+    "valid_transition_extra_retain_added": false,
+    "transition_failure": "terminal at noexcept boundary; no supported recoverable B73D70 failure",
+    "abandoned_preparation": "cancel host metadata only; caller returns raw physical slot",
+    "retirement": "existing companion physically destroys/returns slot, callback validates own companion/phase and unbinds opaque saved key, marks retired",
+    "explicit_disposal_resets_retired_host_only": true,
+    "allocation_authenticity_proved": false,
+    "slot_reuse_and_host_quiescence": "separate caller obligations; metadata mutex does not supply them"
+  },
+  "builds": {
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\before_build_receipt.json",
+      "bytes": 899,
+      "sha256": "9c248ce63b97b0aadeefa6ca7ed545c626ae39342b06511a6bc95a9f03d4ad5e"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\after_build_receipt.json",
+      "bytes": 899,
+      "sha256": "f3bec99486b2f0e1189722d8a0b4cb8bf290a87c92045bb3290d9ff724f8a034"
+    },
+    "fresh_normal_scripts_build_ps1": true,
+    "Win32_MSVC": true,
+    "checks_per_build": 3,
+    "check_names": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "retained_seed": {
+      "entry": "blobs/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "new_tests": 0,
+    "new_probes": 0,
+    "initial_cold_run": {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\initial_before_build_receipt.json",
+        "bytes": 885,
+        "sha256": "4531914e7784c73857bc3e084ae28dd4d35cb8a88fcb8e2ecd76e82e64e69409"
+      },
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\initial_before_build.log",
+        "bytes": 78902,
+        "sha256": "0499058615b9862b1135e400d4cfad36145d378fda5301ed93cb81853749585f"
+      },
+      "configured_checks": 2,
+      "three_check_credit": false,
+      "qualification": "First normal cold build configured before the accepted seed copy; required fresh seeded baseline rerun separately passed all three checks."
+    }
+  },
+  "COFF": {
+    "Core_objects_before_after": [
+      1990,
+      1990
+    ],
+    "App_objects_before_after": [
+      80,
+      80
+    ],
+    "complete_old_executable_sections": 174357,
+    "old_executable_sections_payload_and_symbolic_relocations_exact": 174357,
+    "changed_old_executable_sections": 0,
+    "removed_old_executable_sections": 0,
+    "added_executable_sections": 38,
+    "added_executable_bytes": 2304,
+    "added_code_objects": [
+      "native_mesh_owner.obj"
+    ],
+    "compiler_proven_selected_TUs": [
+      245,
+      245
+    ],
+    "compiler_proven_mesh_header_consumers": [
+      243,
+      243
+    ],
+    "complete_selected_physical_section_indices": true,
+    "whole_object_drift": 243,
+    "whole_changed_App_objects": 17,
+    "whole_object_drift_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\comparison.json",
+      "bytes": 38919986,
+      "sha256": "ab76c4ff89003385fb82c9a40e7885babf0c8827e20652a0b86de27b097d28a3"
+    },
+    "full_all80_App_census": true,
+    "selected_nonexecutable_added": 28,
+    "selected_nonexecutable_changed": 52,
+    "selected_nonexecutable_removed": 0,
+    "selected_added_vtable_sections": 0,
+    "whole_changed_objects_outside_selected_cohort": 0,
+    "private_symbol_normalization": "none",
+    "all_Code_section_and_all_section_record_references_retained": true,
+    "record_references_outside_native_mesh_owner_obj": 0,
+    "record_symbols_in_final_game_map": 0,
+    "positive_direct_providers": {
+      "before": {
+        "selected_code_sections": 138,
+        "direct_relocations": 241,
+        "positive_provider_sections": 78,
+        "helper_decodes": 0
+      },
+      "after": {
+        "selected_code_sections": 176,
+        "direct_relocations": 330,
+        "positive_provider_sections": 97,
+        "helper_decodes": 7
+      }
+    },
+    "all_selected_direct_relocations_have_positive_COFF_or_import_definitions": true,
+    "actual_current_CRT_link_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\link_inputs.json",
+      "bytes": 1604423,
+      "sha256": "16969cf4d991c229b559c559d6b0cf5cf6cb72a4a2e7e71a578910ac0c48289d"
+    },
+    "retained_complete_artifacts_and_final_link_maps": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\artifact_comparison.json",
+      "bytes": 7871,
+      "sha256": "41d2d0117280f7e5479c527af193e203214ab317f2421c4d50f682b244ca48dd"
+    },
+    "complete_compiled_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\extra_compiled_evidence.json",
+      "bytes": 57519717,
+      "sha256": "cdfc36496ee2b9e4d2f3ec2cdbd417d9b30350468af8a07094fe0a7433507e60"
+    }
+  },
+  "proof": {
+    "zip": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\cc12_native_mesh_prepared_record_proof.zip",
+      "bytes": 146478816,
+      "sha256": "fea5d511ccd07cb41086f0fa9767a952665d7c27a21e09005b023541125537bc"
+    },
+    "script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\portable_replay.py",
+      "bytes": 5792,
+      "sha256": "4948c572c47102ef1ed546c631fe16f89e0115c989c9496bec59bd9bc2ea3d05"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\manifest.json",
+      "bytes": 1525050,
+      "sha256": "04dab5325ddee8466c623f7159bc89a9b69c38d1c61b98b38f7d283b19f8e8cd"
+    },
+    "in_place_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\portable_replay_receipt.json",
+      "bytes": 1210,
+      "sha256": "046bf4763f897f63f9cb48755a00abddd71144139483fdef3980507bfcde2d4d"
+    },
+    "physical_relocation": {
+      "zip": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\relocated\\cc12_native_mesh_prepared_record_proof.zip",
+        "bytes": 146478816,
+        "sha256": "fea5d511ccd07cb41086f0fa9767a952665d7c27a21e09005b023541125537bc"
+      },
+      "script": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\relocated\\portable_replay.py",
+        "bytes": 5792,
+        "sha256": "4948c572c47102ef1ed546c631fe16f89e0115c989c9496bec59bd9bc2ea3d05"
+      },
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_mesh_prepared_record_cpp\\local\\cc12_mesh_prepared_record_cpp\\relocated\\portable_replay_receipt.json",
+        "bytes": 1210,
+        "sha256": "046bf4763f897f63f9cb48755a00abddd71144139483fdef3980507bfcde2d4d"
+      }
+    },
+    "identical_guarded_receipts": true,
+    "one_read_only_ZIP_open": true,
+    "post_preload_external_file_access_writes_processes_network_new_library_loads_and_directory_enumeration_blocked": true,
+    "summary": {
+      "status": "pass",
+      "baseline_commit": "a5351f3e6711f1990c30566a1db30fa8623c82b4",
+      "actual_staged_Source_tree": "3b0877c7da79155e0151946db2be83015cda2a35",
+      "closed_Source_paths": 4228,
+      "Git_rows": 4235,
+      "real_trees": 10,
+      "before_after_Selected_TUs": [
+        245,
+        245
+      ],
+      "before_after_mesh_header_consumers": [
+        243,
+        243
+      ],
+      "Core_objects": 1990,
+      "App_objects": 80,
+      "old_executable_sections_exact": 174357,
+      "added_executable_sections": 38,
+      "added_executable_bytes": 2304,
+      "whole_object_drift": 243,
+      "selected_nonexecutable_added": 28,
+      "selected_nonexecutable_changed": 52,
+      "selected_nonexecutable_removed": 0,
+      "new_record_Game_map_symbols": 0,
+      "checked_members": 5422,
+      "zip_members": 5423,
+      "retained_bytes": 1336394351,
+      "existing_checks": "three existing checks passed in each retained fresh normal build receipt; replay does not execute them",
+      "guard": {
+        "allowed_zip_reads": 1
+      },
+      "boundary": "Source/COFF/link static replay and retained fresh existing build receipts only. No actual allocation authenticity, runtime helper, original Native ABI/SEH, caller custody, slot reuse exclusion or game validation."
+    }
+  },
+  "boundaries": {
+    "Source_only_dormant_composition": true,
+    "new_Cpp_interface_not_original_ABI": true,
+    "new_record_runtime_or_fixture_executed": false,
+    "original_game_executed": false,
+    "Native_or_GPR_queries": 0,
+    "Native_or_GPR_writes": 0,
+    "Native_exports": 0,
+    "ledger_changes": 0,
+    "CMake_changes": 0,
+    "caller_changes": 0,
+    "GUI_factory_changes": 0,
+    "particle_hook_changes": 0,
+    "application_registration_or_persistent_custodian": false,
+    "full_particle_resource_delegate_GO": false,
+    "material_section_admission_or_stream_custody_complete": false,
+    "automatic_release_or_retry_or_rollback_or_pending_collection": false,
+    "shadow_registry_or_extra_creator_reference": false,
+    "allocation_provenance": "Explicit caller obligation, not authenticated by extent/alignment/profile tokens.",
+    "native_slot_reuse": "Caller independently excludes reuse from physical return through exact old-entry removal.",
+    "host_disposal": "Caller proves callback/terminal/resolved-companion borrower quiescence; callback never disposes record.",
+    "current_particle_hook": "postconstruction noexcept bind_mesh only; separate raw-key window/caller/failure-custody packet required.",
+    "proof": "Static Source/COFF/link replay, independent fresh normal build checks, and existing seed fixture checks; no runtime helper, complete custody, original Native ABI/SEH or startup/gameplay equivalence."
+  }
+}

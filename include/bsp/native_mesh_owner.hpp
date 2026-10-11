@@ -4,6 +4,7 @@
 #include "bsp/native_mesh_pool.hpp"
 #include "bsp/native_string.hpp"
 #include <array>
+#include <optional>
 
 namespace bsp {
 
@@ -131,6 +132,51 @@ private:
     NativeMeshCompanionDisposal disposal_;
     Phase phase_{Phase::bound};
     void require_current_profile() const noexcept;
+};
+
+// Dormant HOST custody for one genuine caller-supplied raw C0h allocation.
+// Construct this nonmoving record in stable host storage BEFORE B73D70. Its
+// throwing preparation reserves the exact opaque registry key without reading
+// unconstructed +04. The caller authenticates allocation/pool provenance;
+// extent and profile tokens alone do not establish that provenance. All supplied
+// domains remain alive, and no physical slot is allocated or returned here.
+class NativeMeshPreparedRecord final {
+public:
+    NativeMeshPreparedRecord(void* actual_slot, std::size_t slot_bytes,
+        NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&);
+    // Abandoned preparation cancels host admission only; caller returns raw.
+    // After the transition begins, terminal retirement and explicit disposal
+    // are required before destruction. There is no postconstruction rollback.
+    ~NativeMeshPreparedRecord() noexcept;
+    NativeMeshPreparedRecord(const NativeMeshPreparedRecord&) = delete;
+    NativeMeshPreparedRecord& operator=(const NativeMeshPreparedRecord&) = delete;
+    NativeMeshPreparedRecord(NativeMeshPreparedRecord&&) = delete;
+    NativeMeshPreparedRecord& operator=(NativeMeshPreparedRecord&&) = delete;
+
+    // One closed noexcept transition: existing B73D70 on this SAME raw slot,
+    // inline companion with the precreated callback, then exact admitted
+    // publication. Valid flow adds no host allocation, Native callback or retain.
+    // Contract/profile/count/capability or mutex failure is terminal here.
+    NativeMeshStorage& construct_and_publish(NativeMeshConstants) noexcept;
+    bool retired() const noexcept { return phase_ == Phase::retired; }
+    // Caller proves constructor/terminal/callback/resolved-borrower quiescence;
+    // never call within the terminal callback. Independently exclude raw-slot
+    // reuse from physical return through removal of the old registry entry.
+    // The registry metadata mutex supplies neither lifetime guarantee.
+    void dispose_retired_at_quiescence() noexcept;
+
+private:
+    enum class Phase { prepared, publishing, published, retired, disposed };
+    NativeMeshEnvironment& environment_;
+    NativeRenderActualOwnerRegistry& registry_;
+    void* const raw_identity_;
+    NativeMeshCompanionDisposal disposal_;
+    NativeRenderActualOwnerRegistry::BindingAdmission registry_admission_;
+    std::optional<NativeMeshReference> reference_;
+    Phase phase_{Phase::prepared};
+    // Companion has ALREADY destroyed/returned Native storage. Use the saved
+    // identity only as an opaque key; retain this record through terminal return.
+    static void retire_reference(void*, NativeMeshReference&) noexcept;
 };
 
 // Valid native domain: aligned live owners/atomics; 0<=stream count<=6 and

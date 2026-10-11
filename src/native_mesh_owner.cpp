@@ -4,6 +4,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 namespace bsp {
 static_assert(sizeof(NativeMeshStorage) == 0xbc);
@@ -210,5 +211,59 @@ void NativeMeshReference::release_zero_references() noexcept {
     delete_native_mesh_00b74280(&storage_, environment_, 1);
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
+}
+
+NativeMeshPreparedRecord::NativeMeshPreparedRecord(void* actual_slot,
+    std::size_t slot_bytes, NativeMeshEnvironment& environment,
+    NativeRenderActualOwnerRegistry& registry)
+    : environment_(environment), registry_(registry), raw_identity_(actual_slot),
+      disposal_{this, retire_reference} {
+    if (!actual_slot || slot_bytes != NativeMeshPool::slot_bytes ||
+        reinterpret_cast<std::uintptr_t>(actual_slot) % alignof(NativeMeshStorage) != 0 ||
+        &environment.retained_owners != &registry)
+        throw std::invalid_argument("mesh record requires one aligned actual C0h slot and canonical borrowed domains");
+    const auto* const table = environment.vtable_00d62d60;
+    if (!table || table[0] != 0x00bd30e0 || table[1] != 0x00b74280)
+        throw std::invalid_argument("mesh record requires the supplied actual D62D60 terminal profile");
+    registry_admission_ = registry_.prepare_binding(raw_identity_);
+}
+NativeMeshPreparedRecord::~NativeMeshPreparedRecord() noexcept {
+    if (phase_ == Phase::prepared) {
+        if (reference_) std::terminate();
+        // Admission destruction cancels metadata only; caller owns raw return.
+    } else if (phase_ != Phase::disposed || reference_ || registry_admission_)
+        std::terminate();
+}
+NativeMeshStorage& NativeMeshPreparedRecord::construct_and_publish(
+    NativeMeshConstants constants) noexcept {
+    const auto* const table = environment_.vtable_00d62d60;
+    if (phase_ != Phase::prepared || reference_ || !registry_admission_ ||
+        &environment_.retained_owners != &registry_ || !table ||
+        table[0] != 0x00bd30e0 || table[1] != 0x00b74280)
+        std::terminate();
+    phase_ = Phase::publishing;
+    auto* const mesh = construct_native_mesh_00b73d70(raw_identity_, constants);
+    if (mesh != raw_identity_ || mesh->references_04.load(std::memory_order_relaxed) != 1)
+        std::terminate();
+    reference_.emplace(*mesh, environment_, std::move(disposal_));
+    registry_.publish(std::move(registry_admission_), *reference_);
+    phase_ = Phase::published;
+    return *mesh;
+}
+void NativeMeshPreparedRecord::retire_reference(void* context,
+    NativeMeshReference& reference) noexcept {
+    if (!context) std::terminate();
+    auto& record = *static_cast<NativeMeshPreparedRecord*>(context);
+    if (record.phase_ != Phase::published || !record.reference_ ||
+        record.registry_admission_ || &*record.reference_ != &reference)
+        std::terminate();
+    record.registry_.unbind(record.raw_identity_, reference);
+    record.phase_ = Phase::retired;
+}
+void NativeMeshPreparedRecord::dispose_retired_at_quiescence() noexcept {
+    if (phase_ != Phase::retired || !reference_ || registry_admission_)
+        std::terminate();
+    reference_.reset(); // Already-retired host companion; no Native access.
+    phase_ = Phase::disposed;
 }
 } // namespace bsp
