@@ -1,0 +1,137 @@
+{
+  "packet": "cc12_application_vector_retirement_action_candidate_entry_primary",
+  "status": "Root accepted bounded Native candidate evidence; qualified Source parent gate ready",
+  "worker_commit": "c63bf02239a008197710b3713c3dd0c16f3d3b20",
+  "private_directory": "local\\cc12_application_vector_retirement_action_candidate_entry_primary",
+  "proof_zip_sha256": "971024e1ecc93fa49ea5828e495f71a8b35440eb3f54d4c9d9b56c7a60cba2e5",
+  "pins": {
+    "Root_actual_review.json": {
+      "bytes": 3686,
+      "sha256": "00600e2966e31cbb827e4d0d32bf71d33bb55230ba6457e73a6a76bbf3a9e6cb"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 3768,
+      "sha256": "6b5f25779f8a4821c17a831fe7788f3859146ca58ed397ffc5f3fd95af108faf"
+    },
+    "Root_native_decode.json": {
+      "bytes": 1736,
+      "sha256": "94971a2d01bbab3ec358235e285ebc95dcef7c546f8140e2c61b1181aa587730"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 1330,
+      "sha256": "79a7d0edc4d680cfe58e7808e80e46d9108cdd786bde7904824ba9231405bfb0"
+    },
+    "Root_whole_gate.json": {
+      "bytes": 4255,
+      "sha256": "3c56c155aad08fd04458afc1b3cee49ec724cf7e68938959c8bcaa74ae337053"
+    },
+    "Root_review.py": {
+      "bytes": 4104,
+      "sha256": "1544850df6e1074674b8f2fc2b9dff410da1652704a9725037166ee6bbe96c85"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2387,
+      "sha256": "2a0746ccdf33a64ae503c17fea6ad9d87aba20dec5af3d916b1e80966924435f"
+    },
+    "Root_native_decode.py": {
+      "bytes": 4487,
+      "sha256": "4c713330b79201ff4211827c0da12bc4e8798cc3d7c94a54b4e6989d247cbe13"
+    },
+    "replay.py": {
+      "bytes": 26581,
+      "sha256": "bd9540d70d895adfdbb31164058530be1753f881c98b26768b8979d3e565d035"
+    },
+    "audit_replay.py": {
+      "bytes": 2322,
+      "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+    }
+  },
+  "actual_Git": {
+    "ZIP_entries": 109,
+    "actual_Git_objects": 21,
+    "finite_inputs": 9,
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_ACTION_CANDIDATE_ENTRY.md",
+        "blob": "ff94a4827635cc942aef4347e091a591e6c33a73",
+        "sha256": "5e0ffb15793f0d4050e2dc40d74905d386eccfaa44cec8d34237adc05d1a47f1",
+        "length": 5109
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_action_candidate_entry.json",
+        "blob": "504db8e2091548c4e304b409f66129ac782cc512",
+        "sha256": "8e0e287666508517bda29a4a06a4dc2ec47a82dc9d5af899d38d16f99edce887",
+        "length": 20223
+      }
+    ],
+    "original_copy_equal_and_distinct": true,
+    "Root_gates_compared_before_copy": true
+  },
+  "guard": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "Native_decode": {
+    "status": "Root_NATIVE_DECODE_PASS",
+    "code_hex": "8b4df0e98847f6ff",
+    "code_sha256": "2c08320829fdef733253cdfa9bbf17d2f4a0f6a6e69eab756c032554f9f5d910",
+    "pins": [
+      {
+        "name": "body_bytes_first.stdout",
+        "bytes": 45,
+        "sha256": "68cc993d87b45b246e3c94429c21a80bf236c866abb5953b229693732753ffda"
+      },
+      {
+        "name": "body_bytes_second.stdout",
+        "bytes": 45,
+        "sha256": "68cc993d87b45b246e3c94429c21a80bf236c866abb5953b229693732753ffda"
+      }
+    ],
+    "Capstone_version": "5.0.7",
+    "manual_ModRM": {
+      "opcode": "8B",
+      "ModRM": "4D",
+      "disp8_signed": -16,
+      "destination": "ECX",
+      "source": "SS:[current EBP-10h]"
+    },
+    "manual_E9": {
+      "site": "00C86203",
+      "relative_signed": -637048,
+      "next_address": "00C86208",
+      "target": "00BEA990",
+      "return_push": false
+    },
+    "parent_immediate_input": {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "bytes": 34569,
+      "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "parent93B_sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297"
+    },
+    "receiver_spill": {
+      "instruction": "007379BA",
+      "actual_encoding": "89742408",
+      "store_ESP": "entry S-18h",
+      "address": "storeESP+8h = S-10h",
+      "value": "incoming ECX captured in ESI before any call"
+    },
+    "conditional_frame_equation": "For same SS and same linear receiver slot: actionEBP-10h = storeESP+8h, hence actionEBP = storeESP+18h = entryS modulo2^32. Actual A additionally requires preserved/reestablished spill contents.",
+    "Original_FH3_invocation_or_frame_binding_authenticated": false,
+    "ABI_authenticated": false,
+    "Source_credit": false,
+    "runtime_credit": false
+  },
+  "boundary": {
+    "candidate_role_conditional": true,
+    "Original_FH3_authenticated": false,
+    "original_action_frame_binding": false,
+    "destination_behavior_new_credit": false,
+    "Source_implemented": false,
+    "Source_current_equality_or_census": false,
+    "build_credit": false,
+    "runtime_credit": false
+  },
+  "Source_next_contract": "Explicit actual receiver A/context, genuine row resize0 then current data array-free, qualified C++ state0 cleanup through existing BEA990; no authenticated Original EH state claim."
+}
