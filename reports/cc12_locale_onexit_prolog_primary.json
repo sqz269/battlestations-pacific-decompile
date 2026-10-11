@@ -1,0 +1,1512 @@
+{
+  "schema": 1,
+  "status": "reviewed_full_Native_body_conditional_operands",
+  "address": "00C07C00",
+  "worker_commit": "1ab57ea8033c543975836a75fb8d77e028f5278a",
+  "Native_epoch": 98,
+  "function_count": 64730,
+  "reviews": {
+    "Root_initial_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "typed_captures": 2,
+      "raw_capture_bytes_equal": true,
+      "raw_gate_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5",
+      "saved_function": {
+        "entry": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "name": "__SEH_prolog4",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "69",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c07c44"
+              },
+              "length": "69"
+            }
+          ]
+        }
+      },
+      "entry_listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "length": 5,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "entry_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c07c05"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c07c05"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "saved_entry_prototype": "undefined __SEH_prolog4(void)",
+      "automatic_proto_companion_summary_wholly_opaque": true,
+      "instruction_texts_or_code_data_bytes_read": 0,
+      "Original_SEH4_CRT_register_ABI_and_invocation_authenticated": false,
+      "next_admission": {
+        "scope": "Only direct typed listing/function/flow metadata for exact69savedbodyaddresses C07C00..C07C44 under98/64730 closure",
+        "required": "Return raw perbyte coverage/units/flows to Root before any codebytes/text",
+        "excluded": "No proto repetition/decompile/disasm/opcodes/text/data/stack/targets/callers/GPRrepair/Source/runtime"
+      }
+    },
+    "Root_listing_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "typed_sites": 69,
+      "typed_raw_responses": 138,
+      "all_raw_pairs_equal": true,
+      "qualified_units": [
+        {
+          "start": "00C07C00",
+          "length": 5,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C05",
+          "length": 7,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c0c"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c0c"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C0C",
+          "length": 4,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c10"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c10"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C10",
+          "length": 4,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c14"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c14"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C14",
+          "length": 4,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c18"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c18"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C18",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1a"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1a"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C1A",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1b"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1b"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C1B",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1c"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1c"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C1C",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1d"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c1d"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C1D",
+          "length": 5,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c22"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c22"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C22",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c25"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c25"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C25",
+          "length": 2,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c27"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c27"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C27",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c28"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c28"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C28",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c2b"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c2b"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C2B",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c2e"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c2e"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C2E",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c31"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c31"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C31",
+          "length": 7,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c38"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c38"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C38",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c3b"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c3b"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C3B",
+          "length": 3,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c3e"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c3e"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C3E",
+          "length": 6,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c44"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c44"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        },
+        {
+          "start": "00C07C44",
+          "length": 1,
+          "saved_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          }
+        }
+      ],
+      "flow_counts": {
+        "FALL_THROUGH": 20,
+        "TERMINATOR": 1
+      },
+      "whole_automatic_proto_companion_opaque": true,
+      "code_text_bytes_read": 0,
+      "Original_SEH4_frame_ABI_authentication": false,
+      "next_admission": {
+        "code_scope": "Only exact69codebytes C07C00..C07C44 two exactreads under fresh matching all69typed/count/project/program bookends",
+        "text_scope": "Only21wholeunitstarts context0; independent manual and Capstone detailedoperands agreement",
+        "meaning": "Conditional instruction-local register/stack/memory/frame relationships only; no memory preimages or actual Original compiler/CRT/SEH4 authentication",
+        "excluded": "No data/stack/descriptor/IAT/targets/callers/prototype repetition/decompile/disasm/GPRwrites/Source/runtime"
+      }
+    },
+    "Root_actual_review.json": {
+      "status": "PASS",
+      "worker_commit": "1ab57ea8033c543975836a75fb8d77e028f5278a",
+      "frozen_HEAD": "bc4fae025bf633cea14293184ef1d4f1b2ff628a",
+      "Root_HEAD": "62e4722fd991544de6f0fc8d82d8ae74b6d330c8",
+      "proof_pins": [
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/evidence.zip",
+          "bytes": 474839,
+          "sha256": "72f0dfaee482745518835f1959f640eb7df5a1b4a29e8a115c49ababe9f0d8bc"
+        },
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/delivery_git.zip",
+          "bytes": 597642,
+          "sha256": "65ef3342ec4179b6b088a47bd1b471d62f3c82181d0a572d2444b561f07d229b"
+        },
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/next_worker_handoff.json",
+          "bytes": 5185,
+          "sha256": "e5f2faa862f794f21902d0a651acfce2feb8771b6119d07f050b867dbfc2836c"
+        }
+      ],
+      "physical_helpers": [
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/Tools/common.py",
+          "bytes": 7117,
+          "sha256": "d960716ed4f85d5cad69621276b4addd3d90c28d0060890ef0182611ad64a8b2"
+        },
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/Tools/delivery_verifier.py",
+          "bytes": 3638,
+          "sha256": "2a60f17d4c9ccd29d75970b37ba34b8843760515be09a3e7ee2df49e498efa66"
+        },
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/Tools/guarded_replay.py",
+          "bytes": 4090,
+          "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+        },
+        {
+          "path": "local/cc12_locale_onexit_prolog_primary/Tools/verifier.py",
+          "bytes": 10894,
+          "sha256": "0560543d4b7170abc8a0c6452d1b28e0d58d0535f0760fc80dd3939fbbe70a5c"
+        }
+      ],
+      "physically_retained_producers": 10,
+      "actual_frozen_objects": 6,
+      "actual_delivery_objects": 8,
+      "actual_prerequisite_inputs": 7,
+      "actual_outputs": [
+        {
+          "bytes": 4915,
+          "entry": "Outputs/docs/CC12_LOCALE_ONEXIT_PROLOG_ENTRY_METADATA.md",
+          "oid": "4a4aa8dc5afc04e36e5798dd46ec0d77b613cae9",
+          "path": "docs/CC12_LOCALE_ONEXIT_PROLOG_ENTRY_METADATA.md",
+          "sha256": "ea3c13a2eee35bef0725aea7af09f430369d0c853ba883ff92e42e9dc2867ee5"
+        },
+        {
+          "bytes": 47856,
+          "entry": "Outputs/reports/cc12_locale_onexit_prolog_entry_metadata.json",
+          "oid": "5c99683aa79726571aff0b99f572ad7eea71fbf8",
+          "path": "reports/cc12_locale_onexit_prolog_entry_metadata.json",
+          "sha256": "25e2784911ab54223e69abd3a7606a67e331b3930535bd38315c2b9250e2510e"
+        }
+      ],
+      "Root_CRLF_only_variants": [
+        "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "reports/cc12_locale_onexit_body_primary.json"
+      ],
+      "Source_tree_ids": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "Root_current_Source_ids": {
+        "src": "5f538f3833c3d9c62f6331e92be66f437a8f0fb4",
+        "include": "b7c8e373ded962fa2fe9efafcf94136d7a1fd0d2"
+      },
+      "current_Root_Source_equality_claimed": false,
+      "Source_census": false,
+      "metadata_captures_match_Root_review": true,
+      "body_ABI_CRT_owner_status_runtime_credit": false
+    },
+    "Root_core_guard.json": {
+      "status": "PASS",
+      "frozen_HEAD": "bc4fae025bf633cea14293184ef1d4f1b2ff628a",
+      "Source_tree_ids": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "finite_inputs": 7,
+      "actual_frozen_Git_objects": 6,
+      "initial_entry_raw_responses": 2,
+      "complete_body_raw_responses": 138,
+      "operand_bookend_raw_responses": 138,
+      "complete_raw_responses_total": 278,
+      "Native_closed": true,
+      "fresh_unique_code_bytes": 69,
+      "code": {
+        "bytes": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+      },
+      "context0_instruction_pairs": 21,
+      "manual_Capstone_detail_agreement": true,
+      "excluded_failed_capture_responses": 45,
+      "paired_body_raw_equal": true,
+      "epoch": 98,
+      "function_count": 64730,
+      "body_address_units": 69,
+      "whole_instruction_units": 21,
+      "interior_addresses": 48,
+      "default_effective_flow_equal": true,
+      "flow_override_NONE": true,
+      "prototype_companion_and_target_objects": "wholly opaque",
+      "library_name_authentication": false,
+      "frame_status_owner_ABI_established": false,
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "72f0dfaee482745518835f1959f640eb7df5a1b4a29e8a115c49ababe9f0d8bc"
+      }
+    },
+    "Root_delivery_guard.json": {
+      "status": "PASS",
+      "commit": "1ab57ea8033c543975836a75fb8d77e028f5278a",
+      "frozen_HEAD": "bc4fae025bf633cea14293184ef1d4f1b2ff628a",
+      "actual_delivery_Git_objects": 8,
+      "actual_output_blobs": 2,
+      "exact_output_paths": [
+        "docs/CC12_LOCALE_ONEXIT_PROLOG_ENTRY_METADATA.md",
+        "reports/cc12_locale_onexit_prolog_entry_metadata.json"
+      ],
+      "current_staged_committed_bytes_equal": true,
+      "worker_base_final_Source_tree_ids": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "Source_census_performed": false,
+      "current_Root_Source_equality_claimed": false,
+      "clean_final_status": true,
+      "core_archive_pin": {
+        "bytes": 474839,
+        "sha256": "72f0dfaee482745518835f1959f640eb7df5a1b4a29e8a115c49ababe9f0d8bc"
+      },
+      "Native_closed": true,
+      "Root_guard": {
+        "status": "PASS",
+        "single_ZIP_reads_only": true,
+        "post_preload_imports": false,
+        "process_network_dynamic_library_directory_or_mutation": false,
+        "read_opens": 1,
+        "archive_sha256": "65ef3342ec4179b6b088a47bd1b471d62f3c82181d0a572d2444b561f07d229b"
+      }
+    },
+    "Root_operand_review.json": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "count": 64730,
+      "paired_operand_typed_responses": 138,
+      "code_bytes": 69,
+      "code_sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+      "instructions": 21,
+      "manual_rows": [
+        {
+          "address": "00C07C00",
+          "length": 5,
+          "bytes_hex": "68 90 7C C0 00",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "immediate",
+              "value_mod32": 12614800,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C05",
+          "length": 7,
+          "bytes_hex": "64 FF 35 00 00 00 00",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "memory",
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": "fs",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C0C",
+          "length": 4,
+          "bytes_hex": "8B 44 24 10",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "type": "memory",
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 16,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C10",
+          "length": 4,
+          "bytes_hex": "89 6C 24 10",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 16,
+              "segment": null,
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "ebp",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C14",
+          "length": 4,
+          "bytes_hex": "8D 6C 24 10",
+          "mnemonic": "lea",
+          "operands": [
+            {
+              "type": "register",
+              "name": "ebp",
+              "size": 4
+            },
+            {
+              "type": "memory",
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 16,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C18",
+          "length": 2,
+          "bytes_hex": "2B E0",
+          "mnemonic": "sub",
+          "operands": [
+            {
+              "type": "register",
+              "name": "esp",
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C1A",
+          "length": 1,
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "register",
+              "name": "ebx",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C1B",
+          "length": 1,
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C1C",
+          "length": 1,
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "register",
+              "name": "edi",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C1D",
+          "length": 5,
+          "bytes_hex": "A1 90 55 E1 00",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "type": "memory",
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 14767504,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C22",
+          "length": 3,
+          "bytes_hex": "31 45 FC",
+          "mnemonic": "xor",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -4,
+              "segment": null,
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C25",
+          "length": 2,
+          "bytes_hex": "33 C5",
+          "mnemonic": "xor",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "ebp",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C27",
+          "length": 1,
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C28",
+          "length": 3,
+          "bytes_hex": "89 65 E8",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -24,
+              "segment": null,
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "esp",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C2B",
+          "length": 3,
+          "bytes_hex": "FF 75 F8",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -8,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C2E",
+          "length": 3,
+          "bytes_hex": "8B 45 FC",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -4,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C31",
+          "length": 7,
+          "bytes_hex": "C7 45 FC FE FF FF FF",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -4,
+              "segment": null,
+              "size": 4
+            },
+            {
+              "type": "immediate",
+              "value_mod32": 4294967294,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C38",
+          "length": 3,
+          "bytes_hex": "89 45 F8",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -8,
+              "segment": null,
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C3B",
+          "length": 3,
+          "bytes_hex": "8D 45 F0",
+          "mnemonic": "lea",
+          "operands": [
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            },
+            {
+              "type": "memory",
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": -16,
+              "segment": null,
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C3E",
+          "length": 6,
+          "bytes_hex": "64 A3 00 00 00 00",
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "type": "memory",
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": "fs",
+              "size": 4
+            },
+            {
+              "type": "register",
+              "name": "eax",
+              "size": 4
+            }
+          ]
+        },
+        {
+          "address": "00C07C44",
+          "length": 1,
+          "bytes_hex": "C3",
+          "mnemonic": "ret",
+          "operands": []
+        }
+      ],
+      "Root_Capstone_version": "5.0.7",
+      "Capstone_detailed_operands_equal": true,
+      "paired_context_zero_texts": 21,
+      "conditional_schedule": {
+        "entry": "ESP=S, EBP=B",
+        "allocation": "A=then-current DWORD SS:[S+8]",
+        "frame": "F=S+8; EBP=F",
+        "recorded_ESP": "S-A-24",
+        "pre_RET_ESP": "S-A-28",
+        "post_RET_ESP": "S-A-24",
+        "final_EAX": "F-16",
+        "RET_target": "then-current SS:[S-A-28], unknown",
+        "aliasing": "Each read occurs after preceding writes. Default DS, SS and FS bases/contents can alias; no automatic saved-value or return-target identity."
+      },
+      "conditional_parent_composition": "If the accepted BF6FB9 two PUSH and CALL schedule reaches this entry with unchanged SS slot, S=W-12, A=12 and F=W-4. This does not establish RET target or original SEH ABI.",
+      "unqueried_literals": [
+        "00C07C90",
+        "00E15590"
+      ],
+      "Original_CRT_FH3_SEH4_owner_status_callback_ABI_or_runtime_credit": false
+    }
+  },
+  "Root_current_Source_tree_IDs": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "current_Source_equality_to_frozen_worker_claimed": false,
+  "new_Source_census_or_build": false,
+  "qualified_saved_name": "__SEH_prolog4 (saved name, not Original identity)",
+  "proofs": {
+    "evidence.zip": {
+      "path": "local/cc12_locale_onexit_prolog_primary/evidence.zip",
+      "bytes": 474839,
+      "sha256": "72f0dfaee482745518835f1959f640eb7df5a1b4a29e8a115c49ababe9f0d8bc"
+    },
+    "delivery_git.zip": {
+      "path": "local/cc12_locale_onexit_prolog_primary/delivery_git.zip",
+      "bytes": 597642,
+      "sha256": "65ef3342ec4179b6b088a47bd1b471d62f3c82181d0a572d2444b561f07d229b"
+    },
+    "next_worker_handoff.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/next_worker_handoff.json",
+      "bytes": 5185,
+      "sha256": "e5f2faa862f794f21902d0a651acfce2feb8771b6119d07f050b867dbfc2836c"
+    },
+    "Root_initial_review.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_initial_review.json",
+      "bytes": 3325,
+      "sha256": "5f02743244c12ed003224bb83519ad3e2d29e3916807311ed923b1935b7215d6"
+    },
+    "Root_listing_review.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_listing_review.json",
+      "bytes": 20065,
+      "sha256": "835eb06af6c8c4c14adf010a48b1c01aa91629c4434051792e55f30ea25c8921"
+    },
+    "Root_actual_review.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_actual_review.json",
+      "bytes": 3102,
+      "sha256": "8bdd76ec3a52730514853f91cbe5626d9fdcb3fd23b076c198690c56836edd00"
+    },
+    "Root_core_guard.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_core_guard.json",
+      "bytes": 1534,
+      "sha256": "90c2eabfb61e93cf1ce46e71495ba67eda4333c772fd477dd9ed224cfaa6bc8b"
+    },
+    "Root_delivery_guard.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_delivery_guard.json",
+      "bytes": 1154,
+      "sha256": "421343b5c74979730e866054a1c6d44cb86705726262d61b7bd847df523ef90a"
+    },
+    "Root_operand_review.json": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_operand_review.json",
+      "bytes": 9170,
+      "sha256": "85eee45c473bb92bd417c8cce9ad31d13cb88976376d8eab099903605286f032"
+    },
+    "Root_exact_code.bin": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Root_exact_code.bin",
+      "bytes": 69,
+      "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+    },
+    "Tools/common.py": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Tools/common.py",
+      "bytes": 7117,
+      "sha256": "d960716ed4f85d5cad69621276b4addd3d90c28d0060890ef0182611ad64a8b2"
+    },
+    "Tools/verifier.py": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Tools/verifier.py",
+      "bytes": 10894,
+      "sha256": "0560543d4b7170abc8a0c6452d1b28e0d58d0535f0760fc80dd3939fbbe70a5c"
+    },
+    "Tools/delivery_verifier.py": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Tools/delivery_verifier.py",
+      "bytes": 3638,
+      "sha256": "2a60f17d4c9ccd29d75970b37ba34b8843760515be09a3e7ee2df49e498efa66"
+    },
+    "Tools/guarded_replay.py": {
+      "path": "local/cc12_locale_onexit_prolog_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    }
+  },
+  "qualification": "Byte/listing/operand evidence only; no actual stack, FS/default-segment contents, Original SEH identity, ABI, Source activation, status, callback or gameplay validation"
+}
