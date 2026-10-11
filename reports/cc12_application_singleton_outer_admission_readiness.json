@@ -1,0 +1,1417 @@
+{
+  "schema": "cc12.application_singleton_outer_admission_readiness.v1",
+  "packet": "cc12_application_singleton_outer_admission_readiness",
+  "utc": "2026-10-11T00:49:03.228395+00:00",
+  "scope": {
+    "kind": "SOURCE_ONLY_READINESS",
+    "owned_tracked_files": [
+      "docs/CC12_APPLICATION_SINGLETON_OUTER_ADMISSION_READINESS.md",
+      "reports/cc12_application_singleton_outer_admission_readiness.json"
+    ],
+    "addresses_leased": [],
+    "Source_changes": 0,
+    "CMake_changes": 0,
+    "caller_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_probes": 0,
+    "new_Native_queries": 0,
+    "new_Native_code_bytes": 0,
+    "new_Native_data_bytes": 0,
+    "Ghidra_mutations": 0,
+    "ledger_changes": 0,
+    "game_execution": false,
+    "OS_audio_validation": false
+  },
+  "baseline": {
+    "Main_commit": "c02232befa117182c0536d6e60dbaedeedddff58",
+    "Root_manifest": {
+      "entry": "blobs/d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a",
+      "bytes": 1267925,
+      "sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a"
+    },
+    "closed_Source_paths": 4228,
+    "src_include_paths": 4210,
+    "actual_Git_rows": 4255,
+    "actual_Git_trees": 11,
+    "Source_root": "0e7fdcecd84ec8083b7ca4520e933a5c1d94552f",
+    "Root_Source3356": 3356,
+    "all_Root_inputs_LF_equal": true,
+    "Root_raw_newline_variants": 8,
+    "Source_differences_from_prior_implementation": [
+      "include/bsp/native_mesh_owner.hpp",
+      "src/native_mesh_owner.cpp"
+    ],
+    "historical_artifacts_not_replayed": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 74046208,
+        "sha256": "0093960f1d14ef10a84fc46a3527e5289b53047f08c36832bf58eda51cf35b1a",
+        "retained_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\after\\Artifacts\\build\\win32\\Release\\bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "59504c91869835aa629db090579f05cd8d8c5dddb9329b390a187fe70463e037",
+        "retained_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\after\\Artifacts\\build\\win32\\Release\\bsp_game.exe"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7550586,
+        "sha256": "e538a12479c47b2b47ed93c316f9543752b9028cf7c8cd83560c8dbd91a33ff2",
+        "retained_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\after\\Artifacts\\build\\win32\\bsp_game.map"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "4be8468ea2f1e22633f1ca1d7df86fec0d073e47994f51fbbc49e425ab90f3e3",
+        "retained_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_singleton_source_primary\\after\\Artifacts\\build\\win32\\Testing\\Temporary\\LastTest.log"
+      }
+    ],
+    "current_Source_unchanged": true
+  },
+  "contract": {
+    "schema": "cc12.application_singleton_outer_admission_contract.v1",
+    "decision": {
+      "dormant_BEA970_borrowed_Source_GO": true,
+      "implemented_by_this_packet": false,
+      "full_737970_Source_GO": false,
+      "actual_E1AE90_authority_producer_GO": false,
+      "raw_Application_owner_GO": false,
+      "combined_Game_frame_factory_GO": false,
+      "startup_activation_GO": false,
+      "automatic_storage_return_GO": false,
+      "retirement_GO": false,
+      "Original_FH3_or_current_external_ABI_GO": false
+    },
+    "smallest_next_packet": {
+      "id": "cc12_application_loop_base_borrowed_source_implementation",
+      "address": "00BEA970",
+      "accepted_body": {
+        "bytes": 22,
+        "instructions": 8,
+        "original_ABI": "ECX original receiver; no explicit stack arguments; preserve ESI; EAX original receiver; RET0"
+      },
+      "proposed_API": "void* construct_native_application_loop_base_00bea970(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+      "placement": "Append one dormant function/declaration to the existing native_render_service_base.cpp/.hpp pair; no new owner type, cell, binding, CMake entry, caller or private guard.",
+      "prerequisites": [
+        "Every accepted BEA810 prerequisite remains required, including fixed distinct disjoint actual manager/E1AE90 cells and the existing GameNativeStringProcess/GameSingletonHost manager authority.",
+        "The original caller retains stable actual aligned enclosing 1Ch storage, valid uint32 access at +0, and a valid byte access at +04. Preserve every other incoming object byte and domain.",
+        "Actual manager results/vector, captured real native section/count+18, original receiver, actual cells and selected registration objects remain valid across all providers and cleanup. No projected critical section, private EH alias, invalidating concurrency or null-manager fallback.",
+        "Publication and registration can expose the original receiver or selected other/null argument while the numeric profile is D68BC4 and before any BEA970 poststore. Qualified observers must tolerate that stage; numeric identity is not a callable table."
+      ],
+      "ordered_schedule": [
+        "Capture/retain original receiver identity; call genuine construct_native_application_singleton_base_00bea810(original, context) once.",
+        "Ignore the child's result as an authority; after normal return only, store DWORD D68BC8 at original+0.",
+        "Then clear exactly BYTE original+04. Do not widen the store or infer the byte's semantic role.",
+        "Return the original receiver without reading current E1AE90, repairing publication or adding registration."
+      ],
+      "failure_contract": [
+        "If BEA810 escapes or never returns, neither new poststore runs. Do not add outer cleanup, clear, restore, unregister, free, retry, retain or counter compensation.",
+        "Inherited Source state0 precedes the base profile; state1 arms after the conditional captured-section Enter/current-depth stage and remains through conditional normal Leave. Null section skips Enter/depth/release but still arms state1 before publication. Ordinary C++ cleanup invokes genuine guard then generic reset only if guard cleanup returns.",
+        "A normal-Leave escape may produce another current decrement/Leave. The earlier external release disposition remains unknown; no balance/safety inference. A second escaping MSVC C++ cleanup exception terminates through the established private boundary.",
+        "Within valid storage, the two poststores have no ordinary C++ throwing provider. Invalid access, hardware faults, Original FH3/EBP/private spills and current external runtime ABI are not admitted. No new post-base cleanup is invented.",
+        "Base success/reset, a changed/null current publication, absent insertion evidence, or wrapper C++ scope exit is not proof that all escaped references are gone. Retain storage/cells/providers until separately resolved."
+      ],
+      "allocation_policy": "This is a borrowed constructor. Neither accepted BEA970 nor 737970 allocates the enclosing receiver. Canonical BF681B-style Source allocation and getter lazy manager-allocation cleanup concern separate allocation domains and do not authorize allocating/freeing an Application.",
+      "verification_for_later_implementation": "Separately assigned implementation must preserve exact Source prerequisites and obtain fresh normal Win32 build/compiled evidence against its own frozen integrated epoch. This readiness grants no build/test/runtime credit."
+    },
+    "remaining_737970_contract": {
+      "positive_retained_body": "Complete accepted 42B/15-instruction same-receiver body calls BEA970, then writes CFEAB0 at+0, zero DWORDs+08/+0C/+10/+14, zero BYTEs+19/+1A, and sets BYTE+18=1, in that order. It returns the original receiver and has no enclosing Application allocation.",
+      "held_Source_boundary": "Before a full borrowed 737970 interface, explicitly settle the actual +08 NativeApplicationPointerVectorStorage subobject and +14 pointer-cell object/access lifetimes, store types/aliasing, and their preserved preimages before base publication. Do not infer these from names, a 1Ch buffer, projected fields or Game storage.",
+      "no_new_Native_body_needed_for_normal_shell": "The complete retained bodies already establish the normal shell order; this packet performs no fresh Native query or decoding beyond static replay of accepted records."
+    },
+    "authority_and_lifetime_gaps": [
+      "No existing canonical E1AE90 cell owner is supplied by the current process/member inventory. The dormant base API merely accepts a reference. Its unconditional write is an operation on a supplied authority, not creation/authentication of that authority.",
+      "Current GameStartupHost construction resets only ApplicationFrameState and constructed_; destruction only clears constructed_. Platform identity uses this host. No cast, detached pointer, projected ApplicationShutdownState or new default context produces the actual raw owner.",
+      "The same stable owner must supply actual+14 to GameNativeGameApplicationFrame and remain alive with its exclusive runtime, canonical strings, services and failure records through all last uses/observations. The frame's separate71A0 Game allocation and zeroing are not Application allocation or zeroing.",
+      "E1AE78 is independent. Existing canonical duplicate/free primitives and accepted producer slices remain positive qualified evidence, but current startup parses mode directly and supplies no canonical retained name cell. Do not couple that retirement to Application scope.",
+      "D68BC4/D68BC8/CFEAB0 are numeric Native profile identities; this packet creates no callable tables, Application scalar/delete binding or canonical destruction/removal/drain order.",
+      "Current manager drain selects the current owner profile and passes flags1. CE3818 positively dispatches to delete_native_singleton_base_00412440, which calls singleton_lifetime_free when bit0 is set. An escaped receiver reset to CE3818 is therefore not a safe drain/storage-return token. Unsupported Application profiles are not universal failure protection.",
+      "Any future allocation/failed-construction/storage-return policy must distinguish pre-entry allocation ownership, entered base construction, partial publication/registration, returning/nonreturning cleanup, and externally unresolved references; preserve indeterminate dispositions rather than free/retry by exception or scope exit."
+    ],
+    "future_external_gate": {
+      "required_for_BEA970_only": false,
+      "optional_named_packet": "cc12_application_original_caller_storage_failure_metadata_admission",
+      "scope": "If stronger Original caller/storage-return evidence is later required, separately authorize metadata only for WinMain008F81F0 and the retained008F8419 construction call's enclosing EH range. Reuse the existing57-byte identity slice first; proposal of any new body/table/handler read must wait for exact typed ranges and a separate byte cap. No new Native read is performed or implicitly authorized here.",
+      "limits": "Does not solve Source owner/authority by itself and does not replace distinct E1AE78, callable profile, +14 or retirement contracts."
+    }
+  },
+  "Source_inventory": [
+    {
+      "area": "actual_E1AE90",
+      "positive": "Only actual-cell declaration and supplied-cell write/read occur in dormant BEA810. Comment-only Native consumers are preserved in complete hits.",
+      "producer": "No canonical cell owner or Source caller supplied",
+      "queries": [
+        "base_entry",
+        "application_publication"
+      ]
+    },
+    {
+      "area": "outer_normal_shells",
+      "positive": "Complete accepted 42B/15 and 22B/8 bodies; same original receiver, poststores only after child normal return",
+      "producer": "Current Source 737970 mentions are projected comments/log, not raw body/cell ownership",
+      "queries": [
+        "outer_entries",
+        "startup_shells",
+        "projected_application_identity"
+      ]
+    },
+    {
+      "area": "shared_manager_authority",
+      "positive": "Actual GameNativeStringProcess manager_01090aa0 cell and GameSingletonHost binding",
+      "producer": "Reuse existing stable authority; no copied/default/second-domain context",
+      "queries": [
+        "shared_manager_authority"
+      ]
+    },
+    {
+      "area": "actual_Application_game_14",
+      "positive": "GameNativeGameApplicationFrame borrows actual pointer-cell reference and retains exclusive runtime/services/string/failure domain",
+      "producer": "No enclosing raw Application owner; separate 71A0 Game allocation does not supply one",
+      "queries": [
+        "actual_game_cell",
+        "retained_frame",
+        "allocation_policy"
+      ]
+    },
+    {
+      "area": "actual_Application_vector_08",
+      "positive": "Existing 12B NativeApplicationPointerVectorStorage and bounded preload/reserve borrowers",
+      "producer": "No enclosing owner/object lifetime/access policy for full 737970 Source",
+      "queries": [
+        "actual_vector"
+      ]
+    },
+    {
+      "area": "actual_E1AE78",
+      "positive": "Borrowed frame reference and existing canonical duplicate/free primitives; accepted qualified producer/retirement evidence retained",
+      "producer": "No canonical retained name owner wired to current startup; BootstrapHost string projection is not the actual cell",
+      "queries": [
+        "name_publication",
+        "canonical_duplicate"
+      ]
+    },
+    {
+      "area": "allocation_storage_return",
+      "positive": "Canonical allocation provider/new-handler policy and separate manager getter allocation cleanup retained",
+      "producer": "No Application heap ownership or safe post-entry failure return policy",
+      "queries": [
+        "allocation_policy",
+        "raw_deletion_profile_gate"
+      ]
+    },
+    {
+      "area": "Application_profiles_retirement",
+      "positive": "Base numeric D68BC4 Source plus accepted outer Native poststores/destructor/removal order. Manager drain CE3818 -> generic delete(flags1) -> free positively retained.",
+      "producer": "No callable Application table/delete binding, retirement, registry-removal guarantee or safe drain token",
+      "queries": [
+        "application_profiles",
+        "raw_deletion_profile_gate"
+      ]
+    }
+  ],
+  "complete_bounded_queries": [
+    {
+      "id": "base_entry",
+      "pattern": "construct_native_application_singleton_base_00bea810",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "line": 76,
+          "text": "void* construct_native_application_singleton_base_00bea810("
+        },
+        {
+          "path": "src/native_render_service_base.cpp",
+          "line": 122,
+          "text": "void* construct_native_application_singleton_base_00bea810("
+        }
+      ]
+    },
+    {
+      "id": "outer_entries",
+      "pattern": "737970|bea970",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/app_frame.hpp",
+          "line": 8,
+          "text": "// Constructor 00737970 stores 1 at +18h and 0 at +19h and +1Ah. This is not the"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1836,
+          "text": "    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1838,
+          "text": "    log_.implemented(\"StartupHost::application_construct\", \"00737970\");"
+        }
+      ]
+    },
+    {
+      "id": "application_publication",
+      "pattern": "e1ae90",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/game_render_frame.hpp",
+          "line": 223,
+          "text": "    virtual void submit_world_view_00735b50() = 0; // ECX = 00e1ae90, unused by the body"
+        },
+        {
+          "path": "include/bsp/locale_lua_context.hpp",
+          "line": 20,
+          "text": "// The caller selects the CURRENT owner from native00e1ae90 virtual+14 and"
+        },
+        {
+          "path": "include/bsp/locale_text_lookup.hpp",
+          "line": 10,
+          "text": "// its current Lua owner through global 00e1ae90, virtual +0x14, then reads the"
+        },
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "line": 55,
+          "text": "    void* volatile& actual_application_e1ae90;"
+        },
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "line": 71,
+          "text": "// current E1AE90 for BD0C30 (including null). Return original receiver after"
+        },
+        {
+          "path": "src/game_hosts_text.cpp",
+          "line": 75,
+          "text": "// The native resolver reaches its Lua owner through the global at 00e1ae90 and that"
+        },
+        {
+          "path": "src/native_render_service_base.cpp",
+          "line": 136,
+          "text": "    context.actual_application_e1ae90 = actual_receiver;"
+        },
+        {
+          "path": "src/native_render_service_base.cpp",
+          "line": 139,
+          "text": "    void* const current_application = context.actual_application_e1ae90;"
+        }
+      ]
+    },
+    {
+      "id": "name_publication",
+      "pattern": "e1ae78",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/app_bootstrap.hpp",
+          "line": 98,
+          "text": "// duplicated command line at DAT_00e1ae78 rather than from an argument; the"
+        },
+        {
+          "path": "include/bsp/app_bootstrap.hpp",
+          "line": 277,
+          "text": "    // The string BSP_NativeString_Duplicate stores in DAT_00e1ae78 at 0073d945."
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 10,
+          "text": "// composed, the genuine Application+14 and current E1AE78 cells, and the SAME"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 44,
+          "text": "        char* volatile& actual_duplicate_name_00e1ae78,"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 74,
+          "text": "    char* volatile& duplicate_name_00e1ae78_;"
+        },
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "line": 75,
+          "text": "// callable profile, startup activation, +14 lifetime or E1AE78 retirement right."
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 19,
+          "text": "     duplicate_name_00e1ae78_(duplicate),strings_(strings) {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 61,
+          "text": "        captured_name_=duplicate_name_00e1ae78_;"
+        }
+      ]
+    },
+    {
+      "id": "retained_frame",
+      "pattern": "GameNativeGameApplicationFrame",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 16,
+          "text": "class GameNativeGameApplicationFrame final {"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 42,
+          "text": "    GameNativeGameApplicationFrame(GameNativeGameRuntime&,"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 46,
+          "text": "    ~GameNativeGameApplicationFrame();"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 47,
+          "text": "    GameNativeGameApplicationFrame(const GameNativeGameApplicationFrame&)=delete;"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 48,
+          "text": "    GameNativeGameApplicationFrame& operator=(const GameNativeGameApplicationFrame&)=delete;"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 49,
+          "text": "    GameNativeGameApplicationFrame(GameNativeGameApplicationFrame&&)=delete;"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 50,
+          "text": "    GameNativeGameApplicationFrame& operator=(GameNativeGameApplicationFrame&&)=delete;"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 15,
+          "text": "GameNativeGameApplicationFrame::GameNativeGameApplicationFrame("
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 27,
+          "text": "GameNativeGameApplicationFrame::~GameNativeGameApplicationFrame() {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 34,
+          "text": "bool GameNativeGameApplicationFrame::active() const noexcept {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 37,
+          "text": "bool GameNativeGameApplicationFrame::name_resolved() const noexcept {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 40,
+          "text": "bool GameNativeGameApplicationFrame::runtime_retired() const noexcept {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 46,
+          "text": "void GameNativeGameApplicationFrame::record_failure() noexcept {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 50,
+          "text": "NativeGameStorage* GameNativeGameApplicationFrame::construct() {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 77,
+          "text": "NativeGameStorage* GameNativeGameApplicationFrame::scalar_delete(std::uint32_t flags) {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 95,
+          "text": "void GameNativeGameApplicationFrame::free_retained_storage() {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 102,
+          "text": "void GameNativeGameApplicationFrame::acknowledge_name_resolution() {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 107,
+          "text": "void GameNativeGameApplicationFrame::acknowledge_diagnostic_retirement(DiagnosticDisposition disposition) {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 121,
+          "text": "GameNativeGameApplicationFrame::Status GameNativeGameApplicationFrame::status() const noexcept {"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 128,
+          "text": "void* GameNativeGameApplicationFrame::name_header_for_diagnostics() noexcept {"
+        }
+      ]
+    },
+    {
+      "id": "actual_game_cell",
+      "pattern": "actual_application_game_14|application_game_14_",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 43,
+          "text": "        void* volatile& actual_application_game_14,"
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "line": 73,
+          "text": "    void* volatile& application_game_14_;"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 18,
+          "text": "    :runtime_(runtime),application_game_14_(application),"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 69,
+          "text": "        native_site_=0x73e1af;application_game_14_=result;application_published_=true;"
+        }
+      ]
+    },
+    {
+      "id": "actual_vector",
+      "pattern": "NativeApplicationPointerVectorStorage",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+          "line": 29,
+          "text": "    NativeApplicationPointerVectorStorage& actual_rows,"
+        },
+        {
+          "path": "include/bsp/native_shader_preload.hpp",
+          "line": 11,
+          "text": "struct NativeApplicationPointerVectorStorage {"
+        },
+        {
+          "path": "include/bsp/native_shader_preload.hpp",
+          "line": 15,
+          "text": "static_assert(sizeof(NativeApplicationPointerVectorStorage)==12);"
+        },
+        {
+          "path": "include/bsp/native_shader_preload.hpp",
+          "line": 26,
+          "text": "    NativeApplicationPointerVectorStorage&,std::int32_t,"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 10,
+          "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, data_00) == 0);"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 11,
+          "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, count_04) == 4);"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 12,
+          "text": "static_assert(offsetof(NativeApplicationPointerVectorStorage, capacity_08) == 8);"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 18,
+          "text": "    NativeApplicationPointerVectorStorage* actual_rows,"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 29,
+          "text": "    NativeApplicationPointerVectorStorage*,"
+        },
+        {
+          "path": "src/native_application_pointer_vector_resize.cpp",
+          "line": 81,
+          "text": "    NativeApplicationPointerVectorStorage& actual_rows,"
+        },
+        {
+          "path": "src/native_shader_preload.cpp",
+          "line": 24,
+          "text": "    NativeApplicationPointerVectorStorage& rows,I requested,"
+        },
+        {
+          "path": "src/native_shader_preload.cpp",
+          "line": 137,
+          "text": "            auto& rows=*reinterpret_cast<NativeApplicationPointerVectorStorage*>(static_cast<char*>(application)+8);"
+        }
+      ]
+    },
+    {
+      "id": "startup_shells",
+      "pattern": "application_construct\\(|application_destruct\\(",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/game_hosts.hpp",
+          "line": 639,
+          "text": "    void application_construct() override;"
+        },
+        {
+          "path": "include/bsp/game_hosts.hpp",
+          "line": 643,
+          "text": "    void application_destruct() override;"
+        },
+        {
+          "path": "include/bsp/winmain_startup.hpp",
+          "line": 171,
+          "text": "    virtual void application_construct() = 0;"
+        },
+        {
+          "path": "include/bsp/winmain_startup.hpp",
+          "line": 175,
+          "text": "    virtual void application_destruct() = 0;"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1835,
+          "text": "void GameStartupHost::application_construct() {"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 2514,
+          "text": "void GameStartupHost::application_destruct() {"
+        },
+        {
+          "path": "src/winmain_startup.cpp",
+          "line": 228,
+          "text": "    host.application_construct();"
+        },
+        {
+          "path": "src/winmain_startup.cpp",
+          "line": 232,
+          "text": "    host.application_destruct();"
+        }
+      ]
+    },
+    {
+      "id": "shared_manager_authority",
+      "pattern": "manager_01090aa0\\(|manager_publication_01090aa0_\\(game_native_string_process",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/game_native_string_process.hpp",
+          "line": 15,
+          "text": "    void* volatile& manager_01090aa0() noexcept { return manager_; }"
+        },
+        {
+          "path": "src/game_hosts_singletons.cpp",
+          "line": 19,
+          "text": "    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),"
+        },
+        {
+          "path": "src/game_native_entity_registry_process.cpp",
+          "line": 7,
+          "text": "      manager_(game_native_string_process().manager_01090aa0()) {}"
+        },
+        {
+          "path": "src/game_native_input_settings_process.cpp",
+          "line": 7,
+          "text": "    :manager_(game_native_string_process().manager_01090aa0()){}"
+        }
+      ]
+    },
+    {
+      "id": "canonical_duplicate",
+      "pattern": "duplicate_native_string_00438e40",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/native_string_duplicate.hpp",
+          "line": 18,
+          "text": "char* __fastcall duplicate_native_string_00438e40(const char* actual_text_ecx);"
+        },
+        {
+          "path": "src/native_reference_payload_copy.cpp",
+          "line": 32,
+          "text": "        call duplicate_native_string_00438e40"
+        },
+        {
+          "path": "src/native_reference_payload_replace.cpp",
+          "line": 26,
+          "text": "        call duplicate_native_string_00438e40"
+        },
+        {
+          "path": "src/native_scene_property_record_type2_string_storage.cpp",
+          "line": 26,
+          "text": "        call duplicate_native_string_00438e40"
+        },
+        {
+          "path": "src/native_scene_property_record_type5_storage.cpp",
+          "line": 26,
+          "text": "        call duplicate_native_string_00438e40"
+        },
+        {
+          "path": "src/native_string_duplicate.cpp",
+          "line": 25,
+          "text": "__declspec(naked) char* __fastcall duplicate_native_string_00438e40("
+        }
+      ]
+    },
+    {
+      "id": "application_profiles",
+      "pattern": "d68bc4|d68bc8|cfeab0",
+      "corpus_count": 4210,
+      "hits": [
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "line": 65,
+          "text": "// State0 precedes D68BC4; state1 follows Enter/current-depth increment and stays"
+        },
+        {
+          "path": "src/native_render_service_base.cpp",
+          "line": 125,
+          "text": "    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;"
+        }
+      ]
+    },
+    {
+      "id": "allocation_policy",
+      "pattern": "singleton_lifetime_allocate|singleton_lifetime_free",
+      "paths": [
+        "src/native_singleton_publication.cpp",
+        "src/game_native_game_application_frame.cpp",
+        "src/singleton_lifetime.cpp",
+        "include/bsp/singleton_lifetime.hpp"
+      ],
+      "corpus_count": 4,
+      "hits": [
+        {
+          "path": "src/native_singleton_publication.cpp",
+          "line": 44,
+          "text": "    void* const allocation = singleton_lifetime_allocate({"
+        },
+        {
+          "path": "src/native_singleton_publication.cpp",
+          "line": 53,
+          "text": "        singleton_lifetime_free(allocation);"
+        },
+        {
+          "path": "src/native_singleton_publication.cpp",
+          "line": 80,
+          "text": "            void* const allocation = singleton_lifetime_allocate({"
+        },
+        {
+          "path": "src/native_singleton_publication.cpp",
+          "line": 91,
+          "text": "                singleton_lifetime_free(allocation);"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 55,
+          "text": "        void* block=singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0});"
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "line": 99,
+          "text": "    singleton_lifetime_free(retained_);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 46,
+          "text": "    return static_cast<void**>(singleton_lifetime_allocate({"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 51,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 65,
+          "text": "void singleton_lifetime_free(void* pointer) noexcept {"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 92,
+          "text": "        void* storage = singleton_lifetime_allocate({"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 99,
+          "text": "        singleton_lifetime_free(owned_section_);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 101,
+          "text": "        singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 181,
+          "text": "        singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 293,
+          "text": "    singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 307,
+          "text": "    singleton_lifetime_free(owned_section_);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 324,
+          "text": "        void* storage = singleton_lifetime_allocate({SingletonAllocationKind::manager,"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 330,
+          "text": "            singleton_lifetime_free(storage);"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "line": 339,
+          "text": "        singleton_lifetime_free(manager);"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "line": 19,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest&);"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "line": 20,
+          "text": "void singleton_lifetime_free(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "id": "projected_application_identity",
+      "pattern": "request.application = this|parse_command_line_0073ce20\\(mode\\)|frame_state_ = ApplicationFrameState|constructed_ =",
+      "paths": [
+        "src/game_hosts.cpp"
+      ],
+      "corpus_count": 1,
+      "hits": [
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1839,
+          "text": "    frame_state_ = ApplicationFrameState{};"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1840,
+          "text": "    constructed_ = true;"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 1935,
+          "text": "    const CommandLineOptions command_line = parse_command_line_0073ce20(mode);"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 2130,
+          "text": "    request.application = this;"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "line": 2516,
+          "text": "    constructed_ = false;"
+        }
+      ]
+    },
+    {
+      "id": "raw_deletion_profile_gate",
+      "pattern": "d68bc4|d68bc8|cfeab0|ce3818|raw singleton deletion requires|delete_native_singleton_base_00412440",
+      "paths": [
+        "src/native_singleton_destruction.cpp",
+        "include/bsp/native_singleton_destruction.hpp"
+      ],
+      "corpus_count": 2,
+      "hits": [
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "line": 314,
+          "text": "    case 0x00ce3818:"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "line": 315,
+          "text": "        delete_native_singleton_base_00412440(owner, nullptr, flags);"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "line": 568,
+          "text": "    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "line": 665,
+          "text": "__declspec(naked) void* __fastcall delete_native_singleton_base_00412440("
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "line": 671,
+          "text": "        mov dword ptr [esi], 00ce3818h"
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "line": 61,
+          "text": "// Other admitted objects carry these recovered slot-zero profiles: CE3818,"
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "line": 165,
+          "text": "    // CE3818 and freeing it; it does not unregister itself from the manager."
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "line": 281,
+          "text": "// Full00412440[31]: test low flags bit0 before rewriting CE3818; optionally"
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "line": 284,
+          "text": "void* __fastcall delete_native_singleton_base_00412440("
+        }
+      ]
+    }
+  ],
+  "exact_Source_excerpts": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "start": 45,
+      "end": 78,
+      "requested_end": 78,
+      "text": "// No service initialization, full derived destruction or game validation claim.\n} // namespace bsp\n\nnamespace bsp {\n// Dormant BEA810 singleton-base interface over borrowed actual Application\n// storage. Both bindings are fixed, distinct actual cells, disjoint from the\n// receiver, context and private guard. Their values remain live. The manager\n// authority must be the GameNativeStringProcess/GameSingletonHost domain.\nstruct NativeApplicationSingletonBaseContext {\n    void* volatile& actual_manager_01090aa0;\n    void* volatile& actual_application_e1ae90;\n};\n\n// BEA810 singleton-base body: original ECX receiver, no stack arguments, EAX receiver,\n// RET. This explicit-context Source API is not the original binary ABI.\n// Caller retains stable aligned actual storage, valid uint32 access at +0 and\n// the enclosing 1Ch preimages/domains. No direct stores affect +04..+1B. Actual\n// manager results/vector, captured native section and its depth DWORD at +18\n// remain valid through providers/cleanup; no null-manager fallback, EH-stack\n// aliases, concurrent invalidation or SystemSingletonCriticalSection projection.\n// State0 precedes D68BC4; state1 follows Enter/current-depth increment and stays\n// armed through normal Leave. C++ escape uses genuine 411EE0 then 412430 only\n// if guard cleanup returns. A second escaping MSVC C++ cleanup exception takes\n// the existing termination boundary; original FH3/hardware faults are unproved.\n// Normal-Leave escape may decrement/Leave again, with no safe disposition claim.\n// Publish original receiver unconditionally; second getter precedes selecting\n// current E1AE90 for BD0C30 (including null). Return original receiver after\n// successful release. Publication/registration effects persist on failure:\n// no clear, restore, unregister, free, retry, retain or counter compensation.\n// This creates no owner, actual-cell producer, outer constructor/destructor,\n// callable profile, startup activation, +14 lifetime or E1AE78 retirement right.\nvoid* construct_native_application_singleton_base_00bea810(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context);\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "start": 14,
+      "end": 53,
+      "requested_end": 53,
+      "text": "namespace bsp {\nnamespace {\nusing Word = std::uint32_t;\nstruct NativeGuard {\n    Word profile_00;\n    CRITICAL_SECTION* section_04;\n};\nstatic_assert(sizeof(void*) == 4 && sizeof(NativeGuard) == 8);\nstatic_assert(offsetof(NativeGuard, section_04) == 4);\nstatic_assert(sizeof(CRITICAL_SECTION) == 0x18);\nvolatile Word& depth(CRITICAL_SECTION* section) noexcept {\n    return *reinterpret_cast<volatile Word*>(\n        reinterpret_cast<std::byte*>(section) + 0x18);\n}\nint cleanup_exception(unsigned long code) noexcept {\n    if (code == 0xe06d7363u) std::terminate();\n    return EXCEPTION_CONTINUE_SEARCH;\n}\nvoid unwind_guard(NativeGuard& guard) noexcept {\n    __try {\n        destroy_native_singleton_guard_00411ee0(&guard);\n    } __except (cleanup_exception(GetExceptionCode())) { __assume(0); }\n}\nstruct BaseCleanup {\n    void* receiver;\n    bool armed = true;\n    ~BaseCleanup() noexcept {\n        if (armed) destroy_native_generic_singleton_base_00412430(receiver);\n    }\n};\nstruct GuardCleanup {\n    NativeGuard& guard;\n    bool armed = true;\n    ~GuardCleanup() noexcept { if (armed) unwind_guard(guard); }\n};\n} // namespace\n\nvoid destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept {\n    *static_cast<volatile Word*>(actual_receiver) = 0x00ce3818u;\n}\n"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "start": 120,
+      "end": 149,
+      "requested_end": 150,
+      "text": "\nnamespace bsp {\nvoid* construct_native_application_singleton_base_00bea810(\n    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {\n    BaseCleanup base_cleanup{actual_receiver}; // Source state0 before profile.\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d68bc4u;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    NativeGuard guard{0x00ce37fcu, section};\n    if (section) {\n        EnterCriticalSection(section);\n        depth(section) = depth(section) + 1u;\n    }\n    GuardCleanup guard_cleanup{guard}; // Source state1 after Enter/depth.\n    context.actual_application_e1ae90 = actual_receiver;\n    void* const manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    void* const current_application = context.actual_application_e1ae90;\n    register_native_singleton_object_00bd0c30(manager, nullptr, current_application);\n    if (section) {\n        depth(section) = depth(section) - 1u;\n        LeaveCriticalSection(section);\n    }\n    guard_cleanup.armed = false;\n    base_cleanup.armed = false;\n    return actual_receiver;\n}\n} // namespace bsp\n"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "start": 8,
+      "end": 55,
+      "requested_end": 55,
+      "text": "// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    // Actual pending-registry publication shares this retained process lifetime.\n    // Accessing the cell does not construct or register a registry owner.\n    void* volatile& pending_registry_00f878cc() noexcept;\n    // Permanent allocation-statistics publication; cell access creates no owner.\n    void* volatile& allocation_stats_0109cefc() noexcept;\n    // Permanent typed F8C274 authority; this accessor creates no owner.\n    NativeParticleModelManagerStorage* volatile& particle_manager_00f8c274() noexcept;\n    // Source admission policy, not Native storage. Claim once while quiescent;\n    // never reset, including after drain or host replacement. No owner is made.\n    bool claim_particle_manager_domain() noexcept;\n    NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }\n    volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }\n    NativeStringRawPoolContext& raw_context() noexcept { return raw_; }\n    ActualNativeStringPoolStorage& strings() noexcept { return strings_; }\n    // Distinct permanent Source authorities for the two Original initial-NUL\n    // roles. Only const pointers escape; Original's writable .data is not\n    // claimed universally immutable. Shader E17654 borrowers use this SAME byte.\n    const char* property_empty_00e177e4() const noexcept;\n    const char* query_empty_00e17654() const noexcept;\nprivate:\n    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n    // Append after every established authority; do not reuse another raw8 owner.\n    void* volatile pending_registry_00f878cc_{};\n    void* volatile allocation_stats_0109cefc_{};\n    NativeParticleModelManagerStorage* volatile particle_manager_00f8c274_{};\n    bool particle_manager_domain_claimed_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();\n"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "start": 29,
+      "end": 35,
+      "requested_end": 35,
+      "text": "}\n\nGameNativeStringProcess& game_native_string_process() {\n    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "start": 15,
+      "end": 34,
+      "requested_end": 34,
+      "text": "\nnamespace bsp::game {\n\nGameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()),\n      allocation_stats_context_{manager_publication_01090aa0_,\n          game_native_string_process().allocation_stats_0109cefc()} {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n    deletion_bindings_.allocation_stats = &allocation_stats_context_;\n}\n\n"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "start": 34,
+      "end": 57,
+      "requested_end": 57,
+      "text": "\n__declspec(noinline) void* get_native_singleton_manager_00415350(\n    void* volatile& actual_manager_publication_01090aa0) {\n    void* const initial = actual_manager_publication_01090aa0;\n    if (initial) {\n        return initial;\n    }\n\n    // Allocation occurs before native state0 is armed. The saved allocation\n    // remains the cleanup target even if construction changes publication.\n    void* const allocation = singleton_lifetime_allocate({\n        SingletonAllocationKind::manager, 0x14, 0x14});\n    try {\n        void* const result = allocation\n            ? construct_native_singleton_manager_00bd0960(allocation, nullptr)\n            : nullptr;\n        actual_manager_publication_01090aa0 = result;\n        return result;\n    } catch (...) {\n        singleton_lifetime_free(allocation);\n        throw;\n    }\n}\n\n"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "start": 1,
+      "end": 100,
+      "requested_end": 100,
+      "text": "#include \"bsp/native_singleton_vector_registration_wrappers.hpp\"\n\n#include \"bsp/native_singleton_vector_insert_count.hpp\"\n\n#include <cstdlib>\n\nnamespace bsp {\nnamespace {\n\n// Fixed actual SDK service. The no-argument source call has the same five-byte\n// CALL site width as BF6713; its current CRT owns the handler and fatal path.\n__declspec(noinline) void __cdecl current_crt_invalid_parameter() {\n    _invalid_parameter_noinfo();\n}\n\n} // namespace\n\n__declspec(naked) void* __fastcall insert_one_native_singleton_slots_checked_00bd08d0(\n    void*, void*, void*, const void*, void*, const void*) {\n    __asm {\n        push ecx\n        push ebx\n        push ebp\n        mov ebp, dword ptr [esp + 14h]\n        push esi\n        mov esi, ecx\n        push edi\n        mov edi, dword ptr [esi + 4]\n        test edi, edi\n        jz zero_index\n        mov eax, dword ptr [esi + 8]\n        mov ecx, eax\n        sub ecx, edi\n        sar ecx, 2\n        jnz nonempty_index\n    zero_index:\n        xor ebx, ebx\n        jmp perform_insert\n    nonempty_index:\n        cmp edi, eax\n        jbe validate_iterator_owner\n        call current_crt_invalid_parameter\n    validate_iterator_owner:\n        test ebp, ebp\n        jz invalid_iterator_owner\n        cmp ebp, esi\n        je compute_index\n    invalid_iterator_owner:\n        call current_crt_invalid_parameter\n    compute_index:\n        mov ebx, dword ptr [esp + 20h]\n        sub ebx, edi\n        sar ebx, 2\n    perform_insert:\n        mov edx, dword ptr [esp + 24h]\n        mov eax, dword ptr [esp + 20h]\n        push edx\n        push 1\n        push eax\n        push ebp\n        mov ecx, esi\n        call insert_count_native_singleton_slots_00bd0700\n        mov edi, dword ptr [esi + 4]\n        cmp edi, dword ptr [esi + 8]\n        jbe derive_result\n        call current_crt_invalid_parameter\n    derive_result:\n        mov dword ptr [esp + 20h], edi\n        lea edi, [edi + ebx * 4]\n        cmp edi, dword ptr [esi + 8]\n        ja invalid_result\n        cmp edi, dword ptr [esi + 4]\n        jae write_result\n    invalid_result:\n        call current_crt_invalid_parameter\n    write_result:\n        mov eax, dword ptr [esp + 18h]\n        mov dword ptr [eax + 4], edi\n        pop edi\n        mov dword ptr [eax], esi\n        pop esi\n        pop ebp\n        pop ebx\n        pop ecx\n        ret 10h\n    }\n}\n\n__declspec(naked) void __fastcall append_native_singleton_slot_00bd0bc0(\n    void*, void*, const void*) {\n    __asm {\n        sub esp, 8\n        push esi\n        mov esi, ecx\n        mov edx, dword ptr [esi + 4]\n        test edx, edx\n        jnz captured_begin_nonnull\n        xor ecx, ecx\n        jmp compare_capacity\n    captured_begin_nonnull:\n"
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "start": 8,
+      "end": 26,
+      "requested_end": 26,
+      "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n"
+    },
+    {
+      "path": "include/bsp/game_native_game_application_frame.hpp",
+      "start": 7,
+      "end": 62,
+      "requested_end": 62,
+      "text": "namespace bsp::game {\n// Retained Source composition of 73E150..73E1D9, not an Original FH3 frame.\n// Requires an exclusive fresh runtime with every construction/lifetime service\n// composed, the genuine Application+14 and current E1AE78 cells, and the SAME\n// canonical raw string domain used by that runtime. These borrowed objects and\n// the captured nonnull C string must remain valid through their last use.\n// Lifetime free_00bf6989 must match canonical malloc and actually free on a\n// successful flags&1 call. A throwing override can leave disposition unknown.\n// No automatic cleanup, publication rollback, operation replay or pool owner.\nclass GameNativeGameApplicationFrame final {\npublic:\n    enum class Phase { fresh, constructing, live, deleting, destroyed, failed,\n        retired, diagnostic_retired };\n    enum class Stage { none, allocation, name_preparation, game_construction,\n        name_return, scalar_delete };\n    enum class Allocation { absent, retained, indeterminate, released };\n    enum class Name { unprepared, preparing, complete, return_attempted,\n        returned, externally_resolved };\n    enum class DiagnosticDisposition { no_allocation, already_released };\n    struct Status {\n        Phase phase;\n        Stage active_stage, failed_stage;\n        Allocation allocation;\n        Name name;\n        GameNativeGameRuntime::Phase runtime_phase;\n        std::uintptr_t allocation_address, constructor_result_address,\n            scalar_result_address; // Historical bits, NOT live ownership.\n        const char* captured_name; // Borrow only; never freed by this frame.\n        // Caller/helper boundary anchors; child fault progress stays in runtime.\n        std::uint32_t native_site, failed_native_site, observed_name_mask,\n            scalar_flags;\n        std::int32_t parent_cleanup_state;\n        bool parent_state_recorded, constructor_entered, constructor_completed,\n            application_published, scalar_attempted, scalar_completed;\n    };\n    GameNativeGameApplicationFrame(GameNativeGameRuntime&,\n        void* volatile& actual_application_game_14,\n        char* volatile& actual_duplicate_name_00e1ae78,\n        NativeStringRawPoolContext& canonical_strings);\n    ~GameNativeGameApplicationFrame();\n    GameNativeGameApplicationFrame(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame& operator=(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame(GameNativeGameApplicationFrame&&)=delete;\n    GameNativeGameApplicationFrame& operator=(GameNativeGameApplicationFrame&&)=delete;\n    NativeGameStorage* construct();\n    NativeGameStorage* scalar_delete(std::uint32_t flags);\n    // Only proven retained storage: never entered, scalar completed with bit 0\n    // clear, or externally resolved graph already acknowledged by the runtime.\n    void free_retained_storage();\n    // Caller has actually resolved the pending partial/completed name. This\n    // acknowledgment performs no header access, return, clear or retry.\n    void acknowledge_name_resolution();\n    // Caller has resolved graph/name/publication obligations and explicitly\n    // proves the original allocation absent or already released. No cleanup.\n    void acknowledge_diagnostic_retirement(DiagnosticDisposition);\n    Status status() const noexcept;\n"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "start": 15,
+      "end": 40,
+      "requested_end": 40,
+      "text": "GameNativeGameApplicationFrame::GameNativeGameApplicationFrame(\n    GameNativeGameRuntime& runtime,void* volatile& application,\n    char* volatile& duplicate,NativeStringRawPoolContext& strings)\n    :runtime_(runtime),application_game_14_(application),\n     duplicate_name_00e1ae78_(duplicate),strings_(strings) {\n    static_assert(sizeof(NativeGameStorage)==0x71a0);\n    static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);\n    static_assert(std::is_trivially_destructible_v<NativeGameStorage>);\n    static_assert(sizeof(void*)==4&&sizeof(name_header_)==8);\n    if(runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::invalid_argument(\"Application frame requires an exclusive fresh native game runtime\");\n}\nGameNativeGameApplicationFrame::~GameNativeGameApplicationFrame() {\n    // Source retained-owner rejection policy; NOT recovered native EH cleanup.\n    if((phase_!=Phase::fresh&&phase_!=Phase::destroyed&&phase_!=Phase::retired\n            &&phase_!=Phase::diagnostic_retired)\n        ||(allocation_!=Allocation::absent&&allocation_!=Allocation::released)\n        ||!name_resolved()||!runtime_retired())std::terminate();\n}\nbool GameNativeGameApplicationFrame::active() const noexcept {\n    return phase_==Phase::constructing||phase_==Phase::deleting;\n}\nbool GameNativeGameApplicationFrame::name_resolved() const noexcept {\n    return name_==Name::unprepared||name_==Name::returned||name_==Name::externally_resolved;\n}\nbool GameNativeGameApplicationFrame::runtime_retired() const noexcept {\n"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "start": 50,
+      "end": 80,
+      "requested_end": 80,
+      "text": "NativeGameStorage* GameNativeGameApplicationFrame::construct() {\n    if(phase_!=Phase::fresh||runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::logic_error(\"Application frame construction is one-shot\");\n    phase_=Phase::constructing;active_stage_=Stage::allocation;native_site_=0x73e150;\n    try {\n        void* block=singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0});\n        allocation_address_=reinterpret_cast<std::uintptr_t>(block);\n        retained_=static_cast<NativeGameStorage*>(block);allocation_=Allocation::retained;\n        ::new (block) NativeGameStorage;\n        std::memset(block,0,0x71a0);\n        parent_cleanup_state_=0x27;parent_state_recorded_=true;\n        captured_name_=duplicate_name_00e1ae78_;\n        active_stage_=Stage::name_preparation;native_site_=0x73e188;name_=Name::preparing;\n        construct_native_string_header_0041e870(name_header_,strings_,captured_name_);\n        name_=Name::complete;observed_name_mask_|=0x2;\n        parent_cleanup_state_=0x28;\n        active_stage_=Stage::game_construction;native_site_=0x73e1a1;constructor_entered_=true;\n        auto* result=runtime_.construct(*retained_,name_header_);\n        constructor_completed_=true;constructor_result_address_=reinterpret_cast<std::uintptr_t>(result);\n        native_site_=0x73e1af;application_game_14_=result;application_published_=true;\n        parent_cleanup_state_=-1;\n        active_stage_=Stage::name_return;native_site_=0x73e1ce;name_=Name::return_attempted;\n        destroy_native_string_header_0041dd20(name_header_,strings_);\n        name_=Name::returned;active_stage_=Stage::none;phase_=Phase::live;\n        return result;\n    } catch(...) {record_failure();throw;}\n}\nNativeGameStorage* GameNativeGameApplicationFrame::scalar_delete(std::uint32_t flags) {\n    if(active()||!constructor_completed_||scalar_attempted_||!name_resolved()\n        ||allocation_!=Allocation::retained||runtime_.phase()!=GameNativeGameRuntime::Phase::live)\n        throw std::logic_error(\"Application frame scalar requires its first live owner and resolved name\");\n"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "start": 81,
+      "end": 107,
+      "requested_end": 107,
+      "text": "    scalar_attempted_=true;scalar_flags_=flags;phase_=Phase::deleting;\n    active_stage_=Stage::scalar_delete;native_site_=0x4de270;\n    // A qualified override can release then throw. Never retain a supposedly\n    // live pointer across this call; success with bit 0 clear restores ownership.\n    allocation_=Allocation::indeterminate;retained_=nullptr;\n    try {\n        auto* result=runtime_.scalar_delete(flags);\n        scalar_result_address_=reinterpret_cast<std::uintptr_t>(result);scalar_completed_=true;\n        if(flags&1)allocation_=Allocation::released;\n        else {allocation_=Allocation::retained;retained_=reinterpret_cast<NativeGameStorage*>(allocation_address_);}\n        active_stage_=Stage::none;phase_=Phase::destroyed;\n        return result;\n    } catch(...) {record_failure();throw;}\n}\nvoid GameNativeGameApplicationFrame::free_retained_storage() {\n    if(active()||allocation_!=Allocation::retained||!name_resolved()||!runtime_retired()\n        ||(runtime_.phase()==GameNativeGameRuntime::Phase::destroyed&&(scalar_flags_&1)))\n        throw std::logic_error(\"Application frame free requires resolved graph/name and proven retained allocation\");\n    singleton_lifetime_free(retained_);\n    retained_=nullptr;allocation_=Allocation::released;phase_=Phase::retired;\n}\nvoid GameNativeGameApplicationFrame::acknowledge_name_resolution() {\n    if(active()||name_resolved())\n        throw std::logic_error(\"Only a pending application name can be externally resolved\");\n    name_=Name::externally_resolved;\n}\nvoid GameNativeGameApplicationFrame::acknowledge_diagnostic_retirement(DiagnosticDisposition disposition) {\n"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "start": 1835,
+      "end": 1843,
+      "requested_end": 1843,
+      "text": "void GameStartupHost::application_construct() {\n    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's\n    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.\n    log_.implemented(\"StartupHost::application_construct\", \"00737970\");\n    frame_state_ = ApplicationFrameState{};\n    constructed_ = true;\n}\n\nvoid GameStartupHost::application_initialize(int flags, const char* mode) {\n"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "start": 1930,
+      "end": 1940,
+      "requested_end": 1940,
+      "text": "    // The command line is parsed at 0073d94a, after the whole phase-2 block, which is why\n    // cachedload cannot have influenced any phase-2 mount. Milestone 1 parsed it before\n    // phase 2; the native position is used here.\n    // WinMain passes \"cachedload\" as the second 0073d410 argument. Native keeps\n    // that pointer in EBP, duplicates it at 0073d933, then parses at 0073d94a.\n    const CommandLineOptions command_line = parse_command_line_0073ce20(mode);\n    log_.implemented(\"Phase 3 parse_command_line\", \"0073ce20\");\n    log_.notef(\"command line cached_load=%d fixed_frame_rate=%d file_access_log=%d\",\n        command_line.cached_load ? 1 : 0, command_line.fixed_frame_rate ? 1 : 0,\n        command_line.file_access_log ? 1 : 0);\n\n"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "start": 2125,
+      "end": 2134,
+      "requested_end": 2134,
+      "text": "    request.x = 0;\n    request.y = 0;\n    request.width = settings_view_.options_file.width_14;\n    request.height = settings_view_.options_file.height_18;\n    request.renderer_option = static_cast<std::uint32_t>(settings_view_.options_file.antialias_58);\n    request.application = this;\n    request.instance = instance_;\n    request.procedure = &game_window_procedure;\n    if (request.width <= 0 || request.height <= 0) {\n        // 008d841f's literal pair, the fallback the loader itself uses when a parsed\n"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "start": 2514,
+      "end": 2532,
+      "requested_end": 2532,
+      "text": "void GameStartupHost::application_destruct() {\n    log_.implemented(\"StartupHost::application_destruct\", \"008f8444\");\n    constructed_ = false;\n}\n\nvoid GameStartupHost::destroy_singleton_lifetime_manager() {\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n    exit_if_frame_clock_failed();\n    exit_if_native_vfs_interrupted();\n    exit_if_allocation_stats_failed();\n    exit_if_particle_manager_failed();\n    log_.implemented(\"StartupHost::destroy_singleton_lifetime_manager\", \"008f8449\");\n    if (native_renderer_) native_renderer_->drain_singletons();\n    else singletons_->shutdown();\n    if (lua_services_)\n        log_.notef(\"native Lua after raw singleton drain: fundamentals=%s getters=%u\",\n            lua_services_->fundamentals_published() ? \"non-null\" : \"null\",\n            lua_services_->fundamentals_getter_calls());\n"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "start": 729,
+      "end": 754,
+      "requested_end": 754,
+      "text": "    GameVfsHost* vfs_{};\n    GameSettingsBlock settings_view_;\n    GameNativeSettingsProcess* settings_process_{};\n    std::vector<std::string> content_suffixes_;\n    GameNativeSettingsApplication* settings_host_{};\n    GameScriptHost* scripts_{};\n    GameLocaleHost* locale_{};\n    GameFontHost* fonts_{};\n    GameFrontendHost* frontend_{};\n    // Milestone 2c.\n    GameStateSlot game_state_;          // *(00e188a8)+5D4h\n    GameFrameProfiler* profiler_{};     // 004c1dd0's counter arrays\n    GameMenuHost* menu_{};              // the front-end registry and the main-menu path\n    GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449\n    GameDecalTable* decals_{};          // phase 9, 00740840\n    IDirect3D9* renderer_api_{};\n    NativeRendererParametersOwner* renderer_parameters_{};\n    SettingsRendererCapabilities renderer_capabilities_;\n    std::string window_class_name_;\n    GameRunSummary summary_;\n    bool constructed_{};\n    // Source caller ownership state; this is not the native FH3 state number.\n    enum class AllocationStatsPhase : std::uint8_t {\n        unattempted, allocating, allocation_failed, skipped,\n        constructing, handed_over, failed\n    };\n"
+    },
+    {
+      "path": "include/bsp/app_frame.hpp",
+      "start": 6,
+      "end": 14,
+      "requested_end": 14,
+      "text": "namespace bsp {\n// Projection of the two per-frame flag bytes of the native application object.\n// Constructor 00737970 stores 1 at +18h and 0 at +19h and +1Ah. This is not the\n// full native layout; +4h..+14h hold unreconstructed subsystem pointers and\n// +14h is the game object passed to the update in ECX.\nstruct ApplicationFrameState {\n    bool first_update{true}; // +18h, cleared after the game update at 00737b2b\n    bool input_action_latch{false}; // +19h, cleared at 00737ac0 and set at 00737af2\n};\n"
+    },
+    {
+      "path": "include/bsp/app_shutdown.hpp",
+      "start": 181,
+      "end": 191,
+      "requested_end": 191,
+      "text": "// Fields of the application object that 00737f30 reads or writes.\nstruct ApplicationShutdownState {\n    // this+0x08: array of reference-counted system pointers.\n    void** systems;\n    // this+0x0c: element count of that array.\n    std::uint32_t system_count;\n    // this+0x14: the GGame instance, cleared once destroyed.\n    void* game;\n};\n\n// Everything 00737f30 reaches that is not reconstructed yet. The comments give\n"
+    },
+    {
+      "path": "src/platform_services.cpp",
+      "start": 74,
+      "end": 82,
+      "requested_end": 82,
+      "text": "ApplicationFrameService::ApplicationFrameService(void* application,\n    ApplicationFrameState& frame, FrameMarkerColor& marker, ApplicationFrameHost& host) noexcept\n    : application_(application), frame_(frame), marker_(marker), host_(host) {}\nvoid ApplicationFrameService::run_application_frame_vslot_10(void* application) {\n    if (!application || application != application_)\n        throw std::logic_error(\"platform application frame binding does not match the current owner\");\n    run_application_frame(frame_, marker_, host_);\n}\n} // namespace bsp\n"
+    },
+    {
+      "path": "include/bsp/winmain_startup.hpp",
+      "start": 167,
+      "end": 180,
+      "requested_end": 180,
+      "text": "\n    // 008f8419 / 008f8429 / 008f8432 / 008f843b / 008f8444, all on the same 0x1c byte\n    // stack object: BSP_Application_Construct, BSP_Application_Initialize(flags, mode),\n    // BSP_Platform_RunLoopDispatch, BSP_Application_Shutdown, BSP_Application_Destruct.\n    virtual void application_construct() = 0;\n    virtual void application_initialize(int flags, const char* mode) = 0;\n    virtual void platform_run_loop_dispatch() = 0;\n    virtual void application_shutdown() = 0;\n    virtual void application_destruct() = 0;\n\n    // 008f8449..008f8460: when the singleton manager pointer at 01090aa0 is set, destroy it\n    // through BSP_SingletonLifetime_Destroy, free it, and clear the pointer.\n    virtual void destroy_singleton_lifetime_manager() = 0;\n};\n"
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "start": 222,
+      "end": 238,
+      "requested_end": 238,
+      "text": "        return 0;\n    }\n\n    // 008f83fc..008f8496.\n    host.set_thread_affinity_to_first_processor();\n    host.publish_game_resource_factory();\n    host.application_construct();\n    host.application_initialize(kApplicationInitializeFlags, kApplicationInitializeMode);\n    host.platform_run_loop_dispatch();\n    host.application_shutdown();\n    host.application_destruct();\n    host.destroy_singleton_lifetime_manager();\n    host.close_mutex(mutex.handle);\n    if (thread_slot != nullptr) {\n        host.random_threads_unregister_current();\n        host.release_thread_slot(thread_slot);\n    }\n"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "start": 51,
+      "end": 67,
+      "requested_end": 67,
+      "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}\n"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "start": 1,
+      "end": 20,
+      "requested_end": 25,
+      "text": "#pragma once\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error This literal native entry requires MSVC Win32.\n#endif\n\nnamespace bsp {\n\n// Whole native 00438E40..00438E79: actual borrowed text in ECX, no stack\n// arguments, full EAX result and RET 0. Null returns null without providers.\n// Otherwise the source must remain a live, readable, NUL-terminated byte\n// object whose length + 1 and address range do not wrap. On normal success\n// the result owns that many bytes in the current canonical allocation domain;\n// release it once with singleton_lifetime_free after the final observation.\n// The two genuine calls bind current canonical allocation and standard memcpy.\n// Original private CRT/EH, failure unwind and class ownership are not admitted.\n// This entry does not change the older plain-CDECL duplicate_00438e40 API.\nchar* __fastcall duplicate_native_string_00438e40(const char* actual_text_ecx);\n\n}  // namespace bsp\n"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "start": 1,
+      "end": 63,
+      "requested_end": 66,
+      "text": "#include \"bsp/native_string_duplicate.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n\n#include <cstring>\n\n#pragma function(memcpy)\n\nnamespace bsp {\nnamespace {\n\n// Source-only CDECL size adapter; no native reconstruction credit. The real\n// canonical service retains current malloc/new-handler behavior and ownership.\n__declspec(noinline) void* __cdecl allocate_native_string_bytes(\n    std::size_t actual_bytes) {\n    return singleton_lifetime_allocate(\n        {SingletonAllocationKind::object, actual_bytes, actual_bytes});\n}\n\n}  // namespace\n\n// Complete native57 SHA-256:\n// 28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4\n// Only the two CALL operands at [34,38) and [44,48) are rebound. All other\n// 49 bytes retain the native scan, widths, stack timing and return behavior.\n__declspec(naked) char* __fastcall duplicate_native_string_00438e40(\n    const char*) {\n    __asm {\n        push ebx\n        mov ebx, ecx\n        test ebx, ebx\n        jnz L_nonnull\n        xor eax, eax\n        pop ebx\n        ret\n    L_nonnull:\n        mov eax, ebx\n        lea edx, [eax + 1]\n    L_scan:\n        mov cl, byte ptr [eax]\n        add eax, 1\n        test cl, cl\n        jnz L_scan\n        push esi\n        sub eax, edx\n        lea esi, [eax + 1]\n        push edi\n        push esi\n        call allocate_native_string_bytes\n        push esi\n        mov edi, eax\n        push ebx\n        push edi\n        call memcpy\n        add esp, 10h\n        mov eax, edi\n        pop edi\n        pop esi\n        pop ebx\n        ret\n    }\n}\n\n}  // namespace bsp\n"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "start": 559,
+      "end": 569,
+      "requested_end": 569,
+      "text": "            return;\n        }\n        break;\n    case 0x00ce44dc:\n        delete_native_device_registry_00441840(\n            static_cast<NativeDeviceRegistryStorage*>(owner), flags,\n            process_native_device_registry_00e17bf4());\n        return;\n    }\n    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");\n}\n"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "start": 314,
+      "end": 316,
+      "requested_end": 316,
+      "text": "    case 0x00ce3818:\n        delete_native_singleton_base_00412440(owner, nullptr, flags);\n        return;\n"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "start": 618,
+      "end": 627,
+      "requested_end": 627,
+      "text": "    popped:\n        cmp ecx, ebx\n        je recount\n        mov eax, dword ptr [ecx]\n        push 1\n        push eax\n        // +8 binding spill +4 savedEDI +8 source arguments = +14h.\n        mov edx, dword ptr [esp + 14h]\n        call delete_current_profile\n    recount:\n"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "start": 665,
+      "end": 683,
+      "requested_end": 683,
+      "text": "__declspec(naked) void* __fastcall delete_native_singleton_base_00412440(\n    void*, void*, std::uint32_t) {\n    __asm {\n        test byte ptr [esp + 4], 1\n        push esi\n        mov esi, ecx\n        mov dword ptr [esi], 00ce3818h\n        je keep_owner\n        push esi\n        call singleton_lifetime_free\n        add esp, 4\n    keep_owner:\n        mov eax, esi\n        pop esi\n        ret 4\n    }\n}\n\n__declspec(naked) void __fastcall probe_native_gameplay_effect_registry_0086b0b0(\n"
+    },
+    {
+      "path": "include/bsp/app_bootstrap.hpp",
+      "start": 270,
+      "end": 282,
+      "requested_end": 282,
+      "text": "class BootstrapHost {\npublic:\n    virtual ~BootstrapHost() = default;\n    // GetModuleFileNameA(NULL, ..) at 00439040.\n    virtual std::string module_file_name() const = 0;\n    // 006ad0d0.\n    virtual void install_object_handle_resolvers() = 0;\n    // The string BSP_NativeString_Duplicate stores in DAT_00e1ae78 at 0073d945.\n    virtual std::string command_line() const = 0;\n    virtual HardwareProbeHost& hardware_probe() = 0;\n    virtual GameSettingsHost& game_settings() = 0;\n    virtual GameSettingsBlock& retained_game_settings() = 0;\n};\n"
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "start": 73,
+      "end": 94,
+      "requested_end": 94,
+      "text": "// LocaleTextRuntimeHost for 00a9f4b0's two live dependencies.\n//\n// The native resolver reaches its Lua owner through the global at 00e1ae90 and that\n// object's virtual +14h. This process builds no such owner: the page scripts each own a\n// private state and none of them is the application's current context. So the '#...#'\n// substitution half is the unimplemented policy rather than a guess at which state to\n// read, and 00b692c0's own unsuccessful-traversal answer, \"invalid\", is returned. No\n// shipped title or main-menu string contains a marker, so the method is never reached;\n// a run that reaches it says so in the host table.\nclass GameLocaleTextRuntime final : public LocaleTextRuntimeHost {\npublic:\n    explicit GameLocaleTextRuntime(GameHostLog& log) : log_(log) {}\n\n    std::string context_string_00b692c0(const std::string& path) override {\n        static_cast<void>(path);\n        log_.unimplemented(\"LocaleText::lua_context_value\", \"00b692c0\");\n        return \"invalid\";\n    }\n\n    char16_t crt_uppercase_00c0391c(char16_t code_unit) override {\n        log_.implemented(\"LocaleText::crt_uppercase\", \"00c0391c\");\n        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));\n"
+    }
+  ],
+  "absence_boundary": "Finite lexical queries and retained positive Source provider/member/caller evidence in the closed 4210-file corpus, not universal absence in foreign binaries or future code.",
+  "accepted_bodies": {
+    "Ghidra_mutations": 0,
+    "accepted_bodies": [
+      {
+        "address": "00737970",
+        "bytes": 42,
+        "instructions": 15,
+        "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d"
+      },
+      {
+        "address": "00bea970",
+        "bytes": 22,
+        "instructions": 8,
+        "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd"
+      }
+    ],
+    "fresh_Native_bytes": 0,
+    "fresh_Native_queries": 0,
+    "status": "pass"
+  },
+  "prior_retention": {
+    "readiness_commit": "59b5665ac579246f28801b93ca5d9e33665410e2",
+    "readiness_report": {
+      "entry": "blobs/e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4",
+      "bytes": 279834,
+      "sha256": "e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4"
+    },
+    "readiness_document": {
+      "entry": "blobs/38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975",
+      "bytes": 13902,
+      "sha256": "38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975"
+    },
+    "readiness_handoff": {
+      "entry": "blobs/270fc205723ec28a8057ad35660ca0d7bcd6df0be21c78f90588633d75132c57",
+      "bytes": 12176,
+      "sha256": "270fc205723ec28a8057ad35660ca0d7bcd6df0be21c78f90588633d75132c57"
+    },
+    "readiness_pins": 853,
+    "readiness_helpers": 108,
+    "implementation_commit": "770c31f60f4d9876fe7df02f37eecb41ea5366b8",
+    "implementation_ZIP": {
+      "entry": "blobs/2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e",
+      "bytes": 94896677,
+      "sha256": "2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e"
+    },
+    "implementation_helper": {
+      "entry": "blobs/023654c5de73ae51fc6433e94f86be52c39f03552575793e86c92ea43efecb0e",
+      "bytes": 6919,
+      "sha256": "023654c5de73ae51fc6433e94f86be52c39f03552575793e86c92ea43efecb0e"
+    },
+    "implementation_outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_SINGLETON_BASE_SOURCE_IMPLEMENTATION.md",
+        "git_blob": "c840b5e4a7c0e5ac7ed5cbfc4395c198cd905f2c",
+        "committed": {
+          "entry": "blobs/feb7a5c705310da794af5f4eb9055885448a0d2563c5fd9eecb9718b82790cf1",
+          "bytes": 5955,
+          "sha256": "feb7a5c705310da794af5f4eb9055885448a0d2563c5fd9eecb9718b82790cf1"
+        },
+        "working": {
+          "entry": "blobs/26211c9825d7ca589cc3a1ba4777e33992e0d36b471add7012809d906cf2c71f",
+          "bytes": 6042,
+          "sha256": "26211c9825d7ca589cc3a1ba4777e33992e0d36b471add7012809d906cf2c71f"
+        }
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "git_blob": "0442ebf610c1c7eaa3332c12c0fcea477e218b13",
+        "committed": {
+          "entry": "blobs/7965939f3472377db4345dac6f9cc822142e3573f8b83030af3dfa7e17178ecc",
+          "bytes": 4418,
+          "sha256": "7965939f3472377db4345dac6f9cc822142e3573f8b83030af3dfa7e17178ecc"
+        },
+        "working": {
+          "entry": "blobs/b02291db7ec54e2ef34d1e9153097c075b230fbb8c488e8d737ec7f318ff994f",
+          "bytes": 4450,
+          "sha256": "b02291db7ec54e2ef34d1e9153097c075b230fbb8c488e8d737ec7f318ff994f"
+        }
+      },
+      {
+        "path": "reports/cc12_application_singleton_base_source_implementation.json",
+        "git_blob": "6174b0317f3a33f0b928fc33e90b59c9004a6326",
+        "committed": {
+          "entry": "blobs/7329ef4fcdc8e712be8c776019b1710babbf80e56411e132830c53130a16efae",
+          "bytes": 42630,
+          "sha256": "7329ef4fcdc8e712be8c776019b1710babbf80e56411e132830c53130a16efae"
+        },
+        "working": {
+          "entry": "blobs/fd61c687c7b148cafa6ef1dae89b86d33da9d6975928ff04f96715387a812d9f",
+          "bytes": 43792,
+          "sha256": "fd61c687c7b148cafa6ef1dae89b86d33da9d6975928ff04f96715387a812d9f"
+        }
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "git_blob": "b0ded28076a353b02be07b49087d846d0db45511",
+        "committed": {
+          "entry": "blobs/3f5cc2e3c9810bbcd4720310b99d2d1d2222049a265481a0ab95446c2c53bde0",
+          "bytes": 5882,
+          "sha256": "3f5cc2e3c9810bbcd4720310b99d2d1d2222049a265481a0ab95446c2c53bde0"
+        },
+        "working": {
+          "entry": "blobs/50d164820fcdf9416ca630740ef82cdbaa0b1a0174d85bff2181636fdd344e90",
+          "bytes": 5912,
+          "sha256": "50d164820fcdf9416ca630740ef82cdbaa0b1a0174d85bff2181636fdd344e90"
+        }
+      }
+    ],
+    "implementation_helpers": 23,
+    "qualification": "Immutable historical evidence retained and statically replayed. No historical build, another Source epoch, Native execution, Original FH3 or current external ABI credit is transferred."
+  },
+  "portable_proof": {
+    "bundle": {
+      "schema": 1,
+      "utc": "2026-10-11T00:45:59.851583+00:00",
+      "ZIP": {
+        "entry": "evidence.zip",
+        "bytes": 512526951,
+        "sha256": "e5e33f635fb902712e619717d6d7b6d96c4c92e962b40a067a4636aee46fa269"
+      },
+      "helper": {
+        "entry": "portable_replay.py",
+        "bytes": 4952,
+        "sha256": "4fff1de59794b97518cfd62d0edd11e371b6f0fe46b165deda5fab042e4d80c6"
+      },
+      "manifest": {
+        "entry": "manifest.json",
+        "bytes": 1294439,
+        "sha256": "2d6f171038e7e22dc109d65025931bfc27ee6507d6a4071af2a1b4f0f78f2309"
+      },
+      "members": 4628,
+      "retained_bytes": 596929030
+    },
+    "manifest": {
+      "path": "local/cc12_application_singleton_outer_admission_readiness/manifest.json",
+      "bytes": 1294439,
+      "sha256": "2d6f171038e7e22dc109d65025931bfc27ee6507d6a4071af2a1b4f0f78f2309"
+    },
+    "helpers": {
+      "path": "local/cc12_application_singleton_outer_admission_readiness/helper_graph.json",
+      "bytes": 82180,
+      "sha256": "de8200561d384e84701f06644574d783328f1c5a0d95128fa557a743b6a1042e"
+    },
+    "original_replay": {
+      "path": "local/cc12_application_singleton_outer_admission_readiness/replay_in_place.json",
+      "bytes": 2839,
+      "sha256": "78dcbcfc785998690cc2bc25b46eb15ae392d10b78b8b89582d18c0e1cc87819"
+    },
+    "copied_replay": {
+      "path": "local/cc12_application_singleton_outer_admission_readiness/replay_copied.json",
+      "bytes": 2839,
+      "sha256": "78dcbcfc785998690cc2bc25b46eb15ae392d10b78b8b89582d18c0e1cc87819"
+    },
+    "physical_copy": {
+      "path": "local/cc12_application_singleton_outer_admission_readiness/physical_copy_receipt.json",
+      "bytes": 1761,
+      "sha256": "e4a55dfa6ae1f7370a549914c1e198685f75928cc92e9ce6c401f62ce0b405f2"
+    },
+    "finite_top_level_pins": [
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/freeze.json",
+        "bytes": 4712911,
+        "sha256": "ece16ae643ce655b64108d1ff470518f2e2cfd0d38f24639966fb7b477c0b6fd"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/source_queries.json",
+        "bytes": 64572,
+        "sha256": "b5f3039351b8651e877ac931cef412dcc1468a5c25073076e0f13c108ba18296"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/query_spec.json",
+        "bytes": 3207,
+        "sha256": "d54e6d6cc92fbece9a31140a8bee5822fb3d90c4987e9ac87ef6277d841d2030"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/priors.json",
+        "bytes": 525984,
+        "sha256": "d8788e025a58e9fb40179b14dc07aca82b35ff32cec7c93f3e4bfe31e75d4979"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/outer_body_evidence.json",
+        "bytes": 6122,
+        "sha256": "420c817d6444a2691d62eb474656839cc4f7ce597a8a9718b6efa0801b3429c1"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/contract.json",
+        "bytes": 8169,
+        "sha256": "ad9e4410455a2b5f8cd3f0acf9eb5321dabb8c4610fb62a4e330bd621cfc45d7"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_admission_readiness/helper_graph.json",
+        "bytes": 82180,
+        "sha256": "de8200561d384e84701f06644574d783328f1c5a0d95128fa557a743b6a1042e"
+      }
+    ],
+    "strict_guard": {
+      "active_after_preload": true,
+      "allowed_zip_reads": 1,
+      "blocked": "other opens, writes, process creation, networking, new dynamic library loads and directory enumeration",
+      "only_input": "the supplied ZIP"
+    },
+    "execution_boundary": "Static supplied ZIP/helper replay only. Capture/mutation helpers are hashed/parsed, never executed. Original and distinct physical-copy results are equal."
+  },
+  "audit_result": {
+    "Ghidra_mutations": 0,
+    "Source": {
+      "Git": {
+        "Source_paths": 4228,
+        "actual_git_rows": 4255,
+        "root": "0e7fdcecd84ec8083b7ca4520e933a5c1d94552f",
+        "trees": 11
+      },
+      "Root_Source3356": 3356,
+      "Root_manifest_sha256": "d171fd187a6609a8be42fa29f39cb495ad8c3d0e3fd34b18f7470e734d8c602a",
+      "Root_raw_variants": 8,
+      "excerpts": 32,
+      "hits": {
+        "actual_game_cell": 4,
+        "actual_vector": 12,
+        "allocation_policy": 20,
+        "application_profiles": 2,
+        "application_publication": 8,
+        "base_entry": 2,
+        "canonical_duplicate": 6,
+        "name_publication": 8,
+        "outer_entries": 3,
+        "projected_application_identity": 5,
+        "raw_deletion_profile_gate": 9,
+        "retained_frame": 20,
+        "shared_manager_authority": 4,
+        "startup_shells": 8
+      },
+      "queries": 14,
+      "src_include": 4210,
+      "status": "pass"
+    },
+    "Source_only": true,
+    "accepted_outer_bodies": {
+      "Ghidra_mutations": 0,
+      "accepted_bodies": [
+        {
+          "address": "00737970",
+          "bytes": 42,
+          "instructions": 15,
+          "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d"
+        },
+        {
+          "address": "00bea970",
+          "bytes": 22,
+          "instructions": 8,
+          "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd"
+        }
+      ],
+      "fresh_Native_bytes": 0,
+      "fresh_Native_queries": 0,
+      "status": "pass"
+    },
+    "baseline_commit": "c02232befa117182c0536d6e60dbaedeedddff58",
+    "boundary": "Dormant borrowed BEA970 Source admission only; no owner, cell producer, startup, retirement, storage return, Original FH3 or current external ABI closure.",
+    "checked_members": 4627,
+    "decision": {
+      "Original_FH3_or_current_external_ABI_GO": false,
+      "actual_E1AE90_authority_producer_GO": false,
+      "automatic_storage_return_GO": false,
+      "combined_Game_frame_factory_GO": false,
+      "dormant_BEA970_borrowed_Source_GO": true,
+      "full_737970_Source_GO": false,
+      "implemented_by_this_packet": false,
+      "raw_Application_owner_GO": false,
+      "retirement_GO": false,
+      "startup_activation_GO": false
+    },
+    "guard": {
+      "active_after_preload": true,
+      "allowed_zip_reads": 1,
+      "blocked": "other opens, writes, process creation, networking, new dynamic library loads and directory enumeration",
+      "only_input": "the supplied ZIP"
+    },
+    "helper_graph": {
+      "current": 11,
+      "implementation": 23,
+      "readiness": 108
+    },
+    "new_Cpp_changes": 0,
+    "new_Native_bytes": 0,
+    "new_Native_queries": 0,
+    "new_builds_tests_probes": 0,
+    "packet": "cc12_application_singleton_outer_admission_readiness",
+    "prior_evidence": {
+      "Source_delta_from_prior_implementation": [
+        "include/bsp/native_mesh_owner.hpp",
+        "src/native_mesh_owner.cpp"
+      ],
+      "historical_compiled_evidence_only": true,
+      "prior_implementation_ZIP_sha256": "2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e",
+      "prior_implementation_helpers": 23,
+      "prior_implementation_outputs": 4,
+      "prior_implementation_replayed": true,
+      "prior_readiness_helpers": 108,
+      "prior_readiness_pins": 853,
+      "prior_readiness_replayed": true,
+      "status": "pass"
+    },
+    "retained_bytes": 596929030,
+    "status": "pass",
+    "zip_members": 4628
+  },
+  "delivery": "Exactly two tracked outputs; final committed/working output pins, real Git object/Source-root checks and immutable commit ID are separately recorded in committed_final_check.json. No worker push."
+}
