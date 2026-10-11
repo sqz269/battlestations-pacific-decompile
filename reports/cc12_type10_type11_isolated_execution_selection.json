@@ -15377,6 +15377,295 @@
           "ABI_qualification": false,
           "game_qualification": false,
           "prior_ordered_snapshots_preserved": true
+        },
+        "fresh_F6_native01_complete_Source_approval_primary_DATA_PASS_and_compact_actual_HOLD_checkpoint": {
+          "schema": "Root_F6_native01_actual_primary_DATA_PASS_and_compact_runtime_HOLD_checkpoint_v1",
+          "author": "Root",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "accepted_Source_only": {
+            "report": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_independent_Source_closure_Root_accepted_DATA01.json",
+              "bytes": 17943942,
+              "sha256": "af798dfb368c6b74b55cf9a1911568faac2db309d32afff95af7895a6923d59c"
+            },
+            "gate": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_independent_Source_closure_Source_accepted_DATA01.json",
+              "bytes": 6111,
+              "sha256": "e0f2043c90a3e793f3424d30e0c1d80da863bce26e840d6cc8271620697d0046"
+            },
+            "original_native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_independent_Source_closure_original_genuine_native_DATA01.json",
+              "bytes": 90109,
+              "sha256": "8564c7fb8b4b9dc438008fee08f517da8837300438183fa533aff36a5d1da632"
+            },
+            "predicate_count": 2991,
+            "pins_each_bookend": 145,
+            "staged_exact_inert_aliases": {
+              "primary": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\review_F6_native01_complete_actual_adopted_DATA_graph_Root_SOURCE02.py",
+                "bytes": 31910,
+                "sha256": "c569da60e1791e27015d4fb9d66b8e71c5a8f72fe34952ba639e6d8aec289758"
+              },
+              "joint": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\consume_F6_native01_complete_adopted_DATA_joint_Root_SOURCE01.py",
+                "bytes": 33237,
+                "sha256": "3901db36f89eab4a05e60ed8fcad45b499c7d16e68c778355743024d7be99db5"
+              },
+              "peer": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\independent_review_consumer_NATIVE_SOURCE03.py",
+                "bytes": 53661,
+                "sha256": "546da7bee65f5087973fa283441d76d5c4fdf4dc5cec62e7be42b6a6dad6e359"
+              }
+            },
+            "complete_independent_source_contracts": {
+              "compact": {
+                "report": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeCompactInspectorSource03IndependentApprovalDATA01\\independent_Source03_complete_approval_DATA02.json",
+                  "bytes": 5362448,
+                  "sha256": "7144bc91558141bcb6312b99c1dfa7915163b47be284e72ac003ef36e1c2ddbc"
+                },
+                "seal": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeCompactInspectorSource03IndependentApprovalDATA01\\seal.DATA.json",
+                  "bytes": 1249127,
+                  "sha256": "680fd8bb44045d55115bbe4f99573e1db29dd066472ccbf6f21b44e9f2cf24c9"
+                },
+                "outside": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeCompactInspectorSource03IndependentApprovalDATA01_closed_actual_native.json",
+                  "bytes": 344357,
+                  "sha256": "9bfdb345471237cc9490c1df81cd84bb416076b534e8e06e6508ed3ef41a4a01"
+                },
+                "checks": 11366,
+                "pins": 55
+              },
+              "prestartup": {
+                "report": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_prestartup_constructor_Source_independent_review_20261010\\review.DATA.json",
+                  "bytes": 4141785,
+                  "sha256": "00bbd6a57a3d5580da0d6c4060d5ddbf3368a85a807b605137b03f689be0299f"
+                },
+                "seal": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_prestartup_constructor_Source_independent_review_20261010\\seal.DATA.json",
+                  "bytes": 5151,
+                  "sha256": "0a4f2538ac2d9590e759d7f73b8ba0f15e9528858af308a544823f8ddf44c665"
+                },
+                "outside": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_prestartup_constructor_Source_independent_review_20261010.genuine_native.DATA.json",
+                  "bytes": 5957,
+                  "sha256": "5c8e29387d8b0ab10ab7a3f4265621372671653667c13792706c541364059f4a"
+                },
+                "checks": 8147,
+                "pins": 33
+              },
+              "combined": {
+                "report": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01\\review.DATA.json",
+                  "bytes": 1496725,
+                  "sha256": "2124bbadfdbae92a3f329ced4ccc148f09959f39385af95022f1aeff761ddabc"
+                },
+                "seal": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01\\seal.DATA.json",
+                  "bytes": 53684,
+                  "sha256": "95d68c4360809851c1c12e572fba5c3a5e59830c8a0a110549c78ba842556d54"
+                },
+                "outside": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01.genuine_native_DATA01.json",
+                  "bytes": 3693688,
+                  "sha256": "c24808db49834eb90f6845fcbc07d2569964ade2fb345dff3d1a466dcd98d712"
+                },
+                "closure": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01\\closure.DATA.json",
+                  "bytes": 1732081,
+                  "sha256": "a7e8578c88d50c51f54c00ba679005636cdf92ca6c1c448cf52aaf3cc4749d38"
+                },
+                "outer": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01.outer_closer.genuine_native_DATA01.json",
+                  "bytes": 1014140,
+                  "sha256": "99e4a8e3e80dcc40f8dbb9e49f04c6c0967cc0f72cd25243eca6a4043371186e"
+                },
+                "native": {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\Root_F6_native01_joint_consumer_independent_Source_reviewDATA01\\original_genuine_review_tools.DATA.json",
+                  "bytes": 421945,
+                  "sha256": "26d1334d6ddfd3a17cf3b470b43d98f8b666ab1b5dd371faa8b7a3cd49b3058b"
+                },
+                "checks": 5515,
+                "pins": 47
+              }
+            }
+          },
+          "independent_Source_gate_and_alias_approval": {
+            "report": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeRootSourceGateAliasIndependentReviewDATA01\\review.DATA.json",
+              "bytes": 3076823,
+              "sha256": "db1d06175a32ebfd0e7f7bfb08e289afc7f367fe653e95ec08521957ab879838"
+            },
+            "seal": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeRootSourceGateAliasIndependentReviewDATA01\\seal.DATA.json",
+              "bytes": 1216080,
+              "sha256": "c039b1d3ef82ee0c258efb4cafb00133070bcca6909e059b65ff2b6ce224fac5"
+            },
+            "native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeRootSourceGateAliasIndependentReviewDATA01\\complete_actual_own_native.DATA.json",
+              "bytes": 118278,
+              "sha256": "32f560e67677b5d153a054850d9d51a5ae392bafec8f9fbfae842e000ccdf1f9"
+            },
+            "outside": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6NativeRootSourceGateAliasIndependentReviewDATA01_closed_actual_native.json",
+              "bytes": 131883,
+              "sha256": "da9f787f20fb7e21b8b8572a48447b4aacf6a484e27361bc0306d231fe0d838c"
+            },
+            "predicate_count": 10731,
+            "physical_pin_count": 152,
+            "closing_predicate_count": 12383
+          },
+          "actual_primary_adopted_graph_DATA_review": {
+            "report": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_actual_adopted_DATA_graph_Root_review_DATA01.json",
+              "bytes": 130363993,
+              "sha256": "775259215a34563fac2b3e8bed8dc82a67127bdcb02d1d990e0b216fff7b8062"
+            },
+            "native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_actual_adopted_graph_original_genuine_native_DATA01.json",
+              "bytes": 15512,
+              "sha256": "14b438f2aae796fd3ef7d92995d88372fbc4e87df7c4233c0d8caaa8ebec20eb"
+            },
+            "executed_Source": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\review_F6_native01_complete_actual_adopted_DATA_graph_Root_SOURCE02.py",
+              "bytes": 31910,
+              "sha256": "c569da60e1791e27015d4fb9d66b8e71c5a8f72fe34952ba639e6d8aec289758"
+            },
+            "actual_input_bindings": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_primary_adopted_DATA_graph_review_inputs_DATA01.json",
+              "bytes": 3019,
+              "sha256": "f8e4bc2f64f26f3db6662fa0b54afac024c1de77585ca9d3576088046069cfc2"
+            },
+            "initial_chunk": "db61d9",
+            "original_session_id": 53855,
+            "actual_tool_chunks": [
+              "db61d9",
+              "9c83e8",
+              "ff3c2b",
+              "ccf5a0",
+              "d633c2"
+            ],
+            "actual_terminal_exit_code": 0,
+            "check_count": 360024,
+            "predicate_invocations": 8107154,
+            "complete_current_physical_pin_count": 34819,
+            "semantic_review": {
+              "tables": {
+                "complete_D07_base": {
+                  "original_frozen_pairs": 14504,
+                  "scopes": 66,
+                  "memberships": 31146,
+                  "literal_membership_sha256": "ab26acf970bc76a9d35bda5e39043f00721224d76f1d8058b24403a595bb029d"
+                },
+                "complete_actual_adopted_graph": {
+                  "original_frozen_pairs": 16022,
+                  "scopes": 70,
+                  "memberships": 37146,
+                  "literal_membership_sha256": "dfb7dc9e8a76cbba6f37148630c788dc5dc849315792a3fdfb759d7c3860cd1a"
+                }
+              },
+              "final_adopted_family_files": 1536,
+              "final_adopted_family_members": 1538,
+              "immutable_families": 27,
+              "additional_current_pins": 1274,
+              "prior_UN_current_pins_consumed": 11,
+              "runtime_Source_relocations": 3,
+              "complete_contract_relocations": 3,
+              "full_Source_closure_pins": 1258
+            },
+            "blockers": [],
+            "Root_complete_adopted_graph_acceptance_issued": false
+          },
+          "actual_compact_inspector_HOLD": {
+            "report": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_adopted_DATA_independent_review_20261010\\review.DATA.json",
+              "bytes": 35488,
+              "sha256": "7d27df2c7ab46a57dabc71895aea10c91f6d819ee3ff7d927df2fabbc0c21427"
+            },
+            "native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_adopted_DATA_independent_review_20261010\\actual_review_native.DATA.json",
+              "bytes": 99010,
+              "sha256": "6fec2035aef59c894fc2aff5889c650bce89d20edd4c9f0ed4f9988921380003"
+            },
+            "predicate_stream": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_adopted_DATA_independent_review_20261010\\review.DATA.predicates.jsonl",
+              "bytes": 615064,
+              "sha256": "7da291b672d3f576a2d7400e5f7252eb09fa8ce213adf36dab935740b5cc1313"
+            },
+            "typed_HOLD_seal": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_adopted_DATA_independent_review_20261010\\family_seal.DATA.json",
+              "bytes": 33643,
+              "sha256": "254a66f83f08239ff2747deaa533cb3b2c18f6f2ed353dab069bebf7e847011a"
+            },
+            "outside_original_native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_native01_adopted_DATA_independent_review_20261010.genuine_native.DATA.json",
+              "bytes": 216983,
+              "sha256": "0e81e04f669d8ab01bf49189b4eb3a3f80bd9c9d718ca726be572e0043f89986"
+            },
+            "actual_initial_and_terminal_chunk": "043158",
+            "actual_terminal_exit_code": 1,
+            "actual_session_id": null,
+            "predicate_invocations": 2259,
+            "physical_opening_count": 20,
+            "physical_closing_count": 0,
+            "actual_exception": {
+              "type": "KeyError",
+              "message": "'allow_dispatch'"
+            },
+            "graph_scan_started": false,
+            "PASS_sealer_executed": false,
+            "candidate_retried": false,
+            "closed_readonly_family_members": 9
+          },
+          "compact_actual_producer_contract_diagnosis": {
+            "failed_record": "actual 17900-byte DATA adoption native capture",
+            "authorization_record_allow_dispatch_present_and_false": true,
+            "missing_native_keys": [
+              "actual_executed_adoption_plan",
+              "actual_executed_selected_adopter_Source",
+              "actual_terminal_chunk_id",
+              "actual_terminal_exit_code",
+              "adopted_graph_Root_acceptance_issued",
+              "adopted_graph_independent_review_issued",
+              "allow_DATA_adoption",
+              "allow_dispatch",
+              "complete_UN_Root_acceptance",
+              "complete_UN_Root_acceptance_genuine_native",
+              "final_adopted_Root_seal",
+              "future_capture_writer_terminal",
+              "original_exec_session_id",
+              "phase_execution_authority",
+              "separate_DATA_adoption_authorization",
+              "separate_DATA_adoption_authorization_genuine_native"
+            ],
+            "actual_unchanged_adopter_stdout_fields": [
+              "dispatch_executed",
+              "future_API_terminal_or_runtime_proven"
+            ],
+            "stale_expected_stdout_fields": [
+              "dispatch_permission_issued",
+              "future_API_terminal_proven"
+            ],
+            "actual_original_command_format_and_capture_limits_preserved": true,
+            "absent_authorization_field": "complete_inert_adoption_plan_Root_acceptance",
+            "actual_authorization_provenance_field": "complete_inert_adoption_plan_original_native",
+            "immutable_original_producers_retained": true,
+            "additive_Source04_contract_repair_authorized": true,
+            "new_Source04_candidate_approved": false,
+            "new_Source04_candidate_executed": false
+          },
+          "complete_joint_adopted_DATA_acceptance_pending": true,
+          "ordinary_startup_executed": false,
+          "formal_Dispatch_authorized": false,
+          "native_phase_executed": false,
+          "new_native_clock_started": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "prior_ordered_snapshots_preserved": true
         }
       }
     }
