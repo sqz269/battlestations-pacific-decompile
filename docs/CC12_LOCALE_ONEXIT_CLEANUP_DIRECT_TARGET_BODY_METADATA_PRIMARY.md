@@ -1,0 +1,15 @@
+# Root review: complete C11B31 saved body
+
+Root accepted worker commit `79fe73e4ed1bb498bd4a2c581d3c773147d992ef`, frozen at `29cbf21392cce9f8d5594e5442476266766097b7`, after checking the complete original metadata, actual finite Git objects, physical copied archives and all seven instructions independently. This is saved-listing and archive evidence. It does not establish Original ABI or game behavior.
+
+The exact 21 bytes are `558BEC8B4508FF34C57864E100FF151022CE005DC3`. Root's separate manual opcode, ModRM, SIB, displacement, operand access and default-segment fields agree with actual detailed Capstone 5.0.7 for all seven units. FF /6 uses DS at wrapping `E16478 + EAX*8`; FF /2 reads current DS at `CE2210`. Neither address was dereferenced by this packet.
+
+The memory PUSH reads its source before its stack write. The indirect CALL reads its cell after that preceding PUSH write and before its own return-address write. Possible DS/SS aliases remain admitted. Following an opaque return, ESP Q, EBP, other registers, flags, segments and memory are unknown. Only renewed actual 32-bit SS stack-address size permits the local POP/RET equations: POP reads current SS:[Q]; RET reads current SS:[Q+4]; final ESP is Q+8. This does not prove stack balance, entry-register restoration, argument cleanup or provider identity.
+
+Root checked every member and manifest pin of the 325-member core and 77-member delivery archives, their distinct worker copies, twelve actual commit/tree records representing ten distinct objects, eight unchanged positive inputs, exactly two worker outputs and their working/index/commit equality. All 121 copied Root gate/preimage artifacts match the original Root files. Source subtree identities are recorded only; no Source census or earlier-archive recursion occurred.
+
+Root read the complete 23,807-byte pure replay helper before executing it. Each copied archive then passed a separate strict process allowing one physical ZIP read, one exact pinned helper execution and one exclusive receipt write. Both runs recorded zero denied events. Every other audit event was denied. Original Root execution stdout/stderr, producers and receipts are retained under `local/cc12_locale_onexit_cleanup_direct_target_body_metadata_primary/`; exact pins and results are in the accompanying JSON report.
+
+The worker and Root metadata gate, actual review and strict replay executions had no failures. A Root read-only inline inspection had an unmatched-parenthesis SyntaxError before execution; its complete original tool output is retained in the conversation, and separate local original streams are not claimed. The subsequent inspection and actual review passed. No Native query or GPR mutation resulted from that incident.
+
+No `C11B46`, prototype, pointer cell, descriptor, EXTERNAL or callee query was made. Source was unchanged; no new build, test, probe, Original/game run or OS/audio/runtime validation was performed. Existing Source contracts and provider evidence require a separate readiness review before claiming any correspondence.

@@ -1,0 +1,3036 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_cleanup_direct_target_body_metadata_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "79fe73e4ed1bb498bd4a2c581d3c773147d992ef",
+  "worker_outputs": {
+    "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md": {
+      "bytes": 7842,
+      "sha256": "847d8ea8b3d155720449c25a65febcde9a3f3eb26e5d554fd4da7e34354d9b69"
+    },
+    "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json": {
+      "bytes": 30500,
+      "sha256": "7c0eeede190254825282a9fc9dade26e8be386fed492c3827050e861e96333bc"
+    }
+  },
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_onexit_cleanup_direct_target_body_metadata_primary",
+  "artifact_pins": {
+    "Root_listing_gate.py": {
+      "bytes": 9630,
+      "sha256": "136b5ef88d338e347c7e786218b81a0d7699a851fd5c1a206459e4114acc0e44"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 41657,
+      "sha256": "c58d349b4e59c091feb5c8491e15143d6cdbf3f9ca0b9f53c2a3b9260b3dffc0"
+    },
+    "Root_listing_gate.stdout": {
+      "bytes": 324,
+      "sha256": "64dbaeb2871de2a5ffff0b1fa4dbd3b9d66b0dbaef51c51342a7cb0d04ff0241"
+    },
+    "Root_listing_gate.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_actual_review.py": {
+      "bytes": 9073,
+      "sha256": "00c9f3e6a0b78f3e04c97002019e4c8e56a3fe53aeeb1902bccbd67e854fadfe"
+    },
+    "Root_actual_review.json": {
+      "bytes": 8322,
+      "sha256": "1b358765bb90e171e07d91ecdda3aad0d693c80a90610395d16f7cc339e296ce"
+    },
+    "Root_actual_review.stdout": {
+      "bytes": 139,
+      "sha256": "16dace9496f429dcff47be2962ac93599a7a06724c3ee0eb4c1f58fe9981f4e5"
+    },
+    "Root_actual_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_reviewed_replay.py": {
+      "bytes": 23807,
+      "sha256": "94430b0f5d020262290f266611923377756edd0fbdef29d913f2ac9172d8781e"
+    },
+    "Root_reviewed_worker_guard.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2098,
+      "sha256": "fda501c949e6612abff5e25358b550975d2d8f90344c1c69f1b94cb5b401af6c"
+    },
+    "Root_core_v1.zip": {
+      "bytes": 2804663,
+      "sha256": "a63f3ce849d9af7cae6fa7c7a518b73223c7fa4cdce9dd8852a8776547162b72"
+    },
+    "Root_delivery_v1.zip": {
+      "bytes": 2234910,
+      "sha256": "6ce8fec68f59d451d368a449d381f602acd9c2786de83d53ff2e6fe8465b371d"
+    },
+    "Root_core_strict_receipt.json": {
+      "bytes": 31340,
+      "sha256": "0dabd2fb07f0b4b4aab22845b5ce267fec227f7599cea0628ce8fba5bf44d0e7"
+    },
+    "Root_delivery_strict_receipt.json": {
+      "bytes": 1301,
+      "sha256": "07fbdcce30f5d03f6803e3fc25c78e46151b05fa700882b4c556e4395f88fe89"
+    },
+    "Root_core_strict.stdout": {
+      "bytes": 133,
+      "sha256": "74a9a26d5ea0d88bcf9d89002903a7f600c89c33c08b9461870acda8b037d4bd"
+    },
+    "Root_core_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_delivery_strict.stdout": {
+      "bytes": 137,
+      "sha256": "0306b1be0b4a34b859aabb11790172eeb1afffd801002f14e8ba25c519d39c5c"
+    },
+    "Root_delivery_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_actual_frozen_Git_manifest.json": {
+      "bytes": 5020,
+      "sha256": "d534b1ecdbc99875dcc19b8de2767fd0780a69d212e8690c3854667d6f87fe03"
+    },
+    "Root_actual_delivery_Git_manifest.json": {
+      "bytes": 6376,
+      "sha256": "ff08ded53d3dc17899336d8e3b7807aab55f1a14b03b3c9a2ad1f125d724879e"
+    }
+  },
+  "initial_Root_gate": {
+    "status": "PASS",
+    "admitted_body_range": [
+      "00C11B31",
+      "00C11B45"
+    ],
+    "admitted_body_bytes": 21,
+    "admitted_units": [
+      {
+        "address": "00C11B31",
+        "length": 1,
+        "next": "00C11B32",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b32"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b32"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2141,
+          "sha256": "239c6b3fae250eda1a9be90791149f65f8b137fec18eab80ff64ec830fb63472"
+        }
+      },
+      {
+        "address": "00C11B32",
+        "length": 2,
+        "next": "00C11B34",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b32"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b32"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b32"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b32"
+            },
+            "length": 2,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b34"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b34"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2110,
+          "sha256": "a8dd4f5ec7ea094dc3c1f54101cedfc4dc2b53f9d6db8cb8cac154bd71190719"
+        }
+      },
+      {
+        "address": "00C11B34",
+        "length": 3,
+        "next": "00C11B37",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b34"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b34"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b34"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b34"
+            },
+            "length": 3,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b37"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b37"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2110,
+          "sha256": "f3baf9a661969e1c0ab36b3154cbba8767dedc4a623548df273c83bc911c22a8"
+        }
+      },
+      {
+        "address": "00C11B37",
+        "length": 7,
+        "next": "00C11B3E",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b37"
+            },
+            "length": 7,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b37"
+            },
+            "length": 7,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b37"
+            },
+            "length": 7,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b37"
+            },
+            "length": 7,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b3e"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b3e"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2110,
+          "sha256": "95c61dd5540dcf1d376d7db887217ec02f9a65b643343c5e930143cabb170eed"
+        }
+      },
+      {
+        "address": "00C11B3E",
+        "length": 6,
+        "next": "00C11B44",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b3e"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b3e"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b3e"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b3e"
+            },
+            "length": 6,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "COMPUTED_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": true,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b44"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b44"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": [
+            {
+              "space": "EXTERNAL",
+              "offset": "00000159"
+            }
+          ]
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2442,
+          "sha256": "7a3c0e0fd361620e8f829a38f88af996c2dce191e6bbdcff8e1e615d4b3be091"
+        }
+      },
+      {
+        "address": "00C11B44",
+        "length": 1,
+        "next": "00C11B45",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b44"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b44"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b44"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b44"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b45"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c11b45"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2110,
+          "sha256": "137bb926c538d5d453671204d80f7c21b57af663b4a3d84a3293c1984a10ea6c"
+        }
+      },
+      {
+        "address": "00C11B45",
+        "length": 1,
+        "next": "00C11B46",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": 1,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "TERMINATOR",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "effective_flow": {
+            "name": "TERMINATOR",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "owner": {
+          "entry": {
+            "space": "ram",
+            "offset": "00c11b31"
+          },
+          "name": "__unlock",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 1,
+            "returned_range_count": 1,
+            "address_count": "21",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c11b31"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c11b45"
+                },
+                "length": "21"
+              }
+            ]
+          }
+        },
+        "raw_payload_pin": {
+          "bytes": 2042,
+          "sha256": "9a0e49ea43724f3625c12c9627a41372496130617fc4128e8eaeeaf47600e9d8"
+        }
+      }
+    ],
+    "paired14_original_raws_identical": true,
+    "all90_metadata_preimages_plus3_post_manifest_streams_copied": {
+      "run_local.py": {
+        "bytes": 1791,
+        "sha256": "3f93a860459202f5fb5cf815c388c032b0b9eddae600e01ab5e109d15617181b"
+      },
+      "prepare_capture.py": {
+        "bytes": 3809,
+        "sha256": "3e851bafae6f34c908e03ec9fabb9c0f6d3dc944d1a9d1cebf994ceb85209129"
+      },
+      "capture_metadata.py": {
+        "bytes": 6670,
+        "sha256": "9502b80eff9a917d2431ba76a8a488032b21b6b1788169416be0e23087dcab08"
+      },
+      "capture_git.py": {
+        "bytes": 3408,
+        "sha256": "339281beba5f21f3c4e0c8af86783da766fc572d9e5ae6905ef0b8705a4ec422"
+      },
+      "pin_metadata.py": {
+        "bytes": 5996,
+        "sha256": "ffb772faffbe86b8ce3643184f4437debb8b091235d6fcdbd70c88fadee662a1"
+      },
+      "capture_revision.json": {
+        "bytes": 1061,
+        "sha256": "b1ce82c551d899a62e89485f490a744e4716fa861082de3d62f254a590157bc8"
+      },
+      "preimages/shared_epilogue_body_metadata_capture_metadata.py": {
+        "bytes": 6049,
+        "sha256": "5d3de40e5799f767f6934ceab665757aa656ef02651866cb96c7b1b7a1ec1bef"
+      },
+      "preimages/cleanup_direct_target_entry_capture_git.py": {
+        "bytes": 3400,
+        "sha256": "0632f3bf2e94552991ddfd74c5d9973cb9d183dd38f6862576e10b46eb0a3068"
+      },
+      "capture_schedule.json": {
+        "bytes": 261,
+        "sha256": "9a714123c530c98e10118d12b3fed8d7ad1a4275895ef5364661a50fe6851ed6"
+      },
+      "walk_a.json": {
+        "bytes": 20971,
+        "sha256": "f693440acde8156852b9633d839994e07ac646666992855d7ceced491f475a98"
+      },
+      "walk_b.json": {
+        "bytes": 20971,
+        "sha256": "3281f4e6676f07a55523c57724fb9c1c3a419bce95607ec360a27e3e19d031e7"
+      },
+      "validated_metadata.json": {
+        "bytes": 870,
+        "sha256": "3e4a17a8677c63622e3609c3937d3f9bf63625edad53600ac6427e4000798dda"
+      },
+      "typed_a_00C11B31.raw.json": {
+        "bytes": 8813,
+        "sha256": "23630cc5540d6ce01e46b469e4f6d65737c9021bdad3312d3c5454ab4bc8db38"
+      },
+      "typed_a_00C11B32.raw.json": {
+        "bytes": 8734,
+        "sha256": "9f10a73e461732be4f2b46372d25062b2aedba2e3a16d3555ee9230af578472b"
+      },
+      "typed_a_00C11B34.raw.json": {
+        "bytes": 8734,
+        "sha256": "d5c9d644dd582deff8ce28c9bd0d50a4651acd2b9ba1cf9adc778fa1f46ab450"
+      },
+      "typed_a_00C11B37.raw.json": {
+        "bytes": 8734,
+        "sha256": "20df16e1abd7b758857d174415cfe548a7165963053898887ed38db20a0774d4"
+      },
+      "typed_a_00C11B3E.raw.json": {
+        "bytes": 9552,
+        "sha256": "58ad1f38915ec377a3cdf0d20130beec10f9a9fd7d06c069c26bfdeab835d033"
+      },
+      "typed_a_00C11B44.raw.json": {
+        "bytes": 8734,
+        "sha256": "a256d4a672cba60b00122c61e8333e779fa5da1c58ea8e0a33a61c21407c8a56"
+      },
+      "typed_a_00C11B45.raw.json": {
+        "bytes": 8558,
+        "sha256": "8febb0df631db2b6bccd03b0846ad5b9aa39b16f96aa0edaef92662bd8dc5a03"
+      },
+      "typed_b_00C11B31.raw.json": {
+        "bytes": 8813,
+        "sha256": "19c39db4894d736af60e2f78eba8f19e0235dd8e012926a384d6b50de6958f5a"
+      },
+      "typed_b_00C11B32.raw.json": {
+        "bytes": 8734,
+        "sha256": "93220aa2076550a9a036c0f8b7e9486d497daf6f0d502d4f87a6907b233bf018"
+      },
+      "typed_b_00C11B34.raw.json": {
+        "bytes": 8734,
+        "sha256": "bc5f1fe5c3e26c0a8dd1e94905ca5d891b74c95b29c425bc84e4a091784bdd13"
+      },
+      "typed_b_00C11B37.raw.json": {
+        "bytes": 8734,
+        "sha256": "17c405d1f4787d116f60c572f6408b84acce882c327f1fba023d94d4ce661887"
+      },
+      "typed_b_00C11B3E.raw.json": {
+        "bytes": 9552,
+        "sha256": "7e081168af0d67d0d685e4a16350c3f04552baec713be8accd6c07db00d32a70"
+      },
+      "typed_b_00C11B44.raw.json": {
+        "bytes": 8734,
+        "sha256": "3b36b02cc337ff04a0ff6e088353c715c2076bbcd3684c94fdbba66fda5208db"
+      },
+      "typed_b_00C11B45.raw.json": {
+        "bytes": 8558,
+        "sha256": "c87100f731fe4c308df130e3129140437a1f475051052be00e0ddc54caa19a0c"
+      },
+      "count_before.command.json": {
+        "bytes": 416,
+        "sha256": "8304846b18e533bdb0694ae501d207b47f110fd4983d1f6dddede0c713ce54bf"
+      },
+      "count_before.stdout.bin": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "count_before.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "count_between.command.json": {
+        "bytes": 416,
+        "sha256": "8304846b18e533bdb0694ae501d207b47f110fd4983d1f6dddede0c713ce54bf"
+      },
+      "count_between.stdout.bin": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "count_between.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "count_after_metadata.command.json": {
+        "bytes": 416,
+        "sha256": "8304846b18e533bdb0694ae501d207b47f110fd4983d1f6dddede0c713ce54bf"
+      },
+      "count_after_metadata.stdout.bin": {
+        "bytes": 49,
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      "count_after_metadata.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B31.command.json": {
+        "bytes": 742,
+        "sha256": "b95d1f70b96eed506c8bb5ef339c85a81d3e706a318736aa190dc84bdb6be1fd"
+      },
+      "typed_a_00C11B31.stdout.bin": {
+        "bytes": 220,
+        "sha256": "e4016008168739b999d0afa3c030031880ef1583481eea84520ee4975ad4aa11"
+      },
+      "typed_a_00C11B31.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B32.command.json": {
+        "bytes": 742,
+        "sha256": "ba1a4f026e2959df0361d618aa577618358345ddc487541b8b2afb1ad166dee2"
+      },
+      "typed_a_00C11B32.stdout.bin": {
+        "bytes": 220,
+        "sha256": "e71b81a8640b81e613173589675e1a630612922af7b08559ae2695888fc20917"
+      },
+      "typed_a_00C11B32.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B34.command.json": {
+        "bytes": 742,
+        "sha256": "2cb0b1cc4bf68cf8bfdca08c20bac3f9df78b1fd62290ba1285e1004360aff0b"
+      },
+      "typed_a_00C11B34.stdout.bin": {
+        "bytes": 220,
+        "sha256": "6596c0490b4ba3e55e8ed6b06c197375f0825dd8481437f6919dbb5e8d0a4767"
+      },
+      "typed_a_00C11B34.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B37.command.json": {
+        "bytes": 742,
+        "sha256": "826d2ad86457e2e84902d04f4112f4f4e4cf49cdce7405113b00e2e11eda8a37"
+      },
+      "typed_a_00C11B37.stdout.bin": {
+        "bytes": 220,
+        "sha256": "05c54354703ee732259666996f89260e9ba53ce2b6d185e7a12db34413071674"
+      },
+      "typed_a_00C11B37.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B3E.command.json": {
+        "bytes": 742,
+        "sha256": "5e60c7abb10daf2aeedcf23b936a84c83233b10a5223a45f0882fbe46d6f7396"
+      },
+      "typed_a_00C11B3E.stdout.bin": {
+        "bytes": 220,
+        "sha256": "8c7aaa8d2fe0640b81e89a10588136d830426f275a11749530da7a8c334c60df"
+      },
+      "typed_a_00C11B3E.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B44.command.json": {
+        "bytes": 742,
+        "sha256": "8d5b06e7559bff2e912a55e13c22beeba1b071d89e02797c4ea56f34d07b48a2"
+      },
+      "typed_a_00C11B44.stdout.bin": {
+        "bytes": 220,
+        "sha256": "7aea236f4d1ee74064c5797ea795a3ae62bc8823485f2c228e8fe578574a6bca"
+      },
+      "typed_a_00C11B44.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_a_00C11B45.command.json": {
+        "bytes": 742,
+        "sha256": "a12125004e4c4b50a422e2cd4550ffb70639421d777a423fee1ca9314745ad75"
+      },
+      "typed_a_00C11B45.stdout.bin": {
+        "bytes": 220,
+        "sha256": "21211cbe647cba890e65f927a8da2d4a0b40be523144fdacdab0abd2cff1b55c"
+      },
+      "typed_a_00C11B45.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B31.command.json": {
+        "bytes": 742,
+        "sha256": "1d953a0c7e8ca21627bbfc6ff9f24d5a8e71cfd3f93fd40aaec14ffcb0cf470f"
+      },
+      "typed_b_00C11B31.stdout.bin": {
+        "bytes": 220,
+        "sha256": "c8da0ec065e41d50cb2b91f455e1bf40cb279432875efb8734acc667cc70d918"
+      },
+      "typed_b_00C11B31.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B32.command.json": {
+        "bytes": 742,
+        "sha256": "eb289ee90c4da9c85e613c2978c10f2e7f7f4a26dbb1b2f736a258a135ff4c13"
+      },
+      "typed_b_00C11B32.stdout.bin": {
+        "bytes": 220,
+        "sha256": "5a721f7f62d3f0bc68da2a30ff476d665a70e18c99f90b70aaa928a3c7f1c01e"
+      },
+      "typed_b_00C11B32.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B34.command.json": {
+        "bytes": 742,
+        "sha256": "4565bc6c136fcf425054d6baaefe614566b975f09e00d31cde32ec5f302b5dab"
+      },
+      "typed_b_00C11B34.stdout.bin": {
+        "bytes": 220,
+        "sha256": "f7a25ebf449a33f12b27255283c472c143d8ffa91c47f2d0c25728b37749acc0"
+      },
+      "typed_b_00C11B34.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B37.command.json": {
+        "bytes": 742,
+        "sha256": "fb53fd3ae24e4b8a3b6c82942023e59d15017f5d4e14bfca03e7d37d1172e253"
+      },
+      "typed_b_00C11B37.stdout.bin": {
+        "bytes": 220,
+        "sha256": "519e82d0300c79927728e86bba8750eea1bc494df3ed776b6b9c475de4ba398f"
+      },
+      "typed_b_00C11B37.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B3E.command.json": {
+        "bytes": 742,
+        "sha256": "366a32fab598fef6c76b8899823073f3ada01de7a5f70d54d963915cbc9315c8"
+      },
+      "typed_b_00C11B3E.stdout.bin": {
+        "bytes": 220,
+        "sha256": "ea4f5b250358f31d328c19ceb25e5f1a81caff026da0da300acd62ff3ec33044"
+      },
+      "typed_b_00C11B3E.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B44.command.json": {
+        "bytes": 742,
+        "sha256": "cecfa28545678a3368db74ae0d167e502c23a6de39da2ed815e0a55ccc33efac"
+      },
+      "typed_b_00C11B44.stdout.bin": {
+        "bytes": 220,
+        "sha256": "cdcd6c652b5be0cb502c7156ee35d21a62461c4fb3365e98d2d35b408381390d"
+      },
+      "typed_b_00C11B44.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "typed_b_00C11B45.command.json": {
+        "bytes": 742,
+        "sha256": "7e61f29cf268dcc440ebafc0696a56d9e8cc5c73aa97abe401bc1a0bbc41addc"
+      },
+      "typed_b_00C11B45.stdout.bin": {
+        "bytes": 220,
+        "sha256": "337d0310a170015b19f8d41191086a7d0ac50a8feaa76eea5ff9b958ed1579b6"
+      },
+      "typed_b_00C11B45.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_prepare.invocation.json": {
+        "bytes": 718,
+        "sha256": "1725164c52dc915126d982b940e8e60867521438df9fa165a0282f3e8bd565e1"
+      },
+      "local_prepare.result.json": {
+        "bytes": 300,
+        "sha256": "9a7c1df94048816a88ace2faaaca83e01234caf5446034e747e22b3f8c5f70f7"
+      },
+      "local_prepare.stdout.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_prepare.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_freeze.invocation.json": {
+        "bytes": 724,
+        "sha256": "74e106bc87942dcf6baae898d8668e6a7272876d422c7d9e60c9039ac4c50605"
+      },
+      "local_freeze.result.json": {
+        "bytes": 302,
+        "sha256": "10db419dba2dc7ad504eab2f17996f7bd0367f63061fb81d3fa880249e8aeb3e"
+      },
+      "local_freeze.stdout.bin": {
+        "bytes": 215,
+        "sha256": "d1c3bfe7ec29c06605bf3e689262debbaa610dc7b7eb05486e90c93ef62b18db"
+      },
+      "local_freeze.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_capture.invocation.json": {
+        "bytes": 720,
+        "sha256": "18cbc34929f09e8f70ef6eaacaae9b5c855df3a63640adeb37f35865c376627f"
+      },
+      "local_capture.result.json": {
+        "bytes": 303,
+        "sha256": "f0db71209720f6b62220fe8ff541fc7bf621f319a1db6a34a7151d2e6df757de"
+      },
+      "local_capture.stdout.bin": {
+        "bytes": 1702,
+        "sha256": "5c17c4277e6e44abac9f6c8ba3df794d2a2c5b71444d9807190a3fd63e034cde"
+      },
+      "local_capture.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_manifest.invocation.json": {
+        "bytes": 712,
+        "sha256": "10e3c41d66031bc952ef3d301f9836aec06751c6fbb3bcd4bcc8720d8b7cdb6c"
+      },
+      "local_manifest.result.json": {
+        "bytes": 302,
+        "sha256": "186bf3a9670e95db3d279549c92c6d31ed4d7aa92a255848eaf1099c614518bc"
+      },
+      "local_manifest.stdout.bin": {
+        "bytes": 259,
+        "sha256": "22a9cd78c96b0b1b7efba8662255694e2d4d8f201fb925b8570fa95ed1012803"
+      },
+      "local_manifest.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "actual6_commit_tree_objects": [
+      {
+        "kind": "commit",
+        "oid": "29cbf21392cce9f8d5594e5442476266766097b7",
+        "member": "objects/29cbf21392cce9f8d5594e5442476266766097b7",
+        "bytes": 309,
+        "sha256": "cf9b49927b5e264b0f46dd6ead39f033ec4da5851a9b98e54b69ad7307db6e8f"
+      },
+      {
+        "kind": "tree",
+        "oid": "fbea5cbf78fadebb0ca0858415ffdb13a2fcfd09",
+        "member": "objects/fbea5cbf78fadebb0ca0858415ffdb13a2fcfd09",
+        "bytes": 563,
+        "sha256": "511fc4eb90f2653ceee9757cb3a52c988685377670698c5578d0f31b3b2750f8"
+      },
+      {
+        "kind": "tree",
+        "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "member": "objects/5d44e3241c6faffb49d6d830faa92fba468aaf25",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      {
+        "kind": "tree",
+        "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+        "member": "objects/fa269934679ee43da523f7bf9c369e4e27d83531",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      {
+        "kind": "tree",
+        "oid": "af1387ef2ee20d71e2140662dcbf453455d8c72f",
+        "member": "objects/af1387ef2ee20d71e2140662dcbf453455d8c72f",
+        "bytes": 233029,
+        "sha256": "9f2d9371ae6f44da59b4b12fd105433015f6a7038a74db647c2f129ddd950f98"
+      },
+      {
+        "kind": "tree",
+        "oid": "6b9a96f9efbc39fd0a8ffebbdefdb07ac1bb5314",
+        "member": "objects/6b9a96f9efbc39fd0a8ffebbdefdb07ac1bb5314",
+        "bytes": 358000,
+        "sha256": "5cdb360240c6d23d5e1ba7623894a60f65755d812f5dd1359ffbd3f882ed8697"
+      }
+    ],
+    "finite8positive_inputs": [
+      {
+        "path": "config/target.json",
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "blob_member": "blobs/config/target.json",
+        "physical_member": "physical/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "blob_member": "blobs/tools/bsp.py",
+        "physical_member": "physical/tools/bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "blob_member": "blobs/tools/ghidra_export.py",
+        "physical_member": "physical/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "blob_member": "blobs/tools/ghidra_typed_flow.py",
+        "physical_member": "physical/tools/ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+        "oid": "14507d4101f0e47158da44e3648cef3a1643a8ff",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY.md",
+        "bytes": 7380,
+        "sha256": "3e2c42fc9415a5c0c7333aadc9479481de9bf83cee1eb5f7c0955d90e64215f2"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_cleanup_direct_target_entry.json",
+        "oid": "60e67837e72812c15abb6fe767e10804c92edee6",
+        "blob_member": "blobs/reports/cc12_locale_onexit_cleanup_direct_target_entry.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_cleanup_direct_target_entry.json",
+        "bytes": 24890,
+        "sha256": "61b2c76d64a482bd31a4b7c1f9fec05546047757b644e444c65f30e359ca0627"
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY_PRIMARY.md",
+        "oid": "253243739a311c1091ac723629ff2230e67a7f90",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY_PRIMARY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_ENTRY_PRIMARY.md",
+        "bytes": 3470,
+        "sha256": "a2f84a3145ee8182d8e16f1270acc3c2c173e7260f3605dd349e7f7bbccf577b"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_cleanup_direct_target_entry_primary.json",
+        "oid": "ff28ba21a52d2cd46de1ef2566abd6c15059deb8",
+        "blob_member": "blobs/reports/cc12_locale_onexit_cleanup_direct_target_entry_primary.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_cleanup_direct_target_entry_primary.json",
+        "bytes": 43803,
+        "sha256": "157654f307602e520be556c75f39d312b38e677309b254bc5927f83819afd490"
+      }
+    ],
+    "all23_frozen_Git_preimages_retained": true,
+    "frozen_commit": "29cbf21392cce9f8d5594e5442476266766097b7",
+    "frozen_Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "GET_method_evidence": "Pinned existing fetch_raw AST plus exact recorded URLs/per-command method provenance; no separate network trace claimed",
+    "EXTERNAL_159": "opaque metadata scalar only, not queried, not an x86 target or authenticated provider",
+    "closing7exact_unit_metadata_and_identity_counts_required": true,
+    "no_proto_or_import_cell_descriptor_target_query_admitted": true,
+    "C11B46_unadmitted": true,
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_commands": 17,
+    "Root_fresh_Native_queries": 0,
+    "Root_gate_failures": 0,
+    "worker_Native_or_offline_failures": 0,
+    "GPR_mutations": 0,
+    "Source_implementation_or_ABI_equivalence_not_part_of_gate": true
+  },
+  "Root_actual_Git_archive_and_manual_review": {
+    "status": "PASS",
+    "worker_commit": "79fe73e4ed1bb498bd4a2c581d3c773147d992ef",
+    "base": "29cbf21392cce9f8d5594e5442476266766097b7",
+    "core_members": 325,
+    "delivery_members": 77,
+    "actual_frozen_Git_records": 6,
+    "actual_delivery_Git_records": 6,
+    "distinct_actual_commit_tree_objects": 10,
+    "positive_inputs": 8,
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md",
+      "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json"
+    ],
+    "Root_original_artifacts_equal": 121,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "manual_fields": [
+      {
+        "address": "00C11B31",
+        "bytes": "55",
+        "mnemonic": "push",
+        "memory_default_segment": "ss",
+        "encoded_memory": null
+      },
+      {
+        "address": "00C11B32",
+        "bytes": "8BEC",
+        "mnemonic": "mov",
+        "memory_default_segment": null,
+        "encoded_memory": null
+      },
+      {
+        "address": "00C11B34",
+        "bytes": "8B4508",
+        "mnemonic": "mov",
+        "memory_default_segment": "ss",
+        "encoded_memory": {
+          "base": "ebp",
+          "index": null,
+          "scale": 1,
+          "displacement": 8
+        }
+      },
+      {
+        "address": "00C11B37",
+        "bytes": "FF34C57864E100",
+        "mnemonic": "push",
+        "memory_default_segment": "ds",
+        "encoded_memory": {
+          "base": null,
+          "index": "eax",
+          "scale": 8,
+          "displacement": 14771320
+        }
+      },
+      {
+        "address": "00C11B3E",
+        "bytes": "FF151022CE00",
+        "mnemonic": "call",
+        "memory_default_segment": "ds",
+        "encoded_memory": {
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 13509136
+        }
+      },
+      {
+        "address": "00C11B44",
+        "bytes": "5D",
+        "mnemonic": "pop",
+        "memory_default_segment": "ss",
+        "encoded_memory": null
+      },
+      {
+        "address": "00C11B45",
+        "bytes": "C3",
+        "mnemonic": "ret",
+        "memory_default_segment": "ss",
+        "encoded_memory": null
+      }
+    ],
+    "actual_detailed_Capstone_5_0_7": [
+      {
+        "address": 12655409,
+        "bytes": "55",
+        "size": 1,
+        "mnemonic": "push",
+        "op_str": "ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          85,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12655410,
+        "bytes": "8bec",
+        "size": 2,
+        "mnemonic": "mov",
+        "op_str": "ebp, esp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 236,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          },
+          {
+            "type": 1,
+            "size": 4,
+            "access": 1,
+            "register": "esp"
+          }
+        ]
+      },
+      {
+        "address": 12655412,
+        "bytes": "8b4508",
+        "size": 3,
+        "mnemonic": "mov",
+        "op_str": "eax, dword ptr [ebp + 8]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 69,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 8,
+        "displacement_offset": 2,
+        "displacement_size": 1,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "eax"
+          },
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": "ebp",
+              "index": null,
+              "scale": 1,
+              "displacement": 8
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655415,
+        "bytes": "ff34c57864e100",
+        "size": 7,
+        "mnemonic": "push",
+        "op_str": "dword ptr [eax*8 + 0xe16478]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 52,
+        "modrm_offset": 1,
+        "sib": 197,
+        "displacement": 14771320,
+        "displacement_offset": 3,
+        "displacement_size": 4,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": null,
+              "index": "eax",
+              "scale": 8,
+              "displacement": 14771320
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655422,
+        "bytes": "ff151022ce00",
+        "size": 6,
+        "mnemonic": "call",
+        "op_str": "dword ptr [0xce2210]",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 21,
+        "modrm_offset": 1,
+        "sib": 0,
+        "displacement": 13509136,
+        "displacement_offset": 2,
+        "displacement_size": 4,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 3,
+            "size": 4,
+            "access": 1,
+            "memory": {
+              "segment_override": null,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 13509136
+            }
+          }
+        ]
+      },
+      {
+        "address": 12655428,
+        "bytes": "5d",
+        "size": 1,
+        "mnemonic": "pop",
+        "op_str": "ebp",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          93,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": [
+          {
+            "type": 1,
+            "size": 4,
+            "access": 2,
+            "register": "ebp"
+          }
+        ]
+      },
+      {
+        "address": 12655429,
+        "bytes": "c3",
+        "size": 1,
+        "mnemonic": "ret",
+        "op_str": "",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm": 0,
+        "modrm_offset": 0,
+        "sib": 0,
+        "displacement": 0,
+        "displacement_offset": 0,
+        "displacement_size": 0,
+        "immediate_offset": 0,
+        "immediate_size": 0,
+        "operands": []
+      }
+    ],
+    "Root_actual_review_failures": 0,
+    "Root_metadata_gate_failures": 0,
+    "Root_offline_inspection_failures": 1,
+    "inspection_failure": "inline read-only Python unmatched parenthesis before execution; complete original tool output retained in conversation, no separate local streams claimed",
+    "Native_or_GPR_effects": 0,
+    "CPU_contract": "current DS operands; PUSH source before own SS store; CALL cell read after preceding PUSH but before own return store; opaque returned Q/registers/segments/flags/memory; actual32SS required anew for POP and RET; final Q+8 conditional only",
+    "Source_build_Original_ABI_runtime_credit": false
+  },
+  "Root_strict_core_replay": {
+    "status": "PASS",
+    "phase": "core",
+    "helper_pin": {
+      "bytes": 23807,
+      "sha256": "94430b0f5d020262290f266611923377756edd0fbdef29d913f2ac9172d8781e"
+    },
+    "audit_counts": {
+      "archive_read": 1,
+      "helper_exec": 1,
+      "receipt_write": 1
+    },
+    "denied_events": [],
+    "result": {
+      "status": "PASS",
+      "phase": "core",
+      "base": "29cbf21392cce9f8d5594e5442476266766097b7",
+      "source_identity_only": {
+        "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+        "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+      },
+      "typed_payloads": 21,
+      "unit_partition": [
+        [
+          "00C11B31",
+          1
+        ],
+        [
+          "00C11B32",
+          2
+        ],
+        [
+          "00C11B34",
+          3
+        ],
+        [
+          "00C11B37",
+          7
+        ],
+        [
+          "00C11B3E",
+          6
+        ],
+        [
+          "00C11B44",
+          1
+        ],
+        [
+          "00C11B45",
+          1
+        ]
+      ],
+      "metadata_sweeps_equal": true,
+      "epoch": 98,
+      "function_count": 64730,
+      "whole_body_bytes": 21,
+      "whole_body_hex": "558BEC8B4508FF34C57864E100FF151022CE005DC3",
+      "whole_body_pin": {
+        "bytes": 21,
+        "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56"
+      },
+      "manual": [
+        {
+          "address": "00C11B31",
+          "size": 1,
+          "bytes": "55",
+          "physical_fields": {
+            "opcode_hex": "55",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": false,
+            "encoded_register": 5
+          },
+          "operand_memory_default_segment": "ss",
+          "implicit_stack_segment": "ss",
+          "expected_detailed_decode": {
+            "address": 12655409,
+            "bytes": "55",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "ebp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              85,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 1,
+                "register": "ebp"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B32",
+          "size": 2,
+          "bytes": "8BEC",
+          "physical_fields": {
+            "opcode_hex": "8B",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": true,
+            "ModRM_hex": "EC",
+            "mod": 3,
+            "reg_or_group": 5,
+            "rm": 4,
+            "SIB_present": false
+          },
+          "operand_memory_default_segment": null,
+          "implicit_stack_segment": null,
+          "expected_detailed_decode": {
+            "address": 12655410,
+            "bytes": "8bec",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "ebp, esp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              139,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 236,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "ebp"
+              },
+              {
+                "type": 1,
+                "size": 4,
+                "access": 1,
+                "register": "esp"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B34",
+          "size": 3,
+          "bytes": "8B4508",
+          "physical_fields": {
+            "opcode_hex": "8B",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": true,
+            "ModRM_hex": "45",
+            "mod": 1,
+            "reg_or_group": 0,
+            "rm": 5,
+            "SIB_present": false,
+            "encoded_displacement_little_endian": "08"
+          },
+          "operand_memory_default_segment": "ss",
+          "implicit_stack_segment": null,
+          "expected_detailed_decode": {
+            "address": 12655412,
+            "bytes": "8b4508",
+            "size": 3,
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [ebp + 8]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              139,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 69,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 8,
+            "displacement_offset": 2,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "eax"
+              },
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": "ebp",
+                  "index": null,
+                  "scale": 1,
+                  "displacement": 8
+                }
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B37",
+          "size": 7,
+          "bytes": "FF34C57864E100",
+          "physical_fields": {
+            "opcode_hex": "FF",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": true,
+            "ModRM_hex": "34",
+            "mod": 0,
+            "reg_or_group": 6,
+            "rm": 4,
+            "SIB_present": true,
+            "SIB_hex": "C5",
+            "SIB_offset": 2,
+            "scale_bits": 3,
+            "index_bits": 0,
+            "base_bits": 5,
+            "no_base_due_to_mod0_base5": true,
+            "encoded_displacement_little_endian": "7864E100"
+          },
+          "operand_memory_default_segment": "ds",
+          "implicit_stack_segment": "ss",
+          "expected_detailed_decode": {
+            "address": 12655415,
+            "bytes": "ff34c57864e100",
+            "size": 7,
+            "mnemonic": "push",
+            "op_str": "dword ptr [eax*8 + 0xe16478]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              255,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 52,
+            "modrm_offset": 1,
+            "sib": 197,
+            "displacement": 14771320,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": null,
+                  "index": "eax",
+                  "scale": 8,
+                  "displacement": 14771320
+                }
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B3E",
+          "size": 6,
+          "bytes": "FF151022CE00",
+          "physical_fields": {
+            "opcode_hex": "FF",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": true,
+            "ModRM_hex": "15",
+            "mod": 0,
+            "reg_or_group": 2,
+            "rm": 5,
+            "SIB_present": false,
+            "encoded_displacement_little_endian": "1022CE00"
+          },
+          "operand_memory_default_segment": "ds",
+          "implicit_stack_segment": "ss",
+          "expected_detailed_decode": {
+            "address": 12655422,
+            "bytes": "ff151022ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce2210]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              255,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 21,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 13509136,
+            "displacement_offset": 2,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": null,
+                  "index": null,
+                  "scale": 1,
+                  "displacement": 13509136
+                }
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B44",
+          "size": 1,
+          "bytes": "5D",
+          "physical_fields": {
+            "opcode_hex": "5D",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": false,
+            "encoded_register": 5
+          },
+          "operand_memory_default_segment": "ss",
+          "implicit_stack_segment": "ss",
+          "expected_detailed_decode": {
+            "address": 12655428,
+            "bytes": "5d",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "ebp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              93,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "ebp"
+              }
+            ]
+          }
+        },
+        {
+          "address": "00C11B45",
+          "size": 1,
+          "bytes": "C3",
+          "physical_fields": {
+            "opcode_hex": "C3",
+            "prefixes": [],
+            "immediates": [],
+            "ModRM_present": false
+          },
+          "operand_memory_default_segment": "ss",
+          "implicit_stack_segment": "ss",
+          "expected_detailed_decode": {
+            "address": 12655429,
+            "bytes": "c3",
+            "size": 1,
+            "mnemonic": "ret",
+            "op_str": "",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              195,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": []
+          }
+        }
+      ],
+      "actual_Capstone": {
+        "decoder": "Capstone",
+        "version": "5.0.7",
+        "mode": "x86-32",
+        "input": {
+          "bytes": 21,
+          "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56"
+        },
+        "hex": "558BEC8B4508FF34C57864E100FF151022CE005DC3",
+        "manual": [
+          {
+            "address": "00C11B31",
+            "size": 1,
+            "bytes": "55",
+            "physical_fields": {
+              "opcode_hex": "55",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": false,
+              "encoded_register": 5
+            },
+            "operand_memory_default_segment": "ss",
+            "implicit_stack_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655409,
+              "bytes": "55",
+              "size": 1,
+              "mnemonic": "push",
+              "op_str": "ebp",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                85,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "sib": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 1,
+                  "register": "ebp"
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B32",
+            "size": 2,
+            "bytes": "8BEC",
+            "physical_fields": {
+              "opcode_hex": "8B",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": true,
+              "ModRM_hex": "EC",
+              "mod": 3,
+              "reg_or_group": 5,
+              "rm": 4,
+              "SIB_present": false
+            },
+            "operand_memory_default_segment": null,
+            "implicit_stack_segment": null,
+            "expected_detailed_decode": {
+              "address": 12655410,
+              "bytes": "8bec",
+              "size": 2,
+              "mnemonic": "mov",
+              "op_str": "ebp, esp",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                139,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 236,
+              "modrm_offset": 1,
+              "sib": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 2,
+                  "register": "ebp"
+                },
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 1,
+                  "register": "esp"
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B34",
+            "size": 3,
+            "bytes": "8B4508",
+            "physical_fields": {
+              "opcode_hex": "8B",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": true,
+              "ModRM_hex": "45",
+              "mod": 1,
+              "reg_or_group": 0,
+              "rm": 5,
+              "SIB_present": false,
+              "encoded_displacement_little_endian": "08"
+            },
+            "operand_memory_default_segment": "ss",
+            "implicit_stack_segment": null,
+            "expected_detailed_decode": {
+              "address": 12655412,
+              "bytes": "8b4508",
+              "size": 3,
+              "mnemonic": "mov",
+              "op_str": "eax, dword ptr [ebp + 8]",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                139,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 69,
+              "modrm_offset": 1,
+              "sib": 0,
+              "displacement": 8,
+              "displacement_offset": 2,
+              "displacement_size": 1,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 2,
+                  "register": "eax"
+                },
+                {
+                  "type": 3,
+                  "size": 4,
+                  "access": 1,
+                  "memory": {
+                    "segment_override": null,
+                    "base": "ebp",
+                    "index": null,
+                    "scale": 1,
+                    "displacement": 8
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B37",
+            "size": 7,
+            "bytes": "FF34C57864E100",
+            "physical_fields": {
+              "opcode_hex": "FF",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": true,
+              "ModRM_hex": "34",
+              "mod": 0,
+              "reg_or_group": 6,
+              "rm": 4,
+              "SIB_present": true,
+              "SIB_hex": "C5",
+              "SIB_offset": 2,
+              "scale_bits": 3,
+              "index_bits": 0,
+              "base_bits": 5,
+              "no_base_due_to_mod0_base5": true,
+              "encoded_displacement_little_endian": "7864E100"
+            },
+            "operand_memory_default_segment": "ds",
+            "implicit_stack_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655415,
+              "bytes": "ff34c57864e100",
+              "size": 7,
+              "mnemonic": "push",
+              "op_str": "dword ptr [eax*8 + 0xe16478]",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                255,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 52,
+              "modrm_offset": 1,
+              "sib": 197,
+              "displacement": 14771320,
+              "displacement_offset": 3,
+              "displacement_size": 4,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 3,
+                  "size": 4,
+                  "access": 1,
+                  "memory": {
+                    "segment_override": null,
+                    "base": null,
+                    "index": "eax",
+                    "scale": 8,
+                    "displacement": 14771320
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B3E",
+            "size": 6,
+            "bytes": "FF151022CE00",
+            "physical_fields": {
+              "opcode_hex": "FF",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": true,
+              "ModRM_hex": "15",
+              "mod": 0,
+              "reg_or_group": 2,
+              "rm": 5,
+              "SIB_present": false,
+              "encoded_displacement_little_endian": "1022CE00"
+            },
+            "operand_memory_default_segment": "ds",
+            "implicit_stack_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655422,
+              "bytes": "ff151022ce00",
+              "size": 6,
+              "mnemonic": "call",
+              "op_str": "dword ptr [0xce2210]",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                255,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 21,
+              "modrm_offset": 1,
+              "sib": 0,
+              "displacement": 13509136,
+              "displacement_offset": 2,
+              "displacement_size": 4,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 3,
+                  "size": 4,
+                  "access": 1,
+                  "memory": {
+                    "segment_override": null,
+                    "base": null,
+                    "index": null,
+                    "scale": 1,
+                    "displacement": 13509136
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B44",
+            "size": 1,
+            "bytes": "5D",
+            "physical_fields": {
+              "opcode_hex": "5D",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": false,
+              "encoded_register": 5
+            },
+            "operand_memory_default_segment": "ss",
+            "implicit_stack_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655428,
+              "bytes": "5d",
+              "size": 1,
+              "mnemonic": "pop",
+              "op_str": "ebp",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                93,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "sib": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 2,
+                  "register": "ebp"
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11B45",
+            "size": 1,
+            "bytes": "C3",
+            "physical_fields": {
+              "opcode_hex": "C3",
+              "prefixes": [],
+              "immediates": [],
+              "ModRM_present": false
+            },
+            "operand_memory_default_segment": "ss",
+            "implicit_stack_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655429,
+              "bytes": "c3",
+              "size": 1,
+              "mnemonic": "ret",
+              "op_str": "",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                195,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "sib": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": []
+            }
+          }
+        ],
+        "actual_detailed_Capstone": [
+          {
+            "address": 12655409,
+            "bytes": "55",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "ebp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              85,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 1,
+                "register": "ebp"
+              }
+            ]
+          },
+          {
+            "address": 12655410,
+            "bytes": "8bec",
+            "size": 2,
+            "mnemonic": "mov",
+            "op_str": "ebp, esp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              139,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 236,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "ebp"
+              },
+              {
+                "type": 1,
+                "size": 4,
+                "access": 1,
+                "register": "esp"
+              }
+            ]
+          },
+          {
+            "address": 12655412,
+            "bytes": "8b4508",
+            "size": 3,
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [ebp + 8]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              139,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 69,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 8,
+            "displacement_offset": 2,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "eax"
+              },
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": "ebp",
+                  "index": null,
+                  "scale": 1,
+                  "displacement": 8
+                }
+              }
+            ]
+          },
+          {
+            "address": 12655415,
+            "bytes": "ff34c57864e100",
+            "size": 7,
+            "mnemonic": "push",
+            "op_str": "dword ptr [eax*8 + 0xe16478]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              255,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 52,
+            "modrm_offset": 1,
+            "sib": 197,
+            "displacement": 14771320,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": null,
+                  "index": "eax",
+                  "scale": 8,
+                  "displacement": 14771320
+                }
+              }
+            ]
+          },
+          {
+            "address": 12655422,
+            "bytes": "ff151022ce00",
+            "size": 6,
+            "mnemonic": "call",
+            "op_str": "dword ptr [0xce2210]",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              255,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 21,
+            "modrm_offset": 1,
+            "sib": 0,
+            "displacement": 13509136,
+            "displacement_offset": 2,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 3,
+                "size": 4,
+                "access": 1,
+                "memory": {
+                  "segment_override": null,
+                  "base": null,
+                  "index": null,
+                  "scale": 1,
+                  "displacement": 13509136
+                }
+              }
+            ]
+          },
+          {
+            "address": 12655428,
+            "bytes": "5d",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "ebp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              93,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "ebp"
+              }
+            ]
+          },
+          {
+            "address": 12655429,
+            "bytes": "c3",
+            "size": 1,
+            "mnemonic": "ret",
+            "op_str": "",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              195,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "sib": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": []
+          }
+        ],
+        "agreement": true
+      },
+      "saved_text": [
+        "PUSH EBP",
+        "MOV EBP,ESP",
+        "MOV EAX,dword ptr [EBP + 0x8]",
+        "PUSH dword ptr [EAX*0x8 + 0xe16478]",
+        "CALL dword ptr [0x00ce2210]",
+        "POP EBP",
+        "RET"
+      ],
+      "saved_computed_call_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b44"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c11b44"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000159"
+          }
+        ]
+      },
+      "CLI_commands": 31,
+      "local_capture_evidence": {
+        "completed_local_invocations": 8,
+        "all_producers_pinned_before_execution": true,
+        "original_streams_retained": true,
+        "offline_failures": 0,
+        "current_core_packaging_invocation_pinned": true
+      },
+      "actual_frozen_Git_objects": 6,
+      "finite_positive_inputs": 8,
+      "Root_copied_artifacts": 121,
+      "Root_metadata_preimages": 93,
+      "Root_frozen_Git_preimages": 23,
+      "Native_capture_failures": 0,
+      "Root_gate_execution_failures": 0,
+      "EXTERNAL_159_meaning": "opaque saved metadata scalar; not RAM, target-cell contents or an authenticated provider",
+      "Source_Original_ABI_or_unlock_credit": false,
+      "archive": {
+        "bytes": 2804663,
+        "sha256": "a63f3ce849d9af7cae6fa7c7a518b73223c7fa4cdce9dd8852a8776547162b72"
+      },
+      "archive_members_verified": 324
+    }
+  },
+  "Root_strict_delivery_replay": {
+    "status": "PASS",
+    "phase": "delivery",
+    "helper_pin": {
+      "bytes": 23807,
+      "sha256": "94430b0f5d020262290f266611923377756edd0fbdef29d913f2ac9172d8781e"
+    },
+    "audit_counts": {
+      "archive_read": 1,
+      "helper_exec": 1,
+      "receipt_write": 1
+    },
+    "denied_events": [],
+    "result": {
+      "status": "PASS",
+      "phase": "delivery",
+      "base": "29cbf21392cce9f8d5594e5442476266766097b7",
+      "head": "79fe73e4ed1bb498bd4a2c581d3c773147d992ef",
+      "changed_paths": [
+        "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md",
+        "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json"
+      ],
+      "positive_files_unchanged": 8,
+      "current_staged_committed_equal": [
+        "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md",
+        "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json"
+      ],
+      "source_identity_only": {
+        "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+        "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+      },
+      "Git_object_records": 12,
+      "distinct_actual_Git_objects": 10,
+      "archive": {
+        "bytes": 2234910,
+        "sha256": "6ce8fec68f59d451d368a449d381f602acd9c2786de83d53ff2e6fe8465b371d"
+      },
+      "archive_members_verified": 76
+    }
+  },
+  "failure_history": {
+    "worker_Native_offline_guarded": 0,
+    "Root_metadata_gate": 0,
+    "Root_actual_review": 0,
+    "Root_strict_core_delivery": 0,
+    "Root_read_only_inspection": 1,
+    "inspection_detail": "inline read-only Python unmatched parenthesis before execution; complete original tool output retained in conversation, no separate local streams claimed"
+  },
+  "validation_credit": {
+    "exported_saved_listing": true,
+    "whole_body_physically_decoded": true,
+    "copied_archives_replayed": true,
+    "Source_modified": false,
+    "new_build_or_tests": false,
+    "Original_ABI_compatible": false,
+    "runtime_or_game_validated": false
+  },
+  "remaining_boundary": "Provider, descriptor, Source comparison and Original caller ABI require separate scoped evidence; no such query or execution is part of this packet."
+}
