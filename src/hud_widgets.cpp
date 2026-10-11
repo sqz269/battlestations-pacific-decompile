@@ -573,6 +573,415 @@ void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost
     screen.field_1e8 = 0.0f;
     screen.field_230 = 0.0f;
 }
+
+// ---------------------------------------------------------------------------
+// Powerup-manager enter 0061B850, exit 006169F0, update 0061BEA0, carousel 00619C50 and the second
+// list's selection 0061A6C0 (cc13-hud2). Evidence: the listings, read whole; the support-manager
+// write table is in docs/CC13_HUD_AND_WIDGETS.md.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+constexpr std::array<float, 4> kPowerupFullUv{0.0f, 0.0f, 1.0f, 1.0f};
+
+std::uint32_t powerup_list_size(const std::vector<std::uintptr_t>& list) {
+    return static_cast<std::uint32_t>(list.size());
+}
+
+// The bounds-checked element read the image open-codes before each use (00BF6713 when out of range).
+std::uintptr_t powerup_entry_at(const std::vector<std::uintptr_t>& list, std::uint32_t index) {
+    return list.at(index);
+}
+
+// 0061BB5F..0061BBA3 (and the copies in update and 0061A6C0): label width and panel extent.
+void powerup_relayout_label(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    const std::array<float, 3> extent = host.group_extent_00aa6740(powerup_widget(screen, 0xEC));
+    screen.field_234 = static_cast<float>(static_cast<double>(screen.label_width_254) + kPowerupLabelPad);
+    screen.field_238 = extent[1];
+}
+
+float powerup_label_width(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    return static_cast<float>(host.text_width_114(powerup_widget(screen, 0xD4)) / kPowerupLabelScale);
+}
+
+// 0061C5C9..0061C615 / 0061A910..0061A95D: widen only; the image then hides HUD+C0's +D4h (push 0).
+void powerup_widen_label(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    const float width = powerup_label_width(screen, host);
+    if (width > screen.label_width_254) {
+        screen.label_width_254 = width;
+        host.set_visible(host.hud_c0_widget(0xD4), false);
+    }
+}
+
+// The common tail of 00619C50 (from 00619DE5) and 0061A6C0 (from 0061A998) once the selected
+// definition is known. `insert_when_present` is 0061A6C0's inverted cache test (00611C80-style
+// != end plus texture != 0) against 00619C50's == end (00611C50).
+void powerup_show_selected(HudPowerupScreenHost& host, std::uint16_t c0_vector, std::uint32_t index,
+    bool second_list) {
+    const auto definition = [&] {
+        return host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(c0_vector), index));
+    };
+    if (host.definition_kind_8(definition()) == 1) {
+        host.set_visible(host.support_widget(0xF0), false);
+        host.set_visible(host.support_widget(0xF4), true);
+        host.set_visible(host.support_widget(0x1CC), true);
+        host.set_visible(host.hud_c0_widget(0xB8), false);
+        const HudPowerupTeamEntry team = host.team_entry(definition(), host.local_team_28());
+        const std::uintptr_t art = host.support_widget(0x158);
+        if (team.icon_name_1c != 0) {
+            const std::uintptr_t texture = host.resolve_icon_texture(team.unit_class_20, team.icon_name_1c);
+            const std::array<float, 4> uv = host.resolve_icon_uv(team.unit_class_20, team.icon_name_1c);
+            host.set_state_texture_00ab2690(art, 3, texture, uv);
+            host.widget_set_state_88(art, 0, 0, 1.0f);
+            host.widget_set_state_88(art, 3, 0, 1.0f);
+        } else {
+            host.widget_set_state_88(art, 0, 0, 1.0f);
+        }
+        if (team.unit_class_20 != 0) {
+            const std::int32_t key = host.class_key_70(team.unit_class_20);
+            const bool present = host.support_icon_map_contains_00614060(key);
+            const bool insert = second_list ? (present && host.class_texture_d4(team.unit_class_20) != 0) : !present;
+            if (insert) {
+                const std::uint32_t state = host.icon_add_state_00ab64c0(host.support_widget(0x1CC),
+                    host.class_texture_d4(team.unit_class_20), kPowerupFullUv);
+                host.support_icon_map_store_006171b0(key, state);           // the SM+42Ch write
+            }
+        }
+        if (team.unit_class_20 != 0 &&
+            host.support_icon_map_contains_00614060(host.class_key_70(team.unit_class_20))) {
+            host.widget_set_state_88(host.support_widget(0x1CC),
+                host.support_icon_map_read_006171b0(host.class_key_70(team.unit_class_20)), 0, 1.0f);
+            return;
+        }
+        host.widget_set_state_88(host.support_widget(0x1CC), 0, 0, 1.0f);
+        return;
+    }
+    host.set_visible(host.support_widget(0xF0), true);
+    host.set_visible(host.support_widget(0xF4), false);
+    host.set_visible(host.support_widget(0x1CC), false);
+    host.set_visible(host.hud_c0_widget(0xB8), true);
+    if (host.definition_name_is_00425850(definition(), kPowerupRadarSweep)) {
+        host.set_visible(host.hud_c0_widget(0xBC), true);
+        return;
+    }
+    host.set_visible(host.hud_c0_widget(0xBC), false);
+    host.set_visible(host.hud_c0_widget(0xC0), true);
+    // 0061A2D5..0061A3F6: the category icons show when the definition's bit is clear.
+    host.set_visible(host.hud_c0_widget(0xC4), (~host.definition_flags_88(definition()) & 1u) != 0);
+    host.set_visible(host.hud_c0_widget(0xC8), (~(host.definition_flags_88(definition()) >> 1) & 1u) != 0);
+    host.set_visible(host.hud_c0_widget(0xCC), (~(host.definition_flags_88(definition()) >> 2) & 1u) != 0);
+    host.set_visible(host.hud_c0_widget(0xD0), (~(host.definition_flags_88(definition()) >> 3) & 1u) != 0);
+}
+
+}  // namespace
+
+void hud_powerup_enter_0061b850(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    host.slot51_00529a30();                                              // 0061B86F..0061B879
+    host.set_resolved_position_00aa8240(host.support_widget(0x1C4), screen.home_14);
+    host.set_visible(screen.support_page_24, true);
+    host.set_visible(host.support_widget(0x12C), false);                // 0061B8A5..0061B8F2
+    host.set_visible(host.support_widget(0x130), false);
+    host.set_visible(host.support_widget(0x134), false);
+    host.support_delete_slot_clones_00652a60();
+    host.support_rebind_slots_0065d220();
+    host.play_support_sound(HudSupportSound::Open);
+    host.set_visible(host.support_widget(0x1B0), true);                 // 0061B926..0061B959
+    host.set_visible(host.support_widget(0x1C4), true);
+    host.widget_set_size_58(host.support_widget(0x1C4), kPowerupHomeSize);
+    host.set_visible(host.support_widget(0x1C0), false);                // 0061B994..0061B9DF
+    host.set_visible(host.support_widget(0x178), true);
+    host.set_visible(host.support_widget(0x1C8), false);
+    host.bind_support_widgets_00614320();
+    screen.flag_200 = true;                                              // 0061B9EE..0061BA21
+    screen.flag_22c = true;
+    host.set_visible(powerup_widget(screen, 0xD4), false);
+    screen.first_ready_20c = false;
+    screen.field_230 = 0.0f;
+    host.set_visible(powerup_widget(screen, 0xD4), false);
+    host.set_visible(powerup_widget(screen, 0xE8), true);
+    host.set_visible(powerup_widget(screen, 0xEC), true);
+    host.set_visible(powerup_widget(screen, 0xE4), true);
+    // 0061BA50..0061BA8F: the info page 0.3 to the left of its registered position.
+    const float info[3] = {static_cast<float>(static_cast<double>(screen.info_page_f4[0]) - kPowerupInfoOffsetEnter),
+        screen.info_page_f4[1], screen.info_page_f4[2]};
+    host.set_resolved_position_00aa8240(screen.info_page_b0, info);
+    host.get_resolved_position(powerup_widget(screen, 0xE4), screen.right_circle_248);
+    screen.carousel_owner_110 = host.screen_address() + 8;               // 0061BABA..0061BAC3
+    screen.carousel_slot_100 = 0;
+    screen.carousel_selected_104 = 0;
+    host.rebuild_lists_0061b0f0();
+    if (!screen.entries_144.empty()) {                                   // 0061BADA..0061BBD1
+        screen.mode_20 = 0;
+        const std::uintptr_t definition = host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(0x144), 0));
+        host.text_set_source_00abaed0(powerup_widget(screen, 0xD4),
+            host.team_entry(definition, host.local_team_28()).text_source, true);
+        screen.label_width_254 = powerup_label_width(screen, host);
+        powerup_relayout_label(screen, host);
+        screen.count_204 = static_cast<std::int32_t>(screen.entries_144.size());
+    } else {                                                             // 0061BBD6..0061BCC0
+        screen.mode_20 = 1;
+        screen.field_1f0 = 0;
+        screen.field_1ec = 0;
+        screen.field_1f4 = 0;
+        const std::uintptr_t definition = host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(0x184), 0));
+        host.text_set_source_00abaed0(host.hud_c0_widget(0xD4),
+            host.team_entry(definition, host.local_team_28()).text_source, true);
+        screen.label_width_254 = powerup_label_width(screen, host);
+        powerup_relayout_label(screen, host);
+        for (std::uint16_t field = 0x48; field <= 0x54; field += 4) host.set_visible(powerup_widget(screen, field), false);
+    }
+    screen.fade_1e4 = false;                                             // 0061BCC2..0061BD2A
+    screen.field_1e8 = 0.0f;
+    screen.list_1a4.clear();
+    // 0061BD30..0061BE70: the first-use hint once, the permanent hint afterwards.
+    if (host.hint_shown_0068e600(kPowerupHintFirstUse)) {
+        host.trigger_hint_00690fd0(kPowerupHintPermanent, 0);
+    } else {
+        host.trigger_hint_00690fd0(kPowerupHintFirstUse, 0);
+    }
+    host.slot51_00528f70();                                              // 0061BE75..0061BE80
+}
+
+void hud_powerup_exit_006169f0(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    host.set_visible(host.hud_slot_widget(0xC4, 0x64), false);           // 006169F3..00616A0D
+    host.hud_refresh_0054e610();
+    host.set_visible(screen.support_page_24, false);
+    host.set_visible(powerup_widget(screen, 0xD4), false);
+    host.set_visible(host.support_widget(0xF0), true);                  // 00616A3B..00616A89
+    host.set_visible(host.support_widget(0xF4), true);
+    host.set_visible(host.support_widget(0x1CC), true);
+    host.set_visible(host.hud_c0_widget(0xB8), false);
+    host.set_visible(host.support_widget(0x12C), true);                 // 00616AA5..00616AF3
+    host.set_visible(host.support_widget(0x130), true);
+    host.set_visible(host.support_widget(0x134), true);
+    host.play_support_sound(HudSupportSound::Close);
+    host.set_visible(screen.info_page_b0, true);
+    float position[3]{};
+    host.get_resolved_position(powerup_widget(screen, 0xE8), position);  // 00616B14..00616B2B
+    host.set_resolved_position_00aa8240(powerup_widget(screen, 0xE4), position);
+    host.set_visible(powerup_widget(screen, 0xE8), false);
+    host.set_visible(powerup_widget(screen, 0xEC), false);
+    // 00616B4E..00616BA7: FSUB of a double constant chosen by the support screen's refresh result.
+    const double offset = host.support_refresh_0066ffa0() ? kPowerupInfoOffsetExitOn : kPowerupInfoOffsetExitOff;
+    const float info[3] = {static_cast<float>(static_cast<double>(screen.info_page_f4[0]) - offset),
+        screen.info_page_f4[1], screen.info_page_f4[2]};
+    host.set_resolved_position_00aa8240(screen.info_page_b0, info);
+    // 00616BAC..00616BD9: deleting destructors on +28h..+34h and +58h..+64h; the pointers stay.
+    for (std::uint16_t k = 0; k < 4; ++k) {
+        if (powerup_widget(screen, static_cast<std::uint16_t>(0x28 + 4 * k)) != 0) {
+            host.delete_virtual_4(powerup_widget(screen, static_cast<std::uint16_t>(0x28 + 4 * k)));
+        }
+        if (powerup_widget(screen, static_cast<std::uint16_t>(0x58 + 4 * k)) != 0) {
+            host.delete_virtual_4(powerup_widget(screen, static_cast<std::uint16_t>(0x58 + 4 * k)));
+        }
+    }
+    host.tree_erase_00615c90(0x1B4);                                     // 00616BDB..00616C03
+    screen.tree_1b4.clear();
+    host.tree_erase_00615c90(0x1CC);                                     // 00616C06..00616C2E
+    screen.tree_1cc.clear();
+    host.support_rebind_slots_0065d220();
+    host.slot51_00529060();
+    host.slot51_00529a30();                                              // tail jump 00616C64
+}
+
+void hud_powerup_update_0061bea0(HudPowerupScreenState& screen, HudPowerupScreenHost& host, float dt) {
+    // 0061BEBC..0061BF8F: a blocking hint suspends the screen.
+    bool blocking = false;
+    if (!host.active_hint_name_0068e5b0().empty()) blocking = host.hint_blocking_00690b00(host.active_hint_name_0068e5b0());
+    if (blocking) return;
+    if (host.page_busy_121(screen.support_page_24) || host.page_busy_121(screen.info_page_b0)) return;
+    // 0061BFB8..0061BFEE: tile_Icon size (+230h * +234h, +238h).
+    host.widget_set_size_58(powerup_widget(screen, 0xEC),
+        {static_cast<float>(static_cast<double>(screen.field_230) * screen.field_234), screen.field_238});
+    // 0061BFF0..0061C056: right_circle_Icon at the tile's right edge.
+    const std::array<float, 3> extent = host.group_extent_00aa6740(powerup_widget(screen, 0xEC));
+    const float right[3] = {static_cast<float>(static_cast<double>(extent[0]) + screen.right_circle_248[0]),
+        screen.right_circle_248[1], screen.right_circle_248[2]};
+    host.set_resolved_position_00aa8240(powerup_widget(screen, 0xE4), right);
+    // 0061C05B..0061C0E0: text_Text centred half its width left of the circle, y/z kept.
+    float text_z[3]{};
+    float text_y[3]{};
+    float circle[3]{};
+    host.get_resolved_position(powerup_widget(screen, 0xD4), text_z);
+    host.get_resolved_position(powerup_widget(screen, 0xD4), text_y);
+    host.get_resolved_position(powerup_widget(screen, 0xE4), circle);
+    const float text[3] = {static_cast<float>(static_cast<double>(circle[0]) -
+                               static_cast<double>(screen.label_width_254) * 0.5),
+        text_y[1], text_z[2]};
+    host.set_resolved_position_00aa8240(powerup_widget(screen, 0xD4), text);
+    if (!screen.flag_22c) host.set_visible(powerup_widget(screen, 0xD4), true);
+    host.set_visible(host.hud_slot_widget(0xC4, 0x64), true);           // 0061C0FD..0061C113
+    host.slot50_message_00682bd0(host.xbox_prompts_f88a30() ? kPowerupMessageXbox : kPowerupMessagePc);
+    // 0061C15A..0061C1E1: scroll arrows when a list overflows its four slots.
+    host.support_show_100_104(screen.entries_144.size() > 4 && !screen.carousel_scrolling_13f);
+    host.support_show_f8_fc(screen.entries_184.size() > 4 && !screen.flag_1f9);
+    // 0061C1E6..0061C3A4: re-raise the permanent hint unless it is the active one or a hint blocks.
+    bool raise = false;
+    if (host.names_unequal_00449af0(host.active_hint_name_0068e5b0(), kPowerupHintPermanent)) {
+        raise = !host.hint_blocking_00690b00(host.active_hint_name_0068e5b0());
+    } else if (host.active_hint_name_0068e5b0().empty()) {
+        raise = !host.hint_blocking_00690b00(host.active_hint_name_0068e5b0());
+    }
+    if (raise) host.trigger_hint_00690fd0(kPowerupHintPermanent, 0);
+    // 0061C3A4..0061C42C: a changed first list resets the carousel and starts its intro.
+    if (screen.count_204 != static_cast<std::int32_t>(screen.entries_144.size())) {
+        for (std::uint16_t field = 0x78; field <= 0x84; field += 4) host.set_visible(powerup_widget(screen, field), false);
+        screen.carousel_slot_100 = 0;
+        screen.carousel_selected_104 = 0;
+        host.set_visible(powerup_widget(screen, 0x78), true);
+        screen.count_204 = static_cast<std::int32_t>(screen.entries_144.size());
+        screen.field_208 = 1.0f;
+        screen.first_ready_20c = true;
+    }
+    if (screen.first_ready_20c) {                                        // 0061C433..0061C468
+        host.first_intro_00611ae0(dt);
+        host.carousel_tick_00617470();
+        return;
+    }
+    host.tick_00611770(dt);                                              // 0061C46B..0061C489
+    host.second_fade_0061aff0(dt);
+    host.tick_00612b70(dt);
+    if (screen.count_204 != static_cast<std::int32_t>(screen.entries_144.size())) {   // 0061C48E..0061C4F4
+        host.set_visible(powerup_widget(screen, static_cast<std::uint16_t>(0x78 + 4 * screen.carousel_slot_100)), false);
+        screen.carousel_slot_100 = 0;
+        screen.carousel_selected_104 = 0;
+        host.set_visible(powerup_widget(screen, 0x78), true);
+        screen.count_204 = static_cast<std::int32_t>(screen.entries_144.size());
+    }
+    if (!screen.entries_184.empty() && screen.mode_20 == 0 && host.action_pressed_004c43c0(kPowerupActionToSecond) &&
+        !screen.carousel_scrolling_13f) {                                // 0061C4FA..0061C655
+        for (std::uint16_t field = 0x78; field <= 0x84; field += 4) host.set_visible(powerup_widget(screen, field), false);
+        screen.mode_20 = 1;
+        const std::uintptr_t definition =
+            host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(0x184), static_cast<std::uint32_t>(screen.field_1f4)));
+        host.text_set_source_00abaed0(host.hud_c0_widget(0xD4),
+            host.team_entry(definition, host.local_team_28()).text_source, true);
+        powerup_widen_label(screen, host);
+        powerup_relayout_label(screen, host);
+        host.play_support_sound(HudSupportSound::LeftRight);
+    } else if (!screen.entries_144.empty() && screen.mode_20 == 1 &&
+               host.action_pressed_004c43c0(kPowerupActionToFirst) && !screen.flag_1f9) {   // 0061C657..0061C6CD
+        screen.mode_20 = 0;
+        screen.field_228 = 0;
+        host.carousel_refresh_label_00618980();
+        for (std::uint16_t field = 0x88; field <= 0x94; field += 4) host.set_visible(powerup_widget(screen, field), false);
+        host.play_support_sound(HudSupportSound::LeftRight);
+    }
+    host.second_refresh_rows_00619ae0();                                 // 0061C6D2
+    if (screen.entries_144.empty()) screen.mode_20 = 1;                  // 0061C6D9..0061C6F3
+    if (screen.mode_20 == 0) {
+        hud_powerup_carousel_update_00619c50(screen, host, dt);
+    } else {
+        hud_powerup_update_selection_0061a6c0(screen, host);
+    }
+    // 0061C71C..0061C77F: the use input. In the first list it calls the gameplay power-up manager.
+    if (!screen.entries_144.empty() && host.input_owner_flag_b_or_10()) {
+        if (screen.mode_20 == 0) {
+            host.powerup_use_008eb6e0(powerup_entry_at(screen.entries_144, screen.carousel_selected_104));
+        } else {
+            host.second_refresh_rows_00619ae0();
+        }
+    } else if (screen.mode_20 != 0) {
+        host.second_refresh_rows_00619ae0();
+    }
+    screen.flag_200 = false;                                             // 0061C784
+}
+
+void hud_powerup_carousel_update_00619c50(HudPowerupScreenState& screen, HudPowerupScreenHost& host, float dt) {
+    if (screen.carousel_scrolling_13f) {                                 // 00619C56..00619C74
+        host.carousel_animate_006113a0(dt);
+        host.carousel_tick_00617470();
+        return;
+    }
+    host.carousel_tick_00617470();
+    const std::uint32_t size = powerup_list_size(screen.carousel_entries_11c);
+    std::uint32_t& selected = screen.carousel_selected_104;
+    std::int32_t& slot = screen.carousel_slot_100;
+    if (host.action_pressed_004c43c0(kPowerupActionPrev)) {              // 00619C7D..00619D28
+        if (size <= 4 && selected == 0) return;                          // an empty vector counts as <= 4
+        host.play_support_sound(HudSupportSound::UnitToUnit);
+        screen.carousel_moved_13d = true;
+        host.set_visible(host.hud_c0_widget(static_cast<std::uint16_t>(0x78 + 4 * slot)), false);
+        selected = (size + selected - 1) % size;                         // unsigned DIV
+        if (slot > 0) {
+            --slot;
+        } else {
+            screen.carousel_wrap_13c = true;
+            host.carousel_start_scroll_006179d0();
+            screen.carousel_scroll_13e = true;
+        }
+        host.carousel_refresh_label_00618980();
+    } else if (host.action_pressed_004c43c0(kPowerupActionNext)) {       // 00619D2D..00619DDB
+        if (size <= 4 && selected == size - 1) return;
+        host.play_support_sound(HudSupportSound::UnitToUnit);
+        host.set_visible(host.hud_c0_widget(static_cast<std::uint16_t>(0x78 + 4 * slot)), false);
+        screen.carousel_moved_13d = true;
+        selected = (selected + 1) % size;
+        if (slot < 3) {
+            ++slot;
+        } else {
+            screen.carousel_wrap_13c = false;
+            host.carousel_start_scroll_006179d0();
+            screen.carousel_scroll_13e = true;
+        }
+        host.carousel_refresh_label_00618980();
+    }
+    // 00619DE5..00619E37: the selected definition's name into the support screen's +178h text.
+    const std::uintptr_t definition = host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(0x144), selected));
+    host.text_set_source_00abaed0(host.support_widget(0x178), definition + 0x14, true);
+    powerup_show_selected(host, 0x144, selected, false);
+}
+
+void hud_powerup_update_selection_0061a6c0(HudPowerupScreenState& screen, HudPowerupScreenHost& host) {
+    const std::uint32_t size = powerup_list_size(screen.entries_184);
+    auto& selected = reinterpret_cast<std::uint32_t&>(screen.field_1f4);
+    bool moved = false;
+    if (host.action_pressed_004c43c0(kPowerupActionPrev) && !screen.flag_1f9 && !screen.fade_1e4) {   // 0061A6C9..0061A7C7
+        if (screen.field_1f0 == 0 && size <= 4) return;
+        host.play_support_sound(HudSupportSound::UnitToUnit);
+        if (screen.field_1f0 == 0) {
+            if (screen.field_1ec == 0) screen.field_1ec = static_cast<std::int32_t>(size);   // 0059AE20
+            screen.field_1ec -= 1;
+            screen.second_dir_1f8 = false;
+            host.second_start_scroll_006191a0();
+        } else {
+            screen.field_1f0 -= 1;
+        }
+        selected = (size + selected - 1) % size;
+        moved = true;
+    } else if (host.action_pressed_004c43c0(kPowerupActionNext) && !screen.flag_1f9 && !screen.fade_1e4) {   // 0061A7CC..0061A8B7
+        if (static_cast<std::uint32_t>(screen.field_1f0) >= size - 1) return;   // unsigned JAE
+        host.play_support_sound(HudSupportSound::UnitToUnit);
+        if (screen.field_1f0 == 3) {
+            if (size > 4) {
+                screen.field_1ec += 1;
+                if (screen.field_1ec == static_cast<std::int32_t>(size)) screen.field_1ec = 0;
+            }
+            screen.second_dir_1f8 = true;
+            host.second_start_scroll_006191a0();
+        } else {
+            screen.field_1f0 += 1;
+        }
+        selected = (selected + 1) % size;
+        moved = true;
+    }
+    if (moved) {                                                         // 0061A8C4..0061A993
+        const std::uintptr_t definition = host.entry_definition_4(powerup_entry_at(host.hud_c0_entries(0x184), selected));
+        host.text_set_source_00abaed0(host.hud_c0_widget(0xD4),
+            host.team_entry(definition, host.local_team_28()).text_source, true);
+        powerup_widen_label(screen, host);
+        const std::array<float, 3> extent = host.group_extent_00aa6740(powerup_widget(screen, 0xEC));
+        screen.field_234 = static_cast<float>(static_cast<double>(screen.label_width_254) + kPowerupLabelPad);
+        screen.field_238 = extent[1];
+        host.second_refresh_rows_00619ae0();
+    }
+    // 0061A998..0061AA00: the name text comes from this screen's own +184h list.
+    if (selected >= size) return;
+    host.text_set_source_00abaed0(host.support_widget(0x178),
+        host.entry_definition_4(powerup_entry_at(screen.entries_184, selected)) + 0x14, true);
+    powerup_show_selected(host, 0x184, selected, true);
+}
+
 Vec3f plane_spawn_camera_target_0060cb60(const PlaneSpawnCameraState& camera,
     PlaneSpawnCameraHost& host) {
     if (camera.home_384 != 0 && host.is_kind_of(camera.home_384, 9)) {

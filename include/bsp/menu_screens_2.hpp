@@ -1309,6 +1309,24 @@ struct HudFormationState {
     std::vector<std::uintptr_t> markers_110;
     std::vector<std::uintptr_t> markers_11c;
     std::vector<std::uintptr_t> links_12c;
+    // Fields read or written by Update 0053A8E0 (cc13-hud2).
+    bool active_4{};                            // +4: zero skips the whole update
+    std::uintptr_t camera_10{};                 // +10h, ECX of 00B71490
+    float map_extent_x_30{};                    // +30h: map-space x = local x / +30h + 0.5
+    float map_extent_z_34{};                    // +34h: map-space y = -local z / +34h + 0.5
+    float cursor_speed_80{1.0F};                // +80h: 1.0 reset, += dt*16 while the slot holds still, cap 40
+    std::array<float, 2> last_slot_84{};        // +84h/+88h: last selected slot in map space
+    std::int32_t selected_8c{-1};               // +8Ch: selected member index (group order)
+    float drag_radius_90{};                     // +90h: a dragged slot may not leave this radius
+    bool dirty_94{};                            // +94h: a slot moved; replicate once the drag stops
+    bool moved_this_frame_95{};                 // +95h
+    float hold_154{};                           // +154h
+    bool hold_flag_158{};                       // +158h
+    float hold_15c{};                           // +15Ch
+    bool hold_flag_160{};                       // +160h
+    std::int32_t pending_16c{};                 // +16Ch
+    std::int32_t mode_action_170{0x128};        // +170h: 128h idle, else the action (ECh/EFh) that set it
+    float marker_height_190{};                  // +190h: y of the slot markers (unit markers use -100)
 };
 
 struct HudFormationHost {
@@ -1357,6 +1375,97 @@ struct HudFormationHost {
 void hud_formation_enter_0053a4d0(HudFormationState& screen, HudFormationHost& host);
 // 00536800: slot +1Ch of vtable 00CED6FC, __thiscall(screen), RET; no SEH frame.
 void hud_formation_exit_00536800(HudFormationState& screen, HudFormationHost& host);
+
+// HUD formation Update 0053A8E0 (cc13-hud2).
+using FormationMatrix = std::array<float, 16>;   // row-major 4x4, translation in [12..14]
+using FormationVec2 = std::array<float, 2>;
+using FormationVec3 = std::array<float, 3>;
+
+inline constexpr std::string_view kFormationMapHint = "MAPPERMANENT";       // 00CEDA00
+inline constexpr std::uintptr_t kCommandLeave = 0x00E08FB0;                 // command-class singleton `Leave`
+inline constexpr std::uintptr_t kCommandFollow = 0x00E08F60;                // command-class singleton `follow`
+inline constexpr std::int32_t kFormationActionMenu = 0x4B;                  // -> 00534C00
+inline constexpr std::int32_t kFormationActionPromote = 0x50;               // Leave + follow on the leader
+inline constexpr std::int32_t kFormationActionDrag = 0xD8;
+inline constexpr std::int32_t kFormationActionPrev = 0xEC;                  // -> 00533920
+inline constexpr std::int32_t kFormationActionNext = 0xEF;                  // -> 00533830
+inline constexpr std::int32_t kFormationModeIdle = 0x128;
+inline constexpr double kFormationAxisDeadZone = 9.999999747378752e-05;     // 00D7A268
+inline constexpr double kFormationCursorStep = 0.019999999552965164;        // 00D7A2F8
+inline constexpr double kFormationCursorAccel = 16.0;                       // 00CED9F8
+inline constexpr float kFormationCursorSpeedCap = 40.0F;                    // 00CE685C
+inline constexpr double kFormationSlotGapX = 220.0;                         // 00CED9F0
+inline constexpr double kFormationSlotGapZ = 400.0;                         // 00CE3D90
+inline constexpr double kFormationUnitMarkerDrop = 100.0;                   // 00D7A220
+inline constexpr float kFormationMarkerScale = 0.5F;                        // 00CE3800
+inline constexpr float kFormationLinkWidth = 0.01F;                         // 00D7A238
+inline constexpr double kFormationLinkFadeLength = 0.02;                    // 00CE4D88
+inline constexpr float kFormationLinkAlphaOn = 0.5F;                        // 00CE3800
+inline constexpr float kFormationCameraHeight = 20000.0F;                   // 00CE3CC0
+inline constexpr std::array<float, 3> kFormationLinkSelectedRgb{1.0F, 0.81F, 0.51F};  // 00D7A24C, 00CED9E8, 00CED9E4
+inline constexpr std::array<float, 3> kFormationLinkRgb{0.95F, 0.6F, 0.02F};          // 00CED9E0, 00CE3D30, 00CE9BAC
+
+// The formation record 0070D070 returns: group + 18h + index*34h. +0 the unit, +10h/+20h the slot
+// offset stored negated (map x = -r10 / extent + 0.5, map y = r20 / extent + 0.5).
+struct FormationRecordView {
+    std::uintptr_t unit_0{};
+    float r10{};
+    float r20{};
+};
+
+struct HudFormationUpdateHost : HudFormationHost {
+    virtual bool action_pressed_004c43c0(std::int32_t action) = 0;       // ECX = *(00E188A8)
+    virtual bool action_released_00535ee0(std::int32_t action) = 0;      // input record +1Ch/+20h/+24h/+28h
+    virtual bool game_byte_61f() = 0;                                     // *(00E188A8)+61Fh
+    virtual void open_menu_00534c00() = 0;                                // ECX = screen
+    virtual bool active_hint_empty_0068e5b0() = 0;                        // copy of the active hint name is empty
+    virtual float input_axis_2994() = 0;                                  // *(004BEC00()+4)+2994h
+    virtual float input_axis_29c4() = 0;                                  // *(004BEC00()+4)+29C4h
+    virtual void unit_order_icon_00534870() = 0;                          // ECX = screen
+    virtual FormationRecordView group_record_0070d070(std::uintptr_t group, std::int32_t index) = 0;
+    // The only direct gameplay store in the update: 0053AF37/0053AF3C write record +10h/+20h.
+    virtual void group_record_write_slot(std::uintptr_t group, std::int32_t index, float r10, float r20) = 0;
+    virtual FormationRecordView group_member_record_0070d080(std::uintptr_t group, std::uintptr_t member) = 0;
+    virtual std::int32_t group_index_of_member_0070d030(std::uintptr_t group, std::uintptr_t member) = 0;
+    virtual bool vec2_equal_00533d30(const FormationVec2& a, const FormationVec2& b) = 0;  // ECX = a
+    virtual FormationVec2 gui_cursor_5c_60() = 0;                         // 004C12B0()+5Ch/+60h
+    virtual void gui_set_cursor_00aa1fa0(float x, float y) = 0;           // ECX = 004C12B0()
+    // 00465080 fills a 18h-byte descriptor (RET 8); 0077D600 is __thiscall(entity, command, target, flags), RET 0Ch.
+    virtual std::uintptr_t command_target_from_entity_00465080(std::uintptr_t entity, float value) = 0;
+    virtual void entity_issue_command_0077d600(std::uintptr_t entity, std::uintptr_t command,
+        std::uintptr_t target, std::int32_t flags) = 0;
+    virtual std::int32_t list_selected_index_00a9c920(std::uintptr_t list) = 0;
+    virtual void drag_pressed_00535f50() = 0;                             // ECX = screen
+    // 0077A080 builds MT_FORMATION_SET from the group into a stack temporary, 0077C880 sends it from
+    // the leader, 005347C0 destroys the temporary.
+    virtual void replicate_formation_0077a080_0077c880(std::uintptr_t group, std::uintptr_t leader) = 0;
+    virtual std::uintptr_t map_subscript_00538910(std::uint16_t map_offset, std::uintptr_t member) = 0;
+    virtual FormationMatrix unit_matrix_cc(std::uintptr_t unit) = 0;      // 16 floats at unit+CCh
+    virtual FormationMatrix matrix_multiply_00413920(const FormationMatrix& left, const FormationMatrix& right) = 0;
+    virtual void marker_node_set_transform_34(std::uintptr_t marker, const FormationMatrix& m) = 0;  // *(*(marker+0Ch)+0Ch) vtable +34h
+    virtual void marker_node_visibility_00b6da70(std::uintptr_t marker, float factor, bool recurse) = 0;
+    virtual FormationVec3 transform_project_point_00439820(const FormationVec3& local, const FormationMatrix& m) = 0;
+    virtual std::int32_t local_team_28() = 0;                             // player record +28h
+    virtual GuiColour formation_colour(std::uint16_t offset) = 0;         // 00432650()+108h+offset
+    virtual void marker_write_diffuse_00b179f0(std::uintptr_t marker, const GuiColour& colour) = 0;  // *(marker+134h)
+    virtual void curve_clear_00abc920(std::uintptr_t curve) = 0;
+    virtual FormationMatrix pose_derived_inverse_00414e10(std::uintptr_t unit) = 0;
+    virtual FormationVec3 unit_position_fc(std::uintptr_t unit) = 0;     // unit+FCh
+    virtual FormationVec3 transform_affine_point_004142e0(const FormationVec3& point, const FormationMatrix& m) = 0;
+    virtual GuiColour widget_get_colour_54(std::uintptr_t widget) = 0;
+    virtual void curve_add_point_00abc970(std::uintptr_t curve, const FormationVec2& point, float width) = 0;
+    virtual float step_towards_0042ac60(float current, float target, float max_step) = 0;
+    virtual void curve_rebuild_00abca10(std::uintptr_t curve) = 0;
+    virtual FormationMatrix build_look_at_00b63f10(const FormationVec3& eye, const FormationVec3& target,
+        const FormationVec3& up) = 0;
+    virtual void camera_set_view_00b71490(std::uintptr_t camera, const FormationMatrix& view) = 0;
+    virtual void select_previous_00533920() = 0;                          // ECX = screen
+    virtual void select_next_00533830() = 0;                              // ECX = screen
+    virtual void update_order_labels_00536a90(float dt) = 0;              // ECX = screen
+};
+
+// 0053A8E0: slot +20h of vtable 00CED6FC, __thiscall(screen, float dt), RET 4; SEH 00C6C666.
+void hud_formation_update_0053a8e0(HudFormationState& screen, HudFormationUpdateHost& host, float dt);
 
 // Frame stats Register 0053C740 (screen 57h, vtable 00CEDA10).
 struct FrameStatsState {

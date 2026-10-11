@@ -633,3 +633,88 @@ Open, in order of value:
    record readers 004FA8F0/004FA960/004FAA00, 00511BF0.
 4. Session browser PrepareEnter 00570300, selection changed 005787E0, 0056D660, 0056B610 (from the
    menus5 list, untouched here).
+
+## HUD formation Update 0053A8E0 (cc13-hud2)
+
+Reconstructed and build-tested, not wired, not run in `bsp_game`: `hud_formation_update_0053a8e0`
+in `src/menu_screens_2.cpp`, vtable 00CED6FC +20h (00CED71C holds 0053A8E0),
+`__thiscall(screen, float dt)`, RET 4, SEH 00C6C666, frame 258h. Evidence: the listing
+0053A8E0..0053B9CA read whole; constants from the PE on disk (`local/h2_consts.py`). Cleared by cc9
+as reconstruct-only, no wiring. Two group pointers appear and are kept apart: `*(00E188D8)+284h`
+read this frame (the per-member loop, the leader's matrix and the camera) and screen+138h stored
+by Enter (selection, dragging, replication).
+
+Order: +95h = 0; return when byte +4 is clear; action 4Bh (game byte +61Fh clear) calls 00534C00;
+MAPPERMANENT when no hint is active; return when there is no group. The stick (+2994h, +29C4h of
+the input owner) is moving when |b + a| > 9.999999747378752e-05 (00D7A268); the cursor step is
+(a*0.02, 0.02*b) (00D7A2F8, two float stores). 00534870. While moving, the selected record
+(0070D070(+138h, +8Ch)) gives the slot in map space u = -r10/+30h + 0.5, v = r20/+34h + 0.5; if
+the slot equals +84h/+88h (00533D30, both components equal) the cursor speed +80h grows by dt*16
+(00CED9F8) else resets to 1.0, capped at 40 (00CE685C); the GUI cursor (00AA1FA0 on 004C12B0(),
+it stores +5Ch/+60h and moves the cursor widget) goes to slot + speed*step; a selected leader
+zeroes the step and clears the moving flag. Action 50h issues the two 0077D600 calls below and
+snaps the cursor to the old leader's slot. Action D8h pressed calls 00535F50; while dragging
+(+7Ch or moving) and D8h not released (00535EE0), the cursor's map position becomes the slot:
+X = (cx - 0.5)*+30h, Y = (cy - 0.5)*(-+34h); for every other member, a slot within 220 in x
+(00CED9F0) and 400 in z (00CE3D90) of (-X, -Y) aborts, and so does |(X, Y)| > +90h (that test sits
+inside the loop and repeats per member, so a lone selected member skips it); otherwise the record
+is written (below) and +94h/+95h are set. A frame with +94h set and +95h clear replicates the
+formation (0077A080 builds MT_FORMATION_SET, 0077C880 sends it from the leader, 005347C0 frees the
+temporary) and clears +94h.
+
+Per member of the frame's group (rows count non-null members): the unit marker (map +11Ch,
+00538910) gets member matrix * diag(0.5, 0.5, 0.5, 1) with translation (x, +190h - 100, z); the
+slot marker (map +110h) gets leader matrix * the same scale with translation x/z from 00439820
+(the negated record offset through the leader's matrix) and y = +190h, and is hidden (00B6DA70
+factor 0.0) for the leader. Colours come from `00432650()+108h`: the selected non-leader's slot
+marker +50h and its unit marker +00h (team 0) or +20h; otherwise both +10h/+00h (team 0, leader
+or not) or +30h/+20h. Non-leaders get a two-point curve (width 0.01, 00D7A238) from the member's
+position in the leader's frame (004142E0 with 00414E10's inverse) to its slot, with alpha stepped
+by dt (0042AC60) toward 0.0 when both ends are within 0.02 in x and y (00CE4D88) else 0.5; RGB
+(1.0, 0.81, 0.51) when it is the dragged selected member, else (0.95, 0.6, 0.02). The leader's
+curve is hidden. Then a top-down camera: eye (x, 20000, z) and target (x, 0, z) over the leader,
+up = the leader's matrix row 2 (00B63F10, EDX = eye; 00B71490 on +10h). Actions ECh/EFh, only
+while +170h = 128h, clear +16Ch, call 00533920/00533830, set +170h to the action, +154h/+15Ch = 0
+and +158h/+160h = 1. Last, 00536A90(dt). The early returns skip 00536A90.
+
+### Every 0077D600 call
+
+Complete by byte scan: `local/h2_rel32.py 0077D600` finds 61 references in the image, all `E8`
+calls (no `E9`, no absolute dword anywhere, so no table or register-indirect path exists); two
+fall in 0053A8E0..0053B9D7. `ghidra callers` was not used for this claim.
+
+| Call | Command | Target | Flags | Unit (ECX) |
+| --- | --- | --- | --- | --- |
+| 0053AC97 | `Leave`, class singleton 00E08FB0 | 00465080 descriptor (S+ECh) from the selected member `0070D060(*(00E188D8)+284h, +8Ch)`, value 0.0 | 1 (pushed at 0053AC7C before the descriptor's two arguments; 00465080 is RET 8) | the leader `*(screen+138h)+14h` |
+| 0053ACB9 | `follow`, 00E08F60 | the same member, a fresh descriptor | 1 (0053AC9E) | the same leader |
+
+Both run only when +8Ch >= 0, action 50h is pressed this frame and the member is not the leader.
+
+### Other gameplay effects of the update
+
+| Instruction | What | Value |
+| --- | --- | --- |
+| 0053AF37 / 0053AF3C | record `+138h + 18h + (+8Ch)*34h`: +10h and +20h (the member's formation slot) | -0.0 - X and -0.0 - Y from the cursor (SUBSS) |
+| 0053AF79 / 0053AF93 | 0077A080 + 0077C880 on the leader of +138h | the MT_FORMATION_SET replication of the edited group |
+| 0053AC4D, 0053AACC, 0053ACDC, 0053ADA8, 0053AE03, 0053B208 | 0070D060 / 0070D070 / 0070D080 | reads only |
+
+### x87 checks
+
+Each chain was followed on the listing, with the stack depth tracked at every FLD/FSTP/FCOMIP:
+the dead-zone sum (FLD b, FADD a, float store, then a float compare against a double), the cursor
+step (two FMULs from one loaded 0.02, a float store each), the slot mapping (FCHS before and after
+the float store of r20, so v = r20/+34h + 0.5), the speed (FMUL 16.0, FADD +80h, float store), the
+drag mapping (FSUB 0.5 then FMULP; Y keeps the FCHS'd extent), the gap tests (0 - X and 0 - Y come
+from FSUBRP on an FLDZ copy, one leftover 0.0 carried across the first FCOMIP and consumed by the
+second subtraction), the radius (Y*Y and X*X stored as floats, summed, float store, 00BF7030
+`LIBCRT_sqrt`, two float stores), the curve endpoints (FDIVP/FDIVRP with 0.5 kept in ST(2)), the
+fade (one FLDZ kept for both sign tests, FCOMIP pops) and the step argument (the fade's leftover
+0.0 is the pushed target in the short-curve branch). The C++ uses double intermediates where the
+image keeps 80-bit values; every chain is at most three operations before a float store.
+
+Uncertainty: 00534C00, 00535F50, 00533920, 00533830, 00534870 and 00536A90 are host calls, not
+reconstructed. 00535EE0 is read as "released this frame" from its body (input record +28h/+24h
+against +20h/+1Ch); the name is provisional. The record field names r10/r20 follow
+`BSP_UnitGroup_MemberRecordAt`.
+
+Handoff (cc13-hud2): see the cc13-hud2 handoff at the end of docs/CC13_HUD_AND_WIDGETS.md; the formation Update above is complete and build-tested, its open callees are 00536A90, 00535F50, 00534C00, 00533920 and 00533830.
