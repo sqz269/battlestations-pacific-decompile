@@ -14585,9 +14585,14 @@ turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
   steering and the hand-over against the image.
 - What remains is the airframe's pull-through: how far a split-S moves the aircraft and how much the nose
   overshoots once the stick is neutral. That is the flight model.
-- One link is still unread: whether the image's approach is built before the script's `SetSkillLevel`.
-  `usn_19_coralus.lua` calls `PilotSetTarget` first, at line 1411. If it is, the row is the launch bag's `Skill`
-  (`carrier+390h`, not modelled), and the host's row 2 would be the wrong one.
+- **The row is settled for the US strikers.** They are carrier launches, not script `SetSkillLevel` targets.
+  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1,
+    the host's `game+6ACh` (lines 66-82, 156, 195).
+  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
+    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
+  - So row 2 is the image's row too. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
+    Japanese Zuikaku strikers.
+  - **The zero-gain dive is this installation's authored behaviour at difficulty 1.**
 
 ### Scripts (`local\`, prefix `l49_`, none for commit)
 
