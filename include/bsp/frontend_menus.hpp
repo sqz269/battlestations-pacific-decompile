@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "bsp/main_menu_command_bar.hpp"
 #include "bsp/mission_tree_data.hpp"
@@ -334,6 +335,55 @@ struct HudUnitIconHost {
 };
 
 std::int32_t hud_unit_icon_index_0059cb90(HudUnitRef unit, HudClassRef cls, HudUnitIconHost& host);
+
+// ---------------------------------------------------------------------------
+// The tactical map's nearest-icon pick (005A1310)
+// ---------------------------------------------------------------------------
+
+// 005A1310: __thiscall(GUI_map screen, bool skip_own_group), RET 4, EAX = the
+// picked unit (a vehicle, or a squadron's +3D0h leader) or null. Callers:
+// 00526A40 BSP_HudUnitPickScreen_PickUnit and 005A3210. It also stores the
+// hovered entity at screen+520h.
+//
+// Screen fields read: +554h/+558h the cursor's world x/z, +54Ch/+550h the map
+// origin x/z, +30h/+34h the map extent. World positions map to screen units as
+// (x - origin_x) / extent_x + 0.5 and (origin_z - z) / extent_z + 0.5.
+struct HudMapPickView {
+    float cursor_x_554{};
+    float cursor_z_558{};
+    float origin_x_54c{};
+    float origin_z_550{};
+    float extent_x_30{};
+    float extent_z_34{};
+};
+
+// The squared screen-unit radius a candidate must beat (00CF0008).
+inline constexpr float kHudMapPickRadiusSquared = 0.0009f;
+// 00E08890 / 00E08894, both 0.5f in the image (.data, not written here).
+inline constexpr float kHudMapPickCentre = 0.5f;
+
+// One node of the icon map at screen+4F4h/+4F8h: node+10h is the icon, whose
+// +4h is the entity and +8h an active byte.
+struct HudMapPickIcon {
+    HudUnitRef unit;
+    bool active{};
+};
+
+struct HudMapPickHost {
+    virtual ~HudMapPickHost() = default;
+    virtual bool unit_is_kind_5c(HudUnitRef unit, int class_id) = 0;
+    virtual HudUnitRef unit_owner_140(HudUnitRef unit) = 0;              // virtual +140h
+    virtual std::array<float, 3> unit_position_c4(HudUnitRef unit) = 0;  // virtual +C4h
+    virtual HudUnitRef controlled_unit_00e188d8() = 0;
+    virtual HudUnitRef squadron_leader_3d0(HudUnitRef squadron) = 0;
+    virtual void set_hovered_520(HudUnitRef unit) = 0;
+};
+
+// The x87 arithmetic runs at the CRT's 53-bit precision control and stores to
+// float at each FSTP, so the projection computes in double and narrows at the
+// same points. Ties keep the earlier icon (FCOMIP/JBE).
+HudUnitRef pick_nearest_map_unit_005a1310(const HudMapPickView& view,
+    const std::vector<HudMapPickIcon>& icons, bool skip_own_group, HudMapPickHost& host);
 
 } // namespace bsp
 

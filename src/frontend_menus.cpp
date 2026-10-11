@@ -290,4 +290,60 @@ std::int32_t hud_unit_icon_index_0059cb90(HudUnitRef unit, HudClassRef cls, HudU
     return host.class_byte(building, 0x1A7) ? 0x20 : 0x1F;
 }
 
+HudUnitRef pick_nearest_map_unit_005a1310(const HudMapPickView& view,
+    const std::vector<HudMapPickIcon>& icons, bool skip_own_group, HudMapPickHost& host) {
+    host.set_hovered_520({});
+    // 005A1318..005A1389: the cursor in screen units.
+    const float cursor_x = static_cast<float>(
+        (static_cast<double>(view.cursor_x_554) - view.origin_x_54c) / view.extent_x_30 +
+        kHudMapPickCentre);
+    const float cursor_y = static_cast<float>(
+        (static_cast<double>(view.origin_z_550) - view.cursor_z_558) / view.extent_z_34 +
+        kHudMapPickCentre);
+    // 005A1343..005A1366: NEG/SBB/AND, the controlled unit or zero.
+    const HudUnitRef own = skip_own_group ? host.controlled_unit_00e188d8() : HudUnitRef{};
+    float best = kHudMapPickRadiusSquared;
+    const HudMapPickIcon* picked = nullptr;
+    for (const HudMapPickIcon& icon : icons) {
+        if (!icon.unit || !icon.active) continue;
+        if (!host.unit_is_kind_5c(icon.unit, 0x02)) continue;
+        if (own && host.unit_owner_140(icon.unit).native == own.native) continue;
+        if (host.unit_is_kind_5c(icon.unit, 0x2B)) continue;  // MTorpedo
+        if (host.unit_is_kind_5c(icon.unit, 0x34)) continue;  // MWaterMine
+        // 005A1432..005A14C9: two position calls, x from the first, z from the second.
+        const float world_x = host.unit_position_c4(icon.unit)[0];
+        const float map_x = static_cast<float>(
+            (static_cast<double>(world_x) - view.origin_x_54c) / view.extent_x_30 + kHudMapPickCentre);
+        const float world_z = host.unit_position_c4(icon.unit)[2];
+        const float dx = static_cast<float>(static_cast<double>(map_x) - cursor_x);
+        const float map_y = static_cast<float>(
+            (static_cast<double>(view.origin_z_550) - world_z) / view.extent_z_34 + kHudMapPickCentre);
+        const float dy = static_cast<float>(static_cast<double>(map_y) - cursor_y);
+        const float dy2 = static_cast<float>(static_cast<double>(dy) * dy);
+        // 005A14B7..005A14C9: dx*dx is stored to float before the add.
+        const float dx2 = static_cast<float>(static_cast<double>(dx) * dx);
+        const float distance = static_cast<float>(static_cast<double>(dy2) + dx2);
+        if (best > distance) {
+            best = distance;
+            picked = &icon;
+        }
+    }
+    if (picked) {
+        // 005A1509..005A1565: hover the entity, or its owner when that is a
+        // different entity and the pick is not an MLandVehicle (19h).
+        HudUnitRef hovered = host.unit_is_kind_5c(picked->unit, 0x02) ? picked->unit : HudUnitRef{};
+        host.set_hovered_520(hovered);
+        if (hovered) {
+            const HudUnitRef owner = host.unit_owner_140(hovered);
+            if (owner && host.unit_is_kind_5c(owner, 0x02) && owner.native != hovered.native &&
+                !host.unit_is_kind_5c(hovered, 0x19)) {
+                host.set_hovered_520(owner);
+            }
+        }
+        if (host.unit_is_kind_5c(picked->unit, 0x05)) return picked->unit;
+        if (host.unit_is_kind_5c(picked->unit, 0x18)) return host.squadron_leader_3d0(picked->unit);
+    }
+    return {};
+}
+
 } // namespace bsp

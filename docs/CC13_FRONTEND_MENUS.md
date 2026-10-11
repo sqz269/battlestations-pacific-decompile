@@ -290,3 +290,28 @@ squadron (18h). The kamikaze test and 007BCA50 also run on the leader. Descripto
 are per-subclass: other packets name +808h HeavyCruiser on cruisers (avoid_zone_draft_bodies.hpp)
 and +808h/+809h BigLandingShip/Rocketer on landing ships, which does not name them on the
 battleship or cargo tested here. +818h, +81Ah, +82Ch and the command-building bytes are unnamed.
+
+## The tactical map's nearest-icon pick (005A1310)
+
+`BSP_HudMapScreen_PickNearestUnit`, `__thiscall`(GUI_map screen, bool skip_own_group), RET 4.
+Reconstructed as `pick_nearest_map_unit_005a1310`, complete, build-tested. Callers 00526A40
+(`BSP_HudUnitPickScreen_PickUnit`) and 005A3210.
+
+1. +520h = 0. The cursor (+554h, +558h) goes to map screen units as
+   `(x - +54Ch) / +30h + 0.5` and `(+550h - z) / +34h + 0.5` (00E08890/00E08894 are 0.5).
+2. With the flag, the controlled unit 00E188D8 is captured; otherwise zero (NEG/SBB/AND at
+   005A1343..005A1366).
+3. Every node of the icon map at +4F4h/+4F8h whose icon (node+10h) exists, is active (+8h),
+   whose entity (+4h) answers IsKindOf(2), whose virtual +140h owner is not the captured unit,
+   and which is neither MTorpedo (2Bh) nor MWaterMine (34h), is projected through two virtual
+   +C4h calls (x from the first, z from the second). The squared screen distance is kept when it
+   is below the best so far, which starts at 0.0009 (00CF0008); ties keep the earlier node.
+4. +520h gets the winner's entity (if IsKindOf(2)), replaced by its +140h owner when that is a
+   different IsKindOf(2) entity and the winner is not an MLandVehicle (19h).
+5. Returns the winner's entity when it is a vehicle (5), the squadron's +3D0h leader when it is a
+   PlaneSquadronGen (18h), else null.
+
+The arithmetic is x87 with a float store after every step; `dx*dx` is stored before it is added
+to the stored `dy*dy` (005A14B7..005A14C9). The reconstruction replays it in double, narrowing at
+the same points, which equals the native result if the process runs at the MSVC CRT's default
+53-bit precision control. That precision setting is an assumption, not read from this binary.
