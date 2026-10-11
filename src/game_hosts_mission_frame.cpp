@@ -2590,7 +2590,8 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
-                || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order");
+                || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order"
+            || words[1] == "torpedo");
         // `<frame> order <base> <slot> <order> [target...]`.
         const bool air_order_ok = verb_ok && words[1] == "order" && words.size() >= 5;
         // `<frame> depthcharge <ship...>`.
@@ -2601,6 +2602,18 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const std::size_t fire_words = words.size() - (fire_release ? 1 : 0);
         const bool fire_ok = verb_ok && words[1] == "fire" && fire_words >= 5
             && words[fire_words - 2] == "group";
+        // GUNNERY 152/155: `<frame> torpedo <ship...> at <target...>` presses the
+        // torpedo group (79h group 4) aimed at a named unit; `<frame> torpedo
+        // <ship...> release` lets it go. Both names may carry spaces; `at` splits.
+        std::size_t torpedo_at = 0;
+        if (verb_ok && words[1] == "torpedo") {
+            for (std::size_t w = 3; w + 1 < words.size(); ++w) {
+                if (words[w] == "at") { torpedo_at = w; break; }
+            }
+        }
+        const bool torpedo_release = verb_ok && words[1] == "torpedo" && torpedo_at == 0
+            && words.size() >= 4 && words.back() == "release";
+        const bool torpedo_ok = torpedo_release || torpedo_at != 0;
         // `<frame> build <shipyard...> class <id>`: the shipyard name may carry
         // spaces, so the class is the last two words.
         const bool build_ok = verb_ok && words[1] == "build" && words.size() >= 5
@@ -2618,6 +2631,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "build" ? !build_ok
                 : words[1] == "depthcharge" ? !depthcharge_ok
                 : words[1] == "fire" ? !fire_ok
+                : words[1] == "torpedo" ? !torpedo_ok
                 : words[1] == "order" ? !air_order_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
@@ -2625,8 +2639,8 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
                 "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
-                "fire <ship> group <g> [release]` or `<frame> order <base> <slot> <1|2|3> "
-                "[target]`", line, path.c_str());
+                "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
+                "or `<frame> order <base> <slot> <1|2|3> [target]`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
@@ -2664,6 +2678,21 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
             order.fire_group_id = static_cast<int>(g);
             order.fire_held = !fire_release;
             for (std::size_t w = 3; w + 2 < fire_words; ++w) order.unit += ' ' + words[w];
+            host.helm_orders.push_back(order);
+            continue;
+        }
+        if (words[1] == "torpedo") {
+            order.fire_group = true;
+            order.fire_group_id = 4;
+            order.fire_held = !torpedo_release;
+            const std::size_t ship_end = torpedo_release ? words.size() - 1 : torpedo_at;
+            for (std::size_t w = 3; w < ship_end; ++w) order.unit += ' ' + words[w];
+            if (!torpedo_release) {
+                for (std::size_t w = torpedo_at + 1; w < words.size(); ++w) {
+                    if (!order.target.empty()) order.target += ' ';
+                    order.target += words[w];
+                }
+            }
             host.helm_orders.push_back(order);
             continue;
         }
@@ -3118,8 +3147,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 } else if (gunnery == nullptr) {
                     why = "no gunnery host";
                 } else {
-                    fired = gunnery->player_fire_weapon_group(idx, order.fire_group_id,
-                        order.fire_held, why);
+                    if (order.fire_group_id == 4) {
+                        // 0095A1CC: the torpedo group (GUNNERY 152/155).
+                        fired = gunnery->player_fire_torpedo_group(idx, order.target, 0.0f,
+                            order.fire_held, why);
+                    } else {
+                        fired = gunnery->player_fire_weapon_group(idx, order.fire_group_id,
+                            order.fire_held, why);
+                    }
                 }
                 if (fired) ++host.helm_orders_applied; else ++host.helm_orders_refused;
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
