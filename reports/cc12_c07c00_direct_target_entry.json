@@ -1,0 +1,1987 @@
+{
+  "schema": 1,
+  "packet": "cc12_c07c00_direct_target_entry",
+  "status": "bounded_entry_metadata_and_physical_evidence_only",
+  "address": "00C07C00",
+  "scope": {
+    "queried_range": "00C07C00..00C07C04",
+    "bytes": 5,
+    "instruction_units": 1,
+    "metadata_only_owner_extent": "00C07C00..00C07C44",
+    "owner_address_count": 69,
+    "remaining_owner_bytes_unqueried": 64,
+    "next_cursor_unqueried": "00C07C05",
+    "numeric_immediate_unqueried": "00C07C90",
+    "only_public_outputs": [
+      "docs/CC12_C07C00_DIRECT_TARGET_ENTRY.md",
+      "reports/cc12_c07c00_direct_target_entry.json"
+    ]
+  },
+  "positive_incoming_edge": {
+    "source": "accepted BODY physical.ranges[0].hex, positive file only",
+    "call_address": "00C17382",
+    "length": 5,
+    "hex": "e87908ffff",
+    "opcode": 232,
+    "signed_relative_displacement": -63367,
+    "arithmetic_next_EIP": "00C17387",
+    "numeric_target": "00C07C00",
+    "no_new_callsite_target_or_provider_query": true
+  },
+  "frozen": {
+    "base_commit": "9df6eff819361e972cfffa33c333d321bcd48770",
+    "observed_main": "9df6eff819361e972cfffa33c333d321bcd48770",
+    "actual_Git_objects": 14,
+    "positive_inputs": [
+      {
+        "path": "docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA.md",
+        "member": "inputs/docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA.md",
+        "blob": "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e",
+        "index_blob": "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e",
+        "working_raw": {
+          "bytes": 8874,
+          "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 8874,
+        "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+      },
+      {
+        "path": "reports/cc12_c1737b_direct_target_body_metadata.json",
+        "member": "inputs/reports/cc12_c1737b_direct_target_body_metadata.json",
+        "blob": "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f",
+        "index_blob": "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f",
+        "working_raw": {
+          "bytes": 1635037,
+          "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 1635037,
+        "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+      },
+      {
+        "path": "docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+        "member": "inputs/docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+        "blob": "4467b8e7b567aaadac77578db41d1cf4d4585fbb",
+        "index_blob": "4467b8e7b567aaadac77578db41d1cf4d4585fbb",
+        "working_raw": {
+          "bytes": 3774,
+          "sha256": "781af21a130a9a220f2b37c6246ff6bc6df940394c5c86ff843e9e14f17eb209"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 3774,
+        "sha256": "781af21a130a9a220f2b37c6246ff6bc6df940394c5c86ff843e9e14f17eb209"
+      },
+      {
+        "path": "reports/cc12_c1737b_direct_target_body_metadata_primary.json",
+        "member": "inputs/reports/cc12_c1737b_direct_target_body_metadata_primary.json",
+        "blob": "76408bcb7783ef020228ecef8683ba85f5d16b23",
+        "index_blob": "76408bcb7783ef020228ecef8683ba85f5d16b23",
+        "working_raw": {
+          "bytes": 72529,
+          "sha256": "ab040d0ccd187e8ccb5e214c87ace22086f14a532c5280ab08f9111e32505fe1"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 72529,
+        "sha256": "ab040d0ccd187e8ccb5e214c87ace22086f14a532c5280ab08f9111e32505fe1"
+      },
+      {
+        "path": "config/target.json",
+        "member": "inputs/config/target.json",
+        "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "working_raw": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "member": "inputs/tools/bsp.py",
+        "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "working_raw": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "member": "inputs/tools/ghidra_export.py",
+        "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "index_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "working_raw": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "member": "inputs/tools/ghidra_typed_flow.py",
+        "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "working_raw": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "working_LF_equals_blob": true,
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    ],
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "current_working_LF_index_committed_equal_at_freeze": true
+  },
+  "Root_metadata_gate": {
+    "receipt": {
+      "bytes": 8024681,
+      "sha256": "a5641d3ba7026dd76d7a06ef8c60a8656c5c756774869799fb834bb6fc79aa6c"
+    },
+    "admission_manifest": {
+      "bytes": 1632,
+      "sha256": "ef2c54ae6b5d2805cf6a14da179a264d2a2af89c9755db01ed182a94b9682bea"
+    },
+    "producer": {
+      "bytes": 12216,
+      "sha256": "68eee59d91ada3a296e803dd128381d772d983f1b409aa271d92ebbff5c5063d"
+    },
+    "admitted_first_unit": {
+      "address": "00C07C00",
+      "length": 5,
+      "end_inclusive": "00C07C04"
+    },
+    "all_initial_artifacts_copied_before_phase2": 177,
+    "metadata_preimages_copied_and_equal_originals": 167,
+    "Root_gate_inspection_display_failures": 0
+  },
+  "physical": {
+    "range": {
+      "start": "00C07C00",
+      "end_inclusive": "00C07C04",
+      "size": 5,
+      "hex": "68907cc000",
+      "bytes": 5,
+      "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+    },
+    "paired_bytes_equal": true,
+    "paired_context_zero_text": {
+      "00c07c00": {
+        "address": "00c07c00",
+        "instruction": "PUSH 0xc07c90",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      }
+    },
+    "paired_text_pin": {
+      "bytes": 162,
+      "sha256": "87ad8611ac7478e60daac5dcf38c0a7c395cf5b00f6d33109dd4ed255413bb11"
+    },
+    "complete_manual_before_actual_Capstone": {
+      "address": "00C07C00",
+      "length": 5,
+      "hex": "68907cc000",
+      "input_pin": {
+        "bytes": 5,
+        "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+      },
+      "mode": "x86-32 operand/address decoding; live CS and SS attributes unestablished",
+      "prefixes": [],
+      "opcode": {
+        "offset": 0,
+        "size": 1,
+        "hex": "68",
+        "value": 104,
+        "interpretation": "PUSH imm32; full-width immediate, no sign extension required in this 32-bit decoding"
+      },
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "encoded_size": 4,
+        "raw_hex": "907cc000",
+        "unsigned": 12614800,
+        "sign_bit": 0,
+        "signed": 12614800,
+        "sign_extension_to_operand_bits": null,
+        "effective_unsigned32": 12614800,
+        "effective_hex32": "00C07C90"
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "stack_value_bytes_little_endian": "907cc000",
+      "mnemonic": "PUSH",
+      "operand": "0xc07c90",
+      "explicit_memory_operand": false,
+      "implicit_stack_segment": "current SS",
+      "arithmetic_next_EIP": "00C07C05",
+      "current_stack_effect": {
+        "predicate": "32-bit operand size, actual current SS stack-address size 32, and normal instruction completion. This predicate is local to this entry and must be renewed after any opaque call.",
+        "prestate": "S = current ESP; all incoming register, flag, segment and memory values otherwise unconstrained",
+        "ESP_after": "(S - 4) modulo 2^32",
+        "memory_write": "current SS:((S - 4) modulo 2^32) receives bytes 90 7c c0 00",
+        "other_general_registers": "unchanged by this instruction",
+        "arithmetic_EFLAGS": "unchanged by this instruction",
+        "not_established": [
+          "actual SS descriptor or mapping",
+          "fault or access outcome",
+          "relation to an earlier caller stack",
+          "argument or frame role",
+          "calling convention or register ABI",
+          "provider or library identity",
+          "successor instruction",
+          "meaning or contents at numeric immediate 00C07C90"
+        ]
+      },
+      "completed_before_actual_Capstone_execution": true,
+      "Capstone_imported_or_executed_here": false,
+      "Native_queries": 0,
+      "Source_contents_read": false
+    },
+    "actual_fresh_offline_Capstone": {
+      "capstone_version": "5.0.7",
+      "architecture": "CS_ARCH_X86",
+      "mode": "CS_MODE_32",
+      "actual_module": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      "actual_library": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      },
+      "input_pin": {
+        "bytes": 5,
+        "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+      },
+      "manual_result_read_and_verified_before_Capstone_import": {
+        "bytes": 2170,
+        "sha256": "3a7c2bb0a34e2c4a4e0b20985179bd2581d71d0f60f5282de406e8a6b4a96ca3"
+      },
+      "actual_decode": {
+        "address": "00C07C00",
+        "length": 5,
+        "hex": "68907cc000",
+        "mnemonic": "push",
+        "op_str": "0xc07c90",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "modrm": 0,
+        "sib": 0,
+        "displacement": 0,
+        "address_size": 4,
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "eflags": 0,
+        "registers_read": [
+          "esp"
+        ],
+        "registers_written": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "operands": [
+          {
+            "type": 2,
+            "size": 4,
+            "immediate": 12614800,
+            "access": 0
+          }
+        ]
+      },
+      "all_manual_physical_fields_match_actual_decode": true,
+      "group_metadata_retained_separately_not_a_physical_field": true,
+      "offline_only": true,
+      "Native_queries": 0,
+      "Source_contents_read": false
+    }
+  },
+  "metadata": {
+    "complete_original_captures": {
+      "typed_a": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T13:58:09.183481+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "dedcb5168a5f7fa5910e16a08e0a87d6844ee5cfee959fdf5e4ac5be8b6e4287"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      },
+      "typed_b": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T13:58:09.560801+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "b60ecee6fddf423656e5a03c2ea1ad73461177160b856d8227a075d444f0e1ac"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      },
+      "typed_c": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T14:05:07.929362+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "97f38e8acd0f4806288c48e3d16026ba6641ba06b3058f48a04b497b24760b6a"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      }
+    },
+    "all_three_original_direct_payloads_byte_equal": true,
+    "four_aliases_independently_retained": true,
+    "default_and_effective_fields_independently_retained": true,
+    "saved_owner_names_flags_are_metadata_not_authenticated_behavior": true
+  },
+  "Native": {
+    "command_count": 11,
+    "counts": 4,
+    "typed_metadata_captures": 3,
+    "exact_byte_captures": 2,
+    "context_zero_captures": 2,
+    "function_count": 64730,
+    "modification_number": 98,
+    "all_three_physical_CLI_producers_checked_before_and_after_each": true,
+    "commands": {
+      "count_before": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "count_before.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "typed_a": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00C07C00",
+          "--output",
+          "local/cc12_c07c00_direct_target_entry/typed_a.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 188,
+          "sha256": "3b86c2bbb550e2bb1b098d4c958c2cdeaa30ae4417e121200cba89cdf351e04e"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "typed_a.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true,
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Existing frozen fetch_raw uses Request(method=GET); complete response URL/status retained. No separate network trace."
+      },
+      "typed_b": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00C07C00",
+          "--output",
+          "local/cc12_c07c00_direct_target_entry/typed_b.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 188,
+          "sha256": "894ba94f37b7d24df5f7ce1c11b48a98f1e8fc0ae302e36b9ffc2929ec5124ac"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "typed_b.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true,
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Existing frozen fetch_raw uses Request(method=GET); complete response URL/status retained. No separate network trace."
+      },
+      "count_after": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "count_after.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "count_before_bytes": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "count_before_bytes.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "bytes_a": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00C07C00",
+          "--length",
+          "5"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 33,
+          "sha256": "92c6c2c9ed1986495897fd8490865c0a81b864b672191415e5fbacedccc61fbd"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "bytes_a.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "bytes_b": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00C07C00",
+          "--length",
+          "5"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 33,
+          "sha256": "92c6c2c9ed1986495897fd8490865c0a81b864b672191415e5fbacedccc61fbd"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "bytes_b.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "text_a": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "instruction-context",
+          "00C07C00",
+          "--context",
+          "0",
+          "--output",
+          "local/cc12_c07c00_direct_target_entry/text_a.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 118,
+          "sha256": "712b05ca8c0730e9610afe3bec8d4afdb6a9ddeac7a7af08f7a8e8945dd6c32e"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "text_a.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "text_b": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "instruction-context",
+          "00C07C00",
+          "--context",
+          "0",
+          "--output",
+          "local/cc12_c07c00_direct_target_entry/text_b.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 118,
+          "sha256": "f4e52fd7318f9af796205e35fcd5d7aa79bfc9dbf4898ac0001f8a3851c81e2e"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "text_b.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      },
+      "typed_c": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00C07C00",
+          "--output",
+          "local/cc12_c07c00_direct_target_entry/typed_c.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 188,
+          "sha256": "2f07537f7c171a8903ca7615627a117dea3f66a02a29ad80d8687875e6de42dc"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "typed_c.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true,
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Existing frozen fetch_raw uses Request(method=GET); complete response URL/status retained. No separate network trace."
+      },
+      "count_after_bytes": {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_c07c00_direct_target_entry",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "CLI_before": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_after": {
+          "tools/bsp.py": {
+            "bytes": 73311,
+            "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+          },
+          "tools/ghidra_export.py": {
+            "bytes": 14411,
+            "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+          },
+          "tools/ghidra_typed_flow.py": {
+            "bytes": 20048,
+            "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+          }
+        },
+        "CLI_before_file_written_before_subprocess": "count_after_bytes.CLI_before.json",
+        "all_three_physical_CLI_producers_unchanged": true
+      }
+    },
+    "GET_evidence": "Frozen typed-flow producer explicitly uses GET; response URL/status and complete originals retained. No independent network trace."
+  },
+  "evidence_package": {
+    "members": 419,
+    "archive": {
+      "bytes": 22273046,
+      "sha256": "58ca774f88de28dcaaedefc0c2a5e84e93b0bc30919ee8148866f9a8c0c5c48e"
+    },
+    "archive_file_ids": [
+      281475006646533,
+      281475006646534
+    ],
+    "manifest": {
+      "bytes": 69424,
+      "sha256": "68e529ef16b5993fa6eb21bce7e5154aa3e6f44a2940793d0962b41d844d21c0"
+    },
+    "replay_helper": {
+      "bytes": 25974,
+      "sha256": "0c7297d2f08a96e8ecb144a7a977afeafdde5170d4854cc38e96f88a37e2d4fa"
+    },
+    "guard": {
+      "bytes": 3325,
+      "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+    },
+    "package_postexecution_files": [
+      "local_evidence.result.json",
+      "local_evidence.stdout.bin",
+      "local_evidence.stderr.bin"
+    ],
+    "package_postexecution_note": "Own original streams/results occur after ZIP creation and are retained separately for final delivery."
+  },
+  "strict_evidence_replays": {
+    "strict_evidence_original.json": {
+      "guard_active_before_helper_execution": true,
+      "helper_pins_verified_before_execution": [
+        {
+          "name": "replay.py",
+          "bytes": 25974,
+          "sha256": "0c7297d2f08a96e8ecb144a7a977afeafdde5170d4854cc38e96f88a37e2d4fa"
+        },
+        {
+          "name": "guarded_replay.py",
+          "bytes": 3325,
+          "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+        }
+      ],
+      "result": {
+        "mode": "evidence",
+        "members": 419,
+        "evidence": {
+          "base_commit": "9df6eff819361e972cfffa33c333d321bcd48770",
+          "observed_main_at_freeze": "9df6eff819361e972cfffa33c333d321bcd48770",
+          "actual_Git_objects": 14,
+          "positive_inputs": 8,
+          "actual_Root_artifacts": 177,
+          "Root_preimages": 167,
+          "entry": "00C07C00",
+          "admitted_length": 5,
+          "paired_bytes": "68907cc000",
+          "manual_instruction": "PUSH full-width imm32 0xc07c90",
+          "complete_original_three_typed_payloads_equal": true,
+          "Native_commands": 11,
+          "three_CLI_physical_before_after_checks": 11,
+          "manual_fields_before_actual_fresh_Capstone": true,
+          "strict_audit_never_imports_or_executes_Capstone": true,
+          "current_SS32_stack_predicate_required": true,
+          "remaining_owner_address_count_unqueried": 64,
+          "unqueried_next_cursor": "00C07C05",
+          "unqueried_immediate_numeric_value": "00C07C90",
+          "Source_identity_only": {
+            "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+            "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+          },
+          "function_count": 64730,
+          "modification_number": 98,
+          "current_packet_worker_Native_helper_and_inspection_failures": 0,
+          "current_worker_display_truncations": 1,
+          "current_Root_gate_inspection_failures_and_truncations": 0,
+          "saved_owner_name_flags_not_authenticated": true,
+          "GPR_writes": 0,
+          "Source_contents_read": false
+        }
+      },
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 1,
+        "unexpected_denials": []
+      }
+    },
+    "strict_evidence_copy.json": {
+      "guard_active_before_helper_execution": true,
+      "helper_pins_verified_before_execution": [
+        {
+          "name": "replay.py",
+          "bytes": 25974,
+          "sha256": "0c7297d2f08a96e8ecb144a7a977afeafdde5170d4854cc38e96f88a37e2d4fa"
+        },
+        {
+          "name": "guarded_replay.py",
+          "bytes": 3325,
+          "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+        }
+      ],
+      "result": {
+        "mode": "evidence",
+        "members": 419,
+        "evidence": {
+          "base_commit": "9df6eff819361e972cfffa33c333d321bcd48770",
+          "observed_main_at_freeze": "9df6eff819361e972cfffa33c333d321bcd48770",
+          "actual_Git_objects": 14,
+          "positive_inputs": 8,
+          "actual_Root_artifacts": 177,
+          "Root_preimages": 167,
+          "entry": "00C07C00",
+          "admitted_length": 5,
+          "paired_bytes": "68907cc000",
+          "manual_instruction": "PUSH full-width imm32 0xc07c90",
+          "complete_original_three_typed_payloads_equal": true,
+          "Native_commands": 11,
+          "three_CLI_physical_before_after_checks": 11,
+          "manual_fields_before_actual_fresh_Capstone": true,
+          "strict_audit_never_imports_or_executes_Capstone": true,
+          "current_SS32_stack_predicate_required": true,
+          "remaining_owner_address_count_unqueried": 64,
+          "unqueried_next_cursor": "00C07C05",
+          "unqueried_immediate_numeric_value": "00C07C90",
+          "Source_identity_only": {
+            "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+            "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+          },
+          "function_count": 64730,
+          "modification_number": 98,
+          "current_packet_worker_Native_helper_and_inspection_failures": 0,
+          "current_worker_display_truncations": 1,
+          "current_Root_gate_inspection_failures_and_truncations": 0,
+          "saved_owner_name_flags_not_authenticated": true,
+          "GPR_writes": 0,
+          "Source_contents_read": false
+        }
+      },
+      "status": "PASS",
+      "guard": {
+        "archive_reads": 1,
+        "result_writes": 1,
+        "helper_execs": 1,
+        "unexpected_denials": []
+      }
+    }
+  },
+  "artifact_pins": {
+    "metadata_manifest.json": {
+      "bytes": 24801,
+      "sha256": "2032cc396c4c74ba6f849550ea2be50c84e7bfd6e9fc15faad204a912264c9d4"
+    },
+    "inspection_history.json": {
+      "bytes": 934,
+      "sha256": "59047f46660d1c183c9801c3403fcd38c7794c77a9347c629481f9de0608d833"
+    },
+    "Root_gate_artifacts_manifest.json": {
+      "bytes": 33940,
+      "sha256": "6cf0d0e717f3c537a870578672a361d307566bd230aa51a7fd38e760f5c19522"
+    },
+    "capture_metadata.py": {
+      "bytes": 8643,
+      "sha256": "ea3030227f5b86adc610d6df4b633aa91d77f9bcfab89bb1bd8e51ffcf9660da"
+    },
+    "capture_admitted.py": {
+      "bytes": 6267,
+      "sha256": "3c574c17435fdba957e5c2cc632aaa79af2c3e9f8fd9a4a7e85dce7cc30993a8"
+    },
+    "manual_decode.py": {
+      "bytes": 2713,
+      "sha256": "9285e94608814ca799539a55707cea7268cc43f7fd52fea57630650b988fd57f"
+    },
+    "manual_decode.json": {
+      "bytes": 2170,
+      "sha256": "3a7c2bb0a34e2c4a4e0b20985179bd2581d71d0f60f5282de406e8a6b4a96ca3"
+    },
+    "decode_offline.py": {
+      "bytes": 3677,
+      "sha256": "41824b0afd92a623a559e49dbf0e17d53af34f68a0a3d06e3efa572e7e197e12"
+    },
+    "offline_decode.json": {
+      "bytes": 1784,
+      "sha256": "64876124c2d7070b0f42148e666317784b891d6b7588d05db1902093ef8217a3"
+    },
+    "replay.py": {
+      "bytes": 25974,
+      "sha256": "0c7297d2f08a96e8ecb144a7a977afeafdde5170d4854cc38e96f88a37e2d4fa"
+    },
+    "guarded_replay.py": {
+      "bytes": 3325,
+      "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+    },
+    "evidence_manifest.json": {
+      "bytes": 69424,
+      "sha256": "68e529ef16b5993fa6eb21bce7e5154aa3e6f44a2940793d0962b41d844d21c0"
+    },
+    "strict_evidence_original.json": {
+      "bytes": 2034,
+      "sha256": "f7e62e622a093daa72d24d9b34cb673a098cc417036a11f1d98b52c83fec6205"
+    },
+    "strict_evidence_copy.json": {
+      "bytes": 2034,
+      "sha256": "f7e62e622a093daa72d24d9b34cb673a098cc417036a11f1d98b52c83fec6205"
+    }
+  },
+  "failures": {
+    "worker_Native": 0,
+    "worker_helpers": 0,
+    "worker_strict_evidence": 0,
+    "worker_inspection": 0,
+    "worker_display_truncations": 1,
+    "inspection_history": {
+      "scope": "Current packet conversation-tool observations only; this is an honest transcription, not an original subprocess byte stream.",
+      "inspection_failures": 0,
+      "display_truncations": 1,
+      "events": [
+        {
+          "stage": "Onboarding memory-registry search before any target Native metadata query",
+          "command": "rg -n -C 2 \"parallel|worktree|CC10\" C:/Users/sqz269/.codex/memories/MEMORY.md",
+          "tool": "exec_command",
+          "exit_code": 0,
+          "reported_original_token_count": 5491,
+          "reported_max_output_tokens": 1600,
+          "observed_notice": "Warning: truncated output (original token count: 5491)",
+          "reported_total_output_lines": 215,
+          "missing_output_recreated": false,
+          "scope_effect": "No target observation, original Native response, helper execution, or data mutation was truncated or failed. A subsequent bounded registry page was used for general workflow guidance."
+        }
+      ]
+    },
+    "current_Root_gate_inspection_display_failures": 0,
+    "accepted_positive_PRIMARY_history": "Its original IMUL SF comparison failure and display truncation remain retained in the positive file. These are not failures of this entry packet."
+  },
+  "unqueried": [
+    "00C07C05 and remaining 64 saved owner bytes",
+    "owner end cursor 00C07C45",
+    "numeric immediate 00C07C90 as an address",
+    "provider/cell/service/target identity",
+    "prototype/decompilation/neighbors",
+    "Source subtree contents or absence",
+    "Original/runtime/game state"
+  ],
+  "GPR_writes": 0,
+  "Source_contents_read": false,
+  "validation_boundary": "Read-only saved metadata, paired five-byte evidence, manual decoding and fresh offline Capstone. No reconstructed C++, build, fixture, ABI compatibility, function-level behavior or game validation.",
+  "delivery_contract": {
+    "exact_public_outputs": 2,
+    "baseline_actual_Git_objects": 14,
+    "additional_expected_Git_objects": 6,
+    "final_archive_includes_original_commit_Git_streams_and_eight_final_positive_LF_index_checks": true,
+    "package_own_postexecution_streams_and_final_strict_receipts_retained_separately": true
+  }
+}
