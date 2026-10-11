@@ -1,0 +1,233 @@
+{
+  "packet": "cc12_application_crt_getptd_first_direct_target_body_primary",
+  "status": "Root accepted bounded Native body evidence",
+  "worker_commit": "f387187f5fdd35b440a649a46f48875fb1dcfa0f",
+  "private_directory": "local\\cc12_application_crt_getptd_first_direct_target_body_primary",
+  "pins": {
+    "Root_listing_gate.py": {
+      "bytes": 5928,
+      "sha256": "545f1d68dab04281f73b6c1a6a43b9502564d11b9966872914063844e32e682a"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 22143,
+      "sha256": "c2b7913d442c1c6d927c52416b363b3008923ab1a70d8ad1631317a4171c02af"
+    },
+    "Root_review.py": {
+      "bytes": 5892,
+      "sha256": "a7b5789eff343a4f90a2dabffabfe93ef95aec2b20ce7ea5601ee606f6af6e55"
+    },
+    "Root_actual_review.json": {
+      "bytes": 8519,
+      "sha256": "ae15af3caaac2b6fdda5024bb5ed0d7c1615597598b7979fd96b45a6baefc192"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2167,
+      "sha256": "0c37a3419289f85cc015bc74f891c9e1f32ebff21629f4297de5e7c93034b9e0"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 2617,
+      "sha256": "70da5db91e198adb8125aacda832b4c58acb198f4ea33c7b88feeae60d8cbac0"
+    },
+    "body_parser.py": {
+      "bytes": 29693,
+      "sha256": "98df90df5336a074622221919a8a095b13801645c1d1899c27ceda08b502b7db"
+    },
+    "guard_replay.py": {
+      "bytes": 3244,
+      "sha256": "f08671ddcbb521130ce6e840d13502fe55059424c4a85ffe134dfee454c899ca"
+    },
+    "staged_git_receipt.json": {
+      "bytes": 3952,
+      "sha256": "7e085c825937e2cd0f537a916529253932355ebe64e2c8f153855854663d58d6"
+    },
+    "final_git_receipt.json": {
+      "bytes": 3818,
+      "sha256": "8b3a5a83361bf1bdb5604e1b55a7084b0b505047d9ad14e8ccde201b8f9e4108"
+    }
+  },
+  "actual_review": {
+    "status": "PASS",
+    "worker_commit": "f387187f5fdd35b440a649a46f48875fb1dcfa0f",
+    "archive_sha256": "b3502946501de284814b07c492c15e577e0e1cd312a2dab83b066fd6693f7a98",
+    "manifest_members": 84,
+    "actual_frozen_Git_objects": 8,
+    "finite_inputs": 12,
+    "outputs": [
+      {
+        "path": "docs/CC12_APPLICATION_CRT_GETPTD_FIRST_DIRECT_TARGET_BODY.md",
+        "mode": "100644",
+        "git_blob": "40a111999525a530e8e2c44fd65b1987064ac3e2",
+        "bytes": 9395,
+        "sha256": "b2921eca42f41844b4cacda703d3a6a6b80ed2a54dda15491f7fa9015c5ea829"
+      },
+      {
+        "path": "reports/cc12_application_crt_getptd_first_direct_target_body.json",
+        "mode": "100644",
+        "git_blob": "35c24332a012eacf18e953c4bfdd5be807446d31",
+        "bytes": 58233,
+        "sha256": "da1f41917d701da601f125a24f3b8f99f71b36f69cd257cc887f1ad5ad74c754"
+      }
+    ],
+    "helper_pins": {
+      "capture_body.py": {
+        "bytes": 4792,
+        "sha256": "c8cee5d77e30c8375228709550d0e0c7fd43a9afdc0db4ddc50c8ef50e0c98cb"
+      },
+      "body_parser.py": {
+        "bytes": 29693,
+        "sha256": "98df90df5336a074622221919a8a095b13801645c1d1899c27ceda08b502b7db"
+      },
+      "packet_tool.py": {
+        "bytes": 22766,
+        "sha256": "5870cc1181c7236230da696b1c9d0a0cd220241d0070cf783a78c31a662584ca"
+      },
+      "guard_replay.py": {
+        "bytes": 3244,
+        "sha256": "f08671ddcbb521130ce6e840d13502fe55059424c4a85ffe134dfee454c899ca"
+      }
+    },
+    "worker_copies_equal_and_distinct": true,
+    "Root_original_gate_compared_before_copy": true,
+    "Root_actual_Capstone_version": "5.0.7",
+    "Root_operand_encoding_comparisons": 16,
+    "reviewed_worker_independent_manual_decoder": true,
+    "Root_independent_manual_decoder_claim": false,
+    "code_SHA256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+    "Native_contract": {
+      "scope": "Conditional local 32-bit x86 semantics only: each instruction must still have its captured encoding when it executes normally in an appropriate environment. Faults, changed code and asynchronous effects are not modeled. Addresses retain DS/SS segment roles; no flat-segment equality is presumed. Local operations leave unmentioned registers unchanged; each external call discards all prior returned-state assumptions.",
+      "memory_order": "Every operand load and stack pop observes memory at that instruction, after preceding writes on that path. PUSH reads its source before decrementing ESP and writing the new stack slot. A computed CALL reads its dispatch cell before pushing the return address. Do not cache either read of 00E15B00 across calls or pushes.",
+      "instruction_effects": [
+        {
+          "address": "00C05070",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05071",
+          "instruction": "push M32[DS:0x00E15B00]",
+          "conditional_effect": "v := M32[DS:0x00E15B00] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05077",
+          "instruction": "call M32[DS:0x00CE20BC]",
+          "conditional_effect": "target := M32[DS:0x00CE20BC] before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0507D; transfer to target. If it later resumes at 0x00C0507D, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0507D",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX in current state; flags unchanged."
+        },
+        {
+          "address": "00C0507F",
+          "instruction": "test ESI, ESI",
+          "conditional_effect": "t := ESI & ESI; ZF/SF/PF := predicates of t; CF=OF=0; AF undefined. No register or memory writes."
+        },
+        {
+          "address": "00C05081",
+          "instruction": "jne 0x00C0509E",
+          "conditional_effect": "If ZF=0, go to 0x00C0509E; otherwise go to 0x00C05083; state unchanged."
+        },
+        {
+          "address": "00C05083",
+          "instruction": "push M32[DS:0x0109DE38]",
+          "conditional_effect": "v := M32[DS:0x0109DE38] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05089",
+          "instruction": "call 0x00C04FDE",
+          "conditional_effect": "target := 0x00C04FDE before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0508E; transfer to target. If it later resumes at 0x00C0508E, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0508E",
+          "instruction": "pop ECX",
+          "conditional_effect": "ECX := M32[SS:ESP] at this instruction; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C0508F",
+          "instruction": "mov ESI, EAX",
+          "conditional_effect": "ESI := EAX in current state; flags unchanged."
+        },
+        {
+          "address": "00C05091",
+          "instruction": "push ESI",
+          "conditional_effect": "v := ESI evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05092",
+          "instruction": "push M32[DS:0x00E15B00]",
+          "conditional_effect": "v := M32[DS:0x00E15B00] evaluated before changing ESP; ESP := ESP-4 mod 2^32; M32[SS:ESP] := v. The write may alias any later data/dispatch-cell read or earlier stack slot, including partial overlaps. Flags unchanged."
+        },
+        {
+          "address": "00C05098",
+          "instruction": "call M32[DS:0x00CE20B4]",
+          "conditional_effect": "target := M32[DS:0x00CE20B4] before the return-address push; ESP := ESP-4 mod 2^32; M32[SS:ESP] := 0x00C0509E; transfer to target. If it later resumes at 0x00C0509E, all returned EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, flags and memory are fresh unknowns; segment environment and cleanup are unproved. No preservation, provider identity or result meaning is assumed."
+        },
+        {
+          "address": "00C0509E",
+          "instruction": "mov EAX, ESI",
+          "conditional_effect": "EAX := ESI in current state; flags unchanged."
+        },
+        {
+          "address": "00C050A0",
+          "instruction": "pop ESI",
+          "conditional_effect": "ESI := M32[SS:ESP] at this instruction; ESP := ESP+4 mod 2^32; flags unchanged. No earlier pushed value is presumed."
+        },
+        {
+          "address": "00C050A1",
+          "instruction": "ret",
+          "conditional_effect": "target := M32[SS:ESP] now; ESP := ESP+4 mod 2^32; transfer to target; flags unchanged. Entry-stack restoration, caller identity and a valid return destination are unproved."
+        }
+      ],
+      "call_boundaries": [
+        "00C05077",
+        "00C05089",
+        "00C05098"
+      ],
+      "branch_qualification": "If C05077 resumes at C0507D, ESI is set to that returned EAX and tested. A nonzero value takes the local short path to C0509E, where EAX is assigned that ESI before POP ESI and RET. The zero path calls C04FDE at C05089; returned ESP/EBP/EAX/ESI and all other state are unknown. C0508E pops from current returned ESP; C0508F sets ESI from current EAX. C05091 pushes that ESI; C05092 rereads 00E15B00 after that push, preserving possible aliases.",
+      "final_call_qualification": "If C05098 resumes at C0509E, MOV EAX,ESI uses returned unknown ESI. It does not promise the value copied or pushed before that call. POP ESI and RET subsequently read current stack memory.",
+      "limits": "No TLS, locking, caching, allocation, decoding-provider, argument or return-type meaning is authenticated. Saved function names, no-return annotations and EXTERNAL scalars do not establish original ABI or runtime behavior."
+    },
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "strict_guard": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "Native": {
+    "address": "00C05070",
+    "bytes": 50,
+    "instructions": 16,
+    "raw_responses": 150,
+    "epoch": 98,
+    "function_count": 64730,
+    "CLI_calls": 11,
+    "calls": [
+      "00C05077",
+      "00C05089",
+      "00C05098"
+    ],
+    "all_returned_state_unknown": true,
+    "dispatch_cells_unread": [
+      "00CE20BC",
+      "00CE20B4"
+    ],
+    "data_cells_unread": [
+      "00E15B00",
+      "0109DE38"
+    ],
+    "direct_target_address_only": "00C04FDE",
+    "final_EAX_uses_last_returned_ESI": true
+  },
+  "credit": {
+    "bounded_Native": true,
+    "Source": false,
+    "build": false,
+    "fixture": false,
+    "Original_ABI": false,
+    "runtime_startup_gameplay": false,
+    "Source_census_current_Root_equality": false
+  }
+}
