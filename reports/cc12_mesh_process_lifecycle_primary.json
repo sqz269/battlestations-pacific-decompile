@@ -1,0 +1,128 @@
+{
+  "schema": "bsp.cc12.mesh-process-lifecycle.Root-primary.v1",
+  "status": "Source_readiness_reviewed_concrete_owner_exclusion_quiescence_NO_GO",
+  "worker_commit": "c616bf4b236cb9180ee1f3004adda9393877f30b",
+  "proof_pins": [
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/worker_evidence.zip",
+      "bytes": 496230431,
+      "sha256": "0f9e92cb820c4319317ee01018e364f91aec5a81f1d86b0e02b0b3887df975fb"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/worker_portable_replay.py",
+      "bytes": 5202,
+      "sha256": "a1a3c4bbce090fbbfd91a861c160aba4786b10b546c10bc69155673be5bf74fa"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/worker_delivery_evidence.zip",
+      "bytes": 32249506,
+      "sha256": "5e3f95c3f2cc14924606df67f706ae34cfc6e247a75db670feb6bbd8262dc5a7"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/worker_delivery_replay.py",
+      "bytes": 5015,
+      "sha256": "e42db22992d9b6a375d9c3fdaf259300b54171650a56fb64f8fc0aa7c34c45ff"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/Root_guard.json",
+      "bytes": 16836,
+      "sha256": "450eef5d4eb693cbb640d2609b5c633fd90e60ea17be1a14ac4819ee32474ef7"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/Root_delivery_guard.json",
+      "bytes": 3663,
+      "sha256": "12c1afa17598143fe922ac68733b102459a33bbe7493c347051266ebb7bdaa49"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/Root_actual_review.json",
+      "bytes": 2152838,
+      "sha256": "ed313dcf6f7a155080e67abf9b04d4521800156ff6e5f51e44d803d4566879cc"
+    },
+    {
+      "path": "local/cc12_mesh_process_lifecycle_primary/worker_report.json",
+      "bytes": 47826,
+      "sha256": "a9b64c36d293d049cd1a537a9f47bfee6ebaa4193341dbabd7d5787941b0d189"
+    }
+  ],
+  "Source_scope": {
+    "frozen": "8268054c5c7b990f3fa51641d7d9240833e902d5",
+    "closed_Source": 4228,
+    "frozen_actual_Git": 4289,
+    "stage_final_actual_Git": 4291,
+    "trees_each": 10,
+    "dependencies": 58,
+    "Root_current": "f2030981871a23a7f24413d672c661f83d49ce76",
+    "later_accepted_full_shell_Source_delta": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "earlier_Source_epoch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_loop_base_source_primary\\Source3356_application_loop_base_Root_frozen.json",
+      "bytes": 1267920,
+      "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+    },
+    "later_Source_epoch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_full_source_primary\\Source3356_application_full_shell_Root_frozen.json",
+      "bytes": 1251121,
+      "sha256": "27c1cc3c96925ebcb273bf5e5a194eb107eac90fa538e39b83e0cc04148f8783"
+    },
+    "old3356physical_preimages_exact": true,
+    "no_evidence_rebase": true,
+    "later_wrapper_has_no_mesh_owner_cell_or_all_path_policy": true
+  },
+  "evidence": {
+    "queries": 94,
+    "excerpts": 113,
+    "orders": 43,
+    "absences": 11,
+    "participation_rows": 18,
+    "old490_plus20_full_indices_recomputed_historical_only": true,
+    "core_guard_entries": 4356,
+    "delivery_guard_entries": 8629
+  },
+  "GO": {
+    "packet": "cc12_mesh_host_policy_provenance_admission",
+    "scope": "Conditional Source-only input admission, document/report/private proof only; no implementation.",
+    "condition": "A real host policy/provider, scheduling/new-handler/caller bridge and borrower/callback quiescence provenance must be physically supplied or positively identified. Freeze those actual preimages and bind every named endpoint to real begin/end participation. Current Source does not supply these inputs.",
+    "limits": "No unused interface, named token, arbitrary new mutex, fabricated owner, speculative cleanup or repetition of the same absent-name census can satisfy this condition."
+  },
+  "NO_GO": {
+    "concrete_custodian": true,
+    "all_path_exclusion_implementation": true,
+    "borrower_quiescence_implementation": true,
+    "active_provider_factory_callers": true,
+    "resource_delegate": true,
+    "speculative_CXX_interface": true,
+    "reason": "Current Source has real startup/frame/drain/exit endpoints, but no real bridge enrolling every mesh path and separate terminal/callback/borrower quiescence. Persistent PreparedRecord ownership across later resource failure is missing."
+  },
+  "qualified_real_witnesses": [
+    "GameMain process mesh pool initialization before actual consumers",
+    "GameStartupHost renderer graph built before application construction",
+    "Actual frame phases, ordinary drain/CRT exit and incomplete-owner _Exit boundaries",
+    "RenderCommandReference terminal contract explicitly permits queue reentry"
+  ],
+  "not_established": [
+    "Actual host policy enrollment across every allocate/return/trim/slab mutation/free/destroy/CRT exit/allocator-list/new-handler/terminal/borrow/callback/disposal endpoint",
+    "Stable real record custody from before preparation through escape/return/unbind/disposal",
+    "Separate constructor, terminal, callback and borrower quiescence",
+    "Owner/provider/scheduling/handler/caller bridge matching genuine failure, reentry and distinct Source lifetime contracts"
+  ],
+  "next_conditional_admission": {
+    "packet": "cc12_mesh_host_policy_provenance_admission",
+    "input_required": "Physically supplied and positively identified actual owner/provider/scheduling/handler/caller bridge plus separate borrower/callback quiescence provenance.",
+    "source_only": true,
+    "Cpp_activation": false,
+    "absence_only_recensus": false,
+    "invented_interface_token_unused_mutex_epoch_retired_empty_count_or_worker_join": false,
+    "Root_fresh_review_required_before_claim_or_dependent_work": true
+  },
+  "Native_queries": 0,
+  "GPR_mutations": 0,
+  "Cpp_changes": 0,
+  "new_tests": 0,
+  "new_builds": 0,
+  "original_ABI": false,
+  "startup_or_gameplay": false,
+  "qualification": "Accept finite Source facts and historical artifact consistency only. Missing host participation/custody/quiescence keeps concrete C++ owner and activation NO-GO. The later full-shell pair is separately accepted dormant Source and supplies none of the missing mesh mechanisms.",
+  "Root_controller_note": "The strict core replay passed and its receipt was written. A trailing optional summary attempted checked_members instead of checked_zip_members; corrected the display only, without repeating or replacing the successful strict replay."
+}
