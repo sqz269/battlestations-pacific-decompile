@@ -440,4 +440,127 @@ void hint_tracker_trigger_00690fd0(HintTrackerState& tracker, HintTrackerHost& h
     tracker.active_60 = name;                                    // 006920AE
 }
 
+namespace {
+
+// 0054FA44..005501D2 (one loop per nation, the japanese one at 0054FE20): resolve both names,
+// observe each found entity once, enable the shot only when both were found.
+void idle_camera_resolve_shots(IdleCameraHost& host, std::vector<IdleCameraShot>* shots) {
+    if (shots == nullptr) return;
+    for (IdleCameraShot& shot : *shots) {
+        shot.eye_entity = host.find_entity_00925a90(shot.eye_name);  // 0054FB1F
+        if (shot.eye_entity == 0) {
+            shot.enabled = false;
+            continue;
+        }
+        if (!host.observer_registered_00694af0(shot.eye_entity)) host.observer_register_00694a60(shot.eye_entity);
+        shot.target_entity = host.find_entity_00925a90(shot.target_name);
+        if (shot.target_entity == 0) {
+            shot.enabled = false;
+            continue;
+        }
+        if (!host.observer_registered_00694af0(shot.target_entity)) host.observer_register_00694a60(shot.target_entity);
+        shot.enabled = true;
+    }
+}
+
+void idle_camera_unobserve_shots(IdleCameraHost& host, std::vector<IdleCameraShot>* shots) {
+    if (shots == nullptr) return;
+    for (const IdleCameraShot& shot : *shots) {
+        if (shot.eye_entity != 0 && host.observer_registered_00694af0(shot.eye_entity)) {
+            host.observer_unregister_006952a0(shot.eye_entity);
+        }
+        if (shot.target_entity != 0 && host.observer_registered_00694af0(shot.target_entity)) {
+            host.observer_unregister_006952a0(shot.target_entity);
+        }
+    }
+}
+
+void idle_camera_forget_entity(std::vector<IdleCameraShot>* shots, std::uintptr_t observed) {
+    if (shots == nullptr) return;
+    for (IdleCameraShot& shot : *shots) {
+        if (shot.eye_entity == observed) {
+            shot.eye_entity = 0;
+            shot.enabled = false;
+        }
+        if (shot.target_entity == observed) {
+            shot.target_entity = 0;
+            shot.enabled = false;
+        }
+    }
+}
+
+}  // namespace
+
+// 0054F900..005501E9. The 900-byte camera node is made once and kept across Enter calls.
+void idle_camera_enter_0054f900(IdleCameraState& screen, IdleCameraHost& host) {
+    if (screen.camera_1c == 0) {
+        screen.camera_1c = host.create_camera_00432750();      // 0054F932..0054F96A
+        host.camera_attach_00923870(screen.camera_1c);         // 0054F9EA, identity matrix
+        host.observer_register_00694a60(screen.camera_1c);     // 0054F9F5
+    }
+    host.camera_copy_game_view_19fc(screen.camera_1c);         // 0054F9FA..0054FA20
+    screen.timer_20 = kIdleCameraStartTimer;                   // 0054FA30
+    screen.shot_24 = 0;
+    host.game_set_camera_mover_004bc410(screen.camera_1c);     // 0054FA3F
+    const std::int32_t mode = host.game_effective_mode_004bca50();
+    idle_camera_resolve_shots(host, host.shots(0, mode));
+    idle_camera_resolve_shots(host, host.shots(1, mode));
+}
+
+// 0054EFC0..0054F3D9: stops observing every shot entity; the entity pointers, the camera and
+// the camera mover are left as they are.
+void idle_camera_exit_0054efc0(IdleCameraState&, IdleCameraHost& host) {
+    const std::int32_t mode = host.game_effective_mode_004bca50();
+    idle_camera_unobserve_shots(host, host.shots(0, mode));
+    idle_camera_unobserve_shots(host, host.shots(1, mode));
+}
+
+// 0054F3E0..0054F735: the camera itself, else every shot naming the released entity.
+void idle_camera_on_released_0054f3e0(IdleCameraState& screen, IdleCameraHost& host, std::uintptr_t observed) {
+    const std::int32_t mode = host.game_effective_mode_004bca50();
+    if (observed == screen.camera_1c) {
+        screen.camera_1c = 0;
+        return;
+    }
+    idle_camera_forget_entity(host.shots(0, mode), observed);
+    idle_camera_forget_entity(host.shots(1, mode), observed);
+}
+
+// 00550410..00550662. The steps run in the native order; the shot list must hold at least one
+// enabled shot or the native search loops forever (00550560 / 005505A0 have no exit).
+void idle_camera_update_00550410(IdleCameraState& screen, IdleCameraHost& host, float dt) {
+    if (screen.camera_1c == 0) return;
+    screen.timer_20 = dt + screen.timer_20;                    // 00550425..0055042F
+    const std::int32_t mode = host.game_effective_mode_004bca50();
+    std::vector<IdleCameraShot>* shots = host.shots(host.local_side_nation_28() == 0 ? 0 : 1, mode);
+    if (shots == nullptr || shots->empty()) return;            // 00550464 / 0055049D
+    const std::int32_t count = static_cast<std::int32_t>(shots->size());
+    auto& v = *shots;
+    auto enabled = [&v](std::int32_t i) { return v[static_cast<std::size_t>(i)].enabled; };
+    bool step_next = screen.timer_20 > kIdleCameraShotSeconds || !enabled(screen.shot_24);  // 005504C1..005504E1
+    if (!step_next && host.input_action_pressed_004c43c0(kIdleCameraNextAction)) {
+        step_next = !host.hud_bc_blocks_input_006529e0();      // 00550506
+    }
+    if (step_next) {
+        do {
+            screen.shot_24 = (screen.shot_24 + 1) % count;     // 0055057E..005505B9
+        } while (!enabled(screen.shot_24));
+        screen.timer_20 = 0.0F;
+    } else if (host.input_action_pressed_004c43c0(kIdleCameraPrevAction) && !host.hud_bc_blocks_input_006529e0()) {
+        do {
+            screen.shot_24 = (count - 1 + screen.shot_24) % count;  // 00550540..0055057A
+        } while (!enabled(screen.shot_24));
+        screen.timer_20 = 0.0F;
+    }
+    // 005505C3..00550654: eye = shot+0 entity, target = shot+4 entity, world up (0, 1, 0).
+    const IdleCameraShot& shot = v[static_cast<std::size_t>(screen.shot_24)];
+    if (!host.entity_pose_fresh_c8(shot.target_entity)) host.entity_refresh_pose_00414db0(shot.target_entity);
+    if (!host.entity_pose_fresh_c8(shot.eye_entity)) host.entity_refresh_pose_00414db0(shot.eye_entity);
+    const IdleCameraHost::Matrix view =
+        host.look_at_00b63f10(host.entity_position_fc(shot.eye_entity), host.entity_position_fc(shot.target_entity),
+                              {0.0F, 1.0F, 0.0F});
+    host.camera_set_world_004134f0(screen.camera_1c, host.invert_affine_00b63b30(view));
+    host.invalidate_subtree_0042ed50(screen.camera_1c);
+}
+
 }  // namespace bsp

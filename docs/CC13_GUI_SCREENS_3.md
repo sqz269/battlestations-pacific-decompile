@@ -220,6 +220,42 @@ and a pointer). Uncertain: the meaning of +50h; `005FFB20` on the active name is
 lookup that would insert a default definition, which the reconstruction treats as "not critical,
 no +50h".
 
+## Idle camera screen 2Ch (second turn, reconstructed, build-tested)
+
+`idle_camera_enter_0054f900`, `idle_camera_exit_0054efc0`, `idle_camera_update_00550410` and
+`idle_camera_on_released_0054f3e0` in `src/gui_screens_3.cpp`; the four listings were read whole
+(`local/g5_l_0054f900.txt`, `..0054efc0.txt`, `..00550410.txt`). Renamed from `BSP_HudScreen2C_*`
+to `BSP_HudIdleCameraScreen_*`, plus Construct 0054F8C0 and Destruct 0054EC90.
+
+The screen cycles a camera through authored shots. Shots live in per-game-mode `std::vector`s of
+1Ch-byte records: allied (nation 0) at `00E19328 + mode*10h`, japanese (nation 1) at
+`00E193A8 + mode*10h` (begin pointers `00E1932C`/`00E193AC`). A shot is `{+00h eye entity, +04h
+target entity, +08h eye name, +10h target name, +18h enabled}`. Who fills these vectors was not
+traced.
+
+- **Enter**: makes the 384h-byte camera node once (`00432750`, attached with an identity matrix by
+  `00923870(0, game+19CCh, &I)`, observed through the screen's observer sub-object at +8), copies
+  the game view node's world matrix (`game+19FCh`, refreshed by `00B6DB70` unless `+5Ch & 2`) into
+  `camera+74h`, sets the timer to 10.0 (00CE38B8, so the first Update switches shot at once), the
+  shot to 0, and the camera mover to the node (`004BC410`). For both nations it resolves eye then
+  target by name through `00925A90` on `game+19CCh`; a missing eye leaves the old target pointer
+  untouched. Found entities are observed once; a shot is enabled only when both were found.
+- **Update** (`dt`, RET 4): timer += dt. With the local side's list (nation 0 allied, else
+  japanese) it advances to the next enabled shot when the timer passes 6.0 s (00CE6630), when the
+  current shot is disabled, or on input action 11Ah; it goes back on 11Bh. Both actions are
+  ignored while `*(*(00E198C4)+BCh)` (`006529E0`) blocks input; a blocked 11Ah falls through to the
+  11Bh test. A change resets the timer. Then both entities' poses are refreshed when stale
+  (target first), and the camera's world matrix becomes the inverse of the look-at from the eye
+  entity's position (+FCh) to the target's, world up (0, 1, 0) (`00B63F10`, `00B63B30`, `004134F0`,
+  `0042ED50`). The search loops have no exit: a list with no enabled shot hangs the native code,
+  and the reconstruction keeps that.
+- **Exit** unregisters every non-null shot entity of both nations and leaves pointers, camera and
+  mover as they are. **OnObservedReleased** (observer slot +04h on the sub-object) clears the
+  camera pointer when the camera goes, else nulls and disables every shot naming the entity.
+
+x87: only the timer `FLD/FADD/FSTP` in Update; the look-at and inverse are the existing camera
+routines and run host-side. No RNG is drawn.
+
 ## Handoff (cc13-gui5, 2026-10-11)
 
 Commits on agent/cc13-gui5: 10c567ae9 (hints screen reconstruction, 31 definitions, 35 names) and
@@ -243,3 +279,17 @@ Open, in order of value:
 4. Weapon-group screen leftovers in segment 16 (00544E60, 00544FA0, 00545270, ...): check for
    0077D600 unit commands before taking them; 00549200 steps the group on observer kind 5.
 5. Segment 4's dialog sequencer stays with cc9 (packet `cc9_dialog_sequencer`).
+## Handoff update (cc13-gui5, second turn, 2026-10-11)
+
+Items 1 and 2 above are done: TriggerHint 00690FD0 (commit 13c58e207) and the idle camera
+screen 2Ch Enter/Exit/Update/OnObservedReleased (this commit), all build-tested and not wired.
+Ledger: 13 more names (4 tracker, 8 idle camera, 1 corrected), 5 more function records;
+`reports/cc13_gui5.json` now 192 call rows, 0 failed. Open:
+
+1. The hint-definition loader `0068F030` (1813 instructions) and its caller `006921B0`: the
+   field map in the TriggerHint section gives the offsets; the meaning of the +50h byte argument
+   is the main unknown and decides when a forced hint queues.
+2. Remaining tracker helpers 0068EE00 (caller 00690C30), 00690B20, 00690CA0, 00690CD0 (the
+   `flush_award_tracker` stub in `src/game_hosts_mission.cpp`).
+3. The filler of the idle-camera shot vectors 00E19328/00E193A8 (probably mission load).
+4. Items 3 to 5 of the first handoff still stand.

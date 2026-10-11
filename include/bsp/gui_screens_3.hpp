@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bsp {
 
@@ -229,5 +230,72 @@ struct HintTrackerHost {
 // 00690FD0: __thiscall(tracker, NativeString* name, char forced), RET 8; SEH 00C7E723.
 void hint_tracker_trigger_00690fd0(HintTrackerState& tracker, HintTrackerHost& host, const std::string& name,
                                    bool forced);
+
+// ---------------------------------------------------------------------------
+// Idle camera screen 2Ch (HUD manager +94h, constructor 0054F8C0, primary vtable 00CEE408,
+// observer sub-object at +8 with vtable 00CEE3F0; member of the idle-camera interface set
+// {2Ch, 29h, 49h}). It cycles a camera through named eye/target entity pairs.
+// ---------------------------------------------------------------------------
+
+inline constexpr float kIdleCameraShotSeconds = 6.0F;     // 00CE6630
+inline constexpr float kIdleCameraStartTimer = 10.0F;     // 00CE38B8, above 6 so Update switches at once
+inline constexpr std::int32_t kIdleCameraNextAction = 0x11A;  // 004C43C0
+inline constexpr std::int32_t kIdleCameraPrevAction = 0x11B;
+inline constexpr std::uint32_t kIdleCameraNodeBytes = 0x384;  // operator new, memset, 00432750
+
+// One 1Ch-byte shot of the vectors at 00E19328 + mode*10h (allied, nation 0) and
+// 00E193A8 + mode*10h (japanese, nation 1); begin pointers at +4 (00E1932C / 00E193AC).
+struct IdleCameraShot {
+    std::uintptr_t eye_entity{};     // +00h, resolved by Enter from eye_name
+    std::uintptr_t target_entity{};  // +04h, resolved by Enter from target_name
+    std::string eye_name;            // +08h (data +0Ch; null reads as 00E1931C "")
+    std::string target_name;         // +10h (data +14h)
+    bool enabled{};                  // +18h, both entities found
+};
+
+struct IdleCameraState {
+    std::uintptr_t camera_1c{};      // +1Ch, the camera scene node (cleared by the observer slot)
+    float timer_20{};                // +20h, seconds on the current shot
+    std::int32_t shot_24{};          // +24h, current shot index
+};
+
+struct IdleCameraHost {
+    virtual ~IdleCameraHost() = default;
+    virtual std::int32_t game_effective_mode_004bca50() = 0;
+    virtual std::int32_t local_side_nation_28() = 0;   // *(game+18CCh + game+18ECh*4)+28h
+    // The shot vector of a nation (0 allied, 1 japanese) for a game mode; null while its begin
+    // pointer is null.
+    virtual std::vector<IdleCameraShot>* shots(std::int32_t nation, std::int32_t mode) = 0;
+    virtual std::uintptr_t create_camera_00432750() = 0;                  // 384h bytes, zeroed
+    // camera.00923870(0, game+19CCh, identity 4x4)
+    virtual void camera_attach_00923870(std::uintptr_t camera) = 0;
+    virtual bool observer_registered_00694af0(std::uintptr_t observed) = 0;   // EDX = screen+8
+    virtual void observer_register_00694a60(std::uintptr_t observed) = 0;     // EDX = screen+8
+    virtual void observer_unregister_006952a0(std::uintptr_t observed) = 0;   // EDX = screen+8
+    // node = game+19FCh: 00B6DB70 when (node+5Ch & 2) == 0, then 004134F0(camera+74h, node+F0h).
+    virtual void camera_copy_game_view_19fc(std::uintptr_t camera) = 0;
+    virtual void game_set_camera_mover_004bc410(std::uintptr_t camera) = 0;
+    virtual std::uintptr_t find_entity_00925a90(const std::string& name) = 0;  // ECX = game+19CCh
+    virtual bool input_action_pressed_004c43c0(std::int32_t action) = 0;
+    virtual bool hud_bc_blocks_input_006529e0() = 0;     // ECX = *(*(00E198C4)+BCh)
+    virtual bool entity_pose_fresh_c8(std::uintptr_t entity) = 0;
+    virtual void entity_refresh_pose_00414db0(std::uintptr_t entity) = 0;
+    virtual std::array<float, 3> entity_position_fc(std::uintptr_t entity) = 0;
+    using Matrix = std::array<float, 16>;
+    virtual Matrix look_at_00b63f10(const std::array<float, 3>& eye, const std::array<float, 3>& target,
+                                    const std::array<float, 3>& up) = 0;
+    virtual Matrix invert_affine_00b63b30(const Matrix& m) = 0;
+    virtual void camera_set_world_004134f0(std::uintptr_t camera, const Matrix& m) = 0;  // camera+74h
+    virtual void invalidate_subtree_0042ed50(std::uintptr_t camera) = 0;
+};
+
+// 0054F900: slot +18h of vtable 00CEE408, __thiscall(screen), RET; SEH frame.
+void idle_camera_enter_0054f900(IdleCameraState& screen, IdleCameraHost& host);
+// 0054EFC0: slot +1Ch, __thiscall(screen), RET.
+void idle_camera_exit_0054efc0(IdleCameraState& screen, IdleCameraHost& host);
+// 00550410: slot +20h, __thiscall(screen, float dt), RET 4.
+void idle_camera_update_00550410(IdleCameraState& screen, IdleCameraHost& host, float dt);
+// 0054F3E0: observer vtable 00CEE3F0 +04h, __thiscall(screen+8, observed), RET 4.
+void idle_camera_on_released_0054f3e0(IdleCameraState& screen, IdleCameraHost& host, std::uintptr_t observed);
 
 }  // namespace bsp
