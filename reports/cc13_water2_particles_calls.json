@@ -1,0 +1,111 @@
+{
+  "packet": "cc13_water2_particles",
+  "doc": "docs/CC13_PARTICLE_EMITTERS.md",
+  "call_sites": [
+    {
+      "address": "00b057c8",
+      "native": "00bd2fc0",
+      "function": "00b057c0",
+      "note": "ECX = 0, stream primary"
+    },
+    {
+      "address": "00b0c9aa",
+      "native": "00bd2fc0",
+      "function": "00b0c8b0",
+      "note": "ECX = 0, stream primary"
+    },
+    {
+      "address": "00b0c96c",
+      "native": "00bf857a",
+      "function": "00b0c8b0",
+      "note": "fmod(frame, 1)"
+    },
+    {
+      "address": "00b0c9cc",
+      "native": "00bf857a",
+      "function": "00b0c8b0",
+      "note": "fmod(next, 1)"
+    },
+    {
+      "address": "00b0c937",
+      "native": "00affd20",
+      "function": "00b0c8b0"
+    },
+    {
+      "address": "00b0c93e",
+      "native": "00affcb0",
+      "function": "00b0c8b0"
+    },
+    {
+      "address": "00b054b0",
+      "native": "00b05420",
+      "function": "00b05420",
+      "note": "left recursion"
+    },
+    {
+      "address": "00b055d9",
+      "native": "00b05420",
+      "function": "00b05550",
+      "note": "sort(0, count-1)"
+    },
+    {
+      "address": "00b05630",
+      "native": "00b6db60",
+      "function": "00b05550",
+      "note": "model local matrix"
+    },
+    {
+      "address": "00b05637",
+      "native": "00413920",
+      "function": "00b05550",
+      "note": "local * model+298"
+    },
+    {
+      "address": "00b06d7e",
+      "native": "00b0c8b0",
+      "function": "00b06b10",
+      "note": "result discarded"
+    },
+    {
+      "address": "00b0834c",
+      "native": "00b0c8b0",
+      "function": "00b08210"
+    },
+    {
+      "address": "00b07234",
+      "native": "00b06a90",
+      "function": "00b06b10",
+      "note": "frame A"
+    },
+    {
+      "address": "00b0725e",
+      "native": "00b06a90",
+      "function": "00b06b10",
+      "note": "frame B"
+    },
+    {
+      "address": "00b0721c",
+      "native": "00bf85b0",
+      "function": "00b06b10",
+      "note": "floor(frame)"
+    },
+    {
+      "address": "00b0722c",
+      "native": "00bf7420",
+      "function": "00b06b10",
+      "note": "ftol"
+    },
+    {
+      "address": "00b0726d",
+      "native": "00bf857a",
+      "function": "00b06b10",
+      "note": "fmod blend"
+    },
+    {
+      "address": "00b070b1",
+      "native": "00419510",
+      "function": "00b06b10",
+      "note": "FollowDirection axis"
+    }
+  ]
+}
