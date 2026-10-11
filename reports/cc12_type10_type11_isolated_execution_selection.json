@@ -14458,6 +14458,168 @@
               "sha256": "a2a7fdb5a01aebb65f8c0e123cec650e786a7bf3bf8c6496c5775effadedfdfc"
             }
           }
+        },
+        "fresh_F6_review01_formal_Dispatch_authorization_and_original_four_tool_DATA_closure": {
+          "schema": "Root_F6_review01_formal_Dispatch_and_original_four_tool_DATA_checkpoint_v1",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "Root_adoption": false,
+          "all_authority": false,
+          "formal_Dispatch_authorization_issued": true,
+          "bounded_original_four_tool_review_DATA_closure_observed": true,
+          "actual_artifacts": {
+            "formal_Dispatch_authorization": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_actual_F6_review01_Dispatch_authorization.json",
+              "bytes": 230227,
+              "sha256": "9d248f65d69ab72498e52acd95af746f3cbdbd7679ead713fda4d7baa1b5136c"
+            },
+            "formal_authorizer_native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_formal_Dispatch_authorizer_original_genuine_native_DATA01.json",
+              "bytes": 21210,
+              "sha256": "887396c0450edd1356fcfc187d284e6ae2d5b4dbd634fa236250d48305032770"
+            },
+            "four_tool_native": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_four_tool_original_genuine_native_DATA01.json",
+              "bytes": 56564,
+              "sha256": "cb272a9d1cd0c5e9ec9711e17a7defab56dde148c8457491f9e1473dd63c523e"
+            },
+            "fourth_QPC": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_fourth_terminal_external_original_QPC_DATA01.json",
+              "bytes": 2523,
+              "sha256": "dd552fdee0512027562ae0768d40056551b4542b05f945051574745c5d815973"
+            },
+            "candidate": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p6\\Root_text_selection_candidate.json",
+              "bytes": 2385240,
+              "sha256": "4159e682d75da146be67a92b0c41e2e4205779bfdb94bf45eeb778495540dbbd"
+            },
+            "ABI_Source_audit": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011_F6_ABI_Source_coverage_DATA01.json",
+              "bytes": 12448,
+              "sha256": "f653161b83a9288c16d96ca3399238352a83cdc20cee3e83e2c8d176ce0c2c4f"
+            },
+            "inventory_review": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_original_native_closure_current_inventory_review_DATA01.json",
+              "bytes": 3732674,
+              "sha256": "b6283b7559d87e5f1afa26cb0954ec4ffe1660125a460b58972990ac91050809"
+            },
+            "measurement_tools": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_current_inventory_measurement_original_genuine_tools_DATA01.json",
+              "bytes": 127436,
+              "sha256": "e2292f8ed4a2cae92ca9f8a007d33d7006cdf307b3288732f2aa710c3856867c"
+            }
+          },
+          "four_original_terminal_results": [
+            {
+              "name": "Dispatch",
+              "chunk_id": "91f555",
+              "exit_code": 0
+            },
+            {
+              "name": "ExecutionRecorder",
+              "chunk_id": "e77df8",
+              "exit_code": 0
+            },
+            {
+              "name": "Closing",
+              "chunk_id": "0269ae",
+              "exit_code": 0
+            },
+            {
+              "name": "ClosingRecorder",
+              "chunk_id": "bf72fc",
+              "exit_code": 0
+            }
+          ],
+          "three_original_auxiliary_terminal_results": [
+            {
+              "name": "ExecutionEventWriter",
+              "chunk_id": "438595",
+              "exit_code": 0
+            },
+            {
+              "name": "ClosingEventWriter",
+              "chunk_id": "34c3f7",
+              "exit_code": 0
+            },
+            {
+              "name": "FourthObserver",
+              "chunk_id": "e10040",
+              "exit_code": 0
+            }
+          ],
+          "original_native_clock_facts": {
+            "origin_qpc_ticks": 11145882364551,
+            "frequency": 10000000,
+            "after_fourth_terminal_upper_bound_qpc_ticks": 11151229385114,
+            "upper_bound_elapsed_ticks": 5347020563,
+            "upper_bound_seconds_decimal": "534.7020563",
+            "strict_deadline_seconds": 600,
+            "already_observed_fourth_terminal_before_deadline": true,
+            "no_replay_or_clock_reset": true,
+            "observer_own_future_API_terminal_proven": false
+          },
+          "Root_text_receipt_issued": false,
+          "Root_text_receipt": null,
+          "fixture_advance_authorized": false,
+          "compilation_performed": false,
+          "target_launched": false,
+          "Native_ABI_qualification": false,
+          "game_qualification": false,
+          "runtime_authority": false,
+          "Dispatch_authority_granted_by_checkpoint": false,
+          "new_Source_qualification": false,
+          "pending": [
+            "independent full selection review and separate Root text receipt",
+            "separate fixture advancement",
+            "compilation and Native fixture launch",
+            "original ABI and game qualification"
+          ],
+          "scope": "Historical original native review-tool/clock DATA only. Source coverage and constructor/helper/provider ABI remain distinct; this additive public checkpoint grants no authority.",
+          "recorded_current_inventory_review": {
+            "artifact": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_original_native_closure_current_inventory_review_DATA01.json",
+              "bytes": 3732674,
+              "sha256": "b6283b7559d87e5f1afa26cb0954ec4ffe1660125a460b58972990ac91050809"
+            },
+            "distinct_pins_physically_bookended_with_two_whole_hashes": 2715,
+            "counts": {
+              "fixture_files": 1483,
+              "fixture_members": 1488,
+              "external_files": 1212,
+              "external_members": 1212,
+              "Root_files": 8,
+              "remaining_empty_roots": 3
+            },
+            "writer_performs_no_live_inventory_rescan": true
+          },
+          "own_inventory_measurement_history": {
+            "original_failed_measurement": {
+              "chunk_id": "e316cf",
+              "exit_code": 1
+            },
+            "actual_membership_diagnosis": {
+              "chunk_id": "833b3d",
+              "exit_code": 0
+            },
+            "frozen_verifier_Source_definition_diagnosis": {
+              "chunk_id": "5c6a8d",
+              "exit_code": 0
+            },
+            "corrected_measurement": {
+              "chunk_id": "f00004",
+              "exit_code": 0
+            },
+            "correction": "One own measurement expression omitted trailing slashes on exactly five directory members; only that expression was corrected. No actual file/member or selected timed attempt changed.",
+            "fixture_or_original_native_timed_failure": false,
+            "original_failed_exit_normalized": false,
+            "complete_raw_own_tools": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_review01_materialization_control01\\Root_F6_review01_current_inventory_measurement_original_genuine_tools_DATA01.json",
+              "bytes": 127436,
+              "sha256": "e2292f8ed4a2cae92ca9f8a007d33d7006cdf307b3288732f2aa710c3856867c"
+            },
+            "auxiliary_output_truncation": "Literal returned truncation is preserved in the optional raw capture. Auxiliary tool exit zero and orchestration parsing errors remain separate; no complete stdout is inferred."
+          }
         }
       }
     }
