@@ -1,0 +1,390 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-unwind-map-readiness.v1",
+  "status": "exact_sixteen_candidate_data_bytes_and_conditional_declared_map_verified_Native_only",
+  "worker_base_commit": "33bfb6c11da2d50cdcae17409148c420c3898d96",
+  "worker_base_tree": "06d8d3ccad3f0ba3e6be70509e5738c87c644312",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_UNWIND_MAP_READINESS.md",
+    "reports/cc12_application_ordinary_retirement_unwind_map_readiness.json"
+  ],
+  "native_scope": {
+    "interval_inclusive": [
+      "00E01CE8",
+      "00E01CF7"
+    ],
+    "explicit_queried_metadata_sites": [
+      "00E01CE8",
+      "00E01CE9",
+      "00E01CEA",
+      "00E01CEB",
+      "00E01CEC",
+      "00E01CED",
+      "00E01CEE",
+      "00E01CEF",
+      "00E01CF0",
+      "00E01CF1",
+      "00E01CF2",
+      "00E01CF3",
+      "00E01CF4",
+      "00E01CF5",
+      "00E01CF6",
+      "00E01CF7"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730,
+    "metadata_batches": 3,
+    "typed_responses": 48,
+    "data_read_count": 2,
+    "data_bytes_per_read": 16,
+    "metadata_identity_count_data_closed_unchanged": true,
+    "instruction_text_queries": 0,
+    "action_target_queries": 0,
+    "other_Native_queries": false
+  },
+  "listing_observation": {
+    "all_sixteen_bytes_covered_by_defined_DataDB": true,
+    "unit_start": "00E01CE8",
+    "reported_unit_length": 16,
+    "unit_at_query": [
+      "00E01CE8"
+    ],
+    "other_fifteen_unit_at_queries": null,
+    "instruction_at_and_containing": null,
+    "function_at_and_containing": null,
+    "instruction_flow": null,
+    "functions": [],
+    "direct_call_targets": [],
+    "read_length": 16,
+    "explicit_memory_block_backing_or_type_proof": false,
+    "coverage_basis": "listing metadata only; two successful exact read-only memory requests establish these sixteen returned bytes"
+  },
+  "raw_data": {
+    "hex": "FF FF FF FF 50 72 CC 00 00 00 00 00 58 72 CC 00",
+    "capture_form": "complete BSP CLI formatted stdout and stderr; not raw HTTP response",
+    "raw_LE_DWORDs": [
+      {
+        "offset": 0,
+        "address": "00E01CE8",
+        "hex": "FFFFFFFF"
+      },
+      {
+        "offset": 4,
+        "address": "00E01CEC",
+        "hex": "00CC7250"
+      },
+      {
+        "offset": 8,
+        "address": "00E01CF0",
+        "hex": "00000000"
+      },
+      {
+        "offset": 12,
+        "address": "00E01CF4",
+        "hex": "00CC7258"
+      }
+    ]
+  },
+  "conditional_layout_comparison": {
+    "condition": "Only if the already qualified classic MSVC x86 nonrelative absolute UnwindMapEntry layout applies",
+    "basis": [
+      "docs/CC12_APPLICATION_DESCRIPTOR_PRIMARY.md",
+      "reports/cc12_application_descriptor_primary.json"
+    ],
+    "qualified_frozen_definition_version_from_Root_contract": "14.51.36231",
+    "current_header_or_web_reads": false,
+    "older_definition_captures_reopened": false,
+    "entry_extent_bytes": 8,
+    "candidate_entry_count": 2,
+    "comparison_fields": [
+      "signed 32-bit candidate toState",
+      "32-bit candidate absolute action-address value"
+    ],
+    "entries": [
+      {
+        "index": 0,
+        "entry_address": "00E01CE8",
+        "candidate_toState": -1,
+        "candidate_action_address": "00CC7250"
+      },
+      {
+        "index": 1,
+        "entry_address": "00E01CF0",
+        "candidate_toState": 0,
+        "candidate_action_address": "00CC7258"
+      }
+    ],
+    "declared_candidate_state_path": [
+      1,
+      0,
+      -1
+    ],
+    "actual_state_writes_or_traversal_observed": false,
+    "action_targets_queried_or_called": false,
+    "Original_compiler_or_runtime_identity_established": false,
+    "FH3_authenticity_established": false,
+    "frame_ABI_or_invocation_established": false,
+    "cleanup_or_retirement_authority": false
+  },
+  "prerequisite": {
+    "current_Root_admission_docs_and_report": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_DESCRIPTOR_PREFIX_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_descriptor_prefix_primary.json"
+    ],
+    "descriptor_prefix_worker_commit": "9529409baf4bf13ce1a9ece440cf36cdb2e77957",
+    "descriptor_prefix_Root_commit": "33bfb6c11da2d50cdcae17409148c420c3898d96",
+    "admission_receipt": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/Root_initial_gate.json",
+      "bytes": 4441,
+      "sha256": "571a0d69b9ce04c6c119fd83c0df8647ec883cf15345c1794a6239e97226f808"
+    },
+    "earlier_descriptor_and_compiler_provenance_remains_opaque": true,
+    "recursive_predecessor_archives_copied_or_replayed": false
+  },
+  "Source_Git_identity_only": {
+    "frozen_HEAD": "33bfb6c11da2d50cdcae17409148c420c3898d96",
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "actual_immediate_prerequisite_input_blobs": 12,
+    "Source_content_census_or_semantic_claim": false,
+    "Old3356_or_Source4217_credit_transfer": false
+  },
+  "exclusions": [
+    "remaining descriptor bytes",
+    "candidate action addresses 00CC7250 and 00CC7258, or any pointer/target following",
+    "neighbor, caller, body, prototype, stack, funclet, instruction-text, disassembly or decompilation queries",
+    "Original compiler/runtime authentication, actual FH3 dispatch, frame ABI, invocation, cleanup or retirement authority",
+    "Ghidra mutation, repair, rename, or analysis",
+    "C++ implementation, tests, build, probes, process, game, OS or audio action",
+    "Source content census, historical archive replay, artifact or runtime credit transfer"
+  ],
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/evidence.zip",
+      "bytes": 200790,
+      "sha256": "54630c3d5b2cf5086100da8a0501fc8362eaa6bbecab79b1140b61db7aade493"
+    },
+    "manifest": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/manifest.json",
+      "bytes": 11367,
+      "sha256": "3be7e96e95d7a6039b619676481c281de470831eb9e7ff4242e0dd81455eeeba"
+    },
+    "replay_helper": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/portable_replay.py",
+      "bytes": 11950,
+      "sha256": "cd99c11c0e5f34790e9a0c10c42599be873ab78e2aea12c2df05eecb54d78b03"
+    },
+    "guard_helper": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/guard_replay.py",
+      "bytes": 2182,
+      "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/capture_gate.py",
+        "bytes": 1826,
+        "sha256": "7de1e756c2c986e48b302cfcad3deab67c75594aa6f9be7f672ff82a17831663"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/capture_data.py",
+        "bytes": 1811,
+        "sha256": "0bcb59f26db2f7b7673d73daccee4b3b48d1142906678c260d11e08ce776187d"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/portable_replay.py",
+        "bytes": 11950,
+        "sha256": "cd99c11c0e5f34790e9a0c10c42599be873ab78e2aea12c2df05eecb54d78b03"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/guard_replay.py",
+        "bytes": 2182,
+        "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/packet_tool.py",
+        "bytes": 19376,
+        "sha256": "7f78868053b6ca5eef90df6bd3f0621995f21cd84e29b3b3152cb82b158a5e58"
+      }
+    ],
+    "physical_copy_distinct": true,
+    "copy_zip": {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/distinct_copy/evidence.zip",
+      "bytes": 200790,
+      "sha256": "54630c3d5b2cf5086100da8a0501fc8362eaa6bbecab79b1140b61db7aade493"
+    },
+    "replay_equal": true,
+    "replay_result": {
+      "status": "PASS",
+      "zip_entries": 65,
+      "payload_members": 64,
+      "payload_bytes": 616933,
+      "Native_CLI_calls": 11,
+      "metadata_batches": 3,
+      "typed_responses": 48,
+      "unique_sites": 16,
+      "epoch": 98,
+      "count": 64730,
+      "listing_coverage": {
+        "start": "00E01CE8",
+        "length": 16,
+        "defined": true
+      },
+      "data_reads": 2,
+      "bytes_per_read": 16,
+      "hex": "FF FF FF FF 50 72 CC 00 00 00 00 00 58 72 CC 00",
+      "raw_LE_DWORDs": [
+        "FFFFFFFF",
+        "00CC7250",
+        "00000000",
+        "00CC7258"
+      ],
+      "conditional_classic_x86_comparison": [
+        {
+          "index": 0,
+          "entry_address": "00E01CE8",
+          "candidate_toState": -1,
+          "candidate_action_address": "00CC7250"
+        },
+        {
+          "index": 1,
+          "entry_address": "00E01CF0",
+          "candidate_toState": 0,
+          "candidate_action_address": "00CC7258"
+        }
+      ],
+      "conditional_declared_state_path": [
+        1,
+        0,
+        -1
+      ],
+      "frozen_HEAD": "33bfb6c11da2d50cdcae17409148c420c3898d96",
+      "Source_subtree_identities": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "frozen_input_blobs": 12,
+      "explicit_memory_block_backing_or_type_proof": false,
+      "Original_compiler_or_FH3_authentication": false,
+      "frame_invocation_or_cleanup_authority": false,
+      "action_target_queries": 0,
+      "external_inputs": false
+    },
+    "guard": {
+      "only_supplied_zip_reads": true,
+      "no_post_preload_imports": true,
+      "no_network_process_dynamic_library_directory_or_mutation": true
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/original_replay.json",
+        "bytes": 1417,
+        "sha256": "d19bfaf4a4d0292cdea0ba20531cd283ba20d69673460b384c1dced98876f530"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/original_guard.json",
+        "bytes": 454,
+        "sha256": "31f066ee83ec1cbea3b8874b71d66c575a9180addadbed943de5f826a53015bf"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/original_replay_command.json",
+        "bytes": 587,
+        "sha256": "02dae0f6f41a344742d5cefb1998468e64b2457de2bca96b1d1db516285e9a10"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/distinct_copy_replay.json",
+        "bytes": 1417,
+        "sha256": "d19bfaf4a4d0292cdea0ba20531cd283ba20d69673460b384c1dced98876f530"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/distinct_copy_guard.json",
+        "bytes": 469,
+        "sha256": "cb38c0c42c87a75adf8bd773478c934c3dac21cda355ecec33cd44a97d49282b"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/distinct_copy_replay_command.json",
+        "bytes": 602,
+        "sha256": "6123dd8a2b277feae11f820e43c5b3e4931b4857bebebb4b92d6391e86791bae"
+      }
+    ]
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/frozen_git.json",
+      "bytes": 7668,
+      "sha256": "17e4e46fa3069d30f8e2ed6d5aab78be82888a7632fa0cc699ed85cb18d5d665"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/Root_initial_gate.json",
+      "bytes": 4441,
+      "sha256": "571a0d69b9ce04c6c119fd83c0df8647ec883cf15345c1794a6239e97226f808"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/seal.json",
+      "bytes": 5287,
+      "sha256": "e5e92cbe6473d00311159bcef008ae18e2e54a0fa9af3b3670b38e427c1f561c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/manifest.json",
+      "bytes": 11367,
+      "sha256": "3be7e96e95d7a6039b619676481c281de470831eb9e7ff4242e0dd81455eeeba"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/initial_gate.json",
+      "bytes": 40209,
+      "sha256": "7a484f53a6cbfc35a0371b8fc7d17bf21e63072baeaad25dfef89d9f5d6d7512"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/pre_data_gate.json",
+      "bytes": 40209,
+      "sha256": "b47d7996c735117b5b95ebea85a4eb8db1d85545c8f922b67e43d31d3b61aec1"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/closing_gate.json",
+      "bytes": 40209,
+      "sha256": "a6e850a85a5e4cdc495c5483d7a6281deaa26112a987607181dd69fc32d10fe4"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/initial_gate_schedule.json",
+      "bytes": 2637,
+      "sha256": "85dd39b2be0c39b8bb497d6e57b7580b8ab1da5a85147113d86c7f20334e603d"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/pre_data_gate_schedule.json",
+      "bytes": 2644,
+      "sha256": "17a853856966be1ccc29bdee85d7336531fcdd3de99dd7107c63d68626dc8984"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/closing_gate_schedule.json",
+      "bytes": 2637,
+      "sha256": "fcf75865a778d2a768af531eb9edd536224214c0cf59ef9ee902de9395b8b5d7"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/data_schedule.json",
+      "bytes": 1711,
+      "sha256": "cbfc0f4bb01ced7091e8d6a7318539f49c8e4b117e673de512bc79a415f680ba"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/data_primary.stdout.txt",
+      "bytes": 77,
+      "sha256": "92f8eece4561eef7d5081049bc30b5bd5ade7141365bb83f283b9aae3a31f6a8"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_unwind_map_readiness/data_closing.stdout.txt",
+      "bytes": 77,
+      "sha256": "92f8eece4561eef7d5081049bc30b5bd5ade7141365bb83f283b9aae3a31f6a8"
+    }
+  ],
+  "git_delivery_receipts": {
+    "staged": "local/cc12_application_ordinary_retirement_unwind_map_readiness/staged_git_receipt.json",
+    "final": "local/cc12_application_ordinary_retirement_unwind_map_readiness/final_git_receipt.json",
+    "note": "External post-generation receipts check actual frozen/final inputs and exactly two staged/final output Git objects; no self-referential output hash is embedded."
+  },
+  "next_gate": "Candidate action addresses remain unread. Any action-target metadata or further data requires a separately bounded Root packet.",
+  "validation_boundary": "Captured and independently replay-checked Native listing/data plus a conditional declared table comparison only; no reconstruction, build, fixture, ABI, cleanup invocation, or game validation."
+}
