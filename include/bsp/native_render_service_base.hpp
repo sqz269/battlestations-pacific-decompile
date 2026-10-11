@@ -76,3 +76,26 @@ struct NativeApplicationSingletonBaseContext {
 void* construct_native_application_singleton_base_00bea810(
     void* actual_receiver, NativeApplicationSingletonBaseContext& context);
 } // namespace bsp
+
+namespace bsp {
+// Dormant borrowed BEA970 loop-base shell; descriptive name, original ECX
+// receiver/no stack arguments/EAX original receiver/RET0. This explicit-context
+// Source API is not the original binary ABI. Retain stable aligned actual 1Ch
+// enclosing storage, valid uint32 object/access at +0, BYTE access at +04, and
+// all BEA810 actual-cell/shared-manager/section/provider/disjointness/lifetime
+// prerequisites. Preserve every other incoming byte and owner domain.
+// Call genuine BEA810 once on the original receiver with the same context;
+// ignore its return value. Only after normal return store DWORD D68BC8 at +0,
+// then exactly BYTE zero at +04, and return the original receiver.
+// Child escape/nonreturn reaches neither store. Reuse its ordinary C++ cleanup
+// unchanged, including conditional null-section handling, current-depth and
+// captured-section roles, normal-Leave uncertainty and second-cleanup termination.
+// Publication/registration occur under D68BC4 before these stores. Escaped
+// references retain their lifetime obligations; CE3818 reset can reach the
+// generic flags1 drain/free path and is not storage-return authority.
+// No owner/cell producer, full 737970, caller, activation, callable profile,
+// outer cleanup, rollback, retain, free, retirement or storage-return policy.
+// Hardware faults, Original FH3/private frame and external ABI remain unproved.
+void* construct_native_application_loop_base_00bea970(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context);
+} // namespace bsp

@@ -147,3 +147,14 @@ void* construct_native_application_singleton_base_00bea810(
     return actual_receiver;
 }
 } // namespace bsp
+
+namespace bsp {
+void* construct_native_application_loop_base_00bea970(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context) {
+    void* const original_receiver = actual_receiver;
+    (void)construct_native_application_singleton_base_00bea810(original_receiver, context);
+    *static_cast<volatile Word*>(original_receiver) = 0x00d68bc8u;
+    static_cast<volatile unsigned char*>(original_receiver)[0x04] = 0;
+    return original_receiver;
+}
+} // namespace bsp
