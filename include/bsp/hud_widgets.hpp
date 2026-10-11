@@ -531,6 +531,163 @@ struct HudPowerupHost {
 void hud_powerup_layout_00614600(HudPowerupScreenState& screen, HudPowerupHost& host);
 // 00614170, slot +10h, __thiscall(screen), RET.
 void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost& host);
+// ---------------------------------------------------------------------------
+// The plane-spawn camera, vtable 00CF4930 (3CCh bytes over base 00432750)
+// ---------------------------------------------------------------------------
+//
+// Fields: +74h the published 4x4 matrix (rows +74h, +84h up, +94h forward,
+// +A4h eye), +10h observer listener (00CF4914), +384h the home entity,
+// +388h the plane, +38Ch a 4x4 seed matrix whose translation row is
+// +3BCh..+3C4h.
+
+struct Vec3f {
+    float x{};
+    float y{};
+    float z{};
+};
+
+struct PlaneSpawnCameraState {
+    std::uintptr_t home_384{};
+    std::uintptr_t plane_388{};
+    std::array<float, 16> seed_38c{};   // [12..14] = +3BCh..+3C4h
+    std::array<float, 16> matrix_74{};  // [4..6] up, [8..10] forward, [12..14] eye
+};
+
+// The plane and home reads 0060CB60/0060CD50 make.
+struct PlaneSpawnPlaneView {
+    bool current_5c{};          // byte +5Ch
+    int state_900{};            // +900h (1 = the parked case)
+    std::uintptr_t parent_3c{};
+    Vec3f local_a4;             // +A4h
+    Vec3f world_fc;             // +FCh, the pose translation row
+    Vec3f row0_cc;              // pose rows +CCh / +ECh after 00414DB0 refresh
+    Vec3f row2_ec;
+};
+
+struct PlaneSpawnCameraHost {
+    virtual ~PlaneSpawnCameraHost() = default;
+    virtual bool is_kind_of(std::uintptr_t entity, int kind) = 0;            // vtable +5Ch
+    virtual Vec3f home_kind9_position(std::uintptr_t home) = 0;               // *(home+538h)+808h
+    virtual PlaneSpawnPlaneView plane(std::uintptr_t plane) = 0;              // refreshes the pose
+    // 006BCD20(ECX = home, DL = 0): the AirOps block, 0 when none.
+    virtual std::uintptr_t air_ops_block_006bcd20(std::uintptr_t home) = 0;
+    // block+3Ch vtable +40h(out, plane) and its translation at +30h.
+    virtual Vec3f parked_position(std::uintptr_t block, std::uintptr_t plane) = 0;
+    // 00414E10 on home, then 00414D10 on plane+FCh.
+    virtual Vec3f transform_into_home(std::uintptr_t home, std::uintptr_t plane) = 0;
+    virtual void unregister_pair_006952a0(std::uintptr_t observed) = 0;       // EDX = camera+10h
+    virtual void register_pair_00694a60(std::uintptr_t observed) = 0;
+    virtual std::array<float, 16> block_matrix(std::uintptr_t block) = 0;     // block vtable +18h
+    virtual std::array<float, 16> plane_matrix(std::uintptr_t plane) = 0;     // plane+CCh
+    virtual float tuning_7c() = 0;                                            // 0042E740 singleton +7Ch
+    virtual void camera_virtual_ac(std::uintptr_t home) = 0;                  // vtable +ACh
+    virtual void orthonormalize_0085dc80(std::array<float, 16>& matrix) = 0;
+    virtual void publish_pose_004329d0(float dt) = 0;
+};
+
+// 0060CB60: __thiscall(camera, Vec3* out), out in EAX, RET 4.
+Vec3f plane_spawn_camera_target_0060cb60(const PlaneSpawnCameraState& camera,
+    PlaneSpawnCameraHost& host);
+// 0060CC90, vtable +DCh: __thiscall(camera, float dt), RET 4.
+void plane_spawn_camera_update_0060cc90(PlaneSpawnCameraState& camera, float dt,
+    PlaneSpawnCameraHost& host);
+// 0060CD50: __thiscall(camera, home, plane), RET 8.
+void plane_spawn_camera_set_targets_0060cd50(PlaneSpawnCameraState& camera,
+    std::uintptr_t home, std::uintptr_t plane, PlaneSpawnCameraHost& host);
+// The eye offset 0060CE67..0060CF56 adds to +3BCh..+3C4h (x87, FSTP points cast).
+Vec3f plane_spawn_camera_eye_offset(const Vec3f& row0, const Vec3f& row2, float tuning) noexcept;
+inline constexpr double kPlaneSpawnEyeUp = 0.0;      // 00D7A258
+inline constexpr double kPlaneSpawnEyeBack = 1.5;    // 00CE3D78
+inline constexpr double kPlaneSpawnEyeHeight = 1.2000000476837158;  // 00CEC160
+struct PlaneSpawnAttachHost {
+    virtual ~PlaneSpawnAttachHost() = default;
+    virtual void register_pair_00694a60(std::uintptr_t observed) = 0;     // EDX = screen+8
+    virtual std::uintptr_t screen_home_entity() = 0;                      // vtable +28h (0060CA20)
+    virtual std::uintptr_t air_ops_block_006bcd20(std::uintptr_t home) = 0;
+    virtual std::uintptr_t holder_entity_7c(std::uintptr_t block) = 0;     // block+7Ch
+    // operator new(3CCh) + memset + 00432750 + the four vtable stores; 0 on failure.
+    virtual std::uintptr_t create_camera() = 0;
+    // 00923870(ECX = camera, 0, game+19CCh, identity 4x4); runs even for a null camera.
+    virtual void init_camera_00923870(std::uintptr_t camera) = 0;
+    virtual void set_targets_0060cd50(std::uintptr_t camera, std::uintptr_t home, std::uintptr_t plane) = 0;
+    virtual void set_camera_mover_004bc410(std::uintptr_t camera) = 0;
+};
+
+// 0060CF90 BSP_HudPlaneSpawnScreen_AttachPlane: __thiscall(screen, plane), RET 4.
+// Caller 0068ACA0 BSP_InGameInterface_ApplyPendingInterface.
+void plane_spawn_attach_plane_0060cf90(PlaneSpawnScreenState& screen, std::uintptr_t plane,
+    PlaneSpawnAttachHost& host);
+// ---------------------------------------------------------------------------
+// The in-game chat / message screen, screen 15h, vtables 00CF1998 / 00CF19C0
+// ---------------------------------------------------------------------------
+//
+// 90h-byte object (BSP_MultiChatScreen_Construct 005CFDA0, docs/MULTI_MENU_SCREENS.md).
+// Three std::list message logs: +68h (proxy, head +6Ch, size +70h) the timed
+// overlay, +74h (head +78h, size +7Ch) the in-mission history, +80h (head
+// +84h, size +88h) the lobby log; byte +8Dh is set after every add.
+
+enum class ChatMessageType : int {
+    LostUnit = 5,       // lostunitplayername
+    Swap = 6,           // globals.swapmessage, SwapPlayer1 + SwapPlayer2
+    Join = 7,           // globals.joinmessage
+    Left = 8,           // globals.leftmessage
+    Surrender = 9,      // ingame.multi_surrender
+    NotSurrender = 10,  // ingame.multi_notsurrender
+};
+
+struct ChatMessage {
+    std::string sender;    // NativeString (+14h / +10h in the nodes)
+    int type{};            // +1Ch / +18h
+    std::u16string text;   // wide string (+0Ch / +08h)
+    float timer{};         // +08h, overlay list only
+};
+
+struct ChatScreenState {
+    std::vector<ChatMessage> overlay_68;   // front = list front
+    std::vector<ChatMessage> history_74;
+    std::vector<ChatMessage> lobby_80;
+    bool dirty_8d{};
+};
+
+inline constexpr float kChatOverlaySeconds = 6.0f;   // 00CE6630
+inline constexpr std::size_t kChatOverlayCap = 7;    // erase the back while size > 6
+inline constexpr std::size_t kChatHistoryCap = 15;   // size > 14
+inline constexpr std::size_t kChatLobbyCap = 43;     // size > 42, erase the front
+
+struct ChatScreenHost {
+    virtual ~ChatScreenHost() = default;
+    virtual bool game_online_1fe4() = 0;
+    virtual bool lua_event_dispatcher_present() = 0;   // 00F8A0C4 != 0
+    // 00985F30 on 00F8A0C4: the Lua "chat" event (docs/MISSION_EVENTS_UPDATE.md).
+    virtual void fire_lua_chat_event_00985f30(const std::string& sender, int type,
+        const std::string& message) = 0;
+    virtual void set_lua_global_string(std::string_view name, const std::string& value) = 0;
+    // 00A9FAD0 on *(00F8BC4C): the localised text of a key list.
+    virtual std::u16string resolve_key_00a9fad0(const std::string& key) = 0;
+    virtual std::u16string widen_004c5e60(const std::string& text) = 0;
+    virtual std::string narrow_low_bytes(const std::u16string& text) = 0;
+};
+
+// 005D0050: __thiscall(screen, NativeString* sender, int type, NativeString*
+// message, NativeString* second), RET 10h. Sole caller 005D07E0 region; the
+// Lua chat event table names it as the producer of `chat`.
+void chat_add_message_005d0050(ChatScreenState& screen, const std::string& sender, int type,
+    const std::string& message, const std::string& second, ChatScreenHost& host);
+// 005D0770: __thiscall(screen, sender, unused, type, message, second,
+// xuid_lo, xuid_hi), RET 1Ch. Callers 00772020, 00772170, 007722E0 (session
+// message handlers). 007786E0 on game+2080h with (local xuid, sender xuid)
+// mutes the message; the local xuid is -1:-1 when game+18ECh is outside 0..7.
+struct ChatMuteHost {
+    virtual ~ChatMuteHost() = default;
+    virtual int local_player_slot() = 0;                                   // game+18ECh
+    virtual std::uint64_t player_xuid(int slot) = 0;                      // slot record +80h/+84h
+    virtual bool muted_007786e0(std::uint64_t local, std::uint64_t remote) = 0;
+};
+bool chat_message_passes_mute_005d0770(std::uint64_t sender_xuid, ChatMuteHost& host);
+
+// Listener 00CF19C0 slot +00h, 005D1460: __thiscall(screen+8, char key, bool
+// down), AL handled, RET 8. Returns the 005D11F0 mode to open, or 0.
+int chat_key_mode_005d1460(std::uint8_t key, bool down, bool in_mission) noexcept;
 }  // namespace bsp
 
 #endif  // BSP_HUD_WIDGETS_HPP
