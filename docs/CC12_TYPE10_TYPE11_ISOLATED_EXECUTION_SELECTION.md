@@ -457,3 +457,10 @@ The fresh actual retry input is frozen and independently reviewed before executi
 The actual joint validation passed in the original process `48554`: `3c2d02` → `f8247f` → `7cbdb9` → `f7255f` → `c2768f/0`. The genuine native capture preserves all five full argument/result tuples and the exact complete terminal stdout. Root consumed the whole accepted joint report and native capture (`f4a160/0`): 423 serialized positive rows, 3,411,665 predicate invocations and 34,957 equal current pin bookends. The separate accepted independent review records 30,978,010 invocations and 34,868 current pins.
 
 The joint producer records five fields in each own-API stamp; the Source-staging gate's nine-field books and fresh independent metadata observations remain separate evidence. The earlier Root03/peer07 HOLD and genuine failure are retained unchanged. Source credit remains zero. Adopted DATA acceptance is issued; constructor execution, ordinary startup, dispatch, a fresh native clock, runtime, fixture, ABI and game qualification remain pending.
+
+
+### Actual Native prestartup DATA constructor
+
+The reviewed constructor completed successfully: `24f907/85757` → `635f24/0`. Its original native capture preserves both full argument/result tuples and the complete actual stdout. It produced the frozen selected-input book (17 pins) and prestartup binding (seven prerequisites, three complete contract pairs). Root consumed both outputs (`d35eed/0`); independent review confirmed the full literal mapping and current physical identities (`a42dea/0`).
+
+The probe and admission consume these two DATA outputs directly; neither requires a constructor-native schema or session rule. The separate genuine constructor capture remains forensic provenance. Ordinary startup, startup admission, selected phase Source execution, dispatch, a new native clock, runtime, fixture, ABI and game qualification remain unissued.
