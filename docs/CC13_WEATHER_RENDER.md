@@ -10,7 +10,7 @@ Analysis target: `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`. Names 
 backed by string anchors, vtables and caller context, not recovered symbols. Status words:
 *named* (ledger + Ghidra), *reconstructed* (C++ in `src/weather_render.cpp`), *build-tested*
 (`scripts/build.ps1` passes). Nothing here is fixture-tested, ABI-compatible or game-validated.
-Call-site claims are in `reports/cc13_weather1_calls.json` (23 rows, `tools/verify_report_calls.py`
+Call-site claims are in `reports/cc13_weather1_calls.json` (40 rows, `tools/verify_report_calls.py`
 clean).
 
 ## Correction: the "ocean" at `[game+19E8h]+3Ch` is the cloud manager
@@ -41,9 +41,11 @@ Owner: the gameplay-effect code in segment 53 builds the storm with `00873EB0`
 (`Effects\Lightning\lightning.ats`) and ticks it from `00873C80`.
 
 Construction (`00BC0D40`): material `3dLightning.mshd` with texture `lightning_002.dds`, float
-parameter `cLifetime` bound to the global `010909B4`; six bolt meshes
-`Effects\Lightning\villam_00{1..6}.MMOD` ("villam" is Hungarian for lightning) loaded into
-`+08..+1C` (model) and `+24..+38` (scene node), placed at `(0, 20, 0)` and hidden. Then
+parameter `cLifetime` bound to the global `010909B4`; seven bolt meshes
+`Effects\Lightning\villam_00{1..7}.MMOD` ("villam" is Hungarian for lightning; loop bound
+`CMP ESI,7` at `00BC10D5`, and `00BC04C0` releases seven) loaded into `+08..+20` (model) and
+`+24..+3C` (scene node), placed at `(0, 20, 0)` and hidden. The bolt pick is `% 6`, so
+`villam_007` is loaded but never shown. Then
 `+00` flash duration 0.1 (`00D7A2F0`), `+04` max strike interval 14.1 (`00D64740`), `+40` timer
 = Uniform(stream 0, 0, 14.1), `+44` age -1000, `+48` light null, `+4C` flashes left 0.
 
@@ -152,6 +154,55 @@ update. Visible: when the manager's wind flag (`00BBCE70`) and `+1E8h` are set, 
 advance by `direction * delta * speed * 30` (`00BBDD60`, `00BBDD70`, `00CE7630`); then vtable+5Ch
 and the material parameters.
 
+## Atmosphere and sky box
+
+`00BBDFF0` builds the 40h atmosphere object that `BSP_Game_ConstructWorld` keeps at
+`game+19E8h` (`docs/GAME_WORLD_CONSTRUCT.md` calls it the ocean owner): vtable `00D64518` over
+`BSP_WeakOwner`, `+0Ch` source object, `+10h` fog receiver (`00BBDF20`), `+18h` sky box
+(`00BBF8A0`), `+1Ch` 40000, `+20h` time of day (0.5), `+24h` 1.0, `+28h` second blend
+coordinate (0.1), `+2Ch` wind direction normalize(1, 0, 0.4), `+38h` wind speed 0.6, `+3Ch` cloud
+manager (`00BBDA50`, A8h). Accessors `00BBDD30` (+20h), `00BBDD40` (+28h), `00BBDD50` (+24h),
+`00BBDD60` (&+2Ch), `00BBDD70` (+38h), `00BBDD80` (direction * speed). The cloud wind drift in
+`00BBE8B0` reads this direction and speed.
+
+The setters `00BBDE10` (+20h) and `00BBDE50` (+28h) recompute the fog colour with
+`00BBF590` on the sky box and pass it to the fog receiver (`00B84C40`); `00BBDE90` sets the wind
+from a vector. These and `00BBDE00` lie in `00BBDDF0..00BBDEC0`, between segment 93 and 94, where
+Ghidra has only the 3-byte `TRIV_body_00bbddf0`; they are documented here, not defined or renamed
+(outside this lease).
+
+Sky box (`00BBF8A0`, 130h): `sky\skybox.mmod`; three layers of 54h bytes from `+34h`, each with
+four texel taps `cOffset0..3` (0, 1/w, 1/h, both) and `cTextureSize` from the layer texture
+`<name>_A/_B/_C.tga` (`+84h`, `+D8h`, `+12Ch`); mesh elements whose texture name contains
+`skyboxdummy_a/b/c` bind layer 0/1/2 and `cLuminance`. `ConstructWorld` sets the rotation
+(`00BBF1A0`, degrees from scene record `+C5Ch`) and `+30h` (`00BBF200`, record `+C60h`);
+`world_construct.cpp` calls these two `ocean_set_scalar`.
+
+Fog colour (`00BBF590`, reconstructed): two dword colour strips at sky box `+18h` and `+24h`
+(B,G,R,A bytes). `00BBF440` samples a strip at `u = count*t - 0.5`, takes the truncated texel
+unclamped and the next texel wrapped (signed `%`) or clamped, and lerps (`00BBF280`). The colour is
+`lerp(c1, c2, c1.a)` with c1 from the first strip at the time of day (wrapping) and c2 from the
+second at `+28h` (clamped), then `004FB850` packs ARGB. No writer of the two strips was found in
+this segment (`00BBF600`, the only other user of their growth helper `00BBF390`, has no
+reference).
+
+## Application model factories and the lightning strand model
+
+The application vtable `00CFEAB0` has four model factories at `+1Ch..+28h` (`+2Ch` `00BC04B0`
+returns 0): cloud render model (`00BC02E0` -> pool `010909F4`, `00BC54F0`, `cloud.mvfm`, vtable
+`00D64878` with the cCloudInstance type slots), cloud plane (`00BC0350` -> pool `01090A2C`,
+`00BC6060` over `00BC7DB0` "cloudplane"), an unnamed refcounted object (`00BC03C0` -> `00BC6430`,
+vtable `00D64940`) and the lightning strand model (`00BC0440` -> pool `01090A68`, `00BC7460`).
+The three pool thunks `00BC54E0`, `00BC6050`, `00BC7450` were tagged `CG_static_dtor_stub`; they
+are `MOV ECX,pool; JMP allocate`.
+
+`00BC7460` builds a GeneratedModel "Lightning" (`00BC93E0`) with a 200-vertex, 50-quad strip and two
+draw sections (`lightning.mshd`, `thunder.mshd`); the definition passed in has atlas items at
+`+24h` (14h records, names resolved through `00AEFB20`). `00BC84A0` (from `00BC9390`, vtable
+`00D64A50` +5Ch) removes expired strands, and when its timer `+1B8h` runs out spawns
+Uniform(0, def+14h) bursts of up to 50 segments with random directions, widths and atlas cells,
+then re-arms with Uniform(0, def+18h); all of it on stream 0. It is named, not reconstructed.
+
 ## Random draws (process generator `00BD2F10` / `00BD2FC0`)
 
 All draws use stream 0 (`XOR ECX,ECX`) except the bolt choice. These are the same per-thread
@@ -170,6 +221,7 @@ gameplay draws whenever it runs on the same thread.
 | `00BC16BF` | 0 | 1 per live drop per tick | waterdrops tick |
 | `00BC40F0` loop | 0 | 6 per puff attempt | cloud class load |
 | `00BC3930` loop | 0 | 1 per puff per light (2 lights) | first update of each cloud instance |
+| `00BC84A0` | 0 | 1 per expiry of the burst timer, plus several per segment | lightning strand model tick |
 
 The water-drop tick is the notable one: it draws once or four times per live drop per frame, so
 its consumption is frame-rate dependent while drops are on screen.
@@ -190,6 +242,9 @@ its consumption is frame-rate dependent while drops are on screen.
 | `00BC40F0` | `cloud_scatter_puffs_00bc40f0` | whole |
 | `00BC47D0` | `cloud_build_geometry_00bc47d0` | scatter loop and bounds tail |
 | `00BBE8B0` | `cloud_instance_step_00bbe8b0` (+ fade / recycle helpers) | fade, recycle, wind drift |
+| `00BBF280` | `sky_lerp_00bbf280` | whole |
+| `00BBF440` | `sky_gradient_sample_00bbf440` | whole |
+| `00BBF590` | `sky_fog_colour_00bbf590` | float colour before `004FB850` |
 
 Original ABI per function is in the ledger records. Uncertainty shared by all: x87 intermediates
 are evaluated in double and rounded at the native float spills; `fsin`/`fcos` are `std::sin`/
@@ -202,16 +257,16 @@ the contract. NaN orderings follow the native FCOMIP/COMISS branches where they 
 
 `reports/cc13_weather1_defined.json`: `00BBE2B0`, `00BBE2C0`, `00BBE2E0` (cCloudInstance type
 slots, vtables `00D64528` and `00D64878`), `00BC1230` (waterdrops vtable +58h) and `00BC2340`
-(waterdrops vtable +60h, 00BC2340..00BC27B0). Code without any reference was left undefined:
+(waterdrops vtable +60h, 00BC2340..00BC27B0), `00BC7170` (lightning model vtable +5Ch) and
+`00BC4D20` (cloud render model vtable +5Ch, 00BC4D20..00BC4FA8). Code without any reference was left undefined:
 `00BBE5B0` (returns 2.0f), `00BBE5D0` (component multiply), `00BC1250..00BC1290`, `00BC1850`,
 `00BC4A10` (name-string copy of the cloud class).
 
 ## Open
 
-- Render families not yet read: `00BC4C50..00BC54F0` (vtable `00D64878`, cloud render model,
-  vt+5Ch `00BC4D20` has no Ghidra function), `00BC5A50..00BC6060` (`cloud.mvfm`),
-  `00BC6C20..00BC7460` (`thunder.mshd`, `lightning.mvfm`, `lightning.mshd`), `00BC7DB0`
-  (`cloudplane`), `00BC84A0` (410 lines), `00BBF6D0`/`00BBF8A0` (sky box `sky\skybox.mmod`,
-  `skyboxdummy_a..c`, `cLuminance`, `cOffset0..3`, `cTextureSize`).
+- Render-model bodies not reconstructed: `00BC4D20` cloud puff sort/cull, `00BC5300`,
+  `00BC66B0`/`00BC6FA0` vertex fills, `00BC84A0`/`00BC9160` strand update and fill, `00BC2340`
+  and `00BC2D50` water-drop geometry. The per-family vector helpers (`00BC4C50..00BC5300`,
+  `00BC5A50..00BC5E70`, `00BC6C20..00BC7270`) are unnamed.
 - `00BC3930`/`00BC3730`/`00BC3430`/`00BC3580` cloud lighting: needs an assembly pass.
 - `00BBE380` also calls `00BC33B0` (the class `+1A8h` model upload); both are unnamed.

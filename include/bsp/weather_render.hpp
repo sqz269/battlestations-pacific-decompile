@@ -44,7 +44,8 @@ public:
 
 // ---------------------------------------------------------------------------
 // 3D lightning storm (object built by 00BC0D40 for 00873EB0, ticked by
-// 00BC0510 from 00873C80). Six bolt meshes Effects\Lightning\villam_00{1..6}.MMOD.
+// 00BC0510 from 00873C80). Seven bolt meshes Effects\Lightning\villam_00{1..7}.MMOD,
+// of which the % 6 pick only ever shows the first six.
 
 struct LightningStormState {
     float flash_duration{0.1f};        // +00, 00D7A2F0
@@ -258,5 +259,38 @@ bool cloud_instance_home_out_of_range_00bbe8b0(float home_reach) noexcept;
 // 00BBE8E8..00BBECD7 without the 00BBE640 lazy lighting and the parameter tail.
 CloudInstanceStep cloud_instance_step_00bbe8b0(CloudInstanceState& s, WeatherMath& math,
                                                CloudInstanceHost& host, float delta);
+
+// ---------------------------------------------------------------------------
+// Sky colour gradients. The atmosphere object (vtable 00D64518, built by 00BBDFF0
+// at [game+19E8h]) keeps time of day at +20h (default 0.5) and a second blend
+// coordinate at +28h (default 0.1); its sky box (00BBF8A0, at +18h) holds two
+// colour strips. Setting either coordinate (00BBDE10 / 00BBDE50) recomputes the
+// fog colour through 00BBF590 and hands it to the fog receiver at +10h.
+
+struct Rgba {
+    float r{};
+    float g{};
+    float b{};
+    float a{};
+};
+
+struct SkyGradient {               // sky box +18h / +24h (dword vector begin, size)
+    const std::uint8_t* texels{};  // B,G,R,A bytes per texel
+    std::int32_t count{};
+};
+
+// 00BBF280: __fastcall(ECX out, EDX a, stack b*, t*), RET 8:
+// out = a + float(float(b - a) * t) per channel.
+Rgba sky_lerp_00bbf280(const Rgba& a, const Rgba& b, float t) noexcept;
+
+// 00BBF440: __fastcall(ECX out, EDX strip, stack float t, bool wrap), RET 8.
+// u = count*t - 0.5; the truncated texel is used unclamped, the next texel is
+// wrapped (signed %) or clamped to [0, count-1].
+Rgba sky_gradient_sample_00bbf440(const SkyGradient& strip, float t, bool wrap) noexcept;
+
+// 00BBF590 before 004FB850: c1 = strip +18h at the time of day (wrapping),
+// c2 = strip +24h at the second coordinate (clamped), result = lerp(c1, c2, c1.a).
+Rgba sky_fog_colour_00bbf590(const SkyGradient& by_time, const SkyGradient& by_blend, float time_of_day,
+                             float blend) noexcept;
 
 }  // namespace bsp::weather

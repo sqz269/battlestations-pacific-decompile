@@ -509,4 +509,41 @@ CloudInstanceStep cloud_instance_step_00bbe8b0(CloudInstanceState& s, WeatherMat
     return CloudInstanceStep::Visible;
 }
 
+// ---------------------------------------------------------------------------
+// Sky colour gradients
+
+Rgba sky_lerp_00bbf280(const Rgba& a, const Rgba& b, float t) noexcept {
+    const auto one = [t](float lo, float hi) {
+        const float d = f32(static_cast<double>(hi) - lo);
+        return f32(static_cast<double>(lo) + f32(static_cast<double>(d) * t));
+    };
+    return {one(a.r, b.r), one(a.g, b.g), one(a.b, b.b), one(a.a, b.a)};
+}
+
+Rgba sky_gradient_sample_00bbf440(const SkyGradient& strip, float t, bool wrap) noexcept {
+    const float u = f32(static_cast<double>(strip.count) * t - 0.5);
+    const std::int32_t lo = static_cast<std::int32_t>(u);  // CVTTSS2SI
+    const float frac = f32(static_cast<double>(u) - lo);   // FISUB
+    std::int32_t hi = lo + 1;
+    if (wrap) {
+        hi %= strip.count;  // IDIV: the image faults on an empty strip
+    } else if (hi < 0) {
+        hi = 0;
+    } else if (hi > strip.count - 1) {
+        hi = strip.count - 1;
+    }
+    const auto texel = [&](std::int32_t i) {
+        const std::uint8_t* p = strip.texels + static_cast<std::ptrdiff_t>(i) * 4;
+        return Rgba{f32(p[2] / 255.0), f32(p[1] / 255.0), f32(p[0] / 255.0), f32(p[3] / 255.0)};
+    };
+    return sky_lerp_00bbf280(texel(lo), texel(hi), frac);
+}
+
+Rgba sky_fog_colour_00bbf590(const SkyGradient& by_time, const SkyGradient& by_blend, float time_of_day,
+                             float blend) noexcept {
+    const Rgba c1 = sky_gradient_sample_00bbf440(by_time, time_of_day, true);
+    const Rgba c2 = sky_gradient_sample_00bbf440(by_blend, blend, false);
+    return sky_lerp_00bbf280(c1, c2, c1.a);
+}
+
 }  // namespace bsp::weather
