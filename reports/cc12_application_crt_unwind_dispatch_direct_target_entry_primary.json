@@ -1,0 +1,357 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_crt_unwind_dispatch_direct_target_entry_primary",
+  "worker_commit": "9722731b58a2628d60c501484ec255b5d160b326",
+  "worker_frozen_commit": "797b72c27038d2d146d99e22a227a63c85f766d9",
+  "worker_archive_sha256": "e16df5501844ce63e3c1dead75a961baa9b6126d0facfb4349878612f7a494d7",
+  "worker_archive_entries": 87,
+  "actual_finite_Git_objects_checked": 20,
+  "actual_positive_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_LISTING_METADATA.md",
+      "blob": "6a70950b42b0a636709e1ea579ce240d39627166",
+      "sha256": "abd9e65b627bb2df549a85d069eff02feaf6083c8e0aca47a4832a35c14a28c5",
+      "length": 5076
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_listing_metadata.json",
+      "blob": "bc3a2cf54d6ab32237d15555602420f69c96a0d4",
+      "sha256": "643c5a0a831e35ff6e95784a05346ff6ab70f3ab9caeef3e8606c319de4367b0",
+      "length": 196696
+    },
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_BODY_PRIMARY.md",
+      "blob": "d084d57a3ff8d79b9851e4a5c3d6353ce755873a",
+      "sha256": "ab577b2b02f3845c7465f056a46cb84056cf8dc979e069b3dbb838163a1814f4",
+      "length": 2988
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_body_primary.json",
+      "blob": "5a0a50da63d0892db965a23310d430a904374e26",
+      "sha256": "b405b8f281c1a5f42317593ff263a8f17581c81cf1e0605a155df60134d130e9",
+      "length": 344054
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "actual_owned_worker_outputs": [
+    "docs/CC12_APPLICATION_CRT_UNWIND_DISPATCH_DIRECT_TARGET_ENTRY.md",
+    "reports/cc12_application_crt_unwind_dispatch_direct_target_entry.json"
+  ],
+  "physical_distinct_worker_copy_ids": [
+    281475006148500,
+    281475006148501
+  ],
+  "reviewed_whole_helper_bodies": {
+    "replay.py": {
+      "bytes": 26898,
+      "sha256": "a7c8d845f6dbb103dde3abaa39945b93d514ef613a006dac2e7aa76c679d8bbc"
+    },
+    "audit_replay.py": {
+      "bytes": 2322,
+      "sha256": "edd917c8ae853ee5513610675f9b3d5050507a6929b4e952eb88abd8c54d88be"
+    }
+  },
+  "Root_pins": {
+    "Root_entry_gate.py": {
+      "bytes": 3802,
+      "sha256": "8c56c4af6c5580e5f5747f424b83912f3d3736241ae2fdaecc58fc1c23b28bf6"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 837,
+      "sha256": "9f2213de43bb572e9d53ba4a2279aa3ed36b7092cd18cbb28a72578d13aa3482"
+    },
+    "Root_gate_preparation_failure.json": {
+      "bytes": 344,
+      "sha256": "703447ac7e9841559e89abc513e406380393f2fafb6e45abfe5b4b99dd856869"
+    },
+    "Root_actual_review.py": {
+      "bytes": 4478,
+      "sha256": "e1f93698fd2907b17fbf4824ed14c253eccba6db8b8fa5f7f3af51edf03c733a"
+    },
+    "Root_actual_review.json": {
+      "bytes": 3114,
+      "sha256": "f4e9b36a69476b6d428d7abd264cc561a605a0130c11e47726ab9fef41a1c536"
+    },
+    "Root_native_decode.py": {
+      "bytes": 3818,
+      "sha256": "cef3ea7a156c7f86ade6e7ac92d379bd41803799d3f697eff75c0d6da77250ad"
+    },
+    "Root_native_decode.json": {
+      "bytes": 4921,
+      "sha256": "d7dc2e7b143baa847e8855e302eff110647124bb5caff3248a53af97c5b407f5"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2215,
+      "sha256": "d39ee2ccfae02d72bbec0d92326b8ae29ae650035735cea6c0bc01104fb538e2"
+    },
+    "Root_strict_replay.json": {
+      "bytes": 1498,
+      "sha256": "b400e45e0d33fc3df88afd52cf639fea105ba9210f7b06e6c20929eaea7151ef"
+    },
+    "Root_review_proof.zip": {
+      "bytes": 2114598,
+      "sha256": "e16df5501844ce63e3c1dead75a961baa9b6126d0facfb4349878612f7a494d7"
+    }
+  },
+  "Root_audit": {
+    "state": {
+      "reads": 1,
+      "writes": 1,
+      "exec": 1
+    },
+    "denials": [],
+    "policy": "Deny every event except one pinned code execution, one exact archive read and one exclusive receipt creation."
+  },
+  "physical_entry": {
+    "address": "00C07623",
+    "hex": "55",
+    "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7",
+    "manual_register_index": 5,
+    "actual_detailed_Capstone": "5.0.7 PUSH EBP width4; flags unchanged"
+  },
+  "conditional_current_state": "Selected default route after opaque first-call return: T=Q0-0x24, B=F0; completed PUSH gives ESP=Q0-0x28 and SS:[Q0-0x28]=current F0.",
+  "Root_selected_default_route": [
+    {
+      "address": "00C0799C",
+      "hex": "83b80c02000000",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [eax + 0x20c], 0",
+      "registers_written": [
+        "eflags"
+      ]
+    },
+    {
+      "address": "00C079A3",
+      "hex": "8b4518",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [ebp + 0x18]",
+      "registers_written": [
+        "eax"
+      ]
+    },
+    {
+      "address": "00C079A6",
+      "hex": "8b4d08",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [ebp + 8]",
+      "registers_written": [
+        "ecx"
+      ]
+    },
+    {
+      "address": "00C079A9",
+      "hex": "bf63736de0",
+      "mnemonic": "mov",
+      "operands": "edi, 0xe06d7363",
+      "registers_written": [
+        "edi"
+      ]
+    },
+    {
+      "address": "00C079AE",
+      "hex": "beffffff1f",
+      "mnemonic": "mov",
+      "operands": "esi, 0x1fffffff",
+      "registers_written": [
+        "esi"
+      ]
+    },
+    {
+      "address": "00C079B3",
+      "hex": "bb22059319",
+      "mnemonic": "mov",
+      "operands": "ebx, 0x19930522",
+      "registers_written": [
+        "ebx"
+      ]
+    },
+    {
+      "address": "00C079B8",
+      "hex": "7520",
+      "mnemonic": "jne",
+      "operands": "0xc079da",
+      "registers_written": []
+    },
+    {
+      "address": "00C079DA",
+      "hex": "f6410466",
+      "mnemonic": "test",
+      "operands": "byte ptr [ecx + 4], 0x66",
+      "registers_written": [
+        "eflags"
+      ]
+    },
+    {
+      "address": "00C079DE",
+      "hex": "7423",
+      "mnemonic": "je",
+      "operands": "0xc07a03",
+      "registers_written": []
+    },
+    {
+      "address": "00C07A03",
+      "hex": "83780c00",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [eax + 0xc], 0",
+      "registers_written": [
+        "eflags"
+      ]
+    },
+    {
+      "address": "00C07A07",
+      "hex": "7512",
+      "mnemonic": "jne",
+      "operands": "0xc07a1b",
+      "registers_written": []
+    },
+    {
+      "address": "00C07A1B",
+      "hex": "3939",
+      "mnemonic": "cmp",
+      "operands": "dword ptr [ecx], edi",
+      "registers_written": [
+        "eflags"
+      ]
+    },
+    {
+      "address": "00C07A1D",
+      "hex": "7532",
+      "mnemonic": "jne",
+      "operands": "0xc07a51",
+      "registers_written": []
+    },
+    {
+      "address": "00C07A51",
+      "hex": "ff7520",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0x20]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A54",
+      "hex": "ff751c",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0x1c]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A57",
+      "hex": "ff7524",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0x24]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A5A",
+      "hex": "50",
+      "mnemonic": "push",
+      "operands": "eax",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A5B",
+      "hex": "ff7514",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0x14]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A5E",
+      "hex": "ff7510",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0x10]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A61",
+      "hex": "ff750c",
+      "mnemonic": "push",
+      "operands": "dword ptr [ebp + 0xc]",
+      "registers_written": [
+        "esp"
+      ]
+    },
+    {
+      "address": "00C07A64",
+      "hex": "51",
+      "mnemonic": "push",
+      "operands": "ecx",
+      "registers_written": [
+        "esp"
+      ]
+    }
+  ],
+  "Root_positive_manual_E8": {
+    "site": "00C07A65",
+    "hex": "e8b9fbffff",
+    "relative_signed": -1095,
+    "target": "00C07623",
+    "return": "00C07A6A"
+  },
+  "metadata_only": {
+    "saved_name": "FindHandler",
+    "saved_complete_range": "00C07623..00C07978",
+    "saved_bytes": 854,
+    "bytes_read": 1,
+    "remaining853B_unread": true,
+    "saved_signature_types_or_convention_authenticated": false
+  },
+  "revision_identity_boundary": "Worker frozen Source tree IDs are identity only; no equality to current Source revision asserted. No Source content/absence census or prior archive recursion.",
+  "failure_disclosure": {
+    "worker_Native_failures": 0,
+    "worker_helper_failures": 0,
+    "Root_offline_gate_preparation_failures": 2,
+    "Root_review_decode_strict_failures": 0
+  },
+  "credit": {
+    "exported_entry": true,
+    "exact_entry_native_evidence": true,
+    "complete_function_behavior": false,
+    "Source_reconstruction": false,
+    "build_this_packet": false,
+    "Original_ABI": false,
+    "Original_FH3": false,
+    "original_frame": false,
+    "handler_selection": false,
+    "activation_ownership_quiescence": false,
+    "game_or_OS_audio_execution": false,
+    "runtime": false,
+    "Ghidra_mutation": false
+  },
+  "continuation": "Remaining 853-byte body requires separate bounded Root metadata/listing gate and byte admission."
+}
