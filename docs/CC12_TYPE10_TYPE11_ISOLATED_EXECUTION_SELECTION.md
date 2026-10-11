@@ -450,3 +450,10 @@ The corrected pair passed the Root Source-only staging gate (39,515 positive che
 The first staging gate attempt (`043fe9/1`) expected qualification fields absent from the historical HOLD schema. Source03 checks the exact 14-key HOLD producer and the separate native qualification fields. Its focused independent review passed 37 checks and all 159 field accesses across 97 fields. The original Source01 HOLD, Source02 static PASS and actual Source02 gate failure remain separate evidence.
 
 The fresh actual retry input is frozen and independently reviewed before execution. This checkpoint records Source-only acceptance and staging; it does not issue joint DATA acceptance, ordinary startup, dispatch, a new native clock, runtime, fixture, ABI or game qualification.
+
+
+### Root04 / peer08 actual joint DATA acceptance
+
+The actual joint validation passed in the original process `48554`: `3c2d02` → `f8247f` → `7cbdb9` → `f7255f` → `c2768f/0`. The genuine native capture preserves all five full argument/result tuples and the exact complete terminal stdout. Root consumed the whole accepted joint report and native capture (`f4a160/0`): 423 serialized positive rows, 3,411,665 predicate invocations and 34,957 equal current pin bookends. The separate accepted independent review records 30,978,010 invocations and 34,868 current pins.
+
+The joint producer records five fields in each own-API stamp; the Source-staging gate's nine-field books and fresh independent metadata observations remain separate evidence. The earlier Root03/peer07 HOLD and genuine failure are retained unchanged. Source credit remains zero. Adopted DATA acceptance is issued; constructor execution, ordinary startup, dispatch, a fresh native clock, runtime, fixture, ABI and game qualification remain pending.
