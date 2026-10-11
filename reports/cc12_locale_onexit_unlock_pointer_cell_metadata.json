@@ -1,0 +1,816 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_unlock_pointer_cell_metadata",
+  "status": "Worker_saved_data_metadata_and_exact_four_bytes_reviewed_Root_final_review_pending",
+  "frozen_base_commit": "392f8a8f8f3c86520dd10c0b24637c7deb1f2bb7",
+  "observed_main_commit": "392f8a8f8f3c86520dd10c0b24637c7deb1f2bb7",
+  "base_is_actual_ancestor_of_observed_main": true,
+  "finite_positive_inputs": [
+    {
+      "path": "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md",
+      "member": "inputs/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "99b1b2a5c3d5cfe44dbb95901c1359bf142a7fee",
+      "index_blob": "99b1b2a5c3d5cfe44dbb95901c1359bf142a7fee",
+      "working_raw": {
+        "bytes": 7842,
+        "sha256": "847d8ea8b3d155720449c25a65febcde9a3f3eb26e5d554fd4da7e34354d9b69"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 7842,
+      "sha256": "847d8ea8b3d155720449c25a65febcde9a3f3eb26e5d554fd4da7e34354d9b69"
+    },
+    {
+      "path": "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json",
+      "member": "inputs/reports/cc12_locale_onexit_cleanup_direct_target_body_metadata.json",
+      "blob": "4660715142f048c9bb67469dedd07bfbf064b916",
+      "index_blob": "4660715142f048c9bb67469dedd07bfbf064b916",
+      "working_raw": {
+        "bytes": 30500,
+        "sha256": "7c0eeede190254825282a9fc9dade26e8be386fed492c3827050e861e96333bc"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 30500,
+      "sha256": "7c0eeede190254825282a9fc9dade26e8be386fed492c3827050e861e96333bc"
+    },
+    {
+      "path": "docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "member": "inputs/docs/CC12_LOCALE_ONEXIT_CLEANUP_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "blob": "20a1a6d113eeaa4cb8a8c72d055f4d9f0cdc111b",
+      "index_blob": "20a1a6d113eeaa4cb8a8c72d055f4d9f0cdc111b",
+      "working_raw": {
+        "bytes": 3069,
+        "sha256": "f2eddffd220958480f66dfc1d6ce1f60f3a6b57ab37722dcedb402bfc9c15151"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 3069,
+      "sha256": "f2eddffd220958480f66dfc1d6ce1f60f3a6b57ab37722dcedb402bfc9c15151"
+    },
+    {
+      "path": "reports/cc12_locale_onexit_cleanup_direct_target_body_metadata_primary.json",
+      "member": "inputs/reports/cc12_locale_onexit_cleanup_direct_target_body_metadata_primary.json",
+      "blob": "e7b03dd16b9efe18ac1028bf8a441105e2aa9b96",
+      "index_blob": "e7b03dd16b9efe18ac1028bf8a441105e2aa9b96",
+      "working_raw": {
+        "bytes": 90362,
+        "sha256": "b1f7baf8e617809e453df9a2a0cc00ae8974a26e2b9efc93d58c8cf3e41a2937"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 90362,
+      "sha256": "b1f7baf8e617809e453df9a2a0cc00ae8974a26e2b9efc93d58c8cf3e41a2937"
+    },
+    {
+      "path": "config/target.json",
+      "member": "inputs/config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "index_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_raw": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "member": "inputs/tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "index_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working_raw": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "member": "inputs/tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "index_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working_raw": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "member": "inputs/tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "index_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working_raw": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "working_LF_equals_blob": true,
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    }
+  ],
+  "finite_Git_proof": {
+    "actual_object_count": 14,
+    "actual_objects": {
+      "392f8a8f8f3c86520dd10c0b24637c7deb1f2bb7": {
+        "type": "commit",
+        "member": "git_objects/392f8a8f8f3c86520dd10c0b24637c7deb1f2bb7.commit",
+        "bytes": 300,
+        "sha256": "a4936d0430be639e2dd69cc967c547f13ba6508f36bff42eb192af5a9a98fc4a"
+      },
+      "8dc7200c7a8b808c7bfd7dc227630960a00a6e28": {
+        "type": "tree",
+        "member": "git_objects/8dc7200c7a8b808c7bfd7dc227630960a00a6e28.tree",
+        "bytes": 563,
+        "sha256": "3e95a340123e9e971bd1e566cc652857dffa4bb99471fafe99af09569959ab1f"
+      },
+      "a23923211d6d2d953cc41761f9bd68781e32a21a": {
+        "type": "tree",
+        "member": "git_objects/a23923211d6d2d953cc41761f9bd68781e32a21a.tree",
+        "bytes": 234047,
+        "sha256": "fe24c93da7dfc089e635185e31d54faa0626448671745103b296c6c119c6efa8"
+      },
+      "99b1b2a5c3d5cfe44dbb95901c1359bf142a7fee": {
+        "type": "blob",
+        "member": "git_objects/99b1b2a5c3d5cfe44dbb95901c1359bf142a7fee.blob",
+        "bytes": 7842,
+        "sha256": "847d8ea8b3d155720449c25a65febcde9a3f3eb26e5d554fd4da7e34354d9b69"
+      },
+      "07421057fb25932e09e7c17278b1fcd3b9387fec": {
+        "type": "tree",
+        "member": "git_objects/07421057fb25932e09e7c17278b1fcd3b9387fec.tree",
+        "bytes": 359042,
+        "sha256": "60eb2ba53007a25b213659f229f6ec3188aa58f78407cc5d95d9665fd0731aba"
+      },
+      "4660715142f048c9bb67469dedd07bfbf064b916": {
+        "type": "blob",
+        "member": "git_objects/4660715142f048c9bb67469dedd07bfbf064b916.blob",
+        "bytes": 30500,
+        "sha256": "7c0eeede190254825282a9fc9dade26e8be386fed492c3827050e861e96333bc"
+      },
+      "20a1a6d113eeaa4cb8a8c72d055f4d9f0cdc111b": {
+        "type": "blob",
+        "member": "git_objects/20a1a6d113eeaa4cb8a8c72d055f4d9f0cdc111b.blob",
+        "bytes": 3069,
+        "sha256": "f2eddffd220958480f66dfc1d6ce1f60f3a6b57ab37722dcedb402bfc9c15151"
+      },
+      "e7b03dd16b9efe18ac1028bf8a441105e2aa9b96": {
+        "type": "blob",
+        "member": "git_objects/e7b03dd16b9efe18ac1028bf8a441105e2aa9b96.blob",
+        "bytes": 90362,
+        "sha256": "b1f7baf8e617809e453df9a2a0cc00ae8974a26e2b9efc93d58c8cf3e41a2937"
+      },
+      "5d44e3241c6faffb49d6d830faa92fba468aaf25": {
+        "type": "tree",
+        "member": "git_objects/5d44e3241c6faffb49d6d830faa92fba468aaf25.tree",
+        "bytes": 368,
+        "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+      },
+      "a46b97705f35162ba70bfbd4909788d11bb188b4": {
+        "type": "blob",
+        "member": "git_objects/a46b97705f35162ba70bfbd4909788d11bb188b4.blob",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "fa269934679ee43da523f7bf9c369e4e27d83531": {
+        "type": "tree",
+        "member": "git_objects/fa269934679ee43da523f7bf9c369e4e27d83531.tree",
+        "bytes": 2580,
+        "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+      },
+      "ba90f058569106f62c72dc9f9d72de205772fc7c": {
+        "type": "blob",
+        "member": "git_objects/ba90f058569106f62c72dc9f9d72de205772fc7c.blob",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "0056201883c1594d9267d2fcf4990385461f0857": {
+        "type": "blob",
+        "member": "git_objects/0056201883c1594d9267d2fcf4990385461f0857.blob",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "4f73269e25719493aefe1d7f0111b8bbb6b62619": {
+        "type": "blob",
+        "member": "git_objects/4f73269e25719493aefe1d7f0111b8bbb6b62619.blob",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    "root_tree": "8dc7200c7a8b808c7bfd7dc227630960a00a6e28",
+    "selected_trees": {
+      "": "8dc7200c7a8b808c7bfd7dc227630960a00a6e28",
+      "docs": "a23923211d6d2d953cc41761f9bd68781e32a21a",
+      "reports": "07421057fb25932e09e7c17278b1fcd3b9387fec",
+      "config": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+      "tools": "fa269934679ee43da523f7bf9c369e4e27d83531"
+    },
+    "Source_subtree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "working_index_blob_equality": "Working LF-normalized bytes equal actual commit blobs; index IDs and path-aware git hash-object match.",
+    "main_advancement_rule": "Frozen ancestry is captured; no assumption that main remains stationary."
+  },
+  "Native_metadata": {
+    "query": "00CE2210",
+    "phase1_before_Root_gate": [
+      "count_before",
+      "typed_a",
+      "typed_b",
+      "count_after"
+    ],
+    "phase2_after_Root_gate": [
+      "count_before_bytes",
+      "bytes_a",
+      "bytes_b",
+      "typed_c",
+      "count_after_bytes"
+    ],
+    "complete_original_payload": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "00ce2210"
+      },
+      "modification_number_before": "98",
+      "listing": {
+        "instruction_at": null,
+        "instruction_containing": null,
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00ce2210"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": true
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00ce2210"
+          },
+          "length": 4,
+          "java_class": "ghidra.program.database.code.DataDB",
+          "kind": "data",
+          "defined": true
+        }
+      },
+      "instruction_flow": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "functions": [],
+      "direct_call_targets": [],
+      "modification_number_after": "98"
+    },
+    "all_three_original_direct_responses_byte_identical": true,
+    "complete_original_direct_response_pin": {
+      "bytes": 906,
+      "sha256": "1495c56f0965f9cde5bbc91a84d635e55351e11eca0364e7e728fe24329f522f"
+    },
+    "unit_extent_derived_from_start_length": {
+      "inclusive_first": "00CE2210",
+      "inclusive_last": "00CE2213",
+      "queried_addresses": [
+        "00CE2210"
+      ]
+    },
+    "datatype_name_path_value_not_exposed": true,
+    "no_substitute_datatype_query": true,
+    "function_count": 64730,
+    "modification_number": 98,
+    "exact_existing_CLI_commands": [
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00CE2210",
+          "--output",
+          "local/cc12_locale_onexit_unlock_pointer_cell_metadata/typed_a.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 204,
+          "sha256": "083c9d7d95e329d9f60349e9db87727c88e4ea767acda8596dd5f57bf4cb2ca5"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Frozen existing tools/ghidra_typed_flow.py fetch_raw uses Request(..., method=GET); response retains URL/status. Not a separate network trace."
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00CE2210",
+          "--output",
+          "local/cc12_locale_onexit_unlock_pointer_cell_metadata/typed_b.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 204,
+          "sha256": "4246072f131c677eefc5ad04a260bd286d55eeaf3f417e0ad76951811776d612"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Frozen existing tools/ghidra_typed_flow.py fetch_raw uses Request(..., method=GET); response retains URL/status. Not a separate network trace."
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00CE2210",
+          "--length",
+          "4"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 29,
+          "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00CE2210",
+          "--length",
+          "4"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 29,
+          "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "typed-flow",
+          "00CE2210",
+          "--output",
+          "local/cc12_locale_onexit_unlock_pointer_cell_metadata/typed_c.raw.json"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 204,
+          "sha256": "82ef3a711c56fafc1b7ccb7ee415fb808d995c23c8995f10e7a638046ab63e9f"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "direct_metadata_HTTP_method": "GET",
+        "method_evidence": "Frozen existing tools/ghidra_typed_flow.py fetch_raw uses Request(..., method=GET); response retains URL/status. Not a separate network trace."
+      },
+      {
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata",
+        "returncode": 0,
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "stdout": {
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "GET_provenance": "Frozen existing fetch_raw Request(method=GET), original recorded URL/status and command provenance; no separate network trace."
+  },
+  "saved_data_bytes": {
+    "saved_cell_address": "00CE2210",
+    "saved_cell_bytes_hex": "8856a000",
+    "saved_cell_pin": {
+      "bytes": 4,
+      "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b"
+    },
+    "paired_exact_bytes_equal": true,
+    "closing_metadata_equal_to_both_initial_payloads": true,
+    "handwritten_LE32": {
+      "octets": [
+        136,
+        86,
+        160,
+        0
+      ],
+      "shifted_terms": [
+        136,
+        22016,
+        10485760,
+        0
+      ],
+      "sum_decimal": 10507912,
+      "sum_hex": "00A05688"
+    },
+    "interpretation_boundary": "Saved Ghidra bytes only. The decoded number is not authenticated live IAT contents, callable RAM, provider identity, argument cleanup or register preservation.",
+    "total_Native_CLI_commands": 9,
+    "phase2_Native_CLI_commands": 5,
+    "Root_copied_artifacts": 163,
+    "Root_copied_preimages": 157
+  },
+  "Root_gate": {
+    "receipt_pin": {
+      "bytes": 1512843,
+      "sha256": "cfe987b090dcc4021f4fab3aed9a71cc22ab4ed99ad774fb9a6859dc3249a8ac"
+    },
+    "producer_pin": {
+      "bytes": 11861,
+      "sha256": "3178ed53d0575ac44360b5601f854762e6ca98dd4fc31edaddf1b5423b4ed1ce"
+    },
+    "actual_copied_artifacts": 163,
+    "actual_copied_preimages": 157,
+    "all_Root_artifacts_copied_unchanged": true,
+    "first_actual_execution": "PASS",
+    "Root_Native_queries": 0,
+    "Root_source_queries": 0
+  },
+  "architectural_boundary": {
+    "encoded_memory_operand": "Accepted FF151022CE00 reads current DS at offset CE2210.",
+    "ordering": "Cell read follows preceding PUSH memory store and precedes own CALL return-address store; DS/SS aliases remain possible.",
+    "no_measured_bus_or_fault_order": true,
+    "saved_value_is_not_live_IAT_value": true,
+    "numeric_decode_not_callable_RAM_or_provider": true,
+    "current_DS_mapping_loader_state_and_instruction_time_memory_unknown": true,
+    "Source_import_name_does_not_authenticate_Native_provider": true,
+    "opaque_return_boundary": "Returned registers, segments, flags and memory remain unknown. Only renewed actual 32-bit SS stack-address size and normal POP/RET completion support the existing Q-based equations."
+  },
+  "proof": {
+    "private_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_onexit_unlock_pointer_cell_metadata\\local\\cc12_locale_onexit_unlock_pointer_cell_metadata",
+    "evidence_archive": {
+      "members": 354,
+      "archive": {
+        "bytes": 5810952,
+        "sha256": "ced3687680648bb118f19ad91b6b929e54a5263b403b65263fe692613e38c8b8"
+      },
+      "archive_file_ids": [
+        281475006371169,
+        281475006371170
+      ],
+      "manifest": {
+        "bytes": 57784,
+        "sha256": "fa12e3b12bde7b1434e4a85da17b4c02a2c21d82665315e441e73b32e216091a"
+      },
+      "replay_helper": {
+        "bytes": 17077,
+        "sha256": "45d546c2073da3aae48ae5ac64cca3ef45a2cfb798e074185a5d86bc1bd42793"
+      },
+      "guard": {
+        "bytes": 3325,
+        "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+      },
+      "package_postexecution_files": [
+        "local_evidence.result.json",
+        "local_evidence.stdout.bin",
+        "local_evidence.stderr.bin"
+      ],
+      "package_postexecution_note": "These original streams/results occur after ZIP creation and are retained separately for final delivery."
+    },
+    "evidence_original_guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "evidence_copy_guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "both_evidence_replays_first_attempt_PASS": true,
+    "artifact_pins": {
+      "frozen_inputs.json": {
+        "bytes": 40975,
+        "sha256": "e808fcc9a60330e04b0b1a158edbed08cea88bf127bf74b331593180b7b85a02"
+      },
+      "metadata_manifest.json": {
+        "bytes": 27713,
+        "sha256": "f818e215e7bf8f1947742633878a0cd3b6f66bb8f063ac51ba40bf55d4f8f567"
+      },
+      "metadata_observed.json": {
+        "bytes": 1775,
+        "sha256": "e502957c0e488b6bf37b0325af28a52758012302a65fb394851cccbbb8c1b8d7"
+      },
+      "Root_artifact_manifest.json": {
+        "bytes": 46634,
+        "sha256": "a8062ddc067511c63e4b908619654f31de8040f423fc030ee3ee593ce364acb6"
+      },
+      "Root_gate/Root_listing_gate.json": {
+        "bytes": 1512843,
+        "sha256": "cfe987b090dcc4021f4fab3aed9a71cc22ab4ed99ad774fb9a6859dc3249a8ac"
+      },
+      "admitted_bytes.json": {
+        "bytes": 846,
+        "sha256": "004f60f1b7680de4fd0f8e2effcba15d0d4aa669d08bbd53b291064dfe790c2d"
+      },
+      "evidence_manifest.json": {
+        "bytes": 57784,
+        "sha256": "fa12e3b12bde7b1434e4a85da17b4c02a2c21d82665315e441e73b32e216091a"
+      },
+      "evidence_package.json": {
+        "bytes": 859,
+        "sha256": "8debac07649cb24108fa49800fa3f213421c599bd2d9feb4a15580802316956e"
+      },
+      "evidence.zip": {
+        "bytes": 5810952,
+        "sha256": "ced3687680648bb118f19ad91b6b929e54a5263b403b65263fe692613e38c8b8"
+      },
+      "evidence_copy.zip": {
+        "bytes": 5810952,
+        "sha256": "ced3687680648bb118f19ad91b6b929e54a5263b403b65263fe692613e38c8b8"
+      },
+      "replay.py": {
+        "bytes": 17077,
+        "sha256": "45d546c2073da3aae48ae5ac64cca3ef45a2cfb798e074185a5d86bc1bd42793"
+      },
+      "guarded_replay.py": {
+        "bytes": 3325,
+        "sha256": "49aa2f8c102ba0fd32d38d7ace97a8041d17fdfd3ca7bbb7d6cecbb8c44bdb1e"
+      },
+      "strict_evidence_original.json": {
+        "bytes": 1678,
+        "sha256": "69b1c3c2d0f2d1ba028a0519799e6735089104ed0f8bf1a8e33e0fc92bafa13e"
+      },
+      "strict_evidence_copy.json": {
+        "bytes": 1678,
+        "sha256": "69b1c3c2d0f2d1ba028a0519799e6735089104ed0f8bf1a8e33e0fc92bafa13e"
+      },
+      "publish.py": {
+        "bytes": 7524,
+        "sha256": "d5d3c0bec4a34c5ad2d28d23dc6fdad31f4a58668340312b4dcbafab7a139cf5"
+      },
+      "local_publish.invocation.json": {
+        "bytes": 681,
+        "sha256": "afd889492c28fea382c422564f2e26b6605bfed31560c8bf19c0bf0fa0570843"
+      },
+      "local_freeze.invocation.json": {
+        "bytes": 679,
+        "sha256": "4dc8e5d95b9ebe3d0e8d47e7dc7749aff95e7eb078c69210ec505c9c6f351486"
+      },
+      "local_freeze.result.json": {
+        "bytes": 302,
+        "sha256": "812059e4d7d5bd996b4821f44f4fc7df096d58cb22db97a7d1dda5d34dd4c2de"
+      },
+      "local_freeze.stdout.bin": {
+        "bytes": 393,
+        "sha256": "8a9493f4b47e6a4ef3a597aa5e0143f276c6527af1f5f6abaff3d5c8a1bbb1f3"
+      },
+      "local_freeze.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_metadata.invocation.json": {
+        "bytes": 699,
+        "sha256": "8db48304be2ba5d4f3e9c1e72c0a911451ea5ba5e7981b1182a403fc731cdd55"
+      },
+      "local_metadata.result.json": {
+        "bytes": 302,
+        "sha256": "37b6aead033fb095c30d83a9afe7739ab3e08be8cb564d7a5311821906009945"
+      },
+      "local_metadata.stdout.bin": {
+        "bytes": 876,
+        "sha256": "a19193e9c56c4b3a370c9d70b5939d41b9e626566b5d1a36ef20338bbe9a925d"
+      },
+      "local_metadata.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_pin.invocation.json": {
+        "bytes": 691,
+        "sha256": "193f0c99268334889020764cf842fa81a7f5e27d89baf6974c0672b8107c4fb4"
+      },
+      "local_pin.result.json": {
+        "bytes": 302,
+        "sha256": "38bbe9ae308101698f29497fb7acb4d4f3798f4510e7f5c782ccc2fd47b2834f"
+      },
+      "local_pin.stdout.bin": {
+        "bytes": 367,
+        "sha256": "c1ca33a3e8bba94913689737a4f0b912fab97dfb3706c0885121a35db3b4d484"
+      },
+      "local_pin.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_admitted.invocation.json": {
+        "bytes": 699,
+        "sha256": "2f746a20b390feb50883daadaef6545816eb1b6e037ae6b40dbf57e7aa77f7da"
+      },
+      "local_admitted.result.json": {
+        "bytes": 303,
+        "sha256": "e3512e49829bca08fa37acb4d6c7f3ec2e8781bf838d4585551173407dde9d95"
+      },
+      "local_admitted.stdout.bin": {
+        "bytes": 1143,
+        "sha256": "70a105f02fc035d88e39c21adae91fa2593cc4f01c2a7ae7eff2739856957a18"
+      },
+      "local_admitted.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_evidence.invocation.json": {
+        "bytes": 693,
+        "sha256": "c7d2840bd6bc88451ebb27e8b2c02a457d7380ad8531c5ef45031a2fd914731a"
+      },
+      "local_evidence.result.json": {
+        "bytes": 302,
+        "sha256": "2119da894cbbbe90b8d3503f50851fd21ce28ce2151500e94469f82531c6300f"
+      },
+      "local_evidence.stdout.bin": {
+        "bytes": 766,
+        "sha256": "f2d08fee3d2eef455bfd6efbe903e90423f9dee41997b7079f06a7f2e10cdd1e"
+      },
+      "local_evidence.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_strict_evidence_original.invocation.json": {
+        "bytes": 1262,
+        "sha256": "7ca9ac0d6b79e1818d809dcdc1fa17b3f49f5b82ada22e2ec2b820dc6610b5e0"
+      },
+      "local_strict_evidence_original.result.json": {
+        "bytes": 300,
+        "sha256": "9a7c1df94048816a88ace2faaaca83e01234caf5446034e747e22b3f8c5f70f7"
+      },
+      "local_strict_evidence_original.stdout.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_strict_evidence_original.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_strict_evidence_copy.invocation.json": {
+        "bytes": 1263,
+        "sha256": "9ddc5cc07a33ab092ff737fb2f23791d938c1a1135adf47d921d84ad9d267773"
+      },
+      "local_strict_evidence_copy.result.json": {
+        "bytes": 300,
+        "sha256": "9a7c1df94048816a88ace2faaaca83e01234caf5446034e747e22b3f8c5f70f7"
+      },
+      "local_strict_evidence_copy.stdout.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "local_strict_evidence_copy.stderr.bin": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "delivery_after_commit": [
+      "delivery_git.json",
+      "delivery_manifest.json",
+      "delivery_package.json",
+      "delivery.zip",
+      "delivery_copy.zip",
+      "strict_delivery_original.json",
+      "strict_delivery_copy.json"
+    ],
+    "delivery_timing": "Actual final commit and two public output objects are retained after publication. Their manifest/receipts remain external to this committed report, avoiding a self-hash assertion.",
+    "publication_postexecution_files": [
+      "local_publish.result.json",
+      "local_publish.stdout.bin",
+      "local_publish.stderr.bin"
+    ]
+  },
+  "document": {
+    "path": "docs/CC12_LOCALE_ONEXIT_UNLOCK_POINTER_CELL_METADATA.md",
+    "bytes": 7908,
+    "sha256": "2aff889847bb9129408da34fb1afee5f0854bea0f0ef855410b2632354fc9f5d"
+  },
+  "failure_history": {
+    "worker_Native_failures": 0,
+    "worker_offline_helper_failures_through_publication": 0,
+    "Root_actual_gate_failures": 0,
+    "Root_preliminary_shared_tool_output_truncations": 1,
+    "Root_truncation_limitation": "One preliminary combined schema display was truncated by the tool. No conclusion relies on its head. Complete visible tool return stays in conversation, without a separate original local stdout/stderr claim. Follow-up schema displays and this gate independently checked all actual inputs.",
+    "historical_inputs": "Failures disclosed by older accepted inputs keep their own historical scope."
+  },
+  "credit": {
+    "saved_exact_data_metadata": true,
+    "saved_exact_four_bytes": true,
+    "Source_reconstructed_or_modified": false,
+    "Original_ABI": false,
+    "live_IAT_or_provider_identity": false,
+    "new_build_tests_probes": false,
+    "Ghidra_mutation": false,
+    "runtime_startup_game_OS_audio": false
+  },
+  "remaining_boundary": "No current-memory/provider/caller/lock-lifetime authentication. The decoded saved number and EXTERNAL scalar were not queried."
+}
