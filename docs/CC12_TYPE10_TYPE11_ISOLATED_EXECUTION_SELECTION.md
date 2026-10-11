@@ -500,3 +500,10 @@ The selected Prepare materializer completed with actual terminal `d2cadb/0`, pro
 The inert-plan evidence writer appended six actual predicate rows after binding its count. The original produced record is preserved. A separate byte-invertible correction changes only the declared count from 88,812 to the actual 88,818 positive rows; the inert plan itself is unchanged. Root also accepted and copied the generic timed auxiliary Source byte for byte after consuming its complete independent Source review. The selected auxiliary has not executed.
 
 Prepare DATA assembly has not started the fixture or its QPC deadline. The prior F6 Native01 hold remains preserved. Fresh actual phase terminals, separate adoption, fixture qualification, ABI compatibility and game validation remain outstanding.
+
+
+### Fresh F7 Review consumer Source02 acceptance (2026-10-11)
+
+Root accepted and copied the Review-only candidate consumer Source02. Its only behavioral change joins the original same-session tool output chunks before parsing exactly one complete witness marker, allowing a marker split across returned chunks to be read. The full forward and inverse patch, all other complete definitions and the original native predicates remain verified. Raw capture result objects are preserved.
+
+Root consumed the complete Source01 and Source02 independent reviews and closures, then verified 49 current whole-file pins and matching physical bookends. The Root review contains 3,769 positive predicates. Source01's fragmented-marker compatibility limit and earlier failed reader evidence remain preserved. The selected Source02 consumer has not executed; complete adopted-graph review and all 17 runtime raw members are still required separately.
