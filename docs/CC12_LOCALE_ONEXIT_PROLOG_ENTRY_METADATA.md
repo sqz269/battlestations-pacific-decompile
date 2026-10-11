@@ -1,0 +1,24 @@
+# Locale onexit prolog: bounded entry and operand evidence
+
+The accepted physical call at `BF6FC0` selected `C07C00`. Fresh direct metadata records saved name `__SEH_prolog4`, saved prototype `undefined __SEH_prolog4(void)`, no thunk, `no_return=false`, and one complete saved range `C07C00..C07C44`. These are saved metadata; the name and prototype do not authenticate OriginalCRT, compiler, SEH4, frame behavior or ABI. The entire automatically supplied prototype companion remains opaque.
+
+Root first accepted the pinned entry gate, then accepted paired metadata coverage of every one of the 69 saved addresses, then separately admitted exact code bytes and context-zero instruction text. The complete captures contain 278 raw typed responses: two entry observations, 138 coverage responses and 138 operand bookend responses. Every complete observation remains at epoch 98 and count 64,730. The 21 whole instruction units cover the range exactly, with 48 interior addresses. Default and effective flows agree throughout, every override is `NONE`, the first 20 units fall through to the next unit, and the last is a terminator. No target following occurred; automatic target objects remain wholly opaque.
+
+Two exact 69-byte reads and two sets of text at the 21 verified starts agree. Manual opcode, ModRM, SIB, displacement and immediate decoding agrees with detailed Capstone operands. No instruction has a relative operand. Physical code SHA256 is `bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd`. Native collection is closed, with no later live reads or writes.
+
+For the conditional account, assume this exact sequence executes consecutively with a 32-bit stack and every operation completes. Let initial ESP be `S`, initial EBP be `B`, and `F=S+8`; arithmetic wraps modulo 2^32. Let `A` be the value loaded at `C07C0C` through `SS:[S+8]`, and `C` the value loaded at `C07C1D` from default data-segment offset `E15590`, each at its own load time. Segment bases and memory preimages remain unknown.
+
+- The first two pushes write opaque literal `C07C90` and the current `FS:[0]` value. The sequence loads `A`, stores `B` at `SS:[F]`, sets EBP to `F`, subtracts `A` from ESP and pushes EBX, ESI and EDI.
+- It XORs the current `SS:[F-4]` word with `C`, pushes `C XOR F`, and records current ESP (`S-A-24`) at `SS:[F-24]`.
+- It pushes the then-current `SS:[F-8]` word, reloads the then-current `SS:[F-4]` word as `D`, writes `FFFFFFFE` to `SS:[F-4]`, and writes `D` to `SS:[F-8]`.
+- It sets EAX to `F-16=S-8` and stores that offset through `FS:[0]`. Before the final near RET, ESP is `S-A-28`. A completing RET consumes the then-current stack word and leaves ESP at `S-A-24`, EBP at `F`, and EAX at `F-16`.
+
+Aliasing is unproved. In particular, `D` is not equated with the earlier XOR result across intervening writes. The word consumed by RET is not equated with the earlier pushed value, entry stack word or `BF6FC5`. FS/default-data/stack segment relationships, actual continuation, status and ownership remain unknown. `C07C90`, `E15590` and `FS:[0]` were not followed or read as separate targets or data.
+
+An optional predecessor composition uses only the already accepted `PUSH12`, `PUSH E02CF0`, `CALL C07C00`: if they and the first two saved prolog pushes execute consecutively in the same 32-bit SS stack model with the earlier slot untouched, predecessor ESP `W` gives `S=W-12`, `A=12` and `F=W-4`. This condition does not prove the final return word or frame continuation. `E02CF0` remains an opaque prior literal.
+
+The first metadata attempt stopped after 45 retained responses because local atomic file replacement raised `WinError 5`. It is preserved separately and excluded; the subsequent paired passes are complete. An offline summary assertion was corrected to expect the saved string form of epoch 98 without repeating Native reads.
+
+The standalone proof retains seven immediate prerequisite/tool inputs, six actual frozen Git objects, four offline helpers, producers, raw responses, admissions and operand records. Strict replay pins every archive member and every helper before importing retained helper bytes; it permits only archive reads and result writes. A separate delivery proof checks eight actual base/final Git objects and exact current/staged/committed bytes for these two outputs. No inherited archives or Source files are traversed.
+
+Frozen worker base is `bc4fae025bf633cea14293184ef1d4f1b2ff628a`; Source tree identities are `src=405897b6b5d8720b023862bddeb44e463a56a37b` and `include=a58d44af6071fee132ec49fdda541182d7ece633`. These identify only this worker's base and final state. They do not claim equality with concurrent Root Source or transfer implementation, build, fixture, runtime or gameplay credit. No C++, build, tests, executable probe, GPR mutation or game/OS/audio execution was performed. Any successor requires a separate Root scope decision.
