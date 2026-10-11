@@ -221,3 +221,29 @@ Outline of the rest (string anchors and calls in address order; not reconstructe
 | 00636C69..00636D60 | 0062A970, frame title 00518D60, page 00622E30, help line 0054A0C0, a final +38h store |
 
 A successor should take these ranges one at a time with the same EH-anchored listing reading.
+## Rewards enter page builders 0062CA7B.. (cc13-rewards1, partial, build-tested)
+
+Read from a capstone listing of the disk image (10757 instructions, 0062C2C0..00636D78) folded by
+`local/rw1_sq.py` (string temporaries, child lookups, pool releases). ESP offsets are base-relative
+(post-prologue ESP, EH state at [esp+E74h]); pushes are subtracted at every read. The screen is EBP
+until 0062EBAF, where EBP is reused; from there the screen is [esp+54h] (stored at 0062C2F7).
+`rewards_screen_enter_pages_0062ca7b` in `src/ingame_gui.cpp` continues the opening function at the
+join point; call rows in `reports/cc13_ingame_gui.json` carry `function: 0062c2c0` and the C++ name
+in `cpp`.
+
+Locals: [esp+24h] is the commit record (004B4750), [esp+38h] the 00594A70 mission-score record,
+[esp+84h] the 005C3870 mission-tree record (+38h `debriefingText`, +50h `debriefingVoice`, per
+docs/MISSION_TREE_LUA_READER.md), [esp+9Ch] the local player's scoreboard row.
+
+| Range | Status | Content |
+|---|---|---|
+| 0062CA7B..0062CBE0 | reconstructed | +258h = 1 when award pages are queued; `backgrnd_Icon` (+20h) and `back_Icon` (+25Ch) slot +88h state = !+19h; page mode +58h: game+1EE3h or game+1FE4h set gives 1 with 00E08C88 = 0, 00E08C89 = 1, else +19h ? 0 : 2 with 00E08C88 = +19h, 00E08C89 = 0 |
+| 0062CBE6..0062D2F6 | reconstructed | mode 0, page +40h: `debriefing_Clipbox`/`move_Group`/`congrat1_Text` gets `debriefingText` (localised); scroller +68h range = that text's height (00AB6BD0) - [+D0h]; `rank_Icon` = max(00574050 - 1, 0); `info_Group`: `time_value_Text` = 0043CC20(004396F0(record+0Ch)), `score_value_Text` = record+1E0h; `medal_Icon` shown with state max(record+4 - 1, 0) when +19h; when [+10h] == 0 (NEG/SBB/TEST 00E18B5Ch) the voice "sound/messages/" + 008D57A0(00F88980) + "/streamed_dialogs/" + `debriefingVoice` is requested with callback 00622E00 |
+| 0062D2FB..0062E9B7 | reconstructed | mode 1, page +44h: `time_value_Text`; +230h/+234h cleared; listbox +D4h cleared, listener 0; 0062A0B0 builds the 60h-byte rows at +220h, 00625D10 sorts them (introsort shape); game+614h == 7: title 1 = missioncompleted/missionfailed by record+0, `END_Text` = record+254h, USA/JAP hidden, every row in slot i; otherwise title 1 = USN_wins when (won ? side == 0 : side == 1) else IJN_wins, `USA_Text` = record+25Ch with the side-0 rows in slots 0.., `JAP_Text` = record+264h placed 6 row heights below `USA_Text`, side-1 rows from slot 6 numbered slot-5. Each row: clone of +D8h shown, inserted with its index, byte +22Fh+count = !row+5Ch, `rank_Text`, `name_Text` (localised when row+5Ch or "globals.newplayer"), `clan_Text`, `score_Text`, `flag_Icon` (side, 0, 1), `rank_Icon` state and visibility, position = template + (0, (height + 1/120) * slot, 0). Then listener screen+8, select the local row, active, listbox +12Ch/+130h/+134h, 00A9CEB0(0.575, 0), +128h |
+| 0062E9BF..0062EA44 | reconstructed | lost single-player mission: title 2 = "FE.scoring_missionfailed"; side = 005C27E0(tree record) without a session, else record+1E4h == 0 |
+| 0062EA44..00630175 | read, not yet written | objectives page (below) |
+| 00630175..00636D78 | not reconstructed | scoring tables, rank page, award pages, tail (outline above) |
+
+Uncertain: the meaning of +10h (the voice gate), record+1E4h, row+5Ch (an AI slot is a guess);
+the non-7 branch reads the local player without the 0..7 bound the row matcher applies; the
+byte +22Fh+count has no bound against the eight bytes cleared.

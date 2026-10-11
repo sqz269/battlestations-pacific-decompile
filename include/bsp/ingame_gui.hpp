@@ -195,11 +195,19 @@ inline constexpr std::string_view kRewardsServiceRankPrefix = "RANK_SR";  // 00C
 // string is empty here): 0 = rank change, 1 = one unlocked vehicle class.
 enum class RewardsAwardPage : std::uint8_t { RankChange = 0, Unlock = 1 };
 
+// Page modes stored at screen+58h by 0062CB8D..0062CBD4.
+enum class RewardsPageMode : std::int32_t {
+    CampaignWon = 0,   // single player, +19h set: the debriefing page (+40h)
+    Session = 1,       // game+1EE3h or game+1FE4h set: the scoreboard page (+44h)
+    CampaignLost = 2,  // single player, +19h clear: neither page is filled here
+};
+
 struct RewardsEnterState {
     float field64{};                       // +64h, cleared
-    bool input_locked258{};                // +258h, cleared
-    bool score_zero18{};                   // +18h: commit record +0Ch == 0.0f (UCOMISS, ordered)
-    bool commit_present19{};               // +19h: *(commit record) != 0
+    bool input_locked258{};                // +258h, cleared; set at 0062CA92 when pages are queued
+    bool score_zero18{};                   // +18h: commit record +0Ch (play seconds) == 0.0f (UCOMISS, ordered)
+    bool commit_present19{};               // +19h: *(commit record) != 0, the mission-won word (0062D461)
+    RewardsPageMode page_mode58{};         // +58h
     bool group_completed1c{};              // +1Ch
     bool field1d{};                        // +1Dh, cleared
     bool unlocks_pending24{};              // +24h: 007F93F0 on the profile
@@ -210,6 +218,68 @@ struct RewardsEnterState {
     std::string mission30;                 // +30h, copy of game+2198h, then the profile's +68h id
     std::vector<RewardsAwardPage> pages238;  // +238h (cleared by 00625A50)
 };
+
+// A native GUI widget (vtable 00D5BED0 family), opaque here.
+using RewardsWidget = void*;
+
+struct RewardsVec3 {
+    float x{};
+    float y{};
+    float z{};
+};
+
+// The commit record 004B4750 returns (ECX = *(00E188A8)), held at [esp+24h]
+// from 0062C3B2 on; only the fields the page builders read.
+struct RewardsCommitRecord {
+    std::int32_t won{};        // +00h: nonzero selects FE.rewards_missioncompleted
+    std::int32_t medal{};      // +04h: medal_Icon state + 1
+    float play_seconds{};      // +0Ch: BSP_Text_FormatPlayTime input
+    std::int32_t score{};      // +1E0h: score_value_Text
+    std::int32_t field1e4{};   // +1E4h: side test when game+1EE3h is set (0062EA31)
+    std::string end_text;      // +254h: END_Text source (localised)
+    std::string usn_text;      // +25Ch: USA_Text source (localised)
+    std::string ijn_text;      // +264h: JAP_Text source (localised)
+};
+
+// One 60h-byte row of the scoreboard vector at screen+220h (begin +224h, end
+// +228h), filled by 0062A0B0 and sorted by 00625D10.
+struct RewardsScoreRow {
+    std::uint32_t id0{};       // +00h, compared with the local player's +80h
+    std::uint32_t id4{};       // +04h, compared with the local player's +84h
+    std::string name;          // +08h
+    std::string clan;          // +10h
+    std::int32_t side{};       // +18h: 0 = USN rows, 1 = IJN rows
+    std::int32_t score{};      // +50h
+    std::int32_t rank{};       // +58h: rank_Icon state + 1
+    bool ai5c{};               // +5Ch: name is localised, rank_Icon hidden (provisional: an AI slot)
+};
+
+// The local player's record *(game+18CCh + 4*game+18ECh), read only when
+// game+18ECh is in 0..7.
+struct RewardsLocalPlayer {
+    std::int32_t side{};       // +28h
+    std::string name;          // +58h
+    std::uint32_t id80{};      // +80h
+    std::uint32_t id84{};      // +84h
+};
+
+inline constexpr std::string_view kRewardsMissionCompleted = "FE.rewards_missioncompleted";  // 00CF560C
+inline constexpr std::string_view kRewardsMissionFailed = "FE.rewards_missionfailed";        // 00CF55F0
+inline constexpr std::string_view kRewardsUsnWins = "FE.scoring_USN_wins";                   // 00CF5594
+inline constexpr std::string_view kRewardsIjnWins = "FE.scoring_IJN_wins";                   // 00CF5580
+inline constexpr std::string_view kRewardsScoringMissionFailed = "FE.scoring_missionfailed"; // 00CF5558
+inline constexpr std::string_view kRewardsNewPlayer = "globals.newplayer";                   // 00CEF794
+inline constexpr std::int32_t kRewardsGameModeNoSides = 7;  // game+614h value with one shared table
+inline constexpr double kRewardsRowGap = 0.008333333333333333;  // 00CF0DE8, added to the row height
+inline constexpr double kRewardsIjnTableRows = 6.0;             // 00CE6628
+inline constexpr std::int32_t kRewardsIjnFirstSlot = 6;         // 0062E2D4
+inline constexpr float kRewardsListbox124 = 0.575f;             // 00CF557C
+inline constexpr float kRewardsListbox12c = -0.0541666672f;     // 00CF5578
+inline constexpr float kRewardsListbox130 = 0.00763888890f;     // 00CF5574
+inline constexpr float kRewardsListbox128 = 0.00555555569f;     // 00CF2548
+// The debriefing-voice completion callback pushed at 0062D1D4: it hands the name
+// to *(*(00E198AC)+60h) through 0061F9D0, then removes the file from the store.
+inline constexpr std::uint32_t kRewardsDebriefVoiceCallback = 0x00622E00;
 
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
@@ -241,13 +311,75 @@ struct RewardsEnterHost {
     virtual bool group_completed_005c3be0(const std::string& mission) = 0;
     virtual std::vector<std::string> commit_record_keys_6c() = 0;  // list +6Ch, node +0Ch
     virtual bool has_prefix_00553c80(std::string_view key, std::string_view prefix) = 0;  // (prefix, 0)
+
+    // --- page builders (0062CA7B on) ---
+    virtual const RewardsCommitRecord& commit_record() = 0;       // [esp+24h]
+    // The 005C3870 mission record kept at [esp+84h]: +38h debriefingText,
+    // +50h debriefingVoice (docs/MISSION_TREE_LUA_READER.md).
+    virtual std::string selected_debriefing_text_38() = 0;
+    virtual std::string selected_debriefing_voice_50() = 0;
+    virtual std::int32_t mission_side_005c27e0() = 0;            // ECX = the 005C3870 record
+    // 00574050 on game+650h: the low byte of the profile's "RANK" value (+A0h map, 005070C0).
+    virtual std::int32_t profile_rank_byte_00574050() = 0;
+    virtual RewardsWidget screen_widget(std::uint32_t offset) = 0;  // *(screen + offset)
+    virtual std::uint32_t screen_dword(std::uint32_t offset) = 0;
+    virtual float screen_float(std::uint32_t offset) = 0;
+    virtual std::uint8_t game_byte(std::uint32_t offset) = 0;
+    // 00AA7E00(name, 1) on ECX = parent; the name is a temporary NativeString.
+    virtual RewardsWidget child_00aa7e00(RewardsWidget parent, std::string_view name) = 0;
+    virtual void widget_show_34(RewardsWidget widget, bool show) = 0;
+    virtual void widget_set_active_60(RewardsWidget widget, bool active) = 0;
+    virtual void icon_state_88(RewardsWidget widget, std::int32_t state) = 0;  // (state, 0, 1.0f)
+    // 00ABAED0(source, localise): RET 8.
+    virtual void text_source_00abaed0(RewardsWidget text, std::string_view source, bool localise) = 0;
+    virtual float text_height_00ab6bd0(RewardsWidget text) = 0;
+    virtual GuiSize2 widget_size_00aa6740(RewardsWidget widget) = 0;
+    virtual RewardsVec3 widget_position_00aa6750(RewardsWidget widget) = 0;
+    virtual void widget_set_position_00aa8240(RewardsWidget widget, const RewardsVec3& position) = 0;
+    virtual RewardsWidget clone_00aab4c0(RewardsWidget widget) = 0;   // parent 0
+    virtual void scroller_set_range_006834a0(std::uint32_t scroller_offset, float range) = 0;
+    // 00E08C88 / 00E08C89, written beside +58h.
+    virtual void set_debrief_flags_e08c88(bool won, bool session) = 0;
+    // The six page titles in the NativeString vector at 00E196C0 (read by
+    // 00621C60, the page switch); element 1 is the +44h page, 2 the +48h page.
+    virtual void set_page_title_e196c0(std::size_t index, std::string_view key) = 0;
+    virtual float round_value_004396f0(float value) = 0;
+    // The debriefing voice: 004FC150 -> 00BE80B0 -> BSP_FileStore_RequestFile
+    // (00BE7CD0) with the completion callback 00622E00.
+    virtual void request_streamed_dialog_00be7cd0(std::string_view path, std::uint32_t callback) = 0;
+    virtual std::string_view audio_language_folder_008d57a0() = 0;  // ECX = 00F88980
+    // The scoreboard rows (+220h): 0062A0B0 rebuilds them, 00625D10 sorts them.
+    virtual void build_score_rows_0062a0b0() = 0;
+    virtual void sort_score_rows_00625d10() = 0;
+    virtual const std::vector<RewardsScoreRow>& score_rows_220() = 0;
+    virtual bool local_player(RewardsLocalPlayer& out) = 0;       // false when game+18ECh is outside 0..7
+    // The scoreboard listbox at screen+D4h and its row template at +D8h.
+    virtual void listbox_clear_rows_00a9bec0() = 0;
+    virtual void listbox_set_listener_00a9ac40(bool screen_listener) = 0;  // 0 or screen+8
+    virtual void listbox_insert_row_00a9da30(RewardsWidget row, std::int32_t data) = 0;  // (row, data, 0, 0)
+    virtual std::int32_t listbox_row_count_104() = 0;
+    virtual void listbox_select_00a9c7c0(std::int32_t index) = 0;
+    virtual void listbox_set_float(std::uint32_t offset, float value) = 0;
+    virtual void listbox_set_124_00a9ceb0(float value, bool relayout) = 0;
+    // byte screen+22Fh+count after an insert (+230h..+237h are cleared first).
+    virtual void set_row_human_flag(std::int32_t count_after_insert, bool human) = 0;
+    virtual void clear_row_human_flags_230() = 0;
 };
+
+// Folds a native rank or medal number into an icon state: max(value - 1, 0),
+// passed on as its low word (MOVZX ... WORD PTR).
+std::int32_t rewards_icon_state(std::int32_t value) noexcept;
 
 // 0062C2C0: slot +18h of vtable 00CF50CC, __thiscall(screen), RET. Partial:
 // the state reset, the early return on +3Ch and the award-page queue up to
-// 0062CA7B; the page builders that follow (to 00636D79) are not reconstructed.
-// Returns false where the native routine returns (+3Ch).
+// 0062CA7B, then rewards_screen_enter_pages_0062ca7b. Returns false where the
+// native routine returns (+3Ch).
 bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, RewardsEnterHost& host);
+
+// 0062CA7B..: the page builders of the same body (one native function; split
+// here at the point both opening paths join). Partial: see the range table in
+// docs/CC13_INGAME_GUI.md for what is reconstructed.
+void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host);
 
 // ---------------------------------------------------------------------------
 // Support-manager info panel refresh (0066B6C0)

@@ -3,6 +3,10 @@
 #include "bsp/ingame_gui.hpp"
 
 #include "bsp/gui_layer.hpp"
+#include "bsp/main_menu_mission_detail.hpp"
+#include "bsp/profile_checkpoint.hpp"
+
+#include <string>
 
 namespace bsp {
 
@@ -186,7 +190,10 @@ bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, Reward
         host.set_frame_title_00518d60("");
         return false;
     }
-    if (screen.score_zero18) return true;
+    if (screen.score_zero18) {
+        rewards_screen_enter_pages_0062ca7b(screen, host);
+        return true;
+    }
 
     // 0062C53F..0062C684: a rank change (007FCD90(0) between two reads).
     const std::int32_t rank_before = host.profile_counter_005097d0(kRewardsRankCounter);
@@ -215,7 +222,206 @@ bool rewards_screen_enter_award_queue_0062c2c0(RewardsEnterState& screen, Reward
     for (const std::string& key : host.commit_record_keys_6c()) {
         if (host.has_prefix_00553c80(key, kRewardsServiceRankPrefix)) rewards_queue_unlocks(screen, host, key);
     }
+    rewards_screen_enter_pages_0062ca7b(screen, host);
     return true;
+}
+
+std::int32_t rewards_icon_state(std::int32_t value) noexcept {
+    const std::int32_t state = value - 1 > 0 ? value - 1 : 0;
+    return state & 0xFFFF;
+}
+
+namespace {
+
+// The y offset of scoreboard slot `slot`: FLD height, FADD QWORD 1/120,
+// FIMUL slot, FSTP float (0062DAC1..0062DAE7 and its two copies).
+float rewards_row_offset(const GuiSize2& template_size, std::int32_t slot) {
+    return static_cast<float>((static_cast<double>(template_size.y) + kRewardsRowGap) * slot);
+}
+
+// x and z go through FLDZ/FADD, so they are 0.0f + the template's value.
+RewardsVec3 rewards_offset_y(const RewardsVec3& origin, float dy) {
+    return {0.0f + origin.x, origin.y + dy, origin.z + 0.0f};
+}
+
+// 0062D6A3..0062DB83, 0062DDD0..0062E2A9 and 0062E44B..0062E91D: one cloned
+// row of the scoreboard listbox. `rank_number` is the rank_Text value,
+// `slot` the layout slot, `flag_state` the flag_Icon state; returns true when
+// the row is the local player's.
+bool rewards_add_score_row(RewardsEnterHost& host, const RewardsScoreRow& row, std::int32_t row_index,
+                           std::int32_t rank_number, std::int32_t slot, std::int32_t flag_state) {
+    const RewardsWidget templ = host.screen_widget(0xD8);
+    const RewardsWidget item = host.clone_00aab4c0(templ);
+    host.widget_show_34(item, true);
+    host.listbox_insert_row_00a9da30(item, row_index);
+    host.set_row_human_flag(host.listbox_row_count_104(), !row.ai5c);
+
+    host.text_source_00abaed0(host.child_00aa7e00(item, "rank_Text"), std::to_string(rank_number), false);
+    const bool localise_name = row.ai5c || row.name == kRewardsNewPlayer;
+    host.text_source_00abaed0(host.child_00aa7e00(item, "name_Text"), row.name, localise_name);
+    host.text_source_00abaed0(host.child_00aa7e00(item, "clan_Text"), row.clan, true);
+    host.text_source_00abaed0(host.child_00aa7e00(item, "score_Text"), std::to_string(row.score), false);
+    host.icon_state_88(host.child_00aa7e00(item, "flag_Icon"), flag_state);
+    host.icon_state_88(host.child_00aa7e00(item, "rank_Icon"), rewards_icon_state(row.rank));
+    host.widget_show_34(host.child_00aa7e00(item, "rank_Icon"), !row.ai5c);
+
+    const float dy = rewards_row_offset(host.widget_size_00aa6740(templ), slot);
+    host.widget_set_position_00aa8240(item, rewards_offset_y(host.widget_position_00aa6750(templ), dy));
+
+    RewardsLocalPlayer player;
+    return host.local_player(player) && row.id0 == player.id80 && row.id4 == player.id84 && row.name == player.name;
+}
+
+// 0062CBE6..0062D2F6: the campaign debriefing page (+40h).
+void rewards_fill_debriefing(RewardsEnterState& screen, RewardsEnterHost& host) {
+    const RewardsCommitRecord& record = host.commit_record();
+    const RewardsWidget page = host.screen_widget(0x40);
+    const RewardsWidget clip = host.child_00aa7e00(page, "debriefing_Clipbox");
+    // 0062CC42..0062CCA9: move_Group/congrat1_Text shows the debriefing text.
+    host.text_source_00abaed0(host.child_00aa7e00(host.child_00aa7e00(clip, "move_Group"), "congrat1_Text"),
+                              host.selected_debriefing_text_38(), true);
+    // 0062CD06..0062CDDA: the scroller range is the text height less +D0h.
+    const float height = host.text_height_00ab6bd0(
+        host.child_00aa7e00(host.child_00aa7e00(clip, "move_Group"), "congrat1_Text"));
+    host.scroller_set_range_006834a0(0x68, height - host.screen_float(0xD0));
+
+    // 0062CDDF..0062CE8C: rank_Icon from the profile's "RANK" byte (00574050).
+    host.icon_state_88(host.child_00aa7e00(page, "rank_Icon"), rewards_icon_state(host.profile_rank_byte_00574050()));
+
+    const RewardsWidget info = host.child_00aa7e00(page, "info_Group");
+    host.text_source_00abaed0(host.child_00aa7e00(info, "time_value_Text"),
+                              format_play_time_0043cc20(host.round_value_004396f0(record.play_seconds)), true);
+    host.text_source_00abaed0(host.child_00aa7e00(info, "score_value_Text"), std::to_string(record.score), true);
+
+    // 0062D05C..0062D10F
+    const RewardsWidget medal = host.child_00aa7e00(page, "medal_Icon");
+    if (screen.commit_present19) {
+        host.widget_show_34(medal, true);
+        host.icon_state_88(medal, rewards_icon_state(record.medal));
+    } else {
+        host.widget_show_34(medal, false);
+    }
+
+    // 0062D111..0062D2F6: NEG/SBB/TEST EAX,00E18B5Ch is a non-null test of
+    // +10h; with it clear the debriefing voice is requested.
+    if (host.screen_dword(0x10) != 0) return;
+    const std::string path = streamed_dialog_path(host.audio_language_folder_008d57a0(),
+                                                  host.selected_debriefing_voice_50());
+    host.request_streamed_dialog_00be7cd0(path, kRewardsDebriefVoiceCallback);
+}
+
+// 0062D304..0062E9A4: the session scoreboard page (+44h).
+void rewards_fill_scoreboard(RewardsEnterState&, RewardsEnterHost& host) {
+    const RewardsCommitRecord& record = host.commit_record();
+    const RewardsWidget page = host.screen_widget(0x44);
+    host.text_source_00abaed0(host.child_00aa7e00(page, "time_value_Text"),
+                              format_play_time_0043cc20(host.round_value_004396f0(record.play_seconds)), true);
+
+    // 0062D3BD..0062D43B
+    host.clear_row_human_flags_230();
+    host.listbox_clear_rows_00a9bec0();
+    host.listbox_set_listener_00a9ac40(false);
+    host.build_score_rows_0062a0b0();
+    host.sort_score_rows_00625d10();
+
+    std::int32_t local_row = 0;  // [esp+9Ch]
+    const std::vector<RewardsScoreRow>& rows = host.score_rows_220();
+    if (host.game_dword(0x614) == kRewardsGameModeNoSides) {
+        // 0062D461..0062DB95: one table, every row in order.
+        host.set_page_title_e196c0(1, record.won != 0 ? kRewardsMissionCompleted : kRewardsMissionFailed);
+        host.text_source_00abaed0(host.child_00aa7e00(page, "END_Text"), record.end_text, true);
+        host.widget_show_34(host.child_00aa7e00(page, "END_Text"), true);
+        host.widget_show_34(host.child_00aa7e00(page, "USA_Text"), false);
+        host.widget_show_34(host.child_00aa7e00(page, "JAP_Text"), false);
+        for (std::size_t i = 0; i < rows.size(); ++i) {
+            const auto index = static_cast<std::int32_t>(i);
+            if (rewards_add_score_row(host, rows[i], index, index + 1, index, rows[i].side != 0 ? 1 : 0)) {
+                local_row = index;
+            }
+        }
+    } else {
+        // 0062DB9A..0062DBF7: USN wins when the local side won as USN or lost as IJN.
+        RewardsLocalPlayer player;
+        host.local_player(player);  // indexed without the 0..7 check here
+        const bool usn = record.won != 0 ? player.side == 0 : player.side == 1;
+        host.set_page_title_e196c0(1, usn ? kRewardsUsnWins : kRewardsIjnWins);
+        host.text_source_00abaed0(host.child_00aa7e00(page, "END_Text"), record.end_text, true);
+        host.widget_show_34(host.child_00aa7e00(page, "END_Text"), true);
+
+        // 0062DCCE..0062E2C3: USA_Text, then the side-0 rows in slots 0, 1, ...
+        const RewardsWidget usa = host.child_00aa7e00(page, "USA_Text");
+        host.text_source_00abaed0(usa, record.usn_text, true);
+        host.widget_show_34(usa, true);
+        std::int32_t slot = 0;
+        for (std::size_t i = 0; i < rows.size(); ++i) {
+            if (rows[i].side != 0) continue;
+            const auto index = static_cast<std::int32_t>(i);
+            if (rewards_add_score_row(host, rows[i], index, slot + 1, slot, 0)) local_row = index;
+            ++slot;
+        }
+
+        // 0062E2C8..0062E3C7: JAP_Text six row heights below USA_Text.
+        const RewardsWidget jap = host.child_00aa7e00(page, "JAP_Text");
+        host.widget_show_34(jap, true);
+        host.text_source_00abaed0(jap, record.ijn_text, true);
+        const GuiSize2 size = host.widget_size_00aa6740(host.screen_widget(0xD8));
+        const auto dy = static_cast<float>((static_cast<double>(size.y) + kRewardsRowGap) * kRewardsIjnTableRows);
+        host.widget_set_position_00aa8240(jap, rewards_offset_y(host.widget_position_00aa6750(usa), dy));
+
+        // 0062E3CC..0062E931: the side-1 rows from slot 6, numbered from 1.
+        slot = kRewardsIjnFirstSlot;
+        for (std::size_t i = 0; i < rows.size(); ++i) {
+            if (rows[i].side != 1) continue;
+            const auto index = static_cast<std::int32_t>(i);
+            if (rewards_add_score_row(host, rows[i], index, slot - 5, slot, 1)) local_row = index;
+            ++slot;
+        }
+    }
+
+    // 0062E936..0062E9B7
+    host.listbox_set_listener_00a9ac40(true);
+    host.listbox_select_00a9c7c0(local_row);
+    host.widget_set_active_60(host.screen_widget(0xD4), true);
+    host.listbox_set_float(0x12C, kRewardsListbox12c);
+    host.listbox_set_float(0x130, kRewardsListbox130);
+    host.listbox_set_float(0x134, 0.0f);
+    host.listbox_set_124_00a9ceb0(kRewardsListbox124, false);
+    host.listbox_set_float(0x128, kRewardsListbox128);
+}
+
+} // namespace
+
+void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host) {
+    // 0062CA7B..0062CA92
+    if (!screen.pages238.empty()) screen.input_locked258 = true;
+
+    // 0062CA99..0062CB88: both background icons take state 1 for a lost mission.
+    const std::int32_t lost_state = screen.commit_present19 ? 0 : 1;
+    host.icon_state_88(host.child_00aa7e00(host.screen_widget(0x20), "backgrnd_Icon"), lost_state);
+    host.icon_state_88(host.child_00aa7e00(host.screen_widget(0x25C), "back_Icon"), lost_state);
+
+    // 0062CB8D..0062CBD4
+    if (host.game_byte(0x1EE3) == 0 && host.game_dword(0x1FE4) == 0) {
+        screen.page_mode58 = screen.commit_present19 ? RewardsPageMode::CampaignWon : RewardsPageMode::CampaignLost;
+        host.set_debrief_flags_e08c88(screen.commit_present19, false);
+    } else {
+        screen.page_mode58 = RewardsPageMode::Session;
+        host.set_debrief_flags_e08c88(false, true);
+    }
+
+    // 0062CBDB..0062CBE0 and 0062D2FB..0062D2FE
+    if (screen.page_mode58 == RewardsPageMode::CampaignWon) {
+        rewards_fill_debriefing(screen, host);
+    } else if (screen.page_mode58 == RewardsPageMode::Session) {
+        rewards_fill_scoreboard(screen, host);
+    }
+
+    // 0062E9BF..0062EA44: a lost single-player mission titles page 2.
+    if (host.game_byte(0x1EE3) == 0 && host.game_dword(0x1FE4) == 0 && !screen.commit_present19) {
+        host.set_page_title_e196c0(2, kRewardsScoringMissionFailed);
+    }
+    // NOT RECONSTRUCTED from 0062EA1B on: the objectives page and everything after
+    // it (docs/CC13_INGAME_GUI.md, rewards enter range table).
 }
 
 namespace {
