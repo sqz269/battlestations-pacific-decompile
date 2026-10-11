@@ -16113,3 +16113,59 @@ OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_
 - **Consequence for this lane.** 205's USNOS helm files (f7..f17) were tuned on the old plane roll. On current main the
   Enterprise is sunk by DM1 at 1553.34 s, and the mission fails at 1554.69 s. The f12/f17 plans, the capture-party
   pair, 206 item 1 and the primary-3 reroute all need a re-plan on current main.
+
+## 208. A shot-down squadron's landing-queue records: the Kill notification, not the land task (cc9-ships42, 2026-10-11; 206 item 3)
+
+### The destructor path does not erase at a death (read)
+
+- `007BCAA0` (plane destroyed hook, `007BCAA0..007BCB27`) runs `00959450`, then `007F3970` (RemovePlane, only while
+  `+9D4h` is set), then the pilot bot `+DF4h`'s `vtable[10h]` (`0099A830`, retire-all `00999E40` + drain `00999EE0`),
+  then `+6DCh`'s `vtable[10h]`. cc11 (`docs/LANDING_TASK_OWNER_CC11.md`) established that the bot at `+DF4h` owns the
+  land task and that the drain deletes it.
+- `007F3970` stores 0 into the plane's `+9D4h` at `007F3A07`, before the drain.
+- So when the land task destructor `009B3F50` runs, `[plane+9D4h]` is 0. `006C8800` starts with
+  `TEST EDI,EDI; JE` (`006C8803`) and returns. **At a death, the land-task destructor erases nothing.**
+- A live retire (the task replaced while its plane flies) still reaches `006C8800` with the squadron. The host's two
+  retire sites skip it (204). They never ran in the reference rows, so that binding stays a small open item.
+
+### What does erase: the squadron's Kill and the queue's observer slot
+
+- `007F3970`: when the member count `+3CCh` reaches 0 (`007F3A16`), it calls `00926D90` (`MissionEntity_Kill`) on the
+  squadron.
+- The queue object is embedded at block `+84h`, with vtable `00CF868C`, stored at `006CACD3`.
+  - `006BF720` (append) registers it on the squadron through `00694A60` (`ECX` = squadron, `EDX` = queue).
+  - Its table: `+0` `006C06E0` (scalar deleting dtor), `+4` `006C6B40` (`JMP 006C4B30`), `+8` `0042B120` (`RET 4`).
+- The entity removal at the flush (`009273A0` / `009263C0` -> `00925C40` -> `00696330` -> `00693550`) calls each
+  observer's slot `+4` (OBSERVER_EVENT_PRODUCER). The death notifier `00925C90` calls slot `+8`, which is a no-op here.
+- **`006C4B30`** (`006C4B30..006C4BF8`, `__thiscall(queue)(endpoint)`, `RET 4`):
+  - It takes the endpoint's identity (`vtable[4]`) and finds the first record whose `+0h` is that squadron.
+  - `006C06A0` compacts the rest in order, dropping every match. This is a remove, not `006BF7F0`'s swap with the last.
+  - It unregisters with `006952A0` and sets the count from the new end.
+- **Scans.** Absolute dwords for `006C7680`, `006C8800`, `006BF7F0` and `006C5950`: none. The positive control
+  `30 A8 99 00` finds `00D1F358`. With ships41's rel32 census, the queue loses records only at `006C5950`'s head (bound,
+  204.1), at the land-task destructor (live retire only), and at this notification.
+- **Uncertainty.**
+  - Whether the `+A8h` assignment records have their own observer is unread. This binding touches the queue only.
+  - That the queues get slot `+4` from the squadron's flush is inferred from the producer chain above. The squadron's
+    own removal call into `00925C40` was not traced instruction by instruction.
+
+### The binding: `kSquadronKillQueueEraseBound`, committed OFF (`src/game_hosts_units.cpp`)
+
+- In `squadron_leave_on_death_007bcaa0`: when the leave leaves the record with no live member, every landing deck's
+  queue drops that squadron's records and keeps the rest in order.
+- **LABELLED:** the host erases at the leave sweep, which is one frame boundary before the image's flush.
+- OFF logs the same `squadron kill:` line ("kept, unbound") and changes nothing.
+- Census: `summary squadron kill queue erase bound kills erases`.
+
+**Predictions (OFF -> ON), written before the pairs.**
+- **USNOS f3** (`s40_os_f3.txt`, 40000):
+  - The wave-1 squadrons `#1.4` and `#1.6` are shot down, so expect two erases at Airfield3. `#1.5` is erased by the
+    stock return, as now.
+  - Wave 2 (`#4.4`..`#4.6`) then queues at a smaller n: up to 3 lower, which puts its circle point 180 m less far behind.
+  - The 202 loop's release count (24) should fall. It may not reach 0, because the radius factor runs on the `+A8h`
+    record count, which this does not touch.
+  - Exit 3, with landing timing moving at Airfield3 from the first erase.
+- **ESMP08 p3 (72000) and USN01 p8 (22000):** erases at the carriers whose squadrons are wiped out. Landing timing
+  moves (exit 3). Deaths are equal or close.
+- **Flip rule.** ON if every erase follows a squadron's last death and the queue order of the survivors is unchanged.
+  Spread in landing timing does not block the flip.

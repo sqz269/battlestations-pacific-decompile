@@ -2619,6 +2619,7 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
     unsigned long long stock_return_site_leaves{0};
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
+    unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
     unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
@@ -5334,6 +5335,15 @@ struct GameUnitsHost::Impl {
     // 006BF7F0 on +84h moves the last record into its place). False: the record stays
     // and later squadrons queue behind it (n = largest + 1).
     static constexpr bool kStockReturnQueueEraseBound = true;   // ON by its pairs (SHIP_AI 204.1)
+    // Packet cc9_squadron_kill_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 208). True: when
+    // 007F3970 leaves a squadron with no member (+3CCh == 0 at 007F3A16), its Kill
+    // (00926D90) queues the entity, and the flush's removal notification (009273A0 ->
+    // 00696330, callback slot+4) reaches every landing queue that observes it: the
+    // queue object at block+84h (vtable 00CF868C, slot+4 006C6B40 -> 006C4B30) removes
+    // all of that squadron's records in order (006C06A0) and unregisters (006952A0).
+    // LABELLED: the host erases at the leave sweep, one frame boundary before the image's
+    // flush. False: a shot-down squadron's record stays and keeps the largest n.
+    static constexpr bool kSquadronKillQueueEraseBound = false;
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -6310,6 +6320,34 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(summary.simulated_seconds), rec->live_count(),
                 old_leader < slots.size() ? slots[old_leader]->row.name.c_str() : "-",
                 leader < slots.size() ? slots[leader]->row.name.c_str() : "-");
+            if (rec->live_count() == 0) squadron_kill_queue_erase_006c4b30(*rec);
+        }
+    }
+
+    // 007F3A16 -> 00926D90 (Kill) -> the flush's slot+4 notification -> 006C4B30 on
+    // each observing queue (block+84h): every record of the squadron goes, the rest
+    // keep their order (006C06A0 is a remove, not 006BF7F0's swap with the last).
+    void squadron_kill_queue_erase_006c4b30(const bsp::PlaneSquadronHostRecord& rec) {
+        ++squadron_kill_queue_kills;
+        const std::size_t sqi = static_cast<std::size_t>(
+            &rec - bsp::plane_squadron_registry().records().data());
+        for (std::size_t di = 0; di < landing_decks.size(); ++di) {
+            std::vector<LandingQueueEntry>& q = landing_decks[di].queue;
+            std::size_t held = 0;
+            for (const LandingQueueEntry& e : q) held += e.squadron == sqi ? 1u : 0u;
+            if (held == 0) continue;
+            log.notef("  squadron kill: %s's %zu landing-queue record(s) at deck %zu %s "
+                "(%zu queued; 00926D90 -> 009273A0 slot+4 -> 006C4B30, packet "
+                "cc9_squadron_kill_queue_erase)", rec.name.c_str(), held, di,
+                kSquadronKillQueueEraseBound ? "erased" : "kept, unbound", q.size());
+            if constexpr (kSquadronKillQueueEraseBound) {
+                std::size_t w = 0;
+                for (std::size_t r = 0; r < q.size(); ++r) {
+                    if (q[r].squadron != sqi) q[w++] = q[r];
+                }
+                q.resize(w);
+                squadron_kill_queue_erases += held;
+            }
         }
     }
 
@@ -33883,6 +33921,10 @@ void GameUnitsHost::report() {
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
         host.stock_return_queue_misses);
+    host.log.notef("summary squadron kill queue erase bound=%d kills=%llu erases=%llu "
+        "(00926D90 -> 009273A0 slot+4 -> 006C4B30, packet cc9_squadron_kill_queue_erase)",
+        Impl::kSquadronKillQueueEraseBound ? 1 : 0, host.squadron_kill_queue_kills,
+        host.squadron_kill_queue_erases);
     if constexpr (kBaseLaunchChainBound) {
         std::size_t inside_now = 0;
         for (const auto& s : host.slots) {
