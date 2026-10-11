@@ -398,4 +398,137 @@ struct AimTargetView {
 std::array<float, 2> camera_aim_delta_00794910(const AimCameraView& camera,
                                                const AimTargetView& target, float scale);
 
+// ---------------------------------------------------------------------------
+// MovCam, the scripted movie camera of the luaMW_MovCam_* bindings (00D04B58,
+// 0079F480, built by 005CC000). Its mode word is +384h; the setters write it
+// and call 007A5110; the +170h sub-object's step 007A91A0 runs the mode.
+enum class MovCamMode : std::uint32_t {
+    None = 0,             // 007A6910 / 007A7DE0 / 007A7F30 reset
+    HandTargeted = 1,     // 007A6B40, luaMW_MovCam_HandMode_Targeted (+388h sub-mode)
+    HandDeck = 2,         // 007A6B90 HandMode_Deck, 007A8180 PickSnittDeckPosition
+    HandOverview = 3,     // 007A6BC0 HandMode_Overview
+    RefPos = 4,           // 007A6CD0 RefPos, 007A6E60 RefPos_Polar, 007A7070 RefPos_Radius, 007A7F30 TompiModeWeak
+    Viktor = 6,           // 007A7DE0 ViktorMode
+    Tompi = 7,            // 007A8100 TompiMode
+    PosRotZoom = 8,       // 007998C0 SetPosRotZoom
+};
+
+// A reference point (+14h entity, +18h point, +24h radius): the path records
+// and the RefPos targets share it.
+struct CameraRef {
+    std::size_t entity_14{0};
+    std::array<float, 3> point_18{};
+    float radius_24{0.0f};
+};
+
+struct CameraRefHost {
+    virtual ~CameraRefHost() = default;
+    virtual std::array<float, 3> entity_position_fc(std::size_t entity) = 0;   // after 00414DB0
+    // [world+1ED4h]'s +FCh, or the global 00F87574 when there is none.
+    virtual std::array<float, 3> viewer_position() = 0;
+    virtual std::array<float, 3> normalize_00419510(const std::array<float, 3>& v) = 0;
+    // 004142E0 through the entity's world +CCh, or (level) through that world
+    // with its translation set to 00F8758C..00F87594 and passed through 0085DAD0.
+    virtual std::array<float, 3> entity_transform(std::size_t entity, const std::array<float, 3>& p,
+                                                  bool level) = 0;
+};
+
+// 00793AC0: ECX ref, stack (out, level byte), RET 8. With a radius > 0 the
+// point is radius along the direction from the anchor (entity position or
+// +18h) to the viewer; otherwise +18h itself, or +18h in the entity's frame.
+std::array<float, 3> camera_ref_resolve_00793ac0(const CameraRef& ref, bool level, CameraRefHost& host);
+
+struct MovCamFollowHost {
+    virtual ~MovCamFollowHost() = default;
+    // 00794910(out, target, scale) with scale = [camera+4D0h]+54h.
+    virtual std::array<float, 2> aim_delta_00794910(std::size_t target) = 0;
+    // 00794130(target, -1.0): aim straight at the target.
+    virtual void aim_at_target_00794130(std::size_t target) = 0;
+    virtual float reciprocal_length_00419260(const std::array<float, 2>& v) = 0;
+};
+
+struct MovCamFollow {
+    float theta_3c4{0.0f};
+    float rho_3c8{0.0f};
+    std::size_t target_3e4{0};
+    float tolerance_3e8{0.0f};
+    float growth_3ec{1.0f};
+    float base_4f8{0.0f};
+};
+
+// 00795180: ECX camera, stack dt, RET 4. Lets the target drift inside a cone
+// that grows by (growth-1) per 0.05 s (00D0DE84); below 0.001 (00D7A23C) it
+// aims straight at it. When the drift exceeds the cone the angles move by the
+// excess; otherwise the cone shrinks to the drift.
+void movcam_follow_00795180(MovCamFollow& c, float dt, MovCamFollowHost& host);
+
+// 007900B0: the luaMW_MovCam_AddInterpolator record. `name` selects the id
+// (turnHInput 1, turnVInput 2, walkHInput 3, walkVInput 4, zoomInput 5,
+// moveSpeed 6, rotSpeed 7, zoom 8; case-insensitive); an unknown name leaves
+// `id_0` as it was. Four argument words follow and +14h is cleared.
+struct MovCamInterpolator {
+    std::uint32_t id_0{0};
+    std::array<std::uint32_t, 4> args_4{};
+    std::uint32_t field_14{0};
+};
+void movcam_interpolator_init_007900b0(MovCamInterpolator& r, const std::string& name,
+                                       const std::array<std::uint32_t, 4>& args);
+
+// MovCam motion. [camera+4D0h] is the speed-limit block the luaMW_MovCam_Set*
+// bindings edit: +34h top speed, +4Ch acceleration (per 0.05 s), +54h the
+// target-lead scale. Camera +3A0h is the position, +3B8h the previous one,
+// +3ACh the velocity being built this step.
+struct MovCamLimits {
+    float top_speed_34{0.0f};
+    float accel_4c{0.0f};
+    float lead_scale_54{0.0f};
+};
+struct MovCamMotion {
+    std::array<float, 3> position_3a0{};
+    std::array<float, 3> velocity_3ac{};
+    std::array<float, 3> previous_3b8{};
+};
+
+// 00793730: ECX out, EDX v, stack length, RET 4. v scaled to `length`; zero
+// when |v| (0 unless its float square sum exceeds 1e-10) is below 1e-6.
+std::array<float, 3> scale_to_length_00793730(const std::array<float, 3>& v, float length) noexcept;
+
+// 00794B80: ECX camera, stack (dir.xyz, max, square byte), RET 14h. The wanted
+// velocity is dir scaled to top_speed * min(|dir|, max) / max; the step toward
+// it from (position - previous) is at most accel * 0.05 (00D0DE84) long,
+// scaled by min(|difference| / (accel*0.05), 1), squared when `square`, and is
+// added to +3ACh.
+void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const std::array<float, 3>& dir,
+                           float max, bool square) noexcept;
+
+// 00790540: ECX camera, RET. When 00903860 (on [camera+30h]) has a ground
+// height under +394h, +398h becomes max(+398h, ground + 2.0).
+void movcam_keep_above_ground_00790540(std::array<float, 3>& position_394, bool has_ground, float ground) noexcept;
+
+// Angular counterparts: [camera+4D0h] +38h top turn rate, +50h turn
+// acceleration; camera +3CCh/+3D0h the angles, +3DCh/+3E0h the previous ones,
+// +3D4h/+3D8h the turn being built this step.
+struct MovCamTurnLimits {
+    float top_rate_38{0.0f};
+    float accel_50{0.0f};
+};
+struct MovCamTurn {
+    std::array<float, 2> angles_3cc{};
+    std::array<float, 2> rate_3d4{};
+    std::array<float, 2> previous_3dc{};
+    std::size_t target_3e4{0};
+    float tolerance_3e8{0.0f};
+    float growth_3ec{1.0f};
+};
+
+// 00793800: the 2-D 00793730 (x*x + y*y).
+std::array<float, 2> scale_to_length_00793800(const std::array<float, 2>& v, float length) noexcept;
+
+// 00794D60: ECX camera, stack (d.xy, max, square byte, target), RET 14h. As
+// 00794B80 for the angles. A non-null target also (re)arms the follow cone of
+// 00795180: tolerance = 00414C60(d) on a fresh target, else min(tolerance,
+// that), growth 0.875 (00D0467C), target stored.
+void movcam_turn_00794d60(MovCamTurn& t, const MovCamTurnLimits& limits, const std::array<float, 2>& d,
+                          float max, bool square, std::size_t target, float length_00414c60_of_d) noexcept;
+
 }  // namespace bsp::cc13cam
