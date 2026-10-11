@@ -1,0 +1,594 @@
+{
+  "schema": "bsp.cc12.locale-onexit-second-call-body.v1",
+  "status": "closed_bounded_body_with_unknown_external_boundary",
+  "packet": "cc12_locale_onexit_second_call_body",
+  "frozen_HEAD": "b1591d875a4fe995c60b6def77b7768af306477d",
+  "predecessor": {
+    "worker_commit": "73769a54a4850ca4aca931b09c944f456fb69a7c",
+    "primary_commit": "b1591d875a4fe995c60b6def77b7768af306477d",
+    "primary_doc": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_PRIMARY.md",
+    "primary_report": "reports/cc12_locale_onexit_second_call_entry_primary.json",
+    "positive_selection": "Previously accepted BF6FC5 physical CALL selects BFBA68; no predecessor Native reread."
+  },
+  "metadata": {
+    "entry": "00BFBA68",
+    "saved_name": "LIBCRT_unmatched_00bfba68",
+    "saved_body_range": [
+      "00BFBA68",
+      "00BFBA70"
+    ],
+    "no_return": false,
+    "is_thunk": false,
+    "direct_thunk_target": null,
+    "unit_layout": [
+      [
+        "00BFBA68",
+        2
+      ],
+      [
+        "00BFBA6A",
+        5
+      ],
+      [
+        "00BFBA6F",
+        1
+      ],
+      [
+        "00BFBA70",
+        1
+      ]
+    ],
+    "whole_instruction_units": 4,
+    "interior_addresses": 5,
+    "exact_coverage": true,
+    "coverage_raw_responses": 18,
+    "operand_bookend_raw_responses": 18,
+    "complete_raw_responses_total": 36,
+    "paired_and_cross_phase_raw_equal": true,
+    "all_flow_overrides": "NONE",
+    "default_effective_flows_equal": true,
+    "call_address": "00BFBA6A",
+    "call_flow": "UNCONDITIONAL_CALL",
+    "call_target_address_only": "00C11C21",
+    "call_fallthrough": "00BFBA6F"
+  },
+  "Root_admission": {
+    "path": "Root_listing_gate.json",
+    "bytes": 5434,
+    "sha256": "824f8dcb9f15f59c73a832317be1a657d6ab95a387d8e7ddd688f1f2c775d5b2"
+  },
+  "Native": {
+    "status": "PASS",
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "typed_before_after_equal": true,
+    "typed_equal_accepted_baseline": true,
+    "typed_raw_responses": 18,
+    "complete_typed_raw_responses_total": 36,
+    "code_pair_equal": true,
+    "text_pair_equal": true,
+    "fresh_unique_code_bytes": 9,
+    "unique_instruction_text_starts": 4,
+    "text_context": 0,
+    "fresh_data_bytes": 0,
+    "prototype_decompile_disasm_queries": 0,
+    "target_caller_neighbor_expansion_queries": 0,
+    "GPR_mutations": 0,
+    "automatic_target_objects": "wholly opaque",
+    "external_returned_state": "wholly unknown",
+    "actual_OS_CRT_callback_status_ABI_game_validation": false,
+    "successor_admitted": false,
+    "admission_pin": {
+      "bytes": 5434,
+      "sha256": "824f8dcb9f15f59c73a832317be1a657d6ab95a387d8e7ddd688f1f2c775d5b2"
+    },
+    "admission_copied_before_operand_reads": true
+  },
+  "physical_code": {
+    "bytes": 9,
+    "sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d"
+  },
+  "decode": {
+    "status": "PASS",
+    "code": {
+      "bytes": 9,
+      "sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d"
+    },
+    "code_hex": "6a08e8b261010059c3",
+    "instructions": [
+      {
+        "address": "00BFBA68",
+        "length": 2,
+        "bytes_hex": "6a08",
+        "manual_encoding": "6A imm8; sign-extend 08 to DWORD 00000008; a completing 32-bit PUSH decrements ESP by4 and writes that DWORD.",
+        "manual_mnemonic": "push",
+        "manual_operands": [
+          {
+            "kind": "immediate",
+            "value": 8,
+            "size": 4
+          }
+        ],
+        "saved_instruction_text": "PUSH 0x8",
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "8",
+        "capstone_operands": [
+          {
+            "kind": "immediate",
+            "value": 8,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          106,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 1,
+        "capstone_immediate_size": 1,
+        "capstone_groups": [
+          "not64bitmode"
+        ],
+        "detailed_operand_and_saved_text_agreement": true
+      },
+      {
+        "address": "00BFBA6A",
+        "length": 5,
+        "bytes_hex": "e8b2610100",
+        "manual_encoding": "E8 rel32; little-endian B2610100 is signed +000161B2; BFBA6F+000161B2=C11C21. Completing near CALL pushes BFBA6F before transfer.",
+        "manual_mnemonic": "call",
+        "manual_operands": [
+          {
+            "kind": "immediate",
+            "value": 12655649,
+            "size": 4
+          }
+        ],
+        "saved_instruction_text": "CALL 0x00c11c21",
+        "capstone_mnemonic": "call",
+        "capstone_op_str": "0xc11c21",
+        "capstone_operands": [
+          {
+            "kind": "immediate",
+            "value": 12655649,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "eip"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          232,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 1,
+        "capstone_immediate_size": 4,
+        "capstone_groups": [
+          "call",
+          "branch_relative",
+          "not64bitmode"
+        ],
+        "detailed_operand_and_saved_text_agreement": true
+      },
+      {
+        "address": "00BFBA6F",
+        "length": 1,
+        "bytes_hex": "59",
+        "manual_encoding": "58+1 POP ECX; source is the then-current stack word and a completing POP advances ESP by4.",
+        "manual_mnemonic": "pop",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "ecx",
+            "size": 4
+          }
+        ],
+        "saved_instruction_text": "POP ECX",
+        "capstone_mnemonic": "pop",
+        "capstone_op_str": "ecx",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "ecx",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "esp",
+          "ecx"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          89,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "capstone_groups": [
+          "not64bitmode"
+        ],
+        "detailed_operand_and_saved_text_agreement": true
+      },
+      {
+        "address": "00BFBA70",
+        "length": 1,
+        "bytes_hex": "c3",
+        "manual_encoding": "C3 near RET, no immediate or size override; uses the then-current stack word as destination and advances ESP by4 if completed.",
+        "manual_mnemonic": "ret",
+        "manual_operands": [],
+        "saved_instruction_text": "RET",
+        "capstone_mnemonic": "ret",
+        "capstone_op_str": "",
+        "capstone_operands": [],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "capstone_groups": [
+          "ret",
+          "not64bitmode"
+        ],
+        "detailed_operand_and_saved_text_agreement": true
+      }
+    ],
+    "Capstone": {
+      "python_package_version": "5.0.7",
+      "python_module": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "python_module_pin": {
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      "native_library": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+      "native_library_pin": {
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      }
+    },
+    "physical_call": {
+      "address": "00BFBA6A",
+      "opcode": "E8",
+      "signed_rel32": 90546,
+      "next_ip": "00BFBA6F",
+      "computed_target": "00C11C21",
+      "target_followed": false
+    },
+    "physical_flow_vs_saved_metadata": {
+      "physical_E8_near_relative_call": true,
+      "saved_default_and_effective_flow": "UNCONDITIONAL_CALL",
+      "saved_override": "NONE",
+      "saved_target_address": "00C11C21",
+      "physical_and_metadata_targets_agree": true,
+      "library_no_return_flags_not_used_to_decode_physical_opcode": true
+    },
+    "manual_detailed_Capstone_and_saved_text_agree": true,
+    "meaning": "Conditional instruction-local effects only; all external returned registers, ESP and memory remain unknown."
+  },
+  "conditional_operand_model": {
+    "precondition": "The specified instructions are reached, execute in the stated order with 32-bit stack addressing, and complete. Offset arithmetic wraps modulo2^32.",
+    "initial_symbol": "S is ESP at BFBA68, without an assumed incoming ABI or caller frame.",
+    "before_external_call": [
+      {
+        "address": "00BFBA68",
+        "effect": "PUSH sign-extended imm8 08: ESP=S-4; DWORD8 written through SS:[S-4]."
+      },
+      {
+        "address": "00BFBA6A",
+        "effect": "Completing physical near CALL pushes BFBA6F through SS:[S-8], sets ESP=S-8, and transfers to C11C21."
+      }
+    ],
+    "external_boundary": {
+      "address": "00C11C21",
+      "target_followed": false,
+      "returned_control_registers_ESP_memory": "All unknown. A return to BFBA6F, cleanup and preservation are not established.",
+      "ABI_or_locking_contract_assumed": false
+    },
+    "if_control_returns_to_BFBA6F": {
+      "U": "Then-current returned ESP, independent of S unless separately proved.",
+      "POP_ECX": "A completing POP loads ECX from the then-current DWORD through SS:[U] and sets ESP=U+4.",
+      "RET": "A completing near RET consumes the then-current DWORD through SS:[U+4] as destination and sets ESP=U+8.",
+      "final_EAX_and_status": "Unknown across the external boundary.",
+      "not_equated": [
+        "POPed word with the earlier pushed8",
+        "RET word with the incoming caller return word",
+        "U with S-4 or any caller-balanced formula"
+      ]
+    },
+    "limits": [
+      "All operand memory preimages after the external call are unknown.",
+      "Saved target objects are wholly opaque.",
+      "No originalOS/CRT/provider, callback ownership, status, ABI or actual execution is established."
+    ]
+  },
+  "quarantine": {
+    "semantic_credit": false,
+    "whole_automatic_target_objects_opaque": true,
+    "saved_library_name_is_authentication": false,
+    "target_callee_identity_or_behavior_credited": false
+  },
+  "Source_identity_only": {
+    "tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "Actual worker frozen base and independently captured worker final only.",
+    "census_performed": false,
+    "Source_files_read": 0,
+    "current_Root_equality_claimed": false,
+    "implementation_build_fixture_runtime_credit": false
+  },
+  "bounded_provenance": {
+    "finite_prerequisite_and_tool_files": 9,
+    "actual_frozen_Git_objects": 6,
+    "selected_files": [
+      {
+        "path": "config/target.json",
+        "git_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git_entry": "GitBlobs/config/target.json",
+        "git_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_entry": "PhysicalFiles/config/target.json",
+        "physical_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+        "git_oid": "71b5968f3895d8c607172e4e367645ef88ca1f11",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+        "git_pin": {
+          "bytes": 2537,
+          "sha256": "cb98fa9777b62a948238415582190e1eb26d0cb70a89daee5eafdc489b346fdc"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+        "physical_pin": {
+          "bytes": 2537,
+          "sha256": "cb98fa9777b62a948238415582190e1eb26d0cb70a89daee5eafdc489b346fdc"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_PRIMARY.md",
+        "git_oid": "d5745ede9f80972536d5c1915ba37983cd66561b",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_PRIMARY.md",
+        "git_pin": {
+          "bytes": 1582,
+          "sha256": "771a1dc043d52c2433f947bcdeb41c45e00ba3ea88c3717a07a25ff261e3217e"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_PRIMARY.md",
+        "physical_pin": {
+          "bytes": 1582,
+          "sha256": "771a1dc043d52c2433f947bcdeb41c45e00ba3ea88c3717a07a25ff261e3217e"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_entry_metadata.json",
+        "git_oid": "255aebda50c2f24b89c55b21e56ffa1c057bfe96",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_second_call_entry_metadata.json",
+        "git_pin": {
+          "bytes": 11736,
+          "sha256": "680e1965d3aa45ff1f074763c8e96d9fbed859601a4e65eab027e19b399c18d6"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_second_call_entry_metadata.json",
+        "physical_pin": {
+          "bytes": 11736,
+          "sha256": "680e1965d3aa45ff1f074763c8e96d9fbed859601a4e65eab027e19b399c18d6"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_second_call_entry_primary.json",
+        "git_oid": "ba72d02938f812ccfdbc8e097b933c7a5a8c312c",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_second_call_entry_primary.json",
+        "git_pin": {
+          "bytes": 13179,
+          "sha256": "527bc75bf77385b2104814db2dbe10cf021acabff21115ecc90d24df49e09ec0"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_second_call_entry_primary.json",
+        "physical_pin": {
+          "bytes": 13179,
+          "sha256": "527bc75bf77385b2104814db2dbe10cf021acabff21115ecc90d24df49e09ec0"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git_entry": "GitBlobs/tools/bsp.py",
+        "git_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_entry": "PhysicalFiles/tools/bsp.py",
+        "physical_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git_entry": "GitBlobs/tools/ghidra_export.py",
+        "git_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_export.py",
+        "physical_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git_entry": "GitBlobs/tools/ghidra_typed_flow.py",
+        "git_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_typed_flow.py",
+        "physical_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/workspace.py",
+        "git_oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git_entry": "GitBlobs/tools/workspace.py",
+        "git_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_entry": "PhysicalFiles/tools/workspace.py",
+        "physical_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_raw_equal_Git": true
+      }
+    ],
+    "inherited_archives_traversed": 0,
+    "retained_offline_helpers": 4,
+    "retained_producers": 9,
+    "complete_CLI_streams": 12,
+    "failed_or_interrupted_Native_captures": 0
+  },
+  "archive": {
+    "bytes": 419656,
+    "sha256": "f3a180cd1d32ed661cfd269c7bd8d3c1d0e3e44e5e648af880d8e057ed0cd4e0"
+  },
+  "archive_path": "local/cc12_locale_onexit_second_call_body/evidence.zip",
+  "offline_guard": {
+    "status": "PASS",
+    "guard_active_before_helper_execution": true,
+    "helper_pins_verified_before_import": [
+      {
+        "bytes": 5942,
+        "name": "common.py",
+        "sha256": "53d69e5893fd34f80fc2d5654800af31c1dbeb1e207a4a02eca89a0bb9aeb296"
+      },
+      {
+        "bytes": 3647,
+        "name": "delivery_verifier.py",
+        "sha256": "0cfd04b4f87682496e78f3d2fa23f200f2c39b3ae6815123375c468a7479bd1c"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 9806,
+        "name": "verifier.py",
+        "sha256": "9abcf643c850cc237e4b471069a0bfffc5696d0f81dead358aa8a8713b669fe4"
+      }
+    ],
+    "unexpected_denials": [],
+    "distinct_physical_copy_verified": true
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_BODY.md",
+      "reports/cc12_locale_onexit_second_call_body.json"
+    ],
+    "separate_delivery_archive": "local/cc12_locale_onexit_second_call_body/delivery_git.zip",
+    "actual_worker_base_final_Git_objects": 8,
+    "current_staged_committed_bytes_equal_required": true
+  },
+  "not_established": [
+    "C11C21 identity or implementation",
+    "external return state and cleanup",
+    "memory/register preservation",
+    "actual caller frame continuation",
+    "OS/CRT authenticity",
+    "callback ownership",
+    "status meaning",
+    "ABI compatibility",
+    "actual execution or gameplay"
+  ],
+  "next_scope": "None admitted. Native is closed; Root chooses any successor."
+}
