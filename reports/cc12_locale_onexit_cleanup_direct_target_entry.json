@@ -1,0 +1,759 @@
+{
+  "schema": 1,
+  "packet": "cc12_locale_onexit_cleanup_direct_target_entry",
+  "status": "exact one-byte entry physical contract and accepted numeric caller target; independent Root final review pending",
+  "base_commit": "022395d820ddaf58360b6c551b7d7657417e6a2b",
+  "entry_scope": {
+    "address": "00C11B31",
+    "exact_admitted_bytes": 1,
+    "saved_owner_label_metadata_only": "__unlock",
+    "saved_owner_range_metadata_only": [
+      "00C11B31",
+      "00C11B45"
+    ],
+    "saved_owner_bytes_metadata_only": 21,
+    "remaining_body_bytes_unread": 20
+  },
+  "listing_metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "paired_and_closing_direct_payloads_equal": true,
+    "four_aliases": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b31"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b31"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b31"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c11b31"
+        },
+        "length": 1,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b32"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c11b32"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "owner_metadata": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c11b31"
+      },
+      "name": "__unlock",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "21",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c11b31"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c11b45"
+            },
+            "length": "21"
+          }
+        ]
+      }
+    },
+    "raw_direct_payload": {
+      "bytes": 2141,
+      "sha256": "239c6b3fae250eda1a9be90791149f65f8b137fec18eab80ff64ec830fb63472"
+    },
+    "automatic_direct_call_targets": "retained opaque and not traversed",
+    "CLI_commands": 10,
+    "CLI_breakdown": {
+      "count_bookends": 4,
+      "typed_flow": 3,
+      "exact_byte_reads": 2,
+      "context_zero_entry_text": 1
+    },
+    "phase_one_commands_before_Root_gate": 4,
+    "admitted_remaining_commands": 6,
+    "prototype_queries": 0
+  },
+  "Root_gate": {
+    "producer": {
+      "bytes": 7059,
+      "sha256": "999ca1cf4754032a94b189a71c2884cd3289e35fb26104550ff4b736541ba36f"
+    },
+    "receipt": {
+      "bytes": 2357,
+      "sha256": "64059759d4f2d9a580fde81bad52a6e5c1c67fe709f03d6561771a2679895203"
+    },
+    "metadata_preimages_copied": 33,
+    "frozen_positive_Git_preimages_copied": 23,
+    "copied_artifacts_total": 59,
+    "Root_producer_executed_by_worker": false,
+    "Root_gate_execution_failures": 0,
+    "Root_Native_queries": 0
+  },
+  "physical": {
+    "entry_hex": "55",
+    "entry_pin": {
+      "bytes": 1,
+      "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+    },
+    "saved_text": "PUSH EBP",
+    "positive_caller_hex": "6A0AE812FFFFFF59C3",
+    "positive_caller_pin": {
+      "bytes": 9,
+      "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042"
+    },
+    "positive_caller_source": [
+      {
+        "path": "frozen/blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+        "bytes": 27705,
+        "sha256": "e68a6a20f7641cd831b90325e469aa86ef1e9666534986859a1cbf1d7c927224"
+      },
+      {
+        "path": "frozen/blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json",
+        "bytes": 5649,
+        "sha256": "10021d437071703f24785522159bfe539ace374e0c2cbe7aa5435fff3ba8df76"
+      }
+    ],
+    "fresh_Native_caller_query": false,
+    "decoder": "Actual detailed Capstone 5.0.7 x86-32 and independent opcode/bitfield decode",
+    "physical_capture": {
+      "bytes": 10564,
+      "sha256": "9c95be93a6fcee0fba9ff1140bb02153aaddc47531e5ffcd0d2732fe541f51b0"
+    },
+    "decodes": {
+      "entry": {
+        "input": {
+          "bytes": 1,
+          "sha256": "a25513c7e0f6eaa80a3337ee18081b9e2ed09e00af8531c8f7bb2542764027e7"
+        },
+        "hex": "55",
+        "manual": [
+          {
+            "address": "00C11B31",
+            "bytes": "55",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "55",
+              "ModRM_present": false,
+              "encoded_register": 5
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655409,
+              "bytes": "55",
+              "size": 1,
+              "mnemonic": "push",
+              "op_str": "ebp",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                85,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 1,
+                  "register": "ebp"
+                }
+              ]
+            }
+          }
+        ],
+        "actual_detailed_Capstone": [
+          {
+            "address": 12655409,
+            "bytes": "55",
+            "size": 1,
+            "mnemonic": "push",
+            "op_str": "ebp",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              85,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 1,
+                "register": "ebp"
+              }
+            ]
+          }
+        ],
+        "agreement": true
+      },
+      "positive_caller": {
+        "input": {
+          "bytes": 9,
+          "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042"
+        },
+        "hex": "6A0AE812FFFFFF59C3",
+        "manual": [
+          {
+            "address": "00C11C18",
+            "bytes": "6A0A",
+            "size": 2,
+            "physical_fields": {
+              "opcode_hex": "6A",
+              "ModRM_present": false,
+              "encoded_imm8": 10,
+              "signed_imm8": 10,
+              "pushed_imm32": 10
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655640,
+              "bytes": "6a0a",
+              "size": 2,
+              "mnemonic": "push",
+              "op_str": "0xa",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                106,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 1,
+              "immediate_size": 1,
+              "operands": [
+                {
+                  "type": 2,
+                  "size": 4,
+                  "access": 0,
+                  "immediate": 10
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C1A",
+            "bytes": "E812FFFFFF",
+            "size": 5,
+            "physical_fields": {
+              "opcode_hex": "E8",
+              "ModRM_present": false,
+              "encoded_rel32_little_endian": "12FFFFFF",
+              "signed_rel32": -238,
+              "physical_next": 12655647,
+              "numeric_target": 12655409
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655642,
+              "bytes": "e812ffffff",
+              "size": 5,
+              "mnemonic": "call",
+              "op_str": "0xc11b31",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                232,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 1,
+              "immediate_size": 4,
+              "operands": [
+                {
+                  "type": 2,
+                  "size": 4,
+                  "access": 0,
+                  "immediate": 12655409
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C1F",
+            "bytes": "59",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "59",
+              "ModRM_present": false,
+              "encoded_register": 1
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655647,
+              "bytes": "59",
+              "size": 1,
+              "mnemonic": "pop",
+              "op_str": "ecx",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                89,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": [
+                {
+                  "type": 1,
+                  "size": 4,
+                  "access": 2,
+                  "register": "ecx"
+                }
+              ]
+            }
+          },
+          {
+            "address": "00C11C20",
+            "bytes": "C3",
+            "size": 1,
+            "physical_fields": {
+              "opcode_hex": "C3",
+              "ModRM_present": false
+            },
+            "implicit_memory_segment": "ss",
+            "expected_detailed_decode": {
+              "address": 12655648,
+              "bytes": "c3",
+              "size": 1,
+              "mnemonic": "ret",
+              "op_str": "",
+              "prefix": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "opcode": [
+                195,
+                0,
+                0,
+                0
+              ],
+              "address_size": 4,
+              "modrm": 0,
+              "modrm_offset": 0,
+              "displacement": 0,
+              "displacement_offset": 0,
+              "displacement_size": 0,
+              "immediate_offset": 0,
+              "immediate_size": 0,
+              "operands": []
+            }
+          }
+        ],
+        "actual_detailed_Capstone": [
+          {
+            "address": 12655640,
+            "bytes": "6a0a",
+            "size": 2,
+            "mnemonic": "push",
+            "op_str": "0xa",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              106,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1,
+            "operands": [
+              {
+                "type": 2,
+                "size": 4,
+                "access": 0,
+                "immediate": 10
+              }
+            ]
+          },
+          {
+            "address": 12655642,
+            "bytes": "e812ffffff",
+            "size": 5,
+            "mnemonic": "call",
+            "op_str": "0xc11b31",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              232,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 4,
+            "operands": [
+              {
+                "type": 2,
+                "size": 4,
+                "access": 0,
+                "immediate": 12655409
+              }
+            ]
+          },
+          {
+            "address": 12655647,
+            "bytes": "59",
+            "size": 1,
+            "mnemonic": "pop",
+            "op_str": "ecx",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              89,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": [
+              {
+                "type": 1,
+                "size": 4,
+                "access": 2,
+                "register": "ecx"
+              }
+            ]
+          },
+          {
+            "address": 12655648,
+            "bytes": "c3",
+            "size": 1,
+            "mnemonic": "ret",
+            "op_str": "",
+            "prefix": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opcode": [
+              195,
+              0,
+              0,
+              0
+            ],
+            "address_size": 4,
+            "modrm": 0,
+            "modrm_offset": 0,
+            "displacement": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0,
+            "operands": []
+          }
+        ],
+        "agreement": true
+      }
+    }
+  },
+  "conditional_CPU_contract": {
+    "conditions": [
+      "Each ESP formula below is conditional on an actual 32-bit SS stack-address size at that instruction, 32-bit operand/code decoding and normal completion. Live SS descriptors were not queried.",
+      "Offset and ESP arithmetic is modulo 2^32. Reads and writes use the SS, registers and memory current at the instruction; the later reads are not an entry-memory snapshot.",
+      "The optional caller-to-entry composition additionally requires the listed PUSH/CALL/entry PUSH to execute consecutively in the modeled state without intervening mutation.",
+      "After the opaque callee suffix, no register, flag, segment, stack-address size or memory preservation is assumed. Conditions for a subsequent POP or RET must hold again at that instruction."
+    ],
+    "entry": {
+      "address": "00C11B31",
+      "hex": "55",
+      "encoding": "50+r with r=5 selects EBP; no prefix, ModRM, displacement or immediate",
+      "symbols": {
+        "P": "ESP immediately before this entry instruction",
+        "B": "EBP immediately before this entry instruction"
+      },
+      "qualified_effect": "Under the actual 32-bit SS stack-size and normal-completion conditions: ESP := P-4; Write32(current SS, P-4, B).",
+      "registers": "Only ESP changes among general registers; EBP remains B at the end of this one instruction.",
+      "flags": "This PUSH does not write flags on normal completion.",
+      "physical_next_instruction_address": "00C11B32",
+      "next_instruction_bytes_queried": false,
+      "not_established": [
+        "established EBP frame pointer",
+        "frame contents or caller identity",
+        "function-wide register preservation",
+        "argument interpretation",
+        "unlock operation",
+        "callee ABI"
+      ]
+    },
+    "positive_caller_instructions": [
+      {
+        "address": "00C11C18",
+        "hex": "6A0A",
+        "instruction": "PUSH 10",
+        "qualified_effect": "Under the actual 32-bit SS stack-size condition, let S be current ESP. Sign-extend imm8 0A to 0000000A; ESP := S-4; Write32(current SS, S-4, 10)."
+      },
+      {
+        "address": "00C11C1A",
+        "hex": "E812FFFFFF",
+        "instruction": "CALL 00C11B31",
+        "qualified_effect": "Signed rel32 is -238; physical next address 00C11C1F plus -238 gives 00C11B31. Under actual 32-bit SS stack size and the normal preceding PUSH, ESP := S-8; Write32(current SS, S-8, 00C11C1F)."
+      },
+      {
+        "address": "00C11C1F",
+        "hex": "59",
+        "instruction": "POP ECX",
+        "qualified_effect": "Only if the opaque callee returns here and actual 32-bit SS stack size holds anew: let Q be the unknown returned ESP; ECX := current Read32(SS, Q); ESP := Q+4."
+      },
+      {
+        "address": "00C11C20",
+        "hex": "C3",
+        "instruction": "RET",
+        "qualified_effect": "If this instruction normally follows that POP and actual 32-bit SS stack size holds: target := current Read32(SS, Q+4); ESP := Q+8. The target remains unknown."
+      }
+    ],
+    "optional_local_composition": "Only under the stated consecutive normal-execution and actual 32-bit SS stack-size conditions, the target entry receives P=S-8 and pushes its current B at SS:[S-12], yielding ESP=S-12. These are instruction-time writes, not claims about final caller-frame contents.",
+    "opaque_boundary": "After the one known target PUSH, the remaining 20 bytes and any calls remain opaque. If execution eventually returns to C11C1F, every general register, ESP, EBP, flag, segment and memory value is independently unknown; Q has no established relation to S.",
+    "alias_rule": "No disjointness of underlying storage or preservation of earlier pushed words is assumed. Later reads observe their then-current memory and segments."
+  },
+  "finite_Git_proof": {
+    "selected_inputs": [
+      "config/target.json",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "tools/ghidra_typed_flow.py",
+      "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY.md",
+      "reports/cc12_locale_onexit_lock_initializer_cleanup_body.json",
+      "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_BODY_PRIMARY.md",
+      "reports/cc12_locale_onexit_lock_initializer_cleanup_body_primary.json"
+    ],
+    "count": 8,
+    "actual_commit_and_tree_objects": 6,
+    "Source_tree_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "Source_contents_read": false,
+    "Source_census": false,
+    "prior_proof_archives_traversed": false,
+    "current_Main_Source_equality_claimed": false,
+    "Root_distinct_frozen_copies_verified_against_actual_Git": true
+  },
+  "proof": {
+    "core_archive": {
+      "path": "local/cc12_locale_onexit_cleanup_direct_target_entry/core_v1.zip",
+      "bytes": 2114515,
+      "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+    },
+    "copy_archive": {
+      "path": "local/cc12_locale_onexit_cleanup_direct_target_entry/core_v1_copy.zip",
+      "bytes": 2114515,
+      "sha256": "34435879348fec09a3f4635534a044b1dabe2a9d860117afd02cfdcbe71aca1a"
+    },
+    "members_including_manifest": 152,
+    "distinct_file_ids": [
+      2814749796576891,
+      281475006210133
+    ],
+    "replay_producer": {
+      "bytes": 19119,
+      "sha256": "df80c3a219215ce374f3079f372aa2b6878eecb55d8d86a62e5e08641ce79cb6"
+    },
+    "guard_producer": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    },
+    "original_receipt": {
+      "bytes": 23477,
+      "sha256": "c1afff2a998cebcd7f29b344f1a58645c9ebe537303f5f1d5ac4896cf28174b7"
+    },
+    "copy_receipt": {
+      "bytes": 23477,
+      "sha256": "c1afff2a998cebcd7f29b344f1a58645c9ebe537303f5f1d5ac4896cf28174b7"
+    },
+    "both_core_replays_PASS_first_attempt": true,
+    "per_replay_guard": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "permitted_effects": "One supplied physical ZIP read, one pinned precompiled helper execution, one exclusive receipt write; every other audited effect denied.",
+    "delivery": "Separate post-commit actual-Git original/copy proof verifies exactly the two owned outputs, unchanged eight positive inputs, and working/index/committed byte equality."
+  },
+  "failures": {
+    "offline_validator_execution_failures": 1,
+    "cause": "The initial text adapter replaced == 20 within the HTTP 200 check, producing HTTP 210 and an offline AssertionError.",
+    "retention": "Failed preparer, validator and manifest-helper physical preimages; exact displayed original tool traceback; repair producer; original and corrected revision records.",
+    "separate_raw_stream_limitation": "The failed offline invocation supplied a combined exec-tool output, not separate raw stdout/stderr files. The retained failure record states this explicitly.",
+    "failed_attempt_Native_queries": 0,
+    "failed_attempt_GPR_mutations": 0,
+    "correction": "HTTP check restored to 200 and body-size substitution restricted to its exact arithmetic assertion; one corrected offline retry passed.",
+    "Native_capture_failures": 0,
+    "Root_gate_execution_failures": 0,
+    "Root_Native_queries": 0,
+    "guarded_core_replay_failures": 0,
+    "error_free_packet_claimed": false,
+    "failure_record": {
+      "bytes": 2336,
+      "sha256": "e382e26c25569c1221989cd8f7442418720253925a071043a30942e2f6fc3def"
+    }
+  },
+  "limitations": [
+    "The __unlock saved name, no-return/thunk flags, body range and any automatically returned call-target or EXTERNAL metadata establish no semantic behavior or live ABI.",
+    "The remaining 20 saved body bytes at C11B32..C11B45 are unread; no prototype, callee, neighbor, data, provider or subsequent unit was queried.",
+    "Pushing 10 in the positive caller does not prove a lock number or unlock operation, and later POP ECX does not prove argument cleanup.",
+    "No connection from an earlier Original caller frame is assumed. No whole-function stack balance, return identity, register preservation or binary replacement contract is established.",
+    "No Source content/census, old proof archive, C++ change, build, test, native probe, Original/game process, OS/audio behavior or GPR mutation was performed in this packet."
+  ],
+  "next_boundary": "Root independently reviews and integrates this exact entry before considering a new body-metadata admission. C11B32 is not queried in this packet."
+}
