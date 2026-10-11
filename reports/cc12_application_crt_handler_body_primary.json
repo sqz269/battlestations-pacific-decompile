@@ -1,0 +1,336 @@
+{
+  "schema": "bsp.cc12.crt-handler-body.Root.v1",
+  "status": "exact_body_and_conditional_instruction_local_stack_transfers_accepted",
+  "worker_commit": "8f45f1abbd0f08529d214d5baacdb153d3693091",
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/evidence.zip",
+      "bytes": 518294,
+      "sha256": "b2844fab4ed6bdbb4bbb12a582cfe6b1a49a21d08aa5bf51f3344dd83c969a43"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/manifest.json",
+      "bytes": 13219,
+      "sha256": "c4b16f273136eaaa3587e5818aad707d6cfc08d4ad9a509aab4213121106259b"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/seal.json",
+      "bytes": 59331,
+      "sha256": "0db5037c0ad7f2eed09a0e6ab0b84fcdd283cf07c65b93e7b3f10cc1147447f1"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/portable_replay.py",
+      "bytes": 7382,
+      "sha256": "56018467707ccd5050c6ab427647fa886d6f98d1f5217f531376bfb4d99ad075"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/guard_replay.py",
+      "bytes": 2283,
+      "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_guard_runner.py",
+      "bytes": 736,
+      "sha256": "893e94a8c84a554171c2cbcb6eb2f23550fb80fbe2b000a9e6e69db9eb972287"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_guard.json",
+      "bytes": 33943,
+      "sha256": "04c1867e5a3b7887d67227a464e6f75cec8aa476e26436d4bfba7b6681c285f3"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_guard.stderr.txt",
+      "bytes": 423,
+      "sha256": "648c07e0a53c9a530424807e98a6981c7dbe65f61e7aea6ad93c85f7f0ad3886"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/copy_and_actual.py",
+      "bytes": 4653,
+      "sha256": "cc0f3590b5d0398b9a0ced07554320f1b2a0579e21e1a9b9ee8f3c8b8a2792a1"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_actual_review.json",
+      "bytes": 11809,
+      "sha256": "f5e378e9e0b7a3c37f1debd78d5124385e204ea88dff64b579181f665d4760a8"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/review_listing.py",
+      "bytes": 4780,
+      "sha256": "e2c042ff5719ade0355f947a040d2350b13bf7b77c880f008c6905cb7d1d4982"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_listing_gate.json",
+      "bytes": 25516,
+      "sha256": "d0245e3afd2e1eebf87c452620af5beffd7afabdb3e4ff615e5fec64de2e1131"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/review_operands.py",
+      "bytes": 4950,
+      "sha256": "596cf14811103af1dda51d05c26e43d5e1819c3e118f2cdad8c46c2e46097029"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_operand_review.json",
+      "bytes": 5058,
+      "sha256": "101a66414b722e5d2b9346fb7a8f39f55f263898501d43ab3e80e2688008700d"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/Root_exact_code.bin",
+      "bytes": 54,
+      "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/staged_git_receipt.json",
+      "bytes": 3613,
+      "sha256": "650d48f7e459701c300ddcdb11371ae5da4c3238c93a27d308f71999cd7c6d0f"
+    },
+    {
+      "path": "local/cc12_application_crt_handler_body_primary/final_git_receipt.json",
+      "bytes": 3483,
+      "sha256": "1adedbc7a5315313c32ded695ce5eeca2425245e21a09ee3d23135dbe1dc9714"
+    }
+  ],
+  "Native": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "typed_responses": 216,
+    "all_four_raw_batches_equal": true,
+    "count_reads": 6,
+    "code_reads": 2,
+    "code_bytes_per_read": 54,
+    "code_sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+    "instruction_count": 27,
+    "instructions": [
+      {
+        "address": "00BF6B43",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "address": "00BF6B44",
+        "length": 2,
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "address": "00BF6B46",
+        "length": 3,
+        "mnemonic": "sub",
+        "operands": "esp, 8"
+      },
+      {
+        "address": "00BF6B49",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00BF6B4A",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00BF6B4B",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00BF6B4C",
+        "length": 1,
+        "mnemonic": "cld",
+        "operands": ""
+      },
+      {
+        "address": "00BF6B4D",
+        "length": 3,
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 4], eax"
+      },
+      {
+        "address": "00BF6B50",
+        "length": 2,
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00BF6B52",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6B53",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6B54",
+        "length": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6B55",
+        "length": 3,
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp - 4]"
+      },
+      {
+        "address": "00BF6B58",
+        "length": 3,
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp + 0x14]"
+      },
+      {
+        "address": "00BF6B5B",
+        "length": 3,
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp + 0x10]"
+      },
+      {
+        "address": "00BF6B5E",
+        "length": 3,
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp + 0xc]"
+      },
+      {
+        "address": "00BF6B61",
+        "length": 3,
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp + 8]"
+      },
+      {
+        "address": "00BF6B64",
+        "length": 5,
+        "mnemonic": "call",
+        "operands": "0xc07991"
+      },
+      {
+        "address": "00BF6B69",
+        "length": 3,
+        "mnemonic": "add",
+        "operands": "esp, 0x20"
+      },
+      {
+        "address": "00BF6B6C",
+        "length": 3,
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 8], eax"
+      },
+      {
+        "address": "00BF6B6F",
+        "length": 1,
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00BF6B70",
+        "length": 1,
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00BF6B71",
+        "length": 1,
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00BF6B72",
+        "length": 3,
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp - 8]"
+      },
+      {
+        "address": "00BF6B75",
+        "length": 2,
+        "mnemonic": "mov",
+        "operands": "esp, ebp"
+      },
+      {
+        "address": "00BF6B77",
+        "length": 1,
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "address": "00BF6B78",
+        "length": 1,
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "manual_Root_Capstone_and_context0_texts_agree": true,
+    "conditional_entry": {
+      "ESP": "unknown S",
+      "EAX": "unknown D",
+      "own_EBP": "H=S-4",
+      "descriptor_store": "DWORD[S-8]=D",
+      "DF_before_CALL": 0,
+      "ESP_before_CALL": "S-38h",
+      "target_entry_ESP": "T=S-3Ch",
+      "target_stack": {
+        "T": "BF6B69",
+        "T+4,+8,+Ch,+10h": "four unqueried incomingDWORDs atS+4,+8,+Ch,+10h",
+        "T+14h": "D",
+        "T+18h,+1Ch,+20h": "zero"
+      }
+    },
+    "conditional_external_return": {
+      "ESP": "unknown Q",
+      "EBP": "unknown F",
+      "EAX": "unknown A",
+      "memory": "unknown M after external return",
+      "post_store_memory": "Mprime=M with DWORD[F-8]=A after ADD ESP,20h",
+      "EDI": "Mprime[Q+20h]",
+      "ESI": "Mprime[Q+24h]",
+      "EBX": "Mprime[Q+28h]",
+      "EAX_after_reload": "A if own store/read complete without intervening mutation",
+      "EBP_after_POP": "Mprime[F]",
+      "near_RET_IP": "Mprime[F+4]",
+      "final_ESP": "F+8",
+      "normal_restoration_requires": "Q=S-38h,F=S-4 and intact saved words; these are conditions, not target ABI evidence"
+    },
+    "descriptor_dereferences": 0,
+    "entire_automatic_target_function_objects_wholly_opaque": true,
+    "target_queries": 0,
+    "own_handler_EBP_does_not_bind_Original_action_EBP": true,
+    "Original_FH3_authentication_frame_invocation_target_behavior_ABI_runtime": false
+  },
+  "actual_membership": {
+    "objects": 8,
+    "inputs": 11,
+    "outputs": 2,
+    "physically_retained_helpers": 16,
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "Source_census": false,
+    "Root_CRLF_only_variants": [
+      "docs/CC12_APPLICATION_CRT_HANDLER_ENTRY_METADATA_PRIMARY.md",
+      "reports/cc12_application_crt_handler_entry_metadata_primary.json",
+      "docs/CC12_APPLICATION_UNWIND_ACTIONS_PRIMARY.md"
+    ],
+    "stage_final_tree_and_output_blobs_equal": true
+  },
+  "guard": {
+    "single_ZIP_reads_only": true,
+    "no_post_preload_imports_or_external_effects": true,
+    "manual_decode_replayed": true,
+    "guarded_Capstone_library_execution": false,
+    "Root_independent_Capstone_outside_guard": true
+  },
+  "entire_automatic_target_function_objects_wholly_opaque": true,
+  "next_candidate": {
+    "address": "00C07991",
+    "selection": "physicalE8 operand atBF6B64",
+    "initial_scope": "Separate direct entry/listing/function/body-range/flow metadata and saved prototype only, no target body credit"
+  },
+  "Source_build_ABI_runtime_credit": false,
+  "overall_goal_complete": false
+}
