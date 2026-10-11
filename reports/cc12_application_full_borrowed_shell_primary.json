@@ -1,0 +1,186 @@
+{
+  "schema": "bsp.cc12.application-full-borrowed-shell.primary.v1",
+  "utc": "2026-10-11T02:08:42.156459+00:00",
+  "status": "conditional_dormant_borrowed_Source_admission",
+  "worker_commit": "a96a4fa8d20d5946130a5b334aabbfbcd2597da4",
+  "Root_review_head": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+  "primary_reviews": {
+    "Root_actual_review.json": {
+      "path": "local\\cc12_application_full_borrowed_shell_primary\\Root_actual_review.json",
+      "bytes": 3442,
+      "sha256": "a84f399fd600ecbad32f34f56010eb1279aedee23d81a3c743e5ef6f3d5a6149"
+    },
+    "Root_delivery_review.json": {
+      "path": "local\\cc12_application_full_borrowed_shell_primary\\Root_delivery_review.json",
+      "bytes": 521,
+      "sha256": "a12194fad551925e45123d19bd5d4e7d82b822980c652137a42e733e8cdf13d4"
+    },
+    "Root_guard.json": {
+      "path": "local\\cc12_application_full_borrowed_shell_primary\\Root_guard.json",
+      "bytes": 8636,
+      "sha256": "7e385b34b27c939427a11cdac4966235dd3c30da2f0dd0137b55e01250439300"
+    }
+  },
+  "worker_proof": {
+    "ZIP": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_full_borrowed_shell_primary\\worker_evidence.zip",
+      "bytes": 623967609,
+      "sha256": "04bac7ff9c77bfc0d045b874de232c1173e573416f78b928e522e34a05f89671"
+    },
+    "helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_full_borrowed_shell_primary\\worker_portable_replay.py",
+      "bytes": 5158,
+      "sha256": "267088b3ba3084fe5a7f00168fc55dfa6dc12c5b8a70da8ec26e0f2e13ed1866"
+    },
+    "final_delivery": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_application_full_borrowed_shell_primary\\worker_final_delivery.json",
+      "bytes": 5510,
+      "sha256": "d054ce9216334fa44efd0ab1e6f1b0e0cd341dd65295df07b052bed238e7ea66"
+    }
+  },
+  "actual_Git": {
+    "frozen_blobs": 4270,
+    "frozen_commit_tree_objects": 12,
+    "later_Main_blobs": 4231,
+    "later_Main_commit_tree_objects": 13,
+    "prior_loop_outputs_blobs": 4
+  },
+  "closed_Source_paths": 4228,
+  "current_Source_roots": {
+    "src": "a62d3549c06d76f6342b17507a39dcd250c1ef4f",
+    "include": "c75c7cfeed1028dcb11a9ceb1d6fc8601148e67c",
+    "cmake": "b667be387981817cd5b1c78cc088efa88cf44cf8",
+    "scripts": "bf65e83d6945357deb40b7a440352ff3d2a7305e",
+    "tests": "e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68",
+    "CMakeLists.txt": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa"
+  },
+  "current_Root_Source3356": {
+    "path": "local\\cc12_application_loop_base_source_primary\\Source3356_application_loop_base_Root_frozen.json",
+    "bytes": 1267920,
+    "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+  },
+  "Source_epoch_qualification": "Frozen bab and separately retained later Main3c3 Source are exact to current Root C++ Source. Earlier e89 remains separately retained with only the accepted BEA970 pair Source delta. No old compiled evidence is transferred.",
+  "accepted_bodies": {
+    "bytes": 64,
+    "full_shell_bytes": 42,
+    "full_shell_instructions": 15,
+    "instructions": 23,
+    "loop_bytes": 22,
+    "loop_instructions": 8
+  },
+  "helper_graph": {
+    "current": 12,
+    "earlier_implementation": 23,
+    "earlier_readiness": 108,
+    "loop": 29,
+    "outer": 11
+  },
+  "strict_replay": {
+    "checked_members": 4344,
+    "zip_members": 4345,
+    "retained_bytes": 667524655,
+    "guard": {
+      "active_after_preload": true,
+      "allowed_zip_reads": 1,
+      "blocked": "other opens, writes, process creation, networking, new dynamic library loads and directory enumeration",
+      "only_input": "the supplied ZIP"
+    }
+  },
+  "decision": {
+    "dormant_737970_borrowed_Source_GO": true,
+    "current_737970_Source_implemented": false,
+    "raw_byte_extent_alone_GO": false,
+    "raw_Application_owner_GO": false,
+    "canonical_Application_name_cell_production_GO": false,
+    "frame_name_handoff_GO": false,
+    "caller_startup_activation_GO": false,
+    "retirement_storage_return_GO": false,
+    "Original_FH3_external_ABI_GO": false
+  },
+  "entry_preconditions": [
+    "Target the existing MSVC Win32 Source domain, not a portable host ABI. Stable suitably aligned actual enclosing 1Ch storage must remain byte-addressable through offset1Bh for the whole admitted call and every escaped reference's lifetime. Receiver identity is the exact existing actual Application domain.",
+    "A live valid uint32 object exists at +0 before entry. The actual 12-byte NativeApplicationPointerVectorStorage object and its pointer/int32 members already have begun lifetimes at +08/+0C/+10. A distinct live void* object exists at +14. Deriving addresses from a void* or matching Native byte sizes/names does not establish those lifetimes or types.",
+    "Those actual objects have the existing declared member offsets and sufficient alignment. Their storage is disjoint except the explicit enclosing byte view. The receiver region and its typed fields do not overlap the context object, actual manager cell, actual E1AE90 cell, section/depth or manager/vector bookkeeping required by the child. Do not treat matching pointer representations as permission to alias a void* object through a uint32 or NativeGameStorage* lvalue.",
+    "The object lifetimes exist without the new shell executing initialization or replacing incoming bytes before BEA970. The shell performs no preimage loads from the vector/Game fields: existing values may be overwritten, but their validity for any earlier provider observation remains an external obligation. There is no all-zero incoming preimage assumption. Starting typed lifetimes on raw Native bytes is not proven by this packet.",
+    "External ownership obligations must permit overwriting the vector header and Game cell without releasing prior storage, entries or Game. The constructor cannot be used as reset/clear/retirement of a live owner. This contract adds no test, free, per-element release or hidden policy for prior bits.",
+    "All BEA970/BEA810 prerequisites remain in force: exact actual shared-manager and E1AE90 cell references, real provider bindings and allocation domains, actual captured section identity, current-depth semantics, guard storage, reentrancy/alias obligations and sufficient lifetimes after partial publication/registration. Do not equate projected startup state or frame parameters with a proven owner/producer.",
+    "Valid storage permits each built-in typed/byte store after normal child return; these operations introduce no ordinary C++ throw. No hardware-fault, signal, asynchronous exception, invalid pointer, stale object or data-race guarantee is supplied. Unsupported concurrent observers are not made safe by volatile.",
+    "Use actual typed null assignments for pointer members. Native parity requires the MSVC Win32 output to emit exact four-byte zero pointer stores, in the accepted order. Native DWORD-zero bytes alone are not a portable C++ null-representation proof; the future implementation's compiled output is an explicit acceptance gate."
+  ],
+  "admitted_next_packet": {
+    "address": "00737970",
+    "accepted_body_bytes": 42,
+    "accepted_instructions": 15,
+    "suggested_descriptive_API": "void* construct_native_application_00737970(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+    "provider": "construct_native_application_loop_base_00bea970",
+    "provider_contract": "The exact accepted Source BEA970 declaration/definition from edc97a7f6, already composed over genuine BEA810 with the same context and original receiver. Exactly one genuine child call; ignore its returned pointer. Do not invent a callback, alternate constructor, null fallback or noinline requirement.",
+    "existing_field_type": "NativeApplicationPointerVectorStorage from native_shader_preload.hpp, with existing Source static_asserts for size12 and member offsets0/4/8 in native_application_pointer_vector_resize.cpp.",
+    "existing_Game_cell_type": "An actual void* object at original+0x14, accessed as void* volatile&, matching GameNativeGameApplicationFrame's real borrowed cell interface. It is not a NativeGameStorage* object, a copied pointer or a projection boolean.",
+    "no_added_services": "Do not call reserve, resize, preload or construct a Game frame. The Original shell calls only BEA970; those services can allocate, free, publish, throw or change counts and are not zero-initialization substitutes.",
+    "postnormal_schedule": [
+      {
+        "offset": 0,
+        "bytes": 4,
+        "value_hex": "00cfeab0",
+        "Source_access": "volatile uint32 object assignment"
+      },
+      {
+        "offset": 8,
+        "bytes": 4,
+        "value_hex": "00000000",
+        "Source_access": "volatile access to existing vector.data_00 void** pointer object; assign nullptr"
+      },
+      {
+        "offset": 12,
+        "bytes": 4,
+        "value_hex": "00000000",
+        "Source_access": "volatile access to existing vector.count_04 int32 object; assign zero"
+      },
+      {
+        "offset": 16,
+        "bytes": 4,
+        "value_hex": "00000000",
+        "Source_access": "volatile access to existing vector.capacity_08 int32 object; assign zero"
+      },
+      {
+        "offset": 20,
+        "bytes": 4,
+        "value_hex": "00000000",
+        "Source_access": "actual void* volatile Game cell; assign nullptr"
+      },
+      {
+        "offset": 25,
+        "bytes": 1,
+        "value_hex": "00",
+        "Source_access": "volatile unsigned char access"
+      },
+      {
+        "offset": 26,
+        "bytes": 1,
+        "value_hex": "00",
+        "Source_access": "volatile unsigned char access"
+      },
+      {
+        "offset": 24,
+        "bytes": 1,
+        "value_hex": "01",
+        "Source_access": "volatile unsigned char access"
+      }
+    ],
+    "return": "Return the captured original receiver, independently of the child return.",
+    "excluded_changes": "No new layout/owner/context struct, virtual table object, profile dispatch binding, allocator/free binding, placement construction, aggregate value initialization, memset, prezero, copied vector, cleanup, catch, rollback, retained storage, ownership reset or caller. Preserve exact prior Source bodies; implementation file placement remains a future bounded packet choice."
+  },
+  "boundaries": {
+    "new_Cpp": false,
+    "new_builds_tests_probes": false,
+    "new_Native_queries": false,
+    "new_Ghidra_mutations": false,
+    "original_ABI": false,
+    "current_Application_owner": false,
+    "cell_producer": false,
+    "activation": false,
+    "retirement": false,
+    "storage_return": false,
+    "runtime": false
+  }
+}
