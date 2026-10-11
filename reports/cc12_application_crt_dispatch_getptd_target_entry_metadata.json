@@ -1,0 +1,450 @@
+{
+  "schema": "bsp.cc12.dispatch-getptd-target-entry-metadata.v1",
+  "status": "PASS_BOUNDED_ENTRY_METADATA_ONLY",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_DISPATCH_GETPTD_TARGET_ENTRY_METADATA.md",
+    "reports/cc12_application_crt_dispatch_getptd_target_entry_metadata.json"
+  ],
+  "frozen_worker_HEAD": "20249ad80737f3dfd25077bca038fa37f9154586",
+  "frozen_worker_root_tree": "66004b90d139f646e523868d1b0c05ae58c70e64",
+  "frozen_worker_Source_subtree_identities": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "Source_identity_scope": "Frozen worker base/final identities only; no current/future Root Source equality or content census.",
+  "positive_prerequisite_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_BODY_PRIMARY.md",
+      "mode": "100644",
+      "git_blob": "ebbcbdd4b055d6c162f7cad41ed2898f42a20604",
+      "member": "working/docs/CC12_APPLICATION_CRT_DISPATCH_FIRST_CALL_BODY_PRIMARY.md",
+      "git_member": "git_blobs/ebbcbdd4b055d6c162f7cad41ed2898f42a20604.bin",
+      "working_bytes": 2150,
+      "working_sha256": "0171022580d1d17073055506e94fa29fd1c08c6c3753be1f1579d3c344f482c8",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "reports/cc12_application_crt_dispatch_first_call_body_primary.json",
+      "mode": "100644",
+      "git_blob": "06d9c2c8e84bc1975e331101f6e9f03faeeaa91d",
+      "member": "working/reports/cc12_application_crt_dispatch_first_call_body_primary.json",
+      "git_member": "git_blobs/06d9c2c8e84bc1975e331101f6e9f03faeeaa91d.bin",
+      "working_bytes": 56001,
+      "working_sha256": "bfe231eb37090a8592b85cbb4d9137ceb669235f04432f7a9d0094ab10f750c8",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "config/target.json",
+      "mode": "100644",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "member": "working/config/target.json",
+      "git_member": "git_blobs/a46b97705f35162ba70bfbd4909788d11bb188b4.bin",
+      "working_bytes": 455,
+      "working_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "mode": "100644",
+      "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "member": "working/tools/bsp.py",
+      "git_member": "git_blobs/ba90f058569106f62c72dc9f9d72de205772fc7c.bin",
+      "working_bytes": 73311,
+      "working_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "mode": "100644",
+      "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "member": "working/tools/ghidra_typed_flow.py",
+      "git_member": "git_blobs/4f73269e25719493aefe1d7f0111b8bbb6b62619.bin",
+      "working_bytes": 20048,
+      "working_sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "mode": "100644",
+      "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "member": "working/tools/ghidra_export.py",
+      "git_member": "git_blobs/0056201883c1594d9267d2fcf4990385461f0857.bin",
+      "working_bytes": 14411,
+      "working_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/branch_sync.py",
+      "mode": "100644",
+      "git_blob": "f73dbc623c26495daff4c94da0e5b74388eb0cc2",
+      "member": "working/tools/branch_sync.py",
+      "git_member": "git_blobs/f73dbc623c26495daff4c94da0e5b74388eb0cc2.bin",
+      "working_bytes": 3532,
+      "working_sha256": "274a868ce73e272fbfaae77affba83f50cf57b213e37d87ae3cbd2fee09eb149",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/coordination.py",
+      "mode": "100644",
+      "git_blob": "c9b6a6788498b82373233afe3211002ed90ca4c1",
+      "member": "working/tools/coordination.py",
+      "git_member": "git_blobs/c9b6a6788498b82373233afe3211002ed90ca4c1.bin",
+      "working_bytes": 17283,
+      "working_sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/ledger.py",
+      "mode": "100644",
+      "git_blob": "1d037c9effea576092d60ce5b4d4783420a617f7",
+      "member": "working/tools/ledger.py",
+      "git_member": "git_blobs/1d037c9effea576092d60ce5b4d4783420a617f7.bin",
+      "working_bytes": 7610,
+      "working_sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9",
+      "working_matches_Git_exactly": true
+    },
+    {
+      "path": "tools/workspace.py",
+      "mode": "100644",
+      "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+      "member": "working/tools/workspace.py",
+      "git_member": "git_blobs/ba99df2b6e5bd7cd8bd910934b83340fcf857604.bin",
+      "working_bytes": 1371,
+      "working_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+      "working_matches_Git_exactly": true
+    }
+  ],
+  "Root_entry_gate": {
+    "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/Root_listing_gate.json",
+    "bytes": 7663,
+    "sha256": "c5c224477006b54fbddac842df9a06d09dbbc7a65f5bd3f34bf02900e3f68a4e"
+  },
+  "native_and_replay": {
+    "OriginalFH3_or_runtime_invocation": false,
+    "Root_entry_gate_sha256": "c5c224477006b54fbddac842df9a06d09dbbc7a65f5bd3f34bf02900e3f68a4e",
+    "Source_content_census": false,
+    "TLS_or_callee_ABI_authenticated": false,
+    "body_continuation_or_gap_bytes_read": 0,
+    "counts": {
+      "count_calls": 7,
+      "entry_byte_reads": 2,
+      "entry_text_queries": 2,
+      "prototype_queries": 1,
+      "typed_requests_and_raw_responses": 4
+    },
+    "data_or_stack_bytes_read": 0,
+    "entry_operands_and_prototype": {
+      "CLI_body_prefix_is_only_minmax_envelope": true,
+      "actual_Capstone_execution": {
+        "base_address": "00C051B7",
+        "binding_version": "5.0.7",
+        "code_sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+        "library_version": [
+          5,
+          0,
+          1280
+        ],
+        "mode": "CS_ARCH_X86 / CS_MODE_32",
+        "tool_pins": [
+          {
+            "bytes": 43729,
+            "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+            "role": "python_binding",
+            "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+          },
+          {
+            "bytes": 7572480,
+            "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+            "role": "native_decoder_library",
+            "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+          }
+        ]
+      },
+      "actual_Capstone_manual_and_paired_texts_agree": true,
+      "automatic_companion": {
+        "CLI_reported_omitted_lines": null,
+        "CLI_reported_total_lines": null,
+        "complete_companion_HTTP_response_retained": false,
+        "emitted_nonempty_lines_excluding_marker": 34,
+        "entire_companion_opaque": true,
+        "field_values_credited": [],
+        "normalized_CLI_text_sha256": "160e21c51f66afd679f3a942f48f50622c40e32c834c4709206a71aa943bbebb",
+        "truncation_marker": null
+      },
+      "body_or_gap_bytes_read": 0,
+      "bytes_per_read": 1,
+      "callee_ABI_or_return_state_authenticated": false,
+      "code_hex": "56",
+      "code_reads": 2,
+      "code_sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+      "entry": "00C051B7",
+      "manual_instructions": [
+        {
+          "address": "00C051B7",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "register",
+              "name": "esi",
+              "size": 4
+            }
+          ],
+          "size": 1
+        }
+      ],
+      "paired_saved_texts_equal": true,
+      "paired_text_context_neighbors": 0,
+      "prototype_stdout_sha256": "ed9d2f2145c814b2ec8999681abe7c1464010ec15c24ca5e0846691fb3494470",
+      "replay_limit": "Pure replay independently decodes the one-byte PUSH register opcode and checks retained actual Capstone output. It does not load Capstone.",
+      "saved_prototype": "undefined LIBCRT_unmatched_00c051b7(void)",
+      "status": "PASS"
+    },
+    "epoch": 98,
+    "external_target_traversal": false,
+    "failed_capture_count": 0,
+    "four_entry_raw_captures_equal": true,
+    "frozen_head": "20249ad80737f3dfd25077bca038fa37f9154586",
+    "frozen_worker_Source_subtree_identities": {
+      "include": "09add3be594e63edcce6a16ec041ed965441e898",
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2"
+    },
+    "function_count": 64730,
+    "git_object_count": 8,
+    "member_count": 77,
+    "metadata": {
+      "automatic_target_objects": 0,
+      "entry_extent": {
+        "end_inclusive": "00C051B7",
+        "length": 1,
+        "start": "00C051B7"
+      },
+      "entry_flow": {
+        "default_fallthrough": {
+          "offset": "00c051b8",
+          "space": "ram"
+        },
+        "default_flow": {
+          "is_call": false,
+          "is_computed": false,
+          "is_conditional": false,
+          "is_jump": false,
+          "is_terminal": false,
+          "name": "FALL_THROUGH"
+        },
+        "default_targets": [],
+        "effective_fallthrough": {
+          "offset": "00c051b8",
+          "space": "ram"
+        },
+        "effective_flow": {
+          "is_call": false,
+          "is_computed": false,
+          "is_conditional": false,
+          "is_jump": false,
+          "is_terminal": false,
+          "name": "FALL_THROUGH"
+        },
+        "effective_targets": [],
+        "fallthrough_overridden": false,
+        "flow_override": "NONE"
+      },
+      "entry_listing": {
+        "code_unit_at": {
+          "address": {
+            "offset": "00c051b7",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "code_unit_containing": {
+          "address": {
+            "offset": "00c051b7",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "instruction_at": {
+          "address": {
+            "offset": "00c051b7",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        },
+        "instruction_containing": {
+          "address": {
+            "offset": "00c051b7",
+            "space": "ram"
+          },
+          "defined": null,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "length": 1
+        }
+      },
+      "saved_body_unincluded_gap": {
+        "end_inclusive": "00C05221",
+        "length": 3,
+        "start": "00C0521F"
+      },
+      "saved_function": {
+        "body": {
+          "address_count": "116",
+          "complete": true,
+          "range_count": 2,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00c0521e",
+                "space": "ram"
+              },
+              "length": "104",
+              "start": {
+                "offset": "00c051b7",
+                "space": "ram"
+              }
+            },
+            {
+              "end_inclusive": {
+                "offset": "00c0522d",
+                "space": "ram"
+              },
+              "length": "12",
+              "start": {
+                "offset": "00c05222",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 2
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00c051b7",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "LIBCRT_unmatched_00c051b7",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    },
+    "physical_helper_count": 4,
+    "prerequisite_input_count": 10,
+    "raw_entry_response_sha256": "b4982c0dcb260c9a9a204c40bff1ded18c853a033a4c8bd18d8c64c5a6a8f1ef",
+    "status": "PASS"
+  },
+  "conditional_local_contract": {
+    "positive_route": "The independently accepted physical CALL at C0522F targets numeric C051B7. This packet follows that positive edge only to the exact target entry.",
+    "saved_name": "LIBCRT_unmatched_00c051b7",
+    "saved_prototype": "undefined LIBCRT_unmatched_00c051b7(void)",
+    "name_and_prototype_are_analysis_metadata_only": true,
+    "entry_local_effect": "If the one-byte PUSH ESI completes normally from ESP=T and ESI=U, it writes U to DWORD[T-4], changes ESP to T-4, and falls through to C051B8. This is the only admitted instruction effect.",
+    "saved_ranges": "C051B7..C0521E (104 addresses), C05222..C0522D (12 addresses). These are saved function metadata, not a per-byte listing or instruction-coverage proof for the body.",
+    "saved_unincluded_gap": "C0521F..C05221 (3 addresses) is outside the saved ranges and entirely unqueried.",
+    "prototype_body_prefix_limit": "The CLI Body prefix displays C051B7..C0522D, the 119-address min/max envelope; it does not include the three-byte gap in the actual 116-address body.",
+    "external_return_state": "All returned registers, including EAX/ESI/EBP/ESP, flags, memory and cleanup remain unknown. No target body instruction after C051B7 was read.",
+    "unresolved": [
+      "Actual TLS or thread-state semantics",
+      "Callee ABI, register preservation and stack cleanup",
+      "Actual return value, return target or termination behavior",
+      "Parent frame/data binding",
+      "OriginalFH3/compiler identity and any runtime invocation"
+    ],
+    "next_gate": "Any body-address listing, gap query, target traversal or further operands require a separate explicit Root admission."
+  },
+  "offline_evidence": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/evidence.zip",
+      "bytes": 486511,
+      "sha256": "fa1cdae5c54fa0172cffa4fa078be5bf9e191acda49f318c848a37c84f638e8c"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/distinct_copy/evidence.zip",
+      "bytes": 486511,
+      "sha256": "fa1cdae5c54fa0172cffa4fa078be5bf9e191acda49f318c848a37c84f638e8c"
+    },
+    "physical_copy_distinct": true,
+    "manifest": {
+      "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/manifest.json",
+      "bytes": 13233,
+      "sha256": "f768e8c914b6defbafa370a7cc673a33a614b653176fcbd0dd42e1ebff474f76"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/capture_entry.py",
+        "bytes": 4244,
+        "sha256": "dca0fe1d6896fa87385696db1f0f41ac5d3a544840dae75ed1a01f4262fbb3c6"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/metadata_parser.py",
+        "bytes": 16541,
+        "sha256": "47d017eddd65ebe56773ce29d9b8e7ff67f45c9da7a684f1a0947d32ef8a34c8"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/guard_replay.py",
+        "bytes": 2283,
+        "sha256": "aa1c45f08d4f1b384c5a3612003af932f08ff90f710449bb7cb8c692b6b495c8"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/packet_tool.py",
+        "bytes": 19076,
+        "sha256": "f9108b3240128260827b18abda6843630069b3ade9765046c674bd93eda85af8"
+      }
+    ],
+    "replay_equal": true,
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/original_replay.json",
+        "bytes": 5142,
+        "sha256": "1680317d5242625ae0a695bbe67e248f04464438674bb0bc4f1d1b574b944603"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/original_guard.json",
+        "bytes": 457,
+        "sha256": "740140d4d961f284a7f59cac5eaca9ce142e7b49691da747127e56a196e67b09"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/original_command.json",
+        "bytes": 587,
+        "sha256": "9c1a2bf5e8972fbdac8400182f5337874b0b5aac7d1b16bf3764196f296a0868"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/distinct_copy_replay.json",
+        "bytes": 5142,
+        "sha256": "1680317d5242625ae0a695bbe67e248f04464438674bb0bc4f1d1b574b944603"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/distinct_copy_guard.json",
+        "bytes": 472,
+        "sha256": "d9af7d7af59ff17fe95989af582a308fa7019f91529175d8920d7a1dfcd0a7bc"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_getptd_target_entry_metadata/distinct_copy_command.json",
+        "bytes": 602,
+        "sha256": "8e547e30c55fe81672358def514215d4d037ba8c60fa3dd451533877ef4a55d5"
+      }
+    ]
+  },
+  "validation_limits": {
+    "Ghidra_mutation": false,
+    "Source_changes": false,
+    "Source_content_census": false,
+    "build_or_new_tests_required_for_metadata_only_changes": false,
+    "callee_ABI_proof": false,
+    "TLS_semantics": false,
+    "OriginalFH3_identity": false,
+    "native_execution": false,
+    "game_validation": false
+  }
+}
