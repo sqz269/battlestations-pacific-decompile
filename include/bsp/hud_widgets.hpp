@@ -531,6 +531,92 @@ struct HudPowerupHost {
 void hud_powerup_layout_00614600(HudPowerupScreenState& screen, HudPowerupHost& host);
 // 00614170, slot +10h, __thiscall(screen), RET.
 void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost& host);
+// ---------------------------------------------------------------------------
+// The plane-spawn camera, vtable 00CF4930 (3CCh bytes over base 00432750)
+// ---------------------------------------------------------------------------
+//
+// Fields: +74h the published 4x4 matrix (rows +74h, +84h up, +94h forward,
+// +A4h eye), +10h observer listener (00CF4914), +384h the home entity,
+// +388h the plane, +38Ch a 4x4 seed matrix whose translation row is
+// +3BCh..+3C4h.
+
+struct Vec3f {
+    float x{};
+    float y{};
+    float z{};
+};
+
+struct PlaneSpawnCameraState {
+    std::uintptr_t home_384{};
+    std::uintptr_t plane_388{};
+    std::array<float, 16> seed_38c{};   // [12..14] = +3BCh..+3C4h
+    std::array<float, 16> matrix_74{};  // [4..6] up, [8..10] forward, [12..14] eye
+};
+
+// The plane and home reads 0060CB60/0060CD50 make.
+struct PlaneSpawnPlaneView {
+    bool current_5c{};          // byte +5Ch
+    int state_900{};            // +900h (1 = the parked case)
+    std::uintptr_t parent_3c{};
+    Vec3f local_a4;             // +A4h
+    Vec3f world_fc;             // +FCh, the pose translation row
+    Vec3f row0_cc;              // pose rows +CCh / +ECh after 00414DB0 refresh
+    Vec3f row2_ec;
+};
+
+struct PlaneSpawnCameraHost {
+    virtual ~PlaneSpawnCameraHost() = default;
+    virtual bool is_kind_of(std::uintptr_t entity, int kind) = 0;            // vtable +5Ch
+    virtual Vec3f home_kind9_position(std::uintptr_t home) = 0;               // *(home+538h)+808h
+    virtual PlaneSpawnPlaneView plane(std::uintptr_t plane) = 0;              // refreshes the pose
+    // 006BCD20(ECX = home, DL = 0): the AirOps block, 0 when none.
+    virtual std::uintptr_t air_ops_block_006bcd20(std::uintptr_t home) = 0;
+    // block+3Ch vtable +40h(out, plane) and its translation at +30h.
+    virtual Vec3f parked_position(std::uintptr_t block, std::uintptr_t plane) = 0;
+    // 00414E10 on home, then 00414D10 on plane+FCh.
+    virtual Vec3f transform_into_home(std::uintptr_t home, std::uintptr_t plane) = 0;
+    virtual void unregister_pair_006952a0(std::uintptr_t observed) = 0;       // EDX = camera+10h
+    virtual void register_pair_00694a60(std::uintptr_t observed) = 0;
+    virtual std::array<float, 16> block_matrix(std::uintptr_t block) = 0;     // block vtable +18h
+    virtual std::array<float, 16> plane_matrix(std::uintptr_t plane) = 0;     // plane+CCh
+    virtual float tuning_7c() = 0;                                            // 0042E740 singleton +7Ch
+    virtual void camera_virtual_ac(std::uintptr_t home) = 0;                  // vtable +ACh
+    virtual void orthonormalize_0085dc80(std::array<float, 16>& matrix) = 0;
+    virtual void publish_pose_004329d0(float dt) = 0;
+};
+
+// 0060CB60: __thiscall(camera, Vec3* out), out in EAX, RET 4.
+Vec3f plane_spawn_camera_target_0060cb60(const PlaneSpawnCameraState& camera,
+    PlaneSpawnCameraHost& host);
+// 0060CC90, vtable +DCh: __thiscall(camera, float dt), RET 4.
+void plane_spawn_camera_update_0060cc90(PlaneSpawnCameraState& camera, float dt,
+    PlaneSpawnCameraHost& host);
+// 0060CD50: __thiscall(camera, home, plane), RET 8.
+void plane_spawn_camera_set_targets_0060cd50(PlaneSpawnCameraState& camera,
+    std::uintptr_t home, std::uintptr_t plane, PlaneSpawnCameraHost& host);
+// The eye offset 0060CE67..0060CF56 adds to +3BCh..+3C4h (x87, FSTP points cast).
+Vec3f plane_spawn_camera_eye_offset(const Vec3f& row0, const Vec3f& row2, float tuning) noexcept;
+inline constexpr double kPlaneSpawnEyeUp = 0.0;      // 00D7A258
+inline constexpr double kPlaneSpawnEyeBack = 1.5;    // 00CE3D78
+inline constexpr double kPlaneSpawnEyeHeight = 1.2000000476837158;  // 00CEC160
+struct PlaneSpawnAttachHost {
+    virtual ~PlaneSpawnAttachHost() = default;
+    virtual void register_pair_00694a60(std::uintptr_t observed) = 0;     // EDX = screen+8
+    virtual std::uintptr_t screen_home_entity() = 0;                      // vtable +28h (0060CA20)
+    virtual std::uintptr_t air_ops_block_006bcd20(std::uintptr_t home) = 0;
+    virtual std::uintptr_t holder_entity_7c(std::uintptr_t block) = 0;     // block+7Ch
+    // operator new(3CCh) + memset + 00432750 + the four vtable stores; 0 on failure.
+    virtual std::uintptr_t create_camera() = 0;
+    // 00923870(ECX = camera, 0, game+19CCh, identity 4x4); runs even for a null camera.
+    virtual void init_camera_00923870(std::uintptr_t camera) = 0;
+    virtual void set_targets_0060cd50(std::uintptr_t camera, std::uintptr_t home, std::uintptr_t plane) = 0;
+    virtual void set_camera_mover_004bc410(std::uintptr_t camera) = 0;
+};
+
+// 0060CF90 BSP_HudPlaneSpawnScreen_AttachPlane: __thiscall(screen, plane), RET 4.
+// Caller 0068ACA0 BSP_InGameInterface_ApplyPendingInterface.
+void plane_spawn_attach_plane_0060cf90(PlaneSpawnScreenState& screen, std::uintptr_t plane,
+    PlaneSpawnAttachHost& host);
 }  // namespace bsp
 
 #endif  // BSP_HUD_WIDGETS_HPP

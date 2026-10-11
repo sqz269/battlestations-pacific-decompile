@@ -282,3 +282,39 @@ Open, in order of value:
    once their owners are known.
 5. Unreferenced Ghidra-less code is listed in the two "Unreferenced" sections above; it was left
    undefined on purpose.
+
+## The plane-spawn camera (second packet, cc13-hud1)
+
+Lease `cc13_hud1_camera` (0060C7D0..0060D130). Conventions follow docs/CC13_CAMERA_CONTROLLERS.md:
+x87 chains in double with a float cast at every native FSTP. Correction to the first packet:
+slot +28h 0060CA20 returns an entity pointer (0060CF90 observes it and passes it to 006BCD20),
+so it is now `BSP_HudPlaneSpawnScreen_GetHomeEntity`; the C++ keeps `plane_spawn_target_id_0060ca20`.
+
+| Address | Name | ABI | Status |
+| --- | --- | --- | --- |
+| 0060CF90 | `BSP_HudPlaneSpawnScreen_AttachPlane` | thiscall(plane), RET 4 | reconstructed, build-tested |
+| 0060CD50 | `BSP_PlaneSpawnCamera_SetTargets` | thiscall(home, plane), RET 8 | reconstructed, build-tested |
+| 0060CC90 | `BSP_PlaneSpawnCamera_UpdatePose` (vtable 00CF4930 +DCh) | thiscall(float dt), RET 4 | reconstructed, build-tested |
+| 0060CB60 | `BSP_PlaneSpawnCamera_GetTargetPosition` | thiscall(Vec3* out), EAX, RET 4 | reconstructed, build-tested |
+
+- **Attach** (from 0068ACA0): +20h = plane, observed through screen+8; the home entity (slot
+  +28h) is observed and its AirOps block (006BCD20, DL = 0) goes to +24h. The first attach
+  creates the 3CCh-byte camera at +1Ch (operator new, memset, 00432750, vtables 00CF4930 /
+  00CF4914 / 00CF490C / 00CF48F4), runs 00923870(camera, 0, game+19CCh, identity) even when the
+  allocation failed, and observes it. Then SetTargets(camera, block ? block+7Ch : 0, plane) and
+  `BSP_Game_SetCameraMover(camera)`.
+- **SetTargets** swaps the observed pair +384h (home) / +388h (plane). With an AirOps block the
+  seed matrix +38Ch is the block's vtable +18h matrix; otherwise it is the plane pose (+CCh) and
+  the translation row +3BCh..+3C4h gets the eye offset, with t = game-tuning +7Ch:
+  `x = f(f(f(r2x*t)*1.5) + f(-r0x*t))`, `y = f(t*1.2 + f(f(f(0*t)*1.5) + f(0*t)))`,
+  `z = f(f(1.5*f(r2z*t)) + f(-r0z*t))` (rows r0 = +CCh, r2 = +ECh; constants 00D7A258 = 0.0,
+  00CE3D78 = 1.5, 00CEC160 = 1.2000000476837158, all doubles). Then camera vtable +ACh(home)
+  and +74h = +38Ch.
+- **UpdatePose**: eye = +3BCh..+3C4h, forward = target - eye, up = (0,1,0), 0085DC80, then
+  `BSP_CameraMover_ApplyShakeAndPublishPose(dt)`.
+- **Target**: a kind-9 home gives *(home+538h)+808h; a parked plane (byte +5Ch clear and +900h
+  == 1) asks the block's +3Ch object (vtable +40h, translation at +30h), or (0,0,0) without a
+  block; a plane parented to the home (or no home) gives plane+A4h; otherwise plane+FCh in the
+  home's frame (00414E10, 00414D10).
+
+Uncertainty: what kind 9 and +900h == 1 mean; camera vtable +ACh and 00923870 were not read.

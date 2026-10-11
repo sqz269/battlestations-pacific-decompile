@@ -573,4 +573,109 @@ void hud_powerup_register_00614170(HudPowerupScreenState& screen, HudPowerupHost
     screen.field_1e8 = 0.0f;
     screen.field_230 = 0.0f;
 }
+Vec3f plane_spawn_camera_target_0060cb60(const PlaneSpawnCameraState& camera,
+    PlaneSpawnCameraHost& host) {
+    if (camera.home_384 != 0 && host.is_kind_of(camera.home_384, 9)) {
+        return host.home_kind9_position(camera.home_384);
+    }
+    const PlaneSpawnPlaneView plane = host.plane(camera.plane_388);
+    if (!plane.current_5c && plane.state_900 == 1) {
+        const std::uintptr_t block = host.air_ops_block_006bcd20(camera.home_384);
+        if (block == 0) {
+            return {};
+        }
+        return host.parked_position(block, camera.plane_388);
+    }
+    if (plane.parent_3c == camera.home_384 || camera.home_384 == 0) {
+        return plane.local_a4;
+    }
+    return host.transform_into_home(camera.home_384, camera.plane_388);
+}
+
+void plane_spawn_camera_update_0060cc90(PlaneSpawnCameraState& camera, float dt,
+    PlaneSpawnCameraHost& host) {
+    if (camera.plane_388 == 0) {
+        return;
+    }
+    auto& m = camera.matrix_74;
+    m[12] = camera.seed_38c[12];
+    m[13] = camera.seed_38c[13];
+    m[14] = camera.seed_38c[14];
+    const Vec3f target = plane_spawn_camera_target_0060cb60(camera, host);
+    m[8] = target.x - m[12];   // forward (+94h) = target - eye, each an FSUB/FSTP
+    m[9] = target.y - m[13];
+    m[10] = target.z - m[14];
+    m[4] = 0.0f;               // up (+84h) = (0, 1, 0)
+    m[5] = 1.0f;
+    m[6] = 0.0f;
+    host.orthonormalize_0085dc80(m);
+    host.publish_pose_004329d0(dt);
+}
+
+Vec3f plane_spawn_camera_eye_offset(const Vec3f& row0, const Vec3f& row2, float tuning) noexcept {
+    const auto f = [](double v) { return static_cast<float>(v); };
+    const double t = tuning;
+    const float a = f(-row0.x * t);          // [esp+20h]
+    const float b = f(kPlaneSpawnEyeUp * t);  // [esp+24h] and [esp+0Ch]
+    const float c = f(-row0.z * t);          // [esp+28h]
+    const float px = f(row2.x * t);
+    const float pz = f(row2.z * t);
+    const float x = f(f(px * kPlaneSpawnEyeBack) + static_cast<double>(a));
+    const float mid = f(f(b * kPlaneSpawnEyeBack) + static_cast<double>(b));
+    const float z = f(f(kPlaneSpawnEyeBack * pz) + static_cast<double>(c));
+    const float y = f(t * kPlaneSpawnEyeHeight + mid);
+    return {x, y, z};
+}
+
+void plane_spawn_camera_set_targets_0060cd50(PlaneSpawnCameraState& camera,
+    std::uintptr_t home, std::uintptr_t plane, PlaneSpawnCameraHost& host) {
+    if (camera.home_384 != 0) {
+        host.unregister_pair_006952a0(camera.home_384);
+        camera.home_384 = 0;
+    }
+    if (camera.plane_388 != 0) {
+        host.unregister_pair_006952a0(camera.plane_388);
+        camera.plane_388 = 0;
+    }
+    camera.home_384 = home;
+    camera.plane_388 = plane;
+    if (home != 0) {
+        host.register_pair_00694a60(home);
+    }
+    if (camera.plane_388 != 0) {
+        host.register_pair_00694a60(camera.plane_388);
+    }
+    if (const std::uintptr_t block = host.air_ops_block_006bcd20(camera.home_384)) {
+        camera.seed_38c = host.block_matrix(block);
+    } else if (camera.plane_388 != 0) {
+        camera.seed_38c = host.plane_matrix(camera.plane_388);
+        const PlaneSpawnPlaneView view = host.plane(camera.plane_388);
+        const Vec3f offset = plane_spawn_camera_eye_offset(view.row0_cc, view.row2_ec, host.tuning_7c());
+        camera.seed_38c[12] = camera.seed_38c[12] + offset.x;
+        camera.seed_38c[13] = camera.seed_38c[13] + offset.y;
+        camera.seed_38c[14] = camera.seed_38c[14] + offset.z;
+    }
+    host.camera_virtual_ac(camera.home_384);
+    camera.matrix_74 = camera.seed_38c;  // 004134F0
+}
+void plane_spawn_attach_plane_0060cf90(PlaneSpawnScreenState& screen, std::uintptr_t plane,
+    PlaneSpawnAttachHost& host) {
+    screen.plane_20 = plane;
+    if (plane != 0) {
+        host.register_pair_00694a60(plane);
+        if (const std::uintptr_t home = host.screen_home_entity()) {
+            host.register_pair_00694a60(home);
+            screen.holder_24 = host.air_ops_block_006bcd20(home);
+        }
+    }
+    if (screen.observed_1c == 0) {
+        screen.observed_1c = host.create_camera();
+        host.init_camera_00923870(screen.observed_1c);
+        host.register_pair_00694a60(screen.observed_1c);
+    }
+    const std::uintptr_t home_entity =
+        screen.holder_24 != 0 ? host.holder_entity_7c(screen.holder_24) : 0;
+    host.set_targets_0060cd50(screen.observed_1c, home_entity, screen.plane_20);
+    host.set_camera_mover_004bc410(screen.observed_1c);
+}
 }  // namespace bsp
