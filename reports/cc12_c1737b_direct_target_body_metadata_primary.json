@@ -1,0 +1,2321 @@
+{
+  "schema": "cc12.primary.v1",
+  "packet": "cc12_c1737b_direct_target_body_metadata_primary",
+  "status": "Root_reviewed_integrated_with_explicit_IMUL_SF_decoder_difference",
+  "worker_commit": "0e826b6f2164a353bd20309e1e9fb1cf46f3e270",
+  "frozen_parent": "bd1ba5d9cc77dde06c26a728b810caa5c55cbf10",
+  "physical": {
+    "ranges": [
+      {
+        "range_index": 1,
+        "start": "00C1737B",
+        "end_inclusive": "00C174E8",
+        "length": 366,
+        "whole_units": 123,
+        "first_unit": "00C1737B",
+        "last_unit": "00C174E7",
+        "last_unit_length": 2,
+        "stopped_at_end_plus_one_without_query": "00C174E9",
+        "hex": "6a20689837e000e87908ffff33ff897de4897dd88b5d0883fb0b7f4c74158bc36a02592bc174222bc174082bc174642bc17544e804defeff8bf8897dd885ff751483c8ffe961010000be3ce40901a13ce40901eb60ff775c8bd3e811fdffff8bf083c6088b06eb5a8bc383e80f743c83e806742b48741ce89487feffc7001600000033c05050505050e8e6f2fdff83c414ebaebe44e40901a144e40901eb16be40e40901a140e40901eb0abe48e40901a148e40901c745e40100000050e8a1dbfeff8945e05933c0837de0010f84d80000003945e075076a03e87349feff3945e4740750e8bda7ffff5933c08945fc83fb08740a83fb0b740583fb04751b8b4f60894dd489476083fb0875408b4f64894dd0c747648c00000083fb08752e8b0db868e100894ddc8b0dbc68e1008b15b868e10003ca394ddc7d198b4ddc6bc90c8b575c89441108ff45dcebdbe809dbfeff8906c745fcfeffffffe81500000083fb08751fff776453ff55e059eb19",
+        "bytes": 366,
+        "sha256": "b467d8570c32e0a62e3808c59233a2f77985dd23deb05ebe4008aadb2da38437"
+      },
+      {
+        "range_index": 2,
+        "start": "00C174FE",
+        "end_inclusive": "00C1752A",
+        "length": 45,
+        "whole_units": 18,
+        "first_unit": "00C174FE",
+        "last_unit": "00C1752A",
+        "last_unit_length": 1,
+        "stopped_at_end_plus_one_without_query": "00C1752B",
+        "hex": "53ff55e05983fb08740a83fb0b740583fb0475118b45d489476083fb0875068b45d089476433c0e81b07ffffc3",
+        "bytes": 45,
+        "sha256": "1bf44ee576e20972ca53ccf6a54aff318d2f5c6c28a100b6d50184700f4a4874"
+      }
+    ],
+    "total_bytes": 411,
+    "instructions": 141
+  },
+  "complete_Root_manual_and_fresh_actual": {
+    "independent_manual_saved_before_import": true,
+    "actual_decoder": "Capstone5.0.7 x8632 detailed",
+    "instruction_count": 141,
+    "fully_equal_instruction_records": 140,
+    "all_physical_fields_operands_access_registers_groups_equal_at_all141": true,
+    "single_flag_difference_retained": {
+      "status": "PASS_with_retained_IMUL_SF_decoder_metadata_difference",
+      "Root_initial_full_field_comparison_failures": 1,
+      "manual_physical_records": 141,
+      "fresh_actual_Capstone_records": 141,
+      "fully_equal_records": 140,
+      "differing_record": {
+        "address": "00C174B8",
+        "manual": {
+          "address": "00C174B8",
+          "size": 3,
+          "hex": "6bc90c",
+          "mnemonic": "imul",
+          "operands": [
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "ecx"
+            },
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "ecx"
+            },
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12
+            }
+          ],
+          "operand_access": [
+            2,
+            1,
+            0
+          ],
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            107,
+            0,
+            0,
+            0
+          ],
+          "addr_size": 4,
+          "modrm": 201,
+          "sib": 0,
+          "disp": 0,
+          "encoding": {
+            "modrm_offset": 1,
+            "disp_offset": 0,
+            "disp_size": 0,
+            "imm_offset": 2,
+            "imm_size": 1
+          },
+          "regs_read": [
+            "ecx"
+          ],
+          "regs_written": [
+            "ecx",
+            "eflags"
+          ],
+          "implicit_regs_read": [],
+          "implicit_regs_written": [
+            "eflags"
+          ],
+          "eflag_effects": [
+            "MODIFY_CF",
+            "MODIFY_OF",
+            "UNDEFINED_AF",
+            "UNDEFINED_PF",
+            "UNDEFINED_SF",
+            "UNDEFINED_ZF"
+          ],
+          "groups": []
+        },
+        "actual": {
+          "address": "00C174B8",
+          "size": 3,
+          "hex": "6bc90c",
+          "mnemonic": "imul",
+          "operands": [
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "ecx"
+            },
+            {
+              "kind": "reg",
+              "size": 4,
+              "name": "ecx"
+            },
+            {
+              "kind": "imm",
+              "size": 4,
+              "value": 12
+            }
+          ],
+          "operand_access": [
+            2,
+            1,
+            0
+          ],
+          "prefix": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opcode": [
+            107,
+            0,
+            0,
+            0
+          ],
+          "addr_size": 4,
+          "modrm": 201,
+          "sib": 0,
+          "disp": 0,
+          "encoding": {
+            "modrm_offset": 1,
+            "disp_offset": 0,
+            "disp_size": 0,
+            "imm_offset": 2,
+            "imm_size": 1
+          },
+          "regs_read": [
+            "ecx"
+          ],
+          "regs_written": [
+            "ecx",
+            "eflags"
+          ],
+          "implicit_regs_read": [],
+          "implicit_regs_written": [
+            "eflags"
+          ],
+          "eflag_effects": [
+            "MODIFY_CF",
+            "MODIFY_OF",
+            "MODIFY_SF",
+            "UNDEFINED_AF",
+            "UNDEFINED_PF",
+            "UNDEFINED_ZF"
+          ],
+          "groups": []
+        }
+      },
+      "manual_interpretation": "IMUL low32 signed product; CF/OF indicate truncation and SF/ZF/AF/PF undefined. Keep architecture semantics separately from decoder coarse flag metadata.",
+      "actual_decoder_observation": "Capstone5.0.7 marks MODIFY_SF for6BC90C; this does not establish architectural SF behavior.",
+      "original_manual_and_fresh_actual_unchanged": true,
+      "manual_or_decoder_reexecuted": false,
+      "all_other_fields_equal": true,
+      "new_Native_queries": 0,
+      "GPR_writes": 0,
+      "Source_contents_read": false,
+      "original_pins": {
+        "Root_own_manual.json": {
+          "size": 166765,
+          "sha256": "a848082838afdd01932cdbd3722836f4e96dd425b032c45f9c9d79262eee4732"
+        },
+        "Root_fresh_Capstone.json": {
+          "size": 155915,
+          "sha256": "596fcae6c9c2bb285d0a4d2ecbc2d5bef2c8bb9dc882cfe321aeda9cc1cced6c"
+        },
+        "Root_decoder_preexecution.json": {
+          "size": 540,
+          "sha256": "ffebe01c81dcb47369c38dd02e88c8499eec086bff91596f084d9ad64d29f2e3"
+        },
+        "Root_decoder_execution.json": {
+          "size": 3610,
+          "sha256": "f19d90e3c857e606bc60a5b3e0b807e558311b0fc4e146bbfad36d1e0f61de16"
+        },
+        "Root_independent_decode.stdout": {
+          "size": 1888,
+          "sha256": "749209b05c4cf5ec275c7f7822e63e8b3f93233cd42704fd6d12870bca0e7088"
+        },
+        "Root_independent_decode.stderr": {
+          "size": 337,
+          "sha256": "1406a62f7e0985ed164de3e791c2cfae4f7da6dc02e533ccba07d1d46692f85c"
+        },
+        "Root_cpu_fields.py": {
+          "size": 7615,
+          "sha256": "166e2cb940bf4b3027dbf0fee17bb50f452530e93067b7e7fa775c2d59e98156"
+        },
+        "Root_independent_decode.py": {
+          "size": 3960,
+          "sha256": "746d308a1b1daa3ce709c93dfcd07abb98696c256b62af1eeb26fe9659354079"
+        }
+      },
+      "worker_confirmation": "Worker pre-Capstone manual_x86.py:143 independently describes SF undefined; worker comparison only asserts physical fields/operands and retains actual mask separately. No worker output amendment."
+    },
+    "fresh_actual_matches_all_worker_retained_fields": true,
+    "full_original_manual": {
+      "bytes": 166765,
+      "sha256": "a848082838afdd01932cdbd3722836f4e96dd425b032c45f9c9d79262eee4732"
+    },
+    "full_original_actual": {
+      "bytes": 155915,
+      "sha256": "596fcae6c9c2bb285d0a4d2ecbc2d5bef2c8bb9dc882cfe321aeda9cc1cced6c"
+    }
+  },
+  "direct_and_computed_calls": [
+    {
+      "address": "00C17382",
+      "hex": "e87908ffff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "7908ffff",
+        "unsigned": 4294903929,
+        "signed": -63367,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12614656
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12614656,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C07C00",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C17387",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17387",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173AE",
+      "hex": "e804defeff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "04defeff",
+        "unsigned": 4294893060,
+        "signed": -74236,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12603831
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12603831,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C051B7",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C173B3",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173B3",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173D5",
+      "hex": "e811fdffff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "11fdffff",
+        "unsigned": 4294966545,
+        "signed": -751,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12677355
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12677355,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C170EB",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C173DA",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173DA",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173F2",
+      "hex": "e89487feff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "9487feff",
+        "unsigned": 4294870932,
+        "signed": -96364,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12581771
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12581771,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00BFFB8B",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C173F7",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173F7",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17404",
+      "hex": "e8e6f2fdff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "e6f2fdff",
+        "unsigned": 4294832870,
+        "signed": -134426,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12543727
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12543727,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00BF66EF",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C17409",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17409",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17438",
+      "hex": "e8a1dbfeff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "a1dbfeff",
+        "unsigned": 4294892449,
+        "signed": -74847,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12603358
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12603358,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C04FDE",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C1743D",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1743D",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17454",
+      "hex": "e87349feff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "7349feff",
+        "unsigned": 4294855027,
+        "signed": -112269,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12565964
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12565964,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00BFBDCC",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C17459",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17459",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C1745F",
+      "hex": "e8bda7ffff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "bda7ffff",
+        "unsigned": 4294944701,
+        "signed": -22595,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12655649
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12655649,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C11C21",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C17464",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17464",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C174C7",
+      "hex": "e809dbfeff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "09dbfeff",
+        "unsigned": 4294892297,
+        "signed": -74999,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12603349
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12603349,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C04FD5",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C174CC",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C174CC",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C174D5",
+      "hex": "e815000000",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "15000000",
+        "unsigned": 21,
+        "signed": 21,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678383
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678383,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C174EF",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C174DA",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C174DA",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C174E3",
+      "hex": "ff55e0",
+      "length": 3,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": {
+        "offset": 1,
+        "value": 85,
+        "mod": 1,
+        "reg_or_group": 2,
+        "rm": 5
+      },
+      "sib": null,
+      "displacement": {
+        "offset": 2,
+        "size": 1,
+        "raw_hex": "e0",
+        "unsigned": 224,
+        "signed": -32
+      },
+      "immediate": null,
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "mem",
+          "base": "ebp",
+          "index": null,
+          "scale": 1,
+          "displacement": -32,
+          "default_segment": "ss",
+          "size": 4,
+          "offset_formula": "mod32(base + index*scale + sign-extended displacement); absent terms are zero"
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": null,
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C174E6",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": "read",
+      "opcode": [
+        255
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C174E6",
+      "near_indirect_target": "Read the current 32-bit operand value before the CALL return-address store; destination/provider unknown"
+    },
+    {
+      "address": "00C174FF",
+      "hex": "ff55e0",
+      "length": 3,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": {
+        "offset": 1,
+        "value": 85,
+        "mod": 1,
+        "reg_or_group": 2,
+        "rm": 5
+      },
+      "sib": null,
+      "displacement": {
+        "offset": 2,
+        "size": 1,
+        "raw_hex": "e0",
+        "unsigned": 224,
+        "signed": -32
+      },
+      "immediate": null,
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "mem",
+          "base": "ebp",
+          "index": null,
+          "scale": 1,
+          "displacement": -32,
+          "default_segment": "ss",
+          "size": 4,
+          "offset_formula": "mod32(base + index*scale + sign-extended displacement); absent terms are zero"
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": null,
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C17502",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": "read",
+      "opcode": [
+        255
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17502",
+      "near_indirect_target": "Read the current 32-bit operand value before the CALL return-address store; destination/provider unknown"
+    },
+    {
+      "address": "00C17525",
+      "hex": "e81b07ffff",
+      "length": 5,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 4,
+        "raw_hex": "1b07ffff",
+        "unsigned": 4294903579,
+        "signed": -63717,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12614725
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12614725,
+          "size": 4
+        }
+      ],
+      "branch_condition": null,
+      "direct_target": "00C07C45",
+      "implicit_stack": {
+        "required_current_predicate": "Current SS has 32-bit stack addressing; instruction completes normally. Renew this predicate on every independently entered or post-opaque-call path.",
+        "operand_bytes": 4,
+        "segment": "current SS",
+        "ESP_before": "current S, unrelated to any earlier call prestate",
+        "ESP_after": "mod32(S-4)",
+        "memory": "store LE32(value) to SS:mod32(S-4)",
+        "value": "arithmetic return EIP 00C1752A",
+        "returned_state": "If opaque CALL later returns here, all registers, flags, segments, memory, ESP and EBP are unknown"
+      },
+      "explicit_memory_access": null,
+      "opcode": [
+        232
+      ],
+      "mnemonic": "call",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1752A",
+      "near_indirect_target": null
+    }
+  ],
+  "conditional_branches": [
+    {
+      "address": "00C17395",
+      "hex": "7f4c",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "4c",
+        "unsigned": 76,
+        "signed": 76,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678115
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678115,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0 and SF=OF",
+      "direct_target": "00C173E3",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        127
+      ],
+      "mnemonic": "jg",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17397",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17397",
+      "hex": "7415",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "15",
+        "unsigned": 21,
+        "signed": 21,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678062
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678062,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C173AE",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17399",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173A0",
+      "hex": "7422",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "22",
+        "unsigned": 34,
+        "signed": 34,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678084
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678084,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C173C4",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173A2",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173A4",
+      "hex": "7408",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "08",
+        "unsigned": 8,
+        "signed": 8,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678062
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678062,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C173AE",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173A6",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173A8",
+      "hex": "7464",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "64",
+        "unsigned": 100,
+        "signed": 100,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678158
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678158,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C1740E",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173AA",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173AC",
+      "hex": "7544",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "44",
+        "unsigned": 68,
+        "signed": 68,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678130
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678130,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C173F2",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173AE",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173BA",
+      "hex": "7514",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "14",
+        "unsigned": 20,
+        "signed": 20,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678096
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678096,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C173D0",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173BC",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173E8",
+      "hex": "743c",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "3c",
+        "unsigned": 60,
+        "signed": 60,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678182
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678182,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17426",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173EA",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173ED",
+      "hex": "742b",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "2b",
+        "unsigned": 43,
+        "signed": 43,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678170
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678170,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C1741A",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173EF",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C173F0",
+      "hex": "741c",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "1c",
+        "unsigned": 28,
+        "signed": 28,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678158
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678158,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C1740E",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C173F2",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17447",
+      "hex": "0f84d8000000",
+      "length": 6,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 2,
+        "size": 4,
+        "raw_hex": "d8000000",
+        "unsigned": 216,
+        "signed": 216,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678437
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678437,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17525",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        15,
+        132
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1744D",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17450",
+      "hex": "7507",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "07",
+        "unsigned": 7,
+        "signed": 7,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678233
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678233,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C17459",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17452",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C1745C",
+      "hex": "7407",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "07",
+        "unsigned": 7,
+        "signed": 7,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678245
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678245,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17465",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1745E",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C1746D",
+      "hex": "740a",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "0a",
+        "unsigned": 10,
+        "signed": 10,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678265
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678265,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17479",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1746F",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17472",
+      "hex": "7405",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "05",
+        "unsigned": 5,
+        "signed": 5,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678265
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678265,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17479",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17474",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17477",
+      "hex": "751b",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "1b",
+        "unsigned": 27,
+        "signed": 27,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678292
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678292,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C17494",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17479",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17485",
+      "hex": "7540",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "40",
+        "unsigned": 64,
+        "signed": 64,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678343
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678343,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C174C7",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17487",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17497",
+      "hex": "752e",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "2e",
+        "unsigned": 46,
+        "signed": 46,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678343
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678343,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C174C7",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17499",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C174B3",
+      "hex": "7d19",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "19",
+        "unsigned": 25,
+        "signed": 25,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678350
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678350,
+          "size": 4
+        }
+      ],
+      "branch_condition": "SF=OF",
+      "direct_target": "00C174CE",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        125
+      ],
+      "mnemonic": "jge",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C174B5",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C174DD",
+      "hex": "751f",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "1f",
+        "unsigned": 31,
+        "signed": 31,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678398
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678398,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C174FE",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C174DF",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17506",
+      "hex": "740a",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "0a",
+        "unsigned": 10,
+        "signed": 10,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678418
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678418,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17512",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17508",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C1750B",
+      "hex": "7405",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "05",
+        "unsigned": 5,
+        "signed": 5,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678418
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678418,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=1",
+      "direct_target": "00C17512",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        116
+      ],
+      "mnemonic": "je",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1750D",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C17510",
+      "hex": "7511",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "11",
+        "unsigned": 17,
+        "signed": 17,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678435
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678435,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C17523",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C17512",
+      "near_indirect_target": null
+    },
+    {
+      "address": "00C1751B",
+      "hex": "7506",
+      "length": 2,
+      "mode": "x86 32-bit instruction/operand/address decoding",
+      "prefixes": [],
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "raw_hex": "06",
+        "unsigned": 6,
+        "signed": 6,
+        "sign_extended_to_operand32": false,
+        "relative_to_next_eip": true,
+        "effective_value": 12678435
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "operands": [
+        {
+          "type": "imm",
+          "value": 12678435,
+          "size": 4
+        }
+      ],
+      "branch_condition": "ZF=0",
+      "direct_target": "00C17523",
+      "implicit_stack": null,
+      "explicit_memory_access": null,
+      "opcode": [
+        117
+      ],
+      "mnemonic": "jne",
+      "arithmetic_flags": "unchanged by instruction",
+      "next_eip_arithmetic_only": "00C1751D",
+      "near_indirect_target": null
+    }
+  ],
+  "current_stack_and_alias_boundaries": [
+    "Every stack operation requires current SS stack-address size 32 and normal completion independently; no pre-call ESP/EBP relationship is retained after an opaque call.",
+    "All 13 calls are opaque. At either computed CALL, read the current SS:[EBP-0x20] operand before the return-address store; target/provider and all returned state remain unknown.",
+    "Current EBP-relative addresses do not authenticate caller arguments, local variables, an established frame or a recovered ABI.",
+    "The C174A2 backedge reloads absolute memory operands and accesses a mutable counter; stores may alias counter, bounds or other state. No fixed loop bound, nonaliasing or termination is proved.",
+    "The C174D5 relative call numerically targets C174EF inside the excluded gap; no gap byte or callee was acquired.",
+    "Matching offsets before and after opaque calls do not establish identity or restoration of earlier values.",
+    "XOR EAX,EAX at C17523 precedes opaque CALL C07C45 at C17525; RET at C1752A therefore does not prove a zero return value."
+  ],
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "Root_gate_artifacts_checked": 1870,
+  "Root_metadata_preimages": 1860,
+  "Root_actual_Git_objects": {
+    "bd1ba5d9cc77dde06c26a728b810caa5c55cbf10": {
+      "type": "commit",
+      "member": "git_objects/bd1ba5d9cc77dde06c26a728b810caa5c55cbf10.commit",
+      "bytes": 348,
+      "sha256": "1669a3017508dab5dd36e48929c2286664351c29d363a1593fd6db07bc74682f"
+    },
+    "b859cc8950bf306c27b9ebb081008b31cacaa431": {
+      "type": "tree",
+      "member": "git_objects/b859cc8950bf306c27b9ebb081008b31cacaa431.tree",
+      "bytes": 563,
+      "sha256": "1a2c3b0b222b91ccaafe6427252cb0b8c9a1cef4659cdc92deee3c22b09bf83c"
+    },
+    "bea43a24afea0a3ea8c3a982f7856c0facb30c6b": {
+      "type": "tree",
+      "member": "git_objects/bea43a24afea0a3ea8c3a982f7856c0facb30c6b.tree",
+      "bytes": 236243,
+      "sha256": "2cdd842039a94b0e69b803e53cceb5ac06751f26394d68c48c6dad665bb7cc04"
+    },
+    "50cbdcebce36307a549f19cb71e754306e3a14f3": {
+      "type": "blob",
+      "member": "git_objects/50cbdcebce36307a549f19cb71e754306e3a14f3.blob",
+      "bytes": 6528,
+      "sha256": "69960394893f51dc1c8fc80b24816601da03e66c17fd5512c9940c49b244013a"
+    },
+    "d2771180a379768c4e3ad4705ac8bd0d9caa30ec": {
+      "type": "tree",
+      "member": "git_objects/d2771180a379768c4e3ad4705ac8bd0d9caa30ec.tree",
+      "bytes": 361294,
+      "sha256": "930f24c890022932e79d6f84ab38f46bd28ddff25688368056ff3071afc148b6"
+    },
+    "d3de851c81e997370f9bd767ef98cb275dfb0827": {
+      "type": "blob",
+      "member": "git_objects/d3de851c81e997370f9bd767ef98cb275dfb0827.blob",
+      "bytes": 49105,
+      "sha256": "7e4bd08adf8142d79fee94774e35a0b33c79209bc29673e4e4511be3a726c205"
+    },
+    "30e1379b70ae43c39732635b50e31551e8cd4f47": {
+      "type": "blob",
+      "member": "git_objects/30e1379b70ae43c39732635b50e31551e8cd4f47.blob",
+      "bytes": 1676,
+      "sha256": "61b15b2719d4f89b9f319df83cdafd2b1733f5db1868d1bdf75d742feec54cc5"
+    },
+    "40ad58a52ff8731e8d4de0e7a60b999349f38a3f": {
+      "type": "blob",
+      "member": "git_objects/40ad58a52ff8731e8d4de0e7a60b999349f38a3f.blob",
+      "bytes": 50397,
+      "sha256": "79fc5b14ce726b5ba957e70cabda6ec793b569212474d43a89337f855d8ab684"
+    },
+    "5d44e3241c6faffb49d6d830faa92fba468aaf25": {
+      "type": "tree",
+      "member": "git_objects/5d44e3241c6faffb49d6d830faa92fba468aaf25.tree",
+      "bytes": 368,
+      "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+    },
+    "a46b97705f35162ba70bfbd4909788d11bb188b4": {
+      "type": "blob",
+      "member": "git_objects/a46b97705f35162ba70bfbd4909788d11bb188b4.blob",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "fa269934679ee43da523f7bf9c369e4e27d83531": {
+      "type": "tree",
+      "member": "git_objects/fa269934679ee43da523f7bf9c369e4e27d83531.tree",
+      "bytes": 2580,
+      "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+    },
+    "ba90f058569106f62c72dc9f9d72de205772fc7c": {
+      "type": "blob",
+      "member": "git_objects/ba90f058569106f62c72dc9f9d72de205772fc7c.blob",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    "0056201883c1594d9267d2fcf4990385461f0857": {
+      "type": "blob",
+      "member": "git_objects/0056201883c1594d9267d2fcf4990385461f0857.blob",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    "4f73269e25719493aefe1d7f0111b8bbb6b62619": {
+      "type": "blob",
+      "member": "git_objects/4f73269e25719493aefe1d7f0111b8bbb6b62619.blob",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    "0e826b6f2164a353bd20309e1e9fb1cf46f3e270": {
+      "type": "commit",
+      "member": "delivery_git_objects/0e826b6f2164a353bd20309e1e9fb1cf46f3e270.commit",
+      "bytes": 673,
+      "sha256": "61007985e346a620c411cbe91b37539b2785a74539ac79b03dfddff1bd74c8bf"
+    },
+    "27a8a40c01b98ff1ee6b1dcfc3178a956a432d14": {
+      "type": "tree",
+      "member": "delivery_git_objects/27a8a40c01b98ff1ee6b1dcfc3178a956a432d14.tree",
+      "bytes": 563,
+      "sha256": "0ea10897a8d31a1481a33302288a41f202b5c40767db399c28e548fa7085ec00"
+    },
+    "1fc783e62d269500a594b8f7c7029e9e3b7346de": {
+      "type": "tree",
+      "member": "delivery_git_objects/1fc783e62d269500a594b8f7c7029e9e3b7346de.tree",
+      "bytes": 236313,
+      "sha256": "d46bc1a780aad137cd1fe959bf113fd743ae5949b056f0398b1d8a2f28702e6b"
+    },
+    "80818a10de7f32ce39e8534b843776d804eafe01": {
+      "type": "tree",
+      "member": "delivery_git_objects/80818a10de7f32ce39e8534b843776d804eafe01.tree",
+      "bytes": 361366,
+      "sha256": "aea8adc84f7222fb15844ccf3730c3aa74d432648d7211ce44e78d1e4a512706"
+    },
+    "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e": {
+      "type": "blob",
+      "member": "delivery_git_objects/684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e.blob",
+      "bytes": 8874,
+      "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+    },
+    "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f": {
+      "type": "blob",
+      "member": "delivery_git_objects/ead202a5ab72277bd20ed2d8bb8359e0caa7d05f.blob",
+      "bytes": 1635037,
+      "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+    }
+  },
+  "Root_original_Git_streams": {
+    "count": 86,
+    "complete_private_receipt": {
+      "bytes": 7792501,
+      "sha256": "6556996a1758624b55cfa64f443847a16671b87ee675ddfd12bf6dbefa94d9ab"
+    }
+  },
+  "ten_current_LF_index_files": [
+    {
+      "path": "docs/CC12_C1737B_DIRECT_TARGET_ENTRY.md",
+      "blob": "50cbdcebce36307a549f19cb71e754306e3a14f3",
+      "working": {
+        "bytes": 6528,
+        "sha256": "69960394893f51dc1c8fc80b24816601da03e66c17fd5512c9940c49b244013a"
+      },
+      "LF": {
+        "bytes": 6528,
+        "sha256": "69960394893f51dc1c8fc80b24816601da03e66c17fd5512c9940c49b244013a"
+      }
+    },
+    {
+      "path": "reports/cc12_c1737b_direct_target_entry.json",
+      "blob": "d3de851c81e997370f9bd767ef98cb275dfb0827",
+      "working": {
+        "bytes": 49105,
+        "sha256": "7e4bd08adf8142d79fee94774e35a0b33c79209bc29673e4e4511be3a726c205"
+      },
+      "LF": {
+        "bytes": 49105,
+        "sha256": "7e4bd08adf8142d79fee94774e35a0b33c79209bc29673e4e4511be3a726c205"
+      }
+    },
+    {
+      "path": "docs/CC12_C1737B_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "blob": "30e1379b70ae43c39732635b50e31551e8cd4f47",
+      "working": {
+        "bytes": 1676,
+        "sha256": "61b15b2719d4f89b9f319df83cdafd2b1733f5db1868d1bdf75d742feec54cc5"
+      },
+      "LF": {
+        "bytes": 1676,
+        "sha256": "61b15b2719d4f89b9f319df83cdafd2b1733f5db1868d1bdf75d742feec54cc5"
+      }
+    },
+    {
+      "path": "reports/cc12_c1737b_direct_target_entry_primary.json",
+      "blob": "40ad58a52ff8731e8d4de0e7a60b999349f38a3f",
+      "working": {
+        "bytes": 50397,
+        "sha256": "79fc5b14ce726b5ba957e70cabda6ec793b569212474d43a89337f855d8ab684"
+      },
+      "LF": {
+        "bytes": 50397,
+        "sha256": "79fc5b14ce726b5ba957e70cabda6ec793b569212474d43a89337f855d8ab684"
+      }
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "LF": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "LF": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "LF": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "LF": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "path": "docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e",
+      "working": {
+        "bytes": 8874,
+        "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+      },
+      "LF": {
+        "bytes": 8874,
+        "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+      }
+    },
+    {
+      "path": "reports/cc12_c1737b_direct_target_body_metadata.json",
+      "blob": "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f",
+      "working": {
+        "bytes": 1635037,
+        "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+      },
+      "LF": {
+        "bytes": 1635037,
+        "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+      }
+    }
+  ],
+  "proof_member_pins_verified": 4768,
+  "Root_strict_audit": {
+    "status": "PASS",
+    "first_actual_Root_strict_execution_PASS": true,
+    "Root_exactly_matches_both_worker_receipts": true,
+    "Root_audit": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "receipt": {
+      "size": 2885,
+      "sha256": "8a96ae0616189941771c4633db3c687ed83a2ebf26017c1652226ec06ac644db"
+    },
+    "worker_original": {
+      "size": 2885,
+      "sha256": "8a96ae0616189941771c4633db3c687ed83a2ebf26017c1652226ec06ac644db"
+    },
+    "worker_distinct": {
+      "size": 2885,
+      "sha256": "8a96ae0616189941771c4633db3c687ed83a2ebf26017c1652226ec06ac644db"
+    }
+  },
+  "worker_failure_history": {
+    "current_packet_Native": 0,
+    "current_packet_helpers": 0,
+    "current_packet_strict_replays": 0,
+    "current_packet_worker_inspection": 1,
+    "current_packet_worker_display_truncations": 0,
+    "current_packet_Root_gate_or_inspection": 0,
+    "current_packet_Root_display_truncations": 0,
+    "retained_current_inspection_incident": {
+      "scope": "Current packet; pre-Native offline inspection",
+      "kind": "Incorrect prior helper filename in read-only Get-Content",
+      "command": "Get-Content -LiteralPath J:/PROG/battlestations-pacific-decompile-cc12_c1737b_direct_target_entry/local/cc12_c1737b_direct_target_entry/freeze_inputs.py -TotalCount 70",
+      "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_c1737b_direct_target_body_metadata",
+      "exit_code": 1,
+      "max_output_tokens": 1800,
+      "original_token_count": 92,
+      "original_tool_combined_output": "Get-Content: \r\nLine |\r\n   2 |  Get-Content -LiteralPath J:/PROG/battlestations-pacific-decompile-cc1 \u2026\r\n     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n     | Cannot find path 'J:/PROG/battlestations-pacific-decompile-cc12_c1737b_direct_target_entry/local/cc12_c1737b_direct_target_entry/freeze_inputs.py' because it does not exist.\r\n",
+      "separate_original_stdout_stderr_available": false,
+      "display_truncated_by_tool": false,
+      "PowerShell_abbreviated_command_echo": true,
+      "Native_queries_before_incident": 0,
+      "producer_execution_or_edit_occurred": false,
+      "resolution": "Discover actual existing helper filename before the next bounded read; retain this incident in phase1 and final manifests.",
+      "inspection_failures": 1,
+      "inspection_display_truncations": 0
+    },
+    "prior_scope_history": "Accepted ENTRY and ENTRY_PRIMARY inputs are frozen byte-for-byte and remain in the finite proof; their histories are retained under their original packet scopes."
+  },
+  "failures": {
+    "Root_gate": 0,
+    "Root_decoder_full_field_comparison": 1,
+    "Root_final_review": 0,
+    "Root_strict_replay": 0,
+    "Root_post_strict_comparison": 0,
+    "Root_inspection": 0,
+    "Root_display_truncations": 1
+  },
+  "Root_decoder_inspection_history": {
+    "scope": "Root bounded inspection before decoder; conversation tool output only",
+    "display_truncations": 1,
+    "command": "Python glob *.bin emitted all closing/walk streams instead of four selected byte files",
+    "original_tokens": 10374,
+    "budget": 1000,
+    "no_gate_or_decoder_failure": true,
+    "no_Native_GPR_Source_effects": true
+  },
+  "Native": {
+    "worker_read_only_commands": 435,
+    "typed_originals": 423,
+    "function_count": 64730,
+    "modification_number": 98,
+    "Root_new_queries": 0
+  },
+  "validation_boundary": {
+    "Source_edits": 0,
+    "new_tests": 0,
+    "new_builds": 0,
+    "GPR_writes": 0,
+    "runtime_executions": 0,
+    "Source_contents_read": false,
+    "gap_end_plus_one_callees_provider_cells_unqueried": true,
+    "ABI_startup_game_equivalence_established": false
+  },
+  "Root_artifact_pins": {
+    "Root_actual_final_review.py": {
+      "bytes": 7571,
+      "sha256": "e8a3fdb7adc1aae8cd13ff9130e47b94d85c67813f22fd794adb0af3e193a5f8"
+    },
+    "Root_actual_final_review.json": {
+      "bytes": 7792501,
+      "sha256": "6556996a1758624b55cfa64f443847a16671b87ee675ddfd12bf6dbefa94d9ab"
+    },
+    "Root_final_review_preexecution.json": {
+      "bytes": 298,
+      "sha256": "33d2dbc8f8e18c85db26877e0154f81155b8287d4c8ec85ff904595cb9ee5c3d"
+    },
+    "Root_final_review_execution.json": {
+      "bytes": 763,
+      "sha256": "155b841162002111ae6399e79c5299281591c6624c5009480900825953bd43d2"
+    },
+    "Root_actual_final_review.stdout": {
+      "bytes": 240,
+      "sha256": "69a024c9a3da2a57ad1c58b84561735e4f1abeb1b3b3aac6cd451931ec492e88"
+    },
+    "Root_actual_final_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_own_manual.json": {
+      "bytes": 166765,
+      "sha256": "a848082838afdd01932cdbd3722836f4e96dd425b032c45f9c9d79262eee4732"
+    },
+    "Root_fresh_Capstone.json": {
+      "bytes": 155915,
+      "sha256": "596fcae6c9c2bb285d0a4d2ecbc2d5bef2c8bb9dc882cfe321aeda9cc1cced6c"
+    },
+    "Root_cpu_fields.py": {
+      "bytes": 7615,
+      "sha256": "166e2cb940bf4b3027dbf0fee17bb50f452530e93067b7e7fa775c2d59e98156"
+    },
+    "Root_independent_decode.py": {
+      "bytes": 3960,
+      "sha256": "746d308a1b1daa3ce709c93dfcd07abb98696c256b62af1eeb26fe9659354079"
+    },
+    "Root_decoder_preexecution.json": {
+      "bytes": 540,
+      "sha256": "ffebe01c81dcb47369c38dd02e88c8499eec086bff91596f084d9ad64d29f2e3"
+    },
+    "Root_decoder_execution.json": {
+      "bytes": 3610,
+      "sha256": "f19d90e3c857e606bc60a5b3e0b807e558311b0fc4e146bbfad36d1e0f61de16"
+    },
+    "Root_decoder_derivation.json": {
+      "bytes": 3128,
+      "sha256": "fb855a1335992c96298250721b1126fcd7ca3281864cef3dd4bc8c5b205e4135"
+    },
+    "Root_independent_decode.stdout": {
+      "bytes": 1888,
+      "sha256": "749209b05c4cf5ec275c7f7822e63e8b3f93233cd42704fd6d12870bca0e7088"
+    },
+    "Root_independent_decode.stderr": {
+      "bytes": 337,
+      "sha256": "1406a62f7e0985ed164de3e791c2cfae4f7da6dc02e533ccba07d1d46692f85c"
+    },
+    "Root_IMUL_SF_comparison_disposition.json": {
+      "bytes": 4899,
+      "sha256": "ab8c7bebf61404544d872f54f7d2a9f72363226951fd8d7fd92d23717c0d8370"
+    },
+    "Root_decoder_inspection_history.json": {
+      "bytes": 351,
+      "sha256": "941af09848edb846ce0f948a636ed28b48160ccdfdebff2bb5846b793df92155"
+    },
+    "Root_strict_driver.py": {
+      "bytes": 2523,
+      "sha256": "cdb19c9efb0bbf2fdab3f366daa54ce6f96bed4045119bd1f73425ad7948af80"
+    },
+    "Root_strict.preexecution.json": {
+      "bytes": 1094,
+      "sha256": "b5da18d925591d861529609e5610748d90af5ef322513b3392b27223db9d17fa"
+    },
+    "Root_strict.execution.json": {
+      "bytes": 2193,
+      "sha256": "0abf56014a78db00c87dedc9b8a4f57659d50bacc659d3e721fee7a5f4c10bc3"
+    },
+    "Root_strict.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 2885,
+      "sha256": "8a96ae0616189941771c4633db3c687ed83a2ebf26017c1652226ec06ac644db"
+    },
+    "Root_strict_receipt_comparison.json": {
+      "bytes": 646,
+      "sha256": "daabb7e11d6bd3de387dcad1c23a8597cb2aab033cc7b8b7ce8710126a70cf4c"
+    }
+  }
+}
