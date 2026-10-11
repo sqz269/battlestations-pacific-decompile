@@ -835,6 +835,63 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab58d0",
+    "end_address": "00ab58e9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab58d0",
+    "end_address": "00ab58e8",
+    "bytes_disassembled": 25,
+    "message": "Successfully disassembled 25 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab58d0",
+    "disassemble_first": false,
+    "name": "BSP_GuiIconDelayedLoads_OnFileLoaded"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab58d0",
+    "function_name": "BSP_GuiIconDelayedLoads_OnFileLoaded",
+    "entry_point": "00ab58d0",
+    "body_size": 25,
+    "message": "Function created successfully at 00ab58d0",
+    "warnings": [
+     "Function name 'BSP_GuiIconDelayedLoads_OnFileLoaded' \u2014 main part 'GuiIconDelayedLoads_OnFileLoaded' is not PascalCase. Expected: GuiicondelayedloadsOnfileloaded",
+     "Function name 'BSP_GuiIconDelayedLoads_OnFileLoaded' \u2014 main part 'GuiIconDelayedLoads_OnFileLoaded' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIconDelayedLoads_OnFileLoaded' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab58d0",
+   "end": "00ab58e9",
+   "name": "BSP_GuiIconDelayedLoads_OnFileLoaded",
+   "after": "Function: BSP_GuiIconDelayedLoads_OnFileLoaded at 00ab58d0\nSignature: undefined BSP_GuiIconDelayedLoads_OnFileLoaded(void)\nEntry: 00ab58d0\nBody: 00ab58d0 - 00ab58e8"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

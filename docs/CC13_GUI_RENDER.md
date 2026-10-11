@@ -199,6 +199,32 @@ unimplemented. Code: `include/bsp/movie_subtitles.hpp`, `src/movie_subtitles.cpp
   uses a lockit key (`usn14.outro`) as the text.
 - `00AAD9A0` DescribeProperties writes `MovieName` (`+100h`) when it is not empty.
 
+## Icon delayed texture loads
+
+The `DelayedTextureLoad` Icon property (`+101h`, `docs/GUI_ICON_WIDGET.md`) feeds a
+registry that the existing Icon runtime rejects. Reconstructed as
+`GuiIconDelayedLoads` in `src/gui_render.cpp` (bookkeeping only).
+
+- `00AB5700` GetSingleton: 10h object at `00F8BD98`, vtable `00D5C4B8`, created under the
+  SingletonLifetime manager's critical section and registered with it. Entries are 0Ch
+  `{NativeString name, Icon* owner}` at `+4h`, count `+8h`.
+- `00AB5F00` Request (`RET 0Ch`, from `BSP_GuiIcon_VisibilityChanged`): returns when the
+  (name, owner) pair is pending (length compare, then `__stricmp`, then owner); otherwise
+  asks the file store (`BSP_FileStoreFactory_GetOrCreate` with callback `00AB58D0`,
+  `BSP_FileStore_RequestFile`) and appends only when that returns true.
+- `00AB58D0` (no Ghidra function before this packet; defined `00AB58D0..00AB58E9`) is the
+  completion callback, `RET 8`: singleton, then `00AB51B0`.
+- `00AB51B0` Deliver (`RET 8`): for each entry with the name, the texture is created once
+  through `[00F8D394]` +64h, the owner's `00AB3840` is called, and the entry is removed by
+  copying the last entry over it without advancing the scan index.
+- `00AB50E0` CancelOwner (`RET 4`, from the Icon destructor `00AB5E70`): same removal rule
+  keyed on the owner (`00AB5111..00AB519F`).
+- `00AB3840` `BSP_GuiIcon_ApplyDelayedTexture` (`RET 0Ch`): every 40h state record whose
+  texture name matches takes the texture, fills its native size `+34h/+38h` from `00AB17B0`
+  when both are zero, clears `+3Ch` (load pending) and **sets `+3Dh`**, which
+  `docs/GUI_ICON_WIDGET.md` lists as unidentified: it marks a delivered delayed texture.
+  The current state (`(short)+ECh`) is rebuilt through virtual +80h.
+
 ## Unreferenced code in the segment
 
 A rel32 and absolute-dword scan of the PE (`local/r1_rel32.py`) finds no caller of:

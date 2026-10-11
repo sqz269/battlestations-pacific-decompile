@@ -320,4 +320,82 @@ std::array<GuiQuadVertex, 4> gui_progbar_quad_00ac7930(const GuiUvRect& uv,
     return quad;
 }
 
+// ---------------------------------------------------------------------------
+// Icon delayed texture loads
+// ---------------------------------------------------------------------------
+
+bool gui_native_name_equal_00ab5f00(const std::string& a, const std::string& b) noexcept
+{
+    // The scans in 00AB5F00, 00AB51B0 and 00AB3840: lengths first; two empty
+    // names compare equal; otherwise __stricmp, folded here as in the C locale.
+    if (a.size() != b.size()) {
+        return false;
+    }
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        unsigned char x = static_cast<unsigned char>(a[i]);
+        unsigned char y = static_cast<unsigned char>(b[i]);
+        if (x >= 'A' && x <= 'Z') {
+            x = static_cast<unsigned char>(x - 'A' + 'a');
+        }
+        if (y >= 'A' && y <= 'Z') {
+            y = static_cast<unsigned char>(y - 'A' + 'a');
+        }
+        if (x != y) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool GuiIconDelayedLoads::request_00ab5f00(const std::string& name, const void* owner,
+    bool request_accepted)
+{
+    for (const Entry& entry : entries_) {
+        if (gui_native_name_equal_00ab5f00(entry.name, name) && entry.owner == owner) {
+            return false;
+        }
+    }
+    if (!request_accepted) {
+        return false;
+    }
+    entries_.push_back({name, owner});
+    return true;
+}
+
+void GuiIconDelayedLoads::remove_at(std::size_t index)
+{
+    // Copy the last entry over the removed one, then drop the last.
+    if (index != entries_.size() - 1) {
+        entries_[index] = entries_.back();
+    }
+    entries_.pop_back();
+}
+
+std::vector<const void*> GuiIconDelayedLoads::deliver_00ab51b0(const std::string& name)
+{
+    std::vector<const void*> owners;
+    std::size_t i = 0;
+    while (i < entries_.size()) {
+        if (gui_native_name_equal_00ab5f00(entries_[i].name, name)) {
+            owners.push_back(entries_[i].owner);
+            remove_at(i);
+        } else {
+            ++i;
+        }
+    }
+    return owners;
+}
+
+void GuiIconDelayedLoads::cancel_owner_00ab50e0(const void* owner)
+{
+    std::size_t i = 0;
+    while (i < entries_.size()) {
+        if (entries_[i].owner == owner) {
+            remove_at(i);
+        } else {
+            ++i;
+        }
+    }
+}
+
 } // namespace bsp

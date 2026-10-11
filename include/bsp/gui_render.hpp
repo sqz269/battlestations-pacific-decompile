@@ -31,6 +31,7 @@
 // extended-precision intermediates are not reproduced bit for bit.
 #include <array>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "bsp/gui_geometry.hpp"
@@ -210,5 +211,47 @@ bool gui_progbar_set_value_00ac7870(float width, float requested,
 // rectangle.
 std::array<GuiQuadVertex, 4> gui_progbar_quad_00ac7930(const GuiUvRect& uv,
     float width, float height, float value) noexcept;
+
+// ---------------------------------------------------------------------------
+// Icon delayed texture loads (the `DelayedTextureLoad` path)
+// ---------------------------------------------------------------------------
+
+// The 10h-byte singleton at 00F8BD98 (00AB5700, vtable 00D5C4B8): an array of
+// 0Ch-byte {NativeString name, Icon* owner} entries at +4h with the count at
+// +8h. Owners are opaque here. Name equality is the native one: equal lengths
+// and, when both are non-empty, __stricmp == 0.
+class GuiIconDelayedLoads {
+public:
+    struct Entry {
+        std::string name;
+        const void* owner{};
+    };
+
+    // 00AB5F00, __thiscall(len, chars, owner): nothing when (name, owner) is
+    // already pending; otherwise the file is requested from the file store
+    // with the 00AB58D0 callback and the entry appended only when that request
+    // returns true (`request_accepted`, the host's answer). Returns whether an
+    // entry was appended.
+    bool request_00ab5f00(const std::string& name, const void* owner, bool request_accepted);
+
+    // 00AB51B0 via 00AB58D0: every entry with this name, in array order with
+    // swap-with-last removal (the scan index does not advance after a removal,
+    // so the moved entry is examined next). Returns the owners in the order
+    // 00AB3840 is called on them; the texture is created once (factory +64h)
+    // before the first.
+    std::vector<const void*> deliver_00ab51b0(const std::string& name);
+
+    // 00AB50E0, __thiscall(owner): removes the owner's entries with the same
+    // swap-with-last rule (called from the Icon destructor and visibility hook).
+    void cancel_owner_00ab50e0(const void* owner);
+
+    const std::vector<Entry>& entries() const noexcept { return entries_; }
+
+private:
+    void remove_at(std::size_t index);
+    std::vector<Entry> entries_;
+};
+
+bool gui_native_name_equal_00ab5f00(const std::string& a, const std::string& b) noexcept;
 
 } // namespace bsp
