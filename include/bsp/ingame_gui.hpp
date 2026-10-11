@@ -256,8 +256,36 @@ struct RewardsScoreRow {
     std::int32_t side{};       // +18h: 0 = USN rows, 1 = IJN rows
     std::int32_t score{};      // +50h
     std::int32_t rank{};       // +58h: rank_Icon state + 1
-    bool ai5c{};               // +5Ch: name is localised, rank_Icon hidden (provisional: an AI slot)
+    std::int32_t game_mode34{};  // +34h: 004BCA50 when the row was built
+    std::int32_t badges48{};   // +48h: keys of the player's score record that 0090C000 accepts
+    bool ai5c{};               // +5Ch: the slot's +9h byte (an AI slot; its name may be a difficulty key)
 };
+
+// The player record *(game+18CCh + 4*slot) fields 0062A0B0 reads.
+struct RewardsPlayerSlot {
+    bool ai09{};               // +09h
+    bool byte0a{};             // +0Ah: an AI slot without it is skipped
+    std::int32_t index20{};    // +20h: negative = empty; compared with game+18ECh
+    std::int32_t side28{};     // +28h
+    std::int32_t difficulty2c{};  // +2Ch: index into kRewardsAiNameKeys
+    std::string name58;        // +58h, C string
+    std::string clan78;        // +78h, C string
+    std::uint32_t id80{};      // +80h
+    std::uint32_t id84{};      // +84h
+    std::uint8_t rank90{};     // +90h
+};
+
+// 00E08940: the AI name keys by difficulty (6..8 are not strings in the image).
+inline constexpr std::array<std::string_view, 6> kRewardsAiNameKeys{"FE.easy", "FE.easy", "FE.easy", "FE.easy", "FE.normal", "FE.hard"};
+inline constexpr std::string_view kRewardsAiClan = " ";  // 00CE3A90
+
+struct RewardsEnterHost;
+
+// 0062A0B0: __thiscall(screen), RET. Rebuilds the +220h rows from the eight player slots.
+std::vector<RewardsScoreRow> rewards_build_score_rows_0062a0b0(RewardsEnterHost& host);
+// 00625D10: the rows by descending score; equal scores keep their order (the
+// insertion-sort path, 00623410, which is the only one up to 20h rows).
+void rewards_sort_score_rows_00625d10(std::vector<RewardsScoreRow>& rows);
 
 // The local player's record *(game+18CCh + 4*game+18ECh), read only when
 // game+18ECh is in 0..7.
@@ -467,10 +495,15 @@ struct RewardsEnterHost {
     // (00BE7CD0) with the completion callback 00622E00.
     virtual void request_streamed_dialog_00be7cd0(std::string_view path, std::uint32_t callback) = 0;
     virtual std::string_view audio_language_folder_008d57a0() = 0;  // ECX = 00F88980
-    // The scoreboard rows (+220h): 0062A0B0 rebuilds them, 00625D10 sorts them.
-    virtual void build_score_rows_0062a0b0() = 0;
-    virtual void sort_score_rows_00625d10() = 0;
-    virtual const std::vector<RewardsScoreRow>& score_rows_220() = 0;
+    // The scoreboard rows (+220h), rebuilt by rewards_build_score_rows_0062a0b0
+    // and sorted by rewards_sort_score_rows_00625d10.
+    virtual std::vector<RewardsScoreRow>& score_rows_220() = 0;
+    // --- 0062A0B0 inputs ---
+    virtual bool player_slot_18cc(std::int32_t slot, RewardsPlayerSlot& out) = 0;  // false for a null slot
+    virtual std::int32_t effective_game_mode_004bca50() = 0;
+    // The per-player score record *(game+21A0h)+4+slot*284h: +1E0h and the key list +6Ch.
+    virtual std::int32_t player_score_1e0(std::int32_t slot) = 0;
+    virtual std::vector<std::string> player_score_keys_6c(std::int32_t slot) = 0;
     virtual bool local_player(RewardsLocalPlayer& out) = 0;       // false when game+18ECh is outside 0..7
     // The scoreboard listbox at screen+D4h and its row template at +D8h.
     virtual void listbox_clear_rows_00a9bec0() = 0;

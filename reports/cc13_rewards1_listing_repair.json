@@ -1,0 +1,127 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006316a0",
+    "end_address": "006316cb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006316a0",
+    "end_address": "006316ca",
+    "bytes_disassembled": 43,
+    "message": "Successfully disassembled 43 byte(s)"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00632a59",
+    "end_address": "00632a84"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00632a59",
+    "end_address": "00632a83",
+    "bytes_disassembled": 43,
+    "message": "Successfully disassembled 43 byte(s)"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "0063169b"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 0063169b (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "00632a54"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 00632a54 (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "recreate": "0062c2c0",
+   "previous": "Function: BSP_RewardsScreen_Enter at 0062c2c0\nSignature: undefined BSP_RewardsScreen_Enter(void)\nEntry: 0062c2c0\nBody: 0062c2c0 - 00636d78",
+   "plate": "[BSP reconstruction 0062c2c0]\nSlot +18h of vtable 00CF50CC; drives award and unlock text; calls 005C3DE0 BSP_MissionTree_AdvanceToNextMission at 0062C866 and 00586150 at 0062C886. docs/CC13_INGAME_GUI.md\n\n[BSP reconstruction 0062c2c0] update\nSlot +18h of vtable 00CF50CC; drives award and unlock text; calls 005C3DE0 BSP_MissionTree_AdvanceToNextMission at 0062C866 and 00586150 at 0062C886. docs/CC13_INGAME_GUI.md | Opening segment 0062C2C0..0062CA7B reconstructed as rewards_screen_enter_award_queue_0062c2c0 (cc13-frontend3, partial); the body runs to 00636D79 (about 10760 instructions), outline in docs/CC13_INGAME_GUI.md"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0062c2c0"
+   },
+   "result": {
+    "success": true,
+    "address": "0062c2c0",
+    "deleted_function": "BSP_RewardsScreen_Enter",
+    "body_size": 43592,
+    "message": "Function 'BSP_RewardsScreen_Enter' deleted at 0062c2c0"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0062c2c0",
+    "disassemble_first": false,
+    "name": "BSP_RewardsScreen_Enter"
+   },
+   "result": {
+    "success": true,
+    "address": "0062c2c0",
+    "function_name": "BSP_RewardsScreen_Enter",
+    "entry_point": "0062c2c0",
+    "body_size": 43678,
+    "message": "Function created successfully at 0062c2c0",
+    "warnings": [
+     "Function name 'BSP_RewardsScreen_Enter' \u2014 main part 'RewardsScreen_Enter' is not PascalCase. Expected: RewardsscreenEnter",
+     "Function name 'BSP_RewardsScreen_Enter' \u2014 main part 'RewardsScreen_Enter' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RewardsScreen_Enter' does not start with a recognized verb. First word 'Rewards' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "0062c2c0",
+    "comment": "[BSP reconstruction 0062c2c0]\nSlot +18h of vtable 00CF50CC; drives award and unlock text; calls 005C3DE0 BSP_MissionTree_AdvanceToNextMission at 0062C866 and 00586150 at 0062C886. docs/CC13_INGAME_GUI.md\n\n[BSP reconstruction 0062c2c0] update\nSlot +18h of vtable 00CF50CC; drives award and unlock text; calls 005C3DE0 BSP_MissionTree_AdvanceToNextMission at 0062C866 and 00586150 at 0062C886. docs/CC13_INGAME_GUI.md | Opening segment 0062C2C0..0062CA7B reconstructed as rewards_screen_enter_award_queue_0062c2c0 (cc13-frontend3, partial); the body runs to 00636D79 (about 10760 instructions), outline in docs/CC13_INGAME_GUI.md"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 0062c2c0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "0062c2c0",
+   "after": "Function: BSP_RewardsScreen_Enter at 0062c2c0\nSignature: undefined BSP_RewardsScreen_Enter(void)\nEntry: 0062c2c0\nBody: 0062c2c0 - 00636d78"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
