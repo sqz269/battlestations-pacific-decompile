@@ -402,4 +402,48 @@ struct HintReloadState {
 // 006921B0: __fastcall(tracker), RET.
 void hint_tracker_reload_006921b0(HintReloadState& tracker, HintReloadHost& host);
 
+// ---------------------------------------------------------------------------
+// Segment 10: GUI parking of in-game screens (game singleton 00E188A8 methods).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::int32_t kGuiScreenSlots = 0x5F;          // 004D6725: screens 0..5Eh of 00E18B60
+inline constexpr double kGuiParkOffsetX = 1000.0;               // 00CE47A0
+// Screens left in place while a hint pauses the game (004D94F0): 28h, 55h (menu prompt),
+// 57h (frame stats), 5Dh, 34h (hints).
+inline constexpr std::array<std::int32_t, 5> kHintPauseKeptScreens{0x28, 0x55, 0x57, 0x5D, 0x34};
+// Screens left in place while the game+61Fh pause is on (004D95F0).
+inline constexpr std::array<std::int32_t, 16> kSystemPauseKeptScreens{
+    0x0D, 0x0E, 0x0F, 0x28, 0x3C, 0x3D, 0x53, 0x55, 0x57, 0x58, 0x59, 0x5C, 0x5D, 0x19, 0x5E, 0x0C};
+
+struct GuiParkHost {
+    virtual ~GuiParkHost() = default;
+    virtual bool screen_present_e18b60(std::int32_t slot) = 0;
+    virtual std::vector<std::uintptr_t> screen_collect_24(std::int32_t slot) = 0;  // screen vtable +24h
+    virtual bool widget_parked_121(std::uintptr_t widget) = 0;
+    virtual void widget_set_parked_121(std::uintptr_t widget, bool parked) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(std::uintptr_t widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(std::uintptr_t widget, const std::array<float, 3>& p) = 0;
+};
+
+// 004D6480: __stdcall-like (std::vector<int>* kept, char park), RET 8 (ECX unused).
+void gui_park_screens_004d6480(GuiParkHost& host, const std::vector<std::int32_t>& kept, bool park);
+
+struct GamePauseState {
+    bool system_pause_61f{};   // game+61Fh
+    bool hint_pause_620{};     // game+620h
+    std::int32_t pause_lock_624{};  // game+624h, blocks 004D94F0 when non-zero
+    std::int32_t session_kind_1fe4{};
+};
+
+struct GamePauseHost : GuiParkHost {
+    virtual void hints_advance_basic_step_0054e440() = 0;     // ECX = *(*(00E198C4)+A8h)
+    virtual bool hud_screen_e8_flag() = 0;                    // 00E198C4 && +E8h && *(+E8h)+4
+    virtual void input_force_refresh() = 0;                   // input+20h = 1; 00A93020
+};
+
+// 004D94F0: __thiscall(game, char paused), RET 4; SEH 00C66588.
+void game_set_hint_pause_004d94f0(GamePauseState& game, GamePauseHost& host, bool paused);
+// 004D95F0: __thiscall(game, char paused), RET 4.
+void game_set_system_pause_004d95f0(GamePauseState& game, GamePauseHost& host, bool paused);
+
 }  // namespace bsp

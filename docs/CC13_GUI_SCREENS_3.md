@@ -109,7 +109,7 @@ Behaviour:
 `004D94F0(game, flag)` (segment 10, outside the lease, not renamed): when `game+620h` differs from
 the flag and `game+624h` is 0 it stores the flag and passes the screens 28h, 55h, 57h, 5Dh and 34h
 with it to 004D6480, which the movie screens also call. It reads as "pause everything but these
-screens"; the name `BSP_Game_SetHintPause` is left for the owner of segment 10.
+screens"; renamed `BSP_Game_SetHintPause` in the third turn under a segment-10 lease (see below).
 
 Input records: the input manager's action array at `*(004BEC00()+4)` has 30h-byte records;
 `00535EE0(action)` is "pressed this frame" (`+20h` set and `+1Ch > 0`, unless `+28h` set and `+24h >
@@ -351,3 +351,40 @@ loader 0068F030 with its reload 006921B0 (7 functions, build-tested, not wired).
 is resolved. Still open: the HintSystem Lua wrappers in segment 56 (008D1F50, 008D2190, 008D24F0,
 008D2340, 0088CEC0, 008D2850; mission-script visible, so cc9 should decide on them), the
 idle-camera shot filler, and items 3 to 5 of the first handoff.
+## Segment 10 (third turn): GUI parking and the two pause setters (reconstructed, build-tested)
+
+Lease `cc13_gui5_seg10` on 004D0920-004E7DB0. Triage (`local/g5_triage.py`, which lists
+functions without a reconstruction record and flags cc9/cc12 docs citing them,
+`local/g5_triage10.txt`): `BSP_Game_DestroyWorld`, `BSP_Game_RequestState`, 004D8000,
+004D9C00, 004DC940, 004DCDF0 and 004E2200 are cited by recent cc12 docs, and 004E27E0 and
+004E7A10 by cc9's `SHIP_AI_OPEN_ITEMS.md`; none of them were touched. Most of the uncited rest are
+container instantiations, scene and game-lifecycle bodies without strings. I took only the GUI
+pieces the hints work depends on:
+
+- `004D6480 BSP_GuiScreens_ParkWidgets(std::vector<int>* kept, char park)`, RET 8: for screen
+  slots 0..5Eh of the table 00E18B60 it collects each screen's widgets through the Collect slot
+  (+24h) and moves each widget 1000.0 (00CE47A0) to the left when parking a slot that is not in
+  `kept` (widget+121h marks it), or back when not parking or when the slot is kept. Positions go
+  through the resolved-position pair 00AA6750/00AA8240. This is how pausing hides the HUD: the
+  widgets are moved off screen, not hidden.
+- `004D94F0 BSP_Game_SetHintPause(char)`: when game+620h changes and game+624h is 0, parks
+  everything but screens 28h, 55h, 57h, 5Dh and 34h.
+- `004D95F0 BSP_Game_SetSystemPause(char)` (provisional name): when game+61Fh changes, setting it
+  while a hint pause is active advances the tutorial step (0054E440); clearing it in a session
+  with `*(00E198C4)+E8h` up forces an input-context refresh (input+20h = 1, 00A93020); then parks
+  everything but 0Dh, 0Eh, 0Fh, 28h, 3Ch, 3Dh, 53h, 55h, 57h, 58h, 59h, 5Ch, 5Dh, 19h, 5Eh, 0Ch.
+  The same byte suppresses ShowHint in sessions.
+
+The movie screens (005CD9C0, 005CDB00, 005CDC50, 005CDD70) and 005D11F0/005D18A0 also call
+004D6480; they were not reviewed here.
+
+## Handoff (cc13-gui5, third turn end, 2026-10-11)
+
+Stopping at about 55% context. Commits this turn: b11bb3276 (tracker helpers and loader), the
+merge, and the segment-10 commit. Totals for the lineage worker: 25 functions reconstructed and
+build-tested in `src/gui_screens_3.cpp`, none wired; 399 report call rows, 0 failed.
+
+Next, in order: `004D9830` (tagged as a scalar deleting destructor, but a game method called
+with 1 by the hints code; 241 instructions, scene-node visibility through 004BDA70/00B6DA70);
+the HintSystem Lua wrappers in segment 56 (for cc9 to decide); the idle-camera shot filler; the
+remaining uncited segment-10 functions, after checking each against cc9/cc12 docs again.

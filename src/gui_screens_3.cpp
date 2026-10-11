@@ -699,4 +699,48 @@ void hint_tracker_reload_006921b0(HintReloadState& tracker, HintReloadHost& host
     host.close_script();
 }
 
+// 004D6480..004D6740. For each of the 5Fh screen slots, every collected widget is parked
+// 1000 units to the left (+121h set) when parking and the slot is not kept, and returned
+// otherwise. The y and z components go through FADD 0.0 (a -0.0 becomes +0.0); x is computed in
+// double from the float and stored as float.
+void gui_park_screens_004d6480(GuiParkHost& host, const std::vector<std::int32_t>& kept, bool park) {
+    for (std::int32_t slot = 0; slot < kGuiScreenSlots; ++slot) {
+        bool is_kept = false;
+        for (std::int32_t id : kept) {
+            if (id == slot) is_kept = true;  // 004D64CD..004D64D5 (no early exit)
+        }
+        if (!host.screen_present_e18b60(slot)) continue;
+        for (std::uintptr_t widget : host.screen_collect_24(slot)) {   // 004D6511
+            if (widget == 0) continue;
+            const bool hide = park && !is_kept;
+            if (hide == host.widget_parked_121(widget)) continue;      // 004D6573 / 004D6640
+            host.widget_set_parked_121(widget, hide);
+            const std::array<float, 3> p = host.widget_resolved_position_00aa6750(widget);
+            const double x = hide ? static_cast<double>(p[0]) - kGuiParkOffsetX : static_cast<double>(p[0]) + kGuiParkOffsetX;
+            host.widget_set_resolved_position_00aa8240(widget, {static_cast<float>(x), p[1] + 0.0F, p[2] + 0.0F});
+        }
+    }
+}
+
+// 004D94F0..004D95E1.
+void game_set_hint_pause_004d94f0(GamePauseState& game, GamePauseHost& host, bool paused) {
+    if (game.hint_pause_620 == paused || game.pause_lock_624 != 0) return;
+    game.hint_pause_620 = paused;
+    const std::vector<std::int32_t> kept(kHintPauseKeptScreens.begin(), kHintPauseKeptScreens.end());
+    gui_park_screens_004d6480(host, kept, paused);  // 004D95B7
+}
+
+// 004D95F0..004D9829. Setting the pause while a hint pauses advances the tutorial step; leaving
+// it in a session with the HUD +E8h screen up forces an input-context refresh.
+void game_set_system_pause_004d95f0(GamePauseState& game, GamePauseHost& host, bool paused) {
+    if (game.system_pause_61f == paused) return;
+    game.system_pause_61f = paused;
+    if (paused && game.hint_pause_620) host.hints_advance_basic_step_0054e440();  // 004D963B
+    if (game.session_kind_1fe4 != 0 && !game.system_pause_61f && host.hud_screen_e8_flag()) {
+        host.input_force_refresh();                                            // 004D966C..004D967F
+    }
+    const std::vector<std::int32_t> kept(kSystemPauseKeptScreens.begin(), kSystemPauseKeptScreens.end());
+    gui_park_screens_004d6480(host, kept, paused);
+}
+
 }  // namespace bsp
