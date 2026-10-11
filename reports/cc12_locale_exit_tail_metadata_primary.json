@@ -1,0 +1,876 @@
+{
+  "schema": "bsp.cc12.locale-exit-tail-metadata.Root.v1",
+  "status": "remaining_stored_tail_metadata_accepted",
+  "worker_commit": "7307485545258c317d9d0990e032472b39c0bfd2",
+  "proof_pins": [
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/evidence.zip",
+      "bytes": 405699415,
+      "sha256": "02fe641258df3a1b063f98b3bd62920ea79d16f08001518850911ae5cbbdd2c3"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/manifest.json",
+      "bytes": 1567553,
+      "sha256": "32c2cd980847d95f7434b1b59104910557237286f5bf8c317c5f78a4a637295a"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/delivery_git.zip",
+      "bytes": 685761,
+      "sha256": "ba5b94f65b961655b328e657e021fe0fff1513ba194df1f3bdce072178381168"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/next_worker_handoff.json",
+      "bytes": 43177,
+      "sha256": "2802a4e59b183fd29e94f493fc5bb6705bedc8e1e87d6e39dade4e63b8bdfe00"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_copy_core.json",
+      "bytes": 15846,
+      "sha256": "f31c1a93995a63b2966d43cabc456f5744f38347e4fb9be3af008adbf9382b3b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_copy_delivery.json",
+      "bytes": 392,
+      "sha256": "c3c27c42a6228c83528fee33bb83975ef9c42bfdf0abab4e34bdf0cbfb592355"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_initial_gate.json",
+      "bytes": 17297,
+      "sha256": "0f77bc9516981f249720ee5766f105135b52f40112074a1146e022e574094d19"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_core_guard.json",
+      "bytes": 54081,
+      "sha256": "f0e1ac1a0c470c13393ed4f7276548843c35fafc110bc5a83f2ae35877eeafaa"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_delivery_guard.json",
+      "bytes": 7403,
+      "sha256": "1e348826a241b9de47af391668ae74275060a74b27200909f6cfad0fb1512b74"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Root_actual_review.json",
+      "bytes": 1239016,
+      "sha256": "cebfd6d3b221acd890d22357427045a4af47273a575e8e428d6529ab6fec1654"
+    }
+  ],
+  "physically_retained_helpers": [
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_call_metadata_delivery_replay.py",
+      "bytes": 2893,
+      "sha256": "b8bbe2ec8b4e38b3d2d953e0d092c139d905096c33665708bcd38a7dfcb99739"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_call_metadata_replay.py",
+      "bytes": 14920,
+      "sha256": "2a925803bddb93a5f8b124c3222f63eaa7fea259f015a867ccaa7318cd160224"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_call_operand_delivery_replay.py",
+      "bytes": 2890,
+      "sha256": "803f8b1d65942df0eb18d83c6d9e45f2c7bb80982b7753b81a80b42e842de717"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_call_operand_replay.py",
+      "bytes": 15043,
+      "sha256": "6d451466115bbf5a4e5d5f146287989546968fc6037278678774f531fc31da60"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_push_metadata_delivery_replay.py",
+      "bytes": 2914,
+      "sha256": "cfd5544bbfa2f46178c66ed4a00f47cf0b4586f6415c3429cab0c84dcd444626"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/after_push_metadata_replay.py",
+      "bytes": 19458,
+      "sha256": "6bf8528889b880404881e196f0ae91f245939743fd80649ff10540504e453bf1"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/call_delivery_replay.py",
+      "bytes": 2466,
+      "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/call_operand_delivery_replay.py",
+      "bytes": 2949,
+      "sha256": "87776dea498812a1a48dea88f2b3a2e17af91bce906cb4e01879373458fa481e"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/call_operand_replay.py",
+      "bytes": 15469,
+      "sha256": "2d0082ad8b72b1c56d621bbe08b85ebdde861b05739efc82dd2457a65414826b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/call_replay.py",
+      "bytes": 12906,
+      "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/delivery_verifier.py",
+      "bytes": 2875,
+      "sha256": "2efc92afb561e8dd8617963fe27905bf0e24adf6c6122c46035e1cc4acf46cba"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/entry_operand_delivery_replay.py",
+      "bytes": 2895,
+      "sha256": "5bf2c653b06fb7aab7bcb5ac1a7f9f3b1add5eaa996b61bc32fb9b1358e94eba"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/entry_operand_replay.py",
+      "bytes": 15018,
+      "sha256": "acdadd99adfd86aef5e522dbcda05f9d7be6582dc662fa7f9ee344ac0c45c9a7"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/exit_metadata_delivery_replay.py",
+      "bytes": 2881,
+      "sha256": "776c0015d590f9bc481eaee59ed4d084c25db1c5ce6a54eda65d2aba7971bb5b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/exit_metadata_replay.py",
+      "bytes": 11337,
+      "sha256": "0e365b15191d65f5d740edde87e976c0f924f75dadfdef563c0294f8abda9770"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/guarded_replay.py",
+      "bytes": 4090,
+      "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/metadata_delivery_replay.py",
+      "bytes": 2467,
+      "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/metadata_replay.py",
+      "bytes": 9853,
+      "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/operand_delivery_replay.py",
+      "bytes": 2480,
+      "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/operand_replay.py",
+      "bytes": 10585,
+      "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_metadata_delivery_replay.py",
+      "bytes": 2462,
+      "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_metadata_replay.py",
+      "bytes": 12435,
+      "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_pop_metadata_delivery_replay.py",
+      "bytes": 2408,
+      "sha256": "19afc228d031f2df2ee44dea72d2c0029638950238853c123600b95614978e87"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_pop_metadata_replay.py",
+      "bytes": 12097,
+      "sha256": "022a113ea89a32f9e80a10aca6cb9df296c08c1d59d6f198797f2056db466665"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_pop_operand_delivery_replay.py",
+      "bytes": 2668,
+      "sha256": "a7ffa62372070cc42f504a8b48ef55b596b92929287ff253ce53addf4edbc205"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/post_pop_operand_replay.py",
+      "bytes": 15964,
+      "sha256": "cc5a8f5f70a642e6eb1ae7c90450ad123cca63f5f5643979505c319452dfac9b"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/prefix_delivery_replay.py",
+      "bytes": 2465,
+      "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/prefix_replay.py",
+      "bytes": 10761,
+      "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/prior_replay.py",
+      "bytes": 5817,
+      "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/return_metadata_delivery_replay.py",
+      "bytes": 2453,
+      "sha256": "977f708c138accaf6692198296378067f1478642401b092f3f2b73bbe72cddbd"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/return_metadata_replay.py",
+      "bytes": 10363,
+      "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/return_operand_delivery_replay.py",
+      "bytes": 2563,
+      "sha256": "8024b7026c805e2ddd5d1b439b5309fdbba69e23797bd6778aef45bd7a3f2fed"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/return_operand_replay.py",
+      "bytes": 13268,
+      "sha256": "c47081e1a52c18656155650973251acfa2018b0817d5389135ae95a002da687a"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_metadata_primary/Tools/verifier.py",
+      "bytes": 15901,
+      "sha256": "2546945a4b9323a7b7ab0432865e348e682d6dd34cf6a68b76f7710ed8f9de70"
+    }
+  ],
+  "Native": {
+    "epoch": 98,
+    "count": 64730,
+    "actual_raw_captures": 14,
+    "equal_raw_pairs": 7,
+    "identity_bookends_equal": true,
+    "qualified_gate": {
+      "status": "PASS",
+      "Native_epoch": 98,
+      "Native_count": 64730,
+      "actual_raw_captures": 14,
+      "equal_raw_pairs": 7,
+      "identity_bookends_equal": true,
+      "containing_owner": {
+        "entry": {
+          "space": "ram",
+          "offset": "00bf6ff5"
+        },
+        "name": "_atexit",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "18",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00bf6ff5"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00bf7006"
+              },
+              "length": "18"
+            }
+          ]
+        }
+      },
+      "qualified_per_byte": [
+        {
+          "query": "BF7000",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7002"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7002"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7001",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": null,
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": null,
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7000"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": null,
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7002",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7004"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7004"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7003",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": null,
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": null,
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7002"
+              },
+              "length": 2,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": null,
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7004",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7004"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7004"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7004"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7004"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7005"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7005"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7005",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7005"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7005"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7005"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7005"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7006"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00bf7006"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        },
+        {
+          "query": "BF7006",
+          "function_at_query": null,
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7006"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7006"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7006"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00bf7006"
+              },
+              "length": 1,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "effective_flow": {
+              "name": "TERMINATOR",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": true
+            },
+            "default_fallthrough": null,
+            "effective_fallthrough": null,
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "direct_call_targets": []
+        }
+      ],
+      "fresh_code_bytes_text_data": 0,
+      "actual_tail_extent_metadata_only": 7,
+      "unit_lengths": [
+        2,
+        2,
+        1,
+        1,
+        1
+      ],
+      "no_operand_or_return_opcode_credit": true,
+      "pins": [
+        {
+          "path": "Native_gate_summary.json",
+          "bytes": 17781,
+          "sha256": "9e40482f42cf97345a891bd8c5f2097318f66e6d40222159a7f9855d34f471c2"
+        },
+        {
+          "path": "Native/before_BF7000.json",
+          "bytes": 8723,
+          "sha256": "701e155176cca5dc6f0d1b71a069c376646ca2cca6b2c849e2775c008cc6122a"
+        },
+        {
+          "path": "Native/before_BF7001.json",
+          "bytes": 6802,
+          "sha256": "04c9596998bb8ea9c028c5b993bbceef83b5210384010df86c230aff91f917de"
+        },
+        {
+          "path": "Native/before_BF7002.json",
+          "bytes": 8723,
+          "sha256": "c07ca42ae14a96632928a77f80298dbe2241cf7cb78d8784780b539364f835d9"
+        },
+        {
+          "path": "Native/before_BF7003.json",
+          "bytes": 6802,
+          "sha256": "680675c39b80afc3ec52d9228c1a6e7b37557e83d852c74198b498011348bafa"
+        },
+        {
+          "path": "Native/before_BF7004.json",
+          "bytes": 8723,
+          "sha256": "223caabd464cededb8541a33e52d1924ed60ff6afa64c74d356a4989cfe3d214"
+        },
+        {
+          "path": "Native/before_BF7005.json",
+          "bytes": 8723,
+          "sha256": "88edde2e11b68ae9b6a593483f6d85a65ed2a77d907c126cefa6a38199907284"
+        },
+        {
+          "path": "Native/before_BF7006.json",
+          "bytes": 8551,
+          "sha256": "996f5c47f7b44e12a97862330f85fc5cbfef8999ad31d1d4deae224e71cb59ef"
+        },
+        {
+          "path": "Native/after_BF7000.json",
+          "bytes": 8723,
+          "sha256": "b84fcab9a59a22cbf8075358a0729ff4d6ffde0057f759ad951f43441e4196a1"
+        },
+        {
+          "path": "Native/after_BF7001.json",
+          "bytes": 6802,
+          "sha256": "513e38218c9977ff0627c29ffe4acd51bb3343309fc1ca286edb6eefe8c30532"
+        },
+        {
+          "path": "Native/after_BF7002.json",
+          "bytes": 8723,
+          "sha256": "79caf53e06ae6a31f832b25673b439d69cc04d93a08b3a4277e3ce24f94d1cb6"
+        },
+        {
+          "path": "Native/after_BF7003.json",
+          "bytes": 6802,
+          "sha256": "5360d9462e255cc5c0a0342bd9e5b07052efb2dabd9ee8d6e0cb299bd8c749d3"
+        },
+        {
+          "path": "Native/after_BF7004.json",
+          "bytes": 8723,
+          "sha256": "bce44fa14cc8f3dbc569e83c5377c5ccffe289403215a9aef8393d3025d78503"
+        },
+        {
+          "path": "Native/after_BF7005.json",
+          "bytes": 8723,
+          "sha256": "88a05ac9c8bf2607cdafa67e382b2969fcb03a4dae5f00e7aa608b52a7c04b34"
+        },
+        {
+          "path": "Native/after_BF7006.json",
+          "bytes": 8551,
+          "sha256": "8e7c997b5b969f281dfa8199ca8d07f8869355dfeaa6ceb799cf71a7064eb16d"
+        },
+        {
+          "path": "Native/closure.json",
+          "bytes": 772,
+          "sha256": "8b6d7c9f8318d1fc5c77a55938e4388db10e93825cad08f5727753fcff2d5911"
+        },
+        {
+          "path": "Native/count_before.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        },
+        {
+          "path": "Native/count_after.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      ]
+    },
+    "fresh_code_text_data_bytes": 0,
+    "whole_capture_strict_site_only": false,
+    "fresh_capture_strict_site_only": true,
+    "entire_inherited_target_objects_opaque": true
+  },
+  "actual_Git": {
+    "frozen_blobs": 4306,
+    "frozen_objects": 11,
+    "delivery_objects": 8,
+    "outputs": 2,
+    "Source4217_equal": true,
+    "original575_f203_bf866_frozen54f_distinct": true,
+    "inherited_Root_CRLF_variants": 5,
+    "no_rebase_or_build_runtime_transfer": true
+  },
+  "unknowns": [
+    "Exact physical opcodes/operands of the five units",
+    "Actual reach, preceding callee return/cleanup, entryEAX and postcalleeESP",
+    "Resulting status, callback/locale ownership, Source ABI/startup/game"
+  ],
+  "next_admission": {
+    "packet": "cc12_locale_exit_tail_operand",
+    "initial_gate": "Fresh exact typed metadata for all7 bytes BF7000..BF7006 under unchanged98/64730 project/program/count/identity; containing nonThunk/noReturnfalse BF6FF5 one-range18B BF6FF5..BF7006; functionAt null all7; units lengths2,2,1,1,1 at7000,7002,7004,7005,7006; interiors7001/7003 instructionAt/flow null; NONE/noFTOverride, empty targets, start flows FALL_THROUGH to next start except7006 TERMINATOR/nullFT",
+    "conditional_operand_scope": "Only after all actual gates pass: exact7 codebytes BF7000..BF7006 and context-zero text at five starts, then unchanged fullseven metadata/code/text/count/identity bookends",
+    "qualification": "Decode physical instruction-local effects conditionally, keep unknown reach/precedingcallee/postcalleeESP/inputEAX/CRTowner/runtime; TERMINATOR alone is not RET proof",
+    "excluded": [
+      "No BF6FB9 target/caller/neighbor/prototype/body/data/pointer/stack expansion or automatic successor admission",
+      "No GPR mutation/repair, C++/tests/builds/probes/process/OS/audio/game action",
+      "No actual return/status/CRTauthenticity/owner/ABI/runtime claim"
+    ]
+  },
+  "overall_goal_complete": false
+}
