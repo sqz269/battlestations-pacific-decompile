@@ -274,3 +274,24 @@ ABI-compatible (host-interface projection), not game-validated; no host wiring.
 The whole body of 0062C2C0 is reconstructed; no range remains. Open items: (1) done (listing repair above); (2) the meaning of screen+10h, record+1E4h, row+5Ch and record+24Dh;
 (3) the bodies of 0062A0B0, the 00625D10 predicate and the score-table formulas; (4) host wiring
 of `RewardsEnterHost` (none exists).
+
+## Scoreboard rows 0062A0B0 and their sort 00625D10 (cc13-rewards1, reconstructed, build-tested)
+
+`rewards_build_score_rows_0062a0b0` (747 instructions, 0062A0B0..0062A960, RET): the rows at
+screen+220h are cleared (00625980) and the game mode read (004BCA50). For each slot 0..7 of
+game+18CCh: a null slot, +20h < 0, or +9h set with +0Ah clear is skipped; otherwise a zeroed 60h
+row is pushed (00627820; temporary destroyed by 0061F2C0) and filled: +00h/+04h = slot
++80h/+84h; +08h = slot +58h, except an AI slot (+9h) whose name is at most one character takes
+00E08940[+2Ch] (FE.easy x4, FE.normal, FE.hard); +10h = " " (00CE3A90) for an AI slot, else slot
++78h; +5Ch = slot +9h (so row+5Ch is the AI flag); +18h = slot +28h; +50h = the per-player score
+record *(game+21A0h)+4+slot*284h +1E0h; +34h = the game mode; +48h = the number of keys in that
+record's +6Ch list accepted by 0090C000; +58h = the profile's "RANK" byte (00574050) when slot
++20h == game+18ECh, else slot +90h. `rewards_sort_score_rows_00625d10`: the comparator
+(00623457, 006234B1: CMP against +50h, JLE/JG) puts higher scores first and moves a row only
+past strictly lower ones; with at most eight rows only the insertion path (00623410) runs, so the
+model is a stable sort by descending score.
+
+The score-table point functions 00911CE0, 00911C00, 00910500 and 00910570 are cited by
+docs/BOT_SCHEDULER_OUTPUT.md, docs/SIDE_AI_SCHEDULER_HANDOFF.md and docs/SCORING_BODIES.md (the
+side-AI scoring lanes), so their bodies are left to those lanes; they are named and documented
+here only. 009064D0 has no other reader.
