@@ -1,0 +1,347 @@
+{
+  "schema": "bsp.cc12.locale-onexit-second-call-entry-metadata.v1",
+  "status": "closed_exact_entry_metadata_only",
+  "packet": "cc12_locale_onexit_second_call_entry_metadata",
+  "frozen_HEAD": "e461a37e8e9c0b07412eea97828da9d03b7f7416",
+  "merged_Main": "d207b8d8a70fca7c3a353edc24b4b119f8b236ac",
+  "predecessor": {
+    "worker_commit": "ddf0db184d17382da9c5521f1344322e94373569",
+    "primary_doc": "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+    "primary_report": "reports/cc12_locale_onexit_body_primary.json",
+    "selection": "Previously accepted physical CALL at BF6FC5 targets BFBA68; no fresh predecessor query."
+  },
+  "Native": {
+    "status": "PASS",
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "scope": "Exact entry only. No full-body address, text, decompile, disasm, xrefs, data/stack, targets, Source or runtime query.",
+    "address": "00BFBA68",
+    "typed_response_count": 2,
+    "raw_pair_equal": true,
+    "raw_pin": {
+      "bytes": 2156,
+      "sha256": "69ce2b38013f9e982589e1c0dbd3e6a580f70fbd03d2d112b02e1047e052f7d0"
+    },
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00bfba68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "function_at_query": {
+      "space": "ram",
+      "offset": "00bfba68"
+    },
+    "function_containing_query": {
+      "space": "ram",
+      "offset": "00bfba68"
+    },
+    "qualified_entry_function": {
+      "entry": {
+        "space": "ram",
+        "offset": "00bfba68"
+      },
+      "name": "LIBCRT_unmatched_00bfba68",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "9",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00bfba68"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00bfba70"
+            },
+            "length": "9"
+          }
+        ]
+      }
+    },
+    "entry_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba6a"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00bfba6a"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "saved_prototype_prefix": [
+      "Function: LIBCRT_unmatched_00bfba68 at 00bfba68",
+      "Signature: undefined LIBCRT_unmatched_00bfba68(void)",
+      "Entry: 00bfba68",
+      "Body: 00bfba68 - 00bfba70"
+    ],
+    "entry_bytes_length": 2,
+    "entry_bytes_pair_equal": true,
+    "prototype_companion": "entire automatic companion opaque",
+    "automatic_target_objects": "entire automatic objects opaque",
+    "saved_name_prototype_authentication": false,
+    "actual_OS_CRT_callback_status_ABI_game_validation": false,
+    "data_bytes_read": 0,
+    "GPR_mutations": 0,
+    "full_body_admitted": false
+  },
+  "exact_entry_code": {
+    "hex": "6a08",
+    "bytes": 2,
+    "sha256": "8d38f9f0b8aaf50c1b5a8db595dc1e9dbab0ce00381920e869144cbfbbcfa034"
+  },
+  "saved_body_range_limit": "BFBA68..BFBA70 is saved range metadata only. Only BFBA68 was queried; only the two-byte entry unit was read.",
+  "quarantine": {
+    "semantic_credit": false,
+    "whole_automatic_prototype_companion_opaque": true,
+    "whole_automatic_target_objects_opaque": true,
+    "saved_name_prototype_authentication": false
+  },
+  "Source_identity_only": {
+    "tree_ids": {
+      "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+      "include": "09add3be594e63edcce6a16ec041ed965441e898"
+    },
+    "scope": "Actual worker frozen base and independently captured worker final only.",
+    "census_performed": false,
+    "Source_files_read": 0,
+    "current_Root_equality_claimed": false,
+    "implementation_build_fixture_runtime_credit": false
+  },
+  "bounded_provenance": {
+    "finite_prerequisite_and_tool_files": 7,
+    "actual_frozen_Git_objects": 6,
+    "selected_files": [
+      {
+        "path": "config/target.json",
+        "git_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git_entry": "GitBlobs/config/target.json",
+        "git_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_entry": "PhysicalFiles/config/target.json",
+        "physical_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "git_oid": "dd5183953b53766e0c3ffb4ee3dc0b16e2a7f7d6",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "git_pin": {
+          "bytes": 2094,
+          "sha256": "5db5eeb5dd9158143a7baa3f4f836a98e99692612ffa8a2720debb3795432433"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "physical_pin": {
+          "bytes": 2094,
+          "sha256": "5db5eeb5dd9158143a7baa3f4f836a98e99692612ffa8a2720debb3795432433"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_body_primary.json",
+        "git_oid": "d3b9f72001a19c5bdd49c8002e4a9b3be113e134",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_body_primary.json",
+        "git_pin": {
+          "bytes": 25139,
+          "sha256": "d7886a7184483559d2b2d3e5551ec84aab9d054b81f51c2ef9d5df75a637d154"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_body_primary.json",
+        "physical_pin": {
+          "bytes": 25139,
+          "sha256": "d7886a7184483559d2b2d3e5551ec84aab9d054b81f51c2ef9d5df75a637d154"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git_entry": "GitBlobs/tools/bsp.py",
+        "git_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_entry": "PhysicalFiles/tools/bsp.py",
+        "physical_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git_entry": "GitBlobs/tools/ghidra_export.py",
+        "git_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_export.py",
+        "physical_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git_entry": "GitBlobs/tools/ghidra_typed_flow.py",
+        "git_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_typed_flow.py",
+        "physical_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/workspace.py",
+        "git_oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git_entry": "GitBlobs/tools/workspace.py",
+        "git_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_entry": "PhysicalFiles/tools/workspace.py",
+        "physical_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_raw_equal_Git": true
+      }
+    ],
+    "inherited_archives_traversed": 0,
+    "retained_offline_helpers": 4,
+    "retained_producers": 7
+  },
+  "archive": {
+    "bytes": 382438,
+    "sha256": "ac179e952f3ba509198828d9669677f58c93f5ef3abd978414bc5195c87fb0c7"
+  },
+  "archive_path": "local/cc12_locale_onexit_second_call_entry_metadata/evidence.zip",
+  "offline_guard": {
+    "status": "PASS",
+    "guard_active_before_helper_execution": true,
+    "helper_pins_verified_before_import": [
+      {
+        "bytes": 4903,
+        "name": "common.py",
+        "sha256": "d5aa065cee68a8ebaf239f15b2fb70f3146b23e255c48619dacf4200c97bfd0f"
+      },
+      {
+        "bytes": 3642,
+        "name": "delivery_verifier.py",
+        "sha256": "da91eb7207b16b5977eea80b4196e14563aaf09e2decba4e20dab6ff1f3d7728"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 5485,
+        "name": "verifier.py",
+        "sha256": "2e170dd0e6b1b5c1389d0480655c6de1577140d8a4f6761c53a67a3e3a7c4602"
+      }
+    ],
+    "unexpected_denials": [],
+    "distinct_physical_copy_verified": true
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_SECOND_CALL_ENTRY_METADATA.md",
+      "reports/cc12_locale_onexit_second_call_entry_metadata.json"
+    ],
+    "separate_delivery_archive": "local/cc12_locale_onexit_second_call_entry_metadata/delivery_git.zip",
+    "actual_worker_base_final_Git_objects": 8,
+    "current_staged_committed_bytes_equal_required": true
+  },
+  "not_established": [
+    "function body behavior",
+    "callees",
+    "return state",
+    "stack cleanup",
+    "memory or register preservation",
+    "OS or CRT authenticity",
+    "callback ownership",
+    "status meaning",
+    "ABI compatibility",
+    "actual execution or game validation"
+  ],
+  "next_scope": "None. Native is closed; Root admission is required before any full-body work."
+}
