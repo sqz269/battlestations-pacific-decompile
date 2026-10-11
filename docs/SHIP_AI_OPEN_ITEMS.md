@@ -16364,3 +16364,61 @@ OFF is `7107b671b` (tree build). ON is the same commit exported with the switch 
   take, and nothing else moves.
 - **Verdict: ON.**
 - **Not exercised by these rows:** the `+A8h` erase (0 records) and the slot-state arm (0 slots).
+
+## 209. Handoff (cc9-ships42, 2026-10-11)
+
+### Landed or committed (`agent/cc9-ships42`)
+
+| section / sha | what |
+| --- | --- |
+| `f9fde7416` | the `torpedo` helm line (g33's edit); `kPlayerTorpedoGroupFireBound` is the gunnery lane's to flip |
+| 207-207.2, `ba9800cf0`, `d97129693` | the capture-party pair is **untested** (f12 no longer reaches a SetParty); `+127Ch` is the image's |
+| 207.3, `92c6ac58f` | cc11's soft-roll store `783c4f35d` moved every plane row; it is image-faithful |
+| 208-208.1, `b89b3d537`, `564410718` | `kSquadronKillQueueEraseBound` **ON**: the Kill notification's slot+4 `006C4B30` drops a dead squadron's queue records |
+| 208.2, `176db9deb` | the 857.91 s sightings are the two listeners registering on one frame |
+| 208.3-208.4, `3b2be78e7`, `b09643b8d` | JM08 Gyoraitei: destination and mode-3 steering are the image's; the half throttle is `009E5E90`'s +150 deg store |
+| 208.5, `add95861e` | `00980E50` re-notifies every pass, so USNOS's double sighting is image behaviour |
+| 208.6-208.6.1, `7107b671b`, `cda4475cf` | `kLandTaskRetireQueueEraseBound` **ON** (live retire -> `006C8800` -> `006C7680`) |
+
+### Open, in order
+
+1. **The USNOS re-plan on current main.** Everything that blocked it is now settled as image behaviour: the soft roll
+   (207.3), the double sighting (208.5), and DM1's artillery friendly fire (GUNNERY 164).
+   - **Variant a** (`local\s42_os_a.txt`, f17 without `27950 moveto Enterprise`) keeps the Enterprise alive.
+   - The troop transports die to the Airfield1/2/3 torpedo squadrons:
+     - variant a: TroopTrans6 at 1304.70 s, TroopTrans3 at 1490.08 s, TroopTrans5 at 1627.46 s;
+     - TroopTrans1/2/4 die at 148-471 s as they did in ships41's runs.
+   - The transports carry damage from about 121-131 s (wave 1), so they are weak by the time the strikes come.
+   - **Variant c** (`s42_os_c.txt`): Enterprise fighters (class 810) launched at `Airfield1_sqn16` and
+     `Airfield3_sqn18`. Only two fighter flights launch (slots 0 and 2; later lines get "no such slot"), and the run
+     *diverges*: TroopTrans3 dies at 1243.74 s, and the mission fails at 1396.14 s. Worse.
+   - **Variant d** (`s42_os_d.txt`): fighters launched at TroopTrans3/6/5 in turn from 1000 s, as an escort. Two
+     flights launch (at TroopTrans3 and TroopTrans6). **TroopTrans3 survives, and HQ2 is captured at 1703.34 s**
+     (`Bases captured: 1.00`; HQ2 neutralized at 1456.15 s). TroopTrans6 dies at 1254.95 s and TroopTrans5 at 1666.25 s.
+     **DM1 sinks the Enterprise at 1729.26 s** (killer range 46 m) as Takao1 closes, and the mission fails at
+     1733.07 s.
+   - **Variant e** (`s42_os_e.txt`, 60000 frames, `-Traj`): d plus bombers (331/339) at Takao1 from 1200 s. It was
+     running when this handoff was written; its log is `local\s42_p4_ose.log`.
+   - **Ideas not tried:**
+     - Enterprise bombers (331/339) on Airfield1/Airfield3 before their 1068/1114 s launches;
+     - holding TroopTrans3 back (the f12 `select` + `moveto` legs) until the strikes are spent;
+     - bringing NH's AA alongside the transports.
+   - On f17-length runs, watch for gunnery35's AV at about 4228 s on the anchor build. If it hits, send the frame to
+     gunnery35.
+2. **`kCaptureStatePartyFromUnitBound`** stays OFF and untested. Re-pair it once a USNOS plan reaches an HQ SetParty.
+   Predict one resync per SetParty.
+3. **JM08 Gyoraitei:** the remaining comparison is the ring scan's inputs (`009E76D0`'s slot scores), which put the
+   chosen bearing on the far side of the committed arm.
+4. **`+A8h` records:** no Kill observer (208.4). They leave only by live retire or `006CC9F0`. Neither the `+A8h` arm nor
+   the slot arm of 208.6 was exercised in the pairs.
+
+### Tools (`local\`, `s42_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s42_rows.ps1` | the launcher (AF form). Rows: `smoke`, `j6t4`, `u2`, `e8`, `u1`, `osf3`, `osf7`, `osf12s` (2600), `osf12m` (32000), `osf12`, `osf17`, `osa`/`osb`/`osc`/`osd` (44000), `osaf`/`osbf`/`oscf` (200000), `j8g9s`/`j8g9`. `-Traj` writes CSVs |
+| `s42_traj.py` | sampled x,z of named units over a time window, from the CSVs |
+| `s42_near.py` | units within a radius of points at time t |
+| `s42_pursuit.py` | distance, heading against bearing, throttle of one unit chasing another |
+| `s42_patch_*.py` | the applied patches |
+| `s42_bisect_list.txt` | the 400 first-parent main commits from 207.3's bisect |
