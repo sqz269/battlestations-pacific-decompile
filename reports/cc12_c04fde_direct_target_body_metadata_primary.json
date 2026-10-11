@@ -1,0 +1,1864 @@
+{
+  "schema": "cc12.primary.v1",
+  "packet": "cc12_c04fde_direct_target_body_metadata_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "1bc9726a314941c623853a7c627ecd61be7709f9",
+  "frozen_parent": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b",
+  "positive_edge": {
+    "address": "00C17125",
+    "length": 5,
+    "hex": "e8b4defeff",
+    "mode": "x86-32 interpretation; current execution and segment descriptor state unestablished",
+    "prefixes": [],
+    "opcode": 232,
+    "modrm": null,
+    "sib": null,
+    "fields": [
+      {
+        "field": "opcode",
+        "offset": 0,
+        "size": 1,
+        "hex": "e8",
+        "value": 232
+      },
+      {
+        "field": "relative_displacement",
+        "offset": 1,
+        "size": 4,
+        "hex": "b4defeff",
+        "value": -74060
+      }
+    ],
+    "mnemonic": "call",
+    "operands": [
+      {
+        "kind": "imm",
+        "size": 4,
+        "value": 12603358
+      }
+    ],
+    "operand_access": [
+      0
+    ],
+    "regs_read": [
+      "eip",
+      "esp"
+    ],
+    "regs_written": [
+      "esp"
+    ],
+    "implicit_regs_read": [
+      "esp",
+      "eip"
+    ],
+    "implicit_regs_written": [
+      "esp"
+    ],
+    "eflags": 0,
+    "eflag_effects": [],
+    "groups": [
+      "call",
+      "branch_relative",
+      "not64bitmode"
+    ],
+    "implicit_stack_segment": "ss",
+    "current_SS_B1_predicate_required": true,
+    "transfer": {
+      "kind": "direct_near_call",
+      "signed_displacement": -74060,
+      "numeric_target": "00C04FDE",
+      "next_address": "00C1712A",
+      "encoded_return_address": "00C1712A"
+    },
+    "numeric_next_cursor": "00C1712A"
+  },
+  "physical": {
+    "start": "00C04FDE",
+    "end_inclusive": "00C0504B",
+    "size": 110,
+    "hex": "56ff35005be1008b35bc20ce00ffd685c07421a1fc5ae10083f8ff741750ff35005be100ffd6ffd085c074088b80fc010000eb2668d09fd600ff155c21ce008bf085f67423e8d3feffff85c0741a68e09fd60056ff15f420ce0085c0740aff742408ffd0894424088b4424085ec3",
+    "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5"
+  },
+  "instructions": 36,
+  "physical_transfers": [
+    {
+      "address": "00C04FEB",
+      "length": 2,
+      "hex": "ffd6",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 214,
+        "mod": 3,
+        "reg_opcode": 2,
+        "rm": 6
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "d6",
+          "value": 214
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C04FED"
+      },
+      "numeric_next_cursor": "00C04FED"
+    },
+    {
+      "address": "00C04FEF",
+      "length": 2,
+      "hex": "7421",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "21",
+          "value": 33
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603410
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 33,
+        "numeric_target": "00C05012",
+        "next_address": "00C04FF1",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C04FF1"
+    },
+    {
+      "address": "00C04FF9",
+      "length": 2,
+      "hex": "7417",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "17",
+          "value": 23
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603410
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 23,
+        "numeric_target": "00C05012",
+        "next_address": "00C04FFB",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C04FFB"
+    },
+    {
+      "address": "00C05002",
+      "length": 2,
+      "hex": "ffd6",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 214,
+        "mod": 3,
+        "reg_opcode": 2,
+        "rm": 6
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "d6",
+          "value": 214
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "esi",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "reg",
+          "size": 4,
+          "name": "esi"
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C05004"
+      },
+      "numeric_next_cursor": "00C05004"
+    },
+    {
+      "address": "00C05004",
+      "length": 2,
+      "hex": "ffd0",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 208,
+        "mod": 3,
+        "reg_opcode": 2,
+        "rm": 0
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "d0",
+          "value": 208
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "eax",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C05006"
+      },
+      "numeric_next_cursor": "00C05006"
+    },
+    {
+      "address": "00C05008",
+      "length": 2,
+      "hex": "7408",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "08",
+          "value": 8
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603410
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 8,
+        "numeric_target": "00C05012",
+        "next_address": "00C0500A",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C0500A"
+    },
+    {
+      "address": "00C05010",
+      "length": 2,
+      "hex": "eb26",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 235,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "eb",
+          "value": 235
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "26",
+          "value": 38
+        }
+      ],
+      "mnemonic": "jmp",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603448
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [],
+      "regs_written": [],
+      "implicit_regs_read": [],
+      "implicit_regs_written": [],
+      "eflag_effects": [],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "direct_jump",
+        "signed_displacement": 38,
+        "numeric_target": "00C05038",
+        "next_address": "00C05012",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C05012"
+    },
+    {
+      "address": "00C05017",
+      "length": 6,
+      "hex": "ff155c21ce00",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 21,
+        "mod": 0,
+        "reg_opcode": 2,
+        "rm": 5
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "15",
+          "value": 21
+        },
+        {
+          "field": "displacement",
+          "offset": 2,
+          "size": 4,
+          "hex": "5c21ce00",
+          "value": 13508956
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 13508956
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 13508956
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C0501D"
+      },
+      "numeric_next_cursor": "00C0501D"
+    },
+    {
+      "address": "00C05021",
+      "length": 2,
+      "hex": "7423",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "23",
+          "value": 35
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603462
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 35,
+        "numeric_target": "00C05046",
+        "next_address": "00C05023",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C05023"
+    },
+    {
+      "address": "00C05023",
+      "length": 5,
+      "hex": "e8d3feffff",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 232,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "e8",
+          "value": 232
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 4,
+          "hex": "d3feffff",
+          "value": -301
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603131
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eip",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "eip",
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "branch_relative",
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "direct_near_call",
+        "signed_displacement": -301,
+        "numeric_target": "00C04EFB",
+        "next_address": "00C05028",
+        "encoded_return_address": "00C05028"
+      },
+      "numeric_next_cursor": "00C05028"
+    },
+    {
+      "address": "00C0502A",
+      "length": 2,
+      "hex": "741a",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "1a",
+          "value": 26
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603462
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 26,
+        "numeric_target": "00C05046",
+        "next_address": "00C0502C",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C0502C"
+    },
+    {
+      "address": "00C05032",
+      "length": 6,
+      "hex": "ff15f420ce00",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 21,
+        "mod": 0,
+        "reg_opcode": 2,
+        "rm": 5
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "15",
+          "value": 21
+        },
+        {
+          "field": "displacement",
+          "offset": 2,
+          "size": 4,
+          "hex": "f420ce00",
+          "value": 13508852
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 13508852
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "mem",
+          "size": 4,
+          "segment_override": null,
+          "default_segment": "ds",
+          "base": null,
+          "index": null,
+          "scale": 1,
+          "displacement": 13508852
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C05038"
+      },
+      "numeric_next_cursor": "00C05038"
+    },
+    {
+      "address": "00C0503A",
+      "length": 2,
+      "hex": "740a",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 116,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "74",
+          "value": 116
+        },
+        {
+          "field": "relative_displacement",
+          "offset": 1,
+          "size": 1,
+          "hex": "0a",
+          "value": 10
+        }
+      ],
+      "mnemonic": "je",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12603462
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "regs_read": [
+        "eflags"
+      ],
+      "regs_written": [],
+      "implicit_regs_read": [
+        "eflags"
+      ],
+      "implicit_regs_written": [],
+      "eflag_effects": [
+        "TEST_ZF"
+      ],
+      "groups": [
+        "branch_relative",
+        "jump"
+      ],
+      "implicit_stack_segment": null,
+      "current_SS_B1_predicate_required": false,
+      "transfer": {
+        "kind": "conditional_jump",
+        "signed_displacement": 10,
+        "numeric_target": "00C05046",
+        "next_address": "00C0503C",
+        "encoded_return_address": null
+      },
+      "numeric_next_cursor": "00C0503C"
+    },
+    {
+      "address": "00C05040",
+      "length": 2,
+      "hex": "ffd0",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 255,
+      "modrm": {
+        "value": 208,
+        "mod": 3,
+        "reg_opcode": 2,
+        "rm": 0
+      },
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "ff",
+          "value": 255
+        },
+        {
+          "field": "modrm",
+          "offset": 1,
+          "size": 1,
+          "hex": "d0",
+          "value": 208
+        }
+      ],
+      "mnemonic": "call",
+      "operands": [
+        {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        }
+      ],
+      "operand_access": [
+        1
+      ],
+      "regs_read": [
+        "eax",
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "call",
+        "not64bitmode"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "computed_near_call",
+        "target_operand": {
+          "kind": "reg",
+          "size": 4,
+          "name": "eax"
+        },
+        "numeric_target": null,
+        "encoded_return_address": "00C05042"
+      },
+      "numeric_next_cursor": "00C05042"
+    },
+    {
+      "address": "00C0504B",
+      "length": 1,
+      "hex": "c3",
+      "mode": "x86-32 interpretation; current live execution and segment attributes unestablished",
+      "prefixes": [],
+      "opcode": 195,
+      "modrm": null,
+      "sib": null,
+      "fields": [
+        {
+          "field": "opcode",
+          "offset": 0,
+          "size": 1,
+          "hex": "c3",
+          "value": 195
+        }
+      ],
+      "mnemonic": "ret",
+      "operands": [],
+      "operand_access": [],
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode",
+        "ret"
+      ],
+      "implicit_stack_segment": "ss",
+      "current_SS_B1_predicate_required": true,
+      "transfer": {
+        "kind": "near_return",
+        "numeric_target": null,
+        "encoded_immediate_adjustment": 0,
+        "ordinary_fallthrough": false
+      },
+      "numeric_next_cursor": "00C0504C"
+    }
+  ],
+  "state_and_ABI_limits": {
+    "mode": "Decode is x86-32 only. Current execution mode, segment descriptors, mappings, permissions, register values and memory values are unestablished.",
+    "stack": "Renew current SS.B=1 independently for every PUSH, CALL, POP and RET. Under that predicate and normal successful completion, PUSH and near CALL decrement current ESP by four and write through current SS; CALL stores its encoded return offset. POP and near RET read through current SS at current ESP and increment current ESP by four. No aggregate stack delta, balance or caller-return identity is inferred.",
+    "source_order": "PUSH dword [ESP+8] at C0503C forms its explicit source offset from pre-instruction current ESP and reads through current SS before its own stack decrement/write. The later store at C05042 and load at C05046 each form current ESP+8 anew; a returned opaque call separates the PUSH source from that store.",
+    "segments_aliasing": "Absolute cells and EAX+1FC use current DS; explicit ESP+8 operands default to current SS. Every implicit stack access uses current SS under its renewed stack-address predicate. No flat DS=SS assumption or non-alias property is established. Earlier stack writes can alias later cell reads through the current mappings.",
+    "opaque_calls": "The six computed targets and the C04EFB direct callee are not queried. If any opaque call returns, treat all returned registers, flags, memory and segment state as unknown. In particular ESI at C05002 is not assumed preserved from the earlier MOV or CALL, and either CALL EAX uses its own current EAX.",
+    "literals": "D69FD0 and D69FE0 are encoded immediate values only; their referents are unread. E15B00, E15AFC, CE20BC, CE215C and CE20F4 are numeric explicit memory offsets, without imported API, string, provider, pointer-value or library authentication.",
+    "flags": "TEST computes the bitwise conjunction for flags without storing a result: normal CF/OF reset, SF/ZF/PF set from the result, AF undefined. CMP EAX,-1 uses the sign-extended imm8 and updates subtraction flags without writing EAX. JE tests current ZF; the six adjacent comparisons support conditional local composition only on uninterrupted normal execution.",
+    "control": "Relative target arithmetic is a numeric code-offset fact. Computed CALL targets are unknown current register or memory values. RET C3 at C0504B has no encoded immediate adjustment, no ordinary sequential fallthrough, and an unknown current stack target. Reachability and return are not guaranteed.",
+    "identity": "Saved BSP_CRT_DecodePointerCurrentState/no_return=false/nonthunk and automatic call companions remain metadata. No function prototype, calling convention, decoded-pointer meaning, provider, library identity or callee-saved contract is recovered.",
+    "boundary": "C0504C, every callee/target body, every data-cell value and every immediate referent remain unqueried."
+  },
+  "saved_owner": {
+    "entry": {
+      "space": "ram",
+      "offset": "00c04fde"
+    },
+    "name": "BSP_CRT_DecodePointerCurrentState",
+    "no_return": false,
+    "is_thunk": false,
+    "thunk_target_recursive": false,
+    "direct_thunk_target": null,
+    "body": {
+      "range_count": 1,
+      "returned_range_count": 1,
+      "address_count": "110",
+      "complete": true,
+      "ranges": [
+        {
+          "start": {
+            "space": "ram",
+            "offset": "00c04fde"
+          },
+          "end_inclusive": {
+            "space": "ram",
+            "offset": "00c0504b"
+          },
+          "length": "110"
+        }
+      ]
+    }
+  },
+  "default_effective_target_arrays_differ_at": [
+    "00C04FEB",
+    "00C05002",
+    "00C05017",
+    "00C05032"
+  ],
+  "independent_saved_target_arrays": [
+    {
+      "address": "00C04FEB",
+      "saved_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fed"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c04fed"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000104"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00C05002",
+      "saved_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05004"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05004"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000104"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00C05017",
+      "saved_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c0501d"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c0501d"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "0000012c"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00C05032",
+      "saved_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "COMPUTED_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": true,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c05038"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c05038"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000112"
+          }
+        ]
+      }
+    }
+  ],
+  "Root_independent_manual_fresh_Capstone": {
+    "review": {
+      "status": "PASS",
+      "manual_count": 36,
+      "actual_count": 36,
+      "Capstone_version": "5.0.7",
+      "actual_Capstone_producer_executed": true,
+      "manual_physically_written_before_Capstone_import": true,
+      "differences": [],
+      "code": {
+        "length": 110,
+        "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5"
+      }
+    },
+    "manual_record_count": 36,
+    "all_detailed_fields_match_worker": true,
+    "unordered_register_group_lists_sorted_only_for_comparison": true,
+    "full_original_manual": {
+      "size": 42163,
+      "sha256": "4876e737779b88276b527f45c4b6f2aafe2eba224cbedff7ef2185f8b07615f7"
+    },
+    "full_original_fresh_actual": {
+      "size": 38518,
+      "sha256": "5192bd5692d33d5dc7d625522b142b03b3b7a1732d46a43acd7e80ee34d3eb06"
+    }
+  },
+  "Source_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "Root_actual_Git_objects": [
+    {
+      "label": "commit",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b",
+      "type": "commit",
+      "oid": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b",
+      "payload": "captures/git_commit_payload.stdout",
+      "size": 412,
+      "sha256": "f709964300b9e82fb52b22eddb767f0f3e596b2309f5c61b83db3f6abd29159e"
+    },
+    {
+      "label": "root",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b^{tree}",
+      "type": "tree",
+      "oid": "7887eb41954d48108fcae429ae7f87d7fb7624b3",
+      "payload": "captures/git_root_payload.stdout",
+      "size": 563,
+      "sha256": "12e8420327afbdf0dc94699069551d73328d94139f9160413bad823eda56f6d1"
+    },
+    {
+      "label": "dir_docs",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:docs",
+      "type": "tree",
+      "oid": "0f0817455e562c18fe25b847df73d284dbb46de1",
+      "payload": "captures/git_dir_docs_payload.stdout",
+      "size": 236375,
+      "sha256": "1a02426cd2fa8be7162e73af31d15c99d35257bed129ee4a15287e0d941cbe9c"
+    },
+    {
+      "label": "dir_reports",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:reports",
+      "type": "tree",
+      "oid": "2f3776fc973753ad5284320b12864467651c48f9",
+      "payload": "captures/git_dir_reports_payload.stdout",
+      "size": 361430,
+      "sha256": "704a1b768760e366f07dc495f2105c07a671ae3a967c8d83312736c995bc235f"
+    },
+    {
+      "label": "dir_config",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:config",
+      "type": "tree",
+      "oid": "5d44e3241c6faffb49d6d830faa92fba468aaf25",
+      "payload": "captures/git_dir_config_payload.stdout",
+      "size": 368,
+      "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+    },
+    {
+      "label": "dir_tools",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:tools",
+      "type": "tree",
+      "oid": "fa269934679ee43da523f7bf9c369e4e27d83531",
+      "payload": "captures/git_dir_tools_payload.stdout",
+      "size": 2580,
+      "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+    },
+    {
+      "label": "input_0",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:docs/CC12_C04FDE_DIRECT_TARGET_ENTRY.md",
+      "type": "blob",
+      "oid": "947c130de0010c42ca89de277d1f6c2554aef80f",
+      "payload": "captures/git_input_0_payload.stdout",
+      "size": 6053,
+      "sha256": "7e5b1e34818a874805383d829d6f6ec4feb06f16c82f5e10c022622593270d7f"
+    },
+    {
+      "label": "input_1",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:reports/cc12_c04fde_direct_target_entry.json",
+      "type": "blob",
+      "oid": "3ac0cde3b87fcfee94dfed58a0b55968d7a65d67",
+      "payload": "captures/git_input_1_payload.stdout",
+      "size": 23760,
+      "sha256": "c71b2dba288b807540419e8c1a6a45923e7136d922762b8ba3165f790625322d"
+    },
+    {
+      "label": "input_2",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:docs/CC12_C04FDE_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "type": "blob",
+      "oid": "e48df2a9110ac9814598ed1203c29c4dc1981b4c",
+      "payload": "captures/git_input_2_payload.stdout",
+      "size": 2246,
+      "sha256": "cb96d5b873d7fd931d767ef965b3af53545004ec244bedb942724fb7f204cd4f"
+    },
+    {
+      "label": "input_3",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:reports/cc12_c04fde_direct_target_entry_primary.json",
+      "type": "blob",
+      "oid": "d891768ad27588aeb976748271143bd3c2355b4b",
+      "payload": "captures/git_input_3_payload.stdout",
+      "size": 33824,
+      "sha256": "813295c539a6444cdbe1f1115e2d3e9d9851ae094c62c115f9fdf195551c388c"
+    },
+    {
+      "label": "input_4",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:config/target.json",
+      "type": "blob",
+      "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "payload": "captures/git_input_4_payload.stdout",
+      "size": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "label": "input_5",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:tools/bsp.py",
+      "type": "blob",
+      "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "payload": "captures/git_input_5_payload.stdout",
+      "size": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "label": "input_6",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:tools/ghidra_export.py",
+      "type": "blob",
+      "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "payload": "captures/git_input_6_payload.stdout",
+      "size": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "label": "input_7",
+      "spec": "af2d5cc2cf36aea89b1a1bdedad8f5b0f2b8e65b:tools/ghidra_typed_flow.py",
+      "type": "blob",
+      "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "payload": "captures/git_input_7_payload.stdout",
+      "size": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    {
+      "label": "commit",
+      "type": "commit",
+      "oid": "1bc9726a314941c623853a7c627ecd61be7709f9",
+      "payload": "final_git_captures/commit_payload.stdout",
+      "size": 440,
+      "sha256": "65a0a6f6f9f2d239cc05a14ed7675834b021bef9f8b256b53b21fe6d2a05bc9b"
+    },
+    {
+      "label": "root",
+      "type": "tree",
+      "oid": "4c3c8d009d7b695d65680627a8a781d0bf4d8a22",
+      "payload": "final_git_captures/root_payload.stdout",
+      "size": 563,
+      "sha256": "b37ea9c0908766ea843437145870c076cf7196f458439471d024c1f163554b50"
+    },
+    {
+      "label": "dir_docs",
+      "type": "tree",
+      "oid": "8dc03ea1ac5894c99af2f08237881bf74d30c93f",
+      "payload": "final_git_captures/dir_docs_payload.stdout",
+      "size": 236445,
+      "sha256": "e7b1253a06be73e716762d5b855ce423537d409f4e823cad5e58c3594c6a246f"
+    },
+    {
+      "label": "dir_reports",
+      "type": "tree",
+      "oid": "b015a2df7f89a9d7057e577611fbf1ce4f0d7bfa",
+      "payload": "final_git_captures/dir_reports_payload.stdout",
+      "size": 361502,
+      "sha256": "963af1d740a12ce7467b3d38a60df462ff7ea1bb8fb6ff73e446aef09bedb2ec"
+    },
+    {
+      "label": "output_0",
+      "type": "blob",
+      "oid": "f10aa5fec2a7adbf924cea8dff86c8c74a74b263",
+      "payload": "final_git_captures/output_0_payload.stdout",
+      "size": 9622,
+      "sha256": "557a7490026fbb6ab0a81d5fadd2099182ba4b36d42bc235f34cec725564ba78"
+    },
+    {
+      "label": "output_1",
+      "type": "blob",
+      "oid": "d19a0ee84644a3cfee3556029cfcdd4092b589bf",
+      "payload": "final_git_captures/output_1_payload.stdout",
+      "size": 388391,
+      "sha256": "de4af83f73d800f56fcc2128325ccfffe616f881d49aeada7de205b79aeeb856"
+    }
+  ],
+  "Root_original_Git_streams": {
+    "count": 86,
+    "complete_private_receipt": {
+      "size": 3734704,
+      "sha256": "a92ac7adf508b8da1798490927e160f3ce8882c7fe497630cf17bf4768ed16ac"
+    }
+  },
+  "ten_current_LF_index_files": [
+    {
+      "path": "docs/CC12_C04FDE_DIRECT_TARGET_ENTRY.md",
+      "blob": "947c130de0010c42ca89de277d1f6c2554aef80f",
+      "working": {
+        "size": 6053,
+        "sha256": "7e5b1e34818a874805383d829d6f6ec4feb06f16c82f5e10c022622593270d7f"
+      },
+      "LF": {
+        "size": 6053,
+        "sha256": "7e5b1e34818a874805383d829d6f6ec4feb06f16c82f5e10c022622593270d7f"
+      }
+    },
+    {
+      "path": "reports/cc12_c04fde_direct_target_entry.json",
+      "blob": "3ac0cde3b87fcfee94dfed58a0b55968d7a65d67",
+      "working": {
+        "size": 23760,
+        "sha256": "c71b2dba288b807540419e8c1a6a45923e7136d922762b8ba3165f790625322d"
+      },
+      "LF": {
+        "size": 23760,
+        "sha256": "c71b2dba288b807540419e8c1a6a45923e7136d922762b8ba3165f790625322d"
+      }
+    },
+    {
+      "path": "docs/CC12_C04FDE_DIRECT_TARGET_ENTRY_PRIMARY.md",
+      "blob": "e48df2a9110ac9814598ed1203c29c4dc1981b4c",
+      "working": {
+        "size": 2246,
+        "sha256": "cb96d5b873d7fd931d767ef965b3af53545004ec244bedb942724fb7f204cd4f"
+      },
+      "LF": {
+        "size": 2246,
+        "sha256": "cb96d5b873d7fd931d767ef965b3af53545004ec244bedb942724fb7f204cd4f"
+      }
+    },
+    {
+      "path": "reports/cc12_c04fde_direct_target_entry_primary.json",
+      "blob": "d891768ad27588aeb976748271143bd3c2355b4b",
+      "working": {
+        "size": 33824,
+        "sha256": "813295c539a6444cdbe1f1115e2d3e9d9851ae094c62c115f9fdf195551c388c"
+      },
+      "LF": {
+        "size": 33824,
+        "sha256": "813295c539a6444cdbe1f1115e2d3e9d9851ae094c62c115f9fdf195551c388c"
+      }
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "LF": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "LF": {
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "LF": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "LF": {
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "path": "docs/CC12_C04FDE_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "f10aa5fec2a7adbf924cea8dff86c8c74a74b263",
+      "working": {
+        "size": 9622,
+        "sha256": "557a7490026fbb6ab0a81d5fadd2099182ba4b36d42bc235f34cec725564ba78"
+      },
+      "LF": {
+        "size": 9622,
+        "sha256": "557a7490026fbb6ab0a81d5fadd2099182ba4b36d42bc235f34cec725564ba78"
+      }
+    },
+    {
+      "path": "reports/cc12_c04fde_direct_target_body_metadata.json",
+      "blob": "d19a0ee84644a3cfee3556029cfcdd4092b589bf",
+      "working": {
+        "size": 388391,
+        "sha256": "de4af83f73d800f56fcc2128325ccfffe616f881d49aeada7de205b79aeeb856"
+      },
+      "LF": {
+        "size": 388391,
+        "sha256": "de4af83f73d800f56fcc2128325ccfffe616f881d49aeada7de205b79aeeb856"
+      }
+    }
+  ],
+  "proof_member_pins_verified": 2218,
+  "Root_gate_artifacts_checked": 1012,
+  "Root_metadata_preimages": 993,
+  "Root_strict_audit": {
+    "status": "PASS",
+    "first_actual_Root_strict_execution_PASS": true,
+    "matches_both_worker_receipts_except_two_physical_path_fields": true,
+    "removed_comparison_fields_only": [
+      "helper.path",
+      "supplied_zip.path"
+    ],
+    "Root_audit": {
+      "zip_reads": 1,
+      "helper_execs": 1,
+      "receipt_writes": 1,
+      "denied": []
+    },
+    "receipt": {
+      "size": 2060,
+      "sha256": "32cdb51ebd55a6e3c16e3940837222ab3aa950b3373ac3db8d5b9b241ee92953"
+    },
+    "worker_original": {
+      "size": 2032,
+      "sha256": "d7eeef94ff7c5a4eb983ca8f2eb4c911270d3fff3036ec170c9cc29997eebeb9"
+    },
+    "worker_distinct": {
+      "size": 2037,
+      "sha256": "f0b03a48631ad24d5369784c70bfdabbc6382bb46899aa3f358534cda5c652b0"
+    }
+  },
+  "worker_failure_history": {
+    "worker_Native": 0,
+    "worker_decoder": 0,
+    "worker_captured_producer_processes": 0,
+    "worker_inspection_command": 1,
+    "worker_display_truncations": 0,
+    "Root_gate": 1,
+    "Root_inspection": 2,
+    "Root_display_truncations": 0
+  },
+  "Root_gate_failure_history": {
+    "count": 1,
+    "original_artifacts": {
+      "Root_listing_gate.py": {
+        "size": 13978,
+        "sha256": "2881eec625173db3138f7bfdef02ef6793450478d26068c64fc06299623cb0df"
+      },
+      "Root_body_gate_tail.py.txt": {
+        "size": 6923,
+        "sha256": "0a3ee3d3a77a9f1e8596fafed487f846fd5cc327c8be62f3dfedd7ee0fc2672a"
+      },
+      "Root_gate_preexecution.json": {
+        "size": 296,
+        "sha256": "243f1001c34f21ae8174486004b9360d6cf3a63a649e65327c971b6e2b52543d"
+      },
+      "Root_gate_execution.json": {
+        "size": 1189,
+        "sha256": "9c09dedb6d2d3992064e4afbc5717c6a7ebef1817031a068d064b021fd72ec12"
+      },
+      "Root_listing_gate.stdout": {
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Root_listing_gate.stderr": {
+        "size": 419,
+        "sha256": "a092452b1b3ee8f82368c9b2ad82ee152e6cace72b7867a6a036d5829d94757a"
+      },
+      "Root_gate_derivation.json": {
+        "size": 558,
+        "sha256": "7326cc53c72a2b777e0266ac774eb10385e92f6b3be223e0faada560d173a6c8"
+      }
+    },
+    "first_error": "KeyError: 'blob' after completed 14-Git/eight-input/72 typed originals/76CLI/372HTTP checks; finite_git inputs use git_blob, and accepted ENTRY Native stores summary only",
+    "correction": "Use git_blob for both accepted input Git calls; compare saved body against accepted ENTRY metadata.complete_saved_owner."
+  },
+  "Root_inspection_history": {
+    "scope": "Current C04FDE BODY Root tool-only inspection; exact visible tool output transcribed, no claimed local original process streams",
+    "count": 2,
+    "incidents": [
+      {
+        "command": "Get-Content -LiteralPath local/cc12_c1711f_direct_target_body_metadata_primary/Root_body_gate_tail.py.txt -TotalCount 45",
+        "exit_code": 1,
+        "visible_error": "Cannot find path local/cc12_c1711f_direct_target_body_metadata_primary/Root_body_gate_tail.py.txt because it does not exist.",
+        "effect": "No gate or Native query executed; used existing full Root_listing_gate.py lines59 onward."
+      },
+      {
+        "command": "Python schema inspection: dict(list(v.items())[:1]) for source_raw_storage",
+        "exit_code": 1,
+        "visible_traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\nAttributeError: 'str' object has no attribute 'items'",
+        "effect": "Read-only inspection only; bounded follow-up printed string directly."
+      }
+    ],
+    "gate_decoder_Native_GPR_Source_effects": 0
+  },
+  "failures": {
+    "Root_gate": 1,
+    "Root_inspection": 2,
+    "Root_display_truncations": 0,
+    "Root_decoder": 0,
+    "Root_final_review": 0,
+    "Root_strict_replay": 0,
+    "Root_post_strict_comparison": 0
+  },
+  "Native": {
+    "worker_read_only_commands": 83,
+    "HTTP_responses": 430,
+    "original_typed_payloads": 108,
+    "CLI_separate_observations": 166,
+    "physical_CLI_source_reads": 498,
+    "function_count": 64730,
+    "modification_number": 98,
+    "Root_new_queries": 0
+  },
+  "validation_boundary": {
+    "Source_edits": 0,
+    "new_tests": 0,
+    "new_builds": 0,
+    "GPR_writes": 0,
+    "runtime_executions": 0,
+    "Source_contents_read": false,
+    "callee_cell_provider_end_plus_one_unqueried": true,
+    "ABI_startup_game_equivalence_established": false
+  },
+  "Root_artifact_pins": {
+    "Root_listing_gate.json": {
+      "size": 1812875,
+      "sha256": "89adbb2af1d0afe57402c6328ab70e35f1fa3cbce04e1fd889b519af7543be31"
+    },
+    "Root_gate_failure_history.json": {
+      "size": 1418,
+      "sha256": "9a3a4c4c9a91f2fb1a75b86f55d84cd9fa956b2eab42f719c89c613d1d2a2a5a"
+    },
+    "Root_inspection_incidents.json": {
+      "size": 1060,
+      "sha256": "01c4cc175ba85b162c6c51ce0c833f74a16088216e429f1f289086a03302e6c2"
+    },
+    "Root_actual_final_review.py": {
+      "size": 6026,
+      "sha256": "68a9f3f473773f47260c2e14e46a139a2bc6e2b1cdc687e43041a7cabbab63a1"
+    },
+    "Root_actual_final_review.json": {
+      "size": 3734704,
+      "sha256": "a92ac7adf508b8da1798490927e160f3ce8882c7fe497630cf17bf4768ed16ac"
+    },
+    "Root_final_review_preexecution.json": {
+      "size": 422,
+      "sha256": "1e55f3f08a32d124e13d562d829130ca792c9f23afcb6058f1799e95c6926e0c"
+    },
+    "Root_final_review_execution.json": {
+      "size": 704,
+      "sha256": "9c82688bf6269a19358312d39dfeec70ad615a64a5d6a464c7ac4a98b8966d59"
+    },
+    "Root_final_review_derivation.json": {
+      "size": 2580,
+      "sha256": "9f3fa06444d3efd6ddf35b0b654edadcf520c05c15e91387064e401a97164f98"
+    },
+    "Root_actual_final_review.stdout": {
+      "size": 198,
+      "sha256": "abbc6fff78796ae47fb7b74c0a5f9a8ad6c0b234f0c1ddfd48cb673991bbf514"
+    },
+    "Root_actual_final_review.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_own_manual.json": {
+      "size": 42163,
+      "sha256": "4876e737779b88276b527f45c4b6f2aafe2eba224cbedff7ef2185f8b07615f7"
+    },
+    "Root_fresh_Capstone.json": {
+      "size": 38518,
+      "sha256": "5192bd5692d33d5dc7d625522b142b03b3b7a1732d46a43acd7e80ee34d3eb06"
+    },
+    "Root_cpu_fields.py": {
+      "size": 7745,
+      "sha256": "c4a2fd552a167eabacb95fda71ff34eca30d58d155d17a129da9d68bdd7cb369"
+    },
+    "Root_independent_decode.py": {
+      "size": 3779,
+      "sha256": "7e49bd882d22e136b16bd21c7d640de2954fe519d96ebce672c3691fca47b736"
+    },
+    "Root_decoder_preexecution.json": {
+      "size": 414,
+      "sha256": "cb7030cdbe5b787434268961158bcf6ae11373f0b7946059000fa93e4f33b078"
+    },
+    "Root_decoder_execution.json": {
+      "size": 860,
+      "sha256": "40cdc1b3b6396de524b85955dd79047f5b3cd6b7e1cc4a351711b54cb0b2086d"
+    },
+    "Root_decoder_derivation.json": {
+      "size": 1375,
+      "sha256": "c05ac021f49c54a26ba94b62e6dc6d9559e5fbe55619af8a1e8c9faa7262f28c"
+    },
+    "Root_independent_decode.stdout": {
+      "size": 312,
+      "sha256": "effa831dd2e44a34f15beb5e5766020b5531641df13d5d1a31d0fa0521d5259c"
+    },
+    "Root_independent_decode.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_driver.py": {
+      "size": 2074,
+      "sha256": "dce323f75b458132446a9fd127bd5023925b8139a68599f813f60d19a48be227"
+    },
+    "Root_strict.preexecution.json": {
+      "size": 1089,
+      "sha256": "7cf6f7cf8b2e049bf7e47de7d3506de102440125671a4ac4b4383716d8174703"
+    },
+    "Root_strict.execution.json": {
+      "size": 2130,
+      "sha256": "248859913ace15e160438689155b26ed93c2ff7bc5d8567849c83c1fdf196b1d"
+    },
+    "Root_strict.stdout": {
+      "size": 263,
+      "sha256": "95c611637c8fad9f0192e4d6a33a9fafb6b42ed2b6d5f926938e05369c383802"
+    },
+    "Root_strict.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_receipt.json": {
+      "size": 2060,
+      "sha256": "32cdb51ebd55a6e3c16e3940837222ab3aa950b3373ac3db8d5b9b241ee92953"
+    },
+    "Root_strict_receipt_comparison.json": {
+      "size": 740,
+      "sha256": "34f4009ba2197e0b7cc8e794791407b679a16ec798f08f6daf7811abb5b6a6db"
+    }
+  }
+}
