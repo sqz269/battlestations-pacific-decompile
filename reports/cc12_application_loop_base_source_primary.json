@@ -1,0 +1,152 @@
+{
+  "schema": "bsp.cc12.application-loop-base.Root-primary.v1",
+  "status": "dormant_borrowed_loop_base_fresh_Win32_static_review_PASS",
+  "worker_commit": "edc97a7f6aad6b4382d7000ef1c56790dec45761",
+  "worker_report": {
+    "path": "local/cc12_application_loop_base_source_primary/worker_report.json",
+    "bytes": 132675,
+    "sha256": "6df8d2873259f3a0b8fe81f93419d96ba3ab01f2e28a2a90a43f3401de5c089a"
+  },
+  "Root_worker_review": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_worker_review.json",
+    "bytes": 2527,
+    "sha256": "87b976c1d825bd086cfc5c3038b383de8377d48946f73aea8817e5747ff55c73"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_guarded_worker_replay.json",
+    "bytes": 17670,
+    "sha256": "97e825baef250129b79c95efb839937172987fbe7ec2ea5c1b12fa0a4820ece5"
+  },
+  "Root_final_delivery": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_final_delivery_review.json",
+    "bytes": 1978114,
+    "sha256": "4fc059e2fe2c61863097f695baddc248938322d451a112dc2157becc671ce3db"
+  },
+  "Root_before": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_before.json",
+    "bytes": 5137267,
+    "sha256": "af670a537c345b25aba6ece7d076a456d4ba4f3406bc12d14b5dae12cdc02aba"
+  },
+  "preserved_initial_Application_epoch": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_before_initial_Application_epoch.json",
+    "bytes": 5076325,
+    "sha256": "6b6d8033a996fc2e977fcb9ac4b9c52b91b4ab7871ce8183b34368845b390d23"
+  },
+  "preserved_unselected_raw_key_epoch": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_before_initial_unselected.json",
+    "bytes": 5124495,
+    "sha256": "9e45234f1fe44d63fbc0aab715843a3f121963007878008431a9f61e50e824fe"
+  },
+  "Root_after": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_after.json",
+    "bytes": 5084488,
+    "sha256": "2b25686793806efab0d07940f16f01c4d8e42387e0d691d0ed62401a6fd75d0c"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_compiled_review.json",
+    "bytes": 52556,
+    "sha256": "8603934744c7c40727e84eb93c865616e09973a2012ecb76fce119c681427636"
+  },
+  "Root_compiler_metadata_review": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_compiler_metadata_review.json",
+    "bytes": 20213,
+    "sha256": "edf50573e6e1fd230f823024a046e948c5ab6fe282ff4d9a67b5d52cee3eb3a6"
+  },
+  "Root_before_compiler_cohort": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_before_compiler_cohort.json",
+    "bytes": 64534,
+    "sha256": "650e8fb7167977d63abe849878ece7f3a3ff23b451dc998a0b5770bcfae8ac25"
+  },
+  "Root_after_compiler_cohort": {
+    "path": "local/cc12_application_loop_base_source_primary/Root_after_compiler_cohort.json",
+    "bytes": 62493,
+    "sha256": "c12c44d863940c874eb67d544e59dcab922865ffa7143aae165b4eb916557b3f"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_application_loop_base_source_primary/Source3356_application_loop_base_Root_frozen.json",
+    "bytes": 1267920,
+    "sha256": "c491d001e5c2cd1a1539b028503c1975b4fe1ec10991d47ab7061f18fa1179c2"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "actual_Root_Git": 4217,
+    "worker_closed_Source": 4228,
+    "worker_frozen_and_staged_Git_occurrences": 4245,
+    "worker_final_Git_occurrences": 4247,
+    "worker_frozen_trees": 11,
+    "worker_baseline": "d5776d070",
+    "Root_baseline": "Accepted raw-key e89 at22e0cfd09; later locale metadata has no Source delta.",
+    "Root_Source_changes": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "new_files": []
+  },
+  "Root_build": {
+    "receipt": {
+      "path": "local/cc12_application_loop_base_source_primary/Root_after_build_receipt.json",
+      "bytes": 886,
+      "sha256": "e894a568c173785f182f396971241522416327152d291c8144ab8144e0b28cdd"
+    },
+    "log": {
+      "path": "local/cc12_application_loop_base_source_primary/Root_after_build.log",
+      "bytes": 3885,
+      "sha256": "2dee1e71f40dbaf7749327963f266f68c899317d9b508e1adf758092733b2017"
+    },
+    "normal_scripts_build_ps1": true,
+    "MSVC_Win32": true,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0
+  },
+  "contract": {
+    "storage": "Borrow stable aligned actual enclosing1Ch storage, live uint32 object at+0 and byte access at+04; preserve remaining incoming bytes and all genuine child fixed-cell/manager/section/provider/disjointness/escaped-reference lifetimes.",
+    "schedule": "Capture original receiver; call genuine BEA810 once with same receiver/context; ignore child result; on normal child return only write DWORD D68BC8 at+0, BYTE zero at+04, return original.",
+    "failure": "Child publication/registration occurs under D68BC4. Child escape/nonreturn reaches no poststores. Reuse unchanged ordinary C++ child cleanup; add no outer cleanup/rollback/retain/free. CE3818 reset is not retirement; flags1 drain may free escaped borrowed receiver.",
+    "ownership": "No raw owner, typed+08vector/+14pointer production, canonical cells, caller, activation, callable profiles, retirement or storage-return authority."
+  },
+  "compiled": {
+    "Core": 1990,
+    "App": 80,
+    "old_code_exact": 174399,
+    "added_code_sections": 2,
+    "added_code_bytes": [
+      199,
+      50
+    ],
+    "changed_old_code": 0,
+    "removed_old_code": 0,
+    "whole_object_changes": 17,
+    "App_whole_object_changes": 1,
+    "selected_TUs": 20,
+    "header_consumers": 17,
+    "complete_physical_indices": 40,
+    "all_selected_noncode_old_exact": 1041,
+    "added_noncode_sections": 1,
+    "changed_compiler_metadata_sections": 2,
+    "removed_noncode_sections": 0,
+    "vtables_exact": 27,
+    "all_offset_provider_EH_SEH_tables": 5,
+    "provider_table_bytes": 236,
+    "positive_private_function_correspondences": 5,
+    "positive_private_SEH_correspondences": 1,
+    "full_provider_module_code_and_relocations_equal_worker": true,
+    "new_handler_actual_code_offset": 21,
+    "new_funcinfo_actual_data_offset": 16,
+    "Source_child_calls": 1,
+    "emitted_out_of_line_child_calls": 0,
+    "child_inlined": true,
+    "poststores_after_normal_Leave": true,
+    "EHsc_state_selector_elision_over_nonthrowing_poststores": "Ordinary C++ valid-storage scope only; no hardware/foreign exception or OriginalFH3 equivalence.",
+    "direct_callers": 0,
+    "Game_map_symbols": 0,
+    "Game_text_exact": true
+  },
+  "GPR_queries": 0,
+  "GPR_mutations": 0,
+  "helper_provider_runtime_execution": 0,
+  "original_ABI_compatible": false,
+  "game_validated": false,
+  "startup_validated": false
+}
