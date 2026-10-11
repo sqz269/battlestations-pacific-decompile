@@ -327,6 +327,27 @@ SEH frame. It owns the buffers that the quad emitters write into; emitter+8 is t
   - +1F8h is overwritten with the floating count used, flushed through 00AF0540(used·4).
   - Element 0 of each mesh gets vertices = used·4 (+10h) and primitives = used·2 (+18h).
 
+### Emitter object and remaining particle-side helpers
+
+The emitter object has the vtable D5DCB4. Its fields are +08h model, +0Ch definition (refcounted),
++10h container and +24h alpha.
+
+| Address | Name | What it does |
+| --- | --- | --- |
+| 00AFF700 | BSP_ParticleEmitter_Spawn | Creates the 30h container on first use (00B053D0), then 00B04C80 Spawn |
+| 00AFF8C0 | BSP_ParticleEmitter_Destruct | Name only. Deletes the container, releases the definition, then the base destructor |
+| 00AF6790 | BSP_ParticleModel_SetEmitterValue | model+2D8h = value; record+B4h = value for each 108h record matched by emitter name |
+| 00AF3F80 | BSP_ParticleSystem_IsSphereVisible | The 00AF4130 sphere, classified by 00B71530 |
+
+- **00AF6790's matching.** Names compare with _stricmp. A null name matches every record; an empty name
+  matches records that have no name.
+- **00AF6790's caller.** It is reached from the RegisteredModelEffect vtable entry 00871FF0.
+- **Left unnamed:**
+  - generic owned-pointer and refcount helpers 00AFF5A0, 00B0A070, 00AFF890, 00AFFA20/30/50, which are
+    probably COMDAT copies;
+  - the dword-array assign 00B0A710;
+  - the unreferenced name→pointer multimap group 00AFEB60..00AFF290.
+
 ## 4. Handoff
 
 - **State.** Leases are released and the work is committed on `agent/cc13-particles1`. Everything in
