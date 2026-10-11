@@ -1,0 +1,178 @@
+{
+  "schema": "bsp.cc12.application-outer-primary.v1",
+  "status": "dormant_borrowed_BEA970_Source_admitted_owner_activation_retirement_held",
+  "worker_commit": "9782cb7acaa951c2dcfe5825879f11ca9c2c050f",
+  "worker_report": {
+    "path": "local/cc12_application_singleton_outer_primary/worker_report.json",
+    "bytes": 90768,
+    "sha256": "e39cea7a2ce5f2b5fd4a2b37d6fd9b09745d74de2fd79a43658afb87925eaebd"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_singleton_outer_primary/worker_document.md",
+    "bytes": 11945,
+    "sha256": "4a6ea05a4e69153d02c95cfad26aa30250087e1501ed055a42fedd93ad7f3336"
+  },
+  "copied_archive": {
+    "path": "local/cc12_application_singleton_outer_primary/evidence.zip",
+    "bytes": 512526951,
+    "sha256": "e5e33f635fb902712e619717d6d7b6d96c4c92e962b40a067a4636aee46fa269"
+  },
+  "copied_helper": {
+    "path": "local/cc12_application_singleton_outer_primary/portable_replay.py",
+    "bytes": 4952,
+    "sha256": "4fff1de59794b97518cfd62d0edd11e371b6f0fe46b165deda5fab042e4d80c6"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_singleton_outer_primary/Root_guarded_replay.json",
+    "bytes": 3406,
+    "sha256": "25ddf185813100283edc522733ba8435ae581777d5ad8c7166ad37a17cea882e"
+  },
+  "actual_Git_blob_rows": 4255,
+  "actual_closed_Source_paths": 4228,
+  "current_Root_Source_exact_after_explicit_LF_comparison": true,
+  "frozen_Source_HEAD": "c02232befa117182c0536d6e60dbaedeedddff58",
+  "Root_current_HEAD": "9316daef07de49f6f0637442c435e990d15e83d0",
+  "prior_readiness_853_pins_byte_identical_to_Root_copies": true,
+  "prior_implementation_archive_byte_identical_to_Root_copy": true,
+  "helper_graph": {
+    "current": 11,
+    "implementation": 23,
+    "readiness": 108
+  },
+  "accepted_bodies": {
+    "Ghidra_mutations": 0,
+    "accepted_bodies": [
+      {
+        "address": "00737970",
+        "bytes": 42,
+        "instructions": 15,
+        "sha256": "f1f9334e65e51c7d309f1f199cdd8e647b50e4ea0878b2d69a60913539c03f6d"
+      },
+      {
+        "address": "00bea970",
+        "bytes": 22,
+        "instructions": 8,
+        "sha256": "fcdcad479e3f2c0246234d5bb8ce666d2ff4e14167dccf915cf1e497bb9d3fcd"
+      }
+    ],
+    "fresh_Native_bytes": 0,
+    "fresh_Native_queries": 0,
+    "status": "pass"
+  },
+  "contract": {
+    "schema": "cc12.application_singleton_outer_admission_contract.v1",
+    "decision": {
+      "dormant_BEA970_borrowed_Source_GO": true,
+      "implemented_by_this_packet": false,
+      "full_737970_Source_GO": false,
+      "actual_E1AE90_authority_producer_GO": false,
+      "raw_Application_owner_GO": false,
+      "combined_Game_frame_factory_GO": false,
+      "startup_activation_GO": false,
+      "automatic_storage_return_GO": false,
+      "retirement_GO": false,
+      "Original_FH3_or_current_external_ABI_GO": false
+    },
+    "smallest_next_packet": {
+      "id": "cc12_application_loop_base_borrowed_source_implementation",
+      "address": "00BEA970",
+      "accepted_body": {
+        "bytes": 22,
+        "instructions": 8,
+        "original_ABI": "ECX original receiver; no explicit stack arguments; preserve ESI; EAX original receiver; RET0"
+      },
+      "proposed_API": "void* construct_native_application_loop_base_00bea970(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+      "placement": "Append one dormant function/declaration to the existing native_render_service_base.cpp/.hpp pair; no new owner type, cell, binding, CMake entry, caller or private guard.",
+      "prerequisites": [
+        "Every accepted BEA810 prerequisite remains required, including fixed distinct disjoint actual manager/E1AE90 cells and the existing GameNativeStringProcess/GameSingletonHost manager authority.",
+        "The original caller retains stable actual aligned enclosing 1Ch storage, valid uint32 access at +0, and a valid byte access at +04. Preserve every other incoming object byte and domain.",
+        "Actual manager results/vector, captured real native section/count+18, original receiver, actual cells and selected registration objects remain valid across all providers and cleanup. No projected critical section, private EH alias, invalidating concurrency or null-manager fallback.",
+        "Publication and registration can expose the original receiver or selected other/null argument while the numeric profile is D68BC4 and before any BEA970 poststore. Qualified observers must tolerate that stage; numeric identity is not a callable table."
+      ],
+      "ordered_schedule": [
+        "Capture/retain original receiver identity; call genuine construct_native_application_singleton_base_00bea810(original, context) once.",
+        "Ignore the child's result as an authority; after normal return only, store DWORD D68BC8 at original+0.",
+        "Then clear exactly BYTE original+04. Do not widen the store or infer the byte's semantic role.",
+        "Return the original receiver without reading current E1AE90, repairing publication or adding registration."
+      ],
+      "failure_contract": [
+        "If BEA810 escapes or never returns, neither new poststore runs. Do not add outer cleanup, clear, restore, unregister, free, retry, retain or counter compensation.",
+        "Inherited Source state0 precedes the base profile; state1 arms after the conditional captured-section Enter/current-depth stage and remains through conditional normal Leave. Null section skips Enter/depth/release but still arms state1 before publication. Ordinary C++ cleanup invokes genuine guard then generic reset only if guard cleanup returns.",
+        "A normal-Leave escape may produce another current decrement/Leave. The earlier external release disposition remains unknown; no balance/safety inference. A second escaping MSVC C++ cleanup exception terminates through the established private boundary.",
+        "Within valid storage, the two poststores have no ordinary C++ throwing provider. Invalid access, hardware faults, Original FH3/EBP/private spills and current external runtime ABI are not admitted. No new post-base cleanup is invented.",
+        "Base success/reset, a changed/null current publication, absent insertion evidence, or wrapper C++ scope exit is not proof that all escaped references are gone. Retain storage/cells/providers until separately resolved."
+      ],
+      "allocation_policy": "This is a borrowed constructor. Neither accepted BEA970 nor 737970 allocates the enclosing receiver. Canonical BF681B-style Source allocation and getter lazy manager-allocation cleanup concern separate allocation domains and do not authorize allocating/freeing an Application.",
+      "verification_for_later_implementation": "Separately assigned implementation must preserve exact Source prerequisites and obtain fresh normal Win32 build/compiled evidence against its own frozen integrated epoch. This readiness grants no build/test/runtime credit."
+    },
+    "remaining_737970_contract": {
+      "positive_retained_body": "Complete accepted 42B/15-instruction same-receiver body calls BEA970, then writes CFEAB0 at+0, zero DWORDs+08/+0C/+10/+14, zero BYTEs+19/+1A, and sets BYTE+18=1, in that order. It returns the original receiver and has no enclosing Application allocation.",
+      "held_Source_boundary": "Before a full borrowed 737970 interface, explicitly settle the actual +08 NativeApplicationPointerVectorStorage subobject and +14 pointer-cell object/access lifetimes, store types/aliasing, and their preserved preimages before base publication. Do not infer these from names, a 1Ch buffer, projected fields or Game storage.",
+      "no_new_Native_body_needed_for_normal_shell": "The complete retained bodies already establish the normal shell order; this packet performs no fresh Native query or decoding beyond static replay of accepted records."
+    },
+    "authority_and_lifetime_gaps": [
+      "No existing canonical E1AE90 cell owner is supplied by the current process/member inventory. The dormant base API merely accepts a reference. Its unconditional write is an operation on a supplied authority, not creation/authentication of that authority.",
+      "Current GameStartupHost construction resets only ApplicationFrameState and constructed_; destruction only clears constructed_. Platform identity uses this host. No cast, detached pointer, projected ApplicationShutdownState or new default context produces the actual raw owner.",
+      "The same stable owner must supply actual+14 to GameNativeGameApplicationFrame and remain alive with its exclusive runtime, canonical strings, services and failure records through all last uses/observations. The frame's separate71A0 Game allocation and zeroing are not Application allocation or zeroing.",
+      "E1AE78 is independent. Existing canonical duplicate/free primitives and accepted producer slices remain positive qualified evidence, but current startup parses mode directly and supplies no canonical retained name cell. Do not couple that retirement to Application scope.",
+      "D68BC4/D68BC8/CFEAB0 are numeric Native profile identities; this packet creates no callable tables, Application scalar/delete binding or canonical destruction/removal/drain order.",
+      "Current manager drain selects the current owner profile and passes flags1. CE3818 positively dispatches to delete_native_singleton_base_00412440, which calls singleton_lifetime_free when bit0 is set. An escaped receiver reset to CE3818 is therefore not a safe drain/storage-return token. Unsupported Application profiles are not universal failure protection.",
+      "Any future allocation/failed-construction/storage-return policy must distinguish pre-entry allocation ownership, entered base construction, partial publication/registration, returning/nonreturning cleanup, and externally unresolved references; preserve indeterminate dispositions rather than free/retry by exception or scope exit."
+    ],
+    "future_external_gate": {
+      "required_for_BEA970_only": false,
+      "optional_named_packet": "cc12_application_original_caller_storage_failure_metadata_admission",
+      "scope": "If stronger Original caller/storage-return evidence is later required, separately authorize metadata only for WinMain008F81F0 and the retained008F8419 construction call's enclosing EH range. Reuse the existing57-byte identity slice first; proposal of any new body/table/handler read must wait for exact typed ranges and a separate byte cap. No new Native read is performed or implicitly authorized here.",
+      "limits": "Does not solve Source owner/authority by itself and does not replace distinct E1AE78, callable profile, +14 or retirement contracts."
+    }
+  },
+  "qualified_prior_replay": {
+    "Source_delta_from_prior_implementation": [
+      "include/bsp/native_mesh_owner.hpp",
+      "src/native_mesh_owner.cpp"
+    ],
+    "historical_compiled_evidence_only": true,
+    "prior_implementation_ZIP_sha256": "2be0e2a505ae461d689b4b8cc1c49fbf895b5494a94ab422e0f464c23a5e395e",
+    "prior_implementation_helpers": 23,
+    "prior_implementation_outputs": 4,
+    "prior_implementation_replayed": true,
+    "prior_readiness_helpers": 108,
+    "prior_readiness_pins": 853,
+    "prior_readiness_replayed": true,
+    "status": "pass"
+  },
+  "scope": {
+    "Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds_tests_probes": 0,
+    "game_OS_audio_runs": 0
+  },
+  "limits": [
+    "BEA97022-byte8-instruction and73797042-byte15-instruction retained bodies are prior evidence, with no fresh Native byte/query credit.",
+    "Only BEA970 borrowed wrapper is admitted: call genuineBEA810 once, ignorechildreturn, then original+0DWORDD68BC8,+4BYTE0,returnoriginal; no extra cleanup or Source caller.",
+    "SourceBaseCleanup armsbeforeprofile but emittedstate0selector follows profile/precedesfirstthrowinggetter; ordinaryC++ undervalidstorage only, no hardware/FH3/OriginalABI proof.",
+    "CE3818 on escapedoriginalreceiver is not a retirement or storage-return token: current-profile manager drain withflags1 can invoke singleton_lifetime_free.",
+    "Full737970 requiresactual+08vector/+14pointer-cell lifetime/access/preimages; owner/E1AE90producer/E1AE78/startup/name/factory/profilebindings/retirement remainheld.",
+    "CurrentApplication3356 raw inputs are LF-equal with eight retained EOL variants; artifacts and historical builds carry no transferred current build/runtime credit."
+  ],
+  "Root_actual_final_Git_validation": {
+    "additional_output_blobs": 2,
+    "total_actual_blob_rows_including_outputs": 4257,
+    "final_commit_and_root_tree": [
+      {
+        "path": "local/cc12_application_singleton_outer_primary/worker_final_commit.bin",
+        "bytes": 809,
+        "sha256": "f1d956a1d835d4fb3d9c7c3d488a06183883b349a909bcac5cb994ca8f3c9124",
+        "kind": "commit"
+      },
+      {
+        "path": "local/cc12_application_singleton_outer_primary/worker_final_tree.bin",
+        "bytes": 563,
+        "sha256": "f90d9c6f917089c5257fcda4e98b68aac9a8b15d14adcf87d372dee23a92b9f8",
+        "kind": "tree"
+      }
+    ],
+    "exact_two_output_scope": true
+  }
+}
