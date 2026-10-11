@@ -142,4 +142,28 @@ NativeParticleModelArraysStorage* construct_native_particle_model_arrays_00afd2e
 NativeNodeStorage* construct_native_particle_model_00af74a0(
     NativeModelOwner&, void* actual_variant, NativeParticleModelConstructionAccess&);
 
+// Required real HOST preparation provider for the dormant raw-key entry below.
+// Supply one persistent, stable NativeMeshPreparedRecord over exactly this
+// genuine unconstructed C0h key, SAME environment and canonical registry.
+// Prepare its callback/admission before construction; never call B73D70 or
+// construct_and_publish here. On throw, cancel entered metadata and abandon
+// prepared records while leaving the caller's raw slot unconstructed.
+// No default provider, Native cleanup, retain, raw return or automatic disposal.
+class NativeParticleMeshRawKeyPreparation {
+public:
+    virtual ~NativeParticleMeshRawKeyPreparation() = default;
+    virtual NativeMeshPreparedRecord& prepare_mesh_raw_key(void* actual_slot,
+        std::size_t slot_bytes, NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&) = 0;
+};
+
+// Dormant new Source interface, not an original ABI or an active factory hook.
+// Borrow genuine canonical services and live constants; the caller keeps the
+// provider/record/callback stable through terminal retirement and later explicit
+// quiescent disposal. Independently exclude pool reuse/trim from physical return
+// through old-key unbinding across every participating path; mutexes do not.
+// Only preparation may recover by returning the still-unconstructed raw slot.
+// Published records survive later resource failure, with no extra creator ref.
+NativeMeshStorage* create_native_particle_prepared_mesh(NativeMeshEnvironment&,
+    NativeMeshConstants, NativeRenderActualOwnerRegistry&, NativeParticleMeshRawKeyPreparation&);
+
 } // namespace bsp

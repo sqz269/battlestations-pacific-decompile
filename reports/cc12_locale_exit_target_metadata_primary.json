@@ -1,0 +1,162 @@
+{
+  "schema": "bsp.cc12.locale-exit-target-metadata.Root-primary.v1",
+  "status": "accepted_with_explicit_endpoint_scope_qualification",
+  "worker_commit": "f281daa651557f08bfe342f61a0ece6b3d58248a",
+  "Root_review_HEAD": "22e0cfd0928d71eb52dea939311ac6292c90fa21",
+  "worker_frozen_HEAD": "9316daef07de49f6f0637442c435e990d15e83d0",
+  "copied_core": {
+    "path": "local\\cc12_locale_exit_target_metadata_primary\\evidence.zip",
+    "bytes": 259858593,
+    "sha256": "e9a5dd0ee4a443c8a28680cd243b13f839a057ae2044fdc92f3f6013369bd22f"
+  },
+  "copied_delivery": {
+    "path": "local\\cc12_locale_exit_target_metadata_primary\\delivery_git.zip",
+    "bytes": 646114,
+    "sha256": "c84861df8f72cb114f5bb7eeaf0a02486984e42b7d1f2d230f497cc559a3189a"
+  },
+  "Root_core_guard": {
+    "path": "local\\cc12_locale_exit_target_metadata_primary\\Root_core_guard.json",
+    "bytes": 29482,
+    "sha256": "5b36f38e6065ac179a37106bd44ba4cbb5f6fa77e151c220cf7520fbfb5e2de4"
+  },
+  "Root_delivery_guard": {
+    "path": "local\\cc12_locale_exit_target_metadata_primary\\Root_delivery_guard.json",
+    "bytes": 5448,
+    "sha256": "8e9fbab088ed47b6f6dc7c5a35d244e371937d7bd9271d40e1ed2f4c6eeb678c"
+  },
+  "Root_actual_Git_and_Source": {
+    "path": "local\\cc12_locale_exit_target_metadata_primary\\Root_actual_review.json",
+    "bytes": 2388092,
+    "sha256": "7e1fe77640a1b9734b1eb959330162348d0f973ab044398a5bdf5f06a3f7d122"
+  },
+  "physical_execution_helpers": 22,
+  "guards_active_before_helper_execution": true,
+  "actual_Git_blob_occurrences": 4294,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_delivery_commit_tree_objects": 8,
+  "actual_delivery_output_blobs": 2,
+  "closed_Source_paths": 4217,
+  "later_Root_Source_paths": [
+    "include/bsp/native_particle_model_construction.hpp",
+    "src/native_particle_model_construction.cpp"
+  ],
+  "later_Source_commit": "8984d54eb218a44fb6b1ef551d9833ecc5bc24d3",
+  "prior_physical_archives_exact": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_post_pop_operand_primary\\worker_evidence.zip",
+      "bytes": 235172237,
+      "sha256": "776103644e42a5d6f16a96386e3a0359629b7c191c5ab2aa8be6552eada4cf82"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_post_pop_operand_primary\\delivery_git.zip",
+      "bytes": 296862,
+      "sha256": "baff473461a41b32cda4402968fc3c9028ffa28f895df317f44a4a57928f3c4c"
+    }
+  ],
+  "accepted_database_subset": {
+    "entry": "00bf6ff5",
+    "name": "_atexit",
+    "declared_prototype": "int __cdecl _atexit(_func_4879 * param_1)",
+    "no_return": false,
+    "is_thunk": false,
+    "direct_thunk_target": null,
+    "entry_instruction_length": 4,
+    "default_and_effective_flow": "FALL_THROUGH",
+    "fallthrough": "00bf6ff9",
+    "flow_override": "NONE",
+    "fallthrough_overridden": false,
+    "default_and_effective_targets": [],
+    "metadata_body_range": [
+      "00bf6ff5",
+      "00bf7006"
+    ],
+    "metadata_address_count": 18
+  },
+  "scope_qualification": {
+    "Root_instruction": "Preserve raw proto stdout and disclose endpoint expansion. Accept exact typed entry/prototype subset with qualification. No repeat proto/body/target query.",
+    "actual_epoch": "98",
+    "actualscope": "Typed target metadata plus proto CLI metadata with unsolicited body-derived summary. Whole capture is NOT strictly entry-only.",
+    "closed": true,
+    "commands_in_order": [
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "BF6FF5",
+        "--output",
+        "local/cc12_locale_exit_target_metadata/Native_before/typed.json"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "BF6FF5",
+        "--lines",
+        "70"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "BF6FF5",
+        "--output",
+        "local/cc12_locale_exit_target_metadata/Native_after/typed.json"
+      ]
+    ],
+    "count": 64730,
+    "count_pair_equal": true,
+    "fresh_code_bytes": 0,
+    "fresh_data_bytes": 0,
+    "prototype_repeat": false,
+    "qualifiedsubset": "Exact typed response and prototype first four summary lines only; database claims, no semantics/ABI proof.",
+    "quarantine_semantic_credit": false,
+    "quarantined_fields": [
+      "instruction_count",
+      "basic_block_count",
+      "edge_count",
+      "call_count",
+      "string_ref_count",
+      "param_count",
+      "cyclomatic_complexity",
+      "prologue_stripped",
+      "epilogue_stripped",
+      "callee_names",
+      "string_constants",
+      "immediate_values",
+      "basic_block_hashes"
+    ],
+    "requested_target": "BF6FF5",
+    "typed_raw_response_pair_equal": true
+  },
+  "fresh_GPR_epoch": 98,
+  "function_count": 64730,
+  "fresh_Native_code_bytes": 0,
+  "fresh_Native_data_bytes": 0,
+  "GPR_mutations": 0,
+  "Root_live_Native_queries": 0,
+  "Source_CMake_changes": 0,
+  "tests_probes_builds_game_OS_audio_actions": 0,
+  "semantic_ABI_runtime_credit": false,
+  "post_callee_state": "UNKNOWN; returned ESP and unchanged original stackword both needed before earlier conditional POP can yield CD9410",
+  "next_candidate": "Exactly BF6FF5..BF6FF8, 4 code bytes and context0 text only, after separately admitted fresh typed gate; no adjacent instruction, body, IAT/data or extra target.",
+  "limits": [
+    "Whole prototype capture was not strictly entry-only. Full raw response retained; unsolicited body metrics/callee label quarantined without semantic credit.",
+    "Database declaration and no_return=false do not establish calling policy, argument cleanup, authentic CRT registration, actual return or initializer completion.",
+    "Source comparisons retain physical CRLF and current Git; no historical build/runtime credit transfers."
+  ]
+}
