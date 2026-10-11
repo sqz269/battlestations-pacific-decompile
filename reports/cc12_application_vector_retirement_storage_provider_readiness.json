@@ -1,0 +1,702 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_storage_provider_readiness",
+  "address": "007379A0",
+  "status": "NO_GO_parent_Source_implementation_until_positive_state0_failure_action_contract",
+  "base_commit": "d207b8d8a70fca7c3a353edc24b4b119f8b236ac",
+  "Source_Git_tree_IDs": {
+    "": "99fc26ea36b9a16df7f577e4638490e605977057",
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898",
+    "include/bsp": "a3be0306baaff4f3e7fb32c5cb66a76fb47d3884"
+  },
+  "baseline": {
+    "entry": "blobs/7b60136a5ef06106317ad226710b35a481657625e95052b8e33d3341ed71f04b",
+    "bytes": 10529,
+    "sha256": "7b60136a5ef06106317ad226710b35a481657625e95052b8e33d3341ed71f04b"
+  },
+  "immediate_inputs": [
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "git_blob": "c70948d941c02381b3696a1faa0bd21157eae995",
+      "committed": {
+        "entry": "blobs/aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+        "bytes": 1749,
+        "sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58"
+      },
+      "working": {
+        "entry": "blobs/aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+        "bytes": 1749,
+        "sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58"
+      },
+      "LF_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58"
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "git_blob": "2433969c7274d021e40f5543b46b0a5d1d693aff",
+      "committed": {
+        "entry": "blobs/1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+        "bytes": 3808,
+        "sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b"
+      },
+      "working": {
+        "entry": "blobs/1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+        "bytes": 3808,
+        "sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b"
+      },
+      "LF_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b"
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "git_blob": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+      "committed": {
+        "entry": "blobs/1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "bytes": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      },
+      "working": {
+        "entry": "blobs/1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "bytes": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      },
+      "LF_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "git_blob": "8f03277c0e7fa740e636fd51cfe5ffbe885047dc",
+      "committed": {
+        "entry": "blobs/8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+        "bytes": 9265,
+        "sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+      },
+      "working": {
+        "entry": "blobs/8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+        "bytes": 9265,
+        "sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+      },
+      "LF_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+    },
+    {
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "git_blob": "c622171df4c13d649f850b11900921ec95ead010",
+      "committed": {
+        "entry": "blobs/97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "bytes": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      "working": {
+        "entry": "blobs/97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "bytes": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      "LF_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "git_blob": "3dd859b845ba0fad68bfaa95ac080177079d3dcd",
+      "committed": {
+        "entry": "blobs/a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52",
+        "bytes": 11255,
+        "sha256": "a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52"
+      },
+      "working": {
+        "entry": "blobs/a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52",
+        "bytes": 11255,
+        "sha256": "a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52"
+      },
+      "LF_sha256": "a303ff6fc0e25090d2f4beb1721d0ffb33c54c59a2d2ad3352b93a879014ae52"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "git_blob": "57204bec62715abf2aabdd3fbd51b3296f5ea456",
+      "committed": {
+        "entry": "blobs/44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8",
+        "bytes": 9011,
+        "sha256": "44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8"
+      },
+      "working": {
+        "entry": "blobs/44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8",
+        "bytes": 9011,
+        "sha256": "44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8"
+      },
+      "LF_sha256": "44178b8725ca112fec3562b800c0ebe023594891f57a42af916607e7f63765b8"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_SOURCE_PRIMARY.md",
+      "git_blob": "70dad9373f47723aa0a1051a35ade1f454a95e91",
+      "committed": {
+        "entry": "blobs/3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9",
+        "bytes": 3042,
+        "sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+      },
+      "working": {
+        "entry": "blobs/3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9",
+        "bytes": 3042,
+        "sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+      },
+      "LF_sha256": "3c7d8c581bde0a74ff4dc3be0e50694490da1a70f8cec231555acd51fffed3f9"
+    },
+    {
+      "path": "reports/cc12_application_ordinary_retirement_source_primary.json",
+      "git_blob": "19ed1ddfe3808a0309024a64e7ff67449043efa2",
+      "committed": {
+        "entry": "blobs/49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40",
+        "bytes": 9682,
+        "sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+      },
+      "working": {
+        "entry": "blobs/49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40",
+        "bytes": 9682,
+        "sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+      },
+      "LF_sha256": "49c76d05d2ee9ef046bf23ef1eeb6239d06d3931e86f1bb1d02c4158cbdd9b40"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_DERIVED_RETIREMENT_SOURCE_PRIMARY.md",
+      "git_blob": "a6a35c975a83e6a2d972c1d3c06a50d738555474",
+      "committed": {
+        "entry": "blobs/f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3",
+        "bytes": 2149,
+        "sha256": "f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3"
+      },
+      "working": {
+        "entry": "blobs/f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3",
+        "bytes": 2149,
+        "sha256": "f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3"
+      },
+      "LF_sha256": "f4d6f9bfe105fac0b7078af2091d7fec6dbbdd276e0673e40fb6af3e03c61ca3"
+    },
+    {
+      "path": "reports/cc12_application_derived_retirement_source_primary.json",
+      "git_blob": "0766130775b1ea1c2c12d11a764a0bf330c6635f",
+      "committed": {
+        "entry": "blobs/d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c",
+        "bytes": 10360,
+        "sha256": "d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c"
+      },
+      "working": {
+        "entry": "blobs/d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c",
+        "bytes": 10360,
+        "sha256": "d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c"
+      },
+      "LF_sha256": "d662c7eaa616d719a4a75e68973ea4898d18ff9441097cf4d2d42dbc1ac48f8c"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "git_blob": "09e676baad335d7db5c894fa3026d81dbf49671a",
+      "committed": {
+        "entry": "blobs/e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "bytes": 5246,
+        "sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+      },
+      "working": {
+        "entry": "blobs/e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "bytes": 5246,
+        "sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+      },
+      "LF_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "git_blob": "61412a36ff96686d2e8e6072d536f9b7b7d1d69e",
+      "committed": {
+        "entry": "blobs/3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "bytes": 11864,
+        "sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+      },
+      "working": {
+        "entry": "blobs/3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "bytes": 11864,
+        "sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+      },
+      "LF_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "git_blob": "d0b01202081f849da0c7f5659b72cb1b6367851d",
+      "committed": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      },
+      "working": {
+        "entry": "blobs/27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+        "bytes": 34569,
+        "sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+      },
+      "LF_sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8"
+    }
+  ],
+  "evidence": {
+    "entry": "blobs/8ba0907981869a31b06c9494c92de8e66d7147cf3ad2b47c392f7d75cd0d0a24",
+    "bytes": 12350,
+    "sha256": "8ba0907981869a31b06c9494c92de8e66d7147cf3ad2b47c392f7d75cd0d0a24"
+  },
+  "Source_clips": [
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "start_line": 11,
+      "end_line": 27,
+      "pin": {
+        "entry": "blobs/bbacbd852cd9872b73b36f6baeddece6f73d3a06df1eb16bf197c517aef9d9a4",
+        "bytes": 1321,
+        "sha256": "bbacbd852cd9872b73b36f6baeddece6f73d3a06df1eb16bf197c517aef9d9a4"
+      },
+      "claim": "Resize borrows existing actual0Ch row object and allocation binding; signed/wrapping/live-read effects, no catch/rollback or new cleanup."
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "start_line": 7,
+      "end_line": 22,
+      "pin": {
+        "entry": "blobs/7a519c6f5e686e909cae74e1d4b19edebb3f6829379ca92b4af4873cc6d96fe0",
+        "bytes": 859,
+        "sha256": "7a519c6f5e686e909cae74e1d4b19edebb3f6829379ca92b4af4873cc6d96fe0"
+      },
+      "claim": "Win32 typed row field offsets and same-row/same-allocation forwarding to reserve."
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "start_line": 35,
+      "end_line": 77,
+      "pin": {
+        "entry": "blobs/86c9adcc62280b34a137c85a8061792e3a62ad25c3e94e3f0da6d63646a3ccf8",
+        "bytes": 1940,
+        "sha256": "86c9adcc62280b34a137c85a8061792e3a62ad25c3e94e3f0da6d63646a3ccf8"
+      },
+      "claim": "Signed capacity/current-count schedule; request0 can reserve or grow; zero writes/decrements then final requested count, no data/capacity/element release in resize."
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "start_line": 9,
+      "end_line": 27,
+      "pin": {
+        "entry": "blobs/cde36fe21ef73aade95f44b9b77c2df6be16aa537e63ca1663a7ecb235923b11",
+        "bytes": 1008,
+        "sha256": "cde36fe21ef73aade95f44b9b77c2df6be16aa537e63ca1663a7ecb235923b11"
+      },
+      "claim": "Actual application+08 0Ch row with void** data and signed count/capacity; allocation BF55BE and free BF6989 callback interfaces."
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "start_line": 23,
+      "end_line": 40,
+      "pin": {
+        "entry": "blobs/89236fdf69db493f1348d9cace981d92a5e7404d296abb22d546551964e4f15d",
+        "bytes": 821,
+        "sha256": "89236fdf69db493f1348d9cace981d92a5e7404d296abb22d546551964e4f15d"
+      },
+      "claim": "Reserve clamps to1, compares signed capacity, wraps requested*4, reloads source/count, frees current old data before new data/capacity stores, count unchanged."
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "start_line": 138,
+      "end_line": 145,
+      "pin": {
+        "entry": "blobs/9232f0e9b14243b14645e2025d206a673014521fad1c9d8b92289cd8f52a6163",
+        "bytes": 598,
+        "sha256": "9232f0e9b14243b14645e2025d206a673014521fad1c9d8b92289cd8f52a6163"
+      },
+      "claim": "Positive preload reserve binding uses cache allocate_arrayBF55BE/free_arrayBF6989; this is a Source binding example, not parent owner/runtime wiring."
+    },
+    {
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "start_line": 8,
+      "end_line": 25,
+      "pin": {
+        "entry": "blobs/7a2295e4540b5f06179d8a3fc041facf5d82e5a0c79f82645b7bfa4173b3cd3a",
+        "bytes": 1022,
+        "sha256": "7a2295e4540b5f06179d8a3fc041facf5d82e5a0c79f82645b7bfa4173b3cd3a"
+      },
+      "claim": "Shared actual allocation domain; array allocator/free interfaces are distinct from object allocator/free and Original CRT/new-handler/FH3 identity remains qualified."
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "start_line": 49,
+      "end_line": 56,
+      "pin": {
+        "entry": "blobs/25ba2c5ecd99066ce6a5ea4ce317506c9c523b621ae944caf90b496a08f28abb",
+        "bytes": 449,
+        "sha256": "25ba2c5ecd99066ce6a5ea4ce317506c9c523b621ae944caf90b496a08f28abb"
+      },
+      "claim": "Application context retains fixed actual shared-manager/Application volatile pointer cell references."
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "start_line": 134,
+      "end_line": 179,
+      "pin": {
+        "entry": "blobs/acc6d545211e8147306482c024aba97051ee787fa6c1c7da50fdf3bccb3338c3",
+        "bytes": 3153,
+        "sha256": "acc6d545211e8147306482c024aba97051ee787fa6c1c7da50fdf3bccb3338c3"
+      },
+      "claim": "Accepted base/derived retirement borrowed storage/provider/lifetime and qualified C++ failure boundaries, no owner/callable-table/free/activation authority."
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "start_line": 183,
+      "end_line": 221,
+      "pin": {
+        "entry": "blobs/eeb9cfd6149b5c6f69566b3d1765b2a3687da35c7081a6b5d881d3bfad555834",
+        "bytes": 1661,
+        "sha256": "eeb9cfd6149b5c6f69566b3d1765b2a3687da35c7081a6b5d881d3bfad555834"
+      },
+      "claim": "Accepted actual Source ordinary retirement and tiny derived forwarding bodies; no parent implementation is added."
+    }
+  ],
+  "normal_parent": {
+    "source_report": "reports/cc12_application_base_retirement_readiness.json",
+    "vector_report": "reports/cc12_application_vector_retirement_readiness.json",
+    "address": "007379A0",
+    "bytes": 93,
+    "instructions": 28,
+    "pin": {
+      "entry": "blobs/ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+      "bytes": 93,
+      "sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297"
+    },
+    "instruction_rows": [
+      {
+        "address": "007379a0",
+        "size": 2,
+        "hex": "6aff",
+        "text": "push -1"
+      },
+      {
+        "address": "007379a2",
+        "size": 5,
+        "hex": "680862c800",
+        "text": "push 0xc86208"
+      },
+      {
+        "address": "007379a7",
+        "size": 6,
+        "hex": "64a100000000",
+        "text": "mov eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "007379ad",
+        "size": 1,
+        "hex": "50",
+        "text": "push eax"
+      },
+      {
+        "address": "007379ae",
+        "size": 7,
+        "hex": "64892500000000",
+        "text": "mov dword ptr fs:[0], esp"
+      },
+      {
+        "address": "007379b5",
+        "size": 1,
+        "hex": "51",
+        "text": "push ecx"
+      },
+      {
+        "address": "007379b6",
+        "size": 1,
+        "hex": "56",
+        "text": "push esi"
+      },
+      {
+        "address": "007379b7",
+        "size": 2,
+        "hex": "8bf1",
+        "text": "mov esi, ecx"
+      },
+      {
+        "address": "007379b9",
+        "size": 1,
+        "hex": "57",
+        "text": "push edi"
+      },
+      {
+        "address": "007379ba",
+        "size": 4,
+        "hex": "89742408",
+        "text": "mov dword ptr [esp + 8], esi"
+      },
+      {
+        "address": "007379be",
+        "size": 3,
+        "hex": "8d7e08",
+        "text": "lea edi, [esi + 8]"
+      },
+      {
+        "address": "007379c1",
+        "size": 2,
+        "hex": "6a00",
+        "text": "push 0"
+      },
+      {
+        "address": "007379c3",
+        "size": 2,
+        "hex": "8bcf",
+        "text": "mov ecx, edi"
+      },
+      {
+        "address": "007379c5",
+        "size": 8,
+        "hex": "c744241800000000",
+        "text": "mov dword ptr [esp + 0x18], 0"
+      },
+      {
+        "address": "007379cd",
+        "size": 5,
+        "hex": "e85ee5ffff",
+        "text": "call 0x735f30"
+      },
+      {
+        "address": "007379d2",
+        "size": 2,
+        "hex": "8b3f",
+        "text": "mov edi, dword ptr [edi]"
+      },
+      {
+        "address": "007379d4",
+        "size": 1,
+        "hex": "57",
+        "text": "push edi"
+      },
+      {
+        "address": "007379d5",
+        "size": 5,
+        "hex": "e8afef4b00",
+        "text": "call 0xbf6989"
+      },
+      {
+        "address": "007379da",
+        "size": 3,
+        "hex": "83c404",
+        "text": "add esp, 4"
+      },
+      {
+        "address": "007379dd",
+        "size": 2,
+        "hex": "8bce",
+        "text": "mov ecx, esi"
+      },
+      {
+        "address": "007379df",
+        "size": 8,
+        "hex": "c7442414ffffffff",
+        "text": "mov dword ptr [esp + 0x14], 0xffffffff"
+      },
+      {
+        "address": "007379e7",
+        "size": 5,
+        "hex": "e8a42f4b00",
+        "text": "call 0xbea990"
+      },
+      {
+        "address": "007379ec",
+        "size": 4,
+        "hex": "8b4c240c",
+        "text": "mov ecx, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "007379f0",
+        "size": 1,
+        "hex": "5f",
+        "text": "pop edi"
+      },
+      {
+        "address": "007379f1",
+        "size": 1,
+        "hex": "5e",
+        "text": "pop esi"
+      },
+      {
+        "address": "007379f2",
+        "size": 7,
+        "hex": "64890d00000000",
+        "text": "mov dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "007379f9",
+        "size": 3,
+        "hex": "83c410",
+        "text": "add esp, 0x10"
+      },
+      {
+        "address": "007379fc",
+        "size": 1,
+        "hex": "c3",
+        "text": "ret "
+      }
+    ],
+    "positive_calls": [
+      {
+        "site": "007379CD",
+        "target": "00735F30",
+        "instruction": {
+          "address": "007379cd",
+          "size": 5,
+          "hex": "e85ee5ffff",
+          "text": "call 0x735f30"
+        }
+      },
+      {
+        "site": "007379D5",
+        "target": "00BF6989",
+        "instruction": {
+          "address": "007379d5",
+          "size": 5,
+          "hex": "e8afef4b00",
+          "text": "call 0xbf6989"
+        }
+      },
+      {
+        "site": "007379E7",
+        "target": "00BEA990",
+        "instruction": {
+          "address": "007379e7",
+          "size": 5,
+          "hex": "e8a42f4b00",
+          "text": "call 0xbea990"
+        }
+      }
+    ],
+    "normal_schedule": [
+      "7379B7 captures actual incoming ECX in ESI; 7379BE forms actual receiver+8 in EDI.",
+      "7379C1 pushes0; 7379C3 sets ECX=receiver+8; 7379CD calls735F30. Its descendants remain outside.",
+      "7379D2 reloads current [receiver+8] after735F30, then 7379D5 callsBF6989 with that vector data pointer, not ESI outer receiver.",
+      "7379DA discards the free argument; 7379DD restores actual receiverECX=ESI; 7379DF sets caller state-1; 7379E7 callsBEA990.",
+      "On normal child return, 7379EC..7379FC restores caller SEH frame/callee-saved registers and RET0. There is no intervening global-publication read or outer-owner free in this captured shell."
+    ],
+    "qualification": "Previously accepted retained93/28 normal bytes only, no fresh Native/PE/decode/query or Original FH3 action proof."
+  },
+  "domain_admission_matrix": [
+    {
+      "domain": "Actual outer receiver/profile",
+      "required": "Borrow actual stable enclosing1Ch storage with aligned live uint32 object/access atA+0, valid preimages and permitted profile-write domain through derived/base reset and C++ cleanup.",
+      "positive": "Accepted BEA990/BEA8B0 Source headers/bodies and Root primary contracts.",
+      "restriction": "Array release must not retire/free A or its fields. No newly manufactured receiver overlay, owner, callable profile or scalar-delete authority."
+    },
+    {
+      "domain": "Actual interior row object/cells",
+      "required": "Borrow an already-live actual NativeApplicationPointerVectorStorage at exactlyA+8; its12B contains data atA+8, signed count atA+0C and signed capacity atA+10, with valid alignment/access/preimages. Keep the row/cell objects stable and live through resize, free callback, child and any qualified cleanup.",
+      "positive": "native_shader_preload.hpp actual+08 layout; resize static field-offset assertions; retained parent formsA+8.",
+      "restriction": "A detached host vector or copied pointer/count/capacity is insufficient. No new type/lifetime is created by a reinterpret-cast or this report."
+    },
+    {
+      "domain": "Allocation/free binding",
+      "required": "Borrow the same stable NativeApplicationPointerVectorAllocation and callable BF55BE-labelled allocate/BF6989-labelled free providers for the existing array domain; maintain provider/calling-interface and reached-storage contracts.",
+      "positive": "Reserve_for_resize forwards same row/binding; preload constructs the pair from cache.allocate_arrayBF55BE/cache.free_arrayBF6989; cache header preserves shared malloc/free domain.",
+      "restriction": "No fallback callback/new heap, object allocatorBF681B/object freeBF65AC substitution or inferred Original CRT/new-handler/FH3/provider-runtime identity."
+    },
+    {
+      "domain": "Backing allocation and reached slots",
+      "required": "The current data value actually reloaded after resize must be admissible to the existing BF6989 free provider, including whatever null behavior that actual provider requires. Allocation base/extents and every reached live32-bit slot access must be valid for the existing signed/wrapping/current-read schedule.",
+      "positive": "Resize growth reloads data per slot; reserve uses wrapping requested*4/current source-count reads and frees current old data before publication; parent reloads current data at7379D2.",
+      "restriction": "Do not substitute a cached pre-resize pointer or an interior/free-mismatched pointer. Backing release must not invalidate A/rows/cell/context/manager/section/provider objects still required by child/cleanup."
+    },
+    {
+      "domain": "Signed row preimages",
+      "required": "Preserve the existing helper schedule for request0 without a new validation guard. A qualified nonnegative count/capacity takes the shrinking/zero-count route. Other signed preimages require all reached growth/reserve domains and preserve faults/preceding effects.",
+      "positive": "Complete existing735F30 Source and accepted80/31 normal contract; negative capacity may reserve and negative count may grow.",
+      "restriction": "Do not assume request0 universally skips allocation, touches no slots, clears data/capacity, releases elements or cannot fail; no clamp/clear shortcut or rollback."
+    },
+    {
+      "domain": "Post-array-free lifetime",
+      "required": "After BF6989 returns, retain outerA/rows/cells/provider domains for BEA990/BEA8B0; avoid external/reentrant use of released backing storage under caller-supplied lifetime/quiescence conditions.",
+      "positive": "Parent frees vector allocation before demoting state-1 and callingBEA990; accepted child writes profile and operates on separate manager/section/cells.",
+      "restriction": "The parent makes no explicit data/capacity reset after free. A nonnull data cell can retain a dangling value unless the provider itself mutates it. This packet proves no quiescence or completion/storage-return guarantee."
+    },
+    {
+      "domain": "Actual manager/Application cells and child domains",
+      "required": "Borrow the fixed actual manager/Application volatile pointer-cell objects in the shared GameNativeStringProcess/GameSingletonHost domain, disjoint from receiver/rows/context/captured section/depth/private guard. Preserve valid M1/M2 manager/vector and captured section/current-depth/provider lifetimes.",
+      "positive": "Accepted NativeApplicationSingletonBaseContext and ordinary/derived Source/Root contracts.",
+      "restriction": "M1/M2 and A/currentP can differ; P can be null. No equality guard, publication substitution, replacement lock, new provider or lifetime repair. Child guard stays armed through Leave with repeated-release/termination hazards."
+    },
+    {
+      "domain": "Element/reference authority",
+      "required": "Keep the existing Source ownership statement distinct from what resize/parent actually do: entries carry material-loader returned caller references, including null; request0 changes count and parent frees backing.",
+      "positive": "native_shader_preload.hpp entry reference comment; complete resize body and retained parent normal calls.",
+      "restriction": "No invented per-element release, payload destruction, reference reclamation, outer ownership or callable-table activation credit."
+    }
+  ],
+  "positive_state_boundary": {
+    "handler_literal_site": "007379A2",
+    "handler_literal": "00C86208",
+    "FS_link_site": "007379AE",
+    "receiver_spill_site": "007379BA",
+    "receiver_spill": "[ESP_store+8]=actual A",
+    "arm_site": "007379C5",
+    "arm": "[ESP_with_request+18h]=0",
+    "demote_site": "007379DF",
+    "demote": "[ESP_after_free_arg_pop+14h]=-1",
+    "qualification": "Normal local registration/state stores only. Descriptor, state-map graph, action target, action operands/frame binding and actual Original FH3 invocation are unproved."
+  },
+  "next_positive_prerequisite": {
+    "function_or_entry": "00C86208",
+    "direct_edge": "PUSH literal00C86208 at7379A2 preceding FS:0 registration",
+    "method": "Bounded read-only complete handler entry/body-size gate first. Follow only actual positive descriptor operand; retain descriptor header and declared state0 unwind row, then exact action body/receiver operands and genuine target contract.",
+    "unknown_descriptor_or_action_address": null,
+    "needed_failure_contract": "What state0 does if735F30 orBF6989 escapes, whether/reaching which cleanup target and with which saved actual receiver; ordering/return/escape behavior before state-1. No inherited frame/FH3 activation assumption."
+  },
+  "failure_limitations": [
+    "735F30 has no catch/noexcept/rollback; reserve allocation/free callbacks and invalid reached accesses can retain preceding effects.",
+    "State0 is stored before735F30 and remains until afterBF6989 returns; demotion-1 precedesBEA990. This normal state evidence supplies no unwind-map/action body or binding.",
+    "Do not add RAII/base cleanup/compensating free, a success no-op or partial parent implementation before positive handler/descriptor/state0/action/target evidence.",
+    "Accepted child qualified C++ cleanup covers its own execution, not the missing parent failure interval before child; no safe cleanup, rollback or Original FH3/frame/invocation/hardware/foreign equivalence."
+  ],
+  "helper_bodies": [
+    {
+      "path": "capture.py",
+      "pin": {
+        "entry": "blobs/5226629d6b7f33650962daaa42e2ac7c06e177bcba27d5f28286994e1dd1c74c",
+        "bytes": 7301,
+        "sha256": "5226629d6b7f33650962daaa42e2ac7c06e177bcba27d5f28286994e1dd1c74c"
+      }
+    },
+    {
+      "path": "publish.py",
+      "pin": {
+        "entry": "blobs/366f201de55ff6d4b7dfd44944667ad913e2caf470c95a2831b04ae6d935952e",
+        "bytes": 20105,
+        "sha256": "366f201de55ff6d4b7dfd44944667ad913e2caf470c95a2831b04ae6d935952e"
+      }
+    },
+    {
+      "path": "package.py",
+      "pin": {
+        "entry": "blobs/42944e73c63f319ad33c50759a3b22121e01bff1d81f766bb620409cd27fd6ae",
+        "bytes": 4155,
+        "sha256": "42944e73c63f319ad33c50759a3b22121e01bff1d81f766bb620409cd27fd6ae"
+      }
+    },
+    {
+      "path": "guard.py",
+      "pin": {
+        "entry": "blobs/4c2de07a0ff5c6d7248f5cec9d883fee97977b73fc772a0560b20809b54d87cb",
+        "bytes": 5869,
+        "sha256": "4c2de07a0ff5c6d7248f5cec9d883fee97977b73fc772a0560b20809b54d87cb"
+      }
+    }
+  ],
+  "validation": {
+    "finite_inputs": 14,
+    "Source_clips": 10,
+    "reused_parent_bytes": 93,
+    "reused_parent_instructions": 28,
+    "normal_call_targets": [
+      "00735F30",
+      "00BF6989",
+      "00BEA990"
+    ],
+    "new_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_probes": 0,
+    "Source_membership_walks": 0,
+    "Source_absence_content_censuses": 0,
+    "recursive_archive_proofs": 0,
+    "original_game_OS_audio_runs": 0
+  },
+  "historical_input_qualification": "Only positive retained normal bytes and current positive Source/provider contracts are promoted. Old Source absence/held-child statements are not current conclusions; accepted child build reports remain historical child evidence, not parent compilation/runtime credit.",
+  "qualification": "Evidence-only actual borrowed storage/provider readiness. Source remains dormant; no owner/activation/ABI/runtime credit. Actual constructor/cell/provider bindings, lifetimes and quiescence require positive caller evidence; no repeated absence census.",
+  "delivery": "External staged/final receipt and finalpins capture exactly two owned output Git objects, unchanged actual Source subtree IDs and fourteen finite fresh input bytes. Small guarded original/copied proof; no push."
+}
