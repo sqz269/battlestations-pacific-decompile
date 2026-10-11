@@ -17,6 +17,12 @@
 
 #include <cstdint>
 
+#include "bsp/camera_projection.hpp"
+
+namespace bsp {
+struct CameraAxesCrtAccess;
+}
+
 namespace bsp::water_render {
 
 struct Float3 {
@@ -208,6 +214,249 @@ struct GridCorners {
     Float4 corner[4];
 };
 GridCorners compute_grid_corners_00b9ca00(const float projector_matrix_174[16]);
+
+// 00B9AE00 `bool __thiscall(field, camera)`, RET 4: the projected-grid
+// projector (packet cc13_water2). Called once per frame from 00BA0090.
+// Verified instruction by instruction against the listing (x87 stack traced
+// from the opcode bytes); docs/CC13_WATER_RENDER.md section 10.
+//
+// The camera is the render camera node. Every touch point the native makes is
+// one method here, called in native order:
+//   refresh_world_if_dirty  TEST [cam+5Ch],2 / JNZ / CALL 00B6DB70 (6 sites)
+//   set_position_vtable_30  CALL [[cam]+30h] with a pointer to three floats
+//   set_field_of_view       00B6FBB0, which stores cam+1C4h
+// The reads are cam+1C4h fov, +1C8h aspect, +1D4h near, +1D8h far, +110h the
+// world forward row, +120h the world position row and +F0h the world matrix.
+class ProjectorCamera {
+public:
+    virtual ~ProjectorCamera() = default;
+    virtual void refresh_world_if_dirty() = 0;
+    virtual float field_of_view_1c4() const = 0;
+    virtual float aspect_1c8() const = 0;
+    virtual float near_plane_1d4() const = 0;
+    virtual float far_plane_1d8() const = 0;
+    virtual Float3 forward_110() const = 0;
+    virtual Float3 position_120() const = 0;
+    virtual const CameraMatrix& world_f0() const = 0;
+    virtual void set_position_vtable_30(const Float3& position) = 0;
+    virtual void set_field_of_view_00b6fbb0(float fov) = 0;
+};
+
+// The five matrices 00B9AE00 stores into the field (row-major, row vectors).
+//   +174h range * inverse(view * projection)   (00B9CA00 reads it)
+//   +1B4h inverse(+174h), from the stored +174h words
+//   +1F4h (view * projection) * affine_inverse(range)   (00B63B30)
+//   +418h the projector view (00B63F10 look-at)
+//   +458h the projector projection (00B642F0, the camera's own parameters)
+// range = [dx 0 0 0; 0 dy 0 0; 0 0 1 0; min_x min_y 0 1] over the projected
+// x/y extent of the clipped points.
+struct ProjectorMatrices {
+    CameraMatrix range_174{};
+    CameraMatrix range_inverse_1b4{};
+    CameraMatrix view_projection_range_1f4{};
+    CameraMatrix view_418{};
+    CameraMatrix projection_458{};
+};
+
+// Steps (all addresses in 00B9AE00):
+//  1. B9AE25: save fov and position; fov *= (double)1.2f [00CEC160]; move the
+//     camera to (0, y, 0) through vtable+30.
+//  2. B9B00F: near = max(near, 1.5) ([00CE3D78] double compare, [00CE380C]
+//     store); P = perspective(fov, aspect, near, far); invP = 00B632D0(P).
+//  3. B9B157: the four near-plane clip corners (+-1, +-1, 0) through invP with
+//     a 1/w divide; the far corners are the near ones times far/near (B9B219).
+//  4. B9B382: all eight to world space through cam+F0h (004142E0).
+//  5. B9B3D0: the 12 cube edges against the planes y = +h and y = -h
+//     (00B9A8A0); h = field+B8h, -h formed as -0.0f - h.
+//  6. B9B492: corners strictly inside the slab, (h + y) / (y - h) < 0.
+//  7. B9B5B8: Pp = perspective again; projector position P = camera position
+//     raised to at least h + 7 [00CED5D8] (mirrored when below y = 0).
+//  8. B9B75E: forward nudged off the horizontal by 0.01 [00D7A358] and
+//     renormalised (00BF7030) when |forward.y| <= cos(89 deg) [00CEC400].
+//  9. B9BA2A: aim = blend of the forward ray's water hit (00B999F0, reflected
+//     when camera and forward are on the same side) and the camera position
+//     + 10 [00CE3DC0] * forward flattened to y = 0, by |forward.y|.
+// 10. B9BD41: view = look-at(P, aim, up (0,1,0)).
+// 11. B9BD46: points flattened to y = 0, projected by view then Pp with 1/w,
+//     x/y min/max, range matrix, outputs above.
+// 12. B9C9A5 / B9C9D3: restore position and fov. Returns false (AL = 0) with
+//     no field write when no point survives (B9C117).
+// The native keeps 80-bit intermediates between spills; this rounds at every
+// native float store and uses double between them, so it is close but not
+// bit-exact. The point list holds 32 entries (native S-0x120 array: at most
+// 6 + 6 plane hits plus 8 corners occur for a convex frustum).
+bool compute_projector_matrices_00b9ae00(ProjectorCamera& camera, float displacement_height_b8,
+                                         const CameraAxesCrtAccess& crt, ProjectorMatrices& out);
+
+// ---------------------------------------------------------------------------
+// Height-tile pyramid (packet cc13_water2).
+
+// One 18h-byte cell. Level 0 holds the spectrum sample; coarser levels hold
+// the 00B9A990 average of a 2x2 block of the finer level.
+struct OceanGridCell {
+    float x{0.0f};       // +00h choppy x
+    float height{0.0f};  // +04h height (level 0: -0.0f - spectrum height)
+    float z{0.0f};       // +08h choppy z
+    float normal[3]{};   // +0Ch
+};
+
+// One 0Ch-byte pyramid level; the array is [field+2B0h], its count [field+2B4h].
+struct OceanGridLevel {
+    std::uint32_t width{0};   // +0h
+    std::uint32_t height{0};  // +4h
+    OceanGridCell* cells{nullptr};  // +8h, width * height cells
+};
+
+// 00B9A990 `void __thiscall(OceanGridCell* out, const OceanGridCell* p0,
+// p1, p2, p3, float scale)`, RET 14h (packet cc13_water2, verified against
+// the listing):
+//   out.xyz = (((p0 + p1) + p2) + p3) * 0.25 (double [00D7A348]),
+//     each partial sum spilled.
+//   n = ((p1.n + p0.n) + p2.n) + p3.n, spilled per component;
+//   m = 005803E0 lerp(n, (0, 4.0 [00CE3D34], 0), scale);
+//   len = 00419440(m); inv = len > 0 ? 1/len : 0 (XORPS); out.n = m * inv.
+OceanGridCell average_grid_quad_00b9a990(const OceanGridCell& p0, const OceanGridCell& p1,
+                                         const OceanGridCell& p2, const OceanGridCell& p3, float scale,
+                                         const CameraAxesCrtAccess& crt);
+
+// What 00B9D7B0 reads and writes on the ocean field (ECX).
+//   height_scale_b8   [field+B8h], Waves.HeightScale
+//   choppy_30         [[field+BCh]+30h..+34h], 8-byte (x, z) entries
+//   heights_20        [[field+BCh]+20h..+24h], 8-byte entries, word 0 read
+//   levels / level_count  [field+2B0h] / [field+2B4h]
+//   extents_104       [field+104h..+110h], running maxima, never reset here
+struct OceanGridTilesField {
+    float height_scale_b8{0.0f};
+    const float* choppy_30{nullptr};
+    std::uint32_t choppy_count{0};
+    const float* heights_20{nullptr};
+    std::uint32_t heights_count{0};
+    OceanGridLevel* levels{nullptr};
+    std::uint32_t level_count{0};
+    float extents_104[4]{};  // +104h scaled |h| max, +108h |x|, +10Ch |h|, +110h |z|
+};
+
+// 00B9D7B0 `void __fastcall(field)`, vtable 00D63E10 slot 0 (packet
+// cc13_water2, verified against the listing).
+//  * B9D7F0..B9DA07: for each level-0 cell (x, y), i = (x & 3Fh) + (y & 3Fh)*40h
+//    into the 64x64 spectrum vectors. Both vectors are range checked first
+//    (00BF6713 = _invalid_parameter_noinfo); the handler is
+//    `invalid_parameter`. The native then reads the element anyway; this port
+//    skips the cell instead when the handler returns.
+//  * cell = (choppy.x, -0.0f - height, choppy.z). The "-0.0 resets" in the
+//    decompile are only the XMM3 reload of [00D7A208] after the CRT call.
+//  * |v| is v > 0 ? v : -0.0f - v (COMISS / SUBSS).
+//    +104h = old > float(HS * |h|) ? old : that (NaN takes the new value)
+//    +108h, +10Ch, +110h = new > old ? new : old (NaN keeps the old value)
+//  * Cell words +0Ch..+14h are written from three never-initialised stack
+//    slots ([ESP+4Ch..54h] = frame -0Ch..-4h); the caller supplies them as
+//    `stack_garbage`. They are not overwritten at level 0.
+//  * B9DA0D..B9DB2F: for level i = 0 .. count-2 the coarser level i+1 cell
+//    (x, y) = 00B9A990 of level i cells (2x, 2y), (2x+1, 2y), (2x, 2y+1),
+//    (2x+1, 2y+1), scale = {0, 0.2 [00CE54A0], 0.5 [00CE3800],
+//    0.9 [00CE3860], 1.0}[i] (a 5-entry stack array; more levels would read
+//    past it).
+//  * B9DB35: tail jump to vtable slot 3 (00BA5030, the float16 upload),
+//    the `upload` callback here.
+void refresh_grid_tiles_00b9d7b0(OceanGridTilesField& field, const float stack_garbage[3],
+                                 const CameraAxesCrtAccess& crt, void (*invalid_parameter)(),
+                                 void (*upload)(void* context), void* upload_context);
+
+// ---------------------------------------------------------------------------
+// Underwater light beams (packet cc13_water2).
+
+// One beam, pointed to by [beams+E8h][i].
+struct OceanBeam {
+    float position[3]{};   // +00h
+    float birth_0c{0.0f};  // +0Ch, < 0 means "respawn now"
+    float death_10{0.0f};  // +10h, < 0 means "no death scheduled yet"
+};
+
+// One 1Ch-byte vertex of the locked beam vertex buffer.
+struct OceanBeamVertex {
+    float x, y, z;
+    float u, v;
+    float alpha;
+    std::uint32_t argb;
+};
+
+// The beam system object (world+ACh). Offsets as in the native object; the
+// names are hypotheses from use.
+struct OceanBeamSystem {
+    std::uint32_t enabled_2c{0};
+    float speed_30{0.0f};
+    float color_3c[4]{};
+    float length_4c{0.0f};        // bottom vertices = top + axis * this
+    float radius_base_50{0.0f};   // spawn radius = base + range * u
+    float radius_range_54{0.0f};
+    float half_width_58{0.0f};
+    float axis_scale_5c{0.0f};    // weight of the displacement normal in the axis
+    float death_band_60[3]{};     // squared-distance bands +60h/+64h/+68h
+    float death_rate_6c[4]{};     // per-band death probabilities +6Ch..+78h
+    float fade_in_time_cc{0.0f};
+    float fade_out_time_d0{0.0f};
+    float fade_in_rate_d4{0.0f};
+    float fade_out_rate_d8{0.0f};
+    std::uint32_t count_dc{0};
+    OceanBeam** beams_e8{nullptr};
+    float previous_clock_ec{0.0f};
+    float clock_f0{0.0f};
+};
+
+// Everything 00BA2FF0 reaches outside the beam object, in native order.
+class OceanBeamHost {
+public:
+    virtual ~OceanBeamHost() = default;
+    virtual void refresh_camera_world_if_dirty() = 0;          // cam+5Ch bit 2 -> 00B6DB70
+    virtual Float3 camera_position_120() = 0;
+    virtual void camera_trivial_00b6fc60() = 0;                // ECX = camera, empty body
+    virtual void set_visibility_factor_00b6da70(float value) = 0;  // [beams+14h], recurse = 0
+    // The first entry of the light list [[beams+14h]+170h]+18h; its +1E0h
+    // vector. false = empty list (the native calls 00BF6713 and goes on).
+    virtual bool first_light_vector(Float3& raw) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 00BA2C20 with ECX = 00E130C0, the private Mersenne state. The caller's
+    // inlined guard (state+9C5h set and +9C4h clear -> write to address 0) is
+    // the host's job too. Must never be the gameplay stream 00BD2F10.
+    virtual std::uint32_t next_private_random_00ba2c20() = 0;
+    virtual float water_height_0078c890(float x, float z) = 0;       // ECX = [[beams+10h]+8] - 4
+    virtual void horizontal_displacement_00ba2b50(float x, float z, float out[2]) = 0;
+    virtual void set_draw_counts(std::uint32_t vertices_10, std::uint32_t primitives_18) = 0;  // [beams+1Ch]
+    virtual OceanBeamVertex* lock_vertices() = 0;                    // [[beams+24h]]+10h (0, 0, 0)
+    virtual void unlock_vertices() = 0;                              // [[beams+24h]]+14h
+    virtual std::uint32_t color_argb_004fb850(const float rgba[4]) = 0;
+};
+
+// 00BA2FF0 `void __thiscall(beams, camera, float time)`, RET 8, called from
+// 0078D02C (packet cc13_water2, verified against the listing).
+//  * Off when enabled_2c == 0. Camera at or above y = 0: visibility 0, return.
+//  * clock_f0 = float(speed * time); previous = old clock, or the new clock
+//    when the old one is negative; frame delta = clock - previous.
+//  * L = normalize(light) (00419510). n = (-0.0-L.x, -L.y, -0.0-L.z);
+//    s = sqrt(1 - n.y^2); h = n.xz * 00419260(n.xz) * s; ly = -sqrt(1 - (1 - n.y^2)).
+//    origin = camera - (camera.y / ly) * (h.x, ly, h.z): where the light ray
+//    through the camera leaves the surface.
+//  * Per beam: birth < 0, or death >= 0 and death < clock -> respawn with
+//    two draws: radius = base + range * u1, angle = u2 * (double)6.2831855f
+//    [00CE3828], position = origin + radius * (cos, 0 [00D7A258], sin).
+//    birth = clock, death = -1. u = (float)(draw (+2^32 if negative)) *
+//    2^-32 [00CE3978]/[00D63B80].
+//    death < 0 -> one draw u3; with d2 = |beam.xz - origin.xz|^2 and p the
+//    band rate (+6Ch if d2 < +60h, +70h if < +64h, +74h if < +68h, else +78h),
+//    survival = exp(log(1 - p) * delta) (00BFA910 = _CIlog, 00BFEEEC =
+//    _CIexp); u3 > survival -> death = clock + fade_out_time.
+//  * Draw counts 4n / 2n; n == 0 -> visibility 0. Otherwise each beam is a
+//    quad facing the surface origin: perpendicular = normalize(origin - beam)
+//    rotated (or (1, 0) when the distance <= (double)0.05f [00D7A270]),
+//    top corners at +-half_width on the water height (0078C890), axis =
+//    normalize(normalize(dx, 64 [00D638F0], dz) * axis_scale + (h.x, ly, h.z))
+//    with (dx, dz) = 00BA2B50, bottom = top + axis * length. Vertex i: right
+//    corner for i = 1, 3 (u = 0), left for 0, 2 (u = 1); v = 0 for i < 2, else
+//    1 and the bottom position. alpha = fade-in * fade-out.
+// Presentation only: it reads the gameplay water height but changes nothing
+// outside the beam object; it never draws from 00BD2F10.
+void update_ocean_beams_00ba2ff0(OceanBeamSystem& beams, OceanBeamHost& host, float time,
+                                 const CameraAxesCrtAccess& crt);
 
 // Grid resolution of the projected mesh 00BA5240 builds ([+FCh] x [+100h]).
 //   00BA5610 (initial): simple ocean 20h x 20h, else 20h x 40h.

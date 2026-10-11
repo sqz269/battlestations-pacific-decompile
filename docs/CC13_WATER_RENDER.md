@@ -279,6 +279,8 @@ native stores, so they are not bit-exact.
 
 ## 9. Handoff
 
+(Superseded for 00B9AE00, 00B9D7B0 and 00BA2FF0 by section 10 and its handoff 10.4; the cc13-water1 notes below are kept for history.)
+
 - Branch `agent/cc13-water1`. The lease was released at the end of the packet.
 - Next worker: the not-reconstructed list in section 8, starting with 00B9AE00 if exact grid parity
   is wanted, or the seg 93 STL naming. AGENTS.md routes x87-heavy packets to a stronger model.
@@ -322,3 +324,104 @@ native stores, so they are not bit-exact.
 are probably cc12 territory.
 - Helper scripts are in this tree's `local/wa1_*`. They are read-only PE censuses: `wa1_callers.py`,
   `wa1_ptrs.py`, `wa1_immref.py`, `wa1_dispstore.py`, `wa1_bounds.py`, `wa1_dis.py` and `wa1_vt.py`.
+
+## 10. Ocean x87 bodies (packet cc13_water2)
+
+Method: every block was traced against the listing with `local/wa2_sym.py` (cc13-water2 tree), a
+symbolic path executor that decodes x87 register arithmetic from the opcode bytes. Ghidra prints
+`DC C9` as `FMUL ST1` (meaning ST1 *= ST0), so its one-operand x87 mnemonics are ambiguous and were
+not trusted. Constants were read from the PE on disk. Status for all three: reconstructed and
+build-tested, not fixture-tested, not game-validated, not wired. The reconstructions round at every
+native float store and use double between stores, so they are close to native but not bit-exact.
+
+### 10.1 00B9AE00 BSP_OceanWaveField_ComputeProjectorMatrices (complete)
+
+`bool __thiscall(field, camera)`, RET 4. AL = 1 on success. `compute_projector_matrices_00b9ae00`.
+water1's eight-step outline was right in shape but wrong in several details:
+- Only the four near clip corners (z = 0) go through the inverse projection (B9B157, count 4). The far
+  corners are the near ones times far/near (B9B219). The ratio is spilled to a float.
+- The near plane is clamped: `near = 1.5 > near ? 1.5f : near` (double [00CE3D78], float [00CE380C]).
+- The fov is widened by the double [00CEC160] = (double)1.2f. The camera is moved to (0, y, 0)
+  through vtable+30. Both are restored on both exits (B9C9A5, B9C9D3).
+- Corners count as inside the slab when `(h + y) / (y - h) < 0`. `FDIVRP` is `DE F1`, so the
+  quotient is ST0/ST1. y = (x*0 + y) + z*0 is kept in extended precision.
+- Projector eye: lim = h + 7.0 ([00CED5D8]). If y < lim, the eye moves up by `lim - y`, or by
+  `lim - 2y` when y < 0 (2.0 is [00D7A308]). This is a lift, not a clamp of a cosine.
+- Forward vector: when |f.y| <= float(cos(1.55334306f)) ([00CEC400], 89 degrees), f.y gets -0.01 or
+  +0.01 (double [00D7A358] = (double)0.01f) and f is renormalised through 00BF7030 (0 for zero length).
+- Aim point: B = f, reflected as `f - (0,2,0)*d` when camera and forward lie on the same side of
+  y = 0. hit = 00B999F0((0,1,0,0), pos, pos + B + 0). The aim is `hit*|f.y| + flatten(pos + 10*f)*(1 - |f.y|)`,
+  10.0 = [00CE3DC0]. Then `aim - eye + eye` is stored as computed.
+- view = 00B63F10(eye, aim, (0,1,0)). The points are flattened to y = 0, then each goes through view
+  and then through the second perspective Pp with a 1/w divide. Each step is stored back.
+- Outputs: +174h = range * inverse(view * Pp); +1B4h = inverse(+174h); +1F4h = (view * Pp) *
+  00B63B30(range); +418h = view; +458h = Pp. Here range = [dx 0 0 0; 0 dy 0 0; 0 0 1 0; min_x min_y 0 1].
+- No point (B9C117): restore the camera and return 0 without writing the field.
+- The point array (frame -120h) has no bound check. For a convex frustum it holds at most 20 points.
+  The port caps it at 32.
+
+### 10.2 00B9D7B0 BSP_OceanWaveField_RefreshGridTiles (complete), 00B9A990 BSP_OceanGrid_AverageQuad (complete)
+
+[field+2B0h] is not a "tile grid" but a pyramid of 0Ch-byte levels {width, height, cells}. Its count
+is at [field+2B4h], and each cell is 18h bytes (x, height, z, normal[3]).
+- Level 0, cell (x, y), with i = (x & 3Fh) + (y & 3Fh)*40h: x = choppy[i].x and z = choppy[i].z from
+  spectrum+30h, and height = -0.0f - spectrum+20h[i].word0. Both std::vector accesses are range
+  checked through 00BF6713 (_invalid_parameter_noinfo).
+- Running maxima, never reset in this function: +104h = HS*|h| (NaN takes the new value), then
+  +108h |x|, +10Ch |h| and +110h |z| (NaN keeps the old value).
+- **The "-0.0 resets"** in the decompile are only the reload of XMM3 = [00D7A208] after the CRT call.
+  They are not field resets.
+- **Native defect:** level-0 normals (+0Ch..+14h) are copied from [ESP+4Ch..54h] (frame -0Ch..-4h).
+  Nothing in the function writes those slots before the first loop, so they hold stack garbage. The
+  port takes them as `stack_garbage`.
+- Level i+1 cell (x, y) = 00B9A990 of the level-i cells (2x, 2y), (2x+1, 2y), (2x, 2y+1) and
+  (2x+1, 2y+1). The scale comes from the 5-entry stack array {0, 0.2, 0.5, 0.9, 1.0}
+  ([00CE54A0], [00CE3800], [00CE3860]). A count of 0 would underflow (SUB ESI,1).
+- 00B9A990: centre = ((p0+p1)+p2)+p3 times double 0.25 [00D7A348]. Normal = ((p1.n+p0.n)+p2.n)+p3.n,
+  lerped (005803E0) towards (0, 4.0 [00CE3D34], 0) by the scale, then normalised (00419440).
+- The function ends by tail-jumping to vtable+0Ch (00BA5030), the float16 upload.
+### 10.3 00BA2FF0 BSP_OceanBeams_Update (complete)
+
+`void __thiscall(beams = world+ACh, camera, float time)`, RET 8. `update_ocean_beams_00ba2ff0`. Every
+outside touch point goes through `OceanBeamHost`.
+- Off when +2Ch == 0. When camera.y >= 0 it sets visibility 0 ([beams+14h], 00B6DA70) and returns
+  before the clock update.
+- The clock is +F0h = float(+30h * time) and the previous clock is +ECh (taken from the new clock when
+  negative). delta = clock - previous.
+- **Surface origin:** L = 00419510(first light's +1E0h vector) and n = -L. Then s = sqrt(1 - n.y^2),
+  h = n.xz * 00419260(n.xz) * s, and ly = -sqrt(1 - (1 - n.y^2)). origin = camera - (camera.y/ly) *
+  (h.x, ly, h.z), so origin.y = 0. Beams are placed around it and every quad faces it. They do not
+  face the camera.
+- **RNG.** Three draws come from `00BA2C20` with ECX = 00E130C0, the private Mersenne state. The two
+  at BA3270/BA32BF are in the respawn path and the one at BA346E decides deaths. The caller also inlines
+  the state guard (state+9C5h set and +9C4h clear: write to address 0). The port keeps the stream
+  behind `next_private_random_00ba2c20`. It must never be wired to 00BD2F10.
+- Respawn happens when birth < 0, or when death >= 0 and clock > death. It sets
+  radius = +50h + +54h*u1, angle = float(u2 * (double)6.2831855f) and position = origin + radius*(cos,
+  0, sin), then birth = clock and death = -1.
+- Death scheduling applies when death < 0. The squared xz distance to the origin selects a band
+  (+60h/+64h/+68h) and its rate p (+6Ch..+78h). survival = exp(log(1-p) * delta): 00BFA910 is _CIlog
+  (x87 path `FLDLN2; FYL2X`) and 00BFEEEC is _CIexp (name string "exp" at 00E1670A). If u3 > survival,
+  death = clock + +D0h.
+- Quads: the perpendicular is normalize(origin - beam) rotated, or (1, 0) at distance <= (double)0.05f.
+  The top corners sit at +-(+58h) on the water height 0078C890. **That is the gameplay water height,
+  including the +24h amplitude** (section 1). It is read only.
+- axis = normalize(normalize(dx, 64, dz) * +5Ch + (h.x, ly, h.z)), with (dx, dz) from 00BA2B50 and
+  4096 = [00D63B90]. The bottom corners are top + axis * +4Ch.
+- Vertices are 1Ch bytes (xyz, u, v, alpha, ARGB). u = 0 for vertices 1 and 3 (the + side). v = 1 for
+  the bottom pair. Fade-in is age * +D4h while age < +CCh. Fade-out multiplies by (death - clock) * +D8h
+  while that is < +D0h. Colour = 004FB850(+3Ch) for each vertex. The counts are written first:
+  [beams+1Ch]+10h = 4n and +18h = 2n.
+### 10.4 Handoff (cc13-water2)
+
+- Branch `agent/cc13-water2`. Leases `cc13_water2_ocean_x87` (00B9AE00-00BA35FF) and `cc13_water2_quad`
+  (00B9A990-00B9AB39) are released.
+- Done: 00B9AE00, 00B9D7B0, 00B9A990 and 00BA2FF0. All four were reconstructed in full and
+  build-tested. They are not fixture-tested and not wired.
+- Next options: give 00BA5030 (the float16 upload that 00B9D7B0 tail-calls) and 00BA51C0/00B9A2F0
+  (vtable 00D63E10 slots 1 and 2) the same treatment, or write a fixture that drives
+  `compute_projector_matrices_00b9ae00` against a captured camera.
+- Tooling: `local/wa2_sym.py` in the cc13-water2 tree is a one-path symbolic executor. Use `--take`
+  for branches, `--esp`/`--fpu`/`--init` to start mid-function, and `--out A=arg:len` for callee
+  outputs. It decodes `D8/DC/DE` register forms from the bytes. Pitfall: capstone names FCOMIP
+  `fcompi`, and the tool now pops for it.
