@@ -16248,6 +16248,82 @@
             "sha256": "1a764f7fbbc6d26613c605cdbea4d8d45ddf58bef7ee743ec2876fc2bb55cbcf"
           },
           "boundary": "Root04 changes only the fresh HOLD destination. Peer08 corrects actual_original_session_id. Source-only acceptance does not issue joint DATA, startup, dispatch, runtime, fixture, ABI or game qualification."
+        },
+        "fresh_F6_native01_Root_Source04_peer_Source08_actual_joint_DATA_acceptance_checkpoint": {
+          "schema": "Root_F6_native01_Root_Source04_peer_Source08_actual_joint_DATA_acceptance_checkpoint_v1",
+          "Source_credit": 0,
+          "Root_joint_DATA_acceptance_issued": true,
+          "new_native_clock_started": false,
+          "status": "complete_adopted_DATA_joint_accepted",
+          "actual_complete_joint_DATA_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_prepare01_complete_adopted_DATA_graph_peer_accepted_DATA01.json",
+            "bytes": 128194078,
+            "sha256": "86ed99a46fa1b077bb2a962f22ea7cc1724080d9d98d7bfca7f63423ec6e8547"
+          },
+          "actual_original_genuine_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_complete_adopted_joint_original_genuine_native_DATA01.json",
+            "bytes": 8191,
+            "sha256": "0ad4f2e988c953ccd37bbb6812422463c883d57a1e9e476a8790cc7322ce0f57"
+          },
+          "actual_selected_retry_input": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\Root_F6_native01_joint_actual_selected_inputs_DATA02.json",
+            "bytes": 14582,
+            "sha256": "bdcf24d702bae01f6e4e9aefd30e404cb134ee3d67442d70bb85d9afd765fadf"
+          },
+          "actual_executed_Root_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\consume_F6_native01_complete_adopted_DATA_joint_Root_SOURCE04.py",
+            "bytes": 51957,
+            "sha256": "e7ca2494d93639bc8ab59b7b97d458369cfc9d0b14a6d7afa21f99ad4f52f21f"
+          },
+          "actual_executed_peer_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_native01_materialization_control01\\independent_review_consumer_F6_native01_SOURCE08.py",
+            "bytes": 98241,
+            "sha256": "67b614c18504380ec5dc5430b19e7876577027186539088a13c09b9ae07cbe14"
+          },
+          "actual_initial_chunk_id": "3c2d02",
+          "actual_original_session_id": 48554,
+          "actual_terminal_chunk_id": "c2768f",
+          "actual_terminal_exit_code": 0,
+          "actual_tool_turn_count": 5,
+          "complete_actual_chunk_chain": [
+            "3c2d02",
+            "f8247f",
+            "7cbdb9",
+            "f7255f",
+            "c2768f"
+          ],
+          "complete_serialized_positive_checks": 423,
+          "complete_positive_predicate_invocations": 3411665,
+          "complete_current_union_pins": 34957,
+          "accepted_independent_predicate_invocations": 30978010,
+          "accepted_independent_current_pins": 34868,
+          "whole_original_native_and_joint_consumption_actual_chunk": "f4a160",
+          "whole_original_native_and_joint_consumption_actual_exit_code": 0,
+          "recorded_joint_own_API_stamp_field_count": 5,
+          "recorded_joint_physical_metadata_scope": "dev, ino, size, mtime_ns, ctime_ns; fresh independent nine-field metadata is a separate observation",
+          "preserved_original_failed_native": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/Root_F6_native01_materialization_control01/Root_F6_native01_joint_SOURCE03_peer_SOURCE07_failed_original_genuine_native_DATA01.json",
+            "bytes": 9042,
+            "sha256": "a61b7b2a761343aebb0f7970c2425d32881ba6090e5ef2a916f18dd3f6744dce"
+          },
+          "preserved_original_failed_HOLD": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/Root_F6_native01_materialization_control01/Root_F6_native01_complete_adopted_joint_actual_HOLD_DATA01.json",
+            "bytes": 55162326,
+            "sha256": "535defc3da47961acdd86e45cb7ca802bf5497b4fe2016c4b1ccdbd6cfbed187"
+          },
+          "prestartup_constructor_executed": false,
+          "ordinary_host_executed": false,
+          "compiler_executed": false,
+          "selected_recipe_executed": false,
+          "allow_dispatch": false,
+          "DATA_adoption_authority": false,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "clock_started": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "boundary": "Actual adopted DATA graph acceptance only. Original failures remain immutable and the prior Source-only checkpoint remains historical. Fresh startup, dispatch, native clock, helper/caller/provider ABI and game qualification remain unissued."
         }
       }
     }
