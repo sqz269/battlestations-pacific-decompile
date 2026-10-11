@@ -2,37 +2,293 @@
   "packet": "cc13_audio1_seg74",
   "document": "docs/CC13_SOUND_STREAMING.md",
   "host_steps": [
-    {"function": "00a7d120", "address": "00a7d1a6", "native": "00a7acf0", "host": "SoundLevelNameHost via find_sound_class_00a7acf0"},
-    {"function": "00a7d120", "address": "00a7d1b9", "native": "00a7acf0", "host": "SoundLevelNameHost via find_sound_class_00a7acf0"},
-    {"function": "00a7d120", "address": "00a7d1da", "native": "00a7acf0", "host": "SoundLevelNameHost via find_sound_class_00a7acf0"},
-    {"function": "00a7d120", "address": "00a7d1f3", "native": "00a7ac70", "host": "set_sound_class_duck_levels_00a7ac70"},
-    {"function": "00a7ac70", "address": "00a7acde", "native": "00a7a3f0", "host": "dirty_sound_classes_00a7a3f0"},
-    {"function": "00a7f890", "address": "00a7f8ab", "native": "00a7c2c0", "host": "SoundClassOwnership::resize_00a7c2c0"},
-    {"function": "00a7f890", "address": "00a7f8c9", "native": "00a7c2c0", "host": "SoundClassOwnership::resize_00a7c2c0"},
-    {"function": "00a7b710", "address": "00a7b722", "native": "00a7ae00", "host": "find_sound_listener_00a7ae00"},
-    {"function": "00a7b710", "address": "00a7b740", "native": "00a7ae80", "host": "select_sound_listener_00a7ae80"},
-    {"function": "00a7d9d0", "address": "00a7da06", "native": "00a7c240", "host": "SoundClassOwnership::append_retained"},
-    {"function": "00a86710", "address": "00a8671d", "native": "00a865f0", "host": "find_sound_dialog_record_00a865f0"},
-    {"function": "00a869b0", "address": "00a869d3", "native": "00c2de18", "host": "SoundStreamDebugHost::channel_get_position_ms"},
-    {"function": "00a869b0", "address": "00a869e8", "native": "00a7a460", "host": "SoundStreamDebugHost::on_out_of_sound_memory"},
-    {"function": "00a869b0", "address": "00a86a22", "native": "004c14c0", "host": "SoundStreamDebugHost::draw_text (sink)"},
-    {"function": "00a869b0", "address": "00a86a5f", "native": "004b47e0", "host": "SoundStreamDebugHost::draw_text"},
-    {"function": "00a83120", "address": "00a8314f", "native": "00a82ae0", "host": "copy_sound_sample_descriptor_00a82ae0"},
-    {"function": "00a83120", "address": "00a8316b", "native": "00c2de9c", "host": "SoundSampleApplyHost::sound_set_3d_min_max_distance"},
-    {"function": "00a83120", "address": "00a83180", "native": "00a7a460", "host": "SoundSampleApplyHost::on_out_of_sound_memory"},
-    {"function": "00a83120", "address": "00a831a2", "native": "00c2de96", "host": "SoundSampleApplyHost::sound_set_variations"},
-    {"function": "00a83120", "address": "00a831c8", "native": "00c2dea8", "host": "SoundSampleApplyHost::sound_get_mode"},
-    {"function": "00a83120", "address": "00a8322a", "native": "00c2de8a", "host": "SoundSampleApplyHost::sound_set_mode"},
-    {"function": "00a83120", "address": "00a83258", "native": "00bf9440", "host": "std::strstr"},
-    {"function": "00a83120", "address": "00a83293", "native": "00426500", "host": "SoundSampleApplyHost::format_* (builder construct)"},
-    {"function": "00a82ae0", "address": "00a82b65", "native": "0093fd00", "host": "SoundSampleApplyHost::assign_parameters"},
-    {"function": "00a89210", "address": "00a89233", "native": "00c2df9e", "host": "SoundEventHost::event_get_state"},
-    {"function": "00a89600", "address": "00a89616", "native": "00a7a2e0", "host": "SoundEventHost::advance_fade"},
-    {"function": "00a89600", "address": "00a89656", "native": "00a894e0", "host": "SoundEventHost::create_and_start"},
-    {"function": "00a89600", "address": "00a89680", "native": "00c2dfb6", "host": "SoundEventHost::event_set_pitch"},
-    {"function": "00a89600", "address": "00a89687", "native": "00a7aaa0", "host": "SoundEventHost::mixed_volume"},
-    {"function": "00a89600", "address": "00a89694", "native": "00c2dfb0", "host": "SoundEventHost::event_set_volume"},
-    {"function": "00a89600", "address": "00a8969f", "native": "00a89560", "host": "SoundEventHost::update_parameters"},
-    {"function": "00a89600", "address": "00a896c7", "native": "00c2df98", "host": "SoundEventHost::event_set_paused"}
+    {
+      "function": "00a7d120",
+      "address": "00a7d1a6",
+      "native": "00a7acf0",
+      "host": "SoundLevelNameHost via find_sound_class_00a7acf0"
+    },
+    {
+      "function": "00a7d120",
+      "address": "00a7d1b9",
+      "native": "00a7acf0",
+      "host": "SoundLevelNameHost via find_sound_class_00a7acf0"
+    },
+    {
+      "function": "00a7d120",
+      "address": "00a7d1da",
+      "native": "00a7acf0",
+      "host": "SoundLevelNameHost via find_sound_class_00a7acf0"
+    },
+    {
+      "function": "00a7d120",
+      "address": "00a7d1f3",
+      "native": "00a7ac70",
+      "host": "set_sound_class_duck_levels_00a7ac70"
+    },
+    {
+      "function": "00a7ac70",
+      "address": "00a7acde",
+      "native": "00a7a3f0",
+      "host": "dirty_sound_classes_00a7a3f0"
+    },
+    {
+      "function": "00a7f890",
+      "address": "00a7f8ab",
+      "native": "00a7c2c0",
+      "host": "SoundClassOwnership::resize_00a7c2c0"
+    },
+    {
+      "function": "00a7f890",
+      "address": "00a7f8c9",
+      "native": "00a7c2c0",
+      "host": "SoundClassOwnership::resize_00a7c2c0"
+    },
+    {
+      "function": "00a7b710",
+      "address": "00a7b722",
+      "native": "00a7ae00",
+      "host": "find_sound_listener_00a7ae00"
+    },
+    {
+      "function": "00a7b710",
+      "address": "00a7b740",
+      "native": "00a7ae80",
+      "host": "select_sound_listener_00a7ae80"
+    },
+    {
+      "function": "00a7d9d0",
+      "address": "00a7da06",
+      "native": "00a7c240",
+      "host": "SoundClassOwnership::append_retained"
+    },
+    {
+      "function": "00a86710",
+      "address": "00a8671d",
+      "native": "00a865f0",
+      "host": "find_sound_dialog_record_00a865f0"
+    },
+    {
+      "function": "00a869b0",
+      "address": "00a869d3",
+      "native": "00c2de18",
+      "host": "SoundStreamDebugHost::channel_get_position_ms"
+    },
+    {
+      "function": "00a869b0",
+      "address": "00a869e8",
+      "native": "00a7a460",
+      "host": "SoundStreamDebugHost::on_out_of_sound_memory"
+    },
+    {
+      "function": "00a869b0",
+      "address": "00a86a22",
+      "native": "004c14c0",
+      "host": "SoundStreamDebugHost::draw_text (sink)"
+    },
+    {
+      "function": "00a869b0",
+      "address": "00a86a5f",
+      "native": "004b47e0",
+      "host": "SoundStreamDebugHost::draw_text"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a8314f",
+      "native": "00a82ae0",
+      "host": "copy_sound_sample_descriptor_00a82ae0"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a8316b",
+      "native": "00c2de9c",
+      "host": "SoundSampleApplyHost::sound_set_3d_min_max_distance"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a83180",
+      "native": "00a7a460",
+      "host": "SoundSampleApplyHost::on_out_of_sound_memory"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a831a2",
+      "native": "00c2de96",
+      "host": "SoundSampleApplyHost::sound_set_variations"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a831c8",
+      "native": "00c2dea8",
+      "host": "SoundSampleApplyHost::sound_get_mode"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a8322a",
+      "native": "00c2de8a",
+      "host": "SoundSampleApplyHost::sound_set_mode"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a83258",
+      "native": "00bf9440",
+      "host": "std::strstr"
+    },
+    {
+      "function": "00a83120",
+      "address": "00a83293",
+      "native": "00426500",
+      "host": "SoundSampleApplyHost::format_* (builder construct)"
+    },
+    {
+      "function": "00a82ae0",
+      "address": "00a82b65",
+      "native": "0093fd00",
+      "host": "SoundSampleApplyHost::assign_parameters"
+    },
+    {
+      "function": "00a89210",
+      "address": "00a89233",
+      "native": "00c2df9e",
+      "host": "SoundEventHost::event_get_state"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a89616",
+      "native": "00a7a2e0",
+      "host": "SoundEventHost::advance_fade"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a89656",
+      "native": "00a894e0",
+      "host": "SoundEventHost::create_and_start"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a89680",
+      "native": "00c2dfb6",
+      "host": "SoundEventHost::event_set_pitch"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a89687",
+      "native": "00a7aaa0",
+      "host": "SoundEventHost::mixed_volume"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a89694",
+      "native": "00c2dfb0",
+      "host": "SoundEventHost::event_set_volume"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a8969f",
+      "native": "00a89560",
+      "host": "SoundEventHost::update_parameters"
+    },
+    {
+      "function": "00a89600",
+      "address": "00a896c7",
+      "native": "00c2df98",
+      "host": "SoundEventHost::event_set_paused"
+    },
+    {
+      "function": "00a8ac90",
+      "address": "00a8acce",
+      "native": "00b62d10",
+      "host": "transform_native_vector4_00b62d10"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eaac",
+      "native": "00a8bd20",
+      "host": "ShadowCascadeSubmitHost::fit_cascade"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eacb",
+      "native": "00a8bd20",
+      "host": "fit_cascade"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eaea",
+      "native": "00a8bd20",
+      "host": "fit_cascade"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eb09",
+      "native": "00a8bd20",
+      "host": "fit_cascade"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eb24",
+      "native": "00b6db70",
+      "host": "refresh_world_matrix"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eb70",
+      "native": "00b70410",
+      "host": "set_extra_clip_plane"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eb77",
+      "native": "00b70470",
+      "host": "clear_extra_clip_plane"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8eba8",
+      "native": "00b1f1f0",
+      "host": "new_render_command"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ebd5",
+      "native": "00b1bf50",
+      "host": "set_metadata"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec1e",
+      "native": "00b1d910",
+      "host": "set_diagnostic_name"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec49",
+      "native": "004c11f0",
+      "host": "append_shadow_command (queue)"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec50",
+      "native": "00b1eb80",
+      "host": "append_shadow_command"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec55",
+      "native": "004c1130",
+      "host": "submit_frame_job (pool)"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec5d",
+      "native": "00a8e090",
+      "host": "submit_frame_job (job)"
+    },
+    {
+      "function": "00a8ea20",
+      "address": "00a8ec7c",
+      "native": "004c1130",
+      "host": "flush_frame_jobs (pool)"
+    }
   ]
 }

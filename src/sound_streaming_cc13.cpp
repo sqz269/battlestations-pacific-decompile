@@ -1,5 +1,6 @@
 #include "bsp/sound_streaming_cc13.hpp"
 
+#include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/sound_dialog_logical.hpp"
 
 #include <cstdio>
@@ -323,6 +324,78 @@ void update_sound_event_00a89600(void* instance, float dt, SoundEventHost& host)
         || read<std::uint8_t>(read<void*>(instance, 0x44), 0xc) != 0;
     const auto hold = read<std::uint8_t>(instance, 0x38);
     host.event_set_paused(read<void*>(instance, 0x54), static_cast<std::uint8_t>(hold | (paused ? 1 : 0)));
+}
+
+void project_shadow_point_00a8ac90(float* inout_xyz, const void* actual_matrix_float16)
+{
+    const float source[4] = {inout_xyz[0], inout_xyz[1], inout_xyz[2], 1.0f}; // 1.0f from 00D7A24C
+    float transformed[4];
+    transform_native_vector4_00b62d10(source, transformed, actual_matrix_float16);
+    // Double rounding through the 53-bit x87 is innocuous for one divide or
+    // multiply of floats, so float arithmetic reproduces each FSTP.
+    const float inverse_w = 1.0f / transformed[3];
+    inout_xyz[0] = transformed[0] * inverse_w;
+    inout_xyz[1] = transformed[1] * inverse_w;
+    inout_xyz[2] = inverse_w * transformed[2];
+}
+
+void submit_shadow_cascades_00a8ea20(void* owner, ShadowCascadeSubmitHost& host)
+{
+    write(owner, 0x390, 35.0f);   // 00CE4D90
+    write(owner, 0x394, 100.0f);  // 00CE3D08
+    write(owner, 0x398, 300.0f);  // 00CE3AE8
+    write(owner, 0x39c, 1000.0f); // 00CE3804
+    write(owner, 0x4ec, 1.5f);    // 00CE380C
+    host.fit_cascade(owner, 5.0f, read<float>(owner, 0x390), 0); // near 00CE3850
+    host.fit_cascade(owner, read<float>(owner, 0x390), read<float>(owner, 0x394), 1);
+    host.fit_cascade(owner, read<float>(owner, 0x394), read<float>(owner, 0x398), 2);
+    host.fit_cascade(owner, read<float>(owner, 0x398), read<float>(owner, 0x39c), 3);
+    for (std::size_t cascade = 0; cascade < 4; ++cascade) {
+        const std::size_t slot = 0x20 + cascade * 4;
+        void* const render_camera = read<void*>(owner, 0x30);
+        if ((read<std::uint8_t>(render_camera, 0x5c) & 2u) == 0u) host.refresh_world_matrix(render_camera);
+        void* const cascade_camera = read<void*>(owner, slot);
+        // COMISS -5.0, height / JBE: an unordered height clears the plane.
+        if (-5.0f > read<float>(render_camera, 0x124)) {
+            const float plane[4] = {0.0f, -1.0f, 0.0f, 2.0f}; // 00D7A260, 00CE3958
+            host.set_extra_clip_plane(cascade_camera, plane);
+        } else {
+            host.clear_extra_clip_plane(cascade_camera);
+        }
+        void* const command = host.new_render_command(read<void*>(owner, 0x34),
+            read<void*>(owner, slot), read<void*>(owner, 0x30), read<void*>(owner, slot + 0x4d0));
+        const std::uint32_t metadata[3] = {0u, 0x62u, 0x1eu};
+        host.set_metadata(command, metadata);
+        host.set_diagnostic_name(command, "SHBU");
+        host.append_shadow_command(command, 0u);
+        host.submit_frame_job(command);
+    }
+    host.flush_frame_jobs();
+}
+
+bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionBinding>& bindings) noexcept
+{
+    for (const auto& binding : bindings)
+        if (binding.force_unit_scale) return true;
+    return false;
+}
+
+bool input_actions_share_binding_00a92910(const std::vector<InputActionBinding>& first,
+    const std::vector<InputActionBinding>& second) noexcept
+{
+    constexpr std::uint32_t kNone = 0xffffffffu;
+    const std::size_t first_count = first.size();
+    for (std::size_t i = 0; i < first_count; ++i) {
+        const auto& a = first[i];
+        if (a.input_code == kNone || static_cast<std::uint32_t>(a.device_class) == kNone) continue;
+        for (std::size_t j = 0; j < second.size(); ++j) {
+            const auto& b = second[j];
+            if (b.input_code != kNone && static_cast<std::uint32_t>(b.device_class) != kNone
+                && a.device_class == b.device_class && a.input_code == b.input_code)
+                return true;
+        }
+    }
+    return false;
 }
 
 } // namespace bsp::cc13_audio

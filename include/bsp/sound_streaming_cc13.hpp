@@ -8,6 +8,7 @@
 // FMOD, the VFS and diagnostics stay host interfaces.
 
 #include "bsp/audio_online_startup.hpp"
+#include "bsp/input_action_classifier.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/sound_class_ownership.hpp"
 #include "bsp/sound_configuration.hpp"
@@ -15,6 +16,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace bsp::cc13_audio {
 
@@ -199,5 +201,66 @@ bool sound_event_is_completed_00a89210(void* instance, SoundEventHost& host);
 // and setVolume(mixed volume) and clear +14h; update parameters; finally
 // setPaused(hold | instance paused +1Ch | class paused class(+44h)+0Ch).
 void update_sound_event_00a89600(void* instance, float dt, SoundEventHost& host);
+
+// ---------------------------------------------------------------------------
+// Directional shadow cascades (same segment; directional shadow owner object)
+// ---------------------------------------------------------------------------
+
+// 00A8AC90, __fastcall(ECX float3* in/out, EDX matrix), RET. Transforms
+// {x,y,z,1} through 00B62D10, then stores x/w, y/w, z/w with 1/w rounded to
+// float first (FLD1/FDIVRP/FSTP) and each product rounded by its FSTP.
+// Caller 00A8ECB0.
+void project_shadow_point_00a8ac90(float* inout_xyz, const void* actual_matrix_float16);
+
+class ShadowCascadeSubmitHost {
+public:
+    virtual ~ShadowCascadeSubmitHost() = default;
+    // 00A8BD20, __thiscall(owner, float near, float far, int cascade), RET 0Ch.
+    virtual void fit_cascade(void* owner, float near_distance, float far_distance, std::int32_t cascade) = 0;
+    virtual void refresh_world_matrix(void* camera) = 0; // 00B6DB70
+    virtual void set_extra_clip_plane(void* camera, const float* plane4) = 0; // 00B70410
+    virtual void clear_extra_clip_plane(void* camera) = 0; // 00B70470
+    // operator_new(44h) then 00B1F1F0(owner +34h, cascade camera, render camera, target).
+    virtual void* new_render_command(void* command_owner, void* cascade_camera,
+        void* render_camera, void* target) = 0;
+    virtual void set_metadata(void* command, const std::uint32_t* metadata3) = 0; // 00B1BF50
+    // 00B1D910 with a temporary native string holding the four bytes at 00D5B5D0.
+    virtual void set_diagnostic_name(void* command, const char* name) = 0;
+    // 004C11F0 queue, then 00B1EB80(queue, command, immediate).
+    virtual void append_shadow_command(void* command, std::uint32_t immediate) = 0;
+    // 004C1130 pool, (pool+4)->vslot1(00A8E090 shadow job, command).
+    virtual void submit_frame_job(void* command) = 0;
+    // (pool+4)->vslot2(0) after the loop.
+    virtual void flush_frame_jobs() = 0;
+};
+
+// 00A8EA20, __fastcall(owner), SEH frame, RET. Sets the four cascade far
+// distances +390h..+39Ch to 35, 100, 300, 1000 and +4ECh to 1.5, fits cascades
+// [5,35], [35,100], [100,300], [300,1000] through 00A8BD20, then for each of the
+// four cascade cameras (+20h + 4i) with render camera +30h (reloaded per pass):
+// refresh the render camera's world matrix unless its flags +5Ch bit1 is set;
+// when the render camera height +124h is below -5.0 (00CFBC84) give the cascade
+// camera the clip plane {0,-1,0,2}, otherwise clear it; build a render command
+// for target +4F0h + 4i with metadata {0, 62h, 1Eh} and name "SHBU", queue it
+// and submit it as a shadow frame job. A failed allocation leaves the command
+// null and native then calls through it. Caller BSP_ShadowMap_UpdateViewFromCamera.
+void submit_shadow_cascades_00a8ea20(void* owner, ShadowCascadeSubmitHost& host);
+
+// ---------------------------------------------------------------------------
+// Input action binding queries (same segment; InputActionBinding projection)
+// ---------------------------------------------------------------------------
+
+// 00A92050, ECX 30h action, RET, AL. True when any binding (vector +10h,
+// count +14h, stride 34h) has byte +14h (force_unit_scale) set. Sibling of
+// 00A92090. Callers: HUD unit-order controls and 0060ABD0.
+bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionBinding>& bindings) noexcept;
+
+// 00A92910, __thiscall(manager, int first, int second), RET 8, AL. Actions are
+// manager+4 + index*30h. True when some binding of the first action and some
+// binding of the second both have device_class (+4) and input_code (+10h)
+// different from -1 and equal to each other. The first count is read once,
+// the second per pass. Caller 005F6EF0 (control binding screen).
+bool input_actions_share_binding_00a92910(const std::vector<InputActionBinding>& first,
+    const std::vector<InputActionBinding>& second) noexcept;
 
 } // namespace bsp::cc13_audio

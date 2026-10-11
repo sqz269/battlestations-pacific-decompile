@@ -2,7 +2,7 @@
 
 Addresses: 00A7A440-00A9AC40 (partition segment 74). Worker cc13-audio1, branch `agent/cc13-audio1`.
 Source: `src/sound_streaming_cc13.cpp`, `include/bsp/sound_streaming_cc13.hpp`.
-Call-site report: `reports/cc13_audio1_calls.json` (32 rows, `tools/verify_report_calls.py` clean).
+Call-site report: `reports/cc13_audio1_calls.json` (48 rows, `tools/verify_report_calls.py` clean).
 Functions defined in Ghidra: `reports/cc13_audio1_defined.json`.
 
 All names are hypotheses, not recovered symbols. Status vocabulary: *named* (ledger + Ghidra
@@ -43,6 +43,10 @@ append fragment 00A80EBA), `sound_configuration` (00A7AE00, 00A7AE80), `sound_di
 | 00A7BE50, 00A7BE60, 00A7BEA0, 00A7BED0 | `sound_instance_default_*` | complete | vtable D5ABB8/D5ABF8/D5AD58/D5B480 slots |
 | 00A89210 | `sound_event_is_completed_00a89210` | complete | listing 00A89210-00A89244 |
 | 00A89600 | `update_sound_event_00a89600` | complete | listing 00A89600-00A896CE |
+| 00A8AC90 | `project_shadow_point_00a8ac90` | complete | listing 00A8AC90-00A8AD1E (x87) |
+| 00A8EA20 | `submit_shadow_cascades_00a8ea20` | complete normal path; allocation-failure path not modelled | listing 00A8EA20-00A8ECA0 |
+| 00A92050 | `any_input_binding_forces_unit_scale_00a92050` | complete | decompile + listing |
+| 00A92910 | `input_actions_share_binding_00a92910` | complete | decompile 00A92910-00A929A4 |
 
 ### Class ducking (00A7AC70, 00A7D120)
 
@@ -122,9 +126,54 @@ the channel (D5ABF8), retained channel (D5AD58) and FMOD event (D5B480) vtables:
 Slots +34/+38 are never overridden in these four vtables; their meaning (six-dword setter,
 three-float getter) is open.
 
+### Shadow cascades (00A8EA20, 00A8AC90)
+
+`BSP_ShadowMap_UpdateViewFromCamera` (00A8F3B0) reaches the cascade path through 00A8EA20, the
+step docs/DIRECTIONAL_SHADOW_OWNER_NEXT.md left as the render-ready boundary. 00A8EA20 fixes the
+four cascade far distances at owner +390h..+39Ch to 35, 100, 300 and 1000 (00CE4D90, 00CE3D08,
+00CE3AE8, 00CE3804) and +4ECh to 1.5, so the cascades are [5,35], [35,100], [100,300],
+[300,1000] with the first near 5.0 (00CE3850). Each is fitted by 00A8BD20 (owner, near, far,
+index). Per cascade camera (owner +20h + 4i) it then refreshes the render camera (+30h) world
+matrix unless camera flags +5Ch bit 1 is set, gives the cascade camera the clip plane
+{0, -1, 0, 2} when the render camera height +124h is below -5.0 (00CFBC84; an underwater
+camera) and clears it otherwise, builds a render command (00B1F1F0: owner +34h, cascade camera,
+render camera, target +4F0h + 4i) with metadata {0, 62h, 1Eh} and diagnostic name `SHBU`,
+appends it to the shadow queue (00B1EB80, immediate 0) and submits it as a shadow frame job
+(00A8E090). The frame-job pool is flushed after the fourth cascade.
+
+Not reconstructed, named only: the cascade fitter 00A8BD20 (2007h bytes of x87), the single-view
+fitter 00A8AEB0 and its two callers 00A8E180 (from 00B3C960) and 00A8E860 (ground-ortho interface
+view), the unreferenced 00A8ECB0 (an older fit-and-submit path that uses 00A8AC90) and 00A8B930,
+and the 2D line intersection 00A8B860. These are the next shadow packet; they need listing-level
+x87 work.
+
+### Input binding queries (00A92050, 00A92910)
+
+00A92050 is the sibling of the reconstructed 00A92090 (`input_binding_poll`): it reports whether
+any binding of an action sets `force_unit_scale` (+14h). 00A92910 is the control-binding screen's
+conflict test: two actions conflict when any pair of their bindings shares device class and
+input code, neither -1.
+
+Named in the same band: `BSP_InputManager_GetContextLevel` 00A92290 (with setter 00A933F0,
+docs/FRONTEND_SCREEN_SETS.md), `BSP_InputBackend_AnyDeviceHasInput` 00A90F90 and
+`BSP_InputBackend_ReadEvent` 00A90530 (both already host methods in `frontend_menus`),
+`BSP_TextOwner_HandleKeyFallback` 00A96750 (docs/TEXT_INPUT_FALLBACK.md),
+`BSP_InputAction_Update_Provisional` 00A92A20, `BSP_GamepadForce_ClearAllChannels` 00A95CB0,
+input-manager singleton base destructors 00A92180/00A92230, and
+`BSP_InputAction_RemoveMatchingBinding` 00A93690. The latter has a native quirk: when no binding
+matches, the end iterator is not the last element, so the last binding is copied into the slot
+past the end and then destroyed, i.e. a miss removes the last binding.
+
+About 60 raw functions remain in 00A90000-00A9AC40. They are `std::vector`/`std::deque`/
+`std::_Tree` instances for the input backend device groups, gamepad force request queues and the
+text owner event queue (allocate-with-throw at 00A907A0, 00A94680, 00A96260, 00A974D0; insert
+bodies 00A91260, 00A97CB0; erase/clear/destroy families around 00A94730, 00A95330, 00A96550,
+00A96FB0). They were not named individually.
+
 ## Named-only routines
 
-85 ledger names were added (`config/names/00a70000.jsonl`, `00a80000.jsonl`) and applied to
+117 ledger names were added in total (85 in the sound band, 32 in the shadow and input bands). The
+first 85 were added (`config/names/00a70000.jsonl`, `00a80000.jsonl`) and applied to
 Ghidra with evidence comments. Beyond the reconstructed rows above they are container and STL
 template instances, recorded so the band stops showing them as unknown:
 
