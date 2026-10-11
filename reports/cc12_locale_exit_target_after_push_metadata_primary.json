@@ -1,0 +1,281 @@
+{
+  "schema": "bsp.cc12.locale-exit-target-after-push-metadata.primary.v1",
+  "utc": "2026-10-11T02:18:56.562550+00:00",
+  "status": "accepted_bounded_BF6FF9_metadata_subset",
+  "worker_commit": "59cdc3c30b38a3e962a2810b03f2b722512e6994",
+  "frozen_HEAD": "c939bad77217caff6a7bc8dab22481e0394ba6b6",
+  "Root_review_HEAD": "f56daf8e390f3e3e0737ba77aa4a1a8857ab7579",
+  "proof_archives": {
+    "evidence.zip": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\evidence.zip",
+      "bytes": 310139070,
+      "sha256": "25fe84a41549404cd9551432fc242712fc98257110dcb97d00c6da0e93b59211"
+    },
+    "delivery_git.zip": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\delivery_git.zip",
+      "bytes": 679414,
+      "sha256": "7c243699dca79133d34783b42f27ad1d65cba68b205b0a3f5570a24edaaddc15"
+    }
+  },
+  "primary_reviews": {
+    "Root_core_guard.json": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\Root_core_guard.json",
+      "bytes": 37656,
+      "sha256": "67eeb1ac0f40c5f9cce99fbdbae8c41b030c41ae3db8929a4a53077b050c23fd"
+    },
+    "Root_delivery_guard.json": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\Root_delivery_guard.json",
+      "bytes": 6166,
+      "sha256": "85680c6dac6c927199213dfa7bf73965e95ef3075cbaadcc81ce6465ede33df3"
+    },
+    "Root_actual_review.json": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\Root_actual_review.json",
+      "bytes": 2437187,
+      "sha256": "f619704d44af62648994c73ef1a852d0771a6040fc6ab68a23e0389e84eb385d"
+    },
+    "Root_qualified_metadata.json": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\Root_qualified_metadata.json",
+      "bytes": 3570,
+      "sha256": "8f64556bbbdc2640cac68729fbe6728ec26bf751bfffef11211e5a20eadb0181"
+    },
+    "Root_actual_ledger_diff.txt": {
+      "path": "local\\cc12_locale_exit_target_after_push_metadata_primary\\Root_actual_ledger_diff.txt",
+      "bytes": 3295,
+      "sha256": "fc98ef0b2e457ac7710475b6b1ba824105d17e4c3a8e2f1f27347990143b70e7"
+    }
+  },
+  "actual_Git": {
+    "frozen_blobs": 4294,
+    "frozen_objects": 11,
+    "Root_Source_epoch_objects": 2,
+    "worker_Base_provenance_objects": 5,
+    "metadata_tree_objects": 2,
+    "delivery_objects": 8,
+    "delivery_outputs": 2,
+    "closed_Source": 4217,
+    "Root_Source_differences": [],
+    "exact_ledger_diff_bytes": 3295
+  },
+  "Native_scope": {
+    "Native_closed": true,
+    "adjacent_queries": 0,
+    "after_validation": {
+      "accepted": true,
+      "errors": [],
+      "state": "accepted"
+    },
+    "capture_order": [
+      "typed_before",
+      "count_before",
+      "count_after",
+      "typed_after"
+    ],
+    "count_bytes_equal": true,
+    "epoch_after": "98",
+    "epoch_before": "98",
+    "fresh_unique_code_bytes": 0,
+    "fresh_unique_data_bytes": 0,
+    "function_count_after": 64730,
+    "function_count_before": 64730,
+    "identity_bookends_equal": true,
+    "instruction_text_queries": 0,
+    "mutations": 0,
+    "prototype_queries": 0,
+    "queried_addresses": [
+      "BF6FF9"
+    ],
+    "target_queries": 0,
+    "typed_raw_response_equal": true
+  },
+  "qualified_metadata": {
+    "complete": true,
+    "direct_call_targets": [
+      {
+        "address": {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        },
+        "default_target": true,
+        "effective_target": true
+      }
+    ],
+    "function_at_query": null,
+    "function_containing_query": {
+      "offset": "00bf6ff5",
+      "space": "ram"
+    },
+    "functions": [
+      {
+        "body": {
+          "address_count": "18",
+          "complete": true,
+          "range_count": 1,
+          "ranges": [
+            {
+              "end_inclusive": {
+                "offset": "00bf7006",
+                "space": "ram"
+              },
+              "length": "18",
+              "start": {
+                "offset": "00bf6ff5",
+                "space": "ram"
+              }
+            }
+          ],
+          "returned_range_count": 1
+        },
+        "direct_thunk_target": null,
+        "entry": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "is_thunk": false,
+        "name": "_atexit",
+        "no_return": false,
+        "thunk_target_recursive": false
+      }
+    ],
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00bf6ffe",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "default_targets": [
+        {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        }
+      ],
+      "effective_fallthrough": {
+        "offset": "00bf6ffe",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "effective_targets": [
+        {
+          "offset": "00bf6fb9",
+          "space": "ram"
+        }
+      ],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00bf6ff9",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 5
+      }
+    },
+    "modification_number_after": "98",
+    "modification_number_before": "98",
+    "program": {
+      "default_address_space": "ram",
+      "image_base": {
+        "offset": "00400000",
+        "space": "ram"
+      },
+      "language": "x86:LE:32:default",
+      "path": "/battlestationspacific.exe",
+      "project": {
+        "location": "/C:/Users/sqz269/",
+        "marker_file": "C:\\Users\\sqz269\\bsp.gpr",
+        "name": "bsp"
+      }
+    },
+    "query_address": {
+      "offset": "00bf6ff9",
+      "space": "ram"
+    },
+    "schema": 1
+  },
+  "scope_qualification": {
+    "whole_capture_strict_site_only": false,
+    "endpoint_also_supplied_target_site_function_object": true,
+    "target_site_function_object_raw_retained": true,
+    "target_site_function_object_in_qualified_subset": false,
+    "target_site_behavior_ABI_ownership_successor_credit": false,
+    "prior_proto_oversupply_quarantine_preserved": true
+  },
+  "inherited_state": {
+    "callee_entry_ESP_W": "unknown",
+    "PUSH_source_K": "unknown DWORD at SS:(W+4)",
+    "postcallee_registers_flags_stack_and_return": "unknown",
+    "old_caller_POP_requires": "returned ESP plus unchanged relevant stack word; no equality or callback inferred"
+  },
+  "separate_next_admission": {
+    "packet": "cc12_locale_exit_target_after_push_operand",
+    "address": "00BF6FF9",
+    "exact_code_range": [
+      "00BF6FF9",
+      "00BF6FFD"
+    ],
+    "bytes": 5,
+    "text_context": 0,
+    "condition": "Fresh identical typed/count/identity bookends at epoch98/count64730 and unchanged qualified metadata before byte/text inspection. One exact instruction only. Rich target-site metadata stays raw/quarantined.",
+    "forbidden": "No BF6FFE/target BF6FB9 query, target/body/prototype/caller/IAT/data/pointer read, listing repair, Native write, C++, build or runtime; no automatic next-site admission."
+  },
+  "limits": {
+    "Root_live_Native_queries": 0,
+    "Root_Ghidra_writes": 0,
+    "new_Native_code_bytes": 0,
+    "new_Native_data_bytes": 0,
+    "new_Cpp": 0,
+    "new_build_tests_probes": 0,
+    "callee_return_behavior": false,
+    "registration_cleanup_CRT_authenticity": false,
+    "external_ABI": false,
+    "runtime": false
+  }
+}
