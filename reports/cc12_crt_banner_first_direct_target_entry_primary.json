@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "packet": "cc12_crt_banner_first_direct_target_entry_primary",
+  "status": "bounded_entry_independently_reviewed",
+  "worker_commit": "e56b396b1de3ce1a040c325a4887e54d48dfcf30",
+  "worker_tree": "c6cde341b3a6298594071a17f128966350fa701b",
+  "frozen_commit": "162d166638bf13581664ffa9b19e78ad718303aa",
+  "worker_outputs": [
+    {
+      "path": "docs/CC12_CRT_BANNER_FIRST_DIRECT_TARGET_ENTRY.md",
+      "blob": "bab9618d9a3c70e1caf15d5d67457d40d7b562d3",
+      "length": 5932,
+      "sha256": "12fe728b7975db8d1505b9f3c1c3b95e5cf93af3f156b26f2c9b4fea0a0d4acc",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "bab9618d9a3c70e1caf15d5d67457d40d7b562d3",
+      "index_stage": "0"
+    },
+    {
+      "path": "reports/cc12_crt_banner_first_direct_target_entry.json",
+      "blob": "89caaac9d7e5aa77c2fc6072c67abbfdbd132a3f",
+      "length": 17651,
+      "sha256": "f5a6938fa81f60613d4f1e110422c2f467da33ada930e9f16f0d8adcace9d251",
+      "working_bytes_equal_Git_blob": true,
+      "LF_only": true,
+      "index_mode": "100644",
+      "index_blob": "89caaac9d7e5aa77c2fc6072c67abbfdbd132a3f",
+      "index_stage": "0"
+    }
+  ],
+  "Root_evidence_pins": {
+    "Root_listing_gate.py": {
+      "bytes": 9631,
+      "sha256": "8a68b0ecf27ffd1bec4b7cd6b8764d437290fb2c72476def1a6ee3ae95bde442"
+    },
+    "Root_listing_gate.json": {
+      "bytes": 1821542,
+      "sha256": "fa777c61a9f6950c9904aaee5d090503a2ebb48d2fd3e3e509049095a5df2da6"
+    },
+    "Root_actual_final_review.py": {
+      "bytes": 8264,
+      "sha256": "423c7c9d1b8e58c8ad739596496afb77a79a7162afbc08228400bb860562ea95"
+    },
+    "Root_actual_final_preexecution.json": {
+      "bytes": 105,
+      "sha256": "efeeb71d54e72d970caa00751cf8aaf2b237b51757a8266b17484074d28d03b4"
+    },
+    "Root_actual_final_execution.json": {
+      "bytes": 501,
+      "sha256": "70691286148f715170d1fa08dc6b9ec096455643d2e064094a7cff60c489ebbc"
+    },
+    "Root_actual_final_review.json": {
+      "bytes": 2042708,
+      "sha256": "91baef1b32b15975f315f8c63608ac9a756f3b1c2d2c3a4f70b78e396440881a"
+    },
+    "Root_actual_final_review.stdout": {
+      "bytes": 200,
+      "sha256": "5aa18ca3131b683bdb391c602111f07c11850b26389034319a188101d6e2a806"
+    },
+    "Root_actual_final_review.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_preexecution.json": {
+      "bytes": 396,
+      "sha256": "9c7874971a406dfbce03f01304880285cbf289568c24e453cd9a788a8da476e4"
+    },
+    "Root_strict_execution.json": {
+      "bytes": 858,
+      "sha256": "a646c924ed4d5408ecd128d0e55f6accd613788e9a4708318c06c4d44a145771"
+    },
+    "Root_strict_receipt.json": {
+      "bytes": 37954,
+      "sha256": "7b0261bb3157c49923e9a42022be60bf95a15218051e1c6d04743536dfac09a5"
+    },
+    "Root_strict.stdout": {
+      "bytes": 189,
+      "sha256": "9114527397faafc6639899fb0cb5270c50a322d230b3f4bef20ed43867aa0056"
+    },
+    "Root_strict.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "Root_physical_archive": {
+    "length": 2868437,
+    "sha256": "f55985e0951c62f99d6000ef8c41e89f4b6be40e139129d0d787a7a9daa83205"
+  },
+  "pinned_entries_reviewed": 154,
+  "actual_Git_objects_independently_compared": 20,
+  "positive_files": 8,
+  "outputs": 2,
+  "current_working_index_LF_files": 10,
+  "Root_original_artifact_copies_compared": 43,
+  "physical": {
+    "address": "00C26B57",
+    "code_hex": "8b4c2404",
+    "length": 4,
+    "code_sha256": "9a475ae9eddc9edb4549fd2714e5606305d83be9e7563698f3ddb91a24f8a4dd"
+  },
+  "Root_manual_fields": {
+    "opcode": 139,
+    "mod": 1,
+    "reg": 1,
+    "rm": 4,
+    "scale_bits": 0,
+    "index_bits": 4,
+    "base_bits": 4,
+    "signed_disp8": 4,
+    "operand_bits": 32,
+    "address_bits": 32,
+    "default_segment": "SS",
+    "destination": "ECX",
+    "base": "ESP",
+    "memory_access": "read4",
+    "register_reads": [
+      "ESP"
+    ],
+    "register_writes": [
+      "ECX"
+    ],
+    "flags_changed": false,
+    "implicit_stack_operation": false
+  },
+  "Root_fresh_actual_Capstone": {
+    "address": "00C26B57",
+    "hex": "8b4c2404",
+    "length": 4,
+    "id": 460,
+    "mnemonic": "mov",
+    "op_str": "ecx, dword ptr [esp + 4]",
+    "prefix": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "opcode": [
+      139,
+      0,
+      0,
+      0
+    ],
+    "address_size": 4,
+    "modrm_offset": 1,
+    "modrm": 76,
+    "sib": 36,
+    "disp_offset": 3,
+    "disp_size": 1,
+    "displacement": 4,
+    "imm_offset": 0,
+    "imm_size": 0,
+    "operands": [
+      {
+        "size": 4,
+        "access": 2,
+        "type": "reg",
+        "register": "ecx"
+      },
+      {
+        "size": 4,
+        "access": 1,
+        "type": "mem",
+        "segment": null,
+        "base": "esp",
+        "index": null,
+        "scale": 1,
+        "displacement": 4
+      }
+    ],
+    "regs_read_implicit": [],
+    "regs_written_implicit": [],
+    "regs_read_all": [
+      "esp"
+    ],
+    "regs_written_all": [
+      "ecx"
+    ],
+    "groups": [],
+    "eflags": 0,
+    "eflags_names": []
+  },
+  "strict_audit": {
+    "first_execution": "PASS",
+    "archive_reads": 1,
+    "helper_executions": 1,
+    "exclusive_receipt_writes": 1,
+    "denied": [],
+    "receipt_equal_both_worker_delivery_receipts": true,
+    "full_physical_helper_and_guard_read_before_execution": true
+  },
+  "failures": {
+    "Root_gate": 0,
+    "Root_inspection": 0,
+    "Root_final_review": 0,
+    "Root_strict": 0,
+    "worker": {
+      "Native": 0,
+      "capture_producer": 0,
+      "actual_decoder": 0,
+      "core_and_delivery_replay": 0,
+      "seal": 0,
+      "Root_gate_and_inspection": 0,
+      "conversation_display_truncations": 3
+    }
+  },
+  "Source_subtree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "new_build_tests_runtime_runs": 0,
+  "Root_Native_queries": 0,
+  "GPR_writes": 0,
+  "not_established": [
+    "C26B5B instruction",
+    "remaining66 owner bytes",
+    "saved library/service/prototype authenticity",
+    "Source implementation",
+    "ABI compatibility",
+    "startup/gameplay/runtime equivalence"
+  ],
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_crt_banner_first_direct_target_entry_primary"
+}
