@@ -1,0 +1,420 @@
+{
+  "schema": "bsp.cc12.application-crt-dispatch-entry-metadata.v1",
+  "status": "direct_saved_entry_metadata_verified_no_body_or_ABI_admission",
+  "worker_base_commit": "7baf3905a1320bf0b37be684512e08f570076df0",
+  "worker_base_tree": "756c7eee38872b392855a1c668126bf73140d186",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_CRT_DISPATCH_ENTRY_METADATA.md",
+    "reports/cc12_application_crt_dispatch_entry_metadata.json"
+  ],
+  "native_scope": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "queried_sites": [
+      "00C07991"
+    ],
+    "typed_response_count": 2,
+    "count_queries": 3,
+    "exact_proto_queries": 1,
+    "epoch": 98,
+    "function_count": 64730,
+    "body_or_data_bytes_read": 0,
+    "decompile_or_disasm_queries": 0
+  },
+  "saved_entry_metadata": {
+    "entry_flow": {
+      "default_fallthrough": {
+        "offset": "00c07992",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00c07992",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "entry_listing": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00c07991",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00c07991",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00c07991",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00c07991",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      }
+    },
+    "saved_function": {
+      "body": {
+        "address_count": "228",
+        "complete": true,
+        "range_count": 1,
+        "ranges": [
+          {
+            "end_inclusive": {
+              "offset": "00c07a74",
+              "space": "ram"
+            },
+            "length": "228",
+            "start": {
+              "offset": "00c07991",
+              "space": "ram"
+            }
+          }
+        ],
+        "returned_range_count": 1
+      },
+      "direct_thunk_target": null,
+      "entry": {
+        "offset": "00c07991",
+        "space": "ram"
+      },
+      "is_thunk": false,
+      "name": "___InternalCxxFrameHandler",
+      "no_return": false,
+      "thunk_target_recursive": false
+    }
+  },
+  "saved_prototype": "undefined ___InternalCxxFrameHandler(void)",
+  "prototype_limits": "The undefined(void) string is saved metadata; no calling convention, register inputs, stack binding or ABI is established.",
+  "automatic_summary_quarantine": {
+    "endpoint": "get_function_signature (automatic bsp.py proto companion)",
+    "whole_summary_opaque": true,
+    "fields_used_to_qualify_findings": [],
+    "complete_proto_capture_strictly_entry_only": false,
+    "complete_companion_HTTP_response_retained": false,
+    "emitted_lines": 40,
+    "total_reported_lines": 50,
+    "note": "The complete emitted CLI stdout and saved prototype prefix are retained. The automatic companion is opaque and capped40/50; omitted companion lines were not re-queried."
+  },
+  "automatic_target_objects": {
+    "typed_direct_call_target_count": 0,
+    "outside_query_objects_credited": 0
+  },
+  "scope_boundaries": [
+    "Saved body range is not an instruction-ownership audit or body-behavior proof.",
+    "Saved ___InternalCxxFrameHandler library name is preserved; neither its spelling nor undefined(void) authenticates FH3, the original compiler, or runtime identity.",
+    "Prior handler-prefix automatic target objects remain wholly opaque and receive no retrospective credit.",
+    "The prior EBP=storeESP+20h action precondition remains conditional; actual invocation and EBP binding remain unknown.",
+    "No actual EH/unwind, cleanup, target ABI, stack or callable Application-owner authority is added."
+  ],
+  "source_identity_only": {
+    "HEAD": "7baf3905a1320bf0b37be684512e08f570076df0",
+    "root_tree": "756c7eee38872b392855a1c668126bf73140d186",
+    "subtrees": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "prerequisite_input_blobs": 10,
+    "Source_content_census": false,
+    "equality_scope": "These actual identities qualify this frozen worker base/final tree, not any later Root Source integration.",
+    "old_Source_artifact_build_runtime_credit_transfer": false
+  },
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/evidence.zip",
+      "bytes": 455525,
+      "sha256": "012bdb9d74dfc6e215f3d213dd0a9f2a44c0575dd64fb94dfe10f846029c81d2"
+    },
+    "copy_zip": {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/distinct_copy/evidence.zip",
+      "bytes": 455525,
+      "sha256": "012bdb9d74dfc6e215f3d213dd0a9f2a44c0575dd64fb94dfe10f846029c81d2"
+    },
+    "physical_copy_distinct": true,
+    "manifest": {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/manifest.json",
+      "bytes": 8330,
+      "sha256": "aa50e443b8ac23bfe2816340db082d1d3625490dbf1b4e726b19d85ee8b139a2"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/capture_entry.py",
+        "bytes": 2414,
+        "sha256": "13a2a45377f3d92aa0e5810bf1019febe5085505de01c22842435da8d5e17ba6"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/portable_replay.py",
+        "bytes": 9386,
+        "sha256": "caa34d0adfcd6a7ef18089021e546edf9f4861e3c7b4e15f56e7f75f30b4e05a"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/guard_replay.py",
+        "bytes": 2283,
+        "sha256": "6471a70ed5f1ec1c406238a67e16e57b0684fa8bd9861af5054ae4c17ee49e92"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/packet_tool.py",
+        "bytes": 16626,
+        "sha256": "8e57db64827b7dd89276386f18833da996f523b0d6f466419d09a98282e9a9b5"
+      }
+    ],
+    "replay_equal": true,
+    "replay_result": {
+      "FH3_or_register_ABI_authenticated": false,
+      "Source_content_census": false,
+      "Source_subtree_identities": {
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633",
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b"
+      },
+      "automatic_signature_summary_wholly_opaque": true,
+      "code_or_data_bytes_read": 0,
+      "companion_emitted_lines": 40,
+      "companion_total_reported_lines": 50,
+      "complete_companion_HTTP_response_retained": false,
+      "epoch": 98,
+      "frozen_head": "7baf3905a1320bf0b37be684512e08f570076df0",
+      "function_count": 64730,
+      "member_count": 48,
+      "metadata": {
+        "entry_flow": {
+          "default_fallthrough": {
+            "offset": "00c07992",
+            "space": "ram"
+          },
+          "default_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "default_targets": [],
+          "effective_fallthrough": {
+            "offset": "00c07992",
+            "space": "ram"
+          },
+          "effective_flow": {
+            "is_call": false,
+            "is_computed": false,
+            "is_conditional": false,
+            "is_jump": false,
+            "is_terminal": false,
+            "name": "FALL_THROUGH"
+          },
+          "effective_targets": [],
+          "fallthrough_overridden": false,
+          "flow_override": "NONE"
+        },
+        "entry_listing": {
+          "code_unit_at": {
+            "address": {
+              "offset": "00c07991",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "code_unit_containing": {
+            "address": {
+              "offset": "00c07991",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "instruction_at": {
+            "address": {
+              "offset": "00c07991",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          },
+          "instruction_containing": {
+            "address": {
+              "offset": "00c07991",
+              "space": "ram"
+            },
+            "defined": null,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "length": 1
+          }
+        },
+        "saved_function": {
+          "body": {
+            "address_count": "228",
+            "complete": true,
+            "range_count": 1,
+            "ranges": [
+              {
+                "end_inclusive": {
+                  "offset": "00c07a74",
+                  "space": "ram"
+                },
+                "length": "228",
+                "start": {
+                  "offset": "00c07991",
+                  "space": "ram"
+                }
+              }
+            ],
+            "returned_range_count": 1
+          },
+          "direct_thunk_target": null,
+          "entry": {
+            "offset": "00c07991",
+            "space": "ram"
+          },
+          "is_thunk": false,
+          "name": "___InternalCxxFrameHandler",
+          "no_return": false,
+          "thunk_target_recursive": false
+        }
+      },
+      "native_query_sites": [
+        "00C07991"
+      ],
+      "prerequisite_input_count": 10,
+      "proto_stdout_sha256": "af3b5448bd4b62a756204ad24a3c67cbc088c10f2999432e563f80fefd54532a",
+      "raw_gate_sha256": "bea38c7bcec2f895126989e51142ddc667a7836202fc27b9081fba4872c72ff1",
+      "raw_gates_equal": true,
+      "saved_prototype": "undefined ___InternalCxxFrameHandler(void)",
+      "status": "PASS",
+      "typed_response_count": 2
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/original_replay.json",
+        "bytes": 2684,
+        "sha256": "9139b4c9556bec749bb6cea66741b269e356c2361e3e8ebe0e9e87b43afb9b90"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/original_guard.json",
+        "bytes": 443,
+        "sha256": "507a92f98563c5149809dc941747c7e7335816cf4b700a4f95a0d6a6c88db318"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/original_command.json",
+        "bytes": 559,
+        "sha256": "caced2cf12cc9b860f08f8c682732343efc75773f20c2c986c9a68e29f3a1c60"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/distinct_copy_replay.json",
+        "bytes": 2684,
+        "sha256": "9139b4c9556bec749bb6cea66741b269e356c2361e3e8ebe0e9e87b43afb9b90"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/distinct_copy_guard.json",
+        "bytes": 458,
+        "sha256": "47c043beac63828786a8a6257a98bb15bc8f1ae02457549c61be1da72e6fcfc3"
+      },
+      {
+        "path": "local/cc12_application_crt_dispatch_entry_metadata/distinct_copy_command.json",
+        "bytes": 574,
+        "sha256": "13b93204c649fb961bd41ec7ae579ba1e72256894d49fb5d71a4673afae84d42"
+      }
+    ]
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/frozen_git.json",
+      "bytes": 7889,
+      "sha256": "fa6ed02795c86a91459ebcccad43dcf26ba3cad06232717fac0bbc44c31213c5"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/manifest.json",
+      "bytes": 8330,
+      "sha256": "aa50e443b8ac23bfe2816340db082d1d3625490dbf1b4e726b19d85ee8b139a2"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/seal.json",
+      "bytes": 6663,
+      "sha256": "5add9917d89b418a07c6e2de4f46dee4252c66f66ce3528c97277c6d70143090"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/entry_before.json",
+      "bytes": 8861,
+      "sha256": "ad0d064fd950363382f28949e0d1f9dcc654dd00f3fb8a904fe70e7653108c96"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/entry_after.json",
+      "bytes": 8861,
+      "sha256": "4a27566f2890c5271b3002186c8e49ea850f582b2c7acc83eae57c384e546cd7"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/entry_proto.stdout.txt",
+      "bytes": 1608,
+      "sha256": "af3b5448bd4b62a756204ad24a3c67cbc088c10f2999432e563f80fefd54532a"
+    },
+    {
+      "path": "local/cc12_application_crt_dispatch_entry_metadata/query_schedule.json",
+      "bytes": 4073,
+      "sha256": "179dd82caf1a0e674888fdbbeacd23667aac181f70fb40b741d6f428bd5e8686"
+    }
+  ],
+  "actual_staged_final_git_closure": {
+    "staged": "local/cc12_application_crt_dispatch_entry_metadata/staged_git_receipt.json",
+    "final": "local/cc12_application_crt_dispatch_entry_metadata/final_git_receipt.json",
+    "exact_owned_outputs": 2,
+    "note": "External receipts pin actual index and final committed tree, avoiding output self-reference."
+  },
+  "exclusions": [
+    "No GPR mutation, analysis, repair, rename or export.",
+    "No bytes, disassembly, decompilation, callers or target expansion.",
+    "No C++, tests, build, probe, process binding, OS, audio or game action.",
+    "No inherited archive recursion or Source-content census."
+  ],
+  "next_gate": "Root reviews these exact saved metadata and selects any separately bounded body packet; no body continuation is implicit."
+}
