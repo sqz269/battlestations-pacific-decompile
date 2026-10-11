@@ -1,0 +1,648 @@
+{
+  "schema": "cc12.c05b68-entry.report.v1",
+  "packet": "cc12_crt_dispatch_first_direct_callee_entry",
+  "status": "exact_entry_physical_and_saved_metadata_verified_only",
+  "frozen_actual_Git_commit": "7b3676abb46b448af7a38cf1912e1de676f4e7a3",
+  "frozen_tree": "e138972c91fe0c8e00abfa76fefb5869a0551e61",
+  "observed_Main_at_successful_capture": "a8430e60ef99c3ea7269041e3476b0979b0f5d26",
+  "frozen_actual_Main_at_worktree_creation_is_ancestor_of_later_observed_Main": true,
+  "current_Main_equals_frozen_claimed": false,
+  "finite_actual_Git_inputs": [
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "00898d7e2fd41314c349109426762359cf394dd8",
+      "length": 7850,
+      "sha256": "f8cb931898edd742807bd6fee9668f5d1be09f774b5eab8dbb55a41883020084",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata.json",
+      "blob": "26514187a33f62057e4cfbee1d93bb704bccfbac",
+      "length": 46734,
+      "sha256": "db882517ee5a684f5edf9a9321db87d67ad8c8271a0ffd30a3813ae200bd650d",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "docs/CC12_CRT_DISPATCH_ZERO_EDGE_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "blob": "0890b0d1cf81cedbc9e136781240b10ce65c4bd1",
+      "length": 2943,
+      "sha256": "ed0b9dee678259519e6a16988bd565b98ec80ca775a1e7d37835266669601c90",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "reports/cc12_crt_dispatch_zero_edge_direct_target_body_metadata_primary.json",
+      "blob": "b530cc4f34538eabd661c110be120f344fa50016",
+      "length": 157847,
+      "sha256": "529a32b363f064bc84fe0ae9b117222e8d1a35a967e52cae684532fe1c7b18d7",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "length": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "length": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "length": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "working_bytes_equal_Git_blob": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "length": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "working_bytes_equal_Git_blob": true
+    }
+  ],
+  "source_tree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "metadata": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "function_count": 64730,
+    "modification_number": 98,
+    "saved_owner": {
+      "entry": {
+        "space": "ram",
+        "offset": "00c05b68"
+      },
+      "name": "__FF_MSGBANNER",
+      "no_return": false,
+      "is_thunk": false,
+      "thunk_target_recursive": false,
+      "direct_thunk_target": null,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "57",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00c05b68"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00c05ba0"
+            },
+            "length": "57"
+          }
+        ]
+      }
+    },
+    "listing": {
+      "instruction_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00c05b68"
+        },
+        "length": 2,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "instruction_flow": {
+      "flow_override": "NONE",
+      "default_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "effective_flow": {
+        "name": "FALL_THROUGH",
+        "is_call": false,
+        "is_jump": false,
+        "is_conditional": false,
+        "is_computed": false,
+        "is_terminal": false
+      },
+      "default_fallthrough": {
+        "space": "ram",
+        "offset": "00c05b6a"
+      },
+      "effective_fallthrough": {
+        "space": "ram",
+        "offset": "00c05b6a"
+      },
+      "fallthrough_overridden": false,
+      "default_targets": [],
+      "effective_targets": []
+    },
+    "original_direct_typed_responses": [
+      {
+        "capture": "entry_a",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      },
+      {
+        "capture": "entry_b",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      },
+      {
+        "capture": "entry_close",
+        "length": 2147,
+        "sha256": "6f95a4586fdbf7674e421f17ba801e3f93fbfe6110bcc3c16b79aa63bee5d33f"
+      }
+    ],
+    "saved_label_proves_type_service_preservation_nonreturn": false,
+    "HTTP_GET_basis": "Actual frozen fetch_raw explicit method GET and retained requested URL/original response; no separate wire telemetry claimed."
+  },
+  "physical": {
+    "length": 2,
+    "code_hex": "6a03",
+    "code_sha256": "413d574c3b171871faa327f83f0ca55e6ffbbf2bf281b4146219a7e59bc14173",
+    "manual": {
+      "address": "00C05B68",
+      "hex": "6a03",
+      "length": 2,
+      "prefixes": [],
+      "opcode": "6A",
+      "mnemonic": "push",
+      "operand_size_bits": 32,
+      "address_size_bits": 32,
+      "stack_address_size": "current SS descriptor B attribute; not implied by code address size",
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "size": 1,
+        "hex": "03",
+        "unsigned_value": 3,
+        "signed_value": 3,
+        "sign_extended_operand_bits": 32,
+        "sign_extended_value": 3,
+        "pushed_little_endian_hex": "03000000"
+      },
+      "operands": [
+        {
+          "type": "imm",
+          "size": 4,
+          "access": 0,
+          "value": 3
+        }
+      ],
+      "implicit_memory_write": {
+        "segment": "current SS",
+        "value": 3,
+        "size": 4,
+        "offset_if_current_SS_B_1": "(current ESP - 4) modulo 2^32"
+      },
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflags_modified_names": [],
+      "success_fallthrough": "00C05B6A",
+      "success_fallthrough_queried": false,
+      "transfer": null
+    },
+    "paired_bytes_equal": true,
+    "paired_context0_equal": true,
+    "three_typed_responses_equal": true,
+    "manual_actual_text_typed_agree": true
+  },
+  "actual_Capstone": {
+    "producer": {
+      "file": "decode_actual.py",
+      "length": 4871,
+      "sha256": "f57d5ae5f7d53d51e4e588205a40118ec9029147c56cd9d84ca494ce57fca1dd"
+    },
+    "Capstone_python_version": "5.0.7",
+    "Capstone_engine_version": [
+      5,
+      0,
+      1280
+    ],
+    "architecture": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "detail": true,
+    "runtime_Capstone_is_outside_pure_ZIP_replay": true,
+    "code_hex": "6a03",
+    "code_sha256": "413d574c3b171871faa327f83f0ca55e6ffbbf2bf281b4146219a7e59bc14173",
+    "length": 2,
+    "instructions": [
+      {
+        "address": "00C05B68",
+        "hex": "6a03",
+        "length": 2,
+        "id": 609,
+        "mnemonic": "push",
+        "op_str": "3",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          106,
+          0,
+          0,
+          0
+        ],
+        "address_size": 4,
+        "modrm_offset": 0,
+        "modrm": 0,
+        "sib": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "displacement": 0,
+        "imm_offset": 1,
+        "imm_size": 1,
+        "operands": [
+          {
+            "size": 4,
+            "access": 0,
+            "type": "imm",
+            "value": 3
+          }
+        ],
+        "regs_read_implicit": [
+          "esp"
+        ],
+        "regs_written_implicit": [
+          "esp"
+        ],
+        "regs_read_all": [
+          "esp"
+        ],
+        "regs_written_all": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "eflags": 0,
+        "eflags_names": []
+      }
+    ]
+  },
+  "cpu_contract": {
+    "entry_state": "All prior opaque return state remains unknown: registers including EBP and ESP, flags, segment selectors and descriptors, SS stack attributes, memory and provider state. Saved names and caller offsets do not recover a type, frame or preservation convention.",
+    "incoming_edge": {
+      "site": "00BFBA09",
+      "hex": "e85aa10000",
+      "signed_rel32": 41306,
+      "numeric_target": "00C05B68",
+      "encoded_return": "00BFBA0E",
+      "local_predicate": "Only when this near CALL executes successfully with actual current 32-bit stack addressing (SS.B=1), if ESP immediately before it is T.",
+      "local_effect": "ESP=(T-4) modulo 2^32; write return 00BFBA0E as a dword through current SS at that offset; enter numeric C05B68. No callee or later state follows from this effect alone."
+    },
+    "entry_push": {
+      "local_predicate": "Renew the actual current SS.B=1 predicate at this PUSH; do not inherit stack attributes across opaque calls. The instruction must complete without fault.",
+      "local_effect": "Let S be current ESP at C05B68. Write sign_extend_32(03)=00000003 as a four-byte value through current SS at (S-4) modulo 2^32, set ESP to that offset, and continue at C05B6A. No arithmetic flags change.",
+      "joined_with_incoming_call": "Only along the accepted successful incoming CALL followed directly by this successful PUSH, with current SS.B=1 established at each operation and no intervening state change: S=T-4 and resulting ESP=T-8 (modulo 2^32). The new dword is 3; the prior CALL wrote BFBA0E at the preceding stack location. This describes local writes, not a stable frame or recovered argument.",
+      "outside_predicate": "With a different or unknown SS stack-address attribute, do not claim the full-ESP S-4/T-8 equations. Segment translation, limits, permissions, memory accessibility, faults and actual runtime values remain unverified.",
+      "other_state": "No explicit general register except stack pointer is written, and flags are unaffected by the instruction; existing values remain unknown. No callee-wide preservation or return behavior is inferred."
+    },
+    "continuation": "C05B6A is arithmetic and saved fallthrough only; no byte, text, owner body continuation, provider, target cell, prototype or service query was made there.",
+    "no_credit": [
+      "Source",
+      "build",
+      "tests",
+      "probe",
+      "ABI compatibility",
+      "Original executable execution",
+      "game",
+      "OS/audio",
+      "runtime behavior",
+      "GPR mutation"
+    ]
+  },
+  "Root_gate": {
+    "physical_producer_pin": {
+      "length": 9160,
+      "sha256": "c446f580b9c726da83551973f7e171133d57bfaafd5571398b2b25a3e7edd8f9"
+    },
+    "receipt_pin": {
+      "length": 4586,
+      "sha256": "e5f79de25af3eea0a11ee8d52abd735efb11d1e47f61496ac8b4d0219da53515"
+    },
+    "finite_copied_files": 62,
+    "admitted_exact_address": "00C05B68",
+    "admitted_bytes": 2,
+    "other_55_saved_owner_bytes_unadmitted": true
+  },
+  "failures": {
+    "worker_offline_Main_advanced_precondition": 1,
+    "failed_attempt_Native_commands": 0,
+    "worker_Native": 0,
+    "phase2_capture": 0,
+    "actual_decoder": 0,
+    "Root_gate": 0
+  },
+  "failure_detail": "One initial offline HEAD==liveMain precondition failed after disjoint Main advancement, before any Native query. Original producer, failed preimage and actual full streams are retained. A separately pinned retry retained frozen actual Main-at-creation 7b3676abb and actual Git --is-ancestor proof against observed a8430e60. No old evidence was overwritten.",
+  "verification": {
+    "Native_commands": 11,
+    "count_bookends": 4,
+    "exact_typed_reads": 3,
+    "exact_bytes_reads": 2,
+    "context0_text_reads": 2,
+    "phase1_commands": 4,
+    "Root_gate_before_bytes_text": true,
+    "phase2_commands": 7,
+    "Native_all_exit0_stderr_empty": true,
+    "all_three_actual_CLI_files_pinned_before_after_each_command": true,
+    "paired_and_closing_original_typed_payloads_byte_equal": true,
+    "paired_bytes_and_text_equal": true,
+    "manual_and_actual_Capstone_5_0_7_all_fields_compared": true,
+    "core_original_and_distinct_copy_strong_replay": [
+      {
+        "label": "core",
+        "receipt": {
+          "length": 12316,
+          "sha256": "6516153d2b434b42270acbbc49d955666450b7212ca2870d4c1bff91e32e4c6e"
+        },
+        "audit": {
+          "audit": "PASS",
+          "archive_reads": 1,
+          "exclusive_receipt_writes": 1,
+          "helper_executions": 1,
+          "denied": []
+        }
+      },
+      {
+        "label": "core_copy",
+        "receipt": {
+          "length": 12316,
+          "sha256": "6516153d2b434b42270acbbc49d955666450b7212ca2870d4c1bff91e32e4c6e"
+        },
+        "audit": {
+          "audit": "PASS",
+          "archive_reads": 1,
+          "exclusive_receipt_writes": 1,
+          "helper_executions": 1,
+          "denied": []
+        }
+      }
+    ],
+    "strict_guard": "Every unknown audit event denied with retained telemetry; exact code object identity; after execution require denied=[] and one archive read, one helper execution, one exclusive receipt.",
+    "pure_helper_executes_archived_producers": false,
+    "pure_helper_imports_or_constructs_decoder": false,
+    "final_delivery": "Postcommit finite actual final Git commit/tree/subtrees/blobs, exact two output differences and current working/index/blob equality are sealed into proof.zip and checked by the same helper on original and distinct copy. Final receipts and pins are in the private handoff."
+  },
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_crt_dispatch_first_direct_callee_entry\\local\\cc12_crt_dispatch_first_direct_callee_entry",
+  "private_evidence_pins": {
+    "metadata_capture_manifest.json": {
+      "length": 9000,
+      "sha256": "574118580f3fa2fd6987b69289bebbd11a4f9f6de55d48bfb650fb2dd9d52c68"
+    },
+    "entry_capture_manifest.json": {
+      "length": 16163,
+      "sha256": "6fdc2326da875b536228c8bf45a42e420ac232ba1e939fff05d778f6daacb60c"
+    },
+    "metadata_gate.json": {
+      "length": 6123,
+      "sha256": "6bf9b25d93bd2476334611ef45f571247ae9052ea1649e39312d96a404b8727a"
+    },
+    "original_direct_raw_pins.json": {
+      "length": 365,
+      "sha256": "b806ba06647ede15f6cea3116587c9bfd8a07a9a2a9ae819729910277ade189b"
+    },
+    "phase1_failure.json": {
+      "length": 1464,
+      "sha256": "245b8cdf818edebc38dee50374bed16f53e845ee52b0ce2ea8c38a5eb667dfac"
+    },
+    "phase1_preexecution_pins.json": {
+      "length": 143,
+      "sha256": "db9120e5d46e37bfcb99d1be8960433f3460534d386aea2c9c87496aa02a3df7"
+    },
+    "phase1_retry_preexecution_pins.json": {
+      "length": 149,
+      "sha256": "7e53eae5bdbeb06e92ed2f3a1a3676d6aa7ccae599227e2344ac4fb5542c129b"
+    },
+    "phase1.stdout": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phase1.stderr": {
+      "length": 805,
+      "sha256": "86147fbc64397957c157fbfffa51498dccd8998cb679e301446aba002f05a090"
+    },
+    "phase1_retry.stdout": {
+      "length": 396,
+      "sha256": "730fa93ed90aa241bbc0413e08a08a2c407cb1bb7dc564c28bc8ebd338b2a89f"
+    },
+    "phase1_retry.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phase2_preexecution_pins.json": {
+      "length": 142,
+      "sha256": "d70c04ee94085eced21ba901b0c49fa0a4212c9ce70462bb688978175440d7a0"
+    },
+    "phase2.stdout": {
+      "length": 176,
+      "sha256": "836750419490300a5525f420e97f0aca99eada8b4e3ec9950228df86d2ae9df1"
+    },
+    "phase2.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "capture_entry_metadata.py": {
+      "length": 14070,
+      "sha256": "fec5e73bdf307387fdc5da0f621f9308b7c2f636606634da861120c847dc74fb"
+    },
+    "phase1_failed_capture_entry_metadata.py": {
+      "length": 14070,
+      "sha256": "fec5e73bdf307387fdc5da0f621f9308b7c2f636606634da861120c847dc74fb"
+    },
+    "capture_entry_metadata_retry.py": {
+      "length": 14804,
+      "sha256": "ea55a5fe590218683925f942fe59a270738dc891eb1386f2f50033de76579b9a"
+    },
+    "capture_admitted_entry.py": {
+      "length": 4753,
+      "sha256": "182496a29e25ef12a2bb904d6d97912430aedead658c35300f1e993bb350c927"
+    },
+    "root_gate_copy_pins.json": {
+      "length": 10650,
+      "sha256": "d0ac8c182f49c98acb984a4e731353025ef9cf554d22277b9fa711c849bbfcb4"
+    },
+    "root_gate/Root_entry_gate.py": {
+      "length": 9160,
+      "sha256": "c446f580b9c726da83551973f7e171133d57bfaafd5571398b2b25a3e7edd8f9"
+    },
+    "root_gate/Root_entry_gate.json": {
+      "length": 4586,
+      "sha256": "e5f79de25af3eea0a11ee8d52abd735efb11d1e47f61496ac8b4d0219da53515"
+    },
+    "decoder_preexecution_pins.json": {
+      "length": 133,
+      "sha256": "c5f370dd991edfae73b50758e4b9ee1105a94451aa7d5075343b26e9a97ca023"
+    },
+    "decode_actual.py": {
+      "length": 4871,
+      "sha256": "f57d5ae5f7d53d51e4e588205a40118ec9029147c56cd9d84ca494ce57fca1dd"
+    },
+    "decode_actual.stdout": {
+      "length": 228,
+      "sha256": "d6d60f4832c7d20571d715cddc6e287320ad07185d67c0821892fdea3144fa33"
+    },
+    "decode_actual.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual_capstone.json": {
+      "length": 1458,
+      "sha256": "24f11b9d83ce179b98ccd1ec0d44b6e43bbe0d8ef6b6a38e443810b4dea4453a"
+    },
+    "http_method_evidence.json": {
+      "length": 574,
+      "sha256": "2b49c5e2bcc9bf8c03d7accd2777c4f9a0d28e48ce420b462843ef5a2933e895"
+    },
+    "git/frozen.json": {
+      "length": 3580,
+      "sha256": "c5ce68f8ed1bee170465ba96d53ac1566e0c4e2e77a9402ab451d2d4d30aeeb5"
+    },
+    "git/frozen.commands.json": {
+      "length": 1230012,
+      "sha256": "440d1160cfe5f6033c58ad9351824291f1db6d9ebf32911920e8ad5a8695c64e"
+    },
+    "replay.py": {
+      "length": 23963,
+      "sha256": "d6eeabaa467e9c533f13111622c15db2d41db57bd55597e72b28ce2f7e1209af"
+    },
+    "audit_replay.py": {
+      "length": 2353,
+      "sha256": "dea7116068843e5affbe63c85bfc6bf23bc60f874ca9761819a27d024b104a5d"
+    },
+    "prepare_core.py": {
+      "length": 2024,
+      "sha256": "2a500943d72e7268c1a42b82f12fd78d01453e1dedfc9403e2e5bd88eb7043cc"
+    },
+    "run_replays.py": {
+      "length": 2792,
+      "sha256": "ec4d495effd5d53d492b02992ca624bada86c1248dc4f98ea9148d02a4780a92"
+    },
+    "replay_preexecution_pins.json": {
+      "length": 513,
+      "sha256": "bd60d8779fed98f0e6e93b073648618faaf64925f506c391be83a7105900dacd"
+    },
+    "core.zip": {
+      "length": 2008451,
+      "sha256": "0fdfc9acb43e926cb1e2eaf178e23ccc94e91485354283256fefdd513b8ebead"
+    },
+    "core_distinct_copy.zip": {
+      "length": 2008451,
+      "sha256": "0fdfc9acb43e926cb1e2eaf178e23ccc94e91485354283256fefdd513b8ebead"
+    },
+    "core_manifest.json": {
+      "length": 24504,
+      "sha256": "bb9ab9ebba94ceff9c388a6f4b35baeb6b16956dd9628311cf6abd6c02798a73"
+    },
+    "core_receipt.json": {
+      "length": 12316,
+      "sha256": "6516153d2b434b42270acbbc49d955666450b7212ca2870d4c1bff91e32e4c6e"
+    },
+    "core_copy_receipt.json": {
+      "length": 12316,
+      "sha256": "6516153d2b434b42270acbbc49d955666450b7212ca2870d4c1bff91e32e4c6e"
+    },
+    "core_execution_preimages.json": {
+      "length": 551,
+      "sha256": "82f5a4fe84fd0909befe062c13be6cd2238f44f8505be6f35a209a5c9085c30a"
+    },
+    "core_audit.command.json": {
+      "length": 1590,
+      "sha256": "18531677c60d656d71137ee825e40e12c913b2447b03d4a44ef2dfded1893a6f"
+    },
+    "core_audit.stdout": {
+      "length": 263,
+      "sha256": "47849bd0235d9fc5410770dcd5ee99479935175d8979739d5843c8dc80259998"
+    },
+    "core_audit.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "core_copy_audit.command.json": {
+      "length": 1609,
+      "sha256": "178be97058d8099ac69e83d1bf873a647f78b492aa228475dd63c3b677050b83"
+    },
+    "core_copy_audit.stdout": {
+      "length": 263,
+      "sha256": "47849bd0235d9fc5410770dcd5ee99479935175d8979739d5843c8dc80259998"
+    },
+    "core_copy_audit.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "core_replays.json": {
+      "length": 640,
+      "sha256": "5f2f2d5e171c12f235da071144d387b68b376a22a973ac2fb579c41571fcb968"
+    },
+    "write_outputs.py": {
+      "length": 14210,
+      "sha256": "d6acba9f85f6dd519eb1c1738c72673f5f687c7d0b04dde50a04d832019e58ff"
+    },
+    "seal_delivery.py": {
+      "length": 7135,
+      "sha256": "b89a304d7fb10d748e6c80a46db9c2c31288966dd49c81ccdf7b996ad1618093"
+    },
+    "seal_preexecution_pins.json": {
+      "length": 264,
+      "sha256": "25a75c4b1f43b26fcb770e594771bac57b1f82ef49ad7c13f7f9dfec3db5b086"
+    }
+  },
+  "boundaries": [
+    "No C05B6A byte/text read or owner body capture.",
+    "No prototype, neighbor, cell, provider or other target query.",
+    "No GPR mutation, name/ledger change, source edit, new build/test/probe, Original execution, game, ABI, OS/audio or runtime proof.",
+    "Saved __FF_MSGBANNER is an unauthenticated saved label. Saved no_return=false does not prove a return.",
+    "src/include identities are inherited root-tree references only; no Source body or repository absence census.",
+    "Only eight selected positive input blobs and finite actual Git structure are included; no recursive prior archive inclusion."
+  ]
+}
