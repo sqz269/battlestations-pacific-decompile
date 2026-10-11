@@ -14738,3 +14738,51 @@ binds them in `src/game_hosts_lua.cpp` behind `kMissionCheckpointBound`, committ
   `scripts/` search).
 - So the binding is build-tested only, and every reference row is identical by construction. No pair is run beyond
   the 300-frame smoke.
+
+## 5fl. Handoff (cc9-lua49, 2026-10-11, at about 72% context)
+
+Branch `agent/cc9-lua49`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua49`. It is merged with origin/main
+`c7271da30`. Everything is committed. Leases are released except `cc9_lua49_checkpoint` (until its TTL) and
+`cc9_lua49_5fi_followup` (this doc).
+
+| item | state | where |
+| --- | --- | --- |
+| Shipyard boats and `TorpedoDirector` | answered: no gap (cc11) | 5fi |
+| JM08 strikes | Missouri sunk; landships nearly all sunk; still no win (see below) | 5fi, this section |
+| Missouri's repair (22 hp/s) | the image's rate | 5fi |
+| JM08 `+7Dh` | the boats' launches come from `kTorpedoBotReadyGateBound` (`060c4b712`) | 5fi |
+| USN04 US dive bombers | neutral aimdive stick. The mod's SPVeteran row in `robots.lua` zeroes the pull gains; `robots__.lua.bak` carries values | 5fi |
+| USNOS f7 | no carrier strike to read: Enterprise dies at 1553 s (ships42 bisected it to cc11's soft roll) | 5fi |
+| `Scoring_SetMissionCompleted` | read, left unbound | 5fi item 4 |
+| `kMovieKeyframeModifierBound` | **ON** (`aacd10eb7`) | 5fj, 5fj.1 |
+| `kMissionCheckpointBound` | OFF (`01557b829`); no installed script reaches it; ON smoke (`local\l49_K1`, USNOS 300 frames) exits 0 | 5fk |
+
+**JM08: where it stands** (all on `1115e208c`, 5fd's launch form, `local\l49_j8gen.py`).
+- **t5** (`l49_j8_t5.txt`, 48000 frames, clean build). Orders: boats Missouri first, Isokaze/Fubuki landships
+  first, attack period 800, Hosho Nevada first.
+  - Missouri is sunk at 701.95 s by `Gyoraitei #Y11`'s tube.
+  - Nevada dies at 529.39 s; TT01-03, LST 02, LST 03 and LSM 01 die.
+  - The HQ falls at 1364.51 s, with TT04-06, LST 01 and LSM 02 still afloat.
+- **t6** is t5 with the airfield's targets reversed (TT06 first).
+  - 10 of 11 landships die by 1018.67 s; Isokaze's guns do most of it.
+  - Only LSM 01 is left, but Missouri lives, and the HQ falls at 1044.04 s.
+- **The runs are chaotic.** One order change moves Missouri's fate, through the shared RNG and the AI targeting.
+  - Try t5/t6 hybrids: the air targeting of t6 with the ship lists of t5, the boat start times, and periods 600/1000.
+  - Any completion must show the exec guard's `refused a mission script's process launch` line.
+- **The player's `torpedo` line (provisional flip, `local\l49_P1`, runs t1-t4) did nothing.** The presses train the
+  tubes, but `trigger_ons=0 tube_fires=0`: bow-on bearings snap-fail, and 19-second holds never reach the 5-degree
+  trigger.
+  - A broadside heading (`takehelm`) before the press would be needed.
+  - t4's Missouri kill came from the AI boats, as in t5.
+
+**The lead's queue after this:** nothing left from this brief's four items plus (c) and (d).
+
+**Scripts** (`local\`, prefix `l49_`, none for commit):
+
+| script | what it does |
+| --- | --- |
+| `l49_lane.ps1` | launches runs; rows `j8`, `u4p2`, `usn02`, `smoke`, ... |
+| `l49_j8gen.py` | writes JM08 order files: `--end`, `--boat-start`, `--period`, and the `--torp-*` player presses |
+| `l49_j8sum.py` | summarizes a run's deaths and outcome |
+| `l49_dispscan.py` | lists the operands with a given displacement |
+| `l49_diag_dive*.py` | the dive trace patches (diagnostic, never committed) |
