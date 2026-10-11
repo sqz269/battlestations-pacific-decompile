@@ -485,3 +485,58 @@ them partial). Named in this packet: 46. Open: the multiplayer enter/update bodi
 005E5B30, 005E8B20, 005ECD80), the controls update 00560430 (Xbox keyboard preset naming,
 `Presets/%S.preset` save, `ControlPresetsOrder`), the pause screen bodies, and the Ghidra-less
 vtable slots listed in the table above.
+
+# Third packet (cc13-frontend2, 2026-10-11): Ghidra-less vtable slots defined and named
+
+Leases `cc13_frontend2_seg20` (00584000..005C5600), `cc13_frontend2_seg1723` (00554680..00568930,
+005E09A0..00604A50), `cc13_frontend2_seg2627` (0061F000..00681000).
+
+## Defining the slot functions
+
+Every handoff address in "Functions Ghidra lacks" and in the in-game GUI doc's slot list, plus
+every other code pointer in the 00CExxxx..00CFxxxx vtables that lands on a 16-byte aligned
+address inside these leases with no Ghidra function (`local/f2_scan.py`: an `.rdata` dword scan
+filtered by vtable bases taken from constructor `MOV [reg+N],imm32` stores), was defined with
+`tools/ghidra_define_function.py` (locked, bytes compared to the disk image, no flow re-discovery).
+Extents come from a recursive descent over the disk image (`local/f2_extent.py`, follows the
+five-entry switch of 005B45C0 at 005B5B64); two extents with an alignment hole (0055D180, 00646170)
+were checked by hand. 178 functions were defined; the record of every bridge call is
+`reports/cc13_frontend2_defined.json`. 166 of them were named in the ledger and in Ghidra.
+
+The bulk follows the base screen vtable 00CEAE54 slot layout:
+
+| Kind | Count | Evidence |
+|---|---|---|
+| `<Screen>_GetScreenId` (+00h) | 20 | `MOV EAX,id; RET`: map 4Ch, minimap 35h, limbo 32h, objectives 39h, orders 3Bh, pause 3Ch, pause-cheat 3Dh, scene-init 5Ah, markers 4Dh, spectator 43h, HUD root 44h, ship status 45h, submarine 48h, periscope 47h, support manager 4Eh, tactical sheet 54h, cursor 28h, follow 49h, unit library 5, narrative 33h |
+| `<Screen>_IsSelfManaged` (+04h) | 6 | `MOV AL,1`: pause, pause-cheat, scene-init, spectator, narrative; tactical sheet returns `*(00E188A8)+1FE4h == 0` |
+| `<Screen>_OccludesLowerLevels` (+08h) | 2 | `MOV AL,1`: map, scene-init |
+| Enter/Exit/Update/BindLayout | 32 | slot position; empty bodies noted per row |
+| `<Screen>_CollectChildren` (+24h) | 16 | `ADD ECX,N; PUSH ECX; MOV ECX,[ESP+8]; CALL 004D6790; RET 4` |
+| `CG_scalar_deleting_dtor_<target>_Adjustor<N>` | 25 | `SUB ECX,N; JMP dtor` at +00h of listener sub-objects |
+| `BSP_SessionMessage<id>_{ScalarDelete,Write,Read,IsType}` | 27 | five-slot vtables 00CF5C38, 00CF5C4C, 00CF61FC, 00CF64C4, 00CF64D8, 00CF64EC, 00CF6500, 00CF3BB8 with ids 160, 148, 161, 130, 167, 168, 169, 188; type tests walk the chain id -> 49h -> 46h |
+| listener slots and callbacks | 38 | listed below |
+
+This answers the FRONTEND_SCREEN_SETS.md gap "which leaf types override +4h/+8h" for the screens in
+these leases: the overriders are the six +04h and two +08h rows above.
+
+Named listener slots and callbacks with behaviour (all provisional except pure no-ops):
+00590D80 `BSP_MainMenu_OnProfileLoaded`, 00590E40/00590E50 `BSP_MainMenu_OnAsyncTextRequestDone(2)`,
+00588460 `BSP_MainMenu_RemoveFileStoreFile`, 0058EE40 `BSP_MainMenu_StringMapFindOrInsert`,
+005861A0 `BSP_MainMenu_OnMovieAdvance`, 00560BF0 `BSP_ControlBindingScreen_HandleGuiEvent`,
+0055D180 `BSP_ControlBindingScreen_OnListboxSelectionChanged`, 00561E50
+`BSP_LeaderboardsScreen_OnListboxSelectionChanged`, 005D9D90 `BSP_MultiGameLobbyScreen_OnListboxActivate`,
+005E7160/005E73A0 `BSP_MultiMainMenuScreen_OnListboxActivate`/`_OnListboxSelectionChanged`, 005E97D0
+`BSP_MultiMainMenuScreen_HandleGuiEvent`, 005EA2D0 `BSP_MultiMainMenuScreen_Update`, 005EBC90
+`BSP_MultiModeSelectorScreen_OnListboxSelectionChanged`, 005ED450 `BSP_MultiModeSelectorScreen_HandleGuiEvent`,
+005FDB50 `BSP_HudPauseScreen_HandleGuiEvent`, 00645BB0 `BSP_InGameHudRootListener_Current0C`,
+0067B0E0 `BSP_HudTacticalSheetScreen_OnListboxActivate`, 0067BC60/0067C130 overlay observers
+`_OnReleased`, and the no-op slots (`...NoOp`). Evidence strings are in the ledger rows.
+
+Defined but deliberately not named: 005EF5F0, 005F0440, 005F1CB0, 005F4C10 (options screens,
+docs/OPTIONS_MENU_SCREENS.md and cc12's options reviews), 005662D0 (vtable base unclear),
+0064B6B0, 0064B6D0, 00650870 (slots +12Ch/+130h/+128h of unit-sized vtables 00CF5CE8/00CF6250),
+006502D0, 0067B3A0, 0067BAA0 (observer and enter slots of classes whose register functions carry
+generic names), 00646170 (register-argument copy helper, `EAX = EDX` count).
+
+Not covered: the same scan outside these leases (00568930..00584000, 005C5600..005E09A0,
+00604A50..0061F000 and 0068xxxx, e.g. the overlay vtables' 0068A320/0068A400/0068A5D0 slots).
