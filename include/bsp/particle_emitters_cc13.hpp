@@ -320,6 +320,11 @@ public:
     virtual ~ParticleEmitterHost() = default;
     // [[container]]+0 (container vtable slot 0) with one stack argument.
     virtual void container_update_slot0(void* container, void* context) = 0;
+    // operator new(30h) then 00B053D0 BSP_NativeParticleEmitterContainer_Construct(model, emitter, count);
+    // null when the allocation fails.
+    virtual void* construct_container(void* model, void* emitter, std::uint32_t count) = 0;
+    // 00B04C80 BSP_NativeParticleEmission_Spawn(container, a, b, c, d, e).
+    virtual void spawn(void* container, void* a, void* b, float c, float d, float e) = 0;
 };
 
 // 00AFF7A0 `int __thiscall(emitter, context, float distance)`, RET 8: 0 without
@@ -372,6 +377,21 @@ public:
 void particle_model_build_frame_geometry_00af63a0(void* model, void* camera, ParticleModelFrameHost& host,
                                                   const CameraAxesCrtAccess& crt);
 
+// 00AF3F80 `bool __thiscall(system, float x, float y, float z, camera)`, RET 10h:
+// 00B71530 classification of {x, y, z, +8Ch + +88h} != 0AAAh. rel32 caller at 00869DE0.
+bool particle_system_sphere_visible_00af3f80(const void* system, float x, float y, float z, void* camera,
+                                             ParticleModelRenderHost& host);
+// 00AF6790 `void __thiscall(model, const char* name, float value)`, RET 8,
+// reached from the RegisteredModelEffect vtable entry 00871FF0 (D0DE30) on
+// effect+1Ch. model+2D8h = value; then for every 108h record of the system
+// (+190h; records +0Ch, count +10h) whose emitter name ([[rec+A0h]+0Ch]) equals
+// name case-insensitively (_stricmp 00BF7FBF), or every record when name is
+// null, or a nameless record when name is empty: record+B4h = value.
+void particle_model_set_emitter_value_00af6790(void* model, const char* name, float value);
+// 00AFF700 `void __thiscall(emitter, a, b, float, float, float)`, RET 14h, SEH:
+// creates the container +10h on first use, then spawns into it.
+void particle_emitter_spawn_00aff700(void* emitter, void* a, void* b, float c, float d, float e,
+                                     ParticleEmitterHost& host);
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380);
 void release_floating_state_00b007a0(volatile std::int32_t& floating_count_00f8d384);
 

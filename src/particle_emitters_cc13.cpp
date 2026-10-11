@@ -1027,6 +1027,41 @@ void particle_model_build_frame_geometry_00af63a0(void* model, void* camera, Par
     wr<std::int32_t>(host.mesh_element_00b732c0(mesh_b, 0), 0x18, used_b * 2);
 }
 
+bool particle_system_sphere_visible_00af3f80(const void* system, float x, float y, float z, void* camera,
+                                             ParticleModelRenderHost& host) {
+    const float sphere[4] = {x, y, z, rd<float>(system, 0x8c) + rd<float>(system, 0x88)};
+    return host.classify_sphere_00b71530(camera, sphere) != 0xaaa;
+}
+
+void particle_model_set_emitter_value_00af6790(void* model, const char* name, float value) {
+    wr<float>(model, 0x2d8, value);
+    const void* system = ptr(model, 0x190);
+    // AF67AB..AF6813: the 108h records at system+0Ch, count system+10h (re-read per pass).
+    for (std::int32_t i = 0; i < rd<std::int32_t>(system, 0x10); ++i) {
+        auto* record = rd<std::uint8_t*>(system, 0x0c) + i * 0x108;
+        bool match = name == nullptr;
+        if (!match) {
+            const char* own = rd<const char*>(ptr(record, 0xa0), 0x0c);
+            match = own == nullptr ? name[0] == '\0' : _stricmp(own, name) == 0;  // 00BF7FBF
+        }
+        if (match) {
+            wr<float>(record, 0xb4, value);
+        }
+    }
+}
+
+void particle_emitter_spawn_00aff700(void* emitter, void* a, void* b, float c, float d, float e,
+                                     ParticleEmitterHost& host) {
+    // AFF71D..AFF782: on first use operator new(30h) (00BF681B) and 00B053D0
+    // BSP_NativeParticleEmitterContainer_Construct(model, emitter, def+20h); then
+    // 00B04C80 BSP_NativeParticleEmission_Spawn(container, a, b, c, d, e).
+    if (rd<void*>(emitter, 0x10) == nullptr) {
+        wr<void*>(emitter, 0x10,
+                  host.construct_container(rd<void*>(emitter, 0x08), emitter, rd<std::uint32_t>(ptr(emitter, 0x0c), 0x20)));
+    }
+    host.spawn(rd<void*>(emitter, 0x10), a, b, c, d, e);
+}
+
 void release_axial_state_00b00750(volatile std::int32_t& axial_count_00f8d380) {
     axial_count_00f8d380 = axial_count_00f8d380 - 1;
 }
