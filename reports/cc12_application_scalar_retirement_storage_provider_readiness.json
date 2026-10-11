@@ -1,0 +1,461 @@
+{
+  "packet": "cc12_application_scalar_retirement_storage_provider_readiness",
+  "address": "00737E00",
+  "status": "CONDITIONAL_dormant_Source_contract_ready_actual_free_domain_held",
+  "scope": "Evidence-only finite positive actual Git packet. No scalar C++ implementation authorized.",
+  "actual_Git_inputs": {
+    "status": "PASS",
+    "commit": "1c7fa182c587f8009508acdd2cf0ce77801128a1",
+    "trees": {
+      "": "0151a473cd2afbdab852bd9cf453ab091b608c8b",
+      "src": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+      "include": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d"
+    },
+    "inputs": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "git_blob": "66f2836056aae1c6e129be91a7b46f8d81b0ec86",
+        "bytes": 12440,
+        "sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "working_bytes": 12440,
+        "working_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "lf_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "git_blob": "5743ebaaa1fbe3521a662db57df2710cfecc29c4",
+        "bytes": 10396,
+        "sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "working_bytes": 10396,
+        "working_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "lf_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION.md",
+        "git_blob": "9bcbe40b99bec0547c12f6ccdc973d42b56f76c4",
+        "bytes": 6445,
+        "sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418",
+        "working_bytes": 6464,
+        "working_sha256": "1bbbb3aed7c8fa639fcc5bfef421a804d7cb3b543c3568bf5740ace7c929b904",
+        "lf_sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation.json",
+        "git_blob": "206576177a1c9bd8005da03439e3b770d9a09c9e",
+        "bytes": 29621,
+        "sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1",
+        "working_bytes": 30267,
+        "working_sha256": "1edce5ada80639df36b6baed83c5cb176a1bc6f2526fe360ca03d7a88cc80c19",
+        "lf_sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION_PRIMARY.md",
+        "git_blob": "e3aec5f920336cf7977989b889d04c17dc680696",
+        "bytes": 3331,
+        "sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e",
+        "working_bytes": 3331,
+        "working_sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e",
+        "lf_sha256": "7c551a63c4b8b6a8abdeec0e2c6154a6cdf0fc8c5ae594e21e585f5c294f878e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation_primary.json",
+        "git_blob": "fa5e03ceb5aab0e76fe947ee5fd958bc1df51751",
+        "bytes": 11734,
+        "sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b",
+        "working_bytes": 11734,
+        "working_sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b",
+        "lf_sha256": "37b0f43f5d33bab98c0efadc463670ba4cf6c96ebad1ea555dc7609cd9284b9b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+        "git_blob": "09e676baad335d7db5c894fa3026d81dbf49671a",
+        "bytes": 5246,
+        "sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "working_bytes": 5246,
+        "working_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+        "lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_readiness.json",
+        "git_blob": "61412a36ff96686d2e8e6072d536f9b7b7d1d69e",
+        "bytes": 11864,
+        "sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "working_bytes": 11864,
+        "working_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+        "lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_STORAGE_PROVIDER_PRIMARY.md",
+        "git_blob": "9af4cf38085c4f6dc404af9650f5ccc2b8c82853",
+        "bytes": 2794,
+        "sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263",
+        "working_bytes": 2794,
+        "working_sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263",
+        "lf_sha256": "0049020f436efa8232e8d1ab047dd13e5d6105aad5c70c68d9be94790dbaa263"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_storage_provider_primary.json",
+        "git_blob": "f5224567af643c8df3dece0fcde349e151f5cfd7",
+        "bytes": 20252,
+        "sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b",
+        "working_bytes": 20252,
+        "working_sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b",
+        "lf_sha256": "3435ff364cdb1431a3377017daa2840178b6bba2e08e257c5844c2e6c50cc47b"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_SCALAR_TABLE_ENTRY_READINESS.md",
+        "git_blob": "9557b120f5ae3d01c610be5a78a987fff3aa6a6f",
+        "bytes": 4753,
+        "sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c",
+        "working_bytes": 4753,
+        "working_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c",
+        "lf_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c"
+      },
+      {
+        "path": "reports/cc12_application_scalar_table_entry_readiness.json",
+        "git_blob": "80dbd8d7eabd87ea7edd3e38539664e7f7877937",
+        "bytes": 11358,
+        "sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a",
+        "working_bytes": 11358,
+        "working_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a",
+        "lf_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "working_bytes": 4372,
+        "working_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "working_bytes": 13257,
+        "working_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "docs/SINGLETON_LIFETIME.md",
+        "git_blob": "fdc81ab12fda7d0f7a1651c208d901ef586156a7",
+        "bytes": 8640,
+        "sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f",
+        "working_bytes": 8640,
+        "working_sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f",
+        "lf_sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f"
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "git_blob": "d52f6a8e6dbbab41c89787606cb8ca23349f767b",
+        "bytes": 28284,
+        "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "working_bytes": 28284,
+        "working_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+      },
+      {
+        "path": "include/bsp/native_shader_binary_cache.hpp",
+        "git_blob": "c622171df4c13d649f850b11900921ec95ead010",
+        "bytes": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "working_bytes": 4300,
+        "working_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+        "lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      {
+        "path": "include/bsp/native_shader_preload.hpp",
+        "git_blob": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+        "bytes": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "working_bytes": 3737,
+        "working_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      }
+    ],
+    "scope": "Finite positive immediate actual Git inputs, not whole Source or compiler dependency closure."
+  },
+  "Native_scalar": {
+    "status": "PASS",
+    "kind": "Finite retained accepted byte/operand review, no fresh Native query",
+    "entry": {
+      "address": "00737E00",
+      "bytes": 30,
+      "hex": "568bf1e898fbfffff644240801740956e897e74b0083c4048bc65ec20400",
+      "sha256": "df7c5e8e769109da1b0c6187ead9fe97cd0037bf3b9d6eaaaf61e67d0c3fef17",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": [
+        {
+          "address": "00737E00",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E01",
+          "bytes": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00737E03",
+          "bytes": 5,
+          "hex": "e898fbffff",
+          "text": "call 0x7379a0"
+        },
+        {
+          "address": "00737E08",
+          "bytes": 5,
+          "hex": "f644240801",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00737E0D",
+          "bytes": 2,
+          "hex": "7409",
+          "text": "je 0x737e18"
+        },
+        {
+          "address": "00737E0F",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E10",
+          "bytes": 5,
+          "hex": "e897e74b00",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00737E15",
+          "bytes": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00737E18",
+          "bytes": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00737E1A",
+          "bytes": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00737E1B",
+          "bytes": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      ],
+      "ordinary_child": "007379A0"
+    },
+    "table_cell": {
+      "address": "00CFEAB0",
+      "bytes": 4,
+      "hex": "007e7300",
+      "sha256": "eb4b264354cb480e9dce6706d54ac7789eb7141ee28decb4a917227468bf25ec",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": []
+    },
+    "historical_audit_baseline": "6df8a40cbdad733d56fcbef6424bd8199997a5a2",
+    "exact_operands": {
+      "receiver": "incoming ECX captured in saved ESI",
+      "parent": "007379A0",
+      "selector": "TEST BYTE SS:[ESP+8],1 after child returns. Under normal child RET0, this is entryESP+4 after saved ESI.",
+      "skip_target": "00737E18",
+      "outer_free": "00BF65AC receives captured A via PUSH ESI; ADD ESP,4 follows",
+      "return": "MOV EAX,ESI; POP ESI; RET4. Return captured address only, no post-free dereference."
+    },
+    "boundary": "Historical raw_PE_equal is retained audit evidence, not newly reopened PE or current runtime verification. No callable Source table or binary ABI credit."
+  },
+  "provider": {
+    "status": "PASS",
+    "Source_service": {
+      "address": "00bf65ac",
+      "proposed_name": "_free",
+      "cpp": "singleton_lifetime_free",
+      "native_abi": "cdecl pointer on stack; JMP CRT free body.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "Retain correct library name; actual matching host std::free service, not a no-op."
+    },
+    "matching_allocator_service": {
+      "address": "00bf681b",
+      "proposed_name": "operator_new",
+      "cpp": "singleton_lifetime_allocate",
+      "native_abi": "cdecl size on stack; EAX raw pointer; RET; throws on exhausted allocation.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "malloc then __callnewh(size) retry loop verified in assembly; host std::malloc/_callnewh/std::bad_alloc implement allocator service with host_bytes. CRT exception/vtable/global handler identity not replaced. Proposed library-role name remains descriptive."
+    },
+    "type": "void singleton_lifetime_free(void*) noexcept",
+    "existing_callback_type": "void (*free_object_00bf65ac)(void*)",
+    "body": "std::free(pointer)",
+    "allocation": "singleton_lifetime_allocate({kind,native_bytes,host_bytes}) returns raw malloc(host_bytes) storage; actual _callnewh retry; matching free; no zeroing or alternate heap.",
+    "conditional_domain": "Actual A must be start of a live compatible allocation from the same host CRT family, not stack, row data, interior pointer, another heap or already freed. Raw allocator storage alone does not establish actual Application/row object lifetimes.",
+    "conditional_provider_lifetime": "Named provider code, matching CRT family and actual outer allocation must remain valid through parent and selected outer free. No default binding, owner or lifetime acquisition is supplied.",
+    "family_separation": "BF6989 array data free is completed by parent; BF65AC outer-object free is distinct and conditional.",
+    "boundary": "Existing genuine host CRT Source service only; Original static CRT heap/exception ABI and actual Application allocation provenance are not established."
+  },
+  "readiness": [
+    {
+      "item": "Complete scalar normal bytes and physical ABI operands",
+      "status": "GO_retained_static_contract",
+      "basis": "737E00: 30 bytes/11 instructions. Saved incoming ECX in ESI; CALL 7379A0; late TEST BYTE[ESP+8],1; selected BF65AC(A), ADD ESP4; captured A to EAX; RET4.",
+      "limit": "Retained complete independent decode; not current PE execution, callable table, Original binary ABI implementation or FH3 authentication."
+    },
+    {
+      "item": "Genuine parent and existing borrowed row/context/allocation interfaces",
+      "status": "GO_accepted_dormant_Source",
+      "basis": "Root accepts actual A+8 rows, same allocation/context, signed/live resize0, current-data BF6989 free, armed C++ cleanup then BEA990.",
+      "limit": "All accepted actual live objects, preimages, cells, providers and captured section/depth domains remain required; no owner or runtime transfer."
+    },
+    {
+      "item": "BF65AC Source implementation and explicit existing type",
+      "status": "GO_host_CRT_service_boundary",
+      "basis": "Existing singleton_lifetime_free(void*) noexcept calls actual std::free. Existing free_object_00bf65ac callback type is void(*)(void*). Matching singleton_lifetime_allocate is actual malloc/_callnewh raw storage service.",
+      "limit": "No default provider, new heap, invented function or transfer to Original static CRT allocation identity."
+    },
+    {
+      "item": "Actual outer allocation, provider and selector domains",
+      "status": "CONDITIONAL_positive_caller_preconditions",
+      "basis": "Late bit0 must select the genuine outer free only after parent returns, using the captured A, never row data. Selected A must be a compatible live allocation start in the same supplied CRT family.",
+      "limit": "These finite inputs do not identify the allocation that produced a particular A or the actual scalar caller selector binding. Stack/interior/foreign/already-freed pointers cannot satisfy the selected free precondition."
+    },
+    {
+      "item": "Next bounded dormant scalar Source packet",
+      "status": "CONDITIONAL_Root_authorization",
+      "basis": "Normal scalar body and real Source provider are present. A later 00737E00 reconstruction can preserve genuine parent, late byte predicate, selected captured-A free and captured-address return with explicit borrowed inputs.",
+      "limit": "No implementation or new interface is authorized or written in this readiness packet. No additional Native function body query is needed for this qualified normal Source contract."
+    },
+    {
+      "item": "Original virtual table, invocation, FH3/frame and binary ABI",
+      "status": "HOLD",
+      "basis": "CFEAB0 slot-zero DWORD positively selects 737E00. It supplies no callable Source table. Parent action invocation/frame remains conditional, with actionEBP=storeESP+18h=entryESP plus preserved contents.",
+      "limit": "Do not copy numeric table words into callable C++ tables or treat the new explicit-context parent API as Original ECX/RET4 ABI."
+    },
+    {
+      "item": "Actual owner, retirement quiescence, activation and runtime",
+      "status": "HOLD",
+      "basis": "Parent frees vector data without post-free reset; selected scalar path then frees outer A and returns its captured address without dereference.",
+      "limit": "No live ownership is implied by returned A. Actual acquisition, remaining aliases, row/outer/provider lifetimes and quiescence must be positively established before active use."
+    }
+  ],
+  "accepted_parent": {
+    "function": "retire_native_application_007379a0",
+    "Source": "src/native_render_service_base.cpp",
+    "PRIMARY": "reports/cc12_application_vector_retirement_source_implementation_primary.json",
+    "worker_commit": "593402f109dae309b02d0dfc96d73f907561db64",
+    "normal": [
+      "Actual already live 0Ch rows at A+8; same supplied allocation/context",
+      "Armed qualified C++ cleanup before signed/live 735F30 resize(rows,0); negative count/capacity preserve wrapping/reserve/growth routes",
+      "After resize reload CURRENT data; genuine BF6989 array free(data), never A; state0 remains armed through free",
+      "After free returns disarm/demote before genuine BEA990(A,same context); no data/capacity reset or element retirement"
+    ],
+    "failure": "Escaping C++ resize/free invokes BEA990 with same A/context; cleanup C++ escape terminates under unchanged E06D7363 filter policy. Parent normal child escape occurs after parent disarm. Foreign/hardware/Original FH3 excluded.",
+    "inherited_domains": "Stable actual borrowed receiver/preimages with live aligned uint32 at +0 and actual live embedded rows at +8; valid actual shared GameNativeStringProcess/GameSingletonHost manager/Application cells, manager/vector/section/depth, element references and provider lifetimes through normal/cleanup child. Intentional row containment and accepted disjoint bindings remain.",
+    "inherited_hazards": "M1/M2 and A/current P may differ; null P does not skip unregister. Captured guard remains armed through normal Leave; escape may decrement/Leave again. Existing base reset helper alone is not a substitute for genuine parent retirement."
+  },
+  "required_scalar_normal_contract": {
+    "capture": "Retain actual incoming A through the ordinary parent; do not substitute a projected host/owner.",
+    "parent": "Invoke genuine accepted 7379A0 with the same actual A, its actual already live rows, allocation and context.",
+    "selector": "After successful parent return read the actual argument byte and test bit0. Physical selector is entryESP+4 after saved ESI and normal child RET0. Upper byte bits and higher argument bytes are not locally consumed. No cached early Boolean receives Native equivalence credit.",
+    "outer_free": "If bit0 set call explicitly supplied genuine BF65AC service with captured A. If clear skip that whole free sequence. Do not free CURRENT row data again or substitute BF6989.",
+    "return": "Return captured address value A, including after selected outer free, without dereferencing it. This is a static schedule, not live ownership.",
+    "failure": "Parent must return before selector/free/return are reached. Its qualified C++ cleanup remains inherited. Scalar body adds no local catch, compensation, reset, refcount, null guard or extra retirement. No safe-cleanup or rollback promise."
+  },
+  "required_free_domains": {
+    "allocation_family": "For the existing host service, A must be start of a compatible still-live allocation from the same actual host malloc/free family. BF681B and BF65AC service scope is host CRT; Original static CRT heap/exception identity is excluded.",
+    "actual_objects": "Raw singleton_lifetime_allocate bytes are uninitialized; they do not create actual Application field/row object lifetimes, actual cell/provider bindings or ownership.",
+    "selection": "A borrowed/stack object may satisfy ordinary parent domains but cannot satisfy selected malloc-family outer free. The retained scalar audit positively describes the startup Application as stack storage; it does not establish a new actual scalar caller flag.",
+    "lifetime": "Actual receiver/rows/cells/managers/sections/providers remain valid through normal or C++ cleanup parent. On selected outer free, actual allocation/provider validity is required until free returns. No access to outer/rows is admitted afterward.",
+    "aliases_quiescence": "Parent can leave data field dangling if its provider does not mutate it. The selected outer free can invalidate A/rows. Alias retirement/quiescence and lifetime acquisition remain external, unproved obligations."
+  },
+  "historical_qualification": {
+    "Native_body": "Scalar Native byte/decode/PE-equality pins are retained from the accepted scalar audit, not refreshed against installed PE in this packet.",
+    "earlier_Source_holds": "Old scalar doc statements that ordinary child contracts were open are historical. Current accepted parent Source/PRIMARY supplies that bounded child contract. Old absence searches are not imported as current evidence.",
+    "prior_build": "Root parent build/3 existing checks and COFF are historical accepted input records. No build/test was performed or rebased in this evidence-only packet.",
+    "archive_scope": "Earlier private/archive references inside input reports remain historical opaque input contents. They are neither recursively replayed nor granted new acceptance credit."
+  },
+  "smallest_next_positive_input": {
+    "dormant_Source": "Root may explicitly authorize one bounded 00737E00 Source implementation under the normal and matching-provider preconditions above. No new Native body/query is needed for that qualified contract.",
+    "actual_active_use": "A finite witness for the exact scalar caller/receiver: where actual A allocation begins, its matching allocator/free family and extent, already-live field/row objects, actual post-parent selector byte, provider/cell lifetimes and retirement/quiescence. No positive caller address is selected by these retained finite inputs, so no Native caller address is invented.",
+    "Original_ABI": "Separate positive original invocation/table/frame/CRT binding evidence is required only before claiming Original ABI/runtime; it is not replaced by host CRT availability."
+  },
+  "new_actions": {
+    "Source_changes": 0,
+    "Native_queries": 0,
+    "GPR_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "scalar_implementation": 0
+  },
+  "private_directory": "local/cc12_application_scalar_retirement_storage_provider_readiness/",
+  "private_references": [
+    {
+      "path": "capture.py",
+      "bytes": 8002,
+      "sha256": "0fe62f32423f4582e2ba40619662fb43269eb34162c27272a90bdfbe478758d2"
+    },
+    {
+      "path": "guard.py",
+      "bytes": 8181,
+      "sha256": "39a84df11f41e3541429cb83b7df204c3fd512cba0d92dcfd9dd997d71468f28"
+    },
+    {
+      "path": "write_report.py",
+      "bytes": 19336,
+      "sha256": "e014cb67708fcb89b14546af94e8ad5c592427153ab9f572466f443818ea063a"
+    },
+    {
+      "path": "seal.py",
+      "bytes": 10525,
+      "sha256": "4c9ee4a0e5925a6f84b63b56c34217331a4f92666aa39562675d9921b71c1404"
+    },
+    {
+      "path": "baseline.json",
+      "bytes": 8789,
+      "sha256": "c3bdcf4c2e8526c5d2492366d3fb5b9684221e6d53c448c7dac53b777f27a22f"
+    },
+    {
+      "path": "routing.json",
+      "bytes": 1215,
+      "sha256": "7c8a265de2acf11e0326a2ef7bc0e79500d8a059966172f26a9f637724943359"
+    },
+    {
+      "path": "route_scalar.txt",
+      "bytes": 565,
+      "sha256": "fed46cf420a7315d1fb5e2021effabc1b9aa58447b5f1b0a8310a94819656a59"
+    },
+    {
+      "path": "route_free.txt",
+      "bytes": 1285,
+      "sha256": "3af9bd0c1b56c7709200cf714afb4dae7910a3d61b0b8e6a70b82d252573c867"
+    },
+    {
+      "path": "route_free_source.txt",
+      "bytes": 141,
+      "sha256": "06b23688786301b2d536a72113750b3d76b1dc0b802b9419bd77c3c3200bf229"
+    },
+    {
+      "path": "operand_review.json",
+      "bytes": 2859,
+      "sha256": "1822f7268fe2c5e4dd0deee0b3e7f69aa66b1448517c10506d928253beca7fc8"
+    },
+    {
+      "path": "provider_review.json",
+      "bytes": 2105,
+      "sha256": "68ffa1f5b42a36c661a07c1dec69206709e15958d564e437f3d4c448e93cc9b1"
+    }
+  ],
+  "delivery": "Exactly two owned outputs. Pinned pure one-open finite ZIP replay, distinct physical copied ZIP, actual frozen/staged/final Git, raw stage-to-final and unchanged src/include trees are closed in finalpins.json."
+}
