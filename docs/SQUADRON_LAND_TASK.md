@@ -14482,3 +14482,124 @@ leases are held. No switch was added. The g12-g14 runs finished before the pause
 - `l48_diag_hq.py` makes the diagnostic export `local\l48_D0` (main `62988a6fa`). It adds an `l48diag hit` line per
   hit, and the env var `BSP_L48_VICTIMS=|A|B|` adds victims to it.
 - `l48_hqdmg.py` gives per-shooter damage to one victim, and `l48_j8sum.py` gives a run's deaths and its outcome.
+
+## 5fi. JM08 on the moved main, the shipyard director question, `Scoring_SetMissionCompleted`, and USN04's silent dive stick (cc9-lua49, 2026-10-11, reads and runs only)
+
+No switch was added and no source changed. All runs are on `10bef4a99` (a clean build of this branch; the USNOS
+300-frame smoke exits 0 and ctest passes), in 5fd's launch form (`local\l49_lane.ps1`, a copy of `l48_lane.ps1`).
+No run completed a mission, so the exec guard had nothing to refuse.
+
+### Item 1: does a shipyard boat inherit `TorpedoDirector = false`? No
+
+cc11 had already answered it (docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md). Spot-checked from disk:
+- `00845001..00845014` pushes owner 0 into `008F41A0`, which builds an empty bag. The launch writes only `Type`,
+  `Skill`, `Race`, `Party`, `OwnerPlayer` and `ShipYardLaunch` (plus the aircraft and submarine keys). There is no
+  `Ship`-group merge, and the clone `008F41F0` adds nothing.
+- In `00822C20`, the `TorpedoDirector` find at `00823932` (`008F2260`) is followed by `TEST EAX,EAX` /
+  `JE 00823955`, which stores 1 when the key is absent.
+
+So the four Gyoraitei's `mask=3` is the image's. There is nothing to bind. The explicit-false class-8 promotion
+(`00823941..00823955`) is cc11's `kShipDirectorClass8Bound`, already ON.
+
+### Item 2: JM08 strike runs (`local\l49_j8gen.py`, l48's generator plus `--end` and `--boat-start`)
+
+**What moved on this main:** the AI tubes now fire. On the g10 orders, the torpedo gate reads `targeted=8398
+sent=5434 shots=18`, where l48's runs had `targeted=0`. The `+7Dh` hold of GUNNERY 161.4 is gone.
+
+| run | frames | Hosho first | Isokaze/Fubuki first | boats first | outcome |
+| --- | --- | --- | --- | --- | --- |
+| g10 | 24000 | Nevada | Nevada | Nevada | 14 tube launches at Nevada; Nevada dies 482.16 (`Gyoraitei #Y1` cat 6); **HQ falls 1062.11** |
+| g15 | 24000 | Nevada | Missouri | Missouri | 27 launches at Missouri, 4 hits; Missouri min 8832 hp; Nevada dies 529.84 (Hosho Kates); **no end in 1200 s** |
+| g16 | 24000 | Missouri | Missouri | Missouri | 31 launches, 5 hits, Missouri min 5705 hp; Kates never hit Missouri; HQ falls 1005.08 |
+| g18 | 48000 | as g15 | as g15 | as g15 | HQ falls 1331.22 |
+| g19 | 48000 | as g16 | as g16 | as g16 | HQ falls 1005.08 |
+| g20 | 30000 | Missouri | landships | landships | **7 of 11 landships dead**; HQ falls 1027.88 |
+| g21 | 30000 | Nevada | landships | Missouri | 20 launches at Missouri; Missouri min 7787 hp; HQ falls 1234.23 |
+
+- **Bullet 66** is the Gyoraitei torpedo. It does 1370 hp to Missouri (11000 hp, armour 130). About one launch in six
+  hits. Missouri repairs about 22 hp/s, so one or two hits a minute never add up.
+- **The shipyard builds in fours.** The next four appear only after the previous boats die, and the 12 boats are spent
+  by about 730 s.
+- **Isokaze and Fubuki never launch.** Their scene `Ship` group carries `TorpedoDirector = false`. In the image too,
+  only the player's director toggle or `TorpedoEnable` reopens it. Their guns (cat 1 and 6) are what kill transports
+  in g19 and g20.
+- **The HQ falls between 1000 and 1330 s on every run but g15.** A win needs all 11 landships and Missouri before
+  that. That is out of reach without more torpedo weight: the player's `torpedo` line for Isokaze/Fubuki, which is
+  cc9-ships42's.
+
+### Item 4: `Scoring_SetMissionCompleted` `008B8AD0` (read; not bound)
+
+**What it does.**
+- It resolves the slot: `[game+18ECh]`, or argument 0 when `game+1FE4h != 0` (`008B8BB8`, `008B8BC7`).
+- It reads the boolean argument; the default is 1 (`008B8C02`, `008B8C0C`).
+- It calls `00906460` (`RET 8`, `009064C0`), which:
+  - stores the record word `+4+slot*284h+0` (`0090648D`);
+  - stores the clock `00F876A4` at `+10h`, only on the 0 -> set edge (`0090647D..00906485`);
+  - walks `[[game+19CCh]+28h]` and calls `00927F60` for every entity whose `+180h <= 7` (`009064AA..009064B3`).
+- `00927F60` (`RET`, `0092802A`):
+  - stamps `entity+1D0h` with the clock, and copies it to the formation members when `entity+9D4h` is a flight
+    leader;
+  - for `+1ACh <= 7` and `vtable[5Ch](5)`, calls `0090ED40`.
+- `0090ED40` (`RET 0Ch`) is skipped in mode 2. Otherwise it adds the elapsed seconds into the record's `+118h` map
+  under the key that the entity's `+170h` sub-object returns through its `vtable[0]`.
+
+**Who calls it.** Only `luaMissionCompletedNew`, `luaMissionFailedNew` and the F2/F4 cheats, in this installation's
+`commandhelpers.lua` (2024-10-29).
+
+**Verdict.** It reaches no gameplay and no `DisplayScores` line. Its readers are the score record and the
+mission-progress save (`src/mission_progress.cpp`). It is left unbound, on purpose: binding it would only feed the
+profile commit at `EndScene`.
+
+### Item 3: USN04 phase 2. The US dive bombers fly a neutral stick in `aimdive`
+
+**Run.** `s39_u4_p1` (`local\l49_ord_u4p1.txt`), `0.0222` s frames with `--frame-jitter '20,3'`, 45000 frames,
+`local\l49_main_u4p2.log`.
+- Dive-bomb releases: 0 of 33.
+- Torpedo releases: 3 of 36, all Kates. No US TBD released.
+
+**Diagnostic.** The diagnostic export `local\l49_T1` (`kHullAimTrace` flipped, plus `l49_diag_dive.py` and
+`l49_diag_dive2.py`, never committed) logs the pitch slot through the planner, the slew and `0099BF30` on every
+turndown or `aimdive` think (`L49P`, `local\l49_T3_u4p2.log`).
+
+**What the trace shows** (`Lexington-class01_sqn05`):
+- The turndown pulls `+0.99` while inverted. It hands over at tick 4411, at pitch -1.01 rad, range 879 m and height
+  915 m: a 46-degree sight line.
+- From tick 4413 the **task itself** writes `+29Ch = 0.000` (`d_in=0.000 act=1 mode=0`). The planner, the slew and
+  the repair pass it through. The nose drifts to -1.226 rad (70 degrees).
+- The CCIP error grows to 570 m. Only the terrain band's repair (`repaired` > 0 from tick 4476, about 330 m) pulls
+  up, too late. The release gate (25 m, `00CE3880`) is never met.
+
+**Why the stick is zero.**
+- `usn_19_coralus.lua` gives every striker `SetSkillLevel(.., 2)`, and `kSkillLevelBound` applies it, so
+  `009F9D22` captures row 2, SPVeteran.
+- This installation's `robots.lua` (2025-06-01) authors `DiveBombAimPrecPullPlus`/`Minus` = 0.0 for SPVeteran
+  (lines 720-721), and `DiveBombAimPrecDist`/`Mul` = 0. Elite is the same (1134-1135).
+- So `dive_bomb_aimdive_steer_009c5c9f` returns `err x 0` every tick. That is the image's arithmetic on the authored
+  row.
+
+**Where this leaves the "no release".**
+- If the image also captures row 2, the dive has no aim feedback, and the release rests on the turndown hand-over
+  alone.
+- The roll-in point is already the image's: `S = 0.7h + 200` (`009C65C1`; `thr` 929.5 at h 1042 in the trace), with
+  completion `009C7EA0` at pitch < -1.0 inverted or < -1.3. TURNDOWN_HEADING and GUNNERY 150/157 read the rest of the
+  steering and the hand-over against the image.
+- What remains is the airframe's pull-through: how far a split-S moves the aircraft and how much the nose
+  overshoots once the stick is neutral. That is the flight model.
+- **The row is settled for the US strikers.** They are carrier launches, not script `SetSkillLevel` targets.
+  - `usn_19_coralus.lua` (2024-08-26) gives the US fleets `SkillLevelOwn`, which is SPVeteran at difficulty 1,
+    the host's `game+6ACh` (lines 66-82, 156, 195).
+  - The launch bag takes `Skill = carrier+390h` (`006C5101`, packet `cc9_carrier_launch_skill`). The log shows
+    `air ops launch skill: squadron=Lexington-class01_sqn01 ... skill=2 applied=1`.
+  - So row 2 is the image's row too. Line 1411's `PilotSetTarget`-before-`SetSkillLevel` order concerns only the
+    Japanese Zuikaku strikers.
+  - **The zero-gain dive is this installation's authored behaviour at difficulty 1.**
+
+### Scripts (`local\`, prefix `l49_`, none for commit)
+
+| script | what it does |
+| --- | --- |
+| `l49_lane.ps1` | launches runs, with the new row `u4p2` |
+| `l49_j8gen.py` | writes JM08 order files |
+| `l49_j8sum.py` | summarizes a run's deaths and outcome |
+| `l49_dispscan.py <disp> [lo hi]` | lists every operand with that displacement, swept from the function starts |
+| `l49_diag_dive.py`, `l49_diag_dive2.py` | the diagnostic patches |
