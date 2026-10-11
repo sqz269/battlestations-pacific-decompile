@@ -279,6 +279,8 @@ native stores, so they are not bit-exact.
 
 ## 9. Handoff
 
+(Superseded for 00B9AE00, 00B9D7B0 and 00BA2FF0 by section 10 and its handoff 10.4; the cc13-water1 notes below are kept for history.)
+
 - Branch `agent/cc13-water1`. The lease was released at the end of the packet.
 - Next worker: the not-reconstructed list in section 8, starting with 00B9AE00 if exact grid parity
   is wanted, or the seg 93 STL naming. AGENTS.md routes x87-heavy packets to a stronger model.
@@ -378,3 +380,48 @@ is at [field+2B4h], and each cell is 18h bytes (x, height, z, normal[3]).
 - 00B9A990: centre = ((p0+p1)+p2)+p3 times double 0.25 [00D7A348]. Normal = ((p1.n+p0.n)+p2.n)+p3.n,
   lerped (005803E0) towards (0, 4.0 [00CE3D34], 0) by the scale, then normalised (00419440).
 - The function ends by tail-jumping to vtable+0Ch (00BA5030), the float16 upload.
+### 10.3 00BA2FF0 BSP_OceanBeams_Update (complete)
+
+`void __thiscall(beams = world+ACh, camera, float time)`, RET 8. `update_ocean_beams_00ba2ff0`. Every
+outside touch point goes through `OceanBeamHost`.
+- Off when +2Ch == 0. When camera.y >= 0 it sets visibility 0 ([beams+14h], 00B6DA70) and returns
+  before the clock update.
+- The clock is +F0h = float(+30h * time) and the previous clock is +ECh (taken from the new clock when
+  negative). delta = clock - previous.
+- **Surface origin:** L = 00419510(first light's +1E0h vector) and n = -L. Then s = sqrt(1 - n.y^2),
+  h = n.xz * 00419260(n.xz) * s, and ly = -sqrt(1 - (1 - n.y^2)). origin = camera - (camera.y/ly) *
+  (h.x, ly, h.z), so origin.y = 0. Beams are placed around it and every quad faces it. They do not
+  face the camera.
+- **RNG.** Three draws come from `00BA2C20` with ECX = 00E130C0, the private Mersenne state. The two
+  at BA3270/BA32BF are in the respawn path and the one at BA346E decides deaths. The caller also inlines
+  the state guard (state+9C5h set and +9C4h clear: write to address 0). The port keeps the stream
+  behind `next_private_random_00ba2c20`. It must never be wired to 00BD2F10.
+- Respawn happens when birth < 0, or when death >= 0 and clock > death. It sets
+  radius = +50h + +54h*u1, angle = float(u2 * (double)6.2831855f) and position = origin + radius*(cos,
+  0, sin), then birth = clock and death = -1.
+- Death scheduling applies when death < 0. The squared xz distance to the origin selects a band
+  (+60h/+64h/+68h) and its rate p (+6Ch..+78h). survival = exp(log(1-p) * delta): 00BFA910 is _CIlog
+  (x87 path `FLDLN2; FYL2X`) and 00BFEEEC is _CIexp (name string "exp" at 00E1670A). If u3 > survival,
+  death = clock + +D0h.
+- Quads: the perpendicular is normalize(origin - beam) rotated, or (1, 0) at distance <= (double)0.05f.
+  The top corners sit at +-(+58h) on the water height 0078C890. **That is the gameplay water height,
+  including the +24h amplitude** (section 1). It is read only.
+- axis = normalize(normalize(dx, 64, dz) * +5Ch + (h.x, ly, h.z)), with (dx, dz) from 00BA2B50 and
+  4096 = [00D63B90]. The bottom corners are top + axis * +4Ch.
+- Vertices are 1Ch bytes (xyz, u, v, alpha, ARGB). u = 0 for vertices 1 and 3 (the + side). v = 1 for
+  the bottom pair. Fade-in is age * +D4h while age < +CCh. Fade-out multiplies by (death - clock) * +D8h
+  while that is < +D0h. Colour = 004FB850(+3Ch) for each vertex. The counts are written first:
+  [beams+1Ch]+10h = 4n and +18h = 2n.
+### 10.4 Handoff (cc13-water2)
+
+- Branch `agent/cc13-water2`. Leases `cc13_water2_ocean_x87` (00B9AE00-00BA35FF) and `cc13_water2_quad`
+  (00B9A990-00B9AB39) are released.
+- Done: 00B9AE00, 00B9D7B0, 00B9A990 and 00BA2FF0. All four were reconstructed in full and
+  build-tested. They are not fixture-tested and not wired.
+- Next options: give 00BA5030 (the float16 upload that 00B9D7B0 tail-calls) and 00BA51C0/00B9A2F0
+  (vtable 00D63E10 slots 1 and 2) the same treatment, or write a fixture that drives
+  `compute_projector_matrices_00b9ae00` against a captured camera.
+- Tooling: `local/wa2_sym.py` in the cc13-water2 tree is a one-path symbolic executor. Use `--take`
+  for branches, `--esp`/`--fpu`/`--init` to start mid-function, and `--out A=arg:len` for callee
+  outputs. It decodes `D8/DC/DE` register forms from the bytes. Pitfall: capstone names FCOMIP
+  `fcompi`, and the tool now pops for it.

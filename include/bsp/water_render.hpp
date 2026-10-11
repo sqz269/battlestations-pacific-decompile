@@ -362,6 +362,102 @@ void refresh_grid_tiles_00b9d7b0(OceanGridTilesField& field, const float stack_g
                                  const CameraAxesCrtAccess& crt, void (*invalid_parameter)(),
                                  void (*upload)(void* context), void* upload_context);
 
+// ---------------------------------------------------------------------------
+// Underwater light beams (packet cc13_water2).
+
+// One beam, pointed to by [beams+E8h][i].
+struct OceanBeam {
+    float position[3]{};   // +00h
+    float birth_0c{0.0f};  // +0Ch, < 0 means "respawn now"
+    float death_10{0.0f};  // +10h, < 0 means "no death scheduled yet"
+};
+
+// One 1Ch-byte vertex of the locked beam vertex buffer.
+struct OceanBeamVertex {
+    float x, y, z;
+    float u, v;
+    float alpha;
+    std::uint32_t argb;
+};
+
+// The beam system object (world+ACh). Offsets as in the native object; the
+// names are hypotheses from use.
+struct OceanBeamSystem {
+    std::uint32_t enabled_2c{0};
+    float speed_30{0.0f};
+    float color_3c[4]{};
+    float length_4c{0.0f};        // bottom vertices = top + axis * this
+    float radius_base_50{0.0f};   // spawn radius = base + range * u
+    float radius_range_54{0.0f};
+    float half_width_58{0.0f};
+    float axis_scale_5c{0.0f};    // weight of the displacement normal in the axis
+    float death_band_60[3]{};     // squared-distance bands +60h/+64h/+68h
+    float death_rate_6c[4]{};     // per-band death probabilities +6Ch..+78h
+    float fade_in_time_cc{0.0f};
+    float fade_out_time_d0{0.0f};
+    float fade_in_rate_d4{0.0f};
+    float fade_out_rate_d8{0.0f};
+    std::uint32_t count_dc{0};
+    OceanBeam** beams_e8{nullptr};
+    float previous_clock_ec{0.0f};
+    float clock_f0{0.0f};
+};
+
+// Everything 00BA2FF0 reaches outside the beam object, in native order.
+class OceanBeamHost {
+public:
+    virtual ~OceanBeamHost() = default;
+    virtual void refresh_camera_world_if_dirty() = 0;          // cam+5Ch bit 2 -> 00B6DB70
+    virtual Float3 camera_position_120() = 0;
+    virtual void camera_trivial_00b6fc60() = 0;                // ECX = camera, empty body
+    virtual void set_visibility_factor_00b6da70(float value) = 0;  // [beams+14h], recurse = 0
+    // The first entry of the light list [[beams+14h]+170h]+18h; its +1E0h
+    // vector. false = empty list (the native calls 00BF6713 and goes on).
+    virtual bool first_light_vector(Float3& raw) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    // 00BA2C20 with ECX = 00E130C0, the private Mersenne state. The caller's
+    // inlined guard (state+9C5h set and +9C4h clear -> write to address 0) is
+    // the host's job too. Must never be the gameplay stream 00BD2F10.
+    virtual std::uint32_t next_private_random_00ba2c20() = 0;
+    virtual float water_height_0078c890(float x, float z) = 0;       // ECX = [[beams+10h]+8] - 4
+    virtual void horizontal_displacement_00ba2b50(float x, float z, float out[2]) = 0;
+    virtual void set_draw_counts(std::uint32_t vertices_10, std::uint32_t primitives_18) = 0;  // [beams+1Ch]
+    virtual OceanBeamVertex* lock_vertices() = 0;                    // [[beams+24h]]+10h (0, 0, 0)
+    virtual void unlock_vertices() = 0;                              // [[beams+24h]]+14h
+    virtual std::uint32_t color_argb_004fb850(const float rgba[4]) = 0;
+};
+
+// 00BA2FF0 `void __thiscall(beams, camera, float time)`, RET 8, called from
+// 0078D02C (packet cc13_water2, verified against the listing).
+//  * Off when enabled_2c == 0. Camera at or above y = 0: visibility 0, return.
+//  * clock_f0 = float(speed * time); previous = old clock, or the new clock
+//    when the old one is negative; frame delta = clock - previous.
+//  * L = normalize(light) (00419510). n = (-0.0-L.x, -L.y, -0.0-L.z);
+//    s = sqrt(1 - n.y^2); h = n.xz * 00419260(n.xz) * s; ly = -sqrt(1 - (1 - n.y^2)).
+//    origin = camera - (camera.y / ly) * (h.x, ly, h.z): where the light ray
+//    through the camera leaves the surface.
+//  * Per beam: birth < 0, or death >= 0 and death < clock -> respawn with
+//    two draws: radius = base + range * u1, angle = u2 * (double)6.2831855f
+//    [00CE3828], position = origin + radius * (cos, 0 [00D7A258], sin).
+//    birth = clock, death = -1. u = (float)(draw (+2^32 if negative)) *
+//    2^-32 [00CE3978]/[00D63B80].
+//    death < 0 -> one draw u3; with d2 = |beam.xz - origin.xz|^2 and p the
+//    band rate (+6Ch if d2 < +60h, +70h if < +64h, +74h if < +68h, else +78h),
+//    survival = exp(log(1 - p) * delta) (00BFA910 = _CIlog, 00BFEEEC =
+//    _CIexp); u3 > survival -> death = clock + fade_out_time.
+//  * Draw counts 4n / 2n; n == 0 -> visibility 0. Otherwise each beam is a
+//    quad facing the surface origin: perpendicular = normalize(origin - beam)
+//    rotated (or (1, 0) when the distance <= (double)0.05f [00D7A270]),
+//    top corners at +-half_width on the water height (0078C890), axis =
+//    normalize(normalize(dx, 64 [00D638F0], dz) * axis_scale + (h.x, ly, h.z))
+//    with (dx, dz) = 00BA2B50, bottom = top + axis * length. Vertex i: right
+//    corner for i = 1, 3 (u = 0), left for 0, 2 (u = 1); v = 0 for i < 2, else
+//    1 and the bottom position. alpha = fade-in * fade-out.
+// Presentation only: it reads the gameplay water height but changes nothing
+// outside the beam object; it never draws from 00BD2F10.
+void update_ocean_beams_00ba2ff0(OceanBeamSystem& beams, OceanBeamHost& host, float time,
+                                 const CameraAxesCrtAccess& crt);
+
 // Grid resolution of the projected mesh 00BA5240 builds ([+FCh] x [+100h]).
 //   00BA5610 (initial): simple ocean 20h x 20h, else 20h x 40h.
 //   00BA6BD0 (vtable slot 4, quality): simple 20h x 20h, else 80h x 100h; it

@@ -18,6 +18,7 @@
 #include "bsp/camera_multiply.hpp"
 #include "bsp/main_menu_map_point_geometry.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
+#include "bsp/native_vector2_math.hpp"
 
 namespace bsp::water_render {
 namespace {
@@ -507,6 +508,231 @@ void refresh_grid_tiles_00b9d7b0(OceanGridTilesField& field, const float stack_g
     }
     // B9DB35: JMP [vtable+0Ch] (00BA5030).
     upload(upload_context);
+}
+
+namespace {
+
+// BA3270..BA3299 and the two other draw sites: FILD, +2^32 when negative
+// ([00CE3978]), * 2^-32 ([00D63B80]), spilled to a float.
+float unit_draw(OceanBeamHost& host) {
+    const std::uint32_t bits = host.next_private_random_00ba2c20();
+    double value = static_cast<double>(static_cast<std::int32_t>(bits));
+    if (static_cast<std::int32_t>(bits) < 0) {
+        value += 4294967296.0;
+    }
+    return static_cast<float>(value * 2.3283064365386963e-10);
+}
+
+}  // namespace
+
+void update_ocean_beams_00ba2ff0(OceanBeamSystem& beams, OceanBeamHost& host, float time,
+                                 const CameraAxesCrtAccess& crt) {
+    if (beams.enabled_2c == 0) {
+        return;
+    }
+    // BA3003..BA3062.
+    host.refresh_camera_world_if_dirty();
+    const Float3 camera = host.camera_position_120();
+    host.camera_trivial_00b6fc60();
+    if (!(0.0f > camera.y)) {  // COMISS / JBE: camera not under water
+        host.set_visibility_factor_00b6da70(0.0f);
+        return;
+    }
+    host.set_visibility_factor_00b6da70(1.0f);
+
+    // BA3067..BA30BA: clock and frame delta.
+    beams.previous_clock_ec = beams.clock_f0;
+    const float clock = static_cast<float>(static_cast<double>(beams.speed_30) * time);
+    beams.clock_f0 = clock;
+    if (0.0f > beams.previous_clock_ec) {
+        beams.previous_clock_ec = clock;
+    }
+    const float delta = static_cast<float>(static_cast<double>(clock) - beams.previous_clock_ec);
+
+    // BA30A5..BA31F8: where the light ray through the camera meets y = 0.
+    Float3 raw;
+    if (!host.first_light_vector(raw)) {
+        host.invalid_parameter_00bf6713();
+    }
+    float light[3];
+    const float raw_v[3] = {raw.x, raw.y, raw.z};
+    camera_vector_normalize_00419510(light, raw_v, &crt);
+    const float ny = -light[1];
+    const float nx = -0.0f - light[0];
+    const float nz = -0.0f - light[2];
+    const float horizontal_sq = static_cast<float>(1.0 - static_cast<double>(ny) * ny);
+    const float s = static_cast<float>(std::sqrt(horizontal_sq));  // 00BF7030
+    float flat[2] = {nx, nz};
+    const float reciprocal = native_vector2_reciprocal_length_00419260(flat, &crt);
+    flat[0] = reciprocal * nx;
+    flat[1] = reciprocal * nz;
+    const float hx = flat[0] * s;
+    const float hz = s * flat[1];
+    const float vertical_sq = static_cast<float>(1.0 - horizontal_sq);
+    const float ly = -static_cast<float>(std::sqrt(vertical_sq));
+    const float k = static_cast<float>(static_cast<double>(camera.y) / ly);
+    const Float3 origin{static_cast<float>(camera.x - static_cast<double>(k) * hx),
+                        static_cast<float>(camera.y - static_cast<double>(ly) * k),
+                        static_cast<float>(camera.z - static_cast<double>(k) * hz)};
+
+    // BA3202..BA3363: respawn and death scheduling.
+    for (std::uint32_t i = 0; i < beams.count_dc; ++i) {
+        OceanBeam& beam = *beams.beams_e8[i];
+        bool respawn = false;
+        if (beam.birth_0c < 0.0f) {
+            respawn = true;
+        } else if (beam.death_10 < 0.0f) {
+            // BA33B1..BA34B4.
+            const float dx = beam.position[0] - origin.x;
+            const float dz = beam.position[2] - origin.z;
+            const float d2 = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+            float rate;
+            if (beams.death_band_60[0] > d2) {
+                rate = beams.death_rate_6c[0];
+            } else if (beams.death_band_60[1] > d2) {
+                rate = beams.death_rate_6c[1];
+            } else if (beams.death_band_60[2] > d2) {
+                rate = beams.death_rate_6c[2];
+            } else {
+                rate = beams.death_rate_6c[3];
+            }
+            float survival = static_cast<float>(1.0 - rate);
+            survival = static_cast<float>(std::log(static_cast<double>(survival)));  // 00BFA910
+            survival = survival * delta;
+            survival = static_cast<float>(std::exp(static_cast<double>(survival)));  // 00BFEEEC
+            const float u3 = unit_draw(host);  // BA346E
+            if (u3 > survival) {
+                beam.death_10 = beams.fade_out_time_d0 + beams.clock_f0;
+            }
+        } else if (beams.clock_f0 > beam.death_10) {
+            respawn = true;
+        }
+        if (respawn) {
+            // BA3240..BA3357.
+            beam.birth_0c = beams.clock_f0;
+            beam.death_10 = -1.0f;  // [00D7A260]
+            const float u1 = unit_draw(host);  // BA3270
+            const float radius = static_cast<float>(static_cast<double>(beams.radius_range_54) * u1 +
+                                                    beams.radius_base_50);
+            const float u2 = unit_draw(host);  // BA32BF
+            const float angle = static_cast<float>(u2 * 6.2831854820251465);  // [00CE3828]
+            const float c = static_cast<float>(std::cos(static_cast<double>(angle)));
+            const float sn = static_cast<float>(std::sin(static_cast<double>(angle)));
+            const float ox = c * radius;
+            const float oz = radius * sn;
+            beam.position[0] = ox + origin.x;
+            beam.position[1] = static_cast<float>(origin.y + 0.0);  // [00D7A258]
+            beam.position[2] = oz + origin.z;
+        }
+    }
+
+    // BA3369..BA33A4.
+    host.set_draw_counts(beams.count_dc * 4, beams.count_dc * 2);
+    if (beams.count_dc == 0) {
+        host.set_visibility_factor_00b6da70(0.0f);
+        return;
+    }
+    // BA34B9..BA3A4A: vertices.
+    host.refresh_camera_world_if_dirty();
+    OceanBeamVertex* vertex = host.lock_vertices();
+    for (std::uint32_t i = 0; i < beams.count_dc; ++i) {
+        const OceanBeam& beam = *beams.beams_e8[i];
+        const float bx = beam.position[0];
+        const float bz = beam.position[2];
+        const float tx = origin.x - bx;
+        const float tz = origin.z - bz;
+        const float distance_sq = static_cast<float>(static_cast<double>(tx) * tx + static_cast<double>(tz) * tz);
+        const float distance = static_cast<float>(std::sqrt(distance_sq));
+        float px = 1.0f;
+        float pz = 0.0f;
+        if (distance > static_cast<double>(0.05f)) {  // [00D7A270]
+            const float inverse = static_cast<float>(1.0 / distance);
+            px = inverse * tz;
+            pz = inverse * -tx;
+        }
+        const double w = beams.half_width_58;
+        const float right_x = static_cast<float>(bx + w * px);
+        const float right_z = static_cast<float>(bz + w * pz);
+        const float left_x = static_cast<float>(bx - w * px);
+        const float left_z = static_cast<float>(bz - w * pz);
+        const float right_y = host.water_height_0078c890(right_x, right_z);
+        const float left_y = host.water_height_0078c890(left_x, left_z);
+        float displacement[2];
+        host.horizontal_displacement_00ba2b50(bx, bz, displacement);
+        // BA36D0..BA3766: normal of (dx, 64, dz); 4096 is [00D63B90].
+        const float dxx = displacement[0] * displacement[0];
+        const float dzz = displacement[1] * displacement[1];
+        const float normal_len = static_cast<float>(
+            std::sqrt(static_cast<float>((static_cast<double>(dxx) + 4096.0) + dzz)));
+        float normal_inverse = 0.0f;
+        if (normal_len > 0.0f) {
+            normal_inverse = static_cast<float>(1.0 / normal_len);
+        }
+        const float nnx = normal_inverse * displacement[0];
+        const float nny = static_cast<float>(64.0 * normal_inverse);  // [00D638F0]
+        const float nnz = normal_inverse * displacement[1];
+        // BA376D..BA37CA: fades.
+        // Both differences stay in extended precision (not spilled).
+        float alpha = 1.0f;
+        const double age = static_cast<double>(beams.clock_f0) - beam.birth_0c;
+        if (beams.fade_in_time_cc > age) {
+            alpha = static_cast<float>(age * beams.fade_in_rate_d4);
+        }
+        const float death = beam.death_10;
+        if (!(death < 0.0f)) {  // [00D7A218] = 0.0, COMISS / JC
+            const double left_time = static_cast<double>(death) - beams.clock_f0;
+            if (beams.fade_out_time_d0 > left_time) {
+                alpha = static_cast<float>(left_time * beams.fade_out_rate_d8 * alpha);
+            }
+        }
+        // BA37CA..BA38D5: the beam axis.
+        const float sx = nnx * beams.axis_scale_5c;
+        const float sy = nny * beams.axis_scale_5c;
+        const float sz = beams.axis_scale_5c * nnz;
+        const float ax = sx + hx;
+        const float ay = sy + ly;
+        const float az = sz + hz;
+        const float axx = ax * ax;
+        const float ayy = ay * ay;
+        const float azz = az * az;
+        const float axis_len = static_cast<float>(
+            std::sqrt(static_cast<float>((static_cast<double>(axx) + ayy) + azz)));
+        float axis_inverse = 0.0f;
+        if (axis_len > 0.0f) {
+            axis_inverse = static_cast<float>(1.0 / axis_len);
+        }
+        const float axis[3] = {ax * axis_inverse, ay * axis_inverse, axis_inverse * az};
+        // BA38E3..BA3A16: four vertices.
+        for (int corner = 0; corner < 4; ++corner) {
+            float pos[3];
+            float u;
+            if (corner == 1 || corner == 3) {
+                pos[0] = right_x; pos[1] = right_y; pos[2] = right_z;
+                u = 0.0f;
+            } else {
+                pos[0] = left_x; pos[1] = left_y; pos[2] = left_z;
+                u = 1.0f;
+            }
+            float v = 0.0f;
+            if (corner >= 2) {
+                const float depth = beams.length_4c;
+                pos[0] = axis[0] * depth + pos[0];
+                pos[1] = axis[1] * depth + pos[1];
+                pos[2] = depth * axis[2] + pos[2];
+                v = 1.0f;
+            }
+            const std::uint32_t argb = host.color_argb_004fb850(beams.color_3c);
+            vertex->x = pos[0];
+            vertex->y = pos[1];
+            vertex->z = pos[2];
+            vertex->argb = argb;
+            vertex->u = u;
+            vertex->v = v;
+            vertex->alpha = alpha;
+            ++vertex;
+        }
+    }
+    host.unlock_vertices();
 }
 
 GridResolution initial_grid_resolution_00ba5610(bool simple_ocean_f9) {
