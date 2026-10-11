@@ -469,3 +469,19 @@ was reconstructed. The multiplayer enters and updates are the `multi_menu_screen
 `multi_menu_screen_update` follow-ups of docs/MULTI_MENU_SCREENS.md and remain open.
 
 docs/HUD_MINIMAP.md got a dated correction for its +6Ch..+7Ch row.
+
+005FD890 `BSP_HudPauseScreen_ShowPage` (provisional, named only): `__thiscall`(pause screen, bool
+second_page, bool multiplayer), called by the pause update 00603CA0 and by 005D3F20 / 005D43C0.
+The second page hides the list and shows +18h; the first clears the rows and the +68h row-widget
+list and sets the frame title from `ingame.paused` / `ingame.pause_multi_title` (which string
+each branch uses was not read). The listing has a list-clear `_free` that Ghidra turns into an
+early return, so the decompiled body is incomplete.
+
+## Handoff (second packet)
+
+Commits after the merge of main: the segment 17/23 batch and this one. Reconstructed in this
+packet: 0055CCC0, 0055D330 (17 functions reconstructed overall in `src/frontend_menus.cpp`, two of
+them partial). Named in this packet: 46. Open: the multiplayer enter/update bodies (005E51D0,
+005E5B30, 005E8B20, 005ECD80), the controls update 00560430 (Xbox keyboard preset naming,
+`Presets/%S.preset` save, `ControlPresetsOrder`), the pause screen bodies, and the Ghidra-less
+vtable slots listed in the table above.
