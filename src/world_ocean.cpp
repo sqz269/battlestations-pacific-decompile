@@ -43,6 +43,10 @@ OceanVec3 normalize_00419510(const OceanVec3& v) noexcept {
     return out;
 }
 
+// cc13 correction (2026-10-11, docs/CC13_WEATHER_RENDER.md): the object at
+// [game+19E8h]+3Ch is the cloud manager, not the ocean; 00BBD310 is
+// BSP_CloudManager_UpdateFrameAndInstances; the arithmetic below is unchanged.
+// Identifiers are kept because gameplay headers include this file.
 bool ocean_orthonormalize_00bbd310(OceanState& ocean, const OceanVec3& reference_axis) noexcept {
     if (!ocean.enabled) {
         // 00BBD31F: the node at ocean+30h is hidden with 00B6DA70(0.0f, 0) and
@@ -69,6 +73,10 @@ bool ocean_orthonormalize_00bbd310(OceanState& ocean, const OceanVec3& reference
     return true;
 }
 
+// cc13 correction (2026-10-11, docs/CC13_WEATHER_RENDER.md): the object at
+// [game+19E8h]+3Ch is the cloud manager, not the ocean; the "shore-wave layer" is a CloudInstance
+// (00BBE7D0) and this step is its wind drift (00BBE8B0, BSP_CloudInstance_Update).
+// Identifiers are kept because gameplay headers include this file.
 OceanVec3 shore_wave_scroll_step_00bbec06(
     const OceanVec3& direction, float speed, float delta) noexcept {
     // Three passes over the triple in the listing: multiply by the delta, then
@@ -88,6 +96,9 @@ OceanVec3 shore_wave_scroll_step_00bbec06(
     return step;
 }
 
+// cc13 correction (2026-10-11, docs/CC13_WEATHER_RENDER.md): the object at
+// [game+19E8h]+3Ch is the cloud manager, not the ocean; this is the CloudInstance wind drift (00BBE8B0).
+// Identifiers are kept because gameplay headers include this file.
 void advance_shore_wave_scroll_00bbec06(
     OceanVec3& scroll, const OceanVec3& direction, float speed, float delta) noexcept {
     const OceanVec3 step = shore_wave_scroll_step_00bbec06(direction, speed, delta);
@@ -144,6 +155,10 @@ void arm_mission_start_latch_004e4e00(
     latch.counted = true;
 }
 
+// cc13 correction (2026-10-11, docs/CC13_WEATHER_RENDER.md): the object at
+// [game+19E8h]+3Ch is the cloud manager, not the ocean; 00BBDDD0 is BSP_Atmosphere_UpdateClouds and
+// 00BBD310 BSP_CloudManager_UpdateFrameAndInstances; the effect, rain and session parts are unaffected.
+// Identifiers are kept because gameplay headers include this file.
 void run_ocean_and_effects_tick(const WorldOceanTickInputs& inputs, WorldOceanHost& host) {
     if (host.ocean_manager_present()) {
         void* const descriptor = host.weather_effect_descriptor();

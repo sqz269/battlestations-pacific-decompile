@@ -16113,3 +16113,117 @@ OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_
 - **Consequence for this lane.** 205's USNOS helm files (f7..f17) were tuned on the old plane roll. On current main the
   Enterprise is sunk by DM1 at 1553.34 s, and the mission fails at 1554.69 s. The f12/f17 plans, the capture-party
   pair, 206 item 1 and the primary-3 reroute all need a re-plan on current main.
+
+## 208. A shot-down squadron's landing-queue records: the Kill notification, not the land task (cc9-ships42, 2026-10-11; 206 item 3)
+
+### The destructor path does not erase at a death (read)
+
+- `007BCAA0` (plane destroyed hook, `007BCAA0..007BCB27`) runs `00959450`, then `007F3970` (RemovePlane, only while
+  `+9D4h` is set), then the pilot bot `+DF4h`'s `vtable[10h]` (`0099A830`, retire-all `00999E40` + drain `00999EE0`),
+  then `+6DCh`'s `vtable[10h]`. cc11 (`docs/LANDING_TASK_OWNER_CC11.md`) established that the bot at `+DF4h` owns the
+  land task and that the drain deletes it.
+- `007F3970` stores 0 into the plane's `+9D4h` at `007F3A07`, before the drain.
+- So when the land task destructor `009B3F50` runs, `[plane+9D4h]` is 0. `006C8800` starts with
+  `TEST EDI,EDI; JE` (`006C8803`) and returns. **At a death, the land-task destructor erases nothing.**
+- A live retire (the task replaced while its plane flies) still reaches `006C8800` with the squadron. The host's two
+  retire sites skip it (204). They never ran in the reference rows, so that binding stays a small open item.
+
+### What does erase: the squadron's Kill and the queue's observer slot
+
+- `007F3970`: when the member count `+3CCh` reaches 0 (`007F3A16`), it calls `00926D90` (`MissionEntity_Kill`) on the
+  squadron.
+- The queue object is embedded at block `+84h`, with vtable `00CF868C`, stored at `006CACD3`.
+  - `006BF720` (append) registers it on the squadron through `00694A60` (`ECX` = squadron, `EDX` = queue).
+  - Its table: `+0` `006C06E0` (scalar deleting dtor), `+4` `006C6B40` (`JMP 006C4B30`), `+8` `0042B120` (`RET 4`).
+- The entity removal at the flush (`009273A0` / `009263C0` -> `00925C40` -> `00696330` -> `00693550`) calls each
+  observer's slot `+4` (OBSERVER_EVENT_PRODUCER). The death notifier `00925C90` calls slot `+8`, which is a no-op here.
+- **`006C4B30`** (`006C4B30..006C4BF8`, `__thiscall(queue)(endpoint)`, `RET 4`):
+  - It takes the endpoint's identity (`vtable[4]`) and finds the first record whose `+0h` is that squadron.
+  - `006C06A0` compacts the rest in order, dropping every match. This is a remove, not `006BF7F0`'s swap with the last.
+  - It unregisters with `006952A0` and sets the count from the new end.
+- **Scans.** Absolute dwords for `006C7680`, `006C8800`, `006BF7F0` and `006C5950`: none. The positive control
+  `30 A8 99 00` finds `00D1F358`. With ships41's rel32 census, the queue loses records only at `006C5950`'s head (bound,
+  204.1), at the land-task destructor (live retire only), and at this notification.
+- **Uncertainty.**
+  - Whether the `+A8h` assignment records have their own observer is unread. This binding touches the queue only.
+  - That the queues get slot `+4` from the squadron's flush is inferred from the producer chain above. The squadron's
+    own removal call into `00925C40` was not traced instruction by instruction.
+
+### The binding: `kSquadronKillQueueEraseBound`, committed OFF (`src/game_hosts_units.cpp`)
+
+- In `squadron_leave_on_death_007bcaa0`: when the leave leaves the record with no live member, every landing deck's
+  queue drops that squadron's records and keeps the rest in order.
+- **LABELLED:** the host erases at the leave sweep, which is one frame boundary before the image's flush.
+- OFF logs the same `squadron kill:` line ("kept, unbound") and changes nothing.
+- Census: `summary squadron kill queue erase bound kills erases`.
+
+**Predictions (OFF -> ON), written before the pairs.**
+- **USNOS f3** (`s40_os_f3.txt`, 40000):
+  - The wave-1 squadrons `#1.4` and `#1.6` are shot down, so expect two erases at Airfield3. `#1.5` is erased by the
+    stock return, as now.
+  - Wave 2 (`#4.4`..`#4.6`) then queues at a smaller n: up to 3 lower, which puts its circle point 180 m less far behind.
+  - The 202 loop's release count (24) should fall. It may not reach 0, because the radius factor runs on the `+A8h`
+    record count, which this does not touch.
+  - Exit 3, with landing timing moving at Airfield3 from the first erase.
+- **ESMP08 p3 (72000) and USN01 p8 (22000):** erases at the carriers whose squadrons are wiped out. Landing timing
+  moves (exit 3). Deaths are equal or close.
+- **Flip rule.** ON if every erase follows a squadron's last death and the queue order of the survivors is unchanged.
+  Spread in landing timing does not block the flip.
+
+### 208.1 Pairs and the flip (cc9-ships42, 2026-10-11)
+
+OFF is `b89b3d537` (tree build). ON is the same commit exported with the switch true (`local\s42_ke`). Logs are
+`local\s42_k{off,on}_<row>.log`. The 300-frame smoke ran clean (exit 0, `kills=0`).
+
+| row | pair_diff | kills / erases (ON) | result |
+| --- | --- | --- | --- |
+| USNOS f3 (`s40_os_f3`, 40000) | 3 | 25 / 6 | Airfield3 erases `#1.4`, `#1.6`, `#4.4` and `#4.5`; Airfield2 erases two of its own. Airfield3 ends `queue=1` instead of 6 and `records=14` instead of 18, with `releases=13` instead of 16. The first moved death row is `plane #4.4` at 792.43 -> 805.88 s, after the wave-1 erases. The run fails on both sides ("Game Over"), at 1733.07 s OFF and 1510.10 s ON |
+| ESMP08 + `s38_e8_p3` (72000) | 3 | 187 / 4 | it completes at 2777.98 s on both sides; deaths 582 = 582. 148 death rows move, the first at 1761.59 s (`Chitose_sqn36\|.-2`). Zuikaku, Zuiho, Chiyoda and Chitose end `queue=0` instead of 1. The exec guard logged `refused a mission script's process launch: sus_prog.exe` |
+| USN01 + `s38_u1_p8` (22000) | 1 | 14 / 1 | gameplay identical. It fails at 920.60 s on both sides (current main; see 207.3) |
+
+- **Mechanism.** Every erase follows the last member's leave. The survivors' records keep their order.
+  - USNOS f3 shows the predicted wave-2 effect: smaller n and an earlier landing turn-around.
+  - The 202 loop's releases drop by 3 but do not reach 0. That fits the prediction, because the radius factor runs on the
+    `+A8h` records, which this binding does not touch.
+- **USNOS f3 fails 223 s earlier ON.** Airfield1/2/3's squadrons are no longer held behind dead records, so they cycle
+  faster against the troop transports. It is the same failure, reached sooner. f3 is an idle-side plan that fails on
+  both sides.
+- **Verdict: ON.** The mechanism matches the listing, and the moves are landing-timing spread.
+- **Still open from 206 item 3:**
+  - the live-retire `006C8800` call at the host's retire sites (reference rows never reach them);
+  - whether the `+A8h` assignment records have a Kill observer of their own.
+
+### 208.2 Who sights Shimotsuke and the blockade at 857.91 s: nobody; it is the listener registration (cc9-ships42, 2026-10-11; a read)
+
+- **The split endpoints.** 207.3's good build `b02e31546` has the same `src`/`include`/CMake tree as `783c4f35d^` =
+  `b982327be` (an empty `git diff --stat`). So the pair in 207.3 is the commit's own endpoints:
+  - `plane #1.1|.-2` dies at 115.05 s without the commit and at 114.85 s with it;
+  - `783c4f35d` is the split, and it is image-faithful.
+- **The script** (this installation's `scripts/missions/COTP-USN/us_osumi.lua`, mtime 2024-10-29):
+  - `luaPh2MovieEnd` (line 1646) adds primary 2 and calls `luaConListen()`.
+  - Then `luaDelay(luaShimListen, 6)` and `luaDelay(luaBlockListen, 6)` (lines 1664/1666) register the
+    `ShimotSighted` and `BlockSighted` recon listeners **on the same frame**. Each has `oldLevel {0,1}`,
+    `newLevel {2}`, `party {PARTY_ALLIED}` (lines 1944-1974).
+  - Neither unit gets `SetForcedReconLevel` before then. The blockade's is set inside `luaBlockade` (line 2041).
+- **The log** (`local\s42_cpoff_osf12.log`):
+  - `ConvoySighted` registers at clock <= 848.92 and fires for Ada1 at 851.92.
+  - Both later listeners register together (log lines 145406/145407, clock <= 854.91).
+  - Both fire on the very next 3 s recon refresh, 857.91 s (lines 146046/146050).
+  - No player unit is within 7.6 km of Shimotsuke then (`local\s42_near.py` over the `s42_tr_osf12m` trajectories).
+    So the dispatch is the first recon refresh after registration, not a spotter arriving.
+  - In ships41's `s41_g12` the same chain ran from the phase-2 start at 1406.05 s (DisplayScores) to 1410.20 s.
+- **So the 1410 -> 858 s move is the phase-2 start moving.** It is not a spotter's path. Phase 1 now ends about 555 s
+  earlier on current main.
+- **Consequence for item 4.** Rerouting spotters cannot separate the two callbacks, because the listeners are armed
+  together and both units already read as level 2 at the first refresh. Whether that level 2 comes from a real sensor
+  or from the listener's starting old level of 0 is unread (`00980E50`'s baseline). Either way the player cannot stagger
+  them by routing. Primary 3 is reachable only if Shimotsuke reads below 2 at registration, which this read does not
+  find.
+- **Variants on current main (from 207.3; `local\s42_p1_<row>.log`, 44000 frames, `-Traj`):**
+  - **a** (`s42_os_a.txt`, f17 without `27950 moveto Enterprise`): the Enterprise survives. Every troop transport
+    dies (TroopTrans6 1304.70 s, TroopTrans3 1490.08 s, TroopTrans5 1627.46 s, all to Airfield1/3 squadrons), and
+    `MissionStatus` fails at 1629.01 s.
+  - **b** (`s42_os_b.txt`, the moveto sent to (13500, -7500)): Takao1 sinks the Enterprise at 1571.96 s, and the
+    mission fails at 1574.51 s.
+  - With f17 as written, DM1, parked 45 m from the Enterprise, sinks it at 1553.34 s while firing at Shima4 about
+    2 km out. That friendly-fire case is gunnery35's (lead, 2026-10-11). The re-plan waits for it.

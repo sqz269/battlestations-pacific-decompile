@@ -205,6 +205,7 @@ struct GameHudHost::Impl {
     unsigned long long movie_keyframes{0};
     unsigned long long movie_publishes{0};
     unsigned long long movie_unsupported{0};
+    unsigned long long movie_events_fired{0};   // cc9_lua49_movie_modifier
     unsigned long long movie_step_draws{0};   // switch 4, 00798D07
     unsigned long long movie_last_pose_log{0};
     int pick_basis_source{0};   // 0 none, 1 ShipCaptain, 2 movie camera
@@ -1812,6 +1813,20 @@ public:
         ++owner_.movie_unsupported;
         owner_.record(what, address);
     }
+    void run_script_00887e50(const std::string& function) override {
+        // Packet cc9_lua49_movie_modifier: a fired keyframe event's `function`
+        // through the script-orders host's 00887E50 (`_G[name]()`, no arguments).
+        // LABELLED: that entry point also counts the call among its blackout
+        // callbacks.
+        GameScriptOrdersHost* orders = owner_.lua != nullptr ? owner_.lua->script_orders() : nullptr;
+        owner_.log.notef("movie keyframe event fires \"%s\" at hud update frame %llu (00791540 -> "
+            "00887E50)", function.c_str(), owner_.summary.update_frames);
+        if (orders == nullptr) {
+            unsupported("MovieKeyframeEvent::run_script", 0x00887e50u);
+            return;
+        }
+        static_cast<bsp::MissionBlackoutHost&>(*orders).mission_lua_call_named_00887e50(function);
+    }
 
 private:
     GameHudHost::Impl& owner_;
@@ -1907,6 +1922,15 @@ void GameHudHost::Impl::step_movie_camera(float seconds) {
         record("MovieCamera::fixed_step_draw", 0x00798d07u);
     }
     MovieParentBinding parents(*this);
+    if constexpr (bsp::kMovieKeyframeModifierBound) {
+        // 00798D38..00798D59, the step's tail: 00797ED0 over both tracks. An
+        // event's script may destroy this camera; the update below then finds
+        // empty tracks.
+        movie_events_fired += static_cast<unsigned long long>(
+            bsp::movie_camera_key_ticks_00797ed0(movie, 0.05f, parents));
+        done("MovieCamera::key_ticks_00797ed0", 0x00797ed0u);
+        if (!movie_active) return;
+    }
     std::array<float, 16> world{};
     float fov = 0.0f;
     if (!bsp::movie_camera_update_0079a3b0(movie, parents, seconds, world, fov)) {
@@ -3721,6 +3745,9 @@ void GameHudHost::report() {
         "publishes=%llu unsupported=%llu active_at_end=%d", kMovieMoverBound ? 1 : 0,
         impl.movie_builds, impl.movie_destroys, impl.movie_keyframes, impl.movie_publishes,
         impl.movie_unsupported, impl.movie_active ? 1 : 0);
+    impl.log.notef("summary mission hud movie keyframe modifiers (packet cc9_lua49_movie_modifier, "
+        "00795CB7 / 00797ED0): bound=%d events_fired=%llu", bsp::kMovieKeyframeModifierBound ? 1 : 0,
+        impl.movie_events_fired);
     impl.log.notef("summary mission hud movie camera keys (packet cc9_movie_camera_keys): "
         "step_draw_bound=%d step_draws=%llu parent_killed_byte_bound=%d "
         "terrain_avoid_bound=%d", kMovieStepDrawBound ? 1 : 0, impl.movie_step_draws,
