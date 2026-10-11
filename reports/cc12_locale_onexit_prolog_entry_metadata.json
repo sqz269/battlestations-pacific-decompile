@@ -1,0 +1,1773 @@
+{
+  "schema": "bsp.cc12.locale-onexit-prolog-entry-metadata.v1",
+  "status": "bounded_entry_body_operands_with_unknown_aliasing_and_return_destination",
+  "packet": "cc12_locale_onexit_prolog_entry_metadata",
+  "frozen_HEAD": "bc4fae025bf633cea14293184ef1d4f1b2ff628a",
+  "scope": "Native-only read-only entry, full saved-body metadata and separately Root-admitted exact code/context0 text.",
+  "predecessor": {
+    "worker_commit": "ddf0db184d17382da9c5521f1344322e94373569",
+    "primary_doc": "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+    "primary_report": "reports/cc12_locale_onexit_body_primary.json",
+    "selection": "Previously accepted physical E8 at BF6FC0 calls C07C00; no fresh predecessor query."
+  },
+  "entry": {
+    "address": "00C07C00",
+    "saved_name": "__SEH_prolog4",
+    "saved_prototype": "undefined __SEH_prolog4(void)",
+    "prototype_limit": "Saved prefix metadata only; whole automatic companion is opaque.",
+    "saved_body_range": [
+      "00C07C00",
+      "00C07C44"
+    ],
+    "saved_body_address_units": 69,
+    "is_thunk": false,
+    "direct_thunk_target": null,
+    "no_return": false,
+    "library_name_authentication": false
+  },
+  "Root_admissions": [
+    {
+      "path": "Root_initial_review.json",
+      "bytes": 3325,
+      "sha256": "5f02743244c12ed003224bb83519ad3e2d29e3916807311ed923b1935b7215d6"
+    },
+    {
+      "path": "Root_listing_review.json",
+      "bytes": 20065,
+      "sha256": "835eb06af6c8c4c14adf010a48b1c01aa91629c4434051792e55f30ea25c8921"
+    }
+  ],
+  "metadata": {
+    "complete_initial_entry_responses": 2,
+    "complete_body_coverage_responses": 138,
+    "complete_operand_bookend_responses": 138,
+    "complete_responses_total": 278,
+    "paired_body_and_operand_raw_responses_identical": true,
+    "epoch": 98,
+    "function_count": 64730,
+    "whole_instruction_units": 21,
+    "interior_addresses": 48,
+    "unit_layout": [
+      [
+        "00C07C00",
+        5
+      ],
+      [
+        "00C07C05",
+        7
+      ],
+      [
+        "00C07C0C",
+        4
+      ],
+      [
+        "00C07C10",
+        4
+      ],
+      [
+        "00C07C14",
+        4
+      ],
+      [
+        "00C07C18",
+        2
+      ],
+      [
+        "00C07C1A",
+        1
+      ],
+      [
+        "00C07C1B",
+        1
+      ],
+      [
+        "00C07C1C",
+        1
+      ],
+      [
+        "00C07C1D",
+        5
+      ],
+      [
+        "00C07C22",
+        3
+      ],
+      [
+        "00C07C25",
+        2
+      ],
+      [
+        "00C07C27",
+        1
+      ],
+      [
+        "00C07C28",
+        3
+      ],
+      [
+        "00C07C2B",
+        3
+      ],
+      [
+        "00C07C2E",
+        3
+      ],
+      [
+        "00C07C31",
+        7
+      ],
+      [
+        "00C07C38",
+        3
+      ],
+      [
+        "00C07C3B",
+        3
+      ],
+      [
+        "00C07C3E",
+        6
+      ],
+      [
+        "00C07C44",
+        1
+      ]
+    ],
+    "body_coverage_exact": true,
+    "all_owner_entries": "00C07C00",
+    "all_flow_overrides": "NONE",
+    "default_effective_flows_equal": true,
+    "default_effective_target_arrays_empty": true,
+    "flow_counts": {
+      "FALL_THROUGH": 20,
+      "TERMINATOR": 1
+    }
+  },
+  "Native": {
+    "status": "PASS",
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "epoch": 98,
+    "function_count": 64730,
+    "typed_before_after_equal": true,
+    "typed_coverage_matches_initial_gate": true,
+    "typed_raw_responses": 138,
+    "code_pair_equal": true,
+    "text_pair_equal": true,
+    "fresh_unique_code_bytes": 69,
+    "unique_instruction_text_starts": 21,
+    "text_context": 0,
+    "fresh_data_bytes": 0,
+    "further_prototype_decompile_disasm_queries": 0,
+    "target_caller_neighbor_expansion_queries": 0,
+    "mutations": 0,
+    "automatic_target_objects": "wholly opaque",
+    "original_prototype_companion": "wholly opaque",
+    "OriginalCRT_compiler_SEH4_authentication": false,
+    "actual_execution_frame_status_ownership_ABI_proven": false
+  },
+  "physical_code": {
+    "bytes": 69,
+    "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd"
+  },
+  "decode": {
+    "manual_and_detailed_Capstone_agree": true,
+    "Capstone": {
+      "python_package_version": "5.0.7",
+      "python_module": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "python_module_pin": {
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      "native_library": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+      "native_library_pin": {
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      }
+    },
+    "instructions": [
+      {
+        "address": "00C07C00",
+        "length": 5,
+        "bytes_hex": "68907cc000",
+        "manual_mnemonic": "push",
+        "manual_encoding": "68 imm32; opaque immediate 00C07C90",
+        "manual_operands": [
+          {
+            "kind": "immediate",
+            "value": 12614800,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "0xc07c90",
+        "capstone_operands": [
+          {
+            "kind": "immediate",
+            "value": 12614800,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 1,
+        "capstone_immediate_size": 4,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C05",
+        "length": 7,
+        "bytes_hex": "64ff3500000000",
+        "manual_mnemonic": "push",
+        "manual_encoding": "64 segment FS; FF /6; ModRM35 mod00 reg6 rm5; absolute disp32 zero",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": "fs",
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "dword ptr fs:[0]",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": "fs",
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "fs"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          100,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 53,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 3,
+        "capstone_displacement_size": 4,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C0C",
+        "length": 4,
+        "bytes_hex": "8b442410",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "8B /r; ModRM44 mod01 reg0 rm4; SIB24 scale1 noindex ESP; disp8 +16",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "eax, dword ptr [esp + 0x10]",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "eax"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 68,
+        "capstone_sib": 36,
+        "capstone_displacement": 16,
+        "capstone_displacement_offset": 3,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C10",
+        "length": 4,
+        "bytes_hex": "896c2410",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "89 /r; ModRM6C mod01 reg5 rm4; SIB24 scale1 noindex ESP; disp8 +16",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "dword ptr [esp + 0x10], ebp",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "ebp"
+        ],
+        "capstone_reg_writes": [],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          137,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 108,
+        "capstone_sib": 36,
+        "capstone_displacement": 16,
+        "capstone_displacement_offset": 3,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C14",
+        "length": 4,
+        "bytes_hex": "8d6c2410",
+        "manual_mnemonic": "lea",
+        "manual_encoding": "8D /r; ModRM6C mod01 reg5 rm4; SIB24 scale1 noindex ESP; disp8 +16; address calculation only",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "lea",
+        "capstone_op_str": "ebp, [esp + 0x10]",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "ebp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          141,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 108,
+        "capstone_sib": 36,
+        "capstone_displacement": 16,
+        "capstone_displacement_offset": 3,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C18",
+        "length": 2,
+        "bytes_hex": "2be0",
+        "manual_mnemonic": "sub",
+        "manual_encoding": "2B /r; ModRME0 mod11 reg4 ESP rm0 EAX",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "sub",
+        "capstone_op_str": "esp, eax",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "eax"
+        ],
+        "capstone_reg_writes": [
+          "eflags",
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          43,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 224,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C1A",
+        "length": 1,
+        "bytes_hex": "53",
+        "manual_mnemonic": "push",
+        "manual_encoding": "50+3 PUSH EBX",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "ebx",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "ebx",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "ebx",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "ebx"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          83,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C1B",
+        "length": 1,
+        "bytes_hex": "56",
+        "manual_mnemonic": "push",
+        "manual_encoding": "50+6 PUSH ESI",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "esi",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "esi",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "esi",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "esi"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          86,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C1C",
+        "length": 1,
+        "bytes_hex": "57",
+        "manual_mnemonic": "push",
+        "manual_encoding": "50+7 PUSH EDI",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "edi",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "edi",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "edi",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "edi"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          87,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C1D",
+        "length": 5,
+        "bytes_hex": "a19055e100",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "A1 moffs32; default segment address 00E15590",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 14767504,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "eax, dword ptr [0xe15590]",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 14767504,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [],
+        "capstone_reg_writes": [
+          "eax"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          161,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 14767504,
+        "capstone_displacement_offset": 1,
+        "capstone_displacement_size": 4,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C22",
+        "length": 3,
+        "bytes_hex": "3145fc",
+        "manual_mnemonic": "xor",
+        "manual_encoding": "31 /r; ModRM45 mod01 reg0 EAX rm5 EBP; disp8 FC=-4",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "xor",
+        "capstone_op_str": "dword ptr [ebp - 4], eax",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp",
+          "eax"
+        ],
+        "capstone_reg_writes": [
+          "eflags"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          49,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 69,
+        "capstone_sib": 0,
+        "capstone_displacement": -4,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C25",
+        "length": 2,
+        "bytes_hex": "33c5",
+        "manual_mnemonic": "xor",
+        "manual_encoding": "33 /r; ModRMC5 mod11 reg0 EAX rm5 EBP",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "xor",
+        "capstone_op_str": "eax, ebp",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "ebp",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "eax",
+          "ebp"
+        ],
+        "capstone_reg_writes": [
+          "eflags",
+          "eax"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          51,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 197,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C27",
+        "length": 1,
+        "bytes_hex": "50",
+        "manual_mnemonic": "push",
+        "manual_encoding": "50+0 PUSH EAX",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "eax",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "eax"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          80,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C28",
+        "length": 3,
+        "bytes_hex": "8965e8",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "89 /r; ModRM65 mod01 reg4 ESP rm5 EBP; disp8 E8=-24",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -24,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "dword ptr [ebp - 0x18], esp",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -24,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "esp",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp",
+          "esp"
+        ],
+        "capstone_reg_writes": [],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          137,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 101,
+        "capstone_sib": 0,
+        "capstone_displacement": -24,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C2B",
+        "length": 3,
+        "bytes_hex": "ff75f8",
+        "manual_mnemonic": "push",
+        "manual_encoding": "FF /6; ModRM75 mod01 reg6 rm5 EBP; disp8 F8=-8",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -8,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "push",
+        "capstone_op_str": "dword ptr [ebp - 8]",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -8,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "esp",
+          "ebp"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          255,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 117,
+        "capstone_sib": 0,
+        "capstone_displacement": -8,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C2E",
+        "length": 3,
+        "bytes_hex": "8b45fc",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "8B /r; ModRM45 mod01 reg0 EAX rm5 EBP; disp8 FC=-4",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "eax, dword ptr [ebp - 4]",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp"
+        ],
+        "capstone_reg_writes": [
+          "eax"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          139,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 69,
+        "capstone_sib": 0,
+        "capstone_displacement": -4,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C31",
+        "length": 7,
+        "bytes_hex": "c745fcfeffffff",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "C7 /0; ModRM45 mod01 reg0 rm5 EBP; disp8 FC=-4; imm32 FFFFFFFE",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          },
+          {
+            "kind": "immediate",
+            "value": 4294967294,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "dword ptr [ebp - 4], 0xfffffffe",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -4,
+            "size": 4
+          },
+          {
+            "kind": "immediate",
+            "value": 4294967294,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp"
+        ],
+        "capstone_reg_writes": [],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          199,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 69,
+        "capstone_sib": 0,
+        "capstone_displacement": -4,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 3,
+        "capstone_immediate_size": 4,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C38",
+        "length": 3,
+        "bytes_hex": "8945f8",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "89 /r; ModRM45 mod01 reg0 EAX rm5 EBP; disp8 F8=-8",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -8,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "dword ptr [ebp - 8], eax",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -8,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp",
+          "eax"
+        ],
+        "capstone_reg_writes": [],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          137,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 69,
+        "capstone_sib": 0,
+        "capstone_displacement": -8,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C3B",
+        "length": 3,
+        "bytes_hex": "8d45f0",
+        "manual_mnemonic": "lea",
+        "manual_encoding": "8D /r; ModRM45 mod01 reg0 EAX rm5 EBP; disp8 F0=-16; address calculation only",
+        "manual_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -16,
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "lea",
+        "capstone_op_str": "eax, [ebp - 0x10]",
+        "capstone_operands": [
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          },
+          {
+            "kind": "memory",
+            "segment": null,
+            "base": "ebp",
+            "index": null,
+            "scale": 1,
+            "displacement": -16,
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "ebp"
+        ],
+        "capstone_reg_writes": [
+          "eax"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          141,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 69,
+        "capstone_sib": 0,
+        "capstone_displacement": -16,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 1,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C3E",
+        "length": 6,
+        "bytes_hex": "64a300000000",
+        "manual_mnemonic": "mov",
+        "manual_encoding": "64 segment FS; A3 moffs32 zero; EAX source",
+        "manual_operands": [
+          {
+            "kind": "memory",
+            "segment": "fs",
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_mnemonic": "mov",
+        "capstone_op_str": "dword ptr fs:[0], eax",
+        "capstone_operands": [
+          {
+            "kind": "memory",
+            "segment": "fs",
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "size": 4
+          },
+          {
+            "kind": "register",
+            "name": "eax",
+            "size": 4
+          }
+        ],
+        "capstone_reg_reads": [
+          "fs",
+          "eax"
+        ],
+        "capstone_reg_writes": [],
+        "capstone_prefixes": [
+          0,
+          100,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          163,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 2,
+        "capstone_displacement_size": 4,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      },
+      {
+        "address": "00C07C44",
+        "length": 1,
+        "bytes_hex": "c3",
+        "manual_mnemonic": "ret",
+        "manual_encoding": "C3 near RET; no immediate and no operand/address-size override",
+        "manual_operands": [],
+        "capstone_mnemonic": "ret",
+        "capstone_op_str": "",
+        "capstone_operands": [],
+        "capstone_reg_reads": [
+          "esp"
+        ],
+        "capstone_reg_writes": [
+          "esp"
+        ],
+        "capstone_prefixes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "capstone_opcodes": [
+          195,
+          0,
+          0,
+          0
+        ],
+        "capstone_modrm": 0,
+        "capstone_sib": 0,
+        "capstone_displacement": 0,
+        "capstone_displacement_offset": 0,
+        "capstone_displacement_size": 0,
+        "capstone_immediate_offset": 0,
+        "capstone_immediate_size": 0,
+        "detailed_operand_agreement": true
+      }
+    ],
+    "relative_operands": 0
+  },
+  "conditional_operand_model": {
+    "scope": "Conditional instruction-local relationships only; no actual execution, frame, ownership, CRT/compiler/SEH4 or ABI authentication.",
+    "preconditions": [
+      "The exact retained sequence executes consecutively with 32-bit stack-address and operand sizes.",
+      "Each listed operation completes. Arithmetic offsets wrap modulo 2^32.",
+      "Segment bases and all load-time memory preimages remain unknown except where an additional condition is explicit."
+    ],
+    "symbols": {
+      "S": "ESP at entry C07C00",
+      "B": "EBP at entry",
+      "F": "S+8 modulo 2^32",
+      "A": "DWORD loaded at C07C0C through SS:[S+8], at that load time",
+      "C": "DWORD loaded at C07C1D through default data segment:[00E15590], at that load time",
+      "R": "DWORD read by PUSH at C07C2B through SS:[F-8], at that read time",
+      "D": "DWORD loaded at C07C2E through SS:[F-4], at that load time"
+    },
+    "steps": [
+      {
+        "address": "00C07C00",
+        "effect": "ESP=S-4; SS:[S-4] receives opaque immediate 00C07C90."
+      },
+      {
+        "address": "00C07C05",
+        "effect": "Read unknown DWORD through FS:[0]; ESP=S-8; SS:[S-8] receives that value."
+      },
+      {
+        "address": "00C07C0C",
+        "effect": "EAX=A from SS:[S+8]."
+      },
+      {
+        "address": "00C07C10",
+        "effect": "SS:[S+8] receives B."
+      },
+      {
+        "address": "00C07C14",
+        "effect": "EBP=F=S+8; LEA reads no memory preimage."
+      },
+      {
+        "address": "00C07C18",
+        "effect": "ESP=S-A-8."
+      },
+      {
+        "address": "00C07C1A",
+        "effect": "ESP=S-A-12; write EBX through SS:[ESP]."
+      },
+      {
+        "address": "00C07C1B",
+        "effect": "ESP=S-A-16; write ESI through SS:[ESP]."
+      },
+      {
+        "address": "00C07C1C",
+        "effect": "ESP=S-A-20; write EDI through SS:[ESP]."
+      },
+      {
+        "address": "00C07C1D",
+        "effect": "EAX=C from the then-current default data-segment memory at offset 00E15590."
+      },
+      {
+        "address": "00C07C22",
+        "effect": "SS:[F-4] receives its then-current DWORD XOR C."
+      },
+      {
+        "address": "00C07C25",
+        "effect": "EAX=C XOR F."
+      },
+      {
+        "address": "00C07C27",
+        "effect": "ESP=S-A-24; SS:[ESP] receives C XOR F."
+      },
+      {
+        "address": "00C07C28",
+        "effect": "SS:[F-24] receives current ESP, S-A-24."
+      },
+      {
+        "address": "00C07C2B",
+        "effect": "Read R through SS:[F-8]; ESP=S-A-28; SS:[ESP] receives R."
+      },
+      {
+        "address": "00C07C2E",
+        "effect": "EAX=D from the then-current SS:[F-4]; D is not equated with the earlier XOR result."
+      },
+      {
+        "address": "00C07C31",
+        "effect": "SS:[F-4] receives FFFFFFFE."
+      },
+      {
+        "address": "00C07C38",
+        "effect": "SS:[F-8] receives D."
+      },
+      {
+        "address": "00C07C3B",
+        "effect": "EAX=F-16=S-8; LEA reads no memory preimage."
+      },
+      {
+        "address": "00C07C3E",
+        "effect": "FS:[0] receives EAX=F-16, with FS base and cross-segment aliasing unknown."
+      },
+      {
+        "address": "00C07C44",
+        "effect": "A completing near RET consumes the then-current DWORD through SS:[S-A-28] and sets ESP=S-A-24. Actual destination remains unknown."
+      }
+    ],
+    "ending_register_offsets_if_RET_completes": {
+      "EAX": "S-8",
+      "EBP": "S+8",
+      "ESP": "S-A-24",
+      "EBX_ESI_EDI_ECX_EDX": "No explicit register writes in this exact instruction sequence; memory effects can still overwrite their pushed copies."
+    },
+    "alias_limits": [
+      "No equality between D and the C07C22 XOR result is established across intervening writes.",
+      "No equality between the final RET word and R, entry SS:[S], or BF6FC5 is established.",
+      "Neither FS:[0] preimage nor the relationship of FS, DS and SS bases is known.",
+      "The copied values, stack writes and other memory operands may alias unless a separate condition rules that out."
+    ],
+    "optional_predecessor_composition": {
+      "basis": "Accepted BF6FB9 PUSH12, BF6FBB PUSH E02CF0, BF6FC0 CALL C07C00; no fresh predecessor or literal-target queries.",
+      "conditions": "The accepted predecessor instructions and first two saved prolog pushes execute consecutively in the same 32-bit SS stack model, with the previously written slot untouched.",
+      "result": "For predecessor initial ESP=W, entry S=W-12, A=12 from SS:[S+8]=SS:[W-4], and F=W-4.",
+      "limits": "This optional composition does not equate the RET word with BF6FC5, establish frame continuation, identify a descriptor, or authenticate an ABI. E02CF0 remains an opaque prior literal."
+    },
+    "unqueried_operands": [
+      "00C07C90 pushed literal",
+      "00E15590 data offset",
+      "FS:[0]"
+    ],
+    "closed_unknowns": [
+      "OriginalCRT/compiler/SEH4 authenticity",
+      "actual execution",
+      "actual frame or continuation",
+      "return destination",
+      "status meaning",
+      "callback or memory ownership",
+      "ABI compatibility"
+    ]
+  },
+  "quarantine": {
+    "semantic_credit": false,
+    "whole_automatic_prototype_companion_opaque": true,
+    "whole_automatic_target_objects_opaque": true,
+    "saved_library_name_is_authentication": false
+  },
+  "failed_attempt": {
+    "retained_separately": true,
+    "accepted_as_evidence": false,
+    "responses_retained": 45,
+    "failure": "Local atomic capture persistence PermissionError WinError 5; excluded from the complete validated passes.",
+    "later_offline_summary_correction": "Changed expected modification_number representation from integer 98 to saved string 98; no repeated Native reads for this correction."
+  },
+  "Source_identity_only": {
+    "tree_ids": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "scope": "Actual worker frozen base and separately captured worker final only.",
+    "census_performed": false,
+    "Source_files_read": 0,
+    "current_Root_equality_claimed": false,
+    "implementation_build_fixture_runtime_credit": false
+  },
+  "bounded_provenance": {
+    "finite_prerequisite_and_tool_files": 7,
+    "actual_frozen_Git_objects": 6,
+    "selected_files": [
+      {
+        "path": "config/target.json",
+        "git_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git_entry": "GitBlobs/config/target.json",
+        "git_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_entry": "PhysicalFiles/config/target.json",
+        "physical_pin": {
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "git_oid": "dd5183953b53766e0c3ffb4ee3dc0b16e2a7f7d6",
+        "git_entry": "GitBlobs/docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "git_pin": {
+          "bytes": 2094,
+          "sha256": "5db5eeb5dd9158143a7baa3f4f836a98e99692612ffa8a2720debb3795432433"
+        },
+        "physical_entry": "PhysicalFiles/docs/CC12_LOCALE_ONEXIT_BODY_PRIMARY.md",
+        "physical_pin": {
+          "bytes": 2094,
+          "sha256": "5db5eeb5dd9158143a7baa3f4f836a98e99692612ffa8a2720debb3795432433"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "reports/cc12_locale_onexit_body_primary.json",
+        "git_oid": "d3b9f72001a19c5bdd49c8002e4a9b3be113e134",
+        "git_entry": "GitBlobs/reports/cc12_locale_onexit_body_primary.json",
+        "git_pin": {
+          "bytes": 25139,
+          "sha256": "d7886a7184483559d2b2d3e5551ec84aab9d054b81f51c2ef9d5df75a637d154"
+        },
+        "physical_entry": "PhysicalFiles/reports/cc12_locale_onexit_body_primary.json",
+        "physical_pin": {
+          "bytes": 25139,
+          "sha256": "d7886a7184483559d2b2d3e5551ec84aab9d054b81f51c2ef9d5df75a637d154"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "git_oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git_entry": "GitBlobs/tools/bsp.py",
+        "git_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_entry": "PhysicalFiles/tools/bsp.py",
+        "physical_pin": {
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "git_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git_entry": "GitBlobs/tools/ghidra_export.py",
+        "git_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_export.py",
+        "physical_pin": {
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/ghidra_typed_flow.py",
+        "git_oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git_entry": "GitBlobs/tools/ghidra_typed_flow.py",
+        "git_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_entry": "PhysicalFiles/tools/ghidra_typed_flow.py",
+        "physical_pin": {
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "physical_raw_equal_Git": true
+      },
+      {
+        "path": "tools/workspace.py",
+        "git_oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git_entry": "GitBlobs/tools/workspace.py",
+        "git_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_entry": "PhysicalFiles/tools/workspace.py",
+        "physical_pin": {
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "physical_raw_equal_Git": true
+      }
+    ],
+    "inherited_archives_traversed": 0,
+    "retained_offline_helpers": 4,
+    "retained_producers": 10
+  },
+  "archive": {
+    "bytes": 474839,
+    "sha256": "72f0dfaee482745518835f1959f640eb7df5a1b4a29e8a115c49ababe9f0d8bc"
+  },
+  "archive_path": "local/cc12_locale_onexit_prolog_entry_metadata/evidence.zip",
+  "offline_guard": {
+    "status": "PASS",
+    "guard_active_before_helper_execution": true,
+    "helper_pins_verified_before_import": [
+      {
+        "bytes": 7117,
+        "name": "common.py",
+        "sha256": "d960716ed4f85d5cad69621276b4addd3d90c28d0060890ef0182611ad64a8b2"
+      },
+      {
+        "bytes": 3638,
+        "name": "delivery_verifier.py",
+        "sha256": "2a60f17d4c9ccd29d75970b37ba34b8843760515be09a3e7ee2df49e498efa66"
+      },
+      {
+        "bytes": 4090,
+        "name": "guarded_replay.py",
+        "sha256": "09ec67b4c104b974ae414ad51a87668ec8a8772ba919ec89460d4132276b626b"
+      },
+      {
+        "bytes": 10894,
+        "name": "verifier.py",
+        "sha256": "0560543d4b7170abc8a0c6452d1b28e0d58d0535f0760fc80dd3939fbbe70a5c"
+      }
+    ],
+    "unexpected_denials": [],
+    "physical_copy_verified": true
+  },
+  "delivery_contract": {
+    "owned_outputs": [
+      "docs/CC12_LOCALE_ONEXIT_PROLOG_ENTRY_METADATA.md",
+      "reports/cc12_locale_onexit_prolog_entry_metadata.json"
+    ],
+    "separate_delivery_archive": "local/cc12_locale_onexit_prolog_entry_metadata/delivery_git.zip",
+    "actual_worker_base_final_Git_objects": 8,
+    "current_staged_committed_bytes_equal_required": true
+  },
+  "not_established": [
+    "OriginalCRT/compiler/SEH4 authenticity",
+    "actual execution",
+    "actual frame or continuation",
+    "return destination",
+    "status meaning",
+    "callback or memory ownership",
+    "ABI compatibility"
+  ],
+  "next_scope": "None admitted by this packet. No Native reads after closure; Root chooses any successor."
+}
