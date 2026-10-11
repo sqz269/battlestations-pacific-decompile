@@ -304,3 +304,63 @@ Run bodies inside segment 6:
 The other run bodies are in segment 5 (`00464350..004654D0`); two are already named
 (`BSP_FireTargetHolder_Apply`, `BSP_EntityCommand_SetSubmarineDepth`). Status: exported and
 named; nothing here is reconstructed.
+
+## Segment 6: shared helpers named in passing
+
+| Address | Name | Evidence |
+| --- | --- | --- |
+| `00467050` | `BSP_Matrix_SetRotationFromEuler` | `__thiscall(float* m, a, b, c)`, `RET 0Ch`; `fsin`/`fcos` of the three angles into elements 0..2, 4..6, 8..10 of a 4x4 matrix; the hosts already call it for the yaw-only placement rotation (`apply_scene_yaw_00467050` in `src/game_hosts_lua.cpp`) |
+| `00467310` | `BSP_FormatToBuffer32` | `cdecl(out, format, ...)` = `_vsprintf_s(out, 20h, format, va)`; `PlaneStock %d` in `docs/AIROPS_LOAD_FROM_SCENE.md` |
+| `004674F0` | `BSP_PodPointerArray_Reserve` | `{data, size, capacity}` reserve, `RET 4`, minimum 1, copy and `_free` of the old block |
+| `00468560` | `BSP_CommandTarget_InitPosition` | `RET 8`; the moveto position descriptor of `docs/AIROPS_LAUNCH_TICK.md` |
+| `00470440` | `BSP_GameplayModifiers_PowerupMultiplier` | `__thiscall(owner, kind, unit)`, `RET 8`; `FLD1` unless `00E0C978` is set and owner+88h+kind*0Ch is non-zero, then a tail jump to `BSP_GameplayModifiers_ProductForUnit` (`0047045E`) |
+| `0046BF20` | `BSP_SceneEntity_RegisterStockFromTypeProperty` | `__thiscall(scene database, bag, class name)`, `RET 8`; `Type` present and class id != 47h: `BSP_SceneEntity_RegisterHiddenStockUnit(Type +0Ch)`; `src/game_hosts_scene_contents.cpp` logs this call as unimplemented `SceneGate::register_multiplayer_stock` |
+
+`0046C450`, which the same host logs as `append_deferred_entity_record`, is a
+`std::vector<void*>::push_back` instantiation (capacity check, store, else the grow path
+`0046B4A0`).
+
+## Segment 6: divergences and uncertainty
+
+- The class roles (`AnimClass` animated scenery, `Bullets` visual for a bullet class, `BuoyClass`,
+  `CloudClass`, a `VehicleClass` visual for a land-vehicle class) come from the Lua table names
+  and the loaders' callers; none of the five entity types was observed in a run.
+- `00BBD6C0` was read only for its role: the CloudType-0 reader passes it the mesh name, the
+  texture string and the multiplier and stores the result at +28h. Calling it a particle system
+  rests on the `ParticleMultiplier` key and on `00477710` feeding particle-style properties
+  (`Density`, `BlurRadius`, `AffectedByWind`) to setters on the same object.
+- The host loaders do not model the base fields `0048F670` fills; `read_named_class_base` is a
+  hook, and the class objects are host-owned (`std::unique_ptr`) where native leaks them when the
+  registry is destroyed.
+- Host Lua access is an interface (`SceneClassLuaTables`/`SceneClassLuaRow`); no implementation
+  against the game's Lua state exists yet, so nothing calls these functions.
+- Movie action slot roles (slot 0 runs, slot 1 stops) rest on `aParticleEffect`, the only action
+  with a non-trivial slot 1; who calls the slots (the movie player tick) was not traced.
+
+## Handoff
+
+State at the end of this packet (cc13-settings2): input items 1 done (reconstructed,
+build-tested); segment 6: the five visual class families, the engine-movie action constructors
+and six shared helpers named (86 ledger names, 3 of them for the input routines, applied to Ghidra with evidence comments), loaders,
+two readers and two resets reconstructed in `src/scene_class_registry.cpp`. Report rows in
+`reports/cc13_scene_browser.json` pass `tools/verify_report_calls.py`.
+
+Open, in priority order:
+
+1. The engine-movie run bodies in segment 5 (`00464350..004654D0`) and the movie parser
+   `004602C0`/`0045E5E0`/`0045DE50`/`00460B80`: the action field layout (+14h, +18h, +2Ch,
+   +34h..+3Ch against `Enum`, `ReferPath`, `OffsetX/Y`), the slot callers, and a reconstruction of
+   the type table and factory. Needs a segment-5 lease.
+2. `00477710` `BSP_CloudEntity_ApplySceneProperties`: a full reconstruction needs the x87 colour
+   paths and the property-kind tests (`property+4`); the setter targets `00BBE470..00BBE5C0` are
+   in segment 93.
+3. Who clears the five class registries (only the Lua tables are reset by `00474200`/`00476410`
+   and their siblings); `BSP_SingletonLifetime` teardown is the likely owner.
+4. Entity slots of the 37h visual base (`+34h` zero velocity, `+B0h`, `+114h`) against the
+   SEntity vtable docs, and the Anim entity's `00B6DC90`/+18Ch animation clock (`00471080`,
+   `004710D0`).
+5. The `0046F940..004702E0` vector-math cluster has no static references; it is probably reached
+   through a vtable not yet tied to a class.
+6. A Lua implementation of `SceneClassLuaTables` over the existing GUI/mission Lua readers would
+   let the scene hosts call the loaders (`BSP_SceneCloud_RegisterClass`/`Instantiate` already
+   reach `00479970` in `docs/ENTITY_IDENTITY.md`).
