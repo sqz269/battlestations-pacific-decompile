@@ -163,6 +163,63 @@ and +0Ch writes through tagged values `{kind 0 string, 1 int, 2 float; payload}`
 - Segment 28: 00689BD0 attract-screen no-op slot, 006935B0 observer no-op slot, 00694250 the
   scalar delete of the class whose singleton is 00E198E0.
 
+## Hint tracker TriggerHint 00690FD0 (second turn, reconstructed, build-tested)
+
+`hint_tracker_trigger_00690fd0` in `src/gui_screens_3.cpp`; the whole listing 00690FD0..006921A1
+was read (`local/g5_l_00690fd0.txt`, filter `local/g5_flt.py`). `__thiscall(tracker, NativeString*
+name, char forced)`, RET 8. The frame is steady after the prologue (`AND ESP,-8`, `SUB ESP,2B0h`,
+three pushes): the new definition's copy sits at S+68h, the active/previous definition's copy at
+S+190h, title S+38h, text S+24h, Lua command S+1Ch.
+
+**The definition** (128h-byte value of the map at tracker+30h) was mapped from the copy
+constructor 005FE010 and the Lua loader `0068F030 BSP_AwardTracker_LoadHintDefinitions`, whose
+stack definition is at +98h: +00h Title, +08h Type (default `hints.gameplay_general_hint`), +10h
+Description, +18h LuaCommand, +20h/+28h/+30h AlliedTitle/AlliedLuaCommand/AlliedDescription,
++38h/+40h/+48h the Japanese three, +50h the loader's byte argument, +54h TitleDescList (8 rows of
+18h: title, description, Lua command), +114h critical, +115h hidden, +116h missionspecific,
++118h storingrule (default `repeatable`), +120h cooldowntime, +124h duration.
+
+**Flow:**
+
+1. +04h forces one trigger; otherwise the hints setting 00F8898C must be non-zero, and 1 admits
+   only forced triggers. A name missing from the definition map is dropped.
+2. With an active hint (+60h): unless the new hint is critical and the active one is not, the
+   trigger is queued on the deque +68h when it is forced and both definitions have +50h, or when
+   `*(*(00E198C4)+E4h)+4` is set; it is dropped when only the active definition has +50h.
+3. storingrule `unique` drops a hint the profile has seen (`007F8E00` on game+650h);
+   `missionunique` drops one already in the list +48h; `cooldown` with a non-zero cooldowntime
+   drops it while the map +3Ch holds the key and otherwise starts the cooldown.
+4. Text: the generic Description (with Title and LuaCommand); else, by the local side's nation
+   (`*(game+18CCh+slot*4)+28h`, 0 Allied, 1 Japanese), that nation's three fields; else the
+   TitleDescList row of the local player slot (game+18ECh). If none applies but the other
+   nation has a description, the hint is dropped. On PC prompts (00F88A30 clear) the key
+   `<description>_pc` replaces the description when the localisation table resolves it.
+5. The previous timed hint (+1Ch, its seconds in +24h) counts as seen when the hints screen has
+   less than a quarter of them left (`(int)hints+54h`, compared after FILD against +24h * 0.25);
+   it is then stored under its own rule, and re-triggering the same name is dropped.
+6. The hints screen is dismissed (0054E610); a non-empty Lua command runs through
+   `006B8AD0(command, 0, 0, 2)` on `*(game+1A08h)+4` with a Hungarian diagnostic for failure or
+   success; unless hidden, `ShowHint(critical, text, title, duration)`.
+7. History: key = Type, prefixed `AAAAAA` for `hints.missionhint`. The map +94h gets the name
+   moved to the back of its list (or a new single-entry list, mirrored into +7Ch); names new to
+   +94h's list are also appended to +7Ch's.
+8. Bookkeeping: a critical, timed or hidden hint is marked seen (profile `007FAE20`, or the
+   recent list +54h for missionspecific); critical/hidden hints are also stored under their
+   rule and clear +1Ch/+24h; timed hints set +1Ch = name and +24h = the screen's seconds;
+   untimed non-critical hints clear +1Ch/+24h and set +28h = name. Finally +60h = name.
+
+**Lua-visible for cc9:** the hint definitions come from a Lua table (field names above), and a
+shown hint's `LuaCommand` (or its Allied/Japanese/row variant) runs as mission Lua through the
+`game+1A08h` host. `forced` and the hints setting decide whether script-triggered hints show at
+all. The reconstruction is not wired; nothing here changes game behaviour.
+
+Names: `0068E450 BSP_AwardTracker_FindHintDefinition`, `0068E4C0 BSP_AwardTracker_FindCooldown`,
+`0068F030 BSP_AwardTracker_LoadHintDefinitions` (provisional), and the corrected evidence of
+`0068EA70 BSP_AwardTracker_TouchRecentHint` (the argument is a by-value NativeString, not a kind
+and a pointer). Uncertain: the meaning of +50h; `005FFB20` on the active name is a mapped-value
+lookup that would insert a default definition, which the reconstruction treats as "not critical,
+no +50h".
+
 ## Handoff (cc13-gui5, 2026-10-11)
 
 Commits on agent/cc13-gui5: 10c567ae9 (hints screen reconstruction, 31 definitions, 35 names) and

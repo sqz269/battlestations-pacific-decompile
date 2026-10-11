@@ -289,4 +289,155 @@ void hud_hints_update_0054e6b0(HudHintsState& screen, HudHintsHost& host, float 
     host.tracker_finish_active_0068e420();                    // 0054EC72
 }
 
+namespace {
+
+// 006912F4..006914AB and the faction arms 006914B0..00691A38: the "<description>_pc" key wins
+// on PC prompts when the localisation table knows it.
+void hint_prefer_pc_key(HintTrackerHost& host, std::string& description) {
+    if (host.pad_prompts_00f88a30()) return;
+    std::string pc = description + std::string(kHintPcSuffix);  // 004261A0
+    if (host.localised_key_exists(pc)) description = pc;         // 00449AF0 true -> 00425F40
+}
+
+}  // namespace
+
+// 00690FD0..006921A1, read whole from the listing (local/g5_l_00690fd0.txt). Steady frame: the
+// new definition copy at S+68h, the active/previous definition copy at S+190h, title S+38h,
+// text S+24h, Lua command S+1Ch.
+void hint_tracker_trigger_00690fd0(HintTrackerState& tracker, HintTrackerHost& host, const std::string& name,
+                                   bool forced) {
+    // 00690FF4..0069101E: +04h forces one trigger past the hints setting.
+    if (!tracker.force_next_04) {
+        const std::int32_t setting = host.hints_setting_00f8898c();
+        if (setting == 0) return;
+        if (!forced && setting == 1) return;
+    } else {
+        tracker.force_next_04 = false;
+    }
+    const HintDefinition* found = host.find_definition_0068e450(name);  // 00691037
+    if (found == nullptr) return;
+    const HintDefinition def = *found;                                  // 0069106A (005FE010)
+
+    // 0069106F..00691123: an active hint either yields to a critical one, queues this one, or
+    // swallows it.
+    if (!tracker.active_60.empty()) {
+        const HintDefinition* active = host.find_definition_0068e450(tracker.active_60);  // 0069108E (005FFB20)
+        const bool active_critical = active != nullptr && active->critical;
+        const bool active_flag = active != nullptr && active->loader_flag_50;
+        if (active_critical || !def.critical) {
+            if ((forced && def.loader_flag_50 && active_flag) || host.hud_screen_e4_busy()) {
+                host.queue_push_back_0068eb90(name);  // 006910EE
+                return;
+            }
+            if (!def.loader_flag_50 && active_flag) return;  // 0069110C..00691112
+        }
+    }
+    // 00691128..0069122C: storing rules that refuse a hint already seen.
+    if (equals_insensitive(def.storing_rule, kHintRuleUnique) && host.profile_has_seen_007f8e00(name)) return;
+    if (equals_insensitive(def.storing_rule, kHintRuleMissionUnique) && host.mission_seen_contains_48(name)) return;
+    // 00691231..006912B6: a cooldown rule refuses while the key is cooling down, else starts it.
+    if (equals_insensitive(def.storing_rule, kHintRuleCooldown) && def.cooldown_time != 0) {
+        if (host.cooldown_contains_0068e4c0(name)) return;
+        host.cooldown_set_00444be0(name, static_cast<float>(def.cooldown_time));
+    }
+
+    // 006912BA..00691A38: text selection. The generic description wins; otherwise the local
+    // side's nation (0 allied, 1 japanese) picks its fields, then the player-slot row. When
+    // neither applies but the other nation has a description, the hint is not for this side.
+    std::string title;
+    std::string text;
+    std::string lua_command;
+    if (!def.description.empty()) {
+        title = def.title;
+        text = def.description;
+        hint_prefer_pc_key(host, text);
+        lua_command = def.lua_command;
+    } else {
+        const std::int32_t nation = host.local_side_nation_28();
+        const std::int32_t slot = host.local_player_slot_18ec();
+        const HintTitleDescRow* row = slot >= 0 && slot < static_cast<std::int32_t>(def.title_desc_list.size())
+                                          ? &def.title_desc_list[static_cast<std::size_t>(slot)]
+                                          : nullptr;
+        if (nation == 0 || nation == 1) {
+            const bool allied = nation == 0;
+            const std::string& own_desc = allied ? def.allied_description : def.japanese_description;
+            const std::string& other_desc = allied ? def.japanese_description : def.allied_description;
+            if (!own_desc.empty()) {
+                title = allied ? def.allied_title : def.japanese_title;
+                text = own_desc;
+                hint_prefer_pc_key(host, text);
+                lua_command = allied ? def.allied_lua_command : def.japanese_lua_command;
+            } else if (row != nullptr && !row->description.empty()) {
+                title = row->title;
+                text = row->description;
+                hint_prefer_pc_key(host, text);
+                lua_command = row->lua_command;
+            } else if (!other_desc.empty()) {
+                return;  // 006917BE / 00691A3D -> 006917CB
+            }
+        }
+    }
+
+    // 00691704..00691AA1: the previous timed hint counts as seen once less than a quarter of its
+    // seconds remained; it is then stored under its rule and an identical re-trigger is dropped.
+    if (!tracker.last_timed_1c.empty()) {
+        const HintDefinition* previous = host.find_definition_0068e450(tracker.last_timed_1c);  // 00691724
+        const float left = static_cast<float>(host.hints_seconds_left_0054d3c0());              // 0069174A, FILD
+        if (previous != nullptr &&
+            static_cast<double>(tracker.last_timed_seconds_24) * kHintSeenFraction > static_cast<double>(left)) {
+            if (equals_insensitive(previous->storing_rule, kHintRuleUnique)) {
+                host.profile_mark_seen_007fae20(tracker.last_timed_1c);   // 00691790
+                if (equals_insensitive(tracker.last_timed_1c, name)) return;
+            } else if (equals_insensitive(previous->storing_rule, kHintRuleMissionUnique)) {
+                host.mission_seen_push_back_48(tracker.last_timed_1c);    // 00691A62
+                if (equals_insensitive(tracker.last_timed_1c, name)) return;
+            }
+        }
+    }
+
+    // 00691AA3..00691B35: replace whatever is shown, run the hint's Lua command, show it.
+    host.hints_dismiss_0054e610();
+    if (!lua_command.empty()) {
+        const bool failed = host.lua_run_string_006b8ad0(lua_command) != 0;  // 00691ADC
+        host.diagnostic_lua_result_004254b0(failed, lua_command);
+    }
+    if (!def.hidden) host.hints_show_0054e020(def.critical, text, title, def.duration);  // 00691B35
+
+    // 00691B3A..00691EB9: history keyed by Type; mission hints sort first under "AAAAAA".
+    std::string key = def.type;
+    if (equals_insensitive(def.type, kHintMissionType)) key = std::string(kHintMissionHistoryPrefix) + key;  // 0043C130
+    if (!host.history94_has_key(key)) {
+        host.history_assign_single(key, name);  // 00691D52..00691EB9
+    } else {
+        if (!host.history94_erase_name(key, name)) host.history7c_push_back(key, name);  // 00691CD6
+        host.history94_push_back(key, name);    // 00691D17
+    }
+
+    // 00691EBD..006920AE: bookkeeping by kind.
+    if (def.critical || def.duration != 0 || def.hidden) {
+        if (!def.mission_specific) {
+            host.profile_mark_seen_007fae20(name);  // 00691EF5
+        } else {
+            host.touch_recent_0068ea70(name);       // 00691F3C, name passed by value
+        }
+        if (def.critical || def.hidden) {
+            if (equals_insensitive(def.storing_rule, kHintRuleUnique)) {
+                host.profile_mark_seen_007fae20(name);           // 00692023
+            } else if (equals_insensitive(def.storing_rule, kHintRuleMissionUnique)) {
+                host.mission_seen_push_back_48(name);            // 0069205E
+            }
+            tracker.last_timed_1c.clear();                       // 00692089
+            tracker.last_timed_seconds_24 = 0.0F;
+        } else {
+            tracker.last_timed_1c = name;                        // 00691FAC
+            tracker.last_timed_seconds_24 = static_cast<float>(host.hints_seconds_left_0054d3c0());  // 00691FE2
+        }
+    } else {
+        tracker.last_timed_1c.clear();                           // 00691F5F
+        tracker.last_timed_seconds_24 = 0.0F;
+        tracker.persistent_28 = name;                            // 00691F6F
+    }
+    tracker.active_60 = name;                                    // 006920AE
+}
+
 }  // namespace bsp

@@ -140,4 +140,94 @@ void hud_hints_dismiss_0054e610(HudHintsState& screen, HudHintsHost& host);
 // 0054E6B0: slot +20h, __thiscall(screen, float dt), RET 4; SEH 00C6D438.
 void hud_hints_update_0054e6b0(HudHintsState& screen, HudHintsHost& host, float dt);
 
+// ---------------------------------------------------------------------------
+// Hint tracker TriggerHint 00690FD0 (singleton 004E1CA0 / 00E198D0, 0A0h bytes; layout in
+// docs/GAME_AWARD_TRACKERS.md). The only caller of ShowHint 0054E020.
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kHintRuleUnique = "unique";                // 00CF7BE8
+inline constexpr std::string_view kHintRuleMissionUnique = "missionunique";  // 00CF7BD8
+inline constexpr std::string_view kHintRuleCooldown = "cooldown";            // 00CF7C5C
+inline constexpr std::string_view kHintPcSuffix = "_pc";                     // 00CEBD30
+inline constexpr std::string_view kHintMissionType = "hints.missionhint";    // 00CF7AEC
+inline constexpr std::string_view kHintMissionHistoryPrefix = "AAAAAA";      // 00CF3F58
+inline constexpr double kHintSeenFraction = 0.25;                            // 00D7A348
+
+// One TitleDescList row (18h bytes), indexed by the local player's slot game+18ECh.
+struct HintTitleDescRow {
+    std::string title;        // +00h
+    std::string description;  // +08h
+    std::string lua_command;  // +10h
+};
+
+// The 128h-byte definition value of the map at tracker+30h. Offsets from the copy constructor
+// 005FE010 and the Lua loader 0068F030 (definition on its stack at +98h).
+struct HintDefinition {
+    std::string title;                  // +00h Title
+    std::string type;                   // +08h Type (default hints.gameplay_general_hint)
+    std::string description;            // +10h Description
+    std::string lua_command;            // +18h LuaCommand
+    std::string allied_title;           // +20h AlliedTitle
+    std::string allied_lua_command;     // +28h AlliedLuaCommand
+    std::string allied_description;     // +30h AlliedDescription
+    std::string japanese_title;         // +38h JapaneseTitle
+    std::string japanese_lua_command;   // +40h JapaneseLuaCommand
+    std::string japanese_description;   // +48h JapaneseDescription
+    bool loader_flag_50{};              // +50h, the loader's byte argument (0068FE65 -> +50h)
+    std::array<HintTitleDescRow, 8> title_desc_list{};  // +54h TitleDescList
+    bool critical{};                    // +114h critical: a pausing hint
+    bool hidden{};                      // +115h hidden: recorded but never shown
+    bool mission_specific{};            // +116h missionspecific
+    std::string storing_rule;           // +118h storingrule (default "repeatable")
+    std::int32_t cooldown_time{};       // +120h cooldowntime
+    std::int32_t duration{};            // +124h duration (seconds handed to ShowHint)
+};
+
+// Tracker fields TriggerHint reads or writes (the containers stay host-side).
+struct HintTrackerState {
+    bool force_next_04{};               // +04h, consumed by the next trigger
+    std::string last_timed_1c;          // +1Ch, last timed hint, checked by the next trigger
+    float last_timed_seconds_24{};      // +24h, its seconds as (int) hints+54h at show time
+    std::string persistent_28;          // +28h, last untimed (persistent) hint
+    std::string active_60;              // +60h, active hint name
+};
+
+struct HintTrackerHost {
+    virtual ~HintTrackerHost() = default;
+    virtual std::int32_t hints_setting_00f8898c() = 0;                 // 0 off, 1 forced only
+    virtual const HintDefinition* find_definition_0068e450(const std::string& name) = 0;  // map +30h; null = end()
+    virtual bool hud_screen_e4_busy() = 0;                             // *(*(00E198C4)+E4h)+4
+    virtual void queue_push_back_0068eb90(const std::string& name) = 0;  // deque +68h
+    virtual bool profile_has_seen_007f8e00(const std::string& name) = 0;  // ECX = game+650h
+    virtual void profile_mark_seen_007fae20(const std::string& name) = 0;  // ECX = game+650h
+    virtual bool mission_seen_contains_48(const std::string& name) = 0;  // list +48h, case-insensitive
+    virtual void mission_seen_push_back_48(const std::string& name) = 0;
+    virtual void touch_recent_0068ea70(const std::string& name) = 0;     // list +54h
+    virtual bool cooldown_contains_0068e4c0(const std::string& name) = 0;  // map +3Ch
+    virtual void cooldown_set_00444be0(const std::string& name, float seconds) = 0;
+    virtual bool pad_prompts_00f88a30() = 0;
+    // 00A9FAD0 on 00F8BC4C, 00436630 narrow, 00449AF0: the key resolves to other text.
+    virtual bool localised_key_exists(const std::string& key) = 0;
+    virtual std::int32_t local_player_slot_18ec() = 0;                 // game+18ECh
+    virtual std::int32_t local_side_nation_28() = 0;                   // *(game+18CCh+slot*4)+28h
+    virtual std::int32_t hints_seconds_left_0054d3c0() = 0;            // (int) hints screen +54h
+    virtual void hints_dismiss_0054e610() = 0;
+    virtual void hints_show_0054e020(bool pausing, const std::string& text, const std::string& title,
+                                     std::int32_t seconds) = 0;
+    // 006B8AD0(command, 0, 0, 2) on *(game+1A08h)+4; non-zero = failure. Then the Hungarian
+    // diagnostic 004254B0 ("Nem sikerult vegrehajtani..." / "...lua parancs vegrehajtva...").
+    virtual std::int32_t lua_run_string_006b8ad0(const std::string& command) = 0;
+    virtual void diagnostic_lua_result_004254b0(bool failed, const std::string& command) = 0;
+    // History maps of lists keyed by Type: +94h (005FD4B0 find, 006002B0 operator[]) and +7Ch.
+    virtual bool history94_has_key(const std::string& key) = 0;
+    virtual bool history94_erase_name(const std::string& key, const std::string& name) = 0;  // true when found
+    virtual void history94_push_back(const std::string& key, const std::string& name) = 0;
+    virtual void history7c_push_back(const std::string& key, const std::string& name) = 0;
+    virtual void history_assign_single(const std::string& key, const std::string& name) = 0;  // both maps = {name}
+};
+
+// 00690FD0: __thiscall(tracker, NativeString* name, char forced), RET 8; SEH 00C7E723.
+void hint_tracker_trigger_00690fd0(HintTrackerState& tracker, HintTrackerHost& host, const std::string& name,
+                                   bool forced);
+
 }  // namespace bsp
