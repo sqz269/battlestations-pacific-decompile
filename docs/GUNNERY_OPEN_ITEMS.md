@@ -11600,3 +11600,27 @@ The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the 
   count is 0 everywhere, the switch flips ON as inert-but-faithful.
 - `kAaLineOfFireExpiryDrawBound` in the reference launch form: gameplay-identical (exit 0/1) on every row, because the
   keyed draw consumes no other key's stream.
+
+### 164.4 Pairs on `43da2ae09` and the verdict
+
+- **Smoke:** JM06, 300 frames, exit 0 (`local\g35_t3smoke.log`).
+- **Pairs:** OFF is the commit as is (`local\g35_t3off`). ON flips both switches (`local\g35_t3on`). AF's launch form
+  (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`), logs `local\g35_t3{off,on}_<row>.log`.
+
+| row | OFF `armour_rejects` / `armour_rejects_tail` | pair_diff | what moved |
+| --- | --- | --- | --- |
+| USNRM01 9000 | 2342 / **2342** | 3 | shots 59220 -> 60120, hit records 1792 -> 1931, hull hits 1405 -> 1406, damage 31375.0 -> 31377.6; deaths identical (152 rows). The Kates' tail guns now fire on armoured ships: `Tautog` hits 0 -> 136, KateSpawn rows' shots rise |
+| USN04 4500 | 0 / 0 | 1 | none |
+| JM05 3000 | 0 / 0 | 1 | none |
+| USN13 3000 | 0 / 0 | 1 | none |
+| USN01 3000 | 0 / 0 | 1 | none |
+| JM08 3000 | 0 / 0 | 1 | none |
+
+- **Every armour refusal on USNRM01 came from a plane-owned gun.** No ship-mounted kind-1 gun was refused there, so
+  the AAGunnerBot term itself is untouched.
+- **Mechanism:** each prediction holds.
+  - Rows with no tail refusal are identical.
+  - USNRM01's change is only the lifted refusals. The added rounds are MG rounds on armour, about 2.6 hp in all, and
+    no death moves.
+  - The expiry draw is inert in the reference form, as predicted: five of the six rows are identical with it ON.
+- **Verdict: both ON.**
