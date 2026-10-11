@@ -322,3 +322,59 @@ native stores, so they are not bit-exact.
 are probably cc12 territory.
 - Helper scripts are in this tree's `local/wa1_*`. They are read-only PE censuses: `wa1_callers.py`,
   `wa1_ptrs.py`, `wa1_immref.py`, `wa1_dispstore.py`, `wa1_bounds.py`, `wa1_dis.py` and `wa1_vt.py`.
+
+## 10. Ocean x87 bodies (packet cc13_water2)
+
+Method: every block was traced against the listing with `local/wa2_sym.py` (cc13-water2 tree), a
+symbolic path executor that decodes x87 register arithmetic from the opcode bytes. Ghidra prints
+`DC C9` as `FMUL ST1` (meaning ST1 *= ST0), so its one-operand x87 mnemonics are ambiguous and were
+not trusted. Constants were read from the PE on disk. Status for all three: reconstructed and
+build-tested, not fixture-tested, not game-validated, not wired. The reconstructions round at every
+native float store and use double between stores, so they are close to native but not bit-exact.
+
+### 10.1 00B9AE00 BSP_OceanWaveField_ComputeProjectorMatrices (complete)
+
+`bool __thiscall(field, camera)`, RET 4. AL = 1 on success. `compute_projector_matrices_00b9ae00`.
+water1's eight-step outline was right in shape but wrong in several details:
+- Only the four near clip corners (z = 0) go through the inverse projection (B9B157, count 4). The far
+  corners are the near ones times far/near (B9B219). The ratio is spilled to a float.
+- The near plane is clamped: `near = 1.5 > near ? 1.5f : near` (double [00CE3D78], float [00CE380C]).
+- The fov is widened by the double [00CEC160] = (double)1.2f. The camera is moved to (0, y, 0)
+  through vtable+30. Both are restored on both exits (B9C9A5, B9C9D3).
+- Corners count as inside the slab when `(h + y) / (y - h) < 0`. `FDIVRP` is `DE F1`, so the
+  quotient is ST0/ST1. y = (x*0 + y) + z*0 is kept in extended precision.
+- Projector eye: lim = h + 7.0 ([00CED5D8]). If y < lim, the eye moves up by `lim - y`, or by
+  `lim - 2y` when y < 0 (2.0 is [00D7A308]). This is a lift, not a clamp of a cosine.
+- Forward vector: when |f.y| <= float(cos(1.55334306f)) ([00CEC400], 89 degrees), f.y gets -0.01 or
+  +0.01 (double [00D7A358] = (double)0.01f) and f is renormalised through 00BF7030 (0 for zero length).
+- Aim point: B = f, reflected as `f - (0,2,0)*d` when camera and forward lie on the same side of
+  y = 0. hit = 00B999F0((0,1,0,0), pos, pos + B + 0). The aim is `hit*|f.y| + flatten(pos + 10*f)*(1 - |f.y|)`,
+  10.0 = [00CE3DC0]. Then `aim - eye + eye` is stored as computed.
+- view = 00B63F10(eye, aim, (0,1,0)). The points are flattened to y = 0, then each goes through view
+  and then through the second perspective Pp with a 1/w divide. Each step is stored back.
+- Outputs: +174h = range * inverse(view * Pp); +1B4h = inverse(+174h); +1F4h = (view * Pp) *
+  00B63B30(range); +418h = view; +458h = Pp. Here range = [dx 0 0 0; 0 dy 0 0; 0 0 1 0; min_x min_y 0 1].
+- No point (B9C117): restore the camera and return 0 without writing the field.
+- The point array (frame -120h) has no bound check. For a convex frustum it holds at most 20 points.
+  The port caps it at 32.
+
+### 10.2 00B9D7B0 BSP_OceanWaveField_RefreshGridTiles (complete), 00B9A990 BSP_OceanGrid_AverageQuad (complete)
+
+[field+2B0h] is not a "tile grid" but a pyramid of 0Ch-byte levels {width, height, cells}. Its count
+is at [field+2B4h], and each cell is 18h bytes (x, height, z, normal[3]).
+- Level 0, cell (x, y), with i = (x & 3Fh) + (y & 3Fh)*40h: x = choppy[i].x and z = choppy[i].z from
+  spectrum+30h, and height = -0.0f - spectrum+20h[i].word0. Both std::vector accesses are range
+  checked through 00BF6713 (_invalid_parameter_noinfo).
+- Running maxima, never reset in this function: +104h = HS*|h| (NaN takes the new value), then
+  +108h |x|, +10Ch |h| and +110h |z| (NaN keeps the old value).
+- **The "-0.0 resets"** in the decompile are only the reload of XMM3 = [00D7A208] after the CRT call.
+  They are not field resets.
+- **Native defect:** level-0 normals (+0Ch..+14h) are copied from [ESP+4Ch..54h] (frame -0Ch..-4h).
+  Nothing in the function writes those slots before the first loop, so they hold stack garbage. The
+  port takes them as `stack_garbage`.
+- Level i+1 cell (x, y) = 00B9A990 of the level-i cells (2x, 2y), (2x+1, 2y), (2x, 2y+1) and
+  (2x+1, 2y+1). The scale comes from the 5-entry stack array {0, 0.2, 0.5, 0.9, 1.0}
+  ([00CE54A0], [00CE3800], [00CE3860]). A count of 0 would underflow (SUB ESI,1).
+- 00B9A990: centre = ((p0+p1)+p2)+p3 times double 0.25 [00D7A348]. Normal = ((p1.n+p0.n)+p2.n)+p3.n,
+  lerped (005803E0) towards (0, 4.0 [00CE3D34], 0) by the scale, then normalised (00419440).
+- The function ends by tail-jumping to vtable+0Ch (00BA5030), the float16 upload.
