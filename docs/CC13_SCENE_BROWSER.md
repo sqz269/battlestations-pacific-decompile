@@ -497,3 +497,59 @@ run takes the entity in `[ESP+4]` and `RET 4`; `ECX` is the action.
 
 Who calls slot 0 and slot 1, and when relative to `ActivateTime`, was not traced; the movie player
 tick in segment 5 (`0045xxxx`, around `0045DCA0`/`0045C690`) is the place to look.
+
+## Cloud property pass `00477710` (second packet)
+
+Host: `include/bsp/cloud_scene_properties.hpp`, `src/cloud_scene_properties.cpp`. Status: the branch
+gate and the CloudType-0 branch are reconstructed and build-tested (ledger fragment); the two mesh
+branches are only read through.
+
+`__thiscall`, `ECX` = cloud entity (`EDI`), `RET`. After the base `0048DBD0`:
+
+- **Gate** (`0047773C..00477780`): class CloudType (class at +188h, field +34h) non-zero or the
+  instance +1A4h non-zero; the property holder +C0h present with kind (+4) 1; byte +1A8h clear.
+  CloudType 0, 1 and 2 select the branches (`00477780`, `00477C3C`, `0047889A`); every path ends
+  with `this->vtable[D8h]()` (`00478A2A`).
+- **Property values**: `BSP_ScenePropertyBag_Find` on the holder's bag (+8) returns a record whose
+  kind +4 is 0 for an integer (read with `CVTSI2SS`), 3 for a boolean byte, and otherwise a float,
+  value at +0Ch. A colour property's +0Ch is a nested bag with `R`, `G`, `B` (`00CE60EC/E8/E4`);
+  the colour passed on is `{R, G, B, 1.0}` (`00D7A24C`).
+- **CloudType 0, particle** (`00477786..00477C37`): `InsideColor` `00BBE540`, `Ambient` `00BBE4B0`,
+  `Diffuse` `00BBE4E0`, `Specular` `00BBE510`, `Density` `00BBE570`, `BlurRadius` `00BBE590`, all
+  read without a null check, each with `ECX` = the instance +1A4h (`0047782D`); then optional
+  `Scale` `00BBE470`, `Alpha` `00BBE490` and `AffectedByWind` `00BBE5C0` (the byte of a kind-3
+  property, otherwise 0), each tested first with `004772C0`. Finally the cloud manager
+  `[[00E188A8]+19E8h]+3Ch` (`00BBDDF0`): `BSP_SceneNode_SetVisibilityFactor(instance,
+  (float)manager+98h byte, 0)` (`00477C13`) and `manager->00BBD470(instance)` (`00477C32`).
+- **CloudType 1, shaded mesh** (`00477C3C..00478895`): `xBaseCol` (R, G, B, A; defaults of 1.0 into
+  the globals `00E186C4..00E186D0` when absent), `xSkyCol`, `xSunCol`, `xScale`, `xRimPower`,
+  `xBackPower`; then on the generated model's geometry the material parameters `cBaseColor`
+  (`BSP_Material_RegisterFloat4ArrayParameter`), `cSkyColor`, `cSunColor` (`00B18AE0`), `cRim_Back`
+  and `cBrad_Scale` (`BSP_Material_RegisterFloat2Parameter`), two shadow textures
+  (`BSP_Material_SetTextureSlot`), and a vertex loop over `BSP_LogicalVertexStream_ReadColour` /
+  `ReadPosition` with `00476550`; it also registers the instance with the manager.
+- **CloudType 2, diffuse mesh** (`0047889A..00478A1B`): `Diffuse` (R, G, B) and `Scale` into
+  `cDiffuseColor_BaranyScale`.
+
+The first-packet summary of this function put `cDiffuseColor_BaranyScale` in the CloudType-1 list;
+it belongs to CloudType 2. Host divergence: a missing mandatory property throws
+`std::out_of_range` where native dereferences null.
+
+## Handoff (second packet)
+
+Done in the second packet: segment-5 movie parser and run bodies (18 functions defined, 31 named,
+the type table, the `Action` reader and four run decisions reconstructed in
+`src/engine_movie_actions.cpp`), and the gate and particle branch of `00477710`
+(`src/cloud_scene_properties.cpp`). Nothing is wired into a game host.
+
+Open, in priority order:
+
+1. The movie player tick that calls action slot 0 and slot 1 against `ActivateTime` (segment 5,
+   around `0045DCA0`/`0045C690`, owner of the `0045A210` list), and the `PointList`/`Entitypath`
+   readers `0045D8A0`, `0045ECA0`, `0045EFB0`. With those, `.ema` playback could be modelled end
+   to end against the 39 files in this installation.
+2. Why `cFOV`, `cFOV_Now` and `sForceArtilleryAngle` have empty run bodies: the camera track
+   probably reads the FOV actions directly.
+3. `00477710` mesh branches (CloudType 1 and 2) and the per-vertex colour loop.
+4. The open items 2..6 of the first handoff still stand (registry teardown, visual-base slots,
+   the unreferenced vector-math cluster, a Lua implementation for the class loaders).
