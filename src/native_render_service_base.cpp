@@ -217,3 +217,44 @@ void retire_native_application_base_00bea990(
     retire_native_application_singleton_base_00bea8b0(actual_receiver, context);
 }
 } // namespace bsp
+
+#include "bsp/native_application_pointer_vector_resize.hpp"
+
+namespace bsp {
+namespace {
+
+void unwind_application_base(void* actual_receiver,
+                             NativeApplicationSingletonBaseContext& context) noexcept {
+    __try {
+        retire_native_application_base_00bea990(actual_receiver, context);
+    } __except (cleanup_exception(GetExceptionCode())) {
+        __assume(0);
+    }
+}
+
+struct ApplicationVectorRetirementCleanup {
+    void* actual_receiver;
+    NativeApplicationSingletonBaseContext& context;
+    bool armed = true;
+    ~ApplicationVectorRetirementCleanup() noexcept {
+        if (armed) unwind_application_base(actual_receiver, context);
+    }
+};
+
+} // namespace
+
+void retire_native_application_007379a0(
+    void* actual_receiver,
+    NativeApplicationPointerVectorStorage& actual_rows,
+    const NativeApplicationPointerVectorAllocation& allocation,
+    NativeApplicationSingletonBaseContext& context) {
+    ApplicationVectorRetirementCleanup cleanup{actual_receiver, context};
+    resize_native_application_pointer_vector_00735f30(actual_rows, 0, allocation);
+    void* const current_data =
+        static_cast<volatile NativeApplicationPointerVectorStorage&>(actual_rows).data_00;
+    allocation.free_00bf6989(current_data);
+    cleanup.armed = false;
+    retire_native_application_base_00bea990(actual_receiver, context);
+}
+
+} // namespace bsp
