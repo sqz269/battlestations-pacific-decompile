@@ -1,0 +1,286 @@
+{
+  "packet": "cc12_application_vector_retirement_source_implementation_primary",
+  "status": "Root reviewed and build-tested qualified dormant Source",
+  "worker_commit": "593402f109dae309b02d0dfc96d73f907561db64",
+  "private_directory": "local\\cc12_application_vector_retirement_source_implementation_primary",
+  "pins": {
+    "Root_review.py": {
+      "bytes": 5172,
+      "sha256": "9caafed985e63bdbdf232ec510c74c3e2024e09bae7a28b540d1b26cf44f3440"
+    },
+    "Root_actual_review.json": {
+      "bytes": 4868,
+      "sha256": "2777734b38a9b3686a3f086e47567cf7f8edd22febc64b38ed8b2b07c24d23cb"
+    },
+    "Root_strict_replay.py": {
+      "bytes": 2247,
+      "sha256": "979c0dbb5c26f301bf2d398017c9dbea2344f01d9713878b1649e4fcfa490e71"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 656,
+      "sha256": "f0e26a52c201208c8c7667fe796bb3ecf48e66470794e0ffcea0480493f9f4af"
+    },
+    "Root_build_invocation.json": {
+      "bytes": 648,
+      "sha256": "f45b326ee6cc23dd4e669ee29dd4bd315aedae5bf760adc076948eab939348b5"
+    },
+    "Root_build_receipt.json": {
+      "bytes": 1256,
+      "sha256": "f09bf33f6135451f0de17309abca80c5e9af3a163a7459f2991d8d6b2d3e39ff"
+    },
+    "Root_build.log": {
+      "bytes": 3885,
+      "sha256": "8d1421c37d13b5190db2d5ee3f8c654c02386f81ce5aeac5f6c11890d6021564"
+    },
+    "coff_review.py": {
+      "bytes": 3976,
+      "sha256": "4b9c9f876f2e9367125d43e1c6a72d0fd5b9e968f8f29783a8fabe6e4b6843cd"
+    },
+    "coff_receipt.json": {
+      "bytes": 14361,
+      "sha256": "21fcb025f7092434ac8e89885c72582823f1dd444c5618a6f5ac08bfd71f8504"
+    },
+    "artifacts/native_render_service_base.obj": {
+      "bytes": 18309,
+      "sha256": "c32340020c82385ddda876cdf1d211b00b399e228346b0144508bf926f63c8f5"
+    },
+    "guard.py": {
+      "bytes": 8415,
+      "sha256": "71ac22b02727dc75e41e55ba794c119b89ba59b49105e0428cfda3dc7971295f"
+    }
+  },
+  "actual_review": {
+    "status": "PASS",
+    "worker_commit": "593402f109dae309b02d0dfc96d73f907561db64",
+    "archive_sha256": "a9f126ebe5dcc20d850c2c4ccd0120588ef25c985e4bb16016014420afdfa6e3",
+    "manifest_sha256": "181c4556245eca2d7d597ba7e31a2e33cb68adeb88ef1a90d74a19e26ec24b03",
+    "entries": 75,
+    "finite_Git_inputs": 22,
+    "outputs": [
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "git_blob": "66f2836056aae1c6e129be91a7b46f8d81b0ec86",
+        "git_bytes": 12440,
+        "git_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "working_bytes": 12440,
+        "working_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+        "lf_sha256": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "git_blob": "5743ebaaa1fbe3521a662db57df2710cfecc29c4",
+        "git_bytes": 10396,
+        "git_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "working_bytes": 10396,
+        "working_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9",
+        "lf_sha256": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9"
+      },
+      {
+        "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_SOURCE_IMPLEMENTATION.md",
+        "git_blob": "9bcbe40b99bec0547c12f6ccdc973d42b56f76c4",
+        "git_bytes": 6445,
+        "git_sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418",
+        "working_bytes": 6464,
+        "working_sha256": "1bbbb3aed7c8fa639fcc5bfef421a804d7cb3b543c3568bf5740ace7c929b904",
+        "lf_sha256": "387e8861af8dc059a013bba61a5b18a21cef9bc028e7952d8f5678c95e822418"
+      },
+      {
+        "path": "reports/cc12_application_vector_retirement_source_implementation.json",
+        "git_blob": "206576177a1c9bd8005da03439e3b770d9a09c9e",
+        "git_bytes": 29621,
+        "git_sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1",
+        "working_bytes": 30267,
+        "working_sha256": "1edce5ada80639df36b6baed83c5cb176a1bc6f2526fe360ca03d7a88cc80c19",
+        "lf_sha256": "9a524b99a1a517ca40e085c386037c4da4db68f00bd3c693e560be4fb72df2e1"
+      }
+    ],
+    "actual_Git_tree_pins": [
+      {
+        "revision": "frozen",
+        "path": "",
+        "oid": "91da8970ceaa585f3ec03d930412df3b234d5fff",
+        "bytes": 563,
+        "sha256": "a488ef0823c78e0553fe855ecfe573bf062cc84c3f792bc62708505ae57bf459"
+      },
+      {
+        "revision": "frozen",
+        "path": "src",
+        "oid": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+        "bytes": 120641,
+        "sha256": "55a6b5addf71fcd4ebf7e8296082c2193bf475b79bffce5327924062e40cf232"
+      },
+      {
+        "revision": "frozen",
+        "path": "include",
+        "oid": "09add3be594e63edcce6a16ec041ed965441e898",
+        "bytes": 30,
+        "sha256": "1bfc2870f1c40a350712b809947d58a73c45ca886e56c8fecd4a771f8dab9b40"
+      },
+      {
+        "revision": "final",
+        "path": "",
+        "oid": "50479aab0f1ef06a9f1996936971e0a164b3c20b",
+        "bytes": 563,
+        "sha256": "ddc535d0575588cefe942ec34430b2fb581ced97761321dc3cefe0a0ea1778b2"
+      },
+      {
+        "revision": "final",
+        "path": "src",
+        "oid": "a7d61af4b6295db0fed1dfced2364a0ed4095d8e",
+        "bytes": 120641,
+        "sha256": "dfbdd77b2eaa8dd7af0f735b0ff1a6b3f7f8351104bba978b539c5913264aa1e"
+      },
+      {
+        "revision": "final",
+        "path": "include",
+        "oid": "d7008d1b0a62237fa7af299d5d2012aed8c54f8d",
+        "bytes": 30,
+        "sha256": "d93bb3ac104dce87e06ce35eb803166debb1aab3d971a199aea092477b20c1fc"
+      }
+    ],
+    "helper_pins": {
+      "seed_input.py": {
+        "bytes": 1363,
+        "sha256": "fc6932397df22feb844e7d82ec8451b7cf2195d6e090b9b43ad20a92f7a460f4"
+      },
+      "prepare.py": {
+        "bytes": 6305,
+        "sha256": "bf02d4a317a2df0997769da80e7ead69998fdeaa0b73c84d04a382a81f6ff77e"
+      },
+      "build_once.py": {
+        "bytes": 2641,
+        "sha256": "83a937644d42e72a9f95a19ab8fbe4ad0198a2fe2226ee3fcc7d924642ab5ba8"
+      },
+      "coff_review.py": {
+        "bytes": 3976,
+        "sha256": "4b9c9f876f2e9367125d43e1c6a72d0fd5b9e968f8f29783a8fabe6e4b6843cd"
+      },
+      "guard.py": {
+        "bytes": 8415,
+        "sha256": "71ac22b02727dc75e41e55ba794c119b89ba59b49105e0428cfda3dc7971295f"
+      },
+      "write_report.py": {
+        "bytes": 17973,
+        "sha256": "e81b09cb2519fb75f08bdd4a9d1acef56badbe3c962de8cb3db7ac38fd1b6e6d"
+      },
+      "seal.py": {
+        "bytes": 10757,
+        "sha256": "c8cc25c9f99307e5705129c6609f7f349369b3cb00f8950139f7d79c4a363823"
+      }
+    },
+    "copies_equal_and_distinct": true,
+    "raw_Source_prefixes_preserved": true,
+    "actual_registered_worker_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "Source_sequence_reviewed": true,
+    "existing_genuine_types_and_bindings": true,
+    "Source_census": false,
+    "Original_FH3_frame_ABI_runtime_credit": false
+  },
+  "strict_guard": {
+    "ZIP_reads": 1,
+    "receipt_writes": 1,
+    "helper_execs": 1,
+    "denials": []
+  },
+  "Root_build": {
+    "status": "PASS",
+    "exit_code": 0,
+    "start_UTC": "2026-10-11T07:46:01.494829+00:00",
+    "finish_UTC": "2026-10-11T07:46:25.596854+00:00",
+    "configuration": "MSVC Win32 Release",
+    "checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "sources_sha256": {
+      "include/bsp/native_render_service_base.hpp": "aed58347ca6920cd8206d66b5ec9cb96c0db2318b93ab7f34813b9c3182c8aec",
+      "src/native_render_service_base.cpp": "5d82332cd0b6f624862e50119a5cd73eef93285dfc7c47eb42287c0f4f3778c9"
+    },
+    "log_bytes": 3885,
+    "log_sha256": "8d1421c37d13b5190db2d5ee3f8c654c02386f81ce5aeac5f6c11890d6021564",
+    "warning_lines": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "Original_runtime_credit": false
+  },
+  "Root_positive_parent_COFF": {
+    "symbol": {
+      "index": 86,
+      "name": "?retire_native_application_007379a0@bsp@@YAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@@Z",
+      "value": 0,
+      "section": 28,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0
+    },
+    "section": {
+      "name": ".text$mn",
+      "raw_size": 120,
+      "raw_pointer": 5307,
+      "relocation_pointer": 5427,
+      "relocation_count": 4,
+      "characteristics": 1615859744
+    },
+    "raw_section_bytes": 120,
+    "raw_section_sha256": "1b120d9ed47d73cbd85678aed7f711253c422a4f5286c0abb5794158cb24f757",
+    "raw_section_hex": "558bec6aff680000000064a1000000005083ec0c535657a10000000033c5508d45f464a3000000008b45088b5d148945e8895decc645f0018b7d108b750c576a0056c745fc00000000e8000000008b06508b4704ffd053ff7508c645f000e80000000083c4188b4df464890d00000000595f5e5b8be55dc3",
+    "relocations": [
+      {
+        "offset": 6,
+        "type": 6,
+        "symbol_index": 128,
+        "decorated_target": "__ehhandler$?retire_native_application_007379a0@bsp@@YAXPAXAAUNativeApplicationPointerVectorStorage@1@ABUNativeApplicationPointerVectorAllocation@1@AAUNativeApplicationSingletonBaseContext@1@@Z"
+      },
+      {
+        "offset": 24,
+        "type": 6,
+        "symbol_index": 178,
+        "decorated_target": "___security_cookie"
+      },
+      {
+        "offset": 74,
+        "type": 20,
+        "symbol_index": 99,
+        "decorated_target": "?resize_native_application_pointer_vector_00735f30@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z"
+      },
+      {
+        "offset": 95,
+        "type": 20,
+        "symbol_index": 85,
+        "decorated_target": "?retire_native_application_base_00bea990@bsp@@YAXPAXAAUNativeApplicationSingletonBaseContext@1@@Z"
+      }
+    ],
+    "extent_boundary": "Actual COFF section raw extent. Not an Original instruction count, runtime ABI or whole-object equivalence claim."
+  },
+  "contract": {
+    "API": "retire_native_application_007379a0(actual_receiver,actual_rows,allocation,context)",
+    "actual_rows_identity": "already-live 12B at actual A+8; explicit caller precondition",
+    "normal_order": [
+      "arm qualifiedCppcleanup",
+      "genuine signed/live resize(rows,0,allocation)",
+      "reload current row data",
+      "genuine arrayfreeBF6989(data)",
+      "disarm",
+      "BEA990(sameA,context)"
+    ],
+    "resize0_universal_clear": false,
+    "outer_free_or_post_free_reset": false,
+    "cleanup": "Escaping C++ resize/free invokes sameA/contextBEA990; cleanup C++ escape terminates via existing filter; foreign/hardware and OriginalFH3 not equivalent.",
+    "same_SS_receiver_address_condition": "actionEBP=storeESP+18h=parentEntryESP mod2^32, plus actual preserved/reestablished receiver cell contents",
+    "shared_storage_provider_lifetime_bindings_required": true
+  },
+  "credit": {
+    "Source_implemented": true,
+    "Win32_build_and_existing3checks": true,
+    "active_caller_owner_acquisition": false,
+    "Original_FH3_action_frame_ABI": false,
+    "startup_gameplay_runtime": false,
+    "whole_object_equivalence": false,
+    "Source_absence_census": false
+  }
+}
