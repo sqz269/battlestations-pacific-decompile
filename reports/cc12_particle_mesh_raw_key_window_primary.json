@@ -1,0 +1,151 @@
+{
+  "schema": "bsp.cc12.particle-mesh-raw-key-window-primary.v1",
+  "status": "conditional_dormant_raw_key_interface_and_entry_GO_concrete_provider_custody_activation_NO_GO",
+  "worker_commit": "9d5239d6174e936a4cce203f781cd67922896acf",
+  "worker_document": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/worker_document.md",
+    "bytes": 13537,
+    "sha256": "199384284a5a551415ba12cb0d0c87ffd0734e2427a505e9e4fcf8d385b7c97c"
+  },
+  "worker_raw_document": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/worker_document_raw.md",
+    "bytes": 13599,
+    "sha256": "92832f766ee77d78d5c41db2f0fb1310b12ee51319319162643acc2265b0ddda"
+  },
+  "document_EOL_qualification": "Raw reported working bytes retained separately; LF-normalized bytes exactly match immutable Git document.",
+  "worker_report": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/worker_report.json",
+    "bytes": 20187,
+    "sha256": "e05372d05818d3c269138a59f343ac5a1aed879cddec727a42ff3700d3bf7980"
+  },
+  "copied_bundle": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/evidence.zip",
+    "bytes": 181151111,
+    "sha256": "1d3864b1432d6018a8a6d22243e4c28d7baaf7f6c0f0fcbbdee730e74e6ed5b3"
+  },
+  "copied_helper": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/portable_replay.py",
+    "bytes": 4449,
+    "sha256": "094093664cd18a48da905987a2503bc588e8952569cbc8ce248cc799477a2af2"
+  },
+  "guarded_replay": {
+    "path": "local/cc12_particle_mesh_raw_key_window_primary/Root_guarded_replay.json",
+    "bytes": 3296,
+    "sha256": "52efba8d64d8dd64e6c0c27f6d66de5877ae4f666982cc67b6d7b921ba65ac51"
+  },
+  "actual_Git": {
+    "captured_head": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+    "Source_rows": 4228,
+    "all_rows": 4263,
+    "objects": 11,
+    "whole_tree_exact": true,
+    "worker_commit_Source_roots_exact": true,
+    "current_Root_Source_differences": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "Root_difference_qualification": "Exactly the separately accepted immutable Application Source pair770c31f6; allotherSource equal, no evidence rebase.",
+    "added_Source_paths": []
+  },
+  "finite_replay_counts": {
+    "closed_Source_paths": 4228,
+    "actual_Git_rows": 4263,
+    "actual_trees": 10,
+    "src_include_corpus": 4210,
+    "queries": 36,
+    "excerpts": 54,
+    "lexical_order_checks": 22,
+    "lexical_absence_checks": 3,
+    "observed_Main_at_capture": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+    "Source_delta_from_observed_Main": []
+  },
+  "Root_epoch": {
+    "manifest": {
+      "entry": "blobs/2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75",
+      "bytes": 1264559,
+      "sha256": "2f2e85784563abd5bef2e5dc8fa002116aa20e61bd8575b25f0888b4bd411a75"
+    },
+    "whole_project_preimages": 3356,
+    "raw_EOL_variants": [
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "LF_differences": [],
+    "artifact_declarations_not_followed": 4,
+    "inherited_build_artifact_or_runtime_credit": false
+  },
+  "prospective_interface": {
+    "name": "NativeParticleMeshRawKeyPreparation",
+    "required_method": "prepare_mesh_raw_key(void*, size_t, NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&) -> NativeMeshPreparedRecord&",
+    "method_may_throw": true,
+    "defaults_or_fakes": false,
+    "preparation_must_not_construct_or_transition": true,
+    "persistent_same_key_record_required": true,
+    "preparation_throw_requires_completed_metadata_cancellation": true
+  },
+  "prospective_entry": {
+    "name": "create_native_particle_prepared_mesh",
+    "parameters": [
+      "NativeMeshEnvironment&",
+      "NativeMeshConstants",
+      "NativeRenderActualOwnerRegistry&",
+      "NativeParticleMeshRawKeyPreparation&"
+    ],
+    "return_type": "NativeMeshStorage*",
+    "whole_entry_noexcept": false,
+    "producer": "NativeMeshPool::allocate_slot_00b73a10",
+    "null_bypass": true,
+    "raw_return_only_before_transition": true,
+    "raw_return": "same NativeMeshPool::return_slot_00b72da0",
+    "single_transition": "NativeMeshPreparedRecord::construct_and_publish noexcept",
+    "existing_private_helper_hooks_factories_and_calleevtable_unchanged": true
+  },
+  "GO": [
+    "Conditional dormant separate raw-key preparation interface and allocator orchestration through required real persistent provider",
+    "Use the actual supplied canonical pool and same accepted registry/record transition",
+    "No active caller or full-resource custody claim"
+  ],
+  "NO_GO": [
+    "Concrete persistent mesh/model custodian and preparation provider without Source closure",
+    "Active particle private-helper/factory/callee-vtable replacement",
+    "Full material/section/stream resource delegate and partial-failure custody",
+    "Reuse exclusion inferred from pool or registry locks",
+    "Disposal or record destruction during active terminal callback",
+    "Allocation authenticity, Native ABI/SEH, startup or gameplay proof"
+  ],
+  "required_dependencies": [
+    "Genuine initialized canonical pool and actual C0h allocation provenance",
+    "Stable precreated persistent same-key record/provider",
+    "Completed metadata cancellation before any preparation throw",
+    "Independent exclusion of raw-slot reuse/trim from physical return through old-entry removal across all participating paths",
+    "Retention of published records across later acquired-construction failures without extra Native release/retain",
+    "Explicit later host disposal only after callback/terminal/resolved-borrower quiescence",
+    "Same registry/profile/constants/string domains and full borrowed lifetime",
+    "Separate actual material/section/stream/model custodian and application entry contracts"
+  ],
+  "limits": {
+    "no_CXX_changes": true,
+    "no_build_tests_or_probes": true,
+    "no_Native_GPR_exports_or_ledgers": true,
+    "no_runtime": true,
+    "concrete_custodian_NO_GO": true,
+    "existing_callers_unchanged": true,
+    "historical_build_artifact_or_runtime_credit": false,
+    "finite_regex_not_compiler_call_graph": true,
+    "parameter_layout_profile_not_allocation_authenticity": true
+  },
+  "prior_archive_credit": "Nested immutable prior archives/helper receipts are pin-checked history, not reopened or credited as new build/runtime evidence.",
+  "scope": {
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "game_runs": 0
+  }
+}
