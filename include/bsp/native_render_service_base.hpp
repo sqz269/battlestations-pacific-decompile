@@ -129,3 +129,34 @@ namespace bsp {
 void* construct_native_application_00737970(
     void* actual_receiver, NativeApplicationSingletonBaseContext& context);
 } // namespace bsp
+
+namespace bsp {
+// Dormant borrowed BEA8B0 ordinary Application singleton-base retirement;
+// descriptive name. Original ECX receiver, no stack arguments, RET0, no
+// semantic EAX result. This explicit-context Source API is not Original ABI.
+// Caller keeps stable aligned actual enclosing 1Ch storage, a live uint32
+// profile object/access at +0 and valid preimages/byte domains. Borrow fixed
+// distinct actual manager/Application cells in the GameNativeStringProcess /
+// GameSingletonHost shared-manager domain, disjoint from receiver, context,
+// section and private guard. Both manager results/vectors, captured native
+// section, its current depth DWORD+18 and providers remain valid throughout
+// normal/escaped execution. No null-manager fallback, projection lock,
+// concurrent invalidation, EH-stack alias or invented object lifetime.
+// Store D68BC4 at receiver+0, then arm state0. First getter precedes unguarded
+// section capture. Arm state1 after conditional Enter/current-depth increment,
+// including null section. Second getter precedes loading current E1AE90; pass
+// that pointer (even null or different from receiver) to genuine BCFCA0, then
+// unconditionally clear the current publication with literal zero. Decrement
+// current depth and Leave the first captured section before CE3818 receiver
+// reset. M1/M2 and receiver/current publication may differ; none is cached,
+// compared, substituted, restored or compensated.
+// Reuse existing ordinary C++ cleanup: genuine 411EE0 then 412430 only if
+// guard cleanup returns. Guard stays armed through normal Leave; Leave escape
+// can decrement/Leave again. A second escaping MSVC C++ cleanup exception takes
+// the existing termination boundary. No safe cleanup, rollback, owner, free,
+// payload cleanup, quiescence, storage return, callable table or activation.
+// Candidate classic-x86 map/actions are conditional evidence only; Original
+// FH3/frame/invocation, hardware/foreign faults and external ABI are excluded.
+void retire_native_application_singleton_base_00bea8b0(
+    void* actual_receiver, NativeApplicationSingletonBaseContext& context);
+} // namespace bsp
