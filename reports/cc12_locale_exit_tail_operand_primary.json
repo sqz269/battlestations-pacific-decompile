@@ -1,0 +1,186 @@
+{
+  "schema": "bsp.cc12.locale-exit-tail-operand.Root.v1",
+  "status": "exact_seven_byte_tail_operand_accepted",
+  "worker_commit": "d96689894f804250fe8eedf06cf138e655579353",
+  "proof_pins": [
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/evidence.zip",
+      "bytes": 430704582,
+      "sha256": "196fd8b155c10dd92c02509cd3963f30f01dcddfe1ec8d6e32473a30215521f1"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/delivery_git.zip",
+      "bytes": 702996,
+      "sha256": "ad92f30d724051b11052163b204cce02acb75de473c1f64c8595f409f73a9416"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/manifest.json",
+      "bytes": 1572183,
+      "sha256": "07ffe3fbf693b61d955c88e7b41b5ebd33349b75a06f165773c32f2cfccc5b89"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/next_worker_handoff.json",
+      "bytes": 44636,
+      "sha256": "877f89b8c896c2f5aeee495c0a6728a639049d1bea3b1bc110f1a90427cc0411"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/Root_copy.json",
+      "bytes": 17149,
+      "sha256": "1960ca5d6d076cb2fcbda922ecbc1f13e4eceb25ec8e6e328d61d64a2a0c26e4"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/Root_core_guard.json",
+      "bytes": 59131,
+      "sha256": "30be1cdfda8697a68883801127550eb88aa435100142013a4a9fe88379de5a58"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/Root_delivery_guard.json",
+      "bytes": 7723,
+      "sha256": "ebd8d4444b7769c512f30c53ab0e062704c342d8fc94393c0b8dc84d4e72c5c6"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/Root_actual_review.json",
+      "bytes": 1222262,
+      "sha256": "42c10bf6efbaaa71b7d4238ddf98d3b4abe0eda362234e5f0681161e5941c17f"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/Root_instruction_decode.json",
+      "bytes": 1512,
+      "sha256": "9b820b0e4bd6b7405c6b74748c6cfe15bd62316a380766a6bd16988540da0ba5"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/copy_proof.py",
+      "bytes": 2258,
+      "sha256": "526033dc222d89210e1c46a982a2c3e586051953a8b4bfdb350dbebdb65fe14a"
+    },
+    {
+      "path": "local/cc12_locale_exit_tail_operand_primary/actual_review.py",
+      "bytes": 7013,
+      "sha256": "d18d4a9754f09a25266b9deee7f01c66252701a3d4606189212d37592bafc1fc"
+    }
+  ],
+  "Native": {
+    "Native_closed": true,
+    "Native_reopened_after_closure": false,
+    "automatic_successor_admission": false,
+    "code_pair_equal": true,
+    "count_pair_equal": true,
+    "epoch": 98,
+    "fresh_capture_strict_site_only": true,
+    "fresh_code_bytes": 7,
+    "fresh_data_bytes": 0,
+    "function_count": 64730,
+    "gate": "PASS",
+    "identity_bookends_equal": true,
+    "inherited_target_objects_entirely_quarantined": true,
+    "instruction_text_queries": 10,
+    "mutations": 0,
+    "neighbor_target_caller_body_proto_data_pointer_stack_queries": 0,
+    "process_status_queries": 0,
+    "queried_addresses": [
+      "BF7000",
+      "BF7001",
+      "BF7002",
+      "BF7003",
+      "BF7004",
+      "BF7005",
+      "BF7006"
+    ],
+    "target_objects_in_qualified_subset": false,
+    "text_context": 0,
+    "text_equal_pairs": 5,
+    "typed_raw_equal_pairs": 7,
+    "whole_capture_strict_site_only": false
+  },
+  "actual_typed_captures": 14,
+  "equal_raw_pairs": 7,
+  "instruction_local_decode": {
+    "status": "PASS",
+    "Native_epoch": 98,
+    "Native_count": 64730,
+    "exact_hex": "1bc0f7d85948c3",
+    "instructions": [
+      {
+        "address": "00BF7000",
+        "bytes": "1bc0",
+        "length": 2,
+        "mnemonic": "sbb",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00BF7002",
+        "bytes": "f7d8",
+        "length": 2,
+        "mnemonic": "neg",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF7004",
+        "bytes": "59",
+        "length": 1,
+        "mnemonic": "pop",
+        "operands": "ecx"
+      },
+      {
+        "address": "00BF7005",
+        "bytes": "48",
+        "length": 1,
+        "mnemonic": "dec",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF7006",
+        "bytes": "c3",
+        "length": 1,
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "conditional_incoming_CF": "unknown bit C",
+    "conditional_incoming_ESP": "unknown S",
+    "conditional_EAX": "C minus1 modulo2^32",
+    "conditional_ECX": "unqueried DWORD[S]",
+    "conditional_near_RET_IP": "unqueried DWORD[S+4]",
+    "conditional_final_ESP": "S+8 modulo2^32 if both stack reads/transfer complete",
+    "conditional_flags": {
+      "CF": "C",
+      "OF": 0,
+      "AF": "1 minus C",
+      "SF": "1 minus C",
+      "ZF": "C",
+      "PF": 1
+    },
+    "preceding_NEG_conditional": "Only if preceding NEG EAX with unknownR completes, C=(R!=0) and resultEAX is0 forRnonzero elseFFFFFFFF",
+    "actual_reach_stack_words_return_status_callback_owner_ABI_runtime_unknown": true
+  },
+  "actual_membership": {
+    "frozen_blobs": 4310,
+    "frozen_objects": 11,
+    "delivery_objects": 8,
+    "outputs": 2,
+    "Source4217_current_Git_equal": true
+  },
+  "physically_retained_helpers": 36,
+  "inherited_34_helper_bodies_physically_equal": true,
+  "guards": {
+    "core": "PASS",
+    "delivery": "PASS",
+    "single_archive_read_only": true
+  },
+  "whole_inherited_capture_strict_site_only": false,
+  "inherited_target_function_objects_wholly_opaque": true,
+  "Source_content_or_build_rebase": false,
+  "ABI_runtime_status_owner_credit": false,
+  "next_candidate": {
+    "address": "00BF6FB9",
+    "selection": "direct preceding CALL operand",
+    "initial_scope": "Separate typed entry/listing/function/body-range/flow metadata and exact saved entry prototype only",
+    "excluded": "No callee body/opcodes/decompile, inferred onexit ownership/status, caller or target expansion"
+  },
+  "unknowns": [
+    "Actual incoming CF and ESP, actual reach and unqueried stack words",
+    "Actual return/status/callback/CRT owner and ABI",
+    "Application owner/lifetimes/failure/retirement/quiescence and startup/gameplay"
+  ],
+  "overall_goal_complete": false
+}
