@@ -1,0 +1,217 @@
+{
+  "schema": "bsp.cc12.locale-post-pop-metadata-primary.v1",
+  "status": "exact_unowned_one_byte_TERMINATOR_metadata_accepted_opcode_unread",
+  "worker_commit": "44b9cce88fe9575b780815abbe6afba026894182",
+  "worker_report": {
+    "path": "local/cc12_locale_post_pop_metadata_primary/worker_report.json",
+    "bytes": 39851,
+    "sha256": "a9f692c52adcf51361643480ded1620ffd34697fc0e3cb99a689e3035309764c"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_post_pop_metadata_primary/worker_document.md",
+    "bytes": 6877,
+    "sha256": "8e50c56c3f7ca31be80c273b87bdc847b660fab408a9f04d4eecb6d1cb2ff06f"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_post_pop_metadata_primary/worker_evidence.zip",
+    "bytes": 211241548,
+    "sha256": "dc4d6f1ebc173ead41e3bf63f1e7543de137681c952a926e6a240d4f9cfeb2a6"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_post_pop_metadata_primary/Root_guarded_worker_replay.json",
+    "bytes": 22337,
+    "sha256": "532abe0801597ce92ebf454f6ca26d7666fff0465fdebff08de711a825e20853"
+  },
+  "actual_Git_blob_occurrences": 4278,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "current_Root_Source_closed": true,
+  "Root_Source_comparison": {
+    "HEAD": "1a3a6d2e5c19f3634e3bfee23d363ac985bc4cd5",
+    "differences": [
+      "include/bsp/native_mesh_owner.hpp",
+      "src/native_mesh_owner.cpp"
+    ],
+    "all_other_paths_equal": true,
+    "qualification": "Exactly the independently reviewed immutable mesh Source pair aaa1e25d4; Source evidence is frozen at worker HEAD, no silent rebase."
+  },
+  "fresh_Native_metadata": {
+    "adjacent_address_queries": 0,
+    "all_Native_captures_closed_before_packaging": true,
+    "capture_atomicity": "Finite read-only samples and explicit equal pairs; no atomic database transaction, continuous stability or executed trace is claimed.",
+    "capture_order": [
+      "typed_before",
+      "count_before",
+      "count_after",
+      "typed_after"
+    ],
+    "comparison": {
+      "bytes": 412,
+      "path": "local/cc12_locale_post_pop_metadata/Native_comparison.json",
+      "sha256": "e1ba29cc0ad177a78d8f29247e95ed7935a56289923fc77a77b0717f52d2312e"
+    },
+    "decompilation_reads": 0,
+    "direct_call_target_records": [],
+    "evidence_files": [
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_post_pop_metadata/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7559,
+        "path": "local/cc12_locale_post_pop_metadata/Native_before/exact_site_gate.json",
+        "sha256": "82a9fddd5d2abbb34177b9e5ab957e52340538a66e017721a9558751e4fa6c4d"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_post_pop_metadata/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7559,
+        "path": "local/cc12_locale_post_pop_metadata/Native_after/exact_site_gate.json",
+        "sha256": "6fcf259ebe2fbbd97c8d4e7d88a25ba2b6c4b110c202d63a6354199c153c6107"
+      }
+    ],
+    "exact_and_containing_unit_records": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00cc8d45",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00cc8d45",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00cc8d45",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00cc8d45",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      }
+    },
+    "exact_count_pairs_equal": 1,
+    "exact_typed_raw_response_pairs_equal": 1,
+    "extra_target_queries": 0,
+    "fresh_unique_code_bytes": 0,
+    "fresh_unique_data_bytes": 0,
+    "function_at_query": null,
+    "function_containing_query": null,
+    "function_count_before_after": 64730,
+    "functions": [],
+    "identity_equal_before_after": true,
+    "image_base": "00400000",
+    "instruction_context_reads": 0,
+    "instruction_flow": {
+      "default_fallthrough": null,
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": true,
+        "name": "TERMINATOR"
+      },
+      "default_targets": [],
+      "effective_fallthrough": null,
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": true,
+        "name": "TERMINATOR"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "instruction_text_reads": 0,
+    "language": "x86:LE:32:default",
+    "later_unit_queries": 0,
+    "lease_widened": false,
+    "measured_unit": {
+      "end_exclusive": "00CC8D46",
+      "end_inclusive": "00CC8D45",
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "length": 1,
+      "start": "00CC8D45"
+    },
+    "modification_number_before_after": 98,
+    "no_return_metadata": "Unavailable/not applicable: no exact/containing function or direct target record exists. No false no-return value is inferred.",
+    "only_queried_address": "00CC8D45",
+    "preceding_unit_refreshes": 0,
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr"
+  },
+  "inherited_conditional_contract": {
+    "CD9410_hypotheses": "ECX=CD9410 after the prior POP requires BOTH the explicit returnedESP=S-4 hypothesis AND that the DWORD at SS:(S-4) still equals CD9410. A plain return or zero-argument-cleanup hypothesis alone does not establish unchanged stack contents.",
+    "EAX_boundary": "The earlier EAX=E1768C credit ends at BF6FF5 entry, never after that callee.",
+    "post_callee_state": "Post-BF6FF5 ESP/GPRs/flags and stackword contents remain unknown. The preserved incoming EAX cannot be identified from the earlier initializer receiver-return contract.",
+    "prior_POP": "Previously accepted CC8D44 byte59/POP ECX, under normal successful decoded32-bit execution with a normal32-bit stack: entryESP=U, ECX=DWORD[SS:U], ESP=U+4 modulo2^32, nextEIP=CC8D45; other GPRs/EFLAGS preserved from POP entry. No stack data were read by the analysis.",
+    "return_site_name": "The prior CALL encoded CC8D44 as its next/return address; that name never established actual target-return behavior."
+  },
+  "prior_operand_archives_byte_identical_to_Root_copies": true,
+  "next_scope_proposal": {
+    "reason": "The measured one-byte TERMINATOR remains opcode-unread. Metadata alone cannot justify advancing to another site or assigning instruction effects.",
+    "requires_separate_Root_admission": true,
+    "scope": "At most exact one-byte and exact context0 text admission at CC8D45, only after a fresh identity and typed owner/unit/flow gate preserving all measured facts. Stop changed/unknown/overlap. No adjacent, target, containing-body or data expansion."
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "One-byte unowned TERMINATOR metadata supplies no opcode or architectural effects, RET or runtime termination proof.",
+    "Function no-return is unavailable, not false. CC8D46 is arithmetic only and unread.",
+    "Prior POP and CALL snapshots are conditional; all post-BF6FF5 state remains unknown; no actual return/cleanup/registration/completion proof.",
+    "Root Source has the separately verified mesh pair delta; worker Source proof remains qualified at its frozen epoch."
+  ],
+  "Root_committed_output_delivery": {
+    "copied_archive": {
+      "path": "local/cc12_locale_post_pop_metadata_primary/delivery_git.zip",
+      "bytes": 291885,
+      "sha256": "e62b4f70c4071edfe0af4661485a57cb1663d9a178a99cfbc10a27c79a535cd4"
+    },
+    "guarded_replay": {
+      "path": "local/cc12_locale_post_pop_metadata_primary/Root_guarded_delivery_replay.json",
+      "bytes": 2771,
+      "sha256": "e635a5009852c8e92c49a17b96035c781d20bb9f4becc500d678ceb451f523a0"
+    },
+    "actual_Git_commit_tree_objects": 4,
+    "actual_output_blobs": 2,
+    "outputs_byte_identical_to_reviewed_worker_files": true
+  }
+}
