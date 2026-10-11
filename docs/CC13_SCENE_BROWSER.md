@@ -82,3 +82,147 @@ Callers `0055C200`, `0055C5A0`, `0055D380` (the control binding screens).
   not observed.
 - `include/bsp/input_settings.hpp`: `InputNameRecord::primary`/`secondary` were renamed to
   `device_type`/`key`, on the `0069E9E0` evidence settings1 recorded (`0069EDBB..0069EDCC`).
+
+## Segment 6: survey
+
+`python tools/bsp.py segment 6` reports 428 candidates; the index lists 551 functions in
+`00465610..0047C680`, 379 of them still `FUN_` before this packet. Most of those are `std::_Tree`
+and `std::vector` instantiations (`STL_xlen_throw_*` callers, node allocators, `_Lbound`,
+`_Insert`, erase-range walkers), skipped under the usual rules. The scene-file side
+(`BSP_SceneFile_*`, `BSP_SceneDatabase_*`, the `SceneBrowserGroups` block) is already covered by
+`docs/SCENE_FILE_READER.md`, `docs/SCENE_BROWSER_GROUPS.md` and `docs/SCENE_ENTITY_FACTORY.md`.
+The new work is the upper half of the segment, `00470700..0047B4E0`: five Lua-described visual
+classes, each with its own registry singleton, lazy loader, reader, entity factory and entity
+vtable. Names below were added to the ledger and applied to Ghidra.
+
+## Segment 6: the visual class registries
+
+Host: `include/bsp/scene_class_registry.hpp`, `src/scene_class_registry.cpp`. Status of the
+loaders, the two readers and the two reset routines: reconstructed, build-tested, not
+ABI-compatible. Everything else in this section is exported and named only.
+
+### Common shape
+
+All five classes derive from the named class base (`00489E60` constructor, base vtable
+`00CE660C`, `00489E80` destructor; `docs/NATIVE_SOLDIER_CLASS_RESOLUTION_ORCH4.md`): name
+NativeString at +4h, mesh resource +10h, FakeFireEfx handle +14h, fire point +18h..+24h, read by
+`NamedClassBase_ReadLua_0048F670`. Class vtable: +0 scalar deleting destructor, +4 read from a
+Lua row, +8 create an entity of the class, and for the three name-keyed classes +0Ch, a constant
+`MOV AL,1; RET` the loader calls on every lookup and ignores (the SoldierClass loader `004B1400`
+does the same).
+
+Each registry is a 10h-byte object (vtable, then a `std::map`) published in a global by a
+double-checked singleton getter under the `BSP_SingletonLifetime_GetManager` critical section and
+registered with `BSP_SingletonLifetime_Register`. The destructor body erases the map nodes and
+frees the sentinel; it does not delete the mapped classes.
+
+| Table | Class bytes / vtable | Key | Getter / global | Construct | Destruct body | Index | Loader | Read | Create entity | Entity id / bytes / vtable |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `AnimClass` | 2Ch / `00CE5B44` | name | `00472200` / `00E18688` | `00472100` | `00472170` | `00471F60` | `004722D0` | `00470820` | `00470C90` | 3Eh / 194h / `00CE5A20` |
+| `Bullets` | 2Ch / `00CE5CB4` | bullet class | `00473AF0` / `00E18690` | `004739F0` | `00473A60` | `004738C0` | `00473BC0` | `0048F670` | `004728F0` | 39h / 18Ch / `00CE5B90` |
+| `BuoyClass` | 28h / `00CE5E14` | name | `00475640` / `00E18698` | `00475540` | `004755B0` | `004753A0` | `00475710` | `0048F670` | `00474160` | 3Ch / 18Ch / `00CE5CF0` |
+| `CloudClass` | 38h / `00CE5FB4` | name | `004798A0` / `00E186A0` | `004797A0` | `00479810` | `00479600` | `00479970` | `004774A0` | `00476360` | 3Dh / 1ACh / `00CE5E68` |
+| `VehicleClass` | 2Ch / `00CE6254` | vehicle class | `0047B2F0` / `00E186DC` | `0047B1F0` | `0047B260` | `0047B0C0` | `0047B3C0` | `0048F670` | `00479FE0` | 38h / 190h / `00CE6130` |
+
+Class ids 3Dh (Cloud) is the scene-file class of `docs/SCENE_ENTITY_FACTORY.md`; 38h, 39h, 3Ch
+and 3Eh are not registered from scene files. Their `IsKindOf` slots (`vtable+5Ch`) were already
+named; all five chain to 37h (`00470BE0`), so 37h is the shared visual-entity base.
+
+### Name-keyed loaders `004722D0`, `00475710`, `00479970`
+
+`__fastcall`, `ECX` = name NativeString, `RET`, `EAX` = class. Registry `operator[]` by name
+(case-insensitive, `BSP_NativeString_LessCaseInsensitive` in the tree walk). On a null cell: Lua
+globals (`00B67980`), the class table (`00B67800` with `"AnimClass"`, `"BuoyClass"`,
+`"CloudClass"`), its row by the name (`00B67800` with the C string for AnimClass and BuoyClass,
+`00B68100` with the NativeString for CloudClass), `operator new`, the class constructor, a copy of
+the name, `vtable+4(row)` (`00479A5F` for CloudClass), then the registry is fetched again and the
+cell stored. `vtable+0Ch` follows on hit and miss.
+
+Native creates the null cell before the Lua read, so a read that throws leaves a null entry that
+the next call retries; the host inserts only after the read and treats a null cell as a miss,
+which is the same observable retry.
+
+Callers: AnimClass `00498D60`; BuoyClass `004A41C0`, `004A5850`; CloudClass
+`BSP_SceneCloud_RegisterClass` (`004E9920`) and `BSP_SceneCloud_Instantiate` (`004E9E40`), which
+`docs/ENTITY_IDENTITY.md` already traced into `00479970`.
+
+### Source-keyed loaders `00473BC0`, `0047B3C0`
+
+`__fastcall`, `ECX` = source class object, `RET`, `EAX` = class. The registry key is the
+pointer (unsigned compare in `004738C0`/`0047B0C0`). On a miss: `operator new(2Ch)`, the copy
+constructor (`00472FF0` Bullets: name from the source's string data at +14h; `0047A800` Vehicle:
+from +54h; both store the source at +28h), the cell is stored (`00473C38`, `0047B438`) **before**
+the Lua read, then `Bullets[[source+0Ch]]` / `VehicleClass[[source+70h]]` through `00B677E0`
+(`00473C7D`, `0047B47D`) and `vtable+4` = `0048F670`. No `vtable+0Ch` call. The host keeps the
+publish-then-read order.
+
+`00473BC0` has one static caller, `006E5C39`, which Ghidra does not place inside a function
+(segment 33, `docs` for `006EA910 BSP_BulletClass_GetOrCreate` describe the bullet class it
+starts from); the caller then calls the visual class's `vtable+8` and keeps the entity.
+`0047B3C0` callers: `00487470`, `004A0410`, `004A3610`, `004A4B70` and
+`BSP_LandingShipClass_ReadLuaFields` (`0074C9F4`; `docs/VEHICLE_CLASS_LUA_LOAD.md` left this call
+undecoded).
+
+### Readers
+
+`00470820` AnimClass: `NamedClassBase_ReadLua_0048F670(row)`, then `Radius` through
+`00B66270` (GetNumber, no default) stored by `FSTP` to +28h.
+
+`004774A0` CloudClass (does not call the base reader):
+
+| Step | Sites | Effect |
+| --- | --- | --- |
+| `CloudType` | `004774C0..004774EB` | `00B66380` default 0, stored to +34h |
+| zero: `Texture` | `00477501..00477556` | `00B662B0` string to +2Ch (empty for null) |
+| zero: `ParticleMultiplier` | `0047756E..00477594` | `00B66330` with `FLD1` default, kept on the stack |
+| zero: clear | `004775B1` | +10h = 0 |
+| zero: `Mesh` | `004775A5..004775FE` | `[[00E188A8]+19E8h]` then `00BBDDF0` (`MOV EAX,[ECX+3Ch]`), `00BBD6C0(mesh, &texture, multiplier)` to +28h |
+| non-zero: `Mesh` | `0047764A..004776AA` | `BSP_Resource_LoadWithGameFactory` (`007188A0`) to +10h |
+
+So a particle cloud (type 0) carries a particle system built from the mesh, texture and
+multiplier, and a mesh cloud keeps only the resource.
+
+### Entities
+
+`CreateEntity` (class `vtable+8`, `__thiscall` on the class, `RET`, `EAX` = entity): `operator
+new` and `memset 0`, base constructor `00489F30`, the three vtable pointers (+0, +10h, +24h), class
+id at +C4h, `BSP_ClassEntity_SetClass` (`0047B9E0`, +170h = class), and
+`BSP_SEntity_PushPending`. The cloud entity also stores the class at +188h and clears +1A4h and
+the byte +1A8h.
+
+Overrides the five entity vtables share (the 37h base): +34h `00470BA0` writes the constant vector
+at `00F87574` (zero velocity), +60h `00470BD0` returns 0, +B0h `004707D0` returns +178h, +114h
+`0047B9D0` stores +174h. Per class `+A0h` (the SEntityInit slot, see `docs/SUBMARINE_MODEL.md`):
+Bullets and Buoy tail-jump to the base `0048DBD0`; Anim `00471080` calls the base, then
+`00B6DC90` on +178h and stores a `BSP_Random_UniformFloatRange` result to +18Ch, which its +D8h
+`004710D0` reads; Vehicle `00479BD0` calls the base and stores to +18Ch; Cloud is
+`BSP_CloudEntity_ApplySceneProperties` below. Vehicle +ECh `0047A660` reads
+`BSP_HitRecord_HullDamage`/`BSP_HitRecord_WorstPart` (`00470510`, `004706D0`). These slot readings
+are survey-level.
+
+`00477710` `BSP_CloudEntity_ApplySceneProperties` (547 pseudocode lines, survey only): after the
+base `0048DBD0`, when the class's CloudType or entity +1A4h is non-zero, the property bag at +C0h
+has kind 1, and byte +1A8h is clear:
+
+- CloudType 0: `InsideColor`, `Ambient`, `Diffuse`, `Specular` (each a property with `R`, `G`,
+  `B` sub-properties at `00CE60EC/E8/E4`, integer or float) feed the particle-system setters
+  `00BBE540`, `00BBE4B0`, `00BBE4E0`, `00BBE510` with the constant at `00D7A24C`; `Density`
+  `00BBE570`, `BlurRadius` `00BBE590`, `Scale` `00BBE470`, `Alpha` `00BBE490`, `AffectedByWind`
+  `00BBE5C0`, then `BSP_SceneNode_SetVisibilityFactor` and `00BBD470`.
+- otherwise: `xBaseCol`, `xSkyCol`, `xSunCol` (R, G, B, and `A` at `00CE608C` for the base
+  colour), `xScale`, `xRimPower`, `xBackPower` become material parameters `cBaseColor`,
+  `cSkyColor`, `cSunColor`, `cRim_Back`, `cDiffuseColor_BaranyScale` through
+  `BSP_Material_RegisterFloat4ArrayParameter` on the generated model's geometry.
+
+`004772C0` and `004773A0` are byte-identical `ECX` = property bag, C-string name, `RET 4`
+helpers returning `BSP_ScenePropertyBag_Find(name)`; both are also called by
+`BSP_Landscape_InitAttachTerrain`.
+
+### Lua table resets
+
+`00474200` and `00476410` run `"BuoyClass=nil\n"` / `"CloudClass=nil\n"` through `006B8AD0(chunk,
+0, 0, 2)`. Both are called from `0045F600` (`0045F6DF`, `0045F6E4`) and from
+`BSP_Game_LoadMissionScene` (`004E0AB9`, `004E0ABE`) in a run of other class-table resets
+(`006E9C50`, `004B1890`, `004AF930`, `004A7120`, `006D74B0`). The registries themselves are not
+cleared there, so a class read in one mission stays cached across a reset of its Lua table; whether
+another path clears them was not traced.
