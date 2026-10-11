@@ -129,6 +129,26 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
          std::memcmp(found->second.raw.data(), raw.data(), raw.size() * sizeof(OceanVec3)) == 0)) {
         return found->second;
     }
+    if (found != hulls_.end()) {
+        // DIAGNOSTIC, env-gated (BSP_HULL_REBUILD_TRACE=<file>): a key already built is rebuilt
+        // from different points, which frees the dyn hull its convex record (+210h) points to.
+        static std::FILE* rebuild_trace = [] {
+            char* path = nullptr;
+            std::size_t length = 0;
+            std::FILE* f = nullptr;
+            if (_dupenv_s(&path, &length, "BSP_HULL_REBUILD_TRACE") == 0 && path) {
+                fopen_s(&f, path, "w");
+                std::free(path);
+            }
+            return f;
+        }();
+        if (rebuild_trace) {
+            std::fprintf(rebuild_trace, "step=%llu unit=%zu shape=%zu old_points=%zu new_points=%zu "
+                "convex_ready=%d\n", census_.steps, unit, shape, found->second.raw.size(), raw.size(),
+                found->second.convex_ready ? 1 : 0);
+            std::fflush(rebuild_trace);
+        }
+    }
     HullShape& h = hulls_[{unit, shape}];
     h.raw = raw;
     h.vertices.clear();
