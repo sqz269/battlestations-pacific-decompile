@@ -16935,6 +16935,68 @@
             "The fresh F7 Prepare fixture has not started; no deadline or runtime result is predicted.",
             "The original F6 Native01 partial timed hold and all failed Source/data producer records are preserved."
           ]
+        },
+        "fresh_F7_review_consumer_Source02_accepted_checkpoint": {
+          "status": "F7_REVIEW_ONLY_CONSUMER_SOURCE02_ACCEPTED_AND_COPIED",
+          "scope": "SOURCE_ONLY",
+          "author": "Root",
+          "Source_credit": 0,
+          "Root_Source_acceptance_issued": true,
+          "Root_joint_DATA_acceptance_issued": false,
+          "new_native_clock_started": false,
+          "Root_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_review_consumer_Source02_complete_Source_acceptance_DATA01.json",
+            "bytes": 5714,
+            "sha256": "d09f1c95c581c11c87165ed62f3ad2089208f5dc64c710743023c6e4d7dbbd05"
+          },
+          "Root_current_complete_Source_review": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_review_consumer_Source02_complete_Source_review_DATA01.json",
+            "bytes": 902040,
+            "sha256": "76cad71a73feb133a8074dd3e899c712383de750dce0bf1dbcfca9c0a6416cda"
+          },
+          "selected_byte_identical_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\selected_F7_review_candidate_selection_consumer_SOURCE02.py",
+            "bytes": 65445,
+            "sha256": "1cb7535af0f30e9f1c766fdcd18c58ea418d13f9cbc836aef33c376305572fe0"
+          },
+          "Root_original_Source_acceptance_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_review_consumer_Source02_Source_acceptance_original_genuine_native_DATA01.json",
+            "bytes": 4475,
+            "sha256": "20ae15b2fb0f8bd692cce028375fa541b70f3390383851f4fe4e6dbbe9bc2263",
+            "readonly": true,
+            "nlink": 1
+          },
+          "Root_checks": 3769,
+          "Root_whole_current_input_pins": 49,
+          "independent_Source01_review": {
+            "checks": 2454,
+            "pins": 31,
+            "closure_checks": 4095,
+            "closure_pins": 35,
+            "full_fragmented_output_plan_compatibility": false
+          },
+          "independent_Source02_review": {
+            "checks": 8280,
+            "pins": 20,
+            "closure_checks": 9267,
+            "closure_pins": 23,
+            "whole_forward_and_inverse_span_verified": true,
+            "other_complete_definitions_and_native_predicates_preserved": true
+          },
+          "only_behavior_change": "Concatenate original same-session output chunks before parsing exactly one complete call2 witness marker.",
+          "original_capture_result_objects_rewritten": false,
+          "consumer_scope": "Review phase candidate selection only",
+          "selected_consumer_executed": false,
+          "complete_adopted_graph_and_17_runtime_raw_members_review_required_separately": true,
+          "clock_started": false,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "actual_execution_event": null,
+          "actual_T0": null,
+          "actual_F": null
         }
       }
     }
