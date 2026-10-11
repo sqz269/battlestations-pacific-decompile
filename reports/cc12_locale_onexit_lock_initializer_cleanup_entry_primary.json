@@ -1,0 +1,147 @@
+{
+  "packet": "cc12_locale_onexit_lock_initializer_cleanup_entry_primary",
+  "status": "Root accepted exact Native entry only",
+  "worker_commit": "9e4cd800dd28e6922bcab51871a01f215fa69041",
+  "pins": {
+    "Root_entry_gate.py": {
+      "bytes": 3783,
+      "sha256": "2463aee5d947dca49f7957b683c70cfde1af7b5acc095112cbe2701ae0bec3e2"
+    },
+    "Root_entry_gate.json": {
+      "bytes": 816,
+      "sha256": "d8e2086af9a22093815baf58e3bcee8c391aafaf20541b9a50a39f32608f87e7"
+    },
+    "Root_core_review.py": {
+      "bytes": 3420,
+      "sha256": "567f155345cbb81f6045b821ad758e18b950994d8dcf7fc5c840adbc11118f91"
+    },
+    "Root_core_actual_review.json": {
+      "bytes": 832,
+      "sha256": "10b3063885f6d28e88266f59f2ca982fa8920b3e0bf4f78fcc6036d38824efc8"
+    },
+    "Root_core_strict_replay.py": {
+      "bytes": 2235,
+      "sha256": "efe4afaa195fe2ab4ea3ced9d3e718ce17625e33c2c716f5de954516c16532ae"
+    },
+    "Root_guard_receipt.json": {
+      "bytes": 6055,
+      "sha256": "c44e21da196c6a1300c67a312da56bf78b7cbdb5f06274d13d1ee378bc46eec2"
+    },
+    "Root_delivery_review.py": {
+      "bytes": 3221,
+      "sha256": "e92301243109ac1feeacaf45e8c6827e7e8a2b0706fe19ffa0112faed2618bfb"
+    },
+    "Root_delivery_actual_review.json": {
+      "bytes": 1522,
+      "sha256": "f3d022807df1f3d91c8341d95a043e2012db5726825dba5d81c08c847caa9d94"
+    },
+    "Root_delivery_strict_replay.py": {
+      "bytes": 2248,
+      "sha256": "8795e6d61a336f739d59638afe2794f3d16fa4aaca1410daffd1074fd8551b8f"
+    },
+    "Root_delivery_guard_receipt.json": {
+      "bytes": 1118,
+      "sha256": "334904506ac72ced61083fdea7e99e51755a42a78daf866affac5f75c97c1fb5"
+    },
+    "replay.py": {
+      "bytes": 14111,
+      "sha256": "6512ccefc353b1947d9223b272b6968f66aa0378374cf64cff1a163c129fc6cf"
+    },
+    "guarded_replay.py": {
+      "bytes": 3097,
+      "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+    }
+  },
+  "private_directory": "local\\cc12_locale_onexit_lock_initializer_cleanup_entry_primary",
+  "core_review": {
+    "status": "PASS",
+    "archive_sha256": "0accc63b0233556802e9bf33cd4a9c4947176e74a90f3f5337643627d7ee1ba4",
+    "manifest_members": 78,
+    "actual_frozen_Git_objects": 6,
+    "finite_inputs": 8,
+    "helper_pins": {
+      "replay.py": {
+        "bytes": 14111,
+        "sha256": "6512ccefc353b1947d9223b272b6968f66aa0378374cf64cff1a163c129fc6cf"
+      },
+      "guarded_replay.py": {
+        "bytes": 3097,
+        "sha256": "a647769ec0b6ead2bb4e313d1219ee8fb19137eee99bb9ac1acfc8d118d1b62e"
+      }
+    },
+    "paired_2B_equal": true,
+    "entry_hex": "6a0a",
+    "Root_manual_signed_imm8": 10,
+    "Root_actual_Capstone_version": "5.0.7",
+    "whole_entry_instructions": 1,
+    "worker_copies_equal_and_distinct": true,
+    "Root_gate_compared_before_copy": true,
+    "remaining_7B_body_read": false,
+    "Source_census": false,
+    "current_Root_Source_equality": false
+  },
+  "delivery_review": {
+    "status": "PASS",
+    "archive_sha256": "ce66df2e2e80a20dd9a49ff828acfd934579677521032d760118b22d76da889e",
+    "manifest_members": 67,
+    "object_records": 12,
+    "distinct_actual_Git_objects": 10,
+    "finite_inputs": 8,
+    "outputs": [
+      {
+        "path": "docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "oid": "acabf543f0c3fec7c60fa0c35cef2d1782bab750",
+        "blob_member": "blobs/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "physical_member": "physical/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md",
+        "bytes": 3743,
+        "sha256": "258e6e464cfc9fc34aa2cdc5106ff7d6890c77879f3ea0e685c15e1d3232fce7",
+        "staged_member": "staged/docs/CC12_LOCALE_ONEXIT_LOCK_INITIALIZER_CLEANUP_ENTRY.md"
+      },
+      {
+        "path": "reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "oid": "824da7acdbdf3595d4546218d1b1fb9dd2c47855",
+        "blob_member": "blobs/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "physical_member": "physical/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json",
+        "bytes": 22239,
+        "sha256": "fb894a7111e831760ca9313169cfcbe05335805b24f25392b33957e06639890c",
+        "staged_member": "staged/reports/cc12_locale_onexit_lock_initializer_cleanup_entry.json"
+      }
+    ],
+    "two_reviewed_helpers_unchanged": true,
+    "worker_copies_equal_and_distinct": true,
+    "Source_census": false,
+    "current_Root_Source_equality": false,
+    "worker_commit": "9e4cd800dd28e6922bcab51871a01f215fa69041"
+  },
+  "guards": {
+    "Root_guard_receipt.json": {
+      "ZIP_reads": 1,
+      "receipt_writes": 1,
+      "helper_execs": 1,
+      "denials": []
+    },
+    "Root_delivery_guard_receipt.json": {
+      "ZIP_reads": 1,
+      "receipt_writes": 1,
+      "helper_execs": 1,
+      "denials": []
+    }
+  },
+  "entry": {
+    "address": "00C11C18",
+    "hex": "6a0a",
+    "physical_instruction": "PUSH 0000000A; current SS:[ESP-4] write, flags unchanged",
+    "metadata_owner_bytes": 9,
+    "remaining_7B_read": false,
+    "prototype_suffix_opaque": true,
+    "semantic_unlock_or_argument_role": false
+  },
+  "credit": {
+    "bounded_Native_entry": true,
+    "complete_body": false,
+    "Original_ABI": false,
+    "Source": false,
+    "build_fixture_runtime_gameplay": false,
+    "current_Root_Source_equality_or_census": false
+  }
+}
