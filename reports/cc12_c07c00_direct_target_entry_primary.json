@@ -1,0 +1,2064 @@
+{
+  "schema": 1,
+  "packet": "cc12_c07c00_direct_target_entry_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "75ec4aed5b6824b733d28649fa35cf6cddd0e91f",
+  "frozen_worker_parent": "9df6eff819361e972cfffa33c333d321bcd48770",
+  "worker_outputs": {
+    "docs/CC12_C07C00_DIRECT_TARGET_ENTRY.md": {
+      "length": 7664,
+      "sha256": "15deb9e9d26a316369587e5b0714719620264df6788c855f2274bf8d86fc433b"
+    },
+    "reports/cc12_c07c00_direct_target_entry.json": {
+      "length": 87264,
+      "sha256": "b7b756c5bf0c68f47e742af01d84ed97b3aee274b954405104dee0e46d103e58"
+    }
+  },
+  "physical": {
+    "range": {
+      "start": "00C07C00",
+      "end_inclusive": "00C07C04",
+      "size": 5,
+      "hex": "68907cc000",
+      "bytes": 5,
+      "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+    },
+    "paired_bytes_equal": true,
+    "paired_context_zero_text": {
+      "00c07c00": {
+        "address": "00c07c00",
+        "instruction": "PUSH 0xc07c90",
+        "context_before": [],
+        "context_after": [],
+        "mnemonic": "PUSH",
+        "patterns_detected": [
+          "stack_operation"
+        ]
+      }
+    },
+    "paired_text_pin": {
+      "bytes": 162,
+      "sha256": "87ad8611ac7478e60daac5dcf38c0a7c395cf5b00f6d33109dd4ed255413bb11"
+    },
+    "complete_manual_before_actual_Capstone": {
+      "address": "00C07C00",
+      "length": 5,
+      "hex": "68907cc000",
+      "input_pin": {
+        "bytes": 5,
+        "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+      },
+      "mode": "x86-32 operand/address decoding; live CS and SS attributes unestablished",
+      "prefixes": [],
+      "opcode": {
+        "offset": 0,
+        "size": 1,
+        "hex": "68",
+        "value": 104,
+        "interpretation": "PUSH imm32; full-width immediate, no sign extension required in this 32-bit decoding"
+      },
+      "modrm": null,
+      "sib": null,
+      "displacement": null,
+      "immediate": {
+        "offset": 1,
+        "encoded_size": 4,
+        "raw_hex": "907cc000",
+        "unsigned": 12614800,
+        "sign_bit": 0,
+        "signed": 12614800,
+        "sign_extension_to_operand_bits": null,
+        "effective_unsigned32": 12614800,
+        "effective_hex32": "00C07C90"
+      },
+      "operand_bits": 32,
+      "address_bits": 32,
+      "stack_value_bytes_little_endian": "907cc000",
+      "mnemonic": "PUSH",
+      "operand": "0xc07c90",
+      "explicit_memory_operand": false,
+      "implicit_stack_segment": "current SS",
+      "arithmetic_next_EIP": "00C07C05",
+      "current_stack_effect": {
+        "predicate": "32-bit operand size, actual current SS stack-address size 32, and normal instruction completion. This predicate is local to this entry and must be renewed after any opaque call.",
+        "prestate": "S = current ESP; all incoming register, flag, segment and memory values otherwise unconstrained",
+        "ESP_after": "(S - 4) modulo 2^32",
+        "memory_write": "current SS:((S - 4) modulo 2^32) receives bytes 90 7c c0 00",
+        "other_general_registers": "unchanged by this instruction",
+        "arithmetic_EFLAGS": "unchanged by this instruction",
+        "not_established": [
+          "actual SS descriptor or mapping",
+          "fault or access outcome",
+          "relation to an earlier caller stack",
+          "argument or frame role",
+          "calling convention or register ABI",
+          "provider or library identity",
+          "successor instruction",
+          "meaning or contents at numeric immediate 00C07C90"
+        ]
+      },
+      "completed_before_actual_Capstone_execution": true,
+      "Capstone_imported_or_executed_here": false,
+      "Native_queries": 0,
+      "Source_contents_read": false
+    },
+    "actual_fresh_offline_Capstone": {
+      "capstone_version": "5.0.7",
+      "architecture": "CS_ARCH_X86",
+      "mode": "CS_MODE_32",
+      "actual_module": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      "actual_library": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      },
+      "input_pin": {
+        "bytes": 5,
+        "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+      },
+      "manual_result_read_and_verified_before_Capstone_import": {
+        "bytes": 2170,
+        "sha256": "3a7c2bb0a34e2c4a4e0b20985179bd2581d71d0f60f5282de406e8a6b4a96ca3"
+      },
+      "actual_decode": {
+        "address": "00C07C00",
+        "length": 5,
+        "hex": "68907cc000",
+        "mnemonic": "push",
+        "op_str": "0xc07c90",
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "modrm": 0,
+        "sib": 0,
+        "displacement": 0,
+        "address_size": 4,
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 4,
+        "eflags": 0,
+        "registers_read": [
+          "esp"
+        ],
+        "registers_written": [
+          "esp"
+        ],
+        "groups": [
+          "not64bitmode"
+        ],
+        "operands": [
+          {
+            "type": 2,
+            "size": 4,
+            "immediate": 12614800,
+            "access": 0
+          }
+        ]
+      },
+      "all_manual_physical_fields_match_actual_decode": true,
+      "group_metadata_retained_separately_not_a_physical_field": true,
+      "offline_only": true,
+      "Native_queries": 0,
+      "Source_contents_read": false
+    }
+  },
+  "saved_metadata": {
+    "complete_original_captures": {
+      "typed_a": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T13:58:09.183481+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "dedcb5168a5f7fa5910e16a08e0a87d6844ee5cfee959fdf5e4ac5be8b6e4287"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      },
+      "typed_b": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T13:58:09.560801+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "b60ecee6fddf423656e5a03c2ea1ad73461177160b856d8227a075d444f0e1ac"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      },
+      "typed_c": {
+        "wrapper": {
+          "schema": 1,
+          "endpoint": "get_flow_metadata",
+          "read_only": true,
+          "utc": "2026-10-11T14:05:07.929362+00:00",
+          "requested_addresses": [
+            "00C07C00"
+          ],
+          "max_ranges": 4096,
+          "verified_before": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "verified_after": [
+            {
+              "project_name": "bsp",
+              "current_folder": "/",
+              "folders": [],
+              "files": [
+                {
+                  "name": "battlestationspacific.exe",
+                  "path": "/battlestationspacific.exe",
+                  "content_type": "Program",
+                  "version": 4712,
+                  "is_read_only": false,
+                  "is_versioned": false
+                }
+              ]
+            },
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+              "executable_format": "Portable Executable (PE)",
+              "language": "x86:LE:32:default",
+              "compiler": "windows",
+              "address_size": 32,
+              "image_base": "00400000",
+              "min_address": "00400000",
+              "max_address": "ffdfffff",
+              "memory_size": 14876380,
+              "function_count": 64730,
+              "symbol_count": 145558,
+              "data_type_count": 795,
+              "creation_date": "Mon May 04 16:56:25 PDT 2026",
+              "memory_block_count": 6,
+              "address_spaces": [
+                {
+                  "name": "ram",
+                  "start": "00000000",
+                  "end": "ffffffff",
+                  "size": 4294967296,
+                  "addressable_unit_size": 1,
+                  "size_bytes": 4294967296,
+                  "address_size_bits": 32,
+                  "is_default": true
+                }
+              ],
+              "has_multiple_address_spaces": false
+            }
+          ],
+          "responses": [
+            {
+              "address": "00C07C00",
+              "url": "http://127.0.0.1:8089/get_flow_metadata?address=00C07C00&program=battlestationspacific.exe&max_ranges=4096",
+              "http_status": 200,
+              "transport_error": null,
+              "raw_response": "{\"schema\":1,\"complete\":true,\"program\":{\"path\":\"/battlestationspacific.exe\",\"language\":\"x86:LE:32:default\",\"image_base\":{\"space\":\"ram\",\"offset\":\"00400000\"},\"default_address_space\":\"ram\",\"project\":{\"name\":\"bsp\",\"location\":\"/C:/Users/sqz269/\",\"marker_file\":\"C:\\\\Users\\\\sqz269\\\\bsp.gpr\"}},\"query_address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"modification_number_before\":\"98\",\"listing\":{\"instruction_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"instruction_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_at\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null},\"code_unit_containing\":{\"address\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"length\":5,\"java_class\":\"ghidra.program.database.code.InstructionDB\",\"kind\":\"instruction\",\"defined\":null}},\"instruction_flow\":{\"flow_override\":\"NONE\",\"default_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"effective_flow\":{\"name\":\"FALL_THROUGH\",\"is_call\":false,\"is_jump\":false,\"is_conditional\":false,\"is_computed\":false,\"is_terminal\":false},\"default_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"effective_fallthrough\":{\"space\":\"ram\",\"offset\":\"00c07c05\"},\"fallthrough_overridden\":false,\"default_targets\":[],\"effective_targets\":[]},\"function_at_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"function_containing_query\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"functions\":[{\"entry\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"name\":\"__SEH_prolog4\",\"no_return\":false,\"is_thunk\":false,\"thunk_target_recursive\":false,\"direct_thunk_target\":null,\"body\":{\"range_count\":1,\"returned_range_count\":1,\"address_count\":\"69\",\"complete\":true,\"ranges\":[{\"start\":{\"space\":\"ram\",\"offset\":\"00c07c00\"},\"end_inclusive\":{\"space\":\"ram\",\"offset\":\"00c07c44\"},\"length\":\"69\"}]}}],\"direct_call_targets\":[],\"modification_number_after\":\"98\"}",
+              "raw_response_base64": "eyJzY2hlbWEiOjEsImNvbXBsZXRlIjp0cnVlLCJwcm9ncmFtIjp7InBhdGgiOiIvYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsImxhbmd1YWdlIjoieDg2OkxFOjMyOmRlZmF1bHQiLCJpbWFnZV9iYXNlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDA0MDAwMDAifSwiZGVmYXVsdF9hZGRyZXNzX3NwYWNlIjoicmFtIiwicHJvamVjdCI6eyJuYW1lIjoiYnNwIiwibG9jYXRpb24iOiIvQzovVXNlcnMvc3F6MjY5LyIsIm1hcmtlcl9maWxlIjoiQzpcXFVzZXJzXFxzcXoyNjlcXGJzcC5ncHIifX0sInF1ZXJ5X2FkZHJlc3MiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJtb2RpZmljYXRpb25fbnVtYmVyX2JlZm9yZSI6Ijk4IiwibGlzdGluZyI6eyJpbnN0cnVjdGlvbl9hdCI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH0sImluc3RydWN0aW9uX2NvbnRhaW5pbmciOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfYXQiOnsiYWRkcmVzcyI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImxlbmd0aCI6NSwiamF2YV9jbGFzcyI6ImdoaWRyYS5wcm9ncmFtLmRhdGFiYXNlLmNvZGUuSW5zdHJ1Y3Rpb25EQiIsImtpbmQiOiJpbnN0cnVjdGlvbiIsImRlZmluZWQiOm51bGx9LCJjb2RlX3VuaXRfY29udGFpbmluZyI6eyJhZGRyZXNzIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibGVuZ3RoIjo1LCJqYXZhX2NsYXNzIjoiZ2hpZHJhLnByb2dyYW0uZGF0YWJhc2UuY29kZS5JbnN0cnVjdGlvbkRCIiwia2luZCI6Imluc3RydWN0aW9uIiwiZGVmaW5lZCI6bnVsbH19LCJpbnN0cnVjdGlvbl9mbG93Ijp7ImZsb3dfb3ZlcnJpZGUiOiJOT05FIiwiZGVmYXVsdF9mbG93Ijp7Im5hbWUiOiJGQUxMX1RIUk9VR0giLCJpc19jYWxsIjpmYWxzZSwiaXNfanVtcCI6ZmFsc2UsImlzX2NvbmRpdGlvbmFsIjpmYWxzZSwiaXNfY29tcHV0ZWQiOmZhbHNlLCJpc190ZXJtaW5hbCI6ZmFsc2V9LCJlZmZlY3RpdmVfZmxvdyI6eyJuYW1lIjoiRkFMTF9USFJPVUdIIiwiaXNfY2FsbCI6ZmFsc2UsImlzX2p1bXAiOmZhbHNlLCJpc19jb25kaXRpb25hbCI6ZmFsc2UsImlzX2NvbXB1dGVkIjpmYWxzZSwiaXNfdGVybWluYWwiOmZhbHNlfSwiZGVmYXVsdF9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImVmZmVjdGl2ZV9mYWxsdGhyb3VnaCI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzA1In0sImZhbGx0aHJvdWdoX292ZXJyaWRkZW4iOmZhbHNlLCJkZWZhdWx0X3RhcmdldHMiOltdLCJlZmZlY3RpdmVfdGFyZ2V0cyI6W119LCJmdW5jdGlvbl9hdF9xdWVyeSI6eyJzcGFjZSI6InJhbSIsIm9mZnNldCI6IjAwYzA3YzAwIn0sImZ1bmN0aW9uX2NvbnRhaW5pbmdfcXVlcnkiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJmdW5jdGlvbnMiOlt7ImVudHJ5Ijp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjMDAifSwibmFtZSI6Il9fU0VIX3Byb2xvZzQiLCJub19yZXR1cm4iOmZhbHNlLCJpc190aHVuayI6ZmFsc2UsInRodW5rX3RhcmdldF9yZWN1cnNpdmUiOmZhbHNlLCJkaXJlY3RfdGh1bmtfdGFyZ2V0IjpudWxsLCJib2R5Ijp7InJhbmdlX2NvdW50IjoxLCJyZXR1cm5lZF9yYW5nZV9jb3VudCI6MSwiYWRkcmVzc19jb3VudCI6IjY5IiwiY29tcGxldGUiOnRydWUsInJhbmdlcyI6W3sic3RhcnQiOnsic3BhY2UiOiJyYW0iLCJvZmZzZXQiOiIwMGMwN2MwMCJ9LCJlbmRfaW5jbHVzaXZlIjp7InNwYWNlIjoicmFtIiwib2Zmc2V0IjoiMDBjMDdjNDQifSwibGVuZ3RoIjoiNjkifV19fV0sImRpcmVjdF9jYWxsX3RhcmdldHMiOltdLCJtb2RpZmljYXRpb25fbnVtYmVyX2FmdGVyIjoiOTgifQ==",
+              "raw_sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+            }
+          ],
+          "validation": {
+            "accepted": true,
+            "state": "accepted",
+            "errors": []
+          },
+          "modification_number": "98"
+        },
+        "wrapper_pin": {
+          "bytes": 8826,
+          "sha256": "97f38e8acd0f4806288c48e3d16026ba6641ba06b3058f48a04b497b24760b6a"
+        },
+        "direct_payload": {
+          "schema": 1,
+          "complete": true,
+          "program": {
+            "path": "/battlestationspacific.exe",
+            "language": "x86:LE:32:default",
+            "image_base": {
+              "space": "ram",
+              "offset": "00400000"
+            },
+            "default_address_space": "ram",
+            "project": {
+              "name": "bsp",
+              "location": "/C:/Users/sqz269/",
+              "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+            }
+          },
+          "query_address": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "modification_number_before": "98",
+          "listing": {
+            "instruction_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "instruction_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_at": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            },
+            "code_unit_containing": {
+              "address": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "length": 5,
+              "java_class": "ghidra.program.database.code.InstructionDB",
+              "kind": "instruction",
+              "defined": null
+            }
+          },
+          "instruction_flow": {
+            "flow_override": "NONE",
+            "default_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "effective_flow": {
+              "name": "FALL_THROUGH",
+              "is_call": false,
+              "is_jump": false,
+              "is_conditional": false,
+              "is_computed": false,
+              "is_terminal": false
+            },
+            "default_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "effective_fallthrough": {
+              "space": "ram",
+              "offset": "00c07c05"
+            },
+            "fallthrough_overridden": false,
+            "default_targets": [],
+            "effective_targets": []
+          },
+          "function_at_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "function_containing_query": {
+            "space": "ram",
+            "offset": "00c07c00"
+          },
+          "functions": [
+            {
+              "entry": {
+                "space": "ram",
+                "offset": "00c07c00"
+              },
+              "name": "__SEH_prolog4",
+              "no_return": false,
+              "is_thunk": false,
+              "thunk_target_recursive": false,
+              "direct_thunk_target": null,
+              "body": {
+                "range_count": 1,
+                "returned_range_count": 1,
+                "address_count": "69",
+                "complete": true,
+                "ranges": [
+                  {
+                    "start": {
+                      "space": "ram",
+                      "offset": "00c07c00"
+                    },
+                    "end_inclusive": {
+                      "space": "ram",
+                      "offset": "00c07c44"
+                    },
+                    "length": "69"
+                  }
+                ]
+              }
+            }
+          ],
+          "direct_call_targets": [],
+          "modification_number_after": "98"
+        },
+        "direct_pin": {
+          "bytes": 2146,
+          "sha256": "58b5928410a59704a57be3aab7d9b0bdd4cb8b41238972278a27bd31386ae2b5"
+        }
+      }
+    },
+    "all_three_original_direct_payloads_byte_equal": true,
+    "four_aliases_independently_retained": true,
+    "default_and_effective_fields_independently_retained": true,
+    "saved_owner_names_flags_are_metadata_not_authenticated_behavior": true
+  },
+  "Root_admission": {
+    "admitted_first_unit": {
+      "address": "00C07C00",
+      "length": 5,
+      "end_inclusive": "00C07C04"
+    },
+    "admitted_body": null,
+    "admitted_unit_length": 5,
+    "complete_original_Root_payload_review": [
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "modification_number_before": "98",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07c05"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07c05"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "name": "__SEH_prolog4",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "69",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00c07c00"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00c07c44"
+                  },
+                  "length": "69"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "98"
+      },
+      {
+        "schema": 1,
+        "complete": true,
+        "program": {
+          "path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": {
+            "space": "ram",
+            "offset": "00400000"
+          },
+          "default_address_space": "ram",
+          "project": {
+            "name": "bsp",
+            "location": "/C:/Users/sqz269/",
+            "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+          }
+        },
+        "query_address": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "modification_number_before": "98",
+        "listing": {
+          "instruction_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "instruction_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_at": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          },
+          "code_unit_containing": {
+            "address": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "length": 5,
+            "java_class": "ghidra.program.database.code.InstructionDB",
+            "kind": "instruction",
+            "defined": null
+          }
+        },
+        "instruction_flow": {
+          "flow_override": "NONE",
+          "default_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "FALL_THROUGH",
+            "is_call": false,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "default_fallthrough": {
+            "space": "ram",
+            "offset": "00c07c05"
+          },
+          "effective_fallthrough": {
+            "space": "ram",
+            "offset": "00c07c05"
+          },
+          "fallthrough_overridden": false,
+          "default_targets": [],
+          "effective_targets": []
+        },
+        "function_at_query": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "function_containing_query": {
+          "space": "ram",
+          "offset": "00c07c00"
+        },
+        "functions": [
+          {
+            "entry": {
+              "space": "ram",
+              "offset": "00c07c00"
+            },
+            "name": "__SEH_prolog4",
+            "no_return": false,
+            "is_thunk": false,
+            "thunk_target_recursive": false,
+            "direct_thunk_target": null,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "69",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00c07c00"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00c07c44"
+                  },
+                  "length": "69"
+                }
+              ]
+            }
+          }
+        ],
+        "direct_call_targets": [],
+        "modification_number_after": "98"
+      }
+    ],
+    "paired_original_raws_equal": true,
+    "function_count": 64730,
+    "modification_number": 98,
+    "Root_gate_failures": 0,
+    "Root_inspection_failures": 0,
+    "Root_inspection_display_truncations": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "Source_contents_read": false
+  },
+  "Root_independent_pre_Capstone_manual": [
+    {
+      "address": "00C07C00",
+      "size": 5,
+      "hex": "68907cc000",
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "imm",
+          "size": 4,
+          "value": 12614800
+        }
+      ],
+      "operand_access": [
+        0
+      ],
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        104,
+        0,
+        0,
+        0
+      ],
+      "addr_size": 4,
+      "modrm": 0,
+      "sib": 0,
+      "disp": 0,
+      "encoding": {
+        "modrm_offset": 0,
+        "disp_offset": 0,
+        "disp_size": 0,
+        "imm_offset": 1,
+        "imm_size": 4
+      },
+      "regs_read": [
+        "esp"
+      ],
+      "regs_written": [
+        "esp"
+      ],
+      "implicit_regs_read": [
+        "esp"
+      ],
+      "implicit_regs_written": [
+        "esp"
+      ],
+      "eflag_effects": [],
+      "groups": [
+        "not64bitmode"
+      ],
+      "Root_transfer": null,
+      "Root_memory_access": "instruction-specific read/write via derived current segment",
+      "Root_INT3_flags_are_coarse_decoder_metadata": false
+    }
+  ],
+  "Root_fresh_actual_Capstone": {
+    "records": [
+      {
+        "address": "00C07C00",
+        "size": 5,
+        "hex": "68907cc000",
+        "mnemonic": "push",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614800
+          }
+        ],
+        "operand_access": [
+          0
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          104,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [
+          "esp"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "implicit_regs_read": [
+          "esp"
+        ],
+        "implicit_regs_written": [
+          "esp"
+        ],
+        "eflag_effects": [],
+        "groups": [
+          "not64bitmode"
+        ]
+      }
+    ],
+    "review": {
+      "status": "PASS",
+      "manual_count": 1,
+      "actual_count": 1,
+      "Capstone_version": "5.0.7",
+      "actual_Capstone_producer_executed": true,
+      "manual_physically_written_before_Capstone_import": true,
+      "differences": [],
+      "code": {
+        "length": 5,
+        "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+      }
+    }
+  },
+  "worker_pre_Capstone_manual": {
+    "address": "00C07C00",
+    "length": 5,
+    "hex": "68907cc000",
+    "input_pin": {
+      "bytes": 5,
+      "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+    },
+    "mode": "x86-32 operand/address decoding; live CS and SS attributes unestablished",
+    "prefixes": [],
+    "opcode": {
+      "offset": 0,
+      "size": 1,
+      "hex": "68",
+      "value": 104,
+      "interpretation": "PUSH imm32; full-width immediate, no sign extension required in this 32-bit decoding"
+    },
+    "modrm": null,
+    "sib": null,
+    "displacement": null,
+    "immediate": {
+      "offset": 1,
+      "encoded_size": 4,
+      "raw_hex": "907cc000",
+      "unsigned": 12614800,
+      "sign_bit": 0,
+      "signed": 12614800,
+      "sign_extension_to_operand_bits": null,
+      "effective_unsigned32": 12614800,
+      "effective_hex32": "00C07C90"
+    },
+    "operand_bits": 32,
+    "address_bits": 32,
+    "stack_value_bytes_little_endian": "907cc000",
+    "mnemonic": "PUSH",
+    "operand": "0xc07c90",
+    "explicit_memory_operand": false,
+    "implicit_stack_segment": "current SS",
+    "arithmetic_next_EIP": "00C07C05",
+    "current_stack_effect": {
+      "predicate": "32-bit operand size, actual current SS stack-address size 32, and normal instruction completion. This predicate is local to this entry and must be renewed after any opaque call.",
+      "prestate": "S = current ESP; all incoming register, flag, segment and memory values otherwise unconstrained",
+      "ESP_after": "(S - 4) modulo 2^32",
+      "memory_write": "current SS:((S - 4) modulo 2^32) receives bytes 90 7c c0 00",
+      "other_general_registers": "unchanged by this instruction",
+      "arithmetic_EFLAGS": "unchanged by this instruction",
+      "not_established": [
+        "actual SS descriptor or mapping",
+        "fault or access outcome",
+        "relation to an earlier caller stack",
+        "argument or frame role",
+        "calling convention or register ABI",
+        "provider or library identity",
+        "successor instruction",
+        "meaning or contents at numeric immediate 00C07C90"
+      ]
+    },
+    "completed_before_actual_Capstone_execution": true,
+    "Capstone_imported_or_executed_here": false,
+    "Native_queries": 0,
+    "Source_contents_read": false
+  },
+  "worker_actual_decode": {
+    "capstone_version": "5.0.7",
+    "architecture": "CS_ARCH_X86",
+    "mode": "CS_MODE_32",
+    "actual_module": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "bytes": 43729,
+      "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+    },
+    "actual_library": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+      "bytes": 7572480,
+      "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+    },
+    "input_pin": {
+      "bytes": 5,
+      "sha256": "4a39144c95b4fe035dc43d04497fb1c63ccb6f82010e2e4904db29aeff152b1a"
+    },
+    "manual_result_read_and_verified_before_Capstone_import": {
+      "bytes": 2170,
+      "sha256": "3a7c2bb0a34e2c4a4e0b20985179bd2581d71d0f60f5282de406e8a6b4a96ca3"
+    },
+    "actual_decode": {
+      "address": "00C07C00",
+      "length": 5,
+      "hex": "68907cc000",
+      "mnemonic": "push",
+      "op_str": "0xc07c90",
+      "prefix": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "opcode": [
+        104,
+        0,
+        0,
+        0
+      ],
+      "modrm": 0,
+      "sib": 0,
+      "displacement": 0,
+      "address_size": 4,
+      "modrm_offset": 0,
+      "disp_offset": 0,
+      "disp_size": 0,
+      "imm_offset": 1,
+      "imm_size": 4,
+      "eflags": 0,
+      "registers_read": [
+        "esp"
+      ],
+      "registers_written": [
+        "esp"
+      ],
+      "groups": [
+        "not64bitmode"
+      ],
+      "operands": [
+        {
+          "type": 2,
+          "size": 4,
+          "immediate": 12614800,
+          "access": 0
+        }
+      ]
+    },
+    "all_manual_physical_fields_match_actual_decode": true,
+    "group_metadata_retained_separately_not_a_physical_field": true,
+    "offline_only": true,
+    "Native_queries": 0,
+    "Source_contents_read": false
+  },
+  "Root_actual_twenty_Git_objects": {
+    "9df6eff819361e972cfffa33c333d321bcd48770": {
+      "type": "commit",
+      "member": "git_objects/9df6eff819361e972cfffa33c333d321bcd48770.commit",
+      "bytes": 404,
+      "sha256": "d06e17e1701196975d59d6618d8b7c98d18387257bd474920f0e7b4360acf8d4"
+    },
+    "8d4496cb1048b43b5aa4e7e7f6dcdc6d43e212f7": {
+      "type": "tree",
+      "member": "git_objects/8d4496cb1048b43b5aa4e7e7f6dcdc6d43e212f7.tree",
+      "bytes": 563,
+      "sha256": "d80007b1f1ec68f414525916a5735c3b1089f9859f787539551432b221e22da4"
+    },
+    "2bc4b6bcec0e3abc61f2aaaf9375cf3f74903cbf": {
+      "type": "tree",
+      "member": "git_objects/2bc4b6bcec0e3abc61f2aaaf9375cf3f74903cbf.tree",
+      "bytes": 236671,
+      "sha256": "90aaad42cedf1e78e0930316fc406a45d60b7a91a8c04978112cb0369346838c"
+    },
+    "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e": {
+      "type": "blob",
+      "member": "git_objects/684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e.blob",
+      "bytes": 8874,
+      "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+    },
+    "d740556edc1e08cce4805725990d91dec3129cd4": {
+      "type": "tree",
+      "member": "git_objects/d740556edc1e08cce4805725990d91dec3129cd4.tree",
+      "bytes": 361734,
+      "sha256": "b0b168885a5d8d4a03759c152db2916b50f6530a43343e2701a8db826e1aa0b7"
+    },
+    "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f": {
+      "type": "blob",
+      "member": "git_objects/ead202a5ab72277bd20ed2d8bb8359e0caa7d05f.blob",
+      "bytes": 1635037,
+      "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+    },
+    "4467b8e7b567aaadac77578db41d1cf4d4585fbb": {
+      "type": "blob",
+      "member": "git_objects/4467b8e7b567aaadac77578db41d1cf4d4585fbb.blob",
+      "bytes": 3774,
+      "sha256": "781af21a130a9a220f2b37c6246ff6bc6df940394c5c86ff843e9e14f17eb209"
+    },
+    "76408bcb7783ef020228ecef8683ba85f5d16b23": {
+      "type": "blob",
+      "member": "git_objects/76408bcb7783ef020228ecef8683ba85f5d16b23.blob",
+      "bytes": 72529,
+      "sha256": "ab040d0ccd187e8ccb5e214c87ace22086f14a532c5280ab08f9111e32505fe1"
+    },
+    "5d44e3241c6faffb49d6d830faa92fba468aaf25": {
+      "type": "tree",
+      "member": "git_objects/5d44e3241c6faffb49d6d830faa92fba468aaf25.tree",
+      "bytes": 368,
+      "sha256": "020781d304d8721c5af90bf2365a339f580bf30d2cb4a654e49aa3a6f3cdb99d"
+    },
+    "a46b97705f35162ba70bfbd4909788d11bb188b4": {
+      "type": "blob",
+      "member": "git_objects/a46b97705f35162ba70bfbd4909788d11bb188b4.blob",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "fa269934679ee43da523f7bf9c369e4e27d83531": {
+      "type": "tree",
+      "member": "git_objects/fa269934679ee43da523f7bf9c369e4e27d83531.tree",
+      "bytes": 2580,
+      "sha256": "d77a9d2eaa01eef083695036c2bf08a7db7f5eeeb5810f5acade7fdfc654756a"
+    },
+    "ba90f058569106f62c72dc9f9d72de205772fc7c": {
+      "type": "blob",
+      "member": "git_objects/ba90f058569106f62c72dc9f9d72de205772fc7c.blob",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    "0056201883c1594d9267d2fcf4990385461f0857": {
+      "type": "blob",
+      "member": "git_objects/0056201883c1594d9267d2fcf4990385461f0857.blob",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    "4f73269e25719493aefe1d7f0111b8bbb6b62619": {
+      "type": "blob",
+      "member": "git_objects/4f73269e25719493aefe1d7f0111b8bbb6b62619.blob",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    "75ec4aed5b6824b733d28649fa35cf6cddd0e91f": {
+      "type": "commit",
+      "member": "delivery_git_objects/75ec4aed5b6824b733d28649fa35cf6cddd0e91f.commit",
+      "bytes": 600,
+      "sha256": "ecdf3dc49570f604bf07decec4d58482234d866346314f20638393d4a5cc71f7"
+    },
+    "8e4820b0fb11e95939ae888bcd9df88ae33217a5": {
+      "type": "tree",
+      "member": "delivery_git_objects/8e4820b0fb11e95939ae888bcd9df88ae33217a5.tree",
+      "bytes": 563,
+      "sha256": "af5f4307b5f9835d108536ff3379381c7633514c801c24853bc2a2f53ee0aed2"
+    },
+    "690691429a72b825a2201314622984ca04a34b78": {
+      "type": "tree",
+      "member": "delivery_git_objects/690691429a72b825a2201314622984ca04a34b78.tree",
+      "bytes": 236733,
+      "sha256": "c8bfc51f69bdf7e34aeef94ce662a3888d6ffea3e526cb0d520604dc9394c683"
+    },
+    "54313a4111b08344fb62da15826169170262a4cf": {
+      "type": "tree",
+      "member": "delivery_git_objects/54313a4111b08344fb62da15826169170262a4cf.tree",
+      "bytes": 361798,
+      "sha256": "26bacac47dd1344bd079cfc5ff3f8c2abf51bcbade5d2ae57133b42c378661f9"
+    },
+    "06e74e8fa203888cf3c2dae6b228a83dc9087d0d": {
+      "type": "blob",
+      "member": "delivery_git_objects/06e74e8fa203888cf3c2dae6b228a83dc9087d0d.blob",
+      "bytes": 7664,
+      "sha256": "15deb9e9d26a316369587e5b0714719620264df6788c855f2274bf8d86fc433b"
+    },
+    "4bea6a5a305cf8e8706a37c3475a914dc0e97c04": {
+      "type": "blob",
+      "member": "delivery_git_objects/4bea6a5a305cf8e8706a37c3475a914dc0e97c04.blob",
+      "bytes": 87264,
+      "sha256": "b7b756c5bf0c68f47e742af01d84ed97b3aee274b954405104dee0e46d103e58"
+    }
+  },
+  "Root_ten_current_LF_index_files": [
+    {
+      "path": "docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA.md",
+      "blob": "684a0c8b9dd5fe55b4ea8b54beec750cc3146a4e",
+      "working": {
+        "bytes": 8874,
+        "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+      },
+      "LF": {
+        "bytes": 8874,
+        "sha256": "0ec86ae8e44c4cc4af1d153a0feb1dcd19ea714852d8e321c16297e7447b7992"
+      }
+    },
+    {
+      "path": "reports/cc12_c1737b_direct_target_body_metadata.json",
+      "blob": "ead202a5ab72277bd20ed2d8bb8359e0caa7d05f",
+      "working": {
+        "bytes": 1635037,
+        "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+      },
+      "LF": {
+        "bytes": 1635037,
+        "sha256": "f82791d35df66aa9fb23485b93354b8e392fd0c8e9629b6f67bdaa9ac524140f"
+      }
+    },
+    {
+      "path": "docs/CC12_C1737B_DIRECT_TARGET_BODY_METADATA_PRIMARY.md",
+      "blob": "4467b8e7b567aaadac77578db41d1cf4d4585fbb",
+      "working": {
+        "bytes": 3774,
+        "sha256": "781af21a130a9a220f2b37c6246ff6bc6df940394c5c86ff843e9e14f17eb209"
+      },
+      "LF": {
+        "bytes": 3774,
+        "sha256": "781af21a130a9a220f2b37c6246ff6bc6df940394c5c86ff843e9e14f17eb209"
+      }
+    },
+    {
+      "path": "reports/cc12_c1737b_direct_target_body_metadata_primary.json",
+      "blob": "76408bcb7783ef020228ecef8683ba85f5d16b23",
+      "working": {
+        "bytes": 72529,
+        "sha256": "ab040d0ccd187e8ccb5e214c87ace22086f14a532c5280ab08f9111e32505fe1"
+      },
+      "LF": {
+        "bytes": 72529,
+        "sha256": "ab040d0ccd187e8ccb5e214c87ace22086f14a532c5280ab08f9111e32505fe1"
+      }
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "LF": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "working": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "LF": {
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "working": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "LF": {
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      }
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "working": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "LF": {
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "path": "docs/CC12_C07C00_DIRECT_TARGET_ENTRY.md",
+      "blob": "06e74e8fa203888cf3c2dae6b228a83dc9087d0d",
+      "working": {
+        "bytes": 7664,
+        "sha256": "15deb9e9d26a316369587e5b0714719620264df6788c855f2274bf8d86fc433b"
+      },
+      "LF": {
+        "bytes": 7664,
+        "sha256": "15deb9e9d26a316369587e5b0714719620264df6788c855f2274bf8d86fc433b"
+      }
+    },
+    {
+      "path": "reports/cc12_c07c00_direct_target_entry.json",
+      "blob": "4bea6a5a305cf8e8706a37c3475a914dc0e97c04",
+      "working": {
+        "bytes": 87264,
+        "sha256": "b7b756c5bf0c68f47e742af01d84ed97b3aee274b954405104dee0e46d103e58"
+      },
+      "LF": {
+        "bytes": 87264,
+        "sha256": "b7b756c5bf0c68f47e742af01d84ed97b3aee274b954405104dee0e46d103e58"
+      }
+    }
+  ],
+  "Root_initial_artifact_copies": 177,
+  "Root_initial_artifact_copies_before_phase2": true,
+  "Root_final_all_member_pin_count": 531,
+  "Root_final_actual_review_receipt": {
+    "length": 6897183,
+    "sha256": "d456a202a1118c96d7b3dfa5a815dc5abfcaa46d31d40ac91f398e9930eec049"
+  },
+  "Root_strict_copied_archive_replay": {
+    "status": "PASS",
+    "first_actual_Root_strict_execution_PASS": true,
+    "Root_exactly_matches_both_worker_receipts": true,
+    "Root_audit": {
+      "archive_reads": 1,
+      "result_writes": 1,
+      "helper_execs": 1,
+      "unexpected_denials": []
+    },
+    "receipt": {
+      "size": 2497,
+      "sha256": "baa6c7e93d21c51221f32d36a6597540e3c7c354cb31a02ba2e18687048cc700"
+    },
+    "worker_original": {
+      "size": 2497,
+      "sha256": "baa6c7e93d21c51221f32d36a6597540e3c7c354cb31a02ba2e18687048cc700"
+    },
+    "worker_distinct": {
+      "size": 2497,
+      "sha256": "baa6c7e93d21c51221f32d36a6597540e3c7c354cb31a02ba2e18687048cc700"
+    }
+  },
+  "Root_terminal_summary_annotation_correction": {
+    "status": "PASS",
+    "scope": "Separate annotation of an inherited terminal print field; no receipt, producer, decoder or strict replay rerun. Original final producer and full child streams remain unchanged.",
+    "original_terminal_field": {
+      "manual_flag_difference_retained": true
+    },
+    "current_packet_full_field_manual_comparison": "PASS; no differences; this PUSH has eflags=0",
+    "reason": "C1737B BODY template retained the terminal-only summary literal for its earlier IMUL SF comparison. The current final review assertions and receipt explicitly record the one-unit full-field PASS. Prior IMUL history remains accepted positive evidence under its original scope.",
+    "Root_terminal_summary_annotation_corrections": 1,
+    "originals": {
+      "Root_actual_final_review.py": {
+        "length": 6812,
+        "sha256": "8cfd504a0ed70764c0501c57a24e5e47dd453c638bbd137cd1762b1a8ece74a9"
+      },
+      "Root_final_preexecution.json": {
+        "length": 481,
+        "sha256": "9a051db67c87327d97f5abffe8cf52600f4227bc71467495bd39c8aa666797f2"
+      },
+      "Root_final_execution.json": {
+        "length": 1300,
+        "sha256": "58e7b641875aaa059f09b83a649d2ef9e4d69d37908260f9b2719d0aadaba0a5"
+      },
+      "Root_final.stdout": {
+        "length": 238,
+        "sha256": "f980830b3e2245b5a7c0d1f06d171959bc54964827de32e0cd678c52e0869291"
+      },
+      "Root_final.stderr": {
+        "length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Root_actual_final_review.json": {
+        "length": 6897183,
+        "sha256": "d456a202a1118c96d7b3dfa5a815dc5abfcaa46d31d40ac91f398e9930eec049"
+      },
+      "Root_fresh_Capstone.json": {
+        "length": 1392,
+        "sha256": "e048d9778a2fb8ae3bedc9a554be23a8d549b5e1da17d38b7355455e39cc125e"
+      }
+    },
+    "producer_or_decoder_reexecuted": false,
+    "Native_queries": 0,
+    "GPR_writes": 0
+  },
+  "failure_scopes": {
+    "worker_Native": 0,
+    "worker_offline_helpers": 0,
+    "worker_inspection": 0,
+    "worker_display_truncations": 1,
+    "Root_gate": 0,
+    "Root_independent_manual_fresh_Capstone": 0,
+    "Root_final_actual_Git_and_artifact_review": 0,
+    "Root_strict_actual_execution": 0,
+    "Root_strict_postcomparison": 0,
+    "Root_final_tool_inspection": 0,
+    "Root_final_tool_display_truncations": 0,
+    "Root_terminal_summary_annotation_corrections": 1,
+    "accepted_prior_BODY_PRIMARY_histories": "Prior C1737B IMUL SF decoder difference remains accepted under its original scope; current PUSH comparison has no differences."
+  },
+  "Source_subtree_identity_only": {
+    "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+    "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+  },
+  "private_evidence_pins": {
+    "Root_actual_final_review.json": {
+      "length": 6897183,
+      "sha256": "d456a202a1118c96d7b3dfa5a815dc5abfcaa46d31d40ac91f398e9930eec049"
+    },
+    "Root_actual_final_review.py": {
+      "length": 6812,
+      "sha256": "8cfd504a0ed70764c0501c57a24e5e47dd453c638bbd137cd1762b1a8ece74a9"
+    },
+    "Root_body_gate_tail.py.txt": {
+      "length": 5162,
+      "sha256": "007ef9217954f879188103e351e9bbf52ad9f50939b775b6b78faaa999f3722b"
+    },
+    "Root_cpu_fields.py": {
+      "length": 7745,
+      "sha256": "c4a2fd552a167eabacb95fda71ff34eca30d58d155d17a129da9d68bdd7cb369"
+    },
+    "Root_decoder_derivation.json": {
+      "length": 826,
+      "sha256": "092c87ee72776ef7496fb0f8e8c0c46282a425a20005c0b4663c2953c1a2ca85"
+    },
+    "Root_decoder_execution.json": {
+      "length": 859,
+      "sha256": "94b81bc64692e53f0f030256ac9888ae5fe5f8be92f7255066d185745777a44f"
+    },
+    "Root_decoder_preexecution.json": {
+      "length": 409,
+      "sha256": "5cd1e5abb4e16b1ca49915360779d953758707382742d51f1f602d978aba5a50"
+    },
+    "Root_final.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_final.stdout": {
+      "length": 238,
+      "sha256": "f980830b3e2245b5a7c0d1f06d171959bc54964827de32e0cd678c52e0869291"
+    },
+    "Root_final_derivation.json": {
+      "length": 584,
+      "sha256": "24459b728d868ffde29d6c7e38238097674df13848e9d2eda4f705b1156f9824"
+    },
+    "Root_final_execution.json": {
+      "length": 1300,
+      "sha256": "58e7b641875aaa059f09b83a649d2ef9e4d69d37908260f9b2719d0aadaba0a5"
+    },
+    "Root_final_preexecution.json": {
+      "length": 481,
+      "sha256": "9a051db67c87327d97f5abffe8cf52600f4227bc71467495bd39c8aa666797f2"
+    },
+    "Root_final_terminal_annotation_correction.json": {
+      "length": 1903,
+      "sha256": "98610901b2e5de9cb45d41c3fa750290a13787ba72ed5c14cc201876f12dc52c"
+    },
+    "Root_fresh_Capstone.json": {
+      "length": 1392,
+      "sha256": "e048d9778a2fb8ae3bedc9a554be23a8d549b5e1da17d38b7355455e39cc125e"
+    },
+    "Root_full_helper_read_pin.json": {
+      "length": 508,
+      "sha256": "44179ce4971301cffcd0affd31129fda47d5be570f922497bb0262613c52663a"
+    },
+    "Root_gate_admission_manifest.json": {
+      "length": 1632,
+      "sha256": "ef2c54ae6b5d2805cf6a14da179a264d2a2af89c9755db01ed182a94b9682bea"
+    },
+    "Root_gate_derivation.json": {
+      "length": 590,
+      "sha256": "8a3c1b1c0c5bed802d2352c83406ec8335b2fec906a0bd2197ad4e65258baaa1"
+    },
+    "Root_gate_execution.json": {
+      "length": 884,
+      "sha256": "d3541ab93ed62183d3eb27431849681ead318c4b1bdeaa69c3dec3e1fc871175"
+    },
+    "Root_gate_preexecution.json": {
+      "length": 164,
+      "sha256": "dc85d0ef7be64a6a7c47c32d893bc2f1e8f0d9f11afcbb0326c834c9b5ea64ec"
+    },
+    "Root_independent_decode.py": {
+      "length": 3165,
+      "sha256": "1949319dbd8eed287382f20c723f8bd1f1a0bd91a0e01f33c93fd8859c133fee"
+    },
+    "Root_independent_decode.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_independent_decode.stdout": {
+      "length": 308,
+      "sha256": "5ad31f81f2294940fdaad3958af384c26bc76a73a8fa8abed3f8ef2afce49717"
+    },
+    "Root_listing_gate.json": {
+      "length": 8024681,
+      "sha256": "a5641d3ba7026dd76d7a06ef8c60a8656c5c756774869799fb834bb6fc79aa6c"
+    },
+    "Root_listing_gate.py": {
+      "length": 12216,
+      "sha256": "68eee59d91ada3a296e803dd128381d772d983f1b409aa271d92ebbff5c5063d"
+    },
+    "Root_listing_gate.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_listing_gate.stdout": {
+      "length": 226,
+      "sha256": "e6846731e385d250b9b24d217b275c9e46b95c698f3e6b86ba1e54b98a0cd7ec"
+    },
+    "Root_own_manual.json": {
+      "length": 1051,
+      "sha256": "bfec3688ab47a02ae74788f75484e001b9eb2cf2ee45994904e14fd805c6bd07"
+    },
+    "Root_strict.execution.json": {
+      "length": 2137,
+      "sha256": "5751b7de40bb97997b108fcd9c3434a2f08caf5e3abe9a74f9f5d85c06de2470"
+    },
+    "Root_strict.preexecution.json": {
+      "length": 1062,
+      "sha256": "5361933090a85a9f661f25031b6bc9e4ffc6f09d0afca0826d60a36ccf086670"
+    },
+    "Root_strict.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict.stdout": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_driver.execution.json": {
+      "length": 1318,
+      "sha256": "5f426cf544c1751f617f1499b2c9c44d955397859b62c605ac47256cea71f7db"
+    },
+    "Root_strict_driver.preexecution.json": {
+      "length": 105,
+      "sha256": "3f7704abc5e2699b97f7b504c68e0793166344f73027ca0388085df159b1dd7c"
+    },
+    "Root_strict_driver.py": {
+      "length": 2492,
+      "sha256": "55a851c8265424e10707b537798dff99dd5f3209be9c577de67d6a71e6ffc815"
+    },
+    "Root_strict_driver.stderr": {
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_strict_driver.stdout": {
+      "length": 552,
+      "sha256": "f39e11f75b975229df09fa1ae0a5378a39e4448d4311d5db7ec9c872e9bfe72e"
+    },
+    "Root_strict_receipt.json": {
+      "length": 2497,
+      "sha256": "baa6c7e93d21c51221f32d36a6597540e3c7c354cb31a02ba2e18687048cc700"
+    },
+    "Root_strict_receipt_comparison.json": {
+      "length": 646,
+      "sha256": "13a25a647d3b6405aa5fd24ebba3b860316144b206252c1254f5791f25f5bcf3"
+    },
+    "Root_worker_metadata_manifest.json": {
+      "length": 24801,
+      "sha256": "2032cc396c4c74ba6f849550ea2be50c84e7bfd6e9fc15faad204a912264c9d4"
+    }
+  },
+  "unqueried": [
+    "00C07C05 and remaining 64 saved owner bytes",
+    "owner end cursor 00C07C45",
+    "numeric immediate 00C07C90 as an address",
+    "provider/cell/service/target identity",
+    "prototype/decompilation/neighbors",
+    "Source subtree contents or absence",
+    "Original/runtime/game state"
+  ],
+  "scope": "Exactly five bytes at C07C00; PUSH full-width immediate C07C90, a numeric literal whose referent and contents remain unqueried. Saved __SEH_prolog4 name and owner metadata are not frame/register/library evidence. Renew current SS.B=1 contract for this push; real descriptors/register values/fault outcome remain unknown. Remaining 64 bytes, C07C05, C07C45 and all target/provider/cell/prototype/Source/runtime meaning remain unqueried. No new Source/build/test/probe/runtime/GPR change."
+}
