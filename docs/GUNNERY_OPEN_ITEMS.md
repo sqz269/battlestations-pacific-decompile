@@ -11539,3 +11539,64 @@ state 0 in the image?
 - Tools in this tree: `local\g34_queue.ps1` (gunnery33's queue, retargeted) and job files `local\g34_*.jobs`.
 - The JM08 diagnostic form: `BSP_AA_TRACE_UNIT`, `BSP_FIRE_GATE_TRACE` and `BSP_FIRE_GATE_TARGET`, with the lua47
   `g9` orders, 8800 frames (`local\g34_diag2_j8y4.log`).
+
+## 164. Friendly fire: the AA line-of-fire cache and the artillery path (lead queue item 3; cc9-gunnery35, 2026-10-11)
+
+163.2 item 2 asked two questions. Both were read from the Ghidra listing and from the image on disk.
+
+### 164.1 The line-of-fire cache (`0072F6E0`)
+
+The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the destructor `0072AD20`. The constructor
+(`0072E5A3..0072E5C2`) zeroes `+42Ch` (the predicate) and the record vector `+430h/+434h/+438h`.
+
+| member | address | reached from |
+| --- | --- | --- |
+| install | `00729560` | `0072E708` only (`LEA ECX,[ESI+424h]` at `0072E702`) |
+| destroy | `00729600` | `0072DB6D` (the gun destructor `0072D950`, `LEA ECX,[EBP+424h]`), `0072AD20` |
+| query | `0072F6E0` | the thunk `00730A20` (`ADD ECX,424h; JMP`), the only `ADD ECX,424h` in `.text` |
+
+- No other `LEA r,[r+424h]` or `ADD r,424h` lands in gun code, and the vtable carries no update slot. So nothing reads
+  a record's third field (the expiry, `U(0.8, 1.2) x [GlobalConfig+8Ch]`). A gun keeps its first answer for each
+  target until it is destroyed.
+- **The host's `line_of_fire_cache` is the image's rule:** it is keyed by (gun, target) and never invalidated.
+- **One gap.** On a miss the image draws the expiry from `00BD2F10` on stream ECX=1 (`0072F76D`; bounds
+  `[00CE74F8]` = 0.8 and `[00CE3814]` = 1.2). The host draws nothing.
+  - On the shared default stream this shifts every later stream-1 draw.
+  - Under `BSP_GUNNERY_RNG_STREAMS=1` (the reference launch form), a draw keyed by (gun, target) moves nothing else.
+
+### 164.2 The artillery path and the tail gunner
+
+`0072C6A0` (`BSP_Gun_CreateAiBots`) fills the six bot slots from the weapon kind `[[gun+3F4h]+80h]`:
+
+| weapon kind | bot | slot | accept (vtable `+1Ch`) |
+| --- | --- | --- | --- |
+| 1, gun `IsKindOf(22h)`, no ancestor of kind 0Fh | LeadClass `008FE740` (AAGunnerBot, vtable `00D180A0`) | `+390h` | `008FBE00`: the armour test, `0085A9A0`, then gun `vtable[1D4h]` |
+| 1, gun `IsKindOf(22h)`, an ancestor of kind 0Fh (a plane) | TurretClass `008FE9F0` (TailGunnerBot, vtable `00D18140`) | `+390h` | `008FBF70`: `0085A9A0`, then gun `vtable[1D4h]` (no armour test) |
+| 5, 6 | BallisticClass `008FEFD0` (AAFlakBot, vtable `00D18238`) | `+394h` | `008FBFC0` |
+| 2, 3, 4, 6 | MuzzleClass `0072BE40` (ArtilleryGunnerBot, vtable `00CFE000`) | `+398h` | `006DEF30`: `00955630` (arc solve), `0085A8B0` (reach), then gun `vtable[1D4h]` |
+| 8 | `008FF4A0` (DepthChargeBot, vtable `00D18338`) | | `008FB590`: target `IsKindOf(8)` |
+
+- Gun `vtable[1D4h]` is `00730A20 -> 0072F6E0`. It answers 1 when `gun+42Ch` is zero, which is every kind except 1, 5
+  and 6 (`00729560`).
+- **Artillery (kinds 2, 3, 4) has no line-of-fire test in the image.** GUNNERY 63's verdict stands.
+- **Kind 6 (LIGHTARTILLERYFLAK) takes it on its artillery picks too:** `006DEF30` reaches `0072F6E0`, and the
+  predicate is installed. The host's `bind_aa_acceptance` runs the line-of-fire test for every kind-6 call, so no
+  gap there.
+- **The divergence found: the tail gunner's armour test.** The host's `bind_aa_acceptance` applies `008FBE17`'s armour
+  term to every kind-1 gun, plane-mounted ones included. The image's tail-gunner accept `008FBF70` has none.
+
+### 164.3 The bindings, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+- **`kTailGunnerNoArmourTestBound`**: a kind-1 gun whose owner is a plane (the host's stand-in for "an ancestor of
+  kind 0Fh") skips the armour term. OFF: the refusals it would lift are counted (`armour_rejects_tail` on the
+  `aa acceptance` summary line).
+- **`kAaLineOfFireExpiryDrawBound`**: each cache miss draws `U(0.8, 1.2)` (`Draw::line_of_fire_ttl`, key (gun, target),
+  or the shared stream by default). The value is stored and never read.
+
+**Predictions (written before any pair).**
+- `kTailGunnerNoArmourTestBound`: inert unless `armour_rejects_tail` > 0 on the OFF side. A tail gun's round
+  (MG, `DamageMax` tens of hp) against an `IsKindOf(4)` target with Armour at or above it is refused OFF and accepted
+  ON. Rows with bombers whose tail gunners meet armoured targets (USN04, JM05, USNRM01) are the candidates. If the
+  count is 0 everywhere, the switch flips ON as inert-but-faithful.
+- `kAaLineOfFireExpiryDrawBound` in the reference launch form: gameplay-identical (exit 0/1) on every row, because the
+  keyed draw consumes no other key's stream.
