@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "packet": "cc12_application_vector_retirement_unwind_row",
+  "status": "conditional_row_candidate_numeric_evidence_only",
+  "verdict": "Two exact8B reads atDB57B0 agree: ffffffff0062c800. Raw little-endian DWORDs are FFFFFFFF,00C86200; signed word0=-1. Saved metadata is a defined8B DataDB. Conditional predecessor/action roles remain hypotheses; the possible action is opaque and unfollowed.",
+  "base_commit": "90d83281ae4af7a0bf923b2b20eb1c10a1fae2ed",
+  "frozen_tree": "7a47b24efa4cc2c8f110ed40ced923db0062f92f",
+  "source_tree_identity_only": {
+    "src": "af8efebaa30365fa0f7f2f591c45861a55b4b1b2",
+    "include": "09add3be594e63edcce6a16ec041ed965441e898"
+  },
+  "finite_positive_Git_inputs": [
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX.md",
+      "blob": "093945fd2901c617665e5582b7d1ee8c07df18f2",
+      "sha256": "9fa18ce993ef3faa3c175fb37fe1ffaedb6e5789fdf631d4d2b167fa9cb425fb",
+      "length": 3995
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix.json",
+      "blob": "af60a15497b7e9a9571e80d34bc4171805025e15",
+      "sha256": "63ed03771662bf21103e020791a116b92d3550fa2318c21dec0986dcea653e41",
+      "length": 13066
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_DESCRIPTOR_PREFIX_PRIMARY.md",
+      "blob": "6645b30d291ea4573e1828b9e5c72594687c0931",
+      "sha256": "91d5948edda11aa3fb4e9984121a3202c402fa8210e5f72268b2499d42ce516c",
+      "length": 2677
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_descriptor_prefix_primary.json",
+      "blob": "d5521db355b8a4173e7e962d30afec5e6223aa53",
+      "sha256": "883075a5bb02c626bea08a29fcf2c3275e74b8427466e66b9c077bc87d56db94",
+      "length": 14048
+    },
+    {
+      "path": "config/target.json",
+      "blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "length": 455
+    },
+    {
+      "path": "tools/bsp.py",
+      "blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "length": 73311
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "length": 14411
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+      "length": 20048
+    }
+  ],
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_VECTOR_RETIREMENT_UNWIND_ROW.md",
+    "reports/cc12_application_vector_retirement_unwind_row.json"
+  ],
+  "positive_candidate": {
+    "worker_report": "reports/cc12_application_vector_retirement_descriptor_prefix.json",
+    "Root_report": "reports/cc12_application_vector_retirement_descriptor_prefix_primary.json",
+    "accepted_worker": "d0f9a44c28e3b644b102d545039ac4350b384c76",
+    "prefix_address": "00DB57B8",
+    "prefix_length": 12,
+    "prefix_raw_hex": "2205931901000000b057db00",
+    "prefix_raw_DWORDs": [
+      "19930522",
+      "00000001",
+      "00DB57B0"
+    ],
+    "selection": "New explicit conditional classic absolute EH-row0 candidate scope uses numeric prefix word2=DB57B0 for exactly8B. This is not inherited permission from the earlier opaque-prefix packet.",
+    "carrier_context": "Immediate accepted prefix report preserves MOV EAX,DB57B8 -> physical JMP BF6B43 without return push -> accepted shared wrapper carries incoming D to the physical C07991 call stack without dereferencing D.",
+    "boundary": "No previous proof ZIP, Native parent/storage provider or dispatcher body reread. No actual state0 arming expansion in this packet."
+  },
+  "Root_gate": {
+    "file": "Root_row_gate.json",
+    "sha256": "292084fed8222def41ca95365c3f61bdd85325e88135b7097bff51107305521f",
+    "producer": "Root_row_gate.py",
+    "producer_sha256": "2dc361a7cc839026ff4a5589a3f84737f16e3d4ef0daf219b8d85fde9d00b24c",
+    "producer_policy": "Retained physical producer body pinned opaque; not executed by this worker.",
+    "admission": "Only two exact8B reads DB57B0..DB57B7 after paired eight-address typed gate; no action target or adjacent data."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_counts": [
+      64730,
+      64730,
+      64730,
+      64730
+    ],
+    "autostart": false,
+    "verification": "Each CLI query verifies project/program/language/image base. All24 per-address typed responses include exact runtime GPR marker and equal epoch98; batch before/after verified identity is retained."
+  },
+  "saved_listing": {
+    "addresses": [
+      "00DB57B0",
+      "00DB57B1",
+      "00DB57B2",
+      "00DB57B3",
+      "00DB57B4",
+      "00DB57B5",
+      "00DB57B6",
+      "00DB57B7"
+    ],
+    "containing_DataDB": {
+      "address": {
+        "space": "ram",
+        "offset": "00db57b0"
+      },
+      "length": 8,
+      "java_class": "ghidra.program.database.code.DataDB",
+      "kind": "data",
+      "defined": true
+    },
+    "exact_code_unit_at": "DataDB atDB57B0 only; null for the seven interior addresses.",
+    "code_unit_containing": "All eight queries identify the same exact8B defined DataDB.",
+    "instruction_at_and_containing": "Both null at all eight addresses.",
+    "function_at_and_containing": "Both null at all eight addresses; every functions list is empty.",
+    "instruction_flow": "Explicitly null at all eight addresses.",
+    "containment_verified": true,
+    "undefined_distinction": "Observed kind=data, DataDB, defined=true; not an undefined unit or instruction.",
+    "saved_function_name_ranges_thunk_noreturn_prototype": null,
+    "qualification": "The saved definition and exact8B size establish listing metadata only, not Original FH3 layout or an authenticated EH-row type."
+  },
+  "row": {
+    "start": "00DB57B0",
+    "end_inclusive": "00DB57B7",
+    "length": 8,
+    "reads": 2,
+    "reads_equal": true,
+    "hex": "ffffffff0062c800",
+    "sha256": "cfa35011665839ef6c0c3aab2f144f09b31c86c04a4d0bd8d25e8e763bdbd923",
+    "read_boundary": "Exactly8B per read; no candidate action, map tail or remaining24B descriptor tail."
+  },
+  "raw_DWORDs": [
+    {
+      "offset": 0,
+      "hex": "FFFFFFFF",
+      "unsigned": 4294967295
+    },
+    {
+      "offset": 4,
+      "hex": "00C86200",
+      "unsigned": 13132288
+    }
+  ],
+  "word0_signed": -1,
+  "decode": {
+    "methods": [
+      "int.from_bytes(little)",
+      "struct.unpack(<II)"
+    ],
+    "agree": true,
+    "pure_replay": "Recomputes both numeric words by int.from_bytes and shifts/sums, checking retained struct.unpack output; signed32 conversion is numeric only.",
+    "conditional_word0_hypothesis": "Only if the classic absolute EH-row layout applies, signed word0=-1 is a possible predecessor-index sentinel. This is a hypothesis, not authenticated unwind behavior.",
+    "conditional_word1_hypothesis": "Only under that unverified layout, raw word1=00C86200 is a possible action address. It remains opaque until a separate exact-entry gate.",
+    "not_established": "No maxstate/state-count, unwind invocation, Original compiler/FH3 layout, map traversal, complete action body or action-frame receiver is authenticated."
+  },
+  "alias_aware_frame_boundary": "The accepted shared wrapper has its own EBP derived from unknown entryESP. Its externally returned ESP, EBP, EAX and memory remain unknown, with aliases preserved. None of this binds the separate Original action-frame EBP or authenticates the action receiver. The numeric row does not remove those uncertainties.",
+  "capture_integrity": {
+    "all_Native_raw_and_streams_retained": true,
+    "native_failed_attempts": [],
+    "helper_failed_attempts": [],
+    "typed_raw_files": [
+      "typed_gate_before.raw.json",
+      "typed_gate_after.raw.json",
+      "typed_close.raw.json"
+    ],
+    "typed_response_count": 24,
+    "per_address_raw_sha256": {
+      "00db57b0": "66d969911c8b714a3cf6465ee9ac74b5e7acae0c554a721c8ab19c9c226a8828",
+      "00db57b1": "41c280e35cc50dd41545585627da8d7325c8a6238ee33e2bad8ec31a76ecb677",
+      "00db57b2": "8d83f6a4c5ab794dcb4e37dbaf760007c02713e02ade148a3ce7a56b4a85a3f1",
+      "00db57b3": "1b169f0556998ed880ac5cf834858a41ee1781dfd352f0349e6b0768fde8bcfb",
+      "00db57b4": "acdfb77e146831f20b2b01ae0d6156bb449fbdc2d815010f739d2e9efcbc2050",
+      "00db57b5": "f3ab0f8c4f5965bcfc0c72c9c44d7faf4192c0b5ce09f1335a1137d72561642c",
+      "00db57b6": "31f68df16e24571ebc1113eb85b214c0633d3c8e3b862d7b278ccbb587d33968",
+      "00db57b7": "604603f9e5c46323b07acf3d4b60d4c891a856de94f061616c57045ed82c8c12"
+    },
+    "paired_and_closing_equal": true,
+    "automatic_targets_companions": "Whole responses retained opaque; no automatic target-object traversal or following.",
+    "producer_validation": "Existing typed-flow producer validates its full response schema; packet replay examines only admitted query/listing/function metadata.",
+    "helpers": "Physical helpers copied into this packet before execution. Evidence destinations reject overwrite; no executed helper was edited in place."
+  },
+  "query_order": [
+    "count_gate_before",
+    "typed_gate_before8",
+    "typed_gate_after8",
+    "count_gate_after",
+    "Root row admission",
+    "count_admitted_before",
+    "row_bytes_first8",
+    "row_bytes_second8",
+    "typed_close8",
+    "count_close"
+  ],
+  "proof": {
+    "local_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_application_vector_retirement_handler_entry\\local\\cc12_application_vector_retirement_unwind_row",
+    "original_zip": "proof.zip",
+    "distinct_copy_zip": "proof_distinct_copy.zip",
+    "original_receipt": "replay_original.json",
+    "distinct_copy_receipt": "replay_copy.json",
+    "method": "Eight immediate positive Git input blobs, actual frozen/staged/final commit/tree objects and exactly two output blobs. Full physical pure replay/producer/helper bodies retained. Strict original/copy ZIP replays allow one supplied archive read and one declared receipt write.",
+    "counts": "Object and archive counts are measured by replay; no assumed inherited counts.",
+    "self_reference_boundary": "Observed final commit/tree/ZIP pins and receipts are supplied separately in the handoff.",
+    "Source_boundary": "Source subtree IDs are identity only, with no Source census/content read or future Root equality constraint. No previous archive recursion."
+  },
+  "credit": {
+    "Original": false,
+    "original_ABI": false,
+    "original_FH3": false,
+    "authenticated_layout": false,
+    "maxstate_interpretation": false,
+    "authenticated_predecessor_sentinel": false,
+    "authenticated_action_pointer": false,
+    "action_target_behavior": false,
+    "actual_action_receiver": false,
+    "state0_action": false,
+    "complete_handler": false,
+    "ownership": false,
+    "activation": false,
+    "runtime": false,
+    "Source_change": false,
+    "Ghidra_mutation": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "game_execution": false,
+    "OS_audio_execution": false
+  },
+  "continuation": "Parent Source remains blocked until Root establishes actual action receiver and target behavior, alongside all remaining frame/ownership contracts. A possible action address from word1 requires separate metadata admission; it was not queried here."
+}
