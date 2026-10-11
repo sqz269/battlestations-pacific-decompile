@@ -617,6 +617,77 @@ struct PlaneSpawnAttachHost {
 // Caller 0068ACA0 BSP_InGameInterface_ApplyPendingInterface.
 void plane_spawn_attach_plane_0060cf90(PlaneSpawnScreenState& screen, std::uintptr_t plane,
     PlaneSpawnAttachHost& host);
+// ---------------------------------------------------------------------------
+// The in-game chat / message screen, screen 15h, vtables 00CF1998 / 00CF19C0
+// ---------------------------------------------------------------------------
+//
+// 90h-byte object (BSP_MultiChatScreen_Construct 005CFDA0, docs/MULTI_MENU_SCREENS.md).
+// Three std::list message logs: +68h (proxy, head +6Ch, size +70h) the timed
+// overlay, +74h (head +78h, size +7Ch) the in-mission history, +80h (head
+// +84h, size +88h) the lobby log; byte +8Dh is set after every add.
+
+enum class ChatMessageType : int {
+    LostUnit = 5,       // lostunitplayername
+    Swap = 6,           // globals.swapmessage, SwapPlayer1 + SwapPlayer2
+    Join = 7,           // globals.joinmessage
+    Left = 8,           // globals.leftmessage
+    Surrender = 9,      // ingame.multi_surrender
+    NotSurrender = 10,  // ingame.multi_notsurrender
+};
+
+struct ChatMessage {
+    std::string sender;    // NativeString (+14h / +10h in the nodes)
+    int type{};            // +1Ch / +18h
+    std::u16string text;   // wide string (+0Ch / +08h)
+    float timer{};         // +08h, overlay list only
+};
+
+struct ChatScreenState {
+    std::vector<ChatMessage> overlay_68;   // front = list front
+    std::vector<ChatMessage> history_74;
+    std::vector<ChatMessage> lobby_80;
+    bool dirty_8d{};
+};
+
+inline constexpr float kChatOverlaySeconds = 6.0f;   // 00CE6630
+inline constexpr std::size_t kChatOverlayCap = 7;    // erase the back while size > 6
+inline constexpr std::size_t kChatHistoryCap = 15;   // size > 14
+inline constexpr std::size_t kChatLobbyCap = 43;     // size > 42, erase the front
+
+struct ChatScreenHost {
+    virtual ~ChatScreenHost() = default;
+    virtual bool game_online_1fe4() = 0;
+    virtual bool lua_event_dispatcher_present() = 0;   // 00F8A0C4 != 0
+    // 00985F30 on 00F8A0C4: the Lua "chat" event (docs/MISSION_EVENTS_UPDATE.md).
+    virtual void fire_lua_chat_event_00985f30(const std::string& sender, int type,
+        const std::string& message) = 0;
+    virtual void set_lua_global_string(std::string_view name, const std::string& value) = 0;
+    // 00A9FAD0 on *(00F8BC4C): the localised text of a key list.
+    virtual std::u16string resolve_key_00a9fad0(const std::string& key) = 0;
+    virtual std::u16string widen_004c5e60(const std::string& text) = 0;
+    virtual std::string narrow_low_bytes(const std::u16string& text) = 0;
+};
+
+// 005D0050: __thiscall(screen, NativeString* sender, int type, NativeString*
+// message, NativeString* second), RET 10h. Sole caller 005D07E0 region; the
+// Lua chat event table names it as the producer of `chat`.
+void chat_add_message_005d0050(ChatScreenState& screen, const std::string& sender, int type,
+    const std::string& message, const std::string& second, ChatScreenHost& host);
+// 005D0770: __thiscall(screen, sender, unused, type, message, second,
+// xuid_lo, xuid_hi), RET 1Ch. Callers 00772020, 00772170, 007722E0 (session
+// message handlers). 007786E0 on game+2080h with (local xuid, sender xuid)
+// mutes the message; the local xuid is -1:-1 when game+18ECh is outside 0..7.
+struct ChatMuteHost {
+    virtual ~ChatMuteHost() = default;
+    virtual int local_player_slot() = 0;                                   // game+18ECh
+    virtual std::uint64_t player_xuid(int slot) = 0;                      // slot record +80h/+84h
+    virtual bool muted_007786e0(std::uint64_t local, std::uint64_t remote) = 0;
+};
+bool chat_message_passes_mute_005d0770(std::uint64_t sender_xuid, ChatMuteHost& host);
+
+// Listener 00CF19C0 slot +00h, 005D1460: __thiscall(screen+8, char key, bool
+// down), AL handled, RET 8. Returns the 005D11F0 mode to open, or 0.
+int chat_key_mode_005d1460(std::uint8_t key, bool down, bool in_mission) noexcept;
 }  // namespace bsp
 
 #endif  // BSP_HUD_WIDGETS_HPP

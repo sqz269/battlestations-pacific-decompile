@@ -678,4 +678,77 @@ void plane_spawn_attach_plane_0060cf90(PlaneSpawnScreenState& screen, std::uintp
     host.set_targets_0060cd50(screen.observed_1c, home_entity, screen.plane_20);
     host.set_camera_mover_004bc410(screen.observed_1c);
 }
+void chat_add_message_005d0050(ChatScreenState& screen, const std::string& sender, int type,
+    const std::string& message, const std::string& second, ChatScreenHost& host) {
+    if (host.game_online_1fe4() && host.lua_event_dispatcher_present()) {
+        host.fire_lua_chat_event_00985f30(sender, type, message);
+    }
+    std::u16string text;
+    switch (static_cast<ChatMessageType>(type)) {
+    case ChatMessageType::Swap:
+        host.set_lua_global_string("SwapPlayer1", message);
+        host.set_lua_global_string("SwapPlayer2", second);
+        text = host.resolve_key_00a9fad0("globals.swapmessage");
+        break;
+    case ChatMessageType::Join:
+        host.set_lua_global_string("SwapPlayer1", message);
+        text = host.resolve_key_00a9fad0("globals.joinmessage");
+        break;
+    case ChatMessageType::Left:
+        host.set_lua_global_string("SwapPlayer1", message);
+        text = host.resolve_key_00a9fad0("globals.leftmessage");
+        break;
+    case ChatMessageType::Surrender:
+        host.set_lua_global_string("SwapPlayer1", message);
+        text = host.resolve_key_00a9fad0("ingame.multi_surrender");
+        break;
+    case ChatMessageType::NotSurrender:
+        host.set_lua_global_string("SwapPlayer1", message);
+        text = host.resolve_key_00a9fad0("ingame.multi_notsurrender");
+        break;
+    case ChatMessageType::LostUnit:
+        // The second string is itself a key; its text, narrowed to its low
+        // bytes, becomes the Lua global the message key interpolates.
+        host.set_lua_global_string("lostunitplayername",
+            host.narrow_low_bytes(host.resolve_key_00a9fad0(second)));
+        text = host.resolve_key_00a9fad0(message);
+        break;
+    default:
+        // An empty sender (00CE3A0C, case-insensitive compare) marks a system
+        // message whose text is a key; otherwise the text is shown verbatim.
+        text = sender.empty() ? host.resolve_key_00a9fad0(message) : host.widen_004c5e60(message);
+        break;
+    }
+    ChatMessage entry{sender, type, text, kChatOverlaySeconds};
+    if (screen.overlay_68.size() > kChatOverlayCap - 1) {
+        screen.overlay_68.pop_back();
+    }
+    screen.overlay_68.insert(screen.overlay_68.begin(), entry);
+    entry.timer = 0.0f;  // the history and lobby nodes have no timer field
+    if (screen.history_74.size() > kChatHistoryCap - 1) {
+        screen.history_74.pop_back();
+    }
+    screen.history_74.insert(screen.history_74.begin(), entry);
+    if (screen.lobby_80.size() > kChatLobbyCap - 1) {
+        screen.lobby_80.erase(screen.lobby_80.begin());
+    }
+    screen.lobby_80.push_back(entry);
+    screen.dirty_8d = true;
+}
+bool chat_message_passes_mute_005d0770(std::uint64_t sender_xuid, ChatMuteHost& host) {
+    const int slot = host.local_player_slot();
+    const std::uint64_t local = (slot < 0 || slot > 7) ? ~std::uint64_t{0} : host.player_xuid(slot);
+    return !host.muted_007786e0(local, sender_xuid);
+}
+
+int chat_key_mode_005d1460(std::uint8_t key, bool down, bool in_mission) noexcept {
+    if (down) {
+        // 26h with no mission interface manager (00E198C4 == 0): mode 1.
+        return (key == 0x26 && !in_mission) ? 1 : 0;
+    }
+    if (key == 9) {
+        return in_mission ? 3 : 1;  // LEA EAX,[EAX+EAX+1]
+    }
+    return 0;
+}
 }  // namespace bsp
