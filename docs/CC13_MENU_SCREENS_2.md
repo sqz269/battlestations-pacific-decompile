@@ -117,7 +117,38 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   (00425850, case-insensitive) opens 00515E00; otherwise the float +438h is pulled to within
   0.0021 (00CEC168) of the row count +434h.
 
-Call sites: `reports/cc13_menu_screens_2.json`, 108 rows, `tools/verify_report_calls.py`: 0 failed.
+- **00515BC0 Leave / 00515E00 Back** (tactical library, reconstructed, build-tested): online with both
+  front-end managers present the screen acts only when 00687860(0Bh, 0) is true. An open view
+  (+90h == 1) is closed through 00511B40 plus the order-of-battle (kind 5, 004FFF20) or unlocks (kind
+  6, 004FFD00) page refresh or, for kind 2, the command bar (0, "", 0), (0A7h, `globals.3dview`, 1),
+  (0B3h, `globals.navigate`, 1), (0B2h, `globals.scroll_menu`, 1), (0A3h, `globals.back`, 2). Back
+  stops there; Leave (and Back with no open view) then pops the request interface online, or offline
+  sets 00E08874 = 0Bh + (+9Ch != 0) and pushes interface request (1, 0).
+
+## Front-end frame setters (segment 12)
+
+The 164h-byte frame singleton (004C1AC0, constructor 00517D10, screen 0Ch) and its three handle
+arrays are described in docs/GAME_TITLE_INIT.md. Reconstructed and build-tested:
+
+- **00518D60 Select**: ECX = backdrop slot, EDX = panel slot, stack (title slot, string*), RET 8.
+  Stores 00E18D84/00E18D88/00E18D8C, applies the selection, and sets the title when the string's
+  length word is non-zero. This is the `set_frame_title_00518d60` that the menu packets call.
+- **00518C80 ApplySelection**: each non-null handle of set +160h is shown exactly when its slot is
+  the selected one (panel, then title, then backdrop; the backdrop pass and the tail jump to 00518B90
+  are skipped when game+5D4h is 0Dh).
+- **00518B90 SetFlag**: ECX = flag; stores 00E08654 and, when a panel is selected and loaded, calls
+  `frame_flag_Icon` virtual +88h(word flag, 0, 1.0).
+- **005189B0 SetTitle**: submits the string to `title_Text` and sizes `szarnyas_FrameBox`: width =
+  extent(+114h)/960 + 0.2667 when that quotient exceeds 0.2667, else 0.5333; 0.7 when game+61Fh or
+  game+634h is set; the height is kept (00AA6740 +4).
+
+A second batch of 35 names (`local/m4_names2.py`) covers the browser helpers (filter edit begin /
+apply 0056E360/0057A910, filter rows, command bar, row builders, JoinSession 0057A9C0), the tactical
+library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model preview (0050AA10,
+0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
+the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
+
+Call sites: `reports/cc13_menu_screens_2.json`, 142 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 

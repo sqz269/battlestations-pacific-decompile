@@ -287,4 +287,91 @@ struct TacticalLibraryActivateHost {
 void tactical_library_on_listbox_activate_00517280(TacticalLibraryScrollState& screen, bool list_is_main_list,
     TacticalLibraryActivateHost& host);
 
+// Tactical library back/leave (00515E00 / 00515BC0).
+struct TacticalLibraryNavState {
+    std::int32_t view_90{};          // +90h, 1 while an entry view is open
+    std::int32_t entry_kind_94{};    // +94h, 2/5/6 tested
+    std::int32_t field_9c{};         // +9Ch, picks 0Bh or 0Ch for 00E08874
+};
+
+struct TacticalLibraryNavHost {
+    virtual ~TacticalLibraryNavHost() = default;
+    virtual bool online_1fe4() = 0;                         // *(00E188A8)+1FE4h != 0
+    virtual bool front_end_manager_present_e198ac() = 0;    // *(00E198AC) != 0
+    virtual bool interface_manager_present_e198b4() = 0;    // *(00E198B4) != 0
+    virtual bool interface_query_00687860(std::int32_t id, std::int32_t arg) = 0;  // ECX = *(00E198B4)
+    virtual void close_view_00511b40() = 0;                 // ECX = screen
+    virtual void show_order_of_battle_page_004fff20() = 0;                // ECX = screen
+    virtual void show_unlocks_page_004ffd00() = 0;                // ECX = screen
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual void pop_request_interface_006881f0() = 0;      // ECX = *(00E198B4)
+    virtual void set_return_screen_e08874(std::int32_t value) = 0;
+    virtual void push_interface_request_004cc460(std::int32_t a, std::int32_t b) = 0;  // ECX = *(00E198AC)
+};
+
+// ---------------------------------------------------------------------------
+// Front-end frame singleton (004C1AC0, 164h bytes, screen 0Ch; docs/GAME_TITLE_INIT.md):
+// selection, flag and title setters 00518D60, 00518C80, 00518B90, 005189B0
+// ---------------------------------------------------------------------------
+
+inline constexpr std::size_t kFrontEndFrameBackdropSlots = 13;   // +0Ch, set stride 34h
+inline constexpr std::size_t kFrontEndFramePanelSlots = 2;       // +110h, set stride 8h
+inline constexpr std::size_t kFrontEndFrameTitleSlots = 2;       // +138h, set stride 8h
+inline constexpr std::size_t kFrontEndFrameSets = 5;
+inline constexpr std::int32_t kFrontEndFrameSkipBackdropMode = 0x0D;  // game+5D4h
+inline constexpr double kFrontEndTitlePixelsPerUnit = 960.0;      // 00CEC380
+inline constexpr double kFrontEndTitlePad = 0.26666666666666666;  // 00CEC3E8
+inline constexpr float kFrontEndTitleMinWidth = 0.53333336F;      // 00CEC3E4
+inline constexpr float kFrontEndTitleFixedWidth = 0.7F;           // 00CE3E18
+inline constexpr std::string_view kFrontEndFrameFlagIcon = "frame_flag_Icon";     // 00CEC3F0
+inline constexpr std::string_view kFrontEndFrameTitleText = "title_Text";         // 00CEC3D8
+inline constexpr std::string_view kFrontEndFrameTitleBox = "szarnyas_FrameBox";   // 00CEC3C4
+
+// Globals the setters share.
+struct FrontEndFrameSelection {
+    std::int32_t backdrop_e18d84{};
+    std::int32_t panel_e18d88{};
+    std::int32_t title_e18d8c{};
+    std::uint32_t flag_e08654{};
+};
+
+// The singleton's handle arrays and its current set (+160h).
+struct FrontEndFrameState {
+    std::array<std::uintptr_t, kFrontEndFrameSets * kFrontEndFrameBackdropSlots> backdrops{};
+    std::array<std::uintptr_t, kFrontEndFrameSets * kFrontEndFramePanelSlots> panels{};
+    std::array<std::uintptr_t, kFrontEndFrameSets * kFrontEndFrameTitleSlots> titles{};
+    std::int32_t set{};
+};
+
+struct FrontEndFrameHost {
+    virtual ~FrontEndFrameHost() = default;
+    virtual FrontEndFrameState& frame_004c1ac0() = 0;     // BSP_FrontEndFrame_GetOrCreate
+    virtual FrontEndFrameSelection& selection() = 0;
+    virtual void widget_virtual_34(std::uintptr_t widget, bool shown) = 0;
+    virtual std::uintptr_t find_child_00aa7e00(std::uintptr_t layout, std::string_view name) = 0;  // (name, 1)
+    virtual void widget_virtual_88(std::uintptr_t widget, std::uint16_t frame, std::int32_t arg, float value) = 0;
+    virtual void text_submit_00abaed0(std::uintptr_t text, std::string_view source) = 0;  // (source, 1)
+    virtual float text_extent_114(std::uintptr_t text) = 0;          // text+114h
+    virtual float widget_height_00aa6740(std::uintptr_t widget) = 0; // returned vector +4
+    virtual void widget_set_size_58(std::uintptr_t widget, float width, float height) = 0;  // virtual +58h(&size)
+    virtual bool game_byte_61f() = 0;                    // *(00E188A8)+61Fh
+    virtual bool game_byte_634() = 0;                    // *(00E188A8)+634h
+    virtual std::int32_t game_mode_5d4() = 0;            // *(00E188A8)+5D4h
+};
+
+// 00518D60: ECX = backdrop slot, EDX = panel slot, stack (title slot, const string*), RET 8.
+void front_end_frame_select_00518d60(std::int32_t backdrop, std::int32_t panel, std::int32_t title,
+    std::string_view text, FrontEndFrameHost& host);
+// 00518C80: __thiscall(frame), RET; tail JMP 00518B90 with ECX = 00E08654.
+void front_end_frame_apply_selection_00518c80(FrontEndFrameHost& host);
+// 00518B90: ECX = flag frame index, RET; SEH 00C6A998.
+void front_end_frame_set_flag_00518b90(std::uint32_t flag, FrontEndFrameHost& host);
+// 005189B0: ECX = const string*, RET; SEH 00C6A980.
+void front_end_frame_set_title_005189b0(std::string_view text, FrontEndFrameHost& host);
+
+// 00515BC0: __thiscall(screen), RET; SEH 00C6A708. Closes an open view, then leaves the screen.
+void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
+// 00515E00: __thiscall(screen), RET; SEH 00C6A748. Closes an open view, or leaves through 00515BC0.
+void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host);
+
 }  // namespace bsp

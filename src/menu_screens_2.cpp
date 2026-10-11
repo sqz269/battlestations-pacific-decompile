@@ -494,4 +494,121 @@ void tactical_library_on_listbox_activate_00517280(TacticalLibraryScrollState& s
     if (screen.scroll_value > count) screen.scroll_value = static_cast<float>(count + kTacticalLibraryScrollStep);
 }
 
+// 00518D60. The three slot indices go to 00E18D84/00E18D88/00E18D8C before anything else.
+void front_end_frame_select_00518d60(std::int32_t backdrop, std::int32_t panel, std::int32_t title,
+    std::string_view text, FrontEndFrameHost& host) {
+    FrontEndFrameSelection& selection = host.selection();
+    selection.backdrop_e18d84 = backdrop;                            // 00518D64
+    selection.panel_e18d88 = panel;                                  // 00518D6A
+    selection.title_e18d8c = title;                                  // 00518D70
+    front_end_frame_apply_selection_00518c80(host);                  // 00518D75..00518D7C
+    if (!text.empty()) front_end_frame_set_title_005189b0(text, host);  // 00518D81..00518D8A: length word
+}
+
+// 00518C80, ESI = frame, EDI = slot. Each existing handle of the current set is shown
+// exactly when its slot is the selected one (SETE AL into virtual +34h).
+void front_end_frame_apply_selection_00518c80(FrontEndFrameHost& host) {
+    FrontEndFrameState& frame = host.frame_004c1ac0();
+    const FrontEndFrameSelection& selection = host.selection();
+    const auto set = static_cast<std::size_t>(frame.set);
+    for (std::int32_t slot = 0; slot < 2; ++slot) {                 // 00518C90..00518CC0
+        const std::uintptr_t handle = frame.panels[set * kFrontEndFramePanelSlots + slot];
+        if (handle != 0) host.widget_virtual_34(handle, slot == selection.panel_e18d88);
+    }
+    for (std::int32_t slot = 0; slot < 2; ++slot) {                 // 00518CD0..00518D00
+        const std::uintptr_t handle = frame.titles[set * kFrontEndFrameTitleSlots + slot];
+        if (handle != 0) host.widget_virtual_34(handle, slot == selection.title_e18d8c);
+    }
+    if (host.game_mode_5d4() == kFrontEndFrameSkipBackdropMode) return;  // 00518D02..00518D0E
+    for (std::int32_t slot = 0; slot < 13; ++slot) {                // 00518D12..00518D4A
+        const std::uintptr_t handle = frame.backdrops[set * kFrontEndFrameBackdropSlots + slot];
+        if (handle != 0) host.widget_virtual_34(handle, slot == selection.backdrop_e18d84);
+    }
+    front_end_frame_set_flag_00518b90(selection.flag_e08654, host);  // 00518D4C..00518D54 tail JMP
+}
+
+// 00518B90. The flag is stored even when no panel is selected.
+void front_end_frame_set_flag_00518b90(std::uint32_t flag, FrontEndFrameHost& host) {
+    FrontEndFrameSelection& selection = host.selection();
+    selection.flag_e08654 = flag;                                    // 00518BAF
+    if (selection.panel_e18d88 < 0) return;                          // 00518BA8..00518BB5
+    FrontEndFrameState& frame = host.frame_004c1ac0();
+    const std::uintptr_t panel =
+        frame.panels[static_cast<std::size_t>(frame.set) * kFrontEndFramePanelSlots + selection.panel_e18d88];
+    if (panel == 0) return;                                          // 00518BD8..00518BDC
+    const std::uintptr_t icon = host.find_child_00aa7e00(panel, kFrontEndFrameFlagIcon);  // 00518C1D
+    // 00518C22..00518C3C: virtual +88h(word 00E08654, 0, 1.0F).
+    host.widget_virtual_88(icon, static_cast<std::uint16_t>(selection.flag_e08654), 0, 1.0F);
+}
+
+// 005189B0, EBP = the string, EBX = title_Text, ESI = szarnyas_FrameBox.
+void front_end_frame_set_title_005189b0(std::string_view text, FrontEndFrameHost& host) {
+    FrontEndFrameState& frame = host.frame_004c1ac0();
+    const FrontEndFrameSelection& selection = host.selection();
+    const std::uintptr_t layout =
+        frame.titles[static_cast<std::size_t>(frame.set) * kFrontEndFrameTitleSlots + selection.title_e18d8c];
+    if (layout == 0) return;                                         // 005189CC..005189EC
+    const std::uintptr_t label = host.find_child_00aa7e00(layout, kFrontEndFrameTitleText);  // 00518A2E
+    const std::uintptr_t box = host.find_child_00aa7e00(layout, kFrontEndFrameTitleBox);     // 00518A98
+    host.text_submit_00abaed0(label, text);                          // 00518AC6..00518ACB
+    float width = kFrontEndTitleFixedWidth;                          // 00518B4D..00518B61 (61Fh or 634h set)
+    if (!host.game_byte_61f() && !host.game_byte_634()) {            // 00518AD0..00518AE5
+        // 00518AE7..00518B21: the extent over 960 is rounded to float; FCOMI against 0.2667.
+        const float extent = static_cast<float>(host.text_extent_114(label) / kFrontEndTitlePixelsPerUnit);
+        width = extent > kFrontEndTitlePad ? static_cast<float>(extent + kFrontEndTitlePad) : kFrontEndTitleMinWidth;
+    }
+    host.widget_set_size_58(box, width, host.widget_height_00aa6740(box));  // 00518B71..00518B79
+}
+
+namespace {
+
+// 00515BE4..00515C07 (00515BC0) and the same block in 00515E00: online with both
+// managers present, the screen acts only when 00687860(0Bh, 0) answers true.
+bool tactical_library_may_navigate(TacticalLibraryNavHost& host) {
+    if (host.online_1fe4() && host.front_end_manager_present_e198ac() && host.interface_manager_present_e198b4()) {
+        return host.interface_query_00687860(0x0B, 0);
+    }
+    return true;
+}
+
+// 00515C1A..00515CF0 (00515BC0) and the same block in 00515E00.
+void tactical_library_close_view(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
+    host.close_view_00511b40();
+    if (screen.entry_kind_94 == 5) host.show_order_of_battle_page_004fff20();
+    if (screen.entry_kind_94 == 6) host.show_unlocks_page_004ffd00();
+    if (screen.entry_kind_94 == 2) {
+        // Strings 00CE3A0C, 00CEB430, 00CEB394, 00CEB3FC, 00CEB3A8; pushed last-to-first.
+        host.rebuild_command_bar_0054b530({{
+            {0x00, "", 0},
+            {0xA7, "globals.3dview", 1},
+            {0xB3, "globals.navigate", 1},
+            {0xB2, "globals.scroll_menu", 1},
+            {0xA3, "globals.back", 2},
+        }});
+    }
+}
+
+}  // namespace
+
+void tactical_library_leave_00515bc0(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
+    if (!tactical_library_may_navigate(host)) return;
+    if (screen.view_90 == 1) tactical_library_close_view(screen, host);
+    // 00515D9F..00515DE6.
+    if (host.online_1fe4()) {
+        host.pop_request_interface_006881f0();
+        return;
+    }
+    host.set_return_screen_e08874((screen.field_9c != 0 ? 1 : 0) + 0x0B);
+    host.push_interface_request_004cc460(1, 0);
+}
+
+void tactical_library_back_00515e00(const TacticalLibraryNavState& screen, TacticalLibraryNavHost& host) {
+    if (!tactical_library_may_navigate(host)) return;
+    if (screen.view_90 == 1) {
+        tactical_library_close_view(screen, host);
+        return;
+    }
+    tactical_library_leave_00515bc0(screen, host);                   // 00515FEF
+}
+
 }  // namespace bsp
