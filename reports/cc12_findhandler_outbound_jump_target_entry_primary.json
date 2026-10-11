@@ -1,0 +1,525 @@
+{
+  "schema": 1,
+  "packet": "cc12_findhandler_outbound_jump_target_entry_primary",
+  "status": "Root_reviewed_integrated",
+  "worker_commit": "df947a88f7139fed1e12f34013fc0b23135de858",
+  "private_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_findhandler_outbound_jump_target_entry_primary",
+  "artifact_pins": {
+    "Root_entry_gate.py": {
+      "size": 10116,
+      "sha256": "8ba0df1fb51e7a4bbf2359d8eb1d08dc5a144d66bfe757d3cbe2ead692e8ec00"
+    },
+    "Root_entry_gate.json": {
+      "size": 4972,
+      "sha256": "5e0e5f412170f9965f69a49ce45679e009fc6cace4ed6c09c346a2a45b236349"
+    },
+    "Root_entry_gate.stdout": {
+      "size": 247,
+      "sha256": "d1f0e155b6c68ca54f99c63c2446037f2f88c288ff4a83d235b5b16a517f898f"
+    },
+    "Root_entry_gate.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_entry_gate_attempt01.py": {
+      "size": 10047,
+      "sha256": "7f00d40b934d5b330a53ca1396c1a6df4dfdcedd4f25efaad514fa3bb167ea14"
+    },
+    "Root_entry_gate_attempt02.py": {
+      "size": 10112,
+      "sha256": "c164ca66eb6d1220c5b5d0b8846de2df38d3512961c9083eb4ac8bc05f0bab3c"
+    },
+    "Root_entry_gate_attempt02.stdout": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_entry_gate_attempt02.stderr": {
+      "size": 371,
+      "sha256": "3a63fb405609d6ab41e2fd0442fc4d392e05f428e17f5989ab19c15095f45d71"
+    },
+    "Root_review_failure_history.json": {
+      "size": 728,
+      "sha256": "676bec9c531e57e389f652f692c8a83c5cc8de0b11fd2e79d0b3167b9eeff860"
+    },
+    "preserve_gate_failures.py": {
+      "size": 1618,
+      "sha256": "c49427a225c6e69ae7a10dd42395a5e06ecdc070561fe261f31d4dfd810de1d5"
+    },
+    "Root_actual_review.py": {
+      "size": 7808,
+      "sha256": "8c6f860b89e30bae0c327ffdfdad904dc906abf894fa4b230d963516e66b4198"
+    },
+    "Root_actual_review.json": {
+      "size": 2839,
+      "sha256": "ef100d490f0f5c25008bcb801b7b600b86d9f947ee8a502e40fe47e78e4ae40b"
+    },
+    "Root_actual_review.stdout": {
+      "size": 118,
+      "sha256": "c9b964d56d29f06941b5afa90158795f85bbae7ab0837a975b3704c4abefce7d"
+    },
+    "Root_actual_review.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Root_reviewed_replay.py": {
+      "size": 18958,
+      "sha256": "86583964e3d77192578a2b5585caf20027a89d0058979e774fdcba933cdcc87a"
+    },
+    "Root_reviewed_worker_guard.py": {
+      "size": 2351,
+      "sha256": "8deb67ea53026ce6da9f1c0feae2d4cba092c2b0e967f467a73d95bc4d90f032"
+    },
+    "Root_proof.zip": {
+      "size": 3241329,
+      "sha256": "902fb4d3dc55029b7ceb8a12892c74ce19a98a242035b99a34a1bc7dc01ba978"
+    },
+    "Root_strict_replay.py": {
+      "size": 1932,
+      "sha256": "2f6410d2b30d52e5e2bf026719ab70b9cdfa253a6232f96003c95dc5ae92e477"
+    },
+    "Root_strict_receipt.json": {
+      "size": 2215,
+      "sha256": "e8c2be9a652fe8d1091649295ff39f4c82304352c730cc19de1e60b8f44e4d72"
+    },
+    "Root_strict_replay.stdout": {
+      "size": 140,
+      "sha256": "172dc7a55c538504efb42ea8e94c700b60de308a277f39a81818b0e82a04d820"
+    },
+    "Root_strict_replay.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "worker_outputs": {
+    "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_ENTRY.md": {
+      "size": 5398,
+      "sha256": "1a1d19f310a2e746f7d27c0f81282edd03fe40deec5c05dede43053e3826d96c"
+    },
+    "reports/cc12_findhandler_outbound_jump_target_entry.json": {
+      "size": 18987,
+      "sha256": "0f4486219d91523eca90a7f0df49fc7f0ca2cee24553c6a9b5a2b209b6f9276e"
+    }
+  },
+  "initial_Root_gate": {
+    "status": "PASS",
+    "frozen_commit": "5bf637888ab41abff1da77d0335c7a467c59dfa3",
+    "metadata_manifest": {
+      "size": 64027,
+      "sha256": "be5a38da1c7e69935c8f13c3dc3bba0fb92d692a5d3e913e409e91a59e295d55"
+    },
+    "metadata_preimages_copied": 156,
+    "actual_Git_objects": 14,
+    "positive_inputs": 8,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "epoch": 98,
+    "function_count": 64730,
+    "Native_commands": 4,
+    "original_HTTP_GET_responses": 16,
+    "paired_original_raw_pin": {
+      "size": 2254,
+      "sha256": "23cb77b0a2e1ab56c765f4194671d8f00fbd66d6b8a4d6c3006794d613b703d5"
+    },
+    "complete_payload": {
+      "schema": 1,
+      "complete": true,
+      "program": {
+        "path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": {
+          "space": "ram",
+          "offset": "00400000"
+        },
+        "default_address_space": "ram",
+        "project": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        }
+      },
+      "query_address": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "modification_number_before": "98",
+      "listing": {
+        "instruction_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "instruction_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_at": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        },
+        "code_unit_containing": {
+          "address": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "length": 2,
+          "java_class": "ghidra.program.database.code.InstructionDB",
+          "kind": "instruction",
+          "defined": null
+        }
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00c07a77"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00c07a77"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      },
+      "function_at_query": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00c07a75"
+      },
+      "functions": [
+        {
+          "entry": {
+            "space": "ram",
+            "offset": "00c07a75"
+          },
+          "name": "terminate",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 2,
+            "returned_range_count": 2,
+            "address_count": "44",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c07a75"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c07a94"
+                },
+                "length": "32"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "00c07a9c"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "00c07aa7"
+                },
+                "length": "12"
+              }
+            ]
+          }
+        }
+      ],
+      "direct_call_targets": [],
+      "modification_number_after": "98"
+    },
+    "admitted_exact_entry": {
+      "address": "00C07A75",
+      "length": 2
+    },
+    "remaining_saved_owner_bytes_unadmitted": 42,
+    "gap_unadmitted": "C07A95..C07A9B",
+    "C07A77_unadmitted": true,
+    "Root_gate_failures": 2,
+    "Root_offline_inspection_failures": 3,
+    "Root_fresh_Native_queries": 0,
+    "GPR_mutations": 0,
+    "no_proto_or_body_or_target_query_admitted": true
+  },
+  "Root_actual_Git_archive_and_independent_physical_review": {
+    "status": "PASS",
+    "worker_commit": "df947a88f7139fed1e12f34013fc0b23135de858",
+    "frozen_commit": "5bf637888ab41abff1da77d0335c7a467c59dfa3",
+    "archive_members": 462,
+    "actual_Git_objects": 20,
+    "positive_inputs": 8,
+    "owned_outputs": [
+      "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_ENTRY.md",
+      "reports/cc12_findhandler_outbound_jump_target_entry.json"
+    ],
+    "Root_original_artifacts_equal": 167,
+    "Root_metadata_preimages": 156,
+    "Source_identity_only": {
+      "src": "dfb2ee135e7b642465d448dcc1616fd92686ad51",
+      "include": "7bb7ed2fc76e16eb09ff91be796c5b264aab9ca9"
+    },
+    "manual": {
+      "incoming_edge_opcode": "E9",
+      "rel32_signed": -131,
+      "numeric_next": "00C07AF8",
+      "numeric_target": "00C07A75",
+      "return_address_push": false,
+      "entry_opcode": "6A",
+      "encoded_immediate_bytes": 1,
+      "operand_width": 4,
+      "signed_value": 8,
+      "entry_local_ESP": "T-4 only under actual renewed SS32; incoming JMP leaves current ESP unchanged"
+    },
+    "actual_detailed_Capstone": [
+      {
+        "address": "00C07AF3",
+        "size": 5,
+        "hex": "e97dffffff",
+        "mnemonic": "jmp",
+        "op_str": "0xc07a75",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614261
+          }
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          233,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 4
+        },
+        "regs_read": [],
+        "regs_written": [],
+        "eflags": 0,
+        "groups": [
+          "branch_relative",
+          "jump"
+        ]
+      },
+      {
+        "address": "00C07A75",
+        "size": 2,
+        "hex": "6a08",
+        "mnemonic": "push",
+        "op_str": "8",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 8
+          }
+        ],
+        "prefix": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "opcode": [
+          106,
+          0,
+          0,
+          0
+        ],
+        "addr_size": 4,
+        "modrm": 0,
+        "sib": 0,
+        "disp": 0,
+        "encoding": {
+          "modrm_offset": 0,
+          "disp_offset": 0,
+          "disp_size": 0,
+          "imm_offset": 1,
+          "imm_size": 1
+        },
+        "regs_read": [
+          "esp"
+        ],
+        "regs_written": [
+          "esp"
+        ],
+        "eflags": 0,
+        "groups": [
+          "not64bitmode"
+        ]
+      }
+    ],
+    "Root_actual_review_failures": 0,
+    "Root_manual_decode_failures": 0,
+    "Root_gate_failures": 2,
+    "Root_offline_inspection_failures": 3,
+    "Root_attempt01_separate_local_original_streams_available": false,
+    "Native_or_GPR_effects": 0,
+    "Source_build_ABI_runtime_credit": false
+  },
+  "Root_strict_replay": {
+    "status": "PASS",
+    "helper_sha256": "86583964e3d77192578a2b5585caf20027a89d0058979e774fdcba933cdcc87a",
+    "audit_counts": {
+      "archive_read": 1,
+      "helper_exec": 1,
+      "receipt_write": 1
+    },
+    "denied_events": [],
+    "result": {
+      "accepted": true,
+      "archive_members": 462,
+      "actual_Git_objects": 20,
+      "finite_inputs": 8,
+      "exact_final_outputs": [
+        "docs/CC12_FINDHANDLER_OUTBOUND_JUMP_TARGET_ENTRY.md",
+        "reports/cc12_findhandler_outbound_jump_target_entry.json"
+      ],
+      "final_commit": "df947a88f7139fed1e12f34013fc0b23135de858",
+      "final_tree": "b2047c995b0165b581634df51ae2108b3ac65288",
+      "Root_original_metadata_preimages_equal": 156,
+      "Root_artifacts_pinned": 167,
+      "original_typed_raws": 2,
+      "closing_typed_raws": 1,
+      "all_three_typed_raws_equal": true,
+      "Native_commands": 11,
+      "HTTP_responses": 39,
+      "entry_hex": "6a08",
+      "entry_length": 2,
+      "incoming_edge": {
+        "address": "00C07AF3",
+        "length": 5,
+        "hex": "e97dffffff",
+        "prefixes": [],
+        "modrm": null,
+        "sib": null,
+        "fields": [
+          {
+            "field": "opcode",
+            "offset": 0,
+            "size": 1,
+            "hex": "e9",
+            "value": 233
+          },
+          {
+            "field": "relative_displacement",
+            "offset": 1,
+            "size": 4,
+            "hex": "7dffffff",
+            "value": -131
+          }
+        ],
+        "mnemonic": "jmp",
+        "operands": [
+          {
+            "kind": "imm",
+            "size": 4,
+            "value": 12614261
+          }
+        ],
+        "signed_displacement": -131,
+        "numeric_next_address": "00C07AF8",
+        "numeric_target": "00C07A75",
+        "return_address_push": false,
+        "flags_written": []
+      },
+      "count": 64730,
+      "epoch": 98,
+      "Root_gate_failures_retained": 2,
+      "Root_offline_inspection_failures_disclosed": 3,
+      "Root_attempt01_separate_local_original_streams_available": false,
+      "worker_Native_failures": 0,
+      "worker_decoder_failures": 0,
+      "archive_contained_code_executions": 0,
+      "fresh_Native_queries": 0,
+      "Capstone_constructed_or_imported_in_replay": false
+    }
+  },
+  "failure_history": {
+    "inspection_failures": [
+      "FileNotFoundError guessed git/frozen.json; actual finite_git.json",
+      "KeyError guessed files; actual inputs",
+      "PowerShell quoting parser error; command not started"
+    ],
+    "gate_failures": [
+      "AST Request expected attribute but actual imported name",
+      "formatted positive doc searched for contiguous E97DFFFFFF"
+    ],
+    "attempt01_producer": "exact reconstruction from original tool-call code before correction",
+    "attempt01_streams": "complete original tool output in conversation; overwritten locally by attempt02, no separate local originals claimed",
+    "attempt02_streams": "complete actual original local stdout/stderr retained",
+    "Native_or_GPR_effects": 0
+  },
+  "final_review_failure_counts": {
+    "Root_actual_Git_archive_manual": 0,
+    "Root_strict_replay": 0,
+    "worker_Native_decoder_replay": 0
+  },
+  "validation_credit": {
+    "exact_entry_saved_listing": true,
+    "complete_owner_metadata_only": true,
+    "whole_owner_bytes_unread": 42,
+    "gap_bytes_unread": 7,
+    "Source_modified": false,
+    "new_build_test_probe": false,
+    "Original_ABI_compatible": false,
+    "game_runtime_OS_audio_validated": false
+  },
+  "next_boundary": "A separately leased metadata-only walk of the two complete saved owner ranges; no C07A77 query is admitted by this entry review."
+}
