@@ -204,7 +204,30 @@ pitch are 0, else pitch = `acos(d.y/|d|)` (0 above 1, pi below -1, CRT 00BF9940)
 array or the parent (00791876/00791887/00791896). So a replayed type-1 key starts where the
 camera already is and orbits the key's authored position.
 
-## 7. Function table
+## 7. Keyframe events (`event`)
+
+`docs/HUD_PICK_SEGMENT_QUERY.md` 10.2 left the `event` key. 007A0EB0 reads it at
+007A1F94..007A22EE when `event` is a table and the key is a camera key (`+28h`) or the parse's
+named-key flag `[ESP+13h]` is set. `type` (00B662B0, compared by 00425850) picks the class;
+`function` is stored by 0079C000; `sunk` also reads `depth` (00B66270, FSTP `+28h` at
+007A22CB). Every class watches the keyframe's parent `+1Ch` through an observer at `+10h`
+(vtable 00CE3CF0, entity at `+24h`). The event goes to keyframe `+ECh`, deleting the previous
+one (007A22D2..007A22E8). An unknown type makes none.
+
+| type | vtable | ctor | check (slot `+4h`) |
+| --- | --- | --- | --- |
+| `noparent` | 00D046E4 | inline, 007A203D | 00791570: entity set and 00923810(entity, 1) null, i.e. its `+3Ch` scene parent is gone |
+| `noentity` | 00D046F0 | 00799FA0 | 00791590: entity null (the observer cleared it) |
+| `killed` | 00D046FC | 0079A040 | 007915B0: entity null or byte `+5Eh` set |
+| `sunk` | 00D04708 | 0079A0E0 (2Ch) | 007915D0: entity null, `+5Eh` set, or `depth > world y` (`+100h` after 00414DB0; FCOMPI/JA) |
+
+Every check is false once the fired byte `+Ch` is set. Slot `+8h` 00791540 sets it and runs
+the named function through the mission script runner 00887E50 (`world+1A08h`, the same call the
+step uses for `finishscript` at 007912E0). 0078E630 `BSP_MovieKeyframe_Tick` (from 00797ED0)
+calls the modifier's slot `+14h`, then for a key in state 1 or 2 and `dt > 0` checks the event,
+fires it and deletes it (0078E540 with 0).
+
+## 8. Function table
 
 | address | name | status |
 | --- | --- | --- |
@@ -237,13 +260,24 @@ camera already is and orbits the key's authored position.
 | 00799DE0 | BSP_MovieKeyframe_SetModifier | named |
 | 00791360 | BSP_MovieKeyframe_WriteBits | named |
 | 007A2370 | BSP_MovieKeyframe_ReadBits | named |
+| 00791540 | BSP_KeyframeEvent_Fire | reconstructed, defined |
+| 00791570 | BSP_KeyframeEventNoParent_Check | reconstructed, defined |
+| 00791590 | BSP_KeyframeEventNoEntity_Check | reconstructed, defined |
+| 007915B0 | BSP_KeyframeEventKilled_Check | reconstructed, defined |
+| 007915D0 | BSP_KeyframeEventSunk_Check | reconstructed, defined |
+| 00799FA0, 0079A040, 0079A0E0 | BSP_KeyframeEvent{NoEntity,Killed,Sunk}_Construct | named |
+| 007995F0, 00799620, 00799650 | BSP_KeyframeEvent{NoEntity,Killed,Sunk}_SetEntity | named |
+| 0079C000 | BSP_KeyframeEvent_SetFunction | named |
+| 0078E540 | BSP_MovieKeyframe_SetEvent | named |
+| 0078E630 | BSP_MovieKeyframe_Tick | reconstructed |
+| 007A1F94 (fragment of 007A0EB0) | keyframe_event_parse_007a1f94 | reconstructed |
 
 "Defined" means the function did not exist in Ghidra and was created by
 `tools/ghidra_define_function.py` (record kept in the worktree's `local/c1_defined_functions.json`): 007918B0 and
 00795EE0 lay inside the bodies Ghidra had given 00791360 and 00795D90, 0079CF80 inside 0079CBD0,
 00792710 after 007926F0.
 
-## 8. Status and uncertainty
+## 9. Status and uncertainty
 
 - **Reconstructed, build-tested.** Not ABI-compatible: curves are `std::vector`, entities and
   cameras are host handles, the Lua table is a value tree. No fixture or game run exercises the
@@ -259,4 +293,4 @@ camera already is and orbits the key's authored position.
   argument (`camera_arg + 3B8h`).
 
 Call-site rows for `tools/verify_report_calls.py`: `reports/cc13_camera_controllers.json`
-(15 rows, 0 failed on 2026-10-11).
+(21 rows, 0 failed on 2026-10-11).

@@ -569,4 +569,54 @@ GameCameraChoice gamecamera_choose_camera_0079cbd0(const GameCameraModifier& m,
     return c;
 }
 
+// ---------------------------------------------------------------------------
+// keyframe events
+
+bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t parent,
+                                   bool camera_or_named, KeyframeEvent& out) {
+    if (event.kind != ModifierLuaValue::Kind::Table || !camera_or_named) return false;
+    const ModifierLuaValue& type = event.field("type");
+    KeyframeEvent e{};
+    const std::string& name = type.string;
+    if (name == "noparent") e.kind = KeyframeEventKind::NoParent;
+    else if (name == "noentity") e.kind = KeyframeEventKind::NoEntity;
+    else if (name == "killed") e.kind = KeyframeEventKind::Killed;
+    else if (name == "sunk") e.kind = KeyframeEventKind::Sunk;
+    else return false;
+    e.entity_24 = parent;                          // 007A207F / 007A2126 / 007A21AC / 007A2236
+    e.function_4 = event.field("function").string; // 0079C000
+    if (e.kind == KeyframeEventKind::Sunk) e.depth_28 = event.field("depth").number_f32();  // 007A22CB
+    out = std::move(e);
+    return true;
+}
+
+bool keyframe_event_check(const KeyframeEvent& e, KeyframeEventHost& host) {
+    if (e.fired_c) return false;
+    switch (e.kind) {
+    case KeyframeEventKind::NoParent:   // 00791570: the entity's scene parent is gone
+        return e.entity_24 != 0 && host.scene_parent_3c(e.entity_24) == 0;
+    case KeyframeEventKind::NoEntity:   // 00791590
+        return e.entity_24 == 0;
+    case KeyframeEventKind::Killed:     // 007915B0
+        return e.entity_24 == 0 || host.destroyed_5e(e.entity_24);
+    case KeyframeEventKind::Sunk:       // 007915D0: FLD y, FLD depth, FCOMPI, JA
+        if (e.entity_24 == 0 || host.destroyed_5e(e.entity_24)) return true;
+        return e.depth_28 > host.world_y_100(e.entity_24);
+    }
+    return false;
+}
+
+void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host) {
+    e.fired_c = true;
+    if (!e.function_4.empty()) host.run_script_00887e50(e.function_4);
+}
+
+void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
+                            KeyframeEventHost& host) {
+    if (state_f8 == 0 || state_f8 == 3 || !(dt > 0.0f) || !event_ec) return;
+    if (!keyframe_event_check(*event_ec, host)) return;
+    keyframe_event_fire_00791540(*event_ec, host);
+    event_ec.reset();
+}
+
 }  // namespace bsp::cc13cam

@@ -27,6 +27,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -45,13 +46,15 @@ using ModifierCurve = std::vector<std::pair<float, float>>;
 // (00B65FB0 IsNil, 00B66050 IsNumber, 00B661B0 IsTable, 00B66160 IsUserdata,
 // 00B66270 GetNumber, 00B662D0 ToUserdata, 00B67720 by index, 00B67800 by name).
 struct ModifierLuaValue {
-    enum class Kind { Nil, Number, Table, Userdata, Other };
+    enum class Kind { Nil, Number, String, Table, Userdata, Other };
     Kind kind{Kind::Nil};
     // lua_tonumber; a numeric string is Kind::Number (lua_isnumber is true).
     double number{0.0};
     std::vector<ModifierLuaValue> array;                              // t[1], t[2], ...
     std::vector<std::pair<std::string, ModifierLuaValue>> fields;     // named keys
     std::size_t userdata{0};                                          // host entity handle
+    // 00B662B0 (lua_tostring): the text of a string or number, empty otherwise.
+    std::string string;
 
     const ModifierLuaValue& field(const char* name) const noexcept;
     const ModifierLuaValue& at(int lua_index) const noexcept;         // nil when absent
@@ -265,5 +268,50 @@ struct GameCameraChoice {
 };
 GameCameraChoice gamecamera_choose_camera_0079cbd0(const GameCameraModifier& m,
                                                    GameCameraModifierHost& host);
+
+// ---------------------------------------------------------------------------
+// Keyframe events: `event = {type = ..., function = "name", depth = n}`,
+// parsed by 007A0EB0 at 007A1F94..007A22EE into the keyframe's +ECh (one
+// event; a new one deletes the old). 28h-byte objects (2Ch for `sunk`):
+// +4h function name, +Ch fired byte, +10h observer (vtable 00CE3CF0) whose
+// +24h is the keyframe's parent entity, +28h depth. Vtables are three slots:
+// deleting dtor, check, fire (00791540 for all four).
+enum class KeyframeEventKind {
+    NoParent,   // `noparent`, vtable 00D046E4 (inline ctor 007A203D), check 00791570
+    NoEntity,   // `noentity`, vtable 00D046F0, ctor 00799FA0, check 00791590
+    Killed,     // `killed`,   vtable 00D046FC, ctor 0079A040, check 007915B0
+    Sunk,       // `sunk`,     vtable 00D04708, ctor 0079A0E0, check 007915D0
+};
+
+struct KeyframeEvent {
+    KeyframeEventKind kind{KeyframeEventKind::NoParent};
+    std::string function_4;
+    bool fired_c{false};
+    std::size_t entity_24{0};   // cleared by the observer when the entity goes
+    float depth_28{0.0f};
+};
+
+struct KeyframeEventHost {
+    virtual ~KeyframeEventHost() = default;
+    virtual std::size_t scene_parent_3c(std::size_t entity) = 0;   // 00923810(entity, 1)
+    virtual bool destroyed_5e(std::size_t entity) = 0;             // byte +5Eh
+    virtual float world_y_100(std::size_t entity) = 0;             // +100h after 00414DB0
+    // 00887E50(world+1A08h, 0, &name, 0, 0, -1), the mission script runner.
+    virtual void run_script_00887e50(const std::string& function) = 0;
+};
+
+// The event block of 007A0EB0. Read only when `event` is a table and the key
+// is a camera key (+28h) or the parse's named-key flag is set; an unknown
+// `type` makes no event. `function` and `depth` go through 00B662B0/00B66270.
+bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t parent,
+                                   bool camera_or_named, KeyframeEvent& out);
+bool keyframe_event_check(const KeyframeEvent& e, KeyframeEventHost& host);
+// 00791540: fired = 1, then the function when its name is non-empty.
+void keyframe_event_fire_00791540(KeyframeEvent& e, KeyframeEventHost& host);
+// 0078E630, the key tick (RET 4): the modifier's slot +14h (a no-op in all
+// four tables), then, for a key in state 1 or 2 with dt > 0, a triggered event
+// fires and is deleted (0078E540 SetEvent(null)).
+void keyframe_tick_0078e630(int state_f8, float dt, std::optional<KeyframeEvent>& event_ec,
+                            KeyframeEventHost& host);
 
 }  // namespace bsp::cc13cam
