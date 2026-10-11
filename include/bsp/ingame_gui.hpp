@@ -281,6 +281,27 @@ inline constexpr float kRewardsListbox128 = 0.00555555569f;     // 00CF2548
 // to *(*(00E198AC)+60h) through 0061F9D0, then removes the file from the store.
 inline constexpr std::uint32_t kRewardsDebriefVoiceCallback = 0x00622E00;
 
+// One node of a commit-record objective list (node fields after next/prev).
+struct RewardsObjective {
+    std::string key;           // node+0Ch: shown without its first character (00469840(1, 7FFFFFFFh))
+    std::string points_key;    // node+14h: key of the record+18h points map
+    std::int32_t completed{};  // node+1Ch
+};
+
+enum class RewardsObjectiveKind : std::uint8_t { Primary = 0, Secondary = 1, Hidden = 2 };
+
+inline constexpr std::string_view kRewardsObjectiveCompleted = "^FE.rewards_completed";  // 00CF5514
+inline constexpr std::string_view kRewardsObjectiveFailed = "^FE.rewards_failed";        // 00CF5500
+inline constexpr std::string_view kRewardsHiddenObjective = "globals.obj_hid";                 // 00CEFCE8
+inline constexpr std::string_view kRewardsObjectiveNumberSuffix = ".";                   // 00CE3A70
+inline constexpr std::string_view kRewardsZeroPoints = "0";                              // 00CE43BC
+inline constexpr double kRewardsObjectiveLine = 0.02777777798473835;   // 00CF5550 (1/36 as a float)
+inline constexpr double kRewardsObjectiveArea = 0.6527777910232544;    // 00CF5548
+inline constexpr double kRewardsObjectiveTop = 0.1736111111111111;     // 00CF5540
+inline constexpr double kRewardsObjectiveHeaderGap = 0.013888888992369175;  // 00CF0B20
+inline constexpr float kRewardsObjectiveDepth = -1.0f;                 // 00D7A260
+inline constexpr std::array<float, 4> kRewardsFailedColor{0.7f, 0.1f, 0.1f, 1.0f};  // 00CE3E18, 00D7A2F0 x2, 00D7A24C
+
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
     virtual bool session_present_f8a2fc() = 0;
@@ -364,6 +385,23 @@ struct RewardsEnterHost {
     // byte screen+22Fh+count after an insert (+230h..+237h are cleared first).
     virtual void set_row_human_flag(std::int32_t count_after_insert, bool human) = 0;
     virtual void clear_row_human_flags_230() = 0;
+
+    // --- objectives page (0062EA1B..00630188) ---
+    // The commit record's three objective lists for a side (0: +204h, +210h,
+    // +21Ch; else +228h, +234h, +240h), each a std::list (head +4, size +8).
+    virtual const std::vector<RewardsObjective>& commit_objectives(std::int32_t side, RewardsObjectiveKind kind) = 0;
+    // 0061EC70 on record+18h: the points map, keyed by node+14h.
+    virtual bool commit_objective_points(const std::string& points_key, std::int32_t& points) = 0;
+    // 0061F340 on the 00594A70 record +21Ch (side 0) or +240h: true when the key
+    // is present and that node's +1Ch is nonzero.
+    virtual bool hidden_objective_revealed(std::int32_t side, const std::string& key) = 0;
+    virtual void text_ellipsized_00abb000(RewardsWidget text, std::string_view source, float width, bool localise) = 0;
+    virtual void text_cstring_00abbe50(RewardsWidget text, std::string_view source, bool localise) = 0;
+    virtual void widget_set_size_58(RewardsWidget widget, GuiSize2 size) = 0;
+    virtual void widget_set_color_50(RewardsWidget widget, const std::array<float, 4>& rgba) = 0;
+    // 0052ED20: push_back onto the widget vector at screen+F8h.
+    virtual void keep_created_widget_f8_0052ed20(RewardsWidget widget) = 0;
+    virtual void set_objectives_flag_e08c8a(bool any) = 0;
 };
 
 // Folds a native rank or medal number into an icon state: max(value - 1, 0),

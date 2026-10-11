@@ -389,6 +389,105 @@ void rewards_fill_scoreboard(RewardsEnterState&, RewardsEnterHost& host) {
     host.listbox_set_float(0x128, kRewardsListbox128);
 }
 
+// The objectives page cursor: x from the item template (+DCh), the running
+// y, and z = -1.0f ([esp+78h..80h]).
+struct RewardsObjectiveLayout {
+    RewardsVec3 cursor;
+    float gap{};      // [esp+9Ch]: +E0h.y - +ECh.y
+    float spacing{};  // [esp+44h]
+};
+
+// One objectives section: header text (`header`), box (`box`, resized to the
+// lines), then one clone of +DCh per list node. Native copies: primary
+// 0062F06A..0062F742, secondary 0062EBC5..0062F966, hidden 0062F97B..00630173.
+void rewards_objective_section(RewardsEnterHost& host, RewardsObjectiveLayout& layout, std::int32_t side,
+                               RewardsObjectiveKind kind, std::uint32_t box_offset, std::uint32_t header_offset,
+                               std::uint32_t header_x_offset) {
+    const std::vector<RewardsObjective>& list = host.commit_objectives(side, kind);
+    const RewardsWidget box = host.screen_widget(box_offset);
+    const RewardsWidget header = host.screen_widget(header_offset);
+    RewardsVec3& at = layout.cursor;
+    if (list.empty()) {
+        // 0062EBA0..0062EBBF, 0062F968..0062F979, 00630175..
+        host.widget_show_34(box, false);
+        host.widget_show_34(header, false);
+        return;
+    }
+    host.widget_show_34(box, true);
+    host.widget_show_34(header, true);
+    // The primary header takes its x from the secondary header (+F0h), 0062F09B.
+    host.widget_set_position_00aa8240(header, {host.widget_position_00aa6750(host.screen_widget(header_x_offset)).x, at.y, at.z});
+    at.y = at.y + layout.gap;
+    host.widget_set_position_00aa8240(
+        box, {host.widget_position_00aa6750(box).x, at.y, static_cast<float>(static_cast<double>(at.z) + 1.0)});
+    // FILD count, FMUL line, FADDP line: the box is one line taller than its list.
+    const auto count = static_cast<std::int32_t>(list.size());
+    host.widget_set_size_58(box, {host.widget_size_00aa6740(box).x,
+                                  static_cast<float>(count * kRewardsObjectiveLine + kRewardsObjectiveLine)});
+    at.y = static_cast<float>(at.y + kRewardsObjectiveHeaderGap);
+
+    std::int32_t number = 1;
+    for (const RewardsObjective& node : list) {
+        const RewardsWidget item = host.clone_00aab4c0(host.screen_widget(0xDC));
+        const std::string text = node.key.size() > 1 ? node.key.substr(1) : std::string();
+        bool completed = node.completed != 0;
+        host.text_source_00abaed0(host.child_00aa7e00(item, "number_Text"),
+                                  std::to_string(number) + std::string(kRewardsObjectiveNumberSuffix), true);
+        if (kind == RewardsObjectiveKind::Primary) {
+            host.text_ellipsized_00abb000(host.child_00aa7e00(item, "primary_Text"), text, kRewardsObjectiveDepth, true);
+        } else if (kind == RewardsObjectiveKind::Secondary) {
+            host.text_source_00abaed0(host.child_00aa7e00(item, "primary_Text"), text, true);
+        } else {
+            // 0062FB16..0062FD98: a hidden objective is named only once the
+            // 00594A70 record marks it; its own +1Ch still picks the verdict.
+            const bool revealed = host.hidden_objective_revealed(side, node.key);
+            host.text_source_00abaed0(host.child_00aa7e00(item, "primary_Text"),
+                                      revealed ? text : std::string(kRewardsHiddenObjective), true);
+        }
+        host.text_cstring_00abbe50(host.child_00aa7e00(item, "primary_value_Text"),
+                                   completed ? kRewardsObjectiveCompleted : kRewardsObjectiveFailed, true);
+        std::int32_t points = 0;
+        const bool scored = host.commit_objective_points(node.points_key, points);
+        host.text_source_00abaed0(host.child_00aa7e00(item, "primary_point_value_Text"),
+                                  scored ? std::to_string(points) : std::string(kRewardsZeroPoints), false);
+        if (!completed) host.widget_set_color_50(host.child_00aa7e00(item, "primary_value_Text"), kRewardsFailedColor);
+        host.widget_show_34(item, true);
+        host.keep_created_widget_f8_0052ed20(item);
+        host.widget_set_position_00aa8240(item, at);
+        at.y = static_cast<float>(at.y + kRewardsObjectiveLine);
+        ++number;
+    }
+    // FLD spacing, FADD 1/72, FADD y.
+    at.y = static_cast<float>(layout.spacing + kRewardsObjectiveHeaderGap + at.y);
+}
+
+// 0062EA1B..00630188: the objectives page.
+void rewards_fill_objectives(RewardsEnterHost& host) {
+    const RewardsCommitRecord& record = host.commit_record();
+    const std::int32_t side = host.game_byte(0x1EE3) == 0 ? host.mission_side_005c27e0() : (record.field1e4 == 0 ? 1 : 0);
+
+    // 0062EA85..0062EB79: the free height is shared out between the gaps
+    // above, between and below the non-empty sections.
+    const auto pri = static_cast<std::int32_t>(host.commit_objectives(side, RewardsObjectiveKind::Primary).size());
+    const auto sec = static_cast<std::int32_t>(host.commit_objectives(side, RewardsObjectiveKind::Secondary).size());
+    const auto hid = static_cast<std::int32_t>(host.commit_objectives(side, RewardsObjectiveKind::Hidden).size());
+    RewardsObjectiveLayout layout;
+    const double top_y = host.widget_position_00aa6750(host.screen_widget(0xE0)).y;
+    layout.gap = static_cast<float>(top_y - host.widget_position_00aa6750(host.screen_widget(0xEC)).y);
+    const std::int32_t sections = (hid > 0) + (sec > 0) + (pri > 0);
+    const std::int32_t lines = hid + sec + pri;
+    layout.spacing = static_cast<float>(
+        ((kRewardsObjectiveArea - lines * kRewardsObjectiveLine) - (kRewardsObjectiveLine + layout.gap) * sections) /
+        (sections + 1));
+    layout.cursor = {host.widget_position_00aa6750(host.screen_widget(0xDC)).x,
+                     static_cast<float>(layout.spacing + kRewardsObjectiveTop), kRewardsObjectiveDepth};
+
+    host.set_objectives_flag_e08c8a(pri != 0 || sec != 0 || hid != 0);
+    rewards_objective_section(host, layout, side, RewardsObjectiveKind::Primary, 0xE0, 0xEC, 0xF0);
+    rewards_objective_section(host, layout, side, RewardsObjectiveKind::Secondary, 0xE4, 0xF0, 0xF0);
+    rewards_objective_section(host, layout, side, RewardsObjectiveKind::Hidden, 0xE8, 0xF4, 0xF4);
+}
+
 } // namespace
 
 void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host) {
@@ -420,8 +519,9 @@ void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnter
     if (host.game_byte(0x1EE3) == 0 && host.game_dword(0x1FE4) == 0 && !screen.commit_present19) {
         host.set_page_title_e196c0(2, kRewardsScoringMissionFailed);
     }
-    // NOT RECONSTRUCTED from 0062EA1B on: the objectives page and everything after
-    // it (docs/CC13_INGAME_GUI.md, rewards enter range table).
+    rewards_fill_objectives(host);
+    // NOT RECONSTRUCTED from 00630188 on: the scoring tables and everything after
+    // them (docs/CC13_INGAME_GUI.md, rewards enter range table).
 }
 
 namespace {
