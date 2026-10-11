@@ -1,0 +1,542 @@
+{
+  "schema": "bsp.cc12.ordinary-retirement-action-entry-metadata.v1",
+  "status": "two_saved_action_bodies_exact_operands_and_conditional_slot_bindings_verified_Native_only",
+  "worker_base_commit": "46bdc74e3e5f2112b311a9a61862739f6213da3f",
+  "worker_base_tree": "79b9e4402480f4ffb25d887992c75efa8792403c",
+  "owned_outputs": [
+    "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_ACTION_ENTRY_METADATA.md",
+    "reports/cc12_application_ordinary_retirement_action_entry_metadata.json"
+  ],
+  "admission_stages": [
+    "direct typed metadata at CC7250 and CC7258 only",
+    "Root-reviewed expansion to per-byte metadata at CC7250..CC725F",
+    "Root-reviewed exact16 code bytes twice and context0 text at CC7250, CC7253, CC7258, CC725B"
+  ],
+  "native_scope": {
+    "initial_sites": [
+      "00CC7250",
+      "00CC7258"
+    ],
+    "expanded_interval_inclusive": [
+      "00CC7250",
+      "00CC725F"
+    ],
+    "explicit_queried_metadata_sites": [
+      "00CC7250",
+      "00CC7251",
+      "00CC7252",
+      "00CC7253",
+      "00CC7254",
+      "00CC7255",
+      "00CC7256",
+      "00CC7257",
+      "00CC7258",
+      "00CC7259",
+      "00CC725A",
+      "00CC725B",
+      "00CC725C",
+      "00CC725D",
+      "00CC725E",
+      "00CC725F"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "epoch": 98,
+    "function_count": 64730,
+    "metadata_batches": 4,
+    "typed_responses": 50,
+    "code_read_count": 2,
+    "code_bytes_per_read": 16,
+    "context_zero_text_starts": [
+      "00CC7250",
+      "00CC7253",
+      "00CC7258",
+      "00CC725B"
+    ],
+    "metadata_identity_count_code_closed_unchanged": true,
+    "target_following_queries": 0,
+    "stack_or_data_reads": 0,
+    "prototype_decompile_disassembly_queries": 0
+  },
+  "saved_metadata": {
+    "function_at_and_containing_entries": [
+      "00CC7250",
+      "00CC7258"
+    ],
+    "saved_names": [
+      "Unwind@00cc7250",
+      "Unwind@00cc7258"
+    ],
+    "saved_ranges": [
+      [
+        "00CC7250",
+        "00CC7257"
+      ],
+      [
+        "00CC7258",
+        "00CC725F"
+      ]
+    ],
+    "each_saved_body_address_count": 8,
+    "no_return": false,
+    "is_thunk": false,
+    "unit_lengths": [
+      3,
+      5,
+      3,
+      5
+    ],
+    "interior_site_count_per_full_batch": 12,
+    "entry_flow": "default/effective FALL_THROUGH with NONE override to entry+3",
+    "jump_site_flow": "default UNCONDITIONAL_JUMP; saved CALL_RETURN override yields effective CALL_TERMINATOR; both fallthroughs null",
+    "site_flow_target_addresses_only": [
+      "00412430",
+      "00411EE0"
+    ],
+    "entire_automatic_target_function_objects_wholly_opaque": true,
+    "saved_name_or_range_authenticates_Original_funclet": false
+  },
+  "physical_operands": {
+    "code_hex": "8B 4D E8 E9 D8 B1 74 FF 8D 4D EC E9 80 AC 74 FF",
+    "code_capture_form": "complete BSP CLI formatted stdout and stderr; not raw HTTP response",
+    "manual": [
+      {
+        "address": "00CC7250",
+        "length": 3,
+        "bytes": "8B4DE8",
+        "mnemonic": "MOV",
+        "destination": "ECX",
+        "base": "EBP",
+        "signed_displacement": -24,
+        "operand_memory_read": true,
+        "operand_memory_read_bytes": 4
+      },
+      {
+        "address": "00CC7253",
+        "length": 5,
+        "bytes": "E9D8B174FF",
+        "mnemonic": "JMP",
+        "signed_rel32": -9129512,
+        "destination": "00412430",
+        "return_address_push": false
+      },
+      {
+        "address": "00CC7258",
+        "length": 3,
+        "bytes": "8D4DEC",
+        "mnemonic": "LEA",
+        "destination": "ECX",
+        "base": "EBP",
+        "signed_displacement": -20,
+        "operand_memory_read": false,
+        "operand_memory_read_bytes": 0
+      },
+      {
+        "address": "00CC725B",
+        "length": 5,
+        "bytes": "E980AC74FF",
+        "mnemonic": "JMP",
+        "signed_rel32": -9130880,
+        "destination": "00411EE0",
+        "return_address_push": false
+      }
+    ],
+    "recorded_Capstone_version": "5.0.7",
+    "manual_Capstone_context_zero_texts_agree": true,
+    "saved_CALL_RETURN_separate_from_physical_E9": true,
+    "normal_instruction_local_effects_before_targets": {
+      "EBP_changed": false,
+      "ESP_delta": 0,
+      "return_address_push": false,
+      "EFLAGS_changed": false,
+      "first_action": "ECX receives DWORD at EBP-18h; one four-byte operand-memory read",
+      "second_action": "ECX receives EBP-14h modulo 2^32; no operand-memory read"
+    },
+    "successful_execution_or_valid_memory_established": false
+  },
+  "conditional_saved_slot_bindings": {
+    "prior_parent_contract": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_READINESS.md",
+      "reports/cc12_application_ordinary_retirement_readiness.json"
+    ],
+    "retained_parent_count_epoch_not_refreshed": true,
+    "retained_receiver_store": {
+      "site": "00BEA8CC",
+      "address": "ESP_R+8h",
+      "value": "EDI, previously captured from incoming ECX=A at BEA8CA"
+    },
+    "retained_guard_stores": [
+      {
+        "site": "00BEA8E8",
+        "address": "ESP_G+Ch",
+        "value": "CE37FC"
+      },
+      {
+        "site": "00BEA8F0",
+        "address": "ESP_G+10h",
+        "value": "captured section S in ESI"
+      }
+    ],
+    "algebra_modulo_2_32": {
+      "receiver_address_match": "EBP-18h = ESP_R+8h iff EBP=ESP_R+20h",
+      "guard_address_match": "EBP-14h = ESP_G+Ch iff EBP=ESP_G+20h",
+      "common_binding_requires": "ESP_R=ESP_G"
+    },
+    "receiver_value_binding_also_requires_unchanged_spill_contents": true,
+    "guard_contents_lifetime_and_aliasing_not_proved": true,
+    "actual_stack_bytes_read": 0,
+    "actual_EBP_FH3_binding_or_invocation_proved": false
+  },
+  "existing_target_contract_reuse": {
+    "basis": [
+      "docs/CC12_APPLICATION_TARGETS_BODY_PRIMARY.md",
+      "reports/cc12_application_targets_body_primary.json"
+    ],
+    "fresh_target_queries": 0,
+    "saved_target_objects_used_as_authority": false,
+    "00412430": "Previously accepted body writes CE3818 at ECX then RET; a conditional receiver argument does not prove actual invocation.",
+    "00411EE0": "Previously accepted body captures receiver+4, writes CE37FC, conditionally decrements captured+18h then PUSHes captured and CALLs [CE2210]; no local argument cleanup/rollback.",
+    "external_return_requirement": "The accepted nonnull guard return requires the external callee to remove its one four-byte argument.",
+    "IAT_contents_external_callee_behavior_or_OS_execution_verified_here": false,
+    "old_Native_Source_build_fixture_ABI_or_runtime_credit_transferred": false
+  },
+  "prerequisite": {
+    "current_Root_admission_docs_and_report": [
+      "docs/CC12_APPLICATION_ORDINARY_RETIREMENT_UNWIND_MAP_PRIMARY.md",
+      "reports/cc12_application_ordinary_retirement_unwind_map_primary.json"
+    ],
+    "unwind_map_worker_commit": "fea3ea0e8564c7c0c09a798b6d94a7983416f6bb",
+    "unwind_map_Root_commit": "46bdc74e3e5f2112b311a9a61862739f6213da3f",
+    "admission_receipts": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/Root_initial_gate.json",
+        "bytes": 4544,
+        "sha256": "efcffdb417d4afdf3562ff095102442c2ac823f992825fcbac9228adf6bf784b"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/Root_coverage_gate.json",
+        "bytes": 4663,
+        "sha256": "ee3c7d03e6931f1271f16cb155a845c69b31b20bd73e8c478bae348e111d0043"
+      }
+    ],
+    "earlier_descriptor_map_compiler_Source_and_target_provenance_remains_distinct": true,
+    "recursive_predecessor_archives_copied_or_replayed": false
+  },
+  "Source_Git_identity_only": {
+    "frozen_HEAD": "46bdc74e3e5f2112b311a9a61862739f6213da3f",
+    "Source_subtree_identities": {
+      "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+      "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+    },
+    "actual_immediate_prerequisite_input_blobs": 14,
+    "Source_content_census_or_semantic_claim": false,
+    "Old3356_or_Source4217_credit_transfer": false
+  },
+  "exclusions": [
+    "remaining descriptor bytes or other metadata sites",
+    "action-target, IAT, pointer, neighbor, caller, stack, funclet or data following",
+    "prototype, decompilation, disassembly, or context-neighbor requests",
+    "Original compiler/runtime authentication, actual FH3 dispatch, frame ABI, invocation, provider behavior, cleanup or retirement authority",
+    "Ghidra mutation, repair, rename, or analysis",
+    "Source composition, C++ implementation, tests, build, probes, process, game, OS or audio action",
+    "Source content census, historical archive replay, artifact or runtime credit transfer"
+  ],
+  "seal": {
+    "status": "PASS",
+    "zip": {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/evidence.zip",
+      "bytes": 269485,
+      "sha256": "70c5256c27da90de894a39594d4dda26a7d8aa1b860ab510673c13a9bb9857a5"
+    },
+    "manifest": {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/manifest.json",
+      "bytes": 14709,
+      "sha256": "329afa3e8ab18dec359c8d066b0cbe3b592cc0116a8450302951959bf6528043"
+    },
+    "replay_helper": {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/portable_replay.py",
+      "bytes": 16201,
+      "sha256": "b4418cd991466283eda8e7d2104563235bd7b3cea1314ff543d4ac7f1f6210a7"
+    },
+    "guard_helper": {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/guard_replay.py",
+      "bytes": 2182,
+      "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+    },
+    "helpers": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/capture_gate.py",
+        "bytes": 1787,
+        "sha256": "a0348e860e067b933816a11fd6c9e696a74bbc59ea57cb24544b98b20ee1599d"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/capture_units_gate.py",
+        "bytes": 1839,
+        "sha256": "7e1359da993f1978f4c8970e7e60d37885d886ac8c52c873e704e780fae4520d"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/capture_operands.py",
+        "bytes": 2133,
+        "sha256": "5b6fe92a6dc0a558f939a3647d259cf806696d1d20c04dd47c2811a2b09363d4"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/decode_operands.py",
+        "bytes": 4005,
+        "sha256": "db44d736c47f461876de1334cbd3378b460e3337b0ee19e4ea7fb2b2c247ee34"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/portable_replay.py",
+        "bytes": 16201,
+        "sha256": "b4418cd991466283eda8e7d2104563235bd7b3cea1314ff543d4ac7f1f6210a7"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/guard_replay.py",
+        "bytes": 2182,
+        "sha256": "536f11c32740d2c7cf6d12fb5b1efd74fed6e0d31779e9d1eb0307d7a1e70c1a"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/packet_tool.py",
+        "bytes": 22558,
+        "sha256": "dea59bbd87b5d92c45e9177aa3cda4021a26eeeb72ef64d770ba69a3deef104f"
+      }
+    ],
+    "physical_copy_distinct": true,
+    "copy_zip": {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/distinct_copy/evidence.zip",
+      "bytes": 269485,
+      "sha256": "70c5256c27da90de894a39594d4dda26a7d8aa1b860ab510673c13a9bb9857a5"
+    },
+    "replay_equal": true,
+    "replay_result": {
+      "status": "PASS",
+      "zip_entries": 84,
+      "payload_members": 83,
+      "payload_bytes": 951512,
+      "Native_CLI_calls": 15,
+      "metadata_batches": 4,
+      "typed_responses": 50,
+      "initial_sites": 2,
+      "full_coverage_sites": 16,
+      "epoch": 98,
+      "count": 64730,
+      "saved_function_ranges": [
+        [
+          "00CC7250",
+          "00CC7257"
+        ],
+        [
+          "00CC7258",
+          "00CC725F"
+        ]
+      ],
+      "unit_lengths": [
+        3,
+        5,
+        3,
+        5
+      ],
+      "code_reads": 2,
+      "bytes_per_read": 16,
+      "context_zero_texts": 4,
+      "code_hex": "8B 4D E8 E9 D8 B1 74 FF 8D 4D EC E9 80 AC 74 FF",
+      "manual_decode": [
+        {
+          "address": "00CC7250",
+          "length": 3,
+          "bytes": "8B4DE8",
+          "mnemonic": "MOV",
+          "destination": "ECX",
+          "base": "EBP",
+          "signed_displacement": -24,
+          "operand_memory_read": true,
+          "operand_memory_read_bytes": 4
+        },
+        {
+          "address": "00CC7253",
+          "length": 5,
+          "bytes": "E9D8B174FF",
+          "mnemonic": "JMP",
+          "signed_rel32": -9129512,
+          "destination": "00412430",
+          "return_address_push": false
+        },
+        {
+          "address": "00CC7258",
+          "length": 3,
+          "bytes": "8D4DEC",
+          "mnemonic": "LEA",
+          "destination": "ECX",
+          "base": "EBP",
+          "signed_displacement": -20,
+          "operand_memory_read": false,
+          "operand_memory_read_bytes": 0
+        },
+        {
+          "address": "00CC725B",
+          "length": 5,
+          "bytes": "E980AC74FF",
+          "mnemonic": "JMP",
+          "signed_rel32": -9130880,
+          "destination": "00411EE0",
+          "return_address_push": false
+        }
+      ],
+      "recorded_Capstone_version": "5.0.7",
+      "conditional_saved_slot_bindings": {
+        "receiver": "EBP = ESP_R + 20h, modulo 2^32; saved spill contents must still match receiver",
+        "guard": "EBP = ESP_G + 20h, modulo 2^32",
+        "common_EBP_requires": "ESP_R = ESP_G",
+        "actual_FH3_binding_observed": false
+      },
+      "frozen_HEAD": "46bdc74e3e5f2112b311a9a61862739f6213da3f",
+      "Source_subtree_identities": {
+        "src": "405897b6b5d8720b023862bddeb44e463a56a37b",
+        "include": "a58d44af6071fee132ec49fdda541182d7ece633"
+      },
+      "frozen_input_blobs": 14,
+      "entire_automatic_target_function_objects_opaque": true,
+      "target_following_queries": 0,
+      "stack_or_data_reads": 0,
+      "Original_FH3_frame_invocation_ABI_authority": false,
+      "external_inputs": false
+    },
+    "guard": {
+      "only_supplied_zip_reads": true,
+      "no_post_preload_imports": true,
+      "no_network_process_dynamic_library_directory_or_mutation": true
+    },
+    "replay_pins": [
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/original_replay.json",
+        "bytes": 2411,
+        "sha256": "4eeffd1ce77af061d77c8a49d7ed1e04e5aa30c0e8cf57da81632c989434fc05"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/original_guard.json",
+        "bytes": 455,
+        "sha256": "012d52b1d3ed90d61687497ed9dcef59c604e5e0368d885cbdb6440806877225"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/original_replay_command.json",
+        "bytes": 589,
+        "sha256": "e532622d6793a7a8068a266a0a003db96b64f4f2a7a5a510668c476f153fcd5f"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/distinct_copy_replay.json",
+        "bytes": 2411,
+        "sha256": "4eeffd1ce77af061d77c8a49d7ed1e04e5aa30c0e8cf57da81632c989434fc05"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/distinct_copy_guard.json",
+        "bytes": 470,
+        "sha256": "5859730957df411e4ed70947effb234d13565ab088bd24f2ae0417403410aaaf"
+      },
+      {
+        "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/distinct_copy_replay_command.json",
+        "bytes": 604,
+        "sha256": "c8a9306cf159e8fb0f14ae2bb0ea3297a384c24f4facd911391e5fa8a821b506"
+      }
+    ]
+  },
+  "proof_pins": [
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/frozen_git.json",
+      "bytes": 8894,
+      "sha256": "0d23bce73ea010d1425f71921fd064d7244b7d3e22ed7024cc195b194b585435"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/Root_initial_gate.json",
+      "bytes": 4544,
+      "sha256": "efcffdb417d4afdf3562ff095102442c2ac823f992825fcbac9228adf6bf784b"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/Root_coverage_gate.json",
+      "bytes": 4663,
+      "sha256": "ee3c7d03e6931f1271f16cb155a845c69b31b20bd73e8c478bae348e111d0043"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/seal.json",
+      "bytes": 6777,
+      "sha256": "5842f9e231802aacff0fe420d23fb4c1c736f5b95438a513e68acdcdf92fb716"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/manifest.json",
+      "bytes": 14709,
+      "sha256": "329afa3e8ab18dec359c8d066b0cbe3b592cc0116a8450302951959bf6528043"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/initial_gate.json",
+      "bytes": 14532,
+      "sha256": "351fd9ad0995f4b1d75ddc39ef932a1f1e40da6eabb2a53f6f7cec57ac7fd0f4"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/initial_gate_schedule.json",
+      "bytes": 2378,
+      "sha256": "fa4e86b429845d256f1a9350a94c231faf7718e3a76992385702150fabcd9359"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/coverage_gate.json",
+      "bytes": 71752,
+      "sha256": "4d9232223db5979bb2f6805b4f72c80c3ede28e0c06b65727fc54fc315c8d42e"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/coverage_gate_schedule.json",
+      "bytes": 2651,
+      "sha256": "43431bdeb30f0f749867715f0b2d0bb3867ff7268f0637f0e090e27767a60ea3"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/pre_operand_gate.json",
+      "bytes": 71752,
+      "sha256": "01c74e83a1626074b26a30fb4415ae6769a3cc7502ac5f0ae5a617a0c1c32241"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/pre_operand_gate_schedule.json",
+      "bytes": 2672,
+      "sha256": "595becf39a9c5830265fddb08e57593475d3813fc0735cbdc503cf912cdc90ca"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/closing_gate.json",
+      "bytes": 71752,
+      "sha256": "860809a5925f9d648f0ff7230e1c1f58fe21181fb774567d91f5edbafaacad5f"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/closing_gate_schedule.json",
+      "bytes": 2644,
+      "sha256": "b2be9ee32f92f2a3f4a837f7c674a50e7ad27a59223e5fe66e11260ce7ff7eed"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/operand_schedule.json",
+      "bytes": 2785,
+      "sha256": "e54fa92a18a76c210374597cd5adfde3d688f0f29635954c9515cffdde67fc1f"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/operand_decode.json",
+      "bytes": 2523,
+      "sha256": "46907a4bae5838c86a78c039ae4186fd4d5d64466e2b35205225f8cc9e0a936c"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/instruction_text.json",
+      "bytes": 655,
+      "sha256": "d136407332d71eca4066504c0ef6003115e3680c1c95aa3abb71b510b82f8cf7"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/code_primary.stdout.txt",
+      "bytes": 77,
+      "sha256": "e53ef906c91c04826c32a57645cf62fd52e3e40a3e45b10c817f12e26fb891bd"
+    },
+    {
+      "path": "local/cc12_application_ordinary_retirement_action_entry_metadata/code_closing.stdout.txt",
+      "bytes": 77,
+      "sha256": "e53ef906c91c04826c32a57645cf62fd52e3e40a3e45b10c817f12e26fb891bd"
+    }
+  ],
+  "git_delivery_receipts": {
+    "staged": "local/cc12_application_ordinary_retirement_action_entry_metadata/staged_git_receipt.json",
+    "final": "local/cc12_application_ordinary_retirement_action_entry_metadata/final_git_receipt.json",
+    "note": "External post-generation receipts verify actual frozen/final prerequisites and exactly two output Git objects."
+  },
+  "next_gate": "This packet provides bounded instruction-local argument preparation and conditional slot algebra for a separately reviewed Source policy; no new scope is admitted here.",
+  "validation_boundary": "Captured and replay-checked saved Native metadata, exact instruction operands and conditional argument relationships only; no Source implementation, actual EH activation, ABI, cleanup invocation, or game validation."
+}
