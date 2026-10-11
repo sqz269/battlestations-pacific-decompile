@@ -232,7 +232,11 @@ struct RewardsVec3 {
 // from 0062C3B2 on; only the fields the page builders read.
 struct RewardsCommitRecord {
     std::int32_t won{};        // +00h: nonzero selects FE.rewards_missioncompleted
-    std::int32_t medal{};      // +04h: medal_Icon state + 1
+    std::int32_t field04{};    // +04h: medal_Icon state + 1; third argument of 00910570
+    std::int32_t field08{};    // +08h: second argument of 00910500
+    float map_seconds{};       // +14h: FE.scoring_mapusage input
+    std::uint8_t flag24d{};    // +24Dh: last argument of 00911CE0/00911C00
+    std::int32_t badge{};      // +1DCh: FE.scoring_badge points
     float play_seconds{};      // +0Ch: BSP_Text_FormatPlayTime input
     std::int32_t score{};      // +1E0h: score_value_Text
     std::int32_t field1e4{};   // +1E4h: side test when game+1EE3h is set (0062EA31)
@@ -301,6 +305,65 @@ inline constexpr double kRewardsObjectiveTop = 0.1736111111111111;     // 00CF55
 inline constexpr double kRewardsObjectiveHeaderGap = 0.013888888992369175;  // 00CF0B20
 inline constexpr float kRewardsObjectiveDepth = -1.0f;                 // 00D7A260
 inline constexpr std::array<float, 4> kRewardsFailedColor{0.7f, 0.1f, 0.1f, 1.0f};  // 00CE3E18, 00D7A2F0 x2, 00D7A24C
+
+// The scoring page (0063018D..006359A3) reads these maps of the commit record.
+// Damage: record+9Ch (player) / +A8h (party), map<by category, map<friendly
+// key, map<target category, damage>>>; an L1 node with an empty inner map
+// still opens a group.
+struct RewardsDamageTarget {
+    std::int32_t category{};   // L3 key, index into kRewardsUnitCategoryKeys
+    std::int32_t damage{};     // L3 value
+};
+struct RewardsDamageSide {
+    std::int32_t friendly_key{};  // L2 key: 0 is a friendly hit
+    std::vector<RewardsDamageTarget> targets;
+};
+struct RewardsDamageGroup {
+    std::int32_t by_category{};   // L1 key
+    std::vector<RewardsDamageSide> sides;
+};
+// record+CCh (count +D4h): map<side key, map<category, count>>; record+D8h
+// (count +E0h): map<category, count>.
+struct RewardsCategoryCount {
+    std::int32_t category{};
+    std::int32_t count{};
+};
+struct RewardsRemainingSide {
+    std::int32_t side_key{};      // only key 0 is listed
+    std::vector<RewardsCategoryCount> counts;
+};
+// record+48h (count +50h): map<name, int>, node +0Ch and +14h.
+struct RewardsMissionSpecial {
+    std::string name;
+    std::int32_t points{};
+};
+
+// 00E0B5E0: the unit-category keys the scoring tables index (20 pointers;
+// 18 and 19 are empty strings).
+inline constexpr std::array<std::string_view, 20> kRewardsUnitCategoryKeys{
+    "globals.unitcat_carrier", "globals.unitcat_destroyer", "globals.unitcat_torpedoboat",
+    "globals.unitcat_battleship", "globals.unitcat_cruiser", "globals.unitcat_cargo",
+    "globals.unitcat_landingship", "globals.unitcat_levelbomber", "globals.unitcat_divebomber",
+    "globals.unitcat_torpedobomber", "globals.unitcat_fighter", "globals.unitcat_reconplane",
+    "globals.unitcat_kamikaze", "globals.unitcat_submarine", "globals.unitcat_landvehicle",
+    "globals.unitcat_landfort", "globals.unitcat_airfield", "globals.unitcat_shipyard", "", ""};
+
+inline constexpr std::string_view kRewardsScoringPlayerAct = "FE.scoring_playeract";      // 00CF5424
+inline constexpr std::string_view kRewardsScoringPartyAct = "FE.scoring_partyact";        // 00CF539C
+inline constexpr std::string_view kRewardsScoringCommand = "FE.scoring_command";          // 00CF5388
+inline constexpr std::string_view kRewardsScoringCommandType = "FE.scoring_command_type";  // 00CF5370
+inline constexpr std::string_view kRewardsScoringCommandAmount = "FE.scoring_command_amount";  // 00CF5344
+inline constexpr std::string_view kRewardsScoringRemaining = "FE.scoring_remaining";      // 00CF5304
+inline constexpr std::string_view kRewardsScoringSuicide = "FE.scoring_suicide";          // 00CF52E8
+inline constexpr std::string_view kRewardsScoringMapUsage = "FE.scoring_mapusage";        // 00CF52D4
+inline constexpr std::string_view kRewardsScoringBadge = "FE.scoring_badge";              // 00CF52A8
+inline constexpr std::string_view kRewardsScoringMissionSpec = "FE.scoring_missionspec";  // 00CF5290
+inline constexpr std::string_view kRewardsFriendlyHitPrefix = "FE.scoring_friendlyhit|.: |";  // 00CF53C0
+inline constexpr std::string_view kRewardsCountOpen = "|. (x";                            // 00CF52FC
+inline constexpr std::string_view kRewardsCountClose = ")";                               // 00CE584C
+inline constexpr double kRewardsScoreRow = 0.030555555829778314;      // 00CF53B8
+inline constexpr double kRewardsScoreGroupGap = 0.0027777778450399637;  // 00CF53B0
+inline constexpr double kRewardsDoneToMargin = 0.020833333333333332;  // 00CF0000
 
 struct RewardsEnterHost {
     virtual ~RewardsEnterHost() = default;
@@ -402,6 +465,29 @@ struct RewardsEnterHost {
     // 0052ED20: push_back onto the widget vector at screen+F8h.
     virtual void keep_created_widget_f8_0052ed20(RewardsWidget widget) = 0;
     virtual void set_objectives_flag_e08c8a(bool any) = 0;
+
+    // --- scoring page (0063018D..006359A3) ---
+    virtual void set_scoring_flag_e08c8b(bool value) = 0;
+    virtual RewardsWidget clone_under_00aab4c0(RewardsWidget widget, RewardsWidget parent) = 0;
+    virtual RewardsVec3 widget_local_position_00aa67f0(RewardsWidget widget) = 0;  // &widget+0Ch
+    virtual void widget_set_local_position_00aa7dc0(RewardsWidget widget, const RewardsVec3& position) = 0;
+    virtual std::vector<RewardsDamageGroup> damage_groups(std::uint32_t map_offset) = 0;  // +9Ch / +A8h
+    // 00593480 copies the map at record+`kills_offset` (+B4h / +C0h); the
+    // 0062C170 -> 0062BB60 -> 00625900 chain indexes the copy (a missing key
+    // reads 0 there); the copy is freed after the row (00593180).
+    virtual std::int32_t kills_from_copy(std::uint32_t kills_offset, std::int32_t friendly_key,
+                                         std::int32_t by_category, std::int32_t target_category) = 0;
+    virtual std::vector<RewardsRemainingSide> remaining_units_cc() = 0;
+    virtual std::vector<RewardsCategoryCount> suicides_d8() = 0;
+    virtual std::vector<RewardsMissionSpecial> mission_specials_48() = 0;
+    // The point formulas on *(game+21A0h).
+    virtual std::int32_t damage_points_00911ce0(std::int32_t by, std::int32_t target, std::int32_t friendly_key,
+                                                std::int32_t damage, std::int32_t mode, std::uint8_t flag24d) = 0;
+    virtual std::int32_t kill_points_00911c00(std::int32_t friendly_key, std::int32_t by, std::int32_t target,
+                                              float kills, std::int32_t mode, std::uint8_t flag24d) = 0;
+    virtual std::int32_t remaining_points_00910500(std::int32_t category, std::int32_t field08) = 0;
+    virtual std::int32_t suicide_points_00910570(std::int32_t category, std::int32_t mode, std::int32_t field04) = 0;
+    virtual std::int32_t map_usage_points_009064d0(float seconds) = 0;
 };
 
 // Folds a native rank or medal number into an icon state: max(value - 1, 0),

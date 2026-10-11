@@ -6,6 +6,7 @@
 #include "bsp/main_menu_mission_detail.hpp"
 #include "bsp/profile_checkpoint.hpp"
 
+#include <cstdio>
 #include <string>
 
 namespace bsp {
@@ -297,7 +298,7 @@ void rewards_fill_debriefing(RewardsEnterState& screen, RewardsEnterHost& host) 
     const RewardsWidget medal = host.child_00aa7e00(page, "medal_Icon");
     if (screen.commit_present19) {
         host.widget_show_34(medal, true);
-        host.icon_state_88(medal, rewards_icon_state(record.medal));
+        host.icon_state_88(medal, rewards_icon_state(record.field04));
     } else {
         host.widget_show_34(medal, false);
     }
@@ -488,6 +489,319 @@ void rewards_fill_objectives(RewardsEnterHost& host) {
     rewards_objective_section(host, layout, side, RewardsObjectiveKind::Hidden, 0xE8, 0xF4, 0xF4);
 }
 
+// What 0063018D..0063089E measures once for the scoring page: +10Ch is the
+// table template, +110h the group header, +114h the row, +118h their parent.
+struct RewardsScoringLayout {
+    RewardsVec3 table_pos;        // [esp+134h], world position of +10Ch
+    RewardsVec3 group_pos;        // [esp+B4h], +110h
+    RewardsVec3 row_pos;          // [esp+CCh], +114h
+    RewardsVec3 cursor;           // [esp+48h], starts at table_pos
+    // Local positions of the +10Ch children, re-applied to every clone.
+    RewardsVec3 local_separator, local_row_line, local_vline[4];
+    RewardsVec3 row_line_pos;     // [esp+C0h], world position of +10Ch/row_line_FrameBox
+    GuiSize2 row_line_size;       // [esp+ECh]
+    float vline_width{};          // [esp+58h]
+    GuiSize2 group_row_line_size; // [esp+D8h]
+    GuiSize2 done_to_size;        // [esp+F4h]
+    std::int32_t mode{};          // [esp+40h]
+};
+
+constexpr std::array<std::string_view, 4> kRewardsVlines{"vline1_FrameBox", "vline2_FrameBox", "vline3_FrameBox",
+                                                         "vline4_FrameBox"};
+
+RewardsScoringLayout rewards_measure_scoring(RewardsEnterHost& host) {
+    RewardsScoringLayout s;
+    const RewardsWidget table = host.screen_widget(0x10C);
+    const RewardsWidget group = host.screen_widget(0x110);
+    const RewardsWidget row = host.screen_widget(0x114);
+    s.mode = host.game_dword(0x1FE4) != 0 ? 2 : host.game_dword(0x6AC);
+    s.table_pos = host.widget_position_00aa6750(table);
+    s.group_pos = host.widget_position_00aa6750(group);
+    s.row_pos = host.widget_position_00aa6750(row);
+    s.cursor = s.table_pos;
+    s.local_separator = host.widget_local_position_00aa67f0(host.child_00aa7e00(table, "separator_line_FrameBox"));
+    s.local_row_line = host.widget_local_position_00aa67f0(host.child_00aa7e00(table, "row_line_FrameBox"));
+    for (std::size_t i = 0; i < kRewardsVlines.size(); ++i) {
+        s.local_vline[i] = host.widget_local_position_00aa67f0(host.child_00aa7e00(table, kRewardsVlines[i]));
+    }
+    s.row_line_pos = host.widget_position_00aa6750(host.child_00aa7e00(table, "row_line_FrameBox"));
+    s.row_line_size = host.widget_size_00aa6740(host.child_00aa7e00(table, "row_line_FrameBox"));
+    s.vline_width = host.widget_size_00aa6740(host.child_00aa7e00(table, "vline1_FrameBox")).x;
+    s.group_row_line_size = host.widget_size_00aa6740(host.child_00aa7e00(group, "row_line_FrameBox"));
+    s.done_to_size = host.widget_size_00aa6740(host.child_00aa7e00(row, "done_to_value_Text"));
+    // 006307BF..0063084F: the done-to column runs up to the total column less 1/48.
+    const double total_x = host.widget_local_position_00aa67f0(host.child_00aa7e00(row, "total_value_Text")).x;
+    s.done_to_size.x = static_cast<float>(
+        (total_x - host.widget_local_position_00aa67f0(host.child_00aa7e00(row, "done_to_value_Text")).x) -
+        kRewardsDoneToMargin);
+    return s;
+}
+
+// A table: a clone of +10Ch under +118h at the cursor, its title, the saved
+// child positions, then the cursor moves to the first group line.
+RewardsWidget rewards_table_begin(RewardsEnterHost& host, RewardsScoringLayout& s, std::string_view title,
+                                  bool command_columns) {
+    const RewardsWidget table = host.clone_under_00aab4c0(host.screen_widget(0x10C), host.screen_widget(0x118));
+    host.widget_set_position_00aa8240(table, s.cursor);
+    host.text_ellipsized_00abb000(host.child_00aa7e00(table, "header_Text"), title, kRewardsObjectiveDepth, true);
+    if (command_columns) {
+        // 00633080..0063328E
+        host.text_ellipsized_00abb000(host.child_00aa7e00(table, "done_by_Text"), kRewardsScoringCommandType,
+                                      kRewardsObjectiveDepth, true);
+        host.text_ellipsized_00abb000(host.child_00aa7e00(table, "done_to_Text"), kRewardsScoringCommandAmount,
+                                      kRewardsObjectiveDepth, true);
+        host.widget_show_34(host.child_00aa7e00(table, "damage_Text"), false);
+        host.widget_show_34(host.child_00aa7e00(table, "kills_Text"), false);
+    }
+    for (std::size_t i = 0; i < kRewardsVlines.size(); ++i) {
+        host.widget_set_local_position_00aa7dc0(host.child_00aa7e00(table, kRewardsVlines[i]), s.local_vline[i]);
+    }
+    host.widget_set_local_position_00aa7dc0(host.child_00aa7e00(table, "row_line_FrameBox"), s.local_row_line);
+    host.widget_set_local_position_00aa7dc0(host.child_00aa7e00(table, "separator_line_FrameBox"), s.local_separator);
+    host.widget_show_34(table, true);
+    s.cursor.y = static_cast<float>((static_cast<double>(s.group_pos.y) - s.table_pos.y) + s.cursor.y);
+    return table;
+}
+
+// The vertical lines run from vline1's top to the cursor; the command table
+// hides vline2 and vline3 instead (006357A4..00635811).
+void rewards_table_end(RewardsEnterHost& host, const RewardsScoringLayout& s, RewardsWidget table, bool command_columns) {
+    const float top = host.widget_position_00aa6750(host.child_00aa7e00(table, "vline1_FrameBox")).y;
+    const GuiSize2 vline{s.vline_width, s.cursor.y - top};
+    for (std::size_t i = 0; i < kRewardsVlines.size(); ++i) {
+        const RewardsWidget line = host.child_00aa7e00(table, kRewardsVlines[i]);
+        if (command_columns && (i == 1 || i == 2)) {
+            host.widget_show_34(line, false);
+        } else {
+            host.widget_set_size_58(line, vline);
+        }
+    }
+    host.widget_set_size_58(host.child_00aa7e00(table, "row_line_FrameBox"), s.row_line_size);
+    host.widget_set_size_58(host.child_00aa7e00(table, "separator_line_FrameBox"), s.row_line_size);
+}
+
+RewardsWidget rewards_group_begin(RewardsEnterHost& host, const RewardsScoringLayout& s, std::string_view title) {
+    const RewardsWidget group = host.clone_under_00aab4c0(host.screen_widget(0x110), host.screen_widget(0x118));
+    host.text_ellipsized_00abb000(host.child_00aa7e00(group, "done_by_value_Text"), title, kRewardsObjectiveDepth, true);
+    host.widget_set_position_00aa8240(group, {s.group_pos.x, s.cursor.y, s.group_pos.z});
+    host.widget_show_34(group, true);
+    return group;
+}
+
+void rewards_group_end(RewardsEnterHost& host, RewardsScoringLayout& s, RewardsWidget group) {
+    s.cursor.y = static_cast<float>(s.cursor.y + kRewardsScoreGroupGap);
+    host.widget_set_size_58(host.child_00aa7e00(group, "row_line_FrameBox"), s.group_row_line_size);
+    host.widget_set_position_00aa8240(host.child_00aa7e00(group, "row_line_FrameBox"),
+                                      {s.row_line_pos.x, s.cursor.y, s.row_line_pos.z});
+}
+
+RewardsWidget rewards_row_clone(RewardsEnterHost& host) {
+    return host.clone_under_00aab4c0(host.screen_widget(0x114), host.screen_widget(0x118));
+}
+
+void rewards_row_place(RewardsEnterHost& host, RewardsScoringLayout& s, RewardsWidget row) {
+    host.widget_set_position_00aa8240(row, {s.row_pos.x, s.cursor.y, s.row_pos.z});
+    host.widget_show_34(row, true);
+}
+
+void rewards_row_advance(RewardsScoringLayout& s) {
+    s.cursor.y = static_cast<float>(s.cursor.y + kRewardsScoreRow);
+}
+
+void rewards_row_hide_damage_kills(RewardsEnterHost& host, RewardsWidget row) {
+    host.widget_show_34(host.child_00aa7e00(row, "damage_value_Text"), false);
+    host.widget_show_34(host.child_00aa7e00(row, "kills_value_Text"), false);
+}
+
+// "<category>|. (x<count>)", the remaining/suicide row label (00633957..00633A3B).
+std::string rewards_count_label(std::int32_t category, std::int32_t count) {
+    std::string text(kRewardsUnitCategoryKeys[static_cast<std::size_t>(category)]);
+    text += kRewardsCountOpen;
+    text += std::to_string(count);
+    text += kRewardsCountClose;
+    return text;
+}
+
+// 00630C13..0063181C (player, maps +9Ch/+B4h) and 00631F1B..00632BD2 (party,
+// +A8h/+C0h). A friendly hit (L2 key 0) prefixes the target and paints three
+// (player) or four (party) columns.
+void rewards_damage_table(RewardsEnterHost& host, RewardsScoringLayout& s, std::string_view title,
+                          std::uint32_t damage_offset, std::uint32_t kills_offset, bool party) {
+    const RewardsCommitRecord& record = host.commit_record();
+    host.set_scoring_flag_e08c8b(false);
+    const RewardsWidget table = rewards_table_begin(host, s, title, false);
+    for (const RewardsDamageGroup& by : host.damage_groups(damage_offset)) {
+        const RewardsWidget group =
+            rewards_group_begin(host, s, kRewardsUnitCategoryKeys[static_cast<std::size_t>(by.by_category)]);
+        for (const RewardsDamageSide& side : by.sides) {
+            for (const RewardsDamageTarget& target : side.targets) {
+                std::int32_t points = host.damage_points_00911ce0(by.by_category, target.category, side.friendly_key,
+                                                                  target.damage, s.mode, record.flag24d);
+                const RewardsWidget row = rewards_row_clone(host);
+                host.text_source_00abaed0(host.child_00aa7e00(row, "damage_value_Text"), std::to_string(target.damage),
+                                          false);
+                const std::int32_t kills =
+                    host.kills_from_copy(kills_offset, side.friendly_key, by.by_category, target.category);
+                points += host.kill_points_00911c00(side.friendly_key, by.by_category, target.category,
+                                                    static_cast<float>(kills), s.mode, record.flag24d);
+                host.text_source_00abaed0(host.child_00aa7e00(row, "kills_value_Text"), std::to_string(kills), false);
+                host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(points), false);
+                rewards_row_place(host, s, row);
+                const std::string_view category = kRewardsUnitCategoryKeys[static_cast<std::size_t>(target.category)];
+                if (side.friendly_key == 0) {
+                    host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"),
+                                                  std::string(kRewardsFriendlyHitPrefix) + std::string(category),
+                                                  kRewardsObjectiveDepth, true);
+                    host.widget_set_color_50(host.child_00aa7e00(row, "done_to_value_Text"), kRewardsFailedColor);
+                    if (party) {
+                        host.widget_set_color_50(host.child_00aa7e00(row, "damage_value_Text"), kRewardsFailedColor);
+                        host.widget_set_color_50(host.child_00aa7e00(row, "kills_value_Text"), kRewardsFailedColor);
+                        host.widget_set_color_50(host.child_00aa7e00(row, "total_value_Text"), kRewardsFailedColor);
+                    } else {
+                        host.widget_set_color_50(host.child_00aa7e00(row, "total_value_Text"), kRewardsFailedColor);
+                        host.widget_set_color_50(host.child_00aa7e00(row, "kills_value_Text"), kRewardsFailedColor);
+                    }
+                } else {
+                    host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"), category,
+                                                  kRewardsObjectiveDepth, true);
+                }
+                rewards_row_advance(s);
+            }
+        }
+        rewards_group_end(host, s, group);
+    }
+    rewards_table_end(host, s, table, false);
+}
+
+// 006348A6..00634900: "%d:%02d:%02d" from an hour, "%d:%02d" from a minute,
+// else "%d" of at least 1; the seconds are truncated (CVTTSS2SI).
+std::string rewards_map_usage_time(float seconds) {
+    const auto t = static_cast<std::int32_t>(seconds);
+    char buffer[64];
+    if (t >= 3600) {
+        std::snprintf(buffer, sizeof buffer, "%d:%02d:%02d", t / 3600, (t % 3600) / 60, (t % 3600) % 60);
+    } else if (t >= 60) {
+        std::snprintf(buffer, sizeof buffer, "%d:%02d", t / 60, t % 60);
+    } else {
+        std::snprintf(buffer, sizeof buffer, "%d", t > 0 ? t : 1);
+    }
+    return buffer;
+}
+
+// 00632F5C..006359A3: the command table and its five groups.
+void rewards_command_table(RewardsEnterHost& host, RewardsScoringLayout& s) {
+    const RewardsCommitRecord& record = host.commit_record();
+    const std::vector<RewardsRemainingSide> remaining = host.remaining_units_cc();
+    const std::vector<RewardsCategoryCount> suicides = host.suicides_d8();
+    const std::vector<RewardsMissionSpecial> specials = host.mission_specials_48();
+    // 00632F5C..00632F8E: COMISS +14h > 0.0f, +1DCh signed.
+    if (remaining.empty() && suicides.empty() && !(record.map_seconds > 0.0f) && record.badge <= 0 && specials.empty()) {
+        return;
+    }
+    host.set_scoring_flag_e08c8b(false);
+    const RewardsWidget table = rewards_table_begin(host, s, kRewardsScoringCommand, true);
+
+    // 0063354D..00633CF6
+    if (!remaining.empty()) {
+        const RewardsWidget group = rewards_group_begin(host, s, kRewardsScoringRemaining);
+        for (const RewardsRemainingSide& side : remaining) {
+            if (side.side_key != 0) continue;
+            for (const RewardsCategoryCount& entry : side.counts) {
+                const std::int32_t points =
+                    host.remaining_points_00910500(entry.category, record.field08) * entry.count;
+                const RewardsWidget row = rewards_row_clone(host);
+                rewards_row_hide_damage_kills(host, row);
+                host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(points), false);
+                host.widget_set_size_58(host.child_00aa7e00(row, "done_to_value_Text"), s.done_to_size);
+                host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"),
+                                              rewards_count_label(entry.category, entry.count), kRewardsObjectiveDepth,
+                                              true);
+                rewards_row_place(host, s, row);
+                rewards_row_advance(s);
+            }
+        }
+        rewards_group_end(host, s, group);
+    }
+
+    // 00633CFB..00634576
+    if (!suicides.empty()) {
+        const RewardsWidget group = rewards_group_begin(host, s, kRewardsScoringSuicide);
+        for (const RewardsCategoryCount& entry : suicides) {
+            const std::int32_t points =
+                host.suicide_points_00910570(entry.category, s.mode, record.field04) * entry.count;
+            const RewardsWidget row = rewards_row_clone(host);
+            rewards_row_hide_damage_kills(host, row);
+            host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(points), false);
+            host.widget_set_color_50(host.child_00aa7e00(row, "total_value_Text"), kRewardsFailedColor);
+            host.widget_set_size_58(host.child_00aa7e00(row, "done_to_value_Text"), s.done_to_size);
+            host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"),
+                                          rewards_count_label(entry.category, entry.count), kRewardsObjectiveDepth, true);
+            host.widget_set_color_50(host.child_00aa7e00(row, "done_to_value_Text"), kRewardsFailedColor);
+            rewards_row_place(host, s, row);
+            rewards_row_advance(s);
+        }
+        rewards_group_end(host, s, group);
+    }
+
+    // 0063457B..00634B93
+    if (record.map_seconds > 0.0f) {
+        const RewardsWidget group = rewards_group_begin(host, s, kRewardsScoringMapUsage);
+        const std::int32_t points = host.map_usage_points_009064d0(record.map_seconds);
+        const RewardsWidget row = rewards_row_clone(host);
+        rewards_row_hide_damage_kills(host, row);
+        host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(points), false);
+        host.widget_set_size_58(host.child_00aa7e00(row, "done_to_value_Text"), s.done_to_size);
+        host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"),
+                                      rewards_map_usage_time(record.map_seconds), kRewardsObjectiveDepth, false);
+        rewards_row_place(host, s, row);
+        rewards_row_advance(s);
+        rewards_group_end(host, s, group);
+    }
+
+    // 00634B98..006350EF: the done-to column shows the badge points / 100.
+    if (record.badge > 0) {
+        const RewardsWidget group = rewards_group_begin(host, s, kRewardsScoringBadge);
+        const RewardsWidget row = rewards_row_clone(host);
+        rewards_row_hide_damage_kills(host, row);
+        host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(record.badge), false);
+        host.widget_set_size_58(host.child_00aa7e00(row, "done_to_value_Text"), s.done_to_size);
+        host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"), std::to_string(record.badge / 100),
+                                      kRewardsObjectiveDepth, false);
+        rewards_row_place(host, s, row);
+        rewards_row_advance(s);
+        rewards_group_end(host, s, group);
+    }
+
+    // 006350F4..00635668
+    if (!specials.empty()) {
+        const RewardsWidget group = rewards_group_begin(host, s, kRewardsScoringMissionSpec);
+        for (const RewardsMissionSpecial& entry : specials) {
+            const RewardsWidget row = rewards_row_clone(host);
+            rewards_row_hide_damage_kills(host, row);
+            host.text_source_00abaed0(host.child_00aa7e00(row, "total_value_Text"), std::to_string(entry.points), false);
+            host.widget_set_size_58(host.child_00aa7e00(row, "done_to_value_Text"), s.done_to_size);
+            host.text_ellipsized_00abb000(host.child_00aa7e00(row, "done_to_value_Text"), entry.name,
+                                          kRewardsObjectiveDepth, true);
+            rewards_row_place(host, s, row);
+            rewards_row_advance(s);
+        }
+        rewards_group_end(host, s, group);
+    }
+
+    rewards_table_end(host, s, table, true);
+}
+
+// 00630188..006359A3: the scoring page. Returns the final cursor y, which
+// the rank page code at 006359A3 reads ([esp+4Ch]).
+float rewards_fill_scoring(RewardsEnterHost& host) {
+    host.set_scoring_flag_e08c8b(false);
+    RewardsScoringLayout s = rewards_measure_scoring(host);
+    if (!host.damage_groups(0x9C).empty()) rewards_damage_table(host, s, kRewardsScoringPlayerAct, 0x9C, 0xB4, false);
+    if (!host.damage_groups(0xA8).empty()) rewards_damage_table(host, s, kRewardsScoringPartyAct, 0xA8, 0xC0, true);
+    rewards_command_table(host, s);
+    return s.cursor.y;
+}
+
 } // namespace
 
 void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnterHost& host) {
@@ -520,8 +834,10 @@ void rewards_screen_enter_pages_0062ca7b(RewardsEnterState& screen, RewardsEnter
         host.set_page_title_e196c0(2, kRewardsScoringMissionFailed);
     }
     rewards_fill_objectives(host);
-    // NOT RECONSTRUCTED from 00630188 on: the scoring tables and everything after
-    // them (docs/CC13_INGAME_GUI.md, rewards enter range table).
+    const float scoring_end_y = rewards_fill_scoring(host);
+    (void)scoring_end_y;
+    // NOT RECONSTRUCTED from 006359A3 on: the rank page, the award pages and the
+    // tail (docs/CC13_INGAME_GUI.md, rewards enter range table).
 }
 
 namespace {
