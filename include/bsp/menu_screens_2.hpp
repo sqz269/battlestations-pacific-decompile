@@ -27,6 +27,8 @@ inline constexpr float kSessionBrowserJoinStepCap = 0.1F;        // 00D7A2F0
 inline constexpr std::uint32_t kSessionBrowserRecordBytes = 0xA0;  // (end - begin) / 0A0h
 inline constexpr std::int32_t kSessionBrowserJoinStatusReady = 0x217;  // 00A39750 result
 inline constexpr std::size_t kSessionBrowserEditFilterBase = 9;          // +19h - +10h
+inline constexpr float kSessionBrowserFilterRowTop = 0.075F;              // 00CEED68
+inline constexpr double kSessionBrowserFilterRowPad = 0.011111111111111112;  // 00CEED60
 
 // The screen's widget pointers that these routines dereference.
 enum class SessionBrowserWidget : std::uint16_t {
@@ -36,6 +38,7 @@ enum class SessionBrowserWidget : std::uint16_t {
     Toggle3C = 0x3C,       // virtual +84h(state), paired with +50h
     Toggle40 = 0x40,       // virtual +84h(state), paired with +51h
     EmptyText4C = 0x4C,    // shown when no session is listed
+    Viewport44 = 0x44,     // the filter rows' viewport (height read by 00568930)
     Widget74 = 0x74,
     Widget84 = 0x84,       // passed to 0056B610
     Widget88 = 0x88,
@@ -58,7 +61,10 @@ struct SessionBrowserState {
     bool filters_reset_f1{};         // +F1h
     std::int32_t scroller_1e4_204{};  // +204h (scroller +1E4h, field +20h)
     bool scroller_1e4_22c{};         // +22Ch (scroller +1E4h, field +48h)
-    float field_240{};               // +240h
+    float field_240{};               // +240h, laid-out filter content height (enter resets it)
+    float row_spacing_25c{};         // +25Ch, filter row step
+    bool scroller_12c_174{};         // +174h (scroller +12Ch, field +48h)
+    bool scroller_188_1d0{};         // +1D0h (scroller +188h, field +48h)
     bool refresh_pending{};          // +265h
     float refresh_timer{};           // +268h
     std::uint32_t refresh_row{};     // +26Ch, 00425E50 selected row of the list
@@ -86,6 +92,7 @@ struct SessionRecordView {
     bool has_target{};               // record+00h is non-null
     std::uint32_t target_04{};       // *(record+00h)+04h
     std::uint32_t target_08{};       // *(record+00h)+08h
+    std::uint64_t xuid_98{};         // record+98h/+9Ch
 };
 
 struct SessionBrowserHost {
@@ -145,7 +152,14 @@ struct SessionBrowserHost {
     virtual void set_frame_title_00518d60(std::string_view title) = 0;  // ECX = 0Ah, EDX = 0, stack 0
     // Screen-local helpers not reconstructed here (ECX = screen unless noted).
     virtual void prepare_00570300() = 0;
-    virtual void layout_00568930() = 0;
+    // Filter-row layout (00568930): rows are the nine widgets +54h..+74h.
+    virtual float widget_f4_x_00aa67f0() = 0;                 // first float of 00AA67F0(widget +F4h)
+    virtual void filter_row_set_position_00aa7dc0(std::int32_t row, float x, float y, float z) = 0;
+    virtual bool filter_row_visible_38(std::int32_t row) = 0;
+    virtual void scroller_attach_content_00683790(std::uint16_t scroller_offset, std::int32_t arg) = 0;
+    virtual float widget_height_00aa6740(SessionBrowserWidget widget) = 0;  // returned vector +4
+    virtual void scroller_set_scroll_range_006834a0(std::uint16_t scroller_offset, float range) = 0;
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;   // ECX = game+1EF0h
     virtual void filters_tick_0056dd80() = 0;
     virtual void command_bar_tick_0056e3e0() = 0;
     virtual void begin_filter_edit_0056e360() = 0;
@@ -153,15 +167,10 @@ struct SessionBrowserHost {
     virtual void build_rows_default_00576d20() = 0;
     virtual void build_rows_005789c0(std::int32_t sort_key) = 0;
     virtual void refresh_rows_00577650() = 0;
-    virtual void select_first_0056aa70() = 0;              // arg = list +30h
     virtual void reset_search_0056ac40() = 0;              // ECX = screen+278h
     virtual void scroll_follow_0056b610() = 0;             // (screen+1E4h, list +30h, widget +84h, 0)
-    virtual void back_from_results_00568cb0() = 0;
-    virtual void list_action_00568df0(std::int32_t arg) = 0;
     virtual void filter_left_0056ee00() = 0;
     virtual void filter_right_0056efb0() = 0;
-    virtual void list_left_0056aad0() = 0;
-    virtual std::uint64_t selected_player_xuid_00568d40() = 0;
     // 0057A9C0(record, arg): the record comes from the screen's vector +2A0h (005663B0) or from the
     // client's +94h result vector (00566370).
     virtual void join_session_0057a9c0(bool from_client_results, std::size_t index, std::int32_t arg) = 0;
@@ -229,7 +238,29 @@ struct SessionBrowserEventHost {
     virtual void scroller_set_auto_scroll_00683300(std::uint16_t scroller_offset, std::int32_t direction,
         float step, std::int32_t arg) = 0;
     virtual bool session_signed_in_198() = 0;
+    virtual bool event_byte_d4() = 0;                         // event+D4h
+    virtual void event_virtual_4c(float value) = 0;
+    virtual void scroller_end_thumb_drag_00683320(std::uint16_t scroller_offset) = 0;
 };
+
+// Segment-18 browser helpers (ECX = screen unless noted).
+// 00568930: __thiscall(screen), RET. Lays out the nine filter rows and the +12Ch scroll range.
+void session_browser_layout_filter_rows_00568930(SessionBrowserState& screen, SessionBrowserHost& host);
+// 00568A30: widget-listener slot +0Ch (ECX = screen+0Ch), stack (event), RET 4: release.
+void session_browser_on_widget_released_00568a30(SessionBrowserState& screen, SessionBrowserEventHost& event);
+// 00568B60: widget-listener slot +18h (ECX = screen+0Ch), stack (event, bool hovered), RET 8.
+void session_browser_on_widget_hover_00568b60(SessionBrowserState& screen, bool hovered, SessionBrowserHost& host,
+    SessionBrowserEventHost& event);
+// 00568CB0: __thiscall(screen), RET (tail JMP 006881F0).
+void session_browser_back_from_results_00568cb0(SessionBrowserHost& host);
+// 00568D40: __thiscall(screen), RET, 64-bit result in EDX:EAX (0 when nothing valid is selected).
+std::uint64_t session_browser_selected_xuid_00568d40(SessionBrowserHost& host);
+// 00568DF0: __thiscall(screen, int which), RET 4: 0 selects toggle +40h/+51h, 1 toggle +3Ch/+50h.
+void session_browser_select_toggle_00568df0(SessionBrowserState& screen, std::int32_t which, SessionBrowserHost& host);
+// 0056AA70: __thiscall(screen, list), RET 4; every caller passes +30h.
+void session_browser_focus_list_0056aa70(SessionBrowserHost& host);
+// 0056AAD0: __thiscall(screen), RET: leave a toggle and return to a non-empty result list.
+void session_browser_return_to_list_0056aad0(SessionBrowserState& screen, SessionBrowserHost& host);
 
 void session_browser_handle_gui_event_0057af20(SessionBrowserState& screen, SessionBrowserHost& host,
     SessionBrowserEventHost& event);

@@ -273,3 +273,11 @@ recovered evidence for the registry index of each class.
 | 00683610 | analyzed (field init only; the block's use is not traced) |
 | 005E6E00, 005EA930, 005E10A0, 00573BB0, 005D2F40, 005CFE40 | exported from disk bytes; no Ghidra function |
 | 00687330, 00687800, 00689540, 006888E0 | read only; owned elsewhere |
+
+## Correction (2026-10-11, cc13-menus4)
+
+0057B530 (now `BSP_MultiSessionBrowserScreen_PollSessionList`) does not rebuild the browser's own record
+list. It takes the vector that session-client virtual +94h returns. When the dirty byte 00E08701 was set (it
+clears it) and that vector is non-empty, it joins its first record (00566370(0), then 0057A9C0(record, 0)).
+Otherwise, with 00E08700 set, it clears the +278h list and +288h and tail-jumps 0057AC10; otherwise it clears
+00E08702 and shows the results page (0057A0F0(1)). Evidence and reconstruction: docs/CC13_MENU_SCREENS_2.md.

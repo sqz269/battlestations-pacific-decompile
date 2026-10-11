@@ -130,6 +130,26 @@ applied and +250h..+258h edit dwords; +265h refresh pending, +268h refresh count
   select their row (00A9C8F0 with event+D8h) and step it up/down. Non-returning paths end by
   highlighting the widget: kind 6 -> virtual +88h(2, 0, 1.0), kind 12h -> virtual +84h(2).
 
+## Segment 18 browser helpers (second turn, lease `cc13_menus4_seg18`)
+
+Containment of the listener slots 00568A30 (+0Ch) and 00568B60 (+18h) of vtable 00CEF100: 00568930
+ends with `RET` at 00568A24 followed by INT3 padding (00568A25..00568A2F), and Ghidra's body of
+00568930 holds exactly the 72 instructions of the descent, so both slots are separate functions.
+They and the destructor 005692E0 (ref 00CEED6C) were defined. Reconstructed and build-tested:
+
+- **00568930 LayoutFilterRows**: rows +54h..+74h at x = 00AA67F0(+F4h).x, y = 0.075 (00CEED68) plus
+  the row step +25Ch per row (rounded to float each step); the content height (last visible row + 1)
+  * step + 0.0111 (00CEED60) is applied to the +12Ch scroller (00683790, then range = height minus
+  the +44h viewport height) only when it differs from +240h, which the enter resets to 0.
+- **00568A30 OnWidgetReleased / 00568B60 OnWidgetHover**: end thumb drags (00683320) or auto-scroll
+  (00683300 with 0) on the three scrollers, the result scroller restarting the refresh countdown;
+  hover scales command buttons (virtual +4Ch, 0.5 hovered, else 1.0), selects toggle +3Ch from
+  widget +114h while the list is focused, and redraws the rest by kind (6: +88h, 12h: +84h). The hover
+  path's compare chain is reproduced literally (it can only skip the redraw for an event equal to three
+  different widgets at once).
+- **00568CB0 BackFromResults** (session +8Ch, mode 0, pop request), **00568D40 GetSelectedXuid**
+  (record +98h/+9Ch), **00568DF0 SelectToggle**, **0056AA70 FocusList** and **0056AAD0 ReturnToList**.
+
 ## Smaller reconstructions
 
 - **0052E150 Credits exit**: stops the credits stream (*(00E198AC)+54h, 00A86F40), restarts the menu
@@ -192,7 +212,7 @@ library loaders (PowerUpLib, NoseArt, movies, TutorialLib, UnitLib), its model p
 0050A950), the order-of-battle and unlocks pages, MenuPrompt Register/Exit (005311C0/00530970) and
 the frame-stats formatter 0053BCC0. Most are provisional (string and caller evidence only).
 
-Call sites: `reports/cc13_menu_screens_2.json`, 233 rows, `tools/verify_report_calls.py`: 0 failed.
+Call sites: `reports/cc13_menu_screens_2.json`, 256 rows, `tools/verify_report_calls.py`: 0 failed.
 
 ## Uncertainty
 
