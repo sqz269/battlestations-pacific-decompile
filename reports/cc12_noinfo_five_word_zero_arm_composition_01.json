@@ -1,0 +1,299 @@
+{
+  "schema": "cc12.noinfo-five-word-zero-arm-composition-report.v1",
+  "status": "SYMBOLIC_CONDITIONAL_COMPOSITION_PACKAGED_FOR_ROOT_PRECOMMIT_REVIEW",
+  "packet": "cc12_noinfo_five_word_zero_arm_composition_01",
+  "frozen_commit": "605312f9ae9b71a80d4a9406c3234f0a2f08c113",
+  "independent_candidate_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\independent_candidate.json",
+    "bytes": 13908,
+    "sha256": "ca45fbfc20153455fa0398fc0f0d9d6daeebac0224b244f4c550edd677881e9b"
+  },
+  "candidate_closed_before_Root_criteria_or_peer_material": true,
+  "contract": {
+    "schema": "cc12.noinfo-five-word-zero-arm-independent-candidate.v1",
+    "packet": "cc12_noinfo_five_word_zero_arm_composition_01",
+    "status": "INDEPENDENT_SYMBOLIC_COMPOSITION_CANDIDATE_NOT_EXECUTED",
+    "frozen_commit": "605312f9ae9b71a80d4a9406c3234f0a2f08c113",
+    "evidence_boundary": {
+      "outer_schedule": "Retained historical Native16 readiness document, listing 00BF6713..00BF6722.",
+      "intermediate_schedule": "Retained historical Native36 readiness document, entry 00BF66EF and zero arm 00BF6705..00BF670E.",
+      "leaf": "Retained admitted C04EF3 same-epoch body and joined local contract; seven-byte AND followed by C3 RET.",
+      "joint_fresh_physical_observation": false,
+      "live_execution_observed": false,
+      "admission_limit": "This composes separately retained evidence under explicit compatibility conditions. The historical caller and admitted leaf were not jointly freshly captured or executed.",
+      "references_expanded": false,
+      "Source_boundary": "No Source filepath was accessed and no Source census was performed. Historical documents incidentally displayed embedded member-body and Source/library prose in the earlier bounded reads. Root_input_scope_qualification_01.json records the actual displays; no Source implementation, signature or equivalence credit is taken from them."
+    },
+    "domain": {
+      "mode": "Ordinary legacy non-64-bit x86, default 32-bit operand and address sizes, SS.B=1 throughout the composed interval.",
+      "stack_arithmetic": "All ESP expressions are CPU offsets modulo 2^32. Every complete four-byte access must separately satisfy segment, paging, alignment, privilege and protection conditions; notation does not waive crossing-operand checks.",
+      "RAM": "Ordinary little-endian RAM. Backing-byte identity determines aliasing. No MMIO, asynchronous interference, unmodeled control protection, fault delivery, partial-fault effects or interthread atomicity claim.",
+      "mapping": "Each represented instruction fetch and each direct or indirect transfer must reach the stated instruction under applicable CS mapping and valid target checks. Stable applicable DS/SS/CS descriptors and backing translations are required during each locally composed instruction interval. First-provider and final-target behavior outside those intervals remains arbitrary.",
+      "code": "The stated instruction bytes must remain applicable at each reached fetch. In particular, the leaf AND must not invalidate its following C3 RET or later composed caller instructions. Data/code separation is sufficient but not observed; self-modifying-code behavior is excluded from this local success model.",
+      "SS_B_0_fence": "No full-ESP depth, slot or cleanup equation below is asserted for SS.B=0. That case requires separate SP wrapping and mixed ESP-instruction analysis; a 32-bit operand alone does not establish a 32-bit stack-address size.",
+      "failure_boundary": "A failed access, transfer, mapping, frame-continuity or code-applicability condition takes execution outside the corresponding success continuation. No exception, termination or nonreturn conclusion follows."
+    },
+    "coordinates": {
+      "L": "Saved listing coordinate, not by itself a runtime CPU offset.",
+      "phi": "Applicable but unobserved listing-to-runtime-linear instruction mapping.",
+      "rho": "rho(L) = (phi(L) - CS.base) modulo 2^32, subject to compatible code-segment and transfer mappings.",
+      "U": "ESP at entry to the historical outer body 00BF6713.",
+      "S": "ESP at entry to Native36 00BF66EF after the five pushes and CALL: S = U - 24.",
+      "R_outer_initial": "The four-byte word initially at SS:U, not a recovered caller identity.",
+      "B_initial": "EBP before the Native36 PUSH EBP; equality with outer-entry EBP requires continuity through the preceding ordinary instructions.",
+      "A_i": "Five argument slots at S + 4*i for i=1..5; their locations are U-20,U-16,U-12,U-8,U-4 respectively. The slot at S-8 is the separate literal-2 child argument, not A_2."
+    },
+    "ordered_schedule": [
+      {
+        "phase": "outer_entry_and_five_pushes",
+        "listing": "00BF6713 XOR EAX,EAX; 00BF6715..00BF6719 five PUSH EAX instructions",
+        "effect": "EAX becomes zero. Push order is A_5,A_4,A_3,A_2,A_1 at U-4,U-8,U-12,U-16,U-20. Each push writes a four-byte zero at its own current SS slot. Simultaneously retained zero words require those writes and intervening behavior to preserve the relevant bytes; ordinary distinct frame backing with stable mapping is a sufficient establishment condition."
+      },
+      {
+        "phase": "outer_call",
+        "listing": "00BF671A CALL 00BF66EF; continuation 00BF671F",
+        "effect": "Normal compatible CALL sets entry ESP S=U-24 and writes rho(00BF671F) at SS:S. It pushes a CPU offset, not automatically the numeric listing value 00BF671F. Argument-zero retention through this write is a separate memory condition."
+      },
+      {
+        "phase": "first_provider_setup",
+        "listing": "00BF66EF PUSH EBP; MOV EBP,ESP; PUSH dword DS:[0109DD64]; 00BF66F8 CALL 00C04FDE",
+        "effect": "PUSH EBP writes B_initial at S-4; EBP becomes S-4. The global operand is read as then-current memory after earlier stack writes, then pushed at S-8. Normal CALL writes rho(00BF66FD) at S-12 = U-36. No original-global-value preservation or first-provider semantics are assumed."
+      },
+      {
+        "phase": "first_provider_return_and_zero_selection",
+        "listing": "Continuation 00BF66FD TEST EAX,EAX; POP ECX; zero branch reaches 00BF6705",
+        "effect": "The first provider may arbitrarily change registers, memory and relevant machine state. This continuation requires a compatible normal return to rho(00BF66FD) with ESP S-8 and applicable caller code/frame mapping. Let H be its returned EAX. This packet takes only H=0. POP ECX reads the then-current word at S-8 and leaves ESP S-4. TEST plus that POP and branch do not restore earlier argument, return or saved-EBP bytes."
+      },
+      {
+        "phase": "zero_arm_leaf_call",
+        "listing": "00BF6705 PUSH 2; 00BF6707 CALL 00C04EF3; continuation 00BF670C",
+        "effect": "PUSH writes literal 2 at S-8. CALL writes rho(00BF670C) at S-12=U-36 and reaches the admitted leaf under compatible mapping. Leaf entry EAX is zero in this selected path. M2 below is the memory after both writes and before the leaf AND, so any alias effects of the complete prefix are already included."
+      },
+      {
+        "phase": "admitted_leaf",
+        "listing": "00C04EF3 AND dword DS:[0109EEA8],0; 00C04EFA RET",
+        "effect": "Read the old four-byte DS operand, then complete the four-byte zero write, then RET reads its return word from the resulting memory at SS:(S-12). A valid ordinary RET leaves ESP S-8 and loads that current word as a CPU EIP offset. It reaches rho(00BF670C) only under the explicit return-target predicate."
+      },
+      {
+        "phase": "intermediate_zero_tail",
+        "listing": "00BF670C POP ECX; 00BF670D POP EBP; 00BF670E JMP 00BF65BB",
+        "effect": "If the leaf really reaches this continuation normally, POP ECX reads the post-AND word at S-8 and POP EBP reads the post-AND word at S-4. ESP becomes S. JMP transfers to the final target under compatible mapping without pushing a return word or discarding the five argument slots. Native36 has no owned RET here."
+      },
+      {
+        "phase": "conditional_outer_continuation",
+        "listing": "00BF671F ADD ESP,20; 00BF6722 RET",
+        "effect": "The final target remains arbitrary. Only if it reaches rho(00BF671F) normally with compatible mapping/frame and ESP P does this ADD compute (P+20) mod 2^32 and RET read the then-current word at that new SS offset. For P=S+4=U-20 the ADD reaches U and normal RET leaves ESP U+4. This P follows from a compatible plain final-target return using SS:S, but is not guaranteed by the JMP or leaf. Reaching the original outer caller additionally requires the late SS:U word to equal R_outer_initial and a valid destination."
+      }
+    ],
+    "leaf_memory_algebra": {
+      "M2": "Ordinary-RAM byte map immediately before the leaf AND, after arbitrary first-provider behavior and zero-arm PUSH/CALL writes.",
+      "W": "{ backing(DS, 0x0109EEA8+i) : i=0..3 }, using the applicable leaf data mapping.",
+      "M3": "M3[b] = 0 if b is in W; otherwise M3[b] = M2[b]. This is the normal-completion result, not byte-store order or atomicity.",
+      "r_L_j": "backing(SS,L+j) for j=0..3, with stable applicable stack mapping through the locally modeled reads.",
+      "V2_L": "sum(256^j * M2[r_L_j], j=0..3).",
+      "V3_L": "sum(256^j * (0 if r_L_j is in W else M2[r_L_j]), j=0..3).",
+      "Preserve_L": "V3_L=V2_L iff every overlapping original byte M2[r_L_j] with r_L_j in W was already zero. Disjointness is sufficient, not necessary.",
+      "Match_L_K": "For each j, (0 if r_L_j in W else M2[r_L_j]) equals byte_j(K). This is exactly V3_L=K, for any specified 32-bit K.",
+      "Zero_L": "V3_L=0 iff every nonoverlapping byte M2[r_L_j] with r_L_j not in W is zero. Overlapped bytes become zero regardless of their prior values.",
+      "general_alias_scope": "These predicates do not require numerical DS/SS equality, flat mapping or cross-operand disjointness. They cover partial aliases and arbitrary prior mutations. The interval from M2 through the local POPs must still meet stable mapping, normal-completion and no-interference conditions."
+    },
+    "slot_obligations": [
+      {
+        "slot": "A_1..A_5",
+        "offsets": [
+          "S+4=U-20",
+          "S+8=U-16",
+          "S+12=U-12",
+          "S+16=U-8",
+          "S+20=U-4"
+        ],
+        "tail_zero_condition": "For every i=1..5, Zero_(S+4*i). All five conditions plus actual arrival at the final target give five zero argument-slot words at that intermediate entry. They are stack words, not a recovered typed signature.",
+        "qualification": "Initial pushes of zero do not prove these conditions: first-provider or earlier aliasing writes may change them. If all five M2 words are zero, the leaf zero write preserves their zeros regardless of overlap. If W is disjoint from a mutated argument, that mutation survives. The leaf can also zero an overlapped nonzero byte."
+      },
+      {
+        "slot": "Native36 caller return",
+        "offset": "S=U-24",
+        "expected_value": "rho(00BF671F)",
+        "condition": "Match_S_rho(00BF671F) gives that word at the intermediate tail only. The pre-AND condition V2_S=rho(00BF671F) and Preserve_S are sufficient together, but neither is assumed. The final target can later change or ignore this slot; its eventual return needs its own compatible behavior and late return-word condition."
+      },
+      {
+        "slot": "saved EBP",
+        "offset": "S-4=U-28",
+        "expected_value": "B_initial",
+        "condition": "Match_(S-4)_B_initial is exactly the condition for the local POP EBP to restore the saved initial value. Without it POP loads the current post-AND word. This is not a callee-saved-register ABI guarantee."
+      },
+      {
+        "slot": "literal-2 child argument / POP ECX slot",
+        "offset": "S-8=U-32",
+        "expected_value": "2",
+        "condition": "Match_(S-8)_2 is exactly the condition for the local POP ECX to load 2. In the ordinary distinct-frame establishment subcase V2_(S-8)=2, so overlap of its low byte changes 2 to 0, while overlap confined to its already-zero high bytes preserves 2. General M2 and Match are used if prefix writes alias this slot."
+      },
+      {
+        "slot": "leaf return",
+        "offset": "S-12=U-36",
+        "expected_value": "rho(00BF670C)",
+        "condition": "Match_(S-12)_rho(00BF670C), valid ordinary RET and applicable target mapping are required to enter the composed POP/POP/JMP suffix. CALL establishment alone is insufficient because the AND precedes the RET read. A different valid resulting offset yields a different continuation outside this suffix."
+      },
+      {
+        "slot": "outer caller return",
+        "offset": "U=S+24",
+        "expected_value": "R_outer_initial",
+        "condition": "Match_U_R_outer_initial is exactly preservation through the leaf relative to the original outer word, provided its prior history is included in M2. It does not bind later final-target writes. With compatible P=S+4, outer RET returns to the original destination only if its late current word still equals R_outer_initial and the target is valid."
+      }
+    ],
+    "registers_flags_and_results": {
+      "intermediate_EAX": "On the selected H=0 path with normal leaf/suffix completion, EAX=0 at entry to the final target: PUSH, CALL, the admitted AND/RET, POP ECX, POP EBP and JMP do not assign it in this ordinary local model.",
+      "intermediate_flags": {
+        "CF": 0,
+        "OF": 0,
+        "ZF": 1,
+        "SF": 0,
+        "PF": 1,
+        "AF": "undefined"
+      },
+      "intermediate_flags_origin": "The leaf AND supplies these arithmetic flags; subsequent ordinary RET/POPs/JMP do not modify them. No guarantee is made for unrelated status bits or for flags after arbitrary final-target execution.",
+      "final_EAX": "Arbitrary final-target residue if an outer return occurs; zero at the intermediate tail is not a final result contract.",
+      "final_flags": "If the outer ADD executes, it supplies arithmetic flags for 32-bit P+20. The ordinary outer RET does not restore the earlier AND flags.",
+      "final_control": "No nonreturn, termination, handler ABI, Watson behavior, recovered C/C++ signature, Source UCRT equivalence or successful startup/gameplay inference."
+    },
+    "verification_and_actions": {
+      "formal_derivation_only": true,
+      "model_executions": 0,
+      "simulations": 0,
+      "tests": 0,
+      "builds": 0,
+      "probes": 0,
+      "Native_context_provider_target_queries": 0,
+      "decoder_imports_or_executions": 0,
+      "Source_file_accesses": 0,
+      "Source_absence_census": false,
+      "Source_implementation_credit": false,
+      "C_plus_plus_CMake_ledger_edits": 0,
+      "GPR_mutations": 0,
+      "runtime_actions": 0,
+      "archives_created": 0,
+      "old_helper_executions": 0,
+      "ABI_compatible": false,
+      "startup_or_gameplay_validated": false
+    }
+  },
+  "retained_finite_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\Root_frozen_inputs.json",
+      "bytes": 17432,
+      "sha256": "7931eaf8a3683f61ab6b5c815fca66d94da7a98f5f8236dc7f42dbd6400ca79e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\docs\\CC12_NATIVE_CRT_FIVE_ZERO_ARGUMENT_TARGET_ABI_READINESS.md",
+      "bytes": 12988,
+      "sha256": "0c567beab6188bdee8e7175a1bd805aa4ef50762ddd6d62655cab2f2d00f8e13"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\docs\\CC12_MISSION_LUA_VARIANT_INVALID_PARAMETER_PROVIDER_ABI_READINESS.md",
+      "bytes": 12045,
+      "sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\docs\\CC12_C04EF3_SAME_EPOCH_BODY_01.md",
+      "bytes": 11216,
+      "sha256": "c607467ede9fd86346dc76c1a6184d7952e32ce631b5996f07e6fcd1224decbf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\reports\\cc12_c04ef3_same_epoch_body_01.json",
+      "bytes": 881752,
+      "sha256": "9d7ff6a8222d31c3778fc6ac822fd1905e3da9353b21d5f806755db97f88b58f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\docs\\CC12_C04EF3_JOINED_BODY_CONTRACT_01.md",
+      "bytes": 7513,
+      "sha256": "e7c59ccaeb2e79ed57e6220293073fc6bc0863fd0c36f68803bf7c3f87154891"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\reports\\cc12_c04ef3_joined_body_contract_01.json",
+      "bytes": 116908,
+      "sha256": "89442af897f38a76cc22c91786204ef2e360ea2ba5b17914057d23b1bb7844d2"
+    }
+  ],
+  "Root_input_scope_qualification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\inputs\\Root_input_scope_qualification_01.json",
+    "bytes": 2656,
+    "sha256": "9e93db1d2c3edfabd7c4615f847860d74d8e9292bde90d716e455c7cd0dff820"
+  },
+  "input_freeze_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\input_freeze.json",
+    "bytes": 11862,
+    "sha256": "5cd43afd0782a4450a47735cf2464a05cf0fca6791cd5ef95ba06b80e7b54d33"
+  },
+  "first_packaging_source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\package_once.py",
+    "bytes": 3237,
+    "sha256": "0c41bd149036602f4e3ce44361a9fc50767b3da79a4a4b350eb1f034a6c3f395"
+  },
+  "packaging_preexecution_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\packaging_preexecution_pins.json",
+    "bytes": 2160,
+    "sha256": "e4e7910aede1de3438b3d279c706e96abe16f2b9d2771fa047413f1877c57537"
+  },
+  "public_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\docs\\CC12_NOINFO_FIVE_WORD_ZERO_ARM_COMPOSITION_01.md",
+    "bytes": 8604,
+    "sha256": "171eed337f33a64c0057d8f40ed3e709a5618229eeaf6abf307c8bfd666c3f5d",
+    "repository_path": "docs/CC12_NOINFO_FIVE_WORD_ZERO_ARM_COMPOSITION_01.md"
+  },
+  "packaging_is_not_model_execution_or_test": true,
+  "semantic_changes_after_candidate": [
+    {
+      "schema": "cc12.noinfo-five-word-zero-arm-semantic-refinement.v1",
+      "name": "semantic_refinement_01",
+      "status": "MINIMAL_CORRECTION_FOR_PEER_REVIEW",
+      "immutable_base_candidate": {
+        "file": "independent_candidate.json",
+        "bytes": 13908,
+        "sha256": "ca45fbfc20153455fa0398fc0f0d9d6daeebac0224b244f4c550edd677881e9b"
+      },
+      "candidate_json_pointer": "/slot_obligations/1/condition",
+      "old": "Match_S_rho(00BF671F) gives that word at the intermediate tail only. Earlier CALL establishment and Preserve_S are sufficient together, but neither is assumed. The final target can later change or ignore this slot; its eventual return needs its own compatible behavior and late return-word condition.",
+      "new": "Match_S_rho(00BF671F) gives that word at the intermediate tail only. The pre-AND condition V2_S=rho(00BF671F) and Preserve_S are sufficient together, but neither is assumed. The final target can later change or ignore this slot; its eventual return needs its own compatible behavior and late return-word condition.",
+      "reason": "Preserve_S covers only M2 to M3. An arbitrary compatible first provider or earlier prefix write can change the Native36 caller-return word between its original CALL establishment and M2. Therefore the earlier establishment alone cannot supply the needed M2 premise.",
+      "symbolic_countercase": "The outer CALL initially writes rho(00BF671F) at S; the arbitrary first provider later changes that word to x unequal to rho(00BF671F) and returns compatibly with H=0. If W is disjoint from the S word and remaining local success conditions hold, Preserve_S is true while the intermediate tail still sees x. This is a logical countercase at the allowed provider boundary, not an execution or claim of Native provider realizability.",
+      "unchanged": [
+        "Exact Match_S_rho(00BF671F) predicate",
+        "All other candidate keys and values",
+        "Original immutable candidate and first packaging source, pins, streams and results"
+      ],
+      "model_executions": 0,
+      "tests": 0,
+      "Native_Source_runtime_queries": 0
+    }
+  ],
+  "publication_qualifications": [
+    "Root review clarified that U-36 is the deepest return slot written by owned CALL instructions, not a bound on unopened providers private stack depth."
+  ],
+  "peer_review_status": "PENDING_ROOT_REVIEW",
+  "publication_frontier": "Public documentation/report only; no Source, ABI or runtime promotion.",
+  "refined_candidate_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\refined_candidate_01.json",
+    "bytes": 14012,
+    "sha256": "569783280d92b72bb0f859ee1dde1812f9efc247ac7a5ee4cf51c75936700a5f"
+  },
+  "semantic_refinement_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\semantic_refinement_01.json",
+    "bytes": 2056,
+    "sha256": "5a048273dd7a8ad00b4ea208b9d2ab1ba8867c66e69892aa139592e180cc3673"
+  },
+  "first_publication_retention": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\first_publication_retention.json",
+    "bytes": 1666,
+    "sha256": "23fe1d4cc11f109598ff35ed32d43aff16f4b3fba56d519b8ee4c02c0cf66f00"
+  },
+  "first_refinement_packaging_source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\package_refinement_once.py",
+    "bytes": 3717,
+    "sha256": "80f07deccfbb5255f3aa9985a3ea45e14ac58d0940582077e1c04fdfc7d81550"
+  },
+  "refinement_preexecution_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_c04ef3_joined_body_contract_01\\local\\cc12_noinfo_five_word_zero_arm_composition_01\\refinement_preexecution_pins.json",
+    "bytes": 2128,
+    "sha256": "40eb52614530327843ab6296fd2c2e71d0cd7732fbd701466816361367b7466a"
+  }
+}
