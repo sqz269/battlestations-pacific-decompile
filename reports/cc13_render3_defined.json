@@ -206,6 +206,92 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8c6a0",
+    "end_address": "00b8c6ac"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8c6a0",
+    "end_address": "00b8c6ab",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8c6a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b8c6a0",
+    "function_name": "FUN_00b8c6a0",
+    "entry_point": "00b8c6a0",
+    "body_size": 12,
+    "message": "Function created successfully at 00b8c6a0"
+   }
+  },
+  {
+   "defined": "00b8c6a0",
+   "end": "00b8c6ac",
+   "name": null,
+   "after": "Function: FUN_00b8c6a0 at 00b8c6a0\nSignature: undefined FUN_00b8c6a0(void)\nEntry: 00b8c6a0\nBody: 00b8c6a0 - 00b8c6ab"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8d840",
+    "end_address": "00b8d84a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8d840",
+    "end_address": "00b8d849",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8d840",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b8d840",
+    "function_name": "FUN_00b8d840",
+    "entry_point": "00b8d840",
+    "body_size": 10,
+    "message": "Function created successfully at 00b8d840"
+   }
+  },
+  {
+   "defined": "00b8d840",
+   "end": "00b8d84a",
+   "name": null,
+   "after": "Function: FUN_00b8d840 at 00b8d840\nSignature: undefined FUN_00b8d840(void)\nEntry: 00b8d840\nBody: 00b8d840 - 00b8d849"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

@@ -214,4 +214,87 @@ caller). `00B64CE0` multiplies by a matrix from `0047C2A0` and sets the translat
 
 ## Segment 91
 
-(in progress)
+Segment 91 had 126 reconstruction records (the ocean spectrum core, bone models, animation
+channel readers, mesh-resource initialisers). This packet named the 142 remaining Ghidra
+functions plus two Ghidra-less flare thunks, and corrected two tag names: `00B90C10` and
+`00B90C20` are tagged `cg_static_dtor_stub`, but each is `MOV ECX, pool; JMP allocate` into
+the 404- and 400-byte pools (`01090358`, `01090390`).
+
+### Mit::allocator block pools (reconstructed slot order)
+
+Ghidra carries the RTTI name `Mit::allocator_list_elem` for the base vtable, so `Mit` is the
+engine's own namespace. Three pool instantiations live here, each a list element of
+`00E188B4` with a critical section at +0Ch, a recursion counter +24h, a block-pointer vector
+(+28h/+2Ch/+30h) and the current block +34h (-1 = none). A block holds 32 slots whose last
+dword is the block index, then a uint16 free-index stack and a uint16 free count.
+
+| Payload | Stride | Block | Init | Allocate | Free | Trim | Vtable |
+|---|---|---|---|---|---|---|---|
+| 480 (flare, pool `010902A8`) | 1E4h | 3CC4h | `00B8B6D0` | `00B8D700` | `00B8C3A0` | `00B8D660` | `D63410` |
+| 404 (skin model, quadtree node) | 198h | 3344h | `00B8FA80` | `00B90800` | `00B90020` | `00B90760` | `D6355C` |
+| 400 (bone model) | 194h | 32C4h | `00B8FB50` | `00B90AC0` | `00B90150` | `00B90A20` | `D63560` |
+
+A fresh block's stack is `31..0`, so slot 0 is handed out first. When the current block
+empties, the pool advances to the first later block with a free slot (never an earlier one);
+a free lowers `current` to the freed block's index (an unsigned compare, so it also replaces
+-1). Trim releases every completely free block by moving the last block into its place and
+renumbering that block's slots. `MitBlockPool` reproduces exactly this order; it holds no
+memory. Ghidra treats the `CALL _free` in `00B8D660` as no-return, so the listing omits the
+move-and-renumber tail `00B8D686..00B8D6BF` (read from the PE with `disasm-raw`); the same
+pattern is likely in the other two trims. This is a listing repair candidate, not changed here.
+
+The flare class uses the 480-byte pool directly: `00B8D840` (Ghidra-less) is its operator new
+(`MOV ECX,010902A8; JMP 00B8D700`), `00B8C6A0` (Ghidra-less) its operator delete, and the
+scalar deleting destructor `00B8D9A0` frees into the same pool.
+
+### Flares (reconstructed helpers)
+
+The flare object (vtable `D63420`, 23 slots, all generated-model base methods except the
+scalar delete) keeps the projected clip position at +1A4h/+1A8h and a visibility at +1B4h.
+
+| Address | Name | Reconstructed as |
+|---|---|---|
+| `00B8B350` | `BSP_Flare_CentreWeight` | `(1.4142136 - r) * 0.2 + 0.05`, r = distance from screen centre |
+| `00B8B3B0` | `BSP_Flare_EdgeFade` | linear fade in the outer 6% band of each screen edge, 0 outside |
+| `00B8B670` | `BSP_Flare_PairTest` | `+1C0h != 0 && +1C4h >= +1C0h` |
+| `00B8B8C0` | `BSP_FlareOwner_PlaceElement` | `base + dir * owner^t` via the CRT log/exp stubs |
+| `00B8C520` | `BSP_Color32_Scale` | per-byte scale, clamp to [0,255], FISTP rounding |
+| `00B8B980` | `BSP_FlareGeometry_WriteDiscFan` | index pattern only: `(0, i+1, (i+1)%n+1)` |
+
+The x87 compare order of `00B8B3B0` was traced from the listing, including how unordered
+compares fall through (a NaN position skips the range rejections, as COMISS/FCOMI branch in
+the image). `00B8B8C0` uses the CRT stubs `00BFA910` and `00BFEEEC`; both have the SSE2
+dispatch prologue and are taken as log and exp from the exp(log(a)*t) shape only. The flare
+draw path (`BSP_Flare_UpdateFromCachedOcclusionSamples` `00B8D150`, the quad writers
+`00B8C6B0/00B8C8A0/00B8CC90`, the billboard rebuild `00B8BDD0` and the geometry builder
+`00B8DD60` with `flare2.mshd`, `flareocclusion.mshd` and `simplecolor2.mvfm`) is named, not
+reconstructed; `docs/FLARE_QUERY_SUBMISSION.md` covers the occlusion-query side.
+
+### Groups, skinned/bone models, quadtree nodes, resources (named)
+
+`D634B0` is the `cGroupParamsResource` vtable (slot +18h `00B8EB20` writes its params into a
+node's +184h when the node accepts type token `0109032C`); `D634F8` is `cGroup` (clone
+`00B8F6F0`, render `00B8EF10` with the sphere/plane classifier, node detach `00B8F090`).
+`D63590` is the bone model (clone `00B912E0`, 400-byte pool), `D635F0` the skin model (render
+`00B90490`, animator step `00B8FDE0`, 404-byte pool), `D63650` the quadtree node (clone
+`00B91C40`, render `00B91A50`, build `00B91D70` with the `QuadTreeNode` name). Which of
+`cSkined3dObject` / `cMatrixIndexed3dObject` (type-info builders `00B90FB0` / `00B911D0`)
+belongs to which vtable was not settled. Mesh-resource constructors and model factories
+(`00B93020`, `00B930F0`, `00B931F0`, `00B93680..00B93A00`) are named from their vtables.
+
+### Ocean FFT and grid indices (named)
+
+`00B94E90`, `00B950B0` and `00B952D0` are the bit-reversal and butterfly stages behind the
+inverse FFT `00B95AA0` (`docs/OCEAN_WAVE_FIELD.md`); `00B962E0..00B96960` are the spectrum
+samplers (`docs/CC13_WATER_RENDER.md` covers `00B962E0/00B96450`). `00B98BE0` builds a 16-bit
+index list for one grid patch with edge-stitch flags (bit 0 doubles the edge resolution), using
+three edge-strip writers, and `00B99790` builds every level and flag combination. These were
+named only; reconstructing them belongs with the water lane.
+
+## Verification
+
+- `scripts/build.ps1` passes in the worktree (bsp_core with `src/post_effects_cc13.cpp`; the
+  two existing CTest suites pass).
+- `tools/verify_report_calls.py reports/cc13_render3_calls.json`: 26 call rows, 0 failed.
+- Constants were read from the PE with `tools/pe_const_read.py`; RET sizes from the listings.
+- Not done: native differential fixtures, game runs. No new tests were added.

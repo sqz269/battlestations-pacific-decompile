@@ -418,4 +418,110 @@ int find_named_index(const std::vector<NamedIndexRecord>& records, const std::st
     return 0x37;
 }
 
+// ---------------------------------------------------------------------------
+// Segment 91
+
+MitBlockPool::Slot MitBlockPool::allocate() {
+    if (current_ == -1) {
+        current_ = static_cast<int>(blocks_.size());
+        Block b;
+        for (int i = 0; i < kSlots; ++i) b.stack[i] = static_cast<std::uint16_t>(kSlots - 1 - i);
+        b.count = kSlots;
+        b.id = next_id_++;
+        blocks_.push_back(b);
+    }
+    Block& b = blocks_[current_];
+    --b.count;
+    const Slot s{current_, b.stack[b.count]};
+    if (b.count == 0) {
+        const int from = current_ + 1;
+        current_ = -1;
+        for (int i = from; i < static_cast<int>(blocks_.size()); ++i) {
+            if (blocks_[i].count != 0) {
+                current_ = i;
+                break;
+            }
+        }
+    }
+    return s;
+}
+
+void MitBlockPool::free(Slot s) {
+    Block& b = blocks_.at(s.block);
+    b.stack[b.count] = static_cast<std::uint16_t>(s.slot);
+    ++b.count;
+    if (static_cast<std::uint32_t>(s.block) < static_cast<std::uint32_t>(current_)) current_ = s.block;
+}
+
+void MitBlockPool::trim() {
+    for (std::size_t i = 0; i < blocks_.size(); ++i) {
+        if (blocks_[i].count != kSlots) continue;
+        blocks_[i] = blocks_.back();  // slots of the moved block are renumbered to i
+        blocks_.pop_back();
+        --i;  // the image decrements EDI and re-tests the same index
+    }
+    current_ = -1;
+    for (std::size_t i = 0; i < blocks_.size(); ++i) {
+        if (blocks_[i].count != 0) {
+            current_ = static_cast<int>(i);
+            break;
+        }
+    }
+}
+
+float flare_centre_weight(float x, float y, float visibility) {
+    if (!(visibility > 0.0f)) return 0.0f;
+    const float sum = f(static_cast<double>(y) * y + static_cast<double>(x) * x);
+    const float r = f(std::sqrt(static_cast<double>(sum)));
+    return f((1.4142136573791504 - r) * 0.20000000298023224 + 0.05000000074505806);
+}
+
+float flare_edge_fade(float x, float y, float visibility, float limit, bool limit_flag) {
+    // Unordered compares fall through like the image's COMISS/FCOMI branches.
+    constexpr double lo = -0.9399999976158142, hi = 0.9399999976158142, width = 0.06000000238418579;
+    if (!(0.0f < visibility) && !std::isnan(visibility)) return 0.0f;
+    if (!(visibility <= limit) && !std::isnan(visibility) && !std::isnan(limit) && limit_flag) return 0.0f;
+    if (!(x > -1.0f) && !std::isnan(x)) return 0.0f;
+    float fade = 1.0f;
+    if (lo > x) fade = f((x + hi) / width + 1.0);
+    if (!(y > -1.0f) && !std::isnan(y)) return 0.0f;
+    if (lo > y) fade = f(((y + hi) / width + 1.0) * fade);
+    if (!(x < 1.0f) && !std::isnan(x)) return 0.0f;
+    if (x > hi) fade = f((1.0 - (x - hi) / width) * fade);
+    if (!(y < 1.0f) && !std::isnan(y)) return 0.0f;
+    if (y > hi) fade = f((1.0 - (y - hi) / width) * fade);
+    return fade;
+}
+
+bool flare_pair_test(float a_1c0, float b_1c4) {
+    if (a_1c0 == 0.0f) return false;
+    return b_1c4 >= a_1c0;
+}
+
+void flare_place_element(float owner_base, const float origin[2], const float dir[2], float t,
+    float out[2]) {
+    const float k = f(std::log(static_cast<double>(owner_base)));
+    const float e = f(std::exp(static_cast<double>(f(static_cast<double>(k) * t))));
+    out[0] = f(origin[0] + static_cast<double>(f(static_cast<double>(dir[0]) * e)));
+    out[1] = f(origin[1] + static_cast<double>(f(static_cast<double>(e) * dir[1])));
+}
+
+void scale_color32(const std::uint8_t in[4], std::uint8_t out[4], float scale) {
+    for (int i = 0; i < 4; ++i) {
+        float v = f(static_cast<double>(scale) * in[i]);
+        if (!(0.0f <= v)) v = 0.0f;
+        else if (255.0 < v) v = 255.0f;
+        out[i] = static_cast<std::uint8_t>(static_cast<int>(std::nearbyint(v)));
+    }
+}
+
+void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out) {
+    out.clear();
+    for (std::uint32_t i = 0; i < rim_count; ++i) {
+        out.push_back(0);
+        out.push_back(static_cast<std::uint16_t>(i + 1));
+        out.push_back(static_cast<std::uint16_t>((i + 1) % rim_count + 1));
+    }
+}
+
 } // namespace bsp::cc13fx

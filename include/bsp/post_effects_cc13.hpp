@@ -341,4 +341,96 @@ struct NamedIndexRecord {
 };
 int find_named_index(const std::vector<NamedIndexRecord>& records, const std::string& name);
 
+// ---------------------------------------------------------------------------
+// Segment 91: Mit::allocator block pools (RTTI Mit::allocator_list_elem).
+// Each owner links into the allocator list 00E188B4, holds a CRITICAL_SECTION
+// at +0Ch with a recursion counter at +24h, a block pointer vector
+// {+28h data, +2Ch count, +30h capacity} and the current block index +34h
+// (-1 = none). A block is 32 slots of `stride` bytes, the slot's last dword
+// holding its block index, then a uint16 free-index stack [32] and a uint16
+// free count. Three instantiations:
+//   stride 1E4h (flare, global 010902A8): ctor 00B8D580, block init 00B8B6D0,
+//     allocate 00B8D700, free 00B8C3A0, trim 00B8D660 (vtable D63410 slot 0)
+//   stride 198h (quadtree node): block init 00B8FA80, allocate 00B90800,
+//     free 00B90020, trim 00B90760
+//   stride 194h (bone model): block init 00B8FB50, allocate 00B90AC0,
+//     free 00B90150, trim 00B90A20
+// This models the slot order only (which block/slot a call returns), not the
+// memory; the lock is the caller's.
+class MitBlockPool {
+public:
+    static constexpr int kSlots = 32;
+    struct Slot {
+        int block{-1};
+        int slot{-1};
+    };
+    // allocate: when current == -1 a block is appended (stack[i] = 31 - i,
+    // count 32) and becomes current. Pops stack[--count] of the current block;
+    // when that empties the block, current becomes the first later block with
+    // a free slot, else -1. Slot 0 of a fresh block is handed out first.
+    Slot allocate();
+    // free: pushes the slot index at stack[count++]; current = min(current,
+    // block) compared unsigned, so -1 always takes the block.
+    void free(Slot s);
+    // trim: every block whose count is 32 is released and replaced by the last
+    // block (whose slots are renumbered), re-examining the same index; then
+    // current = the first block with a free slot, else -1. In 00B8D660 the
+    // body after CALL _free (00B8D686..00B8D6BF) is missing from the Ghidra
+    // listing because the call is treated as no-return.
+    void trim();
+    int current() const { return current_; }
+    int block_count() const { return static_cast<int>(blocks_.size()); }
+    int free_count(int block) const { return blocks_.at(block).count; }
+
+private:
+    struct Block {
+        std::array<std::uint16_t, kSlots> stack{};
+        std::uint16_t count{};
+        int id{};  // stands in for the block address
+    };
+    std::vector<Block> blocks_;
+    int current_{-1};
+    int next_id_{};
+};
+
+// ---------------------------------------------------------------------------
+// Flare object (1E0h payload in the 1E4h pool; vtable D63420, scalar delete
+// 00B8D9A0, constructor 00B8D9C0 "flare"). Fields used below: +1A4h/+1A8h the
+// projected position (clip x, y), +1B4h visibility, +1B8h, +1C8h flag,
+// +1C0h/+1C4h a pair compared by 00B8B670, +1DCh the pow base of 00B8B8C0.
+
+// 00B8B350, __fastcall(ECX flare) -> ST0, RET. 0 unless visibility > 0; else
+// (1.4142136 - sqrt(x*x + y*y)) * 0.2 + 0.05 with the sum and the root
+// rounded to float (doubles D633E0, CE3D10, D7A270). Larger toward the centre.
+float flare_centre_weight(float x, float y, float visibility);
+
+// 00B8B3B0, __fastcall(ECX flare) -> ST0, RET. Screen-edge fade. 0 unless
+// visibility > 0 and (visibility <= limit(+1B8h) or flag(+1C8h) == 0), and
+// -1 < x < 1 and -1 < y < 1. f starts at 1; x < -0.94 sets f = (x + 0.94)/0.06
+// + 1, y < -0.94 multiplies by (y + 0.94)/0.06 + 1, x > 0.94 and then y > 0.94
+// multiply by 1 - (v - 0.94)/0.06 (doubles D633F8 -0.94,
+// D633F0 0.94, D633E8 0.06). f is stored to float after every step.
+float flare_edge_fade(float x, float y, float visibility, float limit, bool limit_flag);
+
+// 00B8B670, __fastcall(ECX flare) -> AL, RET. false when +1C0h == 0.0
+// exactly; otherwise +1C4h >= +1C0h (false when either is NaN).
+bool flare_pair_test(float a_1c0, float b_1c4);
+
+// 00B8B8C0, __thiscall(ECX flare owner, unused, element*), RET 8.
+// k = pow-base via the CRT stub 00BFA910 (log, provisional) of owner+1DCh;
+// e = exp(k * element+44h) (00BFEEEC); element+34h/+38h = element+8h/+0Ch +
+// e * element+3Ch/+40h. I.e. base + dir * owner^t.
+void flare_place_element(float owner_base, const float origin[2], const float dir[2], float t,
+    float out[2]);
+
+// 00B8C520, __thiscall(const uint8 rgba[4] ECX, uint8 out[4], float scale),
+// RET 8. Each byte times scale, clamped to [0, 255] (double CE4B48 test,
+// float CEDD44 value) and rounded with FISTP (round-half-even in the default
+// control word); output byte order equals input order.
+void scale_color32(const std::uint8_t in[4], std::uint8_t out[4], float scale);
+
+// Index pattern of the disc fan written by 00B8B980 (centre vertex 0, rim
+// vertices 1..n): triangle i = (0, i+1, (i+1) % n + 1), 16-bit indices.
+void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out);
+
 } // namespace bsp::cc13fx
