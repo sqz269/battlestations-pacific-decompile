@@ -353,10 +353,8 @@ The emitter object has the vtable D5DCB4. Its fields are +08h model, +0Ch defini
 - **State.** Leases are released and the work is committed on `agent/cc13-particles1`. Everything in
   section 3 is reconstructed and build-tested; none of it is wired into the host, fixture-tested or
   game-validated. All draws stay inside 00B0C8B0, on the caller's `ParticleRandom`.
-- **The render half 00B0CF80..00B1BD20 is not particle code.** It is the scene-renderer object: setters on
-  this+21Ah..268h are called from HUD screens, Settings_ApplyAll and OptionsScreen; 00B0D190 is called by
-  BSP_Game_Render and DestroyWorld; 00B156C0 is the scene render. It has about 50 unnamed FUN_. Its
-  ownership was asked of the lead (cc13-render1/render2?) and not answered before this handoff.
+- **The render half 00B0CF80..00B1BD20 is not particle code.** It is the scene-renderer service
+  [00F8D39C], now in docs/CC13_SCENE_RENDERER.md (with its own handoff).
 - **Next particle targets.**
   - 00AF0C50 BSP_FoliageGroups_BuildVisibleSet (segment 81) is already reconstructed in
     `src/render_tail.cpp`, with this = [00F8C274]. It calls 00AF6360 and 00AF63A0, and [00F8C274] is the
