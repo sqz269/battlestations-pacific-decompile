@@ -194,12 +194,60 @@ void evaluate_position_00795650(MovieKeyframe& k, MovieCameraParentHost& host) {
     terrain_avoid_00795b45(k, host);
 }
 
+// The modifier's view of the keyframe (cc13cam::ModifierKeyframe has the same
+// image offsets): the fields goaround reads and writes are copied in and out.
+void modifier_evaluate(cc13cam::GoAroundModifier& m, MovieKeyframe& k, float elapsed,
+                       float offset) {
+    cc13cam::ModifierKeyframe view;
+    view.local_34 = k.local_34;
+    view.work_40 = k.work_40;
+    view.zoom_c8 = k.zoom_c8;
+    view.smooth_d0 = k.smooth_d0;
+    m.owner_4 = &view;
+    cc13cam::goaround_evaluate_00791c90(m, elapsed, offset);
+    m.owner_4 = nullptr;
+    k.work_40 = view.work_40;
+    k.zoom_c8 = view.zoom_c8;
+    k.smooth_d0 = view.smooth_d0;
+}
+
+// The event checks over the parent host. Entity handles are unit index + 1,
+// 0 for none. SUBSTITUTION, labelled: the image's observer clears +24h when the
+// entity is deleted; the host has no deletion, so `noentity` never fires and
+// `killed`/`sunk` read the destroyed byte through the parent host.
+class KeyframeEventBinding final : public cc13cam::KeyframeEventHost {
+public:
+    explicit KeyframeEventBinding(MovieCameraParentHost& host) : host_(host) {}
+    std::size_t scene_parent_3c(std::size_t entity) override {
+        return host_.has_scene_parent_3c(entity - 1) ? entity : 0;
+    }
+    bool destroyed_5e(std::size_t entity) override { return host_.destroyed_5e(entity - 1); }
+    float world_y_100(std::size_t entity) override {
+        std::array<float, 16> m{};
+        host_.world(entity - 1, m);
+        return m[13];
+    }
+    void run_script_00887e50(const std::string& function) override {
+        host_.run_script_00887e50(function);
+    }
+
+private:
+    MovieCameraParentHost& host_;
+};
+
 // 00795C10, weight(track, dt).
 float weight_00795c10(MovieKeyframe& k, const HudMovieCamera& camera, float dt,
                       MovieCameraParentHost& host) {
     const float ts = camera.clock_3b0 + dt;            // 00795C4F FSTP
     if (k.start_f0 > ts) return 0.0f;
     if (k.state_f8 == 0) begin_00791020(k, camera);
+    if (kMovieKeyframeModifierBound && k.modifier_e4) {
+        // 00795C89..00795CB7: slot +Ch with (clock - start, &pose, dt), the
+        // elapsed time stored to float at 00795CAC. Only goaround is built, and
+        // it writes the working position, zoom and smoothing it owns.
+        const float elapsed = camera.clock_3b0 - k.start_f0;
+        modifier_evaluate(*k.modifier_e4, k, elapsed, dt);
+    }
     evaluate_position_00795650(k, host);
     const float e = ts - k.start_f0;
     const float b = k.blend_f4;
@@ -421,6 +469,20 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
                 k.local_34[2] = cr * d * ct + k.local_34[2];
                 nothing_placed = false;
             }
+            // 007A1A29..007A1BB2: `modifier` is a table; its `name` picks the
+            // class, 00799DE0 stores it and slot +1Ch parses the same table.
+            if (kMovieKeyframeModifierBound && in.modifier
+                && in.modifier->kind == cc13cam::ModifierLuaValue::Kind::Table) {
+                const std::string& name = in.modifier->field("name").string;
+                if (name == "goaround") {
+                    auto m = std::make_shared<cc13cam::GoAroundModifier>();
+                    cc13cam::goaround_construct_007a0650(*m);       // 007A1B03
+                    cc13cam::goaround_parse_007a3100(*m, *in.modifier);   // 007A1BB2
+                    k.modifier_e4 = std::move(m);
+                } else if (name == "gamecamera" || name == "fpscamera") {
+                    host.unsupported("MovieKeyframe::gamecamera_modifier", 0x007a06d0u);
+                }
+            }
         }
         if (entity != kMovieNoParent && k.parent_1c == kMovieNoParent) {
             // 007A1FC0..007A2012: the entity's own world position, added once.
@@ -444,6 +506,15 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
     }
     if (in.zoom) k.zoom_c4 = *in.zoom;
     if (in.smoothtime) k.smooth_cc = *in.smoothtime;
+    // 007A1F94..007A22EE: the event, for a camera key or a named postype; it
+    // watches the keyframe's parent (+1Ch) and replaces any earlier one.
+    if (kMovieKeyframeModifierBound && in.event) {
+        cc13cam::KeyframeEvent ev;
+        const std::size_t parent = k.parent_1c == kMovieNoParent ? 0 : k.parent_1c + 1;
+        if (cc13cam::keyframe_event_parse_007a1f94(*in.event, parent, k.camera_28 || named, ev)) {
+            k.event_ec = std::move(ev);
+        }
+    }
     for (const std::string& key : in.unsupported_keys) {
         static_cast<void>(key);
         host.unsupported("MovieKeyframe::unsupported_key", 0x007a0eb0u);
@@ -574,6 +645,32 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     camera.local_74 = camera.matrix_528;                  // 0079B83C
     world = camera.local_74;                              // 00435410 -> 004329D0
     return true;
+}
+
+int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
+                                    MovieCameraParentHost& host) {
+    KeyframeEventBinding events(host);
+    int fired = 0;
+    for (MovieTrack* track : {&camera.target_414, &camera.camera_498}) {   // 00798D46, 00798D59
+        // 00797ED0 walks the list live; an event's script may append keys, so
+        // the index loop re-reads the size and the keyframes are heap objects.
+        for (std::size_t n = 0; n < track->keys.size(); ++n) {
+            MovieKeyframe& k = *track->keys[n];
+            if (k.state_f8 == 0 || k.state_f8 == 3) continue;   // 00797F0A..00797F14
+            // 00797F2E 0078E630: dt > 0, a triggered event fires and is deleted.
+            // ORDER, labelled: the event is taken off the key before its script
+            // runs, because the script may tear the camera (and this key) down;
+            // the image fires first and deletes after (0078E540 with 0).
+            if (!(dt > 0.0f) || !k.event_ec || !cc13cam::keyframe_event_check(*k.event_ec, events)) {
+                continue;
+            }
+            cc13cam::KeyframeEvent ev = std::move(*k.event_ec);
+            k.event_ec.reset();
+            ++fired;
+            cc13cam::keyframe_event_fire_00791540(ev, events);
+        }
+    }
+    return fired;
 }
 
 }  // namespace bsp

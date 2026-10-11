@@ -296,6 +296,48 @@ bool movie_vector(lua_State* state, int table, std::array<float, 3>& out) {
     }
     return true;
 }
+// Packet cc9_lua49_movie_modifier: a Lua value as 007A0EB0's LuaObject
+// wrappers see it, for the modifier and event parses (bsp::cc13cam). Tables
+// are copied two levels deep (the curves are arrays of numbers); an entity
+// table is userdata to the image and is not read by either parse.
+bsp::cc13cam::ModifierLuaValue movie_lua_value(lua_State* state, int index, int depth) {
+    using Value = bsp::cc13cam::ModifierLuaValue;
+    Value v;
+    const int type = lua_type(state, index);
+    if (type == LUA_TNUMBER) {
+        v.kind = Value::Kind::Number;
+        v.number = lua_tonumber(state, index);
+        v.string = lua_tostring(state, index);   // 00B662B0's text of a number
+    } else if (type == LUA_TSTRING) {
+        // lua_isnumber is true for a numeric string, which 00B66050 accepts.
+        v.kind = lua_isnumber(state, index) ? Value::Kind::Number : Value::Kind::String;
+        v.number = lua_tonumber(state, index);
+        v.string = lua_tostring(state, index);
+    } else if (type == LUA_TTABLE) {
+        v.kind = Value::Kind::Table;
+        if (depth > 0) {
+            const int abs_index = index < 0 ? lua_gettop(state) + index + 1 : index;
+            const int n = static_cast<int>(lua_objlen(state, abs_index));
+            for (int i = 1; i <= n; ++i) {
+                lua_rawgeti(state, abs_index, i);
+                v.array.push_back(movie_lua_value(state, -1, depth - 1));
+                lua_pop(state, 1);
+            }
+            lua_pushnil(state);
+            while (lua_next(state, abs_index) != 0) {
+                if (lua_type(state, -2) == LUA_TSTRING) {
+                    v.fields.emplace_back(lua_tostring(state, -2),
+                                          movie_lua_value(state, -1, depth - 1));
+                }
+                lua_pop(state, 1);
+            }
+        }
+    } else if (type != LUA_TNIL && type != LUA_TNONE) {
+        v.kind = Value::Kind::Other;
+    }
+    return v;
+}
+
 void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& in) {
     const int top = lua_gettop(state);
     lua_getfield(state, table, "postype");
@@ -346,7 +388,11 @@ void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& 
         lua_pop(state, 1);
         for (const char* key : {"deckpos", "upvector", "modifier", "relativetotarget"}) {
             lua_getfield(state, position, key);
-            if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+            if (bsp::kMovieKeyframeModifierBound && std::string(key) == "modifier") {
+                if (lua_type(state, -1) == LUA_TTABLE) in.modifier = movie_lua_value(state, -1, 3);
+            } else if (!lua_isnil(state, -1)) {
+                in.unsupported_keys.push_back(key);
+            }
             lua_pop(state, 1);
         }
         // Packet cc9_movie_camera_keys, switch 6: 007A1470 IsBoolean, then
@@ -368,7 +414,11 @@ void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& 
     movie_number(state, table, "smoothtime", in.smoothtime);
     for (const char* key : {"event", "finishscript", "flyalt"}) {
         lua_getfield(state, table, key);
-        if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+        if (bsp::kMovieKeyframeModifierBound && std::string(key) == "event") {
+            if (lua_type(state, -1) == LUA_TTABLE) in.event = movie_lua_value(state, -1, 2);
+        } else if (!lua_isnil(state, -1)) {
+            in.unsupported_keys.push_back(key);
+        }
         lua_pop(state, 1);
     }
     lua_settop(state, top);
