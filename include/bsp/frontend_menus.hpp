@@ -23,6 +23,7 @@
 
 #include "bsp/main_menu_command_bar.hpp"
 #include "bsp/mission_tree_data.hpp"
+#include "bsp/mission_tree_screens.hpp"
 
 namespace bsp {
 
@@ -451,6 +452,26 @@ struct CapturePointCandidate {
 // as is float(radius)*float(radius); an unordered compare selects (JA only).
 HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& controlled_position,
     const std::vector<CapturePointCandidate>& points);
+
+// ---------------------------------------------------------------------------
+// Advancing the campaign selection after a mission (005C3DE0)
+// ---------------------------------------------------------------------------
+
+struct MissionAdvanceHost : FrontEndMenuFailureHost {
+    virtual bool mission_completed_0090c560(const MissionRecord& record) = 0;
+    // The NativeString at *(00E188A8)+6B8h, which is profile (+650h) +68h, the
+    // string 00586150 copies out.
+    virtual void set_profile_selected_mission_6b8(std::string_view id) = 0;
+};
+
+// 005C3DE0: __fastcall(ECX = mission-tree screen), RET, AL. Called from the
+// scoring screen's enter 0062C2C0 (0062C866). Looks up the current mission key
+// game+2198h (005C3470), stores the pair in +0Ch/+10h, steps the mission index
+// by one when the current mission is completed and not the group's last,
+// clamps it to [0, found + 1] with signed compares, copies that record's id to
+// profile+68h and answers whether the index moved past the found mission.
+bool advance_campaign_selection_005c3de0(MissionTreeScreenState& state,
+    std::string_view current_mission_key, MissionAdvanceHost& host);
 
 } // namespace bsp
 

@@ -381,4 +381,30 @@ HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& cont
     return {};
 }
 
+bool advance_campaign_selection_005c3de0(MissionTreeScreenState& state,
+    std::string_view current_mission_key, MissionAdvanceHost& host) {
+    const MissionTreeIndex found = find_mission_by_name_005c3470(state, current_mission_key);
+    state.selected_mission = found.mission;
+    state.selected_group = found.group;
+    if (found.group >= state.groups.size()) host.invalid_parameter_00bf6713();
+    const auto& missions = state.groups[found.group].missions;
+    const auto count = static_cast<std::uint32_t>(missions.size());
+    // 005C3E3E..005C3E6E: an unsigned compare with count - 1.
+    if (state.selected_mission < count - 1u) {
+        if (state.selected_mission >= count) host.invalid_parameter_00bf6713();
+        if (host.mission_completed_0090c560(missions[state.selected_mission])) ++state.selected_mission;
+    }
+    // Signed clamp to [0, found + 1].
+    auto selected = static_cast<std::int32_t>(state.selected_mission);
+    const auto found_mission = static_cast<std::int32_t>(found.mission);
+    if (selected < 0) selected = 0;
+    else if (static_cast<std::int32_t>(static_cast<std::uint32_t>(found_mission) + 1u) < selected) {
+        selected = found_mission + 1;
+    }
+    state.selected_mission = static_cast<std::uint32_t>(selected);
+    if (state.selected_mission >= count) host.invalid_parameter_00bf6713();
+    host.set_profile_selected_mission_6b8(missions[state.selected_mission].name);
+    return found_mission < selected;
+}
+
 } // namespace bsp

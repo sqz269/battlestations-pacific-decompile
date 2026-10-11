@@ -349,3 +349,21 @@ the point's pose and then the unit's (00414DB0 when +C8h is clear), and stores t
 whose squared distance is not above `float(+7C4h)^2` and whose side (+54h) is 2. The x87 sum is
 `(dx*dx + dy*dy) + dz*dz` stored to float, compared with `float(r)*float(r)` stored to float, by
 `FCOMIP`/`JA`, so an unordered result counts as inside.
+
+## Mission-tree helpers
+
+**005C3DE0** (`BSP_MissionTree_AdvanceToNextMission`, reconstructed as
+`advance_campaign_selection_005c3de0`, complete, build-tested): the scoring screen's enter
+0062C2C0 calls it at 0062C866 after a mission. It resolves the current mission key (game+2198h)
+through 005C3470 and stores the pair at +0Ch/+10h; `groups.at(group)`; when the mission index is
+below `count - 1` (unsigned, 005C3E5E `JNC`) and that mission is completed (0090C560) it steps
+by one; it then clamps the index to `[0, found + 1]` with signed compares (005C3EB0 `JGE`,
+005C3EB8 `JLE`), copies that record's id (+00h) to *(00E188A8)+6B8h and returns
+`found < index` (005C3F2C `SETG`). +6B8h is profile (+650h) + 68h, the string 00586150 copies
+out, so 00586150 reads the profile's selected campaign mission (evidence appended to its
+ledger row).
+
+**005C4BE0 / 005C4D40 / 005C51F0**: the 154h side block's element constructor, destructor and
+copy constructor. 005C89B0 pushes (154h, 2, 005C4BE0, 005C4D40) at 005C8A52..005C8A5E for the
+record's two blocks at +B8h/+20Ch; 005C81F0 references 005C51F0 (005C85F1) and 005C4D40.
+Named only.
