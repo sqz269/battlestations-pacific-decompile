@@ -251,3 +251,27 @@ Open, in order of value:
    build camera matrices; coordinate with the camera lane first.
 5. Left unnamed: 005347F0 (vtable 00CED548 slot +0Ch, tests 78h/49h/46h), 00519340 (unit vtables
    +130h, returns +3ACh), 0057D3E0 (00CEFC24 run, `XOR AL,AL; RET 8`).
+
+## Handoff update (cc13-menus4, second turn, 2026-10-11)
+
+0334b0af1 adds the segment-18 browser helpers (8 reconstructed, 3 functions defined, 9 names) and the
+dated 0057B530 correction appended to docs/MULTI_MENU_SCREENS.md; 38 functions are now reconstructed and
+build-tested, 256 call rows, 0 failed. Item 1 of the handoff above is done for 00568930..0056AAD0 and
+the two listener slots. Still open, in order:
+
+1. FinishJoin 0057AC10, first reading from the pseudocode (asm not read): when +288h is set it cancels
+   (session +8Ch, mode 0, pop request); it then walks the client's +94h results, looks each record's
+   first dword up in the tree at +278h (0056B850, header +27Ch) and, for a key not yet in the tree that
+   00574100 accepts, stores 00E08760 = -1.0, inserts the key (00571FD0) and joins that record
+   (0057A9C0(record, 0)). With no candidate it pops the request when 006878D0 > 0, sets 00E19610 = 1,
+   pushes request 10h, copies byte *(00F8A2FC)+4Dh to game+2059h, returns to page 0 (+270h = 2.5,
+   +274h = -1) and clears the tree. So +278h is the set of sessions already tried.
+2. JoinSession 0057A9C0 (lobby options 00575xxx copy, sessionname Lua global from the record's wide
+   name, session +8Ch, mode 2, then for record +04h == 0FFh a session block copied into
+   *(game+207Ch)+96Ch..+9A4h via 00568CE0, mode 6 and SetPage(2); otherwise 007701F0 and SetPage(2) or
+   the error path with request 1Bh).
+3. The row builders 00576D20/005789C0/00579980/00577650, BindLayout 0056BDA0, 0056B610, 0056D660 (filter
+   value refresh, ERROR!), PrepareEnter 00570300, selection changed 005787E0.
+4. Credits enter 0052EE30, tactical library enter 00511F40 / update 005162B0, the free camera
+   (0053DD90, 00540390; the camera conventions are in docs/CC13_CAMERA_CONTROLLERS.md, only cc9's
+   hud_movie_camera.cpp is off-limits).
