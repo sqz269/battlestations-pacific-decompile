@@ -4534,6 +4534,20 @@ struct GameUnitsHost::Impl {
             const bsp::DiveBombFlyAboveSpan span =
                 bsp::dive_bomb_flyabove_span_009c65fd(height_above, lead_range);
             slot.db_flyabove_span = span.span;
+            if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveCarriedFlagsBound) {
+            // +18h/+19h/+1Ah are state bytes, not per-think predicates
+            // (cc13-audit9, GUNNERY 192). 009C83E0 reads them at
+            // 009C84FB/009C8508/009C85E8 before this think's flyabove tick
+            // runs, so the transition sees what the PREVIOUS tick left; the
+            // tick writes them in dive_bomb_flyabove_flags_009c659f and the
+            // enter 009C6270 seeds them. The OFF arm below recomputes them
+            // from the current pose: one think early, +18h on every high tick
+            // (the image clears it at 009C659F and sets it only at 009C680E),
+            // and `ready` beating the 009C66E7 clear.
+            in.flyabove_can_dive_790 = slot.db_flyabove_can_dive_18;
+            in.flyabove_ready_791 = slot.db_flyabove_ready_19;
+            in.flyabove_leave_792 = slot.db_flyabove_leave_1a;
+            } else {
             // +18h at 009C680E: dive once higher above the aim point than
             // approach+D4h, which is now the real 675.0 m.
             in.flyabove_can_dive_790 = bsp::dive_bomb_flyabove_can_dive_009c680e(
@@ -4556,6 +4570,7 @@ struct GameUnitsHost::Impl {
             // which the transition rule already models by taking `ready` first.
             in.flyabove_leave_792 = bsp::dive_bomb_flyabove_leave_009c66e3(
                 lead_bearing_error, span, slot.db_attack_dist_b4);
+            }
             // Packet cc9_dive_modes, diagnostic only: the fly-over's roll-in
             // inputs per tick, to tell 009C67B0's two arms apart.
             if (kHullAimTrace && slot.dive_bomb_state == bsp::DiveBombState::kFlyAbove) {
@@ -22896,6 +22911,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // sets +1Ah from `approach+D1h == 0`. Only the
                                 // +1Ch clear needs state here: the other three
                                 // are recomputed every tick by the state feed.
+                                // With kDiveFlyAboveCarriedFlagsBound all four
+                                // are carried state (cc13-audit9; 009C6298 CMP /
+                                // 009C62A1 SETE for +1Ah).
+                                if constexpr (bsp::dive_bomb_constant::
+                                                  kDiveFlyAboveCarriedFlagsBound) {
+                                    unit_.db_flyabove_can_dive_18 = false;
+                                    unit_.db_flyabove_ready_19 = false;
+                                    unit_.db_flyabove_leave_1a = !unit_.db_has_bomb_d1;
+                                }
                                 unit_.db_flyabove_bank_latch_1c = false;
                                 unit_.db_flyabove_latch_tick = -1;
                                 unit_.db_flyabove_side_20 = 0;   // 009C628C
@@ -24142,8 +24166,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // at 009C6532. Reading limit_c here would compare
                         // approach+D4h (675 m) against 210 m and veto the bank
                         // arm on every tick of every mission.
-                        const float unclamped_c = unit_.db_begin_alt_ac +
-                                                  unit_.db_aim_point_height_50;
+                        // GUNNERY 192 (cc13-audit9 item 4): C is ctl+398h.
+                        // approach+0Ch is never null on this path (cc13-audit7
+                        // item 11), so 009C64A8 loads it and it is
+                        // db_begin_alt_ac this think; ACh + 50h is the OFF arm.
+                        const float unclamped_c =
+                            bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound
+                                ? unit_.db_begin_alt_ac
+                                : unit_.db_begin_alt_ac +
+                                      unit_.db_aim_point_height_50;
                         const bool bank_arm_bl =
                             bsp::dive_bomb_flyabove_bank_arm_009c6530(
                                 /*is_recon_plane=*/false,
@@ -24153,6 +24184,87 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.db_flyabove_lead_range,
                                 unit_.db_flyabove_height);
                         if (bank_arm_bl) ++unit_.db_flyabove_bl_ticks;
+                        // 009C6678-009C66D1 (item 7): the bank limit plan+2C8h
+                        // near the lead point. approach+24h is taken as 1.0, the
+                        // substitution the break-off feed makes (b.speed_ratio_41c).
+                        if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound) {
+                            float limit = 0.0f;
+                            if (bsp::dive_bomb_flyabove_bank_limit_009c6678(
+                                    1.0f, unit_.db_flyabove_lead_range, &limit)) {
+                                unit_.plan_state.bank_limit_2c8 = limit;
+                            }
+                        }
+                        // The latched arm's writes (009C69B1/009C69B9: bank target
+                        // 0 with plan+2CCh = 1; 009C69E1-009C69F1: yaw slot
+                        // desired, active, plan+2D4h = 0), item 15.
+                        auto apply_latched_arm = [this](float yaw_284) {
+                            unit_.plan_state.bank_target_2c4 = 0.0f;
+                            unit_.plan_heading_mode_2cc = 1;
+                            unit_.plan_heading_2c0_written = false;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = yaw_284;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            unit_.gl_yaw_mode_2d4_zero = true;
+                        };
+                        bool suppress_heading_1c = false;
+                        float dead_band_t = 0.0f;
+                        bool reached_dive_test = false;
+                        if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveCarriedFlagsBound) {
+                        // 009C659F-009C6A33, the flag step (cc13-audit9 items
+                        // 8-12): the carried bytes, the roll-in test on the
+                        // impact bearing, the dive test on the BL leave edge.
+                        const bsp::DiveBombFlyAboveSpan fa_span =
+                            bsp::dive_bomb_flyabove_span_009c65fd(
+                                unit_.db_flyabove_height,
+                                unit_.db_flyabove_lead_range);
+                        bsp::DiveBombFlyAboveStepInputs fin;
+                        fin.entry.can_dive_18 = unit_.db_flyabove_can_dive_18;
+                        fin.entry.ready_19 = unit_.db_flyabove_ready_19;
+                        fin.entry.leave_1a = unit_.db_flyabove_leave_1a;
+                        fin.entry.latch_1c = unit_.db_flyabove_bank_latch_1c;
+                        fin.bank_arm_bl = bank_arm_bl;
+                        // Item 15 is kDiveFlyAboveBankArmsBound's.
+                        fin.run_latched_arm =
+                            bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound;
+                        // 009C663E-009C66E1 on Eabs.
+                        fin.leave_now = bsp::dive_bomb_flyabove_leave_009c66e3(
+                            bearing_error, fa_span, unit_.db_attack_dist_b4);
+                        // 009C66FB-009C6765: the roll-in error is measured from
+                        // approach+D8h/E0h to the aim point, the bearing
+                        // 009C7A80 left in db_impact_bearing_18 this think,
+                        // against the heading. Not the lead-point error.
+                        fin.roll_in_error = bsp::wrapped_angle_subtract_00438b10(
+                            unit_.plane_heading_c6c, unit_.db_impact_bearing_18);
+                        fin.span = fa_span.span;
+                        fin.bearing_error = bearing_error;
+                        fin.bearing_error_abs = bearing_error_abs;
+                        fin.height_above_aim_b = unit_.db_flyabove_height;
+                        fin.release_range_d4 = unit_.db_release_range_d4;
+                        fin.lead_range_r = unit_.db_flyabove_lead_range;
+                        fin.turn_circle_radius = unit_.plane_turn_circle_radius;
+                        fin.span_dead_band =
+                            bsp::dive_bomb_flyabove_span_dead_band_009c6674(
+                                fa_span.span);
+                        const bsp::DiveBombFlyAboveStep fstep =
+                            bsp::dive_bomb_flyabove_flags_009c659f(fin);
+                        if (fstep.flags.latch_1c &&
+                            !unit_.db_flyabove_bank_latch_1c) {
+                            unit_.db_flyabove_latch_tick =
+                                unit_.dive_bomb_arm_ticks;
+                        }
+                        unit_.db_flyabove_can_dive_18 = fstep.flags.can_dive_18;
+                        unit_.db_flyabove_ready_19 = fstep.flags.ready_19;
+                        unit_.db_flyabove_leave_1a = fstep.flags.leave_1a;
+                        unit_.db_flyabove_bank_latch_1c = fstep.flags.latch_1c;
+                        unit_.db_flyabove_dead_band_t = fstep.dead_band_t;
+                        if (fstep.bank_arm_ran) {
+                            unit_.db_flyabove_along_track = fstep.bank.along_track;
+                            unit_.db_flyabove_cross_track = fstep.bank.cross_track;
+                        }
+                        if (fstep.latched_arm) apply_latched_arm(fstep.yaw_284);
+                        suppress_heading_1c = fstep.flags.latch_1c;
+                        dead_band_t = fstep.dead_band_t;
+                        reached_dive_test = fstep.reached_dive_test;
+                        } else {
                         bsp::DiveBombFlyAboveBankInputs bin;
                         bin.latched_1c = unit_.db_flyabove_bank_latch_1c;
                         bin.bank_arm_bl = bank_arm_bl;
@@ -24182,10 +24294,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // it means giving +19h its own carried state, which is
                         // the 009C6A30/009C6826 pair as well, and that is a
                         // packet rather than a line. `bank.clear_roll_in_19` is
-                        // carried for the census only.
+                        // carried for the census only (kDiveFlyAboveCarriedFlagsBound
+                        // models it).
+                        // Item 15 without the carried flags: the latched arm on
+                        // every BL tick with +1Ch set. Its 009C6A30 +19h copy
+                        // is dropped here; the feed recomputes +19h.
+                        if (bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound &&
+                            bank_arm_bl && bank.latched_1c) {
+                            apply_latched_arm(
+                                bsp::dive_bomb_flyabove_latched_arm_009c6929(
+                                    bearing_error, bearing_error_abs,
+                                    unit_.db_flyabove_lead_range)
+                                    .yaw_284);
+                        }
+                        suppress_heading_1c = bank.latched_1c;
+                        dead_band_t = bank.dead_band_t;
+                        }
                         bsp::DiveBombFlyAboveCommandInputs in;
                         // 009C6DCD / 009C6DDA: the latch suppresses the write.
-                        in.suppress_heading_1c = bank.latched_1c;
+                        in.suppress_heading_1c = suppress_heading_1c;
                         // 009C6A37-009C6A9F then 009C6D6F-009C6DC8. A is
                         // AddWrappedAngle(C, deadband) when 009C6A46's JBE is
                         // not taken and the raw bearing otherwise; the slew
@@ -24200,7 +24327,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::wrapped_angle_add_00438aa0(
                                     unit_.plane_heading_c6c,
                                     bsp::dive_bomb_flyabove_dead_band_009c6a37(
-                                        bearing_error, bank.dead_band_t)),
+                                        bearing_error, dead_band_t)),
                                 bsp::dive_bomb_flyabove_constant::
                                     kHeadingSlewLimit);
                         const bsp::DiveBombFlyAboveCommand r =
@@ -24219,8 +24346,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C6DF5-009C6E08: with flyabove+18h clear the bank
                         // scale plan+2E8h is 1.5 (00CE380C), whether or not the
                         // heading was written. The 1.4 (00D06874) store at
-                        // 009C683A, on the 009C67BF-009C6829 roll-in path, is
-                        // not modelled here.
+                        // 009C683A, on the tick that reached the dive test, is
+                        // modelled with kDiveFlyAboveCarriedFlagsBound (item 12):
+                        // in this installation +18h is set only at 009C680E,
+                        // so the tick leaves 1.4 exactly when +18h is set.
+                        if (reached_dive_test) {
+                            unit_.plan_state.turn_scale_2e8 = bsp::kRollInTurnScale;
+                        }
                         if (bsp::dive_bomb_constant::kDiveFlyAboveTermsBound && !unit_.db_flyabove_can_dive_18) {
                             unit_.plan_state.turn_scale_2e8 = 1.5f;
                         }
