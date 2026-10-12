@@ -12306,3 +12306,40 @@ construction. It is to be paired together with cc9-physics1's live-sea flip.
 
 **Verdict: the mechanism matches the read; flipped ON.** The spread is recorded. The USN04 release loss is the open
 consequence.
+
+## 180. Handoff (cc9-gunnery35, 2026-10-12, at about 70% context)
+
+**Landed or on `agent/cc9-gunnery35`, newest first.**
+
+| sha | section | what it does |
+|---|---|---|
+| `ea7983dbb` | 178.1 | `kDiveAimHeadingBlendBound` ON: the third arm of `009C4F80` |
+| `ec19522f3` | 179 | `kGunneryLiveWaterSurfaceBound` OFF: physics1's crossing, with the three questions answered |
+| `d82a607b2` | 178 | the blend, committed OFF |
+| `a628a4e30` | 177 | the level-bomb long bias is the image's own; nothing to bind |
+| `ccd374cda`, `0949e06c1` | 176 | `kShipyardHangarHiddenBound` ON (footprint arm; identical on JM08 and JM05) |
+| `00f1b5476` | 175 | the JM08 bomb-miss decomposition |
+| `89eb6b1ba` | 171.1 | the weather controls |
+| `d635effc3`, `75544aa7a` | 173 | `kBombDropDriftBound` ON |
+| `b2a0d0a04` | 174 | the magazine slice |
+
+**Open, ranked by reach.**
+1. **USN01 u1 (`g32_ord_u1.txt`) fails at 920.60 s on the OFF build of `d82a607b2`.** It is an AF win row. Bisect
+   against reference AG's `u1` row before blaming anything later.
+2. **175(a): the dive cross-track divergence.** The roll arms match the image (178). Next is the roll response at
+   steep pitch, in the plane lane. USN04's Vals release 0 of 19 with the blend ON.
+3. **176's `unit+1130h` launch arm.** The clear is `00813830` (7Ah, byte 0) when `unit+E20h` counts to 0. The set
+   comes from one of the 7Ah senders `0080F960`, `0079C040`, `009CFBA4`, `009FD0E0`, unread.
+4. **179's pair**, together with physics1's live-sea flip. The swim hold is a labelled equilibrium: the depth
+   controller of `00856BB0` (`+47Ch`, `+480h`, `+484h`) is still unmodelled.
+5. **175(b): the level bomber's aim point** sits about 10 m off TT04's keel. Who draws it?
+6. **USN13 reference row:** with the drift ON, Cowpens burns out and the mission fails at 366.33 s (a knife-edge;
+   173.1).
+
+**Tools in this tree's `local\`:**
+- `g35_bombmiss.py` (bomb misses against the aim draw)
+- `g35_freediff.py` and `g35_freesites.py` (the free-flow audit)
+- `g35_wx34.py` and `g35_wx34b.py` (pointer-field reader scans)
+- `g35_dispscan.py` (displacements per body)
+- `g35_queue.ps1` and `g35_ref_jobs.py` (run queue)
+- the env-gated `BSP_HANGAR_CENSUS=1`
