@@ -286,7 +286,7 @@ bool compute_projector_matrices_00b9ae00(ProjectorCamera& camera, float displace
         forward_up = -0.0f - forward_up;  // SUBSS from [00D7A208]
     }
     const float cos_limit = static_cast<float>(std::cos(static_cast<double>(1.55334306f)));  // FCOS [00CEC400]
-    if (!(cos_limit < forward_up)) {
+    if (cos_limit >= forward_up) {  // FCOMIP / JB 00B9B7E0: unordered (NaN) skips the nudge
         const double nudge = static_cast<double>(0.01f);  // [00D7A358]
         Float3 t;
         t.x = forward.x + 0.0f;
