@@ -729,5 +729,9 @@
  "cc13dy1h": "Body after INT3 padding (696 of the 717 so defined have no rel32 or absolute reference), defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md, 'Defined bodies'): inside 00401010-00410240, the first object's Dyn/Mit header-instantiation run; generic name, class not identified",
  "cc13dy1s": "Body after INT3 padding defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md); STL/CRT shape: memcpy_s/memmove_s wrapper, std exception construction or throw, _Allocate overflow check, free(p) or char_traits::assign",
  "st1_treeminmax": "cc13-stl1 shape: follow left/right link until child _Isnil byte set (std::_Tree::_Min/_Max)",
- "st1_treefind": "cc13-sweep6D shape: _Lbound walk, then end() unless key < node key fails; returns the iterator pair by hidden pointer (std::_Tree::find)"
+ "st1_treefind": "cc13-sweep6D shape: _Lbound walk, then end() unless key < node key fails; returns the iterator pair by hidden pointer (std::_Tree::find)",
+ "st1_iterdec": "cc13-sweep6D shape: checked _Tree iterator: null-container hook, _Isnil -> rightmost, else left-subtree _Max or parent climb (std::_Tree::const_iterator::_Dec / operator--)",
+ "st1_iterinc": "cc13-sweep6D shape: checked _Tree iterator: null-container and _Isnil hooks (_invalid_parameter_noinfo), then right-subtree _Min or parent climb (std::_Tree::const_iterator::_Inc / operator++)",
+ "st1_treeeraserange": "cc13-sweep6D shape: erase(first,last): begin()/end() pair takes the _Erase(root)+reset fast path, otherwise loops erase(where) with checked-iterator hooks (std::_Tree::erase(first,last))",
+ "st1_mapsubscript": "cc13-sweep6D shape: _Lbound walk; on miss builds a default value (inner map head _Buynode) and calls insert(hint,pair); returns &node->value.second (std::map::operator[])"
 }
