@@ -22,6 +22,7 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/gui_render.hpp"
+#include "bsp/gui_texture.hpp"
 #include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 
@@ -873,5 +874,100 @@ void gui_icon_delayed_loads_destroy_00ab5560(GuiIconDelayedLoads& singleton,
 // data). Returns the owners deliver_00ab51b0 hands to 00AB3840.
 std::vector<const void*> gui_icon_delayed_loads_on_file_loaded_00ab58d0(const std::string& name,
     GuiIconDelayedLoads*& global_00f8bd98, GuiIconDelayedLoadsHost& host);
+
+// ---------------------------------------------------------------------------
+// Movie, FrameBox, AnimIcon and manager leaves
+// ---------------------------------------------------------------------------
+
+// 00AAC7F0, __fastcall(ECX = movie): 00AA7DC0 with a zero position on the
+// stack, i.e. position (0,0,0), recompose 00AA7220, bounds 00AA70E0.
+void gui_movie_reset_position_00aac7f0(GuiWidgetTransform& movie, GuiWidgetTransformHost& host);
+
+struct GuiMovieHost {
+    virtual ~GuiMovieHost() = default;
+    // Movie vtable +78h (the loaded hook; it creates the player at +F0h).
+    virtual void loaded_virtual_78(void* movie) = 0;
+    // The material of the widget's scene node: 00B732C0(00B74640(node, 0, 0)).
+    virtual void* node_material(void* node) = 0;
+    // Player (+F0h) vtable +38h(slot) -> texture; vtable +10h().
+    virtual void* player_texture(void* player, std::uint32_t slot) = 0;
+    virtual void player_virtual_10(void* player) = 0;
+    // 00B189F0 BSP_Material_SetTextureSlot, ECX = material +20h.
+    virtual void set_texture_slot_00b189f0(void* sampler_block, std::uint32_t slot, void* texture) = 0;
+};
+// 00AAC820, __fastcall(ECX = movie): when the player +F0h is null run vtable
+// +78h first; then for slots 0, 1, 2 (re-fetching the node material each time)
+// bind player texture `slot` into material+20h slot `slot`.
+void gui_movie_bind_video_textures_00aac820(void* movie, GuiMovieHost& host);
+// 00AAC8C0, __fastcall(ECX = movie): when +F0h is non-null, tail-call its
+// vtable +10h.
+void gui_movie_forward_player_10_00aac8c0(void* movie, GuiMovieHost& host);
+
+// 00AD3A20 timed-entry base kind: MOV EAX, 2; RET.
+inline std::int32_t gui_timed_entry_base_kind_00ad3a20() noexcept { return 2; }
+
+struct GuiNodeGeometryHost {
+    virtual ~GuiNodeGeometryHost() = default;
+    // 00B74640(node, 0), 00B72B20 (stream count), 00B73260(geometry, 0).
+    virtual void* node_geometry_00b74640(void* node) = 0;
+    virtual std::int32_t stream_count_00b72b20(void* geometry) = 0;
+    virtual void* stream_00b73260(void* geometry, std::uint32_t index) = 0;
+};
+// 00ACEB00, __fastcall(ECX = framebox): the first vertex stream of the node
+// +4Ch's geometry, or null when the geometry or its streams are missing.
+// With a null node the native returns whatever EAX held on entry (EAX is not
+// written on that path); this returns null there.
+void* gui_framebox_stream_00aceb00(void* framebox, GuiNodeGeometryHost& host);
+// 00AD2720, __fastcall(ECX = framebox): the count of 2Ch-byte state records in
+// the vector +F0h..+FCh (signed division of last - first by 2Ch; 0 when first
+// is null).
+std::int32_t gui_framebox_state_count_00ad2720(const void* framebox) noexcept;
+
+// 00AD2FF0, AnimIcon loaded hook: 00AB10F0 (Icon reset to first state); when
+// Forward (+142h) is false, vtable +88h(states - 1, 0, 1.0f), i.e. start on the
+// last state.
+struct GuiAnimIconHost {
+    virtual ~GuiAnimIconHost() = default;
+    virtual void icon_reset_00ab10f0(void* icon) = 0;
+    virtual void select_state_virtual_88(void* icon, std::int32_t state, std::int32_t mode, float blend) = 0;
+};
+void gui_anim_icon_loaded_00ad2ff0(void* icon, GuiAnimIconHost& host);
+
+// 00AA2B30 BSP_GUI_PreloadTexture, cdecl-like __stdcall(name*), RET 4:
+// 00AA2660(name, uv (0,0,1,1), size, 1.0f) and the returned reference is
+// dropped, which keeps the texture loaded. The native size pair is an
+// uninitialized stack slot; nothing reads it afterwards.
+void* gui_preload_texture_00aa2b30(std::string_view name, const GuiTextureCallbacks& callbacks);
+
+// 00AA59B0, __thiscall(manager, entry*), RET 4: 00AAA5A0(manager+44h group,
+// entry+8h widget, 0), then push_back of the entry into the std::list at
+// manager+34h (00AA4D30 buy node, 00AA43A0 size check, link before the head).
+struct GuiHoistHost {
+    virtual ~GuiHoistHost() = default;
+    virtual void attach_child_00aaa5a0(void* group, void* widget, std::int32_t index) = 0;
+    virtual void list_push_back(void* list, const void* entry) = 0;
+};
+void gui_manager_adopt_hoisted_widget_00aa59b0(void* manager, const void* entry, GuiHoistHost& host);
+
+// 00AA6EB0 / 00AACD10, __fastcall(ECX = owner slot): when *slot is non-null
+// call its vtable +0 (00AA6EB0) or +8 (00AACD10) with 1 (delete), then null it.
+struct GuiVirtualDeleteHost {
+    virtual ~GuiVirtualDeleteHost() = default;
+    virtual void call_virtual_with_1(void* object, std::uint32_t vtable_offset) = 0;
+};
+void gui_delete_owned_object(void** slot, std::uint32_t vtable_offset, GuiVirtualDeleteHost& host);
+
+// 00AA3480, __fastcall(ECX = native string header): when the buffer is
+// non-null, return length + 1 bytes to the sized pool (00419CC0/00BD1510).
+void gui_native_string_release_00aa3480(void* header, GuiWidgetMemberHost& host);
+
+// 00AA57A0, __fastcall(ECX = list): 00AA51D0 clear, then operator delete of the
+// head node (+4h) and +4h = 0.
+struct GuiListHost {
+    virtual ~GuiListHost() = default;
+    virtual void clear_00aa51d0(void* list) = 0;
+    virtual void free_block(void* block) = 0;
+};
+void gui_string_list_destroy_00aa57a0(void* list, GuiListHost& host);
 
 } // namespace bsp::gui_widgets_cc13

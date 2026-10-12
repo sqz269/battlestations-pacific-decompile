@@ -689,4 +689,76 @@ std::vector<const void*> gui_icon_delayed_loads_on_file_loaded_00ab58d0(const st
     return gui_icon_delayed_loads_00ab5700(global_00f8bd98, host).deliver_00ab51b0(name);
 }
 
+void gui_movie_reset_position_00aac7f0(GuiWidgetTransform& movie, GuiWidgetTransformHost& host) {
+    movie.position = GuiWidgetPoint{};
+    recompose_local_transform(movie, host);
+    refresh_local_bounds(movie, host);
+}
+
+void gui_movie_bind_video_textures_00aac820(void* movie, GuiMovieHost& host) {
+    if (read_field<void*>(movie, 0xF0) == nullptr) host.loaded_virtual_78(movie);
+    for (std::uint32_t slot = 0; slot < 3; ++slot) {
+        auto* material = static_cast<std::byte*>(host.node_material(read_field<void*>(movie, 0x4C)));
+        void* texture = host.player_texture(read_field<void*>(movie, 0xF0), slot);
+        host.set_texture_slot_00b189f0(read_field<void*>(material, 0x20), slot, texture);
+    }
+}
+
+void gui_movie_forward_player_10_00aac8c0(void* movie, GuiMovieHost& host) {
+    if (auto* player = read_field<void*>(movie, 0xF0)) host.player_virtual_10(player);
+}
+
+void* gui_framebox_stream_00aceb00(void* framebox, GuiNodeGeometryHost& host) {
+    void* node = read_field<void*>(framebox, 0x4C);
+    if (node == nullptr) return nullptr;
+    void* geometry = host.node_geometry_00b74640(node);
+    if (geometry == nullptr) return nullptr;
+    if (host.stream_count_00b72b20(geometry) == 0) return nullptr;
+    return host.stream_00b73260(geometry, 0);
+}
+
+std::int32_t gui_framebox_state_count_00ad2720(const void* framebox) noexcept {
+    const auto first = read_field<std::uintptr_t>(framebox, 0xF4);
+    if (first == 0) return 0;
+    const auto bytes = static_cast<std::int32_t>(read_field<std::uintptr_t>(framebox, 0xF8) - first);
+    return bytes / 0x2C; // IMUL 2E8BA2E9h, SAR 3, sign fix
+}
+
+void gui_anim_icon_loaded_00ad2ff0(void* icon, GuiAnimIconHost& host) {
+    host.icon_reset_00ab10f0(icon);
+    if (read_field<std::uint8_t>(icon, 0x142) != 0) return;
+    const auto first = read_field<std::uintptr_t>(icon, 0xF4);
+    const std::int32_t count = first != 0
+        ? static_cast<std::int32_t>(read_field<std::uintptr_t>(icon, 0xF8) - first) >> 6 : 0;
+    host.select_state_virtual_88(icon, count - 1, 0, 1.0f);
+}
+
+void* gui_preload_texture_00aa2b30(std::string_view name, const GuiTextureCallbacks& callbacks) {
+    std::array<float, 4> uv{0.0f, 0.0f, 1.0f, 1.0f};
+    std::array<float, 2> size{}; // uninitialized in the native frame; never read back
+    return resolve_gui_texture_00aa2660(name, uv, size, 1.0f, callbacks);
+}
+
+void gui_manager_adopt_hoisted_widget_00aa59b0(void* manager, const void* entry, GuiHoistHost& host) {
+    host.attach_child_00aaa5a0(read_field<void*>(manager, 0x44), read_field<void*>(entry, 8), 0);
+    host.list_push_back(static_cast<std::byte*>(manager) + 0x34, entry);
+}
+
+void gui_delete_owned_object(void** slot, std::uint32_t vtable_offset, GuiVirtualDeleteHost& host) {
+    if (*slot != nullptr) {
+        host.call_virtual_with_1(*slot, vtable_offset);
+        *slot = nullptr;
+    }
+}
+
+void gui_native_string_release_00aa3480(void* header, GuiWidgetMemberHost& host) {
+    release_native_string(header, 0, host);
+}
+
+void gui_string_list_destroy_00aa57a0(void* list, GuiListHost& host) {
+    host.clear_00aa51d0(list);
+    host.free_block(read_field<void*>(list, 4));
+    write_field<void*>(list, 4, nullptr);
+}
+
 } // namespace bsp::gui_widgets_cc13
