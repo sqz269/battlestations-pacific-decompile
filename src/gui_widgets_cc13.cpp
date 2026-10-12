@@ -3,6 +3,7 @@
 #include "bsp/native_animation_registry.hpp"
 #include "bsp/gui_manager_cc13.hpp"
 
+#include <cstdlib>
 #include <cstring>
 #include <intrin.h>
 #include <type_traits>
@@ -989,5 +990,182 @@ void* gui_layer_copy_construct_00ac6040(void* self, const void* source, GuiLayer
     }
     return self;
 }
+
+namespace msvc9_containers {
+namespace {
+std::byte* node_at(const void* object, std::size_t offset) noexcept { return read_field<std::byte*>(object, offset); }
+bool is_nil(const void* node) noexcept { return read_field<std::uint8_t>(node, 0x15) != 0; }
+} // namespace
+
+void* tree_rightmost_00aa1040(void* node) noexcept {
+    while (!is_nil(node_at(node, 8))) node = node_at(node, 8);
+    return node;
+}
+
+void* tree_buy_head_node_00aa2920() {
+    auto* node = static_cast<std::byte*>(::operator new(0x18));
+    write_field<void*>(node, 0, nullptr);
+    write_field<void*>(node, 4, nullptr);
+    write_field<void*>(node, 8, nullptr);
+    write_field<std::uint8_t>(node, 0x14, 1);
+    write_field<std::uint8_t>(node, 0x15, 0);
+    return node;
+}
+
+void* tree_init_head(void* tree) {
+    void* head = tree_buy_head_node_00aa2920();
+    write_field<void*>(tree, 4, head);
+    write_field<std::uint8_t>(head, 0x15, 1);
+    write_field<void*>(head, 4, head);
+    write_field<void*>(head, 0, head);
+    write_field<void*>(head, 8, head);
+    write_field<std::uint32_t>(tree, 8, 0);
+    return tree;
+}
+
+void tree_iterator_decrement_00aa1210(void* iterator, TreeIteratorHost& host) {
+    if (read_field<void*>(iterator, 0) == nullptr) host.checked_iterator_failure_00bf6713();
+    std::byte* node = node_at(iterator, 4);
+    if (is_nil(node)) {
+        // --end(): the rightmost node, head->right.
+        node = node_at(node, 8);
+        write_field<void*>(iterator, 4, node);
+        if (is_nil(node)) host.checked_iterator_failure_00bf6713(); // empty tree
+        return;
+    }
+    if (!is_nil(node_at(node, 0))) {
+        // The rightmost node of the left subtree.
+        node = static_cast<std::byte*>(tree_rightmost_00aa1040(node_at(node, 0)));
+        write_field<void*>(iterator, 4, node);
+        return;
+    }
+    // Climb while we are a left child (the iterator node is updated as it goes).
+    std::byte* parent = node_at(node, 4);
+    while (!is_nil(parent) && read_field<std::byte*>(iterator, 4) == node_at(parent, 0)) {
+        write_field<void*>(iterator, 4, parent);
+        parent = node_at(parent, 4);
+    }
+    // 00AA1285: the test is on the iterator's node, which the loop only ever
+    // moves to non-nil parents, so it cannot fire; --begin() therefore lands on
+    // the head (end()) instead of failing.
+    if (is_nil(read_field<std::byte*>(iterator, 4))) {
+        host.checked_iterator_failure_00bf6713();
+        return;
+    }
+    write_field<void*>(iterator, 4, parent);
+}
+
+void* tree_iterator_pre_decrement(void* iterator, TreeIteratorHost& host) {
+    tree_iterator_decrement_00aa1210(iterator, host);
+    return iterator;
+}
+
+void tree_clear_00aa28f0(void* tree, TreeEraseHost& host) {
+    std::byte* head = node_at(tree, 4);
+    host.erase_subtree_00aa22c0(tree, node_at(head, 4));
+    write_field<void*>(head, 4, head);
+    write_field<std::uint32_t>(tree, 8, 0);
+    write_field<void*>(head, 0, head);
+    write_field<void*>(head, 8, head);
+}
+
+void tree_destroy(void* tree, TreeEraseHost& host) {
+    std::byte* head = node_at(tree, 4);
+    host.erase_range_00aa49e0(tree, node_at(head, 0), head);
+    ::operator delete(node_at(tree, 4));
+    write_field<void*>(tree, 4, nullptr);
+    write_field<std::uint32_t>(tree, 8, 0);
+}
+
+void* list_buy_sentinel_00aac180() {
+    auto* node = static_cast<std::byte*>(::operator new(0x0C));
+    write_field<void*>(node, 0, node);
+    write_field<void*>(node, 4, node);
+    return node;
+}
+
+void* list_buy_node_00aac210(void* next, void* prev, const std::uint32_t& value) {
+    auto* node = static_cast<std::byte*>(::operator new(0x0C));
+    write_field<void*>(node, 0, next);
+    write_field<void*>(node, 4, prev);
+    write_field<std::uint32_t>(node, 8, value);
+    return node;
+}
+
+void* list_buy_named_entry_node_00aa4d30(void* next, void* prev, const void* entry, GuiNativeStringHost& strings) {
+    auto* node = static_cast<std::byte*>(::operator new(0x14));
+    write_field<void*>(node, 0, next);
+    write_field<void*>(node, 4, prev);
+    try {
+        gui_named_entry_copy_00aa3d30(node + 8, entry, strings);
+    } catch (...) {
+        ::operator delete(node);
+        throw;
+    }
+    return node;
+}
+
+void list_clear_00aac1d0(void* list) noexcept {
+    std::byte* head = node_at(list, 4);
+    std::byte* node = node_at(head, 0);
+    write_field<void*>(head, 0, head);
+    write_field<void*>(head, 4, head);
+    write_field<std::uint32_t>(list, 8, 0);
+    while (node != head) {
+        std::byte* next = node_at(node, 0);
+        ::operator delete(node);
+        node = next;
+    }
+}
+
+void list_destroy_00aac3b0(void* list) noexcept {
+    list_clear_00aac1d0(list);
+    ::operator delete(node_at(list, 4));
+    write_field<void*>(list, 4, nullptr);
+}
+
+void* list_construct(void* list, std::uint32_t node_bytes) {
+    auto* head = static_cast<std::byte*>(::operator new(node_bytes));
+    write_field<void*>(head, 0, head);
+    write_field<void*>(head, 4, head);
+    write_field<void*>(list, 4, head);
+    write_field<std::uint32_t>(list, 8, 0);
+    return list;
+}
+
+void* list_copy_construct_00aa57c0(void* list, const void* source, ListCopyHost& host) {
+    write_field<void*>(list, 4, host.buy_sentinel_00a9b720());
+    write_field<std::uint32_t>(list, 8, 0);
+    std::byte* source_head = node_at(source, 4);
+    host.insert_range_00a9d560(list, node_at(list, 4), node_at(source_head, 0), source_head);
+    return list;
+}
+
+void* allocate_elements(std::uint32_t count, std::uint32_t element_bytes) {
+    if (count != 0 && 0xFFFFFFFFu / count < element_bytes) throw std::bad_alloc();
+    return ::operator new(static_cast<std::size_t>(count) * element_bytes);
+}
+
+void deallocate(void* pointer) noexcept { ::operator delete(pointer); }
+
+void free_pointer(void** slot) noexcept {
+    if (*slot != nullptr) std::free(*slot);
+}
+
+void free_and_clear_00aa1ad0(void** slot) noexcept {
+    if (*slot != nullptr) {
+        ::operator delete(*slot);
+        *slot = nullptr;
+    }
+}
+
+std::uint32_t vector_size(const void* vector, std::uint32_t element_bytes) noexcept {
+    const auto first = read_field<std::uintptr_t>(vector, 4);
+    if (first == 0) return 0;
+    return static_cast<std::uint32_t>(
+        static_cast<std::int32_t>(read_field<std::uintptr_t>(vector, 8) - first) / static_cast<std::int32_t>(element_bytes));
+}
+
+} // namespace msvc9_containers
 
 } // namespace bsp::gui_widgets_cc13

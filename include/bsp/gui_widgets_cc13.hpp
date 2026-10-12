@@ -16,6 +16,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <new>
 #include <string>
 #include <utility>
 
@@ -1179,5 +1180,97 @@ struct GuiLayerCopyHost {
 };
 void* gui_layer_copy_construct_00ac6040(void* self, const void* source, GuiLayerCopyHost& host,
     GuiNativeStringHost& strings);
+
+// ---------------------------------------------------------------------------
+// VS2008 container internals of segments 76/77, over raw native nodes
+// ---------------------------------------------------------------------------
+
+// Layouts (VS2008, _SECURE_SCL on):
+//   std::list<T>   {allocator +0, head node +4, size +8}; node {next +0, prev +4, value +8}
+//   std::_Tree     {comparator/allocator +0, head node +4, size +8}; node {left +0,
+//                  parent +4, right +8, value +0Ch.., color +14h (1 = black), isnil +15h}
+//   std::vector<T> {allocator +0, first +4, last +8, end +0Ch}
+// operator new is 00BF681B, operator delete 00BF65AC, free 00BF6989. These
+// reconstructions use ::operator new / ::operator delete / std::free on raw
+// storage; the native allocator is the same CRT pair.
+namespace msvc9_containers {
+
+// 00AA1040 _Tree::_Max, __fastcall(ECX = node): follow right links while the
+// right child is not the nil head; EAX = node.
+void* tree_rightmost_00aa1040(void* node) noexcept;
+// 00AA2920 _Tree::_Buynode(): 18h bytes, links null, color 1, isnil 0 (value
+// bytes +0Ch..+13h left uninitialized).
+void* tree_buy_head_node_00aa2920();
+// 00AA2C10 / 00AA3420 / 00AA5730, __fastcall(ECX = tree) (00AA3420 is the
+// constructor taking the comparator and allocator, RET 8): head = buy node,
+// head->isnil = 1, head->parent = head->left = head->right = head, size 0.
+void* tree_init_head(void* tree);
+// 00AA1210 _Tree::const_iterator::_Dec, __fastcall(ECX = iterator {owner +0,
+// node +4}); 00AA2280 / 00AA28B0 operator--() call it and return the iterator.
+// A null owner, or decrementing end() of an empty tree, reaches 00BF6713;
+// decrementing begin() moves to the head without a failure.
+struct TreeIteratorHost {
+    virtual ~TreeIteratorHost() = default;
+    virtual void checked_iterator_failure_00bf6713() = 0;
+};
+void tree_iterator_decrement_00aa1210(void* iterator, TreeIteratorHost& host);
+void* tree_iterator_pre_decrement(void* iterator, TreeIteratorHost& host);
+// 00AA28F0 _Tree::clear, __fastcall(ECX = tree): _Erase(root) (00AA22C0), then
+// head->parent = head, size = 0, head->left = head->right = head.
+// 00AA4CF0 / 00AA5150 _Tree destructors: erase(begin(), end()) (00AA49E0),
+// free the head, head = 0, size = 0.
+struct TreeEraseHost {
+    virtual ~TreeEraseHost() = default;
+    virtual void erase_subtree_00aa22c0(void* tree, void* root) = 0;
+    virtual void erase_range_00aa49e0(void* tree, void* first, void* last) = 0;
+};
+void tree_clear_00aa28f0(void* tree, TreeEraseHost& host);
+void tree_destroy(void* tree, TreeEraseHost& host);
+
+// 00AAC180 list _Buynode() sentinel: 0Ch bytes, next = prev = itself.
+void* list_buy_sentinel_00aac180();
+// 00AAC210 list _Buynode(next, prev, const T& value) for a 4-byte T, RET 0Ch.
+void* list_buy_node_00aac210(void* next, void* prev, const std::uint32_t& value);
+// 00AA4D30 list _Buynode(next, prev, const entry&) for the 0Ch-byte named
+// entry: 14h bytes; the entry is copy-constructed by 00AA3D30 (an EH frame
+// frees the node if that throws).
+void* list_buy_named_entry_node_00aa4d30(void* next, void* prev, const void* entry, GuiNativeStringHost& strings);
+// 00AAC1D0 list::clear for 4-byte values: unlink everything, size 0, delete each
+// node.
+void list_clear_00aac1d0(void* list) noexcept;
+// 00AAC3B0 list destructor: clear, delete the head, head = 0.
+void list_destroy_00aac3b0(void* list) noexcept;
+// 00AAC500 / 00AA3400 list constructors: head = sentinel of node_bytes (0Ch via
+// 00AAC180 for the button list, 14h via 00AA2820 for the named-entry list),
+// size 0.
+void* list_construct(void* list, std::uint32_t node_bytes);
+// 00AA57C0 list copy constructor, __thiscall(list, const list*), RET 4: head =
+// 00A9B720 sentinel, size 0, then insert(end, source.begin, source.end)
+// (00A9D560).
+struct ListCopyHost {
+    virtual ~ListCopyHost() = default;
+    virtual void* buy_sentinel_00a9b720() = 0;
+    virtual void insert_range_00a9d560(void* list, void* where, void* first, void* last) = 0;
+};
+void* list_copy_construct_00aa57c0(void* list, const void* source, ListCopyHost& host);
+
+// std::_Allocate<T>(count) for sizeof(T) = 0Ch (00AAB830), 14h (00AA1B40,
+// 00AACD30), 18h (00AA1BF0) and 24h (00AACD90), __fastcall(ECX = count):
+// count 0 allocates 0 bytes; count > 0 with 0xFFFFFFFF / count < sizeof(T)
+// throws std::bad_alloc (00BF6340 / 00BF6885); otherwise operator new.
+void* allocate_elements(std::uint32_t count, std::uint32_t element_bytes);
+// allocator::deallocate(p, n), __thiscall(alloc, p, n), RET 8 (00AA10F0,
+// 00AA1190, 00AAB770, 00AACAE0, 00AACB00): operator delete(p).
+void deallocate(void* pointer) noexcept;
+// 00AA6E80 / 00AAB7F0 / 00AACCE0, __fastcall(ECX = slot): free(*slot) when
+// non-null; the slot is NOT cleared. 00AA1AD0: operator delete(*slot) when
+// non-null and the slot cleared.
+void free_pointer(void** slot) noexcept;
+void free_and_clear_00aa1ad0(void** slot) noexcept;
+// vector::size for 40h (00AA1D00), 14h (00AAC910) and 24h (00AAC970) byte
+// elements, __fastcall(ECX = vector): 0 when first is null.
+std::uint32_t vector_size(const void* vector, std::uint32_t element_bytes) noexcept;
+
+} // namespace msvc9_containers
 
 } // namespace bsp::gui_widgets_cc13
