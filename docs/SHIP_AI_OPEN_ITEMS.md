@@ -16797,12 +16797,13 @@ re-reads it). Callers of `GameUnitsHost::set_unit_side_0054`:
 | `game_hosts_script_orders.cpp` `set_unit_party_00928f50` (Lua `SetParty` on a unit, `kSetPartyUnitBound`) | **no** |
 
 So the capture paths are already immediate; a script `SetParty` on a unit leaves gunnery's side stale for the rest of
-the mission. In this installation's mission scripts, the only live `SetParty` on a unit rather than the mission's
-own script entity is `bsm_06_holding_lombok.lua:579` (`SetParty(bunkerLost, PARTY_JAPANESE)`); every
-`SetParty(Mission.Henry, ...)` is commented out. USNOS has none, so a USNOS pair is expected identical.
+the mission. This installation's scripts carry 246 uncommented `SetParty` calls on something other than `this` /
+`Mission` (a grep over `scripts/`; which of them reach a unit at run time is not counted). USNOS has one:
+`us_osumi.lua:1106` sets a neutral unit Allied once a `Mission.Troops` unit is within 1500 m (the capture
+neighbourhood); USN04's `usn_19_coralus.lua:879` sets the Lexington neutral.
 
 The edit (units host, the one setter every path goes through; switch `kPartyChangeRefreshesGunneryBound`, OFF):
 `GameUnitsHost::set_unit_side_0054` calls `impl_->gunnery->refresh_unit_side(index)` after the write. Routed to the
-lead because `src/game_hosts_units.cpp` is leased by cc9-gunnery36. Predictions: smoke and USNOS identical
-(exit 0); BSM06 moves from the `bunkerLost` SetParty on, where gunnery's side for the bunker changes in the same step instead of never
+lead because `src/game_hosts_units.cpp` is leased by cc9-gunnery36. Predictions: smoke identical (exit 0); USNOS
+moves from the first `us_osumi.lua:1106` SetParty that reaches a unit (exit 3, or 1 if none does), where gunnery's side for the bunker changes in the same step instead of never
 (expected: its guns and its attackers re-pick targets).
