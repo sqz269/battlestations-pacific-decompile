@@ -1060,4 +1060,124 @@ void gui_group_read_properties_00ac6fd0(void* group, GuiTableReader& reader, Gui
 // default), 00ABDD80, and vtable +7Ch.
 void gui_curve_read_properties_00abe1d0(void* curve, GuiTableReader& reader, GuiReaderHost& host);
 
+// ---------------------------------------------------------------------------
+// Named entries, timed entries, FrameBox destructor
+// ---------------------------------------------------------------------------
+
+// The 0Ch-byte {native string name, dword value} entry of the manager's
+// hoisted-widget list (value = widget) and of string/value maps.
+// 00AA3D30, __thiscall(entry, const entry* source), RET 4: zero the header;
+// unless copying onto itself, resize to the source length (0041DD40, keep) and
+// copy the destination length of bytes when the source is non-empty; the value
+// +8h is copied in every case (so a self-copy keeps the value but loses the
+// string, whose buffer is abandoned, not freed).
+void* gui_named_entry_copy_00aa3d30(void* entry, const void* source, GuiNativeStringHost& strings);
+// 00AA9A20, __thiscall(entry, const native string* name, dword value), RET 8:
+// the same string copy from `name`, then +8h = value.
+void* gui_named_entry_construct_00aa9a20(void* entry, const void* name, std::uint32_t value,
+    GuiNativeStringHost& strings);
+// 00AA44D0 (__fastcall(ECX = slot, EDX = source)) and 00AA4AB0 (__stdcall(slot,
+// source), RET 8): placement construction, 00AA3D30 when the slot is non-null.
+void gui_named_entry_place_copy(void* slot, const void* source, GuiNativeStringHost& strings);
+
+// 00AA8B80, __thiscall(widget, int index), RET 4: the timed-entry pointer
+// array at +88h (data +88h, count +8Ch). Nothing when count < index; when index
+// == count the array is first grown to index + 1 (00AA77B0, new slot null);
+// then a non-null entry is deleted through its vtable +0 (flag 1) and the slot
+// cleared.
+struct GuiTimedEntryHost {
+    virtual ~GuiTimedEntryHost() = default;
+    virtual void resize_pointer_array_00aa77b0(void* array, std::int32_t count) = 0;
+    virtual void delete_entry(void* entry) = 0;
+    // 00BF6989 free of the array block.
+    virtual void free_block(void* block) = 0;
+};
+void gui_widget_delete_timed_entry_00aa8b80(void* widget, std::int32_t index, GuiTimedEntryHost& host);
+// 00AA7BD0, __fastcall(ECX = array): 00AA77B0(0), then free the data block.
+void gui_timed_entry_array_destroy_00aa7bd0(void* array, GuiTimedEntryHost& host);
+
+// 00AD2880, __fastcall(ECX = framebox): vtable 00D5D130, return the +104h
+// string buffer, destroy the 2Ch-record vector at +F0h (00AD21B0), base
+// destructor.
+struct GuiFrameBoxHost {
+    virtual ~GuiFrameBoxHost() = default;
+    virtual void destroy_state_vector_00ad21b0(void* vector) = 0;
+};
+void gui_framebox_destroy_00ad2880(void* framebox, GuiWidgetMemberHost& host, GuiFrameBoxHost& framebox_host);
+
+// ---------------------------------------------------------------------------
+// AnimIcon update (vtable +40h)
+// ---------------------------------------------------------------------------
+
+// AnimIcon fields: +138h FPS (float), +13Ch the last step time in ms (dword,
+// converted unsigned), +140h PlaybyDefault (playing), +141h Loop, +142h
+// Forward; the Icon current state at +ECh (int16) and states at +F0h.
+struct GuiAnimIconUpdateHost {
+    virtual ~GuiAnimIconUpdateHost() = default;
+    // 00AB1150 BSP_GuiIcon_Update(seconds).
+    virtual void icon_update_00ab1150(void* icon, float seconds) = 0;
+    // [01090AB0] vtable +14h: the clock's {counter, frequency} int64 pair.
+    virtual std::array<std::int64_t, 2> clock_counter_and_frequency() = 0;
+    // Icon vtable +88h(state, 0, 1.0f).
+    virtual void select_state_virtual_88(void* icon, std::int16_t state, std::int32_t mode, float blend) = 0;
+};
+
+// 00AD3040, __thiscall(icon, float seconds), RET 4 (x87 read from the bytes:
+// DE F2 = FDIVRP ST(2),ST(0), DE C2 = FADDP ST(2),ST(0), DE F9 = FDIVP
+// ST(1),ST(0)). Icon update first; nothing more unless playing with at least
+// one state. now = float(1000.0 * float(counter / frequency)); when now is
+// greater than 1000.0 / FPS + (unsigned)last (kept in x87 precision, not
+// rounded), last = trunc(float(float(counter / frequency) * 1000.0)) (FISTP
+// under a chop control word) and the state steps: forward from the last state
+// wraps to 0 only with Loop; backward from 0 wraps to the last state only with
+// Loop; otherwise current +/- 1. Intermediates are double here, which is the
+// x87 result under the 53-bit precision control the game runs with
+// (docs/X87_CONTROL_WORD.md); an extended-precision run could differ in the
+// last bit of the comparison.
+void gui_anim_icon_update_00ad3040(void* icon, float seconds, GuiAnimIconUpdateHost& host);
+
+// 00AD2A80 FrameBox vtable +8Ch, __thiscall(framebox, const record* r, int16
+// index), RET 8. LOCK INC of the count at (r->+0h)+4h (the record's first
+// field is a ref-counted object; the increment is not balanced here), then
+// index == count: push_back (00AD29D0); otherwise records[index] = *r
+// (00AD0D00, index checked: 00BF6713 when out of range). Finally, when the
+// current state (+ECh, int16) is that index, vtable +88h with no arguments.
+struct GuiFrameBoxRecordHost {
+    virtual ~GuiFrameBoxRecordHost() = default;
+    virtual void push_back_record_00ad29d0(void* vector, const void* record) = 0;
+    virtual void assign_record_00ad0d00(void* element, const void* record) = 0;
+    virtual void checked_iterator_failure_00bf6713() = 0;
+    virtual void framebox_virtual_88(void* framebox) = 0;
+};
+void gui_framebox_insert_state_record_00ad2a80(void* framebox, const void* record, std::int16_t index,
+    GuiFrameBoxRecordHost& host);
+
+// 00AC8890 Scrollbar vtable +78h (loaded hook), __fastcall(ECX = scrollbar):
+// looks up "_BackArrow_Icon", "_ForwArrow_Icon", "_Background_Icon" and
+// "_Slider_Icon" with 00AAA2B0 and DISCARDS each result (EAX is not stored;
+// each temporary native string is returned to the pool), then
+// 00AC7D00 SetValue(MinValue +F0h) and 00AA7170.
+struct GuiScrollbarLoadHost {
+    virtual ~GuiScrollbarLoadHost() = default;
+    virtual void* find_child_by_suffix_00aaa2b0(void* widget, const char* name) = 0;
+    virtual void set_value_00ac7d00(void* scrollbar, float value) = 0;
+    virtual void loaded_base_00aa7170(void* widget) = 0;
+};
+void gui_scrollbar_on_loaded_00ac8890(void* scrollbar, GuiScrollbarLoadHost& host);
+
+// 00AC6040 Layer copy constructor, __thiscall(this, source), RET 4: base copy,
+// vtable 00D5BE38; +ECh, +F0h (the camera store), +F5h, +F8h, +FCh (applied
+// Priority) and the +100h name copied (+F4h is not); the store descriptor
+// +108h..+11Ch is RESET to its defaults (0, 0.1 (00D7A2F0), 1000.0
+// (00CE3804), 1.0, authored Priority 0, RenderOrder 0.0) rather than copied;
+// +120h/+121h copied; then 00AC59A0 (scene/camera/store setup) and, when +F5h
+// is set, the store's +20h count is incremented.
+struct GuiLayerCopyHost {
+    virtual ~GuiLayerCopyHost() = default;
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    virtual void setup_00ac59a0(void* layer) = 0;
+};
+void* gui_layer_copy_construct_00ac6040(void* self, const void* source, GuiLayerCopyHost& host,
+    GuiNativeStringHost& strings);
+
 } // namespace bsp::gui_widgets_cc13

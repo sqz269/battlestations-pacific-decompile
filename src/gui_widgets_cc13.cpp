@@ -854,4 +854,140 @@ void gui_curve_read_properties_00abe1d0(void* curve, GuiTableReader& reader, Gui
     host.curve_virtual_7c(curve);
 }
 
+void* gui_named_entry_copy_00aa3d30(void* entry, const void* source, GuiNativeStringHost& strings) {
+    write_field<std::uint32_t>(entry, 0, 0);
+    write_field<std::uint32_t>(entry, 4, 0);
+    if (entry != source) copy_native_string(entry, source, strings);
+    copy_dword(entry, source, 8);
+    return entry;
+}
+
+void* gui_named_entry_construct_00aa9a20(void* entry, const void* name, std::uint32_t value,
+    GuiNativeStringHost& strings) {
+    write_field<std::uint32_t>(entry, 0, 0);
+    write_field<std::uint32_t>(entry, 4, 0);
+    if (entry != name) copy_native_string(entry, name, strings);
+    write_field<std::uint32_t>(entry, 8, value);
+    return entry;
+}
+
+void gui_named_entry_place_copy(void* slot, const void* source, GuiNativeStringHost& strings) {
+    if (slot != nullptr) gui_named_entry_copy_00aa3d30(slot, source, strings);
+}
+
+void gui_widget_delete_timed_entry_00aa8b80(void* widget, std::int32_t index, GuiTimedEntryHost& host) {
+    void* array = static_cast<std::byte*>(widget) + 0x88;
+    if (read_field<std::int32_t>(widget, 0x8C) < index) return;
+    if (index >= read_field<std::int32_t>(widget, 0x8C)) host.resize_pointer_array_00aa77b0(array, index + 1);
+    void** slot = read_field<void**>(widget, 0x88) + index;
+    if (*slot != nullptr) {
+        host.delete_entry(*slot);
+        *slot = nullptr;
+    }
+}
+
+void gui_timed_entry_array_destroy_00aa7bd0(void* array, GuiTimedEntryHost& host) {
+    host.resize_pointer_array_00aa77b0(array, 0);
+    host.free_block(read_field<void*>(array, 0));
+}
+
+void gui_framebox_destroy_00ad2880(void* framebox, GuiWidgetMemberHost& host, GuiFrameBoxHost& framebox_host) {
+    write_field<std::uint32_t>(framebox, 0, 0x00D5D130);
+    release_native_string(framebox, 0x104, host);
+    framebox_host.destroy_state_vector_00ad21b0(static_cast<std::byte*>(framebox) + 0xF0);
+    host.destroy_widget_base_00aa9730(framebox);
+}
+
+void gui_anim_icon_update_00ad3040(void* icon, float seconds, GuiAnimIconUpdateHost& host) {
+    host.icon_update_00ab1150(icon, seconds);
+    if (read_field<std::uint8_t>(icon, 0x140) == 0) return;
+    const auto first = read_field<std::uintptr_t>(icon, 0xF4);
+    if (first == 0) return;
+    const std::int32_t count = static_cast<std::int32_t>(read_field<std::uintptr_t>(icon, 0xF8) - first) >> 6;
+    if (count == 0) return;
+
+    constexpr double kMilliseconds = 1000.0;  // 00CE47A0
+    constexpr double kTwoTo32 = 4294967296.0; // 00CE3978 (float)
+    auto clock = host.clock_counter_and_frequency();
+    double next = kMilliseconds / static_cast<double>(read_field<float>(icon, 0x138));
+    const auto last = read_field<std::int32_t>(icon, 0x13C);
+    double last_ms = static_cast<double>(last);
+    if (last < 0) last_ms += kTwoTo32;
+    next += last_ms;
+    const float clock_seconds = static_cast<float>(static_cast<double>(clock[0]) / static_cast<double>(clock[1]));
+    const float now = static_cast<float>(kMilliseconds * clock_seconds);
+    if (!(static_cast<double>(now) > next)) return;
+
+    clock = host.clock_counter_and_frequency();
+    const float seconds_now = static_cast<float>(static_cast<double>(clock[0]) / static_cast<double>(clock[1]));
+    const float stamp = static_cast<float>(static_cast<double>(seconds_now) * kMilliseconds);
+    write_field<std::int32_t>(icon, 0x13C, static_cast<std::int32_t>(static_cast<std::int64_t>(stamp)));
+
+    const bool forward = read_field<std::uint8_t>(icon, 0x142) != 0;
+    const bool loop = read_field<std::uint8_t>(icon, 0x141) != 0;
+    const auto current = read_field<std::int16_t>(icon, 0xEC);
+    if (forward) {
+        if (count - 1 == current) {
+            if (loop) host.select_state_virtual_88(icon, 0, 0, 1.0f);
+            return;
+        }
+    } else if (current == 0) {
+        if (loop) host.select_state_virtual_88(icon, static_cast<std::int16_t>(count - 1), 0, 1.0f);
+        return;
+    }
+    host.select_state_virtual_88(icon, static_cast<std::int16_t>(current + (forward ? 1 : -1)), 0, 1.0f);
+}
+
+void gui_framebox_insert_state_record_00ad2a80(void* framebox, const void* record, std::int16_t index,
+    GuiFrameBoxRecordHost& host) {
+    auto* object = read_field<std::byte*>(record, 0);
+    _InterlockedIncrement(reinterpret_cast<volatile long*>(object + 4)); // 00CE221C
+    const std::int32_t count = gui_framebox_state_count_00ad2720(framebox);
+    void* vector = static_cast<std::byte*>(framebox) + 0xF0;
+    if (index == count) {
+        host.push_back_record_00ad29d0(vector, record);
+    } else {
+        if (read_field<std::uintptr_t>(framebox, 0xF4) == 0 || static_cast<std::uint32_t>(index) >=
+                static_cast<std::uint32_t>(gui_framebox_state_count_00ad2720(framebox)))
+            host.checked_iterator_failure_00bf6713();
+        host.assign_record_00ad0d00(read_field<std::byte*>(framebox, 0xF4) + index * 0x2C, record);
+    }
+    if (read_field<std::int16_t>(framebox, 0xEC) == index) host.framebox_virtual_88(framebox);
+}
+
+void gui_scrollbar_on_loaded_00ac8890(void* scrollbar, GuiScrollbarLoadHost& host) {
+    for (const char* name : {"_BackArrow_Icon", "_ForwArrow_Icon", "_Background_Icon", "_Slider_Icon"})
+        static_cast<void>(host.find_child_by_suffix_00aaa2b0(scrollbar, name)); // result unused in the image
+    host.set_value_00ac7d00(scrollbar, read_field<float>(scrollbar, 0xF0));
+    host.loaded_base_00aa7170(scrollbar);
+}
+
+void* gui_layer_copy_construct_00ac6040(void* self, const void* source, GuiLayerCopyHost& host,
+    GuiNativeStringHost& strings) {
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, 0x00D5BE38);
+    copy_dword(self, source, 0xEC);
+    copy_dword(self, source, 0xF0);
+    write_field<std::uint8_t>(self, 0xF5, read_field<std::uint8_t>(source, 0xF5));
+    write_field<float>(self, 0xF8, read_field<float>(source, 0xF8));
+    copy_dword(self, source, 0xFC);
+    write_field<std::uint32_t>(self, 0x100, 0);
+    write_field<std::uint32_t>(self, 0x104, 0);
+    copy_native_string(static_cast<std::byte*>(self) + 0x100, static_cast<const std::byte*>(source) + 0x100, strings);
+    write_field<std::uint32_t>(self, 0x108, 0);
+    write_field<float>(self, 0x10C, 0.1f);
+    write_field<float>(self, 0x110, 1000.0f);
+    write_field<float>(self, 0x114, 1.0f);
+    write_field<std::uint32_t>(self, 0x118, 0);
+    write_field<float>(self, 0x11C, 0.0f);
+    write_field<std::uint8_t>(self, 0x120, read_field<std::uint8_t>(source, 0x120));
+    write_field<std::uint8_t>(self, 0x121, read_field<std::uint8_t>(source, 0x121));
+    host.setup_00ac59a0(self);
+    if (read_field<std::uint8_t>(self, 0xF5) != 0) {
+        auto* store = read_field<std::byte*>(self, 0xF0);
+        write_field<std::int32_t>(store, 0x20, read_field<std::int32_t>(store, 0x20) + 1);
+    }
+    return self;
+}
+
 } // namespace bsp::gui_widgets_cc13
