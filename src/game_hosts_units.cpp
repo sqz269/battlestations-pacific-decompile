@@ -4594,6 +4594,11 @@ struct GameUnitsHost::Impl {
         in.altitude = slot.motion.position[1];
         in.dive_altitude_a8 = slot.db_dive_alt_a8;
         in.rearm_timer_1c = slot.db_aim_rearm_1c;
+        // SUBSTITUTION, labelled: 009C6114 draws U(0.5, 1.0) (00CE3800 0.5,
+        // FLD1) from 00BD2F10 with ECX = 1 after each release and stores it
+        // to state+1Ch; this host takes the low end and draws nothing. It
+        // gates only a second release within one aimdive (cc13 plane-bot
+        // audit 7a, GUNNERY 181).
         in.rearm_draw = bsp::dive_bomb_constant::kAimDiveRearmLow;
         // 009C59BA-009C5C9B, reconstructed.
         bsp::DiveBombAimErrorInputs e;

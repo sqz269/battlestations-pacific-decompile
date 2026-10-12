@@ -12390,3 +12390,42 @@ p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (le
 - Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
 - Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
   points by the transpose of the fort frame. Not started.
+## 181. `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The read** (`009C5F50`-`009C5FCB`, disk bytes through `disasm-raw`; frame base `E`, the ESP after the prologue):
+- `009C5F57`/`009C5F66` `MOVSS [ESP+24h]` store `|pitch command|` to `E+24h`.
+- `009C5F6F FLD [EBP+54h]` (AimPitchRatio, `row+60h` in the host's view), `009C5F72 SUB ESP,14h`,
+  `009C5F75 FMUL [ESP+38h]` and `009C5F79 FSTP [ESP+38h]`: with ESP at `E-14h`, `[ESP+38h]` is `E+24h`, so the
+  product is stored as a float **over** the `|pitch|` slot. `009C5F7D` reloads it as the power cap's x.
+- `00419010` ends in `RET 14h` (`00419030`), so ESP is back at `E` after `009C5F9E`.
+- `009C5FA7 FLD [ESP+24h]` therefore reloads `AimPitchRatio x |pitch|`, and the brake floor's interpolation
+  `00419010(0, MinBrake [EBP+50h], 1, MaxBrake [EBP+4Ch], x)` takes the product, as the power cap does.
+- The host (`src/dive_bomb_aimdive_tail.cpp`) passed `|pitch|`. `kAimDiveTailBound` is ON, so this is live.
+
+**The binding.** `kAimDiveBrakeRatioBound` in `src/dive_bomb_aimdive_tail.cpp`; ON the floor takes `x1`, OFF it
+takes `|pitch|`. The row values are the captured skill row's (`dive_bomb_row`), unchanged.
+
+**This installation's rows** (`scripts/datatables/robots.lua`, mtime 2025-06-01 16:03:10; PilotBot):
+
+| row | MaxPower | MinPower | MaxBrake | MinBrake | AimPitchRatio | floor ON | floor OFF |
+|---|---|---|---|---|---|---|---|
+| SPNormal (skill 1) | 0.7 | 0.2 | 0.5 | 0.0 | 3.0 | `0.5 min(1, 3p)` | `0.5 p` |
+| SPVeteran (skill 2) | 1.0 | 1.0 | 0.0 | 0.0 | **0.0** | 0 | 0 |
+
+`robots__.lua.bak` beside it (16:03:09) has SPVeteran's ratio at 3.0; the modded value is what this installation
+runs. SPVeteran's brakes are 0.0 either way, so skill-2 pilots cannot move.
+
+**Predictions, written before the pairs.**
+- OFF is identical by construction (the switch is a `constexpr` select).
+- ON, only SPNormal (or other ratio-3 row) dive bombers in aimdive move, and only on ticks where the stick is off
+  centre and `1 - v` is below the new floor: the floor triples for `p < 1/3` and saturates at 0.5 from there. Above
+  about 120 m plus the pull-out margin `v = 1`, so the brake **is** the floor; the image brakes harder through the
+  upper aimdive.
+- Expected: slower aimdives, release ticks later and release heights or distances shifted; dive-bomb-task release
+  counts move on USN04 phase 2 and JM08 r7, direction not predicted (175(a)'s cross-track miss decides whether the
+  extra time helps). Units with no dive bombers in aimdive stay identical until the cascade.
+- **Mechanism failure** would be: no aimdive row moves, or moves on a row whose dive bombers are all skill 2.
+
+The re-arm draw (audit 7a): `009C6106`-`009C6119` call `00BD2F10` with `ECX = 1`, `[ESP] = 0.5` (`00CE3800`,
+bytes `00 00 00 3F`) and `[ESP+4] = 1.0` (`FLD1`), and `009C6119 FSTP [ESI+1Ch]` stores the draw. The host's fixed
+`kAimDiveRearmLow` is now labelled a SUBSTITUTION in `src/game_hosts_units.cpp` (comment only).
