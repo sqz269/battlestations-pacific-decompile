@@ -78,7 +78,9 @@ float ocean_wave_field_sample_0078c890(const OceanWaveFieldState& field,
 float ocean_coverage_mask_00b9cf50(const std::vector<OceanCoverageRegion>& regions,
                                    float x, float z) noexcept {
     for (const OceanCoverageRegion& r : regions) {
-        if (x < r.x0 || z < r.z0 || r.x1 < x || r.z1 < z) continue;
+        // 00B9CF73..00B9CF90: FCOMI/JB thrice and FCOMPI/JAE; an unordered
+        // compare (NaN) leaves the region, so a NaN point gets 1.0.
+        if (!(x >= r.x0) || !(z >= r.z0) || !(r.x1 >= x) || !(r.z1 >= z)) continue;
         const float row_f = static_cast<float>(
             (1.0 - (static_cast<double>(z) - r.z0) * r.scale_z) * r.height);
         std::uint32_t col = truncate_unsigned(static_cast<double>(r.width) - 1.0);
