@@ -15002,3 +15002,32 @@ mission when the HQ changes party.
   cut it; y1 (r5, LST03 second in the boat list) and x1-x3 (r7 with TT04 promoted in the boat, ship and air lists)
   never started (queued behind the slots at the outage). They are rerun next.
 - The w runs never reach phase 2, so C47 targeting (w3) is untested.
+- **x1-x3 on the rerun** (r7 with TT04 first in the boat list, first in the ship list, first in the air list): all
+  three lose the HQ (990.25, 1080.65, 1009.65 s) with Missouri alive; 9, 7 and 5 landships dead. Promoting TT04
+  costs the early Missouri kill each time.
+
+## 5fo. Post-`_free` audit of the 22 functions only this doc owns (cc9-lua50, 2026-10-12, reads only)
+
+docs/CC13_FREE_FLOW_REPAIR.md lists 22 repaired functions whose only owning doc is this one. For each, the code
+after every `_free`-family call (`00BF65AC`, `00BF6989`, `00BF9DC8`) was read from the live listing
+(`local\l50_postfree.py`, one `local\l50_postfree_<addr>.txt` per function) and compared with the host.
+
+| function | what the newly visible code does | host |
+| --- | --- | --- |
+| `006B0000`, `007B6810`, `007F1140`, `007F1EE0`, `009B2E30`, `009CC000` (scalar deleting dtors) | the `ADD ESP`/`POP`/`RET` epilogue | no host effect |
+| `006D3B10` (dtor body, caller `006D40D0`) | frees `+830h`, releases `+828h` (vtable `+4`(1)), then `006CA410` and the base dtor `00959940` | no host effect (memory only) |
+| `006C48F0` (air-ops list erase, from `006CC5C0` and three others) | decrements the count `+8h` and continues the walk | no host effect: the host's container erase |
+| `006CADD0` `BSP_AirOps_LoadFromScene` | the next property-name string builds (`0065CAF0`, `006952A0`, `00695870`) after each free; the loads past them were already visible | no host effect |
+| `00733D50`, `00733FF0`, `007340A0` (HUD countdown) | `00733FF0`/`007340A0`: destroy the old callback holder `+54h` and store the new one (or 0) | covered: `game_hosts_script_orders.cpp` Countdown / `countdown_stop_007340a0` already cite `0073405E`-`00734083` and `00734110`-`0073412E`; `00733D50` zeroes its `[EDI]` the same way |
+| `00759120` (mothership model bind) | `"runwaycenter"` (`00D018BC`) model node -> class `+814h..+81Ch` | covered: `carrier_runway_class_00759120` (`00759237`-`00759265`) |
+| `007F0280` `BSP_Bot_NearFieldUnitAvoidanceProbe` | after a vector grow: store the element, count + 1, back into the walk | no host effect: the host's push_back |
+| `00929800` `BSP_MissionEntity_PublishLuaDead` | frees the script object `+1D8h` and zeroes it, the Lua ref dtor `00B67700`, then `LeaveCriticalSection` | no host effect: `entity_kill_00926d90` already erases the entity from both think lists |
+| `0094C900` | frees two locals and returns (`RET 20h`) | no host effect |
+| `00982120` (the `exitzone` warning, from `BSP_Plane_OutOfActionCountdown` and `BSP_PlaneSquadron_OnPlaneLeftMap`) | sets warning-manager byte `+105h` = 1 and frees the argument vector | no gameplay effect: HUD warning state (cc13's warning lane) |
+| `009B4D00`, `009B6D20` (level-bomb attack run / move-to ticks) | after a vector grow in the spacing pass: store the peer, count + 1, back into the walk | no host effect: `lb_spacing_pass` uses a vector |
+| `009CA200` | the epilogue, `RET 4` | no host effect |
+| `00A287C0` (from `BSP_AiPlanner_CaptureThink`) | map `operator[]`: insert through `00A215D0` when the key is missing, return `node+10h` | no host effect: std::map default-inserts the same |
+| `00A32500` `BSP_Ai_ForcedTargetWeightInsert` | after a grow: copy the 20h-byte record (`REP MOVSD`), count + 1, then `00A038C0` | no new behaviour: the non-grow path (`00A327CD`) was visible and reaches the same `00A038C0` call. `00A038C0` empties the map at `[00F8A738]` (a cache, through `00A01340`); the host keeps no such cache |
+
+So no function on this list needs a new bind. Uncertainty: the comparison is against the post-free fragments only;
+the rest of each body was visible before the repair and is not re-audited here.
