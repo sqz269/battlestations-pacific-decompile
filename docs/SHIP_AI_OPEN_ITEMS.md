@@ -16637,3 +16637,6 @@ The exec guard logs `bsp: refused a mission script's process launch: sus_prog.ex
   with logs within one byte of each other, because they are identical until frame 118000.
 - Any change to the build moves USNOS from a few hundred seconds in (the lift-height flip moved the first death row
   at 288 s). Plans are tied to the build they were tuned on; re-tune from x rather than from d.
+- **y** (x + NH also on Musashi in 78300-117300; log `local\s43_p9_osyf.log`) completes too, at 7687.83 s (entity
+  Essex): Loui2 sinks Musashi at 4092.27 s, Loui1 sinks Haku1 at 7505.75 s and Loui2 Haku2 at 7608.65 s, and the
+  `sus_prog.exe` refusal is logged. Two different endings from one plan, so the plan is not a knife-edge.
