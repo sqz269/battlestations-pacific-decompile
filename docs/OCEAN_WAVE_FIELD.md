@@ -531,3 +531,19 @@ call at 0078D02C inside 0078CFF0, the ocean's render job (0068A0D0 -> 0078CFF0, 
 no absolute dword. So the displacement reaches only the light-beam render effect; no simulation
 path reads it, and the skipped choppy vectors of 00B95D30 (section 9(a)) change no gameplay
 value. Recorded and closed.
+
+## 13. The six wins with the live sea on (queue item 3, after section 11)
+
+Runs from local\p1_on (e103dabd0 with the flip, the same code as 126f79f83), reference launch form;
+logs local\p1w_on_<key>.log and, for the two pair rows, local\p1b_on_{u1w,u2w}.log.
+
+| Win | AG / OFF | ON |
+|---|---|---|
+| USN02 s36_u2_p7 | 782.03 s | **lost** (no completion in 16000 frames) |
+| LOMP10 s37_l10_p2 | 957.54 s | completes 1333.08 s, guard line logged |
+| USN12 s38_u12_p2 | 1529.92 s | **lost** (no completion in 36000 frames) |
+| ESMP08 l46_e8_orders2 | 3204.10 s | completes 2307.28 s, guard line logged |
+| USN01 l50_u1_u2 | 702.85 s | **lost** (no completion in 22000 frames) |
+| LOMP06 l50_l6_q6 | 486.80 s | completes 520.05 s, guard line logged |
+
+Three wins lost to the live sea (plan casualties), three hold with moved times.
