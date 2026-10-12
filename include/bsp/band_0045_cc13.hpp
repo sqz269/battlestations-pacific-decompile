@@ -50,7 +50,7 @@ float point_line_distance_0046f440(const Vec3& point, const Vec3& line_point,
 // 0046FC80 BSP_Geometry_RayPlaneIntersect, __fastcall(ECX origin, EDX dir, [ESP+4]
 // plane_point, [ESP+8] plane_normal, [ESP+0Ch] out), RET 0Ch, AL = hit. Returns false and
 // leaves `out` alone when dot(dir, normal) == 0 (LAHF/TEST AH,44h/JNP: a NaN denominator
-// proceeds and writes NaNs). Otherwise out = origin + dir * t, t = dot(plane_point - origin,
+// proceeds and writes NaNs). Otherwise out = origin + float(dir * t), t = dot(plane_point - origin,
 // normal) / dot(dir, normal), and returns true. The ray parameter is not range-checked.
 bool ray_plane_intersect_0046fc80(const Vec3& origin, const Vec3& dir, const Vec3& plane_point,
                                   const Vec3& plane_normal, Vec3& out) noexcept;

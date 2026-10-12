@@ -257,6 +257,15 @@ if(BUILD_TESTING)
     target_compile_options(bsp_native_math_tests PRIVATE /W4 /WX /fp:strict)
     add_test(NAME native_math_differential COMMAND bsp_native_math_tests)
   endif()
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/local/cc13_leaf_reference.hpp")
+    # cc13 leaf reconstructions against their original bytes (tools/verify_cc13_leaf_reference.py).
+    add_executable(bsp_cc13_leaf_fixture_tests tests/cc13_leaf_fixture_tests.cpp src/band_0040_cc13.cpp
+                   src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp)
+    target_include_directories(bsp_cc13_leaf_fixture_tests PRIVATE local)
+    target_link_libraries(bsp_cc13_leaf_fixture_tests PRIVATE bsp_core)
+    target_compile_options(bsp_cc13_leaf_fixture_tests PRIVATE /W4 /WX /fp:strict)
+    add_test(NAME cc13_leaf_differential COMMAND bsp_cc13_leaf_fixture_tests)
+  endif()
   # The Python tool tests were outside CTest, so a green build said nothing about them and a broken
   # exporter test rode on main unnoticed. Registered only when pytest is importable, so a machine
   # without it still configures; the test itself fails loudly if the suite regresses.
