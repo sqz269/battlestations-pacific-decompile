@@ -319,8 +319,8 @@ constexpr float kTailGunnerShootRange[6] = {950.0f, 750.0f, 800.0f, 800.0f, 850.
 //    (00414D10 at 008FFC3D): the target origin, with no 00901C20 lead. Nor does
 //    008FFA20 halve a negative vertical (00902F76 is 00902920's). OFF: the AA
 //    gunner's lead and halving.
-constexpr bool kTailGunnerAimErrorBound = false;
-constexpr bool kTailGunnerOwnAimBound = false;
+constexpr bool kTailGunnerAimErrorBound = true;  // GUNNERY 193: ON by pair verdict
+constexpr bool kTailGunnerOwnAimBound = true;  // GUNNERY 193: ON by pair verdict
 // This installation's robots.lua (2025-06-01), TailGunnerBot, by skill index:
 // {AngleError (+0Ch), AimPeriodMin (+10h), AimPeriodMax (+14h)}, copied to
 // bot+84h/+88h/+8Ch by 008FBEF0.
