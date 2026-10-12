@@ -92,13 +92,13 @@ WorldConstructResult run_world_construct(WorldConstructHost& host) {
     result.ocean_from_scene_record = record != 0;
     if (record != 0) {
         result.ocean_owner = host.create_ocean_owner(
-            0x40, result.scene_root, host.record_field(kSceneRecordOceanDescOffset));
+            0x40, result.scene_root, host.record_field(kSceneRecordSkyboxNameOffset));
         host.ocean_set_light(result.ocean_owner, 0);
-        host.ocean_set_vector(kSceneRecordOceanVector0Offset, 0); // 00BBCD90
-        host.ocean_set_vector(kSceneRecordOceanVector1Offset, 1); // 00BBCDE0
-        host.ocean_set_vector(kSceneRecordOceanVector2Offset, 2); // 00BBCD50
-        host.ocean_set_scalar(kSceneRecordOceanScalar0Offset, 0); // 00BBF1A0
-        host.ocean_set_scalar(kSceneRecordOceanScalar1Offset, 1); // 00BBF200
+        host.ocean_set_vector(kSceneRecordCloudLightsAmbientOffset, 0); // 00BBCD90
+        host.ocean_set_vector(kSceneRecordCloudLightsSunOffset, 1); // 00BBCDE0
+        host.ocean_set_vector(kSceneRecordCloudLightsBottomOffset, 2); // 00BBCD50
+        host.ocean_set_scalar(kSceneRecordSkyboxRotateOffset, 0); // 00BBF1A0
+        host.ocean_set_scalar(kSceneRecordSkyboxLuminanceOffset, 1); // 00BBF200
         host.set_world_parameter_from_record(
             kWaterTracerColorKey, host.record_field(kSceneRecordWaterTracerColorOffset));
     } else {
@@ -116,9 +116,9 @@ WorldConstructResult run_world_construct(WorldConstructHost& host) {
     host.operator_set_atmosphere(result.operator_node, result.atmosphere);
     host.release_ref(result.atmosphere);
     if (record != 0) {
-        for (std::size_t i = 0; i < kSceneRecordFogEntryCount; ++i) {
+        for (std::size_t i = 0; i < kSceneRecordDirFogColorCount; ++i) {
             host.atmosphere_add_layer(result.atmosphere,
-                kSceneRecordFogEntryOffset + i * kSceneRecordFogEntryStride, i);
+                kSceneRecordDirFogColorOffset + i * kSceneRecordDirFogColorStride, i);
         }
     }
 

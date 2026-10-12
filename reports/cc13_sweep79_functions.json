@@ -1,0 +1,15 @@
+{
+  "packet": "cc13-sweep79",
+  "doc": "docs/CC13_BAND_0079_007F.md",
+  "status_note": "names are hypotheses; src/band_0079_cc13.cpp is reconstructed and build-tested, not game-validated",
+  "steps": [
+    {"address": "0062c5a7", "native": "007fcd90", "function": "BSP_RewardsScreen_Enter", "note": "sole caller of BSP_Rewards_EvaluateRankAward"},
+    {"address": "004e2b21", "native": "007f7bf0", "function": "BSP_Game_ApplyCommandLineOptions", "note": "BSP_Difficulty_IndexOfName"},
+    {"address": "004e03fb", "native": "007fa2d0", "function": "BSP_Game_LoadMissionScene", "note": "BSP_NoseArt_LoadTextures"},
+    {"address": "0077815e", "native": "007f7c60", "function": "BSP_Session_PumpReceiveQueue", "note": "MT_CAMERA handler BSP_PlayerRecord_SetCameraState"},
+    {"address": "0076d9dd", "native": "007f7490", "function": "BSP_Session_ReceiveVoiceData", "note": "BSP_PlayerRecord_StampVoiceTime"},
+    {"address": "00774e8e", "native": "007f7490", "function": "BSP_Session_SendLocalVoice", "note": "BSP_PlayerRecord_StampVoiceTime"},
+    {"address": "007aa23e", "native": "007a87b0", "function": "BSP_MovCam_Step", "note": "BSP_MovCam_UpdateHandMode"}
+  ],
+  "reconstructed": ["00797980", "00797c60", "00797d20", "00793610", "007936d0", "00793380", "007f7470", "007f7480", "007f7490", "007f7c60", "007f7cd0", "007f7bf0"]
+}

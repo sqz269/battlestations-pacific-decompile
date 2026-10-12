@@ -584,3 +584,133 @@ existing provisional names" above.
 Both packets are done. Remaining leads: the 004EB5A0 function definition (left to the
 integrator), the writer of record+90Ch, and the `[00F8D394]` vtable+120h call in 004ED910. Leases
 of both packets are released at the end.
+
+## Loose ends (cc13-sceneloose1, 2026-10-12)
+
+This section closes the three leads in the handoff and two doc corrections. The open questions
+above that are now answered are 004EB5A0, record+90Ch and vtable+120h. The 004ED690 gate byte,
+00A79480's stream tail and camera +178h stay open.
+
+### 004EB5A0 is a separate function, now defined
+
+| check | result |
+|---|---|
+| prologue | `004EB5A0 PUSH ESI; PUSH EDI; PUSH 00CE941C ("NumBeams")`, and `MOV ESI,EDX; MOV EDI,ECX` (`__fastcall(ECX = Beam bag, EDX = record)`) |
+| preceding code | `004EB59F RET` ends `BSP_SceneRecord_ReadAnimatedTextureFrames` 004EB180 (Ghidra body 004EB180-004EB59F). There is no padding between the two functions. |
+| end | `004EB9A7 RET`, then INT3 at 004EB9A8-004EB9AF and the 004EB9B0 entry |
+| references | one reference, the `JMP 004EB5A0` at 004ECA1B (a tail call from 004EB9B0). There is no absolute pointer (`scan-bytes 'A0 B5 4E 00'` finds nothing). |
+| cross branches | Capstone over 004EB5A0-004EB9A7 and 004EB9B0-004ECA23 (`local/sl1_branches.py`): only 004ECA1B crosses between the two ranges. The first range has two RETs. |
+
+The Ghidra split was made under the write lock (record `reports/cc13_sceneloose1_define.json`).
+`tools/ghidra_define_function.py` cannot do it, because it treats an address inside another body
+as "already a function". `create_function` at 004EB5A0 with `disassemble_first: false` therefore
+ran directly, and Ghidra trimmed the containing body itself.
+
+| function | body before | body after |
+|---|---|---|
+| 004EB9B0 `BSP_SceneRecord_ReadWaterProperties` | 004EB5A0-004ECA23 | 004EB9B0-004ECA23 |
+| 004EB5A0 `BSP_SceneRecord_ReadWaterBeamParticles` | (none) | 004EB5A0-004EB9A7 |
+| 004EB180 `BSP_SceneRecord_ReadAnimatedTextureFrames` | 004EB180-004EB59F | unchanged |
+
+`ghidra proto 00BF9DC8` gave `void __cdecl _free(void * _Memory)` with body 00BF9DC8-00BF9E55
+both before and after the split. 'Non-Returning Functions - Discovered' was not touched. The
+ledger has the new name, and 004EB9B0 has appended evidence. `ghidra_annotate --apply` applied
+both names and comments, and the prior annotations are in
+`local/ghidra-annotations-20261012T150759Z.json` (an untracked file in the worker tree).
+`include/bsp/scene_weather_cc13.hpp` now cites the defined function. `src/scene_weather_cc13.cpp`
+cites only addresses, so it needed no change.
+
+Also noted: the ledger name of 004EB180 (`ReadAnimatedTextureFrames`, from cc13-sweep4B) is the
+WaterParticle particle-set reader per this doc. It was left as is, because 004EB180 is outside
+this packet.
+
+### Writer of record+90Ch
+
++90Ch is the scene path, a native string with its length at +90Ch and its buffer at +910h. This
+matches `mission_load_path.hpp` and `mission_scene_load.hpp`. `local/sl1_disp.py` scans .text
+for the disp32 `0C 09 00 00` and decodes 1-8 bytes back. It finds these accesses in the scene
+code:
+
+| address | function | access |
+|---|---|---|
+| 004DA2E8 | 004DA2A0 `BSP_SceneRecord_Construct` | `MOV [ESI+90Ch], EBX` (zero length) |
+| 004E1FD2 / 004E2017 | 004E1D70 `BSP_Game_BuildSceneRecord` | length store (0 or `strlen`), the buffer at 004E1FCC / 004E2011, NUL at 004E201D |
+| 004E0CBE / 004E0E13 | 004DFB70 `BSP_Game_LoadMissionScene` | `LEA EDX, [EAX+90Ch]` (address taken, a read site) |
+| 004E2168 | 004E1D70 | `LEA ESI, [EDI+90Ch]` |
+| 004D7819, 004E1FA1, 004E1FEC, 004E202E | | reads |
+
+004E1D70 is `__thiscall` with four stack arguments (`RET 10h`). The prologue is
+`PUSH -1 / PUSH handler / PUSH fs:[0]`, then `SUB ESP,40h` and four PUSHes, so `[ESP+60h]` is
+argument 1, the `scenePath` of the ledger prototype. That argument is copied into the string
+(EBP at 004E1F78 and 004E2020). So the LUT name that 004EE9E0 builds comes from the scene path
+given to `BSP_Game_BuildSceneRecord`, whose callers are the console-command queue, SetPendingScene,
+the command-line options, and the two session handlers. The other disp-90Ch stores in the image
+(007Cxxxx, 00A39xxx, 00A42076) are in other classes. The scan sees literal displacements only,
+so a block copy of a whole record would not show up. No such copy is known.
+
+### `[00F8D394]` vtable+120h in 004ED910
+
+The call is at 004EDD87-004EDD95: `MOV ECX,[00F8D394]; MOV EDX,[ECX]; MOV EAX,[EDX+120h]; CALL EAX`.
+It is a `__thiscall` with no arguments, made after the world-parameter strings are published and
+before the environment-sound loop.
+
+- **Object and class.** 00F8D394 is the primary renderer (`docs/APP_INIT_RENDERER.md`). The only
+  vtable store that matches is `BSP_D3D9Renderer_Construct` 00B32410 at 00B3243B, which writes
+  `00D5F0A8`; its pair in `BSP_D3D9Renderer_Destroy` 00B32920 at 00B32942 writes the same value.
+  The scan was `scan-bytes 'C7 ?? A8 F0 D5 00'`.
+- **Target.** The disk dword at 00D5F1C8 (slot +120h) is **00B24DD0**,
+  `BSP_Renderer_RefreshMaterialTextures`.
+- **What it does.** It walks the renderer's effect registry (base +1A9Ch, count +1AA0h, stride
+  2Ch). For each record it calls `BSP_MaterialEffectBase_RefreshTextures` 00B19000 on the owner at
+  +28h. That function re-resolves each material's textures through the 00F8D434 world-parameter
+  name override. (Sources: `docs/NATIVE_SHADER_OWNER_ARRAY_RESET_DISCOVERY.md` and
+  `src/platform_renderer_activation.cpp`, which is reconstructed, build-tested and
+  fixture-tested.)
+- **Why the call is here.** Step 1 of 004ED910 has just published `ReflectionCubeMap`,
+  `DiffAtlas_*`, `TerrainLUT` and the other names into that same table, so step 2 makes every
+  loaded material pick them up. 004EDD95 is therefore an indirect caller of 00B24DD0. The older
+  doc reports "no callers" because it counted direct calls only.
+
+The host hook `TerrainTextureHeaderHost::renderer_slot_120` is renamed
+`refresh_material_textures_00b24dd0`, and the call site in `apply_terrain_texture_header_004ed910` is
+updated to match.
+
+### world_construct.hpp labels
+
+The file was unleased, it is not on cc9's list, and its last owners were Claude 52a62312c and
+Codex 4def3d599. The constants are renamed after the readers that write the fields, and all nine
+uses in `src/world_construct.cpp` are updated:
+
+| offset | old | new |
+|---|---|---|
+| A20h (+stride, count) | `kSceneRecordFogEntry*` | `kSceneRecordDirFogColor*` |
+| A78h | `kSceneRecordCameraNearOffset` | `kSceneRecordObjectRenderClipOffset` |
+| A84h | `kSceneRecordLightScalarOffset` | `kSceneRecordShadowRenderClipOffset` |
+| A88h | `kSceneRecordFoliageDensityOffset` | `kSceneRecordFoliageRenderClipOffset` |
+| A8Ch | `kSceneRecordFoliageRangeOffset` | `kSceneRecordFoliageLowResDistOffset` |
+| A90h | `kSceneRecordFoliageEnableOffset` | `kSceneRecordBushShadowAllowedOffset` |
+| C54h | `kSceneRecordOceanDescOffset` | `kSceneRecordSkyboxNameOffset` |
+| C5Ch / C60h | `kSceneRecordOceanScalar0/1Offset` | `kSceneRecordSkyboxRotateOffset` / `kSceneRecordSkyboxLuminanceOffset` |
+| 1014h / 1024h / 1034h | `kSceneRecordOceanVector0/1/2Offset` | `kSceneRecordCloudLightsAmbient/Sun/BottomOffset` |
+| 1044h | `kSceneRecordTerrainHandleOffset` | `kSceneRecordSunEffectNameOffset` |
+| 104Ch | `kSceneRecordShoreHandleOffset` | `kSceneRecordThunderStormEffectNameOffset` |
+
+100Ch (`kSceneRecordTerrainVectorOffset`, the horizontal-angle copy) keeps its name, because
+which reader writes it was not checked here. The host hooks `ocean_set_vector`,
+`ocean_set_scalar` and `create_ocean_owner` (and their overrides in `tests/math_tests.cpp`) also
+keep their names. A header comment records that they stand for the cloud-manager colour setters
+and for the sky creation and setters. The A88h store was checked again: 004ECE34
+`MOVSS [EDI+0A88h], XMM0` and 004ECE6A `MOVSS [EDI+0A8Ch], XMM0`. A correction note is appended
+to `docs/CC13_FOLIAGE_TERRAIN_SETUP.md`.
+
+### 00B405E0 argument order
+
+A correction is appended to `docs/CC13_SHADER_VTABLES.md`: the order is `(index, matrix, rows)`.
+`[ESP+0Ch]` at entry is rows (the switch value). After `SUB ESP,20h`, `[ESP+24h]` is the index
+(shifted left by 4) and `[ESP+28h]` is the matrix.
+
+### Status
+
+Ghidra: one function defined and two annotated. Source: renames only; nothing new is
+reconstructed, and nothing is game-validated (no runs). Build: `./scripts/build.ps1` passed, with both test
+targets passing. No new tests.

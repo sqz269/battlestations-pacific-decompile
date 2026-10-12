@@ -29,6 +29,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
+#include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
 #include "bsp/mission_camera.hpp"        // packet cc9_lua_camera_state
 #include "bsp/mission_lua_host.hpp"
@@ -891,6 +892,93 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         record.world[14],
         (made_row != nullptr && made_row->class_row_found) ? "found" : "absent");
     log_.implemented("AirOps::build_squadron", "006c5050");
+    return made.entity_id;
+}
+
+// Packet cc9_lua52_kamikaze_wiring. 006FED18-006FEED3: the bag of the released
+// kamikaze (Type = KamikazePlaneClass's class, WingCount 1, Skill, Race, Party,
+// OwnerPlayer, State 7, VelocitySI, Vel3D, Invincible 0.0, FireStance 2,
+// AutoAttackTarget, DummyObjectID) into 004F0AD0 at the round's matrix, the
+// creator create_air_ops_squadron_006c5050 already reaches. SUBSTITUTIONS,
+// labelled: VelocitySI/Vel3D, Invincible, FireStance and DummyObjectID have no
+// reader in create_units (the plane starts at the units host's seeded speed);
+// the name is the carrier's plus a counter, where 004F0AD0 takes
+// [desc+DCh]+13Ch. The AutoAttackTarget is the caller's.
+std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
+    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name) {
+    created_name.clear();
+    if (spawn.plane_class <= 0) return 0u;
+    const GameUnitRow* carrier = units_.unit_row(spawn.carrier);
+    GameSceneEntityRecord record;
+    char suffix[32];
+    std::snprintf(suffix, sizeof(suffix), "_kz%02u", spawn.dummy_id);
+    record.name = (carrier != nullptr ? carrier->name : std::string("DummyKamikaze")) + suffix;
+    record.class_name = "PlaneSquadronGen";
+    record.class_id = 0x18;
+    record.type_id = spawn.plane_class;
+    record.party = spawn.party;
+    record.race = spawn.race;
+    record.owner_player = spawn.owner_player;
+    record.bag_skill = spawn.skill;
+    record.bag_skill_source = "Skill";
+    record.created = true;
+    for (int i = 0; i < 16; ++i) record.world[i] = spawn.world[static_cast<std::size_t>(i)];
+
+    bsp::PlaneSquadronSpawnRequest request;
+    request.squadron_name = record.name;
+    request.type_class_id = spawn.plane_class;
+    request.wing_count_present = true;
+    request.wing_count_raw = 1;                       // 006FED63 PUSH 1, WingCount
+    const bsp::PlaneSquadronSpawnPlan plan = bsp::plane_squadron_plan_members_007f4580(request);
+
+    const std::size_t before = units_.count();
+    bsp::PlaneSquadronHostRecord& squadron = bsp::plane_squadron_registry().add(record.name);
+    squadron.wing_count = plan.wing_count;
+    squadron.behaviour = plan.behaviour;
+    squadron.type_class_id = spawn.plane_class;
+    squadron.party = record.party;
+    squadron.from_air_ops_launch = true;               // a mission-time creation
+    squadron.bag_state = 7;                            // 006FEDC7 PUSH 7, State
+    squadron.squadron_unit = before;
+    squadron.member_names.clear();
+    squadron.member_units.clear();
+    squadron.member_spawn_index.clear();
+    if (!plan.members.empty()) {
+        squadron.member_names.push_back(record.name);
+        squadron.member_units.push_back(before);
+        squadron.member_spawn_index.push_back(plan.members[0].spawn_index);
+    }
+    std::vector<GameSceneEntityRecord> batch;
+    batch.push_back(record);
+    units_.create_units(batch);
+    if (units_.count() <= before) {
+        squadron.member_names.clear();
+        squadron.member_units.clear();
+        squadron.member_spawn_index.clear();
+        squadron.squadron_unit = bsp::kPlaneSquadronNoUnit;
+        log_.notef("dummy kamikaze spawn: create_units made no instance for class %d",
+                   spawn.plane_class);
+        return 0u;
+    }
+    AirOpsSquadron made;
+    made.unit_index = before;
+    made.entity_id = static_cast<std::uint32_t>(made.unit_index + 1);
+    made.wing_count = 1;
+    made.name = record.name;
+    squadrons_.push_back(made);
+    created_name = made.name;
+    const GameUnitRow* target = spawn.target_plus_one > 0
+        ? units_.unit_row(spawn.target_plus_one - 1) : nullptr;
+    log_.notef("dummy kamikaze spawn: %s class=%d party=%d skill=%d -> unit %zu at "
+        "(%.1f %.1f %.1f) v=(%.1f %.1f %.1f) |v|=%.1f target=%s dummy=%u "
+        "(006FEC00 -> 004F0AD0, packet cc9_lua52_kamikaze_wiring)",
+        made.name.c_str(), spawn.plane_class, spawn.party, spawn.skill, made.unit_index,
+        static_cast<double>(record.world[12]), static_cast<double>(record.world[13]),
+        static_cast<double>(record.world[14]), static_cast<double>(spawn.velocity[0]),
+        static_cast<double>(spawn.velocity[1]), static_cast<double>(spawn.velocity[2]),
+        static_cast<double>(spawn.speed), target != nullptr ? target->name.c_str() : "-",
+        spawn.dummy_id);
+    log_.implemented("DummyKamikazePlane::spawn_kamikaze", "006fec00");
     return made.entity_id;
 }
 
