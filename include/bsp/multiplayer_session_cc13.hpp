@@ -1084,7 +1084,7 @@ struct SessionManagerHost {
     virtual void online_stats_push_back(const OnlineStatsEntry& entry) = 0;
     virtual OnlineStatsEntry online_stats_front() = 0;
     // 004C04C0 __thiscall(game, 12 words), RET 30h; returns at once when
-    // game+22DDh is set. Builds XUSER property ids 2000008Eh.. (not opened).
+    // game+22DDh is set. Reconstructed by cc13-net3 as write_online_stats_004c04c0.
     virtual void apply_stats_entry_004c04c0(const std::uint32_t (&args)[12]) = 0;
     virtual void after_stats_00626c50() = 0;  // 00626C50, not opened
 };
@@ -1301,6 +1301,9 @@ void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& 
 // byte 0) to the sync queue whose count is 00F1B14C (arrays 00F86550,
 // 00F56550, 00F26E50; full at 300h, then nothing happens) and clear
 // entity+310h. 0077C540 later calls vtable[188h](holder, byte) per queued row.
+// holder+4h starts at -999999 (0077EB50) and only 00779F80 refreshes it,
+// which MultiScore never calls, so the time test always passes for it. The
+// force flag is set by the Lua binding ForceMultiScoreSend (008AFEC0).
 inline constexpr std::uint32_t kNetSyncQueueCapacity = 0x300;
 struct NetSyncQueueRow {
     const void* entity{nullptr};
@@ -1311,6 +1314,82 @@ struct NetSyncQueue {
     std::int32_t count{0};  // 00F1B14C
     NetSyncQueueRow rows[kNetSyncQueueCapacity]{};
 };
+// ---------------------------------------------------------------------------
+// cc13-net3: 004C04C0, the XSessionWriteStats builder
+// ---------------------------------------------------------------------------
+
+// One XUSER_PROPERTY in the game's scratch area (game+2210h + k*18h): id at
+// +0h, XUSER_DATA type at +8h (1 = int32, 2 = int64), value at +10h.
+struct StatsProperty {
+    std::uint32_t property_id{0};
+    std::uint8_t data_type{0};
+    std::int64_t value{0};  // int32 properties use the low dword only
+    std::uint32_t game_offset{0};  // where the image builds it (2210h..2288h)
+};
+// One XSESSION_VIEW_PROPERTIES at game+22A0h + i*0Ch: view id, property count,
+// property pointer.
+struct StatsView {
+    std::uint32_t view_id{0};
+    std::vector<StatsProperty> properties;
+};
+
+// The twelve stack words (RET 30h). 007746F0 passes, from the first online
+// stats entry e: {[game+207Ch]+9CCh, e2, e3, e4, e5, e6, e10, e8, e7, 0, e11, e12}.
+struct StatsWriteArgs {
+    std::uint32_t session{0};     // XSessionWriteStats hSession
+    std::uint64_t xuid{0};        // also compared with 00A3EB00 when not ranked
+    std::int32_t id_5{0};         // looked up in the vector 00E19458..00E1945C
+    std::uint32_t row_6{0};       // row of the 8x3 view table (no bounds check)
+    std::uint32_t ranked_7{0};    // byte test; the whole dword is compared with 3E5h when nothing is written
+    std::int32_t value_8{0};
+    std::int32_t value_9{0};
+    std::int32_t value_10{0};
+    std::int32_t unused_11{0};    // never read
+    std::int32_t value_12{0};
+    std::int32_t value_13{0};
+};
+
+// Rows of the stack table at 004C04DE..004C058A: {view unranked, view
+// ranked, property id}. Row 3 is all zero.
+inline constexpr std::uint32_t kStatsViewTable[8][3] = {
+    {0x0D, 0x0E, 0x2000008Eu}, {0x0F, 0x10, 0x2000009Du}, {0x11, 0x12, 0x20000081u},
+    {0x00, 0x00, 0x00000000u}, {0x0B, 0x0C, 0x20000091u}, {0x09, 0x0A, 0x20000092u},
+    {0x07, 0x08, 0x20000083u}, {0x05, 0x06, 0x20000082u}};
+
+struct StatsWriteHost {
+    virtual ~StatsWriteHost() = default;
+    virtual bool write_blocked_22dd() = 0;                 // game+22DDh
+    virtual std::uint64_t local_xuid_00a3eb00() = 0;       // ECX = [00F8ABE8]
+    // The int vector at 00E19458 (begin) / 00E1945C (end), BSS; no
+    // literal-address writer was found (see the doc).
+    virtual std::vector<std::int32_t> listed_ids_00e19458() = 0;
+    virtual bool online_ready_198() = 0;                    // [00F8A2FC] && vtable[198h]()
+    virtual std::uint32_t session_mode_1fe4() = 0;         // game+1FE4h
+    // XSessionWriteStats(session, xuid, count, views, overlapped): the
+    // overlapped block game+7038h (zeroed, 1Ch bytes) only when game+1FE4h
+    // is non-zero, else null.
+    virtual std::uint32_t xsession_write_stats(std::uint32_t session, std::uint64_t xuid,
+                                               const std::vector<StatsView>& views,
+                                               bool overlapped) = 0;
+    virtual void x_get_overlapped_extended_error_null() = 0;  // XGetOverlappedExtendedError(0)
+    virtual void zero_overlapped_7038() = 0;
+    virtual void set_write_blocked_22dd() = 0;
+};
+
+// 004C04C0 __thiscall(game, 12 words) RET 30h. Builds up to four views:
+// - id listed and the online manager ready: when ranked, view FFFF0000h with
+//   1000800Ah = value_10 and 1000800Bh = value_9 (int32); when not ranked the
+//   whole write is skipped unless xuid equals the local xuid. Then, for each
+//   positive value: value_12 as table[row][2] in view table[row][ranked != 0],
+//   value_13 as 20000084h in view 4, value_8 as 200000BCh in view 1 (int64).
+// - otherwise: value_12 != 0 as one view, id 2 and property 20000080h when
+//   (id_5 - 1) < 14 unsigned, else id 3 and 2000008Fh.
+// Then the overlapped block is zeroed, XSessionWriteStats runs when any view
+// was built, XGetOverlappedExtendedError(0) runs unless the result (or, with
+// nothing written, the ranked_7 dword) is 3E5h, and game+22DDh is set when
+// game+1FE4h is non-zero, which blocks every later call.
+void write_online_stats_004c04c0(const StatsWriteArgs& args, StatsWriteHost& host);
+
 bool schedule_net_table_sync_00780a00(std::uint8_t& force_310, const void* entity,
                                       const void* holder, std::int32_t holder_tick_04,
                                       std::int32_t now_00f876b0, NetSyncQueue& queue) noexcept;
