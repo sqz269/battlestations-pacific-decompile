@@ -858,6 +858,493 @@
      "function": "0042e180"
     }
    ]
+  },
+  {
+   "address_entry": "00432750",
+   "cpp": "construct_mover_base_00432750",
+   "steps": [
+    {
+     "address": "00432771",
+     "native": "00925ce0",
+     "function": "00432750"
+    },
+    {
+     "address": "00432786",
+     "native": "00875890",
+     "function": "00432750"
+    },
+    {
+     "address": "00432820",
+     "native": "004134f0",
+     "function": "00432750"
+    },
+    {
+     "address": "0043289b",
+     "native": "004134f0",
+     "function": "00432750"
+    },
+    {
+     "address": "004328cd",
+     "native": "00432650",
+     "function": "00432750"
+    },
+    {
+     "address": "004328db",
+     "native": "00432650",
+     "function": "00432750"
+    },
+    {
+     "address": "00432938",
+     "native": "00bd2f10",
+     "function": "00432750"
+    },
+    {
+     "address": "00432955",
+     "native": "00bd2f10",
+     "function": "00432750"
+    },
+    {
+     "address": "00432972",
+     "native": "00bd2f10",
+     "function": "00432750"
+    }
+   ]
+  },
+  {
+   "address_entry": "00519290",
+   "cpp": "construct_ship_camera_base_00519290",
+   "steps": [
+    {
+     "address": "00519293",
+     "native": "00432750",
+     "function": "00519290"
+    }
+   ]
+  },
+  {
+   "address_entry": "00519490",
+   "cpp": "construct_bomber_view_00519490",
+   "steps": [
+    {
+     "address": "00519493",
+     "native": "00519290",
+     "function": "00519490"
+    }
+   ]
+  },
+  {
+   "address_entry": "005176f0",
+   "cpp": "construct_airfield_camera_005176f0",
+   "steps": [
+    {
+     "address": "005176f3",
+     "native": "00432750",
+     "function": "005176f0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00650830",
+   "cpp": "construct_submarine_camera_00650830",
+   "steps": [
+    {
+     "address": "00650833",
+     "native": "00519290",
+     "function": "00650830"
+    }
+   ]
+  },
+  {
+   "address_entry": "0078e830",
+   "cpp": "construct_shipyard_camera_0078e830",
+   "steps": [
+    {
+     "address": "0078e833",
+     "native": "00432750",
+     "function": "0078e830"
+    }
+   ]
+  },
+  {
+   "address_entry": "00605130",
+   "cpp": "construct_plane_chase_camera_00605130",
+   "steps": [
+    {
+     "address": "00605133",
+     "native": "00432750",
+     "function": "00605130"
+    }
+   ]
+  },
+  {
+   "address_entry": "006065d0",
+   "cpp": "construct_plane_cockpit_camera_006065d0",
+   "steps": [
+    {
+     "address": "006065d7",
+     "native": "00432750",
+     "function": "006065d0"
+    },
+    {
+     "address": "006066a8",
+     "native": "004134f0",
+     "function": "006065d0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042a830",
+   "cpp": "destroy_mover",
+   "steps": [
+    {
+     "address": "0042a875",
+     "native": "00875490",
+     "function": "0042a830"
+    },
+    {
+     "address": "0042a884",
+     "native": "00925780",
+     "function": "0042a830"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042bca0",
+   "cpp": "destroy_target_observer_0042bca0",
+   "steps": [
+    {
+     "address": "0042bcd4",
+     "native": "006952a0",
+     "function": "0042bca0"
+    },
+    {
+     "address": "0042bce3",
+     "native": "00695870",
+     "function": "0042bca0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00519240",
+   "cpp": "destroy_mover",
+   "steps": [
+    {
+     "address": "0051926b",
+     "native": "0042bca0",
+     "function": "00519240"
+    },
+    {
+     "address": "0051927a",
+     "native": "0042a830",
+     "function": "00519240"
+    }
+   ]
+  },
+  {
+   "address_entry": "00606800",
+   "cpp": "destroy_mover",
+   "steps": [
+    {
+     "address": "0060682c",
+     "native": "0042bca0",
+     "function": "00606800"
+    },
+    {
+     "address": "0060686a",
+     "native": "0042a830",
+     "function": "00606800"
+    }
+   ]
+  },
+  {
+   "address_entry": "00435210",
+   "cpp": "destroy_mover",
+   "steps": [
+    {
+     "address": "0043523b",
+     "native": "0042bca0",
+     "function": "00435210"
+    },
+    {
+     "address": "0043524a",
+     "native": "0042a830",
+     "function": "00435210"
+    }
+   ]
+  },
+  {
+   "address_entry": "004353a0",
+   "cpp": "destroy_mover",
+   "steps": [
+    {
+     "address": "004353cb",
+     "native": "0042bca0",
+     "function": "004353a0"
+    },
+    {
+     "address": "004353da",
+     "native": "0042a830",
+     "function": "004353a0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042c3a0",
+   "cpp": "scalar_deleting_destructor",
+   "steps": [
+    {
+     "address": "0042c3a3",
+     "native": "0042a830",
+     "function": "0042c3a0"
+    },
+    {
+     "address": "0042c3b0",
+     "native": "00bf6989",
+     "function": "0042c3a0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042e030",
+   "cpp": "cockpit_set_plane_0042e030",
+   "steps": []
+  },
+  {
+   "address_entry": "0042aaf0",
+   "cpp": "chase_set_target_0042aaf0",
+   "steps": [
+    {
+     "address": "0042ab00",
+     "native": "006952a0",
+     "function": "0042aaf0"
+    },
+    {
+     "address": "0042ab16",
+     "native": "00694a60",
+     "function": "0042aaf0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042f6c0",
+   "cpp": "submarine_setup_0042f6c0",
+   "steps": [
+    {
+     "address": "0042f6d0",
+     "native": "0042f650",
+     "function": "0042f6c0"
+    },
+    {
+     "address": "0042f6f2",
+     "native": "00414db0",
+     "function": "0042f6c0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042eb20",
+   "cpp": "shipyard_camera_setup_0042eb20",
+   "steps": [
+    {
+     "address": "0042eb53",
+     "native": "004134f0",
+     "function": "0042eb20"
+    },
+    {
+     "address": "0042eb61",
+     "native": "006bcd20",
+     "function": "0042eb20"
+    },
+    {
+     "address": "0042eb7a",
+     "native": "004134f0",
+     "function": "0042eb20"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042cb30",
+   "cpp": "airfield_camera_setup_0042cb30",
+   "steps": [
+    {
+     "address": "0042cb58",
+     "native": "004134f0",
+     "function": "0042cb30"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042ea40",
+   "cpp": "ship_camera_focus_entity_0042ea40",
+   "steps": [
+    {
+     "address": "0042ea63",
+     "native": "006952a0",
+     "function": "0042ea40"
+    },
+    {
+     "address": "0042ea73",
+     "native": "00694a60",
+     "function": "0042ea40"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042f5c0",
+   "cpp": "ship_camera_reset_0042f5c0",
+   "steps": [
+    {
+     "address": "0042f5c4",
+     "native": "00923840",
+     "function": "0042f5c0"
+    },
+    {
+     "address": "0042f5fe",
+     "native": "004134f0",
+     "function": "0042f5c0"
+    },
+    {
+     "address": "0042f618",
+     "native": "006952a0",
+     "function": "0042f5c0"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042f760",
+   "cpp": "cockpit_reset_0042f760",
+   "steps": [
+    {
+     "address": "0042f768",
+     "native": "00923840",
+     "function": "0042f760"
+    },
+    {
+     "address": "0042f76d",
+     "native": "0042e740",
+     "function": "0042f760"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042cc30",
+   "cpp": "chase_reset_0042cc30",
+   "steps": [
+    {
+     "address": "0042cc33",
+     "native": "00923840",
+     "function": "0042cc30"
+    },
+    {
+     "address": "0042ccf9",
+     "native": "004134f0",
+     "function": "0042cc30"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042dfd0",
+   "cpp": "submarine_adopt_0042dfd0",
+   "steps": [
+    {
+     "address": "0042dfee",
+     "native": "0042dc20",
+     "function": "0042dfd0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00432cb0",
+   "cpp": "ship_camera_base_step_00432cb0",
+   "steps": [
+    {
+     "address": "00432cdb",
+     "native": "0042dcd0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432cfe",
+     "native": "00b646e0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432d08",
+     "native": "004134f0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432d1a",
+     "native": "004134f0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432d91",
+     "native": "00b64640",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432d9b",
+     "native": "004134f0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432dad",
+     "native": "00413920",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432db5",
+     "native": "004134f0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432dcf",
+     "native": "00414db0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432e21",
+     "native": "0042c610",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432e34",
+     "native": "004134f0",
+     "function": "00432cb0"
+    },
+    {
+     "address": "00432e46",
+     "native": "004329d0",
+     "function": "00432cb0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00433560",
+   "cpp": "shipyard_camera_step_00433560",
+   "steps": [
+    {
+     "address": "00433576",
+     "native": "004134f0",
+     "function": "00433560"
+    },
+    {
+     "address": "00433585",
+     "native": "004329d0",
+     "function": "00433560"
+    }
+   ]
+  },
+  {
+   "address_entry": "0042cb70",
+   "cpp": "submarine_select_mode_0042cb70",
+   "steps": [
+    {
+     "address": "0042cb9e",
+     "native": "00414db0",
+     "function": "0042cb70"
+    }
+   ]
   }
  ]
 }
