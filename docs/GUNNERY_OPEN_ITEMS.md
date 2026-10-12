@@ -11810,3 +11810,27 @@ data plumbing.
   time. A `--stop-after-end` proposal went to the lead for ships42.
 - **Slot contention:** three workers share three `run_game` slots. A 150000-frame USNOS run holds one slot for about
   an hour.
+
+## 170. `kPlayerTorpedoGroupFireBound`: the trigger read and the JM06 pair (lead queue; cc9-gunnery35, 2026-10-12)
+
+**The read against the image** (`0095A1CC..0095A426`, disk bytes).
+- Per gun of the unit: `IsKindOf(20h)` (`0095A1DD`), then `00954210(7, gun)` (a torpedo tube).
+- The bearing is `-wrap(msg yaw - unit heading)` (`0095A217` `00438B10`, `0095A21C FCHS`).
+- `0085AB50` snaps it with `[00E0B588]`. It is only a wrapper: the gun's own arc record
+  (`[[gun+3F0h]+538h]+94h`, index `[gun+38Ch]`) goes to `007F6190`, so the host's direct
+  `gun_snap_heading_to_fire_window_007f6190(arcs, bearing, pi/4)` is the same call.
+- **Submarines and torpedo boats** (`IsKindOf(8)` / `IsKindOf(0Eh)`, `0095A24B`/`0095A25F`) take the press arm at
+  `0095A380`.
+- **Surface units** train with `0085ABA0` (`0095A28F`) and raise the trigger within 5 degrees.
+- The host follows each of these steps.
+- **One host difference:** the host filters tubes on category 7 only, not on `IsKindOf(20h)`. For the units checked,
+  every category-7 gun is a turning gun, so it is not a gap here.
+
+**Predictions (before the pair).** JM06 3000 with `cc9-gunnery33\local\g33_ord_j6t4.txt`: four presses at
+USTroopTransport 01 from PlayerSub 01, a submarine, so the press arm applies.
+- **OFF:** `group4_messages` counted, `tube_fires=0`.
+- **ON:** one tube fires per press whose bearing snaps into a bow window and whose `CanFire(1)` answers, so up to 4
+  `tube_fires`, and torpedoes run at the transport. Exit 3 expected.
+- **An idle control (JM06 without orders):** identical, because no message is sent.
+- **lua49's surface case** (JM08: the bow-on snap failures, `trigger_ons=0`) is the surface train-and-hold arm, and
+  this pair does not exercise it.
