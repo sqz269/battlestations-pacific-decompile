@@ -604,3 +604,14 @@ run extended to 40000 frames (local\p2s_on_l10x.log) has no fifth death and no c
 (Ashigara, Oyodo at hull-water health 0.073, Kiyoshimo, Kashi) take no damage after the 1500 s cap, so this is not a
 frame-cap artefact. The first moved entity is Kasumi, 30 s earlier, to the same squadron. Verdict: chance, not a
 directional effect of the sea; the plan has no margin for one kill fewer.
+
+## 17. The flip: live sea and live water crossing ON (cc9-physics3, 2026-10-12)
+
+`kWaveFieldLiveAmplitudeBound` (include/bsp/ocean_spectrum.hpp) and `kGunneryLiveWaterSurfaceBound`
+(src/game_hosts_gunnery.cpp) are set true together, by the lead's decision. Basis: the mechanism matched every
+prediction in sections 11 and 15 (the scene's HeightScale as the +24h amplitude, one render step per frame, the
+predicted coverage regions, every round's water crossing at 0084B380 -> 0078D1B0 on the live surface), and each win
+the combined pair lost (USN01, LOMP10, USN12) was explained per entity as a knife-edge or chance, not a directional
+effect (section 16). The two switches go together because the crossing samples the live sea: with the sea alone a
+round still crosses at y = 0 while hulls ride the waves. The wins pair on main with and without this commit follows
+in its own section.
