@@ -11662,3 +11662,27 @@ The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the 
     the run.
   - Check whether a unit index can sit in both the fort and the hull lists, since `fort_convex` and `hull_convex`
     share `hulls_`'s (unit, shape) keys.
+
+## 166. BSM01 p6's knife-edge: depth-charge presses do not help; a ramming last leg helps on three builds of four (lead queue item 4; cc9-gunnery35, 2026-10-11)
+
+163.2 item 6 proposed adding `depthcharge HenryPT` presses once `takehelm ... stop 40` has parked HenryPT by the halted
+MiniSub. Variants of `s38_b1_p6` (cc9-gunnery32's `g32_ord_b1.txt`), each 40000 frames in AF's launch form:
+
+| order file | build | MiniSub | `Mission.EndMission` | guard line |
+| --- | --- | --- | --- | --- |
+| p6 | this branch (`c2a886a8a`: AG + GUNNERY 164 ON) | contact death (HenryPT, `killer_gun=0`, 25 m) 450.41 s | 779.93 s | yes |
+| p6 + presses every 60 frames, 7400..11000 (`local\g35_ord_b1_v1.txt`) | this branch | contact 524.20 s | 854.91 s | yes |
+| p6 + presses every 20 frames, 7000..9000 (`v2`) | this branch | **survives** | none in 40000 frames | no |
+| p6 with the last leg not stopped (`6850 takehelm HenryPT 0.6 1072 -3017`, `v3`) | this branch | contact 443.62 s | 773.93 s | yes |
+| p6 with the last leg stopping at 5 m (`v4`) | this branch | contact 443.67 s | 773.93 s | yes |
+| `v3` | `b982327be` (AF-equivalent: the five AG switches OFF, no soft roll) | contact 540.59 s | 869.91 s | yes |
+| `v3` | AG (`local\g35_ag`) and the anchor | survives; HenryPT ends 660 m short and dies at 1501.74 s (Raleigh, blast, 32 m) | 1503.34 s (the player's boat is dead) | no |
+
+- **The rack does not kill the MiniSub.** `v1`'s 22 rack rounds score 2 hits and 0 damage (gunrow 7). Every
+  completion is still HenryPT's contact.
+- **Dense presses lose the run.** `v2` stops the kill altogether.
+- **`v3` and `v4` are a little faster and complete on three builds of four.** On AG and the anchor, HenryPT never
+  reaches the sub: the failure is upstream of the last leg (its track after the 140.85 s first damage), so no
+  last-leg change fixes it.
+- **Not adopted.** p6 already completes on this branch (779.93 s). The file to keep, if the lead wants one, is `v3`
+  (`local\g35_ord_b1_v3_keep.txt`).
