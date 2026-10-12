@@ -1,0 +1,16 @@
+{
+  "packet": "cc13-gp71",
+  "doc": "docs/CC13_GP_0071_0078.md",
+  "steps": [
+    {"address": "00734b36", "function": "00734b10", "native": "00733b10", "claim": "the narrative send to a party builds the MT_MISSIONINFO message"},
+    {"address": "0075935d", "function": "00759330", "native": "007592a0", "claim": "the mothership's create-message slot builds MT_MOTHERSHIP_CREATE"},
+    {"address": "00743fbd", "function": "00743f90", "native": "00743db0", "claim": "the land fort's create-message slot builds MT_LANDFORT_CREATE"},
+    {"address": "00741d65", "function": "00741d40", "native": "00741a40", "claim": "the land convoy's create-message slot builds MT_LANDCONVOY_CREATE"},
+    {"address": "0072b674", "function": "0072b640", "native": "0072a1d0", "claim": "the gun's create-message slot builds MT_GUN_CREATE"},
+    {"address": "00778872", "function": "00778860", "native": "0071bfc0", "claim": "the unit's director path object 0 is read through the slot accessor"},
+    {"address": "0075058e", "function": "00750550", "native": "007500e0", "claim": "the line-of-sight trigger factory constructs the trigger"},
+    {"address": "00750632", "function": "007505c0", "native": "0074fee0", "claim": "the proximity trigger factory constructs the trigger"},
+    {"address": "0073513a", "function": "00735100", "native": "00734140", "claim": "the narrative update ends the showing entry"},
+    {"address": "0077d4bb", "function": "0077d3f0", "native": "0077ccc0", "claim": "setting a GUI name builds MT_SETGUINAME"}
+  ]
+}
