@@ -450,8 +450,9 @@ inline constexpr bool kEngineMovieEntryBound = true;
 // GenerateInEngineMovie fallback (0046CC37-0046CC43, no +24h record) is not
 // created on the instantiate pass, standing in for 0046B730 killing it at the
 // movie's stop and re-creating only from the +24h records. False: it lives on
-// through the mission, as before.
-inline constexpr bool kEngineMovieStopRosterBound = false;
+// through the mission, as before. ON (5fr): JM05 drops 9 movie actors, JM06 the
+// three TypeB_Jake subs no script names; USNOS identical.
+inline constexpr bool kEngineMovieStopRosterBound = true;
 
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag

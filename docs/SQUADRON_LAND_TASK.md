@@ -15167,3 +15167,13 @@ fire whatever matches (`summary mission script hit second pass`).
 `bsm_08` (`Mission.Fortress`), USNRM `usn_1_pearl` (`ArizonaKillers`/`OklahomaKillers`), `jm06` (`Mission.PlayerUnit`).
 **Predictions:** rows whose hit subscriptions key on ships are identical (pair_diff 0/1); a row with a squadron-keyed
 subscription whose squadron lands hits moves, with `fired > 0` and that callback's log line appearing ON only.
+
+**5fr pairs on `6896a3e68`** (`local\l50_G0` OFF, `local\l50_G1` ON; 3000 frames):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | 9 dropped: F4F Wildcat 01-04, Fletcher-class 01, Clemson-class 02, SB2C Helldiver 01-02, TargetPT (the .ema's actors; jm05.lua names none of them); units 398 -> 389, shots 2214 -> 2155, plane water contacts 2 -> 0, deaths 16 = 16; three building death rows change their nearest ship from Clemson-class 02 to 01 |
+| JM06 | 3, moved | the three TypeB_Jake subs 01-03 dropped (jm06.lua finds only 04-09); units 26 -> 23; deaths, hits, shots identical |
+| USNOS (control) | 0/1, gameplay identical | nothing dropped |
+
+**Verdict: ON.** Every prediction holds and no dropped entity is named by its mission script.
