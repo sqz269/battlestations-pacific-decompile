@@ -16964,3 +16964,36 @@ LOMP10 win `p3_l10_b` (30000), USN02 win `s36_u2_p7` (16000), USN15 idle (36000,
 - Both wins still complete with the guard line on every side (LOMP10 1259.85 s, USN02 203.01 s).
 - **Verdict: all three ON.** Each ON arm is the arithmetic the bytes compute (re-read above, and agreeing with
   Ghidra's decompiler); no row shows a mechanism failure and none moves.
+
+## 218. Handoff (cc9-ships44, 2026-10-12; the goal is paused)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44`. Logs, order files and
+tools are in its `local\` (`s44_rows.ps1` launcher with `-Dt`/`-Jitter`/`-Traj`, `s44_sum.ps1`, `s44_peek.ps1`,
+`s44_pos.py` trajectory sampler, `s44_mk.py` USN15 order writer with moveto/attack/torp specs, `s44_mk_i1.py`
+IJN01 writer). No leases held.
+
+**Done in this lineage:** 212 (the targeted launch is 00673A10; `kPlayerLaunchScreenCursorBound` retired), 213/213.1
+(party refresh; flipped ON by construction via gunnery37), 214 (USN15 win h on e7e2dd1e8), 215/215.1
+(`kFusedSquadronSlotSelectableBound` ON), 216/216.1 (`kAiGroupPartyChangeRemovalBound`, OFF, unexercised), 217/217.1
+(x87 W1/W2/W4: switches bound, paired and flipped ON, `affcc5419`; nothing left of the x87 item).
+
+**Left, in rough order:**
+1. **USN15 re-tune.** Variant h no longer wins on main 8e2e2fba9+ (Yamashiro left at 2.8%, fail 3211.61 s; 215.1). cc13's
+   audit (docs/CC13_AUDIT_USN15_GUNNERY.md) says the US-side numbers are faithful to the modded data (Fuso 90000 hp).
+   Levers: keep the BBs off Fuso's 2-3 km band (h's hold at (-3000, 9500)), player torpedoes (`torpedo <ship> at
+   <target>` after `select`; variant i: many tube snaps FAIL outside the tube window and friendly hits on Columbia),
+   and timing the concentration on Yamashiro. Quote multi-word names (`select "West Virginia"`).
+2. **USNOS re-tune from x** (211.3) once the plane batch has settled; it would also exercise the HQ2 SetParty
+   (`us_osumi.lua:1106`) for 213 and possibly 216.
+3. **IJN01 phase 2** (parked): fused ON reaches phase 2 at about 483 s; Judy `target` waves (`s44_i1_a.txt`) dive and
+   release (min 0.5 m, mean 121 m on 8e2e2fba9) but no PearlObjOne ship dies and AA (Tautog, Cachalot) downs every
+   Judy by about 2400 s. Needs better dive aim or a different wave plan; phase 3 (Jill torpedoes at PearlObjTwo) is
+   unplanned.
+4. **JM06**: SetFailure's gunnery/units hunks (kShipJamMotionBound, n1/n7) are on main OFF (7a0386564); the Lua side
+   is lua52's. After that, pair on JM06 (Lexington's permanent SteeringJam, 600 s EngineJam) and plan the torpedo hit
+   (the hit callback's arg 4 is live) and the Yamato phase.
+5. **Landing troops and paratroopers**: not started in this lineage; see CC13_WIN_READINESS.md for the missions that
+   need them.
+6. `kAiGroupPartyChangeRemovalBound` (216): pair on a mission that SetParties grouped ships (`usn_16_endgame_at_kure`,
+   `islandcapture*`, `usn_09_leyte`) before flipping.
+7. **The shallow-water functions** (lead's list): not started in this lineage; take the addresses from the lead's queue.
