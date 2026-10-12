@@ -12038,3 +12038,26 @@ per class at load from the decoded GeomMesh; `local\g35_census_usn13.log`).
   to the magazine element rather than to `body`. Whatever the deck triangles' kind, the hull-side triangles in the
   slice belong to it.
 - One run's explosion was attributed by timing only; the hit record's element kind is not logged per hit.
+
+### 173.1 The pairs (export `75544aa7a`, `local\g35_drOFF` / `g35_drON`; diffs `local\g35_dd_<row>.txt`)
+
+| row | exit | drift census ON | what moved |
+|---|---|---|---|
+| USN13 long (9000) | 3 | drops=573 steps=194628 max_accel=0.329 | hull hits 224 -> 203, damage 35180 -> 34131, hit records 1614 -> 1621; **Cowpens sinks (fire, 366.18 s) and the mission fails at 366.33 s** ("Game Over") |
+| USN01 (3000) | 1 | drops=2 max_accel=0.040 | gameplay identical |
+| JM05 long (9000) | 1 | drops=2 max_accel=0.031 | gameplay identical |
+| LOMP10 long (9000) | 3 | (dive bombs, 16 releases) | hull hits 118 -> 115, damage 4100 -> 3641; PT 01/02 deaths 8-9 s later; deaths 5 = 5 |
+
+- **The mechanism matches the prediction.** The draws were already taken, so the RNG stream is unchanged.
+  - Level-bomb hull hits fall on USN13 (224 -> 203).
+  - Dive bombs (falls of a few seconds) barely move: USN01 and JM05 are identical, and LOMP10 moves by a few hits.
+- **One prediction was wrong: the drift is larger than 0.05.** `max_accel` is 0.33 m/s^2 on USN13, so some rack has
+  a Wind several times 0.05. The displacement bound in 173 scales with it, to about 47 m over a 16.9 s fall.
+- **The USN13 failure is a knife-edge.**
+  - OFF, Cowpens ends the run at `health=0.152`, already burning from the first water at 206.91 s.
+  - ON, a changed bomb sequence burns it out (`fire_total=3541`). Its sinking ends the mission through
+    `Mission.MissionStatus`.
+  - The reference row's outcome therefore rests on a carrier that is at 15% health either way.
+
+**Verdict: the mechanism matches; flipped ON.** The USN13 mission failure is recorded as a knife-edge consequence
+for the next reference, not as a mechanism failure.

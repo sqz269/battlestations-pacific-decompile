@@ -184,7 +184,7 @@ constexpr bool kBombDropScatterBound = true;
 //    NoGravity test. LABELLED: the owner is the dropping plane, its velocity is
 //    unit_linear_velocity; the host's step applies it after the position slot.
 //    OFF: drawn and discarded, as before.
-constexpr bool kBombDropDriftBound = false;
+constexpr bool kBombDropDriftBound = true;  // ON: GUNNERY 173.1
 // This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
 // LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
 // SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
