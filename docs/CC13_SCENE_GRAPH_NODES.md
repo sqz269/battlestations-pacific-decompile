@@ -163,3 +163,13 @@ stores floats; bit-exact agreement with the extended-precision original is not c
 
 - The meaning of node `+50h`, camera `+190h/+194h` and the debug flag bytes.
 - Whether `00B72300`'s second name argument is really an exclusion.
+
+## Handoff (2026-10-12)
+
+Every raw and never-defined vtable target in both bands is named. Light parameter setters
+were already named by earlier lineages (`BSP_PointLight_*`, `BSP_AmbientLight_*`,
+`BSP_DirectionalLight_*`); no raw light setter remained. Not done: bit-exact x87 fixtures
+for the sampler (a natural next step: run `sample_track_00b76ce0` against the native body
+on recorded tracks from an installed model), the matrix composition `00B64CE0` used by the
+pose slot, and the larger camera capture bodies (`00B708E0`, `00B83F30`, `00B848C0`), which
+are named only. `00B70900` and `00B80900` are false vtable hits inside other functions.
