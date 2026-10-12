@@ -31,18 +31,6 @@ inline void add_scaled3(float dst[3], const float src[3], float scale) noexcept 
 // Both bodies inside 00C4DF5F..00C4E092; body B's third row is 00C4E08C..00C4E092.
 void transform_point(const DynSolverBodyInput& body, const float local[3],
                      float world[3]) noexcept {
-    if constexpr (kDynWorkerPrecisionBound) {
-        // 00C4DFBA..00C4E0A8 at a worker's 53 bits: each component stays on the x87 stack
-        // until its FSTP, as ((row0*l0 + row1*l1) + row2*l2) + position (body A's first
-        // component adds row1*l1 first, the same value).
-        for (int k = 0; k < 3; ++k) {
-            const double sum = (static_cast<double>(body.row0[k]) * local[0] +
-                                static_cast<double>(body.row1[k]) * local[1]) +
-                               static_cast<double>(body.row2[k]) * local[2];
-            world[k] = static_cast<float>(sum + body.position[k]);
-        }
-        return;
-    }
     world[0] = local[1] * body.row1[0] + local[0] * body.row0[0] +
                local[2] * body.row2[0] + body.position[0];
     world[1] = body.row2[1] * local[2] + body.row0[1] * local[0] +
@@ -73,6 +61,193 @@ float jacobian_dot_velocity(const float j[12], const DynSolverBodyInput& a,
     return sum;
 }
 
+// 00C4DE40 for one point, associated as the listing is (kDynListingAssociationBound) and,
+// with R = double, holding what the listing keeps on the x87 stack at a worker's 53 bits
+// (kDynWorkerPrecisionBound). Every FSTP to a float is a sp() here; anything without one
+// stayed on the stack. With R = float every operation rounds, as at 24 bits. The chains
+// were read with local\p2_x87sym.py over the disk bytes; docs/GUNNERY_OPEN_ITEMS.md 183
+// lists them. A single operation on two floats rounds the same at either precision, so
+// those stay plain float arithmetic.
+template <typename R>
+void build_contact_rows_listing(const DynConstraintBuildInput& input,
+                                const DynSolverWorldSettings& settings, float dt,
+                                DynConstraintRow& normal_row,
+                                DynConstraintRow& friction_row) noexcept {
+    const auto sp = [](R v) noexcept { return static_cast<float>(v); };
+    // (j1*v1 + j0*v0) + j2*v2, spilled once (00C4E6E0, 00C4E78E and their siblings).
+    const auto dot3 = [&](const float* j, const float* v) noexcept {
+        return sp((R(j[1]) * v[1] + R(j[0]) * v[0]) + R(j[2]) * v[2]);
+    };
+    const DynSolverBodyInput& a = input.body_a;
+    const DynSolverBodyInput& b = input.body_b;
+    const DynSolverContactPoint& point = input.point;
+
+    // 00C4DFBA..00C4E0A8: ((row0*l0 + row1*l1) + row2*l2) + position, one spill each.
+    const auto to_world = [&](const DynSolverBodyInput& body, const float* l,
+                              float* w) noexcept {
+        for (int k = 0; k < 3; ++k) {
+            w[k] = sp(((R(body.row0[k]) * l[0] + R(body.row1[k]) * l[1]) +
+                       R(body.row2[k]) * l[2]) + body.position[k]);
+        }
+    };
+    float world_a[3];
+    float world_b[3];
+    to_world(a, point.local_point_a, world_a);
+    to_world(b, point.local_point_b, world_b);
+    const float ra[3] = {world_a[0] - a.position[0], world_a[1] - a.position[1],
+                         world_a[2] - a.position[2]};
+    const float rb[3] = {world_b[0] - b.position[0], world_b[1] - b.position[1],
+                         world_b[2] - b.position[2]};
+
+    normal_row.impulse = settings.warm_start_scale * point.normal_impulse;
+    normal_row.impulse_bias = point.bias_impulse;
+    normal_row.body_a = a.solver_index;
+    normal_row.body_b = b.solver_index;
+    friction_row.body_a = a.solver_index;
+    friction_row.body_b = b.solver_index;
+
+    // 00C4E1F7..00C4E31E: each angular entry is one a*b - c*d, stored once. The friction
+    // row's -(ra x t) (00C4EB99..00C4EC55) is the same value: negation is exact.
+    const auto jacobian = [&](const float* n, float* j) noexcept {
+        j[0] = kNegativeZero - n[0];
+        j[1] = kNegativeZero - n[1];
+        j[2] = kNegativeZero - n[2];
+        const float nax = kNegativeZero - ra[0];
+        const float nay = kNegativeZero - ra[1];
+        const float naz = kNegativeZero - ra[2];
+        j[3] = sp(R(nay) * n[2] - R(naz) * n[1]);
+        j[4] = sp(R(naz) * n[0] - R(n[2]) * nax);
+        j[5] = sp(R(nax) * n[1] - R(nay) * n[0]);
+        j[6] = n[0];
+        j[7] = n[1];
+        j[8] = n[2];
+        j[9] = sp(R(rb[1]) * n[2] - R(rb[2]) * n[1]);
+        j[10] = sp(R(rb[2]) * n[0] - R(n[2]) * rb[0]);
+        j[11] = sp(R(n[1]) * rb[0] - R(rb[1]) * n[0]);
+    };
+    // 00C4E380..00C4E3DB, 00C4E448..00C4E499 (and 00C4ED72.., 00C4EE30..):
+    // (I[3+c]*j1 + I[c]*j0) + I[6+c]*j2 for column c, one spill each.
+    const auto mass_jacobian = [&](const float* j, float* m) noexcept {
+        m[0] = a.inverse_mass * j[0];
+        m[1] = j[1] * a.inverse_mass;
+        m[2] = a.inverse_mass * j[2];
+        m[6] = b.inverse_mass * j[6];
+        m[7] = j[7] * b.inverse_mass;
+        m[8] = b.inverse_mass * j[8];
+        for (int c = 0; c < 3; ++c) {
+            m[3 + c] = sp((R(a.inverse_inertia[3 + c]) * j[4] + R(a.inverse_inertia[c]) * j[3]) +
+                          R(a.inverse_inertia[6 + c]) * j[5]);
+            m[9 + c] = sp((R(b.inverse_inertia[3 + c]) * j[10] + R(b.inverse_inertia[c]) * j[9]) +
+                          R(b.inverse_inertia[6 + c]) * j[11]);
+        }
+    };
+    // 00C4E6BE..00C4E74F and 00C4EE84..00C4EEFB: the four group dots are spilled, their
+    // sum stays on the stack.
+    const auto jacobian_dot = [&](const float* j) noexcept {
+        return ((R(dot3(j + 3, a.angular_velocity)) + dot3(j + 0, a.linear_velocity)) +
+                dot3(j + 6, b.linear_velocity)) + dot3(j + 9, b.angular_velocity);
+    };
+    // 00C4E773..00C4E7FC and 00C4EF2D..00C4EF99: 1 / the stacked sum of spilled groups.
+    const auto effective_mass = [&](const float* j, const float* m) noexcept {
+        return sp(R(1) / (((R(dot3(j + 3, m + 3)) + dot3(j + 0, m + 0)) + dot3(j + 6, m + 6)) +
+                          dot3(j + 9, m + 9)));
+    };
+
+    jacobian(point.normal, normal_row.jacobian);
+    mass_jacobian(normal_row.jacobian, normal_row.mass_jacobian);
+
+    // 00C4E4A6..00C4E63B: w x r one spill per component, then each add spilled.
+    const auto cross_arm = [&](const float* w, const float* r, float* out) noexcept {
+        out[0] = sp(R(r[2]) * w[1] - R(r[1]) * w[2]);
+        out[1] = sp(R(r[0]) * w[2] - R(r[2]) * w[0]);
+        out[2] = sp(R(r[1]) * w[0] - R(r[0]) * w[1]);
+    };
+    float wxra[3];
+    float wxrb[3];
+    cross_arm(a.angular_velocity, ra, wxra);
+    cross_arm(b.angular_velocity, rb, wxrb);
+    float relative[3];
+    for (int k = 0; k < 3; ++k) {
+        relative[k] = ((wxrb[k] + b.linear_velocity[k]) - a.linear_velocity[k]) - wxra[k];
+    }
+    const float* n = point.normal;
+    // 00C4E655..00C4E671, then 00C4E675 FMUL restitution and 00C4E67C FADD the double 0.05.
+    const float normal_velocity =
+        sp((R(relative[0]) * n[0] + R(relative[1]) * n[1]) + R(relative[2]) * n[2]);
+    const R bounce = R(normal_velocity) * input.restitution;
+    float target = static_cast<float>(static_cast<double>(bounce) + 0.05);
+    if (!(target < 0.0f)) target = 0.0f;  // 00C4E68A FLDZ / FCOMIP / JBE: zero unless below
+
+    normal_row.rhs_velocity = sp(R(kNegativeZero - target) - jacobian_dot(normal_row.jacobian));
+    float clamped;
+    if (point.depth >= 0.0f) {
+        clamped = point.depth;
+        if (settings.max_correction_depth < point.depth) clamped = settings.max_correction_depth;
+    } else {
+        clamped = 0.0f;
+    }
+    normal_row.rhs_bias = sp((R(settings.position_correction) * clamped) / dt);  // 00C4E63F..4E651
+    normal_row.effective_mass = effective_mass(normal_row.jacobian, normal_row.mass_jacobian);
+    normal_row.friction_coefficient = input.friction;
+
+    friction_row.impulse = 0.0f;
+    friction_row.impulse_bias = 0.0f;
+    friction_row.rhs_bias = 0.0f;
+    friction_row.friction_coefficient = 0.0f;
+
+    // 00C4E828..00C4E932: the perpendicular, as dyn_friction_direction builds it.
+    const float an0 = abs_float(n[0]);
+    const float an1 = abs_float(n[1]);
+    float largest = an0;
+    unsigned int axis = 0;
+    if (an0 < an1) {
+        largest = an1;
+        axis = 1;
+    }
+    if (largest < abs_float(n[2])) axis = 2;
+    const unsigned int bit = 1u << axis;
+    const unsigned int other = bit & 3u;
+    float perpendicular[3] = {n[0], n[1], n[2]};
+    const float swapped = perpendicular[axis];
+    perpendicular[axis] = perpendicular[other];
+    perpendicular[other] = swapped;
+    perpendicular[axis] = kNegativeZero - perpendicular[axis];
+    perpendicular[(1u << (bit & 3u)) & 3u] = 0.0f;
+    // 00C4E90F..00C4E92B: (p1*p1 + p0*p0) + p2*p2, spilled, then 004011D0.
+    float length = sqrt_float(sp((R(perpendicular[1]) * perpendicular[1] +
+                                  R(perpendicular[0]) * perpendicular[0]) +
+                                 R(perpendicular[2]) * perpendicular[2]));
+    const float px = perpendicular[0] / length;
+    const float py = perpendicular[1] / length;
+    const float pz = perpendicular[2] / length;
+    // 00C4E96F..00C4E9C9, then the two projections 00C4E9D0..00C4E9FF and ..00C4EA49.
+    const float qx = sp(R(py) * n[2] - R(pz) * n[1]);
+    const float qy = sp(R(pz) * n[0] - R(n[2]) * px);
+    const float qz = sp(R(n[1]) * px - R(n[0]) * py);
+    const float along_q = sp((R(qy) * relative[1] + R(qx) * relative[0]) + R(qz) * relative[2]);
+    const float along_p = sp((R(relative[0]) * px + R(relative[1]) * py) + R(pz) * relative[2]);
+    const float tx = px * along_p + qx * along_q;  // each product and the sum spilled
+    const float ty = py * along_p + qy * along_q;
+    const float tz = pz * along_p + qz * along_q;
+    const float length_sq = sp((R(tx) * tx + R(ty) * ty) + R(tz) * tz);  // 00C4EAC6
+    float tangent[3];
+    if (length_sq > kDynFrictionDirectionEpsilonSq) {
+        length = sqrt_float(length_sq);
+        tangent[0] = tx / length;
+        tangent[1] = ty / length;
+        tangent[2] = tz / length;
+    } else {
+        tangent[0] = px;
+        tangent[1] = py;
+        tangent[2] = pz;
+    }
+    jacobian(tangent, friction_row.jacobian);
+    mass_jacobian(friction_row.jacobian, friction_row.mass_jacobian);
+    friction_row.rhs_velocity = sp(-jacobian_dot(friction_row.jacobian));  // 00C4EEFB FCHS
+    friction_row.effective_mass =
+        effective_mass(friction_row.jacobian, friction_row.mass_jacobian);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -89,8 +264,9 @@ float dyn_row_group_dot(float j0, float j1, float j2, float v0, float v1,
         // rounding to float at a worker's 53 bits. The float products are exact in double.
         return static_cast<float>((static_cast<double>(j1) * v1 + static_cast<double>(j0) * v0) +
                                   static_cast<double>(j2) * v2);
+    } else {
+        return (j1 * v1 + j0 * v0) + j2 * v2;
     }
-    return (j1 * v1 + j0 * v0) + j2 * v2;
 }
 
 float dyn_row_residual(float rhs, const float jacobian[12], const float linear_a[3],
@@ -376,10 +552,11 @@ void dyn_solve_group_00403720(DynConstraintBatch& batch,
     }
 }
 
-void dyn_build_contact_rows_00c4de40(const DynConstraintBuildInput& input,
-                                     const DynSolverWorldSettings& settings, float dt,
-                                     DynConstraintRow& normal_row,
-                                     DynConstraintRow& friction_row) noexcept {
+// The order used before kDynListingAssociationBound, kept as the OFF arm.
+static void build_contact_rows_before(const DynConstraintBuildInput& input,
+                                      const DynSolverWorldSettings& settings, float dt,
+                                      DynConstraintRow& normal_row,
+                                      DynConstraintRow& friction_row) noexcept {
     const DynSolverBodyInput& a = input.body_a;
     const DynSolverBodyInput& b = input.body_b;
     const DynSolverContactPoint& point = input.point;
@@ -453,6 +630,19 @@ void dyn_build_contact_rows_00c4de40(const DynConstraintBuildInput& input,
         kNegativeZero - jacobian_dot_velocity(friction_row.jacobian, a, b);
     friction_row.effective_mass =
         dyn_effective_mass(friction_row.jacobian, friction_row.mass_jacobian);
+}
+
+void dyn_build_contact_rows_00c4de40(const DynConstraintBuildInput& input,
+                                     const DynSolverWorldSettings& settings, float dt,
+                                     DynConstraintRow& normal_row,
+                                     DynConstraintRow& friction_row) noexcept {
+    if constexpr (kDynWorkerPrecisionBound) {
+        build_contact_rows_listing<double>(input, settings, dt, normal_row, friction_row);
+    } else if constexpr (kDynListingAssociationBound) {
+        build_contact_rows_listing<float>(input, settings, dt, normal_row, friction_row);
+    } else {
+        build_contact_rows_before(input, settings, dt, normal_row, friction_row);
+    }
 }
 
 void dyn_write_back_velocities_00c37b50(const DynSolverBodyVelocity* velocities,
