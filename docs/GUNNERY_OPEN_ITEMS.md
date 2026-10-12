@@ -12477,3 +12477,44 @@ Prediction, flat sea (kWaveFieldLiveAmplitudeBound and kGunneryLiveWaterSurfaceB
   rise toward the combined pair's 10. The ON pair already showed this mechanism.
 - LOMP06 l50_l6_q6: entries > 0 if the Narwhal launches submerged. The win should hold; the time may move.
 - Rows without a submerged launcher: entries = 0, gameplay identical.
+## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+
+Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
+disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of
+FSUB(R)P/FDIV(R)P from the opcode byte. A chain without a spill stays on the stack, so it is double at a worker's
+53 bits. Chains in 00C4DE40, for one point. "sp" is a float spill. g(j,v) = sp((j1 v1 + j0 v0) + j2 v2).
+
+| Piece | Listing | OFF C++ before |
+|---|---|---|
+| transform 00C4DFBA..4E0A8 | sp(((r0 l0 + r1 l1) + r2 l2) + p) per component | y, z added as (r2 l2 + r0 l0) + r1 l1 |
+| lever arm, warm start | single operations | same |
+| contact Jacobian 00C4E1F7..4E31E | each angular entry sp(a b - c d) | same order, rounded products |
+| angular mass Jacobian 00C4E380..4E499 | sp((I[3+c] J1 + I[c] J0) + I[6+c] J2) | (I[6+c] J2 + ...) + I[3+c] J1, reversed |
+| w x r, relative velocity 00C4E4A6..4E63B | sp(a b - c d), then each add spilled | same |
+| normal velocity 00C4E655..4E671 | sp((rx nx + ry ny) + rz nz) | (rz nz + ry ny) + rx nx |
+| restitution 00C4E675..4E690 | sp(sp(nv e) + 0.05 **double** at 00D7A270); zero unless < 0 (NaN -> 0) | + 0.05f; NaN kept |
+| bias 00C4E63F..4E651 | sp((c d) / dt) | same |
+| normal J.u 00C4E6B2..4E759 | sp(-t - ((g(angA) + g(linA)) + g(linB)) + g(angB)), the sum on the stack | same order, sum rounded per add |
+| effective mass 00C4E773..4E7FC | sp(1 / (((g(J,M) angA + linA) + linB) + angB)) | one 12-term chain 5,3,4,2,0,1,... |
+| perpendicular length 00C4E90F..4E92B | sp((p1^2 + p0^2) + p2^2) | (p2^2 + p0^2) + p1^2 |
+| along_q, along_p 00C4E9D0..4EA49 | sp((qx vx + qy vy) + qz vz), sp((vx px + vy py) + pz vz) | z-first order |
+| tangent 00C4EA82..4EAA6 | each product and the sum spilled | same |
+| tangent length 00C4EAC6 | sp((tx^2 + ty^2) + tz^2) | z-first |
+| friction J.u 00C4EE84..4EEFB, eff. mass 00C4EF2D..4EF99 | as the normal row; rhs sp(-sum) | as above |
+
+The solve loops 00C42530, 00C42230 and the warm start 00C42BA0 (checked the same way) keep only the group dots on
+the stack, which `dyn_row_group_dot` already rounds once under the switch. 00C37B50 is single adds and 00C35020
+is copies, so neither needs a change.
+
+**Two switches.** `kDynListingAssociationBound` (new, include/bsp/hull_terrain_contact.hpp) runs the builder in
+the listing's association at float. That is the image at 24 bits, and it moves OFF rows by itself because the
+before-order rounds differently. `kDynWorkerPrecisionBound` runs the same template with the stack in double and
+implies the association. The OFF arm is the old code, unchanged. LABELLED: at 24 bits the restitution add is
+`float(double(product) + 0.05)`; the x87 rounds the exact sum once, which differs only on a double-rounding tie.
+
+Prediction: per-ULP differences in every Dyn contact row. Rows with no hull contact are identical (gameplay exit
+0/1). Contact-heavy rows (USNOS long, JM08, BSM01 l50_b1_a) move after their first contact solve, and the moves are
+chaotic, not directional. The verdict is mechanism-only: the first moved line must come after a contact census
+entry.
+
+**00C535E0 (cc13 audit residual 11a).** Not read in this pass.
