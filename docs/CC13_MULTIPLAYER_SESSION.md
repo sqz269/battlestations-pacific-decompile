@@ -494,7 +494,7 @@ The MultiScore primary vtable is `00D040B8` (written at 00780DEE by `00780DB0`; 
 | slot | address | role |
 |---|---|---|
 | 17Ch | `00780AE0` | send MT_MNETTABLESYNCENTITY_CREATE (DFh) to one peer (reconstructed) |
-| 180h | `00780A00` | schedule a sync to one peer holder (reconstructed; no Ghidra function yet) |
+| 180h | `00780A00` | schedule a sync to one peer holder (reconstructed; Ghidra function created by net3, `BSP_MultiScore_ScheduleSync`) |
 | 188h | `00782020` | sync to one peer (net1) |
 | 18Ch | `00780B90` | apply a received E0h (reconstructed) |
 
@@ -513,8 +513,7 @@ client executes `MultiScore[p][key]=value;...` exactly as 00781910 rebuilt it, w
 receiver's own local slot.
 
 **Create.** `00780AE0` builds DFh inline (`00766FC0(DFh, 0, entity, 0)`, vtable `00D03804`,
-`+C4h = 0`, `+10Ch = game+18C8h`) and sends it through `00779FC0`. `00780A70`, which no Ghidra
-function covers, is the same constructor as a `__thiscall(msg, entity) RET 4` routine. DFh uses the
+`+C4h = 0`, `+10Ch = game+18C8h`) and sends it through `00779FC0`. `00780A70` (Ghidra function created by net3, `BSP_NetTableSyncCreate_Construct`; no xref found) is the same constructor as a `__thiscall(msg, entity) RET 4` routine. DFh uses the
 shared entity-create codec (write `00767D70` -> `00765000`, read `007683B0` -> `00767E30`) and its
 is-a answers DFh, 47h and 46h, so `00780670` splices it onto `00F871A0` for `0077EC20`, which calls
 `msg->vtable[1Ch]()` (0077EC8E) when `msg+1Ch` names no entity yet. For DFh that is `007813B0`:
@@ -593,17 +592,17 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 
 Packet cc13-net1 totals: 68 Ghidra renames with evidence comments, 61 reconstruction records,
 about 60 reconstructed C++ functions. Packet cc13-net2 (net2, finished by net3 after a power
-outage): 27 more renames, 22 reconstruction records, 24 never-defined bodies created in Ghidra; all
+outage): 29 more renames, 24 reconstruction records, 26 never-defined bodies created in Ghidra; all
 C++ in `src/multiplayer_session_cc13.cpp` is build-tested only, nothing game-validated.
 
 Done from the net2 packet: (1) `007752D0` ServerAddPlayer; (2) `007746F0` with `004C9780`;
 (3) the 2Bh..34h arms (codec and HUD effects only); (4) `007F7460`; (5) the client execution of
 the MultiScore text (`00780B90`) and the DFh create path; (6) the 24 never-defined bodies.
 
-Left, in order of value: create Ghidra functions at `00780A00` (MultiScore slot 180h) and
-`00780A70` (DFh constructor), held until the lead confirms "Non-Returning Functions - Discovered"
-is still disabled after the restart, then name them (`BSP_MultiScore_ScheduleSync`,
-`BSP_NetTableSyncCreate_Construct` are the proposed hypotheses) and add their ledger records (the
-C++ is already in place); the writer of `holder+4h`; the readers of record `+14h` and `+A4h`;
+Ghidra functions `00780A00` and `00780A70` were created under the write lock on the lead's go-ahead
+(bodies 00780A00..00780A61 and 00780A70..00780AAA), named and recorded; afterwards `_free`
+(`00BF9DC8`, thunks `00BF65AC`/`00BF6989`) still read `void __cdecl _free(void *)`, not noreturn.
+
+Left, in order of value: the writer of `holder+4h`; the readers of record `+14h` and `+A4h`;
 `004C04C0` (XUSER stats writes); the generic entity-create codec `00765000`/`00767E30` and
 `00766FC0`, which are outside this lease.
