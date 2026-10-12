@@ -30,7 +30,8 @@ struct ProfileSettingsSaveHost {
     // 00425F40 copy of game+684h (profile+34h).
     virtual std::string copy_profile_save_name_684() = 0;
     // 004C5E00: ECX = storage manager, calls manager vtable +10h with an
-    // out-string. What the slot names is not recovered; it is the fallback name.
+    // out-string. On the PC vtable 00D68C10 that slot is 00BEB630, the newest
+    // valid slot (newest_valid_storage_slot_00beb630 below).
     virtual std::string storage_fallback_name_004c5e00() = 0;
     // 00BD3E10 (ECX = manager, NativeString*, DWORD kind; RET 8).
     virtual void request_single_write_00bd3e10(std::string_view name, std::uint32_t kind) = 0;
@@ -62,6 +63,22 @@ void complete_profile_settings_save_008d6b70(const GameSettingsBlock& settings,
 
 inline constexpr std::uint32_t kSettingsSaveStorageKind = 0;   // 008D6CFD push 0
 inline constexpr int kSettingsSaveWriterState = 2;             // 008D6B8D cmp [eax+8],2
+
+// One FindFirstFileA/FindNextFileA result of 00BEB630's walk over the pattern
+// at manager +53Ch (root + "\*", 00D68C58), with the two per-entry queries.
+struct StorageSlotCandidate {
+    std::string name;
+    bool has_valid_marker{false};   // vtable +20h = 00BEB1C0, root\name\valid exists
+    std::uint64_t valid_write_time{0}; // 00BEB0C0: last-write FILETIME of root\name\valid, 0 on failure
+};
+
+// 00BEB630 selection rule: ECX = manager, out NativeString*, RET 4. Starts from
+// the empty string and a zero time; an entry with the valid marker replaces the
+// choice only when its time is strictly greater (high dword first, then low),
+// so ties keep the earlier entry and a zero time never wins. FindClose is
+// called on the handle even when FindFirstFileA failed. The Win32 walk itself
+// is not projected here; PcStorageBackend does not implement this slot yet.
+std::string newest_valid_storage_slot_00beb630(const std::vector<StorageSlotCandidate>& entries);
 
 // ---------------------------------------------------------------------------
 // Settings equality: 008D4AF0 and its content-vector helper 008D48E0.

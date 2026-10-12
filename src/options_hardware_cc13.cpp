@@ -60,6 +60,20 @@ void complete_profile_settings_save_008d6b70(const GameSettingsBlock& settings,
     if (next) next();
 }
 
+std::string newest_valid_storage_slot_00beb630(const std::vector<StorageSlotCandidate>& entries)
+{
+    std::string best;           // 00BEB669: 00436710 empty string
+    std::uint64_t best_time = 0;
+    for (const StorageSlotCandidate& entry : entries) {
+        if (!entry.has_valid_marker) continue;
+        if (entry.valid_write_time > best_time) {
+            best = entry.name;
+            best_time = entry.valid_write_time;
+        }
+    }
+    return best;
+}
+
 bool native_string_vector_equal_008d48e0(
     const std::vector<std::string>& self, const std::vector<std::string>& other)
 {

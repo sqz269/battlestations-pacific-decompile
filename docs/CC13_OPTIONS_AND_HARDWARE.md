@@ -50,12 +50,14 @@ set and `00BD53C0` otherwise.
 1. `008D6C19..008D6C37`: requires storage manager `[0109CECC]+21h` and `00A3E510` on `[00F8ABE8]`
    (the selected Xenon user). Unlike the restore, there is no `00BD3450` reset and no game check.
 2. `008D6C61`: when `007F8CA0` (ECX = game+650h) reports a profile save name, the name is a copy of
-   game+684h. Otherwise it comes from `004C5E00`, which calls storage-manager vtable `+10h` with an
-   out-string (`004C5E00..004C5E1A`). What that slot returns is not recovered.
+   game+684h. Otherwise it comes from `004C5E00` (`BSP_StorageManager_GetNewestSlotName`), which
+   calls storage-manager vtable `+10h` with an out-string (`004C5E00..004C5E1A`). On the PC
+   vtable `00D68C10` that slot is `00BEB630`; see the next section.
 3. `008D6CC4/008D6CCE`: compared against the empty string from `00436710` through `00449AF0`.
    Only nonemptiness matters.
 4. When the name is nonempty, `008D6D06` stores the callback in `00F88958`. `008D6D0C` calls
-   `00BD3E10(name, 0)`, a single-file write of kind 0 (`docs/PC_STORAGE_BACKEND.md`, operation 4).
+   `00BD3E10(name, 0)`, a single-file write of kind 0 (`docs/PC_STORAGE_BACKEND.md`, operation 4). Kind 0 is
+   the leaf `quick`, the first of the three names at `00E15324` (`include/bsp/storage_backend.hpp`).
    `008D6D11` passes the literal `008D6B70` to `006ADB50`.
 5. Otherwise, `008D6D7B..008D6D83` calls the argument when it is nonnull and leaves the slot as it
    was.
@@ -68,6 +70,25 @@ at `008D6D11`. When the storage state `[0109CECC]+08h == 2`, it builds a stack w
 nonnull (`008D6BDC..008D6BEF`). Two differences from the profile writes in `src/profile_write.cpp`:
 no state-1 branch clears the profile name, and no `00CE3784` retiring vtable is stored on the
 normal path. The host still releases its writer, because the host needs that for lifetime.
+
+### Save-name fallback: `00BEB630`, `00BEB0C0`
+
+The selection rule is reconstructed and build-tested (`newest_valid_storage_slot_00beb630`). The
+Win32 walk is not projected, and `PcStorageBackend` (`src/storage_backend.cpp`) does not
+implement this slot yet. `00BEB630` (ECX = manager, out NativeString*, `RET 4`) starts from the
+empty string (`00436710` at `00BEB669`) and a zero time. It enumerates `FindFirstFileA` /
+`FindNextFileA` over manager `+53Ch`, which the initializer `00BEB2C0` builds as root + `"\*"`
+(`00D68C58`). Each entry that passes vtable `+20h` (`00BEB1C0`, `BSP_PcStorage_HasValidMarker`)
+is timed by `00BEB0C0` at `00BEB724`. That helper `sprintf`s `root(+534h)\slot\valid`, opens the
+file with GENERIC_READ, and returns the last-write FILETIME, or 0 on any failure. An entry
+replaces the choice only when its time is strictly greater (high dword compared first). Ties
+therefore keep the earlier entry, and a time of zero never wins. `FindClose` runs even when
+`FindFirstFileA` returned INVALID_HANDLE_VALUE.
+
+Effect: on PC, saving settings with no profile save name writes the settings archive to leaf `quick`
+of the slot whose `valid` marker is newest. With no valid slot the name is empty, the save is rejected and
+the callback is called directly. The other two callers of `004C5E00` are the console-command
+paths `004E26AA` and `004E3418` (census). This packet does not describe them.
 
 ## Settings equality: `008D4AF0`, `008D48E0`
 
