@@ -52,9 +52,9 @@ one bounded host packet; **L** is several packets or a missing task family.
 | 2 | **JM06** | Phase 3 posts idle at 24000 frames, after `GetSubmarineOnSurface` was bound (LUA_BINDING_MISSION, cc9-lua44) | hit-callback args, `kLuaListenerCallbackArgsBound` OFF, so `arg[4]` is nil (S once paired); a torpedo order that actually hits Lexington (S-M, order-file geometry); Lexington plus escorts sunk by the Yamato (M) |
 | 3 | **JM08** | HQ held for 2400-4800 s in r5/r7/w1-w3, but 10 of 11 LandShips dead, so primary 1 is open (SQUADRON_LAND_TASK 14968-15017) | bombs cannot finish TT04 against repair (GUNNERY 175, M); then phase 2's three C-47 waves with the HQ still alive (M) |
 | 4 | **USN15** | **no host run on record** | first run needed. A pure surface action with hosted features. Risk: the escape fail at JapanGoTo (M, unknown) |
-| 5 | **USN04** | Phase 2 with order file `s39_u4_p1`, under frame jitter only (SHIP_AI 196, SQUADRON_LAND_TASK 14571ff) | US dive bombers never release: the SPVeteran row in this installation's `robots.lua` zeroes the dive-aim gains (S lever: difficulty 0; otherwise M); phase 1 under lockstep (M); Lexington slots 1-2; then the carrier-HP and scuttle phases (L overall) |
+| 5 | **USN04** | Phase 2 with order file `s39_u4_p1`, under frame jitter only (SHIP_AI 196, SQUADRON_LAND_TASK 14571ff) | US dive bombers never release: the SPVeteran row in this installation's `robots.lua` zeroes the dive-aim gains (faithful to this installation; no difficulty lever, see CC13_AUDIT_REATTACK_AND_SKILL section B; M); phase 1 under lockstep (M); Lexington slots 1-2; then the carrier-HP and scuttle phases (L overall) |
 | 6 | **USN13** | Phase 3 idle (SHIP_AI 14780ff); never attempted with orders | about 60 targets including AA and coastal forts; same SPVeteran dive-release problem; the carrier-loss fail is a knife edge (L) |
-| 7 | **IJN01** | Phase 1 stuck: each A7M dives once and never strafes; only PT1 dies (SHIP_AI 14716ff) | fighter after its one bomb (plane lane, M); then Judy and Jill phases (M) |
+| 7 | **IJN01** | Phase 1 stuck (SHIP_AI 14716ff). Corrected 2026-10-12: the A7Ms do strafe again; the stall is the host refusing `select` once a fused squadron's named plane dies (CC13_AUDIT_REATTACK_AND_SKILL section A) | kFusedSquadronSlotSelectableBound (measured ON: 25/25 StrafeShips killed, MissionPhase=2 at 612 s; S once paired); then Judy and Jill phases (M) |
 | 8 | **JM05** | Phase 1, no end on idle rows (AG); no order run | three captures by transports, sinking Lexington, and keeping both carriers alive; long mission (L) |
 | 9 | **USN19** | 3000-frame kamikaze pair only (2026-09-29) | kamikaze/Ohka tasks not hosted (cc13-kamikaze1); three HQ captures; sinking a 17500-HP Yamato with the dive-release problem (L) |
 | 10 | **USN18** | 3000-frame smoke, phase 1 | kill the Ohka group (drop-kamikaze/kamikaze, not hosted), 39 shore guns, HQ capture; four phases (L) |
@@ -243,9 +243,10 @@ and torpedoes from an escort to scuttle Lexington. The rocket appears only in th
 - Phase 1 passes only under frame jitter (SHIP_AI 196).
 
 **Blockers:**
-1. The SPVeteran zero row. Running at difficulty 0 is a harness lever (S; `chosen_difficulty()`,
-   CC13_DIFFICULTY_VALUES), but check `SkillLevelOwn` at 66-82 first. Otherwise there is no in-host fix: the row is
-   this installation's data.
+1. The SPVeteran zero row. Corrected 2026-10-12 (CC13_AUDIT_REATTACK_AND_SKILL section B): difficulty 0 (Elite) is
+   zeroed too, and difficulty 2 (SPNormal) loses Lexington at 233.76 s, so there is no difficulty lever. Zero gains
+   remove pitch steering but not release; the US made 0 releases from 15 aircraft (the "1 of 33" was a Japanese Val).
+   There is no in-host fix: the row is this installation's data.
 2. Phase 1 under lockstep (M).
 3. Lexington slots 1-2 (SHIP_AI 196) (M).
 4. Primary 3 needs both carriers at or below 50% at difficulty 1 (M).
@@ -416,8 +417,8 @@ the scuttle at 828).
 
 ## 4. Open questions for cc9
 
-- Is `chosen_difficulty()` worth a harness option? Difficulty 0 likely selects a non-zero dive-aim row for the US
-  side in USN04, USN13 and USN19. Check each script's skill table before relying on it.
+- Answered 2026-10-12 (CC13_AUDIT_REATTACK_AND_SKILL section B): no difficulty lever. Difficulty 0 is zeroed too,
+  difficulty 2 fails USN04 at 233.76 s, and USN19's US carriers already sit at the default SPNormal.
 - Should `kLuaListenerCallbackArgsBound` be paired on JM06 24000 next? It is the only hard host gate left on JM06's
   primary 2.
 - Should USN15 get a first idle row? It is the only mission in the list with no run at all.
