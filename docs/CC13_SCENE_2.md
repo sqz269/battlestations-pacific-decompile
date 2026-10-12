@@ -24,10 +24,9 @@ identical instantiations (pointer arrays, trees, iterator wrappers, type leaves)
 absolute-dword scan of the installed executable found 147 of the 340 unreferenced (mostly
 container instantiations, the type-info thunks, the ring writer and the 32-point FFTs).
 
-Result: **334 of 340** have a reconstruction record (`reconstructed_build_tested`; ten of
-them are backfilled records for cc9's ocean reconstructions, see below). Six bodies remain:
-`00B708E0` (hi-res screenshot tiles), `00B8DD60` (flare geometry builder), `00B98BE0`
-(grid patch builder) and its three strip writers `00B978B0`, `00B97C80`, `00B980A0`.
+Result: **338 of 340** have a reconstruction record (`reconstructed_build_tested`; ten of
+them are backfilled records for cc9's ocean reconstructions, see below). Two bodies remain:
+`00B708E0` (hi-res screenshot tiles) and `00B8DD60` (flare geometry builder).
 
 Shared-shape records (scope `shared_shape_model` or `table_model`) point at one generic
 function or table entry: the native bodies are byte-identical after relocation and differ
@@ -109,12 +108,22 @@ no original field names were recovered; offsets above are named by use.
 | --- | --- |
 | 00B708E0 | Decompile is stack-corrupted; needs a full listing read (tile loop, projection offsets, surface copies). |
 | 00B8DD60 | About 600 instructions (vertex/index buffers, atlas lookups for both element names, two materials, per-type draw sections). |
-| 00B98BE0, 00B978B0, 00B97C80, 00B980A0 | Integer index generation, roughly 1,000 decompile lines; `grid_builder_build_all_00b99790` calls BuildPatch as an image routine. |
 
 The ten cc9 ocean bodies (00B94CA0, 00B95750, 00B96B90, 00B96C10, 00B96C50, 00B97100,
 00B952D0, 00B95AA0, 00B95D30 in `src/ocean_spectrum.cpp`, 00B960C0 in
 `src/ocean_wave_field.cpp`) were reconstructed by cc9 without records; this pass added
 `reconstructed_ledger_backfilled_from_source` records and did not edit those files.
+
+## Grid index builder
+
+The singleton [01090490] builds one index buffer for every LOD patch shape of a 32-cell grid
+(N = +04h = 20h, vertices (N+1)^2, index (N+1)*y + x): sizes 1, 2, 4, .. 32, and for sizes
+below 32 the 15 stitching masks (bit 1 top, 2 right, 4 bottom, 8 left: that edge uses twice
+the cells so it meets a finer neighbour). A masked patch is the interior (00B97C80) plus four
+stitched edges: the top through 00B980A0, the other three inline in 00B98BE0, each a fan of
+outer coarse steps against an inner fine row. Each patch is recorded as {cells, edge cells
+(1, 4, 8, 2), one strip {4, 0, (N+1)^2, first index, triangle count}} in row `cells`.
+Transcribed from the integer decompile; not checked against the native output.
 
 ## Open questions
 
@@ -125,9 +134,9 @@ The ten cc9 ocean bodies (00B94CA0, 00B95750, 00B96B90, 00B96C10, 00B96C50, 00B9
 
 ## Handoff (2026-10-12)
 
-Next steps, in order of value: the grid patch builder and strip writers (pure integer code;
-transcribe from the decompile and check the reload points marked by Ghidra's `uVarN =
-local_48` assignments in the listing), the flare geometry builder 00B8DD60 (uses the element
+Next steps, in order of value: a host check of the grid index writers against the native
+bodies (they were transcribed from the integer decompile, with the cursor reloads Ghidra
+shows as `uVarN = local_48` read as the same spilled value), the flare geometry builder 00B8DD60 (uses the element
 layout already in the header), then 00B708E0 from the listing. The x87 tracer used for
 this pass was `local/sc2_x87.py` in the cc13-scene2 worker tree, not committed (capstone over
 disk bytes, symbolic stack, per-store expressions); it is linear and does not follow branches, so trace basic

@@ -1660,6 +1660,209 @@ void grid_builder_build_all_00b99790(GridBuilder& b, GridBuilderServices& s) {
     b.words_08.clear();  // 00529980(0)
 }
 
+namespace {
+
+struct GridWriter {
+    GridBuilder& b;
+    std::uint32_t n;
+    void push(std::uint32_t y, std::uint32_t x) {
+        b.words_08.push_back(static_cast<std::uint16_t>((n + 1) * y + x));
+    }
+    void push_centre() {
+        const std::uint32_t h = n >> 1;
+        push(h, h);
+    }
+};
+
+}  // namespace
+
+void grid_write_full_patch_00b978b0(GridBuilder& b, std::uint32_t cells) {
+    GridWriter w{b, b.max_size_04};
+    const std::uint32_t st = w.n / cells;
+    for (std::uint32_t r = 0, y0 = 0; r < cells; ++r, y0 += st) {
+        const std::uint32_t y1 = y0 + st;
+        for (std::uint32_t c = 0, x0 = 0; c < cells; ++c, x0 += st) {
+            const std::uint32_t x1 = x0 + st;
+            if ((c & 1) == (r & 1)) {
+                w.push(y1, x0); w.push(y1, x1); w.push(y0, x0); w.push(y0, x1); w.push(y0, x0); w.push(y1, x1);
+            } else {
+                w.push(y1, x0); w.push(y0, x1); w.push(y0, x0); w.push(y1, x0); w.push(y1, x1); w.push(y0, x1);
+            }
+        }
+    }
+}
+
+void grid_write_interior_00b97c80(GridBuilder& b, std::uint32_t cells) {
+    GridWriter w{b, b.max_size_04};
+    const std::uint32_t st = w.n / cells;
+    const std::uint32_t last = cells - 1;
+    for (std::uint32_t r = 1, y0 = st; r < last; ++r, y0 += st) {
+        const std::uint32_t y1 = y0 + st;
+        for (std::uint32_t c = 1, x0 = st; c < last; ++c, x0 += st) {
+            const std::uint32_t x1 = x0 + st;
+            if ((c & 1) == (r & 1)) {
+                w.push(y1, x1); w.push(y0, x0); w.push(y1, x0); w.push(y0, x1); w.push(y0, x0); w.push(y1, x1);
+            } else {
+                w.push(y0, x1); w.push(y0, x0); w.push(y1, x0); w.push(y1, x1); w.push(y0, x1); w.push(y1, x0);
+            }
+        }
+    }
+}
+
+void grid_write_edge_00b980a0(GridBuilder& b, std::uint32_t edge, std::uint32_t cells, std::uint32_t edge_cells) {
+    GridWriter w{b, b.max_size_04};
+    const std::uint32_t n = w.n;
+    std::uint32_t st = n / cells;
+    const std::uint32_t cs = n / edge_cells;
+    // A and B as (x, y); `sel` picks the running coordinate; `end` is where A stops.
+    std::uint32_t a[2], bb[2], da[2], db[2], end, sel;
+    switch (edge) {
+    case 1: end = n; sel = 0; a[0] = 0; a[1] = 0; bb[0] = st; bb[1] = st; da[0] = cs; da[1] = 0; db[0] = st; db[1] = 0; break;
+    case 2: end = n; sel = 1; a[0] = n; a[1] = 0; bb[0] = n - st; bb[1] = st; da[0] = 0; da[1] = cs; db[0] = 0; db[1] = st; break;
+    case 4:
+        end = 0; sel = 0; a[0] = n; a[1] = n; bb[0] = n - st; bb[1] = n - st; st = 0u - st;
+        da[0] = 0u - cs; da[1] = 0; db[0] = st; db[1] = 0; break;
+    case 8:
+        end = 0; sel = 1; a[0] = 0; a[1] = n; bb[0] = st; bb[1] = n - st; st = 0u - st;
+        da[0] = 0; da[1] = 0u - cs; db[0] = 0; db[1] = st; break;
+    default: return;  // the native locals are left uninitialised
+    }
+    if (cells == 1) {
+        for (std::uint32_t k = 0; k < edge_cells; ++k) {
+            const std::uint32_t nx = a[0] + da[0], ny = a[1] + da[1];
+            w.push(ny, nx);
+            w.push(a[1], a[0]);
+            w.push_centre();
+            a[0] = nx;
+            a[1] = ny;
+        }
+        return;
+    }
+    while (a[sel] != end) {
+        const std::uint32_t nx = a[0] + da[0], ny = a[1] + da[1];
+        w.push(ny, nx);
+        w.push(a[1], a[0]);
+        w.push(bb[1], bb[0]);
+        a[0] = nx;
+        a[1] = ny;
+        if (bb[sel] == a[sel] && bb[sel] != end - st) {
+            const std::uint32_t bx = db[0] + bb[0], by = bb[1] + db[1];
+            w.push(by, bx);
+            w.push(a[1], a[0]);
+            w.push(bb[1], bb[0]);
+            bb[0] = bx;
+            bb[1] = by;
+        }
+    }
+}
+
+void grid_build_patch_00b98be0(GridBuilder& b, std::uint32_t cells, std::uint32_t mask) {
+    GridWriter w{b, b.max_size_04};
+    const std::uint32_t n = w.n;
+    const std::uint32_t e1 = (mask & 1) ? cells * 2 : cells;
+    const std::uint32_t e2 = (mask & 2) ? cells * 2 : cells;
+    const std::uint32_t e4 = (mask & 4) ? cells * 2 : cells;
+    const std::uint32_t e8 = (mask & 8) ? cells * 2 : cells;
+    const auto first = static_cast<std::uint32_t>(b.words_08.size());
+    const std::uint32_t side = n + 1;
+    if (mask == 0) {
+        grid_write_full_patch_00b978b0(b, cells);
+    } else {
+        grid_write_interior_00b97c80(b, cells);
+        grid_write_edge_00b980a0(b, 1, cells, e1);
+        const std::uint32_t st = n / cells;
+        // Bottom edge (y = N), x running from N down to 0.
+        {
+            const std::uint32_t cs = n / e4;
+            std::uint32_t x = n;
+            if (cells == 1) {
+                for (std::uint32_t k = 0; k < e4; ++k) {
+                    const std::uint32_t xn = x - cs;
+                    w.push(n, xn); w.push(n, x); w.push_centre();
+                    x = xn;
+                }
+            } else {
+                const std::uint32_t inner = n - st;
+                std::uint32_t cursor = n - st;
+                while (x != 0) {
+                    const std::uint32_t xn = x - cs;
+                    w.push(n, xn); w.push(n, x); w.push(inner, cursor);
+                    if (cursor == xn && cursor != st) {
+                        const std::uint32_t old = cursor;
+                        cursor -= st;
+                        w.push(inner, cursor); w.push(n, xn); w.push(inner, old);
+                    }
+                    x = xn;
+                }
+            }
+        }
+        // Left edge (x = 0), y running from N down to 0.
+        {
+            const std::uint32_t cs = n / e8;
+            std::uint32_t y = n;
+            if (cells == 1) {
+                for (std::uint32_t k = 0; k < e8; ++k) {
+                    const std::uint32_t yn = y - cs;
+                    w.push(yn, 0); w.push(y, 0); w.push_centre();
+                    y = yn;
+                }
+            } else {
+                std::uint32_t cursor = n - st;
+                while (y != 0) {
+                    const std::uint32_t yn = y - cs;
+                    w.push(yn, 0); w.push(y, 0); w.push(cursor, st);
+                    if (cursor == yn && cursor != st) {
+                        w.push(cursor - st, st); w.push(yn, 0); w.push(cursor, st);
+                        cursor -= st;
+                    }
+                    y = yn;
+                }
+            }
+        }
+        // Right edge (x = N), y running from 0 up to N.
+        {
+            const std::uint32_t cs = n / e2;
+            const std::uint32_t inner = n - st;
+            std::uint32_t y = 0;
+            if (cells == 1) {
+                for (std::uint32_t k = 0; k < e2; ++k) {
+                    const std::uint32_t yn = cs + y;
+                    w.push(yn, n); w.push(y, n); w.push_centre();
+                    y = yn;
+                }
+            } else {
+                std::uint32_t cursor = st;
+                while (y != n) {
+                    const std::uint32_t yn = cs + y;
+                    w.push(yn, n); w.push(y, n); w.push(cursor, inner);
+                    if (cursor == yn && cursor != n - st) {
+                        w.push(st + cursor, inner); w.push(yn, n); w.push(cursor, inner);
+                        cursor += st;
+                    }
+                    y = yn;
+                }
+            }
+        }
+    }
+    GridPatch20 patch;
+    patch.words[0] = cells;
+    patch.words[1] = e1;
+    patch.words[2] = e4;
+    patch.words[3] = e8;
+    patch.words[4] = e2;
+    strips_reserve_00b974b0(patch.strips, 1);
+    GridStrip14 strip;
+    strip.words[0] = 4;
+    strip.words[1] = 0;
+    strip.words[2] = side * side;
+    strip.words[3] = first;
+    strip.words[4] = (static_cast<std::uint32_t>(b.words_08.size()) - first) / 3;
+    patch.strips.items.push_back(strip);
+    if (static_cast<std::int32_t>(b.rows_14.items.size()) <= static_cast<std::int32_t>(cells))
+        rows_resize_00b989f0(b.rows_14, static_cast<std::int32_t>(cells) + 1);
+    patches_push_back_00b98770(b.rows_14.items[cells], patch);
+}
+
 void grid_builder_construct_00b998c0(GridBuilder& b, GridBuilderServices& s) {
     b.vtable = 0x00D6391C;
     b.words_08.clear();

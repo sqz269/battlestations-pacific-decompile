@@ -1238,6 +1238,29 @@ struct GridBuilder {
     void* ref_24 = nullptr;
 };
 void grid_builder_build_all_00b99790(GridBuilder& b, GridBuilderServices& s);
+// Index writers over the word array (+08h; growth double/min 1 through 0059E5E0-style
+// reserve, not modelled: the host vector only keeps the contents). Every index is the
+// 16-bit value (N + 1) * y + x with N = builder +04h; step = N / cells.
+// 00B978B0 (thiscall(builder, cells), RET 4): the full patch: per cell (row r, column c)
+// six indices; when the parities of c and r agree (y1,x0) (y1,x1) (y0,x0) (y0,x1) (y0,x0)
+// (y1,x1), else (y1,x0) (y0,x1) (y0,x0) (y1,x0) (y1,x1) (y0,x1).
+void grid_write_full_patch_00b978b0(GridBuilder& b, std::uint32_t cells);
+// 00B97C80 (thiscall(builder, cells), RET 4): the interior cells 1 .. cells-2 in both
+// directions; parities agree: (y1,x1) (y0,x0) (y1,x0) (y0,x1) (y0,x0) (y1,x1), else (y0,x1)
+// (y0,x0) (y1,x0) (y1,x1) (y0,x1) (y1,x0).
+void grid_write_interior_00b97c80(GridBuilder& b, std::uint32_t cells);
+// 00B980A0 (thiscall(builder, edge, cells, edge_cells), RET 0Ch): one stitched edge (1 top,
+// 2 right, 4 bottom, 8 left). A runs along the outer edge in coarse steps N / edge_cells,
+// B along the inner row in fine steps N / cells; each coarse step emits (A', A, B) and,
+// when B has been reached and is not the last inner point, (B', A', B) with B advanced.
+// cells == 1 fans every outer step to the centre (N/2, N/2).
+void grid_write_edge_00b980a0(GridBuilder& b, std::uint32_t edge, std::uint32_t cells, std::uint32_t edge_cells);
+// 00B98BE0 (thiscall(builder, cells, mask), RET 8): mask 0 writes the full patch; otherwise
+// the interior, the top edge through 00B980A0, then the bottom (4), left (8) and right (2)
+// edges inline (cells doubled on an edge whose mask bit is set). The patch record {cells,
+// edge cells for bits 1, 4, 8, 2; strips = [{4, 0, (N+1)^2, first index, triangles}]} is
+// appended to row `cells` of +14h (rows grown to cells + 1 first).
+void grid_build_patch_00b98be0(GridBuilder& b, std::uint32_t cells, std::uint32_t mask);
 void grid_builder_construct_00b998c0(GridBuilder& b, GridBuilderServices& s);
 void grid_builder_destruct_00b98b10(GridBuilder& b, void*& instance_01090490, GridBuilderServices& s);
 // 00B97480: [01090490] = 0 and the singleton-base vtable 00CE3818.
