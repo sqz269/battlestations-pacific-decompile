@@ -31,7 +31,7 @@ below.
 
 ## Scan
 
-`local/sc1_dialog_scan.py` (read-only, run with `python -I` over the installation root) walks
+`tools/dialog_type_scan.py` (read-only, run with `python -I` over the installation root) walks
 every `.lua` file (621 in this installation, none precompiled: no file starts with `\x1bLua`),
 blanks comments, finds every `sequence = {` / `["sequence"] = {` block, brace-matches it, and
 collects every `type` assignment inside it.
