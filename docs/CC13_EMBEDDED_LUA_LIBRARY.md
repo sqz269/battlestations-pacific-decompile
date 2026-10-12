@@ -152,12 +152,23 @@ source names; nothing calls them.
 
 ## Handoff
 
-Done: every Lua block function is named in the ledger, tag shards and inventory; Ghidra
-annotation and function definition ran as recorded in the commit message. Open items:
+Done (2026-10-12, 02:42-03:04 UTC): every Lua block function is named in the ledger, tag
+shards and inventory, and in Ghidra. The 73 functions were defined
+(`reports/defined_functions.json`), all 411 renames and plate comments applied through
+`tools/ghidra_annotate.py` under the write lock, project saved; prior values are in the
+worktree's `local/ghidra-annotations-*.json`. Spot checks: `luaB_newproxy` body
+`00A66CB0-00A66D92`, `luaB_tostring` now ends at `00A66C91`, `block_follow` `00A73D10-00A73D30`.
+
+One deviation: `Arith 00A6DC00` (lvm.c static) is recorded as **`lvm_Arith`**, because the
+Ghidra bridge rejects the single-token name `Arith` (`name_quality`). The inventory keeps the
+source name `lvm.c:Arith`, so a `build_tag_ledger.py` regeneration would propose `Arith`
+again and hit the same rejection.
+
+Open items:
 
 1. The six accessors at `00A776B0-00A77720` need an owner (vtable search for 00A77700).
-2. `luaB_tostring 00A66BB0` may still show a body that runs into `luaB_newproxy` in older
-   exports; refresh exports for 00A66BB0/00A66CB0 after the next snapshot.
+2. Exports in `exports/bsp` still carry the old names until the next `bsp.py snapshot`
+   (not run here: Ghidra was busy with cc13-flowfix1's image-wide body repair).
 3. The bookmarks `ghidra_tag.py` sets ("Inventory: lua511") were not applied for the 73 new
    functions; `python tools/ghidra_tag.py --category lua511 --apply` adds them if wanted.
 4. The `loadlib.c` part of the inventory (`00C2xxxx`) is outside this packet and was not
