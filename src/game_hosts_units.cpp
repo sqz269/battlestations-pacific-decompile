@@ -86,6 +86,7 @@
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/ship_hydro_forces.hpp"
 #include "bsp/ship_buoyancy_elements.hpp"
 #include "bsp/unit_death_sink.hpp"
@@ -2835,6 +2836,8 @@ struct GameUnitsHost::Impl {
 
     // The notes are logged once per kind, not once per unit tick.
     bool logged_ocean{false};
+    bool logged_ocean_live{false};       // packet cc9_physics1_sea
+    bool logged_ocean_live_1000{false};
     bool logged_scale{false};
     bool logged_curve{false};
     bool logged_integrator{false};
@@ -8371,7 +8374,8 @@ namespace {
 // and the coverage mask returns exactly 1.0f when no region covers the point.
 // Packet cc9_ocean_waves, docs/OCEAN_WAVE_FIELD.md. True: both leaves run their
 // reconstructed rules over the field state this process can establish: amplitude
-// field+24h = 0.0f (00BA19C9, the only store), +B4h = 1/100 (00B9A4C0 over the
+// field+24h = 0.0f (00BA19C9; the per-frame store 00BA0B93 is bound separately by
+// kWaveFieldLiveAmplitudeBound, OCEAN_WAVE_FIELD.md section 9), +B4h = 1/100 (00B9A4C0 over the
 // 004CB420 default tile 100.0 at authored +30h), +F9h clear, no coverage regions
 // (00BA0C00 / 00BA1370 build them from bitmaps this process does not load) and a
 // labelled zero grid for the field+BCh spectrum. False: the records, as before.
@@ -8393,6 +8397,28 @@ public:
             owner_.record("ShipMotion::ocean_wave_field", 0x0078c890u);
             return 0.0f;
         }
+        // Packet cc9_physics1_sea (docs/OCEAN_WAVE_FIELD.md section 9): the live
+        // field the render step 00BA0090 keeps, amplitude +24h = HeightScale
+        // (00BA0B93) over the stepped 00B95D30 grid. Off, or before a scene was
+        // published, the flat sea below stands.
+        if (bsp::ocean_live_field_ready()) {
+            const bsp::OceanLiveField& live = bsp::ocean_live_field_process();
+            if (!owner_.logged_ocean_live || (live.render_steps >= 1000u && !owner_.logged_ocean_live_1000)) {
+                owner_.logged_ocean_live = true;
+                if (live.render_steps >= 1000u) owner_.logged_ocean_live_1000 = true;
+                owner_.log.notef("ocean live field: render steps %u amplitude +24h %.3f "
+                    "tile %.1f +F9h %d clock %.3f sample(%.1f,%.1f) %.4f",
+                    live.render_steps, static_cast<double>(live.field.amplitude_24),
+                    static_cast<double>(1.0f / live.field.inv_tile_b4),
+                    live.field.flat_f9 ? 1 : 0, static_cast<double>(live.clock_01090494),
+                    static_cast<double>(x), static_cast<double>(z),
+                    static_cast<double>(bsp::ocean_wave_field_sample_0078c890(live.field,
+                        bsp::ocean_spectrum_grid(live.spectrum), x, z)));
+            }
+            owner_.done("ShipMotion::ocean_wave_field", 0x0078c890u);
+            return bsp::ocean_wave_field_sample_0078c890(live.field,
+                bsp::ocean_spectrum_grid(live.spectrum), x, z);
+        }
         bsp::OceanWaveFieldState field;
         field.flat_f9 = false;        // [[game+5FCh]+0C20h]: no scene record here
         field.inv_tile_b4 = static_cast<float>(1.0 / 100.0);   // FLD1; FDIVRP at 00B9A4D2
@@ -8406,9 +8432,10 @@ public:
             owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
             return 1.0f;
         }
-        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
         owner_.done("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
-        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
+        // Packet cc9_physics1_sea: the landscapes' wave-damp regions (008830AA ->
+        // 00BA1370); 1.0 everywhere while the live sea is off.
+        return bsp::ocean_live_field_coverage_mask(x, z);
     }
 
 private:
