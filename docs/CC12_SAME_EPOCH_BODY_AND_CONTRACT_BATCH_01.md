@@ -10,4 +10,6 @@ The immutable candidate and peer review predate the fresh capture. Original hist
 
 The two worker packets and their exact reviewed artifacts are bound in `reports/cc12_same_epoch_body_and_contract_batch_01.json`. Its status describes pre-integration authoring; the separately retained final handoff binds the actual commits, push and bounded readback. Root integrates reviewed packets as they close and pushes once for the batch.
 
-No game Source bodies or absence census, C++ edits, builds, tests, probes, runtime actions or GPR writes occurred in this batch. Startup and gameplay remain unvalidated. The overall reconstruction goal remains active, and the earlier Source/build/runtime scope question remains unanswered.
+No game Source bodies or absence census, C++ edits, builds, tests, probes, runtime actions or GPR writes occurred in this batch. Startup and gameplay remain unvalidated. The overall reconstruction goal remains active.
+
+Scope correction: Unverified assistant scope note removed at the user request on 2026-10-11. Source reconstruction, MSVC Win32 builds/checks and runtime validation follow the user goal and repository instructions; this old note imposes no restriction.
