@@ -11852,3 +11852,41 @@ from the same exes).
 
 **Verdict: the mechanism matches; flipped ON.** The spread miss (no hit) comes from the order file's aim. lua49's
 surface train-and-hold case (`trigger_ons=0` on JM08) is still not exercised by any pair.
+
+## 171. The weather recon modifier: `WeatherConfig+34h` has no reader in the image (lead queue item 2; cc9-gunnery35, 2026-10-12)
+
+**Question.** `00445A30` (`BSP_WeatherConfig_SetCurrentWeather`, reached from `luaMW_SetWeather` `008B21A0`)
+stores `WeatherReconModifiers[name]` into `WeatherConfig+34h` (`00445A8C/00445A93`).
+`docs/CC13_OPTIONS_AND_HARDWARE.md` (the `00445A30` paragraph) says recon detection reads it. The host's recon
+path has only the per-unit `ReconModifier`. Is that a gap?
+
+**Answer: no host effect.** No image instruction reads `+34h` of the weather config.
+- **Where the config lives.** The game's only pointer to the config is `game+21C4h`. Its only writers are
+  `004DC913` (`BSP_Game_ConstructGlobalSubsystems`, after `new` + `00445B10`) and `004D2CCE` (`BSP_Game_DestroyWorld`,
+  clearing it); `scan-bytes '89 ?? C4 21 00 00'` finds only these two.
+- **The scan** (`local\g35_wx34.py`, disk bytes of this installation's exe). It finds every `MOV r32,[r32+21C4h]` in
+  `.text` and follows the loaded register, and any register copy of it, to the next `CALL`/`JMP`/`RET`. It reports
+  each memory operand on that register at a chosen displacement, each `CALL` made with ECX = the config, each
+  `PUSH`, and each store of the pointer.
+  - Positive controls: `+74h` finds 6 sites (`005AA2C8`, `008043F3`, `00804694`, `00804935`, the Lua setter/getter
+    `008B243C`/`008B2584`), and `+78h` finds 5 (the recon sensor scalars of `GUNNERY_RECON_DETECTION.md`).
+  - `+34h` finds **0**. So do `+2Ch`, `+30h`, `+38h..+40h` and `+18h..+28h`.
+- **Methods called with ECX = the config.** There are four: `00445790` (camera shake; reads `+2Ch`, `+44h..+68h`),
+  `004439B0` and `00443A30` (daytime; `+4h` only) and `00445A30` itself (it writes `+34h`). The virtual call at
+  `004D2CCC` is the destructor: the vtable `00CE4934` holds `00445BD0` and then 0. The one pointer store, at
+  `00A47C07`, is in `00A47B80`, which loads `[edi+21C4h]` from a different object (it compares the value with -1
+  and has an alternative `[eax+9CCh]`). Its reads were not followed.
+- **The loader** `00444D20` writes `1.0f` to `+34h` for `"default"`.
+
+**Verdict.** The `+34h` value is written by the setter and the loader and read by nothing, so the image has no weather
+recon effect to bind. `SetWeather`'s visible effect is the camera-shake rescale in `00445790`, which the cc13
+reconstruction already carries. No switch was added and no pair was run.
+
+**Correction.** The claim that recon detection reads `+34h` in `CC13_OPTIONS_AND_HARDWARE.md` is unsupported. Recon
+detection (`008048A0`) reads `+74h`/`+78h` (`SimplifiedRecon/SonarMultiplier`), not `+34h`. That doc is cc13's,
+so it was not edited here.
+
+**Uncertainty.**
+- The scan stops at the first call or jump, so a pointer spilled to the stack and re-read later is invisible to it.
+  The only spill seen is the unrelated `00A47C07`.
+- A `LEA` or `ADD` that forms `game+21C4h` without the disp32 load would also be missed. None was looked for.
