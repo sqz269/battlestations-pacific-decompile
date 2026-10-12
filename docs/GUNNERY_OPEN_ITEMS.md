@@ -12602,3 +12602,13 @@ mount-frame round trip.
 - **Not bound.** The reach is a fraction of a second per build; the host's units lane owns the ship-motion tick. If
   it is bound, the host needs a per-unit counter set to 5 by `shipyard_build_00844fc0`, decremented on each
   ship-motion tick, and `ship_in_shipyard_hangar_0081de10` answering 1 while it is non-zero.
+**00C535E0 (cc13 audit residual 11a): yes, by the transpose.** 00C535E0 is a 68-byte thunk to 00C53010, whose
+contact projection 00C48BE0 writes the body-local witnesses. 00C48D15..00C48D89 for A and 00C48D8C..00C48E0A for B
+first form d = p - t, with t the body frame's +2Ch row (B's frame is reached as [[work+4]+4]+8). They then store
+local_k = row_k . d, where row_k is the frame's k-th row at +08h/+14h/+20h. That is the transpose. It inverts the
+frame only when the rows are orthonormal. With rows s*u_k it gives local = s^2 x the true local point, and
+00C4DE40's transform (and 00C4B9B0's refresh) map that back to t + s^2 d. For a static fort the solve does not see
+it, because body B's angular terms multiply a zero velocity and a zero mass Jacobian. 00C4B9B0's depth and drift
+tests on the refreshed points do see it. Not quantified: what 00C4B9B0's thresholds then do with an s = 1.415 fort
+(the length-2.003 direction in the audit). The host's normalized `rigid_fort` frame gives undistorted points, so it
+differs from the image here. It is the correct geometry, and the image is not.
