@@ -3196,12 +3196,12 @@
    "ecx_evidence": [
     "1"
    ],
-   "function": "006FCA40",
-   "name": "FUN_006fca40",
+   "function": "006FCA50",
+   "name": "FUN_006fca50",
    "class": "GAMEPLAY",
    "confidence": "band",
    "reason": "air ops / gunnery / projectiles / structures",
-   "reach": null,
+   "reach": "own function 006FCA50-006FCA70 after the INT3 padding that ends the adjustor thunk 006FCA40 (sub ecx,10h; jmp 006FCAD0); defined by cc13-define3 2026-10-12; no rel32 or dword reference found",
    "host": "not modelled",
    "host_generator": null,
    "host_note": ""
@@ -11830,15 +11830,15 @@
    "ecx_evidence": [
     "0"
    ],
-   "function": "00AF7F40",
-   "name": "BSP_NativeParticleModel_ScalarDelete",
+   "function": "00AF7F70",
+   "name": "FUN_00af7f70",
    "class": "PRESENTATION",
-   "confidence": "name",
-   "reason": "native particle model scalar delete",
-   "reach": null,
-   "host": "reconstructed library only (not called by the game host)",
+   "confidence": "band",
+   "reason": "x == 0 ? 0 : UnitFloat() * x over [esp+4] (own function 00AF7F70, not the scalar delete 00AF7F40; class kept from the particle band)",
+   "reach": "own function 00AF7F70-00AF7FA5 after INT3 padding; 00AF7F40 ends 00AF7F5F and 00AF7F60 is a separate 15-byte body; defined by cc13-define3 2026-10-12; no rel32 or dword reference found",
+   "host": "not modelled",
    "host_generator": null,
-   "host_note": "src/native_particle_model_lifetime.cpp:121 src/native_particle_model_lifetime.cpp:147"
+   "host_note": ""
   },
   {
    "address": "00AF7FB9",
