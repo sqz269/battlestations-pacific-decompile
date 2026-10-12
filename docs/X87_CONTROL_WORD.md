@@ -174,3 +174,25 @@ precision is a behaviour change like any other: the fixed-step unit jobs are RNG
 mantissa" holds for the main thread only. `00825F20` is a fixed-step pool job, and a pool worker
 that claims it runs it at 53 bits (`docs/CC13_FPU_PRECISION.md` section 3). The `0.05` / `1.0`
 double-constant note under "What this changes" applies to the 24-bit case.
+
+### The first RNG-coupled spots (cc9-physics4, 2026-10-12)
+
+| Site | Image | Host before | Binding |
+| --- | --- | --- | --- |
+| gun bot aim error `00902CF5`..`00902D07` (`BSP_GunBot_LeadAimTick`, run by `run_gun_aim_and_fire` 00953CC0) | draw `*` qword `00CE3D28` (3.1415927410125732) `/` qword `00CE3D20` (180.0) `+` float e | double chain with 3.14159265358979 | `kGunAimDegreePrecisionBound` (`f1ad57b30`, OFF): `d * 3.1415927f / 180.0f + e` |
+| torpedo gyro jitter `00900856`..`00900876` | `FILD` sign `*` qword magnitude `*` the same pi `/` 180 `+` the run heading stored as a float at `00900526` | `atan2` kept in double, 3.14159265358979 | same switch: the heading narrowed first, then the float chain |
+| flak reroll `008FDC65`..`008FDC7F` | sign `*` magnitude `*` pi_f `/` 180 | float, `3.14159265358979f` (= pi_f) | none: already the 24-bit case |
+
+The image multiplies by the **double** 3.1415927410125732 on a 24-bit thread, so its product rounds to
+24 bits at once: a float product is the main-thread case. On a 53-bit pool worker the same code is the
+double chain with that constant, which the old host expression was not either (it used the wider pi).
+
+**Predictions, before the pair** (USN12 `s38_u12_p2`, AA-heavy win; USN01 `p3_u1_z4`, torpedoes): every
+aim error moves by at most a float ulp, so pair_diff verdict 3 (moved) is likely through the shared
+stream once any hit flips; both wins should hold; death counts within a few percent.
+
+**The pair** (OFF = tree build at `f1ad57b30`, ON = its flip, `local\p4g_{off,on}_{u12,u1z4}.log`): USN12
+completed 1539.83 s both sides with the guard, pair_diff gameplay identical (108 deaths, 2766 hits; 1374
+gunner rolls and 24 gyro launches ran); USN01 completed 1014.63 s both sides, verdict 0, identical apart from
+noise (2379 gunner rolls). The float-ulp changes flipped no draw and no hit on these two missions;
+the prediction of a moved verdict did not hold. **Flipped ON**: the rule is the listing's and nothing moved.

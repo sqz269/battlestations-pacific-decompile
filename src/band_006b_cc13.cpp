@@ -12,29 +12,29 @@
 namespace bsp::band_006b_cc13 {
 
 const TypeIdRule kSessionMessageTypeRules[] = {
-    {0x006BC410u, 0x00CF85F0u, 3, {0x89, 0x49, 0x46}},       // BSP_AirOpsMessage89_AcceptsType
-    {0x006BD890u, 0x00CF8624u, 3, {0x81, 0x49, 0x46}},       // BSP_AirBaseSlotMessage81_AcceptsType
-    {0x006BDA50u, 0x00CF8638u, 3, {0x85, 0x49, 0x46}},       // BSP_AirOpsStockMessage85_AcceptsType
-    {0x006BDCB0u, 0x00CF8660u, 3, {0x88, 0x49, 0x46}},       // BSP_AirbaseOrdersMessage88_AcceptsType
-    {0x006D16F0u, 0x00CF8B40u, 4, {0x72, 0x62, 0x49, 0x46}}, // BSP_AirFieldMessage72_AcceptsType
-    {0x006D1770u, 0x00CF8B54u, 4, {0x73, 0x62, 0x49, 0x46}}, // BSP_AirFieldMessage73_AcceptsType
-    {0x006D17F0u, 0x00CF8B68u, 4, {0x74, 0x62, 0x49, 0x46}}, // BSP_AirFieldMessage74_AcceptsType
-    {0x006D1870u, 0x00CF8B7Cu, 4, {0x75, 0x62, 0x49, 0x46}}, // BSP_AirFieldMessage75_AcceptsType
-    {0x006D44D0u, 0x00D03720u, 2, {0x47, 0x46}},             // BSP_NetEntityCreateMessage_AcceptsType
-    {0x006D4770u, 0x00CF8EBCu, 3, {0xA3, 0x47, 0x46}},       // BSP_AirFieldCreateMessageA3_AcceptsType
-    {0x006E0660u, 0x00CF9324u, 3, {0xB6, 0x47, 0x46}},       // BSP_BombCreateMessage_AcceptsType
-    {0x006E3980u, 0x00CF9628u, 3, {0xAD, 0x49, 0x46}},       // BSP_GunFireMessage_AcceptsType
-    {0x006E3AA0u, 0x00CF963Cu, 3, {0xB2, 0x49, 0x46}},       // BSP_BombPlatformMessageB2_AcceptsType
-    {0x006E3B80u, 0x00CF9650u, 2, {0xB3, 0x46}},             // BSP_RackLoadMessageB3_AcceptsType
-    {0x006E4870u, 0x00CF9B44u, 3, {0xB1, 0x49, 0x46}},       // BSP_BombDropMessageB1_AcceptsType
-    {0x006EBA00u, 0x00CFAA0Cu, 3, {0x7C, 0x49, 0x46}},       // BSP_UnitMessage7C_AcceptsType
-    {0x006EBAE0u, 0x00CFAA20u, 3, {0xC6, 0x49, 0x46}},       // BSP_UnitMessageC6_AcceptsType
-    {0x006EBBE0u, 0x00CFAA34u, 3, {0xB4, 0x49, 0x46}},       // BSP_CatapultLaunchMessageB4_AcceptsType
-    {0x006F2500u, 0x00CFADBCu, 2, {0xD3, 0x46}},             // BSP_CommandBuildingMessageD3_AcceptsType
-    {0x006F25C0u, 0x00CFADD0u, 2, {0xD4, 0x46}},             // BSP_CommandBuildingMessageD4_AcceptsType
-    {0x006F2690u, 0x00CFADE4u, 2, {0xD5, 0x46}},             // BSP_CommandBuildingMessageD5_AcceptsType
-    {0x006F4200u, 0x00CFAE84u, 2, {0xD6, 0x46}},             // BSP_CommandBuildingMessageD6_AcceptsType
-    {0x006FCB30u, 0x00CFBC28u, 3, {0xB7, 0x47, 0x46}},       // BSP_DepthChargeCreateMessageB7_AcceptsType
+    {0x006BC410u, 0x00CF85F0u, 3, {0x89, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_DOLAUNCHSLOT_IsType
+    {0x006BD890u, 0x00CF8624u, 3, {0x81, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_SETSLOT_IsType
+    {0x006BDA50u, 0x00CF8638u, 3, {0x85, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_STOCKITEM_IsType
+    {0x006BDCB0u, 0x00CF8660u, 3, {0x88, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_SETORDERS_IsType
+    {0x006D16F0u, 0x00CF8B40u, 4, {0x72, 0x62, 0x49, 0x46}}, // BSP_SessionMessage_AIRBASE_SET_RUNWAYFAILURE_IsType
+    {0x006D1770u, 0x00CF8B54u, 4, {0x73, 0x62, 0x49, 0x46}}, // BSP_SessionMessage_AIRBASE_CLEAR_RUNWAYFAILURE_IsType
+    {0x006D17F0u, 0x00CF8B68u, 4, {0x74, 0x62, 0x49, 0x46}}, // BSP_SessionMessage_AIRBASE_SET_HANGARFAILURE_IsType
+    {0x006D1870u, 0x00CF8B7Cu, 4, {0x75, 0x62, 0x49, 0x46}}, // BSP_SessionMessage_AIRBASE_CLEAR_HANGARFAILURE_IsType
+    {0x006D44D0u, 0x00D03720u, 2, {0x47, 0x46}},             // BSP_SessionMessage_CREATE_IsType
+    {0x006D4770u, 0x00CF8EBCu, 3, {0xA3, 0x47, 0x46}},       // BSP_SessionMessage_AIRFIELD_CREATE_IsType
+    {0x006E0660u, 0x00CF9324u, 3, {0xB6, 0x47, 0x46}},       // BSP_SessionMessage_BOMB_CREATE_IsType
+    {0x006E3980u, 0x00CF9628u, 3, {0xAD, 0x49, 0x46}},       // BSP_SessionMessage_GUN_FIRE_IsType
+    {0x006E3AA0u, 0x00CF963Cu, 3, {0xB2, 0x49, 0x46}},       // BSP_SessionMessage_BOMBPLATFORM_RELOAD_IsType
+    {0x006E3B80u, 0x00CF9650u, 2, {0xB3, 0x46}},             // BSP_SessionMessage_MULTIBOMBPLATFORM_GENERATE_IsType
+    {0x006E4870u, 0x00CF9B44u, 3, {0xB1, 0x49, 0x46}},       // BSP_SessionMessage_BOMBPLATFORM_FIRE_IsType
+    {0x006EBA00u, 0x00CFAA0Cu, 3, {0x7C, 0x49, 0x46}},       // BSP_SessionMessage_VEHICLE_ADD_LAUNCHED_IsType
+    {0x006EBAE0u, 0x00CFAA20u, 3, {0xC6, 0x49, 0x46}},       // BSP_SessionMessage_PLANE_TAKEOFF_IsType
+    {0x006EBBE0u, 0x00CFAA34u, 3, {0xB4, 0x49, 0x46}},       // BSP_SessionMessage_CATAPULT_FIRE_IsType
+    {0x006F2500u, 0x00CFADBCu, 2, {0xD3, 0x46}},             // BSP_SessionMessage_COMMANDBUILDING_SETOWNER_IsType
+    {0x006F25C0u, 0x00CFADD0u, 2, {0xD4, 0x46}},             // BSP_SessionMessage_COMMANDBUILDING_SETLEVEL_IsType
+    {0x006F2690u, 0x00CFADE4u, 2, {0xD5, 0x46}},             // BSP_SessionMessage_COMMANDBUILDING_UPDATECAPTURE_IsType
+    {0x006F4200u, 0x00CFAE84u, 2, {0xD6, 0x46}},             // BSP_SessionMessage_COMMANDBUILDING_INFERIORLIST_IsType
+    {0x006FCB30u, 0x00CFBC28u, 3, {0xB7, 0x47, 0x46}},       // BSP_SessionMessage_DEPTHCHARGE_CREATE_IsType
 };
 const std::size_t kSessionMessageTypeRuleCount = sizeof(kSessionMessageTypeRules) / sizeof(kSessionMessageTypeRules[0]);
 
