@@ -323,6 +323,13 @@ then read the structs. The rain emitter must stay off unless it gets its own RNG
 
 ## 004EB9B0 `BSP_SceneRecord_ReadWaterProperties` (g_Ocean)
 
+**Status note.** The host already parses the physics-relevant part of g_Ocean live:
+`bsp::ocean_scene_waves_from_header` and `ocean_live_field_publish_scene` in cc9's
+`src/ocean_spectrum.cpp`, called from the header pass in `game_hosts_mission.cpp`.
+`read_water_properties_004eb9b0` below is the full-key reference reader that the audit
+("g_Ocean audit" below) was checked against. It is not wired, and it is not meant to replace
+cc9's reader.
+
 `__fastcall(ECX = g_Ocean bag, EDX = record)`, caller 004F2205. The record offsets equal
 `water_render::block` + 990h for every key; `include/bsp/water_render.hpp` already names them, and
 `SceneOceanFields` in the header lists them with their record offsets.
@@ -445,9 +452,8 @@ The consumer census used the same displacement scan as the first packet:
     field+F9h.
   - `Waves`: 0078C9B0 hands them to the field (WindDirection/WindSpeed 00B9A450, WaveHeight
     00B96C50, LayerScale k = field+B4h, HeightScale field+B8h, Falloff/TimeScale +18h/+20h).
-  - `docs/OCEAN_WAVE_FIELD.md` (cc9) already reconstructs the field and notes that the host does
-    not parse these keys. `read_water_properties_004eb9b0` now provides that parse. No cc9 file
-    was edited.
+  - cc9's host already parses these keys (`ocean_scene_waves_from_header`, live). The audit below
+    compares that parse with the image. No cc9 file was edited.
 - **Presentation.** Everything else:
   - `1WaveDampening*` goes to the ocean shader parameters through 00B9A0D0 (ocean +5E0h..).
   - The optics go through the 00B99E60.. setters, and the caustics scale through 004DEF1F.
@@ -456,6 +462,122 @@ The consumer census used the same displacement scan as the first packet:
   - The post-process blocks go to the renderer service.
   - The Colorize strings have no direct displacement reader.
 - **RNG.** None of these readers draws. Ocean motion consumes no RNG in these routines.
+
+## g_Ocean audit: cc9's `ocean_scene_waves_from_header` against 004EB9B0 / 0078C9B0
+
+This compares the host's live reader (`src/ocean_spectrum.cpp`, origin/main 2026-10-12) and its
+build step `ocean_live_field_build` with the image. The image side is 004EB9B0, which writes
+record+990h, and 0078C9B0, which consumes the block at 004DF87F.
+
+**Correct, field by field.**
+
+- **HeightScale.** Block +5Ch goes to field+B8h (0078CA0B/0078CA0E), and per frame +2Ch = +24h.
+  The host does the same.
+- **TimeScale.** 00B9A4C0's third argument is block +34h, stored at +20h (00B9A4E4). The host
+  stores `time_scale_20`.
+- **WindDirection.** `FLD +4Ch; FMUL qword pi (00CE3D28); FSTP float` (0078C9EC..0078C9F5). The
+  host computes `f32(dir * kWindDirectionScale)` with the same constant.
+- **WindSpeed.** Block +50h is the second argument to 00B9A450 and then 00B96C10. Same in the host.
+- **WaveHeight / ChoppyWavesFactor.** Block +54h and +58h go to 00B96C50, called before the wind
+  setter in both.
+- **LayerScale.** Stored at +1Ch and +B0h, with `1/LayerScale` at +B4h (00B9A4D2 FDIVRP). The host
+  keeps the reciprocal, the only part 0078C890 reads.
+- **Falloff.** Block +2Ch is stored at +18h by 00B9A4C0. The host reads it but does not store it.
+  No CPU reader of +18h is on the 0078C890 path, so this has no physics impact.
+- **0_SimpleOcean.** The image stores it only for type 3, and the host only for `has_boolean`.
+  The flat byte reaches 0078DAA0 at 004DF7E1 in both.
+- **Defaults.** 004CB420 gives +2Ch 0.6, +30h 100, +34h 1.0, +4Ch 0.5, +50h 64, +54h 80,
+  +58h 0.04 and +5Ch 1.0, matching the host's `OceanSceneWaves` initializers.
+
+**Wave damping.** `1WaveDampeningDepth/Power/Scale` (block +38h..+40h) go through 0078CCE0..0078CCFF
+to 00B9A0D0. That routine stores `1/depth`, power, scale and 1.0 at ocean +5E0h..+5ECh, then
+publishes them as system-parameter slot 3 through 00B40860. No other instruction in the ocean code
+(00B9xxxx-00BAxxxx) touches +5E0h..+5F0h, and 0078C890 reads only +24h, +B4h, +BCh and +F9h. So
+damping is a shader-side effect with no CPU water-height or physics impact, and the host is right
+to ignore it. `1WaveDampModel` is "" in all 258 files.
+
+**Defects.** Neither defect is reached by this installation. All 258 Waves blocks author every key
+as `F`, and the one scene without g_Weather has no g_Ocean.
+
+1. **Integer-typed values are ignored.** The image converts a type-0 value with CVTSI2SS (004EB9B0
+   number read); the host's `read` accepts only `has_float` and keeps the default. Fix:
+   `kOceanSceneWavesIntKeysBound`, OFF.
+2. **The no-g_Weather reset is missing.** When the header has no `g_Weather` sub-bag, 004F2242
+   builds a default 004CB420 block and 004E8BF0 copies it over record+990h, after 004EB9B0 has
+   run. 0078C9B0 then consumes default Waves values. `0_SimpleOcean` at C20h is outside the
+   block and survives. Fix: `kOceanSceneWavesWeatherResetBound`, OFF.
+
+**Notes without a diff.**
+
+- The host matches the `g_Ocean` and `Waves` sub-block names case-sensitively and keeps the last
+  duplicate. The image's bag lookup is case-insensitive (008F2260 via `__stricmp`). Every file
+  uses the exact case.
+- Missing required keys crash the image; the host uses defaults.
+- 0078C9B0 also runs from 00502480 and `BSP_UnitLibraryScreen_Enter` (the tactical-library
+  preview). Those are not mission ocean paths.
+
+**Diff.** It was applied in the worker tree and built (pass), then reverted. `git apply --check`
+passes against files identical to origin/main.
+
+```diff
+diff --git a/include/bsp/ocean_spectrum.hpp b/include/bsp/ocean_spectrum.hpp
+--- a/include/bsp/ocean_spectrum.hpp
++++ b/include/bsp/ocean_spectrum.hpp
+@@ -128,6 +128,16 @@ struct OceanSceneWaves {
+ };
+ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header_properties);
+ 
++// cc13-weather1 audit of 004EB9B0 (docs/CC13_SCENE_WEATHER.md, "g_Ocean audit"). Both
++// OFF; no scene in this installation reaches either path.
++// True: an `I`-typed Waves value is converted like 004EB9B0's CVTSI2SS arm instead of
++// keeping the 004CB420 default.
++inline constexpr bool kOceanSceneWavesIntKeysBound = false;
++// True: a header without g_Weather resets the Waves fields to the 004CB420 defaults,
++// as 004F2242..004F225D copies a default block over record+990h after 004EB9B0 ran
++// (0_SimpleOcean at record+C20h is outside the block and survives).
++inline constexpr bool kOceanSceneWavesWeatherResetBound = false;
++
+ // The ocean object at world+A8h as the CPU height path needs it, plus its spectrum.
+ struct OceanLiveField {
+     OceanSpectrum spectrum;
+diff --git a/src/ocean_spectrum.cpp b/src/ocean_spectrum.cpp
+--- a/src/ocean_spectrum.cpp
++++ b/src/ocean_spectrum.cpp
+@@ -309,6 +309,9 @@ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header)
+     const auto read = [block](const char* key, float& out) {
+         const SceneProperty* p = block->find(key);
+         if (p != nullptr && p->has_float) out = p->float_value;
++        // 004EB9B0: CMP [rec+4],0 / CVTSI2SS, so an `I` value is converted, not skipped.
++        else if (kOceanSceneWavesIntKeysBound && p != nullptr && p->has_integer)
++            out = static_cast<float>(p->integer_value);
+     };
+     read("Falloff", waves.falloff_2c);
+     read("LayerScale", waves.layer_scale_30);
+@@ -318,6 +321,20 @@ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header)
+     read("WaveHeight", waves.wave_height_54);
+     read("ChoppyWavesFactor", waves.choppy_58);
+     read("HeightScale", waves.height_scale_5c);
++    if (kOceanSceneWavesWeatherResetBound) {
++        const auto weather = [](const ScenePropertyBlock& h) {
++            for (const auto& child : h.blocks) {
++                if (child.first == "g_Weather") return true;
++            }
++            return false;
++        };
++        if (!weather(header)) {
++            OceanSceneWaves reset;
++            reset.simple_ocean = waves.simple_ocean;
++            reset.authored = waves.authored;
++            return reset;
++        }
++    }
+     return waves;
+ }
+ 
+```
+
+**Labels in `include/bsp/world_construct.hpp`.** These are a doc note only; see "Corrections to
+existing provisional names" above.
 
 ## Handoff
 
