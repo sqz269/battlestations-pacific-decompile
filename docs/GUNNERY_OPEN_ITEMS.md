@@ -12190,3 +12190,29 @@ Nothing is bound here.
 - **Next step.** Read which sender sets byte 1 for a shipyard-built unit, and who seeds `+E20h`. The host's
   `shipyard_build_00844fc0` would then keep a per-unit launch state, and `ship_in_shipyard_hangar_0081de10` would
   answer 1 while it is set. Until then a fresh boat is never blind in the host.
+
+## 177. 175(c), the level-bomb long bias: the image's own; nothing to bind (lead queue; cc9-gunnery35, 2026-10-12)
+
+**The question.** 175(c) found level bombs falling about 0.3 s longer than `009C7D71`/`007BCC80` predicts, because
+the cone (`006E1F00`) launches along the round's forward row and so drops 5do's -3.0 m/s. Does anything in the
+image restore a downward component?
+
+**The read** (disk bytes, `006E520D..006E5359`, after the cone).
+- **The "no cone" arm.** `006E5214` `vtable[5Ch](33h)` and `006E5227` `class+E0h <= 0`. It sets D = (1, 1, 1) and
+  zeroes the drift (`006E5230..006E525A`). This is the arm 130.2 took as never true.
+- **The cone call.** `006E529C` is the block's slot `+34h` (`006E1F00`), with (&D, &rack+4ECh).
+- **Then a launch along the rack's row 1** (`006E52B4..006E5301`): `velocity += [rack+3F4h]+DCh * rack+DCh..+E4h`.
+  - `desc+DCh` is `LaunchSpeed` (`006E01F2`, in the BombPlatform class reader).
+  - In this installation's Lua, all 74 `LaunchSpeed` entries are 0. The only file is
+    `scripts\datatables\autoload\deviceclasses.lua`, mtime 2024-07-13. So the term adds nothing.
+- **The rack frame.** `0072E6D0` applies `BSP_Gun_PlatformMountFrame` to the model node it builds (`gun+3BCh`,
+  `param_1[0xEF]`) before `SetParent`. That is lua41's "the slot frame goes to the model root" (130.6). The round
+  is parented under the gun ENTITY (`006E3E70 -> 006E2C00`), whose local stays identity.
+  - So for every rack the round's forward row is the aircraft's nose. That includes JM08's level bombers: class
+    167, `models/planes/japan/betty.MMOD`.
+
+**Verdict.**
+- The image launches a level bomb with vy of about 0 and predicts it with vy - 3.0. The ~14 m long bias is therefore
+  the image's own behaviour, and the host reproduces it. Nothing was bound.
+- **Uncertain:** 130.6's "gun-entity placement store" (Val/Kate slot 50) is still not read. It could matter only if
+  some other code writes `gun+74h`, which `0072E6D0` does not.
