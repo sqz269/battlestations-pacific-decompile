@@ -12673,3 +12673,21 @@ are not repeated here.
   hold. Exit 3 on IJN01, USN04 and JM08.
 - Moveto draws: every row with a plane moveto install moves (USN04's escorts and waves); the moveto flies about
   22.5 m lower on average and switches to the target's speed earlier.
+
+## 188. `kFlakFlyTimeBurstBound` and `kFlakBlastIgnoreFalloffBound`: the flak expiry burst and the full-damage flak blast (lead queue, cc13-flak1's diff; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_FLAK_FLYTIME_BURST.md section 5, applied as written (`git apply --check` clean on 187).
+- `kFlakFlyTimeBurstBound`: a Flak round reaching FlyTime runs `0070C210(proj, 0)`, the `U(BlastDamageMin,
+  BlastDamageMax)` draw and the radial blast `0084BAD0`, before the proximity block, instead of dying silently.
+- `kFlakBlastIgnoreFalloffBound`: every flak blast ignores the distance falloff, as the image's; the host's
+  `apply_impact_blast` hard-coded the falloff for them.
+- The reads (`0070C370`..`0070C3D7`, `0070C210`, `0084BAD0`) are cc13's and are not repeated here.
+
+**Predictions (cc13's section 6, before any pair), each switch alone, in the reference launch form.**
+- Burst: up to about 150 more blasts on USN04 9000, of which at most about 20 reach a plane; category 5/6 hits +0 to
+  +25; Kate deaths move by a few seconds; no friendly hits. Rows with more flak against bombers (USN13, LOMP10) move
+  similarly; more plane deaths overall.
+- Falloff: category 5/6 damage per hit +10-50%; Kates die a few seconds earlier; a carrier release may be lost.
+- **This installation's data:** its modded "Yamato 1945 Type 3 Flak Bullet" row (`bulletclasses.lua` arcade 2657,
+  realistic 2613) has FlyTime 10, BlastRange 4500 and damage 3500-4000 (cc13). With the burst ON it dominates any
+  mission that arms it; that is the installation's data, recorded as such.

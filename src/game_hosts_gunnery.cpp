@@ -364,6 +364,21 @@ constexpr bool kAaTargetTurnAverageBound = true;
 //    along its track (0070C210, the radial blast). OFF: direct strikes only.
 //    Packet cc9_flak_proximity_burst.
 constexpr bool kFlakProximityBurstBound = true;
+//  * kFlakFlyTimeBurstBound: a Flak-type round whose flight time passes FlyTime
+//    bursts where it is. 0070C3B1 -> 0070C210(proj, 0): the argument is never
+//    read, so the expiry runs the same detonation as the proximity lock - the
+//    U(BlastDamageMin, BlastDamageMax) draw (0070C247, stream 1) and the radial
+//    blast 0084BAD0 with ignoreFalloff = 1 (0070C26E) - before the lock search.
+//    OFF: the life bound below removes the round silently.
+//    Packet cc13-flak1, docs/CC13_FLAK_FLYTIME_BURST.md.
+constexpr bool kFlakFlyTimeBurstBound = false;
+//  * kFlakBlastIgnoreFalloffBound: every flak blast takes full damage inside
+//    BlastRange. The detonation pushes ignoreFalloff = 1 (0070C26E) and the
+//    impact burst sets it from classDesc+8h == 10h, the Flak sub-type
+//    (0084BE74 SETE); 004705C0 then lifts a positive falloff fraction to 1.
+//    OFF: the proximity and impact bursts of a flak round fall off with
+//    distance. Packet cc13-flak1.
+constexpr bool kFlakBlastIgnoreFalloffBound = false;
 //  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
 //    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
 //    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
@@ -2196,6 +2211,7 @@ struct GameGunneryHost::Impl {
     std::string smoke_first_unit;
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
+    unsigned long long flak_expiry_bursts{0};   // packet cc13-flak1, 0070C3C8
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
     // per device class (the image does it once per weapon class, 007325A0).
     struct DeviceFirePoints {
@@ -3124,8 +3140,9 @@ struct GameGunneryHost::Impl {
     // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
     // radial burst every class with a Blast table makes on impact, and the one
     // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
+    // ignore_falloff is 0084BAD0's [ESP+8] byte, copied into record+2Ch.
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
-        const float point[3], const float direction[3]);
+        const float point[3], const float direction[3], bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
@@ -8946,6 +8963,42 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // FLT_MAX, 0070C4B1), and on that tick +284h is still FLT_MAX from
         // 0070CB30, so 0070C7CE records the distance and never draws.
         // docs/AA_LETHALITY_AUDIT.md section 11.
+        //
+        // Packet cc13-flak1. 0070C3AA..0070C3C8 run after the base tick and
+        // before the lock search: flight time (+1C4h) > FlyTime (+54h, FCOMI /
+        // JBE) clears +294h and calls 0070C210(proj, 0), which never reads its
+        // argument (RET 4; no [ESP+..] read before 0070C280). So the expiry is
+        // the same detonation as the lock's, at the round's own position
+        // (proj+FCh): the 0070C247 draw, then 0084BAD0 with radius BlastRange
+        // (+70h), ignoreFalloff 1 and the round's source entity (+238h)
+        // skipped. The base tick's own expiry pair at 006E6584 (00696350,
+        // 00926D90(proj, 2)) only marks the round dead first; 0070C210 does
+        // not test that, and its 00926D90(proj, 1) returns on +5Fh.
+        // SUBSTITUTIONS, labelled: the test is the life bound's own
+        // life * V0 > FlyTime * V0 (the row keeps the derived range, not
+        // FlyTime), so ON and OFF expire on the same tick; the source entity
+        // is the owner unit, as for the lock's burst; the point effect
+        // (0070C2EC, class+2Ch) and the trail's world point (0070C350) are
+        // presentation and are not modelled.
+        if constexpr (kFlakFlyTimeBurstBound) {
+            const GameBulletClassRow* const xc = bullet(shot.bullet_class);
+            if (xc != nullptr && xc->type == "Flak" && xc->range > 0.0f
+                && xc->muzzle_speed > 0.0f && shot.life * xc->muzzle_speed > xc->range) {
+                const float no_dir[3] = {0.0f, 0.0f, 0.0f};
+                const float at[3] = {shot.position[0], shot.position[1], shot.position[2]};
+                shot.flak_target = 0;   // 0070C3C1
+                ++flak_expiry_bursts;
+                ++summary.expired;
+                shot.fate = 5;
+                round_bullet_class = shot.bullet_class;
+                apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
+                    no_dir, true);
+                round_bullet_class = -1;
+                done("FlakProjectile::expiry_detonate_0070c3c8", 0x0070c3c8u);
+                shot.alive = false;
+                continue;
+            }
+        }
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
@@ -10228,7 +10281,8 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
 }
 
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
-    std::size_t gun_row, int team_id, const float point[3], const float direction[3]) {
+    std::size_t gun_row, int team_id, const float point[3], const float direction[3],
+    bool ignore_falloff) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
     const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
@@ -10351,7 +10405,8 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
         blast.part_damage_base = damage;
         blast.falloff_range = weapon->blast_range;
-        blast.ignore_falloff = false;
+        blast.ignore_falloff = ignore_falloff
+            || (kFlakBlastIgnoreFalloffBound && weapon->type == "Flak");   // 0084BE74
         blast.armour_selector = 0.0f;
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
@@ -13311,6 +13366,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak expiry bursts=%llu bound=%d "
+            "ignore_falloff_bound=%d (0070C3C8 -> 0070C210, packet cc13-flak1)",
+            host.flak_expiry_bursts, kFlakFlyTimeBurstBound ? 1 : 0,
+            kFlakBlastIgnoreFalloffBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa bot error gunner_rolls=%llu (by level %llu/%llu/"
             "%llu/%llu/%llu/%llu) clamps=%llu ticks=%llu mean_miss_m=%.2f gunner_bound=%d "
             "flak_rolls=%llu (by level %llu/%llu/%llu/%llu/%llu/%llu) mean_angle_deg=%.3f "
