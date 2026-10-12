@@ -16919,3 +16919,13 @@ party change reaches a grouped unit on current main, 213.1). LOMP10 (30000 frame
 1100-1200 s): if CB4 sits in an AI group, ON logs `ai group party change: CB4 ...` and moves from there (exit 3);
 if it is in no group, identical. Mechanism check: every ON removal line names a unit whose +54h just changed and a
 team different from the new party.
+
+### 216.1 Pairs (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `e9ba96058`, ON = `local\s44_gp_on`; logs `local\s44_gp{off,on}_*.log`. smoke exit 0; USN04
+`s39_u4_p1` exit 0; LOMP10 30000 exit 1, gameplay identical: its 20 capture flips/neutralizations (CB4 to party 1
+at about 1100-1200 s) touch no grouped unit, and no `ai group party change` line is logged. The mechanism is not
+exercised by any row at hand; candidates that SetParty grouped ships are `usn_16_endgame_at_kure.lua` (eleven
+ships to neutral), `islandcapture*.lua` and `usn_09_leyte.lua`. Verdict: stays OFF until one of those is paired, or
+flipped by construction on the lead's word (the image removes the member at once; the host's 00A2DDE0 eviction
+already removes it later).
