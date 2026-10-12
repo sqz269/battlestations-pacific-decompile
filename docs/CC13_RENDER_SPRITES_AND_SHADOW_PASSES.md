@@ -183,3 +183,34 @@ Packet complete for the anchored and referenced code; nothing is in flight. A fo
 (2) repair the register prototypes of the seg-90 STL helpers, (3) reconstruct `00B2A380` fully
 (it needs the cube-texture pool `00B3F2C0` and constructor `00B3D650`, both outside this
 packet's reconstructions).
+
+## Aligned-start sweep (2026-10-12 06:09Z, cc13-render5 follow-up packet)
+
+The open question above (about 400 aligned code starts that were not Ghidra functions) is closed.
+Record: `reports/cc13_render5_aligned_starts.json` (per-candidate plan, reason for every
+rejection, post-definition verification) and the define tool's event log
+`reports/cc13_render5_aligned_starts_define_log.json`. Rules follow
+`docs/CC13_UNDEFINED_FUNCTION_SWEEP.md`; nothing was named or reconstructed.
+
+| | count |
+|---|---|
+| 16-byte-aligned candidates in the three ranges (not an index entry, previous byte INT3/NOP padding or the bytes before end a RET / RET imm16 / JMP rel32) | 551 |
+| defined | 415 (391 after padding, 24 after a terminator) |
+| not defined: already inside a live Ghidra function | 117 |
+| not defined: flow check failed (conditional or unconditional branch leaving the gap, register/indirect jump, undecodable, no padding after the end) | 17 |
+| not defined: after-terminator start shown to be mid-function (`00B40630`, `00B49690`) | 2 |
+| not defined: leased to another owner | 0 |
+
+Method: live `get_function_by_address` at the start; Capstone recursive descent from the start,
+bounded by the next index entry or candidate, with tail jumps allowed only to known entries; the
+end must be followed by INT3 padding to the next 16-byte boundary or meet the bound; live
+containment checked again at the middle and last byte; an after-terminator start was kept only
+when the live function before it ends exactly at it, or a planned body does. "Non-Returning
+Functions - Discovered" was checked disabled first; the bodies were written in six locked
+batches of at most 80 with `tools/ghidra_define_function.py`. All 415 bodies were re-read and
+end exactly where planned. `_free` (`00BF65AC`) still reads `void __cdecl _free(void *)`
+afterwards. One forced snapshot and index rebuild followed (function count 75434 -> 75851,
+including other workers' concurrent definitions).
+
+The largest body is 122 bytes; they are the same template/COMDAT residue as the named ones
+(container helpers, scalar deleting destructors, trivial vtable leaves), left `FUN_`.
