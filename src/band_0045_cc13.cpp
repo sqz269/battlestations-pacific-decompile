@@ -81,9 +81,15 @@ bool ray_plane_intersect_0046fc80(const Vec3& origin, const Vec3& dir, const Vec
                             static_cast<double>(plane_normal.y) * oy +
                             static_cast<double>(plane_normal.z) * oz);
     const float t = f32(static_cast<double>(numer) / denom);
-    out.x = f32(static_cast<double>(origin.x) + static_cast<double>(dir.x) * t);
-    out.y = f32(static_cast<double>(origin.y) + static_cast<double>(dir.y) * t);
-    out.z = f32(static_cast<double>(origin.z) + static_cast<double>(dir.z) * t);
+    // 0046FD62..0046FD9A: each dir*t is stored as a float first (FSTP [ESP+14h/18h/1Ch]), then
+    // added to the origin component kept on the stack. The fixture (docs/CC13_FIXTURE_PASS_1.md)
+    // caught the earlier unrounded product.
+    const float sx = f32(static_cast<double>(dir.x) * t);
+    const float sy = f32(static_cast<double>(dir.y) * t);
+    const float sz = f32(static_cast<double>(dir.z) * t);
+    out.x = f32(static_cast<double>(origin.x) + sx);
+    out.y = f32(static_cast<double>(origin.y) + sy);
+    out.z = f32(static_cast<double>(origin.z) + sz);
     return true;
 }
 
