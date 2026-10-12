@@ -23,6 +23,7 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -64,6 +65,11 @@ void format_address(std::uint32_t address, char (&out)[16]) {
 class CameraOceanField final : public bsp::OceanHeightHost {
 public:
     float wave_height_0078c890(float x, float z) override {
+        if (bsp::ocean_live_field_ready()) {  // packet cc9_physics1_sea
+            const bsp::OceanLiveField& live = bsp::ocean_live_field_process();
+            return bsp::ocean_wave_field_sample_0078c890(live.field,
+                bsp::ocean_spectrum_grid(live.spectrum), x, z);
+        }
         bsp::OceanWaveFieldState field;
         field.flat_f9 = false;
         field.inv_tile_b4 = static_cast<float>(1.0 / 100.0);
