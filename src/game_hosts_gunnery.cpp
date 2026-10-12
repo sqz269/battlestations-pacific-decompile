@@ -392,14 +392,14 @@ constexpr bool kFlakProximityBurstBound = true;
 //    blast 0084BAD0 with ignoreFalloff = 1 (0070C26E) - before the lock search.
 //    OFF: the life bound below removes the round silently.
 //    Packet cc13-flak1, docs/CC13_FLAK_FLYTIME_BURST.md.
-constexpr bool kFlakFlyTimeBurstBound = false;
+constexpr bool kFlakFlyTimeBurstBound = true;  // GUNNERY 193: ON by pair verdict
 //  * kFlakBlastIgnoreFalloffBound: every flak blast takes full damage inside
 //    BlastRange. The detonation pushes ignoreFalloff = 1 (0070C26E) and the
 //    impact burst sets it from classDesc+8h == 10h, the Flak sub-type
 //    (0084BE74 SETE); 004705C0 then lifts a positive falloff fraction to 1.
 //    OFF: the proximity and impact bursts of a flak round fall off with
 //    distance. Packet cc13-flak1.
-constexpr bool kFlakBlastIgnoreFalloffBound = false;
+constexpr bool kFlakBlastIgnoreFalloffBound = true;  // GUNNERY 193: ON by pair verdict
 //  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
 //    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
 //    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
