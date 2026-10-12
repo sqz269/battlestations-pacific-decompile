@@ -12882,3 +12882,7 @@ plane/task line classes.
   LOSES THE USN01 WIN** (wu1: completed 425.72 s -> no completion in 1100 s; deaths 91 -> 64). First divergence:
   `torpedo Mav3 aim census tick=51` (cmd_2C0 -2.0110 -> -2.0104), the switch's own path. USN04 phase 2 torpedo
   releases 2/36 -> 1/36; USNRM01 exit 3. Stays OFF; leave-one-out on USN01 to name the switch.
+- **`kDiveYawModeZeroBound` (189 B): ON.** USN04 phase 2: dive-bomb releases 0/32 -> 12/32 (the prediction), deaths
+  68 -> 67; first divergence `aim lead D3A Val #1.1|.-4` projtime 19.01 -> 19.32, the yaw command surviving the
+  planner; in ON the aimglide gate passes (e.g. `#1.1|.-2` passed=1, lead -5.89 m). JM08 exit 3 (dive releases
+  26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173). USN01 win held (425.72 -> 396.03 s).
