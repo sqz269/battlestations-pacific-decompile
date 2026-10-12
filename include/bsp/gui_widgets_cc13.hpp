@@ -970,4 +970,94 @@ struct GuiListHost {
 };
 void gui_string_list_destroy_00aa57a0(void* list, GuiListHost& host);
 
+// ---------------------------------------------------------------------------
+// Movie subtitle containers
+// ---------------------------------------------------------------------------
+
+// Movie: +104h a byte (subtitle shown), +108h the subtitle Text widget, +10Ch
+// the std::vector of 14h-byte subtitle records (first +110h, last +114h),
+// +120h the std::vector of 24h-byte "extratitle" records (first +124h, last
+// +128h; each holds an owned object at +18h). Both record kinds start with an
+// 8-byte native string.
+struct GuiMovieSubtitleHost {
+    virtual ~GuiMovieSubtitleHost() = default;
+    // 00ABBE50 BSP_GuiText_SetLocalisedCString(ECX = text, "", 0).
+    virtual void text_set_localised_00abbe50(void* text, const char* value, bool localise) = 0;
+    // The vector members of the two record types: insert n copies before
+    // `where` (00AAF820 / 00AAFB20) and erase [first, last) (00AAF580 /
+    // 00AAF620). record_bytes selects the type (14h or 24h).
+    virtual void insert_n(void* vector, std::uint32_t record_bytes, void* where, std::uint32_t count,
+        const void* value) = 0;
+    virtual void erase(void* vector, std::uint32_t record_bytes, void* first, void* last) = 0;
+    // The extratitle clear tail: 00AAE130 range copy of [last, last) onto first,
+    // 00AAF120 destroy of the vacated range, last = first.
+    virtual void clear_extratitles_tail(void* vector) = 0;
+    // Owned object vtable +4h(1).
+    virtual void delete_object_virtual_4(void* object) = 0;
+    // 00419CC0 + 00BD1510 (the by-value record's string).
+    virtual void release_string_buffer(void* buffer, std::uint32_t bytes) = 0;
+};
+
+// 00AB00C0, __fastcall(ECX = movie): hide (+104h = 0), blank the subtitle
+// text (when present) and forget it, erase every subtitle, delete each
+// extratitle's +18h object (nulling the slot), then clear the extratitles.
+void gui_movie_clear_subtitles_00ab00c0(void* movie, GuiMovieSubtitleHost& host);
+
+// 00AB0220 (14h records) and 00AB0350 (24h records): std::vector::resize(n,
+// value), __thiscall(vector, n, value by value), RET 4 + sizeof(value). Grows
+// with insert_n at the end, shrinks with erase(first + n, last); the by-value
+// record's leading native string is released on exit. The ledger called them
+// Push*Record; they are resize.
+void gui_movie_resize_records(void* vector, std::uint32_t record_bytes, std::uint32_t count, const void* value,
+    GuiMovieSubtitleHost& host);
+
+// ---------------------------------------------------------------------------
+// Readers with sub-tables: Line, Group, Curve
+// ---------------------------------------------------------------------------
+
+// The table navigation half of the reader visitor (+04h open, +08h close,
+// +10h read without default, +14h has-key), with named or integer keys.
+struct GuiTableReader {
+    virtual ~GuiTableReader() = default;
+    virtual bool has(const char* name) = 0;
+    virtual bool has_index(std::int32_t key) = 0;
+    virtual void open(const char* name) = 0;
+    virtual void close() = 0;
+    virtual void read_index(std::int32_t key, GuiTaggedValue& value) = 0;
+    virtual void read_string(const char* name, void* native_string_header) = 0;
+};
+
+struct GuiReaderHost {
+    virtual ~GuiReaderHost() = default;
+    virtual void read_base_00aaa710(void* widget, GuiTableReader& reader) = 0;
+    // 004222C0 std::vector<float[2]>::push_back (ECX = vector).
+    virtual void push_back_vec2_004222c0(void* vector, const float (&value)[2]) = 0;
+    // 0043B920 range copy used to erase [first, last) of the +130h vector.
+    virtual void clear_vec2_vector(void* vector) = 0;
+    // 00ABDD80 BSP_GuiCurve_SetTexture(ECX = curve, name header).
+    virtual void curve_set_texture_00abdd80(void* curve, void* name_header) = 0;
+    // Curve vtable +7Ch (tessellate, 00ABCED0).
+    virtual void curve_virtual_7c(void* curve) = 0;
+    // 00BF6713, the checked-iterator failure (_invalid_parameter path).
+    virtual void checked_iterator_failure_00bf6713() = 0;
+};
+
+// 00AC2DE0, __thiscall(line, reader), RET 4: base reader; when "Points"
+// (00CFD91C) exists, open it and append Vec2 entries under keys 1, 2, ... to
+// the point vector at +ECh until a key is missing; close.
+void gui_line_read_properties_00ac2de0(void* line, GuiTableReader& reader, GuiReaderHost& host);
+// 00AC6FD0 (no Ghidra function; 5 bytes): JMP 00AAA710.
+void gui_group_read_properties_00ac6fd0(void* group, GuiTableReader& reader, GuiReaderHost& host);
+
+// 00ABE1D0, __thiscall(curve, reader), RET 4. Base reader; erase the authored
+// point vector (+130h, first +134h, last +138h) and resize the widths (+F8h)
+// to 0; when "PosArray" exists read Vec3 entries 1, 2, ...: XY appended to
+// +130h, Z appended to the widths (grow to max(2*capacity, 1)). Then, when
+// fewer than two points were authored (`cmp eax,2; jae` at 00ABE349), the
+// routine starts building the padded control array at +ECh from points [0]
+// and [1] and the checked iterators fail (00BF6713) for 0 or 1 points; with
+// two or more points it skips straight on. Finally Texture (+104h, no
+// default), 00ABDD80, and vtable +7Ch.
+void gui_curve_read_properties_00abe1d0(void* curve, GuiTableReader& reader, GuiReaderHost& host);
+
 } // namespace bsp::gui_widgets_cc13

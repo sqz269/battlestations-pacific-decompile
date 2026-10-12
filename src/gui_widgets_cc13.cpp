@@ -761,4 +761,97 @@ void gui_string_list_destroy_00aa57a0(void* list, GuiListHost& host) {
     write_field<void*>(list, 4, nullptr);
 }
 
+void gui_movie_clear_subtitles_00ab00c0(void* movie, GuiMovieSubtitleHost& host) {
+    write_field<std::uint8_t>(movie, 0x104, 0);
+    if (auto* text = read_field<void*>(movie, 0x108)) host.text_set_localised_00abbe50(text, "", false);
+    write_field<void*>(movie, 0x108, nullptr);
+    void* subtitles = static_cast<std::byte*>(movie) + 0x10C;
+    host.erase(subtitles, 0x14, read_field<void*>(movie, 0x110), read_field<void*>(movie, 0x114));
+    for (std::uint32_t i = 0;; ++i) {
+        auto* first = read_field<std::byte*>(movie, 0x124);
+        if (first == nullptr) break;
+        const auto count = static_cast<std::uint32_t>(
+            static_cast<std::int32_t>(read_field<std::byte*>(movie, 0x128) - first) / 0x24);
+        if (i >= count) break;
+        void** slot = reinterpret_cast<void**>(first + i * 0x24 + 0x18);
+        if (*slot != nullptr) {
+            host.delete_object_virtual_4(*slot);
+            *slot = nullptr;
+        }
+    }
+    if (read_field<void*>(movie, 0x124) != read_field<void*>(movie, 0x128))
+        host.clear_extratitles_tail(static_cast<std::byte*>(movie) + 0x120);
+}
+
+void gui_movie_resize_records(void* vector, std::uint32_t record_bytes, std::uint32_t count, const void* value,
+    GuiMovieSubtitleHost& host) {
+    auto* first = read_field<std::byte*>(vector, 4);
+    auto* last = read_field<std::byte*>(vector, 8);
+    const std::uint32_t size = first != nullptr
+        ? static_cast<std::uint32_t>(static_cast<std::int32_t>(last - first) / static_cast<std::int32_t>(record_bytes))
+        : 0;
+    if (size < count) {
+        host.insert_n(vector, record_bytes, last, count - size, value);
+    } else if (first != nullptr && count < size) {
+        host.erase(vector, record_bytes, first + count * record_bytes, last);
+    }
+    // The callee owns the by-value record: release its leading native string.
+    if (auto* buffer = read_field<void*>(value, 4))
+        host.release_string_buffer(buffer, read_field<std::uint32_t>(value, 0) + 1u);
+}
+
+void gui_line_read_properties_00ac2de0(void* line, GuiTableReader& reader, GuiReaderHost& host) {
+    host.read_base_00aaa710(line, reader);
+    if (!reader.has("Points")) return;
+    reader.open("Points");
+    for (std::int32_t key = 1; reader.has_index(key); ++key) {
+        GuiTaggedValue value;
+        value.tag = GuiValueTag::Vec2;
+        reader.read_index(key, value);
+        const float point[2] = {value.f[0], value.f[1]};
+        host.push_back_vec2_004222c0(static_cast<std::byte*>(line) + 0xEC, point);
+    }
+    reader.close();
+}
+
+void gui_group_read_properties_00ac6fd0(void* group, GuiTableReader& reader, GuiReaderHost& host) {
+    host.read_base_00aaa710(group, reader);
+}
+
+void gui_curve_read_properties_00abe1d0(void* curve, GuiTableReader& reader, GuiReaderHost& host) {
+    host.read_base_00aaa710(curve, reader);
+    host.clear_vec2_vector(static_cast<std::byte*>(curve) + 0x130);
+    void* widths = static_cast<std::byte*>(curve) + 0xF8;
+    resize_native_float_array_00818030(widths, 0);
+    if (reader.has("PosArray")) {
+        reader.open("PosArray");
+        for (std::int32_t key = 1; reader.has_index(key); ++key) {
+            GuiTaggedValue value;
+            value.tag = GuiValueTag::Vec3;
+            reader.read_index(key, value);
+            const float point[2] = {value.f[0], value.f[1]};
+            host.push_back_vec2_004222c0(static_cast<std::byte*>(curve) + 0x130, point);
+            const auto capacity = read_field<std::int32_t>(widths, 8);
+            if (read_field<std::int32_t>(widths, 4) == capacity)
+                reserve_native_float_array_008153e0(widths, capacity * 2 < 2 ? 1 : capacity * 2);
+            if (auto* data = read_field<float*>(widths, 0)) data[read_field<std::int32_t>(widths, 4)] = value.f[2];
+            write_field<std::int32_t>(widths, 4, read_field<std::int32_t>(widths, 4) + 1);
+        }
+        reader.close();
+    }
+    const auto first = read_field<std::uintptr_t>(curve, 0x134);
+    const std::uint32_t count = first != 0
+        ? static_cast<std::uint32_t>((read_field<std::uintptr_t>(curve, 0x138) - first) >> 3) : 0;
+    if (count < 2) {
+        // 00ABE352..: reserve(+ECh, count + 2), then points [0] and [1] through
+        // checked iterators, which fail for these counts.
+        host.checked_iterator_failure_00bf6713();
+        return;
+    }
+    void* texture = static_cast<std::byte*>(curve) + 0x104;
+    reader.read_string("Texture", texture);
+    host.curve_set_texture_00abdd80(curve, texture);
+    host.curve_virtual_7c(curve);
+}
+
 } // namespace bsp::gui_widgets_cc13
