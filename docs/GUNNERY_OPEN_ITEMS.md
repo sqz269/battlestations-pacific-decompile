@@ -11834,3 +11834,21 @@ USTroopTransport 01 from PlayerSub 01, a submarine, so the press arm applies.
 - **An idle control (JM06 without orders):** identical, because no message is sent.
 - **lua49's surface case** (JM08: the bow-on snap failures, `trigger_ons=0`) is the surface train-and-hold arm, and
   this pair does not exercise it.
+
+**The pair** (export `a4d8a5a3b`, `local\g35_t3off` / `g35_t3on`; logs `local\g35_pt{off,on}_j6{,idle}.log`,
+diffs `local\g35_d_pt_j6.txt` / `g35_d_pt_j6idle.txt`; the OFF runs were re-run after the 2026-10-12 outage
+from the same exes).
+- **Orders, exit 3.** ON: `messages=8 presses=4 can_fire_refusals=2 tube_fires=4 order_launches=2`; PlayerSub 01
+  shots 0 -> 2, both at t=30.00 and t=90.00 s (presses 1 and 3; presses 2 and 4 found the tubes reloading).
+  `Projectile::spawn` 233 -> 235, torpedo stock spent 24 -> 26. The OFF counter line is absent (the seat
+  message is not sent while the arm is a record), so the prediction's "OFF counts group-4 messages" was wrong
+  on that detail only.
+- **Where the torpedoes go.** Every tube's bearing (11.2 down to 4.1 degrees) snaps to `-0.0`: the bow tubes'
+  window 0 is `[-180, -0]` and `007F6190` returns its nearer edge, so both run dead ahead
+  (`run_dir=(-0.027 1.000)`), not at the transport. Both end in land (`vsub.impacts_land` 31 -> 33). Hits,
+  damage and deaths are unchanged. The snap is the image's own call with the gun's own arc record, so this is
+  the order file's geometry (the transport is off the bow, past land), not a host gap.
+- **Idle control, exit 1:** gameplay identical, as predicted.
+
+**Verdict: the mechanism matches; flipped ON.** The spread miss (no hit) comes from the order file's aim. lua49's
+surface train-and-hold case (`trigger_ons=0` on JM08) is still not exercised by any pair.

@@ -678,7 +678,7 @@ constexpr bool kPlayerWeaponGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 14
 //    CanFire(1) answers, through vtable[1F0h], and stops. GameGunneryHost::
 //    player_fire_torpedo_group sends the message. OFF: the arm is a record.
 //    docs/GUNNERY_OPEN_ITEMS.md 152.
-constexpr bool kPlayerTorpedoGroupFireBound = false;
+constexpr bool kPlayerTorpedoGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 170
 //  * kMeshlessGunPointWindowBound: packet cc9_meshless_gun_point_window.
 //    0085A3D0 (TurningGun setup), 0085A3E0..0085A4A8: when world+4A4h is set
 //    (always 1, 009037F0 from 004DE69C), the gun class has no Mesh ([desc+38h],
