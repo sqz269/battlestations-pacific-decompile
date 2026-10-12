@@ -146,7 +146,7 @@ constexpr double kPi = 3.14159265358979323846;
 // Packet cc9_party_change_gunnery_side (SHIP_AI 213), OFF until paired: after a
 // party write (set_unit_side_0054), re-read unit+54h into the unit's gunnery row
 // so the gunnery side matches the image's single unit field.
-constexpr bool kPartyChangeRefreshesGunneryBound = false;
+constexpr bool kPartyChangeRefreshesGunneryBound = true;  // ON: SHIP_AI 213, cc9-ships44\local\s44_pr{off,on}_* gameplay-identical; faithful by construction (the image reads +54h live)
 
 // SUBSTITUTION, labelled: Pilot/Torpedo/ReferenceSpeed, the divisor of
 // 009F9D30's run-profile speed ratio. The PilotBot tuning block is not

@@ -1166,6 +1166,15 @@ constexpr bool kReconAggregatesBound = true;
 //    wrote it on every hit, so a zero-damage hit could take the credit. OFF:
 //    every hit. Packet cc9_kill_credit, docs/KILL_CREDIT.md.
 constexpr bool kKillCreditDamageGateBound = true;
+//  * kLuaKillBoxFromHitBound: the `kill` channel boxes victim+2C8h and +2D8h
+//    (009813A0) as 0077CE60 writes them. +2D8h is attacker+180h when 8 or below,
+//    else the shot's [src+1Ch] (0077CFA3-0077CFC5); when the victim's
+//    vtable[140h]() is another unit answering IsKindOf(2) (a plane's squadron),
+//    that unit gets the same attacker (0077D114) and [src+1Ch] (0077D0E8-0077D128).
+//    LABELLED: unit+180h is taken as 9 (unauthored), so +2D8h is the shot's team
+//    stamp; scoring keeps attribution.credited_slot. OFF: the kill box reads
+//    last_attacker and the side stand-in. docs/CC13_AUDIT_LUA51_FLIPS.md item 1a.
+constexpr bool kLuaKillBoxFromHitBound = true;  // ON: SQUADRON_LAND_TASK 5fz/5ga (cc9-lua51 pairs: LOMP05 side stand-ins 30 -> 0, gameplay identical; BSM01 win 767.94 s)
 //  * kPlaneNullFireTargetProviderBound: 008636A0 (called once, 00864C18, from
 //    the attach 00864BD0) installs the director-backed fire-target provider
 //    00D0D324 (slot +4h 00863640, director+238h) only when the unit answers
@@ -1471,6 +1480,9 @@ struct GameGunneryHost::Impl {
         // The kill attribution block at victim+2C4h..+2E8h, as 0077CE60 leaves it.
         bsp::KillAttributionFields attribution{};
         std::size_t last_attacker{0};   // victim+2C4h, one based
+        // kLuaKillBoxFromHitBound: +2C8h (one based) and +2D8h as 009813A0 boxes them.
+        std::size_t lua_kill_attacker{0};
+        int lua_kill_slot{-1};
         // The per-step scratch the pass fills.
         std::vector<bsp::GunneryCandidate> candidates;
         std::vector<int> order;
@@ -9871,6 +9883,18 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
             attacker, kamikaze, true);
         target.last_attacker = shooter + 1;
+        if (kLuaKillBoxFromHitBound) {
+            target.lua_kill_attacker = shooter + 1;
+            target.lua_kill_slot = team_id;   // +180h = 9, so [src+1Ch]
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit && sqn->squadron_unit != victim
+                    && sqn->squadron_unit < unit_state.size()) {
+                    unit_state[sqn->squadron_unit].lua_kill_attacker = shooter + 1;
+                    unit_state[sqn->squadron_unit].lua_kill_slot = team_id;
+                }
+            }
+        }
     }
     ++summary.attributions;
     {
@@ -12316,11 +12340,13 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
 
 std::size_t GameGunneryHost::kill_last_attacker(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return 0;
+    if (kLuaKillBoxFromHitBound) return impl_->unit_state[unit_index].lua_kill_attacker;
     return impl_->unit_state[unit_index].last_attacker;
 }
 
 int GameGunneryHost::kill_credited_slot(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return 0;
+    if (kLuaKillBoxFromHitBound) return impl_->unit_state[unit_index].lua_kill_slot;
     return impl_->unit_state[unit_index].attribution.credited_slot;
 }
 
@@ -12366,6 +12392,8 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
     s.health = s.max_health;
     s.row.health = s.health;
     s.last_attacker = 0;
+    s.lua_kill_attacker = 0;
+    s.lua_kill_slot = -1;
     s.fire_target = 0;
     s.command_target = 0;
     s.attribution = {};
