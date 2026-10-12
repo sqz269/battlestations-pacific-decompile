@@ -5,6 +5,7 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/strafe_task.hpp"
 #include "bsp/game_hosts_commands.hpp"
 
@@ -5008,6 +5009,7 @@ void GameScriptOrdersHost::observe_mission_end() {
         return;
     }
     mission_end_.seen = true;
+    bsp::game::harness_note_mission_end();   // harness only: --stop-after-end
     mission_end_.trigger = status_set ? "MissionStatus" : "EndMission";
     mission_end_.at_seconds = mission_clock_;   // the frame whose thinks set it
     const std::string status = lua_field_text(L, mission, "MissionStatus");

@@ -66,6 +66,12 @@ MissionFrameJitter g_mission_frame_jitter;
 // trigger (-1 disarmed). Neither is read by the simulation.
 volatile long g_harness_mission_frame = -1;
 long g_harness_crash_test_frame = -1;
+// Harness only (--stop-after-end S): the in-mission frame on which the script-orders host
+// first saw the mission end (Mission.MissionStatus or Mission.EndMission), and how many
+// further frames to run before stopping (-1: never, the default). Not read by the simulation.
+long g_harness_mission_end_frame = -1;
+long g_harness_stop_after_end_frames = -1;
+bool g_harness_stopped_after_end = false;
 
 // A real write through a null pointer, so the record shows a genuine access violation at a
 // known instruction in bsp_game.exe. noinline keeps the faulting instruction in this body.
@@ -1941,7 +1947,17 @@ bool GameMissionHost::advance(float seconds) {
         const bool budget_spent = host.frame_host->in_mission_phase()
             && host.summary.mission_frames_run
                 >= static_cast<unsigned long long>(host.mission_frames);
-        if (!more || budget_spent) {
+        // Harness only: --stop-after-end ends the run that many frames after the mission's end
+        // was recorded, instead of simulating on to the frame budget.
+        const bool end_spent = g_harness_stop_after_end_frames >= 0
+            && g_harness_mission_end_frame >= 0
+            && g_harness_mission_frame >= g_harness_mission_end_frame + g_harness_stop_after_end_frames;
+        if (end_spent) {
+            g_harness_stopped_after_end = true;
+            host.log.notef("harness stop-after-end: mission end recorded at mission frame %ld, "
+                "stopping at mission frame %ld", g_harness_mission_end_frame, g_harness_mission_frame);
+        }
+        if (!more || budget_spent || end_spent) {
             host.frame_host->report(host.mission_frames);
             host.publish_frame_summary();
             host.step = GameMissionStep::Stopped;
@@ -1958,6 +1974,12 @@ bool GameMissionHost::advance(float seconds) {
 // Harness only (packet cc9_tooling_1); declared in src/game_main.cpp, the only caller.
 long harness_mission_frame() noexcept { return g_harness_mission_frame; }
 void arm_harness_crash_test(long mission_frame) noexcept { g_harness_crash_test_frame = mission_frame; }
+// Harness only: --stop-after-end (src/game_main.cpp) and the script-orders host's end record.
+void arm_harness_stop_after_end(long frames) noexcept { g_harness_stop_after_end_frames = frames; }
+bool harness_stopped_after_end() noexcept { return g_harness_stopped_after_end; }
+void harness_note_mission_end() noexcept {
+    if (g_harness_mission_end_frame < 0) g_harness_mission_end_frame = g_harness_mission_frame;
+}
 
 void set_mission_frame_jitter(float percent, std::uint32_t seed) noexcept {
     g_mission_frame_jitter.armed = percent > 0.0f;
