@@ -375,6 +375,20 @@ group is unused). `00777820` MT_HINT: outside host mode, `00690FD0` on `004E1CA0
 `00772710` (MT_CHECKSCENELOAD client arm): `r = [00F8A2FC]->vtable[168h]()`, `005D6CD0()`, send
 0Dh with `+18h = (r == 0)` (SETZ at 00772746) to the server, `session+4h = 0`.
 
+## `_free` flow repair in this lease (2026-10-12)
+
+`docs/CC13_FREE_FLOW_REPAIR.md` skipped five `_free` (`00BF65AC`) call sites inside this lease that
+still carried `CALL_RETURN` overrides with undefined bytes after the call. They were repaired with
+copies of cc13-flowfix1's scripts (same checks: instruction present, override `CALL_RETURN`, Ghidra
+bytes equal disk bytes, rel32 call to a `_free` target), under the Ghidra write lock, and saved:
+
+| site | result |
+|---|---|
+| 007846E6, 0078471C, 00784756 | all three belong to `007844E0`: overrides cleared to NONE, fall-throughs disassembled (45, 49, 37 bytes), function deleted and re-created with `disassemble_first=false`; name, signature and plate comment compared equal; body end 007846EA -> 00784773 (`RET`, then INT3 padding) |
+| 00784083, 00784097 | the flowfix census listed them outside any function. They are the body of a function at `00784060` (INT3 padding before it, `RET` at 007840A7, reached by the `JMP` thunk at `00784340`) that had no Ghidra function and no ledger record. Overrides cleared, fall-throughs disassembled (11 and 20 bytes), and the function re-created as `FUN_00784060` (`007840A7` end); it frees every node of the list at `this+4h`, then the head, and zeroes `+4h`/`+8h` |
+
+Fresh exports of both functions now run past every `_free` call.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
