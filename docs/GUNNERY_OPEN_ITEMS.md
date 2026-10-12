@@ -11852,3 +11852,113 @@ from the same exes).
 
 **Verdict: the mechanism matches; flipped ON.** The spread miss (no hit) comes from the order file's aim. lua49's
 surface train-and-hold case (`trigger_ons=0` on JM08) is still not exercised by any pair.
+
+## 171. The weather recon modifier: `WeatherConfig+34h` has no reader in the image (lead queue item 2; cc9-gunnery35, 2026-10-12)
+
+**Question.** `00445A30` (`BSP_WeatherConfig_SetCurrentWeather`, reached from `luaMW_SetWeather` `008B21A0`)
+stores `WeatherReconModifiers[name]` into `WeatherConfig+34h` (`00445A8C/00445A93`).
+`docs/CC13_OPTIONS_AND_HARDWARE.md` (the `00445A30` paragraph) says recon detection reads it. The host's recon
+path has only the per-unit `ReconModifier`. Is that a gap?
+
+**Answer: no host effect.** No image instruction reads `+34h` of the weather config.
+- **Where the config lives.** The game's only pointer to the config is `game+21C4h`. Its only writers are
+  `004DC913` (`BSP_Game_ConstructGlobalSubsystems`, after `new` + `00445B10`) and `004D2CCE` (`BSP_Game_DestroyWorld`,
+  clearing it); `scan-bytes '89 ?? C4 21 00 00'` finds only these two.
+- **The scan** (`local\g35_wx34.py`, disk bytes of this installation's exe). It finds every `MOV r32,[r32+21C4h]` in
+  `.text` and follows the loaded register, and any register copy of it, to the next `CALL`/`JMP`/`RET`. It reports
+  each memory operand on that register at a chosen displacement, each `CALL` made with ECX = the config, each
+  `PUSH`, and each store of the pointer.
+  - Positive controls: `+74h` finds 6 sites (`005AA2C8`, `008043F3`, `00804694`, `00804935`, the Lua setter/getter
+    `008B243C`/`008B2584`), and `+78h` finds 5 (the recon sensor scalars of `GUNNERY_RECON_DETECTION.md`).
+  - `+34h` finds **0**. So do `+2Ch`, `+30h`, `+38h..+40h` and `+18h..+28h`.
+- **Methods called with ECX = the config.** There are four: `00445790` (camera shake; reads `+2Ch`, `+44h..+68h`),
+  `004439B0` and `00443A30` (daytime; `+4h` only) and `00445A30` itself (it writes `+34h`). The virtual call at
+  `004D2CCC` is the destructor: the vtable `00CE4934` holds `00445BD0` and then 0. The one pointer store, at
+  `00A47C07`, is in `00A47B80`, which loads `[edi+21C4h]` from a different object (it compares the value with -1
+  and has an alternative `[eax+9CCh]`). Its reads were not followed.
+- **The loader** `00444D20` writes `1.0f` to `+34h` for `"default"`.
+
+**Verdict.** The `+34h` value is written by the setter and the loader and read by nothing, so the image has no weather
+recon effect to bind. `SetWeather`'s visible effect is the camera-shake rescale in `00445790`, which the cc13
+reconstruction already carries. No switch was added and no pair was run.
+
+**Correction.** The claim that recon detection reads `+34h` in `CC13_OPTIONS_AND_HARDWARE.md` is unsupported. Recon
+detection (`008048A0`) reads `+74h`/`+78h` (`SimplifiedRecon/SonarMultiplier`), not `+34h`. That doc is cc13's,
+so it was not edited here.
+
+**Uncertainty.**
+- The scan stops at the first call or jump, so a pointer spilled to the stack and re-read later is invisible to it.
+  The only spill seen is the unrelated `00A47C07`.
+- A `LEA` or `ADD` that forms `game+21C4h` without the disp32 load would also be missed. None was looked for.
+
+## 172. The post-free audit: what the `_free` no-return damage hid in the 43 GUNNERY rows (lead queue item 3; cc9-gunnery35, 2026-10-12)
+
+**Scope.** The 43 rows of the cc9-owned grew table in `docs/CC13_FREE_FLOW_REPAIR.md` that name a GUNNERY doc (the
+lead's count was 44). The question for each row: did the code that Ghidra cut after `_free` (`00BF65AC`/`00BF6989`)
+carry a step the host reconstruction lacks?
+
+**Method** (`local\g35_freediff.py`, disk bytes).
+- The script runs recursive descent from each entry twice: once with the two free targets as no-return, once as
+  returning. It prints the instructions reached only in the second pass.
+- For every row whose growth lies inside the body, its byte count equals the report's `new_size - old_size`
+  (291, 245, 61, 8, 50, 23, 25, 38, 90, and 3 per site elsewhere). So the difference set is the code the damage
+  hid. One exception is `00849F70`: the descent also wanders into three neighbouring bodies, but its own site
+  is the 3-byte case.
+- `local\g35_freesites.py` decodes each site with its context. The site list comes from the report's `functions`.
+
+**34 of 43 rows hid only the `ADD ESP,4` after the call.** These are `006D40D0 00718C70 00719FA0 0071AAE0 0071BA20
+00729600 0072AD20 0072E6D0 0072F6E0 00747CC0 0076E520 007CAAD0 007D5D20 007F5A10 007F7110 0081DE10 0081E350 0081F980
+00824B60 00849F70 0084ACB0 0084BAD0 008509F0 00853630 00864D90 00882AC0 0092AAE0 00934150 00935540 00935D30 0094BFF0
+00A08460 00A0F680 00A250A0`.
+- In each of these, the code after the join was already in the body, reached by another path.
+- The risk is only in old pseudocode, which ended the free branch, so steps after the join seemed to run on the
+  non-free path only. The host-modelled sites were checked for that:
+  - **`0072F6E0` (`0072F7E4`) and `00864D90` (`00864F8B`).** A vector grows (the old buffer is freed), then the
+    12-byte cache record is appended and the count incremented (`0072F7F0..0072F811`, `00864FA6..00864FBA`). The
+    host appends the entry on a miss in both (164.1, and `unit_sees_unit_00864d90`). Covered.
+  - **`007F5A10` (two sites) and `007F7110`.** The arc vector grows, then the count is bumped or the record is
+    appended. `src/gun_platform_arc.cpp` keeps the arcs in a `std::vector`. Covered.
+  - **`0081DE10` (`0081E343`).** The hidden path is its `return 1` after the footprint hit (`0081E34B MOV AL,1`).
+    The host already labels the whole function "answers 0", from a listing read (section 5). The label did not
+    come from the truncation. See the follow-up below.
+  - **`0072E6D0`, `00849F70`, `0084ACB0`, `0084BAD0`, `00729600`.** A temporary string or vector is freed at the
+    end of a scope and the epilogue follows. No step.
+
+**Nine rows hid real code:**
+- **`006FAD70`** (245 bytes; the end moved `006FADEF -> 006FAEE4`). This is the ConvexObject parse tail: copy the
+  points (`006FAE40`), `006F9EE0` box centre, subtract it (`006FAEA0`), then `00C5DEB0` hull replace at
+  `shape+0Ch`. `hull_terrain_contact.cpp` (`006FAD70's shape build`) and `mmod_hull_convex_box.hpp` carry each step,
+  read from the listing. Covered.
+- **`0072D950`** (61 bytes; the end moved). The gun destructor tail nulls `+414h`/`+418h` after their frees and calls
+  `0087A410 BSP_UnitTickableEntity_Destruct`. The host owns guns by value. No host effect.
+- **`00955EB0`** (`BSP_GunCategoryList_Clear`). The hidden `CMP [ESI],0; JNE 00955EB8` is the loop back: the clear
+  frees every node, not just the first. Container only. No host effect.
+- **`009813A0`, `00982C50`, `00984EB0`, `00988510`** (warning manager), **and `00A179E0`**. The hidden code is
+  list-node free loops: walk, free, reset the sentinel. Container only. No host effect.
+- **`00673A10`** (291 bytes; the strategic-map purchase/support handler).
+  - `00673C28..00673C57` and `00673FD9..00674069` are the per-iteration map clear (`006641B0`), the iterator
+    advance (`00654F20`) and the jump back to the loop at `00673CF6`/`00673B80`. These are GUI icon lists, which
+    the host does not model.
+  - `00674B09..00674B41`, on the common exit after the last free, runs only when `[game+1FE4h] == 0`. It calls
+    `[game+21A0h]->00913AB0([game+18ECh], [ebx]->vtable[18h](0Fh) ? 0Fh : 6)`.
+  - `00913AB0` bumps the `Counter_RUA_MU` award counter for kind 0Fh. When the counter reaches the `RUA_MU`
+    record's threshold it grants `RUA_MU` through `BSP_MissionScoring_GrantAward` `0090EDE0`. A second
+    `00913AB0` call at `0067467B` was always visible.
+  - **This is a host gap, but scoring only.** No host path bumps `Counter_RUA_MU`. `kill_credit` has only the
+    `RUA_DU` analogue, and `src/award_grant.cpp` lists `RUA_MU` (id 30) only as a table row. It does not change
+    gameplay, so it was not bound. It is recorded as an achievement-counter item.
+
+**Verdict.** The repair exposed no missing gameplay step in a GUNNERY function. Nothing was bound and no pair was run.
+
+**Follow-up (not caused by the free damage): `0081DE10` can now be bound.** Section 5 left two inputs
+unidentified.
+- `unit+1130h` is the shipyard-launch sentinel (`unit_message_arms.hpp` `kUnitOffShipyardLaunchState`: 5 while
+  launching, else 0).
+- The nodes of `[[00E188A8]+19CCh]+364h` are expanded by `00848410` over `+780h..+788h`. The record is 10h
+  wide, and `+4` is an entity whose `+5Ch/+5Dh/+5Eh/+60h` state bytes are checked. That matches the shipyard's
+  hangar records (`shipyard_production.hpp`: `+780h`, stride 10h, `+4` the `Object` entity).
+- So a ship that is launching, or whose bow or stern lies inside a shipyard hangar object's footprint, is hidden
+  to the gunnery line of sight (`00864680` returns 0 while `record+20h` is set).
+- **Proposed:** `kShipyardHangarHiddenBound`, OFF, on `line_of_sight_00864680`. A pair needs a shipyard mission
+  with a produced ship (the JM05/USNOS production rows).
+- **Uncertainty:** the `+364h` list's identity rests on the `+780h` layout match. Its producer was not read.
