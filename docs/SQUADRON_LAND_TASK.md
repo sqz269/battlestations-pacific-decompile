@@ -15470,3 +15470,24 @@ section scopes the other path, watching the whole movie. No code was written.
   2. playback with no tracks (the simulation, the clock and the timers, then the stop), paired against the skip
      on JM08 (30 s) and JM06 (43 s);
   3. the tracks and actions.
+
+## 5fz. cc13's audit of the 5fu flips: diffs A, B, C (cc9-lua51, 2026-10-12)
+
+docs/CC13_AUDIT_LUA51_FLIPS.md (cc13-audit11) found the 5fu mechanism faithful and two value defects plus one
+latent stop defect, each with a diff. Applied as written, all OFF:
+- **B, `kLuaHitTargetSquadronBound`** (`src/game_hosts_lua.cpp`): the hit target, for the match and the push, is
+  `hitEntity->vtable[140h]()` (`00988530..0098859B`), a plane's registry squadron.
+- **C, `kEngineMovieStopRosterExemptBound`** (`src/game_hosts_scene_contents.cpp`): `Hidden` admits and the
+  `+158h` exempt classes (44h, 5Eh, 1Dh, 47h, 3Dh) survive the stop.
+- **A, `kLuaKillBoxFromHitBound`** (`src/game_hosts_gunnery.cpp`, the gunnery lane's file): the kill's `+2D8h` is the
+  shot's seat slot `[src+1Ch]` (0 for the player's guns, 8 for AI guns), not the side, and the squadron of a hit
+  plane gets the same attacker and slot (`0077D0E8..0077D128`). Routed to the lead; paired here from exports
+  patched with cc13's hunk (`local\l51_audit_gunnery.patch`), never from this tree.
+
+**Predictions** (from the audit, before any ON run):
+- A: JM01's `PlaneSquadronLost` (`{PLAYER_1}`) counts only squadrons the player's own guns finish (OFF: only US
+  units' kills, i.e. never), so primary 4 can complete: exit 3. LOMP05's `luaJPPlaneShotDown` counts fewer
+  (only the player unit's kills): 0/1 unless OFF reaches 50. BSM01 (win): identical.
+- B: BSM04's `FortressHitListener` (`UNDERATTACK`) can fire on the first hit to any B-17 rather than wing 0's:
+  dialog timing only; otherwise identical.
+- C: latent; no reference row admits a Hidden or exempt-class entity in mode 9. Identical on JM05/JM06.
