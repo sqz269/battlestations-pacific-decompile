@@ -4339,6 +4339,16 @@ void GameScriptOrdersHost::entity_kill_00926d90(void* entity, int cause) {
     ++timers_.deletes;
 }
 
+std::size_t GameScriptOrdersHost::kill_live_script_entities(int cause) {
+    std::size_t killed = 0;
+    for (GameScriptEntity& script : script_entities_) {
+        if (script.dead) continue;
+        entity_kill_00926d90(&script, cause);
+        ++killed;
+    }
+    return killed;
+}
+
 // ---------------------------------------------------------------------------
 // Packet cc_lua_binding_audit: bsp::EntityThinkHost
 // ---------------------------------------------------------------------------

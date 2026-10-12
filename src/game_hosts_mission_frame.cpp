@@ -1351,6 +1351,22 @@ public:
             // luaStageInit (0045F440). The resets and the GC stay records.
             owner_.engine_movie_skip_pending = false;
             owner_.record("EngineMovie::begin_004cce50", 0x004cce50u);
+            // 0046B730's kill pass (0046B795-0046B91B): every root entity, and
+            // every child of a kept root, whose class +C4h is not in the scene
+            // database's +158h set (44h, 5Eh, 1Dh, 47h, 3Dh) is killed with
+            // 00926D90(2) at 0046B906. CreateScript entities are class 3, so
+            // every luaDelay timer luaEngineMovieInit made dies here.
+            // LABELLED: the scene units' kill and re-create from the +28h
+            // records (0046BA7B-0046BBCD) stays a record; on a skip at the first
+            // frame nothing has moved. The ten 00874D00 calls (five CL=0 before
+            // the mode-8 set, five CL=1 after) stay records too: 00874D00 does
+            // not advance the mission clock, and its CL=0 think-list pass
+            // (00929460) finds only the entities just killed.
+            const std::size_t killed = owner_.lua.script_orders() != nullptr
+                ? owner_.lua.script_orders()->kill_live_script_entities(2) : 0;
+            owner_.log.notef("engine movie stop: 0046B730 killed %zu script entit%s "
+                "(class 3, not in the scene database's +158h set)", killed,
+                killed == 1 ? "y" : "ies");
             owner_.record("EngineMovieStop::scene_database_reset_0046b730", 0x0046b730u);
             owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);

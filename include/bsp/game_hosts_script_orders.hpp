@@ -859,6 +859,12 @@ public:
     // script entities (a CreateScript record), for Kill's 00926D90 route.
     bool is_script_entity(void* handle) const noexcept { return script_entity(handle) != nullptr; }
     void kill_script_entity(void* handle, int cause) { entity_kill_00926d90(handle, cause); }
+    // Packet cc9_lua50_movie_kill: 0046B730's kill pass over the root entities
+    // whose class is not in the scene database's +158h set. Script entities are
+    // class 3 (00898892), never in it, so every live one is killed through
+    // 00926D90 with the given cause (PUSH 2 at 0046B904, the call at 0046B906).
+    // Returns how many.
+    std::size_t kill_live_script_entities(int cause);
 private:
     std::map<std::string, SquadronPermissions> squadron_permissions_;
     std::size_t index_of(void* entity) const noexcept;
