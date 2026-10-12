@@ -14964,3 +14964,41 @@ It is committed OFF with these predictions:
 3. **A queued run dies silently.** `tools/run_game.ps1` waits at most `-WaitSeconds` (default 2400 s) for a slot, then
    throws. The log file is never created, and the `.out` stays empty. With three slots held by long runs, four of
    this packet's JM08 runs vanished that way. `local\l50_lane.ps1` now passes `-WaitSeconds 14400`.
+
+## 5fn. JM08: the HQ holds once Nevada and Missouri die (cc9-lua50, 2026-10-11/12, runs only)
+
+Runs on main `e423cd42b`'s build (the 5fm launch form, 48000 frames = 2400 s unless noted). Order files are
+`local\l50_j8_<run>.txt` (generator `local\l50_j8gen.py`, header line = its arguments); the per-run table is
+`local\l50_j8tab.py <logs>`. STD below is the landship list TT01-06, LST01-03, LSM01-02.
+
+**The win condition** (this installation's `prcpjm08.lua`, read whole for this): `CheckPrim1` (all 11 `LandShips`
+dead) and `CheckPrim2` (`Flagship` = Missouri dead) -> `CheckCompletion` sends the `InvasionForce` to the
+RetreatPoint and plays the "Run" dialog, whose callback `FadeIn` -> `PreparePhase2` -> `luaBomberWave1`, then waves 2
+and 3 at +180 s each. Wave 3 carries the C47 wing (`Mission.C47Count` 3-5, class 136, `PilotSetTarget` the HQ);
+`CheckPrim3` waits for every class-136 plane to die, then `Victory` -> `luaMissionCompletedNew`. `CheckHQ` fails the
+mission when the HQ changes party.
+
+| run | change from n1 | landships dead | alive | Missouri | Nevada | HQ |
+| --- | --- | --- | --- | --- | --- | --- |
+| n1 | (ships STD+Missouri, boats Missouri+STD, period 800, `--air-order 900`) | 9 by 963.69 | LSM01-02 | 691.05 | - | falls 1099.65 |
+| r1 | boats LSM first | 3 | 8 | - | - | falls 993.70 |
+| r2 | `--air-order 600` | 8 | LST02, LSM01-02 | - | - | falls 995.85 |
+| r3 | ships list LSM before LST | 9 | LSM01-02 | 691.05 | - | falls 1078.30 |
+| **r5** | boat/ship period 600 | **10 by 1549.59** | **LST03** | 756.44 | 980.33 | **holds 2400 s** |
+| r6 | boats from frame 300 | 9 | TT03, LSM02 | - | - | falls 1000.35 |
+| **r7** | boat/ship period 1000 | **10 by 1637.17** | **TT04** | 740.29 | 996.88 | **holds 2400 s** |
+| w1-w3 | r7 to 3600 / 4800 / 4800 s (w3 adds C47, B-17, B-25, SBD, CAP to the air list) | identical to r7 | TT04 | | | holds 4800 s |
+| x4 | r7, TT04 first in the Hosho list | identical to r7 (the Hosho dies at 456.61 s) | TT04 | | | holds |
+| y3 | r5, LST03 first in the air list | 7 | LST01-02, LSM01-02 | - | 973.04 | falls 1210.85 |
+
+- **What holds the HQ.** It holds only in the runs where both Missouri (740-756 s) and Nevada (secondary 1, to the
+  HQ's own guns at 980-997 s) die. With only Missouri dead (n1, r3) or only Nevada dead (y3) it falls at 1078-1211 s.
+  This is a correlation over these runs, not a read mechanism.
+- **TT04 in r7/w.** At w3's last bomb release it is at about (-324, 3949), under way at 8.7 m/s, heading pi. Airfield level bombers keep attacking it to the end of w3 (37 releases in the closing table, along-course miss
+  at impact 5-167 m, mean 81 m), but only six blasts land in 4800 s, 65 each, and damage control brings it back to
+  4000/4000 by 1784 s. Its earlier hull damage came from boats and guns before Isokaze (887.71) and Fubuki (771.54)
+  died. In r5 TT04 dies at 585.73 s (killer TT01, cat 1), and LST03 is the survivor instead.
+- **y2** (r5, LST03 first in the ships list) had all of TT02-06, LST02-03 and LSM01 dead by 739.89 s when the outage
+  cut it; y1 (r5, LST03 second in the boat list) and x1-x3 (r7 with TT04 promoted in the boat, ship and air lists)
+  never started (queued behind the slots at the outage). They are rerun next.
+- The w runs never reach phase 2, so C47 targeting (w3) is untested.
