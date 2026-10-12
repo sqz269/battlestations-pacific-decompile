@@ -310,3 +310,37 @@ second gravity term (`007DB9E7`-`007DBA2F`).
 **`desc+508h`** is `-[desc+50h]+2Ch - SwimHeight` (`007C4CF8`-`007C4D03`): `[desc+50h]` is the
 class model and `+28h..3Ch` its BoundingBox (min xyz, max xyz; `docs/UNIT_HULL_EXTENTS.md`), so it
 is the belly's depth below the origin less the swim height.
+
+## 11. The binding (`kPlaneWaterSurfaceLawBound`, OFF) and the predictions
+
+`src/game_hosts_units.cpp`, `PlaneBinding::water_surface_step_007cba50`, in `007CBA50`'s order: the
+pilot pass (the gate `0099AE5F` admits state 6) and `007C5AC0`; step 3 (`ctl+94h` and
+`unit+C10h = 99.0` for a dying plane); the sample; `run_core_law_007db680` with `ctl+FCh = 2`
+(the water band replaces the ceiling, no turbo, `ctl+94h` drives `007DB9E7`'s second gravity
+term, `007DA380`'s mode-2 factors in the rate law, the tail on the angular velocity before the
+pose turns); the lift-off byte; the drown test; the accumulator; the state-7 request. The class
+fields are read once per class and logged (`plane water class ...`), `desc+508h` from the Mesh
+BoundingBox.
+
+SUBSTITUTIONS, labelled in the source: the `"splash"` effect (presentation) is not raised; the
+hull list `desc+5BCh` and `unit+770h` are not carried, so the lift-off is the 1.5 m test alone;
+vtable `+204h` is the world speed; `"powerlost"` is counted, not raised; the `C3h` request is
+applied at once; the host keeps the body angular rates as its state, so the tail goes through
+the pose rows to the world vector and back; `unit+674h` (the degenerate-axis fallback) is pose
+row 0. The free-flight contact line keeps its origin-crossing substitution (`[EDI+4]` = 0, section
+4); with `desc+508h` now known that line is a separate, unbound change.
+
+**Can a floating wreck touch gameplay?** Every aircraft that reaches state 6 on the logs on disk is
+dead (section 10's reach). Its kill was credited and its death mode chosen when it died; the
+gunnery host's targeting and kill funnel skip a dead unit; and the water arm kills nothing (no
+depth kill in state 6: a live state-6 plane has MinWaterSpd 0, so `unit+90Ch` never grows and its
+buoyancy holds). The only live state-6 entry on disk is JM08's scripted "Movie Mavis".
+
+**Predictions, written before the pair** (USN01 `p3_u1_z4`, a win; ESMP08 `l46_e8_orders2`):
+- pair_diff verdict 1 (gameplay identical) on both; the win holds on USN01; ESMP08 stays as it is
+  on main (a loss on 355b60167).
+- Moved rows confined to the wreck: its pose after contact, `plane water law` lines (ON only).
+  A wreck on the water has `DeadMeat > 2 s` at once, so `fade = 0`: no buoyancy and no sink brake;
+  it sinks under gravity (and `007DB9E7`'s extra term) and leaves the log's surface rows.
+- No `plane water lift-off` for a dead plane; `plane water powerlost` lines possible once a wreck
+  passes the 6 m threshold, counted only.
