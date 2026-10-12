@@ -16,7 +16,7 @@ ebed5ecf8, a startup.cmake conflict). That merge was aborted and origin/main re-
 | Level | What |
 | --- | --- |
 | Named in ledger and Ghidra | all 132 unnamed functions of both segments, plus four bad names replaced (below) and 00AAC410, which has no Ghidra function |
-| Reconstructed, build-tested | 15 routines in `gui_manager_cc13.cpp` (table below); `./scripts/build.ps1` passes |
+| Reconstructed, build-tested | 17 routines in `gui_manager_cc13.cpp` (table below); `./scripts/build.ps1` passes |
 | ABI-compatible / game-validated | none. The C++ is new interfaces over host objects; the hover pass never runs in the image |
 
 Most of segment 76/77's spine was already reconstructed by earlier packets (manager construct,
@@ -42,8 +42,10 @@ instantiations, the two Mit pools, the Button class, and a handful of small widg
 | 00AA4EF0 | BSP_GuiManager_RelayoutAllPagesWideScreen | `relayout_all_pages_00aa4ef0` | fastcall(ECX = manager) | 00AA8710 on each page of a snapshot of the +14h vector |
 | 00AA6B10 | BSP_GuiWidget_ContainsPoint | `contains_point_00aa6b10` | thiscall(widget, float[2]) -> AL, RET 4 | unreferenced |
 | 00AA69E0 | BSP_GuiWidget_ScaleToExtent | `scale_for_extent_00aa69e0` | thiscall(widget, float, float), RET 8 | unreferenced |
-| 00AA8EC0 | BSP_GuiWidget_SetRectRecursive_Provisional | `set_rect_00aa8ec0` | thiscall(widget, float[4], byte), RET 8 | |
-| 00AA8F30 | BSP_GuiWidget_SetRectFromWidget_Provisional | `rect_from_widget_00aa8f30` | thiscall(widget, widget*, byte), RET 8 | |
+| 00AA8EC0 | BSP_GuiWidget_SetHitClipRectRecursive | `set_rect_00aa8ec0` | thiscall(widget, float[4], byte), RET 8 | |
+| 00AA8F30 | BSP_GuiWidget_SetHitClipRectFromWidget | `rect_from_widget_00aa8f30` | thiscall(widget, widget*, byte), RET 8 | |
+| 00AA9C90 | BSP_GuiWidget_HoistFlaggedChildren | `hoist_flagged_children_00aa9c90` | thiscall(widget, string by value), RET 8 | only self-referenced |
+| 00AA5390 | BSP_GuiManager_ShowOnlyWidgets | `show_only_widgets_00aa5390` | thiscall(manager, const vector*), RET 4 | unreferenced |
 | 00AA2420, 00AA7810 | BSP_GuiWidget_NameLess (+twin) | `name_less_00aa2420` | cdecl(widget**, widget**) | |
 | 00AA9AB0 | BSP_GuiWidget_GetQualifiedName | `qualified_name_00aa9ab0` | thiscall(widget, out), RET 4 | only self-referenced |
 | 00AAA0F0 | BSP_GuiWidget_VisitChildPaths | `visit_child_paths_00aaa0f0` | thiscall(widget, const string&), RET 4 | widget-base virtual +6Ch |
@@ -79,9 +81,25 @@ live-entry test and no highlight reset. An empty list reaches the invalid-parame
 pivot is not subtracted, unlike 00AA6B10) and 00AA8EC0 stores it at +38h..+44h, optionally on
 the whole subtree. The base constructor zeroes these four dwords (00AA9390). The callers are
 list-style screens copying a container's extent onto their rows (BSP_ControlBindingScreen
-builder 0055D380, 00561BE0, BSP_LeaderboardsScreen_FillRows 00561EB0), which is why the field is
-called a clip rectangle; no reader was traced in this packet (00AA9F10, the clip-parameter
-registration, does not read it), so the names carry `_Provisional`.
+builder 0055D380, 00561BE0, BSP_LeaderboardsScreen_FillRows 00561EB0).
+
+The reader is the recursive hit walk 00AA8BD0. Each edge is skipped when it is exactly 0.0
+(UCOMISS against zero, LAHF, TEST AH,44h, JNP), otherwise the widget is rejected when its hit
+box leaves the rectangle: left limit > box left (00AA8CDF..00AA8D3B), box right > right limit
+(00AA8D41..00AA8D63), top limit > box top (00AA8D69..00AA8D87), box bottom > bottom limit
+(00AA8D89..00AA8DAB). So the rectangle is a hit-test clip: rows scrolled outside a list box
+cannot be clicked, and a widget partly outside is rejected whole, not clipped.
+`include/bsp/gui_layer.hpp` (`GuiHitLimits`) already models these four compares but labels the
+fields from its own box naming (`gate_right` for +38h, `min_left` for +3Ch, ...); the edge
+order here follows the writer 00AA8F30, which stores the smaller x at +38h. That file is not
+edited here.
+
+The sweep (`local/gui6_rect_scan.py 00A90000 00AD8000`: Capstone over every INT3-delimited
+chunk, non-CALL/LEA memory operands at +38h, +3Ch, +40h and +44h on one base register) found
+13 chunks: the writer 00AA8EC0 (positive control), the constructors 00AA9390 and 00AA9520, the
+hit walk 00AA8BD0, and nine others. Those checked use the offsets on a different object, for
+example the vertex element offsets at 00AC2BC3 in BSP_GuiLine_Flush; no drawing use of the
+widget rectangle was found.
 
 ### The Button widget (type 15)
 
@@ -160,37 +178,49 @@ image), plus 00AAC410. They are mostly duplicate template instantiations, but in
 00AA6B10, 00AA69E0, 00AAA650, 00AA5390 and 00AA5B40. Their names say so in the ledger evidence.
 A scan cannot rule out a computed address; none of these is the target of a jump table.
 
+## Hoisted children and show-only (00AA9C90, 00AA5390)
+
+00AA9C90 walks a widget's children. A child with byte +76h set is handed to the manager
+through 00AA59B0, which reparents it under the manager's +44h widget (00AAA5A0
+AttachChild(child, 0)) and appends `{path, child}` to the manager list object at +34h (head
++38h). The recorded path is the one passed in: neither the child's nor the current widget's
+name is appended, and the iterator steps before the adoption so the unlink is safe. Other
+children are recursed into with the same path when the current widget is a page root (type 1),
+else with `path + "." + name` (00AA9DF2..00AA9E70). Its only references are its own recursion
+(00AA9DE8, 00AA9E70) and 00AA59B0 is reached only from it, so in this build the manager list at
++34h stays empty and nothing reads it (the `+ 0x38` hits in the segment-76 decompiles of
+00AA2F10, 00AA3910, 00AA3F70 and 00AA4F80 are virtual +38h calls). docs/CC13_FRONTEND_MENUS.md
+line 111 sets +76h through a virtual +4(1); whether that path was meant to feed this one is open.
+
+00AA5390 (thiscall(manager, const vector*), RET 4, unreferenced) saves each listed widget's node
+factor (+4Ch, then +ACh) as an int with CVTTSS2SI (00AA5446), sets factor 0 through 00B6DA70 on
+every widget reachable from the manager pages in breadth-first order, then writes the saved
+value back with CVTSI2SS (00AA5680) on each listed widget and every ancestor. The int round trip
+truncates, so a saved 0.5 is restored as 0.
+
 ## Open questions
 
-- 00AA9C90 (`_Provisional`): walks children, extracts those with byte +76h set into the
-  manager's +38h list with dotted names (through 00AA59B0), and recurses into the rest. Its
-  only references are its own recursion, and 00AA59B0 is reached only from it, so the manager
-  +38h list (constructed empty by 00AA5D70) never gains entries in this build. No segment-76
-  decompile reads manager +38h (the `+ 0x38` hits in 00AA2F10, 00AA3910, 00AA3F70 and 00AA4F80
-  are virtual +38h calls).
-  docs/CC13_FRONTEND_MENUS.md line 111 sets +76h through a virtual +4(1); the link is open.
-- 00AA5390 (`_Provisional`, unreferenced): saves node visibility factors of a widget list,
-  zeroes every page's widgets breadth-first, restores along the listed widgets' parent chains.
-  The tail was not traced.
-- Who reads widget +38h..+44h.
 - 00AAC7F0 sits in the vtable containing 00D5C2E4; the owning class is not identified.
+- Manager +44h, the adopting widget of 00AA59B0: not set by the constructor 00AA5D70; its
+  writer was not looked for, since the only path to it is dead.
+- 00AACA00's owner (00AAD6D0, segment 78) for the Movie pool.
 
 ## Verification
 
 - `./scripts/build.ps1` in the worktree: build and both existing test targets pass.
+- `python tools/verify_report_calls.py reports/cc13_gui6_calls.json`: every call row checked
+  against the live Ghidra bodies, 0 failed. The rows are generated by
+  `local/gui6_make_report.py` from the raw image.
 - Every reference count above comes from `local/gui6_absrefs.py` (full-image dword and rel32
   scan of the installed executable), not from `bsp.py callers`, which under-reports.
+- 00AAC410 was created in Ghidra with `tools/ghidra_define_function.py 00aac410 00aac4fa`
+  (234 bytes, under the write lock); `_free` 00BF9DC8 still reads as returning afterwards.
 - No new tests: the routines are small and their risk is in the host bindings, which do not
   exist yet.
 
 ## Handoff
 
-Segments 76 and 77 have no unnamed functions left. Next steps, none blocking:
-
-1. Create the Ghidra function at 00AAC410 (body to 00AAC4F9, plain RET) once the lead confirms
-   'Non-Returning Functions - Discovered' is still disabled, then apply the ledger name.
-2. Trace a reader of widget +38h..+44h (outside these segments) to settle the clip-rectangle
-   reading and drop the two `_Provisional` suffixes.
-3. 00AA5390's tail and 00AACA00's owner (00AAD6D0, segment 78) for the Movie pool.
-4. Scripts: `local/gui6_absrefs.py` (full-image reference scan), `local/gui6_triage.py`,
-   `local/gui6_names.tsv` (the applied names with evidence) in this worktree.
+Segments 76 and 77 have no unnamed functions and no `_Provisional` names of their own left
+(00AACA00 keeps its suffix until segment 78 settles the Movie pool). Scripts in this worktree:
+`local/gui6_absrefs.py` (full-image reference scan), `local/gui6_rect_scan.py` (field-offset
+sweep), `local/gui6_make_report.py`, `local/gui6_names.tsv` (the applied names with evidence).

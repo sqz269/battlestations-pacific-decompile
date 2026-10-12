@@ -120,8 +120,19 @@ std::array<float, 2> scale_for_extent_00aa69e0(const GuiWidgetTransform& widget,
 
 // Widget +38h..+44h: four floats in the order left, right, top, bottom
 // (00AA8F30 builds them that way). Zeroed by the base constructor 00AA9390.
-// Taken as a clip rectangle from its writers only: the row builders that call
-// 00AA8F30 copy a list box's extent onto each row; no reader was traced here.
+// A hit-test clip: the reader is the hit walk 00AA8BD0, which rejects the
+// widget when its hit box leaves the rectangle on any edge whose limit is
+// non-zero (00AA8CDF left: limit > box left; 00AA8D41 right: box right >
+// limit; 00AA8D69 top; 00AA8D89 bottom; a limit of exactly 0.0 is off). The
+// row builders that call 00AA8F30 copy a list box's extent onto each row, so
+// rows scrolled outside the box cannot be hit. A sweep of 00A90000-00AD8000
+// for functions touching all four offsets on one register found the writer
+// 00AA8EC0 (positive control), the constructors 00AA9390/00AA9520, the hit
+// walk, and seven others whose register is not a widget where checked (for
+// example 00AC2BC3 in BSP_GuiLine_Flush reads vertex element offsets); no
+// drawing use was found. include/bsp/gui_layer.hpp GuiHitLimits labels the same
+// four fields from its box naming (gate_right, min_left, ...); the edge
+// order here follows the writer 00AA8F30.
 struct GuiWidgetRect {
     float left{0.0f};
     float right{0.0f};
@@ -193,6 +204,60 @@ void visit_child_paths_00aaa0f0(GuiNamedWidget& widget, const std::string& prefi
 // the scroll bar's 00AC8890 / 00AC8A80.
 GuiNamedWidget* find_child_by_name_suffix_00aaa2b0(const GuiNamedWidget& widget,
     const std::string& suffix);
+
+// ---------------------------------------------------------------------------
+// 00AA9C90, hoisting flagged children into the manager
+// ---------------------------------------------------------------------------
+
+struct GuiHoistNode {
+    std::string name{};                    // virtual +28h
+    std::int32_t type_id{0};               // +60h; 1 is the page root (Screen)
+    bool hoist{false};                     // byte +76h
+    std::vector<GuiHoistNode*> children{}; // +64h..+6Ch
+};
+
+struct GuiHoistHost {
+    virtual ~GuiHoistHost() = default;
+    // 00AA59B0 on BSP_GuiManager_GetOrCreate(): manager +44h widget
+    // AttachChild(child, 0) (00AAA5A0, which unlinks it from this parent), then
+    // push_back {path, child} on the manager list at +34h (head +38h).
+    virtual void adopt(const std::string& path, GuiHoistNode& child) = 0;
+};
+
+// 00AA9C90. __thiscall(widget, NativeString path by value), RET 8.
+// The iterator is advanced before a flagged child is adopted, so removing it
+// from this list is safe. A flagged child is recorded with the path passed to
+// this widget (its own and this widget's names are not appended) and is not
+// descended into. Every other child is recursed into with the same path when
+// this widget is a page root (type 1), else with path + "." + this widget's
+// name (00AA9DF2..00AA9E70). Nothing outside its own recursion calls it, so the
+// manager list at +34h stays empty in this build.
+void hoist_flagged_children_00aa9c90(GuiHoistNode& widget, const std::string& path,
+    GuiHoistHost& host);
+
+// ---------------------------------------------------------------------------
+// 00AA5390, show only some widgets
+// ---------------------------------------------------------------------------
+
+struct GuiVisibilityNode {
+    float visibility{1.0f};                     // scene node (+4Ch) +ACh
+    GuiVisibilityNode* parent{nullptr};         // +70h
+    std::vector<GuiVisibilityNode*> children{}; // +64h..+6Ch
+};
+
+struct GuiVisibilityHost {
+    virtual ~GuiVisibilityHost() = default;
+    // 00B6DA70 BSP_SceneNode_SetVisibilityFactor(factor, 0) on node +4Ch.
+    virtual void set_visibility(GuiVisibilityNode& widget, float factor) = 0;
+};
+
+// 00AA5390. __thiscall(manager, const std::vector<widget*>*), RET 4; unreferenced. Saves each listed
+// widget's node factor as an int (CVTTSS2SI at 00AA5446), sets factor 0 on every
+// widget reachable from the manager's pages (+18h/+1Ch) in breadth-first order,
+// then for each listed widget sets the saved value (CVTSI2SS at 00AA5680) on it
+// and every ancestor. The int round trip truncates: a saved 0.5 comes back 0.
+void show_only_widgets_00aa5390(const std::vector<GuiVisibilityNode*>& pages,
+    const std::vector<GuiVisibilityNode*>& shown, GuiVisibilityHost& host);
 
 // ---------------------------------------------------------------------------
 // The Button widget (type 15, vtable 00D5BED0, 0FCh bytes)
