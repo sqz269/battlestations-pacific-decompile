@@ -302,6 +302,145 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00be98b0",
+    "end_address": "00be98d9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00be98b0",
+    "end_address": "00be98d8",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00be98b0",
+    "disassemble_first": false,
+    "name": "BSP_FingerprintPayloadBase_ScalarDelete"
+   },
+   "result": {
+    "success": true,
+    "address": "00be98b0",
+    "function_name": "BSP_FingerprintPayloadBase_ScalarDelete",
+    "entry_point": "00be98b0",
+    "body_size": 41,
+    "message": "Function created successfully at 00be98b0",
+    "warnings": [
+     "Function name 'BSP_FingerprintPayloadBase_ScalarDelete' \u2014 main part 'FingerprintPayloadBase_ScalarDelete' is not PascalCase. Expected: FingerprintpayloadbaseScalardelete",
+     "Function name 'BSP_FingerprintPayloadBase_ScalarDelete' \u2014 main part 'FingerprintPayloadBase_ScalarDelete' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FingerprintPayloadBase_ScalarDelete' does not start with a recognized verb. First word 'Fingerprint' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00be98b0",
+   "end": "00be98d9",
+   "name": "BSP_FingerprintPayloadBase_ScalarDelete",
+   "after": "Function: BSP_FingerprintPayloadBase_ScalarDelete at 00be98b0\nSignature: undefined BSP_FingerprintPayloadBase_ScalarDelete(void)\nEntry: 00be98b0\nBody: 00be98b0 - 00be98d8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bed8c0",
+    "end_address": "00bed8e9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bed8c0",
+    "end_address": "00bed8e8",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bed8c0",
+    "disassemble_first": false,
+    "name": "BSP_PhysicalDirectoryFactoryBase_ScalarDelete"
+   },
+   "result": {
+    "success": true,
+    "address": "00bed8c0",
+    "function_name": "BSP_PhysicalDirectoryFactoryBase_ScalarDelete",
+    "entry_point": "00bed8c0",
+    "body_size": 41,
+    "message": "Function created successfully at 00bed8c0",
+    "warnings": [
+     "Function name 'BSP_PhysicalDirectoryFactoryBase_ScalarDelete' \u2014 main part 'PhysicalDirectoryFactoryBase_ScalarDelete' is not PascalCase. Expected: PhysicaldirectoryfactorybaseScalardelete",
+     "Function name 'BSP_PhysicalDirectoryFactoryBase_ScalarDelete' \u2014 main part 'PhysicalDirectoryFactoryBase_ScalarDelete' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PhysicalDirectoryFactoryBase_ScalarDelete' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bed8c0",
+   "end": "00bed8e9",
+   "name": "BSP_PhysicalDirectoryFactoryBase_ScalarDelete",
+   "after": "Function: BSP_PhysicalDirectoryFactoryBase_ScalarDelete at 00bed8c0\nSignature: undefined BSP_PhysicalDirectoryFactoryBase_ScalarDelete(void)\nEntry: 00bed8c0\nBody: 00bed8c0 - 00bed8e8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bf1520",
+    "end_address": "00bf1549"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bf1520",
+    "end_address": "00bf1548",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bf1520",
+    "disassemble_first": false,
+    "name": "BSP_ErrorReporterBase_ScalarDelete"
+   },
+   "result": {
+    "success": true,
+    "address": "00bf1520",
+    "function_name": "BSP_ErrorReporterBase_ScalarDelete",
+    "entry_point": "00bf1520",
+    "body_size": 41,
+    "message": "Function created successfully at 00bf1520",
+    "warnings": [
+     "Function name 'BSP_ErrorReporterBase_ScalarDelete' \u2014 main part 'ErrorReporterBase_ScalarDelete' is not PascalCase. Expected: ErrorreporterbaseScalardelete",
+     "Function name 'BSP_ErrorReporterBase_ScalarDelete' \u2014 main part 'ErrorReporterBase_ScalarDelete' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ErrorReporterBase_ScalarDelete' does not start with a recognized verb. First word 'Error' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bf1520",
+   "end": "00bf1549",
+   "name": "BSP_ErrorReporterBase_ScalarDelete",
+   "after": "Function: BSP_ErrorReporterBase_ScalarDelete at 00bf1520\nSignature: undefined BSP_ErrorReporterBase_ScalarDelete(void)\nEntry: 00bf1520\nBody: 00bf1520 - 00bf1548"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
