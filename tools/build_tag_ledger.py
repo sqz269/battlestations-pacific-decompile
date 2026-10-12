@@ -25,6 +25,8 @@ CATEGORIES = [
     'stl_throw_site', 'cg_scalar_deleting_dtor', 'cg_vector_deleting_dtor', 'cg_array_ctor_helper',
     'cg_adjustor_thunk', 'cg_static_dtor_stub', 'stl_instantiation', 'trivial_body',
     'stl_probable',
+    # Shape-review categories (docs/CC13_TEMPLATE_COPY_SWEEP.md); never derived here, kept as applied rows.
+    'stl_shape', 'tmpl_shape',
 ]
 PLATE_CATEGORIES = {'lua511', 'zlib121', 'rtti_vslot', 'crt_unmatched', 'static_init',
                     'block_dyn', 'block_telemetry', 'block_telemetry_tmpl', 'block_metrics_wrapper',
