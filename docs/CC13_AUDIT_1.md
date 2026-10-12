@@ -24,7 +24,7 @@ Verdict classes: CONFIRMED-CORRECT, DEFECT (with fix), DOC-CLAIM-WRONG, UNSURE.
 | 00B76CE0 sample track | src/scene_graph_cc13.cpp:189 | complete: both out-of-range switches (tables 00B77170 / 00B77188 match the enum 0..5), wrap paths, linear extrapolation both ends, equality early-outs, s, interpolation table 00B771A0 (0-2 Hermite, 3 linear, 4 hold, 5 Bezier) | CONFIRMED-CORRECT (precision note 1) |
 | 00B75720 Bezier segment | src/scene_graph_cc13.cpp:175 | complete, stack slots traced | CONFIRMED-CORRECT |
 | 00B75520 Hermite basis | src/scene_graph_cc13.cpp:65 | complete (EAX = p1, ECX = 1 - p1, EDX = s^3 - s^2, stack = t0) | CONFIRMED-CORRECT |
-| 00B75450 wrap time | src/scene_graph_cc13.cpp:49 | computing path; callee 00BF85B0 taken as floor | UNSURE (callee identity only) |
+| 00B75450 wrap time | src/scene_graph_cc13.cpp:49 | computing path; callee 00BF85B0 proven floor (note 3) | CONFIRMED-CORRECT |
 | 00B9AE00 ocean projector | src/water_render.cpp:196 | sampled: steps 1 (fov * (double)1.2f [00CEC160]), 7 (lift both branches), 8 (nudge), constants 00CE3D78/00CE380C/00CEC400/00D7A358/00CED5D8/00D7A308/00D7A208/00CE6448/00CE3DC0 | CONFIRMED on sampled steps; DEFECT-minor D3 (NaN) |
 | 00A8BD20 shadow cascade fit | src/shadow_cascades_cc13.cpp:330 | sampled: prologue (00B6FC30 = aspect * fov, 0.5 [00D7A280]), slot map of C (+228h), W (+128h, overwritten by the translated slice), P (+288h), T*P (+318h), light point through unshifted P (00A8C8A4), PPS loop reads C with T*P | CONFIRMED on sampled blocks |
 | 0062C2C0 rewards enter, opening | src/ingame_gui.cpp:167 | ranges 0062C3A0..0062C560, 0062C548..0062C90B, 0062C8CB..0062C90B | CONFIRMED-CORRECT |
@@ -34,7 +34,7 @@ Verdict classes: CONFIRMED-CORRECT, DEFECT (with fix), DOC-CLAIM-WRONG, UNSURE.
 | 005B4E3C map zoom trigger | src/map_screen_update_cc13.cpp:68 | trigger conditions 005B4E3C..005B4EB8 | CONFIRMED on sampled range |
 | 005B58DF map zoom shader values | src/map_screen_update_cc13.cpp:120 | complete | DEFECT-minor D2 (NaN clamp) |
 | 00B156C0 scene render | src/scene_renderer_cc13.cpp:410 | 00B15900..00B15D2E (kernel offsets, lens constants, clamps), constants 00CEC9E0 (-0.5), 00CE3CB8 (20000.0) | CONFIRMED on sampled range |
-| 00795EE0 game camera evaluate | src/cc13_camera_controllers.cpp:502 | head, dt gate, tail (JBE skips the +0Ch store), theta scan 00795F25..00795FF6 | CONFIRMED on sampled range; UNSURE U1 (third stack argument) |
+| 00795EE0 game camera evaluate | src/cc13_camera_controllers.cpp:502 | head, dt gate, tail (JBE skips the +0Ch store), theta scan 00795F25..00795FF6 | CONFIRMED on sampled range; U1 resolved (note 2) |
 | 00AF8500 compose object rotation | include/bsp/particle_emitters_cc13.hpp:213 | complete | quirk claim CONFIRMED |
 | 0068F030 hint definitions loader | src/gui_screens_3.cpp:639 | cooldowntime and duration branches, row loop bound | **DEFECT D1 + DOC-CLAIM-WRONG** |
 | 00B9D7B0 grid tile refresh | docs/CC13_WATER_RENDER.md section 10.2 | the "native defect" claim | quirk claim CONFIRMED |
@@ -126,12 +126,15 @@ src/water_render.cpp:289 `if (!(cos_limit < forward_up))` nudges a NaN. Fix:
    00B7705A forms it on the x87 stack (FSUBP from 80-bit operands). The rounding of that one
    difference can differ from the image in the last bit. The file header already says it
    approximates extended intermediates.
-2. U1: 00795EE0 ends `RET 0Ch` (007965C6) but the C++ and the header model two floats (elapsed,
-   offset). The third stack argument is unaccounted for (unread or unused); the header should name
-   it or say it is ignored.
-3. 00B75450 calls 00BF85B0 (an SSE2 CRT routine, `LIBCRT_unmatched_00bf85b0`, one double in, ST0
-   out). The reconstruction takes it as `floor`; the dispatch shape (MXCSR/control-word check,
-   fallback 00C0F394) fits the MSVC `floor` but the identity was not proven here.
+2. U1 (resolved 2026-10-12): 00795EE0 is `(elapsed, pose*, offset)`, RET 0Ch. The caller 00795C10
+   pushes the offset, then a pointer to its local [ESP+14h] (00795C9C), then elapsed. The body
+   reads arg 1 and arg 3 (t = elapsed + offset, 00795EE3/00795EEA), and Ghidra finds no reference
+   to arg 2. 00791C90 has the same layout and was already documented that way. The C++ parameters
+   were already the right two; only the header note was added.
+3. Resolved 2026-10-12: 00BF85B0 is the CRT `floor`. Its x87 fallback 00C0F394 sets the control
+   word [00E16460] = 173Fh (RC = round down) through `_ctrlfp` 00C138A7 and rounds with `__frnd`
+   00C28548 (FRNDINT). Errors are reported to the handler with opcode 0Bh, which is OP_FLOOR
+   in the MSVC trans.h numbering.
 4. 00A93690: the documented quirk (a miss copies the last binding into the slot past the end, then
    destroys the last one and decrements the count at +14h) is in the bytes (00A936D0..00A93745).
    Not documented: with a count of 0 the loop is skipped, ESI = begin is compared with
