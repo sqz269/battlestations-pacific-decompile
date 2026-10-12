@@ -16888,3 +16888,11 @@ OFF = the tree at `bdc1a5f21`, ON = `local\s44_fsq_on` (pair_export); logs `loca
   MissionPhase 1 -> **2**. Every added kill is by an orphaned wing member; mechanism as predicted (cc13's
   25/25 by 612.22 s was measured on an older base).
 - **Verdict: ON.**
+
+### 213.1 The pair (cc9-ships44, 2026-10-12; switch on main `b0ef887a1`)
+
+OFF = this tree at `6c4a6f7f6`, ON = pair_export (`local\s44_pr_on`); logs `local\s44_pr{off,on}_*.log`. smoke exit 0;
+USNOS j (44000) exit 0; USN04 `s39_u4_p1` (0.0222 s, jitter `20,3`) exit 1, gameplay identical. No log carries a
+`SetParty 008a8930: unit=` line, so the mechanism is not exercised on current main (USNOS j reached HQ2's
+`us_osumi.lua:1106` SetParty only on older builds, `s43_*_osj`; 211.5). Verdict: flipped ON by construction (it
+only re-syncs gunnery's cached side to +54h, which the image reads), routed to gunnery37 by the lead.
