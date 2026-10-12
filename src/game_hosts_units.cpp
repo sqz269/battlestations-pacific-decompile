@@ -626,6 +626,11 @@ struct GameUnitSlot {
     // plan+2E4h, the boost request (-> cmd+14h -> unit+A10h, docs/PILOT_PLAN_SLOT_PIPELINE.md);
     // 0099B56C clears it every think. Recorded only: its reader 007BB7B9 is not hosted.
     bool plan_boost_2e4{false};
+    // task+2E4h, the per-think avoidance mask 009A17D0 tests (bit 4 gunfire
+    // detect 009A18BA, bit 2 vehicle 009A1951, bit 1 terrain 009A1974): 0FFh at
+    // 00999944 before the arm; the kamikaze arms store their band (009AF54A,
+    // 0 in aim) and the drop arm its avoid flag. Every other task leaves 0FFh.
+    int task_mask_2e4{0xFF};
     // Diagnostics: thinks with each order class (both builds), and the arms' census.
     int kz_ordered_thinks{0};
     int dkz_ordered_thinks{0};
@@ -7105,7 +7110,9 @@ struct GameUnitsHost::Impl {
                 u.ga_timer_3e8 = -1.0f;                            // 009A193F [00D7A260]
             } else {
                 if (u.ga_rest_3ec <= u.ga_timer_3e8) u.ga_timer_3e8 -= dt;  // 009A18A8
-                if (u.ga_timer_3e8 > 0.0f || u.ga_timer_3e8 < u.ga_rest_3ec) {
+                // Packet cc9_lua52_kamikaze_wiring: 009A18BA TEST +2E4h, 4.
+                if ((u.ga_timer_3e8 > 0.0f || u.ga_timer_3e8 < u.ga_rest_3ec)
+                    && (u.task_mask_2e4 & 4) != 0) {
                     gunfire_detect_0099ec40(u);
                 }
                 if (!u.ga_flag_26c_4 && u.ga_timer_3e8 > 0.0f) {   // 009A190F
@@ -7113,11 +7120,17 @@ struct GameUnitsHost::Impl {
                 }
             }
         }
+        // Packet cc9_lua52_kamikaze_wiring: 009A1951 / 009A1974 TEST +2E4h, 2 / 1
+        // (the squadron's +3A4h stays 0FFh, as above).
         if constexpr (kPilotVehicleAvoidanceBound) {
-            vehicle_avoidance_007df4f0(u, dt);                     // 009A196D -> 0099B670
+            if ((u.task_mask_2e4 & 2) != 0) {
+                vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
+            }
         }
         if constexpr (kPilotTerrainAvoidanceBound) {
-            terrain_avoidance_0099f1c0(u, dt);                     // 009A1990
+            if ((u.task_mask_2e4 & 1) != 0) {
+                terrain_avoidance_0099f1c0(u, dt);                 // 009A1990
+            }
         }
         // 009A1995: pilot+260h = 0; it has no host producer.
     }
@@ -22989,6 +23002,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool was_locked = unit_.kz.aim.locked_18;
                         const bsp::KamikazeArmResult r =
                             bsp::kamikaze_task_arm_009af510(unit_.kz, h, h, dt);
+                        unit_.task_mask_2e4 = unit_.kz.task_2e4;          // 009AF54A
                         if (!was_locked && unit_.kz.aim.locked_18) ++unit_.kz_locks;
                         if (r.after != r.before) {
                             if (r.after == bsp::KamikazeState::kAim) ++unit_.kz_aim_entries;
@@ -23277,6 +23291,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_boost_2e4 = false;                      // 0099B56C
                         const bsp::DropKamikazeArmResult r =
                             bsp::drop_kamikaze_task_arm_009ae8a0(unit_.dkz, h, dt);
+                        unit_.task_mask_2e4 = unit_.dkz.task_2e4;         // the avoid flag
                         // unit+C25h stand-in: one think wide.
                         if (r.releases == 0) unit_.dkz_c25 = false;
                         if (r.after != r.before && unit_.dkz_transition_logs < 40) {
@@ -31192,6 +31207,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // Packet cc9_lua52_kamikaze_wiring: the kamikaze (009AF510)
                             // and drop-kamikaze (009AE8A0) arms; each returns at once
                             // unless the order is its class.
+                            unit_.task_mask_2e4 = 0xFF;                   // 00999944
                             if (unit_.attack_command_class == bsp::kAttackCmdKamikaze)
                                 ++unit_.kz_ordered_thinks;
                             if (unit_.attack_command_class == bsp::kAttackCmdDropKamikaze)
