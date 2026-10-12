@@ -568,7 +568,7 @@ constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    fire query, its cache entry and its expiry draw happen only past them,
 //    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
 //    goes straight to the line-of-fire query (the host before section 182).
-constexpr bool kAaKind6GateBound = false;
+constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 182.3
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision

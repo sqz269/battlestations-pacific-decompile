@@ -12447,3 +12447,19 @@ mount-frame round trip.
   arise on JM06. The precedence remains UNCERTAIN in the image (whether `008FFF20` runs and calls `0072AC20` while the
   seat is player-held is unread); nothing is bound until a row shows the override (`torpedo_gyro_launches` rising by
   the player's shots).
+
+### 182.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
+
+| row | exit | `window_rejects` OFF -> ON | `kind6_gate_rejects` OFF (counted) -> ON (applied) | other |
+|---|---|---|---|---|
+| USN04 E2 (9000) | 3 | 13157 -> 17165 | 0 -> 0 | the plane arm alone; torpedo releases 5 -> 4 of 16 |
+| USN02 (9000) | 3 | 0 -> 0 | 345 -> 1103 | hull hits 74 -> 91, damage 11836.7 -> 12570.6 |
+| USN13 long (9000) | 3 | 10518 -> 13157 | 197 -> 1576 | deaths 47 -> 46 |
+| USN01 win (`l50_u1_u2`, 22000) | 3 | 9360 -> 9266 | 15 -> 120 | **completes 475.21 -> 425.72 s**; deaths 92 -> 91 |
+
+- **Mechanism.** OFF counts surface refusals on every row with dual-purpose mounts facing ships, and none on E2 (no
+  surface contact in 9000 frames); E2 moves through the plane arm alone (the window ahead of the line of fire), as
+  predicted. The ON counts are larger than OFF's because a refused target stays a candidate and is asked again.
+- The win holds and completes earlier.
+
+**Verdict: the mechanism matches the read; flipped ON.**
