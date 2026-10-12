@@ -50,6 +50,7 @@
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/mission_state_frame.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
@@ -1565,6 +1566,11 @@ public:
     void begin_render_profile_block() override { begin_block(kRenderBlockSlot, "render"); }
     void render_004ca440() override {
         owner_.record("MissionFrame::render", 0x004ca440u);
+        // Packet cc9_physics1_sea: render job B 004B4820 -> 0068A0D0 -> 0078CFF0 ->
+        // 00BA0090 steps the ocean after this frame's fixed steps; the time is
+        // [00F876A4], the mission clock. A no-op while kWaveFieldLiveAmplitudeBound
+        // is off.
+        bsp::ocean_live_field_render_job_0068a0d0(owner_.fixed_clock.simulation_clock);
     }
     void end_render_profile_block() override { end_block(kRenderBlockSlot, "render"); }
     void finish_render_frame_004ca1f0() override {
