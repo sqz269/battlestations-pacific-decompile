@@ -56,6 +56,10 @@ namespace bsp {
 
 inline constexpr bool kPlaneCrashSweepBound = false;
 
+// 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (2.0, 00CE3850,
+// for a kind-45h base). The host arms it on a plane's first free-flight step.
+inline constexpr float kPlaneCrashLaunchCooldown = 3.0f;
+
 // 00CEC9D8 (double 0.75), 00CF5E58 (double 0.49), 00D04310 (double 0.96).
 inline constexpr float kPlaneCrashFoldedWingScale = 0.75f;
 inline constexpr float kPlaneCrashWingPointRatio = 0.49f;
