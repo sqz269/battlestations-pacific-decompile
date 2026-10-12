@@ -12733,3 +12733,57 @@ alone and lower with the roll arm (186); the draw pins move dive rows only (USN0
 exactly with `kMoveToLuaAltZeroOffsetBound` (USN01/USN04/USN12 move, JM08 and USN02 do not); the strafe constants
 are under 1 ulp (identical expected); the tail gunner switches move every row where bombers' tail guns fire (more
 bombers shot down, fewer fighter losses), and USN02 and LOMP06 do not move.
+
+## 191. Handoff (cc9-gunnery36, 2026-10-12, at about 75% context)
+
+**Landed or on `agent/cc9-gunnery36`, newest first.** Every switch below is committed OFF unless marked ON.
+
+| sha | section | what |
+|---|---|---|
+| `212e4bfb4` | 190 | torpedo-bomber aim (3), draw pins (6), small batch 2 (3), tail gunner (2): cc13 diffs as written |
+| `05ece33b3` | 189 | audit7 section 9 behind `kDiveYawModeZeroBound` (B), `kDiveAimGlideArmsBound` (A, C), `kDiveFlyAboveTermsBound` (C2, D, E) |
+| `8160e604f` | 188 | `kFlakFlyTimeBurstBound`, `kFlakBlastIgnoreFalloffBound` |
+| `c69233ebb` | 187 | `kTaskProfileActivationOnlyBound`, `kMoveToActivationDrawsBound` |
+| `16a54625b` | 186 | `kRollArmBaseNumeratorBound`; renumbering 181.2/184/185 |
+| `6a88d4e6f` | GAME_EXECUTABLE | reference AH interim: anchor = AG, no win lost |
+| `90493a7c3` | 184.3 | `kAaKind6GateBound` **ON** |
+| `c9a426a89` | 181.2.1 | `kAimDiveBrakeRatioBound` **ON** |
+| `800e376ac` | 185 | the shipyard-launch sentinel is a five-tick countdown (read) |
+
+**Pairs in flight** (all same-commit, reference launch form, `local\g36_pair.ps1`; OFF `local\g36_<tag>OFF`, ON
+`local\g36_<tag>ON`; logs `local\g36_<tag>{off,on}_<key>.log`; progress `local\g36_q_<tag>.jobs.progress`;
+`local\g36_res.ps1 <tags>` diffs finished keys into `local\g36_d_<tag>_<key>.txt`; `local\g36_wait.ps1` shows the
+queues). Keys: `u4p1` = USN04 phase 2 (`s39_u4_p1`, 0.0222, jitter `20,3`, 45000); `j8r7` = JM08 `l50_j8_r7` 20000;
+`w<key>` = the seven wins with `local\g36_ord_<key>.txt`; the rest are AG's idle rows.
+
+| tag | switch(es) ON | keys | first results (OFF -> ON) |
+|---|---|---|---|
+| `ra` | `kRollArmBaseNumeratorBound` | u4p1 j8r7 lomp10l e2 + 7 wins | u4p1 exit 3: torpedo releases 2/36 -> 4/39, deaths 68 -> 69 |
+| `cad` | `kTaskProfileActivationOnlyBound` | ijn01 e2 j8r7 wu1 | **ijn01 exit 1 (predicted to move: check whether `ijn_1_pearl.lua` 1009-1011 runs inside 3000 frames)**; j8r7 exit 3, deaths 154 -> 126, dive releases 26/33 -> 18/24 |
+| `mvd` | `kMoveToActivationDrawsBound` | e2 usn04 j8r7 wu1 | pending |
+| `fb` / `ff` | flak burst / falloff, separately | e2 usn13l lomp10l + 7 wins | ff e2 exit 3: torpedo releases 5/16 -> 1/16 |
+| `a7b` | `kDiveYawModeZeroBound` | u4p1 j8r7 wu1 | j8r7 exit 3: dive releases 26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173 |
+| `a7r` | `kDiveAimGlideArmsBound` + `kDiveFlyAboveTermsBound` | u4p1 j8r7 wu1 | **u4p1 exit 1** (no aimglide/flyabove reach on that row?); j8r7 exit 3, dive releases 26/33 -> 20/33 |
+| `tb` | the three torpedo-aim switches | u4p1 usnrm01 wu1 | usnrm01 exit 3, deaths 152 -> 149 |
+| `dp` | the six draw-pin switches | u4p1 j8r7 wu1 | pending |
+| `sb1` | `kMoveToLuaAltZeroOffsetBound` | usn01 usn04 usn12 jm08 usn02 | pending |
+| `sbs` | the two strafe switches | ijn01 jm08 wu1 | pending |
+| `tg` | the two tail-gunner switches | usnosl esmp08l usn12 usn13l bsm01 jm08 usn04 usn02 lomp06 | pending |
+
+**Still to do, in the lead's order.**
+1. Judge each pair above by mechanism (first divergence on the switch's own path), then flip or record. The lead
+   also wants `kRollArmBaseNumeratorBound` paired together with `kBandShaperPlan264Bound`, and the wins checked for
+   `ra` before it flips.
+2. **audit9's fly-over diff** (docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6) is NOT applied. It is based on
+   audit7's diff without switches, so it does not apply over 189's switched form (it applies on raw audit7 +
+   `dd31c362a`; tested here). It has no switches and rewrites the fly-over feed (the `+18h/+19h/+1Ah` carried
+   flags), the enter seeds, the flag step, BL's C, the 2C8h arm, 2E8h, the cross-track and the latched arm. Plan:
+   apply it on raw audit7 in a scratch tree, then rebase the result onto 189's switches with the old feed kept
+   under a `kDiveFlyAboveCarriedFlagsBound` (parts 3, 4) and the rest under `kDiveFlyAboveTermsBound` or a second
+   switch; pair 9/10 per aircraft on USN04 and JM08. Also its doc corrections to DIVE_BOMB_FLYOVER_FLAGS.md section 2
+   and DIVE_BOMB_TASK.md's flag table.
+3. Reference AH last, on a main with all of the above (AH interim: GAME_EXECUTABLE.md '2026-10-12 ah').
+
+**Notes.** `g36_pair.ps1` takes several flips as ONE comma-joined `-Flip` string (a space-separated second value
+was bound to `-OffFlip` once and that export was discarded). This tree must stay until the pairs are judged: the
+logs live in its `local\`.
