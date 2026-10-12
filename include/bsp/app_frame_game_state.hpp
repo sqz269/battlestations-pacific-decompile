@@ -69,6 +69,11 @@ inline constexpr int kProfilerSpareSlots = 0x32;
 inline constexpr float kProfilerDisplayScaleSeconds = 0.1f;
 // 00d68680, 3CB60B61h. Stored at profiler+8h by the constructor and not read by
 // any routine in this packet; 1/45 to seven digits.
+// Correction (cc13-render5, 2026-10-12): the identifier is kept, but +8h is the
+// profiler overlay's bar height in its 0..1 screen space, not a frame time. The
+// reader is 00BE3BF0 BSP_Profiler_DrawOverlay: first bar y = 0.8 - h
+// (00BE3C14), quad height h (00BE3DCF), bar pitch h * 1.3 (00BE3E69). See
+// docs/CC13_ENGINE_CORE.md.
 inline constexpr float kProfilerReferenceFrameSeconds = 0.0222222218f;
 // 00d7a270, 3FA99999A0000000h. The additive bias on both normalised offsets.
 // The same .rdata cell is the single-player step threshold in
@@ -157,7 +162,10 @@ void profiler_set_slot_color(ProfilerCounters& profiler, int slot, std::uint32_t
 // normalised offset is measured from that record's first entry.
 // tick_scale is the double at 0109db48, zero in the image and filled at run
 // time; a zero scale makes every converted value non finite, so the caller must
-// supply the real one.
+// supply the real one. (cc13-render5, 2026-10-12: the value is counter ticks
+// per second. Its only writer, the static initializer at 00CD8F30, stores
+// 00BE3310: QueryPerformanceCounter around Sleep(100), difference times 10.
+// Converted values are therefore seconds; docs/CC13_ENGINE_CORE.md.)
 // The return value is (ring_index + 1) / kProfilerHistoryFrames, which is 1 on
 // the frame the ring wraps and 0 otherwise. The application frame discards it.
 int profiler_end_frame_00be34d0(ProfilerCounters& profiler, int registered_slot_count,

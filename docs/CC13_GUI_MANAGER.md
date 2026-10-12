@@ -84,15 +84,21 @@ list-style screens copying a container's extent onto their rows (BSP_ControlBind
 builder 0055D380, 00561BE0, BSP_LeaderboardsScreen_FillRows 00561EB0).
 
 The reader is the recursive hit walk 00AA8BD0. Each edge is skipped when it is exactly 0.0
-(UCOMISS against zero, LAHF, TEST AH,44h, JNP), otherwise the widget is rejected when its hit
-box leaves the rectangle: left limit > box left (00AA8CDF..00AA8D3B), box right > right limit
-(00AA8D41..00AA8D63), top limit > box top (00AA8D69..00AA8D87), box bottom > bottom limit
-(00AA8D89..00AA8DAB). So the rectangle is a hit-test clip: rows scrolled outside a list box
-cannot be clicked, and a widget partly outside is rejected whole, not clipped.
-`include/bsp/gui_layer.hpp` (`GuiHitLimits`) already models these four compares but labels the
-fields from its own box naming (`gate_right` for +38h, `min_left` for +3Ch, ...); the edge
-order here follows the writer 00AA8F30, which stores the smaller x at +38h. That file is not
-edited here.
+(UCOMISS against zero, LAHF, TEST AH,44h, JNP); otherwise the widget is rejected when its hit
+box lies wholly outside that edge: left limit > box right (00AA8CDF..00AA8D3B), box left >
+right limit (00AA8D41..00AA8D63), top limit > box bottom (00AA8D69..00AA8D87), box top > bottom
+limit (00AA8D89..00AA8DAB). Which stack value is which box edge follows the pointer
+containment compares that come next (00AA8DAD..00AA8DD1: pointer x below the value at x87
+st(3) rejects, so that value is the box's left, and so on), tracked on the all-limits-zero path.
+So the rectangle is a hit-test clip: rows scrolled fully outside a list box cannot be clicked,
+while a partly visible row stays hittable over its whole box.
+
+`include/bsp/gui_layer.hpp` (`GuiHitLimits`, a 2026-09-10 reconstruction) already modelled these
+four compares correctly, but named the fields `gate_right`, `min_left`, `min_bottom` and
+`min_top`. This packet renamed them `left`, `right`, `top` and `bottom` with the evidence above
+and updated the four uses in `src/gui_layer.cpp`; the logic is unchanged. (An earlier version of
+this section had the edge roles inverted and said a partly outside widget is rejected; the
+pointer compares above corrected that.)
 
 The sweep (`local/gui6_rect_scan.py 00A90000 00AD8000`: Capstone over every INT3-delimited
 chunk, non-CALL/LEA memory operands at +38h, +3Ch, +40h and +44h on one base register) found
@@ -140,8 +146,10 @@ fixed at 32, so it is not reused):
 | 0ECh widget base | F0h | 3C84h | 00AA6CA0 | 00AA7A80 | 00AA75F0 | 00AA7550 | 00AA79A0 / 00AA7470 | 00D5C120 | 00F8BC94 (from BSP_GuiWidget_DeleteBase_Provisional) |
 | 0FCh Button | 100h | 4084h | 00AAB680 | 00AABF80 | 00AABAB0 | 00AABEE0 | 00AABE00 / 00AAB9F0 | 00D5C238 | via stub 00AAC260 |
 
-00AACA00 initialises a third block shape (4 slots, stride 134h, 130h payload, the Movie size);
-its caller 00AAD6D0 is outside this packet, so it is named `_Provisional`.
+A third instantiation serves the Movie widget: 00AACA00 `BSP_GuiMoviePool_InitBlock` (4 slots,
+stride 134h, 130h payload, block 4DCh), allocated by 00AAD6D0 `BSP_GuiMoviePool_Allocate`
+through the stub 00AAD990 `BSP_GuiMovie_AllocatePoolBlock` (`MOV ECX,00F8BD4C; JMP 00AAD6D0`),
+which the Movie factory 00AA1770 calls.
 
 ## Named, not reconstructed
 
@@ -198,12 +206,19 @@ every widget reachable from the manager pages in breadth-first order, then write
 value back with CVTSI2SS (00AA5680) on each listed widget and every ancestor. The int round trip
 truncates, so a saved 0.5 is restored as 0.
 
+## Movie vtable slot +74h (00AAC7F0)
+
+The vtable 00D5C270 follows the string `cGuiMovie` (00D5C250) and holds BSP_GuiMovie_Update
+00AADF40 at +40h and BSP_GuiMovie_SetCompletion 00AAFEE0 at +7Ch, so it is the Movie widget's.
+00AAC7F0 is its slot +74h (00D5C2E4). In the widget base that slot is 00A9AC00
+`BSP_GuiWidget_BasePostConstructReturn`, a bare RET; the AnimIcon overrides it with 00AD2DF0.
+The Movie's override calls BSP_GuiWidget_SetLocalPositionAndBounds 00AA7DC0 with (0, 0, 0), so it
+is named `BSP_GuiMovie_PostConstructResetPosition`.
+
 ## Open questions
 
-- 00AAC7F0 sits in the vtable containing 00D5C2E4; the owning class is not identified.
 - Manager +44h, the adopting widget of 00AA59B0: not set by the constructor 00AA5D70; its
   writer was not looked for, since the only path to it is dead.
-- 00AACA00's owner (00AAD6D0, segment 78) for the Movie pool.
 
 ## Verification
 
@@ -220,7 +235,6 @@ truncates, so a saved 0.5 is restored as 0.
 
 ## Handoff
 
-Segments 76 and 77 have no unnamed functions and no `_Provisional` names of their own left
-(00AACA00 keeps its suffix until segment 78 settles the Movie pool). Scripts in this worktree:
+Segments 76 and 77 have no unnamed functions and no `_Provisional` names of their own left. Scripts in this worktree:
 `local/gui6_absrefs.py` (full-image reference scan), `local/gui6_rect_scan.py` (field-offset
 sweep), `local/gui6_make_report.py`, `local/gui6_names.tsv` (the applied names with evidence).

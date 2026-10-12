@@ -170,3 +170,13 @@ It is a semantic projection, not an ABI-compatible replacement: the native routi
 application in `ECX`, returns nothing, and reads its subsystems from globals. No profiler, input,
 clock, VFS or loading-queue implementation is supplied and none of the host methods have defaults.
 No test was added; the existing suite still passes.
+
+
+## Note 2026-10-12 06:04Z (cc13-render5): tick scale unit and profiler+8h
+
+Append-only correction; the text above is left as written.
+
+- `0109db48` is counter ticks per second. Its only writer is the static initializer at `00cd8f30` (`CALL 00be3310; FSTP qword [0109db48]; RET`). `00be3310` (`BSP_PerfCounter_CalibrateTicksPerSecond`) takes QueryPerformanceCounter before and after `Sleep(100)` and returns the difference times 10 (`__allmul` `00bf7df0`). Every converted profiler value is therefore in seconds, consistent with the 0.1 full scale and the 1/60 grid step of the overlay.
+- `profiler+8h` (`kProfilerReferenceFrameSeconds`, 0.0222) is read: it is the overlay's bar height. `00be3bf0` (`BSP_Profiler_DrawOverlay`, called from `BSP_Game_Render`) uses it for the first bar's y = 0.8 - h (`00be3c14`), each quad's height (`00be3dcf`) and the bar pitch h * 1.3 (`00be3e69`).
+
+Evidence: docs/CC13_ENGINE_CORE.md.

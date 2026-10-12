@@ -15678,3 +15678,12 @@ Round 2 on five rows put one switch back on the anchor (`local\g35_lane_c`, `loc
   - `hcb` was predicted to move USNOS; it moves nothing.
   - The LOMP06 loss was not predicted.
   - USN01 and USNOS were predicted to hold.
+
+
+## Note 2026-10-12 06:04Z (cc13-render5): tick scale unit and profiler+8h
+
+Append-only correction; the text above is left as written.
+
+- `0109db48` is counter ticks per second. Its only writer is the static initializer at `00cd8f30` (`CALL 00be3310; FSTP qword [0109db48]; RET`). `00be3310` (`BSP_PerfCounter_CalibrateTicksPerSecond`) takes QueryPerformanceCounter before and after `Sleep(100)` and returns the difference times 10 (`__allmul` `00bf7df0`). Every converted profiler value is therefore in seconds, consistent with the 0.1 full scale and the 1/60 grid step of the overlay.
+
+Evidence: docs/CC13_ENGINE_CORE.md.
