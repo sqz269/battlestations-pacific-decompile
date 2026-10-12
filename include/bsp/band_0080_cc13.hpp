@@ -99,4 +99,100 @@ constexpr bool is_objective_sync_message(std::uint8_t type) noexcept
     return type >= 0x37 && type <= 0x3E;
 }
 
+// ---------------------------------------------------------------------------
+// Gameplay leaves from 00800000-0084FFFF, cc13-gp80 (docs/CC13_GP_0080_0084.md).
+// Build-tested only: not wired into any host, not fixture- or game-validated.
+// ---------------------------------------------------------------------------
+
+// 00805990 BSP_Party_FromName, by-value NativeString {length, buffer} on the
+// stack, RET 8, -> EAX. Compares against the party table at 00E0B080 ("OWN",
+// "ENEMY", "NEUTRAL", "UNKNOWN") with _stricmp and returns 0..3, or 4 when no
+// entry matches. A null buffer matches an empty table entry; the table has
+// none, so it gives 4. The image also returns the buffer to the sized
+// storage pool (the callee owns the by-value string); the model does not own it.
+std::int32_t party_from_name_00805990(const char* buffer) noexcept;
+
+// 0080B190 BSP_TurnPathPlanner_WrapAngle, __fastcall(ECX = float* angle).
+// While the angle is below 0 it adds 2pi (double 00CE3828); otherwise, while
+// it is above 2pi, it subtracts 2pi. Each step is rounded to float (FSTP to
+// the stack slot, then FST back), so the model works in double and casts.
+// A NaN angle is left as it is. Part of an unreferenced planner.
+void turn_path_wrap_angle_0080b190(float& angle) noexcept;
+
+// 008127E0 BSP_Unit_RefreshFirepowerRatios, __fastcall(ECX = unit). Barrel
+// totals live at unit+103Ch..+1048h (written at bind time by 00812310..008124C0);
+// the live sums come from 00812550 (artillery), 00812600 (aa mounts),
+// 00812680 (torpedo) and 00812730 (depth charge).
+struct FirepowerInputs {
+    float live[4] = {};    // ST0 results of 00812550, 00812600, 00812680, 00812730
+    float total[4] = {};   // unit+103Ch, +1040h, +1044h, +1048h
+    bool engine_jammed = false;  // unit+9E5h
+    float engine = 0.0f;         // unit+9D8h ("engine", 008131E0)
+    float steering = 0.0f;       // unit+9DCh ("steering", 008131E0)
+};
+struct FirepowerRatios {
+    float ratio[4] = {};         // unit+101Ch, +1020h, +1024h, +1028h
+    float engine_factor = 0.0f;  // unit+1014h
+};
+FirepowerRatios refresh_firepower_ratios_008127e0(const FirepowerInputs& in) noexcept;
+
+// 0084EB80 BSP_Stationary_CheckDestroyed, __fastcall(ECX = stationary).
+// protection = +150h, max_damage = +17Ch, damage = +1A0h (in/out). With
+// protection > 0 the damage is capped at (float)((float)(1 - protection) *
+// max_damage) and the object never dies here; otherwise damage >= max_damage
+// clamps it, sets +1A4h and calls vtable +70h(1).
+enum class StationaryDamageResult { Unchanged, Clamped, Destroyed };
+StationaryDamageResult stationary_check_destroyed_0084eb80(float protection, float max_damage,
+                                                           float& damage) noexcept;
+
+// 00828EC0 BSP_VehicleClass_IsTorpedoProofSmallCraft, __fastcall(ECX = class).
+// The class vtable +18h test is made with 0Eh first and with 0Ch only when
+// that fails; a 0Ch class also needs the byte +808h clear. The float +500h
+// must then be at least 00D099AC (8.938947f); COMISS/JB makes NaN fail.
+// docs/ATTACK_COMMANDS.md: a torpedo order needs this to answer false.
+inline constexpr float kTorpedoProofSmallCraftThreshold = 8.938946723937988f;  // float 00D099AC
+bool torpedo_proof_small_craft_00828ec0(bool is_kind_0e, bool is_kind_0c, bool byte_808,
+                                        float value_500) noexcept;
+
+// Shipyard records (docs/GUNNERY_OPEN_ITEMS.md section 134.1). Only the
+// fields the leaves below read are modelled; class_id is [record class]+70h.
+struct ShipyardStockRecord {   // +774h vector, stride 20h
+    std::int32_t class_id = 0; // [+4h]+70h
+    std::int32_t count = 0;    // +8h
+};
+struct ShipyardQueueSlot {     // +794h vector, stride 4Ch
+    std::int32_t state = 0;    // +4h
+    bool has_class = false;    // +8h non-null
+    std::int32_t class_id = 0; // [+8h]+70h
+};
+
+// 008457E0 BSP_Shipyard_ConsumeStock, __thiscall(shipyard, classId, count),
+// RET 8. The first record of the class loses `count`, clamped at 0; nothing
+// happens when no record matches.
+void shipyard_consume_stock_008457e0(ShipyardStockRecord* records, std::size_t n,
+                                     std::int32_t class_id, std::int32_t count) noexcept;
+
+// 00844610 BSP_Shipyard_CountAvailableOfClass, __thiscall(shipyard, classId)
+// -> int, RET 4: the counts of every matching stock record plus the queue
+// slots in state 1 that hold the class.
+std::int32_t shipyard_count_available_00844610(const ShipyardStockRecord* records, std::size_t n_records,
+                                               const ShipyardQueueSlot* slots, std::size_t n_slots,
+                                               std::int32_t class_id) noexcept;
+
+// 008434D0 BSP_Shipyard_CountIdleSlots, __fastcall(ECX = shipyard) -> int:
+// queue slots whose state is 0.
+std::int32_t shipyard_count_idle_slots_008434d0(const ShipyardQueueSlot* slots, std::size_t n) noexcept;
+
+// 0084CF80 BSP_SupportSite_SquadSizeForClass, __thiscall(site, class) -> int,
+// RET 4. Searches the std::list at site+328h, then the one at site+31Ch, for a
+// node whose +8h equals class+70h and returns the node's +10h; 3 when neither
+// list has it (the SquadSize default 0084D170 writes).
+struct SupportSiteListEntry {
+    std::int32_t class_id = 0;   // node +8h
+    std::int32_t squad_size = 0; // node +10h
+};
+std::int32_t support_site_squad_size_0084cf80(const SupportSiteListEntry* list_328, std::size_t n_328,
+                                              const SupportSiteListEntry* list_31c, std::size_t n_31c,
+                                              std::int32_t class_id) noexcept;
+
 } // namespace bsp::cc13_band0080
