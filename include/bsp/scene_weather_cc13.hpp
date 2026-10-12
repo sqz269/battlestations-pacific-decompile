@@ -25,6 +25,8 @@
 #include <array>
 #include <cstdint>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_property_bag.hpp"
@@ -196,6 +198,211 @@ struct SceneMusicHost {
 bool read_music_and_ambience_004ed690(const ScenePropertyBagModel& model, int bag_index,
                                       SceneMusicFields& out, SceneMusicHost& host,
                                       std::string& error);
+
+// ---------------------------------------------------------------------------
+// 004EB9B0 g_Ocean (caller 004F2205). Block offsets match include/bsp/water_render.hpp
+// water_render::block (record offset - 990h). The two particle descriptors are
+// separate objects the record points at (+C18h, +C1Ch), read by 004EB180 and by
+// the tail routine 004EB5A0 BSP_SceneRecord_ReadWaterBeamParticles (its own function
+// 004EB5A0-004EB9A7 since 2026-10-12; reached only by the tail jump at 004ECA1B).
+struct SceneParticleSetFields {           // [record+C18h] / [record+C1Ch]
+    std::int32_t count_00{0};             // NumParticles / NumBeams, raw dword
+    float speed_04{0.0f};                 // Speed
+    std::string texture_file_08;          // TextureFile
+    Rgba color_10{};                      // Color.R/G/B/A, rgb linearized when set
+    std::array<float, 16> tex_20{};       // Tex00..Tex15 (WaterParticle Tex04 is halved)
+};
+
+struct SceneOceanFields {
+    // Foam
+    float foam_scroll_speed_990{0.0f};
+    float foam_noise_scroll_speed_994{0.0f};
+    float foam_fade_range_998{0.0f};
+    std::uint8_t use_foam_99c{0};
+    float foam_height_9a0{0.0f};
+    float foam_scale_9a4{0.0f};
+    float foam_noise_scale_9a8{0.0f};
+    std::string foam_texture_9ac;
+    std::string foam_noise_texture_9b4;
+    // Waves
+    float waves_falloff_9bc{0.0f};
+    float waves_layer_scale_9c0{0.0f};
+    float waves_time_scale_9c4{0.0f};
+    float wave_dampening_depth_9c8{0.0f};
+    float wave_dampening_power_9cc{0.0f};
+    float wave_dampening_scale_9d0{0.0f};
+    std::string wave_damp_model_9d4;
+    float waves_wind_direction_9dc{0.0f};
+    float waves_wind_speed_9e0{0.0f};
+    float waves_wave_height_9e4{0.0f};
+    float waves_choppy_factor_9e8{0.0f};
+    float waves_height_scale_9ec{0.0f};
+    // Fog (water); Minvalue and Maxvalue are stored times 0.01.
+    float uw_exp_dist_maxdist_a94{0.0f};
+    float uw_exp_dist_minvalue_a98{0.0f};
+    float uw_exp_height_cutdepth_a9c{0.0f};
+    float uw_exp_height_maxdepth_aa0{0.0f};
+    float uw_exp_height_maxvalue_aa4{0.0f};
+    Rgba uw_fog_color_aa8{};                  // rgba*L (004E5D20), a = MaxDarken
+    // Caustics
+    float caustics_scale_ab8{0.0f};
+    Rgba caustics_color_abc{};                // rgb only
+    std::string caustics_type_acc;
+    // Optics
+    std::array<float, 4> sky_reflection_ad4{};  // 7SkyRefl BaseFact, PowExp, PowDiv, DesatFact
+    Rgba local_reflection_tint_ae4{};
+    Rgba reflection_tint_af4{};
+    Rgba refraction_tint_b04{};
+    Rgba uw_refraction_tint_b14{};
+    std::array<float, 3> uw_glow_b24{};       // 8UWBaseGlow, 8UWSkyGlow, 8UWSunSpot (optional)
+    Rgba spray_tint_b30{};                    // linearized unconditionally (image quirk)
+    float shadow_strength_b40{0.0f};
+    float refraction_tint_exponent_b44{0.0f};
+    float refraction_tint_power_b48{0.0f};
+    float deep_water_refraction_exponent_b4c{0.0f};
+    float deep_water_refraction_tint_power_b50{0.0f};
+    float refraction_max_depth_b54{0.0f};
+    float refraction_depth_fade_range_b58{0.0f};
+    std::array<float, 3> fresnel_b5c{};       // Exponent, Scale, Offset
+    std::array<float, 3> shore_fade_b68{};    // Depth, Range, Power
+    Rgba refr_specular_color_b74{};
+    float under_water_refr_index_b84{0.0f};
+    float reflection_multiplier_bbc{0.0f};
+    float final_multiplier_bc0{0.0f};
+    // NormalMaps
+    std::array<float, 3> normal_map_layer_scale_bf0{};
+    std::array<float, 3> normal_map_scroll_speed_c00{};
+    std::string normal_map_texture_c10;
+    std::uint8_t simple_ocean_c20{0};         // 0_SimpleOcean, Bool only
+    SceneParticleSetFields water_particle_c18;
+    SceneParticleSetFields beams_c1c;
+};
+
+// 004EB9B0: __fastcall(ECX = g_Ocean bag, EDX = record), RET; caller 004F2205.
+bool read_water_properties_004eb9b0(const ScenePropertyBagModel& model, int bag_index,
+                                    bool linearize, SceneOceanFields& out, std::string& error);
+
+// ---------------------------------------------------------------------------
+// 004EE9E0 g_Terrain (caller 004F232A). Scalars go to the terrain shader globals
+// at 00E18808..00E18988 (named by address); textures to the record; the LUT name
+// to the global NativeString 00E18990.
+struct SceneTerrainSubtypes {             // w0, d01, w1, d12, w2, each times 0.01
+    std::array<float, 5> v{};
+};
+
+struct SceneTerrainFields {
+    // Optional scalars keyed by their global address.
+    struct Scalar { const char* key; std::uint32_t global; float value; bool set; };
+    std::array<Scalar, 26> scalars{};
+    std::array<Rgba, 3> uw_color_e18960{};          // h_UW_Color0..2, rgb (stride 10h)
+    std::array<bool, 3> uw_color_set{};
+    SceneTerrainSubtypes coral_e18894, uw_rock_e1886c, shore_rock_e18844;
+    SceneTerrainSubtypes grass_e18830, dirt_e1881c, ground_rock_e18808;
+    bool uw_subtypes_set{false}, shore_subtypes_set{false}, ground_subtypes_set{false};
+    std::string diff_atlas_bc4, norm_atlas_bcc, mask_texture_bd4, noise_texture_bdc,
+        static_shadow_texture_be4;
+    std::array<float, 3> static_shadow_shot_e1891c{};  // Size, OffsetX, OffsetZ (optional)
+    std::array<bool, 3> static_shadow_shot_set{};
+    std::string terrain_lut_e18990;                    // "LUT_" + stem + ".tga"
+    bool terrain_lut_set{false};
+};
+
+// 004EE9E0: __fastcall(ECX = g_Terrain bag, EDX = record), RET. `game_record_90c`
+// is [[00E188A8]+5FCh]+90Ch, the string the LUT name is derived from (the image
+// reads the game's current record, not EDX). +90Ch is the scene path (length +90Ch,
+// buffer +910h), written only by 004DA2A0 (zeroed) and 004E1D70 (004E1FD2/004E2017, copied
+// from that function's scenePath argument).
+bool read_static_shadow_and_shader_textures_004ee9e0(const ScenePropertyBagModel& model,
+                                                     int bag_index,
+                                                     const std::string& game_record_90c,
+                                                     SceneTerrainFields& out, std::string& error);
+
+// The 004EE9E0 rule for 00E18990: empty source -> unchanged (returns false);
+// otherwise strip through the last '/' (else the last '\\') and the 4-character
+// extension, cap at 14h characters, and wrap as "LUT_" + name + ".tga".
+bool terrain_lut_name_004ee9e0(const std::string& source, std::string& lut);
+
+// ---------------------------------------------------------------------------
+// 004ED910 BSP_SceneFile_ApplyTerrainTextureHeader: __fastcall(ECX = record), RET;
+// caller BSP_SceneFile_ReadHeaderBlock 00469BF0. Publishes record strings to the
+// world parameter table, loads the environment sounds, applies FileSystemLua.
+struct TerrainTextureHeaderInputs {
+    std::string refl_cubemap_b98, cloud_shadow_map_ba8, diff_atlas_bc4, norm_atlas_bcc,
+        mask_texture_bd4, noise_texture_bdc, static_shadow_texture_be4;
+    std::string terrain_lut_e18990;
+    std::string file_system_lua_918;   // FileSystemLua (004F1D91)
+    // Environment sound slots record+D5Ch + i*14h: sample handle present, path +4.
+    std::array<bool, kEnvironmentSoundCount> env_sample_present{};
+    std::array<std::string, kEnvironmentSoundCount> env_path{};
+};
+
+struct TerrainTextureHeaderHost {
+    virtual ~TerrainTextureHeaderHost() = default;
+    virtual void set_world_parameter_string_00b1b830(const std::string& name, const std::string& value) = 0;
+    // [00F8D394] vtable+120h at 004EDD95: the only renderer class (00B32410 stores vtable
+    // 00D5F0A8) has 00B24DD0 BSP_Renderer_RefreshMaterialTextures in that slot (00D5F1C8),
+    // which re-runs 00B19000 on every registered material so the parameters published above
+    // take effect.
+    virtual void refresh_material_textures_00b24dd0() = 0;
+    virtual void acquire_environment_sample(int index, const std::string& path) = 0;  // 00A83FD0 -> D5Ch slot
+    virtual void set_retained_channel_00a7f2f0(int index) = 0;         // [00F8BBD8], slot, index
+    virtual void vfs_clear_aliases_00bdf940() = 0;
+    // The Lua "Files" table of the FileSystemLua script: (name, newname) rows 1..n.
+    virtual std::vector<std::pair<std::string, std::string>> read_file_aliases(const std::string& script) = 0;
+    virtual void vfs_add_alias_00bdf590(const std::string& name, const std::string& newname) = 0;
+    virtual void refresh_bush_textures_00ad60d0() = 0;
+};
+
+// The world-parameter names in publish order with the value each receives.
+// DiffAtlas_B receives record+BC4h (DiffAtlas_A's string) in the image.
+void apply_terrain_texture_header_004ed910(const TerrainTextureHeaderInputs& in,
+                                           TerrainTextureHeaderHost& host);
+
+// ---------------------------------------------------------------------------
+// 004E8510 g_PostProcess (caller 004F2349): three parameter blocks for the
+// renderer service [00F8D39C] and four Colorize texture names in the record.
+// Member initializers are the image's stack defaults; every key is required,
+// so none survives a successful read.
+struct ScenePostProcessHdr {              // 00B0E9B0 block, service +84h..+ACh
+    float bright_pass_threshold{0.2f};    // BrightPassTreshold (sic)
+    float bright_pass_offset{0.8f};
+    float middle_gray{0.18f};
+    float adaptation{0.98f};              // 1 - AdaptationPercent/100
+    float bloom_scale{1.0f};
+    float min_luminance{0.0f};
+    float max_luminance{1000.0f};
+    float new_hdr_param0{3.0f};
+    float new_hdr_param1{10.0f};
+    std::uint8_t anti_banding_on{0};
+    float particle_luminance_mul{1.0f};
+};
+struct ScenePostProcessMotionBlur {       // 00B0EA20 block
+    float max_velocity{1.0f};
+    float velocity_scale{0.5f};
+    float min_speed{100.0f};
+    float divider{600.0f};
+    float max_blur{100.0f};
+    std::array<float, 3> unused{};        // +14h..+1Ch stay 0
+};
+struct ScenePostProcessUnderwaterWave {   // 00B0EA70 block; amplitudes / 1000
+    float horiz_speed{4.0f}, horiz_scale{25.0f}, horiz_phase{0.0f}, horiz_amplitude{0.01f};
+    float vert_speed{2.7f}, vert_scale{22.0f}, vert_phase{0.6f}, vert_amplitude{0.01f};
+};
+struct ScenePostProcessHost {
+    virtual ~ScenePostProcessHost() = default;
+    virtual void set_hdr_params_00b0e9b0(const ScenePostProcessHdr&) = 0;
+    virtual void set_motion_blur_params_00b0ea20(const ScenePostProcessMotionBlur&) = 0;
+    virtual void set_underwater_wave_params_00b0ea70(const ScenePostProcessUnderwaterWave&) = 0;
+};
+struct ScenePostProcessFields {           // Colorize strings in the record
+    std::string texture_name_c24, texture_name_uw_c2c, texture_name_old_film_c34,
+        texture_name_old_film_uw_c3c;
+};
+
+// 004E8510: __fastcall(ECX = g_PostProcess bag, EDX = record), RET.
+bool read_post_process_004e8510(const ScenePropertyBagModel& model, int bag_index,
+                                ScenePostProcessFields& out, ScenePostProcessHost& host,
+                                std::string& error);
 
 // Host adapter, not a native routine: the host's parsed header block
 // (include/bsp/scene_file.hpp, SceneDocument::header.properties) as a bag model

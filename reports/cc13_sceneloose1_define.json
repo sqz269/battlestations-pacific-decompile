@@ -1,0 +1,44 @@
+{
+ "events": [
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "before_004eb9b0": "Function: BSP_SceneRecord_ReadWaterProperties at 004eb9b0\nSignature: undefined BSP_SceneRecord_ReadWaterProperties(void)\nEntry: 004eb9b0\nBody: 004eb5a0 - 004eca23"
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004eb5a0",
+    "name": "BSP_SceneRecord_ReadWaterBeamParticles",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004eb5a0",
+    "function_name": "BSP_SceneRecord_ReadWaterBeamParticles",
+    "entry_point": "004eb5a0",
+    "body_size": 1029,
+    "message": "Function created successfully at 004eb5a0",
+    "warnings": [
+     "Function name 'BSP_SceneRecord_ReadWaterBeamParticles' \u2014 main part 'SceneRecord_ReadWaterBeamParticles' is not PascalCase. Expected: ScenerecordReadwaterbeamparticles",
+     "Function name 'BSP_SceneRecord_ReadWaterBeamParticles' \u2014 main part 'SceneRecord_ReadWaterBeamParticles' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneRecord_ReadWaterBeamParticles' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  }
+ ]
+}
