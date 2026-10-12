@@ -3,7 +3,9 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/native_game_settings_owner.hpp"
 #include "bsp/profile_commit.hpp"
+#include "bsp/weather_config.hpp"
 
+#include <array>
 #include <cstdint>
 #include <string>
 #include <string_view>
@@ -155,5 +157,59 @@ inline constexpr SettingsComparedField kSettingsEqualityTail[] = {
 // HardwareReported, do not affect the result.
 bool game_settings_equal_008d4af0(
     const GameSettingsComparand& self, const GameSettingsComparand& other);
+
+// ---------------------------------------------------------------------------
+// Weather state on the WeatherConfig at game+21C4h (segment 3).
+// ---------------------------------------------------------------------------
+
+// The camera mover as 00445790 uses it: vtable +12Ch returns the view-mode
+// name as a C string; 0042C4C0 (non-virtual, ECX = mover, six floats by value,
+// RET 18h) stores amplitudes at +1D0h..+1D8h and frequencies at +1DCh..+1E4h,
+// the block 004329D0 advances (docs/MISSION_CAMERA.md step 13).
+struct WeatherShakeTarget {
+    virtual ~WeatherShakeTarget() = default;
+    virtual const char* view_mode_name_12c() = 0;
+    virtual void set_shake_0042c4c0(const std::array<float, 3>& amplitudes,
+        const std::array<float, 3>& frequencies) = 0;
+};
+
+// 00445790: ECX = config, [ESP+4] = mover (may be null), RET 4. A null mover
+// does nothing. Otherwise amplitude = base_amplitudes_44 * m, with
+// m = view_mode_amp_multipliers_5c[view] * weather_amp_multipliers_68[current],
+// the weather map looked up first; both lookups insert a missing key as 0.0f.
+// The +74h/+78h "current multiplier" words are not written here. Callers:
+// 00445A30, BSP_Game_SetCameraMover 004BC410, BSP_MovCam_EnterMode 007A5110.
+void apply_weather_camera_shake_00445790(WeatherConfig& config,
+    WeatherShakeTarget* mover, NativeStringStorage& strings);
+
+// 00445A30: ECX = config, NativeString by value (callee-destroyed), RET 8.
+// current_weather_2c = name (self-copy guarded; resize with preserve, then a
+// length-byte copy), current_weather_modifier_34 = weather_recon_modifiers_38
+// [name] (inserting 0.0f when absent), then 00445790 on the game's current
+// camera mover [game+1ED4h]. Callers: luaMW_SetWeather 008B21A0 (cc9's mission
+// host) and the unreferenced reader 00445BF0. +34h feeds recon detection
+// (docs/GUNNERY_RECON_DETECTION.md); its consumers are cc9's.
+void set_current_weather_00445a30(WeatherConfig& config, NativeString name,
+    WeatherShakeTarget* current_mover, NativeStringStorage& strings);
+
+// What 00445BF0 asks of the GuiLuaReader-style archive (vtable +10h,
+// 00BD6830 on the Lua reader): key {0, "dayTime"} into a Float field, key
+// {0, "actWeather"} into a String field. Absent keys are the reader's business.
+struct WeatherStateReader {
+    virtual ~WeatherStateReader() = default;
+    virtual void read_day_time(float& destination) = 0;              // 00CE47B4
+    virtual void read_active_weather(NativeString& destination) = 0; // 00CE47A8
+};
+
+inline constexpr float kWeatherDayHoursF = 24.0f;   // 00CE4788
+inline constexpr double kWeatherDayHoursD = 24.0;   // 00CE4790
+
+// 00445BF0: ECX = config, [ESP+4] = reader, RET 4. No rel32 or absolute-dword
+// reference exists (callsite_census), so it is not in the 00CE4934 vtable and
+// never runs. Reads +04h and the active weather, applies 00445A30, then wraps
+// +04h: add 24.0 while 0 > t, subtract while t > 24.0f (each step rounded to
+// float; a NaN leaves both loops at once).
+void read_weather_state_00445bf0(WeatherConfig& config, WeatherStateReader& reader,
+    WeatherShakeTarget* current_mover, NativeStringStorage& strings);
 
 } // namespace bsp

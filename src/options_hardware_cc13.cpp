@@ -140,6 +140,69 @@ bool native_string_equal_insensitive_00435c40(const std::string& a, const std::s
 
 } // namespace
 
+void apply_weather_camera_shake_00445790(WeatherConfig& config,
+    WeatherShakeTarget* mover, NativeStringStorage& strings)
+{
+    if (!mover) return; // 004457B2
+    std::array<float, 3> amplitudes = config.base_amplitudes_44; // 004457B8..004457D3
+    float m;
+    {
+        NativeString view;
+        view.assign_0041e870(strings, mover->view_mode_name_12c()); // 004457D7/004457DE
+        struct Release {
+            NativeString& s;
+            NativeStringStorage& strings;
+            ~Release() { s.release_to(strings); } // 00445842..00445856
+        } release{view, strings};
+        // 004457F2 then 00445805: the weather map first, each value used once.
+        const double weather = lookup_weather_float_00444be0(
+            config.weather_amp_multipliers_68.value(), config.current_weather_2c, strings);
+        const double view_mult = lookup_weather_float_00444be0(
+            config.view_mode_amp_multipliers_5c.value(), view, strings);
+        // 0044580C FMUL qword, 0044581E FSTP dword: both products are exact
+        // before the float rounding, so double arithmetic reproduces x87.
+        m = static_cast<float>(view_mult * weather);
+    }
+    for (float& a : amplitudes) a = static_cast<float>(static_cast<double>(m) * a);
+    mover->set_shake_0042c4c0(amplitudes, config.frequencies_50); // 004458A0
+}
+
+void set_current_weather_00445a30(WeatherConfig& config, NativeString name,
+    WeatherShakeTarget* current_mover, NativeStringStorage& strings)
+{
+    struct Release {
+        NativeString& s;
+        NativeStringStorage& strings;
+        ~Release() { s.release_to(strings); }
+    } release{name, strings};
+    // 00445A5A..00445A81. The native tests the length before the copy where
+    // the 00BE0A30 fragment tests the buffer; they differ only on a failed
+    // allocation, which the host storage does not return.
+    config.current_weather_2c.copy_from_00be0a30_fragment(strings, name);
+    config.current_weather_modifier_34 = lookup_weather_float_00444be0(
+        config.weather_recon_modifiers_38.value(), name, strings); // 00445A8C/00445A93
+    apply_weather_camera_shake_00445790(config, current_mover, strings); // 00445AA4
+}
+
+void read_weather_state_00445bf0(WeatherConfig& config, WeatherStateReader& reader,
+    WeatherShakeTarget* current_mover, NativeStringStorage& strings)
+{
+    reader.read_day_time(config.start_day_time_04); // 00445C42
+    NativeString active;
+    struct Release {
+        NativeString& s;
+        NativeStringStorage& strings;
+        ~Release() { s.release_to(strings); }
+    } release{active, strings};
+    reader.read_active_weather(active); // 00445C7B
+    NativeString argument;              // 00445C7D..00445CB8 by-value copy
+    argument.copy_from_00be0a30_fragment(strings, active);
+    set_current_weather_00445a30(config, std::move(argument), current_mover, strings);
+    float& t = config.start_day_time_04;
+    while (0.0f > t) t = static_cast<float>(t + kWeatherDayHoursD);            // 00445CC8..00445CD9
+    while (t > kWeatherDayHoursF) t = static_cast<float>(t - kWeatherDayHoursD); // 00445CDB..00445CF9
+}
+
 bool game_settings_equal_008d4af0(
     const GameSettingsComparand& self, const GameSettingsComparand& other)
 {
