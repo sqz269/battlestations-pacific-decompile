@@ -1,0 +1,21 @@
+{
+  "packet": "cc13-sweep50",
+  "doc": "docs/CC13_BAND_0050_0059.md",
+  "steps": [
+    {"function": "00542380", "address": "005423A1", "native": "00ABBE50", "note": "header text into row 0"},
+    {"function": "00542380", "address": "0054240A", "native": "00ABBE50", "note": "line text into a middle row"},
+    {"function": "00542380", "address": "00542453", "native": "00ABBE50", "note": "footer text"},
+    {"function": "00542380", "address": "00542493", "native": "00ABBE50", "note": "empty text into the remaining rows"},
+    {"function": "005424F0", "address": "00542540", "native": "00542380", "note": "render after the selection update"},
+    {"function": "005425B0", "address": "005425BE", "native": "005424F0", "note": "up: selection - 1"},
+    {"function": "005425B0", "address": "005425D4", "native": "005424F0", "note": "down: selection + 1"},
+    {"function": "005425B0", "address": "005425F2", "native": "005424F0", "note": "page down"},
+    {"function": "005425B0", "address": "00542612", "native": "005424F0", "note": "page up"},
+    {"function": "00542DB0", "address": "00542DBB", "native": "004D92B0", "note": "action 49h queried first"},
+    {"function": "00542DB0", "address": "00542DED", "native": "005425B0", "note": "move selection with the four flags"},
+    {"function": "00544540", "address": "0054454B", "native": "00543E50", "note": "copy lines into +0Ch"},
+    {"function": "00544540", "address": "00544560", "native": "00542380", "note": "render after loading lines"},
+    {"function": "00543E00", "address": "00543E30", "native": "00BF6989", "note": "free the row array"},
+    {"function": "00543E00", "address": "00543E45", "native": "00427110", "note": "resize the lines to 0"}
+  ]
+}

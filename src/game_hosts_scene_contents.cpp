@@ -1186,6 +1186,7 @@ private:
     struct AuthoredParent {
         std::size_t scene_id{0};
         std::string name;
+        std::string class_name;
         std::array<float, 16> world{};
     };
     // visit_entity calls a parent before its children while their addresses
@@ -1586,6 +1587,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     AuthoredParent child_parent;
     child_parent.scene_id = scene_id;
     child_parent.name = entity.name;
+    child_parent.class_name = entity.class_name;
     std::copy_n(world_frame, child_parent.world.size(), child_parent.world.begin());
     for (const SceneEntity& child : entity.children) {
         authored_parents_[&child] = child_parent;
@@ -1915,7 +1917,22 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // only from the records, so it is not in the mission. LABELLED: with the
     // skip on the first frame (kEngineMovieEntryBound) it is not created at all
     // instead of created and killed; the registration pass is left as it was.
+    bool survives_stop = false;
+    if (bsp::game::kEngineMovieStopRosterExemptBound) {
+        // 0046F26C-0046F2E1: the +158h set; 0046B7CA tests a root, then an
+        // exempt root's children.
+        auto exempt = [](const std::string& class_name) {
+            const SceneEntityClassRow* row = find_scene_entity_class_by_name(class_name);
+            if (row == nullptr) return false;
+            const int id = static_cast<int>(row->class_id);
+            return id == 0x44 || id == 0x5E || id == 0x1D || id == 0x47 || id == 0x3D;
+        };
+        survives_stop = hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))
+            || (exempt(entity.class_name)
+                && (authored_parent.scene_id == 0 || exempt(authored_parent.class_name)));
+    }
     if (bsp::game::kEngineMovieEntryBound && bsp::game::kEngineMovieStopRosterBound
+            && !survives_stop
             && gate.generate && gate.rule == SceneGateRule::EngineMovieFallback) {
         gate.generate = false;
         record.generated = false;

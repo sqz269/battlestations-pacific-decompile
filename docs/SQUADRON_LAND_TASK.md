@@ -15394,3 +15394,162 @@ leak, RemoveListener of a missing id, filter save/load) were not re-checked agai
   values; both match all). It is latent here, recorded and not bound.
 - Filter save/load: 18 of 23 subscription types save only `callback` in the image. The host's listeners are not
   part of its checkpoint (5fk), so there is nothing to compare yet.
+
+## 5fx. JM08 on the moved main: phase 2 reached, the HQ dies to the first B-17 raid (cc9-lua51, 2026-10-12, runs only)
+
+Build: `agent/cc9-lua51` at `1c5294dfe`, i.e. main `bbde80254` (`kAimDiveBrakeRatioBound` ON) plus 5fu. The launch is
+the 5fm form (`local\l51_lane.ps1`). Order files are `local\l51_j8_<run>.txt`, made by `local\l51_j8gen.py`, a copy
+of `l50_j8gen.py`; each file's header line holds its arguments. `l50_j8tab.py` makes the table. Unless noted, every
+run is 48000 frames and uses r7's lists. The Hosho list is `Nevada,Missouri,LSM 01,LSM 02,TT01-06,LST 01-03`.
+
+| run | change | landships dead | Missouri | Nevada | HQ falls |
+| --- | --- | --- | --- | --- | --- |
+| m1 | r7 unchanged (96000 frames) | 8 by 1090.54 (TT03, LST01, LSM02 alive) | 710.30 | - | 1120.35 |
+| r3 / r5 / n1 | 5fn's files unchanged | 10 / 7 / 9 | 741 / 694 / 741 | - | 1160 / 1050 / 1144 |
+| a1-a3 | Nevada in the boat / air / ship lists | 8 / 8 / 6 | 710 / 710 / - | - | 1120 / 1120 / 1012 |
+| b1 | Hosho Nevada first | 8 | 737.99 | **535.99** (Hosho_sqn08) | 1182.90 |
+| **b2** | b1, period 800 | **11 by 1129.63** (LSM 01 last, to an AA truck) | 671.31 | 535.99 | 1147.35 |
+| **b3** | b2, Isokaze/Fubuki list LSM 01 first | **11 by 1019.07** | 671.31 | 535.99 | **1269.60, in phase 2** |
+| b4 / b5 | LSM 01 first in the air list / both lists | 8 / 3 | - | 530 | 998 / 1059 |
+| b6 / b7 | b2 + destroyers last in the lists / everywhere | 11 / 9 | 671 / - | 536 / 530 | 1147 / 1157 |
+| b8 | b2, destroyers ahead of LSM 01 in the air list | 11 by 1126.92 | 671.31 | 535.99 | 1371.15 |
+| c1 / c2 / c3 | b3 / b3+b8 / b3 with `--air-every 150`, plus the phase-2 bombers (`B-17 #2.1-2.4`, `B-25 #3.x`, `SBD #3.x`) in the air list, 72000 frames | 11 by 1019 / 1019 / 1168 | 671 / 671 / 664 | 536 / 536 / 544 | 1272.85 / 1267.30 / 1291.00 |
+
+- **Phase 2 is now reached.** In b3, primaries 1 and 2 report Success, the destroyers get `NavigatorMoveToRange ...
+  RetreatPoint`, `StartDialog("Run")` plays, and `FadeIn` runs at 1034.78 s. SpawnNew then brings the Wildcat wave
+  (#1), B-17 #2.1-2.4 and the B-25/SBD/CAP wave #3.
+- **What kills the HQ** (diagnostic export `local\l51_D0`: 5fg's `l48_diag_hq.py` patch on this tree, uncommitted;
+  `l48_hqdmg.py` on `l51_D0b3_j8.log`; the b3 timeline repeats exactly). Of the 12000 hp, Japanese AA truck 05
+  (cat 2, bullet 19) puts **3117 into its own HQ** (73 hits from 37.5 s to 1257 s, 36 of them direct), and trucks
+  03/04 another 476. Bristol, Gleaves and Grayson add 1500 between 990 and 1058 s. B-17 #2.1/#2.2 finish it in
+  14 s (1256.05-1270.41, cat 10 bullet 72, about 6900). 5fg measured the bullet-19 splash on the HQ at about 0 on
+  `62988a6fa`, so this friendly AA damage is new since then and is reported to the gunnery lane.
+- **The airfield's fighters do take the B-17s** in c1-c3: class 152 Gekko and class 154 Ki-43 slots get `order 3 ->
+  B-17 #2.1` at 1053 s with 1-3 planes, and the 1155/1255 s launches go to B-17 #2.1/#2.2. They do not stop the raid.
+- **Parked.** The order file has no lever left before 1256 s that keeps 7000 hp on the HQ. The next step is to
+  settle the AA truck's friendly damage on the gunnery side, then rerun b3 (`local\l51_j8_b3.txt`), which is
+  deterministic to the HQ's fall. No completion, so no sus_prog line is expected.
+
+## 5fy. 2b, full engine-movie playback: what it would take (cc9-lua51, 2026-10-12, scoping read only)
+
+The host takes the player's immediate skip on the first simulated frame (`kEngineMovieEntryBound`, LABELLED). This
+section scopes the other path, watching the whole movie. No code was written.
+
+- **Length.** Each `.ema` starts `Animations { Movielen: <s> ...`. This installation's 39 files (`universe\scenes\missions\...`)
+  run from 30 s (`ijn_08_defend_guadalcanal`, JM08) to 90 s (`ijn_01`, `ijn_05` = JM05). `ijn_06` (JM06) is 43 s,
+  `usn_03_Battle_of_Santa_Cruz` (PRCP01) 40 s, and the files carry 3-38 `Animation` tracks. 0045F970's clock
+  (`src/engine_movie_actions.cpp`, reconstructed by cc13) clamps a delta above 1.0 s to 0.01 and steps by the mean
+  of the last 21 deltas. At the harness's fixed 0.05 s the step ramps over the first 21 frames, so playback lasts
+  about `Movielen / 0.05 + 10` frames (JM08 about 610, JM05 about 1810).
+- **The simulation runs underneath.** `004C6B20` (the cutscene advance) is gated by `game+634h == 0 || game+635h != 0`,
+  the same test as the simulation gate `004E50B0` (docs/GAME_FRAME_CONTROL.md, docs/GAME_SIMULATION_GATE.md).
+  So every frame of the movie is also a simulated frame:
+  - units think, fire and draw from the shared generator `00BD2F10`;
+  - the entity tracks (`00459020` via `004581E0`'s PointList) override the actors' poses;
+  - the actions (`004560E0` dispatch: `pTakeOffHack`, `sForceArtilleryTarget`, `cCameraShake`, ...) run;
+  - `luaEngineMovieInit`'s `luaDelay` timers fire when due. PRCP01's `luaUS03StartIntroDialog` at 16 s fires; its
+    88 s one is killed at the stop.
+- **What survives the stop.** `0045F600` -> `0046B730` kills every queued root (the script entities included) and
+  re-creates the `+28h` scene records (`0046BA7B..0046BBCD`). That puts every scene unit back to its authored
+  state, and then `luaPrecacheUnits` / `luaStageInitMulti` / `luaStageInit` run (5fm, 5fp). The residue is:
+  - the mission clock, `Movielen` plus the ramp later than a skip;
+  - every generator draw the movie's simulation made, which shifts all later draws, because `00BD2F10` is one
+    process-wide stream;
+  - Lua globals written by the timers that fired;
+  - whatever a non-`+28h` root did, and on PRCP01 the eight `GenerateObject` ships (5fv).
+- **Why it is not a small bind.** The host has no real "kill and re-create from the `+28h` records". Its skip
+  relies on nothing having moved by frame 1. Playing the movie needs that re-create first, in the units host
+  (shared). Otherwise the units keep their movie-time damage, poses and orders. Then it needs the tracks and
+  actions wired, or else an honest LABELLED stand-in that runs the simulation without them. The `.ema` reader
+  pieces (`0045EFB0` CreateTrack, `0045D8A0` PointList, `0045ECA0`) are named in docs/CC13_SCENE_BROWSER.md;
+  `004581E0` (Hermite PointPos/InTangent/OutTangent, `004581E0`-`00458A63`) and the camera update `0045BD90` (`0045BD90`-`0045BDAB`,
+  `RET 4`: it runs the entity update `00459020(time)` on the camera track, then `0045ACC0(track)`) are unread
+  beyond that; `0045ACC0` is the camera-specific part.
+- **Recommended order** if 2b is taken up:
+  1. the `0046BA7B..0046BBCD` re-create, read whole, and a units-host reset that reproduces it;
+  2. playback with no tracks (the simulation, the clock and the timers, then the stop), paired against the skip
+     on JM08 (30 s) and JM06 (43 s);
+  3. the tracks and actions.
+
+## 5fz. cc13's audit of the 5fu flips: diffs A, B, C (cc9-lua51, 2026-10-12)
+
+docs/CC13_AUDIT_LUA51_FLIPS.md (cc13-audit11) found the 5fu mechanism faithful and two value defects plus one
+latent stop defect, each with a diff. Applied as written, all OFF:
+- **B, `kLuaHitTargetSquadronBound`** (`src/game_hosts_lua.cpp`): the hit target, for the match and the push, is
+  `hitEntity->vtable[140h]()` (`00988530..0098859B`), a plane's registry squadron.
+- **C, `kEngineMovieStopRosterExemptBound`** (`src/game_hosts_scene_contents.cpp`): `Hidden` admits and the
+  `+158h` exempt classes (44h, 5Eh, 1Dh, 47h, 3Dh) survive the stop.
+- **A, `kLuaKillBoxFromHitBound`** (`src/game_hosts_gunnery.cpp`, the gunnery lane's file): the kill's `+2D8h` is the
+  shot's seat slot `[src+1Ch]` (0 for the player's guns, 8 for AI guns), not the side, and the squadron of a hit
+  plane gets the same attacker and slot (`0077D0E8..0077D128`). Routed to the lead; paired here from exports
+  patched with cc13's hunk (`local\l51_audit_gunnery.patch`), never from this tree.
+
+**Predictions** (from the audit, before any ON run):
+- A: JM01's `PlaneSquadronLost` (`{PLAYER_1}`) counts only squadrons the player's own guns finish (OFF: only US
+  units' kills, i.e. never), so primary 4 can complete: exit 3. LOMP05's `luaJPPlaneShotDown` counts fewer
+  (only the player unit's kills): 0/1 unless OFF reaches 50. BSM01 (win): identical.
+- B: BSM04's `FortressHitListener` (`UNDERATTACK`) can fire on the first hit to any B-17 rather than wing 0's:
+  dialog timing only; otherwise identical.
+- C: latent; no reference row admits a Hidden or exempt-class entity in mode 9. Identical on JM05/JM06.
+
+### 5fz, the pairs and the verdicts (cc9-lua51, 2026-10-12)
+
+Exports of `0e5cd27a6` with cc13's diff A hunk applied to the export only (`local\l51_mkexp.ps1`): `l51_E0` (all
+three OFF), `l51_E1` (A ON), `l51_F1` (B ON).
+
+| row | pair | pair_diff | what moved |
+| --- | --- | --- | --- |
+| LOMP05, 24000 | E0/E1 (A) | 1, gameplay identical | `Listener_JPPlaneShotdown` (`{PLAYER_1}`) fired 30 times OFF, for kills by Hornet and the other US ships (side 0), and 0 times ON. AI guns stamp slot 8, and the player's Cushing makes no kills. The OFF count stays below 50, so the power-up is not affected in 900 s. The mission fails at 901.75 s on both sides |
+| BSM01, 17000 (win) | E0/E1 (A) | 1 | `kill_with_attacker` 131 -> 133 (two squadron victims now carry a member's attacker). The win holds at 767.94 s |
+| JM01, 24000 | E0/E1 (A) | 0 | **not measured**: the menu harness never reaches JM01 (`summary mission select=JM01 ... selected=TRN1 ... step=Stopped`, 0 mission frames). Primary 4's reach is still unrun |
+| BSM04 | E0/F1 (B) | 1, gameplay identical | `luaFortressHit` fires on the first hit to `B-17|.-2` (damage 2.2), and `UNDERATTACK1` starts at 73.95 s. OFF waits for a wing-0 hit. The mission fails at 90.05 s (Donald) on both sides |
+
+**Verdicts.**
+- **B: ON** (`kLuaHitTargetSquadronBound`, this branch). It behaves as predicted.
+- **A: recommended ON** to the gunnery lane, which holds the file. Its mechanism shows on LOMP05 as predicted:
+  the side stand-in over-counted. JM01 needs a harness route to the mission before primary 4 can be shown.
+- **C: stays OFF**, recorded. It is latent on every row run, and no reference row admits a Hidden or exempt-class
+  entity in mode 9.
+
+## 5ga. Handoff (cc9-lua51, 2026-10-12, at about 67% context)
+
+Landed or ready on `agent/cc9-lua51`:
+- 5fu: `kLuaListenerCallbackArgsBound` and `kLuaKillAttackerBound` ON.
+- 5fz: `kLuaHitTargetSquadronBound` ON. `kEngineMovieStopRosterExemptBound` is committed OFF (latent).
+- 5fv/5fw/5fy: reads only.
+- 5fx: the JM08 runs.
+
+Open, in the lead's order:
+1. **Diff A** (`kLuaKillBoxFromHitBound`, `src/game_hosts_gunnery.cpp`, held by the gunnery lane) has been routed
+   as `local\l51_audit_gunnery.patch` (this tree). The recommendation is ON. JM01 cannot be reached by
+   `--menu-select JM01` (`selected=TRN1 step=Stopped`), so primary 4 needs a harness route first.
+2. **Kamikaze wiring** (not started). Use `include/bsp/kamikaze_task_cc13.hpp`, `src/kamikaze_task_cc13.cpp`, and the
+   glue sketch in docs/CC13_KAMIKAZE_TASK.md section 6. It goes in `src/game_hosts_units.cpp` (shared: claim,
+   apply, build, commit, release), next to `run_strafe_task_arm_009cd170`, behind `kKamikazeTaskBound` /
+   `kDropKamikazeTaskBound`, both OFF. Two gaps:
+   - the boost byte plan+2E4h has no host field;
+   - the drop must spawn the `DummyKamikazePlane`, whose tick `006FEC00` spawns `desc+DCh` (Ohka 156 /
+     Funryu 370) after `OpenAfterTime`, with `AutoAttackTarget`. That needs the lead-approved loan of the drop
+     site in `game_hosts_gunnery.cpp`.
+   Pairs: USNOS x (`cc9-ships43\local\s43_os_x.txt`, 200000 frames; the win must hold), USN18 and USN15, plus a
+   control.
+3. **JM08**: rerun `local\l51_j8_b3.txt` once the gunnery lane lands `kLandStructureMeshHitTestBound` (the
+   AA truck's "friendly fire" on the HQ is a building box-vs-mesh hit-test defect). Then look at phase 2: CAP or
+   fighters on `B-17 #2.x` before 1256 s, and C-47 kills for the win. cc13's docs/CC13_JM08_HQ.md also asks to bind
+   `RemoveAllAirBasePlanes 008975B0` (the host keeps the 10 authored stock, about 10 extra Hosho planes).
+   Grep every caller mission. Note that `SetRoleAvailable`'s inner `008ABA51` is a record, behaviour unverified.
+4. **Dogfight diff** (docs/CC13_DOGFIGHT_DRAWS.md, three OFF switches in `game_hosts_units.cpp`), paired on
+   LOMP10, USN01 (`l50_u1_u2`) and USNOS with `BSP_GUNNERY_RNG_STREAMS=1`.
+5. **Undispatched event channels** (5fu census: surrender 76, entityKilled 44, input 37, exitzone 36, gui 19,
+   command 17, generate 17, hpEvent 12, ammoType 9, repair 6, shipLanded 5, target 2). List which missions'
+   critical paths need them. JM06's `command`/`submove` sets `Mission.PathEnd`.
+
+Tools in `J:\PROG\battlestations-pacific-decompile-cc9-lua51\local\` (read-only for the next worker; copy to its
+own prefix):
+- `l51_lane.ps1`: row launcher with `-Orders`, `-Frames` and `-Exe`.
+- `l51_j8gen.py`: JM08 orders.
+- `l51_listener_args.py`: the kill/hit callback census.
+- `l51_missionmap.py`: menu id to scene.
+- `l51_movieinit.py`.
+- `l51_mkexp.ps1`: an export with a patch applied.
+- `l51_diag_hq.py` (5fg's HQ hit diagnostic).

@@ -1,0 +1,28 @@
+{
+ "packet": "cc13_scene_weather",
+ "document": "docs/CC13_SCENE_WEATHER.md",
+ "source": "src/scene_weather_cc13.cpp",
+ "status": "reconstructed_build_tested",
+ "call_sites": [
+  {"function": "004f1d70", "address": "004f2237", "native": "004eca30", "name": "BSP_SceneRecord_ReadWeatherFogAndCloudLights"},
+  {"function": "004f1d70", "address": "004f22c0", "native": "004ed690", "name": "BSP_SceneRecord_ReadMusicAndAmbience"},
+  {"function": "004f1d70", "address": "004f230b", "native": "004ee450", "name": "BSP_SceneRecord_ReadSkyAndLights"},
+  {"function": "004f1d70", "address": "004f2242", "native": "004cb420", "name": "BSP_SceneEnvironmentBlock_ConstructDefault"},
+  {"function": "004eca30", "address": "004ecf76", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22"},
+  {"function": "004eca30", "address": "004ed183", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22"},
+  {"function": "004eca30", "address": "004ed21e", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22"},
+  {"function": "004eca30", "address": "004ed2c0", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22", "kind": "tail_jump"},
+  {"function": "004ea870", "address": "004eaa3e", "native": "00ad7140", "name": "set_bush_diffuse_factor_00ad7140"},
+  {"function": "004ea870", "address": "004eaa85", "native": "00ad7fe0", "name": "set_bush_texture_name_00ad7fe0"},
+  {"function": "004ea870", "address": "004eaa95", "native": "00ad5730", "name": "set_bush_normal_allowed_00ad5730"},
+  {"function": "004ea870", "address": "004ea94e", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22"},
+  {"function": "004ee450", "address": "004ee481", "native": "004e7220", "name": "read_cloud_areas_004e7220"},
+  {"function": "004ee450", "address": "004ee4a3", "native": "004ea870", "name": "BSP_SceneRecord_ReadSunLightProperties"},
+  {"function": "004ee450", "address": "004ee4ae", "native": "004b6800", "name": "BSP_LightingConfiguration_ConstructDefault"},
+  {"function": "004ed690", "address": "004ed6bc", "native": "004ed530", "name": "BSP_SceneEnvironmentSound_Read"},
+  {"function": "004ed690", "address": "004ed732", "native": "004ed2d0", "name": "BSP_SceneMusicTrack_Read"},
+  {"function": "004ed2d0", "address": "004ed4ca", "native": "00a83fd0", "name": "BSP_SoundSampleCache_AcquireByName"},
+  {"function": "004ed2d0", "address": "004ed4df", "native": "004e7bb0", "name": "BSP_SoundSampleReference_Assign"},
+  {"function": "004ed2d0", "address": "004ed513", "native": "00a79480", "name": "set_music_track_00a79480"}
+ ]
+}

@@ -66,6 +66,7 @@
 {"address": "00b563d0", "name": "BSP_MshdRenderModePointers_Resize", "evidence": "Descriptive hypothesis, not a recovered symbol. Resize template over 00B56260. See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}
 {"address": "00b56420", "name": "BSP_MshdVersionPointers_Resize", "evidence": "Descriptive hypothesis, not a recovered symbol. Resize template over 00B562C0. See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}
 {"address": "00b56470", "name": "BSP_MshdLodPhasePointers_Resize", "evidence": "Descriptive hypothesis, not a recovered symbol. Resize template over 00B56320. See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}
+{"address": "00b564d0", "name": "BSP_ShaderStatePairs_PushBack_00b564d0", "evidence": "Hypothesis, not a recovered symbol. push_back with doubling growth (minimum 1) through BSP_ShaderStatePairs_Reserve (cc13-sweep9x, docs/CC13_BAND_0090_00BF.md)"}
 {"address": "00b56510", "name": "BSP_MshdLayerPointers_PushBack", "evidence": "Descriptive hypothesis, not a recovered symbol. PushBack template over 00B56200 (grow to max(cap*2,1)). See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}
 {"address": "00b56550", "name": "BSP_MshdRenderModePointers_PushBack", "evidence": "Descriptive hypothesis, not a recovered symbol. PushBack template over 00B56260. See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}
 {"address": "00b56590", "name": "BSP_MshdVersionPointers_PushBack", "evidence": "Descriptive hypothesis, not a recovered symbol. PushBack template over 00B562C0. See docs/CC13_POST_EFFECTS_AND_RESOURCES.md."}

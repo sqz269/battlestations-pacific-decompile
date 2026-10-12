@@ -490,8 +490,9 @@ constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
 //    +FCh/+104h; LABELLED: held at its equilibrium on the surface, as the y = 0 hold
 //    was). The depth charge's depth test stays on absolute y (006FCD20 compares
 //    +100h with -|+470h| and -5.0; its 0078D1B0 only moves the record for effects).
-//    OFF: y = 0 throughout, as before.
-inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
+//    OFF: y = 0 throughout, as before. ON with kWaveFieldLiveAmplitudeBound
+//    (docs/OCEAN_WAVE_FIELD.md section 17).
+inline constexpr bool kGunneryLiveWaterSurfaceBound = true;
 //  * kSubmergedTorpedoLaunchSwimBound: packet cc9_physics2_submerged_swim (loan,
 //    docs/GUNNERY_OPEN_ITEMS.md 182). While a round is in medium 0 (vtable[2Ch] == 0),
 //    0084C11C runs 0084B380, which hits when the segment END is at or below the

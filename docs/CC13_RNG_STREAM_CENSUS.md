@@ -579,3 +579,27 @@ For cc9, in value order:
 
 Census owner: reclassify the 12 ship-part effect sites, `0084C19F`, `0082571D`, `008546E4` and
 `007EC5A0` as PRESENTATION.
+
+## 12. Sound effect instance `00873AE0` (packet cc13-stlreview1, 2026-10-12)
+
+Section 4.2 counts `00873AE0` with the particles. cc13-sweep8E named it
+`BSP_EffectSoundInstance_Construct`, the sound component's instance: `BSP_EffectSound_CreateInstance`
+`00868D00` (sound component vtable `00D0DA18` slot `+18h`) does `operator_new(20h)` and calls it.
+It is presentation (audio), not a particle. It makes two draws from the **shared thread generator,
+stream 0**. There is no private generator: ECX is zeroed at each site.
+
+| site | entry | ECX | draw | use |
+| --- | --- | --- | --- | --- |
+| `00873B63` | `00BD2FC0` raw word | `00873B61 XOR ECX,ECX`, so 0 | one word | `DIV` by the sample count `[def+24h]`; the remainder picks the sample from `[def+20h]`, which `BSP_SoundManager_CreateTrackedSound` (`00A7E490`) starts |
+| `00873C39` | `00BD2F10` U(lo, hi) | `00873C26 XOR ECX,ECX`, so 0; no call between | U(0, 2s), s = `[def+38h]` (`00873C1B FLD`, `FADD ST0,ST0`) | `[inst+20h]` = 1.0 + U(0, 2s) - 2s*0.5 (`00D7A280` = 0.5, `00D7A210` = 1.0), so a factor in 1 +/- s. Pitch or volume is not decoded |
+
+- Both draws sit behind `00873B5B JE 00873C60`, taken when the sample count `[def+24h]` is 0. A
+  definition with samples costs two stream-0 draws per instance.
+- `00BD2ED0` maps stream 0 to the calling thread's slot. On the main thread that is slot 0 stream 0,
+  the shared gameplay stream. The thread that creates effect instances was not traced (open item 2
+  of section 8 applies). If effects are created from gameplay events such as hits and explosions
+  (a hypothesis; the creation path was not followed), these draws interleave with the gameplay
+  stream-0 draws on whichever thread runs that code.
+- Host: no file under `src/` references `00873AE0`, `00868D00` or the instance (checked
+  2026-10-12). If a host ever wires effect sounds, the RNG rule applies: use a presentation stream,
+  or keep it behind an OFF switch with a comment that the image draws stream 0 here.

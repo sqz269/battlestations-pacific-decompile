@@ -16770,3 +16770,162 @@ Consequences:
    to 5) at the stored target. The harness has no line for it; none is needed for the wins so far.
 
 Exact edit routed to the lead for `src/game_hosts_script_orders.cpp` (cc9-lua51's file): see the 212 report.
+
+## 213. A party change and gunnery's `row.side` (cc9-ships44, 2026-10-12; lead item 8a, a read plus a routed edit)
+
+cc13's audit (docs/CC13_AUDIT_CC9_SWITCHES.md 8a) says no SetParty path refreshes gunnery's cached side. On current
+main that holds for one path only.
+
+The image (disk bytes, `disasm-raw`): the SetParty slot `vtable+2Ch` is `00951F30` (an adjustor thunk) ->
+`00928F50`, which calls the base `00923B80` and then rewrites the Lua `Party`/`Race`. `00923B80`:
+- `00923B92` / `00923B95`: entity+54h = party, +58h = race. No cached copy is refreshed here, so readers are taken to
+  read +54h live (not audited reader by reader).
+- `00923B9F`-`00923BC5`: walks the child list (+48h, next at +44h) and calls each child's `vtable+2Ch` with the
+  same three arguments unless the child answers `vtable+5Ch(*arg3)`.
+- `00923BC8`-`00923BD0`: `00696350(ECX = entity, EDX = 6, party)`, the observer slot-0Ch notification. Its one
+  known consumer is the AI group's `00A2DB50`, which removes the entity from the group (`00A2D9D0`) when the new
+  party differs from `group+5628h` (section 63). **The host does not model that removal** (open, AI lane).
+
+The host keeps `row.side` in `GameGunneryHost` as a copy of the units host's `row.party` (`refresh_unit_side`
+re-reads it). Callers of `GameUnitsHost::set_unit_side_0054`:
+
+| caller | refreshes gunnery? |
+| --- | --- |
+| `game_hosts_ship_ai.cpp` capture flip (006F4D10) | yes, right after the write |
+| `game_hosts_ship_ai.cpp` neutralize (006F3270) | yes |
+| `game_hosts_ship_ai.cpp` garrison revive (006F3660) | yes |
+| `game_hosts_script_orders.cpp` `set_unit_party_00928f50` (Lua `SetParty` on a unit, `kSetPartyUnitBound`) | **no** |
+
+So the capture paths are already immediate; a script `SetParty` on a unit leaves gunnery's side stale for the rest of
+the mission. This installation's scripts carry 246 uncommented `SetParty` calls on something other than `this` /
+`Mission` (a grep over `scripts/`; which of them reach a unit at run time is not counted). USNOS has one:
+`us_osumi.lua:1106` sets a neutral unit Allied once a `Mission.Troops` unit is within 1500 m (the capture
+neighbourhood); USN04's `usn_19_coralus.lua:879` sets the Lexington neutral.
+
+The edit (units host, the one setter every path goes through; switch `kPartyChangeRefreshesGunneryBound`, OFF):
+`GameUnitsHost::set_unit_side_0054` calls `impl_->gunnery->refresh_unit_side(index)` after the write. Routed to the
+lead because `src/game_hosts_units.cpp` is leased by cc9-gunnery36. Predictions: smoke identical (exit 0); USNOS
+moves from the first `us_osumi.lua:1106` SetParty that reaches a unit (exit 3, or 1 if none does), where gunnery's side for the bunker changes in the same step instead of never
+(expected: its guns and its attackers re-pick targets).
+
+## 214. USN15 (Surigao): idle rows, and a player-order win (cc9-ships44, 2026-10-12; lead item 2)
+
+Build: origin/main `e7e2dd1e8` plus this branch's doc commits (gameplay identical to main). Env
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, launcher `local\s44_rows.ps1` (reference AD/AF form, `-WaitSeconds
+14400`, `--stop-after-end 40`, `--mission-frame-seconds 0.05`). Logs in `J:\PROG\battlestations-pacific-decompile-
+cc9-ships44\local\`.
+
+**The mission** (this installation's `scripts/missions/COTP-USN/PRCPUS/usn_15_battle_of_surigao_strait.lua`,
+2024-08-09, modded; scene `usn_15_battle_of_surigao_strait.scn`, same date). `luaCheckObjs` (every 5 s): win when
+`IJNKeyTrgs` = {Fuso, Yamashiro, Nachi, Ashigara} are all dead while other IJN ships live (`luaCompleteAll`,
+`FLAGWIN`), or when all 17 IJN ships are dead; fail when every `USShips` entry is dead, or when
+`luaGetShipsAround(JapanGoTo, 3000, "enemy")` finds a ship (JapanGoTo is a NavPoint at (0, 12000) with Party
+Allied in the scene, so the search is `recon[0].enemy`). The US groups get `JoinFormation` and no move orders; the
+IJN groups run to `JapanEdgeMove1/2` and `JapanGoTo`.
+
+**Idle rows** (`s44_a_u15i.log`, 36000 frames; `s44_a_u15if.log`, 120000 frames): no end. Mogami (497 s, killed by
+Fuso), Nachi (515), Ashigara (566) and Fuso (853, Minneapolis) die; Yamashiro destroys both shipyards (the
+secondary fails), then stops at (-798, 10924), 1.3 km from JapanGoTo, from about 3000 s to 6000 s at 94% health,
+and the escape fail never fires (presumably unsighted: the US survivors are 10 km south; not investigated). The
+right group (Phoenix) and the advance group (Fletcher-class22) have no orders and steam south at their start speed
+to z = -19000.
+
+**Observations for the gunnery lane** (recorded, not investigated here):
+1. Fuso alone sinks all six US battleships in the idle row (Mississippi 611 s, 35 s after its first damage; the six
+   by 808 s) at 2.0-2.8 km, after they stop near z = 1000 and it steams past at 12.6 m/s. Their death rows show
+   hits c0..c6 = 0. With the BBs held west (variant b), Fuso instead sinks the whole left group.
+2. Every US 5"/6" blast impact on Fuso and Yamashiro reads `armour=130.0 took=0.0`.
+3. No US destroyer launches a torpedo: every Fletcher's `torpedo candidates ... accepted=0 mask=0 (00863990)`.
+4. Friendly kills: Portland <- Pennsylvania, Fletcher-class09 <- Minneapolis, Mogami <- Fuso, Fubuki-class07 <-
+   Yamashiro.
+
+**Variants** (`local\s44_u15_<v>.txt`, written by `local\s44_mk.py`; logs `s44_b_u15<v>.log`):
+
+| v | orders | result |
+| --- | --- | --- |
+| a | Phoenix, Boise, Shropshire, Fletcher-class22/24 attack Yamashiro at frame 6000 | Yamashiro sinks about 20 US ships; all US dead, fail at 1631 s |
+| b | the BB group (leader Mississippi) moves to (-6000, 6000) at 200 | the BBs ground near (-5800, 7200) and stay there (`navigate_astern`, speed 0); no end |
+| c | b, then the six BBs attack Yamashiro at 36000 | the grounded BBs never close; no end. A repeated `attack` is refused for any unit but the last selected ("not the controlled unit"), so only the last line of a group carries `repeat` |
+| d | the BB group holds at (-3000, 9500); all six attack Yamashiro at 36000 | the BBs engage at about 2640 s and all die by 2892 s; Yamashiro left at 6.4% |
+| e | d, plus Phoenix recalled at 14000, the right group attacking at 54000 | Phoenix and Fletcher-class16 die to Fuso on the way; fail at 3078 s |
+| f | BBs and the left cruisers attack Fuso at 9000, Yamashiro at 36000 | all six BBs still die to Fuso; Yamashiro at 90% |
+| g | d, plus Phoenix recalled to (-1500, 6000) at 23000, the right group attacking at 52000 | the right group meets Yamashiro first, then the BBs; Yamashiro left at 0.66%; all US dead, fail at 2652 s |
+| **h** | the BB group holds at (-3000, 9500) (frame 200); at 23000 Phoenix to (-2000, 9000) and Fletcher-class24/25/26 to about (-1500, 8500); from 40000 all fifteen attack Yamashiro (select + attack, 10 frames apart; Mississippi last with `repeat 30`) | **WIN** |
+
+**h, the win** (`s44_b_u15h.log`): Fuso dies at 1111 s, Yamashiro at 2581.24 s (credited to Fletcher-class11, with
+water 38796 against a capacity of 19243); Nachi and Ashigara died earlier and Fubuki-class06 still lives, so
+`luaCompleteAll` runs and `FLAGWIN` plays from 2582.39 s. `Mission.EndMission` at 2582.34 s, `MissionStatus=true`,
+and stderr/log carry `bsp: refused a mission script's process launch: sus_prog.exe` (the exec guard, main
+`bb30ca8c7`, in luaMissionCompletedNew). West Virginia, the last BB, dies at 2584 s, so the margin is a few
+seconds: expect any build change to move it (the mission is chaotic in the same way USNOS is, 211.3). Re-generate
+the order file with
+`python local\s44_mk.py local\s44_u15_h.txt "<comment>" 200:moveto:Mississippi:-3000:9500 23000:moveto:Phoenix:-2000:9000 23010:moveto:Fletcher-class24:-1500:8500 23020:moveto:Fletcher-class25:-1500:8000 23030:moveto:Fletcher-class26:-1000:8500 "40000:attack:Yamashiro:Phoenix,Boise,Fletcher-class16,Fletcher-class18,Fletcher-class19,Fletcher-class24,Fletcher-class25,Fletcher-class26,Shropshire,Maryland,West Virginia,Tennessee,California,Pennsylvania,Mississippi:repeat"`.
+If it stops winning, the levers are, in order: the BB hold point (open water; (-6000, 6000) grounds them), when
+the BBs commit relative to Yamashiro's turn north (it passes (2630, 3991) at 2200 s), and keeping the right group
+off Fuso's track until Fuso is dead (about 1100 s).
+
+## 215. `kFusedSquadronSlotSelectableBound` (cc13's diff A, applied by cc9-ships44, 2026-10-12)
+
+docs/CC13_AUDIT_REATTACK_AND_SKILL.md part A (origin `ba711c180`): the host fuses a squadron with the plane that
+carries its name, so once that plane dies every `select <squadron>` is refused and the surviving wing never gets
+another order; in the image the PlaneSquadronGen stays selectable until `+3CCh == 0`. The diff is applied verbatim
+(`include/bsp/plane_squadron_host.hpp`, `src/game_hosts_hud.cpp`, `src/game_hosts_mission_frame.cpp`), committed
+OFF. Predictions (cc13's measurements, to be reproduced in this tree): smoke identical; IJN01 with
+`s38_i1_p1` (24200/24000, 0.05 s) moves from A7M_2's first refused order (frame 2802), StrafeShip deaths 13 -> 25
+of 25 and MissionPhase 1 -> 2 by 1200 s; USN04 with `s39_u4_p1` (45200/45000, 0.0222 s, jitter `20,3`) gameplay
+identical (exit 1). Mechanism check: every added IJN01 kill is by an orphaned wing member (`A7M_n|.-k`) whose
+order was accepted through the squadron slot.
+
+### 215.1 Pairs and the flip: **ON** (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `bdc1a5f21`, ON = `local\s44_fsq_on` (pair_export); logs `local\s44_fsq{off,on}_*.log`.
+- smoke: exit 0.
+- USN04 (`s39_u4_p1`, 45200/45000, 0.0222 s, jitter `20,3`): exit 1, gameplay identical, as predicted.
+- USN15 variant h (control): exit 1, gameplay identical. (On this merged main, h no longer wins: Yamashiro is left
+  at 2.8% and the mission fails at 3211.61 s, the knife-edge 214 warned about; re-tune later.)
+- IJN01 (`s38_i1_p1`, 24200/24000): exit 3. Refused helm orders 545 -> 340, applied 104 -> 309; deaths 44 -> 56,
+  kills by A7M wing members (`A7M_n|.-k`) 17 -> 29 (LST1-LST11, PT1-PT4 and the tenders all die by 471 s);
+  MissionPhase 1 -> **2**. Every added kill is by an orphaned wing member; mechanism as predicted (cc13's
+  25/25 by 612.22 s was measured on an older base).
+- **Verdict: ON.**
+
+### 213.1 The pair (cc9-ships44, 2026-10-12; switch on main `b0ef887a1`)
+
+OFF = this tree at `6c4a6f7f6`, ON = pair_export (`local\s44_pr_on`); logs `local\s44_pr{off,on}_*.log`. smoke exit 0;
+USNOS j (44000) exit 0; USN04 `s39_u4_p1` (0.0222 s, jitter `20,3`) exit 1, gameplay identical. No log carries a
+`SetParty 008a8930: unit=` line, so the mechanism is not exercised on current main (USNOS j reached HQ2's
+`us_osumi.lua:1106` SetParty only on older builds, `s43_*_osj`; 211.5). Verdict: flipped ON by construction (it
+only re-syncs gunnery's cached side to +54h, which the image reads), routed to gunnery37 by the lead.
+
+## 216. The AI group's party-change removal, `kAiGroupPartyChangeRemovalBound` (cc9-ships44, 2026-10-12; lead item b, OFF)
+
+Image (disk bytes): the base SetParty `00923B80` ends with `00696350(ECX = entity, EDX = 6, party)`
+(`00923BC8`-`00923BD0`, section 213). The AI group's observer slot `00A2DB50` (`RET 0Ch`, ECX = group+10h):
+event 6 and a party different from `[ECX+5628h]` = group+5638h, the team the constructor copies from the seed's
++54h (`00A2E042`/`00A2E045`) -> `00A2D9D0(entity, 1)` on the group (`00A2DB6A ADD ECX,-10h`). `00A2D9D0`:
+`0077BEA0` unlinks the entity from +563Ch, clears entity+16Ch when it names this group, drops the observer pair
+(`006956A0`), and with the population (+5644h) at 0 and the flag set queues the group on the pending list
+`00F8AA78` (`00A2DA09`-`00A2DA4F`).
+
+Host: the 00A2DDE0 eviction (`evict_invalid_members`) already drops a member whose side no longer matches the
+group's team when it next runs; the event-6 path removes it at once. The bound pass (`src/game_hosts_ai.cpp`,
+`apply_party_change_removals_00a2db50`, run at the start of each AI fixed step) compares every candidate's +54h
+with the value it saw on the previous step and, on a change to a party other than the group's team, removes the
+unit and queues an emptied group like the eviction does. SUBSTITUTION, labelled: no observer edge exists in the
+host, so the removal lands at the next AI step rather than inside SetParty.
+
+Predictions: smoke identical (exit 0). USN04 `s39_u4_p1` and USNOS j identical or gameplay identical (no unit
+party change reaches a grouped unit on current main, 213.1). LOMP10 (30000 frames, CB4 flips to party 1 at about
+1100-1200 s): if CB4 sits in an AI group, ON logs `ai group party change: CB4 ...` and moves from there (exit 3);
+if it is in no group, identical. Mechanism check: every ON removal line names a unit whose +54h just changed and a
+team different from the new party.
+
+### 216.1 Pairs (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `e9ba96058`, ON = `local\s44_gp_on`; logs `local\s44_gp{off,on}_*.log`. smoke exit 0; USN04
+`s39_u4_p1` exit 0; LOMP10 30000 exit 1, gameplay identical: its 20 capture flips/neutralizations (CB4 to party 1
+at about 1100-1200 s) touch no grouped unit, and no `ai group party change` line is logged. The mechanism is not
+exercised by any row at hand; candidates that SetParty grouped ships are `usn_16_endgame_at_kure.lua` (eleven
+ships to neutral), `islandcapture*.lua` and `usn_09_leyte.lua`. Verdict: stays OFF until one of those is paired, or
+flipped by construction on the lead's word (the image removes the member at once; the host's 00A2DDE0 eviction
+already removes it later).

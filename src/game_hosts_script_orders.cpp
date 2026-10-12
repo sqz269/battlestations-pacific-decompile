@@ -1531,19 +1531,14 @@ std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
 
 // ---------------------------------------------------------------------------
 // Packet cc9_player_air_ops_launch (bsp::kAirOpsPlayerLaunchBound). The Support
-// Manager screen's launch, 00675C40 at 0067A57D-0067A5E6, for the harness's
-// `launch` line. docs/AIROPS_LAUNCH_TICK.md, "The player's launch".
+// Manager's targeted launch, 00673A10 (00674765-006748D7, reached from 00675C40 at
+// 0067A642), for the harness's `launch` line. docs/AIROPS_LAUNCH_TICK.md, "The player's launch".
 // ---------------------------------------------------------------------------
 namespace {
 // class+134h DefaultEquipment, which 006C0F00 copies into slot+10h when the
 // class changes. The mission Lua host, which holds the class table, sets it.
 int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
-// Packet cc9_player_launch_screen_cursor (docs/CC13_AIR_OPS_SLOT_GROWTH.md section 4,
-// docs/SHIP_AI_OPEN_ITEMS.md 211). True: slot 0 is 00660190's opening cursor (never
-// 006C7210, whose one caller is 006CC690 LaunchSquadron) and the screen launches only
-// a slot in state 5 (0067A565). False: slot 0 takes 006C7210's pick and state 1 or 5
-// is accepted, as before.
-constexpr bool kPlayerLaunchScreenCursorBound = false;
+// kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
 }  // namespace
 
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)) {
@@ -1577,45 +1572,22 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     if (target_index >= units_.count()) return refuse("no unit by the target name");
     int slot = slot_number - 1;
     if (slot_number <= 0) {
-        if constexpr (kPlayerLaunchScreenCursorBound) {
-            // 00660190: the first slot whose squadron is out (00658530: +28h set,
-            // state 3 or 4) or whose state is 2 or 5; none leaves the constructor's 0
-            // (0066FA11). Past row 3 the cursor is clamped to 3 (0066048A..00660498;
-            // the scroll at +320h is never read), and 0067A54A launches slot +324h.
-            slot = 0;
-            for (std::size_t i = 0; i < deck->slots.size(); ++i) {
-                const bsp::AirOpsSlot& s = deck->slots[i];
-                const bool out_and_away = s.launched_squadron != 0u
-                    && (s.state == bsp::AirOpsSlotState::kLaunched
-                        || s.state == bsp::AirOpsSlotState::kRecalled);
-                if (out_and_away || s.state == bsp::AirOpsSlotState::kLaunching
-                    || s.state == bsp::AirOpsSlotState::kReady) {
-                    slot = i > 3u ? 3 : static_cast<int>(i);
-                    break;
-                }
-            }
-        } else {
-            slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
-        }
+        // 00673A10 at 00674765: the first slot in state 1 or 5, the same walk as
+        // 006C7210 without its growth (none: slots.size(), refused below as at 006747E7).
+        slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
     }
     if (slot < 0 || static_cast<std::size_t>(slot) >= deck->slots.size())
         return refuse("no such slot");
     const bsp::AirOpsSlotState state = deck->slots[static_cast<std::size_t>(slot)].state;
-    if constexpr (kPlayerLaunchScreenCursorBound) {
-        // 0067A565: the screen fills only a slot in state 5; otherwise the button does
-        // nothing (0067A56D). 006C0E70's "1 or 5" belongs to 006C47F0 on 006CD6C0's path.
-        if (state != bsp::AirOpsSlotState::kReady) return refuse("the slot is not in state 5");
-    } else {
-        // 0067A565 and 006C0E70: the screen fills only a slot in state 1 or 5.
-        if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
-            return refuse("the slot is not in state 1 or 5");
-    }
+    // 00673A10 at 00674785-006747C2: the targeted launch takes only a slot in state 1 or 5.
+    if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
+        return refuse("the slot is not in state 1 or 5");
     std::vector<std::int32_t> live(deck->slots.size(), 0);
     for (std::size_t i = 0; i < deck->slots.size(); ++i)
         live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
     const int arm = g_class_default_arm_reader != nullptr
         ? g_class_default_arm_reader(vehicle_class) : 0;
-    // Packet cc9_player_launch_group: 0067A584..0067A592 hands 006C0F00
+    // Packet cc9_player_launch_group: 00674801..0067482B hands 006C0F00
     // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
     // stock clamp is 006C0F00's own; this applies the screen's.
     int screen_count = count;
@@ -1627,12 +1599,12 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
             screen_count = bsp::kSupportManagerLaunchGroup;
         }
     }
-    // 0067A5A7 -> 006C4780 -> 006C0F00.
+    // 00674848 -> 006C4780 -> 006C0F00.
     out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
         static_cast<std::uint32_t>(vehicle_class), screen_count, arm, live.data());
     if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
-    // 0067A5D1 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
-    // 0067A5E6 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
+    // 006748C0 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
+    // 006748D7 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
     // LABELLED: delivered at once; the player id is 0.
     const int answer = bsp::air_ops_slot_command_006ccda0(*deck, slot, 3,
         static_cast<std::uint32_t>(target_index + 1u), 0, true);
