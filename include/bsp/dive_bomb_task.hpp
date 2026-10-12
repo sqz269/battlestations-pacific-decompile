@@ -233,9 +233,9 @@ inline constexpr bool kDiveFlyAboveTermsBound = true;  // GUNNERY 193: ON by pai
 //    the latched arm runs on every BL tick with +1Ch set. OFF: none of them.
 //  * kDiveFlyAboveCrossTrackBound (item 13, part 5): the bank arm's
 //    cross-track is (0.5 + 0.5 sin Eabs) R, not 1.5 sin(Eabs) R.
-inline constexpr bool kDiveFlyAboveCarriedFlagsBound = false;
-inline constexpr bool kDiveFlyAboveBankArmsBound = false;
-inline constexpr bool kDiveFlyAboveCrossTrackBound = false;
+inline constexpr bool kDiveFlyAboveCarriedFlagsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveBankArmsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveCrossTrackBound = true;  // GUNNERY 193: ON by pair verdict
 // 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
 // path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
 // 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a

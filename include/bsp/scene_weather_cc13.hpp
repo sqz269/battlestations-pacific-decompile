@@ -203,8 +203,8 @@ bool read_music_and_ambience_004ed690(const ScenePropertyBagModel& model, int ba
 // 004EB9B0 g_Ocean (caller 004F2205). Block offsets match include/bsp/water_render.hpp
 // water_render::block (record offset - 990h). The two particle descriptors are
 // separate objects the record points at (+C18h, +C1Ch), read by 004EB180 and by
-// the tail routine 004EB5A0 (Ghidra folds it into 004EB9B0's body; reached only by
-// the tail jump at 004ECA1B).
+// the tail routine 004EB5A0 BSP_SceneRecord_ReadWaterBeamParticles (its own function
+// 004EB5A0-004EB9A7 since 2026-10-12; reached only by the tail jump at 004ECA1B).
 struct SceneParticleSetFields {           // [record+C18h] / [record+C1Ch]
     std::int32_t count_00{0};             // NumParticles / NumBeams, raw dword
     float speed_04{0.0f};                 // Speed
@@ -309,7 +309,9 @@ struct SceneTerrainFields {
 
 // 004EE9E0: __fastcall(ECX = g_Terrain bag, EDX = record), RET. `game_record_90c`
 // is [[00E188A8]+5FCh]+90Ch, the string the LUT name is derived from (the image
-// reads the game's current record, not EDX).
+// reads the game's current record, not EDX). +90Ch is the scene path (length +90Ch,
+// buffer +910h), written only by 004DA2A0 (zeroed) and 004E1D70 (004E1FD2/004E2017, copied
+// from that function's scenePath argument).
 bool read_static_shadow_and_shader_textures_004ee9e0(const ScenePropertyBagModel& model,
                                                      int bag_index,
                                                      const std::string& game_record_90c,
@@ -337,7 +339,11 @@ struct TerrainTextureHeaderInputs {
 struct TerrainTextureHeaderHost {
     virtual ~TerrainTextureHeaderHost() = default;
     virtual void set_world_parameter_string_00b1b830(const std::string& name, const std::string& value) = 0;
-    virtual void renderer_slot_120() = 0;                              // [00F8D394] vtable+120h
+    // [00F8D394] vtable+120h at 004EDD95: the only renderer class (00B32410 stores vtable
+    // 00D5F0A8) has 00B24DD0 BSP_Renderer_RefreshMaterialTextures in that slot (00D5F1C8),
+    // which re-runs 00B19000 on every registered material so the parameters published above
+    // take effect.
+    virtual void refresh_material_textures_00b24dd0() = 0;
     virtual void acquire_environment_sample(int index, const std::string& path) = 0;  // 00A83FD0 -> D5Ch slot
     virtual void set_retained_channel_00a7f2f0(int index) = 0;         // [00F8BBD8], slot, index
     virtual void vfs_clear_aliases_00bdf940() = 0;

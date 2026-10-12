@@ -323,6 +323,13 @@ then read the structs. The rain emitter must stay off unless it gets its own RNG
 
 ## 004EB9B0 `BSP_SceneRecord_ReadWaterProperties` (g_Ocean)
 
+**Status note.** The host already parses the physics-relevant part of g_Ocean live:
+`bsp::ocean_scene_waves_from_header` and `ocean_live_field_publish_scene` in cc9's
+`src/ocean_spectrum.cpp`, called from the header pass in `game_hosts_mission.cpp`.
+`read_water_properties_004eb9b0` below is the full-key reference reader that the audit
+("g_Ocean audit" below) was checked against. It is not wired, and it is not meant to replace
+cc9's reader.
+
 `__fastcall(ECX = g_Ocean bag, EDX = record)`, caller 004F2205. The record offsets equal
 `water_render::block` + 990h for every key; `include/bsp/water_render.hpp` already names them, and
 `SceneOceanFields` in the header lists them with their record offsets.
@@ -445,9 +452,8 @@ The consumer census used the same displacement scan as the first packet:
     field+F9h.
   - `Waves`: 0078C9B0 hands them to the field (WindDirection/WindSpeed 00B9A450, WaveHeight
     00B96C50, LayerScale k = field+B4h, HeightScale field+B8h, Falloff/TimeScale +18h/+20h).
-  - `docs/OCEAN_WAVE_FIELD.md` (cc9) already reconstructs the field and notes that the host does
-    not parse these keys. `read_water_properties_004eb9b0` now provides that parse. No cc9 file
-    was edited.
+  - cc9's host already parses these keys (`ocean_scene_waves_from_header`, live). The audit below
+    compares that parse with the image. No cc9 file was edited.
 - **Presentation.** Everything else:
   - `1WaveDampening*` goes to the ocean shader parameters through 00B9A0D0 (ocean +5E0h..).
   - The optics go through the 00B99E60.. setters, and the caustics scale through 004DEF1F.
@@ -457,8 +463,254 @@ The consumer census used the same displacement scan as the first packet:
   - The Colorize strings have no direct displacement reader.
 - **RNG.** None of these readers draws. Ocean motion consumes no RNG in these routines.
 
+## g_Ocean audit: cc9's `ocean_scene_waves_from_header` against 004EB9B0 / 0078C9B0
+
+This compares the host's live reader (`src/ocean_spectrum.cpp`, origin/main 2026-10-12) and its
+build step `ocean_live_field_build` with the image. The image side is 004EB9B0, which writes
+record+990h, and 0078C9B0, which consumes the block at 004DF87F.
+
+**Correct, field by field.**
+
+- **HeightScale.** Block +5Ch goes to field+B8h (0078CA0B/0078CA0E), and per frame +2Ch = +24h.
+  The host does the same.
+- **TimeScale.** 00B9A4C0's third argument is block +34h, stored at +20h (00B9A4E4). The host
+  stores `time_scale_20`.
+- **WindDirection.** `FLD +4Ch; FMUL qword pi (00CE3D28); FSTP float` (0078C9EC..0078C9F5). The
+  host computes `f32(dir * kWindDirectionScale)` with the same constant.
+- **WindSpeed.** Block +50h is the second argument to 00B9A450 and then 00B96C10. Same in the host.
+- **WaveHeight / ChoppyWavesFactor.** Block +54h and +58h go to 00B96C50, called before the wind
+  setter in both.
+- **LayerScale.** Stored at +1Ch and +B0h, with `1/LayerScale` at +B4h (00B9A4D2 FDIVRP). The host
+  keeps the reciprocal, the only part 0078C890 reads.
+- **Falloff.** Block +2Ch is stored at +18h by 00B9A4C0. The host reads it but does not store it.
+  No CPU reader of +18h is on the 0078C890 path, so this has no physics impact.
+- **0_SimpleOcean.** The image stores it only for type 3, and the host only for `has_boolean`.
+  The flat byte reaches 0078DAA0 at 004DF7E1 in both.
+- **Defaults.** 004CB420 gives +2Ch 0.6, +30h 100, +34h 1.0, +4Ch 0.5, +50h 64, +54h 80,
+  +58h 0.04 and +5Ch 1.0, matching the host's `OceanSceneWaves` initializers.
+
+**Wave damping.** `1WaveDampeningDepth/Power/Scale` (block +38h..+40h) go through 0078CCE0..0078CCFF
+to 00B9A0D0. That routine stores `1/depth`, power, scale and 1.0 at ocean +5E0h..+5ECh, then
+publishes them as system-parameter slot 3 through 00B40860. No other instruction in the ocean code
+(00B9xxxx-00BAxxxx) touches +5E0h..+5F0h, and 0078C890 reads only +24h, +B4h, +BCh and +F9h. So
+damping is a shader-side effect with no CPU water-height or physics impact, and the host is right
+to ignore it. `1WaveDampModel` is "" in all 258 files.
+
+**Defects.** Neither defect is reached by this installation. All 258 Waves blocks author every key
+as `F`, and the one scene without g_Weather has no g_Ocean.
+
+1. **Integer-typed values are ignored.** The image converts a type-0 value with CVTSI2SS (004EB9B0
+   number read); the host's `read` accepts only `has_float` and keeps the default. Fix:
+   `kOceanSceneWavesIntKeysBound`, OFF.
+2. **The no-g_Weather reset is missing.** When the header has no `g_Weather` sub-bag, 004F2242
+   builds a default 004CB420 block and 004E8BF0 copies it over record+990h, after 004EB9B0 has
+   run. 0078C9B0 then consumes default Waves values. `0_SimpleOcean` at C20h is outside the
+   block and survives. Fix: `kOceanSceneWavesWeatherResetBound`, OFF.
+
+**Notes without a diff.**
+
+- The host matches the `g_Ocean` and `Waves` sub-block names case-sensitively and keeps the last
+  duplicate. The image's bag lookup is case-insensitive (008F2260 via `__stricmp`). Every file
+  uses the exact case.
+- Missing required keys crash the image; the host uses defaults.
+- 0078C9B0 also runs from 00502480 and `BSP_UnitLibraryScreen_Enter` (the tactical-library
+  preview). Those are not mission ocean paths.
+
+**Diff.** It was applied in the worker tree and built (pass), then reverted. `git apply --check`
+passes against files identical to origin/main.
+
+```diff
+diff --git a/include/bsp/ocean_spectrum.hpp b/include/bsp/ocean_spectrum.hpp
+--- a/include/bsp/ocean_spectrum.hpp
++++ b/include/bsp/ocean_spectrum.hpp
+@@ -128,6 +128,16 @@ struct OceanSceneWaves {
+ };
+ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header_properties);
+ 
++// cc13-weather1 audit of 004EB9B0 (docs/CC13_SCENE_WEATHER.md, "g_Ocean audit"). Both
++// OFF; no scene in this installation reaches either path.
++// True: an `I`-typed Waves value is converted like 004EB9B0's CVTSI2SS arm instead of
++// keeping the 004CB420 default.
++inline constexpr bool kOceanSceneWavesIntKeysBound = false;
++// True: a header without g_Weather resets the Waves fields to the 004CB420 defaults,
++// as 004F2242..004F225D copies a default block over record+990h after 004EB9B0 ran
++// (0_SimpleOcean at record+C20h is outside the block and survives).
++inline constexpr bool kOceanSceneWavesWeatherResetBound = false;
++
+ // The ocean object at world+A8h as the CPU height path needs it, plus its spectrum.
+ struct OceanLiveField {
+     OceanSpectrum spectrum;
+diff --git a/src/ocean_spectrum.cpp b/src/ocean_spectrum.cpp
+--- a/src/ocean_spectrum.cpp
++++ b/src/ocean_spectrum.cpp
+@@ -309,6 +309,9 @@ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header)
+     const auto read = [block](const char* key, float& out) {
+         const SceneProperty* p = block->find(key);
+         if (p != nullptr && p->has_float) out = p->float_value;
++        // 004EB9B0: CMP [rec+4],0 / CVTSI2SS, so an `I` value is converted, not skipped.
++        else if (kOceanSceneWavesIntKeysBound && p != nullptr && p->has_integer)
++            out = static_cast<float>(p->integer_value);
+     };
+     read("Falloff", waves.falloff_2c);
+     read("LayerScale", waves.layer_scale_30);
+@@ -318,6 +321,20 @@ OceanSceneWaves ocean_scene_waves_from_header(const ScenePropertyBlock& header)
+     read("WaveHeight", waves.wave_height_54);
+     read("ChoppyWavesFactor", waves.choppy_58);
+     read("HeightScale", waves.height_scale_5c);
++    if (kOceanSceneWavesWeatherResetBound) {
++        const auto weather = [](const ScenePropertyBlock& h) {
++            for (const auto& child : h.blocks) {
++                if (child.first == "g_Weather") return true;
++            }
++            return false;
++        };
++        if (!weather(header)) {
++            OceanSceneWaves reset;
++            reset.simple_ocean = waves.simple_ocean;
++            reset.authored = waves.authored;
++            return reset;
++        }
++    }
+     return waves;
+ }
+ 
+```
+
+**Labels in `include/bsp/world_construct.hpp`.** These are a doc note only; see "Corrections to
+existing provisional names" above.
+
 ## Handoff
 
 Both packets are done. Remaining leads: the 004EB5A0 function definition (left to the
 integrator), the writer of record+90Ch, and the `[00F8D394]` vtable+120h call in 004ED910. Leases
 of both packets are released at the end.
+
+## Loose ends (cc13-sceneloose1, 2026-10-12)
+
+This section closes the three leads in the handoff and two doc corrections. The open questions
+above that are now answered are 004EB5A0, record+90Ch and vtable+120h. The 004ED690 gate byte,
+00A79480's stream tail and camera +178h stay open.
+
+### 004EB5A0 is a separate function, now defined
+
+| check | result |
+|---|---|
+| prologue | `004EB5A0 PUSH ESI; PUSH EDI; PUSH 00CE941C ("NumBeams")`, and `MOV ESI,EDX; MOV EDI,ECX` (`__fastcall(ECX = Beam bag, EDX = record)`) |
+| preceding code | `004EB59F RET` ends `BSP_SceneRecord_ReadAnimatedTextureFrames` 004EB180 (Ghidra body 004EB180-004EB59F). There is no padding between the two functions. |
+| end | `004EB9A7 RET`, then INT3 at 004EB9A8-004EB9AF and the 004EB9B0 entry |
+| references | one reference, the `JMP 004EB5A0` at 004ECA1B (a tail call from 004EB9B0). There is no absolute pointer (`scan-bytes 'A0 B5 4E 00'` finds nothing). |
+| cross branches | Capstone over 004EB5A0-004EB9A7 and 004EB9B0-004ECA23 (`local/sl1_branches.py`): only 004ECA1B crosses between the two ranges. The first range has two RETs. |
+
+The Ghidra split was made under the write lock (record `reports/cc13_sceneloose1_define.json`).
+`tools/ghidra_define_function.py` cannot do it, because it treats an address inside another body
+as "already a function". `create_function` at 004EB5A0 with `disassemble_first: false` therefore
+ran directly, and Ghidra trimmed the containing body itself.
+
+| function | body before | body after |
+|---|---|---|
+| 004EB9B0 `BSP_SceneRecord_ReadWaterProperties` | 004EB5A0-004ECA23 | 004EB9B0-004ECA23 |
+| 004EB5A0 `BSP_SceneRecord_ReadWaterBeamParticles` | (none) | 004EB5A0-004EB9A7 |
+| 004EB180 `BSP_SceneRecord_ReadAnimatedTextureFrames` | 004EB180-004EB59F | unchanged |
+
+`ghidra proto 00BF9DC8` gave `void __cdecl _free(void * _Memory)` with body 00BF9DC8-00BF9E55
+both before and after the split. 'Non-Returning Functions - Discovered' was not touched. The
+ledger has the new name, and 004EB9B0 has appended evidence. `ghidra_annotate --apply` applied
+both names and comments, and the prior annotations are in
+`local/ghidra-annotations-20261012T150759Z.json` (an untracked file in the worker tree).
+`include/bsp/scene_weather_cc13.hpp` now cites the defined function. `src/scene_weather_cc13.cpp`
+cites only addresses, so it needed no change.
+
+Also noted: the ledger name of 004EB180 (`ReadAnimatedTextureFrames`, from cc13-sweep4B) is the
+WaterParticle particle-set reader per this doc. It was left as is, because 004EB180 is outside
+this packet.
+
+### Writer of record+90Ch
+
++90Ch is the scene path, a native string with its length at +90Ch and its buffer at +910h. This
+matches `mission_load_path.hpp` and `mission_scene_load.hpp`. `local/sl1_disp.py` scans .text
+for the disp32 `0C 09 00 00` and decodes 1-8 bytes back. It finds these accesses in the scene
+code:
+
+| address | function | access |
+|---|---|---|
+| 004DA2E8 | 004DA2A0 `BSP_SceneRecord_Construct` | `MOV [ESI+90Ch], EBX` (zero length) |
+| 004E1FD2 / 004E2017 | 004E1D70 `BSP_Game_BuildSceneRecord` | length store (0 or `strlen`), the buffer at 004E1FCC / 004E2011, NUL at 004E201D |
+| 004E0CBE / 004E0E13 | 004DFB70 `BSP_Game_LoadMissionScene` | `LEA EDX, [EAX+90Ch]` (address taken, a read site) |
+| 004E2168 | 004E1D70 | `LEA ESI, [EDI+90Ch]` |
+| 004D7819, 004E1FA1, 004E1FEC, 004E202E | | reads |
+
+004E1D70 is `__thiscall` with four stack arguments (`RET 10h`). The prologue is
+`PUSH -1 / PUSH handler / PUSH fs:[0]`, then `SUB ESP,40h` and four PUSHes, so `[ESP+60h]` is
+argument 1, the `scenePath` of the ledger prototype. That argument is copied into the string
+(EBP at 004E1F78 and 004E2020). So the LUT name that 004EE9E0 builds comes from the scene path
+given to `BSP_Game_BuildSceneRecord`, whose callers are the console-command queue, SetPendingScene,
+the command-line options, and the two session handlers. The other disp-90Ch stores in the image
+(007Cxxxx, 00A39xxx, 00A42076) are in other classes. The scan sees literal displacements only,
+so a block copy of a whole record would not show up. No such copy is known.
+
+### `[00F8D394]` vtable+120h in 004ED910
+
+The call is at 004EDD87-004EDD95: `MOV ECX,[00F8D394]; MOV EDX,[ECX]; MOV EAX,[EDX+120h]; CALL EAX`.
+It is a `__thiscall` with no arguments, made after the world-parameter strings are published and
+before the environment-sound loop.
+
+- **Object and class.** 00F8D394 is the primary renderer (`docs/APP_INIT_RENDERER.md`). The only
+  vtable store that matches is `BSP_D3D9Renderer_Construct` 00B32410 at 00B3243B, which writes
+  `00D5F0A8`; its pair in `BSP_D3D9Renderer_Destroy` 00B32920 at 00B32942 writes the same value.
+  The scan was `scan-bytes 'C7 ?? A8 F0 D5 00'`.
+- **Target.** The disk dword at 00D5F1C8 (slot +120h) is **00B24DD0**,
+  `BSP_Renderer_RefreshMaterialTextures`.
+- **What it does.** It walks the renderer's effect registry (base +1A9Ch, count +1AA0h, stride
+  2Ch). For each record it calls `BSP_MaterialEffectBase_RefreshTextures` 00B19000 on the owner at
+  +28h. That function re-resolves each material's textures through the 00F8D434 world-parameter
+  name override. (Sources: `docs/NATIVE_SHADER_OWNER_ARRAY_RESET_DISCOVERY.md` and
+  `src/platform_renderer_activation.cpp`, which is reconstructed, build-tested and
+  fixture-tested.)
+- **Why the call is here.** Step 1 of 004ED910 has just published `ReflectionCubeMap`,
+  `DiffAtlas_*`, `TerrainLUT` and the other names into that same table, so step 2 makes every
+  loaded material pick them up. 004EDD95 is therefore an indirect caller of 00B24DD0. The older
+  doc reports "no callers" because it counted direct calls only.
+
+The host hook `TerrainTextureHeaderHost::renderer_slot_120` is renamed
+`refresh_material_textures_00b24dd0`, and the call site in `apply_terrain_texture_header_004ed910` is
+updated to match.
+
+### world_construct.hpp labels
+
+The file was unleased, it is not on cc9's list, and its last owners were Claude 52a62312c and
+Codex 4def3d599. The constants are renamed after the readers that write the fields, and all nine
+uses in `src/world_construct.cpp` are updated:
+
+| offset | old | new |
+|---|---|---|
+| A20h (+stride, count) | `kSceneRecordFogEntry*` | `kSceneRecordDirFogColor*` |
+| A78h | `kSceneRecordCameraNearOffset` | `kSceneRecordObjectRenderClipOffset` |
+| A84h | `kSceneRecordLightScalarOffset` | `kSceneRecordShadowRenderClipOffset` |
+| A88h | `kSceneRecordFoliageDensityOffset` | `kSceneRecordFoliageRenderClipOffset` |
+| A8Ch | `kSceneRecordFoliageRangeOffset` | `kSceneRecordFoliageLowResDistOffset` |
+| A90h | `kSceneRecordFoliageEnableOffset` | `kSceneRecordBushShadowAllowedOffset` |
+| C54h | `kSceneRecordOceanDescOffset` | `kSceneRecordSkyboxNameOffset` |
+| C5Ch / C60h | `kSceneRecordOceanScalar0/1Offset` | `kSceneRecordSkyboxRotateOffset` / `kSceneRecordSkyboxLuminanceOffset` |
+| 1014h / 1024h / 1034h | `kSceneRecordOceanVector0/1/2Offset` | `kSceneRecordCloudLightsAmbient/Sun/BottomOffset` |
+| 1044h | `kSceneRecordTerrainHandleOffset` | `kSceneRecordSunEffectNameOffset` |
+| 104Ch | `kSceneRecordShoreHandleOffset` | `kSceneRecordThunderStormEffectNameOffset` |
+
+100Ch (`kSceneRecordTerrainVectorOffset`, the horizontal-angle copy) keeps its name, because
+which reader writes it was not checked here. The host hooks `ocean_set_vector`,
+`ocean_set_scalar` and `create_ocean_owner` (and their overrides in `tests/math_tests.cpp`) also
+keep their names. A header comment records that they stand for the cloud-manager colour setters
+and for the sky creation and setters. The A88h store was checked again: 004ECE34
+`MOVSS [EDI+0A88h], XMM0` and 004ECE6A `MOVSS [EDI+0A8Ch], XMM0`. A correction note is appended
+to `docs/CC13_FOLIAGE_TERRAIN_SETUP.md`.
+
+### 00B405E0 argument order
+
+A correction is appended to `docs/CC13_SHADER_VTABLES.md`: the order is `(index, matrix, rows)`.
+`[ESP+0Ch]` at entry is rows (the switch value). After `SUB ESP,20h`, `[ESP+24h]` is the index
+(shifted left by 4) and `[ESP+28h]` is the matrix.
+
+### Status
+
+Ghidra: one function defined and two annotated. Source: renames only; nothing new is
+reconstructed, and nothing is game-validated (no runs). Build: `./scripts/build.ps1` passed, with both test
+targets passing. No new tests.

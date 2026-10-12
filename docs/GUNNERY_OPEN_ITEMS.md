@@ -12930,4 +12930,13 @@ plane/task line classes.
   `aimglide -> goaway` exit of `MainAirFieldEntity 01_sqn02|.-2` at tick 1606 (the pull-out latch's arm B), USN01's is
   the `ScoutDauntless` aim lead (projtime 10.02 -> 10.10): both on the switched paths. JM08 dive releases 26/33 ->
   20/33. USN04 phase 2 is identical with zero native counts moved: there `plan+2E8h` is capped by the turn-roll limit
-  (`plane_ai_control.cpp` `max_bank = min(2E8h * TurnRoll, cap)`) and no arm-B latch fires. USN01 lost (convoy strike).
+  (`plane_ai_control.cpp` `max_bank = min(2E8h * TurnRoll, cap)`) and no arm-B latch fires. USN01 lost (convoy strike).- **audit9's trio (192: `kDiveFlyAboveCarriedFlagsBound`, `kDiveFlyAboveBankArmsBound`, `kDiveFlyAboveCrossTrackBound`):
+  ON.** Alone (bases `7d61ca8d6`/`4593a252d`, `local\g37_aAoff_*`/`g37_aBoff_*` against `g37_a9{c,b,x}on_*`), per
+  aircraft by `local\g37_peracft.py`: carried flags take every dive bomber from flyabove straight to aimglide
+  (turndown 1447 -> 0 ticks, aimdive 3441 -> 0, goaway 1736 -> 0 on USN04 phase 2; releases 1/33 -> 13/41; JM08
+  18/24 -> 29/33), the audit's "aimglide on any 67B0 set"; bank arms alone move JM08 (18/24 -> 26/27, one latch) but
+  not USN04's state counts; cross-track alone is identical (cross-track about 400 m against Rt 1820 m, never
+  decisive). Together on `d9f13f80e` (`local\g37_a9all{off,on}_*`): first divergence the dive bombers' aim lead;
+  USN04 phase 2 dive releases 10/44 -> 13/40 (turndown 1227 -> 61, now reached only through the latched arm;
+  aimglide 33 -> 2482); JM08 5/42 -> 12/42 and its HQ loss at 984.18 s disappears; LOMP10's win comes back (none ->
+  completed 1327.37 s); USN01 none on both sides (its convoy strike). This base is before the live sea.
