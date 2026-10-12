@@ -1500,4 +1500,55 @@ void host_check_scene_load_007f7460(PlayerRecord& record, std::uint8_t flag_18) 
     record.scene_check_14 = flag_18 != 0 ? 1u : 0u;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13-net2 item 5 (cc13-net3): MultiScore net slots
+// ---------------------------------------------------------------------------
+
+void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSyncHost& host) {
+    // 00780BD3..00780BE2: a null data pointer becomes 00F871AC (""); the length
+    // is passed unchanged, so a null pointer with a non-zero length would read past
+    // it. The host here passes an empty buffer in that case.
+    const char* data = text.data_2c != nullptr ? text.data_2c : "";
+    host.lua_do_buffer_00b65ec0(std::string(data, text.data_2c != nullptr ? text.length_28 : 0));
+}
+
+NetTableCreateMessage build_net_table_create_00780a70(const void* entity,
+                                                      std::int32_t local_player) noexcept {
+    NetTableCreateMessage m;
+    m.entity = entity;               // 00766FC0(DFh, 0, entity, 0)
+    m.byte_c4 = 0;                   // 00780A8C
+    m.local_player_10c = local_player;  // 00780A9F, game+18C8h
+    return m;
+}
+
+void send_net_table_create_00780ae0(const void* entity, void* peer, std::int32_t local_player,
+                                    NetTableCreateHost& host) {
+    host.send_to_peer_00779fc0(peer, build_net_table_create_00780a70(entity, local_player));
+}
+
+void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& host) {
+    void* object = host.allocate_zeroed_314();
+    if (object == nullptr) return nullptr;  // 007813F4
+    return host.construct_multiscore_00780db0(object, id_1c);
+}
+
+bool schedule_net_table_sync_00780a00(std::uint8_t& force_310, const void* entity,
+                                      const void* holder, std::int32_t holder_tick_04,
+                                      std::int32_t now_00f876b0, NetSyncQueue& queue) noexcept {
+    if (force_310 == 0) {
+        // 00780A0D..00780A2D: FILD of the int difference against
+        // FLD1 / FDIVRP of the float 0.05f; skipped when elapsed <= 1/0.05f.
+        const auto diff = static_cast<std::int32_t>(static_cast<std::uint32_t>(now_00f876b0) -
+                                                    static_cast<std::uint32_t>(holder_tick_04));
+        const double elapsed = static_cast<double>(diff);  // SUB wraps
+        const double interval = 1.0 / static_cast<double>(0.05f);
+        if (!(elapsed > interval)) return false;
+    }
+    if (queue.count >= static_cast<std::int32_t>(kNetSyncQueueCapacity)) return false;  // 00780A39
+    queue.rows[queue.count] = NetSyncQueueRow{entity, holder, 0};
+    ++queue.count;
+    force_310 = 0;  // 00780A58
+    return true;
+}
+
 }  // namespace bsp::mp_cc13

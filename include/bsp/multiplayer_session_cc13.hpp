@@ -658,7 +658,8 @@ struct NetTableSyncHost {
     virtual void send_to_peer_00779fc0(void* peer, const NetTableEntry* entries,
                                        std::size_t count) = 0;
 };
-// 00782020, __thiscall(entity, peer_holder) RET 4: nothing for a null peer
+// 00782020, __thiscall(entity, peer_holder, byte) RET 8 (0078274A; net1 wrote
+// RET 4; 0077C540 pushes both, the byte was not seen read): nothing for a null peer
 // or p == 8, or when MultiScore or MultiScore[p] is not a table. Otherwise
 // the changed pairs in iteration order, then always
 // "MultiScore_save[p]=copy_table(MultiScore[p])" through 00B65EC0, then one
@@ -1225,5 +1226,93 @@ void receive_movcam_blackbar_0076a970(const PresentationMessage& msg,
 // to ([00F8A2FC]->vtable[168h]() == 0). Stores the byte as a 0/1 dword
 // (SETNZ) at record+14h. Readers of record+14h are not mapped.
 void host_check_scene_load_007f7460(PlayerRecord& record, std::uint8_t flag_18) noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc13-net2 (item 5, cc13-net3): the MultiScore entity's other net
+// slots. Primary vtable 00D040B8 (written by 00780DB0 at 00780DEE):
+//   +17Ch 00780AE0  send MT_MNETTABLESYNCENTITY_CREATE (DFh) to one peer
+//   +180h 00780A00  schedule a sync to one peer holder (no Ghidra function)
+//   +188h 00782020  sync to one peer (net1; ABI corrected to RET 8 below)
+//   +18Ch 00780B90  apply a received E0h: run its Lua text
+// Receive route of E0h on the client: 00777850 is-a 46h (MT_NETENT, E0h's
+// is-a 00768440 answers E0h/48h/46h) -> 00780670 (game+5D4h == 0Dh, tick due,
+// msg+18h resolved by 00521E30, entity+BDh set) -> is-a 48h -> 0077C710
+// (per-sender tick stamp in the list at entity+2A4h, skipped when
+// entity+5Eh is set) -> entity->vtable[18Ch](msg).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::uint32_t kMultiScoreVtable = 0x00D040B8u;
+inline constexpr std::uint8_t kNetTableCreateMessageType = 0xDF;
+inline constexpr std::uint32_t kNetTableCreateMessageVtable = 0x00D03804u;
+
+// 00780B90 __thiscall(entity, msg) RET 4. A borrowed Lua state owner on
+// [[[00E188A8]+1A08h]+4]+4 (00B66C00 / 00B669A0), then 00B65EC0 with the data
+// pointer msg+2Ch (00F871AC, an empty string, when null) and the length
+// msg+28h: luaL_loadbuffer(L, text, length, "DoBuffer") and lua_call(L, 0,
+// -1). 00B65EC0 does not check the load result. Nothing else: the entity is
+// not read, so the text alone decides what MultiScore[p] receives.
+struct NetTableSyncText {
+    const char* data_2c{nullptr};
+    std::uint32_t length_28{0};
+};
+void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSyncHost& host);
+
+// DFh as 00780A70 constructs it (__thiscall(msg, entity) RET 4, no Ghidra
+// function) and 00780AE0 builds it inline: base 00766FC0(DFh, 0, entity, 0)
+// (the generic entity-create header, not reconstructed here), vtable
+// 00D03804, byte +C4h = 0, dword +10Ch = game+18C8h (the local player). The
+// codec slots are shared generic ones: write 00767D70 (JMP 00765000), read
+// 007683B0 (JMP 00767E30); is-a 00767D40 answers DFh/47h/46h.
+struct NetTableCreateMessage {
+    std::uint8_t type{kNetTableCreateMessageType};
+    std::uint32_t vtable{kNetTableCreateMessageVtable};
+    const void* entity{nullptr};
+    std::uint8_t byte_c4{0};
+    std::int32_t local_player_10c{0};
+};
+NetTableCreateMessage build_net_table_create_00780a70(const void* entity,
+                                                      std::int32_t local_player) noexcept;
+
+struct NetTableCreateHost {
+    virtual ~NetTableCreateHost() = default;
+    // 00779FC0 on the entity: msg+18h = entity+174h, then 00770B50(peer, msg).
+    virtual void send_to_peer_00779fc0(void* peer, const NetTableCreateMessage& message) = 0;
+    // 007813B0: operator new(314h) (00BF55BE) zeroed by 00BF79F0; null on failure.
+    virtual void* allocate_zeroed_314() = 0;
+    // 00780DB0 __thiscall(obj, uint16 id): BSP_MultiScore_Construct; returns obj.
+    virtual void* construct_multiscore_00780db0(void* object, std::uint16_t id) = 0;
+};
+
+// 00780AE0 __thiscall(entity, peer) RET 4: build DFh on the stack (as
+// 00780A70), send it to the peer through 00779FC0, destroy it (007668E0).
+void send_net_table_create_00780ae0(const void* entity, void* peer, std::int32_t local_player,
+                                    NetTableCreateHost& host);
+
+// 007813B0 __fastcall(ECX = DFh msg), the message's vtable[1Ch]: the
+// receiver-side factory 0077EC20 calls when msg+1Ch names no registered
+// entity. Returns the new MultiScore built with id = (uint16)msg+1Ch, or null
+// when the allocation failed.
+void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& host);
+
+// 00780A00 __thiscall(entity, holder) RET 4, slot 180h. Called by 0077C540
+// for each peer holder of each net entity, when [holder+50h]+0Ch == 8. When
+// entity+310h is set, or when (int)([00F876B0] - holder+4h) > 1.0 /
+// 0.05f ([00D0DE84]) in x87 (so 20 ticks or more), append (entity, holder,
+// byte 0) to the sync queue whose count is 00F1B14C (arrays 00F86550,
+// 00F56550, 00F26E50; full at 300h, then nothing happens) and clear
+// entity+310h. 0077C540 later calls vtable[188h](holder, byte) per queued row.
+inline constexpr std::uint32_t kNetSyncQueueCapacity = 0x300;
+struct NetSyncQueueRow {
+    const void* entity{nullptr};
+    const void* holder{nullptr};
+    std::uint8_t flag{0};
+};
+struct NetSyncQueue {
+    std::int32_t count{0};  // 00F1B14C
+    NetSyncQueueRow rows[kNetSyncQueueCapacity]{};
+};
+bool schedule_net_table_sync_00780a00(std::uint8_t& force_310, const void* entity,
+                                      const void* holder, std::int32_t holder_tick_04,
+                                      std::int32_t now_00f876b0, NetSyncQueue& queue) noexcept;
 
 }  // namespace bsp::mp_cc13

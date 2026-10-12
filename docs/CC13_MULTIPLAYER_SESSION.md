@@ -486,6 +486,56 @@ log is `reports/cc13_net2_defined_functions.json`. They are unnamed (`FUN_`):
 00782910, 00782A80, 00783950, 00786E10, 00786E30, 00786F30. All 24 were present in Ghidra after
 the restart.
 
+## The MultiScore client side: who runs the E0h text (cc13-net3)
+
+The MultiScore primary vtable is `00D040B8` (written at 00780DEE by `00780DB0`; net1's
+"`00D04230 +10h`" is slot `188h` of it). Its net slots:
+
+| slot | address | role |
+|---|---|---|
+| 17Ch | `00780AE0` | send MT_MNETTABLESYNCENTITY_CREATE (DFh) to one peer (reconstructed) |
+| 180h | `00780A00` | schedule a sync to one peer holder (reconstructed; no Ghidra function yet) |
+| 188h | `00782020` | sync to one peer (net1) |
+| 18Ch | `00780B90` | apply a received E0h (reconstructed) |
+
+**Receive route.** E0h's is-a (`00768440`) answers E0h, 48h and 46h. The ladder's 46h arm
+(MT_NETENT, 00778193) hands every such message to `00780670`: the game must be in state 0Dh, the
+message tick (`msg+0Ch`) must be due, `msg+18h` must resolve through `00521E30` to an entity with
+`+BDh` set; then is-a 48h selects `0077C710` (007807A4), which drops a message older than the
+sender's 16-bit stamp in the list at `entity+2A4h` (node `+8h == msg+14h`; a stamp more than
+30000 ahead counts as wrapped and accepts), skips a sender with no node, and otherwise stores the
+new stamp and calls
+`entity->vtable[18Ch](msg)` (0077C79B). For MultiScore that is `00780B90`: a borrowed Lua state
+owner on `[[[00E188A8]+1A08h]+4]+4`, then `00B65EC0` with data `msg+2Ch` (`00F871AC`, an empty
+string, when null) and length `msg+28h`, which is `luaL_loadbuffer(L, text, length, "DoBuffer")`
+and `lua_call(L, 0, -1)` with no check of the load result. The entity itself is not read. So the
+client executes `MultiScore[p][key]=value;...` exactly as 00781910 rebuilt it, with `p` the
+receiver's own local slot.
+
+**Create.** `00780AE0` builds DFh inline (`00766FC0(DFh, 0, entity, 0)`, vtable `00D03804`,
+`+C4h = 0`, `+10Ch = game+18C8h`) and sends it through `00779FC0`. `00780A70`, which no Ghidra
+function covers, is the same constructor as a `__thiscall(msg, entity) RET 4` routine. DFh uses the
+shared entity-create codec (write `00767D70` -> `00765000`, read `007683B0` -> `00767E30`) and its
+is-a answers DFh, 47h and 46h, so `00780670` splices it onto `00F871A0` for `0077EC20`, which calls
+`msg->vtable[1Ch]()` (0077EC8E) when `msg+1Ch` names no entity yet. For DFh that is `007813B0`:
+`operator new(314h)`, zeroed, `00780DB0(obj, (u16)msg+1Ch)`. The host creates its own MultiScore
+at 004D557F (net1 cites the gate: game mode not 8 and `game+1FE4h == 1`).
+
+**Sync schedule.** `0077C540` walks the net entities (`00F87198`); for each peer holder whose
+`[holder+50h]+0Ch == 8` it calls `vtable[180h](holder)`. MultiScore's `00780A00` queues
+`(entity, holder, 0)` into the bucket counted by `00F1B14C` (arrays `00F86550`, `00F56550`,
+`00F26E50`, capacity 300h) when `entity+310h` is set or when `[00F876B0] - holder+4h`, as an x87
+int, exceeds `1/0.05f` (`00D0DE84`), i.e. 20 ticks or more; a queued row clears `+310h`. The same
+function then drains all 40h buckets with `vtable[188h](holder, byte)` (0077C62A).
+
+**Correction:** `00782020` is `RET 8` (0078274A), not `RET 4`: the drain pushes a holder and a
+byte. In the stretch read (0078261D reads the holder at `[ESP+644h]` with the EH-state slot at
+`[ESP+63Ch]`) the byte is not used; the rest of the body was not swept for it. The ledger
+evidence and the header comment are amended.
+
+Not opened: who writes `holder+4h` (the last-sync tick) and `entity+310h`, the generic codec
+`00765000`/`00767E30`, `00766FC0`, and `0077C540` beyond the lines cited.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
@@ -519,6 +569,9 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
   with `tools/verify_report_calls.py` on a JSON built from the live listing, 0 failures. Listing
   checks by net3: 007F7460 (SETNZ, `RET 4`), 0076A970 (both screens, `[ESP+8]` = msg after the
   push), the local-join test at 0077531A..00775332 (`session+F4h == 1` and `+168h`).
+- MultiScore client section: 9 cited calls checked the same way, 0 failures; listings read for
+  00780B90, 00780AE0, 007813B0, 0077C710, 00780A00/00780A70 (disasm-raw, INT3 padding on both
+  sides), the 0077C540 drain loop and the 00782020 `RET 8`.
 
 ## Open questions
 
