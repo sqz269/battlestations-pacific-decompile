@@ -15,7 +15,7 @@ items): a `FUN_` name, no tag row and no ledger name, outside cc9's gameplay tab
 | fixture-tested, ABI-compatible, game-validated | none |
 | left raw in the `ng` list | 22 |
 
-`python tools/raw_ownership_cc13.py table` after the packet: `total 4716 {'cc9': 4238, 'ng': 22,
+`python tools/raw_ownership_cc13.py table` after the packet: `total 4736 {'cc9': 4238, 'ng': 22,
 'sweep79': 476}` (before: `ng` 176).
 
 ## Method
