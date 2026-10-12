@@ -8432,9 +8432,10 @@ public:
             owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
             return 1.0f;
         }
-        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
         owner_.done("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
-        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
+        // Packet cc9_physics1_sea: the landscapes' wave-damp regions (008830AA ->
+        // 00BA1370); 1.0 everywhere while the live sea is off.
+        return bsp::ocean_live_field_coverage_mask(x, z);
     }
 
 private:

@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "bsp/ocean_coverage_regions.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/random.hpp"
 
@@ -137,6 +138,7 @@ struct OceanLiveField {
     float wave_scale_28{0.0f};       // +28h, 00BA0B5F (render only)
     float clock_01090494{0.0f};      // [01090494], 00BA00BA
     std::uint32_t render_steps{0};   // calls of 00BA0090 since the last world build
+    OceanCoverageRegions coverage;   // +620h / +624h, one landscape at a time (008830AA)
 };
 
 // 0078DAA0's ocean part (field defaults, the spectrum's 00B97100), then 0078C9B0's
@@ -167,5 +169,17 @@ OceanSceneWaves ocean_live_field_publish_scene(const ScenePropertyBlock& header_
 // is taken as interface level 1 (the 3D view); the image skips the step on the map
 // views (levels 2 and 3).
 void ocean_live_field_render_job_0068a0d0(float mission_clock);
+
+// 00882AC0's call at 008830AA for one landscape, once its world frame is known:
+// adds the model's wave-damp regions (00BA1370) to the live ocean. Returns the
+// log line's tail, or an empty string while the switch is off or no scene was
+// published. LABELLED: the loader's reduction renderer+1D84h is taken as 0
+// (2 - TextureDetail, which is 2 in this installation's options.txt).
+std::string ocean_live_field_add_landscape_008830aa(const std::string& model_name,
+    const float landscape_world[16], const OceanCoverageFileReader& read_file);
+
+// 00B9CF50 over the live ocean's regions (1.0 outside them, and while the
+// switch is off).
+float ocean_live_field_coverage_mask(float x, float z);
 
 }  // namespace bsp
