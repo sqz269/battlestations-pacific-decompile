@@ -15041,3 +15041,55 @@ after every `_free`-family call (`00BF65AC`, `00BF6989`, `00BF9DC8`) was read fr
 
 So no function on this list needs a new bind. Uncertainty: the comparison is against the post-free fragments only;
 the rest of each body was visible before the repair and is not re-audited here.
+
+## 5fp. `kEngineMovieEntryBound`: 0046B730's kill pass over the script entities (cc9-lua50, 2026-10-12)
+
+**The live re-read of `0046B730`** (decompile and listing, intact after the `_free` repair):
+1. `0046B795`-`0046B8E1`: walk the root entities `[[00E188A8]+19CCh]+8h` (next `+44h`). A root whose class
+   `+C4h` is not in the scene database's set at `+158h` (end node `+15Ch`, the test at `0046B7CA`) is queued;
+   for a root whose class is in the set, every child (`+48h` list, count `+50h`) whose class is not in it is
+   queued. GAME_EXECUTABLE.md: the constructor fills `+158h` with 44h (Landscape), 5Eh, 1Dh, 47h (Path) and 3Dh.
+2. `0046B8ED`-`0046B91B`: `00926D90(2)` on each queued entity (`PUSH 2` at `0046B904`, call at `0046B906`).
+3. Five `00874D00` calls with `CL = 0` (`0046B916`-`0046B98D`) around `00903670` and three world-vtable
+   `+0Ch(0)` calls, then `BSP_Game_SetGameMode(8)` at `0046B99B`.
+4. `0046BA7B`-`0046BBAA`: for each `+28h` record whose class is not in the set, create the entity again by name
+   through the class factory and attach a new property-bag ref at `+C0h`.
+5. `BSP_SEntity_InitAll` x2, `0046AAB0`, five `00874D00` calls with `CL = 1` (`0046BBD4`-`0046BC4B`),
+   then each record's deleting destructor and the vector cleared.
+
+`CreateScript` entities are class 3 (`00898892`) and roots, so every `luaDelay` timer that `luaEngineMovieInit`
+made is killed in step 2.
+
+**The bind (still OFF).**
+- The skip block now kills every live script entity through `00926D90` with cause 2
+  (`GameScriptOrdersHost::kill_live_script_entities`) before `luaPrecacheUnits`.
+- The scene units' kill and re-create (steps 1 and 4 for non-script classes) stay a LABELLED record. On a skip at
+  the first frame nothing has moved, so the re-created units would match the loaded ones.
+- **The ten `00874D00` calls stay records; the clock is not advanced.** `00874D00` re-runs nine rows of the fixed-step
+  fan-out outside the driver `00875BB0` and writes no mission clock. Its `CL = 0` think-list pass `00929460`
+  (0.05 s) runs over a list whose script entities were all just killed. Its world block is behind
+  `[[game+19CCh]+4ACh]` (session pump, replication, InitAll), not read here. `CL = 1` passes 0 dt and skips the
+  think list. Uncertain: `BSP_MissionLuaHost_DrainQueuedCalls` at the head of each call may run Lua calls queued
+  before the skip; none is modelled.
+
+**Predictions for the ON pairs** (JM05, JM06 3000 frames; USNOS control):
+- JM05: the `luaJM5EMDlgA`..D chain no longer runs, so the dialog starts and sequencer messages go back to OFF's
+  4 and 8 (E1 had 8 and 17). The one-frame stage-init shift remains, so the row may still move slightly (exit 3).
+- JM06: as in E1, the scripted Gato kill moves by one frame; nothing else.
+- USNOS: identical (exit 0 or 1). A mechanism failure is JM05 still playing `Intro_dlg_a..c`, or USNOS moving.
+
+**Pairs on `ca93f2dcb`** (`local\l50_F0` OFF, `local\l50_F1` ON; 3000 frames, `local\l50_F{0,1}_{j5,j6,usnos}.log`):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | `StartDialog` calls 4 = 4 (Intro2, Cap_range, Map_hint1, RadarHint1; E1 had 8 with `Intro_dlg_a..d`); `engine movie stop: 0046B730 killed 1 script entity`; deaths 16 = 16, the airfield's sqn01 dies 0.3-1.9 s later; shots 2028 -> 2214 (the same numbers as E1) |
+| JM06 | 3, moved | one script entity killed; the scripted Gato kill moves 0.00 -> 0.05 s; hits 149 -> 150 |
+| USNOS (control) | 1, gameplay identical | only the known ShipAiClearance / ShipAiSectorScan noise |
+
+- **What still moves JM05.** Not the dialogs: every stage-init action is one frame later (`AddUntouchableUnit` at
+  t 0.05 instead of 0.00, the ships' first AI state picks), plus `luaEngineMovieInit`'s own `MissionNarrative` and
+  music level. That is the LABELLED skip at the first frame, which the prediction allowed.
+- **Verdict: ON.** The mechanism matches every prediction: the intro timers die, the dialog count returns to OFF's,
+  and the control is identical. Remaining substitutions, all LABELLED: the player skips on the movie's first frame
+  (the no-skip path plays the 90 s / 43 s movie, `0045F970` and `004560E0`, not wired); the scene units are not
+  killed and re-created; the ten `00874D00` steps and the class-table resets are records.
