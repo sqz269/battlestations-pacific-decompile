@@ -752,5 +752,6 @@
  "st1_listerase": "cc13-stlreview1 shape: list::erase(where): checked hooks, unlink node, destroy value, free node, --size (std::list::erase)",
  "st1_listeraserange": "cc13-stlreview2 shape: list::erase(first,last): begin()/end() pair calls clear(), otherwise loops erase(where) unlinking and freeing each node with checked-iterator hooks (std::list::erase(first,last))",
  "st1_vecreserve": "cc13-stlreview2 shape: vector::reserve(n): max_size length_error check, capacity()<n -> allocate n, _Umove the old range under an EH state, destroy+free old storage, reset first/last/end (std::vector::reserve)",
- "cc13_sweep79_named_library": "cc13-sweep79: bookmark-only stl_probable row upgraded after reading the body; it is a container or string operation (named in the ledger by this sweep) with no string, game-global or game-call anchors"
+ "cc13_sweep79_named_library": "cc13-sweep79: bookmark-only stl_probable row upgraded after reading the body; it is a container or string operation (named in the ledger by this sweep) with no string, game-global or game-call anchors",
+ "mop1_stl": "cc13-mopup1 manual review: template container helper over a named element type (allocator construct, uninitialized copy/fill_n, copy/copy_backward, fill, destroy range, vector _Insert_n, range forwarders); element type and size from the callee and the stride; per-address notes in docs/CC13_MOPUP_1.md"
 }

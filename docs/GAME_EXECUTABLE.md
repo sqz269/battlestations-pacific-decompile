@@ -15763,3 +15763,27 @@ Leave-one-out is by group, on every row AH moves against the anchor and on all s
 
 - Leave-one-out was not run (cancelled with 8 of its 144 runs done), so the moves are not attributed to groups, and
   no `reports/cc9_reference_rebaseline_36.json` is written for this interim.
+
+### Final AH (cc9-gunnery37; base `89e89ffa1` = origin/main `088103ce0` + `agent/cc9-gunnery36`)
+
+**Plan.** `local\g36_switches.py 10bef4a99 89e89ffa1` lists 53 switches ON at the base that are new or flipped since
+AG (`local\g37_ah_switches.txt`): the fifteen of the interim, the plane batch of GUNNERY 186-193, the flak pair,
+the Lua listener/kill switches, the Dyn and live-sea switches (`kDynWorkerPrecisionBound`,
+`kDynListingAssociationBound`, `kGunneryLiveWaterSurfaceBound`, `kWaveFieldLiveAmplitudeBound`), and
+`kSubmergedTorpedoLaunchSwimBound`. Anchor `local\g37_anc` = the base with all 53 false (`pair_export`, 53 flips);
+AH `local\g37_ah` = the base as built. Both run AG's twenty-two rows and the seven wins (`local\g36_ref_jobs.py`,
+AG launch form, `--stop-after-end 40`; win orders `local\g36_ord_<key>.txt`, ESMP08's byte-identical to
+`l46_e8_orders2`). Logs `local\g37_{anc,ah}_<key>.log`, queue `local\g37_q_ahref.jobs`. Leave-one-out groups, for
+every row AH moves and all seven wins: `aa` (kind-6 gate, expiry draw, tail-gunner armour/aim/own-aim), `flak`
+(burst, falloff), `ptg` (player torpedo group, submerged swim), `dive` (drift, heading blend, brake ratio, yaw mode,
+audit7 A/C and C2/D/E, audit9 trio, six draw pins), `plane` (cadence, moveto draws, Lua alt zero, roll arm,
+torpedo-aim three, strafe two), `yard`, `sqn` (kill queue, retire queue, own target, lift height, fused slot),
+`cap` (capture party, party refresh), `lua` (hit second pass, hit target squadron, kill attacker, kill box, listener
+args), `movie` (three), `sea` (live water surface, live amplitude), `dyn` (worker precision, listing association).
+
+**Predictions (before any result).**
+- AH against the anchor: exit 3 on every row with flying planes or moving ships (the sea and Dyn groups alone move
+  every ship row); exit 0/1 is not expected on any row.
+- Wins on AH: USN02 about 203 s, USN12 about 1555 s, ESMP08 about 3447 s, LOMP06 about 535 s, BSM01 767.94 s (the
+  lead's main table); USN01 lost (live sea, and the convoy-strike sensitivity of GUNNERY 193); LOMP10 uncertain
+  (lost on main to the live sea; audit9 brought it back on the flat sea at 1327.37 s).

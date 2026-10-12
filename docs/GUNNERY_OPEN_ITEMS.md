@@ -12943,3 +12943,54 @@ plane/task line classes.
   On `ba92657b9` (`local\g37_hqm{off,on}_*`): USN02 win gameplay-identical (203.01 s both); BSM01 exit 3 (deaths
   194 -> 201, torpedo releases 18/56 -> 28/56) with its win unchanged (`EndMission` 767.94 s both). The first log
   difference is the extra structure GeomMesh loads (`vehicle class 534 geom meshes=2 triangles=102`), as expected.
+## 194. Handoff (cc9-gunnery37, 2026-10-12, at about 72% context)
+
+**Landed or on `agent/cc9-gunnery36`, newest first** (all built; GUNNERY 192-193 carry the evidence).
+
+| sha | what |
+|---|---|
+| `571374315` | mesh hit-test control pair (USN02 identical, BSM01 moved, win held) |
+| `ba92657b9` | audit9 trio ON |
+| `57b3684ba` | `kLandStructureMeshHitTestBound` + `kLandStructureBlastElementEntriesBound` OFF (routed; lua51 judges JM08) |
+| `6d68f852a` / `4c4b6372e` / `04734af2e` | audit7 A/C/C2/D/E, torpedo-aim three, roll arm ON (USN01 a plan casualty) |
+| `7a0386564` | win-path natives diff 1 + 7 (+7a) gunnery/units hunks OFF (routed; ships44 adds the Lua side) |
+| `bf621c5cf` | `kLuaKillBoxFromHitBound` ON (lua51's diff A) + `kPartyChangeRefreshesGunneryBound` ON |
+| `d9f13f80e` .. `7d61ca8d6` | strafe two, Lua alt zero, flak falloff, flak burst, tail gunner, draw pins, moveto draws, yaw mode, cadence ON |
+| `4becbc5cc` | audit9 port (192) |
+| `b0ef887a1` | `kPartyChangeRefreshesGunneryBound` added OFF (routed from ships44) |
+
+cc9-physics3 was told "plane batch landed at 088103ce0" and is re-checking the wins and re-planning USN01.
+
+**In flight: reference AH** (GAME_EXECUTABLE.md "Final AH" under '2026-10-12 ah', plan and predictions written).
+`local\g37_ah.ps1` built the anchor `local\g37_anc` (53 switches false, list `local\g37_ah_switches.txt`) and copied
+AH `local\g37_ah` (base `89e89ffa1`), then queued 58 runs (`local\g37_q_ahref.jobs`, progress `.progress`, logs
+`local\g37_{anc,ah}_<key>.log`; row keys as in `g36_ref_jobs.py`, win keys `u2 u1 l6 l10 u12 b1 e8`).
+**Next:** diff each key (`python tools/pair_diff.py local\g37_anc_<k>.log local\g37_ah_<k>.log`), then leave-one-out
+by the twelve groups listed in the plan, on every moved row and all seven wins: one `pair_export` per group with
+that group's switches `=false` on `89e89ffa1`, e.g. `local\g37_pair.ps1 -Sha 89e89ffa1 -Tag loo_<g> -OffFlip <list>
+-Flip <one harmless =true>` or a direct `pair_export` plus `g37_mkjobs.ps1`. Write the results and
+`reports/cc9_reference_rebaseline_36.json` (lease `cc9_g37_ah` holds both files). Report any win lost, with its group.
+
+**Tools** (this tree's `local\`): `g37_pair.ps1` (-BuildOnly / -RunOnly), `g37_mkjobs.ps1` (one interleaved queue
+from several exe dirs, so several ONs can share one OFF), `g37_res.ps1` (diff + one-line summary), `g37_peracft.py`
+(per-aircraft dive-bomb census), `g37_firstdiff.py`. Notes: launch queues with `Start-Process pwsh` (hidden) and wait
+with foreground loops; a `-BuildOnly` copies `build\` for OFF at its start, so do not rebuild a changed tree until
+its OFF copy exists. A stale `pair_export ... g36_loo_yard` python (PID 51076, dd31c362a, cc9-gunnery36's) has
+hung in this tree since the morning; harmless.
+
+## 195. Pause (cc9-gunnery37, 2026-10-12; the user paused the goal)
+
+- **`kAaKind6GateMountFrameBound`** (docs/CC13_AUDIT12_RECENT_FLIPS.md diff P3: the kind-6 gate solves in the
+  mount frame `[gun+3Ch]`, as the image does before 0085A8B0, instead of with mount NULL) is applied as written and
+  committed OFF. **Not paired.** Pair it on USN02 and USN13 (the most `kind6_gate_rejects`) and flip by verdict.
+- **Reference AH (194) was stopped before any run finished**: the queue and its waiting launches were killed; no
+  `local\g37_{anc,ah}_*` log is complete, and the anchor build `local\g37_anc` is on `89e89ffa1`, which is now stale.
+  Redo AH on main `2eea6749e` or later: anchor = every switch flipped since AG OFF (`local\g36_switches.py
+  10bef4a99 <base>`, then `local\g37_ah.ps1` with a fresh switch list); wins with the WINS_TABLE.md order files
+  (USN01 `p3_u1_o`, LOMP10 `p3_l10_b`, ESMP08 `l46_e8_orders2`, USN02 `s36_u2_p7`, USN12 `s38_u12_p2`, LOMP06
+  `l50_l6_q6`, BSM01 `l50_b1_a`) plus info rows USN15 `s44_u15_h` and USNOS `s43_os_x` (update `g36_ref_jobs.py`'s
+  WINS table first); leave-one-out only on rows whose outcome moves. The "Final AH" plan in GAME_EXECUTABLE.md is
+  superseded by that.
+- **JM08 mesh verdict** for `kLandStructureMeshHitTestBound` is lua51/lua52's (JM08 b3 with the switch ON); my
+  control pair is in 193.
+- Leases released.
