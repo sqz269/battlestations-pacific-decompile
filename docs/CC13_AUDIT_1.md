@@ -157,10 +157,31 @@ src/water_render.cpp:289 `if (!(cos_limit < forward_up))` nudges a NaN. Fix:
   was not run.
 - No Ghidra, ledger or source changes were made.
 
+## Second pass (2026-10-12)
+
+D1-D3 are fixed on this branch: 9eb9d7c10, 41789fbe9 and a55a497db. The open notes 2 and 3 are
+resolved by d5c458063 and aa0d0496c, and the 00A93690 empty-array case is now documented
+(583a3c5f5).
+
+| Routine / range | Source | Verdict |
+|---|---|---|
+| 00511F40 0051384C..005145DF carousel | src/menu_screens_2.cpp:1924 | CONFIRMED. The spacing is 0.46 [stored at +43Ch], the side panels sit at centre -/+ 0.46, and the frames and icons are looked up in native order. |
+| 00511F40 005145E2..0051469F selection | src/menu_screens_2.cpp:1972 | CONFIRMED. Jump table 00514BFC maps kinds 0..8 to +3D4h, +3E4h, +3F4h, +3C4h, +404h, +3F4h, +3F4h, none, +414h. |
+| 00511F40 005146A4..00514BAF keret frames | src/menu_screens_2.cpp:1991 | CONFIRMED. The position is (x + 0, 0 + y, z + 1.0 [00D7A210]), replayed with x87_sym; Capstone's `fadd st(1), st(0)` at 00514849 is the ST0 form. |
+| 0062C2C0 rank page 006359F6..00635F9C | src/ingame_gui.cpp:863 | CONFIRMED. The rank clamp is MOVZX/SUB 1/JNS/XOR, then 13h. The "next" threshold is skipped at rank byte 14h and "previous" at byte <= 1. Before = 0 on a signed JL. The bar inset is 0.00625 [00CF2920]. |
+| 0062C2C0 award layout 00636258..006363A7 | src/ingame_gui.cpp:917 | CONFIRMED, including the FCOMI quirk: the icon height (qword) is compared with the float-rounded text height, and the unrounded text height is recomputed on the other branch. Gap 1/144 [00CF4570], padding 1/72 [00CEBDD0]. |
+| 00B156C0 post objects, composite, final copy | src/scene_renderer_cc13.cpp:612..701 | CONFIRMED on 00B16998..00B16B84 and 00B16BBD..00B16C19. The double +21Ah/+21Bh test is native, 00B4FFE0 is the +23Ch getter, the composite order is 74h/80h/70h, the film gate is `film && (amount > 0 or film >= 2)` with strong = `amount > 0 or film == 3`, and +228h = extent.y / (1 - 2 * amount). |
+| 0078FCF0 ease / `modifier_ease` | src/cc13_camera_controllers.cpp:151 | CONFIRMED, including NaN, which reaches the 1 - 2(1-f)^2 branch on both sides. |
+| 00B9AE00 step 9 (B9BA2A..B9BD41) | src/water_render.cpp:318 | CONFIRMED for finite input. The XOR of the two side flags selects the reflection, and the blend matches. NaN-only difference: both side flags are formed as "JB -> 0", so an unordered dot gives flag 0, while the C++ `!(0 < d)` gives 1. This was not changed because it only affects NaN camera vectors. |
+| 00A8BD20 00A8D808..00A8DA20 near/far, mirror, final multiply | src/shadow_cascades_cc13.cpp:523 | CONFIRMED. 00D7A318 is (double)0.001f and 00CEFF98 is (double)0.6f. On the w < 0 branch, near = -0.0 - max(0.001, lo.z) and far = lo.z, as the C++ has it. The ortho result is copied to ESP+D4h, which is the left operand of the final 00413920 at 00A8DA09; mirror[0] (ESP+88h) is -1 unless the w flag is set. |
+
+Still not reviewed: 00B9AE00 steps 10..12 (matrix helper calls), the debriefing, scoreboard,
+objectives and scoring builders between 0062CBE0 and 006359A3, and 00B156C0's DRSH/SCNE
+host-call ordering beyond the spots above.
+
 ## Handoff
 
 Routing for the lead: D1 to the owner of src/gui_screens_3.cpp (cc13-gui lineage); D2 to the owner
 of src/map_screen_update_cc13.cpp (cc13-warnings1); D3 to the owner of src/water_render.cpp
-(cc13-water2). Not reviewed and still worth a pass: the remaining 0062CBE0..00636D78 page builders,
-00511F40 0051380C..00514BD6 (carousel layout x87), 00B9AE00 steps 9..12, the 00A8BD20 ortho branch
-and 00A8D27E onward, and the camera ease 0078FCF0 / `modifier_ease`.
+(cc13-water2). All three are now fixed on this branch; see "Second pass" for what was reviewed
+after that and what is still unreviewed.
