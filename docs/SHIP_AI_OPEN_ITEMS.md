@@ -16604,3 +16604,169 @@ handler.
   `Enterprise_sqn01|.-2` at 288.40 against 288.95 s; from there the shared RNG stream
   spreads it (ON: Enterprise elevator intakes 3, releases 42; OFF: 9 and 33). **Verdict: ON** (the store is
   unconditional in the image; no mechanism beyond the height to check).
+
+### 210.4 USNOS completes: variant x (cc9-ships43, 2026-10-12; lead item 2)
+
+**Result.** On this branch at 794e37ae7 (both 210 bounds ON), `local\s43_os_x.txt` (200000 frames, log
+`local\s43_p9_osxf.log`) **completes USNOS at 7475.82 s**: `summary mission end: completed at 7475.82 s
+(Mission.MissionStatus) text="The Japanese Empire is finished! - Mission Complete!" entity="Enterprise" objectives=9`.
+The exec guard logs `bsp: refused a mission script's process launch: sus_prog.exe` just before the end.
+
+**What the script needs** (this installation's `scripts/missions/COTP-USN/us_osumi.lua`, 2024-10-29):
+- `Mission.BaseCapped`: HQ1, HQ2 and CB2 all `PARTY_ALLIED` (lines 1080-1136).
+- `Mission.ReinDead`: every entry of `Mission.FinalTrgs` dead (lines 1181-1187). FinalTrgs is built in `luaReinTime`
+  (lines 1698-1704) and holds **Yamato and Musashi as well as Haku1-4**. Variant w had everything else and stalled
+  because Musashi lived.
+- Then `luaBombFadeOut` (line 973), and the end follows about 75 s later.
+
+**The chain** (each file is the previous one plus the change; all in this tree's `local\`):
+
+| variant | change | outcome on 794e37ae7 |
+| --- | --- | --- |
+| n (cf1e64d55) | j + DM1 moved 1 km NW at 47800 + Lexington/Reprisal strikes on the Hakus | Enterprise lives; 3 bases by 4234.58 s; Haku1/2 never hit; no end |
+| q | n + Loui1 and NH moved toward HakuNav1 (1000,-18000) at 118000, then attacking Haku1/2 | on 794e37ae7 TroopTrans3 dies at 1760.09 s (Bettys) and DM1 sinks the Enterprise at 2366.58 s, before the 47800 move |
+| s | q with the DM1 move at 30000 | Shima14 sinks the Enterprise at 2468.83 s |
+| t | q with the DM1 move at 44000 | Enterprise lives; an AI transport captures HQ1 at 2628.55 s; Loui1/Loui2 sink Haku2 6188.51 s and Haku1 6264.67 s; no CB2 (TroopTrans3 is dead) |
+| u | s + Enterprise 810s over TroopTrans3 at 31990-33990 | TroopTrans3 still dies (1759.54 s); fails at 2283.05 s |
+| w | t + TroopTrans5/6 on TroopTrans3's CB2 route from 53100 | CB2 captured 4237.30 s ("Bases captured: 3.00"); all four Hakus dead; Musashi alive, so no ReinDead |
+| **x** | w + Loui1 attacking Musashi every 600 frames in 78000-117400 | Loui2 sinks Musashi at 4100.40 s; NH sinks Haku1 7272.07 s and Haku2 7398.52 s; `HideScoreDisplay(4, 0)` at 7400.06 s; **completed 7475.82 s** |
+
+- p (n + the Enterprise moved south at 2395 s) is worse: the carrier turns toward Shima4-7, parked at about
+  (10700, -1800), and Shima4 sinks it at 2454.62 s.
+- The runs are deterministic: q, r (q without attack orders after 118000) and n re-run on 794e37ae7 all fail at 2367.28 s
+  with logs within one byte of each other, because they are identical until frame 118000.
+- Any change to the build moves USNOS from a few hundred seconds in (the lift-height flip moved the first death row
+  at 288 s). Plans are tied to the build they were tuned on; re-tune from x rather than from d.
+- **y** (x + NH also on Musashi in 78300-117300; log `local\s43_p9_osyf.log`) completes too, at 7687.83 s (entity
+  Essex): Loui2 sinks Musashi at 4092.27 s, Loui1 sinks Haku1 at 7505.75 s and Loui2 Haku2 at 7608.65 s, and the
+  `sus_prog.exe` refusal is logged. Two different endings from one plan, so the plan is not a knife-edge.
+
+## 211. Handoff (cc9-ships43, 2026-10-12)
+
+### 211.1 The player launch's slot: 00660190's cursor and state 5 only (`kPlayerLaunchScreenCursorBound`, committed OFF)
+
+docs/CC13_AIR_OPS_SLOT_GROWTH.md (cc13) settles 210's slot question. 006C7210 always grows the deck, but its only
+caller is 006CC690 (Lua `LaunchSquadron`). The Support Manager launch (0067A54A-0067A5E6) launches the slot under
+the screen cursor (+324h) and requires state 5 (0067A565). So 210's "no such slot = the native 4-slot limit" is right
+about the outcome and wrong about the mechanism: the deck has no slot limit; four is the screen's widget layout.
+- The binding, in `player_air_ops_launch` (src/game_hosts_script_orders.cpp, cc13's diff): slot 0 becomes
+  00660190's opening cursor (the first slot that is out in state 3/4 or in state 2/5, clamped to 3), and only state
+  5 is accepted. OFF keeps 006C7210's pick and "state 1 or 5". The harness keeps emulating the player, so it must
+  not switch to 006CC690.
+- Predictions: smoke identical. USNOS j and x move from the first slot-0 launch where the two picks differ. The
+  cursor stops on a slot whose squadron is still out (state 3/4), and that launch is now refused ("not in state 5"),
+  so ON refuses more launches while squadrons are airborne. Launches into a state-1 slot (cooldown) are refused
+  too. Expect fewer accepted Enterprise launches and a different USNOS outcome; mechanism check: the refusals name
+  state 5, and no ON launch lands in a slot that is not in state 5.
+
+### 211.2 State at handoff
+
+- **Landed on main:** 210 / 210.1 (`kLandCommandOwnTargetBound` ON), 210.3 (`kCarrierLiftHeightFromRunwayBound` ON,
+  plus the post-free audit table), 210.4 (the USNOS win on 794e37ae7, variants x and y). 211.1 is this branch's
+  last code change (OFF until its pair, 211.3).
+- **USNOS win:** `J:\PROG\battlestations-pacific-decompile-cc9-ships43\local\s43_os_x.txt` (1134 lines), launcher
+  `local\s43_rows.ps1` row `osxf` (USNOS, 200000 frames, `-WaitSeconds 14400`, `--stop-after-end 40`). Copy both
+  before this tree is removed. `local\s43_peek.ps1 -Log <log>` prints the headline lines (deaths, captures, end,
+  the exec guard line).
+
+### 211.3 How to re-tune USNOS from x
+
+USNOS is chaotic: any change in the build moves it, often within the first 300 s (210.3). Re-tune from x in this
+order, one variant per run, and read each failure before changing more than one thing:
+1. **The Enterprise must live to about 7500 s.** DM1 parked beside it shells it when enemies close (no line-of-fire
+   check, GUNNERY 164). x moves DM1 1 km NW at frame 44000 (`44000 moveto DM1 12100 -3200`). If DM1 kills it
+   earlier, move that order earlier (30000 lets Shima14 through, variant s). Never move the Enterprise itself; it
+   parks facing west, and any moveto turns it toward Shima4-7, parked at about (10700, -1800) (variants f, p).
+2. **Bases:** HQ2 goes at 1702.90 s. HQ1 (2628.55 s in x) goes to whichever transport is alive (TroopTrans3 died
+   to Bettys at 1760 s on 794e37ae7). CB2 needs a transport on the route (-4300,-1000) -> (-10400,-2800) ->
+   (-9061,-6396) -> (-8600,-7600); x sends TroopTrans5 and TroopTrans6 from frame 53100 (`s43_mk_w.py`).
+3. **FinalTrgs** = Yamato, Musashi, Haku1-4 (us_osumi.lua:1698-1704). Loui2 sinks Yamato unordered (3868.45 s in
+   w and x), and Musashi only once Loui1 is ordered onto it (x: Loui1 on Musashi every 600 frames in 78000-117400, `s43_mk_x.py`). Haku3/Haku4 die near the
+   Enterprise to Gear2/Gear3 and DM1 about 2400-2450 s. For Haku1/Haku2, x moves Loui1 and NH toward HakuNav1
+   (1000,-18000) at frame 118000 and then attacks them (`s43_mk_q.py`).
+4. The end follows `HideScoreDisplay(4, 0)` by about 75 s; check for the `sus_prog.exe` refusal line.
+
+### 211.4 Open items
+
+1. **211.1's verdict** (results in 211.5). If ON, the harness's slot-0 launches follow the screen cursor, and USNOS
+   needs re-tuning (step 3 above): strikes then only go when a slot is back in state 5 with stock.
+2. **The 124 Enterprise strikes at Haku1/2 that never hit** (n). The lead links this to gunnery35's dive-bomb
+   steering fault (GUNNERY 175a). Not yet counted: queued vs launched vs released. One sample, Enterprise_sqn58
+   (class 331, launched 2402 s at Haku1 6.4 km away), flew the torpedo descent and never released before the log
+   lost it. Re-run n after 175a lands and count the three stages.
+3. **Lead item 8a (party change to targeting): not started.** cc13's audit (docs/CC13_AUDIT_CC9_SWITCHES.md 8a)
+   finds that no SetParty path calls `refresh_unit_side`, so gunnery's `row.side` lags a capture by a step and never
+   follows a script SetParty on a non-capture unit. Read where the image propagates a party change to targeting
+   (the SetParty vtable+2Ch 00951F30 -> 00928F50 chain), then route the edit to gunnery35 behind an OFF switch,
+   paired on USNOS j/n.
+4. The `+105h` "Lua listener handled" byte and the level-bomb post-delete code (210.3) belong to other lanes.
+
+### 211.5 Results: 211.1 stays OFF; x does not win on current main
+
+**211.1 pair** (296607ca2; OFF = the tree build, ON = `local\s43_lc`; logs `local\s43_lc_{off,on}_*`):
+- smoke: exit 0.
+- osj (USNOS j, 44000): moved. OFF accepts 14 player launches (31 "no such slot", 12 dead targets); **ON accepts
+  none**: 53 of 56 are refused with "the slot is not in state 5", from the first launch at mission start.
+- **Verdict: OFF, mechanism failure.** In this host a slot reaches state 5 only by the 006C0510 refill of a slot in
+  state 3/4 with no squadron (air_operations.cpp:716-739). A squadron's return (006C5950) and the scene load leave
+  slots in state 1, and nothing moves 1 to 5. The screen's state-5 gate at 0067A565 must therefore sit behind a
+  configuration step the player performs on the screen first (class, count and target, through 006C0F00 /
+  006CCDA0 with apply = 0?), which the harness's one-line `launch` does not model. Read that step (0067A433 to
+  0067A54A and the class/count button handlers) before binding the gate again. The cursor half of the diff may be
+  right on its own, but it was not paired separately.
+- The ON USNOS x run was stopped once osj showed no launch is accepted.
+
+**x on current main** (808f219e8 + 211.1 OFF, gameplay identical to main; log `local\s43_lc_off_osxf.log`,
+`--stop-after-end 40`): **no win.** HQ2 is never neutralized. HQ2 itself kills TroopTrans3 at 1757.44 s, TroopTrans5
+dies at 2717.13 s (Shimotsuke) and TroopTrans6 at 3118.47 s (Ada3). No base is captured, Takao1 sinks only at
+2047.22 s, and the run reaches 200000 frames with `summary mission end: none`. As agreed, not re-tuned: start from
+x with 211.3, beginning with the HQ2 approach (TroopTrans3's legs at 31000 and 39960).
+
+## 212. The player's targeted launch is 00673A10, which takes state 1 or 5; the state-5 gate is the cursor key (cc9-ships44, 2026-10-12; lead item 1, a read)
+
+211.5 assumed a hidden configuration step moves a slot from state 1 to state 5 before the screen launches it. There
+is none. The Support Manager screen (00675C40) has two launch paths, and the harness's `launch base class count
+target` line is the second one.
+
+| path | where | slot | states accepted | target |
+| --- | --- | --- | --- | --- |
+| A, the cursor key | 0067A441-0067A5F3, screen mode `[screen+5Ch] == 0` and input byte `+0Bh` set | the cursor `+324h` | **5 only** (0067A565) | the screen's stored `+21Ch` |
+| B, the targeted launch | 0067A5F9-0067A649 -> **00673A10** (00674317-006748D7) | the **first slot in state 1 or 5**, walking 0 .. block+50h | 1 or 5 | the hovered unit (0067A60E-0067A62B, input byte `+10h`), or none |
+
+Evidence for path B (disk bytes, `disasm-raw`; 00673A10's live decompile is truncated):
+- 0067A5F9: screen mode `[screen+5Ch] == 2` (the target-pick mode). 0067A60E reads the hovered unit
+  (`[[00E198C4]+CCh]+4Ch`); none -> 0065F170 (the unavailable sound). 0067A62B `0065BE80` stores it in
+  `screen+21Ch` (it clears `+21Ch` for a unit that fails vtable+5Ch(2)). With the other input byte the same call
+  gets 0 and clears the target. 0067A642 calls 00673A10 when `[screen+0Ch]` equals the 0.0 at 00D7A218 (UCOMISS / LAHF / `TEST AH,44h` / JP).
+- 00673A43: `screen+34Ch == 0` -> 00674317: `screen+1F4h` non-zero (a base is selected, the same test path A makes
+  at 0067A4C8), and the base answers vtable+5Ch with 45h or 9 (airfield / carrier) -> 0067469F. ESI is the air-ops
+  block (`entity+72Ch` for 45h, `+1188h` otherwise, 006746CD-006746F5), as in path A.
+- 00674765-006747E5, the slot walk: copy slot `i` (`0065CAF0`), read the copy's +2Ch state and +28h squadron.
+  Accepted: state 1 or 5 (with or without a squadron); states 2, 3, 4 and 6 are skipped. **The first accepted slot is
+  used; when none is, the function returns with no launch and no sound (006747E7). There is no deck growth.**
+- 00674801-0067484D: `006BF310(class = screen+2A0h)`; stock <= 0 -> 00674B46 (nothing); count =
+  `min(stock, screen+2B4h)`; `006C4780 -> 006C0F00(slot, class, count)`.
+- 0067485D `006BA4B0` (a one-store setter: slot+10h = `screen+334h`, the screen's equipment pick).
+- 0067486A: target `screen+21Ch` alive (0043F080) -> `006C4F70(slot, target)` and the 82h message
+  {slot, order 3, target, game+18ECh} through 00656280 / 0077C2A0 (006748B5-006748D7); no target -> 006748DE (an
+  order without a target, not read).
+- `screen+34Ch != 0` takes 00673A49-00674316 instead (a unit-list search on `+3A4h`/`+3D8h`; not read, provisional:
+  a non-air support order).
+
+Consequences:
+1. **The OFF code is already path B**: `air_ops_pick_launch_slot_006c7210` returns the first slot in state 1 or 5
+   and otherwise `slots.size()`, which `player_air_ops_launch` refuses as "no such slot" (no growth, as at 006747E7);
+   the state test is "1 or 5". Only its citations are wrong (it cites path A's 0067A57D-0067A5E6 and 006C7210).
+2. **`kPlayerLaunchScreenCursorBound` models path A** (the cursor and state 5), which the harness's targeted `launch`
+   line never is. 211.5's ON result (53 of 56 refused, "not in state 5") is that mismatch, not a missing player
+   step. Verdict: **stays OFF; retire it** rather than re-pair. A pair of path B against OFF would be identical in
+   effect, so none was run.
+3. Remaining differences in OFF against path B, recorded, not bound: (a) path B sets slot+10h from the screen's
+   equipment pick `screen+334h` after 006C0F00, while the harness uses the class default (class+134h through
+   006C0F00); `+334h`'s producer is not read, so whether a player who never touches the equipment gets the default
+   is open. (b) The harness's explicit `slot_number > 0` has no image counterpart on path B (the player cannot pick
+   a slot there); it remains a harness convenience.
+4. Path A is the player relaunching a slot whose squadron is gone (006C0510 promotes a squadron-less state 3/4 slot
+   to 5) at the stored target. The harness has no line for it; none is needed for the wins so far.
+
+Exact edit routed to the lead for `src/game_hosts_script_orders.cpp` (cc9-lua51's file): see the 212 report.

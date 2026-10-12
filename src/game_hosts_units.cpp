@@ -529,6 +529,12 @@ struct GameUnitSlot {
     // attack order, which is what every aircraft in IJN01 and USN01 has.
     unsigned int attack_command_class{0};
     bool dive_bomb_task_installed{false};
+    // kTaskProfileActivationOnlyBound: set at each task install, cleared by the
+    // profile call it stands for (0099AEB3 -> task vt[54h]).
+    bool db_profile_activation_pending{false};
+    bool lb_profile_activation_pending{false};
+    bool moveto_profile_activation_pending{false};
+    bool land_profile_activation_pending{false};
     bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
     // Packet cc9_dogfight_task: the dogfight task (kind 2), installed when
     // 007EEC50 chose class 00E08F58. docs/DOGFIGHT_TASK.md.
@@ -667,6 +673,9 @@ struct GameUnitSlot {
     // fields, named by their offset in that object.
     std::size_t moveto_target_plus_one{0};   // approach+44h, the order's target
     float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
+    // approach+68h: 50.0 (00CEB4D4) from 009C1C30, redrawn U(FollowDist/1,
+    // FollowDist/2) by the activation's 009C3650 (kMoveToActivationDrawsBound).
+    float moveto_follow_dist_68{50.0f};
     float moveto_refresh_58{0.0f};           // countdown; period +54h = 0.5 (009C1CE0)
     float moveto_dwell_60{0.0f};             // the arrival dwell
     float moveto_distance_64{0.0f};          // planar distance, 009BEBA0
@@ -3919,7 +3928,13 @@ struct GameUnitsHost::Impl {
                 }
             }
             GameUnitSlot& block = sq != nullptr ? *sq : slot;
-            if (leader) {
+            bool profile_runs = true;
+            if constexpr (kTaskProfileActivationOnlyBound) {
+                // 0099AEB3: 009C8920 runs once, when the task becomes the head.
+                profile_runs = slot.db_profile_activation_pending;
+                slot.db_profile_activation_pending = false;
+            }
+            if (leader && profile_runs) {
                 const float value = static_cast<float>(
                     static_cast<double>(release_altitude_draw_00bd2f10(
                         slot.row.name + "#dp", 0.0f, 15.0f))
@@ -4594,6 +4609,11 @@ struct GameUnitsHost::Impl {
         in.altitude = slot.motion.position[1];
         in.dive_altitude_a8 = slot.db_dive_alt_a8;
         in.rearm_timer_1c = slot.db_aim_rearm_1c;
+        // SUBSTITUTION, labelled: 009C6114 draws U(0.5, 1.0) (00CE3800 0.5,
+        // FLD1) from 00BD2F10 with ECX = 1 after each release and stores it
+        // to state+1Ch; this host takes the low end and draws nothing. It
+        // gates only a second release within one aimdive (cc13 plane-bot
+        // audit 7a, GUNNERY 181.2).
         in.rearm_draw = bsp::dive_bomb_constant::kAimDiveRearmLow;
         // 009C59BA-009C5C9B, reconstructed.
         bsp::DiveBombAimErrorInputs e;
@@ -5631,6 +5651,11 @@ struct GameUnitsHost::Impl {
     // Packet cc9_near_field_probe: 007F0280 at the dive-bomb attack run
     // (009C42B8) and the fly-over speed slot (009C6B3A). docs/NEAR_FIELD_PROBE.md.
     static constexpr bool kNearFieldProbeBound = true;
+    // cc13-audit10 (docs/CC13_AUDIT_PLANNER_ROLL.md finding 1): the roll arm's
+    // h is the yaw base numerator [ESP+6Ch] (0099DF87), not the raw heading
+    // error. 0099E127 loads it for the deadband and the bank ask, and 0099E02B
+    // for the pitch-floor ramp. Behaviour-changing; pair before ON.
+    static constexpr bool kRollArmBaseNumeratorBound = false;
     // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
     // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
@@ -7133,6 +7158,14 @@ struct GameUnitsHost::Impl {
     // is within TurnCircleRadius + approach+68h (50.0) and faster than 007C47F0.
     // False: squadron+3A0h always (a record).
     static constexpr bool kMoveToTargetSpeedOverrideBound = true;  // ON: five rows identical (PILOT_MOVETO_TASK)
+// Packet cc13-cadence3 (docs/CC13_TASK_PROFILE_CADENCE.md section 10). The
+// moveto task's activation (0099AEB3 -> vt[54h] 009C3650) draws approach+68h =
+// U(FollowDist/1, FollowDist/2) at 009C367C and approach+2Ch = U(0,
+// TravelAltRandom) at 009C36A3, both stream 1, then refreshes (009C36BF).
+// True: the install makes both draws on "#mt" keys after the construction
+// draws and refreshes again. False: +68h stays 50.0 and +2Ch keeps its
+// construction draw U(0, MaxAltOffset).
+static constexpr bool kMoveToActivationDrawsBound = false;
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};
@@ -7153,7 +7186,7 @@ struct GameUnitsHost::Impl {
         const bsp::OceanVec3& v = t.motion.linear_velocity;
         const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
             + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
-        const float reach = unit.plane_turn_circle_radius + 50.0f;          // 009C23E3 FSTP
+        const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
         ++ts_override_within;
         if (!(static_cast<double>(speed) >
@@ -11620,6 +11653,7 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_deck_plus_one = deck + 1u;
     unit.land_explicit_site = explicit_site;
     unit.land_task_installed = true;
+    unit.land_profile_activation_pending = true;    // 0099AEB3
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
     // a wing member in follow (land); then the state's enter, vtable[4].
@@ -21446,6 +21480,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void lb_install_009b7990() {
                         using namespace bsp::level_bomb;
                         unit_.level_bomb_task_installed = true;
+                        unit_.lb_profile_activation_pending = true;   // 0099AEB3
                         unit_.lb_target_plus_one = unit_.command_target_plus_one;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         a = bsp::LevelBombApproach{};
@@ -21580,7 +21615,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // profile re-runs is the arm's own update a moment later.
                     void lb_cruise_profile_009b8c90(bool leader) {
                         bsp::LevelBombApproach& a = unit_.lb_ap;
-                        if (leader) {
+                        bool profile_runs = true;
+                        if constexpr (kTaskProfileActivationOnlyBound) {
+                            // 0099AEB3: the body runs once, when the task becomes
+                            // the head; the 0099B740 below stands for 0099993C.
+                            profile_runs = unit_.lb_profile_activation_pending;
+                            unit_.lb_profile_activation_pending = false;
+                        }
+                        if (leader && profile_runs) {
                             GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
                             if (sq != nullptr) {
                                 const double now = owner_.summary.simulated_seconds;
@@ -21603,7 +21645,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B8D47-009B8D69: +4B0h = max(AttackDist x +41Ch, +4B0h).
                         const float floor_b8 = lb_tuning(
                             &bsp::GameTuningBlock::pilot_level_bomb_attack_dist, 2000.0f) * a.speed_ratio_24;
-                        if (!(floor_b8 < a.in_range_b8)) a.in_range_b8 = floor_b8;
+                        if (profile_runs && !(floor_b8 < a.in_range_b8)) a.in_range_b8 = floor_b8;
                         // 0099B740: the leader authorises the attack (vt[38h] is
                         // 0099B710, true), and the squadron's +370h is what every
                         // member reads.
@@ -22389,6 +22431,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
+                            unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
                             // 007B8AD0 picks: 009C7777 CALL / 009C777C TEST AL,AL
                             // / 009C777E LEA ECX,[ESI+4F0h] / 009C7784 JNZ over
@@ -26340,6 +26383,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
                         if (unit_.moveto_task_installed) return;
                         unit_.moveto_task_installed = true;
+                        unit_.moveto_profile_activation_pending = true;   // 0099AEB3
                         unit_.moveto_arrived_454 = false;       // 009C1D0A
                         unit_.moveto_timer_548 = 1.0f;          // 009C307C
                         unit_.moveto_stagger_54c = -0.5f;       // 009C3089, midpoint
@@ -26382,6 +26426,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ? (unit_.moveto_arrived_454 ? GameUnitSlot::MoveToTaskState::kCircle
                                                         : GameUnitSlot::MoveToTaskState::kMoveTo)
                             : GameUnitSlot::MoveToTaskState::kFollow;   // 009C3097-009C30BF
+                        unit_.moveto_follow_dist_68 = 50.0f;            // 009C1D0D, 00CEB4D4
+                        if constexpr (GameUnitsHost::Impl::kMoveToActivationDrawsBound &&
+                                      bsp::kMoveToTaskTickBound) {
+                            // 0099AEB3 -> 009C3650, the task's activation right
+                            // after this install (the head changed). Draws 6 and 7
+                            // on stream 1 in the image; keyed here. Every unit,
+                            // before 009C36CA's leader gate. LABELLED: the host
+                            // install stands for the head change.
+                            float fd1 = 20.0f, fd2 = 200.0f, rnd = 50.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                fd1 = g.pilot_move_to_follow_dist_1;     // tuning+368h
+                                fd2 = g.pilot_move_to_follow_dist_2;     // tuning+36Ch
+                                rnd = g.pilot_move_to_travel_alt_random; // tuning+364h
+                            }
+                            const std::string& n = unit_.row.name;
+                            unit_.moveto_follow_dist_68 = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt68", fd1, fd2);                 // 009C367C, +460h
+                            unit_.moveto_alt_offset_2c = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt424", 0.0f, rnd);               // 009C36A3, +424h
+                            unit_.moveto_approach_6c = 0.0f;            // 009C36B7, +464h
+                            moveto_refresh_009beba0();                  // 009C36BF
+                        }
                         owner_.log.notef("  moveto task %s: installed kind 7, leader=%d state=%s "
                             "range=%.1f (009C3000)", unit_.row.name.c_str(), leader ? 1 : 0,
                             unit_.moveto_state == GameUnitSlot::MoveToTaskState::kFollow
@@ -26430,8 +26497,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const double now = owner_.summary.simulated_seconds;
                                 const bool below_zero = !sq->sq_freeze_38d
                                     && now >= sq->sq_timer_expiry_380;
+                                bool profile_runs = true;
+                                if constexpr (kTaskProfileActivationOnlyBound) {
+                                    // 0099AEB3: the gate is 009C3650's, run once at
+                                    // the head change and by the leader only
+                                    // (009C36CA 007B8AD0); 009BEBA0 itself just
+                                    // reads +394h. LABELLED: consumed by the
+                                    // install's refresh (009C1D9D), one call early.
+                                    profile_runs = unit_.moveto_profile_activation_pending
+                                        && owner_.unit_is_flight_leader_007b8ad0(
+                                               unit_.process_index);
+                                }
                                 if (sq->sq_freeze_38d) {
                                     cruise = sq->sq_alt_394;             // 009C372A JNZ, return
+                                } else if (!profile_runs) {
+                                    cruise = sq->sq_alt_394;             // no profile call
                                 } else if (below_zero && !sq->sq_lock_3a9) {
                                     sq->sq_alt_set = false;             // the profile overwrites
                                 } else {
@@ -26440,6 +26520,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                                 ++owner_.summary.squadron_travel_alt_refreshes;
                                 sq->sq_last_cruise = cruise;
+                            }
+                            if constexpr (kTaskProfileActivationOnlyBound) {
+                                unit_.moveto_profile_activation_pending = false;
                             }
                         }
                         unit_.moveto_point[1] = cruise - unit_.moveto_alt_offset_2c;
@@ -28377,6 +28460,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // arm stands for the profile's call, the block is the
                     // squadron's slot, and the dirty byte +3ADh is not modelled.
                     void land_cruise_profile_009b3c60() {
+                        if constexpr (kTaskProfileActivationOnlyBound) {
+                            // 0099AEB3: once, when the land task becomes the head.
+                            if (!unit_.land_profile_activation_pending) return;
+                            unit_.land_profile_activation_pending = false;
+                        }
                         if (!owner_.unit_is_flight_leader_007b8ad0(unit_.process_index)) return;
                         GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
                         if (sq == nullptr) return;
@@ -30432,6 +30520,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // never leave them in.
                         bsp::PilotBotRollInputs rin;
                         rin.heading_error = term.heading_error;
+                        if constexpr (GameUnitsHost::Impl::kRollArmBaseNumeratorBound) {
+                            // 0099E127 FLD [ESP+80h] after SUB ESP,14h at
+                            // 0099E110 is frame [ESP+6Ch], which 0099DF87
+                            // stored: SoftHdgZone-deadbanded, SoftHdgMul-scaled.
+                            // 0099E02B reads the same slot for the ramp. Both
+                            // are 0 outside mode 2, and the arm then does not
+                            // run (0099E275).
+                            rin.heading_error = scratch.base_num;
+                        }
                         rin.bank = unit_.plane_bank_angle_c68;
                         rin.dt_scale = 1.0f;
                         rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;

@@ -1,0 +1,8 @@
+{
+  "doc": "docs/CC13_AUDIT_MG_AA_LETHALITY.md",
+  "steps": [
+    {"address": "007BBDB1", "native": "008777D0", "note": "the plane hit handler 007BBCF0 ends in the base hit record"},
+    {"address": "008778A4", "native": "00470510", "note": "008777D0's hull pass computes (record+14h * modifier - armour) * weapon scale"},
+    {"address": "0095DA8D", "native": "0087D730", "note": "AddDamage 0095DA00 (vtable[1ACh]) applies the role-0 cheat inverse, then the party HP inverse"}
+  ]
+}

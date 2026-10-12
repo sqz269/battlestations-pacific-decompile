@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "packet": "cc13-scope2",
+    "doc": "docs/CC13_OMITTED_TASKS_SCOPE.md",
+    "note": "Call sites cited by the scope doc, found by a rel32 scan of the PE on disk (local/sc2b_xscan.py). Read-only scope; no reconstruction."
+  },
+  "steps": [
+    {"address": "0099A24A", "native": "009BDBB0", "function": "0099A170", "note": "moveonpath arm -> plane moveonpath task factory"},
+    {"address": "0099A43C", "native": "009A2F40", "function": "0099A170", "note": "closetoship arm -> factory"},
+    {"address": "0099A462", "native": "009A6970", "function": "0099A170", "note": "depthcharge arm -> factory"},
+    {"address": "009BDBE9", "native": "009BCE50", "function": "009BDBB0", "note": "moveonpath factory -> constructor"},
+    {"address": "009A3573", "native": "009A31A0", "function": "009A3390", "note": "depth-charge approach ctor -> RNG helper"},
+    {"address": "009A5D3C", "native": "009A5330", "function": "009A5D00", "note": "depth-charge RNG site caller"},
+    {"address": "009A25A3", "native": "009A1F00", "function": "009A2500", "note": "closetoship state registration -> RNG state ctor"},
+    {"address": "009A26B8", "native": "009A1F00", "function": "009A2610", "note": "closetoship load path -> RNG state ctor"},
+    {"address": "009A232E", "native": "009A1FC0", "function": "009A2170", "note": "closetoship RNG state ctor"},
+    {"address": "00944C44", "native": "00941FA0", "function": "00944680", "note": "Lua Spawn -> placement search"},
+    {"address": "00944C64", "native": "009426D0", "function": "00944680", "note": "Lua Spawn -> placement check"},
+    {"address": "00944EF6", "native": "00942CB0", "function": "00944680", "note": "Lua Spawn direct-placement branch"},
+    {"address": "00942D25", "native": "00941FA0", "function": "00942CB0", "note": "direct placement -> placement search"}
+  ]
+}

@@ -13,6 +13,13 @@ namespace {
 // and 009C5E91 (the -0.0 at 00D7A208).
 float fold(float v) noexcept { return (v > 0.0f) ? v : (-0.0f - v); }
 
+// GUNNERY 181.2 (cc13 plane-bot audit row 6): 009C5F79's FSTP float writes
+// AimPitchRatio x |pitch| over [ESP+24h] (frame base E, ESP = E-14h there),
+// the slot that held |pitch|; 00419010 is RET 14h, so 009C5FA7's FLD
+// [ESP+24h] reloads the product. ON: the brake floor takes x1, as the image
+// does. OFF: the brake floor takes |pitch| (the host before section 181.2).
+inline constexpr bool kAimDiveBrakeRatioBound = true;
+
 }  // namespace
 
 DiveBombAimDiveTail dive_bomb_aimdive_tail_009c5db8(
@@ -61,9 +68,11 @@ DiveBombAimDiveTail dive_bomb_aimdive_tail_009c5db8(
     const float power_cap = dive_bomb_interpolate_clamped_00419010(
         0.0f, in.max_power_44, 1.0f, in.min_power_48, x1);
     // 009C5FA7-009C5FCB: the brake floor, min brake at a level stick rising to
-    // max brake at a full one.
+    // max brake once |pitch| x AimPitchRatio reaches 1: 009C5FA7 reloads the
+    // slot 009C5F79 overwrote with x1 (kAimDiveBrakeRatioBound above).
     const float brake_floor = dive_bomb_interpolate_clamped_00419010(
-        0.0f, in.min_brake_50, 1.0f, in.max_brake_4c, a);
+        0.0f, in.min_brake_50, 1.0f, in.max_brake_4c,
+        kAimDiveBrakeRatioBound ? x1 : a);
     // 009C5FD4-009C6013: v = clamp((h - margin) / 120, 0.01, 1).
     float v = static_cast<float>(
         (static_cast<double>(in.height_above_aim_14) - static_cast<double>(margin)) /

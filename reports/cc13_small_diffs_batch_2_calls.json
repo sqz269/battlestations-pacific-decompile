@@ -1,0 +1,30 @@
+{
+  "packet": "cc13-smalldiffs1",
+  "doc": "docs/CC13_SMALL_DIFFS_BATCH_2.md",
+  "steps": [
+    {"address": "009C1D9F", "native": "009BEBA0", "function": "009C1C30", "note": "moveto construction refresh (the host comment cites 009C1D9D, the MOV ECX before it)"},
+    {"address": "009C36BF", "native": "009BEBA0", "function": "009C3650", "note": "moveto activation profile refreshes before its leader gate"},
+    {"address": "009C36CA", "native": "007B8AD0", "function": "009C3650", "note": "leader gate before the +394h / +3ADh writes"},
+    {"address": "009CB879", "native": "00BD2F10", "function": "009CB780", "note": "goaway bank draw, then FMUL qword [00D05858] at 009CB87E"},
+    {"address": "009CC154", "native": "009CB500", "function": "009CC020", "note": "goaway state built first"},
+    {"address": "009CC165", "native": "009CAC80", "function": "009CC020", "note": "then the attackrun state"},
+    {"address": "009CACDA", "native": "00BD2F10", "function": "009CAC80", "note": "attackrun +1Ch = -U(0, 1), ECX = 1"}
+  ],
+  "instructions": [
+    {"address": "009BEBAA", "text": "cmp byte ptr [eax + 0x3ad], 0 (eax = approach+0Ch, the squadron block)"},
+    {"address": "009BEBB7", "text": "movss dword ptr [esi + 0x2c], xmm0 (xmm0 = 0)"},
+    {"address": "009BEBFA", "text": "fsub dword ptr [esi + 0x2c]"},
+    {"address": "0089F729", "text": "mov byte ptr [esi + 0x3ad], 0 (SquadronSetTravelAlt)"},
+    {"address": "008A2489", "text": "mov byte ptr [esi + 0x3ad], 0 (SquadronSetAttackAlt)"},
+    {"address": "008A26B9", "text": "mov byte ptr [esi + 0x3ad], 0 (SquadronSetReleaseAlt)"},
+    {"address": "009C375A", "text": "mov byte ptr [esi + 0x31], 1 (esi = block+37Ch)"},
+    {"address": "009C3906", "text": "mov byte ptr [esi + 0x31], 1 (esi = block+37Ch)"},
+    {"address": "009C89D6", "text": "mov byte ptr [edi + 0x3ad], 1"},
+    {"address": "007F2C1A", "text": "mov byte ptr [esi + 0x31], 1 (block init, esi = block+37Ch)"},
+    {"address": "009CB87E", "text": "fmul qword ptr [0xd05858]"},
+    {"address": "009CB6F8", "text": "fadd qword ptr [0xd05850]"},
+    {"address": "009CAB7B", "text": "fld qword ptr [0xd057d8]"},
+    {"address": "009CACE4", "text": "fstp dword ptr [esi + 0x1c] after fchs"},
+    {"address": "009CAD90", "text": "attackrun enter: +20h = 0, +18h = [00CE7804] 0.4; +1Ch untouched"}
+  ]
+}
