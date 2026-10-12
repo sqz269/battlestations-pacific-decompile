@@ -18,6 +18,9 @@ from capstone import CS_ARCH_X86, CS_MODE_32, Cs
 ROOT = Path(__file__).resolve().parents[2]
 SEGS = [20, 17, 23, 26, 27, 29, 6, 15, 12, 19, 2, 9, 78, 81, 84, 85, 86, 88, 89, 90, 91, 92, 93, 94, 96,
         43, 45, 46, 61, 64, 65, 76, 77, 79, 80, 82, 83, 25, 22, 16, 28, 4, 10, 5]
+# Segment ids on the command line replace the list (cc13-sweep6D: 30 31 32 33 34).
+if len(sys.argv) > 1:
+    SEGS = [int(s) for s in sys.argv[1:]]
 EXE = json.loads((ROOT.parent / 'battlestations-pacific-decompile' / 'exports/bsp/disk_binary.json').read_text())['path']
 
 db = sqlite3.connect(ROOT / 'local/bsp_index.sqlite')
