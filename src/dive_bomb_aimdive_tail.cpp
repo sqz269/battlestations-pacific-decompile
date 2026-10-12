@@ -18,7 +18,7 @@ float fold(float v) noexcept { return (v > 0.0f) ? v : (-0.0f - v); }
 // the slot that held |pitch|; 00419010 is RET 14h, so 009C5FA7's FLD
 // [ESP+24h] reloads the product. ON: the brake floor takes x1, as the image
 // does. OFF: the brake floor takes |pitch| (the host before section 181).
-inline constexpr bool kAimDiveBrakeRatioBound = false;
+inline constexpr bool kAimDiveBrakeRatioBound = true;
 
 }  // namespace
 

@@ -12429,3 +12429,21 @@ runs. SPVeteran's brakes are 0.0 either way, so skill-2 pilots cannot move.
 The re-arm draw (audit 7a): `009C6106`-`009C6119` call `00BD2F10` with `ECX = 1`, `[ESP] = 0.5` (`00CE3800`,
 bytes `00 00 00 3F`) and `[ESP+4] = 1.0` (`FLD1`), and `009C6119 FSTP [ESI+1Ch]` stores the draw. The host's fixed
 `kAimDiveRearmLow` is now labelled a SUBSTITUTION in `src/game_hosts_units.cpp` (comment only).
+
+### 181.1 The pairs (OFF = this tree's build of `e9bcc627c`, copied to `local\g36_brOFF`; ON = `pair_export.py --flip kAimDiveBrakeRatioBound=true`, `local\g36_br`; logs `local\g36_br{off,on}_<row>.log`, diffs `local\g36_bd_<row>.txt`)
+
+A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 1 (gameplay identical).
+
+| row | exit | dive-bomb-task releases | other |
+|---|---|---|---|
+| USN04 phase 2 (`s39_u4_p1.txt`, 45000 frames, 0.0222 s, jitter `20,3`) | 3 | 1 of 33 = 1 of 33 | deaths 69 = 69, 32 rows change (Vals first); hits 1396 -> 1385, shots 31223 -> 31405 |
+| JM08 r7 (`l50_j8_r7.txt`, 20000 frames) | 3 | 10 of 15 -> **20 of 33** | deaths 161 -> 147, units 497 -> 479, torpedo releases 6 of 58 -> 0 of 13 (a cascade) |
+| USN01 win (`l50_u1_u2.txt`, 22000 frames) | 1 | 0 of 5 both | completed at 475.21 s both |
+
+- **Mechanism.** The first divergent `db aim` line on both moved rows is an aimdive exit, the ON aircraft higher
+  and later: JM08 `MainAirFieldEntity 01_sqn02` aimdive -> aimglide at tick 1562, alt 569.6 -> tick 1564, alt 574.0;
+  USN04 `D3A Val #1.1` at tick 1109, alt 573.5 -> 578.0 (d 653.8 -> 659.0). A harder brake slows the dive, as
+  predicted. The control row has no release in either build and does not move.
+- USN04's Vals still release once in 33; the brake floor is not the "never release" cause (175(a) remains).
+
+**Verdict: the mechanism matches the read; flipped ON.**
