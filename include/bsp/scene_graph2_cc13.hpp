@@ -1145,4 +1145,148 @@ void free_vector_at_4(void*& data_4, void*& end_8, void*& cap_c, const std::func
 // PodVector FreeData 00B8B7B0, 00B8FC30, 00B8FC70: free +00h when non-null.
 void free_pod_data(void* data, const std::function<void(void*)>& free_block);
 
+// ---------------------------------------------------------------------------
+// Ocean spectrum helpers not covered by src/ocean_spectrum.cpp (cc9). The 64x64 cell
+// vectors hold interleaved (re, im) float pairs.
+// 00B94E90 / 00B950B0 (fastcall(float* cells), both unreferenced): an in-place 32-point
+// radix-2 FFT over interleaved complex values, along a row (stride 1) or a column (stride
+// 32) of a 32x32 grid. Bit reversal, then five stages; twiddles start at (1, 0) and step by
+// (c1, c2) with c1 = -1, c2 = 0 initially and, after each stage, c2 = f(sqrt(f((1 - c1) *
+// 0.5))), c1 = f(sqrt(f((c1 + 1) * 0.5))) (no sign flip, no final scaling).
+void ocean_fft32(float* cells, int stride_complex);
+// 00B962E0 / 00B96450 (thiscall(spectrum, u, v), RET 8; HorizontalDisplacement callers):
+// fx = f(u*64), fy = f(64*v) [D638F0 double], i = CVTTSS2SI, cells (i & 63) and
+// ((i + 1) & 63); bilinear in lerp form with the fractions fx - ix / fy - iy kept
+// unrounded; the re (A) or im (B) part of the +3Ch vector.
+float ocean_sample_displacement(const std::vector<float>& pairs_3c, float u, float v, int part);
+// 00B965C0 / 00B96790 / 00B96960 (unreferenced): FISTP-rounded cells (default rounding),
+// fractions |f(f(u+0) - i)| (a zero fraction becomes -0), neighbour i + 1 when i > 0 else
+// i - 1, lerp form. A/B read the +3Ch pairs (re/im), C the +1Ch vector re.
+float ocean_sample_rounded(const std::vector<float>& pairs, float u, float v, int part);
+// 00B96C80 (vtable 00D63900 slot, thiscall(spectrum, float t), RET 4): vtable +14h, advance
+// (00B95D30), the +08h member's vtable slot 0, vtable +10h.
+struct OceanStepServices {
+    virtual void slot_14(void* spectrum) = 0;
+    virtual void advance_00b95d30(void* spectrum, float t) = 0;
+    virtual void member_08_slot_0(void* spectrum) = 0;
+    virtual void slot_10(void* spectrum) = 0;
+protected:
+    ~OceanStepServices() = default;
+};
+void ocean_step_slot_00b96c80(void* spectrum, float t, OceanStepServices& s);
+// 00B96DA0: vtable 00D638F8, then the six vectors freed and cleared in the order +5Ch,
+// +4Ch, +3Ch, +2Ch, +1Ch, +0Ch (begin words +60h .. +10h), then the ref-counted base.
+std::vector<std::uint32_t> ocean_destruct_order_00b96da0();
+// 00B96F80 vector<8-byte>(n, value) (length error above 1FFFFFFFh), 00B97030
+// vector<float>(n, value) (above 3FFFFFFFh), 00B970A0 vector<8-byte>(n, {0, 0}).
+std::vector<PairRecord> construct_pair_vector_00b96f80(std::uint32_t n, const PairRecord& value);
+std::vector<float> construct_float_vector_00b97030(std::uint32_t n, float value);
+std::vector<PairRecord> construct_zero_pair_vector_00b970a0(std::uint32_t n);
+
+// ---------------------------------------------------------------------------
+// Grid index builder containers (singleton [01090490], vtable 00D6391C).
+struct GridStrip14 { std::uint32_t words[5]{}; };
+struct GridPatch20 {
+    std::uint32_t words[5]{};
+    OwnedArray<GridStrip14> strips;   // +14h array
+};
+using GridRow0C = OwnedArray<GridPatch20>;
+// Vector14 (POD rows): reserve 00B974B0 (min 1, signed, capacity last), resize 00B97560
+// (zero fill), push 00B97620 (double/min 1), assign 00B976A0 (resize 0, reserve n, push
+// each), tidy 00B97840 / 00B97890 (resize 0, free).
+void strips_reserve_00b974b0(OwnedArray<GridStrip14>& a, std::int32_t n);
+void strips_resize_00b97560(OwnedArray<GridStrip14>& a, std::int32_t n);
+void strips_push_back_00b97620(OwnedArray<GridStrip14>& a, const GridStrip14& v);
+void strips_assign_00b976a0(OwnedArray<GridStrip14>& dst, const OwnedArray<GridStrip14>& src);
+void strips_tidy_00b97840(OwnedArray<GridStrip14>& a);
+// Vector20: an element copy copies five words, clears the array and assigns it (so the
+// copy's capacity is max(1, count)). reserve 00B985D0, resize 00B986F0, push 00B98770,
+// assign 00B98830, tidy 00B98880.
+void patch_copy(GridPatch20& dst, const GridPatch20& src);
+void patches_reserve_00b985d0(OwnedArray<GridPatch20>& a, std::int32_t n);
+void patches_resize_00b986f0(OwnedArray<GridPatch20>& a, std::int32_t n);
+void patches_push_back_00b98770(OwnedArray<GridPatch20>& a, const GridPatch20& v);
+void patches_assign_00b98830(OwnedArray<GridPatch20>& dst, const OwnedArray<GridPatch20>& src);
+void patches_tidy_00b98880(OwnedArray<GridPatch20>& a);
+// Vector0C (rows of patches): reserve 00B988F0, resize 00B989F0, tidy 00B98A90 / 00B98AF0.
+void rows_reserve_00b988f0(OwnedArray<GridRow0C>& a, std::int32_t n);
+void rows_resize_00b989f0(OwnedArray<GridRow0C>& a, std::int32_t n);
+void rows_tidy_00b98a90(OwnedArray<GridRow0C>& a);
+// Builder lifetime. Constructor 00B998C0: vtable 00D6391C, +08h..+24h = 0, +04h = 20h, then
+// 00B99790. 00B99790: BuildPatch(s, 0) for s = 1, 2, 4, .. <= +04h, and for s < 20h also
+// the masks 1, 2, 4, 8, 3, 6, Ch, 9, 7, Eh, Dh, Bh, Fh; then an index buffer of +0Ch words
+// (device +60h(n, 1, 65h)) at +20h is filled from the word array and the array is emptied.
+// Destructor 00B98B10: vtable 00D6391C, release +20h and +24h, rows resized to 0 and freed,
+// word array resized to 0 and freed, [01090490] = 0, singleton-base vtable 00CE3818.
+// 00B97480: [01090490] = 0 and the singleton-base vtable.
+std::vector<std::uint32_t> grid_patch_masks_00b99790(std::uint32_t size, std::uint32_t max_size);
+struct GridBuilderServices {
+    virtual void build_patch_00b98be0(std::uint32_t size, std::uint32_t mask) = 0;  // not reconstructed
+    virtual void* create_index_buffer(std::int32_t count) = 0;                    // device +60h(n, 1, 65h)
+    virtual std::uint16_t* lock(void* buffer, std::int32_t count) = 0;            // +0Ch(n, 0, 0)
+    virtual void unlock(void* buffer) = 0;                                        // +10h
+    virtual void release_ref(void* object) = 0;
+protected:
+    ~GridBuilderServices() = default;
+};
+struct GridBuilder {
+    std::uint32_t vtable = 0;
+    std::uint32_t max_size_04 = 0;
+    std::vector<std::uint16_t> words_08;  // +08h data, +0Ch count, +10h capacity
+    OwnedArray<GridRow0C> rows_14;
+    void* index_buffer_20 = nullptr;
+    void* ref_24 = nullptr;
+};
+void grid_builder_build_all_00b99790(GridBuilder& b, GridBuilderServices& s);
+void grid_builder_construct_00b998c0(GridBuilder& b, GridBuilderServices& s);
+void grid_builder_destruct_00b98b10(GridBuilder& b, void*& instance_01090490, GridBuilderServices& s);
+// 00B97480: [01090490] = 0 and the singleton-base vtable 00CE3818.
+void grid_instance_clear_00b97480(void*& instance_01090490, std::uint32_t& vtable);
+
+// ---------------------------------------------------------------------------
+// Remaining small bodies.
+// 00B700A0 (fastcall(camera)): renderer (00F8D394) vtable +08h(0, 0, +188h, &+190h, +18Ch, +194h).
+struct CameraClearView { std::uint32_t word_188 = 0; std::uint32_t colour_190 = 0; float depth_18c = 0; std::uint32_t word_194 = 0; };
+void camera_submit_clear_00b700a0(const CameraClearView& c,
+    const std::function<void(std::uint32_t, std::uint32_t, std::uint32_t, const std::uint32_t*, float, std::uint32_t)>& renderer_slot_08);
+// 00B8E690: forwards (channel, time, flag) to 00B6E150 with the same ECX.
+void node_apply_animation_thunk_00b8e690(void* node, std::int32_t channel, float time, std::int32_t flag,
+    const std::function<void(void*, std::int32_t, float, std::int32_t)>& apply_00b6e150);
+// 00B91C40 quadtree clone and 00B91C00 scalar delete.
+void* quadtree_clone_00b91c40(const void* source, const std::string& name, std::uint32_t flags, void* parent,
+    const std::function<void*()>& pool_allocate, const std::function<void*(void*, const std::string&)>& construct_node,
+    const std::function<void(void*)>& init_quadtree_words, NodeCloneServices& s);
+void* quadtree_scalar_delete_00b91c00(void* self, std::uint32_t flags, const std::function<void(void*)>& set_vtable,
+    const std::function<void(void*)>& destroy_node, const std::function<void(void*)>& pool_free);
+// 00B91280 bone model and 00B91650 skin model destructors; 00B915A0 / 00B916C0 scalar deletes.
+void model_destruct(void* self, bool set_skin_vtable, const std::function<void(void*)>& set_vtable,
+    const std::function<void(void*)>& resize_array_to_zero_and_free, const std::function<void(void*)>& destroy_model);
+void* model_scalar_delete(void* self, std::uint32_t flags, const std::function<void(void*)>& destruct,
+    const std::function<void(void*)>& pool_free);
+// 00B912E0 (bone model Clone, thiscall(source, flags, parent), RET 8): pool 01090390, generated
+// model constructed with the source name, vtable 00D63590, +184h..+18Ch = 0; base state copied;
+// the bone array resized to the source count and each bone looked up by name under `parent`
+// (00B6E750(parent, name, 1)); when the source has a mesh (+180h) its geometry
+// (vtable +10h(flags, 0)) is set with the source +178h/+17Ch (00B75170(0, ...)); +174h assigned
+// through 00B74ED0; +08h..+14h copied.
+struct BoneCloneServices {
+    virtual void* allocate_00b90ac0() = 0;
+    virtual void* construct_bone_model(void* slot, const std::string& name) = 0;  // 00B75030 + vtable + zeros
+    virtual void copy_clone_base_state_00b6f150(const void* source, void* clone, std::uint32_t flags, void* parent) = 0;
+    virtual void resize_bones_00b90630(void* clone, std::int32_t count) = 0;
+    virtual void set_bone(void* clone, std::int32_t index, void* bone) = 0;
+    virtual void* find_child_00b6e750(void* parent, const std::string& name) = 0;
+    virtual void* source_mesh_geometry(const void* source, std::uint32_t flags) = 0;  // null when +180h is null
+    virtual void set_geometry_00b75170(void* clone, void* geometry, float a, float b) = 0;
+    virtual void release_ref(void* object) = 0;
+    virtual void assign_retained_174(void* clone, const void* source) = 0;
+    virtual void copy_vector_08(void* clone, const void* source) = 0;
+protected:
+    ~BoneCloneServices() = default;
+};
+void* bone_model_clone_00b912e0(const void* source, const std::string& name, const std::vector<std::string>& bone_names,
+    float word_178, float word_17c, std::uint32_t flags, void* parent, BoneCloneServices& s);
+// Catch_All funclets 00B7F682 / 00B7F712: free the buffer at [EBP-14h] and rethrow.
+void catch_all_free_and_rethrow(void* buffer, const std::function<void(void*)>& free_block);
+
 }  // namespace bsp::cc13_scene2

@@ -1430,6 +1430,334 @@ void free_pod_data(void* data, const std::function<void(void*)>& free_block) {
     if (data) free_block(data);
 }
 
+// ---------------------------------------------------------------------------
+// Ocean helpers.
+
+namespace {
+
+// CVTTSS2SI: out-of-range and NaN give 80000000h.
+std::int32_t cvttss2si(float v) noexcept {
+    if (!(v > -2147483904.0f && v < 2147483648.0f)) return INT32_MIN;
+    return static_cast<std::int32_t>(v);
+}
+
+// FISTP under the default round-to-nearest-even control word.
+std::int32_t fistp_nearest(float v) noexcept {
+    if (!(v > -2147483904.0f && v < 2147483648.0f)) return INT32_MIN;
+    return static_cast<std::int32_t>(std::nearbyint(static_cast<double>(v)));
+}
+
+float pair_part(const std::vector<float>& pairs, std::uint32_t cell, int part) {
+    return pairs.at(static_cast<std::size_t>(cell) * 2 + static_cast<std::size_t>(part));
+}
+
+}  // namespace
+
+void ocean_fft32(float* cells, int stride_complex) {
+    auto re = [&](int i) -> float& { return cells[2 * i * stride_complex]; };
+    auto im = [&](int i) -> float& { return cells[2 * i * stride_complex + 1]; };
+    int j = 0;
+    for (int i = 0; i < 31; ++i) {
+        if (i < j) {
+            std::swap(re(i), re(j));
+            std::swap(im(i), im(j));
+        }
+        int k = 16;
+        while (k <= j) {
+            j -= k;
+            k >>= 1;
+        }
+        j += k;
+    }
+    float c1 = -1.0f, c2 = 0.0f;  // [00D7A260]
+    int l1 = 1;
+    for (int stage = 0; stage < 5; ++stage) {
+        const int l2 = l1 * 2;
+        float u1 = 1.0f, u2 = 0.0f;  // [00D638E4]
+        for (int jj = 0; jj < l1; ++jj) {
+            for (int i = jj; i < 32; i += l2) {
+                const int i1 = i + l1;
+                const float x1 = re(i1), y1 = im(i1);
+                const float t1 = f(static_cast<double>(x1) * u1 - static_cast<double>(y1) * u2);
+                const float t2 = f(static_cast<double>(y1) * u1 + static_cast<double>(x1) * u2);
+                re(i1) = f(static_cast<double>(re(i)) - t1);
+                im(i1) = f(static_cast<double>(im(i)) - t2);
+                re(i) = f(static_cast<double>(t1) + re(i));
+                im(i) = f(static_cast<double>(t2) + im(i));
+            }
+            const float z = f(static_cast<double>(u1) * c1 - static_cast<double>(u2) * c2);
+            u2 = f(static_cast<double>(u2) * c1 + static_cast<double>(u1) * c2);
+            u1 = z;
+        }
+        const float c2n = f(std::sqrt(static_cast<double>(f((1.0 - c1) * 0.5))));
+        c1 = f(std::sqrt(static_cast<double>(f((static_cast<double>(c1) + 1.0) * 0.5))));
+        c2 = c2n;
+        l1 = l2;
+    }
+}
+
+float ocean_sample_displacement(const std::vector<float>& pairs_3c, float u, float v, int part) {
+    const float fx = f(static_cast<double>(u) * 64.0);
+    const float fy = f(64.0 * static_cast<double>(v));
+    const std::int32_t ix = cvttss2si(fx), iy = cvttss2si(fy);
+    const std::uint32_t cx = static_cast<std::uint32_t>(ix) & 63u, nx = static_cast<std::uint32_t>(ix + 1) & 63u;
+    const std::uint32_t cy = static_cast<std::uint32_t>(iy) & 63u, ny = static_cast<std::uint32_t>(iy + 1) & 63u;
+    const float a = pair_part(pairs_3c, cy * 64 + cx, part), b = pair_part(pairs_3c, cy * 64 + nx, part);
+    const float c = pair_part(pairs_3c, ny * 64 + cx, part), d = pair_part(pairs_3c, ny * 64 + nx, part);
+    const double tx = static_cast<double>(fx) - ix, ty = static_cast<double>(fy) - iy;  // FISUB, unrounded
+    const float top = f(static_cast<double>(a) + (static_cast<double>(b) - a) * tx);
+    const float bottom = f(static_cast<double>(c) + (static_cast<double>(d) - c) * tx);
+    return f(static_cast<double>(top) + (static_cast<double>(bottom) - top) * ty);
+}
+
+float ocean_sample_rounded(const std::vector<float>& pairs, float u, float v, int part) {
+    const float fu = f(static_cast<double>(u) + 0.0);
+    const float fv = f(0.0 + static_cast<double>(v));
+    const std::int32_t iu = fistp_nearest(fu), iv = fistp_nearest(fv);
+    float tu = f(static_cast<double>(fu) - iu);
+    if (!(tu > 0.0f)) tu = f(-0.0 - static_cast<double>(tu));  // [00D7A208]
+    float tv = f(static_cast<double>(fv) - iv);
+    if (!(tv > 0.0f)) tv = f(-0.0 - static_cast<double>(tv));
+    const std::uint32_t cu = static_cast<std::uint32_t>(iu) & 63u;
+    const std::uint32_t nu = static_cast<std::uint32_t>(iu + (iu > 0 ? 1 : -1)) & 63u;
+    const std::uint32_t cv = static_cast<std::uint32_t>(iv) & 63u;
+    const std::uint32_t nv = static_cast<std::uint32_t>(iv + (iv > 0 ? 1 : -1)) & 63u;
+    const float a = pair_part(pairs, cv * 64 + cu, part), b = pair_part(pairs, cv * 64 + nu, part);
+    const float c = pair_part(pairs, nv * 64 + cu, part), d = pair_part(pairs, nv * 64 + nu, part);
+    const float top = f(static_cast<double>(a) + (static_cast<double>(b) - a) * tu);
+    const float bottom = f(static_cast<double>(c) + (static_cast<double>(d) - c) * tu);
+    return f(static_cast<double>(top) + (static_cast<double>(bottom) - top) * tv);
+}
+
+void ocean_step_slot_00b96c80(void* spectrum, float t, OceanStepServices& s) {
+    s.slot_14(spectrum);
+    s.advance_00b95d30(spectrum, t);
+    s.member_08_slot_0(spectrum);
+    s.slot_10(spectrum);
+}
+
+std::vector<std::uint32_t> ocean_destruct_order_00b96da0() { return {0x60, 0x50, 0x40, 0x30, 0x20, 0x10}; }
+
+std::vector<PairRecord> construct_pair_vector_00b96f80(std::uint32_t n, const PairRecord& value) {
+    if (n > 0x1FFFFFFFu) throw std::length_error("vector<T> too long");  // 00B96EA0
+    return std::vector<PairRecord>(n, value);
+}
+
+std::vector<float> construct_float_vector_00b97030(std::uint32_t n, float value) {
+    if (n > 0x3FFFFFFFu) throw std::length_error("vector<T> too long");  // 0041FCF0
+    return std::vector<float>(n, value);
+}
+
+std::vector<PairRecord> construct_zero_pair_vector_00b970a0(std::uint32_t n) {
+    return construct_pair_vector_00b96f80(n, PairRecord{0, 0});
+}
+
+// ---------------------------------------------------------------------------
+// Grid index builder containers.
+
+void strips_reserve_00b974b0(OwnedArray<GridStrip14>& a, std::int32_t n) { owned_reserve_min_one(a, n); }
+void strips_resize_00b97560(OwnedArray<GridStrip14>& a, std::int32_t n) { owned_resize(a, n); }
+
+void strips_push_back_00b97620(OwnedArray<GridStrip14>& a, const GridStrip14& v) {
+    const std::int32_t count = static_cast<std::int32_t>(a.items.size());
+    if (count == a.capacity) strips_reserve_00b974b0(a, capacity_double_min_one(a.capacity));
+    a.items.push_back(v);
+}
+
+void strips_assign_00b976a0(OwnedArray<GridStrip14>& dst, const OwnedArray<GridStrip14>& src) {
+    strips_resize_00b97560(dst, 0);
+    strips_reserve_00b974b0(dst, static_cast<std::int32_t>(src.items.size()));
+    for (const GridStrip14& s : src.items) strips_push_back_00b97620(dst, s);
+}
+
+void strips_tidy_00b97840(OwnedArray<GridStrip14>& a) {
+    strips_resize_00b97560(a, 0);
+    a.items.shrink_to_fit();  // _free of the data pointer; the capacity word is left as it was
+}
+
+void patch_copy(GridPatch20& dst, const GridPatch20& src) {
+    for (int i = 0; i < 5; ++i) dst.words[i] = src.words[i];
+    dst.strips = OwnedArray<GridStrip14>{};
+    strips_assign_00b976a0(dst.strips, src.strips);
+}
+
+void patches_reserve_00b985d0(OwnedArray<GridPatch20>& a, std::int32_t n) {
+    if (n < 1) n = 1;
+    if (a.capacity >= n) return;
+    std::vector<GridPatch20> fresh(a.items.size());
+    for (std::size_t i = 0; i < a.items.size(); ++i) patch_copy(fresh[i], a.items[i]);
+    for (GridPatch20& p : a.items) strips_tidy_00b97840(p.strips);
+    a.items = std::move(fresh);
+    a.items.reserve(static_cast<std::size_t>(n));
+    a.capacity = n;
+}
+
+void patches_resize_00b986f0(OwnedArray<GridPatch20>& a, std::int32_t n) {
+    if (a.capacity < n) patches_reserve_00b985d0(a, n);
+    while (static_cast<std::int32_t>(a.items.size()) < n) a.items.emplace_back();
+    while (static_cast<std::int32_t>(a.items.size()) > n) {
+        strips_tidy_00b97840(a.items.back().strips);
+        a.items.pop_back();
+    }
+}
+
+void patches_push_back_00b98770(OwnedArray<GridPatch20>& a, const GridPatch20& v) {
+    if (static_cast<std::int32_t>(a.items.size()) == a.capacity)
+        patches_reserve_00b985d0(a, capacity_double_min_one(a.capacity));
+    a.items.emplace_back();
+    patch_copy(a.items.back(), v);
+}
+
+void patches_assign_00b98830(OwnedArray<GridPatch20>& dst, const OwnedArray<GridPatch20>& src) {
+    patches_resize_00b986f0(dst, 0);
+    patches_reserve_00b985d0(dst, static_cast<std::int32_t>(src.items.size()));
+    for (const GridPatch20& p : src.items) patches_push_back_00b98770(dst, p);
+}
+
+void patches_tidy_00b98880(OwnedArray<GridPatch20>& a) {
+    patches_resize_00b986f0(a, 0);
+    a.items.shrink_to_fit();
+}
+
+void rows_reserve_00b988f0(OwnedArray<GridRow0C>& a, std::int32_t n) {
+    if (n < 1) n = 1;
+    if (a.capacity >= n) return;
+    std::vector<GridRow0C> fresh(a.items.size());
+    for (std::size_t i = 0; i < a.items.size(); ++i) patches_assign_00b98830(fresh[i], a.items[i]);
+    for (GridRow0C& r : a.items) patches_tidy_00b98880(r);
+    a.items = std::move(fresh);
+    a.capacity = n;
+}
+
+void rows_resize_00b989f0(OwnedArray<GridRow0C>& a, std::int32_t n) {
+    if (a.capacity < n) rows_reserve_00b988f0(a, n);
+    while (static_cast<std::int32_t>(a.items.size()) < n) a.items.emplace_back();
+    while (static_cast<std::int32_t>(a.items.size()) > n) {
+        patches_tidy_00b98880(a.items.back());
+        a.items.pop_back();
+    }
+}
+
+void rows_tidy_00b98a90(OwnedArray<GridRow0C>& a) {
+    rows_resize_00b989f0(a, 0);
+    a.items.shrink_to_fit();
+}
+
+std::vector<std::uint32_t> grid_patch_masks_00b99790(std::uint32_t size, std::uint32_t max_size) {
+    (void)max_size;
+    if (size >= 0x20) return {0};
+    return {0, 1, 2, 4, 8, 3, 6, 0xC, 9, 7, 0xE, 0xD, 0xB, 0xF};
+}
+
+void grid_builder_build_all_00b99790(GridBuilder& b, GridBuilderServices& s) {
+    for (std::uint32_t size = 1; b.max_size_04 != 0 && size <= b.max_size_04; size *= 2)
+        for (std::uint32_t mask : grid_patch_masks_00b99790(size, b.max_size_04)) s.build_patch_00b98be0(size, mask);
+    const auto n = static_cast<std::int32_t>(b.words_08.size());
+    b.index_buffer_20 = s.create_index_buffer(n);
+    std::uint16_t* out = s.lock(b.index_buffer_20, n);
+    for (std::int32_t i = 0; i < n; ++i) out[i] = b.words_08[static_cast<std::size_t>(i)];
+    s.unlock(b.index_buffer_20);
+    b.words_08.clear();  // 00529980(0)
+}
+
+void grid_builder_construct_00b998c0(GridBuilder& b, GridBuilderServices& s) {
+    b.vtable = 0x00D6391C;
+    b.words_08.clear();
+    b.rows_14 = OwnedArray<GridRow0C>{};
+    b.index_buffer_20 = nullptr;
+    b.ref_24 = nullptr;
+    b.max_size_04 = 0x20;
+    grid_builder_build_all_00b99790(b, s);
+}
+
+void grid_builder_destruct_00b98b10(GridBuilder& b, void*& instance_01090490, GridBuilderServices& s) {
+    b.vtable = 0x00D6391C;
+    for (void** slot : {&b.index_buffer_20, &b.ref_24})
+        if (*slot) {
+            s.release_ref(*slot);
+            *slot = nullptr;
+        }
+    rows_tidy_00b98a90(b.rows_14);
+    b.words_08.clear();
+    b.words_08.shrink_to_fit();
+    instance_01090490 = nullptr;
+    b.vtable = 0x00CE3818;
+}
+
+void grid_instance_clear_00b97480(void*& instance_01090490, std::uint32_t& vtable) {
+    instance_01090490 = nullptr;
+    vtable = 0x00CE3818;
+}
+
+// ---------------------------------------------------------------------------
+// Remaining small bodies.
+
+void camera_submit_clear_00b700a0(const CameraClearView& c,
+    const std::function<void(std::uint32_t, std::uint32_t, std::uint32_t, const std::uint32_t*, float, std::uint32_t)>& renderer_slot_08) {
+    renderer_slot_08(0, 0, c.word_188, &c.colour_190, c.depth_18c, c.word_194);
+}
+
+void node_apply_animation_thunk_00b8e690(void* node, std::int32_t channel, float time, std::int32_t flag,
+    const std::function<void(void*, std::int32_t, float, std::int32_t)>& apply_00b6e150) {
+    apply_00b6e150(node, channel, time, flag);
+}
+
+void* quadtree_clone_00b91c40(const void* source, const std::string& name, std::uint32_t flags, void* parent,
+    const std::function<void*()>& pool_allocate, const std::function<void*(void*, const std::string&)>& construct_node,
+    const std::function<void(void*)>& init_quadtree_words, NodeCloneServices& s) {
+    void* clone = pool_allocate();  // pool 010903F0
+    if (clone) {
+        clone = construct_node(clone, name);
+        init_quadtree_words(clone);  // vtable 00D63650, +178h = 0
+    }
+    s.copy_clone_base_state_00b6f150(source, clone, flags, parent);
+    return clone;
+}
+
+void* quadtree_scalar_delete_00b91c00(void* self, std::uint32_t flags, const std::function<void(void*)>& set_vtable,
+    const std::function<void(void*)>& destroy_node, const std::function<void(void*)>& pool_free) {
+    set_vtable(self);    // 00D63650
+    destroy_node(self);  // 00B6F440
+    if (flags & 1) pool_free(self);
+    return self;
+}
+
+void model_destruct(void* self, bool set_skin_vtable, const std::function<void(void*)>& set_vtable,
+    const std::function<void(void*)>& resize_array_to_zero_and_free, const std::function<void(void*)>& destroy_model) {
+    if (set_skin_vtable) set_vtable(self);  // 00B91650 stores 00D635F0; 00B91280 stores none
+    resize_array_to_zero_and_free(self);    // +184h array
+    destroy_model(self);                    // 00B750C0
+}
+
+void* model_scalar_delete(void* self, std::uint32_t flags, const std::function<void(void*)>& destruct,
+    const std::function<void(void*)>& pool_free) {
+    destruct(self);
+    if (flags & 1) pool_free(self);
+    return self;
+}
+
+void* bone_model_clone_00b912e0(const void* source, const std::string& name, const std::vector<std::string>& bone_names,
+    float word_178, float word_17c, std::uint32_t flags, void* parent, BoneCloneServices& s) {
+    void* slot = s.allocate_00b90ac0();
+    void* clone = slot ? s.construct_bone_model(slot, name) : nullptr;
+    s.copy_clone_base_state_00b6f150(source, clone, flags, parent);
+    s.resize_bones_00b90630(clone, static_cast<std::int32_t>(bone_names.size()));
+    for (std::size_t i = 0; i < bone_names.size(); ++i)
+        s.set_bone(clone, static_cast<std::int32_t>(i), s.find_child_00b6e750(parent, bone_names[i]));
+    if (void* geometry = s.source_mesh_geometry(source, flags)) {
+        s.set_geometry_00b75170(clone, geometry, word_178, word_17c);
+        s.release_ref(geometry);
+    }
+    s.assign_retained_174(clone, source);
+    s.copy_vector_08(clone, source);
+    return clone;
+}
+
+void catch_all_free_and_rethrow(void* buffer, const std::function<void(void*)>& free_block) {
+    free_block(buffer);
+    throw;  // __CxxThrowException(0, 0)
+}
+
 // Explicit instantiations: compile every header template at least once.
 template NativeTreeNode<std::uint32_t>* tree_minimum<std::uint32_t>(NativeTreeNode<std::uint32_t>*);
 template NativeTreeNode<std::uint32_t>* tree_maximum<std::uint32_t>(NativeTreeNode<std::uint32_t>*);
