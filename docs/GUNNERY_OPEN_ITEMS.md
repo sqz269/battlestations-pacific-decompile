@@ -11694,7 +11694,7 @@ MiniSub. Variants of `s38_b1_p6` (cc9-gunnery32's `g32_ord_b1.txt`), each 40000 
   body's 3x4 element by element. It does not normalize, so an authored scale stays in the rows (GUNNERY 96.1: the fort
   body's frame is that matrix).
 - The host's `FortWorldEntry::frame` copies `s.world` the same way (`src/game_hosts_units.cpp`).
-- `local_support_kernel` (the transcribed `00C358A0..00C35A..`) picks its start vertex from
+- `local_support_kernel` (the transcribed `00C358A0`) picks its start vertex from
   `AvoidZoneDynHullData::support_seed[27]`. The slot is `13 + 9*trunc(dx*1.99) + 3*trunc(dy*1.99) + trunc(dz*1.99)`
   of the LOCAL direction, read at `[data + slot*2 + 30h]` (`00C35904`), so a unit vector is assumed.
 - The local direction is the world direction through the shape's frame, so a scale-2 frame doubles it. The slot
