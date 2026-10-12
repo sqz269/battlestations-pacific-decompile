@@ -48,6 +48,7 @@
 {"address": "005d4910", "name": "BSP_LobbySlotSwap_HasPair", "evidence": "cc13-mopup1: returns +2F0h != -1 and +2F4h != -1"}
 {"address": "005d49e0", "name": "BSP_LobbySettings_CopyStoredOptions", "evidence": "Hypothesis, not a recovered symbol. __fastcall void(int src), body 005d49e0..005d49f8. Copies fourteen dwords from src into the stored option index array 00e1955c..00e19590 (loop bound 0e19594h), one per LobbySettings name slot. The same fourteen dwords are copied into the 88h-byte network state record at +30h by 0076c2c0, and 005e2f00 reads them at 005e3158. docs/MISSION_LOBBY_SETTINGS.md."}
 {"address": "005d4a10", "name": "BSP_Game_IsStandardGameMode", "evidence": "cc13-mopup1: true when BSP_Game_GetEffectiveGameMode() is one of 0..3 (evaluated four times); callers BSP_MultiGameLobbyScreen_HandleGuiEvent / Update"}
+{"address": "005d50e0", "name": "BSP_SessionRecord_GetFlag274", "evidence": "cc13-mopup1: vtable 00D32DE8 slot 0: returns byte +274h; provisional"}
 {"address": "005d5130", "name": "BSP_Game_GetLocalSlotRecord", "evidence": "ECX = game: game+18CCh[game+18ECh] when the slot is 0..7, else 0. docs/CC13_FRONTEND_MENUS.md"}
 {"address": "005d51f0", "name": "BSP_MultiLobby_IsLocalSlotValid", "evidence": "game+18C8h >= 0 and game+18ECh in 0..7; preserves ECX (005E5B30 relies on it). docs/CC13_FRONTEND_MENUS.md"}
 {"address": "005d5220", "name": "BSP_MultiLobby_IsLocalPlayerReady", "evidence": "Slot valid and byte +0Ch of game+18CCh[game+18ECh]; mirrored into lobby +281h. docs/CC13_FRONTEND_MENUS.md"}
@@ -67,6 +68,7 @@
 {"address": "005d62b0", "name": "BSP_MultiGameLobby_ApplySettings", "evidence": "cc13-mopup1: sets the game mode (00E19564/00E19568) and copies the 0Eh settings (00E1955C) into the game (00E188A8+2020h); caller BSP_MultiGameLobbyScreen_Update"}
 {"address": "005d6350", "name": "BSP_MultiGameLobby_SetSettingForRow1", "evidence": "cc13-mopup1: stores the value into every settings slot whose menu row is 1 and marks +10h = 2; caller BSP_AutoTest_Step; provisional"}
 {"address": "005d63a0", "name": "BSP_MultiGameLobby_SelectedPlayerSlot", "evidence": "cc13-mopup1: maps the listbox selection to the n-th present player slot; provisional"}
+{"address": "005d63e0", "name": "BSP_GuiWidget_DrawBoundsOutline_005d63e0", "evidence": "cc13-mopup1: same body as 00554680 (widget bounds outline through BSP_GuiRect_DrawOutline)"}
 {"address": "005d67e0", "name": "BSP_MultiGameLobby_SetFocus", "evidence": "Stores its argument at +1Ch (005D6833) after leaving the old focus (list index to +ACh, input owner update, old widget slot +84h(0)); RET 4. Provisional. docs/CC13_FRONTEND_MENUS.md"}
 {"address": "005d6cd0", "name": "BSP_Session_DismissLoadPrompt", "evidence": "cc13-mopup1: 00E08958 = -1, BSP_MenuPromptScreen_DismissSlot(1) on the menu command screen; caller BSP_Session_ClientCheckSceneLoad"}
 {"address": "005d6e30", "name": "BSP_MultiGameLobbyScreen_BuildMapPreview", "evidence": "cc13-mopup1: builds \"settings_Group\" / \"map_001_Icon\" widget names and loads the map preview; provisional"}
@@ -94,6 +96,7 @@
 {"address": "005da000", "name": "BSP_MultiGameLobbyScreen_OnListSelect", "evidence": "cc13-mopup1: listener slot 5 of 00CF23B0: list widgets (kind 2) select the row and move the lobby focus; provisional"}
 {"address": "005da210", "name": "BSP_MultiGameLobby_ConfirmLeave", "evidence": "cc13-mopup1: shows \"FE.multi_lobby_serverleaveconfirm\" (host) or \"FE.multi_lobby_clientleaveconfirm\"; callers BSP_MultiGameLobbyScreen_HandleGuiEvent / Update"}
 {"address": "005da530", "name": "BSP_MultiGameLobby_ApplySelectedMap", "evidence": "cc13-mopup1: with a map selected (+2F0h/+2F4h) reads the entry from the map list and applies it; callers BSP_AutoTest_Step, BSP_MultiGameLobbyScreen_HandleGuiEvent / Update; provisional"}
+{"address": "005dac60", "name": "BSP_TwoVectorRecord_Construct_005dac60", "evidence": "cc13-mopup1: zeroes the two vector headers +8..+10h and +18h..+20h"}
 {"address": "005daca0", "name": "BSP_LobbyMapEntry_Destruct", "evidence": "cc13-mopup1: destroys the NativeString range at +18h/+1Ch and frees it; callers CG_scalar_deleting_dtor_005dafe0 and STL destroy ranges; provisional"}
 {"address": "005daf10", "name": "BSP_LobbyMapEntry_CopyConstruct", "evidence": "cc13-mopup1: dword +0 then two checked NativeString vectors (+4, +14h); caller STL_allocator_construct_005defc0"}
 {"address": "005db050", "name": "BSP_MultiGameLobbyScreen_BindWidgets", "evidence": "cc13-mopup1: vtable 00CF23B0 slot 18: binds the lobby widgets (\"players_Group\", \"box_players_Text\", \"players_FrameBox\", \"settings_Group\", \"game_mode_var_Text\", ...) | cc13-mopup1: renamed to avoid a duplicate of an existing name at another address"}
