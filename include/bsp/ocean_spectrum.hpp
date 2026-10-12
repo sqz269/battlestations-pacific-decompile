@@ -157,8 +157,10 @@ void ocean_live_field_render_frame_00ba0090(OceanLiveField& ocean, float mission
 // frame (job B 004B4820 -> 0068A0D0 -> 00BA0090, after the fixed steps of the same
 // frame), and every host reader of 0078C890 samples the live grid times the live
 // amplitude. False: the readers keep the flat sea (amplitude 0.0, a zero grid) and
-// the publish and step calls do nothing.
-inline constexpr bool kWaveFieldLiveAmplitudeBound = false;
+// the publish and step calls do nothing. ON since the pairs of section 11: the
+// mechanism matched every prediction; the USN01 l50_u1_u2 and USN02 s36_u2_p7
+// scripted wins are plan casualties.
+inline constexpr bool kWaveFieldLiveAmplitudeBound = true;
 
 // The host's one ocean object (world+A8h). `ocean_live_field_ready` is true once a
 // scene was published while the switch is on.
