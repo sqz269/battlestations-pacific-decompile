@@ -533,7 +533,12 @@ byte. In the stretch read (0078261D reads the holder at `[ESP+644h]` with the EH
 `[ESP+63Ch]`) the byte is not used; the rest of the body was not swept for it. The ledger
 evidence and the header comment are amended.
 
-Not opened: who writes `holder+4h` (the last-sync tick) and `entity+310h`, the generic codec
+A whole-image scan for the displacement `310h` has about 120 hits; the ones in MultiScore code
+are three (the others belong to functions of other classes and were not checked): the constructor
+stores 0 (00780E2F, `BL` from `XOR EBX,EBX` at 00780DE1) and `00780A00` reads and clears it. No
+literal-offset store in MultiScore code sets it, so unless one of the unchecked hits or a store
+through another base reaches it, the schedule is time-based only. Not opened: who writes `holder+4h`
+(the last-sync tick), the generic codec
 `00765000`/`00767E30`, `00766FC0`, and `0077C540` beyond the lines cited.
 
 ## Out of scope or not reconstructed
@@ -584,14 +589,21 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
    table until MT_REMOVEPLAYER, so rows can outlive slot moves. Not observed in a run.
 
 ## Handoff
+## Handoff
 
-Totals for the packet: 68 Ghidra renames with evidence comments (ledger `config/names/`), 61
-reconstruction records, about 60 reconstructed C++ functions in `src/multiplayer_session_cc13.cpp`,
-all build-tested only.
+Packet cc13-net1 totals: 68 Ghidra renames with evidence comments, 61 reconstruction records,
+about 60 reconstructed C++ functions. Packet cc13-net2 (net2, finished by net3 after a power
+outage): 27 more renames, 22 reconstruction records, 24 never-defined bodies created in Ghidra; all
+C++ in `src/multiplayer_session_cc13.cpp` is build-tested only, nothing game-validated.
 
-Next steps, in order of value: (1) `007752D0` ServerAddPlayer, the server half of the
-player-slot spine (XNet, the PIMPS/unlock sends and the P2P voice peer table; read past each
-`_free` in the listing); (2) the client-side consumer that executes the MultiScore text (`msg+28h` of E0h) and
-the `DFh` create message; (3) `007746F0` MT_SESSION_MANAGER together with the
-online-stats builder `004C9780`; (4) the presentation arms 2Bh..34h. Leases for
-`0076AA00-00787040` were released at the end of this packet.
+Done from the net2 packet: (1) `007752D0` ServerAddPlayer; (2) `007746F0` with `004C9780`;
+(3) the 2Bh..34h arms (codec and HUD effects only); (4) `007F7460`; (5) the client execution of
+the MultiScore text (`00780B90`) and the DFh create path; (6) the 24 never-defined bodies.
+
+Left, in order of value: create Ghidra functions at `00780A00` (MultiScore slot 180h) and
+`00780A70` (DFh constructor), held until the lead confirms "Non-Returning Functions - Discovered"
+is still disabled after the restart, then name them (`BSP_MultiScore_ScheduleSync`,
+`BSP_NetTableSyncCreate_Construct` are the proposed hypotheses) and add their ledger records (the
+C++ is already in place); the writer of `holder+4h`; the readers of record `+14h` and `+A4h`;
+`004C04C0` (XUSER stats writes); the generic entity-create codec `00765000`/`00767E30` and
+`00766FC0`, which are outside this lease.
