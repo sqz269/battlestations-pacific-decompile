@@ -15394,3 +15394,38 @@ leak, RemoveListener of a missing id, filter save/load) were not re-checked agai
   values; both match all). It is latent here, recorded and not bound.
 - Filter save/load: 18 of 23 subscription types save only `callback` in the image. The host's listeners are not
   part of its checkpoint (5fk), so there is nothing to compare yet.
+
+## 5fx. JM08 on the moved main: phase 2 reached, the HQ dies to the first B-17 raid (cc9-lua51, 2026-10-12, runs only)
+
+Build: `agent/cc9-lua51` at `1c5294dfe`, i.e. main `bbde80254` (`kAimDiveBrakeRatioBound` ON) plus 5fu. The launch is
+the 5fm form (`local\l51_lane.ps1`). Order files are `local\l51_j8_<run>.txt`, made by `local\l51_j8gen.py`, a copy
+of `l50_j8gen.py`; each file's header line holds its arguments. `l50_j8tab.py` makes the table. Unless noted, every
+run is 48000 frames and uses r7's lists. The Hosho list is `Nevada,Missouri,LSM 01,LSM 02,TT01-06,LST 01-03`.
+
+| run | change | landships dead | Missouri | Nevada | HQ falls |
+| --- | --- | --- | --- | --- | --- |
+| m1 | r7 unchanged (96000 frames) | 8 by 1090.54 (TT03, LST01, LSM02 alive) | 710.30 | - | 1120.35 |
+| r3 / r5 / n1 | 5fn's files unchanged | 10 / 7 / 9 | 741 / 694 / 741 | - | 1160 / 1050 / 1144 |
+| a1-a3 | Nevada in the boat / air / ship lists | 8 / 8 / 6 | 710 / 710 / - | - | 1120 / 1120 / 1012 |
+| b1 | Hosho Nevada first | 8 | 737.99 | **535.99** (Hosho_sqn08) | 1182.90 |
+| **b2** | b1, period 800 | **11 by 1129.63** (LSM 01 last, to an AA truck) | 671.31 | 535.99 | 1147.35 |
+| **b3** | b2, Isokaze/Fubuki list LSM 01 first | **11 by 1019.07** | 671.31 | 535.99 | **1269.60, in phase 2** |
+| b4 / b5 | LSM 01 first in the air list / both lists | 8 / 3 | - | 530 | 998 / 1059 |
+| b6 / b7 | b2 + destroyers last in the lists / everywhere | 11 / 9 | 671 / - | 536 / 530 | 1147 / 1157 |
+| b8 | b2, destroyers ahead of LSM 01 in the air list | 11 by 1126.92 | 671.31 | 535.99 | 1371.15 |
+| c1 / c2 / c3 | b3 / b3+b8 / b3 with `--air-every 150`, plus the phase-2 bombers (`B-17 #2.1-2.4`, `B-25 #3.x`, `SBD #3.x`) in the air list, 72000 frames | 11 by 1019 / 1019 / 1168 | 671 / 671 / 664 | 536 / 536 / 544 | 1272.85 / 1267.30 / 1291.00 |
+
+- **Phase 2 is now reached.** In b3, primaries 1 and 2 report Success, the destroyers get `NavigatorMoveToRange ...
+  RetreatPoint`, `StartDialog("Run")` plays, and `FadeIn` runs at 1034.78 s. SpawnNew then brings the Wildcat wave
+  (#1), B-17 #2.1-2.4 and the B-25/SBD/CAP wave #3.
+- **What kills the HQ** (diagnostic export `local\l51_D0`: 5fg's `l48_diag_hq.py` patch on this tree, uncommitted;
+  `l48_hqdmg.py` on `l51_D0b3_j8.log`; the b3 timeline repeats exactly). Of the 12000 hp, Japanese AA truck 05
+  (cat 2, bullet 19) puts **3117 into its own HQ** (73 hits from 37.5 s to 1257 s, 36 of them direct), and trucks
+  03/04 another 476. Bristol, Gleaves and Grayson add 1500 between 990 and 1058 s. B-17 #2.1/#2.2 finish it in
+  14 s (1256.05-1270.41, cat 10 bullet 72, about 6900). 5fg measured the bullet-19 splash on the HQ at about 0 on
+  `62988a6fa`, so this friendly AA damage is new since then and is reported to the gunnery lane.
+- **The airfield's fighters do take the B-17s** in c1-c3: class 152 Gekko and class 154 Ki-43 slots get `order 3 ->
+  B-17 #2.1` at 1053 s with 1-3 planes, and the 1155/1255 s launches go to B-17 #2.1/#2.2. They do not stop the raid.
+- **Parked.** The order file has no lever left before 1256 s that keeps 7000 hp on the HQ. The next step is to
+  settle the AA truck's friendly damage on the gunnery side, then rerun b3 (`local\l51_j8_b3.txt`), which is
+  deterministic to the HQ's fall. No completion, so no sus_prog line is expected.
