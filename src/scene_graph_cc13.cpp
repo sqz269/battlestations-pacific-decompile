@@ -53,6 +53,9 @@ float wrap_time_00b75450(float time, float start, float end, std::int32_t* cycle
         return start;
     }
     const double shifted = static_cast<double>(start) + time;  // kept as a double
+    // 00BF85B0 is the CRT floor: its x87 fallback 00C0F394 loads control word [00E16460] = 173Fh
+    // (RC = round down) through _ctrlfp 00C138A7, rounds with __frnd 00C28548 (FRNDINT) and
+    // reports errors as opcode 0Bh (OP_FLOOR).
     const double turns = std::floor(static_cast<double>(time) / length);
     const float wrapped = f(shifted - turns * length);
     if (cycles) {

@@ -129,8 +129,9 @@ void update_map_zoom_shader_values_005b58df(MapScreenZoomState& s, float duratio
     }
     const float z = s.smooth_zoom_1c;
     float a = static_cast<float>(D(z) - 2.0); // 00D7A308
-    if (!(a >= 0.0f)) a = 0.0f;                // FLDZ / FCOMIP / JBE
-    else if (a > 1.0f) a = 1.0f;               // COMISS / JBE
+    // Both JBEs route the unordered case to "keep", so NaN passes through unclamped.
+    if (0.0f > a) a = 0.0f;                    // FLDZ / FCOMIP / JBE 005B59BB
+    else if (a > 1.0f) a = 1.0f;               // COMISS / JBE 005B5A77
     s.shadow_fade_20 = static_cast<float>(1.0 - a);
     const float y = static_cast<float>(1.0 - (D(z) - 1.0) * 0.5);
     s.fade_24 = static_cast<float>(1.0 - static_cast<float>(D(y) * y * y));

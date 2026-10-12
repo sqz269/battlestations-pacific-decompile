@@ -300,12 +300,16 @@ active (see the TriggerHint section).
 `repeatable`), `cooldowntime`, `duration` (default 12), `Type` (default
 `hints.gameplay_general_hint`), `hidden`, `missionspecific` (which then forces Type to
 `hints.missionhint`; the inlined assign compares against EBP = 11h set at 0068FAEF), and
-`TitleDescList`, then assigns `map+30h[id]`. Two native quirks are recorded in the source:
-`cooldowntime` is stored only when present and the default constructor `005FD650` does not
-clear +120h, so an entry without it inherits the previous entry's value (the first entry an
-uninitialised stack word); and TitleDescList rows are written with no bound, so a ninth element
-would overwrite +114h onward. The reconstruction carries the cooldown across entries and stops
-the rows at eight.
+`TitleDescList`, then assigns `map+30h[id]`. A missing `cooldowntime` gives 0. One native quirk is recorded in the source: TitleDescList rows are written with
+no bound, so a ninth element would overwrite +114h onward. The reconstruction stops the rows at
+eight.
+
+Correction (cc13-audit1, 2026-10-12): this section used to say a missing `cooldowntime` inherits
+the previous entry's value, because `005FD650` does not clear +120h. That was wrong. The loader
+writes +120h (ESP+1B8h, with the definition at ESP+98h) on both branches. When the key is nil,
+0068FFF4 stores EDI, and EDI is 0 on every path there: `XOR EDI,EDI` at 0068FF7B, or at 0068FD78
+on the path through 0068FF27. When the key is present, 00690029 stores the integer. The
+`carry` parameter has been removed. See docs/CC13_AUDIT_1.md, D1.
 
 ## Handoff (cc13-gui5, 2026-10-11)
 
