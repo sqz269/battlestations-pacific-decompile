@@ -600,6 +600,43 @@ are intermediate bases that take the type as an argument: `006E0D20` (vtable `00
 directly (for example `00741450`, `006E0690`, `006D5130`, `00813BD0`) carry unit-specific fields
 and belong with those builders.
 
+## `004C04C0` the online stats write (cc13-net3)
+
+`__thiscall(game, 12 dwords) RET 30h`, named `BSP_OnlineStats_WriteSessionStats` (hypothesis).
+Callers: `004CAA90` BSP_OnlineStats_UpdateWrite, `007746F0` (state 3), `00A43AF0`, `00A47B80`. It
+returns at once when `game+22DDh` is set. Otherwise it builds `XUSER_PROPERTY` records (id `+0h`,
+type `+8h`, value `+10h`) in the scratch slots `game+2210h..+2288h` and `XSESSION_VIEW_PROPERTIES`
+at `game+22A0h + i*0Ch`, then calls `XSessionWriteStats(session, xuid, count, views, overlapped)`
+(`00A4D428`, 004C0846):
+
+- **Listed path.** Taken when `id_5` is in the int vector `00E19458..00E1945C` and
+  `[00F8A2FC]->vtable[198h]()` returns true.
+  - Ranked (`ranked_7` low byte set): view `FFFF0000h` with two int32 properties, `1000800Ah` =
+    arg 10 and `1000800Bh` = arg 9.
+  - Not ranked: the views are built only when the xuid argument equals `00A3EB00`'s local xuid.
+  - Then each positive value adds one int64 view:
+    - arg 12 as `table[row][2]` in view `table[row][ranked]`. The 8x3 table is built on the stack
+      at 004C04DE: (0Dh,0Eh,2000008Eh), (0Fh,10h,2000009Dh), (11h,12h,20000081h), zeros,
+      (0Bh,0Ch,20000091h), (9,0Ah,20000092h), (7,8,20000083h), (5,6,20000082h). The row index is
+      not bounds-checked.
+    - arg 13 as `20000084h` in view 4.
+    - arg 8 as `200000BCh` in view 1.
+- **Otherwise.** A non-zero arg 12 becomes one view: id 2 with `20000080h` when `id_5 - 1 < 14`
+  (unsigned), else id 3 with `2000008Fh`.
+- **Tail.** The `XOVERLAPPED` at `game+7038h` (1Ch bytes) is zeroed and passed only when
+  `game+1FE4h` is non-zero; otherwise the write runs synchronously. `XGetOverlappedExtendedError(0)`
+  (`00A4D422`) runs for any result other than `ERROR_IO_PENDING` (3E5h). When nothing was written,
+  the result compared is the whole `ranked_7` argument. Finally `game+22DDh = 1` when
+  `game+1FE4h` is non-zero, so in a networked session each game writes stats once.
+- Arg 11 is never read.
+
+**The listed-id vector is probably always empty.** `00E19458`/`00E1945C` lie in `.data` past its
+raw size (`00E18000`), so they are zero at load. A byte scan for their absolute addresses finds
+only the two reads in this function (positive control: both reads found). Nothing references
+`00E19450..00E19463` by literal address either. Unless something fills it through another base
+(a neighbouring leaderboard object at `00E19430..00E1946C` is read by `BSP_LeaderboardsScreen_*`),
+the listed path never runs, and every stats write is the single view 2/3 property.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
