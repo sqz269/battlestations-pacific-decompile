@@ -1,0 +1,14 @@
+{
+  "packet": "cc13-sweep45",
+  "doc": "docs/CC13_BAND_0045_0048.md",
+  "steps": [
+    {"address": "00489f8a", "function": "00489f30", "native": "00485520", "claim": "37h entity base ctor reads the SoldierGlobals singleton"},
+    {"address": "00489f91", "function": "00489f30", "native": "00485520", "claim": "second SoldierGlobals read before the random phase"},
+    {"address": "00485593", "function": "00485520", "native": "00484700", "claim": "singleton getter constructs SoldierGlobals"},
+    {"address": "0048472c", "function": "00484700", "native": "0084cb70", "claim": "SoldierGlobals ctor runs the SoldierGlobals.lua loader"},
+    {"address": "0046f333", "function": "0046f330", "native": "0046efb0", "claim": "SceneDatabase scalar deleting dtor calls the destructor body"},
+    {"address": "0046f517", "function": "0046f440", "native": "00bf7030", "claim": "point-line distance takes the square root above 1e-10"},
+    {"address": "00451f7b", "function": "00451e50", "native": "00451a90", "claim": "StartDialog session handler starts the dialog"},
+    {"address": "008b0688", "function": "008b0540", "native": "00451a90", "claim": "BSP_LuaBinding_StartDialog uses the same start routine"}
+  ]
+}
