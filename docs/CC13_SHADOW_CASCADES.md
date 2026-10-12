@@ -201,9 +201,7 @@ Native details kept:
 
 ## Ghidra
 
-The renames and evidence comments for all seven addresses go through
-`tools/ghidra_annotate.py --apply`. That needs the write lock, which cc13-flowfix1 held at the
-time of writing; see the handoff for whether it was applied.
+All seven ledger names and evidence comments were applied with `tools/ghidra_annotate.py --apply` on 2026-10-12 and the project was saved. The prior names and comments are recorded in the worker tree's `local/ghidra-annotations-20261012T005723Z.json`. Exports were not refreshed, because the snapshot is shared and cc13-flowfix1's body repair is still in progress.
 
 ## Handoff
 
