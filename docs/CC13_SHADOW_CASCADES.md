@@ -226,7 +226,7 @@ can never fail.
 
 ## Ghidra
 
-All seven ledger names and evidence comments were applied with `tools/ghidra_annotate.py --apply` on 2026-10-12 and the project was saved. The prior names and comments are recorded in the worker tree's `local/ghidra-annotations-20261012T005723Z.json`. Exports were not refreshed, because the snapshot is shared and cc13-flowfix1's body repair is still in progress.
+All seven first-batch ledger names and evidence comments were applied with `tools/ghidra_annotate.py --apply` on 2026-10-12 and the project was saved. The prior names and comments are recorded in the worker tree's `local/ghidra-annotations-20261012T005723Z.json`. Exports were not refreshed, because the snapshot is shared and cc13-flowfix1's body repair is still in progress. The second batch (00AD7A30, 00AD7360, 00AD72A0, 00AE1670) was applied the same way; its prior values are in `local/ghidra-annotations-20261012T013625Z.json`.
 
 ## Handoff
 
