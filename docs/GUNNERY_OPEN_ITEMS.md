@@ -12913,4 +12913,14 @@ plane/task line classes.
   IJN01, JM08 or USN01 (`strafe task: planes=0`). Re-paired where strafers fly (`local\g37_sbs2{off,on}_*`, base
   `fa1af26c2`): ESMP08 9000 (33 strafers, 22 attackruns) exit 0, USNOS 9000 (12, 9) exit 1. Predicted identical (the
   constants are under 1 ulp); the attackrun seed `-U(0, 1)` is a keyed draw (`#star1c`) and leaves no observable
-  trace on these rows. Image-faithful and inert here.
+  trace on these rows. Image-faithful and inert here.- **USN01's convoy strike (the lead's ruling (a)).** USN01 with `g36_ord_u1` wins only when the first AI strike
+  (ConTBD/ConSBD) sinks all six Convoy ships at 181-198 s; if one survives, the mission does not complete in
+  1100 s. Every plane-path change re-rolls it: `kRollArmBaseNumeratorBound` leaves Convoy4 afloat, the audit7 A/C/D/E
+  pair Convoy6, the torpedo-aim group Convoy1 and Convoy6; the draw pins, cadence, moveto draws and flak switches
+  happen to keep all six. It is a plan casualty (USN01 is also lost on main to the live sea, ecb1c55d1), so the three
+  groups below are judged by mechanism.
+- **`kRollArmBaseNumeratorBound` (186): ON.** First divergence on USN04 phase 2 is the formation geometry of the
+  movie flight at tick 400 (wing distances 108.0 -> 109.8 m), the mode-2 heading holds banking less; torpedo
+  releases 2/36 -> 4/39 as predicted (with `kBandShaperPlan264Bound` as well: 2/36 -> 6/60, units 149 -> 211,
+  `local\g37_rabon_*` against `local\g37_aBoff_*`). Wins held: LOMP10 1184.73 -> 1215.16 s, LOMP06 identical,
+  USN12 1589.38 -> 1742.97 s, USN02 identical, BSM01 767.94 s; USN01 lost (above); ESMP08 no completion on either side.

@@ -5733,7 +5733,7 @@ struct GameUnitsHost::Impl {
     // h is the yaw base numerator [ESP+6Ch] (0099DF87), not the raw heading
     // error. 0099E127 loads it for the deadband and the bank ask, and 0099E02B
     // for the pitch-floor ramp. Behaviour-changing; pair before ON.
-    static constexpr bool kRollArmBaseNumeratorBound = false;
+    static constexpr bool kRollArmBaseNumeratorBound = true;  // GUNNERY 193: ON by pair verdict
     // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
     // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
