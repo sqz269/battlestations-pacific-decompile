@@ -2,7 +2,9 @@
 // include/bsp/multiplayer_session_cc13.hpp and docs/CC13_MULTIPLAYER_SESSION.md.
 #include "bsp/multiplayer_session_cc13.hpp"
 
+#include <cstdio>
 #include <cstring>
+#include <vector>
 
 namespace bsp::mp_cc13 {
 
@@ -876,6 +878,114 @@ void server_send_scene_scoring_0076d1b0(const SessionState& session, ScoringHost
     host.scoring_prepare_00905370();
     for (int row = 0; row < kScoringRowCount; ++row) host.scoring_send_row_0090abb0(row);
     host.flush_peer_buffers_007848f0(session.server_transport);
+}
+
+// ---------------------------------------------------------------------------
+// Batch 3: MultiScore net table
+// ---------------------------------------------------------------------------
+
+namespace {
+// 0043BDF0: sprintf "%f" of the float32 widened to double.
+std::string format_float_0043bdf0(float value) {
+    char buffer[64];
+    std::snprintf(buffer, sizeof buffer, "%f", static_cast<double>(value));
+    return buffer;
+}
+}  // namespace
+
+std::string net_table_sync_lua_source_00781910(std::int32_t party,
+                                               const NetTableEntry* entries, std::size_t count) {
+    std::string text;
+    for (std::size_t i = 0; i < count; ++i) {
+        const NetTableEntry& entry = entries[i];
+        text += "MultiScore";
+        text += "[";
+        text += std::to_string(party);  // 00BD1BB0 on the string builder
+        text += "][";
+        if (entry.key.is_string) {
+            text += "\"" + entry.key.text + "\"";
+        } else {
+            // 004CACA0 decimal; the 32 wire bits as a signed int (assumption).
+            text += std::to_string(static_cast<std::int32_t>(entry.key.number));
+        }
+        text += "]=";
+        if (entry.value.is_string) {
+            text += "\"" + entry.value.text + "\"";
+        } else {
+            text += format_float_0043bdf0(entry.value.number);
+        }
+        text += ";";
+    }
+    return text;
+}
+
+int NetTableLuaValue::lua_type() const noexcept {
+    switch (kind) {
+    case Kind::kNil: return 0;       // LUA_TNIL
+    case Kind::kInteger:
+    case Kind::kNumber: return 3;    // LUA_TNUMBER
+    case Kind::kString: return 4;    // LUA_TSTRING
+    case Kind::kOther: return -2;    // some other type: never equal to the above
+    }
+    return -2;
+}
+
+bool net_table_pair_changed_00782020(const NetTablePair& pair) noexcept {
+    const NetTableLuaValue& now = pair.value;
+    const NetTableLuaValue& old = pair.saved;
+    if (old.lua_type() != now.lua_type()) return true;
+    const bool numbers = now.lua_type() == 3;
+    if (numbers && old.number != now.number) return true;  // FCOMP/FNSTSW: NaN differs
+    const bool strings = now.lua_type() == 4;
+    if (strings && old.text != now.text) return true;  // interned pointer compare
+    return false;
+}
+
+bool net_table_entry_from_pair_00782020(const NetTablePair& pair, NetTableEntry& out) {
+    out = NetTableEntry{};
+    switch (pair.key.kind) {
+    case NetTableLuaValue::Kind::kInteger:  // 007814E0
+        out.key.is_string = false;
+        out.key.number = static_cast<std::uint32_t>(static_cast<std::int32_t>(pair.key.number));
+        break;
+    case NetTableLuaValue::Kind::kString:   // 00781430
+        out.key.is_string = true;
+        out.key.text = pair.key.text;
+        break;
+    default:
+        return false;
+    }
+    switch (pair.value.kind) {
+    case NetTableLuaValue::Kind::kInteger:  // 008869F0: (float)int
+        out.value.is_string = false;
+        out.value.number = static_cast<float>(static_cast<std::int32_t>(pair.value.number));
+        return true;
+    case NetTableLuaValue::Kind::kString:   // 00886A10
+        out.value.is_string = true;
+        out.value.text = pair.value.text;
+        return true;
+    default:
+        return false;  // 007823E6 -> 007824B7
+    }
+}
+
+std::string net_table_snapshot_statement_00782020(std::int32_t party) {
+    const std::string p = std::to_string(party);
+    return "MultiScore_save[" + p + "]=copy_table(MultiScore[" + p + "])";
+}
+
+void net_table_sync_to_peer_00782020(void* peer, std::int32_t party, bool tables_present,
+                                     const NetTablePair* pairs, std::size_t count,
+                                     NetTableSyncHost& host) {
+    if (peer == nullptr || party == 8 || !tables_present) return;
+    std::vector<NetTableEntry> changes;
+    for (std::size_t i = 0; i < count; ++i) {
+        if (!net_table_pair_changed_00782020(pairs[i])) continue;
+        NetTableEntry entry;
+        if (net_table_entry_from_pair_00782020(pairs[i], entry)) changes.push_back(entry);
+    }
+    host.lua_do_buffer_00b65ec0(net_table_snapshot_statement_00782020(party));
+    if (!changes.empty()) host.send_to_peer_00779fc0(peer, changes.data(), changes.size());
 }
 
 }  // namespace bsp::mp_cc13

@@ -299,6 +299,47 @@ name})` without a fresh null check, and `004D0FC0(record)`. Ghidra's export ends
 (MT_SESSION_MANAGER state 2 on the host) and 00920A20 (cc9's debrief bring-up). The per-row writer
 `0090ABB0` and the scoring object belong to the mission scoring area, outside this packet.
 
+## The MultiScore net table (batch 3)
+
+`MultiScore` is an entity (constructor `00780DB0`, already named `BSP_MultiScore_Construct`; it
+creates the Lua globals `MultiScore` and `MultiScore_save`, each with eight sub-tables) whose job is
+to replicate the per-player Lua table `MultiScore[p]` from the server to the owning peer. Its
+message is type `E0h`, which the image's table names **`MT_MNETTABLESYNCENTITY_SYNC`** (and `DFh`
+`MT_MNETTABLESYNCENTITY_CREATE`), so the class is a net table sync entity; "MultiScore" is the
+table it syncs.
+
+| address | role | vtable slot |
+|---|---|---|
+| 00782020 | sync to one peer (reconstructed: change rule and statement text) | `00D04230 +10h` |
+| 00781F60 | build the E0h message from the change list (`0075B430(E0h)`, vtable `00D03824`) | |
+| 00781590 | E0h write | `00D03824 +4h` |
+| 00781910 | E0h read (reconstructed: the Lua text it produces) | `00D03824 +8h` |
+| 00779FC0 | `msg+18h` (u16) = `entity+174h`, then `00770B50(peer, msg)` | |
+
+`00782020` (`__thiscall(entity, holder)`, `RET 4`; `[holder]` is the peer and `p = peer+20h`) does
+nothing for a null peer, for `p == 8`, or when `MultiScore` or `MultiScore[p]` is not a table. It
+iterates `MultiScore[p]`; for each pair the old value is `MultiScore_save[p][key]` (by index for an
+integer key, by name for a string key) when the save table exists. The listing (00782200..0078245A)
+fixes the objects: `[ESP+24h]` key, `[ESP+38h]` new value, `[ESP+68h]` old value, `[ESP+A8h]` save
+table. A pair is unchanged when old and new have the same `lua_type` and, for numbers, compare equal
+or, for strings, are the same interned string (pointer compare); any other same-type pair (tables,
+booleans) is unchanged. A changed pair is collected only when the key is an integer (`00B66A60`) or
+a string and the value is an integer (sent as `(float)int` through `008869F0`) or a string
+(`00B660A0` is an exact `LUA_TSTRING` test, no number coercion). **Fractional numbers, booleans
+and nested tables in `MultiScore[p]` never replicate.** After the loop it always runs
+`MultiScore_save[p]=copy_table(MultiScore[p])` through `00B65EC0` (`luaL_loadbuffer(..., "DoBuffer")`
+then `lua_call`), and sends one E0h message when anything was collected.
+
+Wire order (writer 00781590, reader 00781910, after the extended header): the count in **5 bits**
+(the writer does not clamp, so a 32nd change would wrap), then per entry `bool key_is_string`, the
+key (owned string or 32 bits), `bool value_is_string`, the value (owned string or numeric float
+`(0, 1, [00D7A248], 32 bits)`). The reader rebuilds `msg+28h` as Lua source, one statement per
+entry: `MultiScore[p][key]=value;` with `p = current[local slot]+20h` on the receiving side, string
+keys and values in double quotes without escaping, integer keys in decimal (`004CACA0`) and float
+values as `"%f"` (`0043BDF0`). The punctuation constants are `"["` 00CF5980, `"]["` 00D0424C,
+`"]="` 00D04248, `'"'` 00CE436C and `";"` 00CE5698. Which routine executes `msg+28h` on the client
+was not traced.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
@@ -319,17 +360,15 @@ MT_CHECKSCENELOAD client arm, `0076CD20` MT_CONNSTATE (eight `007862C0` smoothed
 `session+0Ch+i*1Ch` from float pairs at `msg+18h+i*0Ch`; the callee is already reconstructed),
 `00777820` MT_HINT (client: award-tracker hint from `msg+18h`), the presentation arms 2Bh..34h
 (blackout, countdown, movie camera: `0076F4C0`, `007709C0`, `0076D420`, `0076F560`, `0076F630`,
-`0076D760`), and the MultiScore entity: `00780DB0` constructor (already named),
-`00781910` (reads a bit-cursor message and rebuilds Lua source `"MultiScore[<party>]=..."`) and
-`00782020` (diffs Lua `MultiScore[i]` against `MultiScore_save[i]` and sends the changes; 47
-callees, many Lua-object calls whose arguments the decompiler dropped, so it needs the listing).
+`0076D760`). The MultiScore entity is covered above.
 
 Outside the segment, routed by the ladder: see the table (the `Other` and `MessageThis` rows).
 
 ## Checks
 
 - Build: `scripts/build.ps1` in the worktree, exit 0, no warnings from the new file.
-- `tools/verify_report_calls.py` run on this doc before commit.
+- `tools/verify_report_calls.py`: 36 call sites cited in this doc (CALL and tail-JMP rows, each with its
+  enclosing function) checked against live Ghidra, 0 failures.
 - Listing checks: 0076D840 (ECX session, `RET 8`), 0076D140 (tail jump to 00784B10 with
   `[ECX+188h]`), 0076D170 (`NEG/SBB/ADD 4`), 0076C7B0 (`__allshl` operands), 007712F0 (signed
   `JGE`), 00771630 (`ESI = [00F8ABE8]` for 00A3EB00, `LEA ECX,[EDI+190h]`), 00773420 (`JLE`, tail),
@@ -352,7 +391,7 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 
 Next steps, in order of value: (1) `00773120` MT_ADDPLAYER and `007752D0` ServerAddPlayer (the
 remaining player-slot spine; both touch XNet and `_free`, so read with `disasm-raw` past each
-`_free`); (2) the MultiScore pair `00781910`/`00782020` (score table replication; needs the
-listing for every `BSP_LuaObject_*` argument); (3) `007746F0` MT_SESSION_MANAGER together with the
+`_free`); (2) the client-side consumer that executes the MultiScore text (`msg+28h` of E0h) and
+the `DFh` create message; (3) `007746F0` MT_SESSION_MANAGER together with the
 online-stats builder `004C9780`; (4) the scene-list arm `007717A0` and `00772710`. Leases for
 `0076AA00-00787040` were released at the end of this packet.

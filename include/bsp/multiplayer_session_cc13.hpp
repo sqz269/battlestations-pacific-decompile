@@ -562,4 +562,96 @@ inline constexpr std::size_t kScoringRowStride = 0x284;
 inline constexpr int kScoringRowCount = 8;  // 1420h / 284h
 void server_send_scene_scoring_0076d1b0(const SessionState& session, ScoringHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch 3: the MultiScore net table (MT_MNETTABLESYNCENTITY_SYNC, E0h)
+// ---------------------------------------------------------------------------
+
+// The MultiScore entity (constructor 00780DB0, primary vtable 00D040B8, the
+// per-peer sync slot at vtable 00D04230 +10h) replicates the Lua global
+// table MultiScore[p] from the server to the peer whose index p is
+// peer+20h. Message E0h: builder 00781F60 (vtable 00D03824), writer 00781590
+// (vtable +4h), reader 00781910 (vtable +8h). The class name comes from the
+// MT_ name; "MultiScore" and "MultiScore_save" are the Lua globals.
+
+// A list node of the E0h message (writer 00781590 reads +0Ch, +18h, +20h,
+// +24h of each node). Key: string when is_string (wire bool 1), else a
+// 32-bit number. Value: string when is_string, else a float32.
+struct NetTableKey {
+    bool is_string{false};
+    std::string text;
+    std::uint32_t number{0};
+};
+struct NetTableValue {
+    bool is_string{false};
+    std::string text;
+    float number{0.0f};  // 008869F0 stores (float)int
+};
+struct NetTableEntry {
+    NetTableKey key;
+    NetTableValue value;
+};
+
+// Wire order (00781590 / 00781910), after the extended message header:
+// count in 5 bits (so at most 31 entries survive; the writer does not clamp),
+// then per entry: bool key_is_string, key (owned string, or 32 bits), bool
+// value_is_string, value (owned string, or numeric float (0, 1, [00D7A248],
+// 32 bits)). Bit-level encoding is left to the bit-cursor reconstructions.
+inline constexpr std::uint32_t kNetTableCountBits = 5;
+inline constexpr std::uint8_t kNetTableSyncMessageType = 0xE0;
+inline constexpr std::uint32_t kNetTableSyncMessageVtable = 0x00D03824u;
+
+// 00781910's text: for each entry
+//   "MultiScore" "[" p "][" key "]=" value ";"
+// with an integer key in decimal, a string key or value quoted with '"'
+// (no escaping), and a float value as sprintf "%f" of the float32 (0043BDF0).
+// p is current[local slot]+20h on the receiving side. The string replaces
+// msg+28h; the entry list at msg+20h is emptied first.
+std::string net_table_sync_lua_source_00781910(std::int32_t party,
+                                               const NetTableEntry* entries, std::size_t count);
+
+// One Lua value as 00782020 classifies it. Integer means 00B66A60 holds (a
+// number whose float32 spill is an exact int32); Number is any other number.
+struct NetTableLuaValue {
+    enum class Kind : std::uint8_t { kNil, kInteger, kNumber, kString, kOther };
+    Kind kind{Kind::kNil};
+    double number{0.0};
+    std::string text;
+    // Lua type code (GetType). kInteger and kNumber share LUA_TNUMBER.
+    int lua_type() const noexcept;
+};
+struct NetTablePair {
+    NetTableLuaValue key;
+    NetTableLuaValue value;
+    // save[key] when MultiScore_save[p] is a table and the key is an
+    // integer or string; nil otherwise.
+    NetTableLuaValue saved;
+};
+
+// 00782020's change rule for one pair. Unchanged when old and new have the
+// same Lua type and, for numbers, compare equal (x87, so NaN is always
+// changed) or, for strings, are the same interned string; any other
+// same-type pair (tables, booleans) is unchanged. A changed pair is sent only
+// when the key is an integer or a string and the value is an integer or a
+// string: fractional numbers, booleans and tables never replicate.
+bool net_table_pair_changed_00782020(const NetTablePair& pair) noexcept;
+bool net_table_entry_from_pair_00782020(const NetTablePair& pair, NetTableEntry& out);
+
+struct NetTableSyncHost {
+    virtual ~NetTableSyncHost() = default;
+    // 00B65EC0: luaL_loadbuffer(text, "DoBuffer") then lua_call.
+    virtual void lua_do_buffer_00b65ec0(const std::string& text) = 0;
+    // 00779FC0 on the entity: msg+18h = entity+174h, then 00770B50(peer, msg).
+    virtual void send_to_peer_00779fc0(void* peer, const NetTableEntry* entries,
+                                       std::size_t count) = 0;
+};
+// 00782020, __thiscall(entity, peer_holder) RET 4: nothing for a null peer
+// or p == 8, or when MultiScore or MultiScore[p] is not a table. Otherwise
+// the changed pairs in iteration order, then always
+// "MultiScore_save[p]=copy_table(MultiScore[p])" through 00B65EC0, then one
+// E0h message to the peer when any entry was collected.
+void net_table_sync_to_peer_00782020(void* peer, std::int32_t party, bool tables_present,
+                                     const NetTablePair* pairs, std::size_t count,
+                                     NetTableSyncHost& host);
+std::string net_table_snapshot_statement_00782020(std::int32_t party);
+
 }  // namespace bsp::mp_cc13
