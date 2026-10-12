@@ -12190,3 +12190,203 @@ Nothing is bound here.
 - **Next step.** Read which sender sets byte 1 for a shipyard-built unit, and who seeds `+E20h`. The host's
   `shipyard_build_00844fc0` would then keep a per-unit launch state, and `ship_in_shipyard_hangar_0081de10` would
   answer 1 while it is set. Until then a fresh boat is never blind in the host.
+
+## 177. 175(c), the level-bomb long bias: the image's own; nothing to bind (lead queue; cc9-gunnery35, 2026-10-12)
+
+**The question.** 175(c) found level bombs falling about 0.3 s longer than `009C7D71`/`007BCC80` predicts, because
+the cone (`006E1F00`) launches along the round's forward row and so drops 5do's -3.0 m/s. Does anything in the
+image restore a downward component?
+
+**The read** (disk bytes, `006E520D..006E5359`, after the cone).
+- **The "no cone" arm.** `006E5214` `vtable[5Ch](33h)` and `006E5227` `class+E0h <= 0`. It sets D = (1, 1, 1) and
+  zeroes the drift (`006E5230..006E525A`). This is the arm 130.2 took as never true.
+- **The cone call.** `006E529C` is the block's slot `+34h` (`006E1F00`), with (&D, &rack+4ECh).
+- **Then a launch along the rack's row 1** (`006E52B4..006E5301`): `velocity += [rack+3F4h]+DCh * rack+DCh..+E4h`.
+  - `desc+DCh` is `LaunchSpeed` (`006E01F2`, in the BombPlatform class reader).
+  - In this installation's Lua, all 74 `LaunchSpeed` entries are 0. The only file is
+    `scripts\datatables\autoload\deviceclasses.lua`, mtime 2024-07-13. So the term adds nothing.
+- **The rack frame.** `0072E6D0` applies `BSP_Gun_PlatformMountFrame` to the model node it builds (`gun+3BCh`,
+  `param_1[0xEF]`) before `SetParent`. That is lua41's "the slot frame goes to the model root" (130.6). The round
+  is parented under the gun ENTITY (`006E3E70 -> 006E2C00`), whose local stays identity.
+  - So for every rack the round's forward row is the aircraft's nose. That includes JM08's level bombers: class
+    167, `models/planes/japan/betty.MMOD`.
+
+**Verdict.**
+- The image launches a level bomb with vy of about 0 and predicts it with vy - 3.0. The ~14 m long bias is therefore
+  the image's own behaviour, and the host reproduces it. Nothing was bound.
+- **Uncertain:** 130.6's "gun-entity placement store" (Val/Kate slot 50) is still not read. It could matter only if
+  some other code writes `gun+74h`, which `0072E6D0` does not.
+
+## 178. 175(a), the dive steering: the two roll arms match the image; `009C4F80` lacked its third arm (lead queue, src/dive_bomb_task.cpp on loan; cc9-gunnery35, 2026-10-12; `kDiveAimHeadingBlendBound`, committed OFF)
+
+**The roll arms, read against disk bytes** (`009C5935..009C5B01`, `009C5D00..009C5DB2`). Every element matches
+`dive_bomb_aimdive_steer_009c5c9f` and its host inputs:
+- **`[ESP+24h]`** (the default arm) is `00438B10(H, pi/2 - atan2(aim.z - unit.z, aim.x - unit.x))`, wrapped into
+  `[0, 2pi)`. Here `aim` is `approach->vtable[0]` and `unit` is `+FCh/+104h`.
+- **`[ESP+18h]`** (the wide arm) is the same form, built from `aim - approach+D8h/+E0h`, the predicted impact.
+  The host's `db_bearing_c0` and `db_impact_bearing_18` are those two bearings, with H as `arg0`.
+- **The band test.** The wide arm is taken when `[ESP+5Ch] > 0` and `1.0472 > |bank|` (`009C5D08..009C5D31`).
+- **The interpolant.** `InterpolateClamped(-band, 1, band, -1, x)`. The wide arm uses band `-0.5/0.5`
+  (`00CE69D0`/`00CE3800`) and the default arm `-0.4/0.4` (`00D1F400`/`00CE7804`). Every constant matches the header.
+- **So the sign flip after the along-track error crosses zero is the image's own arm change.** The arms are not
+  where the host diverges.
+
+**The gap: H itself.** `009C4F80` (`BSP_BotDiveBomb_AimHeading`, body to `009C5177`) has three arms, and the host
+had two.
+- **pitch > -40 deg** (`00CE7D1C`): the Euler heading `vtable[50h]`, plus pi past a folded bank of pi/2. This is in
+  the host.
+- **pitch <= -60 deg** (`00D20338`, `009C5090..009C50B6`): the body-up bearing B. This is in the host for every
+  pitch at or below -40 deg.
+- **-60 < pitch <= -40 deg** (`009C50B7..009C516C`, **new**):
+  - `E` = `vtable[50h]`, plus pi when inverted, as in the first arm;
+  - `d = 00438B10(B, E)`;
+  - `t = 00419010(-60 deg, 0, -40 deg, 1, pitch)`;
+  - the arm returns `00438B10(B, t * d)`. So it slides from B at -60 deg to E at -40 deg.
+- **The binding.** `DiveBombAimHeadingInputs::mid_pitch_blend`, set at all five host sites from
+  `kDiveAimHeadingBlendBound`. The aimdive and aimglide ticks, the flyabove and the aim inputs all take it.
+
+**Predictions.**
+- **OFF:** identical.
+- **ON:** only ticks with pitch in (-60, -40] deg change. The aimdive entry (about -35 deg on JM08's sqn27)
+  is above that band, so mainly the steeper part of each dive moves, as do the turndown and roll-in ticks that
+  pass through the band.
+- Where B and E disagree (inverted, or yawed), H changes by up to `t * |d|`. Bearings, roll commands and release
+  points move.
+- **Rows:** USN04 phase 2 (`s39_u4_p1.txt`: Lexington's bombers, the "never release" question), JM08 r7 (the
+  TT04 misses) and USN01 u1 (a dive-heavy win, as the control).
+- **What this does not explain:** the cross-track divergence of 175(a), if the dives stay above -40 deg. That would
+  then point at the roll response, not the steering law.
+
+## 179. `kGunneryLiveWaterSurfaceBound`: cc9-physics1's crossing edit applied, and its three questions (routed by the lead; cc9-gunnery35, 2026-10-12; committed OFF)
+
+**The edit** is cc9-physics1's text as relayed: the includes, the switch, and the air-to-water test replaced by
+`0084B380 -> 0078D1B0` against `ocean_live_field_water_height_0078cf20`. The prerequisite is on main as
+`4ce2c2bd0`. It keeps the image's axis defect: the trace samples `(x, y)`. One addition: under the switch a round
+already swimming, or a depth charge already in the water, is not tested for a crossing at all (`crossed = false`).
+The hold in (1) puts such rounds on a surface that is not y = 0, and the old `y <= 0 && from > 0` test would
+otherwise re-enter them.
+
+**The three questions.**
+1. **Does the swim levelling follow the surface? Yes.**
+   - `00857480` (the swim advance) calls `BSP_TorpedoProjectile_Steer` `00856BB0`, which samples the sea every step
+     (`BSP_GameWorld_SampleWaterHeight` at `+FCh`/`+104h`; it is among `0078CF20`'s callers).
+   - It drives `vy += -((y - +47Ch) * +480h - +484h * h) * dt`, clamped to +-5. The equilibrium therefore moves with
+     the live height.
+   - The host never modelled that controller; it held the round on y = 0. Under the switch the entry level and every
+     swim step take the live height at (x, z) instead. **LABELLED:** the controller is held at its surface
+     equilibrium, as the y = 0 hold was. `+47Ch`, `+480h` and `+484h` are not kept.
+2. **Does the depth-charge test use absolute y or depth below the surface? Absolute y.**
+   - `006FCD20` compares `+100h` with `-|+470h|` and gates its scan on `+100h <= -5.0` (`00CFBC84`).
+   - Its `0078D1B0` call runs only after detonation, to move the record to the surface for the effects. The host's
+     `depth_charge_should_detonate(y, depth)` is unchanged.
+3. **Must `flight.local_position` and `snapshot_current` take the crossing point? Yes.** The image has one pose
+   (`+FCh`), and the crossing replaces it. The host keeps three copies, and the next step integrates from
+   `snapshot_current`, so all three take the point.
+
+**Census:** `summary mission gunnery live water crossings= bound=`. OFF it is 0 and the run is identical by
+construction. It is to be paired together with cc9-physics1's live-sea flip.
+
+### 178.1 The pairs (export `d82a607b2`, `local\g35_dr{OFF,ON}`; logs `local\g35_bl{off,on}_<row>.log`, diffs `local\g35_db_<row>.txt`)
+
+| row | exit | dive-bomb-task releases | other |
+|---|---|---|---|
+| USN04 phase 2 (`s39_u4_p1.txt`, 40000 frames) | 3 | 3 of 19 -> **0 of 19** | torpedo releases 5 -> 4; hull hits 141 -> 134; deaths 52 = 52 (33 rows move, mostly D3A Vals) |
+| JM08 r7 (`l50_j8_r7.txt`, 20000 frames) | 3 | 5 of 27 -> **10 of 15** | deaths 136 -> 161, units 475 -> 497 (a cascade: torpedo releases 1 -> 6 of 58) |
+| USN01 u1 (`g32_ord_u1.txt`, 22000 frames) | 3 | 4 of 9 -> 5 of 9 | **OFF fails at 920.60 s** ("Game Over", MissionStatus); ON reaches the frame limit with no end; deaths 68 -> 65 |
+
+- The mechanism is the image's own third arm, read whole and continuous with the other two: B at -60 deg, E at
+  -40 deg. Every row moves, which shows the band is crossed in real dives.
+- The release counts move both ways:
+  - USN04's Vals stop releasing altogether.
+  - JM08's airfield dive bombers release twice as often.
+- So the blend does not answer "why USN04's dive bombers don't release" on its own. 175(a)'s cross-track divergence
+  needs the roll response next, which is the plane lane.
+- **USN01 u1, an AF win row, already fails at 920.60 s on the OFF build** (current main plus this branch). That is a
+  reference-row regression from before this switch, for the next reference to bisect.
+
+**Verdict: the mechanism matches the read; flipped ON.** The spread is recorded. The USN04 release loss is the open
+consequence.
+
+## 180. Handoff (cc9-gunnery35, 2026-10-12, at about 70% context)
+
+**Landed or on `agent/cc9-gunnery35`, newest first.**
+
+| sha | section | what it does |
+|---|---|---|
+| `ea7983dbb` | 178.1 | `kDiveAimHeadingBlendBound` ON: the third arm of `009C4F80` |
+| `ec19522f3` | 179 | `kGunneryLiveWaterSurfaceBound` OFF: physics1's crossing, with the three questions answered |
+| `d82a607b2` | 178 | the blend, committed OFF |
+| `a628a4e30` | 177 | the level-bomb long bias is the image's own; nothing to bind |
+| `ccd374cda`, `0949e06c1` | 176 | `kShipyardHangarHiddenBound` ON (footprint arm; identical on JM08 and JM05) |
+| `00f1b5476` | 175 | the JM08 bomb-miss decomposition |
+| `89eb6b1ba` | 171.1 | the weather controls |
+| `d635effc3`, `75544aa7a` | 173 | `kBombDropDriftBound` ON |
+| `b2a0d0a04` | 174 | the magazine slice |
+
+**Open, ranked by reach.**
+1. **USN01 u1 (`g32_ord_u1.txt`) fails at 920.60 s on the OFF build of `d82a607b2`.** It is an AF win row. Bisect
+   against reference AG's `u1` row before blaming anything later.
+2. **175(a): the dive cross-track divergence.** The roll arms match the image (178). Next is the roll response at
+   steep pitch, in the plane lane. USN04's Vals release 0 of 19 with the blend ON.
+3. **176's `unit+1130h` launch arm.** The clear is `00813830` (7Ah, byte 0) when `unit+E20h` counts to 0. The set
+   comes from one of the 7Ah senders `0080F960`, `0079C040`, `009CFBA4`, `009FD0E0`, unread.
+4. **179's pair**, together with physics1's live-sea flip. The swim hold is a labelled equilibrium: the depth
+   controller of `00856BB0` (`+47Ch`, `+480h`, `+484h`) is still unmodelled.
+5. **175(b): the level bomber's aim point** sits about 10 m off TT04's keel. Who draws it?
+6. **USN13 reference row:** with the drift ON, Cowpens burns out and the mission fails at 366.33 s (a knife-edge;
+   173.1).
+
+**Tools in this tree's `local\`:**
+- `g35_bombmiss.py` (bomb misses against the aim draw)
+- `g35_freediff.py` and `g35_freesites.py` (the free-flow audit)
+- `g35_wx34.py` and `g35_wx34b.py` (pointer-field reader scans)
+- `g35_dispscan.py` (displacements per body)
+- `g35_queue.ps1` and `g35_ref_jobs.py` (run queue)
+- the env-gated `BSP_HANGAR_CENSUS=1`
+
+## 181. Handoff: the live sea and the Dyn worker precision (cc9-physics1, 2026-10-12, at about 70% context)
+
+**Branch `agent/cc9-physics1`.** Held off main by the lead: `126f79f83` (`kWaveFieldLiveAmplitudeBound = true`) and
+the docs after it. On the branch since: `e0e3afc4e` (the NaN fix in 00B9CF50, docs/CC13_AUDIT_CC9_RECENT.md 6) and
+the uncommitted-then-committed Dyn precision work below. The sea's record is docs/OCEAN_WAVE_FIELD.md sections 8-13.
+Pair builds: `local\p1_on` (e103dabd0 + flip) and `local\p1_off` (3c7a5ade9, flip false). Both export trees carry
+LOCAL diagnostics that must not be reused for reference rows: a per-round `p1diag` hit/water log in
+src/game_hosts_gunnery.cpp (both) and a control-word dump in src/hull_terrain_contact.cpp (`p1_off`). Re-export
+before any measured pair.
+
+**Waiting on the lead:** cc13-audit8's answer on the wave-damp meshes and frame (00ADE820 / 00BA1370 / 00BA0C00;
+the host walks every hierarchy item with its composed translation, the image passes one terrain node +3CCh), then
+the combined pair: `kWaveFieldLiveAmplitudeBound` + `kGunneryLiveWaterSurfaceBound` (main ec19522f3, GUNNERY 179)
+both ON against both OFF on USN04 3000, JM06, USN01 l50_u1_u2, LOMP10, plus the seven wins (BSM01 l50_b1_a too),
+reference form (BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, `--stop-after-end 40`; local\p1_pairs.ps1 and
+p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (lead accepted the explanation).
+
+**Dyn worker precision (`kDynWorkerPrecisionBound`, include/bsp/hull_terrain_contact.hpp, committed OFF).**
+- Measured: the host's main thread is at x87 control word `007Fh` (24 bits) inside the first
+  `HullTerrainContactSolver::world_step` (local export diagnostic, USN04).
+- (a) Done: `DynWorkerPrecisionScope` sets `_PC_53` around the narrow phase (IntersectTask2) and around each
+  group's solve (LCPSolverTask) in `world_step`, and around the narrow phase and solve of the legacy `step`. The
+  ManifoldUpdate, group formation and event pass stay at 24 bits (main thread in the image).
+- (b) Started in src/dyn_lcp_impulse_math.cpp, both under the switch:
+  - `dyn_row_group_dot`: one rounding of the whole 3-term dot (00C4264F; the same pattern in 00C42230 and in the
+    build's J.u groups 00C4E6E0/00C4E721/00C4E745). Checked: the residual's subtractions, the `res*eff + impulse`
+    chain, the clamp, `dyn_row_apply_impulse` and the warm start 00C42BA0 all spill each step to float, so they
+    need no change.
+  - `transform_point`: one rounding per component, ((row0*l0 + row1*l1) + row2*l2) + position
+    (00C4DFBA..00C4E0A8).
+- (b) Left, with what the listing showed:
+  - 00C4E6BE..00C4E759, J.u: each group dot is spilled, but the running sum of the four dots stays on the stack,
+    and FSUBRP with the target precedes the one FSTP. So `jacobian_dot_velocity` and its caller must keep the sum
+    and the subtraction in double.
+  - 00C4E773.., the effective mass: group dots are spilled at 00C4E78E..; check whether the sum of groups and the
+    FDIVRP at 00C4E7FA stay on the stack. The term order in the C++ (5,3,4 / 2,0,1 ...) needs re-checking against
+    the operand offsets (EDX may be a row offset).
+  - The rest of 00C4DE40 (cross 00C4E4A6.., restitution 00C4E675, bias 00C4E0DC, friction direction with its
+    sqrt), and 00C37B50 and 00C35020: not yet read. The 29 FSTP spill points in 00C4E125..00C4E4A6 are listed by
+    `python local\p1_x87.py <listing> 00C4E125 00C4E4A6`.
+- **A defect at 24 bits too (not fixed, OFF unchanged):** `transform_point`'s OFF code adds world[1] and world[2]
+  as (row2*l2 + row0*l0) + row1*l1, but the listing associates ((row0*l0 + row1*l1) + row2*l2). At 24 bits each add
+  rounds, so the association matters. Fixing it moves OFF; it needs its own pair.
+- Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
+- Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
+  points by the transpose of the fort frame. Not started.

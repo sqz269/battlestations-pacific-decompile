@@ -149,6 +149,16 @@ inline constexpr bool kSunkHullTerrainMaskBound = true;
 // ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 109.4).
 inline constexpr bool kAvoidZoneDraftBodiesBound = true;
 
+// Packet cc9_physics1_dyn_precision (docs/CC13_HOST_PRECISION_CENSUS.md, class B). The image
+// runs the Dyn contact phase's narrow phase (IntersectTask2: 00C53630, 00C535E0, the insert
+// 00C3F760) and its LCP solve (LCPSolverTask 00403720: 00C4DE40, 00C42BA0, 00C42530,
+// 00C42230, 00C37B50, 00C35020) on Dyn worker threads at x87 precision 53 bits; the host
+// runs them inline on the main thread, measured at control word 007Fh (24 bits) inside
+// world_step. True: world_step runs that span at 53 bits (_controlfp_s _PC_53, restored
+// after), and the LCP C++ keeps in double what the listing keeps on the x87 stack between
+// float spills. False: both at 24 bits as before.
+inline constexpr bool kDynWorkerPrecisionBound = false;
+
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
     int manifolds{0};         // manifolds holding a point after the insert

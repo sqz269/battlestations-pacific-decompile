@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/ocean_spectrum.hpp"
+#include "bsp/projectile_helpers.hpp"
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
@@ -444,6 +446,16 @@ constexpr bool kGunneryLosRoleSwapBound = true;
 //    (the launch sentinel) is not kept, so its arm never fires; the test runs at each
 //    LOS test, not on the 0.5 s point refresh. OFF: 0081DE10 answers 0, as before.
 constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
+//  * kGunneryLiveWaterSurfaceBound: packet cc9_physics1_sea (cc9-physics1's edit,
+//    routed; docs/GUNNERY_OPEN_ITEMS.md 179). A round in the air crosses the water
+//    where 0084B380 -> 0078D1B0 finds the live sea (0078CF20), not at y = 0, and the
+//    crossing replaces all three of the host's position copies. A swimming torpedo
+//    keeps to the live surface (00856BB0's depth controller samples 0078CF20 at
+//    +FCh/+104h; LABELLED: held at its equilibrium on the surface, as the y = 0 hold
+//    was). The depth charge's depth test stays on absolute y (006FCD20 compares
+//    +100h with -|+470h| and -5.0; its 0078D1B0 only moves the record for effects).
+//    OFF: y = 0 throughout, as before.
+inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -2145,6 +2157,7 @@ struct GameGunneryHost::Impl {
     double scatter_max_angle{0.0};
     double scatter_max_turn_deg{0.0};
     unsigned long long bomb_drift_drops{0};        // packet cc9_bomb_drift
+    unsigned long long live_water_crossings{0};    // packet cc9_physics1_sea
     unsigned long long bomb_drift_steps{0};
     double bomb_drift_max{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
@@ -8662,6 +8675,12 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             shot.flight.velocity.z += shot.bomb_drift[2] * dt;
             ++bomb_drift_steps;
         }
+        if (kGunneryLiveWaterSurfaceBound && shot.swimming) {
+            // 00856BB0: the depth controller samples 0078CF20 at +FCh/+104h every
+            // swim step. LABELLED: held at its surface equilibrium.
+            shot.flight.local_position.y = bsp::ocean_live_field_water_height_0078cf20(
+                shot.flight.local_position.x, shot.flight.local_position.z);
+        }
         shot.position[0] = shot.flight.local_position.x;
         shot.position[1] = shot.flight.local_position.y;
         shot.position[2] = shot.flight.local_position.z;
@@ -8949,7 +8968,40 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             }
         }
 
-        if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
+        bool crossed = shot.position[1] <= 0.0f && from[1] > 0.0f;
+        if constexpr (kGunneryLiveWaterSurfaceBound) {
+            if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
+                struct LiveWater final : bsp::WaterSurfaceSampler {
+                    float water_height_0078cf20(float x, float z) override {
+                        return bsp::ocean_live_field_water_height_0078cf20(x, z);
+                    }
+                } water;
+                bsp::TraceSegmentList list;
+                list.segments[0] = {{from[0], from[1], from[2]},
+                    {shot.position[0], shot.position[1], shot.position[2]}};
+                list.count = 1;
+                // Faithful to the image's axis defect: the trace samples (x, y)
+                // (docs/PROJECTILE_HELPERS.md 1).
+                const bsp::StaticTraceResult crossing = bsp::static_trace_0084b380(water, list);
+                crossed = crossing.hit;
+                if (crossing.hit) {  // 0084C15F..0084C16B: the crossing replaces the segment end
+                    shot.position[0] = crossing.point.x;
+                    shot.position[1] = crossing.point.y;
+                    shot.position[2] = crossing.point.z;
+                    // The record's pose is the one position in the image; the host
+                    // keeps three copies, and the next step integrates from them.
+                    shot.flight.local_position = bsp::TickPoint3{crossing.point.x,
+                        crossing.point.y, crossing.point.z};
+                    shot.flight.snapshot_current = shot.flight.local_position;
+                    ++live_water_crossings;
+                }
+            } else {
+                // Already in the water: the trace is not run (0084C11C), and the
+                // swim hold below keeps the round on a surface that is not y = 0.
+                crossed = false;
+            }
+        }
+        if (crossed) {
             ++summary.water_crossings;
             shot.fate = 4;
             if (kDepthChargeInWaterBound && shot.depth_charge) {
@@ -9044,9 +9096,14 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     shot.flight.velocity.z = vz / horizontal * swim;
                 }
                 shot.flight.velocity.y = 0.0f;
-                shot.position[1] = 0.0f;
-                shot.flight.local_position.y = 0.0f;
-                shot.flight.snapshot_current.y = 0.0f;
+                // kGunneryLiveWaterSurfaceBound: the surface is where the trace
+                // put the round; OFF, the y = 0 plane.
+                const float level_y = kGunneryLiveWaterSurfaceBound
+                    ? bsp::ocean_live_field_water_height_0078cf20(shot.position[0], shot.position[2])
+                    : 0.0f;
+                shot.position[1] = level_y;
+                shot.flight.local_position.y = level_y;
+                shot.flight.snapshot_current.y = level_y;
                 ++summary.torpedo_swims_started;
                 if (trace) {
                     log.notef("  torpedo trace %llu swim_started life=%.2f "
@@ -13148,6 +13205,9 @@ void GameGunneryHost::report() {
             "(006E4D50 rack+4ECh -> 006E1F00 block+38h -> 006E1510 +348h, packet cc9_bomb_drift)",
             host.bomb_drift_drops, host.bomb_drift_steps, host.bomb_drift_max,
             kBombDropDriftBound ? 1 : 0);
+        host.log.notef("summary mission gunnery live water crossings=%llu bound=%d "
+            "(0084B380 -> 0078D1B0 on 0078CF20, packet cc9_physics1_sea)",
+            host.live_water_crossings, kGunneryLiveWaterSurfaceBound ? 1 : 0);
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
                 "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "

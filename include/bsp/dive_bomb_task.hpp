@@ -1306,6 +1306,9 @@ inline constexpr float kAimHeadingHalfTurn = 3.1415927410125732f;      // 00D7A2
 // 009C5023, the body vector 0042D0D0 transforms: (0, 100, 0), the +Y row of
 // the pose. atan2 is scale-invariant, so only the row matters.
 inline constexpr float kAimHeadingBodyAxisLength = 100.0f;  // 00CE3D08
+// 009C5090, the pitch above which the body-axis bearing is blended back toward
+// the Euler heading (cc9-gunnery35, GUNNERY 178): -60 degrees.
+inline constexpr float kAimHeadingVerticalPitch = -1.0471975803375244f;  // 00D20338
 }  // namespace dive_bomb_constant
 
 // ---------------------------------------------------------------------------
@@ -1346,6 +1349,11 @@ struct DiveBombAimHeadingInputs {
     // 0042D0F2-0042D116 - so (0,100,0) selects row 1 scaled by 100.
     float body_up_x = 0.0f;
     float body_up_z = 0.0f;
+    // 009C508A-009C516C, the third arm (GUNNERY 178): for -60 < pitch <= -40 deg the
+    // body-axis bearing B is blended toward the (inverted-corrected) Euler heading E,
+    // B - t * wrap(B - E) with t = InterpolateClamped(-60 deg, 0, -40 deg, 1, pitch).
+    // False keeps the two-arm form (B for every pitch <= -40 deg).
+    bool mid_pitch_blend = false;
 };
 float dive_bomb_aim_heading_009c4f80(
     const DiveBombAimHeadingInputs& in) noexcept;

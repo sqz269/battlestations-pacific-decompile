@@ -1019,6 +1019,27 @@ float dive_bomb_aim_heading_009c4f80(
     if (bearing < 0.0f) {
         bearing += static_cast<float>(dive_bomb_constant::kTwoPi);
     }
+    // 009C5090 COMISS [00D20338] against pitch, 009C509F JBE: steeper than -60 deg
+    // returns the body-axis bearing; otherwise 009C50B7..009C5168 blend it.
+    if (in.mid_pitch_blend &&
+        !(dive_bomb_constant::kAimHeadingVerticalPitch > in.pitch_c64)) {
+        // 009C50B7 vtable[50h], with 009C50C2..009C50EB's add of pi past a
+        // folded bank of pi/2, as the first arm does.
+        float euler = in.heading_c6c;
+        if (static_cast<double>(folded_bank) >
+            dive_bomb_constant::kAimHeadingInvertedBank) {
+            euler = wrapped_angle_add_00438aa0(
+                euler, dive_bomb_constant::kAimHeadingHalfTurn);
+        }
+        // 009C5101: d = SubtractWrapped(B, E), arg0 the body bearing.
+        const float d = wrapped_angle_subtract_00438b10(bearing, euler);
+        // 009C5144: InterpolateClamped(-60 deg, 0, -40 deg, 1, pitch); 009C5149 FMUL d.
+        const float t = dive_bomb_interpolate_clamped_00419010(
+            dive_bomb_constant::kAimHeadingVerticalPitch, 0.0f,
+            dive_bomb_constant::kAimHeadingSteepPitch, 1.0f, in.pitch_c64);
+        // 009C5163: SubtractWrapped(B, t * d).
+        return wrapped_angle_subtract_00438b10(bearing, t * d);
+    }
     return bearing;
 }
 
