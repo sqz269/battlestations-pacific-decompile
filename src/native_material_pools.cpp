@@ -394,3 +394,87 @@ void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
     if (table) singleton_lifetime_free(table);
 }
 } // namespace bsp
+
+// GUI widget pool family (cc13-gui1, docs/CC13_GUI_1.md): fourteen more instances
+// of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
+#include "bsp/native_gui_widget_pools_cc13.hpp"
+namespace bsp {
+template<class T> NativeGuiWidgetPool<T>::NativeGuiWidgetPool(AllocatorListDomain& list,
+    NativeGuiWidgetPoolStorage& storage) : allocator_list_(list), storage_(storage) {
+    list.bind_virtual0(storage.allocator_00, {T::native_vtable, T::native_virtual0, this, &invoke_trim});
+}
+template<class T> NativeGuiWidgetPool<T>::~NativeGuiWidgetPool() {
+    allocator_list_.unbind_virtual0(storage_.allocator_00);
+}
+template<class T> void NativeGuiWidgetPool<T>::initialize() {
+    initialize_pool<T>(allocator_list_, storage_);
+}
+template<class T> void* NativeGuiWidgetPool<T>::allocate() {
+    return allocate_slot<T>(storage_);
+}
+template<class T> void NativeGuiWidgetPool<T>::free(void* slot) noexcept {
+    return_slot<T>(storage_, slot);
+}
+template<class T> void NativeGuiWidgetPool<T>::trim() {
+    trim_empty_slabs<T>(storage_);
+}
+template<class T> void NativeGuiWidgetPool<T>::destroy() {
+    destroy_pool<T>(allocator_list_, storage_);
+}
+template<class T> void* NativeGuiWidgetPool<T>::initialize_slab(void* raw, std::uint32_t index) noexcept {
+    return bsp::initialize_slab<T>(raw, index); // the engine's, not this member
+}
+template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
+    static_cast<NativeGuiWidgetPool*>(context)->trim();
+}
+#define BSP_GUI_WIDGET_POOL_INSTANCE(T)                                                     \
+    static_assert(T::free_count_offset + 4 == T::slab_bytes);                               \
+    static_assert(T::slots_per_slab <= 0xffffu);                                            \
+    template class NativeGuiWidgetPool<T>;
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiWidgetPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiButtonPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiMoviePoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiIconPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiCurvePoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiSectionPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiLinePoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiScrollbarPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiGridPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiModelPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiSoundPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiClipBoxPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiFrameBoxPoolTraits)
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiAnimIconPoolTraits)
+#undef BSP_GUI_WIDGET_POOL_INSTANCE
+} // namespace bsp
+// The out-of-line Mit pointer-vector members of the slab table (ECX = pool+28h:
+// data, count, capacity). Widget 00AA6FA0/00AA6FF0/00AA76C0/00AA7740, Button
+// 00AAB8E0/00AAB930/00AABC70/00AABD00, Movie 00AACDF0; none has a
+// direct caller (the pool members inline the same code). operator new is
+// 00BF55BE and the free is 00BF6989, as in the inlined copies above.
+namespace bsp {
+namespace {
+void set_slab_table_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    table.capacity = capacity;
+    auto* replacement = allocate_table(capacity);
+    for (std::uint32_t i = 0; i < table.count; ++i)
+        ::new (replacement + i) std::byte*(table.data[i]);
+    if (table.data) singleton_lifetime_free(table.data);
+    table.data = replacement;
+}
+} // namespace
+void native_gui_pool_table_set_capacity(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    set_slab_table_capacity(table, capacity);
+}
+void native_gui_pool_table_grow(NativeGuiPoolSlabTable& table) {
+    set_slab_table_capacity(table, table.capacity * 2u + 2u);
+}
+void native_gui_pool_table_push_back(NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) set_slab_table_capacity(table, table.capacity * 2u + 2u);
+    ::new (table.data + table.count) std::byte*(slab);
+    ++table.count;
+}
+void native_gui_pool_table_reserve(NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+}
+} // namespace bsp
