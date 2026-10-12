@@ -616,4 +616,218 @@ void render_foliage_for_camera_00ad7a30(void* foliage, const void* foliage_globa
     if (read<std::uint8_t>(foliage, 0x05) != 0) debug_draw_foliage_00ad72a0(foliage, host);
 }
 
+void draw_node_box_00ae0a50(const void* node, std::uint32_t colour, float y_offset, FoliageQuadHost& host)
+{
+    // 00AE0A81..00AE0B27: each end spilled to float.
+    const float x0 = static_cast<float>(D(read<float>(node, 0x00)) - read<float>(node, 0x0c));
+    const float z0 = static_cast<float>(D(read<float>(node, 0x08)) - read<float>(node, 0x14));
+    const float x1 = static_cast<float>(D(read<float>(node, 0x00)) + read<float>(node, 0x0c));
+    const float z1 = static_cast<float>(D(read<float>(node, 0x08)) + read<float>(node, 0x14));
+    const float ylo = static_cast<float>(D(read<float>(node, 0x04)) - read<float>(node, 0x10));
+    const float yhi = static_cast<float>(D(read<float>(node, 0x04)) + read<float>(node, 0x10));
+    const float y1 = static_cast<float>(D(yhi) + y_offset);
+    const float y0 = static_cast<float>(D(y_offset) + ylo);
+    auto line = [&](float ax, float ay, float az, float bx, float by, float bz) {
+        const float a[3] = {ax, ay, az}, b[3] = {bx, by, bz};
+        host.draw_line(a, b, colour, colour);
+    };
+    line(x0, y0, z0, x0, y1, z0);
+    line(x0, y0, z1, x0, y1, z1);
+    line(x1, y0, z0, x1, y1, z0);
+    line(x1, y0, z1, x1, y1, z1);
+    line(x0, y1, z0, x1, y1, z0);
+    line(x1, y1, z0, x1, y1, z1);
+    line(x1, y1, z1, x0, y1, z1);
+    line(x0, y1, z1, x0, y1, z0);
+    line(x0, y0, z0, x1, y0, z0);
+    line(x1, y0, z0, x1, y0, z1);
+    line(x1, y0, z1, x0, y0, z1);
+    line(x0, y0, z1, x0, y0, z0);
+}
+
+void debug_draw_entry_node_00ae15e0(void* node, void* model, FoliageQuadHost& host)
+{
+    void* const transform = host.model_transform(model);
+    if ((read<std::uint8_t>(transform, 0x5c) & 2u) == 0) host.refresh_world_matrix(transform);
+    draw_node_box_00ae0a50(node, 0xffffffffu, 20.0f, host); // four 0FFh bytes; 00CE3930
+    if (read<std::uint32_t>(node, 0x34) == 0) return;
+    for (std::size_t slot = 0x1c; slot <= 0x28; slot += 4) {
+        void* const child = read<void*>(node, slot);
+        if (child != nullptr) debug_draw_entry_node_00ae15e0(child, model, host);
+    }
+}
+
+void debug_draw_entry_group_00ae1670(void* entry, FoliageQuadHost& host)
+{
+    debug_draw_entry_node_00ae15e0(read<void*>(entry, 0x18), read<void*>(entry, 0x00), host);
+}
+
+namespace {
+
+// Emission shared by the sum-6 (00AE4897) and leaf (00AE49FD) paths.
+std::int32_t emit_foliage_section(void* cell, bool static_slot, void* source, void* stream,
+    void* layout, void* geometry, void* material, std::int32_t count, std::uint32_t section10,
+    std::uint32_t section18, FoliageQuadHost& host)
+{
+    const std::int32_t instances = read<std::int32_t>(cell, 0x4c) - read<std::int32_t>(cell, 0x48) + 1;
+    void* const section = static_slot ? host.allocate_draw_section() : host.create_draw_section();
+    host.set_vertex_layout(section, layout);
+    write<std::uint32_t>(section, 0x08, 4);
+    host.set_material(section, material);
+    const std::uint32_t s20 = host.source_vslot_20(source);
+    const std::uint32_t s24 = host.source_vslot_24(source);
+    void* const memory = host.allocate_stream_slot();
+    void* view = nullptr;
+    if (memory != nullptr) {
+        view = host.construct_stream_view(memory, s20, s24, read<void*>(source, 0x58), // 00B48D00
+            static_cast<std::uint32_t>(read<std::int32_t>(cell, 0x48)) << 5);
+    }
+    write(cell, 0x54, view);
+    // Native stores 80000000h to view+54h unconditionally; a null view faults there.
+    if (view != nullptr) write<std::uint32_t>(view, 0x54, 0x80000000u);
+    host.append_vertex_stream(section, stream);
+    host.append_vertex_stream(section, read<void*>(cell, 0x54));
+    write<std::uint32_t>(section, 0x18, section18);
+    write<std::uint32_t>(section, 0x0c, 0);
+    write<std::uint32_t>(section, 0x14, 0);
+    write<std::uint32_t>(section, 0x10, section10);
+    host.set_instance_count(section, instances);
+    host.append_draw_section(geometry, section);
+    host.release(section);
+    if (void* const own = read<void*>(cell, 0x54)) {
+        host.release(own);
+        write<void*>(cell, 0x54, nullptr);
+    }
+    return instances + count;
+}
+
+} // namespace
+
+std::int32_t cull_and_emit_foliage_cell_00ae47e0(void* cell, void* camera, void* model,
+    void* source, void* stream, void* layout, void* geometry, void* material,
+    std::int32_t count, std::uint32_t section10, std::uint32_t section18, FoliageQuadHost& host)
+{
+    std::int32_t sum = 0;
+    for (std::int32_t i = host.frustum_plane_count(camera) - 1; i >= 0; --i) {
+        const float* const p = host.frustum_plane(camera, i);
+        const float plane[4] = {p[0], p[1], p[2], p[3]}; // FLD/FSTP copy to the stack
+        const std::int32_t side = host.classify_plane(cell, plane, model);
+        if (side == 0) return count;
+        sum += side;
+    }
+    void* const transform = host.model_transform(model);
+    if ((read<std::uint8_t>(transform, 0x5c) & 2u) == 0) host.refresh_world_matrix(transform);
+    if (sum == 6) {
+        return emit_foliage_section(cell, true, source, stream, layout, geometry, material, count,
+            section10, section18, host);
+    }
+    if (read<std::uint32_t>(cell, 0x24) == 0) {
+        return emit_foliage_section(cell, false, source, stream, layout, geometry, material, count,
+            section10, section18, host);
+    }
+    for (std::size_t slot = 0x2c; slot <= 0x38; slot += 4) {
+        if (void* const child = read<void*>(cell, slot)) {
+            count = cull_and_emit_foliage_cell_00ae47e0(child, camera, model, source, stream, layout,
+                geometry, material, count, section10, section18, host);
+        }
+    }
+    return count;
+}
+
+void debug_draw_quad_node_00ae37f0(void* node, void* model, FoliageQuadHost& host)
+{
+    void* const transform = host.model_transform(model);
+    if ((read<std::uint8_t>(transform, 0x5c) & 2u) == 0) host.refresh_world_matrix(transform);
+    const float wx = read<float>(transform, 0x120), wz = read<float>(transform, 0x128);
+    const float wy = 0.0f; // XORPS
+    auto line = [&](float ax, float ay, float az, float bx, float by, float bz, std::uint32_t c) {
+        const float a[3] = {ax, ay, az}, b[3] = {bx, by, bz};
+        host.draw_line(a, b, c, c);
+    };
+    auto sum = [](float a, float b) { return static_cast<float>(D(a) + b); };
+    using Slots = void* const*;
+    const Slots begin = read<Slots>(node, 0x14);
+    const bool leaf = read<std::uint32_t>(node, 0x24) == 0;
+    if (leaf && (begin == nullptr || ((read<Slots>(node, 0x18) - begin) == 0))) {
+        // 00AE3866..00AE39D2: rect at y 0, white.
+        const float x0 = sum(wx, read<float>(node, 0x00)), x1 = sum(read<float>(node, 0x08), wx);
+        const float z0 = sum(read<float>(node, 0x04), wz), z1 = sum(wz, read<float>(node, 0x0c));
+        line(x0, wy, z0, x1, wy, z0, 0xffffffffu);
+        line(x1, wy, z0, x1, wy, z1, 0xffffffffu);
+        line(x1, wy, z1, x0, wy, z1, 0xffffffffu);
+        line(x0, wy, z1, x0, wy, z0, 0xffffffffu);
+    } else {
+        // 00AE39D9..00AE3EE1: box, then the children.
+        const std::uint32_t colour = read<std::uint8_t>(node, 0x28) != 0 ? 0xffff0000u : 0xff00ffffu;
+        const float x0 = sum(read<float>(node, 0x00), wx), x1 = sum(read<float>(node, 0x08), wx);
+        const float z0 = sum(read<float>(node, 0x04), wz), z1 = sum(wz, read<float>(node, 0x0c));
+        const float y0 = sum(wy, read<float>(node, 0x40)), y1 = sum(read<float>(node, 0x44), wy);
+        line(x0, y0, z0, x0, y1, z0, colour);
+        line(x0, y0, z1, x0, y1, z1, colour);
+        line(x1, y0, z0, x1, y1, z0, colour);
+        line(x1, y0, z1, x1, y1, z1, colour);
+        line(x0, y1, z0, x1, y1, z0, colour);
+        line(x1, y1, z0, x1, y1, z1, colour);
+        line(x1, y1, z1, x0, y1, z1, colour);
+        line(x0, y1, z1, x0, y1, z0, colour);
+        line(x0, y0, z0, x1, y0, z0, colour);
+        line(x1, y0, z0, x1, y0, z1, colour);
+        line(x1, y0, z1, x0, y0, z1, colour);
+        line(x0, y0, z1, x0, y0, z0, colour);
+        if (!leaf) {
+            for (std::size_t slot = 0x2c; slot <= 0x38; slot += 4) {
+                if (void* const child = read<void*>(node, slot)) debug_draw_quad_node_00ae37f0(child, model, host);
+            }
+        }
+    }
+    // 00AE3EE6..00AE4026: instance markers; size is reread every step.
+    auto size = [&]() -> std::uint32_t {
+        return static_cast<std::uint32_t>((read<Slots>(node, 0x18) - read<Slots>(node, 0x14)));
+    };
+    if (read<Slots>(node, 0x14) == nullptr || static_cast<std::int32_t>(size()) <= 0) return;
+    for (std::uint32_t i = 0;; ++i) {
+        if (read<Slots>(node, 0x14) == nullptr || i >= size()) return;
+        auto check = [&] { if (read<Slots>(node, 0x14) == nullptr || i >= size()) host.invalid_parameter(); };
+        check();
+        const float tz = read<float>(read<Slots>(node, 0x14)[i], 0x08);
+        check();
+        const float top[3] = {sum(read<float>(read<Slots>(node, 0x14)[i], 0x00), wx), 20.0f, sum(tz, wz)};
+        check();
+        const float bz = read<float>(read<Slots>(node, 0x14)[i], 0x08);
+        check();
+        const float bottom[3] = {sum(read<float>(read<Slots>(node, 0x14)[i], 0x00), wx), 0.0f, sum(bz, wz)};
+        host.draw_line(bottom, top, 0xffff0000u, 0xffff0000u);
+    }
+}
+
+void debug_draw_bush_group_00ae4040(void* group, FoliageQuadHost& host)
+{
+    debug_draw_quad_node_00ae37f0(read<void*>(group, 0x10), read<void*>(group, 0x00), host);
+}
+
+void render_bush_group_00ae4cf0(void* group, void* camera, FoliageQuadHost& host)
+{
+    host.clear_draw_section_owners(read<void*>(group, 0x28));
+    const float saved_far = read<float>(camera, 0x1d8);
+    const float saved_near = read<float>(camera, 0x1d4);
+    auto walk_mode = [&] {
+        const auto mode = read<std::int32_t>(camera, 0x198);
+        return mode != 2 && mode != 7;
+    };
+    if (walk_mode()) {
+        host.set_far_plane(camera, 700.0f); // 00D1F980
+        host.set_near_plane(camera, 0.01f); // 00D7A238
+    }
+    void* const header = read<void*>(group, 0x04);
+    write(group, 0x30, cull_and_emit_foliage_cell_00ae47e0(read<void*>(group, 0x10), camera,
+        read<void*>(group, 0x00), read<void*>(group, 0x1c), read<void*>(group, 0x20),
+        read<void*>(group, 0x24), read<void*>(group, 0x28), read<void*>(group, 0x34), 0,
+        read<std::uint32_t>(header, 0x0c), read<std::uint32_t>(header, 0x10), host));
+    if (walk_mode()) {
+        host.set_far_plane(camera, saved_far);
+        host.set_near_plane(camera, saved_near);
+    }
+    if (read<std::uint8_t>(group, 0x38) == 0) host.clear_draw_section_owners(read<void*>(group, 0x28));
+}
+
 } // namespace bsp::cc13_shadow

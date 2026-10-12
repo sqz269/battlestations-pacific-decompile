@@ -1,6 +1,6 @@
 # Directional shadow view fitting (cc13-shadow1)
 
-Addresses: 00A8AEB0, 00A8B930, 00A8BD20, 00A8ECB0, 00AD7A30, 00AD7360, 00AD72A0 (reconstructed); 00B1F4D0, 00B1F5E0, 00AE1670 (named)
+Addresses: 00A8AEB0, 00A8B930, 00A8BD20, 00A8ECB0, 00AD7A30, 00AD7360, 00AD72A0, 00AE4CF0, 00AE47E0, 00AE4040, 00AE37F0, 00AE1670, 00AE15E0, 00AE0A50 (reconstructed); 00B1F4D0, 00B1F5E0 (named)
 
 Continues the shadow section of docs/CC13_SOUND_STREAMING.md (cc13-audio1), which reconstructed
 the cascade submit 00A8EA20, the two single-view paths 00A8E860/00A8E180, the point projection
@@ -27,7 +27,13 @@ host methods, so their native bodies stay theirs.
 | 00AD7A30 | BSP_FoliageSystem_RenderForCamera_Provisional | `render_foliage_for_camera_00ad7a30` | reconstructed, build-tested |
 | 00AD7360 | BSP_FoliageSystem_RenderGroups_Provisional | `render_foliage_groups_00ad7360` | reconstructed, build-tested |
 | 00AD72A0 | BSP_FoliageSystem_DebugDraw_Provisional | `debug_draw_foliage_00ad72a0` | reconstructed, build-tested |
-| 00AE1670 | BSP_FoliageEntry_DebugDrawQuadtree_Provisional | none | named |
+| 00AE1670 | BSP_FoliageEntry_DebugDrawQuadtree_Provisional | `debug_draw_entry_group_00ae1670` | reconstructed, build-tested |
+| 00AE15E0 | BSP_FoliageEntryNode_DebugDraw | `debug_draw_entry_node_00ae15e0` | reconstructed, build-tested |
+| 00AE0A50 | BSP_FoliageEntryNode_DrawBox | `draw_node_box_00ae0a50` | reconstructed, build-tested |
+| 00AE4CF0 | BSP_BushGroup_Render_Provisional | `render_bush_group_00ae4cf0` | reconstructed, build-tested |
+| 00AE47E0 | BSP_FoliageCell_CullAndEmit | `cull_and_emit_foliage_cell_00ae47e0` | reconstructed, build-tested |
+| 00AE4040 | BSP_FoliageGroup_DebugDrawQuadtree | `debug_draw_bush_group_00ae4040` | reconstructed, build-tested |
+| 00AE37F0 | BSP_FoliageQuadNode_DebugDraw | `debug_draw_quad_node_00ae37f0` | reconstructed, build-tested |
 | 00B1F4D0 | BSP_RenderCommandQueue_SubmitNamedScene | none | named |
 | 00B1F5E0 | BSP_RenderCommandQueue_SubmitDrawable_Provisional | none | named |
 
@@ -54,7 +60,7 @@ The fitters call these reconstructions directly: `multiply_camera_matrices_00413
 `native_projection_tangent_00412e20` and audio1's `intersect_lines_2d_00a8b860` /
 `project_shadow_point_00a8ac90`. Everything that needs a camera object, the CRT or the render
 queue goes through `ShadowFitHost`. 00B6FC30 (FLD aspect +1C8h, FMUL fov +1C4h, FSTP32) is
-written out inline. `reports/cc13_shadow1_calls.json` lists all 99 modelled call sites (both batches), and
+written out inline. `reports/cc13_shadow1_calls.json` lists all 129 modelled call sites (all batches), and
 `tools/verify_report_calls.py` passes on all of them.
 
 ## Owner layout used
@@ -211,6 +217,38 @@ and the walk then continues as the native does. The constant `test reg, reg` /
 `cmp reg, reg` container tests are omitted, because their reg is owner+54h or owner+64h and they
 can never fail.
 
+## Foliage quadtree cull and debug draw (segment 81)
+
+Host: `FoliageQuadHost`. The draw-section, stream and camera-plane calls are host methods named
+after their ledger callees. 00AE2FE0 is a host method too, so it can bind to
+`foliage_cell_classify_plane_00ae2fe0` in docs/CC13_TERRAIN_RENDER.md.
+
+- 00AE4CF0 (group render) clears the mesh sections (00B73C10) at entry, and again at exit
+  unless byte +38h is set. Around the walk it sets far 700 and near 0.01, then restores the saved
+  +1D8h/+1D4h. Each step happens only when camera +198h is neither 2 nor 7, and the mode is reread
+  for the restore. Walk arguments: root +10h, model +0, source +1Ch, stream +20h, layout +24h,
+  geometry +28h, material +34h, count 0, and header (+4) +0Ch/+10h for section +10h/+18h.
+- 00AE47E0 (cull and emit) sums the plane classes from the last plane down. Any 0 returns the
+  running count unchanged. The model transform is refreshed after the loop. A sum of exactly 6
+  (all six planes straddling) emits through the inline static-slot allocation (00B85EE0 +
+  00B857F0, EH state 1). A leaf (+24h clear) emits through 00533FA0 (EH state 2). Other nodes
+  recurse into +2Ch..+38h, threading the count. One emission:
+  - instances = +4Ch - +48h + 1;
+  - layout, then section +08h = 4, then material;
+  - the source's vslots 20h/24h, then a stream slot (00B4B370) built into a view (00B4A9B0)
+    over physical source+58h at byte offset +48h << 5, kept in cell +54h with view +54h =
+    80000000h. Native has no null check before that store;
+  - stream +20h and the view are appended, section +18h/+0Ch/+14h/+10h are written, then the
+    instance count;
+  - the section is appended to the geometry, the creator references of section and view are
+    released, and +54h is cleared.
+- 00AE37F0 / 00AE4040 (bush quadtree debug draw) draw from the transform x +120h / z +128h with
+  y = 0.0. The `+ 0.0` on the box y is kept. Both branches end with the instance-marker loop,
+  whose index checks call 00BF6713 and continue.
+- 00AE1670 / 00AE15E0 / 00AE0A50 (entry quadtree debug draw): 00AE15E0 always draws its node box
+  in white, raised by 20, and recurses when +34h is set. Box ends are float spills. The y ends
+  are float(float(c +/- h) + offset).
+
 ## Uncertainty
 
 - x87 exponent range: the double model diverges only when an intermediate overflows or underflows
@@ -234,8 +272,8 @@ All seven first-batch ledger names and evidence comments were applied with `tool
   `ShadowCascadeSubmitHost::fit_cascade` / `ShadowSingleViewHost::fit_single_view` once a host
   implements `ShadowFitHost` (camera getters/setters, 00B63F10 look-at, 00B62A10 ortho, 00419510 /
   00419440 with the CRT, 00BF7030).
-- Foliage: 00AE4CF0, 00AE4040 and 00AE15E0/00AE0A50 are the remaining callees (00AE4CF0 and 00AE4040
-  are documented in docs/CC13_TERRAIN_RENDER.md).
+- Foliage: the draw-section and stream callees (00B4A9B0 is unnamed) and the meaning of the sum-6
+  split in 00AE47E0 remain open.
 - 00B1F4D0 / 00B1F5E0 could join the render-queue reconstructions (00B1F170, 00B1EB80, 00B1CB50
   are already complete in cc12's native slices).
 - A native differential test against the image bodies would move these from build-tested to

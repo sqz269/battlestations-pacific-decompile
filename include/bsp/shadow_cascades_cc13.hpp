@@ -172,4 +172,92 @@ void debug_draw_foliage_00ad72a0(void* foliage, FoliageRenderHost& host);
 void render_foliage_for_camera_00ad7a30(void* foliage, const void* foliage_global_00f8c210,
     void* camera, FoliageRenderHost& host);
 
+// ---------------------------------------------------------------------------
+// Foliage quadtree cull/emit and debug draw (segment 81).
+// ---------------------------------------------------------------------------
+
+class FoliageQuadHost {
+public:
+    virtual ~FoliageQuadHost() = default;
+    // model vslot 40h: the model's transform node (camera-like, flags +5Ch).
+    virtual void* model_transform(void* model) = 0;
+    virtual void refresh_world_matrix(void* node) = 0;                  // 00B6DB70
+    // [00F8D394] vslot B4h (00B290D0): one debug line, two points, two colours.
+    virtual void draw_line(const float* p0, const float* p1, std::uint32_t c0, std::uint32_t c1) = 0;
+    virtual void clear_draw_section_owners(void* mesh) = 0;             // 00B73C10
+    virtual void set_far_plane(void* camera, float value) = 0;          // 00B6FC10
+    virtual void set_near_plane(void* camera, float value) = 0;         // 00B6FBF0
+    // 00B70710 BSP_Camera_GetFrustum then 00B65080 BSP_PlaneSet_GetCount.
+    virtual std::int32_t frustum_plane_count(void* camera) = 0;
+    // 00B6FDC0 BSP_Camera_GetPlane(ECX camera, index): four floats a, b, c, d.
+    virtual const float* frustum_plane(void* camera, std::int32_t index) = 0;
+    // 00AE2FE0 BSP_FoliageCell_ClassifyPlane(ECX cell, plane by value, model), RET 14h:
+    // 0 outside, 1 straddling, 10 inside (terrain: foliage_cell_classify_plane_00ae2fe0).
+    virtual std::int32_t classify_plane(void* cell, const float* plane4, void* model) = 0;
+    // Inline 00B85EE0 BSP_DrawSectionPool_AllocateStaticSlot + 00B857F0 construct (null when
+    // the slot is null), as the sum-6 path writes it.
+    virtual void* allocate_draw_section() = 0;
+    virtual void* create_draw_section() = 0;                            // 00533FA0
+    virtual void set_vertex_layout(void* section, void* layout) = 0;    // 00B86650
+    virtual void set_material(void* section, void* material) = 0;       // 00B864C0
+    virtual std::uint32_t source_vslot_20(void* source) = 0;
+    virtual std::uint32_t source_vslot_24(void* source) = 0;
+    virtual void* allocate_stream_slot() = 0;                           // 00B4B370 (ECX 74h unused)
+    // 00B4A9B0(ECX memory, s20, s24, physical, byte offset), RET 10h: logical vertex stream view.
+    virtual void* construct_stream_view(void* memory, std::uint32_t s20, std::uint32_t s24,
+        void* physical, std::uint32_t byte_offset) = 0;
+    virtual void append_vertex_stream(void* section, void* stream) = 0; // 00B85B80
+    virtual void set_instance_count(void* section, std::int32_t count) = 0; // 00B85590
+    virtual void append_draw_section(void* geometry, void* section) = 0;    // 00B73C60
+    // [00CE2220] InterlockedDecrement(object+4); vslot 0 when it reaches zero.
+    virtual void release(void* object) = 0;
+    virtual void invalid_parameter() = 0;                               // 00BF6713
+};
+
+// 00AE37F0, __thiscall(node, model), RET 4, recursive (via 00AE4040 for the
+// root). Origin = model transform world x +120h and z +128h, y = 0.0 (refreshed
+// first). A leaf (+24h clear) with an empty instance vector +14h/+18h draws its
+// cell rect (x +00h/+08h, z +04h/+0Ch) at y 0 in white. Any other node draws its
+// box with y +40h..+44h (each + 0.0) in FFFF0000h when byte +28h is set, else
+// FF00FFFFh, in 00AE0A50's edge order, and recurses into the non-null children
+// +2Ch..+38h when +24h is set. Then each instance (vector of pointers, x +00h, z
+// +08h) gets a red vertical line from y 0 to 20.0 (00CE3930), with the
+// checked-index tests kept.
+void debug_draw_quad_node_00ae37f0(void* node, void* model, FoliageQuadHost& host);
+
+// 00AE4040, __thiscall(group), RET: 00AE37F0(group+10h, group+0).
+void debug_draw_bush_group_00ae4040(void* group, FoliageQuadHost& host);
+
+// 00AE0A50, __thiscall(node, colour, float y_offset), RET 8. Twelve debug lines of
+// the box centre +00h..+08h, half extent +0Ch..+14h, y raised by y_offset: the
+// four verticals (x0z0, x0z1, x1z0, x1z1), then the top and the bottom loops
+// x0z0 -> x1z0 -> x1z1 -> x0z1 -> x0z0. Each end is a float spill, and y adds the
+// offset to the spilled centre +/- half.
+void draw_node_box_00ae0a50(const void* node, std::uint32_t colour, float y_offset, FoliageQuadHost& host);
+
+// 00AE15E0, __thiscall(node, model), RET 4, recursive: refresh the model
+// transform if needed, draw the node box in white raised by 20.0 (00CE3930),
+// and when +34h is set, recurse into the non-null children +1Ch, +20h, +24h, +28h.
+void debug_draw_entry_node_00ae15e0(void* node, void* model, FoliageQuadHost& host);
+
+// 00AE1670, __fastcall(entry), RET: 00AE15E0(entry+18h, entry+0).
+void debug_draw_entry_group_00ae1670(void* entry, FoliageQuadHost& host);
+
+// 00AE47E0, __thiscall(cell, camera, model, source, stream, layout, geometry,
+// material, count, section10, section18), SEH frame, RET 28h, recursive. Sums
+// 00AE2FE0 over the frustum planes from the last; any 0 returns `count`. A sum
+// of exactly 6, or a leaf (+24h clear), emits one instanced section for the
+// instance range +48h..+4Ch and returns count + instances. Any other node
+// returns the count accumulated through children +2Ch, +30h, +34h, +38h.
+std::int32_t cull_and_emit_foliage_cell_00ae47e0(void* cell, void* camera, void* model,
+    void* source, void* stream, void* layout, void* geometry, void* material,
+    std::int32_t count, std::uint32_t section10, std::uint32_t section18, FoliageQuadHost& host);
+
+// 00AE4CF0, __thiscall(group, camera), RET 4. Clears the group mesh's draw
+// sections (+28h). Unless camera +198h is 2 or 7, it sets far 700.0 (00D1F980)
+// and near 0.01 (00D7A238) for the walk and restores the saved +1D8h / +1D4h
+// afterwards. It walks root +10h, stores the instance count at +30h, and clears
+// the mesh again unless byte +38h is set.
+void render_bush_group_00ae4cf0(void* group, void* camera, FoliageQuadHost& host);
+
 } // namespace bsp::cc13_shadow
