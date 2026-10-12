@@ -18,6 +18,7 @@
 #include <cstdint>
 
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_widget.hpp"
 #include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 
@@ -236,5 +237,264 @@ void gui_widget_destroy_with_base(void* self, std::uint32_t vtable, std::uint32_
 // scalar deleting destructor, inlines this body and frees into the Line pool.
 void gui_line_destroy(void* self, GuiWidgetDestructionHost& host);
 void* gui_line_scalar_deleting_destructor(void* self, std::uint32_t flags, GuiWidgetDestructionHost& host);
+
+// ---------------------------------------------------------------------------
+// Property describers and readers
+// ---------------------------------------------------------------------------
+
+// The 8-byte variants a describer passes (tag, value) and the reader fills.
+// Tags are GuiValueTag (gui_layout_loader.hpp). Floats are copied as stored.
+struct GuiTaggedValue {
+    GuiValueTag tag{GuiValueTag::String};
+    std::array<float, 4> f{};
+    bool b{false};
+    const char* s{nullptr};
+};
+
+// A describer visitor (the object a widget's vtable +1Ch receives).
+struct GuiPropertyWriter {
+    virtual ~GuiPropertyWriter() = default;
+    // 00BD5680 BSP_TaggedValue_Equals(value, default).
+    virtual bool equals_00bd5680(const GuiTaggedValue& value, const GuiTaggedValue& def) = 0;
+    // visitor +0Ch, four dwords: (0, name), (tag, value).
+    virtual void write(const char* name, const GuiTaggedValue& value) = 0;
+    // visitor +04h / +08h: open a named sub-table, close it.
+    virtual void open_table(const char* name) = 0;
+    virtual void close_table() = 0;
+};
+
+// A reader visitor (vtable +18h). +0Ch reads with a default (six dwords), +10h
+// without one (four); either leaves the field untouched when the key is absent
+// and no default is given.
+struct GuiPropertyReader {
+    virtual ~GuiPropertyReader() = default;
+    virtual void read_with_default(const char* name, GuiTaggedValue& field, const GuiTaggedValue& def) = 0;
+    virtual void read(const char* name, GuiTaggedValue& field) = 0;
+};
+
+// What the describers need from the engine besides the visitor.
+struct GuiDescribeHost {
+    virtual ~GuiDescribeHost() = default;
+    // Widget vtable +5Ch: the element kind; 1 is the page root.
+    virtual std::int32_t element_kind(const void* widget) = 0;
+    // 00AA5A00 + 00AAA480: the children sorted by case-insensitive name.
+    virtual std::size_t sorted_children(const void* widget, std::array<const void*, 256>& out) = 0;
+    // Child vtable +28h (the name C string) and +1Ch (describe into writer).
+    virtual const char* child_name(const void* child) = 0;
+    virtual void describe_child(const void* child, GuiPropertyWriter& writer) = 0;
+    // The base describer of a derived class (for example 00AB2B70 for Progbar).
+    virtual void describe_base(std::uint32_t native_address, const void* widget, GuiPropertyWriter& writer) = 0;
+    // The base reader of a derived class (for example 00AB3310 for Progbar).
+    virtual void read_base(std::uint32_t native_address, void* widget, GuiPropertyReader& reader) = 0;
+};
+
+// 00AAAED0 BSP_GuiWidget_DescribeProperties, __thiscall(widget, writer), RET 4.
+// In order, each only when it differs from its default: Pos (+0Ch, Vec3, 0),
+// Size (+20h, Vec2, 0), Pivot (+18h, Vec2, 0), Scale (+28h, Vec2, 1),
+// Rotate (+48h, Float, 0), Color (+50h, 1,1,1,1), LowColor (+A4h, 0,0,0,1),
+// HighColor (+B4h, 1,1,1,1), BlendFactor (+C4h, 0). The two colour defaults
+// are function statics (00F8BCE0 under bit 0 of 00F8BCF0, 00F8BCCC under bit 0
+// of 00F8BCDC). WideScreenAlign (+E0h) is written as "Left" (1) or "Right" (2),
+// nothing for 0. Visible (+E4h, default true) only when vtable +5Ch != 1.
+// MouseBlock (+84h) true is always written and then MouseHit is skipped;
+// otherwise MouseHit (+78h, default false) when it differs. Then each child in
+// name order: open_table(child name), child describe, close_table.
+void gui_widget_describe_properties_00aaaed0(const void* widget, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// Progbar (cGuiProgressbar): +138h current value, +13Ch DefaultValue (both
+// float). These lie past the Icon pool's 138h payload: see kGuiWidgetFactories.
+inline constexpr std::uint32_t kGuiProgbarVtable = 0x00D5CC18;
+inline constexpr float kGuiProgbarDefaultValue = 1.0f; // 00D7A24C
+
+// 00AC7A90, __thiscall(progbar, reader), RET 4: the Icon reader 00AB3310, then
+// DefaultValue (Float, default 1) into +13Ch, then +138h = +13Ch.
+void gui_progbar_read_properties_00ac7a90(void* progbar, GuiPropertyReader& reader,
+    GuiDescribeHost& host);
+// 00AC7B00, __thiscall(progbar, writer), RET 4: the Icon describer 00AB2B70,
+// then DefaultValue (+13Ch) when it differs from 1.
+void gui_progbar_describe_properties_00ac7b00(const void* progbar, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+// 00AC7820, __fastcall(ECX = progbar): FLD [ECX+138h]; RET (ST0 = value).
+float gui_progbar_value_00ac7820(const void* progbar) noexcept;
+
+// Scrollbar: +ECh value, +F0h MinValue, +F4h MaxValue, +F8h 1 = horizontal
+// (Alignment other than "Vertical"), 0 = vertical.
+inline constexpr std::uint32_t kGuiScrollbarVtable = 0x00D5CCF8;
+// 00AC8770, __thiscall(scrollbar, writer), RET 4: base describer, then
+// Alignment = "Vertical" (00D5CDA4) only when +F8h is 0, then MinValue and
+// MaxValue when nonzero.
+void gui_scrollbar_describe_properties_00ac8770(const void* scrollbar, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// Model: +F4h ScaleVector (Vec3), +100h RotationEuler (Vec3), +10Ch ModelName
+// and +114h ModelTextureOverride (8-byte native strings: length, buffer).
+// 00ACC4E0, __thiscall(model, writer), RET 4: base describer; ModelName always
+// (an empty C string 00F8C0E4 for a null buffer); ModelTextureOverride when it
+// differs from ""; ScaleVector when not (1,1,1); RotationEuler when not 0.
+void gui_model_describe_properties_00acc4e0(const void* model, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// 00ACCE20, __thiscall(model, reader), RET 4: base reader 00AAA710; ModelName
+// without a default (+10h), ModelTextureOverride with default "" (00CE3A0C),
+// ScaleVector default (1,1,1), RotationEuler default 0; then 00ACCCF0
+// BSP_GuiModel_LoadModel(+10Ch, +114h). The string reads go through the host
+// because they assign native strings.
+struct GuiModelReadHost {
+    virtual ~GuiModelReadHost() = default;
+    virtual void read_base_00aaa710(void* model, GuiPropertyReader& reader) = 0;
+    virtual void read_string(void* model, std::uint32_t field, const char* name, const char* def_or_null,
+        GuiPropertyReader& reader) = 0;
+    virtual void load_model_00acccf0(void* model) = 0;
+};
+void gui_model_read_properties_00acce20(void* model, GuiPropertyReader& reader, GuiModelReadHost& host);
+
+// ---------------------------------------------------------------------------
+// Construction and leaf virtuals of Progbar, Scrollbar and Layer
+// ---------------------------------------------------------------------------
+
+struct GuiWidgetLifetimeHost {
+    virtual ~GuiWidgetLifetimeHost() = default;
+    // 00AA9390 widget base constructor, __thiscall(this, type id), RET 4.
+    virtual void construct_widget_base_00aa9390(void* self, std::int32_t type_id) = 0;
+    // 00AA9520 widget base copy constructor, __thiscall(this, source), RET 4.
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    // 00AB5C60 / 00AB5D30 Icon constructor and copy constructor.
+    virtual void construct_icon_00ab5c60(void* self) = 0;
+    virtual void copy_icon_00ab5d30(void* self, const void* source) = 0;
+    // 00AA7170 BSP_GuiWidget_DeactivateAndRefreshBounds (the Icon loaded hook).
+    virtual void loaded_base_00aa7170(void* self) = 0;
+    // Progbar vtable +88h, __thiscall(this, int, int, float), RET 0Ch.
+    virtual void progbar_virtual_88(void* self, std::int32_t a, std::int32_t b, float c) = 0;
+};
+
+// 00AC77C0, __fastcall(ECX = this), EAX = this: Icon constructor, vtable
+// 00D5CC18, value +138h = 1.0, +60h = 5 (the type id). DefaultValue +13Ch is
+// not written.
+void* gui_progbar_construct_00ac77c0(void* self, GuiWidgetLifetimeHost& host);
+// 00AC7840, __thiscall(this, source), RET 4: Icon copy, vtable, copies the
+// value +138h only (DefaultValue +13Ch is not copied).
+void* gui_progbar_copy_construct_00ac7840(void* self, const void* source, GuiWidgetLifetimeHost& host);
+// 00AC78E0, vtable loaded hook: 00AA7170, then vtable +88h(0, 0, 1.0f).
+void gui_progbar_on_loaded_00ac78e0(void* self, GuiWidgetLifetimeHost& host);
+
+// 00AC7C20, __fastcall(ECX = this), EAX = this: base constructor with type 7,
+// vtable 00D5CCF8, +ECh/+F0h/+F4h = 0.0f, +F8h = 1.
+void* gui_scrollbar_construct_00ac7c20(void* self, GuiWidgetLifetimeHost& host);
+// 00AC7CB0, __thiscall(this, source), RET 4: base copy, vtable, then the four
+// fields +ECh..+F8h.
+void* gui_scrollbar_copy_construct_00ac7cb0(void* self, const void* source, GuiWidgetLifetimeHost& host);
+// 00AC7C90 (Scrollbar geometry virtual) and 00AC3FB0 (Layer attach virtual):
+// a single RET.
+inline void gui_widget_virtual_noop() noexcept {}
+
+// 00AC3FA0, __fastcall(ECX = layer): LEA EAX,[ECX+100h]; RET. The layer name,
+// an 8-byte native string (length, buffer).
+void* gui_layer_name_00ac3fa0(void* layer) noexcept;
+// 00AC57E0, __thiscall(layer, const name*), RET 4: self-assignment returns;
+// otherwise 0041DD40 resize to the source length keeping contents, then, when
+// the source length is nonzero, copy the destination length of bytes from the
+// source buffer.
+struct GuiNativeStringHost {
+    virtual ~GuiNativeStringHost() = default;
+    virtual void resize_0041dd40(void* header, std::uint32_t length, bool preserve) = 0;
+};
+void gui_layer_set_name_00ac57e0(void* layer, const void* name, GuiNativeStringHost& host);
+// ---------------------------------------------------------------------------
+// Widget base setters (segment 77), over GuiWidgetTransform (gui_widget.hpp)
+// ---------------------------------------------------------------------------
+
+// 00AA7910, __thiscall(widget, float z), RET 4: +14h = z, then 00AA7220.
+void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host);
+// 00AA7930, __thiscall(widget, float), RET 4: +48h Rotate, then 00AA7220.
+void gui_widget_set_rotate_00aa7930(GuiWidgetTransform& w, float rotate, GuiWidgetTransformHost& host);
+// 00AA7950, __thiscall(widget, const float[2]*), RET 4: +28h/+2Ch Scale through
+// x87 FLD/FSTP, then 00AA7220.
+void gui_widget_set_scale_00aa7950(GuiWidgetTransform& w, const float (&scale)[2], GuiWidgetTransformHost& host);
+// 00AA7D40, __thiscall(widget, float z), RET 4: X and Y are stored back
+// unchanged (an inlined position setter), Z = z, then 00AA7220 and 00AA70E0.
+void gui_widget_set_local_z_and_bounds_00aa7d40(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host);
+// 00AA7D80, __thiscall(widget, float x), RET 4: the position is stored back
+// unchanged, 00AA7220, 00AA70E0, and only then +08h (the authored X the
+// wide-screen fixup starts from) = x.
+void gui_widget_set_authored_x_00aa7d80(GuiWidgetTransform& w, float x, GuiWidgetTransformHost& host);
+// 00AA6820, __thiscall(widget, byte), RET 4: +75h, the flag that makes a
+// visibility change stamp the whole node subtree (gui_widget_scene.hpp).
+void gui_widget_set_visibility_recurses_00aa6820(void* widget, bool recurses) noexcept;
+// 00AA6800, __fastcall(ECX = widget): MOV ECX,[ECX+4Ch]; JMP 00B6D800 (the
+// scene node's name header).
+struct GuiSceneNodeHost {
+    virtual ~GuiSceneNodeHost() = default;
+    virtual void* node_name_header_00b6d800(void* node) = 0;
+};
+void* gui_widget_node_name_00aa6800(void* widget, GuiSceneNodeHost& host);
+
+// ---------------------------------------------------------------------------
+// Sound, Model, Line and Curve members
+// ---------------------------------------------------------------------------
+
+struct GuiWidgetMemberHost {
+    virtual ~GuiWidgetMemberHost() = default;
+    virtual void construct_widget_base_00aa9390(void* self, std::int32_t type_id) = 0;
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    virtual void destroy_widget_base_00aa9730(void* self) = 0;
+    // 00AA8320 BSP_GuiWidget_ReleaseSceneNodes (tail of Model ReleaseScene).
+    virtual void release_scene_nodes_00aa8320(void* self) = 0;
+    // 00AA7170 the base loaded hook, 00AA6A30 BSP_GuiWidget_SetActive(byte).
+    virtual void loaded_base_00aa7170(void* self) = 0;
+    virtual void set_active_00aa6a30(void* self, bool active) = 0;
+    // A widget virtual by vtable offset with the given single pointer argument
+    // or none (Line +50h with &this->+50h, Line +80h).
+    virtual void call_virtual(void* self, std::uint32_t vtable_offset, void* argument) = 0;
+    // The ref-counted object's vtable +0 when its count reaches zero.
+    virtual void release_ref_object(void* object) = 0;
+    // 00419CC0 + 00BD1510: return a native string buffer of (length + 1) bytes.
+    virtual void release_string_buffer(void* buffer, std::uint32_t bytes) = 0;
+    // 0079EE20, the std::vector copy constructor (ECX = destination, source).
+    virtual void copy_vector_0079ee20(void* destination, const void* source) = 0;
+    // 0086A350, reserve of the Mit qword vector {data, count, capacity}.
+    virtual void reserve_qword_vector_0086a350(void* header, std::int32_t capacity) = 0;
+};
+
+// 00ACDB30, __fastcall(ECX = this), EAX = this: base(0Eh), vtable 00D5CFD0,
+// +ECh..+104h (seven dwords) = 0.
+void* gui_sound_construct_00acdb30(void* self, GuiWidgetMemberHost& host);
+
+// 00ACC740, __fastcall(ECX = this), EAX = this: base(9), +ECh/+F0h = 0,
+// vtable 00D5CF38, the two native strings +10Ch and +114h zeroed. ScaleVector
+// +F4h and RotationEuler +100h are left to the reader.
+void* gui_model_construct_00acc740(void* self, GuiWidgetMemberHost& host);
+// 00ACC6A0, __fastcall(ECX = this): release the ref-counted scene object at
+// +F0h (LOCK DEC of its +4h, vtable +0 at zero), clear +F0h and +ECh, tail-jump
+// 00AA8320.
+void gui_model_release_scene_00acc6a0(void* self, GuiWidgetMemberHost& host);
+// 00ACC7B0, __fastcall(ECX = this): vtable 00D5CF38, release +F0h as above,
+// return the +114h then +10Ch string buffers, base destructor 00AA9730.
+void gui_model_destroy_00acc7b0(void* self, GuiWidgetMemberHost& host);
+
+// 00AC2D00, __fastcall(ECX = this), EAX = this: base(4), vtable 00D5C9E8,
+// +F0h..+FCh = 0 (the point vector and the committed count), +100h = 4.
+void* gui_line_construct_00ac2d00(void* self, GuiWidgetMemberHost& host);
+// 00AC2D60, __thiscall(this, source), RET 4: base copy, vtable, then the
+// vector at +ECh copy-constructed from the source's (0079EE20). +FCh and
+// +100h are not written.
+void* gui_line_copy_construct_00ac2d60(void* self, const void* source, GuiWidgetMemberHost& host);
+// 00AC1BB0, loaded hook: 00AA7170, vtable +50h(&+50h) (re-apply Color), then
+// tail-jump vtable +80h (flush, 00AC29D0).
+void gui_line_on_loaded_00ac1bb0(void* self, GuiWidgetMemberHost& host);
+
+// Curve fields used here: +F8h widths (Mit float array {data, count,
+// capacity}), +10Ch authored points (Mit qword vector), +11Ch..+128h UV rect.
+// 00ABE030, __fastcall(ECX = this), EAX = this: base(0Dh), vtable 00D5C7F8,
+// +ECh..+118h = 0, UV (0,0,1,1) at +11Ch..+128h, +12Ch and +134h..+13Ch = 0.
+void* gui_curve_construct_00abe030(void* self, GuiWidgetMemberHost& host);
+// 00ABC920, __fastcall(ECX = this): reserve(0) of +10Ch when its capacity is
+// negative, count to 0, then 00818030 widths resize 0.
+void gui_curve_clear_points_00abc920(void* self, GuiWidgetMemberHost& host);
+// 00ABC970, __thiscall(this, const float[2]* point, float width), RET 8:
+// append to +10Ch (grow to max(2*capacity, 1)) and the width to +F8h (same).
+void gui_curve_add_point_00abc970(void* self, const float (&point)[2], float width, GuiWidgetMemberHost& host);
+// 00ABC040, loaded hook: 00AA7170 then 00AA6A30(1).
+void gui_curve_on_loaded_00abc040(void* self, GuiWidgetMemberHost& host);
 
 } // namespace bsp::gui_widgets_cc13
