@@ -12909,4 +12909,8 @@ plane/task line classes.
   call inside those windows, so exit 1 everywhere). Re-paired where the scripts call it (`local\g37_aBoff_*` against
   `local\g37_sbron_*`, base `4593a252d`): USNRM01 9000 (67 calls) exit 3, first divergence the formation geometry of
   `Jap #5.1` at tick 800, the squadron `SquadronSetTravelAlt`/`SquadronSetAttackAlt` set to 150 m; JM08 `l50_j8_r7`
-  exit 3 (torpedo releases 4/57 -> 7/57). No win key in the re-pair; the win rows have no Lua altitude call.
+  exit 3 (torpedo releases 4/57 -> 7/57). No win key in the re-pair; the win rows have no Lua altitude call.- **Strafe (190: `kStrafeDoubleConstantsBound`, `kStrafeAttackrunSeedDrawBound`): ON as a group.** No reach on
+  IJN01, JM08 or USN01 (`strafe task: planes=0`). Re-paired where strafers fly (`local\g37_sbs2{off,on}_*`, base
+  `fa1af26c2`): ESMP08 9000 (33 strafers, 22 attackruns) exit 0, USNOS 9000 (12, 9) exit 1. Predicted identical (the
+  constants are under 1 ulp); the attackrun seed `-U(0, 1)` is a keyed draw (`#star1c`) and leaves no observable
+  trace on these rows. Image-faithful and inert here.
