@@ -436,6 +436,14 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    USN12, USN02 and JM06; USN01 moves by two tests the one-sided cell test
 //    00ADEB80 answers differently in the two directions.
 constexpr bool kGunneryLosRoleSwapBound = true;
+//  * kShipyardHangarHiddenBound (packet cc9_hangar_los, docs/GUNNERY_OPEN_ITEMS.md
+//    176): 00864680 runs 0081DE10 for a ship cache owner and answers hidden when
+//    the ship's bow or stern (+-0.5 Length along its axis) lies inside a usable
+//    shipyard hangar Object's footprint, |x| < 0.6 Length and |z| < 0.75 Width in the
+//    object's frame. LABELLED: the +364h list is the shipyard registry; unit+1130h
+//    (the launch sentinel) is not kept, so its arm never fires; the test runs at each
+//    LOS test, not on the 0.5 s point refresh. OFF: 0081DE10 answers 0, as before.
+constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -1318,6 +1326,9 @@ struct GameGunneryHost::Impl {
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
     std::vector<bool> shipyard_hangars_usable(const bsp::ShipyardState& yard) const;
+    // Packet cc9_hangar_los: 0081DE10 for a ship (kShipyardHangarHiddenBound).
+    bool ship_in_shipyard_hangar_0081de10(std::size_t ship);
+    unsigned long long hangar_hidden_tests{0}, hangar_hidden{0};
     bool shipyard_build_00844fc0(bsp::ShipyardState& yard, std::size_t shipyard_unit,
                                  std::size_t entry);
     void shipyard_walk_00846320();
@@ -8295,7 +8306,7 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
     // ON (kGunneryLosRoleSwapBound): 00864D90 raises the target by +90h at 00864E17.
     tp[1] = tp[1] + (target_height + (kGunneryLosRoleSwapBound
         ? bsp::kInstalledLosTargetHeightAdd : bsp::kInstalledLosViewerHeightAdd));
-    // 0081DE10 for a ship target: not modelled, answers 0 (labelled).
+    // 0081DE10 for a ship cache owner: kShipyardHangarHiddenBound below; OFF it answers 0.
     // 00864D90: the observer's point, pose +FCh raised by Height + [+90h].
     unit_pose(observer, r, u, f, op);
     const float observer_height = observer < unit_state.size() ? unit_state[observer].hull_height : 0.0f;
@@ -8304,6 +8315,20 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
         ? bsp::kInstalledLosViewerHeightAdd : bsp::kInstalledLosTargetHeightAdd));
     // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0; ON:
     // 008647F4 casts (owner point, passed point), observer -> target.
+    if (kShipyardHangarHiddenBound) {
+        // 00864680 (0086469F..008646C6): when the cache owner answers IsKindOf(6),
+        // 0081DE10's byte goes to record+20h, and a set byte returns 0 before the ray
+        // (00864783). The owner is the observer with kGunneryLosRoleSwapBound.
+        const std::size_t owner = kGunneryLosRoleSwapBound ? observer : target;
+        if (owner < units.count() && units.unit_is_kind_of(owner, 6)) {
+            ++hangar_hidden_tests;
+            if (ship_in_shipyard_hangar_0081de10(owner)) {
+                ++hangar_hidden;
+                done("Gunnery::line_of_sight_00864680", 0x00864680u);
+                return false;
+            }
+        }
+    }
     const float* from = kGunneryLosRoleSwapBound ? op : tp;
     const float* to = kGunneryLosRoleSwapBound ? tp : op;
     const unsigned long long mesh_hits = shell_mesh_hits;
@@ -11391,6 +11416,65 @@ bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
     return true;
 }
 
+bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
+    // 0081DE10, __fastcall(unit). 0081DE31: unit+1130h > 0 answers 1 at once. LABELLED:
+    // the host keeps no +1130h (the shipyard-launch sentinel), so that arm never fires.
+    // 0081DE5B: the list [[00E188A8]+19CCh]+364h, taken as the shipyard registry; per
+    // node 00848410 expands +780h..+788h (10h records, +4 the hangar Object) keeping the
+    // objects with +5Ch set and +5Dh/+5Eh/+60h clear: shipyard_hangars_usable's filter.
+    if (ship >= units.count()) return false;
+    float sr[3], su[3], sf[3], so[3];
+    unit_pose(ship, sr, su, sf, so);
+    const float ship_length = ship < unit_state.size() ? unit_state[ship].hull_length : 0.0f;
+    // 0081DEB2..0081DF37: the bow and stern, (0, 0, +-class+A0h * 0.5 [00D7A280])
+    // through the unit's matrix (004142E0).
+    const float half = static_cast<float>(ship_length * 0.5);
+    float ends[2][3];
+    for (int k = 0; k < 3; ++k) {
+        ends[0][k] = so[k] + sf[k] * half;
+        ends[1][k] = so[k] - sf[k] * half;
+    }
+    bsp::ShipyardRegistry& registry = bsp::shipyards();
+    for (std::size_t y = 0; y < registry.size(); ++y) {
+        bsp::ShipyardState* yard = registry.mutable_at(y);
+        if (yard == nullptr) continue;
+        const std::vector<bool> usable = shipyard_hangars_usable(*yard);
+        for (std::size_t h = 0; h < yard->hangars.size(); ++h) {
+            if (!usable[h]) continue;
+            const std::size_t obj = unit_by_name(yard->hangars[h].object);
+            if (obj >= units.count() || obj == ship) continue;
+            float er[3], eu[3], ef[3], eo[3];
+            unit_pose(obj, er, eu, ef, eo);
+            const float len = obj < unit_state.size() ? unit_state[obj].hull_length : 0.0f;
+            const float wid = obj < unit_state.size() ? unit_state[obj].hull_width : 0.0f;
+            // 0081DFB8..0081DFD4: class+A0h * 0.6 [00CEFF98] and class+A4h * 0.75
+            // [00CEC9D8]; the point in the object's frame through its +110h inverse
+            // (LABELLED: unit scale). |x| against the first, |z| the second, bow then stern.
+            const float lim_x = static_cast<float>(len * 0.6000000238418579);
+            const float lim_z = static_cast<float>(wid * 0.75);
+            for (const auto& p : ends) {
+                const float d[3] = {p[0] - eo[0], p[1] - eo[1], p[2] - eo[2]};
+                const float lx = d[0] * er[0] + d[1] * er[1] + d[2] * er[2];
+                const float lz = d[0] * ef[0] + d[1] * ef[1] + d[2] * ef[2];
+                static const bool hangar_census = aa_env("BSP_HANGAR_CENSUS") == "1";
+                if (hangar_census && hangar_hidden_tests % 50 == 1) {
+                    // Diagnostic only (BSP_HANGAR_CENSUS=1): where the end sits in the object frame.
+                    log.notef("hangar census: ship=%s obj=%s lx=%.1f lz=%.1f lim=(%.1f %.1f) obj_pos=(%.1f %.1f) ship_pos=(%.1f %.1f)",
+                        unit_state[ship].row.name.c_str(), yard->hangars[h].object.c_str(),
+                        static_cast<double>(lx), static_cast<double>(lz), static_cast<double>(lim_x),
+                        static_cast<double>(lim_z), static_cast<double>(eo[0]), static_cast<double>(eo[2]),
+                        static_cast<double>(so[0]), static_cast<double>(so[2]));
+                }
+                if (std::fabs(lx) < lim_x && std::fabs(lz) < lim_z) {
+                    done("Gunnery::ship_in_shipyard_hangar_0081de10", 0x0081de10u);
+                    return true;   // 0081E33E..0081E34B, MOV AL,1
+                }
+            }
+        }
+    }
+    done("Gunnery::ship_in_shipyard_hangar_0081de10", 0x0081de10u);
+    return false;
+}
 std::vector<bool> GameGunneryHost::Impl::shipyard_hangars_usable(
     const bsp::ShipyardState& yard) const {
     // 00844CE0's four bytes on the hangar object: +5Ch set, +5Dh, +5Eh (dead)
@@ -13233,6 +13317,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        host.log.notef("summary mission gunnery hangar hidden tests=%llu hidden=%llu bound=%d "
+            "(00864680 -> 0081DE10, packet cc9_hangar_los)", host.hangar_hidden_tests,
+            host.hangar_hidden, kShipyardHangarHiddenBound ? 1 : 0);
         // Packet cc9_los_role_swap diagnostic, only with BSP_LOS_CENSUS=1.
         static const bool los_census = aa_env("BSP_LOS_CENSUS") == "1";
         if (los_census) {

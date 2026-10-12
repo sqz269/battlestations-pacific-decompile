@@ -15111,3 +15111,69 @@ On main `6d9a8515f`'s build (`local\l50_lane.ps1` row `b1`, 30000 frames, `--sto
   - `bsp: refused a mission script's process launch: sus_prog.exe` is in the log.
 - **b** (`l50_b1_b.txt`, two legs west via (1500, -3080)) stops at (1421, -3260), 426 m short, and is still in phase 3
   at 1500 s. **c** (`l50_b1_c.txt`, last leg at 7100) was not judged.
+
+## 5fr. `kEngineMovieStopRosterBound`: the movie-only admits do not survive the stop (cc9-lua50, 2026-10-12)
+
+**The image** (`0046C550`'s mode-9 arm, read live, `0046CB43`-`0046CC58`):
+- `GenerateInGame` (`00CE575C`) true: on the instantiate pass (the flag at `[ESP+D0h]` clear) it builds the 5Ch-byte
+  record (`0046CB9C`-`0046CBDD`), appends it to `+24h` (`0046CC01`), registers the stock (`0046BF20`) and
+  returns 1 through `0046C681`.
+- `GenerateInGame` false: it returns the parent bag's `GenerateInEngineMovie` byte (`0046CC37`-`0046CC43`) and
+  builds **no record**.
+- `0046B730` (5fp) kills every non-exempt entity at the stop and re-creates only from the `+28h` records, so an
+  entity admitted by the fallback alone is gone after the movie on both the skip and the no-skip path. The host
+  loads JM05 and JM06 in mode 9 and keeps such entities for the whole mission (SCENE_EMPTY_MULTITYPE_CC11: JM06's
+  TypeB_Jake subs, authored `GenerateInGame = B false`).
+
+**The bind** (`include/bsp/game_hosts_scene_contents.hpp`, OFF; `src/game_hosts_scene_contents.cpp`): with
+`kEngineMovieEntryBound`, an entity whose gate answer is `SceneGateRule::EngineMovieFallback` is not created on
+the instantiate pass and is logged as `scene movie-only entity dropped`. LABELLED: not created instead of created
+at load and killed on the first frame; `luaEngineMovieInit` therefore cannot find it. The registration pass is
+unchanged, so the named-object map still holds it.
+
+**Predictions:** JM06 drops the TypeB_Jake subs and moves (exit 3); JM05 moves only if its scene has fallback
+admits; USNOS and every other row are identical (no `.ema`, no mode 9). A mechanism failure is any non-JM05/06 row
+moving, or a dropped entity the mission script later uses as a live unit.
+
+**Check for the lead (5fo, 009B4D00/009B6D20).** Both float tails after the operator delete are host-covered: the
+`009B4FBB` tail clears `+24h` and runs the spacing pass (`lb_spacing_pass` / `level_bomb_spacing_fraction`), and the
+`009B5323` tail is `009B5320`'s attack-run command (`00438AA0`, plane `+2C0h`, `+2CCh` = 2), which
+`level_bomb_attackrun_009b5320` writes. Both were reachable before the repair through the non-grow path (the functions
+grew by 6 instructions), so nothing in them is new to the host.
+
+## 5fs. Event channels against cc13's CC13_EVENT_CHANNELS.md: the hit second pass (cc9-lua50, 2026-10-12)
+
+**The plane's `vtable[140h]`, resolved** (cc13's open item 1). The plane vtable `00D05F20` holds `007B97E0` at
+`+140h` (bytes at `00D06060`), and `007B97E0` is `MOV EAX,[ECX+9D4h]; RET`: plane `+9D4h`, the squadron (the
+same field the deck test `006C4790` is handed). So the kill/hit second pass keys on the plane's squadron, as cc13 suspected.
+
+**The host's two dispatchers** (`src/game_hosts_lua.cpp`):
+- `dispatch_hit_listeners_00988510` evaluates once with `hit.shooter` (a member plane's own slot; the squadron is a
+  separate slot, `PlaneSquadronHostRecord::squadron_unit`). A subscription keyed on a squadron
+  (`["attacker"] = {Mission.Fighters}`) never matches a plane's hit.
+- `dispatch_kill_listeners_009813a0` has no attacker at all: any subscription with an attacker filter is skipped
+  (`listener_attacker_filtered`), so the kill second pass cannot be modelled until the host's death rows carry
+  `victim+2B0h`. Recorded, not bound.
+- Both call the callbacks with **no arguments**; the image passes (victim, lastAttacker, lastAttackerPlayerIndex) for
+  `kill` and (target, targetDevice, attacker, attackType, attackerPlayerIndex, damage, fire, leak) for `hit`. Left
+  for a later packet.
+
+**The bind `kLuaHitSquadronSecondPassBound`** (`include/bsp/game_hosts_lua.hpp`, OFF): when a hit matched no
+subscription and its shooter is a member of a squadron, evaluate the channel again with the squadron as attacker and
+fire whatever matches (`summary mission script hit second pass`).
+
+**Scripts it can reach** (this installation, `["attacker"] = {...}` on `hit`): PRCPIJN `jm13.lua`/`prcpjm13.lua`
+(`luaDonaldHit`, attacker `Mission.Fighters`; `SaipanHit`, `Mission.Kamikaze`), `bsm_04` (`Mission.FortressRed`),
+`bsm_08` (`Mission.Fortress`), USNRM `usn_1_pearl` (`ArizonaKillers`/`OklahomaKillers`), `jm06` (`Mission.PlayerUnit`).
+**Predictions:** rows whose hit subscriptions key on ships are identical (pair_diff 0/1); a row with a squadron-keyed
+subscription whose squadron lands hits moves, with `fired > 0` and that callback's log line appearing ON only.
+
+**5fr pairs on `6896a3e68`** (`local\l50_G0` OFF, `local\l50_G1` ON; 3000 frames):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | 9 dropped: F4F Wildcat 01-04, Fletcher-class 01, Clemson-class 02, SB2C Helldiver 01-02, TargetPT (the .ema's actors; jm05.lua names none of them); units 398 -> 389, shots 2214 -> 2155, plane water contacts 2 -> 0, deaths 16 = 16; three building death rows change their nearest ship from Clemson-class 02 to 01 |
+| JM06 | 3, moved | the three TypeB_Jake subs 01-03 dropped (jm06.lua finds only 04-09); units 26 -> 23; deaths, hits, shots identical |
+| USNOS (control) | 0/1, gameplay identical | nothing dropped |
+
+**Verdict: ON.** Every prediction holds and no dropped entity is named by its mission script.

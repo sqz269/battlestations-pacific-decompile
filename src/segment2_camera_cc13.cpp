@@ -180,7 +180,9 @@ void torpedo_view_step_00430020(WeaponViewCamera& camera, float dt, WeaponViewHo
                             f32(ky * (static_cast<double>(camera.v_3a8.y) - eye.y) + eye.y),
                             f32(t * (static_cast<double>(camera.v_3a8.z) - eye.z) + eye.z)};
         // 00430476: the look-at height is 3.0 above a target at or above 0, else 3.0.
-        const float look_y = 0.0f <= camera.v_39c.y
+        // COMISS 0.0, y / JBE takes the "+ 3.0" arm when unordered, so a NaN
+        // height propagates (cc13-audit3 N2).
+        const float look_y = !(0.0f > camera.v_39c.y)
                                  ? f32(static_cast<double>(camera.v_39c.y) + kTorpedoHeight)
                                  : kTorpedoHeight;
         std::array<float, 3> dir{f32(static_cast<double>(camera.v_39c.x) - position.x),
@@ -456,8 +458,8 @@ void plane_cockpit_camera_step_00434810(PlaneCockpitCamera& camera, float dt,
             host.premultiply_rotation_x(camera.pose, camera.pitch_398.current);
         if (angle_significant(camera.roll_3ac.current))
             host.premultiply_rotation_z(camera.pose, -0.0f - camera.roll_3ac.current);
-        if (camera.modifier_514 != nullptr && host.modifier_active_8c(camera.modifier_514))
-            host.premultiply_modifier_94(camera.modifier_514, camera.pose);
+        if (camera.observed_514 != nullptr && host.modifier_active_8c(camera.observed_514))
+            host.premultiply_modifier_94(camera.observed_514, camera.pose);
         camera.pose.position_a4 = eye;
         camera.look_frame_3e8 = plane;
         const Vec3 look_local{f32(static_cast<double>(camera.look_offset_3d0.x) + h.x),
@@ -498,7 +500,7 @@ float wrap_once(float r) noexcept {
 
 }  // namespace
 
-void chase_camera_update_offsets_0042f800(DefaultUnitCamera& c, float dt, ChaseCameraHost& host) {
+void chase_camera_update_offsets_0042f800(PlaneChaseCamera& c, float dt, ChaseCameraHost& host) {
     void* t = c.target_388;   // dereferenced before the null test (0042F818)
     const float a = -0.0f - host.entity_float(t, 0xB54);    // pitch rate, negated
     const float b = -0.0f - host.entity_float(t, 0xB50);    // roll rate, negated
@@ -591,7 +593,7 @@ void chase_camera_update_offsets_0042f800(DefaultUnitCamera& c, float dt, ChaseC
     c.look_pitch_3d0 = ease(c.look_pitch_3d0, c.look_pitch_want_3c8, kl);
 }
 
-void default_unit_camera_update_chase_00431480(DefaultUnitCamera& c, float dt,
+void plane_chase_camera_update_chase_00431480(PlaneChaseCamera& c, float dt,
                                                ChaseCameraHost& host) {
     if (!(dt >= 0.0f)) return;   // 0043149F JC
     Mat4Rows& m = c.chase_2b8;
@@ -971,8 +973,8 @@ bool camera_mover_turn_toward_0042c750(float& yaw_384, float& pitch_388, float y
     return false;
 }
 
-void default_unit_camera_step_00434e50(DefaultUnitCamera& camera, float dt,
-                                       DefaultUnitCameraHost& host) {
+void plane_chase_camera_step_00434e50(PlaneChaseCamera& camera, float dt,
+                                       PlaneChaseCameraHost& host) {
     if (host.game_flag_635()) host.element_170_slot4(host.game_float_21ec());
     if (void* target = camera.target_388; target != nullptr) {
         if (camera.timer_3ec > 0.0f) {
@@ -1009,6 +1011,411 @@ void default_unit_camera_step_00434e50(DefaultUnitCamera& camera, float dt,
             host.set_sink_velocity_1b8(host.entity_velocity_34(camera.target_388));
     }
     if (camera.counter_3f8 != 0) --camera.counter_3f8;
+}
+
+// ---- cc13-camera2: construction, destruction and the class slots ---------
+
+namespace {
+
+Mat4Rows identity_rows() noexcept {
+    Mat4Rows m;
+    m.right_74 = Vec3{1.0f, 0.0f, 0.0f};
+    m.up_84 = Vec3{0.0f, 1.0f, 0.0f};
+    m.forward_94 = Vec3{0.0f, 0.0f, 1.0f};
+    m.position_a4 = Vec3{};
+    m.w_b0 = 1.0f;
+    return m;
+}
+
+}  // namespace
+
+void construct_mover_base_00432750(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng) {
+    host.scene_node_construct_00925ce0();
+    host.tick_registration_construct_00875890();
+    m.vtables = kMoverBaseVtables;                 // 004327A6..004327BA
+    m.chase_2b8 = identity_rows();                 // 00432820
+    m.matrix_2f8 = identity_rows();                // 0043289B
+    m.tick_group_184 = 4;
+    m.class_id_c4 = 0x4C;
+    m.camera_node_1bc = nullptr;
+    m.f_1c0 = 0.0f;
+    m.f_1c8 = 0.0f;
+    m.fov_1c4 = host.global_config_float(0x78);
+    m.f_1cc = host.global_config_float(0x7C);
+    m.shake_amplitude_1d0 = Vec3{};
+    m.shake_scale_1dc = Vec3{1.0f, 1.0f, 1.0f};
+    // 00432938 / 00432955 / 00432972: stream 0 in the image, the caller's source here.
+    const float a = rng.uniform(0.0f, 6.28318548f);
+    const float b = rng.uniform(0.0f, 6.28318548f);
+    const float c = rng.uniform(0.0f, 6.28318548f);
+    m.shake_phase_1e8 = Vec3{a, b, c};
+    m.frustum_built_1f4 = 0;
+    m.counted_child_338 = nullptr;
+    m.byte_33c = 0;
+    m.active_380 = 1;
+}
+
+void construct_ship_camera_base_00519290(ShipCameraBaseState& m, MoverCtorHost& host, WanderRandom& rng) {
+    construct_mover_base_00432750(m.base, host, rng);
+    m.base.vtables = kShipCameraVtables;
+    m.focus_3b0 = TargetObserver{};
+    m.pitch_min_3ec = -1.55334306f;   // 00CEC574
+    m.pitch_max_3f0 = 1.55334306f;    // 00CEC400
+    m.height_factor_39c = 0.2f;       // 00CE54A0
+    m.focus_3d4 = 0.0f;
+    m.adopted_countdown_3e8 = 0;
+    m.focus_on_entity_3d8 = 0;
+    m.focus_3dc = 1.0f;
+}
+
+void construct_bomber_view_00519490(ShipCameraBaseState& m, MoverCtorHost& host, WanderRandom& rng) {
+    construct_ship_camera_base_00519290(m, host, rng);
+    m.base.vtables = kBomberViewVtables;
+}
+
+void construct_submarine_camera_00650830(ShipCameraBaseState& m, std::uint8_t& lost_405,
+                                         MoverCtorHost& host, WanderRandom& rng) {
+    construct_ship_camera_base_00519290(m, host, rng);
+    m.base.vtables = kSubmarineCameraVtables;
+    lost_405 = 0;
+}
+
+void construct_airfield_camera_005176f0(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng) {
+    construct_mover_base_00432750(m, host, rng);
+    m.vtables = kAirfieldCameraVtables;
+}
+
+void construct_shipyard_camera_0078e830(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng) {
+    construct_mover_base_00432750(m, host, rng);
+    m.vtables = kShipyardCameraVtables;
+}
+
+void construct_plane_chase_camera_00605130(MoverBaseState& m, PlaneChaseCamera& c, MoverCtorHost& host,
+                                           WanderRandom& rng) {
+    construct_mover_base_00432750(m, host, rng);
+    m.vtables = kPlaneChaseCameraVtables;
+    c.counter_3f8 = 0;
+    c.class_scale_384 = 1.0f;
+}
+
+void construct_plane_cockpit_camera_006065d0(MoverBaseState& m, PlaneCockpitCamera& c,
+                                             TargetObserver& observer_500, MoverCtorHost& host,
+                                             WanderRandom& rng) {
+    construct_mover_base_00432750(m, host, rng);
+    m.vtables = kPlaneCockpitCameraVtables;
+    for (EasedAngle* a : {&c.yaw_384, &c.pitch_398, &c.roll_3ac}) {
+        a->period = 1.0f;
+        a->rate = 1.0f;
+    }
+    c.plane_3c0 = nullptr;
+    c.look_frame_3e8 = identity_rows();   // 006066A8
+    for (RandomWander& w : c.wander) {
+        w.elapsed_24 = 1.0f;
+        w.period_28 = 1.0f;
+        w.budget_2c = 0.0f;
+        w.life_30 = 1.0f;
+        w.radius_lo_34 = 1.0f;
+        w.radius_hi_38 = 1.0f;
+        w.azimuth_3c = 0.0f;
+        w.period_lo_40 = 1.0f;
+        w.period_hi_44 = 1.0f;
+    }
+    observer_500 = TargetObserver{};   // 00CE3CF0, +504h..+50Ch = 0, +510h = 1, +514h = 0
+    c.observed_514 = nullptr;          // the observer's target
+}
+
+void destroy_target_observer_0042bca0(TargetObserver& o, MoverDtorHost& host) {
+    o.vtable_00 = 0x00CE3C8Cu;
+    if (o.target_14 != nullptr) host.observer_unregister_006952a0(o.target_14, o);
+    host.observer_base_destruct_00695870(o);
+}
+
+void destroy_mover(MoverClass cls, MoverDtorState& m, MoverDtorHost& host) {
+    switch (cls) {
+    case MoverClass::ShipBase: case MoverClass::BomberView: case MoverClass::Submarine:   // 00519240
+    case MoverClass::TorpedoView: case MoverClass::BombView:                             // 00435210 / 004353A0
+        if (m.observer != nullptr) destroy_target_observer_0042bca0(*m.observer, host);
+        break;
+    case MoverClass::PlaneCockpit:   // 00606800
+        if (m.observer != nullptr) destroy_target_observer_0042bca0(*m.observer, host);
+        if (m.counted_plane_3c0 != nullptr && *m.counted_plane_3c0 != nullptr) {
+            void* ref = *m.counted_plane_3c0;
+            if (host.reference_decrement(ref) == 0) host.reference_destroy_vtable0(ref);
+            *m.counted_plane_3c0 = nullptr;
+        }
+        break;
+    default:
+        break;
+    }
+    // 0042A830
+    m.vtables = kMoverBaseVtables;
+    host.tick_registration_destruct_00875490();
+    host.scene_node_destruct_00925780();
+}
+
+void* scalar_deleting_destructor(MoverClass cls, MoverDtorState& m, void* self, std::uint32_t flags,
+                                 MoverDtorHost& host) {
+    destroy_mover(cls, m, host);
+    if ((flags & 1u) != 0) host.operator_delete_00bf6989(self);
+    return self;
+}
+
+bool mover_is_kind(MoverClass cls, std::uint32_t id, std::uint32_t class_id_c4) noexcept {
+    if (id == 0x4C || id == 0 || id == class_id_c4) return true;
+    switch (cls) {
+    case MoverClass::Airfield: return id == 0x53;
+    case MoverClass::ShipBase: case MoverClass::BomberView: return id == 0x56;
+    case MoverClass::Submarine: return id == 0x4F || id == 0x56;
+    case MoverClass::PlaneChase: return id == 0x51;
+    case MoverClass::Shipyard: return id == 0x52;
+    case MoverClass::TorpedoView: case MoverClass::BombView: return id == 0x4E;
+    default: return false;   // 0042C010 for the base and the cockpit
+    }
+}
+
+void cockpit_set_plane_0042e030(PlaneCockpitCamera& c, void* plane, const Vec3& eye, const Vec3& look,
+                                MoverSetupHost& host) {
+    if (void* old = c.plane_3c0; old != nullptr) {
+        if (host.reference_decrement(old) == 0) host.reference_destroy_vtable0(old);
+        c.plane_3c0 = nullptr;
+    }
+    c.plane_3c0 = plane;
+    if (plane != nullptr) host.reference_increment(plane);
+    c.eye_offset_3c4 = eye;
+    c.look_offset_3d0 = look;
+    host.step_dc(0.0f);
+}
+
+void chase_set_target_0042aaf0(PlaneChaseCamera& c, void* target, MoverSetupHost& host) {
+    if (c.target_388 != nullptr) host.observer_unregister_006952a0(c.target_388);
+    c.target_388 = target;
+    if (target != nullptr) host.observer_register_00694a60(target);
+    if (c.counter_3f8 != 0) return;
+    c.z_rot_want_39c = c.x_dist_want_3a0 = c.y_dist_want_3a4 = c.z_dist_want_3a8 = 0.0f;
+    c.z_rot_3b0 = c.x_dist_3b4 = c.y_dist_3b8 = c.z_dist_3bc = 0.0f;
+    c.sub_dist_3c0 = 0.0f;
+    c.timer_3ec = c.pitch_input_3e8 = c.yaw_input_3e4 = 0.0f;
+    c.aim_pitch_3e0 = c.aim_yaw_3dc = c.aim_pitch_want_3d8 = c.aim_yaw_want_3d4 = 0.0f;
+    c.speed_share_3f4 = 1.0f;
+    c.flag_3f0 = 0;
+}
+
+void submarine_setup_0042f6c0(SubmarineCamera& c, void* target, void* node, const Vec3& offset,
+                              MoverSetupHost& host) {
+    c.lost_405 = 0;
+    host.ship_camera_set_target_0042f650(target);
+    c.target_3ac = target;   // 0042F650 stores it
+    if (host.entity_u32(target, 0x1268) != 0 && host.entity_byte(target, 0x1281) == 0) c.mode_40c = 1;
+    else c.mode_40c = host.entity_world_y(target) > -8.0f ? 0 : 1;   // 00CE3CC8
+    c.node_3f4 = node;
+    if (c.countdown_3e8 == 0) c.node_offset_3f8 = offset;
+    c.byte_404 = 1;
+}
+
+void submarine_select_mode_0042cb70(SubmarineCamera& c, bool periscope, MoverSetupHost& host) {
+    if (periscope) {
+        c.mode_40c = 2;
+        return;
+    }
+    if (c.target_3ac == nullptr) return;
+    c.mode_40c = -8.0f > host.entity_world_y(c.target_3ac) ? 1 : 0;
+    c.byte_404 = 1;
+}
+
+void shipyard_camera_setup_0042eb20(Mat4Rows& chase_2b8, void* entity, MoverSetupHost& host) {
+    host.attach_ac(entity);
+    if (entity != nullptr && host.entity_is_kind(entity, 0x46)) {
+        chase_2b8 = host.entity_matrix_730(entity);
+        return;
+    }
+    if (void* view = host.entity_view_object_006bcd20(entity); view != nullptr)
+        chase_2b8 = host.entity_matrix_18(view);
+}
+
+void airfield_camera_setup_0042cb30(Mat4Rows& chase_2b8, void* airfield, MoverSetupHost& host) {
+    host.attach_ac(host.entity_ptr(airfield, 0x7C));
+    chase_2b8 = host.entity_matrix_18(airfield);
+}
+
+void ship_camera_focus_point_0042c5a0(ShipFocus& f, float x, float y, float z, float a3, float a4,
+                                      float a5, float a6) noexcept {
+    f.on_entity_3d8 = 0;
+    f.point_3c8 = Vec3{x, y, z};
+    f.f_3d4 = a4;   // the fifth argument goes to +3D4h and the fourth to +3DCh
+    f.f_3dc = a3;
+    f.f_3e0 = a5;
+    f.f_3e4 = a6;
+}
+
+void ship_camera_focus_entity_0042ea40(ShipFocus& f, TargetObserver& o, void* entity, float a1, float a2,
+                                       float a3, float a4, MoverSetupHost& host) {
+    f.on_entity_3d8 = 1;
+    if (o.target_14 != entity) {
+        if (o.target_14 != nullptr) host.observer_unregister_006952a0(o.target_14);
+        o.target_14 = entity;
+        if (entity != nullptr) host.observer_register_00694a60(entity);
+    }
+    f.f_3d4 = a2;
+    f.f_3dc = a1;
+    f.f_3e0 = a3;
+    f.f_3e4 = a4;
+}
+
+void ship_camera_reset_0042f5c0(ShipCameraResetFields& s, TargetObserver& o, ResetHost& host,
+                                MoverDtorHost& dtor_host) {
+    host.node_reset_00923840();
+    if (s.adopted_countdown_3e8 == 0) {
+        s.f_3a4 = 100.0f;   // 00CE3D08
+        s.f_3a8 = 0.0f;
+        s.byte_3a0 = 0;
+        s.chase_2b8 = s.pose_74;
+    }
+    if (o.target_14 != nullptr) {
+        dtor_host.observer_unregister_006952a0(o.target_14, o);
+        o.target_14 = nullptr;
+    }
+    s.focus.f_3d4 = 0.0f;
+    s.focus.on_entity_3d8 = 0;
+    s.focus.f_3e4 = 0.0f;
+    s.focus.f_3e0 = 0.0f;
+}
+
+void cockpit_reset_0042f760(PlaneCockpitCamera& c, ResetHost& host) {
+    host.node_reset_00923840();
+    float smooth = host.tuning_float(0x88);   // CockpitSmooth
+    if (0.10000000149011612 > smooth) smooth = 0.1f;   // 00D7A3A0 double / 00D7A2F0
+    c.yaw_384.period = c.pitch_398.period = c.roll_3ac.period = smooth;
+    const float size = host.tuning_float(0xB0);   // CockpitGunfireEffectSize
+    const float time = host.tuning_float(0xB4);   // CockpitGunfireEffectTime
+    RandomWander& kick = c.wander[0];
+    kick.radius_lo_34 = kick.radius_hi_38 = size;
+    kick.period_lo_40 = kick.period_hi_44 = time;
+    kick.life_30 = f32(static_cast<double>(time) + 0.20000000298023224);   // 00CE3D10
+}
+
+void chase_reset_0042cc30(PlaneChaseCamera& c, ResetHost& host) {
+    host.node_reset_00923840();
+    if (c.counter_3f8 != 0) return;
+    c.timer_3ec = 0.0f;
+    c.z_rot_want_39c = c.x_dist_want_3a0 = c.y_dist_want_3a4 = c.z_dist_want_3a8 = 0.0f;
+    c.z_rot_3b0 = c.x_dist_3b4 = c.y_dist_3b8 = c.z_dist_3bc = 0.0f;
+    c.sub_dist_3c0 = 0.0f;
+    c.flag_3f0 = 0;
+    c.look_pitch_3d0 = c.look_pitch_want_3c8 = c.look_yaw_3cc = c.look_yaw_want_3c4 = 0.0f;
+    c.aim_yaw_3dc = c.aim_yaw_want_3d4 = c.aim_pitch_3e0 = c.aim_pitch_want_3d8 = 0.0f;
+    c.pitch_input_3e8 = c.yaw_input_3e4 = 0.0f;
+    c.chase_2b8 = c.pose;
+}
+
+void ship_camera_copy_state_0042dc20(ShipCameraCopyFields& d, const ShipCameraCopyFields& s) noexcept {
+    d.adopted_countdown_3e8 = 10;
+    d.distance_38c = s.distance_38c;
+    d.yaw_384 = s.yaw_384;
+    d.f_394 = s.f_394;
+    d.f_398 = s.f_398;
+    d.f_390 = s.f_390;
+    d.f_3a8 = s.f_3a8;
+    d.byte_3a0 = s.byte_3a0;
+    d.f_3a4 = s.f_3a4;
+    d.pitch_max_3f0 = s.pitch_max_3f0;
+    d.pitch_min_3ec = s.pitch_min_3ec;
+    d.pitch_388 = s.pitch_388;
+    d.chase_2b8 = s.chase_2b8;   // JMP 004134F0
+}
+
+void submarine_adopt_0042dfd0(SubmarineCamera& dst, ShipCameraCopyFields& dst_ship,
+                              const SubmarineCamera& src, const ShipCameraCopyFields& src_ship) noexcept {
+    dst.byte_404 = 1;
+    if (dst.target_3ac != src.target_3ac) return;
+    ship_camera_copy_state_0042dc20(dst_ship, src_ship);
+    dst.node_offset_3f8 = src.node_offset_3f8;
+    dst.mode_40c = src.mode_40c;
+    dst.lost_405 = 0;
+}
+
+void chase_adopt_0042cd50(PlaneChaseCamera& d, float& dst_398, const PlaneChaseCamera& s,
+                          float src_398) noexcept {
+    if (d.target_388 != s.target_388) return;
+    d.counter_3f8 = 10;
+    dst_398 = src_398;
+    d.z_rot_want_39c = s.z_rot_want_39c;
+    d.x_dist_want_3a0 = s.x_dist_want_3a0;
+    d.y_dist_want_3a4 = s.y_dist_want_3a4;
+    d.z_dist_want_3a8 = s.z_dist_want_3a8;
+    // +3ACh (not modelled in PlaneChaseCamera) is copied too.
+    d.z_rot_3b0 = s.z_rot_3b0;
+    d.x_dist_3b4 = s.x_dist_3b4;
+    d.y_dist_3b8 = s.y_dist_3b8;
+    d.z_dist_3bc = s.z_dist_3bc;
+    d.look_yaw_want_3c4 = s.look_yaw_want_3c4;
+    d.look_pitch_want_3c8 = s.look_pitch_want_3c8;
+    d.look_yaw_3cc = s.look_yaw_3cc;
+    d.look_pitch_3d0 = s.look_pitch_3d0;
+    d.aim_yaw_want_3d4 = s.aim_yaw_want_3d4;
+    d.aim_pitch_want_3d8 = s.aim_pitch_want_3d8;
+    d.aim_yaw_3dc = s.aim_yaw_3dc;
+    d.aim_pitch_3e0 = s.aim_pitch_3e0;
+    d.yaw_input_3e4 = s.yaw_input_3e4;
+    d.pitch_input_3e8 = s.pitch_input_3e8;
+    d.timer_3ec = s.timer_3ec;
+    d.flag_3f0 = s.flag_3f0;
+    d.speed_share_3f4 = s.speed_share_3f4;
+    d.chase_2b8 = s.chase_2b8;
+}
+
+void ship_camera_base_step_00432cb0(ShipCameraBaseStepFields& s, float dt, ShipCameraBaseStepHost& host) {
+    if (s.adopted_countdown_3e8 != 0) --s.adopted_countdown_3e8;
+    host.update_focus_0042dcd0(dt, 0);
+    s.chase_2b8 = host.rotation_y(-0.0f - s.yaw_384);   // 00432D1A: the rotation itself
+    const float fx = -s.chase_2b8.forward_94.x, fz = -s.chase_2b8.forward_94.z;   // FCHS, float spill
+    const float d = s.distance_38c;
+    const Vec3 offset{f32(static_cast<double>(fx) * d), f32(static_cast<double>(s.height_factor_39c) * d),
+                      f32(static_cast<double>(d) * fz)};
+    host.premultiply_rotation_x(s.chase_2b8, -0.0f - s.pitch_388);
+    Vec3 anchor;
+    if (s.target_3ac == nullptr || !host.entity_position(s.target_3ac, anchor))
+        anchor = host.global_vector_00f87574();
+    s.chase_2b8.position_a4 = Vec3{f32(static_cast<double>(anchor.x) + offset.x),
+                                   f32(static_cast<double>(anchor.y) + offset.y),
+                                   f32(static_cast<double>(anchor.z) + offset.z)};
+    host.apply_zoom_0042c610();
+    if (s.active_380 != 0) {
+        s.pose_74 = s.chase_2b8;
+        host.apply_shake_and_publish_004329d0(dt);
+    }
+}
+
+void shipyard_camera_step_00433560(Mat4Rows& pose, const Mat4Rows& chase, bool active_380, float dt,
+                                 MoverHost& host) {
+    if (!active_380) return;
+    pose = chase;
+    host.apply_shake_and_publish_004329d0(dt);
+}
+
+std::uint32_t mover_slot_128_kind(MoverClass cls) noexcept {
+    switch (cls) {
+    case MoverClass::PlaneChase: return 1;   // 00605190
+    case MoverClass::Submarine: case MoverClass::BombView: return 0;   // 00650870, 00435320
+    default: return 2;                       // 0042A8E0
+    }
+}
+
+const char* mover_slot_12c_name(MoverClass cls) noexcept {
+    return cls == MoverClass::PlaneChase ? "PlanePilot"   // 00605180 -> 00CF436C
+                                         : "Default";     // 0042A8F0 -> 00CE3C5C
+}
+
+void mover_release_0042dba0(MoverBaseState& m, MoverReleaseHost& host) {
+    if (void* child = m.counted_child_338; child != nullptr) {
+        host.detach_00b6d890(child, host.scene_root_19ec());
+        if (host.reference_decrement(child) == 0) host.reference_destroy_vtable0(child);
+        m.counted_child_338 = nullptr;
+    }
+    if (m.camera_node_1bc != nullptr) {
+        if (host.is_game_camera_mover()) host.game_set_camera_mover_004bc410(nullptr);
+        m.camera_node_1bc = nullptr;
+    }
+    host.node_slot84_00923060();
 }
 
 }  // namespace bsp::seg2_cc13

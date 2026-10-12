@@ -246,8 +246,8 @@ branches move values between the FPU stack and spilled slots. Ghidra renames app
 | `0042DAF0` | BSP_RandomWander_Advance (new) | `random_wander_advance_0042daf0` | below |
 | `0042C090` | BSP_RandomWander_Evaluate (new) | `random_wander_evaluate_0042c090` | below |
 | `0042C1B0` | BSP_RandomWander_Retarget | `random_wander_retarget_0042c1b0` | RNG, below |
-| `00434E50` | BSP_DefaultUnitCamera_Step | `default_unit_camera_step_00434e50` | body read past 00434F52 with `disasm-raw` |
-| `00431480` | BSP_DefaultUnitCamera_UpdateChase | `default_unit_camera_update_chase_00431480` | below |
+| `00434E50` | **BSP_PlaneChaseCamera_Step** (was BSP_DefaultUnitCamera_Step) | `plane_chase_camera_step_00434e50` | body read past 00434F52 with `disasm-raw` |
+| `00431480` | **BSP_PlaneChaseCamera_UpdateChase** (was BSP_DefaultUnitCamera_UpdateChase) | `plane_chase_camera_update_chase_00431480` | below |
 | `0042F800` | **BSP_PlaneChaseCamera_UpdateOffsets** (was BSP_UnitCamera_EvaluateChaseTunables) | `chase_camera_update_offsets_0042f800` | below |
 | `0042B6E0` | BSP_Matrix_PremultiplyYawThenPitch (new) | `rotate_yaw_then_pitch_0042b6e0` | m = RotY(-0-yaw) x m, then RotX(-0-pitch) x m |
 | `00434140` | BSP_SubmarineCamera_Step | `submarine_camera_step_00434140` | below |
@@ -321,8 +321,7 @@ horizontally closer than 60; with no target it drifts sideways 5/s along the rig
 radius is 100; height pulled toward 45 at (45 - y) x step when below. 0085DC80 each pass.
 
 `0042F800` reads the target's rotation rates +B50h (roll) / +B54h (pitch) / +B58h (yaw), +B28h, +900h,
-+970h, +9B4h and `[class+200h]`, so its target is a plane; the class at 00CF4238 may be the plane
-chase camera rather than a generic default (open). Wanted offsets: +39Ch = ZRotMul x (-roll), +3A0h =
++970h, +9B4h and `[class+200h]`, so its target is a plane: 00CF4238 is the plane chase camera (settled in the follow-up below). Wanted offsets: +39Ch = ZRotMul x (-roll), +3A0h =
 XDistMul x yaw - YDistRollMul x (-roll), +3A4h = -YDistMul x (-pitch) + +3C0h, +3A8h = ZDistMul x
 [+B28h], each eased at its smooth rate x dt, then +3B0h..+3BCh eased toward them at the same rates.
 States 4/5 below height 3.0 raise +3ECh to InterpolateClamped(1.0, 0.6, 4.0, 0, height) x
@@ -358,9 +357,8 @@ only when the flag is set), both rotations first, y + min([class+538h], 10) then
 
 - `0042C750` turns +384h/+388h toward (yaw, pitch) by at most the two steps, scaling the axis with the
   smaller error so both arrive together; an axis within its step snaps; returns 1 only when both snap;
-  does nothing when both steps are below 0.001. **Ghidra splits the function**: the pitch-step tail
-  0042C8F3..0042C931 is a separate bogus `FUN_0042C8F3` with no callers (reached by the JBE at
-  0042C8D8), so the decompile of 0042C750 omits it. Not repaired in Ghidra (lead's call).
+  does nothing when both steps are below 0.001. Ghidra had split the pitch-step tail 0042C8F3..0042C931
+  into a bogus `FUN_0042C8F3` (no callers, reached by the JBE at 0042C8D8); repaired, see the follow-up.
 - `0042C940`: pitch = clamp(pitch, +3ECh + (+3F0h - +3ECh) / 4, 0); chase = RotX(-0.075) x
   RotY(-(+384h + offset)); eye = target - 2 x +38Ch x forward; RotX(-0 - pitch); 0042C610; +400h = 1.
 - `0042E180` (once, byte +1F4h): local planes at +258h: near (0, 0, -1, node+1D4h), far (0, 0, 1,
@@ -368,13 +366,123 @@ only when the flag is set), both rotations first, y + min([class+538h], 10) then
   (+-cos h, 0, -sin h, 0) with h = 00B6FC30 / 2; world planes at +1F8h: 0042D0D0 normal, d = n . node
   position + local d.
 
-### Handoff (cc13-camera2)
+### Follow-up (cc13-camera2, 2026-10-12)
 
-Done: the whole render5 packet. Open:
-- The 00434F52 misaligned unit and the bogus `FUN_0042C8F3` are listing/function-boundary repairs
-  for whoever owns Ghidra structure edits; behaviour is already read around both.
-- Which class 00CF4238 really is (generic default vs plane chase camera): read 00605130 and the
-  EnsureCamera kind table.
-- `007C7800` (plane code) also calls `0042C1B0`; it is gameplay-side and draws stream 0 there too.
-- The `+3CCh` "short by kl x w" yaw update in `0042F800` is literal; confirm in game before anyone
-  "fixes" it.
+- **0042C750 repaired.** `tools/ghidra_define_function.py 0042c750 0042c934 --recreate --delete-inside`
+  under the write lock deleted the bogus `FUN_0042C8F3` and re-created `BSP_CameraMover_TurnTowardAngles`
+  over 0042C750..0042C933 (name, plate comment and the default signature kept; event log in the tree's
+  `local/cm2_define_0042c750.json`). The decompile now shows the pitch step (Add/SubtractWrappedAngle
+  on +388h). `_free` (00BF9DC8) still reads `void __cdecl _free(void * _Memory)`, body ..00BF9E55.
+- **Class settled.** `BSP_GameCameraModifier_EnsureCamera` (0079CBD0; src/cc13_camera_controllers.cpp,
+  docs/CC13_CAMERA_CONTROLLERS.md) builds kind 0Fh (planes) with 006065D0 when the fps byte is set and
+  00605130 otherwise; the only other caller of 00605130 is 00605E50 in the segment-24 plane code. So
+  vtable 00CF4238 is the plane chase (third-person) camera, not a generic default, and 00CF4410 the
+  cockpit. Renamed: 00605130 BSP_PlaneChaseCamera_Construct, 006065D0 BSP_PlaneCockpitCamera_Construct,
+  00434E50 BSP_PlaneChaseCamera_Step, 00431480 BSP_PlaneChaseCamera_UpdateChase; the C++ types and
+  functions follow (`PlaneChaseCamera`, `plane_chase_camera_step_00434e50`, ...). The class-map row
+  "any other kind" above is superseded.
+- **Call-site report** `reports/cc13_camera2_calls.json`: 152 direct CALL rows over the 15 functions,
+  `tools/verify_report_calls.py` 0 failed. The one call in 00434F50..00434FF1 (00434F8D ->
+  00903860) is listed separately: live Ghidra puts no function over that stretch because of the stale
+  unit at 00434F52, which stays for the user's CodeBrowser pass.
+
+Remaining open: 00434F52; `007C7800` (plane code) also calls `0042C1B0` on stream 0; the literal
+`+3CCh` "short by kl x w" yaw update in `0042F800` wants an in-game check.
+
+## Construction and class slots (cc13-camera2, 2026-10-12)
+
+All new code is in the same two files, **reconstructed and Win32 build-tested only**. Ledger names,
+reconstruction records and Ghidra renames were applied with the locked tools (prior values in the
+tree's `local/ghidra-annotations-20261012T071715Z.json`). Seventeen vtable targets had no Ghidra function;
+`tools/ghidra_define_function.py` created them (`local/cm2_define_slots.json`): 0042A8B0, 0042A8C0,
+0042A8D0, 0042B830, 0042B890, 0042B920, 0042B930, 0042B9D0, 0042B9E0, 0042BAC0, 0042BAD0, 0042C040,
+0042C560, 0042CBE0, 0042CC00, 00432CB0, 00435320. The call report `reports/cc13_camera2_calls.json` now
+covers 216 call rows (verify_report_calls: 0 failed).
+
+### The class family, corrected
+
+| class id | vtable | constructor | built for | step (DCh) | name (12Ch) |
+|---|---|---|---|---|---|
+| 4Ch | `00CE3B28` | `00432750` base | - | `00435410` | "Default" |
+| 56h | `00CEC440` | `00519290` BSP_ShipCamera_ConstructBase | (base only) | `00432CB0` BSP_ShipCamera_StepBase | "Default" |
+| 56h | `00CEC5F0` | `00519490` BSP_BomberViewCamera_Construct | bomber view (`005198F0`) | `004335C0` | "Default" |
+| 4Fh | `00CF6250` | `00650830` BSP_SubmarineCamera_Construct | kind 8 (MSubmarine) | `00434140` | "Default" |
+| 50h | `00CF5CE8` | `0064B650` (cc9) | kind 6, ships | `00432ED0` (cc9) | - |
+| 53h | `00CEC1F8` | `005176F0` BSP_AirfieldCamera_Construct | kind 45h (MAirfield) | `00433590` | "Default" |
+| 52h | `00D044B8` | `0078E830` BSP_ShipyardCamera_Construct | kind 46h (MShipyard) | `00433560` | "Default" |
+| 51h | `00CF4238` | `00605130` BSP_PlaneChaseCamera_Construct | kind 0Fh, fps byte clear | `00434E50` | "PlanePilot" |
+| 4Ch | `00CF4410` | `006065D0` BSP_PlaneCockpitCamera_Construct | kind 0Fh, fps byte set | `00434810` | "Default" |
+| 4Eh | `00CE3E60` / `00CE3FD0` | `00435120` / `00435280` | INTF_BOMBVIEW | `00430020` / `00430DA0` | "Default" |
+
+Each class's IsKindOf (slot 5Ch) accepts its id chain plus 4Ch, 0 and the mover's own +C4h; the
+submarine's `006508B0` accepts 4Fh and 56h. The cockpit keeps the base test `0042C010`.
+
+### RNG: every camera construction draws three stream-0 values
+
+`00432750` ends with three `00BD2F10` draws, `XOR ECX,ECX` each (the shared gameplay stream 0):
+U(0, 6.2831855 [`00CE3D9C`]) at **00432938**, **00432955**, **00432972**, stored in that order to
++1E8h, +1ECh, +1F0h (the shake phases next to the amplitude +1D0h and scale +1DCh). So every mover
+constructor (all rows above, and the HUD/menu/movie cameras built on the same base) consumes three
+stream-0 values at construction time. `construct_mover_base_00432750` takes a caller-supplied source;
+cc9's `game_hosts_hud.cpp` already records the three draws without taking them.
+
+### Base fields (00432750)
+
+Scene node 00925CE0 on the mover, tick element 00875890(mover, 0) at +170h, four vtables (+0 main,
++10h the observer interface the mover registers with its target, +24h ref-counted, +170h tick); +2B8h
+and +2F8h identity; +184h = 4; +C4h = 4Ch; +1BCh camera node = 0; +1C0h = +1C8h = 0; +1C4h / +1CCh =
+`[00432650()]+78h` / `+7Ch`; +1D0h..+1D8h = 0; +1DCh..+1E4h = 1.0; phases above; +1F4h (the frustum
+gate of 0042E180) = 0; +338h = +33Ch = 0; +380h = 1.
+
+The ship family base `00519290` adds the observer at +3B0h (target +3C4h), +39Ch = 0.2 (eye height
+factor), pitch limits +3ECh / +3F0h = -/+1.5533 rad (89 deg; the submarine creator `00651370` replaces
+them with GameSettings +458h / +45Ch in degrees), +3DCh = 1.0. The cockpit constructor sets the three
+eased-angle periods and rates to 1.0, the look frame +3E8h to identity, each wander to {elapsed 1,
+period 1, budget 0, life 1, radius 1..1, azimuth 0, period range 1..1} (budget 0: no retarget until a
+reset or owner refills it) and the observer at +500h, whose target +514h is the entity
+`00434810` premultiplies by (the field earlier called "modifier").
+
+### Destructors
+
+`0042BCA0` destroys an embedded observer (vtable 00CE3C8C, unregister when +14h is set, 00695870);
+`0042A830` restores the base vtables and destroys the tick element (00875490) and the node (00925780).
+Class destructors: `00519240` ship family (+3B0h), `00435210` / `004353A0` the INTF_BOMBVIEW pair
+(+384h), `00606800` cockpit (+500h, then releases the counted plane reference +3C0h through
+`[00CE2220]` and vtable[0] at zero). Airfield, chase and shipyard use `0042A830` directly. Slot 0 of
+every vtable is the scalar deleting destructor (`0042C3A0`, `00517880`, `005193B0`, `00519500`,
+`006508F0`, `00605250`, `00606880`, `007926F0`, `00435260`, `004353F0`).
+
+### Setters, resets and adoption
+
+- EnsureCamera's follow-ups: `0042E030` cockpit SetPlane (counted reference swap, eye/look offsets,
+  then vtable[DCh](0)), `0042AAF0` chase SetTarget, `0042F6C0` submarine Setup (mode from
+  [target+1268h]/[+1281h] or depth -8; node +3F4h, offset +3F8h), `0042EB20` shipyard Setup (matrix
+  +730h for kind 46h), `0042CB30` airfield Setup; `0042CB70` submarine SelectMode (periscope 2).
+- Ship focus slots 118h / 11Ch: `0042C5A0` point, `0042EA40` entity (base no-ops `0042A8C0`,
+  `0042A8B0`).
+- Slot A0h reset (base: the node's 00923840): `0042F5C0` ship family, `0042F760` cockpit (angle
+  periods = CockpitSmooth, at least 0.1; **wander 0 is the gunfire kick**: radius
+  CockpitGunfireEffectSize, period CockpitGunfireEffectTime, life + 0.2), `0042CC30` chase.
+- Slot 124h adopt-from (base no-op `0042A8D0`): `0042EB90` / `0042DFD0` / `0042DC20` submarine and
+  ship state, `0042CEA0` / `0042CD50` chase; a class-54h holder is resolved through 00798D70. The copy
+  happens only for the same target and sets the adopted countdown (+3E8h ship, +3F8h chase) to 10,
+  which the resets and SetTarget respect.
+- Other slots: 60h tick element (`0042A8A0`), 128h view kind (2 default, chase 1, submarine and bomb
+  view 0), 12Ch mode name, 130h target (ship +3ACh, chase +388h, bomb view +398h), 34h velocity
+  +1B0h, 114h chase matrix, 120h node world matrix (cockpit: look frame), 84h release (`0042DBA0`).
+
+### Shared entity-interface slots
+
+The mover vtable starts with the generic entity interface. Its default slots are shared by 40-95
+vtables each (`local/cm2_refs.py`), so they are not camera code. Named where the body says what it is:
+`0042B9E0` GetClassName (table E0CD80 by +C4h), `0042BA00` GetWorldPosition, `0042BA40` GetHeading,
+`0042D680` PredictPosition, `0042D770` GetIdentityMatrix, `004313D0` SetName, `0042E960` GetName,
+`0042B860` GetTypeName ("Entity"). The remaining one-instruction stubs (return 0 / 1 / 0.0 / 1.0, RET n)
+are left unnamed.
+
+### Handoff (cc13-camera2, construction packet)
+
+Done: every camera constructor EnsureCamera reaches (cc9's ship captain excepted), the base, the
+destructors and slot-0 deleters, the IsKindOf tests, the follow-up setters, resets, adopt-from slots and
+the camera-specific base slots. Open: `00651370` and `005198F0` (HUD-side creators) are named only;
+the one-instruction shared stubs are unnamed; 00798D70 (class-54h holder -> camera) belongs to segment 45.
