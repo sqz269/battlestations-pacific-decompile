@@ -408,7 +408,7 @@ None of the three is on origin/main `210dabf10`:
 
 ## 9. Open items
 
-- **Moveto activation draws** (section 4): `+424h`/approach+2Ch `U(0, TravelAltRandom)` and
+- **Moveto activation draws** (section 4; done in section 10): `+424h`/approach+2Ch `U(0, TravelAltRandom)` and
   `+460h`/approach+68h `U(FollowDist/1, /2)`. This is a separate switch and pair.
 - **Strafe profile** `009CD020`: not hosted. Its altitude gate would replace a script attack
   altitude at the strafe task's second activation (after a go-away prepend retires). The host
@@ -418,3 +418,192 @@ None of the three is on origin/main `210dabf10`:
 - `docs/BOT_TASK_STATES.md` line 113 says the two `+54h` sites "sit in an undefined region" and
   that their push/per-tick nature is unread. Sections 1 and 2 settle that: both are in
   `0099ACD0`, and both fire on activation.
+
+## 10. The moveto activation draws (packet cc13-cadence3, `kMoveToActivationDrawsBound`)
+
+This section closes the first open item of section 9, where the host makes too few calls. Status:
+exported and reconstructed. The diff below is build-tested with the switch OFF, alone and on top
+of the section 6 diff. It is not pair-tested or game-validated.
+
+### 10.1 The draws, read from the listing
+
+The moveto task class `00D20B68` (also `00D20BE0`) has `+54h` = `009C3650`. Its approach sits at
+`task+3F8h` and is built by `009C1C30`. All draws below are `00BD2F10` with `ECX = 1`, so stream 1;
+`[ESP]` is the low end and `[ESP+4]` the high end.
+
+| # | site | when | field | distribution (this installation, `planeglobals.lua`) |
+| --- | --- | --- | --- | --- |
+| 1 | `009C1C8F` | construction (`009C1C30`) | approach `+2Ch` | `U(0, tuning+540h MaxAltOffset)` = `U(0, 5)` (line 378) |
+| 2 | `009C1CEE` | construction | approach `+58h` | `-U(0, 0.5)` |
+| - | `009C1D0D` | construction | approach `+68h` | constant `50.0` (`00CEB4D4`), no draw |
+| 6 | `009C367C` | **activation** (`009C3650`, every unit) | `task+460h` = approach `+68h` | `U(tuning+368h, tuning+36Ch)` = `U(FollowDist[1], FollowDist[2])` = `U(20, 200)` (line 464) |
+| 7 | `009C36A3` | **activation** (every unit) | `task+424h` = approach `+2Ch` | `U(0, tuning+364h TravelAltRandom)` = `U(0, 50)` (line 463) |
+| - | `009C36B7` | activation | `task+464h` = approach `+6Ch` | `0.0` |
+
+Draws 3-5 are the follow, circle and task constructor draws in `docs/PILOT_MOVETO_TASK.md`. After
+draw 7, `009C36BF` calls the refresh `009BEBA0`. Only then does `009C36CA 007B8AD0` gate the
+leader's `ctl+394h` write. The profile has no other `00BD2F10` call (`009C3650`-`009C394A`, from
+disk bytes). `009BEBA0` itself makes no draw.
+
+So in the image, after its one activation (section 2), a moveto task flies with approach `+2Ch`
+drawn from `U(0, 50)`, not `U(0, 5)`, and with approach `+68h` drawn from `U(20, 200)`, not 50.
+
+### 10.2 What the values feed
+
+A linear sweep of `009BEB00`-`009BEE00` and `009C1000`-`009C3B00` (`local/cad3_reads.py`) for
+`[reg+2Ch]` and `[reg+68h]`:
+- **approach `+2Ch`:**
+  - The refresh `009BEBA0` zeroes it at `009BEBB7` when `ctl+3ADh == 0`. `ctl+3ADh` is the
+    squadron dirty byte. The block init `007F2BD0` sets it to 1 (`007F2C1A`), the Lua altitude
+    natives clear it, and a profile write sets it again.
+  - At `009BEBF1`-`009BEBFD` the steer point's altitude is `ctl+394h - approach+2Ch`.
+  - `009BEDF5` is the follow state's own `+2Ch`, not the approach's.
+- **approach `+68h`:**
+  - Read at `009C23DD` (`FADD`) in `009C23B0`, the target-speed override:
+    `reach = TurnCircleRadius + approach+68h`, and within reach of a faster target the moveto
+    takes the target's speed.
+  - The other stores in that range (`009C14B1`, `009C16CF` in `009BFEE0`, the follow state's
+    geometry, and `009C1E57` in the sibling constructor `009C1DC0`, also `00CEB4D4`) belong to
+    other objects or constructors.
+  - Outside these ranges the approach's readers were not swept: `coverage: partial`.
+
+### 10.3 The host now
+
+- `moveto_alt_offset_2c` is draw 1, `U(0, pilot_general_max_alt_offset)` on key `#mt2c`, at
+  install (`run_moveto_task_install_009c3000`). Nothing redraws it.
+- `moveto_refresh_009beba0` steers at `cruise - moveto_alt_offset_2c` every 0.5 s.
+- `moveto_target_speed_009c23b0` uses the constant `50.0f` for approach `+68h`
+  (`kMoveToTargetSpeedOverrideBound`, ON).
+
+### 10.4 Who sets the inputs
+
+A scan of every `.lua` under the game root finds `TravelAltRandom`, `FollowDist` and
+`MaxAltOffset` only in `scripts/datatables/planeglobals.lua`:
+- line 378, `MaxAltOffset = 5`;
+- line 463, `TravelAltRandom = 50`;
+- line 464, `FollowDist = {20, 200}`.
+
+That file's mtime is 2024-10-29, so it is this installation's value and not necessarily retail.
+No mission script and no `robots.lua` or vehicle-class row sets them: `robots.lua` has only
+`DogfightFollowDist`, a different key. So every mission uses the same values.
+
+### 10.5 The diff
+
+`kMoveToActivationDrawsBound` is OFF, and it is an `Impl` static next to
+`kMoveToTargetSpeedOverrideBound`. It adds `moveto_follow_dist_68` (50.0) to `GameUnitSlot`, and
+`009C23B0`'s reach reads it instead of the literal. That is the same value while the switch is OFF.
+
+At the end of the install, the diff first sets `moveto_follow_dist_68 = 50.0` (`009C1D0D`). With the
+switch ON it then makes draw 6 on key `#mt68`, then draw 7 on key `#mt424` (into
+`moveto_alt_offset_2c`), sets `moveto_approach_6c = 0` and refreshes again (`009C36BF`). Each draw is
+made once per install. Nothing draws on stream 0.
+
+**Order dependency with section 6.**
+- The draws use no pending flag. The host install stands for the activation, as section 5 labels
+  it, and the draws come after the install's own refresh (`009C1D9D`), as in the image.
+- With both switches ON, section 6's pending flag is consumed by that first refresh, so the
+  travel-altitude gate runs there, one refresh early (labelled in section 6). The second refresh,
+  added here, only reads `+394h`.
+- With only this switch ON, the second refresh also applies the per-refresh gate. That gate is the
+  one the host already runs every 0.5 s, so it adds nothing new.
+- The two diffs touch disjoint hunks.
+
+**Checks:**
+- `./scripts/build.ps1` passes with this diff alone (exit 0, `bsp_game.exe` linked, 2/2 tests,
+  no warning in `game_hosts_units`). It also passes stacked on the section 6 diff (exit 0, 2/2 tests, no warning in game_hosts_units).
+- Both builds were reverted.
+- `git apply --check` against origin/main `e7e2dd1e8` passes alone, and also after applying the
+  section 6 diff.
+
+```diff
+diff --git a/src/game_hosts_units.cpp b/src/game_hosts_units.cpp
+index f8634b115..361d3c8c2 100644
+--- a/src/game_hosts_units.cpp
++++ b/src/game_hosts_units.cpp
+@@ -667,6 +667,9 @@ struct GameUnitSlot {
+     // fields, named by their offset in that object.
+     std::size_t moveto_target_plus_one{0};   // approach+44h, the order's target
+     float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
++    // approach+68h: 50.0 (00CEB4D4) from 009C1C30, redrawn U(FollowDist/1,
++    // FollowDist/2) by the activation's 009C3650 (kMoveToActivationDrawsBound).
++    float moveto_follow_dist_68{50.0f};
+     float moveto_refresh_58{0.0f};           // countdown; period +54h = 0.5 (009C1CE0)
+     float moveto_dwell_60{0.0f};             // the arrival dwell
+     float moveto_distance_64{0.0f};          // planar distance, 009BEBA0
+@@ -7138,6 +7141,14 @@ struct GameUnitsHost::Impl {
+     // is within TurnCircleRadius + approach+68h (50.0) and faster than 007C47F0.
+     // False: squadron+3A0h always (a record).
+     static constexpr bool kMoveToTargetSpeedOverrideBound = true;  // ON: five rows identical (PILOT_MOVETO_TASK)
++// Packet cc13-cadence3 (docs/CC13_TASK_PROFILE_CADENCE.md section 10). The
++// moveto task's activation (0099AEB3 -> vt[54h] 009C3650) draws approach+68h =
++// U(FollowDist/1, FollowDist/2) at 009C367C and approach+2Ch = U(0,
++// TravelAltRandom) at 009C36A3, both stream 1, then refreshes (009C36BF).
++// True: the install makes both draws on "#mt" keys after the construction
++// draws and refreshes again. False: +68h stays 50.0 and +2Ch keeps its
++// construction draw U(0, MaxAltOffset).
++static constexpr bool kMoveToActivationDrawsBound = false;
+     unsigned long long ts_override_calls{0}, ts_override_target{0};
+     unsigned long long ts_override_within{0}, ts_override_applied{0};
+     float ts_override_max_speed{0.0f};
+@@ -7158,7 +7169,7 @@ struct GameUnitsHost::Impl {
+         const bsp::OceanVec3& v = t.motion.linear_velocity;
+         const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
+             + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+-        const float reach = unit.plane_turn_circle_radius + 50.0f;          // 009C23E3 FSTP
++        const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
+         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
+         ++ts_override_within;
+         if (!(static_cast<double>(speed) >
+@@ -26387,6 +26398,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
+                             ? (unit_.moveto_arrived_454 ? GameUnitSlot::MoveToTaskState::kCircle
+                                                         : GameUnitSlot::MoveToTaskState::kMoveTo)
+                             : GameUnitSlot::MoveToTaskState::kFollow;   // 009C3097-009C30BF
++                        unit_.moveto_follow_dist_68 = 50.0f;            // 009C1D0D, 00CEB4D4
++                        if constexpr (GameUnitsHost::Impl::kMoveToActivationDrawsBound &&
++                                      bsp::kMoveToTaskTickBound) {
++                            // 0099AEB3 -> 009C3650, the task's activation right
++                            // after this install (the head changed). Draws 6 and 7
++                            // on stream 1 in the image; keyed here. Every unit,
++                            // before 009C36CA's leader gate. LABELLED: the host
++                            // install stands for the head change.
++                            float fd1 = 20.0f, fd2 = 200.0f, rnd = 50.0f;
++                            if (owner_.lua.plane_globals_loaded()) {
++                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
++                                fd1 = g.pilot_move_to_follow_dist_1;     // tuning+368h
++                                fd2 = g.pilot_move_to_follow_dist_2;     // tuning+36Ch
++                                rnd = g.pilot_move_to_travel_alt_random; // tuning+364h
++                            }
++                            const std::string& n = unit_.row.name;
++                            unit_.moveto_follow_dist_68 = owner_.release_altitude_draw_00bd2f10(
++                                n + "#mt68", fd1, fd2);                 // 009C367C, +460h
++                            unit_.moveto_alt_offset_2c = owner_.release_altitude_draw_00bd2f10(
++                                n + "#mt424", 0.0f, rnd);               // 009C36A3, +424h
++                            unit_.moveto_approach_6c = 0.0f;            // 009C36B7, +464h
++                            moveto_refresh_009beba0();                  // 009C36BF
++                        }
+                         owner_.log.notef("  moveto task %s: installed kind 7, leader=%d state=%s "
+                             "range=%.1f (009C3000)", unit_.row.name.c_str(), leader ? 1 : 0,
+                             unit_.moveto_state == GameUnitSlot::MoveToTaskState::kFollow
+```
+
+### 10.6 Missions likely to move with the switch ON
+
+Every mission in which a plane gets a kind-7 moveto task. That covers authored moveto orders,
+`PilotMoveTo` and the moveto route of `0099A170`. USN04 does: its escort Zeros and script-spawned waves are ordered into moveto tasks (`docs/PILOT_MOVETO_TASK.md` lines 3 and 386). Other pair missions were not traced.
+- **Steering altitude:** without a script altitude, the moveto flies `U(0, 50)` below its travel
+  altitude instead of `U(0, 5)`. That is 22.5 m lower on average, and the squadron's members spread
+  over 50 m.
+- **Target speed:** the override's reach grows from `TurnCircleRadius + 50` to
+  `TurnCircleRadius + U(20, 200)`, which averages 110. So a moveto that follows a faster unit
+  switches to the target's speed earlier, on average.
+- **Draws:** two keyed draws per moveto install (`#mt68`, `#mt424`). Unkeyed
+  (`BSP_GUNNERY_RNG_STREAMS` unset), every later units-host draw shifts by two per install.
+
+### 10.7 A related gap, not in this diff
+
+`009BEBA0` zeroes approach `+2Ch` whenever `ctl+3ADh == 0`, which is the state after a Lua
+`SquadronSetTravelAlt`/`SquadronSetAttackAlt` call (the natives clear `+3ADh`). In the image a
+moveto under a script altitude therefore flies exactly at that altitude. The host always subtracts
+`moveto_alt_offset_2c`, including under `sq_alt_set`. A fix would set the offset to 0 in
+`moveto_refresh_009beba0` while the squadron's override is live, as one more switch. It was not
+written, because it is not a draw.
