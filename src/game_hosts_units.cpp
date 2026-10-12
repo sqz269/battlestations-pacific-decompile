@@ -581,6 +581,12 @@ struct GameUnitSlot {
     // Packet cc9_strafe_breakoff (bsp::kStrafeBreakoffBound): the manoeuvre
     // goaway front-pushes; 0 none, 1 tightturn 009BC030, 2 flikflak 009BC0A0.
     int st_mv_kind{0};
+    // Packet cc9-gunnery38 O1: the strafe task is (again) the head, so its
+    // cruise profile 009CD020 runs once (0099AEB3); set by the install and by a
+    // manoeuvre's retire, consumed by the arm.
+    bool st_profile_activation_pending{false};
+    int st_profile_activations{0};
+    int st_profile_seeds{0};
     bool st_mv_side{false};                // tightturn +408h, flikflak +400h
     float st_mv_point[3]{0.0f, 0.0f, 0.0f};// the end condition's point +1Ch..+24h
     float st_mv_dist2{0.0f};               // flikflak's condition +28h
@@ -4005,6 +4011,8 @@ struct GameUnitsHost::Impl {
         const bsp::OrdnanceKindSet set{slot.ordnance_mask};
         slot.db_has_bomb_d1 = bsp::ordnance_has_general_bomb_2ah(set) &&
                               dive_bomb_rounds_remaining(slot) > 0;
+        // Read before the +398h block below consumes it (0099AEB3).
+        const bool db_profile_activation = slot.db_profile_activation_pending;
         // 009C7A96: approach+ACh = ctl+398h, which the cruise profile 009C8920
         // holds at Pilot/DiveBomb/BeginAltRange/1.
         slot.db_begin_alt_ac = kPilotDiveBombBeginAltRange1;
@@ -4110,7 +4118,14 @@ struct GameUnitsHost::Impl {
         float control_alt_39c = bsp::dive_bomb_constant::kCruisingAltitudeThird;
         if (GameUnitSlot* rb = squadron_slot_of(slot.process_index);
             rb != nullptr && rb->sq_release_alt_set) {
-            if (unit_is_flight_leader_007b8ad0(slot.process_index) && !rb->sq_freeze_38e) {
+            // kDiveReleaseAltActivationOnlyBound: the block is 009C8920's (009C89E4-
+            // 009C8A17, inside the 009C8938 leader branch), so with
+            // kTaskProfileActivationOnlyBound it runs at activation only, as the
+            // +398h block above does.
+            const bool profile_call = !kDiveReleaseAltActivationOnlyBound
+                || !kTaskProfileActivationOnlyBound || db_profile_activation;
+            if (profile_call && unit_is_flight_leader_007b8ad0(slot.process_index)
+                && !rb->sq_freeze_38e) {
                 if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
                     rb->sq_release_alt_set = false;
                     rb->sq_lua_alt_3ad = false;   // 009C8A13 +3ADh = 1
@@ -5665,6 +5680,15 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightTurnAfterDrawBound = false;
     static constexpr bool kDogfightAvoidPickDrawBound = false;
     static constexpr bool kDogfightGunBurstDrawBound = false;
+    // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
+    // cruise profile 009CD020, run once per activation (the install and each
+    // time the strafe task resurfaces after a tightturn or flikflak retires),
+    // re-seeds the leader's glide at 009CD0AA (009CA3B0: 009CA41E U(0.8, 1.2),
+    // 009CA459 U(-10, 40)) inside its 009CD035 leader branch. True: the arm
+    // makes that call on the activation think. False: only the install's and
+    // the go-towards enters' seeds, as before. The profile's +394h/+398h
+    // gates and its every-unit 009CCED0(0) call are not hosted here.
+    static constexpr bool kStrafeProfileActivationSeedBound = false;
     // ON since packet cc9_planner_heading_writes: with the torpedo moveto and
     // attackrun heading writes bound (kPilotStateHeadingWritesBound) the Kates
     // close again; pair PHW0/PHW1, docs/PLANNER_HEADING_WRITES.md section 6.
@@ -21038,6 +21062,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const GameUnitsHost::Impl::PilotStrafeRow& row =
                             GameUnitsHost::Impl::strafe_row(unit_);
                         unit_.strafe_task_installed = true;
+                        unit_.st_profile_activation_pending = true;   // 0099AEB3, after the install
                         unit_.st_target_plus_one = unit_.command_target_plus_one;
                         // 009F9CE0: approach+24h = max(1.0, MaxSpd / Pilot/Strafe/ReferenceSpeed).
                         const float ref_speed = owner_.lua.plane_globals_loaded()
@@ -21252,6 +21277,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (done) {
                             unit_.st_mv_kind = 0;                                       // 0099B690
+                            unit_.st_profile_activation_pending = true;   // strafe is the head again
                             if (st_goaway_trace()) st_goaway_note("manoeuvre_done", 0.0, 0.0);
                         }
                     }
@@ -22645,6 +22671,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.st_mv_kind != 0) {
                                 st_manoeuvre_tick(dt);
                                 return;
+                            }
+                        }
+                        if (unit_.st_profile_activation_pending) {
+                            unit_.st_profile_activation_pending = false;
+                            ++unit_.st_profile_activations;
+                            if constexpr (GameUnitsHost::Impl::kStrafeProfileActivationSeedBound) {
+                                if (leader) {                      // 009CD02E 007B8AD0
+                                    st_glide_seed_009ca3b0();      // 009CD0AA
+                                    ++unit_.st_profile_seeds;
+                                }
                             }
                         }
                         // 009CD182: 009CCED0 on the approach; its first call 009FADA0
@@ -27590,7 +27626,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 n + "#mt54c", 0.0f, 1.0f);
                             unit_.moveto_dwell_60 = 0.0f;       // 009C1CFD
                             moveto_refresh_009beba0();          // 009C1D9D
-                            if constexpr (kMoveToLuaAltZeroOffsetBound) {
+                            if constexpr (kMoveToLuaAltZeroOffsetBound
+                                          && !(kMoveToActivationLuaAltOrderBound
+                                               && GameUnitsHost::Impl::kMoveToActivationDrawsBound
+                                               && bsp::kMoveToTaskTickBound)) {
                                 // The activation profile 009C3650 refreshes first
                                 // (009C36BF), then, for the flight leader only
                                 // (009C36CA 007B8AD0), stores +3ADh = 1 with its
@@ -27640,6 +27679,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 n + "#mt424", 0.0f, rnd);               // 009C36A3, +424h
                             unit_.moveto_approach_6c = 0.0f;            // 009C36B7, +464h
                             moveto_refresh_009beba0();                  // 009C36BF
+                            if constexpr (kMoveToLuaAltZeroOffsetBound
+                                          && kMoveToActivationLuaAltOrderBound) {
+                                // 009C36CA..009C375A: the leader's +3ADh = 1 follows
+                                // the 009C36BF refresh, so that refresh still sees a
+                                // live script altitude and zeroes the +2Ch drawn at
+                                // 009C36A3.
+                                GameUnitSlot* blk =
+                                    owner_.squadron_slot_of(unit_.process_index);
+                                if (leader && blk != nullptr && !blk->sq_alt_set) {
+                                    blk->sq_lua_alt_3ad = false;
+                                }
+                            }
                         }
                         owner_.log.notef("  moveto task %s: installed kind 7, leader=%d state=%s "
                             "range=%.1f (009C3000)", unit_.row.name.c_str(), leader ? 1 : 0,
@@ -36675,15 +36726,20 @@ void GameUnitsHost::report() {
                     planes, k[0], k[1], k[2], k[3], k[4], k[5], k[6], trans, aims, gpt, gpf,
                     gaps, hits);
                 {
-                    int tt = 0, ff = 0, mt = 0;
+                    int tt = 0, ff = 0, mt = 0, pa = 0, ps = 0;
                     for (const auto& slot : host.slots) {
                         tt += slot->st_mv_tightturns;
                         ff += slot->st_mv_flikflaks;
                         mt += slot->st_mv_ticks;
+                        pa += slot->st_profile_activations;
+                        ps += slot->st_profile_seeds;
                     }
                     host.log.notef("summary mission strafe breakoff bound=%d tightturns=%d "
                         "flikflaks=%d manoeuvre_ticks=%d (009BC030 / 009BC0A0, packet "
                         "cc9_strafe_breakoff)", bsp::kStrafeBreakoffBound ? 1 : 0, tt, ff, mt);
+                    host.log.notef("summary mission strafe profile activations bound=%d "
+                        "activations=%d leader_seeds=%d (009CD020 / 009CD0AA, cc9-gunnery38 O1)",
+                        GameUnitsHost::Impl::kStrafeProfileActivationSeedBound ? 1 : 0, pa, ps);
                 }
             }
             {
