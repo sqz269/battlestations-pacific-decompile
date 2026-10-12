@@ -97,6 +97,14 @@ were defined; the rest are held. Record: `reports/cc13_undefined_function_sweep_
   00CFDBE4) ends at 0072693F; the loop at 00726940..00726957 is not instructions in Ghidra even
   after `--recreate` reported 40 bytes disassembled (`get_instruction` at 00726940: none). Needs a
   CodeBrowser look (Clear + Disassemble at 00726940).
+- Counts after the forced snapshot (2026-10-12T05:29Z): Ghidra 66,483 -> 75,410 functions
+  (includes other workers' concurrent definitions); `bsp brief` untagged `FUN_` 16,370 -> 24,827,
+  EH funclets unchanged at 27,955. The handler stubs are therefore counted as untagged `FUN_`.
+  bsp counts EH funclets by name prefix only (`Unwind@` / `Catch_All@`, tools/bsp.py:629,
+  tools/status.py:29, tools/progress_board.py:68) and had no convention for handler stubs (8
+  hand-named `EHHandler_<ctx>_<addr>`). Proposed to the lead, not applied: rename the 6,780 stubs
+  `EHHandler@<addr>` and add that prefix to the three counters. `local/df3_rename.py --apply`
+  in the cc13-define1 worktree does the rename (locked batches of 500, prior names logged).
 - Held (31,225): no confirmed reference (unreferenced COMDAT copies, gap-start heuristics, 30
   table hits dropped for lacking structural start evidence). Not defined on purpose; the list is
   in the report for a later pass with stronger evidence.
