@@ -237,9 +237,11 @@ rocket's homing branch is the next packet if rocket hits matter (section 9).
 
 The census (`docs/CC13_RNG_STREAM_CENSUS.md` 10-11, `reports/cc13_rng_stream_census.json`) lists 28 sites
 in `007B3D60..007B6240`; its "25" counts the reached ones. Every reached site uses the thread's gameplay
-stream (stream 1) in the image. The reconstruction routes each one through `RocketTaskHost::uniform`
-with the site's id. `kRocketDrawSites` carries the key a host appends to the unit's name, as the strafe
-arm's `#st<field>` keys do. No site may use stream 0.
+stream (stream 1) in the image. The reconstruction routes each one through
+`RocketRandom::uniform_00bd2f10(key, lo, hi)`, the same shape as the kamikaze task's `KamikazeRandom`.
+`kRocketDrawSites` maps each site to its key suffix. The host builds the stream key as
+`unit name + "#rk" + suffix` (the table shows the full key), as the strafe arm's `#st<field>` keys do.
+No site may use stream 0.
 
 | id | site | function | distribution | key | when |
 | --- | --- | --- | --- | --- | --- |
@@ -287,8 +289,12 @@ arm's `#st<field>` keys do. No site may use stream 0.
 
 ## 7. Glue for the units host (suggested, NOT applied)
 
-The host shape follows `run_strafe_task_arm_009cd170` (`src/game_hosts_units.cpp`, packet cc9_strafe_arm).
-The rocket is the same machine, so most helpers carry over with the `rk` fields.
+The interface follows the kamikaze task's pattern (`include/bsp/kamikaze_task_cc13.hpp`, packet
+cc13-kamikaze1): the task is one value per unit (`RocketTask`), the host implements two interfaces
+(`RocketTaskHost`, the reads and sinks; `RocketRandom`, the keyed draws), and two calls drive it:
+`rocket_task_construct_007b6a40` on install and `rocket_task_arm_007b7c40` each think. The strafe arm
+(`run_strafe_task_arm_009cd170`, `src/game_hosts_units.cpp`) already has almost every helper the
+adapter needs, because the rocket is the same machine.
 
 ```diff
  // GameUnitSlot (src/game_hosts_units.cpp, beside strafe_task_installed)
@@ -296,30 +302,56 @@ The rocket is the same machine, so most helpers carry over with the `rk` fields.
 +    bool rocket_task_installed{false};
 +    std::size_t rk_target_plus_one{0};
 +    bsp::RocketTask rk{};
-+    float rk_aim_point[3]{};          // approach vt[0] 007B4390, lifted
 +    unsigned long long rk_releases{0}, rk_transitions{0};
 
  // the arm dispatch, beside run_strafe_task_arm_009cd170(dt)
 +    if constexpr (bsp::kRocketTaskBound) run_rocket_task_arm_007b7c40(dt);
 
-+    struct RocketHostAdapter final : bsp::RocketTaskHost {
++    // One adapter for both interfaces; every value below already exists for strafe.
++    struct RocketHostAdapter final : bsp::RocketTaskHost, bsp::RocketRandom {
 +        UnitArm& a;
-+        float uniform(bsp::RocketDraw id, float lo, float hi) override {
-+            return a.owner_.release_altitude_draw_00bd2f10(
-+                a.unit_.row.name + bsp::kRocketDrawSites[static_cast<int>(id)].key, lo, hi);
++        float uniform_00bd2f10(const char* key, float lo, float hi) override {
++            return a.owner_.release_altitude_draw_00bd2f10(a.unit_.row.name + "#rk" + key, lo, hi);
 +        }
-+        bsp::NearFieldProbeResult near_field_probe(const float ext[3]) override {
-+            const float w[3] = {0.0f, 0.0f, 0.0f};            // kNearFieldProbeBound as strafe
++        bool update_target_ref_009fada0(bsp::ApproachTargetRefState& ref, float,
++                                        std::array<float, 3>& p) override;   // st_refresh_aim_point on ref
++        void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override;  // hull_aim_seed bump
++        bool target_marked_5d() override;            // !df_slot_live(*st_target())  (LABELLED, as strafe)
++        bsp::RocketTargetKinds target_kinds() override;    // unit_is_kind_of(class, 6/9/0Ah/0Bh/0Dh)
++        bool target_is_unit_5() override;
++        float target_extent_007b5be0() override { return 0.0f; }   // LABELLED, as torpedo/dive
++        float target_y_100() override;
++        bool aimed_rocket_007c1eb0(bsp::RocketAimedRocket& out) override;  // loaded big rocket + class
++        std::array<float, 3> unit_position() override;      // motion.position
++        float heading_50() override;                         // plane_heading_c6c
++        std::array<float, 3> world_to_body(const std::array<float, 3>& p) override;  // df_local
++        float class_speed_188() override;                    // plane_max_spd
++        float class_travel_speed_18c() override;             // plane_travel_speed
++        float class_climb_1e4() override;                    // plane_climb_angle_1e4
++        float class_climb_1ec() override;                    // plane_climb_angle_1ec
++        float class_drop_1f0() override;                     // plane_drop_angle
++        bool bomber_kind() override;                         // st_bomber_kind()
++        bool flight_leader_007b8ad0() override;
++        int attack_mode_370() override;                      // the 0099B740 value, as st_attack_mode_370
++        float ctl_alt_398() override;                        // sq_alt_398, else Strike CruisingAlt
++        bool alt_loadout_007b58d0() override { return false; }   // [00E17BF2] = 0 in single player
++        int parity_f876b0() override;                        // LABELLED stand-in
++        bsp::RocketTuning tuning() override;                 // plane_globals(): pilot_strike_*, cones, ceiling
++        bsp::RocketStrikeRow robot_row() override;           // rocket_strike_row(the unit's robots row)
++        bsp::NearFieldProbeResult near_field_probe_007f0280(const float ext[3]) override {
++            const float w[3] = {0.0f, 0.0f, 0.0f};
 +            return a.nf_probe_squadron_007f0280(ext, w);
 +        }
-+        float fly_to_heading(float standoff, float& side, float range) override {
-+            bsp::FlyToSolverInputs in;                       // as the dive/torpedo goaway fill it
-+            /* point = unit_.rk_aim_point; unit pose; obstacles; world edge */
-+            in.standoff = standoff; in.range = range; in.offset_scale = 1.0f;
-+            const bsp::FlyToSolverResult r = bsp::fly_to_point_heading_009fd570(in, side);
-+            if (r.side_written) side = r.side;
-+            return r.heading;
-+        }
++        float fly_to_heading_009fd570(const std::array<float, 3>& point, float standoff,
++                                      float& side, float range) override;   // fly_to_point_heading_009fd570
++        void set_moveto_ranges_009bde80(float n, float f, float s) override;  // the st_moveto ranges
++        void enter_formation_state(bsp::RocketState) override {}   // LABELLED, as strafe
++        void exit_formation_state(bsp::RocketState) override {}
++        void tick_formation_state(bsp::RocketState s, float) override;   // st_moveto / st_follow ticks
++        void apply_plan(const bsp::RocketPlanCommand& c) override;      // st_speed, plan_heading_2c0, ...
++        void push_manoeuvre_00999f50(const bsp::RocketManoeuvre& m) override;   // into st_mv_*
++        void release_rocket(const bsp::RocketRelease& r) override;   // homing block, then
++                                                                     // owner_.release_ordnance_007bbba0
 +    };
 +
 +    void run_rocket_task_arm_007b7c40(float dt) {
@@ -327,49 +359,40 @@ The rocket is the same machine, so most helpers carry over with the `rk` fields.
 +        if (unit_.command_target_plus_one == 0) return;
 +        RocketHostAdapter host{*this};
 +        if (!unit_.rocket_task_installed || unit_.rk_target_plus_one != unit_.command_target_plus_one) {
-+            bsp::RocketSeedInputs s;
-+            s.speed_ratio_24 = bsp::bot_task_speed_ratio(unit_.plane_max_spd, globals.pilot_strike_reference_speed);
-+            s.attack_dist_664 = globals.pilot_strike_attack_dist;
-+            s.target_size = bsp::rocket_target_size_007b3c00(kinds_of(st_target()));
-+            s.ctl_attack_alt_398 = /* sq_alt_398 or Pilot/Strike/CruisingAlt, as st_glide_seed */;
-+            s.row = bsp::rocket_strike_row(/* the unit's PilotBotParameters row */);
-+            s.flight_leader = owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
-+            bsp::rocket_task_construct_007b6a40(unit_.rk, s, host);   // + hull_aim_ref construct
-+            unit_.rocket_task_installed = true; unit_.rk_target_plus_one = unit_.command_target_plus_one;
++            bsp::rocket_task_construct_007b6a40(unit_.rk, host, host);   // SUBSTITUTION as strafe: per target
++            unit_.rocket_task_installed = true;
++            unit_.rk_target_plus_one = unit_.command_target_plus_one;
 +        }
-+        // 0099B740 attack mode and the manoeuvre suspension exactly as the strafe arm.
-+        st_refresh_aim_point();                   // 009FADA0, with ref.projtime_44 = rk.ap.projtime_9c
-+        unit_.rk.ap.has_rocket_d4 = /* 007C1EB0: a loaded rocket passing rocket_platform_qualifies_007c1eb0 */;
-+        bsp::rocket_aim_point_007b4390(unit_.st_aim_point, unit_.rk.ap.has_rocket_d4, ignition_delay, unit_.rk_aim_point);
-+        bsp::rocket_approach_update_007b78f0(unit_.rk.ap, dt, range_inputs());
-+        // rule: rocket_rule_007b7050; on a change run the enter (gotowards 007B48E0 + the 009FA260
-+        // arming of hull_aim_ref, aim 007B5300, goaway 007B5F10 -> manoeuvre, attackrun 007B4F40).
-+        // tick: moveto/follow/prepare -> st_moveto_tick_009c18c0 / st_follow_tick_009c1fd0 with
-+        // near = far = rk.ap.glide_dist_40, speed range = rk.ap.fire_dist_38; the four attack
-+        // states -> the rocket_* kernels; apply RocketPlanCommand as st_speed/plan writes do.
-+        // aim release: write the rocket record's homing block (+47Ch target, +480h point,
-+        // +48Ch angle), then owner_.release_ordnance_007bbba0(unit_); ++unit_.rk_releases.
++        // 0099B740 (attack mode) and the manoeuvre suspension exactly as the strafe arm.
++        const bsp::RocketArmResult r = bsp::rocket_task_arm_007b7c40(unit_.rk, host, host, dt);
++        if (r.after != r.before) ++unit_.rk_transitions;
++        if (r.released) ++unit_.rk_releases;
 +        owner_.done("BotTaskRocket::arm", 0x007b7c40u);
 +    }
 ```
 
-**Feeds and fields the host must provide:**
+The cruise profile (slot `+54h`) is `rocket_task_cruise_profile_007b7af0`. The strafe host does not run
+its twin `009CD020` because that twin's call cadence is unread (`strafe_task.hpp`), so leave the rocket
+one out until that cadence is read.
+
+**Feeds and values the host must provide:**
 - The PilotSetTarget choice must feed `has_rocket_ordnance` (`007ED970` -> `007B9480`, kind `33h` with
   `IgnitionDelay > 0`). Today it is never set (SQUADRON_LAND_TASK 5bw.1), so the class is never chosen.
   Land it together with `kRocketTaskBound`.
-- `has_rocket_d4`: the plane still holds a rocket that qualifies (`rocket_platform_qualifies_007c1eb0`).
-- The rocket class: `IgnitionDelay`, `VMax`, `Acceleration` (`projectile_kinds.hpp`
-  `kRocketClassOff*`). The launch speed is the rocket's carrier speed before release, which is the
-  plane's speed; that reading of `record+3Ch` is provisional.
-- `local_point`: the host's `df_local(point, l)`.
-- `body_offset_28`: `hull_aim_ref.body_offset_28`.
-- `target_extent`: `007B5BE0`. The torpedo and dive hosts leave it absent (SQUADRON_LAND_TASK 12795).
-  Pass 0 and label the substitution as they do.
-- `parity_f876b0`: the image's global `[00F876B0]`. A deterministic stand-in (for example the unit's
-  process index) must be labelled.
+- `aimed_rocket_007c1eb0`: true while the plane still holds a rocket that passes
+  `rocket_platform_qualifies_007c1eb0`. Fill the class's `IgnitionDelay`, `VMax` and `Acceleration`
+  (`projectile_kinds.hpp` `kRocketClassOff*`). For the launch speed, use the plane's speed. Reading
+  `record+3Ch` as the carrying plane is provisional (section 9).
+- `release_rocket`: the host's rocket record is the bomb-family record (`bomb_torpedo_tick.hpp`), with
+  the homing block at `+47Ch`/`+480h`/`+48Ch`. Then call `owner_.release_ordnance_007bbba0(unit_)`. The
+  homing branch of `0080A000` is not hosted (section 5).
+- `target_extent_007b5be0`: the torpedo and dive hosts leave it absent (SQUADRON_LAND_TASK 12795).
+  Return 0 and label the substitution as they do.
+- `parity_f876b0`: the image's global `[00F876B0]`. A deterministic stand-in, for example the unit's
+  process index, must be labelled.
 - The gun direction (`009FABE0`): strafe does not carry it. Carry it only when the gun gate reads it.
 - The manoeuvre: copy `RocketManoeuvre` into `st_mv_*` and reuse `st_manoeuvre_tick`. One unit has one
-  attack class at a time.
+  attack class at a time. Its draws stay on the strafe `#st` keys unless re-keyed.
 
 ## 8. For cc9: constants in the strafe host (read while comparing twins)
 
@@ -417,7 +440,9 @@ stream 1). The rocket reconstruction uses the image values.
 
 - Done:
   - every rocket-task function read, with the twin evidence;
-  - the kernels in `src/rocket_task_cc13.cpp` (build passes);
+  - `src/rocket_task_cc13.cpp`: the whole-task calls `rocket_task_construct_007b6a40`,
+    `rocket_task_arm_007b7c40` and `rocket_task_cruise_profile_007b7af0`, plus each routine as its own
+    kernel. The interface is the kamikaze task's pattern. The build passes;
   - ledger names and Ghidra comments (section 11);
   - the report `reports/cc13_rocket_task.json` (`tools/verify_report_calls.py`: 69 rows, 0 failed).
 - Next, for cc9's lane:
@@ -433,7 +458,7 @@ stream 1). The rocket reconstruction uses the image values.
 - **Names.** `bsp.py ledger add-name` recorded 41 new names (the section 0 address list less the
   outside contracts). It appended evidence to 5 existing names: `007B7FD0`, `007B6A40`, `007B4980`,
   `007B7AF0`, `007B5BE0`. Existing names were kept, including `_Provisional` on `007B4980`.
-- **Reconstruction records.** `bsp.py ledger add-function` recorded 26 functions, all with status
+- **Reconstruction records.** `bsp.py ledger add-function` recorded 27 functions, all with status
   `reconstructed_build_tested`. Each record carries its coverage and the ABI from the listing's `RET`.
 - **Ghidra.** `tools/ghidra_annotate.py --apply` ran in two passes. The old values are in
   `local/ghidra-annotations-20261012T094446Z.json` and `...094513Z.json`. `007B6D00` and `007B7270` have

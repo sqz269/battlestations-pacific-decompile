@@ -100,7 +100,7 @@
   {"address": "007b7200", "coverage": "complete (director reads are the host's)"},
   {"address": "007b7af0", "coverage": "complete for the writes; 0099B740 is hosted"},
   {"address": "007c1eb0", "coverage": "partial: predicate only; the component walk is the host's"},
-  {"address": "007b7c40", "coverage": "order only (the doc's glue)"}
+  {"address": "007b7c40", "coverage": "complete (rocket_task_arm_007b7c40; outside calls through RocketTaskHost)"}
  ],
  "corrections": [
   {"was": "strafe goaway bank re-plan scale 0.3490658402442932 (game_hosts_units.cpp st_goaway_heading_009cb780)", "is": "double [00D05858] = 0.3490658700466156", "evidence": "PE bytes 00D05858 = 60000000 3FD65718; FMUL qword at 007B5BB0 and its strafe twin"},
