@@ -329,3 +329,130 @@ Not named (outside the lease, recorded here for the owners): 004A2FC0 (group tic
 - Lane: the host's landing path ends at the ramp unload; 0049A410's second
   `FinishLanding` caller would need the lane object. cc9's lane.
 - Presentation (0048A010, 0048A1E0, fake effects): renderer side; keyed presentation streams.
+
+## 10. Paratroopers (segment 46): gameplay reach
+
+Follow-up for cc9, 2026-10-12, read-only (no names, no Ghidra writes), base origin/main
+85360812c. These are the other SoldierGlobals users of section 2. **Verdict: gameplay.** A
+paratrooper is a full game entity. It captures enemy command buildings and damages them, and two
+of the three SoldierGlobals fields it uses decide whether, when and where it lands.
+
+### 10.1 The objects
+
+- **`MParatrooper`** (class id 31h, chain 31h -> 2Ah `MBomb` -> 29h `MBullet`; see
+  `docs/ORDNANCE_KIND_IDENTITY.md`). It is 4BCh bytes. The constructor is 007AB8C0 (on top of
+  `BSP_BombProjectile_Construct` 006E2670). Its primary vtable is 00D05060 (106 slots) and it has
+  six secondary vtables. The +3E4h subobject's vtable is 00D04FD4, whose slot +8h is 007AB360 and
+  slot +10h is 007AB590.
+- **The `Paratrooper` bullet descriptor** has vtable 00CFA604. Its slots are:
+  - +18h 007AC780, the Lua reader;
+  - +20h 007AC2C0, create with a pose;
+  - +24h 007AC4C0, create.
+- **007AC780 fields** (after `BSP_BombClass_ReadLuaFields`):
+
+  | field | offset |
+  | --- | --- |
+  | `CapturePower` | +D8h |
+  | `SlowFactorClosed` | +DCh |
+  | `SlowFactorOpened` | +E0h |
+  | `OpenDuration` | +E4h |
+  | `CloseDuration` | +E8h |
+  | `SoldierClass` | +ECh (004B1400) |
+  | `SoldierAnim` | +F0h |
+  | `CaptureDuration` | +F8h |
+  | `Damage` | +FCh |
+
+  The key strings are at 00D05220..00D05280 and 00CE7164.
+- **This installation's row:** `scripts\datatables\classtables\arcade\bulletclasses.lua:683-702`
+  (`ArcadeTable[22]`, "JP Paratrooper"). It sets `CapturePower` 12, `CaptureDuration` 30,
+  `Damage` 42, `SlowFactorClosed` 0.2, `SlowFactorOpened` 2, `OpenDuration` 1,
+  `CloseDuration` 2, `SoldierClass` "USMarine_shiptraffic" and `SoldierAnim` "fire2".
+  - This file is **locally modified** (mtime 2026-05-09 23:04:46).
+  - The realistic table is also modified (2025-06-02). A second Paratrooper row starts at
+    line 2638 of the arcade file.
+
+### 10.2 What it does
+
+| routine | slot | effect |
+| --- | --- | --- |
+| 007AB8C0 | constructor | `+468h = U(ParachuteOpenAltitudeMin, Max)` (stream 1, see 10.6); class id 31h at +C4h; clears the state bytes |
+| 007ABAB0 | +130h | `BSP_GameEntity_RegisterInParentEntityList`, then `BSP_UnitList_PushBack` into the world's lists `[+30h]+30h`, `+210h`, `+264h` |
+| 007ABAF0 | +134h | unregisters (erases from `+264h`) |
+| 007AB230 / 007AB330 | +164h (message 71h) | the drop target `+47Ch` with y from `BSP_World_GroundHeightAt`; in multiplayer mode 1 routes message 71h and copies `[+3BCh]+180h` to `+4B8h`. Callers: `BSP_MBombPlatform_Drop` 006E4D50, 007AB8A0 |
+| 007ABB30 | +19Ch | air drag scaled between SlowFactorClosed and SlowFactorOpened by the chute fraction `+46Ch`, then `BSP_BombProjectile_AdvanceInAir`; steers toward `+47Ch`, moved out of avoid zones once (`+488h`) |
+| 007AB360 | sub +8h | when height above ground is at or below `+468h`, switches from "fall" to "open" (`+46Ch = 1`). On a target building `+48Ch`: same side kills itself (cause 2); enemy (`BSP_Party_RelativeTo` 00803510 == 1) calls the building's vslot +1ACh with `(Damage +FCh - building +368h) * dt` when positive (007AB509..007AB549). Then slot +19Ch |
+| 007AC000 | +194h | landing: ground reached sets `+470h`. If the ground normal's `acos` exceeds SoldierGlobals `+10h` (`MaxParatrooperGradient`, 007AC28F..007AC2A5), `+471h` (bad landing) is set. Landed with the chute closed: a bad landing is killed; otherwise 006F2C30 picks the nearest enemy command building within its capture radius into `+48Ch` (none: killed), registers a fixed-step callback, and kills itself when `+474h >= CaptureDuration` |
+| 007AB0B0 | +DCh | animation clock fall/open/close. Once "close" has played, every frame adds dt to `+474h` (the capture timer) and fires the soldier's muzzle effect 0048A1E0. Then the clip test 0048A010 on the soldier entity `+478h` |
+| 007AB590 | sub +10h | once (`+490h`): adds itself to the building's capturer array (006F39B0, `+7DCh`/`+7E0h`), hides the chute, instantiates the `SoldierClass` entity into `+478h`, faces it at the building, plays `SoldierAnim` (004B0F80(.., 1, 0)), then the clip test |
+| 007AAE10 | +7Ch | `BSP_UnitInstance_OnKilledLua`; kills `+478h`; removes itself from the building's capturers (006F34B0) |
+| 007AB7D0 | +17Ch | network create message B9h (006E0D20) and `BSP_Entity_SendMessageToPeer` |
+| 007AC530 | +A0h | loads the "fall", "open" and "close" animations and starts "fall" |
+
+Neither 007AB0B0 nor 007AB330 has a Ghidra function; the bodies were read from the disk bytes.
+007AB360 and 007AB590 run with ECX = paratrooper+3E4h.
+
+### 10.3 Writes to non-paratrooper objects
+
+| site | target |
+| --- | --- |
+| 007AB549 | enemy command building vslot +1ACh (damage per second; the building's override was not read) |
+| 007AB5B6 (006F39B0) / 007AAE3E (006F34B0) | building capturer array `+7DCh`/`+7E0h`, under its critical section `+764h` |
+| 007ABAB0 | the world entity lists |
+| 007AB230 | multiplayer session message 71h |
+| 007AB7D0 | network create message |
+| 007AB590, 007AAE10, 007AC000 | the soldier entity it owns (`+478h`), and itself through `BSP_MissionEntity_Kill` |
+
+### 10.4 Outside readers (rel32 and absolute-dword scans)
+
+- **The command building's capture step.** 006F6760 runs from `BSP_FixedStepCallback_RepeatingStep`
+  006F7360. It walks the capturer array and adds each capturer's class `CapturePower`
+  (`[[cap+314h]+D8h]`) to the capturer's side `+54h`. It also reads `+4B8h` and vslot +108h, and
+  reports captures (`BSP_WarningManager_ReportCaptureShip`). This is the capture path.
+  `GetCapturePercentage` 0089B840 and `SetCaptureValue` 0089B0C0 are the Lua face of the same
+  building. The building's other displacement readers: `BSP_RewardsScreen_Enter` 0062C2C0 and
+  006F5AE0.
+- **006F2C30** (nearest enemy command building in `[game+19CCh]+16Ch` within its radius
+  +7C8h/+7A0h/+7C4h) has six callers. Only 007AC077 is the paratrooper's; the other five are
+  006EB3B5, 0074A51A, 00812937, 008129C9 and 008207B5.
+- **Descriptor and vtables.** The only absolute references are the descriptor slots 00CFA61C,
+  00CFA624, 00CFA628 and the vtable slots. The constructor's only callers are 007AC30F and
+  007AC50D.
+- **Lua.** Deaths go through `BSP_UnitInstance_OnKilledLua`. This installation's
+  `achievements.lua:45/829` counts "islands captured by paratroopers". No mission script uses a
+  paratrooper-specific native; `IsLandingTrafficActive` is unrelated.
+- **Other readers:** the AI `Paratroopers` hit-chance weights in `highlvlaiglobals.lua` and the
+  levelbomb paradrop admission path (`docs/ORDNANCE_KIND_IDENTITY.md`).
+
+### 10.5 Damage, capture, collision
+
+- **Damage:** to enemy command buildings while landed (10.3).
+- **Capture:** `CapturePower` while it is in the capturer array, until `CaptureDuration` runs out.
+- **Its own death:** it is killed when:
+  - it lands on a slope steeper than `MaxParatrooperGradient`;
+  - it finds no enemy building in range;
+  - it targets a friendly building;
+  - its capture time ends.
+  The last three are skipped in multiplayer mode 2.
+- **Collision:** none of its own beyond the `MBomb` base (`BSP_BombProjectile_AdvanceInAir`,
+  not read here).
+
+### 10.6 RNG
+
+| call | routine | draw | stream | class |
+| --- | --- | --- | --- | --- |
+| 007AB94A | 007AB8C0 | U(ParachuteOpenAltitudeMin, Max) into `+468h` | **1** (`XOR EBX,EBX` at 007AB8E9, `LEA ECX,[EBX+1]` at 007AB941) | gameplay-coupled: the chute opening height sets the descent and drift, so it decides landing time, place and slope check |
+| 004B102F via 007AB6AC | 004B0F80 from 007AB590 | U(0, duration) of `SoldierAnim` (random start = 1) | 0 | presentation-only (animation phase) |
+
+The scan covered every rel32 call to 00BD2F10, 00BD2FC0 and 00BD2ED0 in 007AAD00..007ACCFF;
+007AB94A is the only direct one. The `MBomb`/`MBullet` base code was not scanned. The
+stream-1 draw shares stream 1 with the other stream-1 users (the landing ship's 0074A9C8
+draw in `BSP_LandingShip_BeginLandingAtPad`, the plane tasks). A host must keep it on stream 1
+in image order, or put it behind an OFF switch; it is not presentation. The 004B0F80 phase draw
+goes to a keyed presentation stream when wired.
+
+### 10.7 Uncertain
+
+- 00BF9940 is read as `acos`; only its use against a dot product in [-1, 1] establishes it.
+- The building's vslot +1ACh override (the damage receiver) was not opened.
+- `+4B8h` as the dropping player (capture attribution) is provisional.
+- Multiplayer mode values: 1 sends message 71h; 2 skips the kills.

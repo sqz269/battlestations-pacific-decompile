@@ -1,0 +1,16 @@
+{
+  "packet": "cc13-sweep8E",
+  "doc": "docs/CC13_BAND_0080_008F.md",
+  "steps": [
+    {"address": "0073dd5b", "function": "0073d410", "native": "0078c400", "note": "BSP_Application_Initialize builds NetworkPacketStatistics when [00F871B4] is 0"},
+    {"address": "008ef719", "function": "008ef6d0", "native": "008ef6a0", "note": "second hex digit of a BIN token"},
+    {"address": "008efaaf", "function": "008efa30", "native": "008ee5f0", "note": "scene text writer escapes each line"},
+    {"address": "007239f9", "native": "0085d020", "note": "mesh trace node tests the segment against a triangle"},
+    {"address": "00777a08", "native": "008e2390", "note": "session receive pump routes MT_OBJ_* messages"},
+    {"address": "00777eaf", "native": "008e2da0", "note": "session receive pump hands MT_PLAYER_PING to the ping handler"},
+    {"address": "008e2fcf", "function": "008e2ee0", "native": "008e2da0", "note": "host-side local ping goes straight to the handler"},
+    {"address": "004f04a7", "native": "008f3880", "note": "scene unit hierarchy stores a matrix as a 16-float FA property"},
+    {"address": "0045f6f8", "native": "00869d20", "note": "Effects=nil on engine movie stop"},
+    {"address": "004e0acd", "native": "00869d20", "note": "Effects=nil on mission scene load"}
+  ]
+}
