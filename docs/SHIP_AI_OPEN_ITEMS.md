@@ -16549,3 +16549,58 @@ All with `kCaptureStatePartyFromUnitBound` ON (207.4) on main at bb41112c2, orde
   outage): the same captures as j (HQ2 1703.34 s, HQ1 2387.10 s). DM1 no longer sinks the Enterprise; the Shima
   group does, at 2856.16 s (Shima5, 2814 m). TroopTrans3's route reaches CB2 only at frame 82500 (4125 s), so the
   Enterprise must last about 1300 s longer.
+
+### 210.3 Post-free audit of the SHIP_AI-owned functions (cc9-ships43, 2026-10-12; lead item 3)
+
+Source: `reports/cc13_free_flow_repair.json` (`functions[].sites`, the `_free` / `operator delete` calls Ghidra had
+treated as non-returning) and docs/CC13_FREE_FLOW_REPAIR.md's grew-list. For each function owned by a SHIP_AI* or
+SQUADRON_LAND_TASK doc, the code after every repaired site was read from disk bytes (`disasm-raw`; tool
+`local\s43_audit_sites.py`), and the host's reconstruction was checked where one exists.
+
+**Bound: `kCarrierLiftHeightFromRunwayBound`, committed OFF, then ON (pairs at the end of this section)** (`src/game_hosts_units.cpp`, packet
+`cc9_carrier_lift_height`).
+- `00759120` (MotherShip class model bind) ends, after the runwaycenter read and its string free, with
+  `0075927C FLD [ESI+818h]` / `00759287 FSTP [ESI+80Ch]`: the lift exit point's height (class+80Ch, read at
+  007591BA from `liftexitpoint`) is overwritten with the runway centre's (class+818h, 0075925D). Both paths join at
+  0075927C, so the store always runs. The truncated decompile ended at the free.
+- The host kept the model's `liftexitpoint` height. This installation's models differ by 0.035 m (Enterprise:
+  15.366 against 15.401), 0.015 (Midway), 0.005 (Essex) and 0 (Hakuryu).
+- Readers in the host: the elevator relaunch pose (`deck_local_pos[1] = lift[1] - y + wheel height`, about line 13180)
+  and the park target's y (unused by the planar park). In the take path, `off_38 = l - lift` cancels the height.
+- Predictions: smoke identical. On carrier missions the relaunch pose rises 3.5 cm on the Enterprise; expect exit 1
+  where no relaunch happens before the end, and otherwise a moved run through the shared RNG (exit 3) with no
+  mechanism to check beyond the logged height line.
+
+**Recorded "no host effect"** (the newly visible code after the sites):
+
+| function | what follows the repaired sites | host |
+| --- | --- | --- |
+| 00A29FD0 CaptureThink (+521) | std::list/map teardown of the planner's locals (00A231C0, 00A28950, 00A20C00 erase calls), then the EH epilogue | the plan covers 00A2A0C1-00A2AF40; the spawn arm (00A2B400-) is a labelled record |
+| 00A287C0 (+69) | map teardown, then `LEA EAX,[EDI+10h]`: the operator[] result | the host keys its own records |
+| 00A25A30 (+31) | teardown, then `MOV AL,BL`: returns 00A23980's verdict (the live decompile still drops it as unreachable) | called only from the Capture/Defend spawn arms, both records |
+| 00A13B60, 00A179E0, 00A2E260, 00A2E4C0, 00A0F970, 00A250A0, 00A0C650 | list teardown and the epilogue (return value), or the outer loop's increment | host loops are complete (`compose_attack_value_00a0c650` walks every attacker) |
+| 009F30F0 ApproachNestedReseed (+13) | the traffic list free loop, then the 009F31A7- stores | `ship_ai_approach_enter_009f3220` already carries 009F31A7-009F31ED |
+| 006C48F0, 0077BEA0, 0066E590 | `std::list::remove`: the loop continues after each erase (`ADD [list+8],-1; JMP`) | the entries are unique (a squadron in a block list, a unit in a group list), so first-match and all-match agree |
+| 006C7210, 006C80C0, 006CADD0, 007F0280, 009B4D00, 009B6D20, 00A32500 | vector growth: the old buffer is freed and the push continues | host containers grow |
+| 00733D50, 00733FF0, 007340A0, 00A16B60, 009F6060, the `CG_*_dtor` rows, 00963600 (+675, a destructor) | container / object destruction | no host destructor work |
+| 00980E50, 00982120, 00984300, 00984EB0, 00986820, 00988510 | `MOV BYTE [obj+105h],1` after the Lua callback ("a listener handled it") | see the note below |
+| 0046B730, 0094B600, 009CA200, 00A07C10, 00A236F0, 00A25B90, 00A0D1D0 | the epilogue, or a debug-print gate (00A0D1D0, [00F8AB01]) | none |
+
+**Note for the warnings / Lua lanes (not bound here).** Every MissionEvents/WarningManager report clears byte
+`+105h` on entry (e.g. 00981707, 00984386) and sets it to 1 after a Lua listener has been called (e.g. 009811A0,
+0098473F). It is read only by 009813A0 ReportLoss (00981AA4) and 00988510 (0098901A), each to skip its default
+warning block when a listener handled the event. The truncated decompiles of 00980E50/00982120/00984300/00986820
+lost the store, but no other function reads it before the next entry clears it. The host models neither +104h nor
++105h.
+
+**Not mine, flagged:** 009B4D00 / 009B6D20 (level-bomb ticks) continue with float logic after an `operator delete`
+(009B4D00 site 2: `FLD [EBP+20h]` ... `CALL 00438AA0`); the squadron/plane lane should check that its ticks were not
+written from the truncated bodies. 00929800 (PublishLuaDead) continues after its free with the think-message branch,
+which the Lua host already labels as not modelled. 004E27E0 is the command-line parser; 00A38DA0 is a multiplayer
+handler.
+- **Pairs (99c1c0c92, both sides exported: `local\s43_lh_off`, `local\s43_lh_on`).** smoke: exit 0 (identical apart
+  from noise). osj (USNOS j, 44000): exit 3, as predicted. ON logs `lift height 15.366, runway centre height 15.401,
+  replaced` for the Enterprise (Midway 15.916 -> 15.931, Essex 18.246 -> 18.251). The first differing death row is
+  `Enterprise_sqn01|.-2` at 288.40 against 288.95 s; from there the shared RNG stream
+  spreads it (ON: Enterprise elevator intakes 3, releases 42; OFF: 9 and 33). **Verdict: ON** (the store is
+  unconditional in the image; no mechanism beyond the height to check).

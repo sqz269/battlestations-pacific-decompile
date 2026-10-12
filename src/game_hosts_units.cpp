@@ -5372,6 +5372,12 @@ struct GameUnitsHost::Impl {
     // recalled squadron with a current attack row loses its land task (USNOS j:
     // Enterprise_sqn05 at 1406.10 s, 4.4 s after the recall).
     static constexpr bool kLandCommandOwnTargetBound = true;   // ON by its pairs (SHIP_AI 210.1)
+    // Packet cc9_carrier_lift_height (docs/SHIP_AI_OPEN_ITEMS.md 210.3). 00759120's tail
+    // 0075927C-00759287, after the runwaycenter read and its free (code Ghidra had
+    // truncated): class+80Ch, the lift exit point's height, = class+818h, the runway
+    // centre's. True: the host's lift[1] takes the runway centre's height. False: it
+    // keeps the model's liftexitpoint height.
+    static constexpr bool kCarrierLiftHeightFromRunwayBound = true;   // ON by its pairs (SHIP_AI 210.3)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -12096,6 +12102,15 @@ const GameUnitsHost::Impl::CarrierRunwayClass& GameUnitsHost::Impl::carrier_runw
                 e.lift_ok ? "liftexitpoint" : "no liftexitpoint point",
                 static_cast<double>(e.lift[0]), static_cast<double>(e.lift[1]),
                 static_cast<double>(e.lift[2]));
+            // 0075927C-00759287: class+80Ch = class+818h.
+            if (e.lift_ok && e.ok) {
+                log.notef("carrier lift class %d \"%s\": lift height %.3f, runway centre "
+                    "height %.3f, %s (0075927C, packet cc9_carrier_lift_height)", type_id,
+                    s.row.name.c_str(), static_cast<double>(e.lift[1]),
+                    static_cast<double>(e.center[1]),
+                    kCarrierLiftHeightFromRunwayBound ? "replaced" : "kept, unbound");
+                if constexpr (kCarrierLiftHeightFromRunwayBound) e.lift[1] = e.center[1];
+            }
         }
     }
     log.notef("carrier runway class %d \"%s\" mesh=%s: %s center=(%.3f, %.3f, %.3f) "
