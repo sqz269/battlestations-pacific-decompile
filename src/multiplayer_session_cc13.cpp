@@ -1083,4 +1083,520 @@ void host_refresh_scene_007717a0(bool game_present, const SceneListView& scenes,
     }
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13-net2: ServerAddPlayer 007752D0 and its builders
+// ---------------------------------------------------------------------------
+
+namespace {
+
+std::uint32_t byte_reverse(std::uint32_t v) noexcept {
+    return (v >> 24) | ((v >> 8) & 0xFF00u) | ((v << 8) & 0xFF0000u) | (v << 24);
+}
+
+// "_ADD_PLAYER_ Server:%d.%d.%d.%d Peer:%d.%d.%d.%d" (00D03D14) and
+// "__P2P_VOICE__ PeerTableToC S:..." (00D03CDC): the four bytes at peer+D78h
+// in memory order, then the same dword byte-reversed (00775616..007757AA).
+void trace_peer_address(ServerAddPlayerHost& host, const char* format, std::uint32_t a) {
+    const unsigned m0 = a & 0xFFu, m1 = (a >> 8) & 0xFFu, m2 = (a >> 16) & 0xFFu, m3 = a >> 24;
+    char text[128];
+    std::snprintf(text, sizeof text, format, m0, m1, m2, m3, m3, m2, m1, m0);
+    host.trace(text);
+}
+
+}  // namespace
+
+void recount_session_slots_0076dbe0(SessionInfo& info, const PlayerRecord (&players)[8],
+                                    const JoinInfo* const (&joins)[8]) noexcept {
+    info.used_private_12a = 0;
+    info.used_slots_128 = 0;
+    for (int i = 0; i < 8; ++i) {  // unrolled four records per pass, stride 460h
+        if (players[i].claimed_08 == 0) continue;
+        ++info.used_slots_128;
+        if (joins[i] != nullptr && joins[i]->private_slot_58 != 0) ++info.used_private_12a;
+    }
+}
+
+float average_peer_quality_00786030(const PeerQualityRow (&rows)[8]) noexcept {
+    std::uint32_t count = 0;
+    float sum = 0.0f;
+    for (int i = 1; i < 8; ++i) {
+        if (rows[i].present_00 == 0) continue;
+        ++count;
+        sum = (i == 1) ? static_cast<float>(rows[i].value_0c + 0.0) : rows[i].value_0c + sum;
+    }
+    return count != 0 ? sum / static_cast<float>(count) : 1.0f;
+}
+
+AddPlayerOut build_add_player_for_record_0076b760(const PlayerRecord& record,
+                                                  const ServerPeer& peer) noexcept {
+    AddPlayerOut m;
+    m.player_18 = record.owner_player_1c;
+    m.xuid_20 = record.xuid_80;
+    m.name_28 = record.name_58;
+    m.tag_48 = record.tag_78;
+    m.address_50 = byte_reverse(peer.address_d78);
+    m.byte_54 = record.byte_88;
+    m.byte_58 = record.voice_registered_89;
+    m.kind_5c = peer.kind_vtable_04;
+    m.rank_60 = record.byte_90;
+    m.platform_61 = static_cast<std::uint8_t>(record.word_94);
+    if (peer.join_08 != nullptr) {  // the image does not check (see the header)
+        const JoinInfo& join = *peer.join_08;
+        m.xnaddr_62 = join.xnaddr_5a;
+        for (int i = 0; i < 4; ++i) m.words_86[i] = join.words_86[i];
+        m.word_96 = join.word_7e;
+        m.word_9a = join.word_82;
+        m.private_9e = join.private_slot_58;
+    }
+    for (int i = 0; i < 3; ++i) m.player_info_a0[i] = record.player_info_e0[i];
+    for (int i = 0; i < 4; ++i) m.join_words_b0[i] = record.join_words_d0[i];
+    return m;
+}
+
+ServerInfoOut build_server_info_0076b670(const SessionInfo& info, float quality) noexcept {
+    ServerInfoOut m;
+    m.used_slots_18 = static_cast<std::uint8_t>(info.used_slots_128);
+    m.used_private_19 = static_cast<std::uint8_t>(info.used_private_12a);
+    // strncpy(+1Ah, session+100h, 20h) then +3Ah = 0.
+    for (std::size_t i = 0; i < 0x20 && i < info.name_100.size(); ++i) {
+        m.name_1a[i] = info.name_100[i];
+    }
+    m.name_1a[0x20] = '\0';
+    m.byte_3b = info.byte_169;
+    m.max_slots_3c = static_cast<std::uint8_t>(info.max_slots_127);
+    m.max_private_3d = static_cast<std::uint8_t>(info.max_private_129);
+    m.quality_40 = quality;
+    m.rank_lo_44 = static_cast<std::uint8_t>(info.rank_lo_12c);
+    m.rank_hi_45 = static_cast<std::uint8_t>(info.rank_hi_12d);
+    m.word_48 = info.word_170;
+    m.word_4c = info.word_174;
+    for (int i = 0; i < 13; ++i) m.words_50[i] = info.words_130[i];
+    return m;
+}
+
+void server_add_player_007752d0(ServerAddPlayerState& state, const LocalProfileView& profile,
+                                ServerPeer& peer, ServerAddPlayerHost& host) {
+    GameView& game = *state.game;
+    SessionInfo& info = *state.info;
+    auto is_local_join = [&]() {
+        return host.server_first_peer() == peer.handle &&
+               !(state.mode == SessionMode::kHost && info.byte_168 != 0);
+    };
+
+    // 007752EE..007754C7: claim the record.
+    PlayerRecord* record = nullptr;
+    if (is_local_join()) {
+        const std::string& name = profile.name_6a0.empty() ? profile.name_68c : profile.name_6a0;
+        const std::string tag = profile.tag_00f88a38 != nullptr ? profile.tag_00f88a38 : "";
+        record = host.claim_participant_004bb440(0, peer.handle, name, tag, profile.xuid_698,
+                                                 profile.byte_6a9, profile.byte_6a8,
+                                                 peer.kind_vtable_04);
+        record->byte_90 = host.profile_rank_00574050();
+        game.local_player = record->owner_player_1c;  // game+18C8h = record+1Ch
+    } else {
+        const JoinInfo& join = *peer.join_08;
+        host.post_template_chat_005cf320(8, 7, std::string(), join.name_00);
+        record = host.claim_participant_004bb440(1, peer.handle, join.name_00, join.tag_20,
+                                                 join.xuid_28, join.byte_59, join.byte_30,
+                                                 peer.kind_vtable_04);
+        record->byte_90 = join.rank_31;
+    }
+    peer.record_d50 = record;
+
+    // 007754C9..00775552: the peer's XNet platform, 2 when it has no address.
+    if (peer.address_d78 != 0) {
+        std::uint32_t platform = 0;
+        if (host.xnet_platform(peer.address_d78, platform) == 0) record->word_94 = platform;
+    } else {
+        record->word_94 = 2;
+    }
+
+    // 00775554..007755BC: MT_MYPLAYER {+18h player, +1Ch nonce hi, +20h nonce lo}.
+    const std::uint64_t nonce = host.session_nonce_268();
+    BuiltMessage my = make_message(0x25, kVtableMyPlayer25);
+    my.put32(0x18, static_cast<std::uint32_t>(record->owner_player_1c));
+    my.put32(0x1C, static_cast<std::uint32_t>(nonce >> 32));
+    my.put32(0x20, static_cast<std::uint32_t>(nonce));
+    host.send_to_peer(peer.handle, my);
+
+    // 007755C1..00775885: every other claimed record to the new peer.
+    for (int i = 0; i < 8; ++i) {
+        PlayerRecord& other = game.players[i];
+        if (&other == record || other.claimed_08 == 0) continue;
+        const ServerPeer& other_peer = *state.record_peers[i];
+        host.send_add_player(peer.handle, build_add_player_for_record_0076b760(other, other_peer));
+        trace_peer_address(host, "_ADD_PLAYER_ Server:%d.%d.%d.%d Peer:%d.%d.%d.%d",
+                           other_peer.address_d78);
+        if (other.slot_20 < 0) continue;
+        BuiltMessage select = make_message(0x19, kVtableSelectPlayer19);
+        select.put32(0x18, static_cast<std::uint32_t>(i));
+        select.put32(0x1C, static_cast<std::uint32_t>(other.slot_20));
+        host.send_to_peer(peer.handle, select);
+        if (other.ready_0c == 0) continue;
+        BuiltMessage ready = make_message(0x1D, kVtableReadyPlayer1D);
+        ready.put32(0x18, static_cast<std::uint32_t>(i));
+        ready.put8(0x1C, 1);  // constants, not the record's +0Ch/+0Dh
+        ready.put8(0x1D, 1);
+        host.send_to_peer(peer.handle, ready);
+    }
+
+    // 0077588B..00775960: AI flags of the eight current records (game+18CCh).
+    for (int j = 0; j < 8; ++j) {
+        BuiltMessage ai = make_message(0x1E, kVtableAiEnable1E);
+        ai.put32(0x18, static_cast<std::uint32_t>(j));
+        ai.put8(0x1C, game.current[j]->ai_enabled_0a);
+        host.send_to_peer(peer.handle, ai);
+        BuiltMessage skill = make_message(0x1F, kVtableAiSkill1F);
+        skill.put32(0x18, static_cast<std::uint32_t>(j));
+        skill.put32(0x1C, game.current[j]->ai_skill_2c);
+        host.send_to_peer(peer.handle, skill);
+    }
+
+    // 00775966..00775B1F: the new record to everyone.
+    trace_peer_address(host, "__P2P_VOICE__ PeerTableToC S:%d.%d.%d.%d P:%d.%d.%d.%d",
+                       peer.address_d78);
+    host.broadcast_add_player(build_add_player_for_record_0076b760(*record, peer));
+
+    // 00775B24..00775BF3: settings and the sub-scene to the new peer.
+    host.send_multi_settings(peer.handle);
+    host.send_subscene(peer.handle);
+
+    // 00775BF8..00775D01: slot counters and MT_SERVERINFO to everyone.
+    if (host.server_first_peer() != peer.handle) --info.will_12b;
+    host.recount_slots_0076dbe0();
+    char text[160];
+    std::snprintf(text, sizeof text,
+                  "MMultiPlayer::ServerAddPlayer: slot: %d/%d, private: %d/%d, will: %d  Rank:[%d,%d]",
+                  info.used_slots_128, info.max_slots_127, info.used_private_12a,
+                  info.max_private_129, info.will_12b, info.rank_lo_12c, info.rank_hi_12d);
+    host.trace(text);
+    host.broadcast_server_info(build_server_info_0076b670(info, host.average_peer_quality_00786030()));
+
+    // 00775D06..00775DC9: pick an AI-held slot. Mode 7 takes the first one;
+    // otherwise the first AI-held slot of the team (+28h 0 or 1) with fewer
+    // human (not AI-held) current records, team 0 on a tie. Default slot 0;
+    // -1 when that team has no AI-held slot.
+    std::int32_t first_team0 = -1, first_team1 = -1, humans0 = 0, humans1 = 0, choice = 0;
+    bool mode7_taken = false;
+    for (int j = 0; j < 8; ++j) {
+        const PlayerRecord& cur = *game.current[j];
+        if (cur.ai_held_09 != 0) {
+            if (host.effective_game_mode_004bca50() == 7) {
+                choice = j;
+                mode7_taken = true;
+                break;
+            }
+            if (cur.team_28 == 0) {
+                if (first_team0 < 0) first_team0 = j;
+            } else if (cur.team_28 == 1 && first_team1 < 0) {
+                first_team1 = j;
+            }
+        } else if (cur.team_28 == 0) {
+            ++humans0;
+        } else {
+            ++humans1;
+        }
+    }
+    (void)mode7_taken;  // the image re-reads 004BCA50 below either way
+    if (host.effective_game_mode_004bca50() != 7) choice = humans1 < humans0 ? first_team1 : first_team0;
+    host.host_select_player_0076c840(record->owner_player_1c, choice);
+
+    // 00775DCE..00775E3E: the local join is placed and done.
+    if (is_local_join()) {
+        host.place_local_record_007f8690(*record, state.game_734, state.game_730);
+        return;
+    }
+
+    // 00775E43..00775FE2: "Sending PIMPS to new client %d:".
+    std::snprintf(text, sizeof text, "Sending PIMPS to new client %d:", record->owner_player_1c);
+    host.trace(text);
+    for (int i = 0; i < 8; ++i) {
+        PlayerRecord& other = game.players[i];
+        if (&other == record || other.claimed_08 == 0) continue;
+        BuiltMessage info_msg = make_message(0xE3, kVtablePlayerInfoE3);
+        info_msg.put32(0x18, other.player_info_e0[0]);
+        info_msg.put32(0x1C, other.player_info_e0[1]);
+        info_msg.put32(0x20, other.player_info_e0[2]);
+        info_msg.put32(0x24, static_cast<std::uint32_t>(other.owner_player_1c));
+        host.send_to_peer(record->peer_50, info_msg);
+        std::snprintf(text, sizeof text, " player: %d pimp %d/%d", other.owner_player_1c,
+                      static_cast<int>(other.player_info_e0[0]),
+                      static_cast<int>(other.player_info_e0[1]));
+        host.trace(text);
+        BuiltMessage unlock = make_message(0xDD, kVtablePlayerUnlockDD);
+        unlock.put32(0x18, static_cast<std::uint32_t>(i));
+        unlock.put32(0x1C, other.unlock_class_110);
+        host.send_to_peer(record->peer_50, unlock);
+        std::snprintf(text, sizeof text, " player: %d unlock unit %d", other.owner_player_1c,
+                      static_cast<int>(other.unlock_class_110));
+        host.trace(text);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-net2: MT_SESSION_MANAGER 007746F0 and 004C9780
+// ---------------------------------------------------------------------------
+
+SessionManagerMessage build_session_manager_004c9780(std::uint8_t player,
+                                                     std::uint8_t state) noexcept {
+    SessionManagerMessage m;
+    m.player_19 = player;
+    m.state_18 = state;
+    return m;
+}
+
+bool all_remote_players_in_state_0076c560(const PlayerRecord (&players)[8],
+                                          std::int32_t local_player,
+                                          std::uint32_t state) noexcept {
+    for (const PlayerRecord& r : players) {
+        if (r.owner_player_1c == local_player || r.claimed_08 == 0 || r.ai_held_09 != 0) continue;
+        if (r.online_state_a4 != state) return false;
+    }
+    return true;
+}
+
+void receive_session_manager_007746f0(SessionManagerState& state,
+                                      SessionManagerMessage& msg,
+                                      SessionManagerHost& host) {
+    char text[96];
+    std::snprintf(text, sizeof text, " - - ONLINE - - SESSION_MANAGER PlayerIndex %d, State  %d",
+                  msg.player_19, msg.state_18);
+    host.trace(text);
+    const auto player_state = [&]() -> std::uint32_t& {
+        return (*state.players)[msg.player_19].online_state_a4;
+    };
+    const auto local_byte = [&]() { return static_cast<std::uint8_t>(state.local_player); };
+
+    if (state.mode == SessionMode::kClient && msg.state_18 == 1 && state.stats_sent_04 == 0) {
+        state.stats_sent_04 = 1;
+        host.client_send_local_score_00772a40();
+        host.send_to_server(build_session_manager_004c9780(local_byte(), 2));
+        host.flush_peer_buffers_007848f0();
+        return;
+    }
+    if (state.mode == SessionMode::kHost && msg.state_18 == 2) {
+        player_state() = 2;
+        if (all_remote_players_in_state_0076c560(
+                *state.players, state.local_player, 2)) {
+            host.debrief_00920a20();
+            host.server_send_scene_scoring_0076d1b0();
+            host.online_clear_74_and_call_184();
+        }
+        state.local_current->online_state_a4 = 4;
+        return;
+    }
+    if (state.mode == SessionMode::kClient && msg.state_18 == 3) {
+        const std::uint32_t owner = host.stats_owner_9cc();
+        host.online_stats_clear_004c0fd0();
+        for (OnlineStatsEntry& entry : msg.entries_1c) {
+            entry.words[0] = owner;  // written into the message node first (007748FA)
+            host.online_stats_push_back(entry);
+        }
+        const OnlineStatsEntry e = host.online_stats_front();
+        const std::uint32_t args[12] = {owner, e.words[2], e.words[3], e.words[4], e.words[5],
+                                        e.words[6], e.words[10], e.words[8], e.words[7], 0,
+                                        e.words[11], e.words[12]};
+        host.apply_stats_entry_004c04c0(args);
+        host.after_stats_00626c50();
+        return;
+    }
+    if (state.mode == SessionMode::kHost && msg.state_18 == 4) {
+        player_state() = 4;
+        if (!all_remote_players_in_state_0076c560(
+                *state.players, state.local_player, 4)) {
+            return;
+        }
+        host.online_call_58();
+        host.broadcast(build_session_manager_004c9780(local_byte(), 5));
+        return;
+    }
+    if (state.mode == SessionMode::kClient && msg.state_18 == 5) {
+        host.online_call_58();
+        host.send_to_server(build_session_manager_004c9780(local_byte(), 5));
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-net2: presentation receivers 2Bh..34h
+// ---------------------------------------------------------------------------
+
+void receive_blackout_0076f4c0(const PresentationMessage& msg, PresentationHost& host) {
+    if (!host.hud_present() || !host.narrative_screen_present_a4()) return;
+    host.arm_blackout_fade_005b9ba0(msg.float_18, msg.float_1c);
+}
+
+void receive_countdown_007709c0(const PresentationMessage& msg, PresentationHost& host) {
+    if (msg.stop_28 == 0) {
+        if (host.countdown_present_21e8()) {
+            host.countdown_start_00733ff0(msg.text_18, msg.float_20, msg.float_24);
+        }
+        host.hud_counter_show_0052b9b0(msg.text_18, msg.float_24);
+        return;
+    }
+    if (host.countdown_present_21e8()) host.countdown_stop_007340a0();
+    host.hud_counter_hide_0052ab90();
+}
+
+void receive_movcam_hand_targeted_0076d420(const PresentationMessage& msg,
+                                           PresentationHost& host) {
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    void* entity = host.resolve_entity_id(static_cast<std::uint16_t>(msg.word_18));
+    host.movcam_hand_mode_targeted_007a6b40(host.movie_camera_005cd160(), entity, msg.byte_1a,
+                                            msg.byte_1b);
+}
+
+void receive_movcam_ref_polar_0076f560(const PresentationMessage& msg, PresentationHost& host) {
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    void* entity = host.resolve_entity_id(static_cast<std::uint16_t>(msg.word_18));
+    host.movcam_ref_pos_polar_007a6e60(host.movie_camera_005cd160(), entity, msg.float_1c,
+                                       msg.float_20, msg.float_24, msg.byte_28, msg.float_2c);
+}
+
+void receive_movcam_ref_radius_0076f630(const PresentationMessage& msg, PresentationHost& host) {
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    void* entity = host.resolve_entity_id(static_cast<std::uint16_t>(msg.word_18));
+    host.movcam_ref_pos_radius_007a7070(host.movie_camera_005cd160(), entity, msg.float_1c,
+                                        msg.byte_20, msg.float_24);
+}
+
+void receive_movcam_path_point_0076a870(const void* raw_message, PresentationHost& host) {
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    host.movcam_path_point_property_007a7c60(host.movie_camera_005cd160(), raw_message);
+}
+
+void receive_movcam_add_interpolator_0076a8a0(const PresentationMessage& msg,
+                                              PresentationHost& host) {
+    // The interpolator is allocated before the HUD check (0076A8B6) and is
+    // leaked when the movie screen is absent.
+    void* interpolator = host.new_interpolator_0078e370(msg.word_18, msg.float_1c, msg.float_20,
+                                                        msg.float_24, msg.float_28);
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    host.movcam_add_interpolator_0079f6d0(host.movie_camera_005cd160(), interpolator);
+}
+
+void receive_movcam_deviation_0076a940(const PresentationMessage& msg, PresentationHost& host) {
+    if (!host.hud_present() || !host.movie_screen_present_98()) return;
+    host.movie_set_deviation_005caf90(msg.float_18);
+}
+
+void receive_movcam_new_add_position_0076d760(SessionState& session, PresentationMessage& msg,
+                                              PresentationHost& host) {
+    if (session.mode == SessionMode::kHost) return;
+    ++session.movcam_count_284;
+    const std::int32_t delta = msg.tick_0c - host.current_tick_00f876b0();
+    const float seconds = static_cast<float>(static_cast<double>(delta) / 1000.0);
+    if (!host.hud_present() || !host.new_movie_screen_present_9c()) return;
+    host.movcam_new_add_position_007a2d30(host.new_movie_camera_005cd240(), msg.word_18, seconds);
+    msg.byte_1c = 0;
+}
+
+void receive_movcam_blackbar_0076a970(const PresentationMessage& msg, PresentationHost& host) {
+    if (!host.hud_present()) return;
+    if (host.new_movie_screen_present_9c()) host.blackbar_9c(msg.byte_18 != 0);
+    if (host.blackbar_screen_present_a0()) host.blackbar_a0(msg.byte_18 != 0);
+}
+
+void host_check_scene_load_007f7460(PlayerRecord& record, std::uint8_t flag_18) noexcept {
+    record.scene_check_14 = flag_18 != 0 ? 1u : 0u;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-net2 item 5 (cc13-net3): MultiScore net slots
+// ---------------------------------------------------------------------------
+
+void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSyncHost& host) {
+    // 00780BD3..00780BE2: a null data pointer becomes 00F871AC (""); the length
+    // is passed unchanged, so a null pointer with a non-zero length would read past
+    // it. The host here passes an empty buffer in that case.
+    const char* data = text.data_2c != nullptr ? text.data_2c : "";
+    host.lua_do_buffer_00b65ec0(std::string(data, text.data_2c != nullptr ? text.length_28 : 0));
+}
+
+NetTableCreateMessage build_net_table_create_00780a70(const void* entity,
+                                                      std::int32_t local_player) noexcept {
+    NetTableCreateMessage m;
+    m.entity = entity;               // 00766FC0(DFh, 0, entity, 0)
+    m.byte_c4 = 0;                   // 00780A8C
+    m.local_player_10c = local_player;  // 00780A9F, game+18C8h
+    return m;
+}
+
+void send_net_table_create_00780ae0(const void* entity, void* peer, std::int32_t local_player,
+                                    NetTableCreateHost& host) {
+    host.send_to_peer_00779fc0(peer, build_net_table_create_00780a70(entity, local_player));
+}
+
+void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& host) {
+    void* object = host.allocate_zeroed_314();
+    if (object == nullptr) return nullptr;  // 007813F4
+    return host.construct_multiscore_00780db0(object, id_1c);
+}
+
+void write_online_stats_004c04c0(const StatsWriteArgs& args, StatsWriteHost& host) {
+    if (host.write_blocked_22dd()) return;  // 004C04CD
+    const std::uint64_t local_xuid = host.local_xuid_00a3eb00();  // read before the lookup
+    bool listed = false;
+    for (std::int32_t id : host.listed_ids_00e19458()) {
+        if (id == args.id_5) listed = true;  // no early exit (004C05C9)
+    }
+    std::vector<StatsView> views;
+    const bool ranked = static_cast<std::uint8_t>(args.ranked_7) != 0;
+    auto int64_property = [](std::uint32_t id, std::int32_t value, std::uint32_t offset) {
+        return StatsProperty{id, 2, static_cast<std::int64_t>(value), offset};  // CDQ
+    };
+    bool build = true;
+    if (listed && host.online_ready_198()) {
+        if (ranked) {
+            StatsView view{0xFFFF0000u, {}};
+            view.properties.push_back(StatsProperty{0x1000800Au, 1, args.value_10, 0x2270});
+            view.properties.push_back(StatsProperty{0x1000800Bu, 1, args.value_9, 0x2288});
+            views.push_back(view);
+        } else if (args.xuid != local_xuid) {
+            build = false;  // 004C0669 / 004C067A
+        }
+        if (build) {
+            const std::uint32_t* row = kStatsViewTable[args.row_6];
+            if (args.value_12 > 0)
+                views.push_back(StatsView{row[ranked ? 1 : 0],
+                                          {int64_property(row[2], args.value_12, 0x2258)}});
+            if (args.value_13 > 0)
+                views.push_back(StatsView{4, {int64_property(0x20000084u, args.value_13, 0x2228)}});
+            if (args.value_8 > 0)
+                views.push_back(StatsView{1, {int64_property(0x200000BCu, args.value_8, 0x2210)}});
+        }
+    } else if (args.value_12 != 0) {
+        const bool low_id = static_cast<std::uint32_t>(args.id_5) - 1u <= 0x0Du;  // SETBE
+        views.push_back(StatsView{low_id ? 2u : 3u,
+                                  {int64_property(low_id ? 0x20000080u : 0x2000008Fu,
+                                                  args.value_12, 0x2240)}});
+    }
+
+    // 004C07F9..004C0866.
+    host.zero_overlapped_7038();
+    const std::uint32_t mode = host.session_mode_1fe4();
+    std::uint32_t result = args.ranked_7;
+    if (!views.empty()) result = host.xsession_write_stats(args.session, args.xuid, views, mode != 0);
+    if (result != 0x3E5u) host.x_get_overlapped_extended_error_null();  // ERROR_IO_PENDING
+    if (mode != 0) host.set_write_blocked_22dd();
+}
+
+bool schedule_net_table_sync_00780a00(std::uint8_t& force_310, const void* entity,
+                                      const void* holder, std::int32_t holder_tick_04,
+                                      std::int32_t now_00f876b0, NetSyncQueue& queue) noexcept {
+    if (force_310 == 0) {
+        // 00780A0D..00780A2D: FILD of the int difference against
+        // FLD1 / FDIVRP of the float 0.05f; skipped when elapsed <= 1/0.05f.
+        const auto diff = static_cast<std::int32_t>(static_cast<std::uint32_t>(now_00f876b0) -
+                                                    static_cast<std::uint32_t>(holder_tick_04));
+        const double elapsed = static_cast<double>(diff);  // SUB wraps
+        const double interval = 1.0 / static_cast<double>(0.05f);
+        if (!(elapsed > interval)) return false;
+    }
+    if (queue.count >= static_cast<std::int32_t>(kNetSyncQueueCapacity)) return false;  // 00780A39
+    queue.rows[queue.count] = NetSyncQueueRow{entity, holder, 0};
+    ++queue.count;
+    force_310 = 0;  // 00780A58
+    return true;
+}
+
 }  // namespace bsp::mp_cc13

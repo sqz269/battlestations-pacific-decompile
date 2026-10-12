@@ -26,11 +26,11 @@ if snapshot_path.exists():
     if functions_path.exists():
         rows = [row for row in json.loads(functions_path.read_text()) if not row.get('isExternal')]
         reviewed = {row['address'] for row in ledger['functions']}
-        funclets = sum(row['name'].startswith(('Unwind@', 'Catch_All@')) for row in rows)
+        funclets = sum(row['name'].startswith(('Unwind@', 'Catch_All@', 'EHHandler@')) for row in rows)
         default_names = sum(row['name'].startswith('FUN_') for row in rows)
         reviewed_named = sum(row['address'] in reviewed and not row['name'].startswith('FUN_') for row in rows)
         other_named = len(rows) - funclets - default_names - reviewed_named
-        print(f"Compiler EH funclet names (Unwind@/Catch_All@): {funclets}")
+        print(f"Compiler EH funclet names (Unwind@/Catch_All@/EHHandler@): {funclets}")
         print(f"Other named internal functions: {other_named} (includes libraries, generated and in-house code)")
         print(f"FUN_ names: {default_names} (may still carry provisional bookmarks)")
         print("Naming/tagging does not establish a reduced reconstruction denominator or completed behavior.")

@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/ocean_spectrum.hpp"
+#include "bsp/projectile_helpers.hpp"
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
@@ -175,6 +177,16 @@ constexpr bool kCommandBuildingGunfireArmourBound = true;
 // and the origin is the plane's. UNCERTAIN: Val/Kate slot 50 may add ~2.0 deg
 // nose-down if the unread gun-entity placement store applies the slot frame.
 constexpr bool kBombDropScatterBound = true;
+//  * kBombDropDriftBound: packet cc9_bomb_drift (docs/GUNNERY_OPEN_ITEMS.md
+//    173). The drift kBombDropScatterBound draws is applied. 006E4D50 builds
+//    rack+4ECh = r1 (n Vz, 0, -n Vx) + r2 n V from the owner's vtable[34h] world
+//    velocity V (n = 1/|V|), r1 = U(-w, w), r2 = U(-0.5w, 0.3w), w = rack Wind;
+//    006E1F00 copies it to block+38h with y zeroed; 006E1510, the bomb family's
+//    air advance, adds record+348h * dt to the velocity each step inside its
+//    NoGravity test. LABELLED: the owner is the dropping plane, its velocity is
+//    unit_linear_velocity; the host's step applies it after the position slot.
+//    OFF: drawn and discarded, as before.
+constexpr bool kBombDropDriftBound = true;  // ON: GUNNERY 173.1
 // This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
 // LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
 // SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
@@ -426,6 +438,24 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    USN12, USN02 and JM06; USN01 moves by two tests the one-sided cell test
 //    00ADEB80 answers differently in the two directions.
 constexpr bool kGunneryLosRoleSwapBound = true;
+//  * kShipyardHangarHiddenBound (packet cc9_hangar_los, docs/GUNNERY_OPEN_ITEMS.md
+//    176): 00864680 runs 0081DE10 for a ship cache owner and answers hidden when
+//    the ship's bow or stern (+-0.5 Length along its axis) lies inside a usable
+//    shipyard hangar Object's footprint, |x| < 0.6 Length and |z| < 0.75 Width in the
+//    object's frame. LABELLED: the +364h list is the shipyard registry; unit+1130h
+//    (the launch sentinel) is not kept, so its arm never fires; the test runs at each
+//    LOS test, not on the 0.5 s point refresh. OFF: 0081DE10 answers 0, as before.
+constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
+//  * kGunneryLiveWaterSurfaceBound: packet cc9_physics1_sea (cc9-physics1's edit,
+//    routed; docs/GUNNERY_OPEN_ITEMS.md 179). A round in the air crosses the water
+//    where 0084B380 -> 0078D1B0 finds the live sea (0078CF20), not at y = 0, and the
+//    crossing replaces all three of the host's position copies. A swimming torpedo
+//    keeps to the live surface (00856BB0's depth controller samples 0078CF20 at
+//    +FCh/+104h; LABELLED: held at its equilibrium on the surface, as the y = 0 hold
+//    was). The depth charge's depth test stays on absolute y (006FCD20 compares
+//    +100h with -|+470h| and -5.0; its 0078D1B0 only moves the record for effects).
+//    OFF: y = 0 throughout, as before.
+inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -678,7 +708,7 @@ constexpr bool kPlayerWeaponGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 14
 //    CanFire(1) answers, through vtable[1F0h], and stops. GameGunneryHost::
 //    player_fire_torpedo_group sends the message. OFF: the arm is a record.
 //    docs/GUNNERY_OPEN_ITEMS.md 152.
-constexpr bool kPlayerTorpedoGroupFireBound = false;
+constexpr bool kPlayerTorpedoGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 170
 //  * kMeshlessGunPointWindowBound: packet cc9_meshless_gun_point_window.
 //    0085A3D0 (TurningGun setup), 0085A3E0..0085A4A8: when world+4A4h is set
 //    (always 1, 009037F0 from 004DE69C), the gun class has no Mesh ([desc+38h],
@@ -1308,6 +1338,9 @@ struct GameGunneryHost::Impl {
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
     std::vector<bool> shipyard_hangars_usable(const bsp::ShipyardState& yard) const;
+    // Packet cc9_hangar_los: 0081DE10 for a ship (kShipyardHangarHiddenBound).
+    bool ship_in_shipyard_hangar_0081de10(std::size_t ship);
+    unsigned long long hangar_hidden_tests{0}, hangar_hidden{0};
     bool shipyard_build_00844fc0(bsp::ShipyardState& yard, std::size_t shipyard_unit,
                                  std::size_t entry);
     void shipyard_walk_00846320();
@@ -2123,6 +2156,10 @@ struct GameGunneryHost::Impl {
     unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
     double scatter_max_angle{0.0};
     double scatter_max_turn_deg{0.0};
+    unsigned long long bomb_drift_drops{0};        // packet cc9_bomb_drift
+    unsigned long long live_water_crossings{0};    // packet cc9_physics1_sea
+    unsigned long long bomb_drift_steps{0};
+    double bomb_drift_max{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
     unsigned long long cb_gate_passes{0};
     unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
@@ -3460,6 +3497,16 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     }
                 }
                 if (!any) continue;
+                // Census (GUNNERY 174): where each section element sits in model space,
+                // against the whole mesh's box, for the bomb element-trace question.
+                log.notef("gunnery: vehicle class %d section element kind=%d index=%u tris=%zu "
+                    "box=(%.1f %.1f %.1f)..(%.1f %.1f %.1f) mesh_y=[%.1f %.1f] (00723D60)",
+                    type_id, el.kind, static_cast<unsigned>(el.node_index),
+                    el.triangle_ordinals.size(), static_cast<double>(elo[0]),
+                    static_cast<double>(elo[1]), static_cast<double>(elo[2]),
+                    static_cast<double>(ehi[0]), static_cast<double>(ehi[1]),
+                    static_cast<double>(ehi[2]), static_cast<double>(lo[1]),
+                    static_cast<double>(hi[1]));
                 entry.section_present[slot] = true;   // the last element of a kind wins
                 for (int k = 0; k < 3; ++k) {
                     entry.section_point[slot][k] = (elo[k] + ehi[k]) * 0.5f;   // 00723030
@@ -8272,7 +8319,7 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
     // ON (kGunneryLosRoleSwapBound): 00864D90 raises the target by +90h at 00864E17.
     tp[1] = tp[1] + (target_height + (kGunneryLosRoleSwapBound
         ? bsp::kInstalledLosTargetHeightAdd : bsp::kInstalledLosViewerHeightAdd));
-    // 0081DE10 for a ship target: not modelled, answers 0 (labelled).
+    // 0081DE10 for a ship cache owner: kShipyardHangarHiddenBound below; OFF it answers 0.
     // 00864D90: the observer's point, pose +FCh raised by Height + [+90h].
     unit_pose(observer, r, u, f, op);
     const float observer_height = observer < unit_state.size() ? unit_state[observer].hull_height : 0.0f;
@@ -8281,6 +8328,20 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
         ? bsp::kInstalledLosViewerHeightAdd : bsp::kInstalledLosTargetHeightAdd));
     // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0; ON:
     // 008647F4 casts (owner point, passed point), observer -> target.
+    if (kShipyardHangarHiddenBound) {
+        // 00864680 (0086469F..008646C6): when the cache owner answers IsKindOf(6),
+        // 0081DE10's byte goes to record+20h, and a set byte returns 0 before the ray
+        // (00864783). The owner is the observer with kGunneryLosRoleSwapBound.
+        const std::size_t owner = kGunneryLosRoleSwapBound ? observer : target;
+        if (owner < units.count() && units.unit_is_kind_of(owner, 6)) {
+            ++hangar_hidden_tests;
+            if (ship_in_shipyard_hangar_0081de10(owner)) {
+                ++hangar_hidden;
+                done("Gunnery::line_of_sight_00864680", 0x00864680u);
+                return false;
+            }
+        }
+    }
     const float* from = kGunneryLosRoleSwapBound ? op : tp;
     const float* to = kGunneryLosRoleSwapBound ? tp : op;
     const unsigned long long mesh_hits = shell_mesh_hits;
@@ -8604,6 +8665,22 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
+        if (kBombDropDriftBound && shot.is_bomb && !shot.flight.class_disables_gravity
+            && shot.flight.mode == bsp::ProjectileMotionMode::kBallistic
+            && (shot.bomb_drift[0] != 0.0f || shot.bomb_drift[2] != 0.0f)) {
+            // 006E1510 (inside the classDesc+20h NoGravity test): v += record+348h * dt.
+            // LABELLED: the host's velocity slot runs after its position slot, so the
+            // drift reaches the position one step later, as gravity's velocity part does.
+            shot.flight.velocity.x += shot.bomb_drift[0] * dt;
+            shot.flight.velocity.z += shot.bomb_drift[2] * dt;
+            ++bomb_drift_steps;
+        }
+        if (kGunneryLiveWaterSurfaceBound && shot.swimming) {
+            // 00856BB0: the depth controller samples 0078CF20 at +FCh/+104h every
+            // swim step. LABELLED: held at its surface equilibrium.
+            shot.flight.local_position.y = bsp::ocean_live_field_water_height_0078cf20(
+                shot.flight.local_position.x, shot.flight.local_position.z);
+        }
         shot.position[0] = shot.flight.local_position.x;
         shot.position[1] = shot.flight.local_position.y;
         shot.position[2] = shot.flight.local_position.z;
@@ -8891,7 +8968,40 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             }
         }
 
-        if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
+        bool crossed = shot.position[1] <= 0.0f && from[1] > 0.0f;
+        if constexpr (kGunneryLiveWaterSurfaceBound) {
+            if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
+                struct LiveWater final : bsp::WaterSurfaceSampler {
+                    float water_height_0078cf20(float x, float z) override {
+                        return bsp::ocean_live_field_water_height_0078cf20(x, z);
+                    }
+                } water;
+                bsp::TraceSegmentList list;
+                list.segments[0] = {{from[0], from[1], from[2]},
+                    {shot.position[0], shot.position[1], shot.position[2]}};
+                list.count = 1;
+                // Faithful to the image's axis defect: the trace samples (x, y)
+                // (docs/PROJECTILE_HELPERS.md 1).
+                const bsp::StaticTraceResult crossing = bsp::static_trace_0084b380(water, list);
+                crossed = crossing.hit;
+                if (crossing.hit) {  // 0084C15F..0084C16B: the crossing replaces the segment end
+                    shot.position[0] = crossing.point.x;
+                    shot.position[1] = crossing.point.y;
+                    shot.position[2] = crossing.point.z;
+                    // The record's pose is the one position in the image; the host
+                    // keeps three copies, and the next step integrates from them.
+                    shot.flight.local_position = bsp::TickPoint3{crossing.point.x,
+                        crossing.point.y, crossing.point.z};
+                    shot.flight.snapshot_current = shot.flight.local_position;
+                    ++live_water_crossings;
+                }
+            } else {
+                // Already in the water: the trace is not run (0084C11C), and the
+                // swim hold below keeps the round on a surface that is not y = 0.
+                crossed = false;
+            }
+        }
+        if (crossed) {
             ++summary.water_crossings;
             shot.fate = 4;
             if (kDepthChargeInWaterBound && shot.depth_charge) {
@@ -8986,9 +9096,14 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     shot.flight.velocity.z = vz / horizontal * swim;
                 }
                 shot.flight.velocity.y = 0.0f;
-                shot.position[1] = 0.0f;
-                shot.flight.local_position.y = 0.0f;
-                shot.flight.snapshot_current.y = 0.0f;
+                // kGunneryLiveWaterSurfaceBound: the surface is where the trace
+                // put the round; OFF, the y = 0 plane.
+                const float level_y = kGunneryLiveWaterSurfaceBound
+                    ? bsp::ocean_live_field_water_height_0078cf20(shot.position[0], shot.position[2])
+                    : 0.0f;
+                shot.position[1] = level_y;
+                shot.flight.local_position.y = level_y;
+                shot.flight.snapshot_current.y = level_y;
                 ++summary.torpedo_swims_started;
                 if (trace) {
                     log.notef("  torpedo trace %llu swim_started life=%.2f "
@@ -11358,6 +11473,65 @@ bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
     return true;
 }
 
+bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
+    // 0081DE10, __fastcall(unit). 0081DE31: unit+1130h > 0 answers 1 at once. LABELLED:
+    // the host keeps no +1130h (the shipyard-launch sentinel), so that arm never fires.
+    // 0081DE5B: the list [[00E188A8]+19CCh]+364h, taken as the shipyard registry; per
+    // node 00848410 expands +780h..+788h (10h records, +4 the hangar Object) keeping the
+    // objects with +5Ch set and +5Dh/+5Eh/+60h clear: shipyard_hangars_usable's filter.
+    if (ship >= units.count()) return false;
+    float sr[3], su[3], sf[3], so[3];
+    unit_pose(ship, sr, su, sf, so);
+    const float ship_length = ship < unit_state.size() ? unit_state[ship].hull_length : 0.0f;
+    // 0081DEB2..0081DF37: the bow and stern, (0, 0, +-class+A0h * 0.5 [00D7A280])
+    // through the unit's matrix (004142E0).
+    const float half = static_cast<float>(ship_length * 0.5);
+    float ends[2][3];
+    for (int k = 0; k < 3; ++k) {
+        ends[0][k] = so[k] + sf[k] * half;
+        ends[1][k] = so[k] - sf[k] * half;
+    }
+    bsp::ShipyardRegistry& registry = bsp::shipyards();
+    for (std::size_t y = 0; y < registry.size(); ++y) {
+        bsp::ShipyardState* yard = registry.mutable_at(y);
+        if (yard == nullptr) continue;
+        const std::vector<bool> usable = shipyard_hangars_usable(*yard);
+        for (std::size_t h = 0; h < yard->hangars.size(); ++h) {
+            if (!usable[h]) continue;
+            const std::size_t obj = unit_by_name(yard->hangars[h].object);
+            if (obj >= units.count() || obj == ship) continue;
+            float er[3], eu[3], ef[3], eo[3];
+            unit_pose(obj, er, eu, ef, eo);
+            const float len = obj < unit_state.size() ? unit_state[obj].hull_length : 0.0f;
+            const float wid = obj < unit_state.size() ? unit_state[obj].hull_width : 0.0f;
+            // 0081DFB8..0081DFD4: class+A0h * 0.6 [00CEFF98] and class+A4h * 0.75
+            // [00CEC9D8]; the point in the object's frame through its +110h inverse
+            // (LABELLED: unit scale). |x| against the first, |z| the second, bow then stern.
+            const float lim_x = static_cast<float>(len * 0.6000000238418579);
+            const float lim_z = static_cast<float>(wid * 0.75);
+            for (const auto& p : ends) {
+                const float d[3] = {p[0] - eo[0], p[1] - eo[1], p[2] - eo[2]};
+                const float lx = d[0] * er[0] + d[1] * er[1] + d[2] * er[2];
+                const float lz = d[0] * ef[0] + d[1] * ef[1] + d[2] * ef[2];
+                static const bool hangar_census = aa_env("BSP_HANGAR_CENSUS") == "1";
+                if (hangar_census && hangar_hidden_tests % 50 == 1) {
+                    // Diagnostic only (BSP_HANGAR_CENSUS=1): where the end sits in the object frame.
+                    log.notef("hangar census: ship=%s obj=%s lx=%.1f lz=%.1f lim=(%.1f %.1f) obj_pos=(%.1f %.1f) ship_pos=(%.1f %.1f)",
+                        unit_state[ship].row.name.c_str(), yard->hangars[h].object.c_str(),
+                        static_cast<double>(lx), static_cast<double>(lz), static_cast<double>(lim_x),
+                        static_cast<double>(lim_z), static_cast<double>(eo[0]), static_cast<double>(eo[2]),
+                        static_cast<double>(so[0]), static_cast<double>(so[2]));
+                }
+                if (std::fabs(lx) < lim_x && std::fabs(lz) < lim_z) {
+                    done("Gunnery::ship_in_shipyard_hangar_0081de10", 0x0081de10u);
+                    return true;   // 0081E33E..0081E34B, MOV AL,1
+                }
+            }
+        }
+    }
+    done("Gunnery::ship_in_shipyard_hangar_0081de10", 0x0081de10u);
+    return false;
+}
 std::vector<bool> GameGunneryHost::Impl::shipyard_hangars_usable(
     const bsp::ShipyardState& yard) const {
     // 00844CE0's four bytes on the hangar object: +5Ch set, +5Dh, +5Eh (dead)
@@ -12536,6 +12710,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
             if (speed > 1.3888888f) velocity[1] -= 3.0f;   // 006E0A93..006E0AB3
         }
     }
+    float drift[3] = {0.0f, 0.0f, 0.0f};
     if (kBombDropScatterBound) {
         // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
         // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
@@ -12549,8 +12724,25 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float t = std::tan(h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             s));                                                            // 006E4FB1
         const float w = chosen->wind_amount;
-        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);             // 006E513C
-        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w, 0.3f * w); // 006E51AC
+        const float r1 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);     // 006E513C
+        const float r2 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w,
+            0.3f * w);                                                              // 006E51AC
+        if (kBombDropDriftBound) {
+            // 006E5054: [rack+3F0h]->vtable[34h], the owner's world velocity V;
+            // n = 1/|V| (0 when |V| <= 0, 006E50B9). 006E50E3..006E5123:
+            // rack+4ECh = (n Vz, 0, -n Vx); 006E5148..006E517E scales it by r1;
+            // 006E51B5..006E51EE adds r2 n V. 006E1F00 zeroes y (block+3Ch).
+            float v[3] = {0.0f, 0.0f, 0.0f};
+            h.units.unit_linear_velocity(unit_index, v);
+            const float len = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+            const float n = len > 0.0f ? 1.0f / len : 0.0f;
+            drift[0] = n * v[2] * r1 + r2 * (n * v[0]);
+            drift[2] = -n * v[0] * r1 + r2 * (n * v[2]);
+            ++h.bomb_drift_drops;
+            const double mag = std::sqrt(static_cast<double>(drift[0]) * drift[0]
+                + static_cast<double>(drift[2]) * drift[2]);
+            if (mag > h.bomb_drift_max) h.bomb_drift_max = mag;
+        }
         // 006E1F00 after vtable[190h]: |v| (D.x r0 + D.y r1 + D.z r2), D not normalised.
         const float dx = t * std::cos(a);
         const float dy = -t * std::sin(a);
@@ -12603,6 +12795,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     shot.is_bomb = true;
+    for (int i = 0; i < 3; ++i) shot.bomb_drift[i] = drift[i];
     // Packet cc8_dive_aim item 2: the tf in force at THIS tick, not the one the
     // aimdive summary prints after the dive has ended.
     shot.release_fall_time = release_fall_time;
@@ -13008,6 +13201,13 @@ void GameGunneryHost::report() {
                 host.scatter_drops, host.scatter_max_angle * 57.29577951308232,
                 host.scatter_max_turn_deg);
         }
+        host.log.notef("summary mission bomb drop drift drops=%llu steps=%llu max_accel=%.4f bound=%d "
+            "(006E4D50 rack+4ECh -> 006E1F00 block+38h -> 006E1510 +348h, packet cc9_bomb_drift)",
+            host.bomb_drift_drops, host.bomb_drift_steps, host.bomb_drift_max,
+            kBombDropDriftBound ? 1 : 0);
+        host.log.notef("summary mission gunnery live water crossings=%llu bound=%d "
+            "(0084B380 -> 0078D1B0 on 0078CF20, packet cc9_physics1_sea)",
+            host.live_water_crossings, kGunneryLiveWaterSurfaceBound ? 1 : 0);
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
                 "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "
@@ -13177,6 +13377,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        host.log.notef("summary mission gunnery hangar hidden tests=%llu hidden=%llu bound=%d "
+            "(00864680 -> 0081DE10, packet cc9_hangar_los)", host.hangar_hidden_tests,
+            host.hangar_hidden, kShipyardHangarHiddenBound ? 1 : 0);
         // Packet cc9_los_role_swap diagnostic, only with BSP_LOS_CENSUS=1.
         static const bool los_census = aa_env("BSP_LOS_CENSUS") == "1";
         if (los_census) {

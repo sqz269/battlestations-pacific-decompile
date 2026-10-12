@@ -6118,10 +6118,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             ++summary_.listener_hit_throttle_passed;
         }
         const int victim = static_cast<int>(hit.victim + 1);
-        const int shooter = static_cast<int>(hit.shooter + 1);
         const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
         const std::string type = bullet != nullptr ? bullet->type : std::string();
         std::vector<std::string> callbacks;
+        auto evaluate = [&](int shooter) {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "hit")) continue;
             auto holds = [](const std::vector<int>& set, int v) {
@@ -6160,6 +6160,24 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 continue;
             }
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        };
+        evaluate(static_cast<int>(hit.shooter + 1));
+        if (kLuaHitSquadronSecondPassBound && callbacks.empty()) {
+            // 0098901A: no subscription matched; 00989047..00989060: a plane
+            // attacker is replaced by vtable[140h]() = plane+9D4h, its squadron,
+            // and 009892E4 evaluates the channel again.
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit == hit.shooter) continue;
+                if (std::find(r.member_units.begin(), r.member_units.end(), hit.shooter)
+                        == r.member_units.end()) {
+                    continue;
+                }
+                evaluate(static_cast<int>(r.squadron_unit + 1));
+                ++summary_.listener_hit_second_passes;
+                if (!callbacks.empty()) ++summary_.listener_hit_second_pass_fires;
+                break;
+            }
         }
         for (const std::string& name : callbacks) {
             const int top = ::lua_gettop(state_);
@@ -7806,6 +7824,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
         summary_.listener_hit_unmodelled);
+    log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
+        "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
+        "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
+        summary_.listener_hit_second_passes, summary_.listener_hit_second_pass_fires);
     log_.notef("summary mission script hit rate limit bound=%d passed=%llu throttled=%llu "
         "pairs=%zu (00988510 this+168h, packet cc9_hit_rate_limit)", kLuaHitRateLimitBound ? 1 : 0,
         summary_.listener_hit_throttle_passed, summary_.listener_hit_throttled,

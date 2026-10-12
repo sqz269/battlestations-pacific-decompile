@@ -436,12 +436,23 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // (thread safe). LABELLED: the player skips the movie on the frame
 // BSP_Game_BeginEngineMovie 004CCE50 starts it (004C6B20's skip path); the
 // movie itself, 0045F970's clock and 004560E0's tracks, is not played, and the
-// class-table resets between the entry points stay records. So does
-// 0046B730's kill pass over entities whose class is not in the scene
-// database's class map (+158h), which very probably removes the
-// luaEngineMovieInit timers the ON run lets play; that is why it stays OFF
-// (JM05 pair, 5fm). False: the mode-8 arm runs at load, as before.
-inline constexpr bool kEngineMovieEntryBound = false;
+// class-table resets between the entry points stay records. 0046B730's kill
+// pass runs for the script entities (class 3, not in the +158h set), so the
+// luaEngineMovieInit timers die before stage init (5fp); the scene units'
+// re-create and the ten 00874D00 steps stay records. False: the mode-8 arm
+// runs at load, as before. ON (5fp): JM05's StartDialog calls stay at OFF's 4
+// (no Intro_dlg_a..d), one script entity is killed on JM05 and JM06, and both
+// rows move by the one-frame stage-init shift; USNOS is gameplay-identical.
+inline constexpr bool kEngineMovieEntryBound = true;
+
+// Packet cc9_lua50_stop_roster (docs/SQUADRON_LAND_TASK.md 5fr). True, with
+// kEngineMovieEntryBound: an entity the mode-9 gate admitted only through the
+// GenerateInEngineMovie fallback (0046CC37-0046CC43, no +24h record) is not
+// created on the instantiate pass, standing in for 0046B730 killing it at the
+// movie's stop and re-creating only from the +24h records. False: it lives on
+// through the mission, as before. ON (5fr): JM05 drops 9 movie actors, JM06 the
+// three TypeB_Jake subs no script names; USNOS identical.
+inline constexpr bool kEngineMovieStopRosterBound = true;
 
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag

@@ -473,6 +473,10 @@ struct GameProjectileRow {
     bsp::ProjectileFlightState flight{};
     float position[3]{};
     float life{0.0f};
+    // Packet cc9_bomb_drift: 006E4D50's drift (rack+4ECh, copied by 006E1F00
+    // into block+38h with y zeroed), the acceleration 006E1510 adds at
+    // record+348h. Zero unless kBombDropDriftBound.
+    float bomb_drift[3]{};
     bool alive{false};
     // Diagnostic (BSP_SHELL_FATE): how the round ended. 0 none, 1 land, 2 entity,
     // 3 flak burst, 4 water, 5 expired.
