@@ -111,6 +111,46 @@ superseded or that the reports no longer derive. Evidence ids are renumbered on 
 `eNNNN`), but their texts survive. The tag rows for the defined bodies (below) carry no ledger name, so they
 survive the same way as `stl_shape` does.
 
+## Tag ledger regeneration: the 1500 rows it already lost
+
+The lead asked about the 1500 rows that regeneration was already dropping. I regenerated in the worktree
+(never on main), diffed against HEAD with `local/dy1_lost.py`, and restored `config/tags` each time.
+
+**Cause.** Every lost row sits at a reviewed address, one that has a ledger name or a reconstruction record.
+`claim()` skips reviewed addresses, so these rows are never re-derived. The keep rule then drops any existing
+row at a reviewed address ("the review supersedes the tag"). No lost row was at an address that is not
+reviewed. The rows are in the shards at all only because the tags were written before the reviews, and nothing
+has regenerated the shards since.
+
+| why lost | rows | main categories (source, evidence id) |
+|---|---|---|
+| ledger name differs from the tag name | 1338 | `stl_probable` 434 (e0029), `cg_scalar_deleting_dtor` 201 (e0001), `trivial_body` 182 (e0002), `block_dyn` 130 (e0638, `DYN_physics_*` inside 00C30930), `block_pipe_ipc` 97, `static_init` 51, `stl_instantiation` 39, `cg_array_ctor_helper` 38, `cg_static_dtor_stub` 38, `cg_vector_deleting_dtor` 34, `crt_unmatched` 30, `stl_throw_site` 24, `cg_adjustor_thunk` 21, and 7 cc13-stl1 rows |
+| ledger name equals the tag name | 149 | `cg_scalar_deleting_dtor` 92, `stl_throw_site` 15, `stl_instantiation` 11, `crt_unmatched` 8, `cg_adjustor_thunk` 5, `trivial_body` 3, RTTI vslots such as `Dyn_Scene_LCPSolverTask_vslot0` |
+| reconstruction record only | 13 | `stl_instantiation`, `trivial_body`, `block_dyn`, `stl_probable` |
+
+Nearly all lost rows come from the inventories (`templates_and_generated.json`, `rtti_middleware.json`,
+`crt_stl.json`).
+
+**Fixed (commit 62bc77f26): the 149 rows whose name the ledger adopted.** When the review took the tag's own
+name, nothing was superseded. The keep rule from 29dada4f2 now applies to every row whose ledger name equals the
+tag name, whatever its source. The same check, run with the fixed tool: rows lost go from 1500 to 1351, and the
+difference is exactly those 149.
+
+**Left as policy (1351 rows).** Rows where the ledger chose a different name, or where only a reconstruction
+record exists, are dropped on purpose. Nothing that reads tags depends on them:
+- `ghidra_tag.py` never renames a non-`FUN_` function (`kept_existing`);
+- the brief's "untagged FUN_" count only looks at `FUN_` names;
+- what they do carry is the library category, which `lookup` and `status.py` display.
+
+If the category should survive review, a one-line change would keep these rows too: drop
+`address not in reviewed` from the keep rule. The tag name would then stay stale next to the ledger name.
+That is the lead's decision, so I have not made it.
+
+**The other direction.** A regeneration also adds 183 rows that the shards lack: `static_init` 114,
+`crt_unmatched` 43, `block_dyn` 10, `block_metrics_wrapper` 8, `block_telemetry` 6, `rtti_vslot` 2. One row
+changes category: 0094CAD0 from `cg_adjustor_thunk` to `block_telemetry_tmpl`. So the shards and the builder
+have drifted apart in both directions since the last real regeneration.
+
 ## Defined bodies (follow-up, same day)
 
 Following `docs/CC13_UNDEFINED_FUNCTION_SWEEP.md`, I defined **717 functions** in 00401010-004138D0 and
@@ -145,6 +185,11 @@ recorded them in `reports/cc13_dyn1_defined_functions.json`. The planner is `loc
 - **Count.** Segment 0 now has 205 untagged `FUN_`: those 189, the 15 earlier ones, and 004138D0 (the next
   segment's first entry). The brief's image-wide untagged count is 14917.
 - **Index.** The call sites inside the former gaps now resolve to their own functions.
+- **Tag names applied in Ghidra.** `local/dy1_applytags.py` runs `ghidra_tag.apply` on these 528 rows only,
+  in locked batches of 100; the logs are `local/ghidra-tags-dy1-*.json`, and `ghidra_tag.py --revert` can undo
+  them. 526 functions were renamed. Two were kept because Ghidra had already named them as thunks: 0040CD90
+  (`Mit_PoolAllocator_20_128_Allocate_0040D860`, a JMP to it) and 0040CDA0 (`thunk_FUN_0040d9d0`). Their tag
+  rows still carry `DYN_header_*` names. The index snapshot shows the new names after the next snapshot.
 
 ## Tools (worktree-local, not committed)
 
