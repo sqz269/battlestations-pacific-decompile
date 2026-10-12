@@ -3,7 +3,10 @@
   "packet": "cc13-rng1",
   "generator": "MT19937, per-thread stream pair (00BD2ED0)",
   "method": "rel32 CALL/JMP scan of .text for 00BD2F10/00BD2F40/00BD2F90/00BD2FC0/00BD2FD0/00BD2ED0 and the state routines; absolute-dword scan of all sections (0 hits; positive control 00CE223C = 16); ECX by backward reaching-definition walk over the enclosing function's linear decode (local/rn1_census.py); three register-derived sites resolved by hand",
-  "host_status_note": "host status is an address grep of src/ and include/ plus hand-read overrides; 'site cited at a host draw' means the site address appears on a src/ line with a draw call"
+  "host_status_note": "host status is an address grep of src/ and include/ plus hand-read overrides; 'site cited at a host draw' means the site address appears on a src/ line with a draw call",
+  "revisions": [
+   "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13: 20 rows reclassified or re-explained; rel32 rescan found no missing draw site"
+  ]
  },
  "sites": [
   {
@@ -519,12 +522,13 @@
    "function": "00489F30",
    "name": "FUN_00489f30",
    "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "shared CreateEntity tail of anim/bullet-visual/buoy/cloud classes: entity+17Ch phase",
+   "confidence": "listing",
+   "reason": "entity base ctor 00489F30 (class 37h): U(-ClipDistance/4, ClipDistance/4) (SoldierGlobals +0Ch, qword 0.25 at 00D7A348, DC C9 = FMUL ST(1),ST(0)); one draw per anim/bullet-visual/buoy/cloud/vehicle-visual entity constructed",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048A7D7",
@@ -538,13 +542,15 @@
    ],
    "function": "0048A6D0",
    "name": "FUN_0048a6d0",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory, segment 8 smoke/wreck keywords)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(0, sum of weights) for the die roll; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048A880",
@@ -558,13 +564,15 @@
    ],
    "function": "0048A6D0",
    "name": "FUN_0048a6d0",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory, segment 8 smoke/wreck keywords)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(MinTime, MaxTime) paces the die roll; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048AC00",
@@ -618,13 +626,15 @@
    ],
    "function": "0048A6D0",
    "name": "FUN_0048a6d0",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory, segment 8 smoke/wreck keywords)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(0, 1) die roll; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048AE02",
@@ -659,12 +669,13 @@
    "function": "0048AEC0",
    "name": "(undefined 0048AEC0, after FUN_0048a6d0)",
    "class": "PRESENTATION",
-   "confidence": "guess (class of the preceding function)",
-   "reason": "only caller 004A2FC0 (scene object factory, segment 8 smoke/wreck keywords)",
+   "confidence": "listing",
+   "reason": "U(0, 1) in 0048AEC0, which has no reference (docs/CC13_SOLDIER_TRAFFIC.md section 6)",
    "reach": "no Ghidra function; starts 0048AEC0 after INT3 padding that ends 0048A6D0's body; no CALL/JMP/Jcc (rel32 or rel8) and no absolute-dword reference found: apparently unreached",
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048B253",
@@ -678,13 +689,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(3, 15) hold; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048B2AC",
@@ -698,13 +711,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(8, 14) die timer; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048B2FA",
@@ -758,13 +773,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(10, 20) withdraw; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048B98F",
@@ -778,13 +795,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(FireMinTime, FireMaxTime) stationary time; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048B9BC",
@@ -858,13 +877,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(RunMinTime, RunMaxTime) stationary time; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048BBF0",
@@ -898,13 +919,15 @@
    ],
    "function": "0048B120",
    "name": "FUN_0048b120",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "only caller 004A2FC0 (scene object factory)",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(0, OutingDelay); docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0048C1FD",
@@ -918,13 +941,15 @@
    ],
    "function": "0048C190",
    "name": "FUN_0048c190",
-   "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "scene object +38h; callers 00491E70/004A4520 under the 004A2FC0 factory",
+   "class": "GAMEPLAY",
+   "confidence": "listing+doc",
+   "reason": "U(3, 10) in 0048C190; docs/CC13_SOLDIER_TRAFFIC.md section 6: soldier/traffic group logic; the draw paces or decides the troops' exposure (die roll, hold, withdraw, stationary and outing times), which reaches landing-ship damage",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "PRESENTATION",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "00498F13",
@@ -2619,12 +2644,13 @@
    "function": "00609BD0",
    "name": "FUN_00609bd0",
    "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "HUD plane effects / pilot screen helper",
+   "confidence": "listing",
+   "reason": "BSP_HudPlaneScreen_UpdateInstruments 00609BD0: stream 1 (MOV ECX,1 at 0060AAA2, no branch between); docs/CC13_BAND_0060_0066.md says stream 0 and is wrong",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0060B0CF",
@@ -2758,13 +2784,15 @@
    ],
    "function": "006D8750",
    "name": "FUN_006d8750",
-   "class": "GAMEPLAY",
-   "confidence": "band",
-   "reason": "air ops / gunnery / projectiles / structures",
+   "class": "PRESENTATION",
+   "confidence": "listing+doc",
+   "reason": "BSP_MarkerInstance_Construct: U(0, 4242.0 [00CF8F74]) bob/spin phase of a mission marker instance (docs/CC13_BAND_006D_006F.md); was a band guess",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "class_prev": "GAMEPLAY",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "006DF009",
@@ -3099,12 +3127,13 @@
    "function": "006F1C80",
    "name": "FUN_006f1c80",
    "class": "PRESENTATION",
-   "confidence": "guess",
-   "reason": "virtual, three draws mixed into a 2-D jitter; segment 33 (bullet/bomb visuals)",
+   "confidence": "listing+doc",
+   "reason": "BSP_FogCloudField_Build 006F1C80 jitter; the builder has no reference, so the draw is dead in this image (docs/CC13_BAND_006D_006F.md)",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "006F1D80",
@@ -3119,12 +3148,13 @@
    "function": "006F1C80",
    "name": "FUN_006f1c80",
    "class": "PRESENTATION",
-   "confidence": "guess",
-   "reason": "virtual, three draws mixed into a 2-D jitter; segment 33 (bullet/bomb visuals)",
+   "confidence": "listing+doc",
+   "reason": "BSP_FogCloudField_Build 006F1C80 jitter; dead (no reference)",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "006F1DC0",
@@ -3139,12 +3169,13 @@
    "function": "006F1C80",
    "name": "FUN_006f1c80",
    "class": "PRESENTATION",
-   "confidence": "guess",
-   "reason": "virtual, three draws mixed into a 2-D jitter; segment 33 (bullet/bomb visuals)",
+   "confidence": "listing+doc",
+   "reason": "BSP_FogCloudField_Build 006F1C80 jitter; dead (no reference)",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "006F2402",
@@ -3399,12 +3430,13 @@
    "function": "00709310",
    "name": "FUN_00709310",
    "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "'FishSchool' ambient wildlife",
+   "confidence": "listing",
+   "reason": "BSP_FishSchoolModel_Init: U(-0.5, 0.5) [00CE69D0, 00CE3800] scaled by school extent +8h, per fish",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "00709440",
@@ -3419,12 +3451,13 @@
    "function": "00709310",
    "name": "FUN_00709310",
    "class": "PRESENTATION",
-   "confidence": "context",
-   "reason": "'FishSchool' ambient wildlife",
+   "confidence": "listing",
+   "reason": "BSP_FishSchoolModel_Init: U(-0.5, 0.5) scaled by school extent +0Ch, per fish",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "0070AB22",
@@ -4019,12 +4052,13 @@
    "function": "007AB8C0",
    "name": "FUN_007ab8c0",
    "class": "GAMEPLAY",
-   "confidence": "band",
-   "reason": "plane units and pilot bots",
+   "confidence": "listing+doc",
+   "reason": "paratrooper ctor 007AB8C0: U(ParachuteOpenAltitudeMin, Max) into +468h; sets descent, so landing time and place (docs/CC13_SOLDIER_TRAFFIC.md 10.6)",
    "reach": null,
    "host": "not modelled",
    "host_generator": null,
-   "host_note": ""
+   "host_note": "",
+   "revision": "cc13-leftovers1 (2026-10-12), docs/CC13_RNG_STREAM_CENSUS.md section 13"
   },
   {
    "address": "007B1CE2",
