@@ -247,7 +247,10 @@ void gamecamera_write_bits_00792710(const GameCameraModifier& m, NativeBitCursor
                                     const NativeBitNumericContext& ctx);
 void gamecamera_read_bits_007a2a80(GameCameraModifier& m, NativeBitCursor* cursor,
                                    const NativeBitNumericContext& ctx);
-// Slot +Ch, RET 0Ch.
+// Slot +Ch, RET 0Ch: (elapsed, pose*, offset); pose is unused. The caller 00795C10 pushes the
+// offset, then a pointer to its own local ([ESP+14h] at 00795C9C), then elapsed; t =
+// [arg1] + [arg3] (00795EE3/00795EEA) and Ghidra's stack analysis finds no read of the second slot
+// (param_3 undefined4 and unreferenced), the same as in 00791C90.
 void gamecamera_evaluate_00795ee0(GameCameraModifier& m, float elapsed, float offset,
                                   GameCameraModifierHost& host);
 
