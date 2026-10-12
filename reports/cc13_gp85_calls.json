@@ -1,0 +1,10 @@
+{
+  "packet": "cc13-gp85",
+  "doc": "docs/CC13_GP_0085_008F.md",
+  "steps": [
+    {"address": "00851cd3", "function": "00851cb0", "native": "00851b40", "note": "stationary class get-or-create subscripts the map at 00F87550"},
+    {"address": "004d2b7b", "native": "00850930", "note": "world teardown clears the stationary class map"},
+    {"address": "00880a4f", "native": "0087fa90", "note": "landscape terrain band dilates a byte mask"},
+    {"address": "00617511", "native": "008e4bb0", "note": "power-up HUD bars read the slot cooldown fraction"}
+  ]
+}
