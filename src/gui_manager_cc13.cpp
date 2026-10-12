@@ -168,6 +168,54 @@ GuiNamedWidget* find_child_by_name_suffix_00aaa2b0(const GuiNamedWidget& widget,
     return nullptr;
 }
 
+// 00AA9C90
+void hoist_flagged_children_00aa9c90(GuiHoistNode& widget, const std::string& path,
+    GuiHoistHost& host) {
+    // Index walk: an adopted child leaves this list, which the image survives
+    // by stepping its iterator first (00AA9CFB).
+    std::size_t i = 0;
+    while (i < widget.children.size()) {
+        GuiHoistNode* child = widget.children[i];
+        if (child->hoist) {
+            const std::size_t before = widget.children.size();
+            host.adopt(path, *child);
+            if (widget.children.size() == before) {
+                ++i; // the host did not unlink it
+            }
+            continue;
+        }
+        if (widget.type_id == 1) {
+            hoist_flagged_children_00aa9c90(*child, path, host);
+        } else {
+            hoist_flagged_children_00aa9c90(*child, path + "." + widget.name, host);
+        }
+        ++i;
+    }
+}
+
+// 00AA5390
+void show_only_widgets_00aa5390(const std::vector<GuiVisibilityNode*>& pages,
+    const std::vector<GuiVisibilityNode*>& shown, GuiVisibilityHost& host) {
+    std::vector<int> saved;
+    saved.reserve(shown.size());
+    for (const GuiVisibilityNode* widget : shown) {
+        saved.push_back(static_cast<int>(widget->visibility)); // CVTTSS2SI
+    }
+    std::vector<GuiVisibilityNode*> work(pages.begin(), pages.end());
+    for (std::size_t i = 0; i < work.size(); ++i) {
+        GuiVisibilityNode* widget = work[i];
+        host.set_visibility(*widget, 0.0f);
+        for (GuiVisibilityNode* child : widget->children) {
+            work.push_back(child);
+        }
+    }
+    for (std::size_t i = 0; i < shown.size(); ++i) {
+        for (GuiVisibilityNode* w = shown[i]; w != nullptr; w = w->parent) {
+            host.set_visibility(*w, static_cast<float>(saved[i])); // CVTSI2SS
+        }
+    }
+}
+
 // 00AAB980 / 00AAB9BC: NEG/SBB/AND 3 for the old focus, SETNE + 2 for the new.
 int button_label_state(const GuiButton& button, bool focused) noexcept {
     if (focused) {
