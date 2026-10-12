@@ -12216,3 +12216,43 @@ image restore a downward component?
   the image's own behaviour, and the host reproduces it. Nothing was bound.
 - **Uncertain:** 130.6's "gun-entity placement store" (Val/Kate slot 50) is still not read. It could matter only if
   some other code writes `gun+74h`, which `0072E6D0` does not.
+
+## 178. 175(a), the dive steering: the two roll arms match the image; `009C4F80` lacked its third arm (lead queue, src/dive_bomb_task.cpp on loan; cc9-gunnery35, 2026-10-12; `kDiveAimHeadingBlendBound`, committed OFF)
+
+**The roll arms, read against disk bytes** (`009C5935..009C5B01`, `009C5D00..009C5DB2`). Every element matches
+`dive_bomb_aimdive_steer_009c5c9f` and its host inputs:
+- **`[ESP+24h]`** (the default arm) is `00438B10(H, pi/2 - atan2(aim.z - unit.z, aim.x - unit.x))`, wrapped into
+  `[0, 2pi)`. Here `aim` is `approach->vtable[0]` and `unit` is `+FCh/+104h`.
+- **`[ESP+18h]`** (the wide arm) is the same form, built from `aim - approach+D8h/+E0h`, the predicted impact.
+  The host's `db_bearing_c0` and `db_impact_bearing_18` are those two bearings, with H as `arg0`.
+- **The band test.** The wide arm is taken when `[ESP+5Ch] > 0` and `1.0472 > |bank|` (`009C5D08..009C5D31`).
+- **The interpolant.** `InterpolateClamped(-band, 1, band, -1, x)`. The wide arm uses band `-0.5/0.5`
+  (`00CE69D0`/`00CE3800`) and the default arm `-0.4/0.4` (`00D1F400`/`00CE7804`). Every constant matches the header.
+- **So the sign flip after the along-track error crosses zero is the image's own arm change.** The arms are not
+  where the host diverges.
+
+**The gap: H itself.** `009C4F80` (`BSP_BotDiveBomb_AimHeading`, body to `009C5177`) has three arms, and the host
+had two.
+- **pitch > -40 deg** (`00CE7D1C`): the Euler heading `vtable[50h]`, plus pi past a folded bank of pi/2. This is in
+  the host.
+- **pitch <= -60 deg** (`00D20338`, `009C5090..009C50B6`): the body-up bearing B. This is in the host for every
+  pitch at or below -40 deg.
+- **-60 < pitch <= -40 deg** (`009C50B7..009C516C`, **new**):
+  - `E` = `vtable[50h]`, plus pi when inverted, as in the first arm;
+  - `d = 00438B10(B, E)`;
+  - `t = 00419010(-60 deg, 0, -40 deg, 1, pitch)`;
+  - the arm returns `00438B10(B, t * d)`. So it slides from B at -60 deg to E at -40 deg.
+- **The binding.** `DiveBombAimHeadingInputs::mid_pitch_blend`, set at all five host sites from
+  `kDiveAimHeadingBlendBound`. The aimdive and aimglide ticks, the flyabove and the aim inputs all take it.
+
+**Predictions.**
+- **OFF:** identical.
+- **ON:** only ticks with pitch in (-60, -40] deg change. The aimdive entry (about -35 deg on JM08's sqn27)
+  is above that band, so mainly the steeper part of each dive moves, as do the turndown and roll-in ticks that
+  pass through the band.
+- Where B and E disagree (inverted, or yawed), H changes by up to `t * |d|`. Bearings, roll commands and release
+  points move.
+- **Rows:** USN04 phase 2 (`s39_u4_p1.txt`: Lexington's bombers, the "never release" question), JM08 r7 (the
+  TT04 misses) and USN01 u1 (a dive-heavy win, as the control).
+- **What this does not explain:** the cross-track divergence of 175(a), if the dives stay above -40 deg. That would
+  then point at the roll response, not the steering law.

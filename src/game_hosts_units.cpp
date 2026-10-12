@@ -2203,6 +2203,12 @@ constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.
 // swing settles and the tail lifts the brake, but releases stay 0 because the
 // aimglide pitch target 009C5522-009C55DF is unbound. Still OFF.
 constexpr bool kAimDiveTailBound = true;
+//  * kDiveAimHeadingBlendBound: packet cc9_dive_aim_heading (docs/GUNNERY_OPEN_ITEMS.md
+//    178). 009C4F80 has a third arm the host lacked (009C508A..009C516C): for a
+//    pitch between -60 and -40 degrees the body-axis bearing B is blended toward the
+//    inverted-corrected Euler heading E, B - t wrap(B - E), t rising 0 -> 1 from -60 to
+//    -40 degrees. OFF: B for every pitch at or below -40 degrees, as before.
+constexpr bool kDiveAimHeadingBlendBound = false;
 // Packet cc9_dive_flight_response: class+164h Accel as the image's reader leaves
 // it (007D20F3-007D2127). docs/DIVE_FLIGHT_RESPONSE.md. OFF, measured: main 32 -> 24
 // releases (local/S1fr_9000.log); the throttle-fix pair lacks its control.
@@ -4623,6 +4629,7 @@ struct GameUnitsHost::Impl {
         // point rather than the aircraft; that remains a labelled SUBSTITUTION,
         // unchanged by this fix.
         bsp::DiveBombAimHeadingInputs ahin;
+        ahin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
         ahin.pitch_c64 = slot.plane_pitch_angle_c64;
         ahin.bank_c68 = slot.plane_bank_angle_c68;
         ahin.heading_c6c = slot.plane_heading_c6c;
@@ -4750,6 +4757,7 @@ struct GameUnitsHost::Impl {
         in.rearm_timer_1c = slot.db_aim_rearm_1c;
         {
             bsp::DiveBombAimHeadingInputs ahin;
+            ahin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
             ahin.pitch_c64 = slot.plane_pitch_angle_c64;
             ahin.bank_c68 = slot.plane_bank_angle_c68;
             ahin.heading_c6c = slot.plane_heading_c6c;
@@ -22785,6 +22793,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plane_heading_c6c);
                             {
                                 bsp::DiveBombAimHeadingInputs hin;
+                                hin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
                                 hin.pitch_c64 = unit_.plane_pitch_angle_c64;
                                 hin.bank_c68 = unit_.plane_bank_angle_c68;
                                 hin.heading_c6c = unit_.plane_heading_c6c;
@@ -23684,6 +23693,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C539C: 00438B10(bearing [ESP+6Ch], aim heading
                             // [ESP+28h]), in the image's argument order.
                             bsp::DiveBombAimHeadingInputs ahin;
+                            ahin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
                             ahin.pitch_c64 = unit_.plane_pitch_angle_c64;
                             ahin.bank_c68 = unit_.plane_bank_angle_c68;
                             ahin.heading_c6c = unit_.plane_heading_c6c;
@@ -24026,6 +24036,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // because 009C7EA0's second arm ends the turndown while
                         // the aircraft is still inverted.
                         bsp::DiveBombAimHeadingInputs hin;
+                        hin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
                         hin.pitch_c64 = unit_.plane_pitch_angle_c64;
                         hin.bank_c68 = unit_.plane_bank_angle_c68;
                         hin.heading_c6c = unit_.plane_heading_c6c;
