@@ -1532,6 +1532,54 @@ void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& 
     return host.construct_multiscore_00780db0(object, id_1c);
 }
 
+void write_online_stats_004c04c0(const StatsWriteArgs& args, StatsWriteHost& host) {
+    if (host.write_blocked_22dd()) return;  // 004C04CD
+    const std::uint64_t local_xuid = host.local_xuid_00a3eb00();  // read before the lookup
+    bool listed = false;
+    for (std::int32_t id : host.listed_ids_00e19458()) {
+        if (id == args.id_5) listed = true;  // no early exit (004C05C9)
+    }
+    std::vector<StatsView> views;
+    const bool ranked = static_cast<std::uint8_t>(args.ranked_7) != 0;
+    auto int64_property = [](std::uint32_t id, std::int32_t value, std::uint32_t offset) {
+        return StatsProperty{id, 2, static_cast<std::int64_t>(value), offset};  // CDQ
+    };
+    bool build = true;
+    if (listed && host.online_ready_198()) {
+        if (ranked) {
+            StatsView view{0xFFFF0000u, {}};
+            view.properties.push_back(StatsProperty{0x1000800Au, 1, args.value_10, 0x2270});
+            view.properties.push_back(StatsProperty{0x1000800Bu, 1, args.value_9, 0x2288});
+            views.push_back(view);
+        } else if (args.xuid != local_xuid) {
+            build = false;  // 004C0669 / 004C067A
+        }
+        if (build) {
+            const std::uint32_t* row = kStatsViewTable[args.row_6];
+            if (args.value_12 > 0)
+                views.push_back(StatsView{row[ranked ? 1 : 0],
+                                          {int64_property(row[2], args.value_12, 0x2258)}});
+            if (args.value_13 > 0)
+                views.push_back(StatsView{4, {int64_property(0x20000084u, args.value_13, 0x2228)}});
+            if (args.value_8 > 0)
+                views.push_back(StatsView{1, {int64_property(0x200000BCu, args.value_8, 0x2210)}});
+        }
+    } else if (args.value_12 != 0) {
+        const bool low_id = static_cast<std::uint32_t>(args.id_5) - 1u <= 0x0Du;  // SETBE
+        views.push_back(StatsView{low_id ? 2u : 3u,
+                                  {int64_property(low_id ? 0x20000080u : 0x2000008Fu,
+                                                  args.value_12, 0x2240)}});
+    }
+
+    // 004C07F9..004C0866.
+    host.zero_overlapped_7038();
+    const std::uint32_t mode = host.session_mode_1fe4();
+    std::uint32_t result = args.ranked_7;
+    if (!views.empty()) result = host.xsession_write_stats(args.session, args.xuid, views, mode != 0);
+    if (result != 0x3E5u) host.x_get_overlapped_extended_error_null();  // ERROR_IO_PENDING
+    if (mode != 0) host.set_write_blocked_22dd();
+}
+
 bool schedule_net_table_sync_00780a00(std::uint8_t& force_310, const void* entity,
                                       const void* holder, std::int32_t holder_tick_04,
                                       std::int32_t now_00f876b0, NetSyncQueue& queue) noexcept {

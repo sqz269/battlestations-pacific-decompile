@@ -65,7 +65,7 @@ KEYWORD_FALLBACK = [
     ('lua', ('lua', 'dofile', 'userdata', 'collectgarbage', 'chunk')),
 ]
 START_CATEGORY = {start: key for key, starts in SEGMENT_CATEGORY.items() for start in starts}
-FUNCLET = ('Unwind@', 'Catch_All@', 'thunk_')
+FUNCLET = ('Unwind@', 'Catch_All@', 'EHHandler@', 'thunk_')
 ADDR_FIELD = re.compile(r'"address"\s*:\s*"([0-9a-fA-F]{8})"')
 LEGACY_KEY = re.compile(r'^\+\s*"([0-9a-fA-F]{8})"\s*:\s*\{')
 SIG = re.compile(r"^\+(?P<line>[A-Za-z_][\w:<>,*&\s\[\]]*?\s[*&]*(?P<name>~?[A-Za-z_][\w:]*(?:<[^()]*>)?)\s*\((?P<args>[^;{}]*)"
