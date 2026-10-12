@@ -465,8 +465,8 @@ inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //    water on its first step. MTorpedo's create 00856420 does not run 006E8430's
 //    spawn-time medium choice (no 0078CF20 call, no vtable[24h]/[28h]). The host's
 //    `from > 0` term kept a submerged launch from ever starting its swim.
-//    OFF: the crossing needs from.y > 0, as before.
-inline constexpr bool kSubmergedTorpedoLaunchSwimBound = false;
+//    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
+inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -569,6 +569,17 @@ constexpr bool kAaLineOfFireExpiryDrawBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    refusals that would be lifted are counted (armour_rejects_tail).
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
 constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
+//  * kAaKind6GateBound: GUNNERY 182 (cc13 switch audit 2a). 00729BC0 sends a
+//    kind-6 (LIGHTARTILLERYFLAK) gun to the AAFlakBot 008FBFC0 against a plane
+//    (variant 1) and to the ArtilleryGunnerBot 006DEF30 otherwise; each runs a
+//    gate before the gun's vtable[1D4h] = 0072F6E0. 008FBFC0 runs the fire
+//    window 0085A9A0 first; 006DEF30 runs 00955630 (ECX [[bot+50h]+3Ch], EDX
+//    target+FCh, gun+FCh, speed [[gun+3F8h]+34h]+50h, &vert, &horz) and then
+//    0085A8B0(horz, vert). ON: kind 6 takes those gates first, so the line-of-
+//    fire query, its cache entry and its expiry draw happen only past them,
+//    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
+//    goes straight to the line-of-fire query (the host before section 182).
+constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 182.3
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1559,6 +1570,7 @@ struct GameGunneryHost::Impl {
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
     unsigned long long aa_window_rejects{0};
+    unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 182
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
@@ -5561,8 +5573,47 @@ public:
             ++owner_.line_of_fire_refusals;
             return true;
         };
-        if (kind == 6) { line_of_fire_refuses(); return; }
-        if (kind != 1 && kind != 5) return;
+        if (kind == 6 && !(kAaKind6GateBound && plane)) {
+            // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
+            // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
+            // present (an unread precondition, labelled), and the solve takes
+            // this host's world-frame convention (mount NULL) turned into the
+            // hull-relative pair, as the seat path does.
+            if (!plane && (len <= 0.0f || row.arcs.empty())) {
+                if constexpr (kAaKind6GateBound) return;   // as kind 5 below
+            } else if (!plane) {
+                bsp::GunGravityArcQuery q;
+                q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
+                q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+                q.muzzle_speed = row.muzzle_speed;
+                q.mount_frame = nullptr;
+                const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+                bool reach = arc.solved;                                // 006DEFAD
+                if (reach) {
+                    const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                    const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+                    const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                    const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                        + (arc.angles.vert - direct);
+                    const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                    reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                        bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+                }
+                if (!reach) {
+                    ++owner_.aa_kind6_gate_rejects;
+                    if constexpr (kAaKind6GateBound) {
+                        in.slot_accepts_target = false;
+                        last_refusal_ = AaRefusal::window;
+                        return;
+                    }
+                }
+            }
+            line_of_fire_refuses();
+            return;
+        }
+        // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
+        // below and then the line of fire, as kind 5.
+        if (kind != 1 && kind != 5 && kind != 6) return;
         if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
             const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
@@ -13468,11 +13519,12 @@ void GameGunneryHost::report() {
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
-            "lof_expiry_draw=%d (packet cc9_aa_targeting)",
+            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips, host.aa_armour_rejects_tail,
-            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0);
+            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0,
+            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "
