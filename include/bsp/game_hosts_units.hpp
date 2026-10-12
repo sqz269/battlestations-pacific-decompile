@@ -451,6 +451,14 @@ inline constexpr bool kDepartedWingmanTaskBlockBound = true;  // ON: pairs (docs
 inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+// Packet cc13-cadence2 (docs/CC13_TASK_PROFILE_CADENCE.md). A task's vtable +54h
+// cruise profile runs only when the task becomes the bot's head: 0099AEB3 after
+// 0099A4C0 changed the head (the 0099A170 install), and 0099AE2B for the parked
+// task. No other vt[54h] dispatch on a task exists. True: the dive (009C8920),
+// level-bomb (009B8C90), land (009B3C60) and moveto (009C3650) profile bodies run
+// once per install; the dive draw is made then. False: they run per think (the
+// moveto gate per 0.5 s refresh), as before.
+inline constexpr bool kTaskProfileActivationOnlyBound = false;
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
