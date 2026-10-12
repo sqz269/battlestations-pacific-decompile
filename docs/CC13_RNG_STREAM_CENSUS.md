@@ -302,3 +302,166 @@ The census is complete for the five stream entries. The next packets, in value o
 
 Re-run: `python local/rn1_census.py && python local/rn1_host.py && python local/rn1_build.py`, all
 from the worktree root.
+
+## 10. Stream-1 host read, the "function referenced" rows (packet cc13-rng2, 2026-10-12)
+
+Worker cc13-rng2, 2026-10-12 08:28 UTC, base origin/main 8af4cee9e. Read-only: no C++, no Ghidra
+writes, no ledger records. This closes open item 3 of section 8 for the 160 stream-1 GAMEPLAY sites
+whose host status was "function referenced; site not cited". Each site's instructions were read
+from the disk image (bounds resolved from the float constants). The host's handling was read from
+`src/` and `include/` at the function and site addresses, in bounded windows. Nothing was built or
+run. "Modelled" means the host source draws the same distribution; no run checked it.
+
+Data: `reports/cc13_rng_stream1_host_status.json`, one row per site with the class, the image
+distribution, the host behaviour, the host file:line and whether the host labels the difference.
+Scripts in the worktree: `local/rn2_ctx.py` (image listing around a site), `local/rn2_grep.py`,
+`local/rn2_results.txt` (the hand classification), `local/rn2_build.py` (report).
+
+### 10.1 Counts
+
+| class | sites | notes |
+| --- | --- | --- |
+| MODELLED | 88 | H-G 38, H-U 48, H-AI 2 |
+| MODELLED-DIFFERENTLY | 32 | 30 labelled, 2 unlabelled |
+| NOT-MODELLED | 27 | 13 labelled, 14 unlabelled |
+| HOST-OMITS-FUNCTION | 13 | 4 are apparently unreached code in the image (section 1.3) |
+
+The H-U generator is `GameUnitsHost::release_altitude_draw_00bd2f10`, with its `st_draw` / `lb_draw`
+wrappers. It is keyed by the unit name plus a suffix (`name#t88`, `"mv_side"` and so on). So the
+pilot-bot draws are separated per consumer, as section 6 item 2 suggests. They are not on H-G.
+
+### 10.2 For cc9: the unlabelled differences
+
+The two unlabelled MODELLED-DIFFERENTLY sites come first; they are what the lanes act on. The
+unlabelled NOT-MODELLED sites follow, gameplay first.
+
+| site | function | class | image | host | host file:line |
+| --- | --- | --- | --- | --- | --- |
+| `0070C247` | BSP_FlakProjectile_Detonate | MD | `U(BlastDamageMin, BlastDamageMax)` on **every** `0070C210` call. That includes the FlyTime expiry (`0070C3B7 PUSH 0` then `CALL 0070C210`), and `0084BAD0` follows the draw unconditionally (`0070C280`). An expiring flak round bursts with radial damage | draws and bursts on the proximity lock only. The FlyTime expiry is the "silent" life bound (no draw, no blast) | `src/game_hosts_gunnery.cpp:8960`, `:8856`; `docs/FLAK_PROXIMITY_BURST.md:17` |
+| `009C7839` | BSP_BotStateDiveBombTurnDown_SetRollDirection | MD | roll magnitude `U(0.8, 1.0)` with the side sign | the dive-bomb binding's `uniform_between(low, high)` returns `low`: always 0.8 | `src/game_hosts_units.cpp:18914` via `src/dive_bomb_task.cpp:1255` |
+| `0084C19F` | BSP_Projectile_TraceSegmentAndImpact | NM | `U(DamageMin, DamageMax)` handed to `00428420`, the blast-reacting scene props | `00428420` not run. The consumer is presentation (section 4.2 classes `00428420` so); reclassify | none |
+| `00827B4D` | BSP_ShipInstance_OnHealthChanged | NM | at death, `U(0, 1)` against `Physics.WreckChance` (settings `+65Ch`) decides the breakup message | library reconstruction only (`ship_on_health_changed_00827a90`, `host.breakup_roll`); no game host calls it | `src/unit_damage.cpp:461` |
+| `007BC1F2` | BSP_Plane_StartNamedEffect | NM | with `+C36h` clear, `U(0, 1) < 0.5` before the `007BA200` session message | not drawn; the host models this function's stream-0 death delay only | `src/game_hosts_units.cpp:16616` |
+| `007D6247` | BSP_Plane_ReadPropertyBag | NM | `unit+C44h = U(2, 4)` | not drawn; no host field (its reader was not traced) | - |
+| `007D7F90` | BSP_PlaneFlightController_Construct | NM | `U(DeadMeat RotationMin pair)` (`00F87330`/`00F87334`) | not drawn; the tuning pair is loaded and unused | `include/bsp/game_tuning_singleton.hpp:192` |
+| `007F2D5B` | BSP_PlaneSquadronTickableEntity_Construct | NM | `+3C4h = -U(0, x)`, phase stagger | not drawn | - |
+| `006CDAA5` | `006CD810` (callee of BSP_AirOps_Update) | NM | U01 roll | no host reference | - |
+| `008AC94B` | `SetDeadMeat` Lua native (`008AC7B0`) | NM | `U(-1, 1)` | name-table entry only; no handler | `src/mission_lua_host.cpp:303` |
+| `009FB45D`, `009FB5AF` | BSP_BotApproachTargetRef_ConstructFromStream | NM | `+60h = -U(0, x)` on the stream-construction (load) path | not hosted | - |
+| `008540EA` | BSP_SubmarineUnit_Serialize | NM | `U(0, 1)` vs 0.5 | serialize path not hosted | - |
+| `008546E4` | BSP_SubmarineUnit_Update | NM | `NextU32 % 15 == 0` calls `00933BB0` (the parts area section 5 calls debris presentation) | not drawn; only the periscope arm is hosted | `src/game_hosts_units.cpp:9164` |
+| `0082571D` | BSP_UnitInstance_Update | NM | `+BC8h = U(Sounds.ShipDeadMeatSoundTimeMin, Max)` (`+64Ch`/`+650h`): a sound timer | not drawn. Presentation; reclassify | - |
+| `006526DF` | BSP_HudUnitView_UpdateOrderAndView | NM | `U(0, 1) > 0.99` on the player's HUD order path | not drawn | `src/unit_order_record.cpp:102` |
+
+Two of these are presentation, not gameplay: `0084C19F` (scene props) and `0082571D` (a sound timer).
+`008546E4` probably is too. For the image this means that ship sinking sounds and gunfire hitting
+scene props advance stream 1, as sections 4.2 and 5 describe for the others.
+
+### 10.3 Labelled differences (the host says it substitutes)
+
+- **The dogfight task draws nothing; every draw is at its midpoint.** Label:
+  `kDogfightManeuverBodyBound`, `src/game_hosts_units.cpp:5476-5482`, "Draws at their midpoints, as
+  every other dogfight draw in this host". 19 sites:
+  - **The aim enter** (`009A75EE` U(0.8, 1.4), `009A7624` U(0.5, 0.8)).
+  - **The avoid enters and their common tick** (`009A7D72`, `009A7E09`, `009A7E4E`, `009A7E6C`,
+    `009A8049`, `009A807B`, `009A80B5`, `009A80D3`).
+  - **The maneuver arm, enter and tick** (`009A8596`, `009A88BD`, `009A89A5`, `009A8AD5`, `009A8AFE`,
+    `009A906B`).
+  - **The target-select reselect timer and noise** (`009AA65A`, `009AA97F`).
+  - **The neighbour finder noise** (`007E21AA`).
+
+  Two of them change behaviour, not just spread:
+  - `009A8712`: the maneuver expiry rolls `U(0, 1)`, doubled when threatened, against
+    `TurnAfterChance`. A fixed 0.5 makes the chance a threshold. A pilot whose `TurnAfterChance` is
+    above 0.5 always turns after; below it never does.
+  - `009A99C6`: the avoid pick draws `U(0, roll + turn weight)` against the roll weight. The host
+    picks turn exactly when the roll weight is under half the sum, so a weighted coin becomes a
+    majority rule.
+
+  The dogfight attackrun and maneuver constructor phase draws (`009A713A`, `009A853A`) are not
+  taken at all (NM, the same label).
+- **Plane neighbours**: the two clocks are seeded at their midpoints (`007E1F94`, `007E1FB9`;
+  `src/game_hosts_units.cpp:987-992`, "U(0,P)+P at midpoints"). The third draw (`007E1FE1`,
+  `U(0, +90h)`) has no host field.
+- **Fighter gun burst clock** `009FCED1`: the image draws `U(robot +234h, +238h)` from the pilot's
+  skill row. The host uses `burst_draw = 3.75` and `delay_draw = 1.15`, which
+  `include/bsp/dogfight_task.hpp:328-329` describes as midpoints of `U(3.0, 4.5)` / `U(0.7, 1.6)`.
+  Nothing sets them per skill level.
+- **Torpedo attackrun constructor** `009D072A`: `-0.5` for `-U(0, 1)`. Label:
+  `src/game_hosts_units.cpp:1551`, "the midpoint, as every other draw in this host".
+- **Dive-bomb approach** `009C3FB0`: in-range `U(1.6, 1.8)`, pinned to 1.6. Label:
+  `src/game_hosts_units.cpp:22477`, "Pinned at the low end of each draw, as this host pins every
+  draw". The same approach's `U(0.6, 0.8)` (`009C3F81`) *is* drawn, under
+  `kAttackDistDrawBound`. The turndown roll `009C7839` is the unlabelled pin in 10.2.
+- **AutoTarget phase** `009F6A8F`: `-(index % 20) * 0.05` for `-U(0, 1)`
+  (`src/game_hosts_ship_ai.cpp:11816`).
+- **Command-building capture phase** `006F56FF`: 0 for `-U(0, 1)`
+  (`src/game_hosts_ship_ai.cpp:12235`).
+- **Air-ops squadron creation** `006C52BA`: the image passes `U(100, 300)` with the squadron's
+  property bag. The host creates one plane at a fixed 150 m over its home base, and that
+  substitution is labelled. Whether the image's draw is that height was not traced.
+- **Labelled NOT-MODELLED:**
+  - gun barrel re-arm `0072D579`: the value is equal, because every ReloadTime in this
+    installation is a scalar; only the stream advance is skipped. Label at
+    `src/game_hosts_gunnery.cpp:2927`;
+  - the flak passing burst `0070C7F7`, argued unreachable in the image, `:8879`;
+  - the shipyard hangar pick `00844AB4`, `:1021`;
+  - the ordnance sub-object `009FD0E0` (2 sites, a contract), `src/game_hosts_units.cpp:29952`;
+  - the cruise profile `009C3650` (2 sites), `:26400`;
+  - strafe aim `+18h` `009CB116`, no reader, `:21031`;
+  - path cursor random direction `007B1CE2`, start mode 7 only, `src/game_hosts_commands.cpp:3144`;
+  - the Duel order `00A2CD47`, `include/bsp/ai_command_tick.hpp:185`;
+  - the ship wreck handler `00824C5C`, logged unimplemented, `src/game_hosts_ready.cpp:595`.
+
+### 10.4 HOST-OMITS-FUNCTION
+
+- **The plane depth-charge bot task** (`009A3390` approach, 4 sites, and the `009A36A0` attackrun):
+  no host runs it; the references are library headers.
+- **Other functions no host reaches:**
+  - the moveonpath task constructor `009BCE50`;
+  - the manoeuvre constructor `009BBAD0` (factory `009BBF60`);
+  - `007B5AF0`;
+  - the vtable slot `007EBF10`;
+  - the Lua `Spawn` placement search `00941FA0` (no host implements `find_spawn_position`).
+- **Apparently unreached in the image** (section 1.3): `006E242B`, `006F2402`, `009DA9A9`.
+
+### 10.5 What is modelled (88)
+
+| area | generator | notes |
+| --- | --- | --- |
+| Gunnery | H-G, keyed `Draw::` | aim-error envelope, ranging, visibility TTL, AA flak error (13 sites), aim wander, blast damage on depth-charge burst and impact. The AA flak sign is `U(0, 1) < 0.5` against the image's `NextU32 & 1`: the same Bernoulli(0.5) |
+| Land-fort fire roll `00747116` | H-G | run only on the land-fort and capture-building damage paths; other kinds with `SmokeFireChanceMul > 0` were not checked |
+| Ship AI | H-G `ship_ai_draw` | sub-attack bands, torpedo track admission (3), brain-constructor timers (5, including two drawn and discarded for the order) |
+| AI groups | H-AI | the party think `U(3, 5)` and the cautious-attack U01 |
+| Pilot bots | H-U | avoid-gunfire timers; land, level-bomb, strafe (goaway, flikflak, tightturn), retreat-zone, moveto, takeoff and torpedo-approach draws; wreck leak weights; the wanderer |
+
+The torpedo-approach reset draws its six values in a different order from the image: `#t88` and
+`#t12c` first. H-U is keyed per suffix, so on its keyed path the order does not matter.
+
+### 10.6 Uncertainty
+
+- **Upper bounds.** Several were read from a stack slot rather than a constant; these rows give
+  the host's bounds as stated in its comments. The magnitude and order of the draws were checked
+  against the listing.
+- **Unconfirmed consumers.** The consumers of `007D6247` (`+C44h`), `007BC1F2` (`007BA200`'s
+  message) and `006CDAA5` were not traced. Their gameplay class is still the census band.
+- **Flak expiry.** The image reads no stack argument before `0084BAD0` (`0070C24C`..`0070C280`).
+  That fact makes `0070C247`'s FlyTime-expiry blast certain from the listing. Its game effect (time-fused AA
+  bursts) was not run.
+- **Sites outside this set.** The other host-status rows of section 5 were not re-read: "cited at
+  a host draw" (45), "comments only" (62) and "no reference" (105). The known pins the lead listed
+  are all there, not here:
+  - the aimglide re-arm `U(0.2, 0.5)` pinned to 0.2 (`009C579E`) and the aimdive re-arm
+    `U(0.5, 1.0)` fixed at 0.5 (`009C6114`) are "comments only";
+  - the torpedo AngleErr, drawn per shot (`00900830`/`0090083E`), is "cited at a host draw".
+
+### 10.7 Handoff
+
+1. For cc9 (`0070C247`). Decide whether the flak FlyTime expiry should burst. That changes AA
+   lethality, not just the RNG.
+2. For cc9 (`009C7839`). The dive-bomb binding's `uniform_between` should draw from H-U, or say
+   that it pins.
+3. Reclassify `0084C19F` and `0082571D` (and probably `008546E4`) as PRESENTATION in the census
+   report.
+4. Run the same read for the 62 "comments only" and 105 "no reference" rows. The
+   "comments only" rows hold the known pins. Use `local/rn2_ctx.py <fn>` for the image side.
