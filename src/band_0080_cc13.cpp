@@ -114,4 +114,181 @@ std::int32_t effect_component_category(std::string_view component) noexcept
     return -1;
 }
 
+// ---------------------------------------------------------------------------
+// cc13-gp80 gameplay leaves.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// _stricmp in the "C" locale: ASCII folding to lower case.
+int ascii_stricmp(const char* a, const char* b) noexcept
+{
+    for (;; ++a, ++b) {
+        int ca = static_cast<unsigned char>(*a);
+        int cb = static_cast<unsigned char>(*b);
+        if (ca >= 'A' && ca <= 'Z') {
+            ca += 'a' - 'A';
+        }
+        if (cb >= 'A' && cb <= 'Z') {
+            cb += 'a' - 'A';
+        }
+        if (ca != cb || ca == 0) {
+            return ca - cb;
+        }
+    }
+}
+
+} // namespace
+
+std::int32_t party_from_name_00805990(const char* buffer) noexcept
+{
+    // 00E0B080: four pointers into .rdata, none null and none empty.
+    static constexpr const char* kPartyNames[4] = {"OWN", "ENEMY", "NEUTRAL", "UNKNOWN"};
+    for (std::int32_t i = 0; i < 4; ++i) {
+        const char* entry = kPartyNames[i];
+        if (buffer == nullptr) {
+            // 008059BD..008059CF: a null buffer matches only a null or empty entry.
+            if (entry[0] == '\0') {
+                return i;
+            }
+        } else if (ascii_stricmp(buffer, entry) == 0) {
+            return i;
+        }
+    }
+    return 4;  // 00805A26: CMP EDI,4; JL loops; past the fourth miss the result is 4.
+}
+
+void turn_path_wrap_angle_0080b190(float& angle) noexcept
+{
+    constexpr double kTwoPi = 6.2831854820251465;  // double 00CE3828
+    // 0080B198: COMISS 0.0, angle; JBE takes the second branch for angle >= 0 and NaN.
+    if (0.0f > angle) {
+        do {
+            angle = static_cast<float>(static_cast<double>(angle) + kTwoPi);  // 0080B1AC FADD, FSTP
+        } while (0.0 > static_cast<double>(angle));
+        return;
+    }
+    // 0080B1CD: FCOMPI then JBE; NaN and angle <= 2pi leave it alone.
+    while (static_cast<double>(angle) > kTwoPi) {
+        angle = static_cast<float>(static_cast<double>(angle) - kTwoPi);  // 0080B1D3 FSUB, FSTP
+    }
+}
+
+FirepowerRatios refresh_firepower_ratios_008127e0(const FirepowerInputs& in) noexcept
+{
+    FirepowerRatios out;
+    for (int i = 0; i < 4; ++i) {
+        // 008127EC: UCOMISS total, 0.0; LAHF; TEST AH,44h; JNP takes FLDZ only for an
+        // ordered equal, so a NaN total still divides.
+        if (in.total[i] == 0.0f) {
+            out.ratio[i] = 0.0f;
+        } else {
+            out.ratio[i] = static_cast<float>(static_cast<double>(in.live[i]) /
+                                              static_cast<double>(in.total[i]));  // FDIV, FSTP
+        }
+    }
+    // 0081288C..008128C9: (unit+9E5h == 0 && unit+9D8h != 0.0) as an integer, FILD,
+    // FMUL by unit+9DCh, FSTP to +1014h.
+    const int engine_available = (!in.engine_jammed && in.engine != 0.0f) ? 1 : 0;
+    out.engine_factor = static_cast<float>(static_cast<double>(in.steering) * engine_available);
+    return out;
+}
+
+StationaryDamageResult stationary_check_destroyed_0084eb80(float protection, float max_damage,
+                                                           float& damage) noexcept
+{
+    // 0084EB89: COMISS protection, 0.0; JBE to the destroy arm for protection <= 0 and NaN.
+    if (protection > 0.0f) {
+        // 0084EB97..0084EBAA: FLD1; FSUBRP; FSTP float; FMUL max_damage; FSTP float.
+        const auto remaining = static_cast<float>(1.0 - static_cast<double>(protection));
+        const auto cap = static_cast<float>(static_cast<double>(remaining) * max_damage);
+        // 0084EBB6: FCOMPI damage, cap; JB skips for damage < cap and NaN.
+        if (damage >= cap) {
+            damage = cap;
+            return StationaryDamageResult::Clamped;
+        }
+        return StationaryDamageResult::Unchanged;
+    }
+    if (damage >= max_damage) {
+        // 0084EBEF..0084EBFE: damage = max, +1A4h = 1, vtable +70h(1).
+        damage = max_damage;
+        return StationaryDamageResult::Destroyed;
+    }
+    return StationaryDamageResult::Unchanged;
+}
+
+bool torpedo_proof_small_craft_00828ec0(bool is_kind_0e, bool is_kind_0c, bool byte_808,
+                                        float value_500) noexcept
+{
+    // 00828ECA / 00828ED9: vtable +18h with 0Eh, then 0Ch only when 0Eh failed.
+    if (!is_kind_0e && !(is_kind_0c && !byte_808)) {
+        return false;
+    }
+    // 00828EF5: COMISS +500h, [00D099AC]; JB fails for smaller and for NaN.
+    return value_500 >= kTorpedoProofSmallCraftThreshold;
+}
+
+void shipyard_consume_stock_008457e0(ShipyardStockRecord* records, std::size_t n,
+                                     std::int32_t class_id, std::int32_t count) noexcept
+{
+    for (std::size_t i = 0; i < n; ++i) {
+        if (records[i].class_id != class_id) {  // 00845828: CMP [EAX+70h],EBP
+            continue;
+        }
+        // 00845843: CMP EAX,ECX; JG subtracts, otherwise the count becomes 0.
+        if (records[i].count > count) {
+            records[i].count -= count;
+        } else {
+            records[i].count = 0;
+        }
+        return;
+    }
+}
+
+std::int32_t shipyard_count_available_00844610(const ShipyardStockRecord* records, std::size_t n_records,
+                                               const ShipyardQueueSlot* slots, std::size_t n_slots,
+                                               std::int32_t class_id) noexcept
+{
+    std::int32_t total = 0;
+    for (std::size_t i = 0; i < n_records; ++i) {
+        if (records[i].class_id == class_id) {
+            total += records[i].count;
+        }
+    }
+    for (std::size_t i = 0; i < n_slots; ++i) {
+        if (slots[i].has_class && slots[i].class_id == class_id && slots[i].state == 1) {
+            ++total;
+        }
+    }
+    return total;
+}
+
+std::int32_t shipyard_count_idle_slots_008434d0(const ShipyardQueueSlot* slots, std::size_t n) noexcept
+{
+    std::int32_t idle = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        if (slots[i].state == 0) {
+            ++idle;
+        }
+    }
+    return idle;
+}
+
+std::int32_t support_site_squad_size_0084cf80(const SupportSiteListEntry* list_328, std::size_t n_328,
+                                              const SupportSiteListEntry* list_31c, std::size_t n_31c,
+                                              std::int32_t class_id) noexcept
+{
+    for (std::size_t i = 0; i < n_328; ++i) {
+        if (list_328[i].class_id == class_id) {  // 0084CFC2: CMP ECX,[EDX+70h]
+            return list_328[i].squad_size;       // 0084CFDF: MOV EAX,[EDI+10h]
+        }
+    }
+    for (std::size_t i = 0; i < n_31c; ++i) {
+        if (list_31c[i].class_id == class_id) {
+            return list_31c[i].squad_size;
+        }
+    }
+    return 3;
+}
+
 } // namespace bsp::cc13_band0080

@@ -5471,7 +5471,7 @@ struct GameUnitsHost::Impl {
     // state-6 arm 007CBA50 with the water law 007DCDD0, the core law's water band
     // 007DC205 and 007DA380's mode-2 factors. False: a state-6 aircraft is frozen
     // where it touched the water.
-    static constexpr bool kPlaneWaterSurfaceLawBound = false;
+    static constexpr bool kPlaneWaterSurfaceLawBound = true;  // ON: USN01 / ESMP08 gameplay identical
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
