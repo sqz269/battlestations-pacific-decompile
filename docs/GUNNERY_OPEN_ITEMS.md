@@ -11625,7 +11625,7 @@ The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the 
   - The expiry draw is inert in the reference form, as predicted: five of the six rows are identical with it ON.
 - **Verdict: both ON.**
 
-## 165. A hull-contact access violation on USNOS f17 (found by reference AG; cc9-gunnery35, 2026-10-11, open)
+## 165. A hull-contact access violation on USNOS f17 (found by reference AG; cc9-gunnery35, 2026-10-11; cause and fix in 167)
 
 **Two crashes, the same frame.**
 
@@ -11686,3 +11686,44 @@ MiniSub. Variants of `s38_b1_p6` (cc9-gunnery32's `g32_ord_b1.txt`), each 40000 
   last-leg change fixes it.
 - **Not adopted.** p6 already completes on this branch (779.93 s). The file to keep, if the lead wants one, is `v3`
   (`local\g35_ord_b1_v3_keep.txt`).
+
+## 167. The cause of 165: a scale-2 fort indexes past the convex support seed table (fixed, unconditional; cc9-gunnery35, 2026-10-11)
+
+**The read.**
+- `00C336C0` (from disk, `00C336C0..00C3370A`) copies the fort unit's 4x4 world matrix (`unit+CCh`) into the Dyn
+  body's 3x4 element by element. It does not normalize, so an authored scale stays in the rows (GUNNERY 96.1: the fort
+  body's frame is that matrix).
+- The host's `FortWorldEntry::frame` copies `s.world` the same way (`src/game_hosts_units.cpp`).
+- `local_support_kernel` (the transcribed `00C358A0..00C35A..`) picks its start vertex from
+  `AvoidZoneDynHullData::support_seed[27]`. The slot is `13 + 9*trunc(dx*1.99) + 3*trunc(dy*1.99) + trunc(dz*1.99)`
+  of the LOCAL direction, read at `[data + slot*2 + 30h]` (`00C35904`), so a unit vector is assumed.
+- The local direction is the world direction through the shape's frame, so a scale-2 frame doubles it. The slot
+  then leaves the table and reads whatever follows the 68h-byte block. That garbage start vertex is then walked
+  through the adjacency list.
+
+**The run evidence.**
+- **The crash dump.** A build of the anchor config with a counter on the slot test (`local\g35_poison`, local only)
+  crashed at mission_frame 84452.
+  - ESI = 0xFFFFFFE8 was the slot offset -24, and the seed read back was 0x4DC0.
+  - The stack held the local direction (1.21, 1.48, 0.60), length 2.003, and three matrix rows of length 2.003.
+- **The fix run.** The same config on `d13436eb4` plus the counters (`local\g35_ctr3`), USNOS `s41_os_f17` to 90000
+  frames, past the 4230 s fault time:
+  - `BSP_FORT_RESCALE_TRACE`: one fort, `unit=72 shapes=1 row_scale=2.0030,2.0030,2.0030`, from step 73.
+  - The counters: `center_hits=0 out_of_table=0`.
+  - No fault; exit 0.
+- **Which pair.** The crash stacks show `hull_fort_narrow_phase` (165), which agrees.
+
+**The fix (`HullTerrainContactSolver::rigid_fort`, `src/hull_terrain_contact.cpp`, unconditional).**
+- A fort whose rows are not unit length (beyond 1e-4) gets per-unit copies of its points, scaled on each local axis
+  by that row's length, and normalized rows.
+- The world geometry is the same: `t + sum_i (s_i p_i) R_i`. Contact points come back in the scaled local frame and
+  are mapped through the normalized rows.
+- Unit-length forts pass through untouched (bit-identical).
+- Uncertainty:
+  - The image builds the same scaled frame. If its fort carries the scale too, the image indexes past the table
+    the same way and reads heap bytes.
+  - The fix changes no world geometry, only that read. It is a host correctness fix, not a switch.
+- **Pairs** (`98e8c70d3` against `d13436eb4`, AF's launch form): USNOS, USNOS long, JM08, USN13, JM05 and USN01 are
+  all exit 0/1. Smoke: USNOS 300 frames, exit 0.
+- **Not checked:** whether any other Dyn body (hull frames from `DynBody`, terrain tiles) can carry a scale. Hull
+  frames come from the motion state's orthonormal rows.
