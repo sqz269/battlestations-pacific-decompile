@@ -148,16 +148,25 @@ void set_material_alpha_ref_00b17310(void* material, std::int32_t value);
 
 // 00B19A60 `void __thiscall(registry)`, RET: for each 2Ch entry of the
 // registry's vector (begin +8h, count +0Ch) call entry+28h's vtable +28h.
-// The registry is BSP_ParticleClock_GetSingleton (004DE4B0); its sibling
-// 00B19A10 calls vtable +18h(frame time) the same way. Caller 00B33A10 (a
-// D3D9 renderer vtable slot at D5F190), which then clears effect+B4h on its
-// own 2Ch effect-cache entries (+1A9Ch/+1AA0h).
-class ClockRegistryHost {
+// The registry (004DE4B0, ledger name BSP_ParticleClock_GetSingleton) holds
+// texture sources: 00B1B4D0 looks samplers up in it, and the Caustics/ShoreWave
+// sources (vtables D64478/D644B4) put BSP_TextureSource_ClearChildren
+// (C303B0, release the frame textures) in slot +28h; the base D5E554 slot is a
+// bare RET. 00B19A10 drives slot +18h, BSP_TextureSource_SetTime.
+class TextureSourceRegistryHost {
 public:
-    virtual ~ClockRegistryHost() = default;
-    virtual void listener_slot28(void* listener) = 0;
+    virtual ~TextureSourceRegistryHost() = default;
+    virtual void* registry_004de4b0() = 0;
+    virtual void source_clear_children_slot28(void* source) = 0;
 };
-void notify_clock_listeners_00b19a60(void* registry, ClockRegistryHost& host);
+void clear_texture_source_children_00b19a60(void* registry, TextureSourceRegistryHost& host);
+
+// 00B33A10 `void __thiscall(renderer)`, RET: renderer vtable 00D5F0A8 slot
+// +E8h, called by BSP_Game_TeardownSessionState (004DAD4A). 00B19A60 on the
+// registry, then byte +B4h = 0 on the effect (+28h) of every 2Ch entry of the
+// renderer's effect cache (+1A9Ch begin, +1AA0h count). Material construction
+// 00B18900 sets that byte to 1, so it reads as "effect in use".
+void release_texture_source_frames_00b33a10(void* renderer, TextureSourceRegistryHost& host);
 
 // What the scene-render spine calls. Methods are named after the original
 // callee; "slotNN" is a vtable offset. Every pointer is borrowed native storage.
@@ -231,10 +240,10 @@ public:
     virtual void pass_assign_targets_00b4e2b0(void* pass, void* targets) = 0;
     virtual void pass_draw_00b4dcc0(void* pass, std::uint32_t unused) = 0;
     virtual void object_slot10(void* object) = 0;  // vtable +10h on +18h/+1Ch/+28h/+2Ch/+60h
-    virtual void call_00b3cda0(void* object5c, void* surface58) = 0;  // contract partly read: device +88h copy
-    virtual bool object0c_visible_00b3c550(void* object0c) = 0;  // object+8h node, node+44h == 0
-    virtual void call_00b3c960(void* object0c, void* camera, void* targets) = 0;
-    virtual void call_00b3c6e0(void* object0c, void* camera, void* targets) = 0;
+    virtual void surface_stretch_from_00b3cda0(void* destination, void* source) = 0;  // StretchRect, linear
+    virtual bool cockpit_node_visible_00b3c550(void* cockpit) = 0;  // cockpit helper +8h node, node+44h == 0
+    virtual void cockpit_begin_frame_00b3c960(void* cockpit, void* camera, void* targets) = 0;
+    virtual void cockpit_draw_00b3c6e0(void* cockpit, void* camera, void* targets) = 0;
     virtual void luminance_measure_00b50050(void* luminance, float value) = 0;
     virtual void tonemap_set_params_draw_00b548c0(void* pass, void* holder, float a, float b, float c, float d,
                                                   float e) = 0;

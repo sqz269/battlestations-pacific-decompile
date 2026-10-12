@@ -82,10 +82,16 @@ header and hands each block to the service at `[00F8D39C]`. The bag keys name th
 - **Small setters.**
   - **00B172E0** stores effect+B0h, the signed sort priority. The GUI model setup passes 0.
   - **00B17310** stores material+104h, the alpha reference (see `BSP_Material_GetWord104`).
-  - **00B19A60** calls vtable +28h on every listener of the 004DE4B0 registry (2Ch entries,
-    object at +28h), as 00B19A10 does with +18h(frame time). Its only caller is 00B33A10, a D3D9
-    renderer vtable slot (D5F190), which then clears effect+B4h on the renderer's effect-cache
-    entries. What slot +28h means for a listener is still open.
+  - **00B19A60** calls vtable +28h on every entry of the 004DE4B0 registry (2Ch entries, object at
+    +28h). The registry holds texture sources, not particle clocks: 00B1B4D0 looks samplers up in
+    it, and the Caustics/ShoreWave sources (vtables D64478/D644B4) have
+    `BSP_TextureSource_ClearChildren` (C303B0, releases the frame textures) at +28h and
+    `BSP_TextureSource_SetTime` (C302A0) at +18h. The base vtable D5E554 has a bare RET at +28h.
+    The ledger name of 004DE4B0 (`BSP_ParticleClock_GetSingleton`) is therefore misleading; it
+    belongs to another lane and is left as is.
+  - **00B33A10** is renderer vtable 00D5F0A8 slot +E8h, called by `BSP_Game_TeardownSessionState`
+    (004DAD4A). It runs 00B19A60, then clears byte +B4h, the "in use" flag that material
+    construction 00B18900 sets, on every effect in the renderer's effect cache (+1A9Ch/+1AA0h).
 
 ## 5. Scene submission and the motion-blur node (00B101C0, 00B10500)
 
@@ -143,11 +149,13 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
    - When blur is active: the +664h pass draws texture +48h into surface +44h, clears the depth (flags 2), and
      runs 00B10500 again.
    - List 1 is drawn into the raw surface +58h with render mode 8/9 (camera mode 0/3), and +58h is
-     copied to +5Ch (00B3CDA0).
+     copied to +5Ch (00B3CDA0, `BSP_D3D9Surface_StretchFrom`: StretchRect, linear filter).
    - The +64h shadow-map holder target with the device depth surface, then passes +68h (+44h) and
      +6Ch (+54h, +60h holder). List 1 runs again with mode 10/11.
-     - When the +0Ch object (role unread) has a visible node at +8h, 00B3C960/00B3C6E0 bracket that pass, it
-       uploads constants first, and it unbinds afterwards.
+     - When the cockpit helper +0Ch (BSP_CockpitHelper_Construct) has a visible node at +8h,
+       `BSP_CockpitHelper_BeginFrame` (00B3C960: cockpit camera synced to the main camera, cockpit
+       shadow) and `BSP_CockpitHelper_DrawCockpit` (00B3C6E0: the node drawn with the cockpit camera
+       in render mode 12) bracket that pass, it uploads constants first, and it unbinds afterwards.
    - Post objects:
      - +18h vtable +10h; device +114h({0, 10h, 70h}).
      - +1Ch and +2Ch only when the lens effect (+21Ah) or sight blur (+21Bh) is on.
@@ -163,9 +171,9 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
        (by +21Ch); +228h, +648h and +64Ch are set; then 00B529A0(+34h, +1D4h, +2ACh, flag, extent y,
        +224h).
      - **Plain.** Otherwise passes +650h/+654h.
-     - Slot 1 is the distortion output when +30h exists and the +0Ch node is not visible.
+     - Slot 1 is the distortion output when +30h exists and the cockpit node is not visible.
        Otherwise it is +668h.
-     - The +654h variant skips the +0Ch test. The other three call 00B3C550 on +0Ch without a
+     - The +654h variant skips the cockpit test. The other three call 00B3C550 on +0Ch without a
        null check.
    - 00B151E0 runs, then the label reset.
 - **Batch helper.** It is used twice.
@@ -225,7 +233,7 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
 | 00B0EB10 | complete (dead near-point rotation omitted) | listing |
 | 00B0DB00 | complete | listing plus `tools/x87_sym.py` walk |
 | 00B151E0 | complete; std::sort substitutes the 00B148E0 instantiation | listing |
-| 00B0E9B0, 00B0EA20, 00B0EA70, 00B172E0, 00B17310, 00B19A60 | complete | listing |
+| 00B0E9B0, 00B0EA20, 00B0EA70, 00B172E0, 00B17310, 00B19A60, 00B33A10 | complete | listing |
 
 - **Status.** 00B156C0, 00B101C0, 00B10500, 00B0EB10, 00B0DB00, 00B151E0 and 00B105B0 are
   reconstructed, along with the three bag setters and the three small setters. They are
@@ -233,16 +241,23 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
 - **Rounding.** x87 extended intermediates are modelled with double, with float roundings where
   the listing stores. Sums of three products and divisions can differ in the last bit in rare
   cases. Float copies made with x87 (memcpy here) would quiet a signalling NaN in the native.
-- **Out of scope.** The 00B1F5E0 / 00B1E6D0 queue helpers and the +0Ch object (00B3C550,
-  00B3C960, 00B3C6E0, 00B3CDA0) are segment 83/84 and are left unnamed.
+- **Out of scope.** The 00B1F5E0 / 00B1E6D0 queue helpers (segment 83) are left unnamed. The
+  cockpit helper calls 00B3C550/00B3C960/00B3C6E0 and 00B3CDA0 are named (section 6) but not
+  reconstructed.
 
 ## 9. Handoff
 
-- **Open:**
-  - What listener vtable +28h does (00B19A60, from 00B33A10).
-  - The type of the +0Ch object (its node at +8h); 00B3C960/00B3C6E0 bodies are unread.
-  - The device vtable +114h words {0, 10h, 70h}.
-  - Service byte +B0h, which gates the camera retain in 00B101C0.
-  - The +2ACh old-film parameter block.
-- **00BA0090** (BSP_OceanWaveField_Update, cc13-water1) also calls 00B0EB10 (its cCorner0..3 are the
+- **Closed since the first handoff:**
+  - Device vtable +114h is `BSP_D3D9Renderer_CommandHookNoOp` (00B20210, a bare `RET 4`). The
+    words {0, 10h, 70h} that 00B156C0 passes, and command+1Ch that 00B17240 passes (the {0, 24h,
+    5Ch} metadata 00B101C0 stores), reach no code in this image.
+  - Service byte +B0h is zeroed by `BSP_RenderResources_Construct` (00B14CB8) and set to 1 by
+    `BSP_RenderResources_InitializeMembers` (00B10912), next to +1C4h and +218h. A byte-store scan
+    of the render range finds no other writer, so after initialization 00B101C0 always keeps the
+    last submitted camera retained in +10h.
+  - The +2ACh old-film parameter block is initialized by 00B0CD80
+    (docs/NATIVE_RENDER_SERVICE_*.md) and consumed by 00B529A0 (docs/CC13_POST_EFFECTS_AND_RESOURCES.md).
+  - Slot +28h of 00B19A60 and the +0Ch object: see sections 4 and 6.
+- **Open:** the 00B1F5E0 / 00B1E6D0 queue helpers (segment 83) are unnamed; 004DE4B0's ledger name
+  says particle clock but the registry holds texture sources (owner lane to decide).- **00BA0090** (BSP_OceanWaveField_Update, cc13-water1) also calls 00B0EB10 (its cCorner0..3 are the
   far-corner rays) and 00B0D160 (+21Ch). It belongs to the water lane.
