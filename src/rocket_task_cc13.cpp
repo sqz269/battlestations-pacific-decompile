@@ -439,9 +439,11 @@ float rocket_flight_time_00809e10(float range, float launch_speed, float vmax_d8
     const float reach_a = static_cast<float>(kHalf * vmax * vmax / a);
     const float reach = static_cast<float>(static_cast<double>(reach_a) - (kHalf * v0) * v0 / a);
     if (static_cast<double>(range) > reach) {
-        // 00809EAD-00809EC3: (R - reach) / VMax + (VMax - v0) / a.
-        const float cruise = static_cast<float>((static_cast<double>(range) - reach) / vmax);
-        return static_cast<float>((vmax - v0) / a + cruise);
+        // 00809EAD-00809EC3: (R - reach) / VMax + (VMax - v0) / a. The FSTP at
+        // 00809EB7 float-rounds (VMax - v0) / a; the cruise quotient stays on the
+        // x87 stack until the FADD at 00809EBF.
+        const float accel_time = static_cast<float>((vmax - v0) / a);
+        return static_cast<float>((static_cast<double>(range) - reach) / vmax + accel_time);
     }
     // 00809ED1-00809F10: sqrt(2 (R + 0.5 v0 (v0 / a)) / a) - v0 / a.
     const float q = static_cast<float>(v0 / a);

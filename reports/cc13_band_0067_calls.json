@@ -1,0 +1,16 @@
+{
+  "packet": "cc13-sweep67",
+  "doc": "docs/CC13_BAND_0067_0073.md",
+  "steps": [
+    {"address": "0073bc6b", "function": "0073bc40", "native": "00736d00", "claim": "the content-package mount gets the MSAR provider factory singleton before registering it"},
+    {"address": "0072315a", "function": "007230f0", "native": "00722210", "claim": "axis 0 sorts the record array by the dword at +0"},
+    {"address": "0072313a", "function": "007230f0", "native": "00722400", "claim": "axis 1 sorts the record array by the dword at +4"},
+    {"address": "0072311a", "function": "007230f0", "native": "007225f0", "claim": "axis 2 sorts the record array by the dword at +8"},
+    {"address": "00708a75", "function": "00708a60", "native": "007079a0", "claim": "the fish-school model's scalar delete returns its slot to the fish-school pool"},
+    {"address": "0070bc45", "function": "0070bc30", "native": "0070acb0", "claim": "the flag model's scalar delete returns its slot to the flag pool"},
+    {"address": "007093f4", "function": "00709310", "native": "00bd2f10", "claim": "fish-school init draws from the shared gameplay RNG (stream 0)"},
+    {"address": "00709440", "function": "00709310", "native": "00bd2f10", "claim": "fish-school init draws a second value from the shared gameplay RNG"},
+    {"address": "004dfa39", "function": "004de610", "native": "00707480", "claim": "world construction builds the message manager"},
+    {"address": "00681c8b", "function": "00681ba0", "native": "0067df40", "claim": "the unit library update steps the selected digit"}
+  ]
+}

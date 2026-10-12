@@ -238,8 +238,9 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
 // (00988530..0098859B): for a plane that is its squadron (007B97E0, plane+9D4h).
 // True: a hit on a squadron member is reported with the squadron as target.
-// False: the hit unit, as before.
-inline constexpr bool kLuaHitTargetSquadronBound = false;
+// False: the hit unit, as before. ON (5fz): BSM04's UNDERATTACK1 now starts at 73.95 s on the first
+// hit to B-17|.-2 instead of waiting for wing 0; gameplay identical.
+inline constexpr bool kLuaHitTargetSquadronBound = true;
 
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,

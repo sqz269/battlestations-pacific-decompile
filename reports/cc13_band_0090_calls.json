@@ -1,0 +1,23 @@
+{
+  "packet": "cc13-sweep9x",
+  "doc": "docs/CC13_BAND_0090_00BF.md",
+  "steps": [
+    {"function": "0098E910", "address": "0098E937", "native": "0098DF90", "note": "default options text asks for the detail level"},
+    {"function": "0098E910", "address": "0098E951", "native": "0098E0E0", "note": "level 1: 800x600 supported?"},
+    {"function": "0098E910", "address": "0098E97C", "native": "0098E0E0", "note": "level 3: 1280x1024 supported?"},
+    {"function": "0098E910", "address": "0098E99D", "native": "0098E0E0", "note": "levels 2/3: 1024x768 supported?"},
+    {"function": "00BBBB90", "address": "00BBBBAE", "native": "00BBB5B0", "note": "construct the MSAR provider"},
+    {"function": "00BBBB90", "address": "00BBBBBF", "native": "00BBBAB0", "note": "verify the archive checksum"},
+    {"function": "00BBBB90", "address": "00BBBBD2", "native": "00BBB660", "note": "destroy the provider"},
+    {"function": "00BBBAB0", "address": "00BBBAC8", "native": "00BBA090", "note": "read and check the MSAR header"},
+    {"function": "00BBBAB0", "address": "00BBBB2C", "native": "00BBA030", "note": "fold each 64 KB chunk into the CRC"},
+    {"function": "00A9C8F0", "address": "00A9C909", "native": "00A9C7C0", "note": "select with the listener cleared"},
+    {"function": "00AB95F0", "address": "00AB9637", "native": "00AB9240", "note": "position the cursor for the new mode"},
+    {"function": "00A78CE0", "address": "00A78D88", "native": "00A786F0", "note": "play dialog stream requests the music record"},
+    {"function": "00ADD1B0", "address": "00ADD1DC", "native": "00ADBF80", "note": "height-field destructor releases the tile grid"},
+    {"function": "00AE1680", "address": "00AE169B", "native": "00AE13D0", "note": "BushGroup deleting destructor returns the slot to its pool"},
+    {"function": "00AE2450", "address": "00AE276A", "native": "00AE1870", "note": "BushGroup initialise allocates from the pool"},
+    {"function": "00AE23F0", "address": "00AE241F", "native": "00AE1FB0", "note": "render filter builds the bush object"},
+    {"function": "00ADC1C0", "address": "00ADC255", "native": "00ADBD00", "note": "height TGA dump computes the height range"}
+  ]
+}

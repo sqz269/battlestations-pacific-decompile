@@ -968,6 +968,17 @@ constexpr bool kAiOwnerPlayerSlotBound = true;
 // identical (section 149.5).
 constexpr bool kAiAutoMergeLeaveBound = true;
 
+// Packet cc9_ai_group_party_change (docs/SHIP_AI_OPEN_ITEMS.md section 216). The base
+// SetParty 00923B80 notifies its observers with event 6 and the new party
+// (00923BC8..00923BD0, 00696350); the AI group's slot 00A2DB50 removes the entity
+// through 00A2D9D0(entity, 1) when that party differs from the group's +5638h team
+// (ECX = group+10h, 00A2DB5B CMP [ECX+5628h]). An emptied group goes to the
+// pending list (00A2DA09..00A2DA4F). SUBSTITUTION, labelled: the host has no
+// observer edge, so the change is seen at the start of the next AI fixed step by
+// comparing each unit's +54h with the value seen before. False: the next
+// 00A2DDE0 eviction removes the member instead.
+constexpr bool kAiGroupPartyChangeRemovalBound = false;
+
 // Packet cc9_ai_coordinator_load_gate, docs/SHIP_AI_OPEN_ITEMS.md section 150.
 // The coordinator (00A31730, whose tick element 00A32D50 runs the compose pass
 // 00A2E720 and the party think 00A182C0) is constructed only by 00A32350, and
@@ -5591,6 +5602,38 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
     }
 
+    // Packet cc9_ai_group_party_change: 00A2DB50 on event 6, polled (see the switch).
+    std::vector<int> observed_party;
+    unsigned long long party_change_removals{0};
+    void apply_party_change_removals_00a2db50() {
+        const std::size_t count = candidate_count();
+        if (observed_party.size() < count) observed_party.resize(count, -1);
+        for (std::size_t unit = 0; unit < count; ++unit) {
+            const int party = units.unit_side_0054(proxy(unit));
+            const int before = observed_party[unit];
+            observed_party[unit] = party;
+            if (before < 0 || before == party) continue;
+            if (unit >= group_of_unit.size()) continue;
+            Group* g = group_of_unit[unit];
+            if (g == nullptr || g->destroyed) continue;
+            if (party == g->team) continue;            // 00A2DB5B..00A2DB61
+            // 00A2D9D0(entity, 1): 0077BEA0 unlinks it, +16Ch cleared when it names
+            // this group; 006956A0's observer pair is not modelled.
+            g->members.erase(std::remove(g->members.begin(), g->members.end(), unit),
+                g->members.end());
+            group_of_unit[unit] = nullptr;
+            ++party_change_removals;
+            log.notef("  ai group party change: %s party %d -> %d leaves the group of team %d "
+                "(population %zu) at t=%.2f (00923BD0 event 6 -> 00A2DB50 -> 00A2D9D0)",
+                unit_name(unit).c_str(), before, party, g->team, g->members.size(),
+                static_cast<double>(clock_seconds));
+            if (g->members.empty() && !g->emptied) {   // 00A2DA09..00A2DA4F
+                g->emptied = true;
+                emptied.push_back(g);
+            }
+        }
+    }
+
     void attach(Group* g, std::size_t unit) {
         if (unit >= candidate_count()) return;
         if (std::find(g->members.begin(), g->members.end(), unit) != g->members.end()) return;
@@ -6102,6 +6145,7 @@ void GameAiCoordinatorHost::fixed_step(float step_seconds) {
         (void)step_seconds;
     } else {
         if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
+        if constexpr (kAiGroupPartyChangeRemovalBound) host.apply_party_change_removals_00a2db50();
         host.clock_seconds += step_seconds;
         ++host.summary.compose_passes;
         ++host.summary.party_think_calls;
