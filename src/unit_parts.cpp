@@ -16,7 +16,7 @@ namespace {
 // Packet cc9_x87_spin_sign_w4 (docs/CC13_X87_DC_FORM_AUDIT.md W4, docs/SHIP_AI_OPEN_ITEMS.md 217).
 // True: the detached part's spin axis x is +vz (00934D46 FSUB leaves vz - 0*vy). False:
 // the earlier -vz.
-constexpr bool kUnitPartSpinSignBound = false;
+constexpr bool kUnitPartSpinSignBound = true;
 
 void vec_add(float out[3], const float a[3]) noexcept {
     out[0] += a[0];

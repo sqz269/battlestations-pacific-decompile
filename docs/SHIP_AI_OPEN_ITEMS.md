@@ -16948,3 +16948,19 @@ Predictions: smoke identical for all three. W1 changes the steering-angle target
 shared RNG. W2 moves only rows where a ship enters the standoff approach on the negative-offset side (JM08's
 torpedo boats, USNOS); identical elsewhere. W4 moves only the detached-part debris spin (presentation; exit 0 or 1
 unless a part's motion feeds collisions): USN15 idle (many sinkings) is the check.
+
+### 217.1 Pairs and the flips: all three **ON** (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `b7b94ebf3` (gameplay as `cece950ac`), ON = one pair_export per switch (`local\s44_w{1,2,4}_on`);
+logs `local\s44_xoff_*.log`, `local\s44_w{1,2,4}on_*.log`. Rows: smoke, USNOS j (44000), JM08 `l47_j8_g9` (24000),
+LOMP10 win `p3_l10_b` (30000), USN02 win `s36_u2_p7` (16000), USN15 idle (36000, W4 only).
+- **W1**: smoke exit 0; USNOS j, JM08, LOMP10, USN02 exit 1, gameplay identical. My prediction was wrong: in this
+  host 00834E90 runs through `unit_instance_step11.cpp` (`kUnitInstanceStep11Bound`) on units that carry no scene
+  nodes, and the steering angle at +1088h it writes has no gameplay reader (the rudder/propeller visuals only).
+- **W2**: smoke exit 0; the four others exit 1, gameplay identical, although 009E6E80 runs 21215 times on USNOS j
+  (`standoff choices`). The negative-offset side weight did not change an outcome in these rows (whether the arm
+  is entered was not counted).
+- **W4**: smoke exit 0; LOMP10 and USN15 idle exit 1, gameplay identical (debris spin only).
+- Both wins still complete with the guard line on every side (LOMP10 1259.85 s, USN02 203.01 s).
+- **Verdict: all three ON.** Each ON arm is the arithmetic the bytes compute (re-read above, and agreeing with
+  Ghidra's decompiler); no row shows a mechanism failure and none moves.

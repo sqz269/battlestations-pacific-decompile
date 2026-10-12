@@ -303,7 +303,7 @@ void unit_update_timers_00956600(UnitTimerState& state, PoseRefreshView& actual_
 // Packet cc9_x87_dc_form_w1 (docs/CC13_X87_DC_FORM_AUDIT.md W1, docs/SHIP_AI_OPEN_ITEMS.md
 // 217). True: the image's (s - bias) * blend - blend. False: the transcription from
 // Ghidra's listing text, which prints DC C9 like D8 C9.
-constexpr bool kUnitSteeringDcFormBound = false;
+constexpr bool kUnitSteeringDcFormBound = true;
 
 float unit_steering_angle_target_00834ed7(float steering_source) noexcept {
     const double biased = static_cast<double>(steering_source) - kUnitSteeringBias;

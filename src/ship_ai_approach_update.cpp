@@ -28,7 +28,7 @@ namespace {
 // Packet cc9_x87_dc_form_w2 (docs/CC13_X87_DC_FORM_AUDIT.md W2, docs/SHIP_AI_OPEN_ITEMS.md 217).
 // True: 009E7441..009E7469 as the bytes compute it, 0.5 * (h*pi + pi). False: the
 // transcription from Ghidra's listing text, (0.5q) * (q + pi*q).
-constexpr bool kApproachSideWeightDcFormBound = false;
+constexpr bool kApproachSideWeightDcFormBound = true;
 
 // The image makes a float non-negative by masking the sign bit of its storage
 // (AND ECX, 0x7FFFFFFF at 009E7619, 009E7688, 009E75A3, 009E6D7A, 009E6DE2,
