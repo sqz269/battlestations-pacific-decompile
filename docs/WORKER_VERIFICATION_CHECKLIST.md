@@ -89,3 +89,10 @@ wave). Claim the annotated set; extend it when you decide to name a callee.
 `reports/<name>.json` has, for every host step, `address` (call site), `native` (callee) and the
 containing function when it is not the packet's main routine; for every routine, `coverage`; for
 every correction, `was`, `is`, `evidence`. `tools/verify_report_calls.py` reads the first two.
+
+## 11. Read `FMUL STi` from the bytes (`DC C9` at `009E7451` was read as `D8 C9`)
+
+Ghidra prints both `D8 C8+i` (ST0 = ST0*ST(i)) and `DC C8+i` (ST(i) = ST(i)*ST0) as `FMUL STi`;
+its p-code and pseudocode are right, only the listing text is ambiguous. Before transcribing a
+listing `FMUL STi`, run `python tools/x87_dc_form_scan.py --range <lo>-<hi> --context 12`, or read
+the pseudocode. Three reconstructions (four sites) got this wrong (docs/CC13_X87_DC_FORM_AUDIT.md).
