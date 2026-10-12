@@ -1,12 +1,14 @@
 // GUI widget library reconstructions, packet cc13-gui1 (docs/CC13_GUI_1.md).
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_animation_registry.hpp"
+#include "bsp/gui_manager_cc13.hpp"
 
 #include <cstring>
 #include <intrin.h>
 #include <type_traits>
 
 namespace bsp::gui_widgets_cc13 {
+using gui_manager_cc13::name_less_00aa2420;
 namespace {
 
 template <class T>
@@ -424,5 +426,16 @@ void gui_curve_add_point_00abc970(void* self, const float (&point)[2], float wid
 void gui_curve_on_loaded_00abc040(void* self, GuiWidgetMemberHost& host) {
     host.loaded_base_00aa7170(self);
     host.set_active_00aa6a30(self, true);
+}
+bool GuiWidgetNameLess::operator()(const void* left, const void* right) const {
+    // 00AA2420: the right operand's name is fetched first, then the left's.
+    const std::string right_name = names->name(right);
+    const std::string left_name = names->name(left);
+    return name_less_00aa2420(left_name, right_name);
+}
+
+void sort_widgets_by_name(const void** first, const void** last, GuiWidgetNameSource& names) {
+    GuiWidgetNameLess pred{&names};
+    msvc9_sort::sort(first, last, last - first, pred);
 }
 } // namespace bsp::gui_widgets_cc13

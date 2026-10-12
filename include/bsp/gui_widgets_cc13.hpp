@@ -16,6 +16,8 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <string>
+#include <utility>
 
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_widget.hpp"
@@ -496,5 +498,211 @@ void gui_curve_clear_points_00abc920(void* self, GuiWidgetMemberHost& host);
 void gui_curve_add_point_00abc970(void* self, const float (&point)[2], float width, GuiWidgetMemberHost& host);
 // 00ABC040, loaded hook: 00AA7170 then 00AA6A30(1).
 void gui_curve_on_loaded_00abc040(void* self, GuiWidgetMemberHost& host);
+// ---------------------------------------------------------------------------
+// The std::sort instantiations over widget pointers (MSVC 9 <algorithm>)
+// ---------------------------------------------------------------------------
 
+// Two byte-identical instantiation sets sort std::vector<cGuiWidget*> by the
+// case-insensitive name predicate (00AA2420 and its twin 00AA7810, reconstructed
+// as name_less_00aa2420 in gui_manager_cc13.hpp; the predicate is inlined into
+// the partition and heap routines). The routines below are the VS2008 library
+// algorithms in the instantiations' operation order, so equal-name elements end
+// up in the same permutation as in the image. Iterators are raw pointers here
+// (the instantiations take them in registers: ECX = first, EDX = second).
+//   routine              set A (00AA5A00)   set B (00AAAED0)
+//   _Med3                00AA2A30           00AA7BF0   ECX,EDX,[esp+4] RET 8
+//   _Push_heap           00AA2A90           00AA7C50
+//   _Median              00AA2D90           00AA8080
+//   _Adjust_heap         00AA2E30           00AA8120
+//   _Unguarded_partition 00AA34A0           00AA8FB0
+//   _Make_heap           00AA37D0           00AA92E0
+//   _Sort_heap           00AA4550           00AAA260
+//   _Insertion_sort      00AA2C80           00AA7F70
+//   _Sort (introsort)    00AA4E00           00AAA480
+// The _ISORT_MAX threshold is 32 elements and _Ideal starts at the count.
+namespace msvc9_sort {
+
+template <class T, class Pred>
+void med3(T* first, T* mid, T* last, Pred& pred) {
+    if (pred(*mid, *first)) std::swap(*mid, *first);
+    if (pred(*last, *mid)) std::swap(*last, *mid);
+    if (pred(*mid, *first)) std::swap(*mid, *first);
+}
+
+// last is inclusive (the partition passes last - 1).
+template <class T, class Pred>
+void median(T* first, T* mid, T* last, Pred& pred) {
+    if (40 < last - first) {
+        const std::ptrdiff_t step = (last - first + 1) / 8;
+        med3(first, first + step, first + 2 * step, pred);
+        med3(mid - step, mid, mid + step, pred);
+        med3(last - 2 * step, last - step, last, pred);
+        med3(first + step, mid, last - step, pred);
+    } else {
+        med3(first, mid, last, pred);
+    }
+}
+
+template <class T, class Pred>
+void push_heap(T* first, std::ptrdiff_t hole, std::ptrdiff_t top, T value, Pred& pred) {
+    for (std::ptrdiff_t idx = (hole - 1) / 2; top < hole && pred(first[idx], value); idx = (hole - 1) / 2) {
+        first[hole] = first[idx];
+        hole = idx;
+    }
+    first[hole] = value;
+}
+
+template <class T, class Pred>
+void adjust_heap(T* first, std::ptrdiff_t hole, std::ptrdiff_t bottom, T value, Pred& pred) {
+    const std::ptrdiff_t top = hole;
+    std::ptrdiff_t idx = 2 * hole + 2;
+    for (; idx < bottom; idx = 2 * idx + 2) {
+        if (pred(first[idx], first[idx - 1])) --idx;
+        first[hole] = first[idx];
+        hole = idx;
+    }
+    if (idx == bottom) {
+        first[hole] = first[bottom - 1];
+        hole = bottom - 1;
+    }
+    push_heap(first, hole, top, value, pred);
+}
+
+template <class T, class Pred>
+void make_heap(T* first, T* last, Pred& pred) {
+    const std::ptrdiff_t bottom = last - first;
+    for (std::ptrdiff_t hole = bottom / 2; 0 < hole;) {
+        --hole;
+        adjust_heap(first, hole, bottom, first[hole], pred);
+    }
+}
+
+template <class T, class Pred>
+void sort_heap(T* first, T* last, Pred& pred) {
+    for (; 1 < last - first; --last) {
+        T value = last[-1];
+        last[-1] = *first;
+        adjust_heap(first, std::ptrdiff_t{0}, (last - 1) - first, value, pred);
+    }
+}
+
+// 00AA1E60 STL_rotate_ptr, __fastcall(ECX = first, EDX = mid, [esp+4] = last):
+// the VS2008 random-access rotate (gcd cycles, highest cycle start first).
+template <class T>
+void rotate(T* first, T* mid, T* last) {
+    const std::ptrdiff_t shift = mid - first;
+    const std::ptrdiff_t count = last - first;
+    std::ptrdiff_t factor = count;
+    for (std::ptrdiff_t s = shift; s != 0;) {
+        const std::ptrdiff_t remainder = factor % s;
+        factor = s;
+        s = remainder;
+    }
+    if (factor < count) {
+        for (; 0 < factor; --factor) {
+            T* const start = first + factor;
+            T* next = start;
+            T value = *start;
+            T* next1 = next + shift;
+            if (next1 == last) next1 = first;
+            while (next1 != start) {
+                *next = *next1;
+                next = next1;
+                if (shift < last - next1) next1 += shift;
+                else next1 = first + (shift - (last - next1));
+            }
+            *next = value;
+        }
+    }
+}
+
+// The instantiations compare the element still at `next` (not a copy) and move
+// it into place with rotate(hole, next, next + 1); the rotate's own
+// (first != mid && mid != last) guard is inlined at the call.
+template <class T, class Pred>
+void insertion_sort(T* first, T* last, Pred& pred) {
+    if (first == last) return;
+    for (T* next = first; ++next != last;) {
+        T* hole = next;
+        if (pred(*next, *first)) {
+            hole = first;
+        } else {
+            while (pred(*next, hole[-1])) --hole;
+        }
+        if (hole != next) rotate(hole, next, next + 1);
+    }
+}
+
+template <class T, class Pred>
+std::pair<T*, T*> unguarded_partition(T* first, T* last, Pred& pred) {
+    T* mid = first + (last - first) / 2;
+    median(first, mid, last - 1, pred);
+    T* pfirst = mid;
+    T* plast = pfirst + 1;
+    while (first < pfirst && !pred(pfirst[-1], *pfirst) && !pred(*pfirst, pfirst[-1])) --pfirst;
+    while (plast < last && !pred(*plast, *pfirst) && !pred(*pfirst, *plast)) ++plast;
+    T* gfirst = plast;
+    T* glast = pfirst;
+    for (;;) {
+        for (; gfirst < last; ++gfirst) {
+            if (pred(*pfirst, *gfirst)) continue;
+            if (pred(*gfirst, *pfirst)) break;
+            std::swap(*plast++, *gfirst);
+        }
+        for (; first < glast; --glast) {
+            if (pred(glast[-1], *pfirst)) continue;
+            if (pred(*pfirst, glast[-1])) break;
+            std::swap(*--pfirst, glast[-1]);
+        }
+        if (glast == first && gfirst == last) return {pfirst, plast};
+        if (glast == first) {
+            if (plast != gfirst) std::swap(*pfirst, *plast);
+            ++plast;
+            std::swap(*pfirst++, *gfirst++);
+        } else if (gfirst == last) {
+            if (--glast != --pfirst) std::swap(*glast, *pfirst);
+            std::swap(*pfirst, *--plast);
+        } else {
+            std::swap(*gfirst++, *--glast);
+        }
+    }
+}
+
+template <class T, class Pred>
+void sort(T* first, T* last, std::ptrdiff_t ideal, Pred& pred) {
+    std::ptrdiff_t count;
+    for (; 32 < (count = last - first) && 0 < ideal;) {
+        const auto mid = unguarded_partition(first, last, pred);
+        ideal /= 2, ideal += ideal / 2;
+        if (mid.first - first < last - mid.second) {
+            sort(first, mid.first, ideal, pred);
+            first = mid.second;
+        } else {
+            sort(mid.second, last, ideal, pred);
+            last = mid.first;
+        }
+    }
+    if (32 < count) {
+        if (1 < last - first) make_heap(first, last, pred);
+        sort_heap(first, last, pred);
+    } else if (1 < count) {
+        insertion_sort(first, last, pred);
+    }
+}
+
+} // namespace msvc9_sort
+
+// The element and predicate the two instantiation sets use: widget pointers,
+// names through each widget's vtable +28h (an 8-byte native string), compared
+// by name_less_00aa2420 (gui_manager_cc13.hpp).
+struct GuiWidgetNameSource {
+    virtual ~GuiWidgetNameSource() = default;
+    virtual std::string name(const void* widget) = 0;
+};
+struct GuiWidgetNameLess {
+    GuiWidgetNameSource* names;
+    bool operator()(const void* left, const void* right) const;
+};
+// _Sort(first, last, last - first, pred), as 00AA5A00 and 00AAAED0 call it.
+void sort_widgets_by_name(const void** first, const void** last, GuiWidgetNameSource& names);
 } // namespace bsp::gui_widgets_cc13
