@@ -1,0 +1,11 @@
+{
+  "packet": "cc13_jm08_aa_truck_hq_damage",
+  "doc": "docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md",
+  "steps": [
+    {"address": "0084C1D3", "native": "0098B370", "function": "0084BF00", "note": "the projectile's entity sweep, exclude = owner->vtable[B0h]()"},
+    {"address": "0098B3EB", "native": "0098ADD0", "function": "0098B370", "note": "the single from/to pair into the segment query"},
+    {"address": "0098AF8C", "native": "0098AC20", "function": "0098ADD0", "note": "the per-entity narrowphase after the coarse test"},
+    {"address": "00955424", "native": "0087BCC0", "function": "00955420", "note": "every unit's part instance"},
+    {"address": "0087BE58", "native": "007135C0", "function": "0087BCC0", "note": "the land-structure branch (IsKindOf 1Bh at 0087BE0D) builds the part instance"}
+  ]
+}
