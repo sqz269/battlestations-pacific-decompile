@@ -67,7 +67,8 @@ which passes the byte at 00F88A31 (docs/APP_INIT_GAME_ENTRY.md).
 
 The vector arrives by value (16 bytes: proxy, first, last, end) with a float after it (RET 14h).
 Manager +6Ch is set to `pages[0]` before `BSP_GuiManager_UpdatePointer` (00AA3FB1) and cleared
-after the walk (00AA400E); each page gets virtual +40h(seconds) when its virtual +38h is true.
+after the walk (00AA400E); while it is set, the hit test 00AA2F10 skips every other page, so
+the pointer pass only sees the first page of the list. Each page gets virtual +40h(seconds) when its virtual +38h is true.
 Compared with the full update 00AA4F80 (include/bsp/blocking_screen.hpp) there is no
 live-entry test and no highlight reset. An empty list reaches the invalid-parameter handler
 00BF6713 before anything else; the C++ returns instead and says so.
@@ -163,7 +164,10 @@ A scan cannot rule out a computed address; none of these is the target of a jump
 
 - 00AA9C90 (`_Provisional`): walks children, extracts those with byte +76h set into the
   manager's +38h list with dotted names (through 00AA59B0), and recurses into the rest. Its
-  only references are its own recursion; the manager +38h list's reader was not found here.
+  only references are its own recursion, and 00AA59B0 is reached only from it, so the manager
+  +38h list (constructed empty by 00AA5D70) never gains entries in this build. No segment-76
+  decompile reads manager +38h (the `+ 0x38` hits in 00AA2F10, 00AA3910, 00AA3F70 and 00AA4F80
+  are virtual +38h calls).
   docs/CC13_FRONTEND_MENUS.md line 111 sets +76h through a virtual +4(1); the link is open.
 - 00AA5390 (`_Provisional`, unreferenced): saves node visibility factors of a widget list,
   zeroes every page's widgets breadth-first, restores along the listed widgets' parent chains.
@@ -178,3 +182,15 @@ A scan cannot rule out a computed address; none of these is the target of a jump
   scan of the installed executable), not from `bsp.py callers`, which under-reports.
 - No new tests: the routines are small and their risk is in the host bindings, which do not
   exist yet.
+
+## Handoff
+
+Segments 76 and 77 have no unnamed functions left. Next steps, none blocking:
+
+1. Create the Ghidra function at 00AAC410 (body to 00AAC4F9, plain RET) once the lead confirms
+   'Non-Returning Functions - Discovered' is still disabled, then apply the ledger name.
+2. Trace a reader of widget +38h..+44h (outside these segments) to settle the clip-rectangle
+   reading and drop the two `_Provisional` suffixes.
+3. 00AA5390's tail and 00AACA00's owner (00AAD6D0, segment 78) for the Movie pool.
+4. Scripts: `local/gui6_absrefs.py` (full-image reference scan), `local/gui6_triage.py`,
+   `local/gui6_names.tsv` (the applied names with evidence) in this worktree.

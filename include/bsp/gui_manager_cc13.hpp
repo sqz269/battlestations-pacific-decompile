@@ -57,8 +57,8 @@ using GuiPageHandle = void*;
 struct GuiPageListUpdateHost {
     virtual ~GuiPageListUpdateHost() = default;
     // Manager +6Ch. Holds the first page of the list while the call runs and is
-    // zeroed at the end; 00AA3910 reads it as the page the pointer pass is
-    // limited to.
+    // zeroed at the end; the hit test 00AA2F10 skips every page but this one
+    // while it is non-null.
     virtual void set_pointer_scope_page(GuiPageHandle page) = 0;
     // 00AA3910 BSP_GuiManager_UpdatePointer, ECX = the manager.
     virtual void run_pointer_pass() = 0;
