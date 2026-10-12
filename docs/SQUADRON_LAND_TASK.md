@@ -15376,3 +15376,21 @@ JM06 (`PRCPIJN/jm06.lua:1205`) subscribes `command` (`moveonpath` / `finish` on 
 `Mission.PathEnd`), JM05 subscribes `gui`, and the COTP-USN rows use `exitzone` and `hpEvent`. None was reached in
 the 450 s runs above (JM06 never registers `submove`). cc13's image bugs (unknown-channel AddListener, the re-add
 leak, RemoveListener of a missing id, filter save/load) were not re-checked against the host in this packet.
+
+**cc13's subscription-path findings against the host** (docs/CC13_EVENT_CHANNELS.md section 2; cc9-lua51, reads only):
+- Unknown channel: the image faults in `0097E360` (ESI = 0, `[0]` read). The host stores the entry and never
+  dispatches it. All 15 channel names this installation's mission scripts pass to AddListener are among the 23,
+  so the crash cannot trigger here. No change.
+- Re-add of a (channel, id): the image overwrites the slot and leaks the old object. The host replaces the entry.
+  The behaviour is the same.
+- RemoveListener of a missing id: the image's checked iterator reaches `00BF6713`, the CRT invalid-parameter
+  path. The host ignores the call. Whether any script does it on a reference row is not censused (most calls are
+  guarded by `IsListenerActive`).
+- The range filters (`damageCaused`, `fireCaused`, `leakCaused`, `duration`): `0096AAD0` reads the **keys**
+  `min` (`00D15F48`, default `-1e10` `00CE4ADC`) and `max` (`00D1AF48`, default `+1e10` `00CE4970`). The host
+  reads the first two **array** numbers. The two disagree on `{5, 100}` (the host filters, the image matches all)
+  and on `{min = 5, max = 100}` (the reverse). The installation's only non-empty forms are `{10}` (PRCPIJN
+  `jm13.lua:2401`; both match all) and `{["1000"] = minValue, [""] = maxValue}` (COTP `usn_14` / `usn_09`, nil
+  values; both match all). It is latent here, recorded and not bound.
+- Filter save/load: 18 of 23 subscription types save only `callback` in the image. The host's listeners are not
+  part of its checkpoint (5fk), so there is nothing to compare yet.
