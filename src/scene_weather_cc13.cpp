@@ -489,6 +489,352 @@ void read_music(const ScenePropertyBagModel& model, int bag, SceneMusicFields& o
     }
 }
 
+// ---------------------------------------------------------------------------
+// 004EB9B0 g_Ocean and its two particle-set helpers.
+
+// 008F0DF0 then strlen with a null test: a null pointer assigns "".
+void read_string_into(const ScenePropertyEntry& entry, std::string& out) {
+    out = read_string(entry);
+}
+
+void read_tint(const ScenePropertyBagModel& model, int bag, const char* key, bool linearize, Rgba& out) {
+    const int colour = require_child(require(model, bag, key));
+    read_rgb(model, colour, out);
+    linearize_if(linearize, out);
+}
+
+// 004EB180 (WaterParticle) and 004EB5A0 (Beam): identical layouts; only the count
+// key and the WaterParticle Tex04 halving (004EB3C0, FMUL qword 0.5) differ.
+void read_particle_set(const ScenePropertyBagModel& model, int bag, const char* count_key,
+                       bool halve_tex04, bool linearize, SceneParticleSetFields& out) {
+    out.count_00 = static_cast<std::int32_t>(raw_dword(require(model, bag, count_key)));
+    out.speed_04 = req_number(model, bag, "Speed");
+    read_string_into(require(model, bag, "TextureFile"), out.texture_file_08);
+    const int colour = require_child(require(model, bag, "Color"));
+    read_rgb(model, colour, out.color_10);
+    out.color_10.a = req_number(model, colour, "A");
+    linearize_if(linearize, out.color_10);
+    char key[6] = {'T', 'e', 'x', '0', '0', '\0'};
+    for (int i = 0; i < 16; ++i) {
+        key[3] = static_cast<char>('0' + i / 10);
+        key[4] = static_cast<char>('0' + i % 10);
+        float value = req_number(model, bag, key);
+        if (halve_tex04 && i == 4) {
+            value = static_cast<float>(static_cast<double>(value) * 0.5);
+        }
+        out.tex_20[i] = value;
+    }
+}
+
+int gated_sub_bag(const ScenePropertyBagModel& model, int bag, const char* key) {
+    // Required key (no null test), section skipped unless the type is 6.
+    const ScenePropertyEntry& entry = require(model, bag, key);
+    return entry.value.type == ScenePropertyType::SubBag ? entry.sub_bag : -1;
+}
+
+void read_ocean(const ScenePropertyBagModel& model, int bag, bool linearize, SceneOceanFields& out) {
+    const ScenePropertyEntry& simple = require(model, bag, "0_SimpleOcean");
+    if (simple.value.type == ScenePropertyType::Bool) {
+        out.simple_ocean_c20 = read_byte(simple);
+    }
+
+    const int optics = gated_sub_bag(model, bag, "Optics");
+    if (optics >= 0) {
+        read_tint(model, optics, "1LocalReflectionTint", linearize, out.local_reflection_tint_ae4);
+        // 004EBB21: no 00F88A0C test before this 004E5C00 call.
+        read_tint(model, optics, "1SprayTintColor", true, out.spray_tint_b30);
+        static constexpr const char* kSky[4] = {"7SkyReflBaseFact", "7SkyReflPowExp", "7SkyReflPowDiv",
+                                                "7SkyReflDesatFact"};
+        for (int i = 0; i < 4; ++i) {
+            out.sky_reflection_ad4[i] = req_number(model, optics, kSky[i]);
+        }
+        static constexpr const char* kGlow[3] = {"8UWBaseGlowStrength", "8UWSkyGlowStrength",
+                                                 "8UWSunSpotStrength"};
+        for (int i = 0; i < 3; ++i) {
+            if (const ScenePropertyEntry* e = find(model, optics, kGlow[i])) {
+                out.uw_glow_b24[i] = read_number(*e);
+            }
+        }
+        read_tint(model, optics, "1ReflectionTint", linearize, out.reflection_tint_af4);
+        read_tint(model, optics, "1RefractionTint", linearize, out.refraction_tint_b04);
+        read_tint(model, optics, "1UWRefractionTint", linearize, out.uw_refraction_tint_b14);
+        out.refraction_tint_exponent_b44 = req_number(model, optics, "2RefractionTintExponent");
+        out.refraction_tint_power_b48 = req_number(model, optics, "2RefractionTintPower");
+        out.deep_water_refraction_exponent_b4c = req_number(model, optics, "2DeepWaterRefractionExponent");
+        out.deep_water_refraction_tint_power_b50 = req_number(model, optics, "2DeepWaterRefractionTintPower");
+        out.shadow_strength_b40 = req_number(model, optics, "9ShadowStrength");
+        out.refraction_max_depth_b54 = req_number(model, optics, "3RefractionMaxDepth");
+        out.refraction_depth_fade_range_b58 = req_number(model, optics, "3RefractionDepthFadeRange");
+        read_tint(model, optics, "RefrSpecularColor", linearize, out.refr_specular_color_b74);
+        out.fresnel_b5c[0] = req_number(model, optics, "4FresnelExponent");
+        out.fresnel_b5c[1] = req_number(model, optics, "4FresnelScale");
+        out.fresnel_b5c[2] = req_number(model, optics, "4FresnelOffset");
+        out.shore_fade_b68[0] = req_number(model, optics, "5ShoreFadeDepth");
+        out.shore_fade_b68[1] = req_number(model, optics, "5ShoreFadeRange");
+        out.shore_fade_b68[2] = req_number(model, optics, "5ShoreFadePower");
+        out.under_water_refr_index_b84 = req_number(model, optics, "UnderWaterRefrIndex");
+        out.reflection_multiplier_bbc = req_number(model, optics, "6ReflectionMultiplier");
+        out.final_multiplier_bc0 = req_number(model, optics, "6FinalMultiplier");
+    }
+
+    const int waves = gated_sub_bag(model, bag, "Waves");
+    if (waves >= 0) {
+        out.waves_wind_direction_9dc = req_number(model, waves, "WindDirection");
+        out.waves_wind_speed_9e0 = req_number(model, waves, "WindSpeed");
+        out.waves_wave_height_9e4 = req_number(model, waves, "WaveHeight");
+        out.waves_choppy_factor_9e8 = req_number(model, waves, "ChoppyWavesFactor");
+        out.waves_height_scale_9ec = req_number(model, waves, "HeightScale");
+        out.waves_falloff_9bc = req_number(model, waves, "Falloff");
+        out.waves_layer_scale_9c0 = req_number(model, waves, "LayerScale");
+        out.waves_time_scale_9c4 = req_number(model, waves, "TimeScale");
+        out.wave_dampening_depth_9c8 = req_number(model, waves, "1WaveDampeningDepth");
+        out.wave_dampening_power_9cc = req_number(model, waves, "1WaveDampeningPower");
+        out.wave_dampening_scale_9d0 = req_number(model, waves, "1WaveDampeningScale");
+        read_string_into(require(model, waves, "1WaveDampModel"), out.wave_damp_model_9d4);
+    }
+
+    const int normals = gated_sub_bag(model, bag, "NormalMaps");
+    if (normals >= 0) {
+        static constexpr const char* kScale[3] = {"layer0_Scale", "layer1_Scale", "layer2_Scale"};
+        static constexpr const char* kSpeed[3] = {"layer0_ScrollSpeed", "layer1_ScrollSpeed",
+                                                  "layer2_ScrollSpeed"};
+        for (int i = 0; i < 3; ++i) {  // read order scale0, speed0, scale1, ...
+            out.normal_map_layer_scale_bf0[i] = req_number(model, normals, kScale[i]);
+            out.normal_map_scroll_speed_c00[i] = req_number(model, normals, kSpeed[i]);
+        }
+        read_string_into(require(model, normals, "Texture"), out.normal_map_texture_c10);
+    }
+
+    const int foam = gated_sub_bag(model, bag, "Foam");
+    if (foam >= 0) {
+        out.use_foam_99c = read_byte(require(model, foam, "UseFoam"));
+        out.foam_scroll_speed_990 = req_number(model, foam, "ScrollSpeed");
+        out.foam_noise_scroll_speed_994 = req_number(model, foam, "NoiseScrollSpeed");
+        out.foam_height_9a0 = req_number(model, foam, "Height");
+        out.foam_fade_range_998 = req_number(model, foam, "FadeRange");
+        out.foam_scale_9a4 = req_number(model, foam, "Scale");
+        out.foam_noise_scale_9a8 = req_number(model, foam, "NoiseScale");
+        read_string_into(require(model, foam, "Texture"), out.foam_texture_9ac);
+        read_string_into(require(model, foam, "NoiseTexture"), out.foam_noise_texture_9b4);
+    }
+
+    // 004EC648 "Caustics": optional, child not null-tested.
+    if (const ScenePropertyEntry* caustics_entry = find(model, bag, "Caustics")) {
+        const int caustics = require_child(*caustics_entry);
+        if (find(model, caustics, "CausticsColor") != nullptr) {
+            read_tint(model, caustics, "CausticsColor", linearize, out.caustics_color_abc);
+        }
+        if (const ScenePropertyEntry* e = find(model, caustics, "CausticsScale")) {
+            out.caustics_scale_ab8 = read_number(*e);
+        }
+        if (const ScenePropertyEntry* e = find(model, caustics, "CausticsType")) {
+            read_string_into(*e, out.caustics_type_acc);
+        }
+    }
+
+    // 004EC77C "Fog": optional; a null child skips to WaterParticle.
+    const ScenePropertyEntry* fog_entry = find(model, bag, "Fog");
+    const int fog = fog_entry != nullptr ? child_bag(*fog_entry) : -1;
+    if (fog >= 0) {
+        if (const ScenePropertyEntry* e = find(model, fog, "UWExpDistMaxdist")) {
+            out.uw_exp_dist_maxdist_a94 = read_number(*e);
+        }
+        // FLD / FMUL qword 0.01 (00CE6638) / FSTP float: 80-bit natively.
+        if (const ScenePropertyEntry* e = find(model, fog, "UWExpDistMinvalue")) {
+            out.uw_exp_dist_minvalue_a98 = static_cast<float>(static_cast<double>(read_number(*e)) * 0.01);
+        }
+        if (const ScenePropertyEntry* e = find(model, fog, "UWExpHeightCutdepth")) {
+            out.uw_exp_height_cutdepth_a9c = read_number(*e);
+        }
+        if (const ScenePropertyEntry* e = find(model, fog, "UWExpHeightMaxdepth")) {
+            out.uw_exp_height_maxdepth_aa0 = read_number(*e);
+        }
+        if (const ScenePropertyEntry* e = find(model, fog, "UWExpHeightMaxvalue")) {
+            out.uw_exp_height_maxvalue_aa4 = static_cast<float>(static_cast<double>(read_number(*e)) * 0.01);
+        }
+        if (find(model, fog, "UWFogColor") != nullptr) {
+            const int colour = child_bag(require(model, fog, "UWFogColor"));
+            if (colour >= 0) {
+                read_rgb(model, colour, out.uw_fog_color_aa8);
+                // 004E5D20: rgba *= L, including the previous +AB4h, then MaxDarken.
+                scale_rgba(out.uw_fog_color_aa8, req_number(model, colour, "L"));
+                out.uw_fog_color_aa8.a = req_number(model, colour, "MaxDarken");
+                linearize_if(linearize, out.uw_fog_color_aa8);
+            }
+        }
+    }
+
+    const ScenePropertyEntry* particle = find(model, bag, "WaterParticle");
+    if (particle != nullptr && particle->value.type == ScenePropertyType::SubBag) {
+        read_particle_set(model, particle->sub_bag, "NumParticles", true, linearize, out.water_particle_c18);
+    }
+    const ScenePropertyEntry* beam = find(model, bag, "Beam");
+    if (beam != nullptr && beam->value.type == ScenePropertyType::SubBag) {
+        read_particle_set(model, beam->sub_bag, "NumBeams", false, linearize, out.beams_c1c);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 004EE9E0 g_Terrain.
+struct TerrainScalarRow { const char* key; std::uint32_t global; };
+constexpr TerrainScalarRow kTerrainScalars[26] = {
+    {"a_UW_Coral_Sand_Slope", 0x00E188F8}, {"ab_UW_Sand_Rock_Slope", 0x00E188FC},
+    {"a_UW_Coral_Sand_Delta", 0x00E18900}, {"ab_UW_Sand_Rock_Delta", 0x00E18904},
+    {"c_GROUND_Grass_Dirt_Slope", 0x00E188E4}, {"cb_GROUND_Dirt_Rock_Slope", 0x00E188E8},
+    {"b_SHORE_Sand_Rock_Delta", 0x00E188EC}, {"c_GROUND_Grass_Dirt_Delta", 0x00E188F0},
+    {"cb_GROUND_Dirt_Rock_Delta", 0x00E188F4}, {"d_Shore_Height", 0x00E18928},
+    {"d_Dirt_Height", 0x00E1892C}, {"e_TerrSlope_Scale", 0x00E1894C},
+    {"e_UV_Scale", 0x00E18950}, {"e_MaskUV_Scale", 0x00E18954},
+    {"eb_UW_TerrSlope_Scale", 0x00E18958}, {"eb_UW_UV_Scale", 0x00E1895C},
+    {"x_Slope_Noise_Divisor", 0x00E18938}, {"x_Slope_Noise_Scaler", 0x00E1893C},
+    {"x_Noise_UVmul", 0x00E18940}, {"x_Height_Noise_Divisor", 0x00E18944},
+    {"x_Height_Noise_Scaler", 0x00E18948}, {"f_NmPower_Coral", 0x00E18908},
+    {"f_NmPower_Sand", 0x00E1890C}, {"f_NmPower_Grass", 0x00E18910},
+    {"f_NmPower_Dirt", 0x00E18914}, {"f_NmPower_Rock", 0x00E18918},
+};
+
+// Five required numbers, then each times 0.01 (FLD qword 0.01 once, then per
+// value FLD / FMUL ST,ST(1) (D8 C9) / FSTP float).
+void read_subtypes(const ScenePropertyBagModel& model, int group_bag, const char* key, char prefix0,
+                   SceneTerrainSubtypes& out) {
+    const int bag = require_child(require(model, group_bag, key));
+    const char p = prefix0;
+    const std::string names[5] = {std::string(1, p) + "0_width",
+                                  std::string(1, p) + "0" + p + "1_delta",
+                                  std::string(1, p) + "1_width",
+                                  std::string(1, p) + "1" + p + "2_delta",
+                                  std::string(1, p) + "2_width"};
+    for (int i = 0; i < 5; ++i) {
+        out.v[i] = req_number(model, bag, names[i].c_str());
+    }
+    for (float& v : out.v) {
+        v = static_cast<float>(static_cast<double>(v) * 0.01);
+    }
+}
+
+void read_terrain(const ScenePropertyBagModel& model, int bag, const std::string& game_record_90c,
+                  SceneTerrainFields& out) {
+    for (std::size_t i = 0; i < out.scalars.size(); ++i) {
+        SceneTerrainFields::Scalar& s = out.scalars[i];
+        s.key = kTerrainScalars[i].key;
+        s.global = kTerrainScalars[i].global;
+        if (const ScenePropertyEntry* e = find(model, bag, s.key)) {
+            s.value = read_number(*e);
+            s.set = true;
+        }
+    }
+    static constexpr const char* kUwColours[3] = {"h_UW_Color0", "h_UW_Color1", "h_UW_Color2"};
+    for (int i = 0; i < 3; ++i) {
+        const int colour = child_bag(require(model, bag, kUwColours[i]));
+        if (colour >= 0) {
+            read_rgb(model, colour, out.uw_color_e18960[i]);
+            out.uw_color_set[i] = true;
+        }
+    }
+    const int uw = child_bag(require(model, bag, "i_UW_subtypes"));
+    if (uw >= 0) {
+        read_subtypes(model, uw, "coral_subtypes", 'c', out.coral_e18894);
+        read_subtypes(model, uw, "rock_subtypes", 'r', out.uw_rock_e1886c);
+        out.uw_subtypes_set = true;
+    }
+    // 004EF2D3: the SHORE child is only tested; its values come from the
+    // i_UW_subtypes bag still in EDI (rock_subtypes). With no UW bag the image
+    // would look the key up in a null bag.
+    if (child_bag(require(model, bag, "i_SHORE_subtypes")) >= 0) {
+        if (uw < 0) {
+            throw ReaderFault("i_SHORE_subtypes without i_UW_subtypes: native reads a null bag");
+        }
+        read_subtypes(model, uw, "rock_subtypes", 'r', out.shore_rock_e18844);
+        out.shore_subtypes_set = true;
+    }
+    const int ground = child_bag(require(model, bag, "i_GROUND_subtypes"));
+    if (ground >= 0) {
+        read_subtypes(model, ground, "grass_subtypes", 'g', out.grass_e18830);
+        read_subtypes(model, ground, "dirt_subtypes", 'd', out.dirt_e1881c);
+        read_subtypes(model, ground, "rock_subtypes", 'r', out.ground_rock_e18808);
+        out.ground_subtypes_set = true;
+    }
+    struct Tex { const char* key; std::string SceneTerrainFields::*field; };
+    static constexpr Tex kTextures[] = {
+        {"g_DiffAtlas", &SceneTerrainFields::diff_atlas_bc4},
+        {"g_NormAtlas", &SceneTerrainFields::norm_atlas_bcc},
+        {"g_MaskTexture", &SceneTerrainFields::mask_texture_bd4},
+        {"g_NoiseTexture", &SceneTerrainFields::noise_texture_bdc},
+        {"g_StaticShadowTexture", &SceneTerrainFields::static_shadow_texture_be4},
+    };
+    for (const Tex& t : kTextures) {
+        if (find(model, bag, t.key) != nullptr) {
+            out.*t.field = read_string(require(model, bag, t.key));
+        }
+    }
+    static constexpr const char* kShot[3] = {"ga_StaticShadowShotSize", "ga_StaticShadowShotOffsetX",
+                                             "ga_StaticShadowShotOffsetZ"};
+    for (int i = 0; i < 3; ++i) {
+        if (const ScenePropertyEntry* e = find(model, bag, kShot[i])) {
+            out.static_shadow_shot_e1891c[i] = read_number(*e);
+            out.static_shadow_shot_set[i] = true;
+        }
+    }
+    out.terrain_lut_set = terrain_lut_name_004ee9e0(game_record_90c, out.terrain_lut_e18990);
+}
+
+// ---------------------------------------------------------------------------
+// 004E8510 g_PostProcess.
+void read_post_process(const ScenePropertyBagModel& model, int bag, ScenePostProcessFields& out,
+                       ScenePostProcessHost& host) {
+    const int hdr_bag = gated_sub_bag(model, bag, "HDR");
+    if (hdr_bag >= 0) {
+        ScenePostProcessHdr hdr;
+        hdr.bright_pass_threshold = req_number(model, hdr_bag, "BrightPassTreshold");
+        hdr.bright_pass_offset = req_number(model, hdr_bag, "BrightPassOffset");
+        hdr.middle_gray = req_number(model, hdr_bag, "MiddleGray");
+        // FLD / FDIV qword 100 / FLD1 / FSUBRP / FSTP float: 80-bit natively.
+        hdr.adaptation = static_cast<float>(1.0 - static_cast<double>(req_number(model, hdr_bag,
+                                                                                 "AdaptationPercent")) / 100.0);
+        hdr.bloom_scale = req_number(model, hdr_bag, "BloomScale");
+        hdr.min_luminance = req_number(model, hdr_bag, "MinLuminance");
+        hdr.max_luminance = req_number(model, hdr_bag, "MaxLuminance");
+        hdr.new_hdr_param1 = req_number(model, hdr_bag, "NewHDRParam1");
+        hdr.new_hdr_param0 = req_number(model, hdr_bag, "NewHDRParam0");
+        hdr.anti_banding_on = read_byte(require(model, hdr_bag, "AntiBandingON"));
+        hdr.particle_luminance_mul = req_number(model, hdr_bag, "ParticleLuminanceMul");
+        host.set_hdr_params_00b0e9b0(hdr);
+    }
+    const int blur_bag = gated_sub_bag(model, bag, "MotionBlur");
+    if (blur_bag >= 0) {
+        ScenePostProcessMotionBlur blur;
+        blur.max_velocity = req_number(model, blur_bag, "MaxVelocity");
+        blur.velocity_scale = req_number(model, blur_bag, "VelocityScale");
+        blur.min_speed = req_number(model, blur_bag, "MinSpeed");
+        blur.max_blur = req_number(model, blur_bag, "MaxBlur");
+        blur.divider = req_number(model, blur_bag, "Divider");
+        host.set_motion_blur_params_00b0ea20(blur);
+    }
+    const int wave_bag = gated_sub_bag(model, bag, "UnderWaterWave");
+    if (wave_bag >= 0) {
+        ScenePostProcessUnderwaterWave wave;
+        wave.horiz_speed = req_number(model, wave_bag, "HorizSpeed");
+        wave.horiz_scale = req_number(model, wave_bag, "HorizScale");
+        wave.horiz_phase = req_number(model, wave_bag, "HorizPhase");
+        // FDIV qword 1000 (00CE47A0) then FSTP float.
+        wave.horiz_amplitude = static_cast<float>(static_cast<double>(req_number(model, wave_bag,
+                                                                                 "HorizAmplitude")) / 1000.0);
+        wave.vert_speed = req_number(model, wave_bag, "VertSpeed");
+        wave.vert_scale = req_number(model, wave_bag, "VertScale");
+        wave.vert_phase = req_number(model, wave_bag, "VertPhase");
+        wave.vert_amplitude = static_cast<float>(static_cast<double>(req_number(model, wave_bag,
+                                                                                "VertAmplitude")) / 1000.0);
+        host.set_underwater_wave_params_00b0ea70(wave);
+    }
+    const int colorize = gated_sub_bag(model, bag, "Colorize");
+    if (colorize >= 0) {
+        read_string_into(require(model, colorize, "TextureName"), out.texture_name_c24);
+        read_string_into(require(model, colorize, "TextureNameUW"), out.texture_name_uw_c2c);
+        read_string_into(require(model, colorize, "TextureNameOldFilm"), out.texture_name_old_film_c34);
+        read_string_into(require(model, colorize, "TextureNameOldFilmUW"), out.texture_name_old_film_uw_c3c);
+    }
+}
+
 void append_block(ScenePropertyBagModel& model, int bag, const ScenePropertyBlock& block) {
     for (const SceneProperty& prop : block.values) {
         ScenePropertyValue value;
@@ -595,6 +941,74 @@ bool read_music_and_ambience_004ed690(const ScenePropertyBagModel& model, int ba
                                       SceneMusicFields& out, SceneMusicHost& host,
                                       std::string& error) {
     return guarded(error, [&] { read_music(model, bag_index, out, host); });
+}
+
+bool read_water_properties_004eb9b0(const ScenePropertyBagModel& model, int bag_index,
+                                    bool linearize, SceneOceanFields& out, std::string& error) {
+    return guarded(error, [&] { read_ocean(model, bag_index, linearize, out); });
+}
+
+bool read_static_shadow_and_shader_textures_004ee9e0(const ScenePropertyBagModel& model,
+                                                     int bag_index,
+                                                     const std::string& game_record_90c,
+                                                     SceneTerrainFields& out, std::string& error) {
+    return guarded(error, [&] { read_terrain(model, bag_index, game_record_90c, out); });
+}
+
+bool terrain_lut_name_004ee9e0(const std::string& source, std::string& lut) {
+    if (source.empty()) {
+        return false;  // 004EFB94: _stricmp(name, "") == 0 skips the whole tail
+    }
+    std::string name = source;
+    // Last '/' (00CE7898), else last '\\' (00CE7894); then substr(i+1, size-i-5),
+    // the count computed unsigned and clamped by 00469840.
+    std::size_t sep = name.find_last_of('/');
+    if (sep == std::string::npos) {
+        sep = name.find_last_of('\\');
+    }
+    if (sep != std::string::npos) {
+        const std::uint32_t size = static_cast<std::uint32_t>(name.size());
+        const std::uint32_t count = size - static_cast<std::uint32_t>(sep) - 5u;
+        name = name.substr(sep + 1, count);
+    }
+    if (name.size() > 0x14) {  // 004EFCB6: CMP size,14h / JBE
+        name = name.substr(0, 0x14);
+    }
+    lut = "LUT_" + name + ".tga";
+    return true;
+}
+
+void apply_terrain_texture_header_004ed910(const TerrainTextureHeaderInputs& in,
+                                           TerrainTextureHeaderHost& host) {
+    host.set_world_parameter_string_00b1b830("ReflectionCubeMap", in.refl_cubemap_b98);
+    host.set_world_parameter_string_00b1b830("CloudShadowMap", in.cloud_shadow_map_ba8);
+    host.set_world_parameter_string_00b1b830("DiffAtlas_A", in.diff_atlas_bc4);
+    host.set_world_parameter_string_00b1b830("DiffAtlas_B", in.diff_atlas_bc4);  // 004EDAE6 pushes +BC4h
+    host.set_world_parameter_string_00b1b830("NormAtlas", in.norm_atlas_bcc);
+    host.set_world_parameter_string_00b1b830("MaskTexture", in.mask_texture_bd4);
+    host.set_world_parameter_string_00b1b830("NoiseTexture", in.noise_texture_bdc);
+    host.set_world_parameter_string_00b1b830("TerrainLUT", in.terrain_lut_e18990);
+    host.set_world_parameter_string_00b1b830("StaticShadowTexture", in.static_shadow_texture_be4);
+    host.renderer_slot_120();
+    for (int i = 0; i < kEnvironmentSoundCount; ++i) {
+        if (!in.env_sample_present[i] && !in.env_path[i].empty()) {
+            host.acquire_environment_sample(i, in.env_path[i]);
+            host.set_retained_channel_00a7f2f0(i);
+        }
+    }
+    host.vfs_clear_aliases_00bdf940();
+    if (!in.file_system_lua_918.empty()) {
+        for (const auto& alias : host.read_file_aliases(in.file_system_lua_918)) {
+            host.vfs_add_alias_00bdf590(alias.first, alias.second);
+        }
+    }
+    host.refresh_bush_textures_00ad60d0();
+}
+
+bool read_post_process_004e8510(const ScenePropertyBagModel& model, int bag_index,
+                                ScenePostProcessFields& out, ScenePostProcessHost& host,
+                                std::string& error) {
+    return guarded(error, [&] { read_post_process(model, bag_index, out, host); });
 }
 
 ScenePropertyBagModel scene_bag_from_block(const ScenePropertyBlock& block) {
