@@ -4874,6 +4874,13 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             }
             ::lua_pop(state, 1);
             entry.attacker_filters_set = attacker || player_index;
+            if (kLuaKillAttackerBound) {
+                // Packet cc9_lua51_listener_args: keep both sets for 0096ACE0.
+                entry.last_attacker_set = attacker;
+                entry.last_attacker_ids = ignored;
+                listener_read_int_set_fn(state, 3, "lastAttackerPlayerIndex",
+                    entry.last_attacker_player_indices);
+            }
         }
         if (listener_key_equal(entry.channel, "hit")) {
             // 009725B0: target (+0Ch) and attacker (+2Ch) through 009721C0, attackType
@@ -5007,7 +5014,19 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         listener_death_seen_[unit] = true;
         ++summary_.listener_kill_deaths;
         const int victim = static_cast<int>(unit + 1);
+        // Packet cc9_lua51_listener_args: the boxed lastAttacker (+2C8h, one based, 0 =
+        // none) and +2D8h. SUBSTITUTION (labelled): +2D8h is the host's credited slot
+        // from its 0077CE60 rule, 0 for a victim no attributed hit reached.
+        const GameGunneryHost* gunnery = units_hooks_->gunnery();
+        int attacker = 0;
+        int attacker_slot = 0;
+        if ((kLuaKillAttackerBound || kLuaListenerCallbackArgsBound) && gunnery != nullptr) {
+            attacker = static_cast<int>(gunnery->kill_last_attacker(unit));
+            attacker_slot = gunnery->kill_credited_slot(unit);
+            if (attacker != 0) ++summary_.listener_kill_with_attacker;
+        }
         std::vector<std::string> callbacks;
+        auto evaluate = [&](int attacker_id) {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "kill")) continue;
             if (!entry.entity_ids.empty()
@@ -5015,7 +5034,21 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                     == entry.entity_ids.end()) {
                 continue;   // 0096AD0D: the `entity` set rejects the victim
             }
-            if (entry.attacker_filters_set) {
+            if (kLuaKillAttackerBound) {
+                // 0096ACE0: +1Ch against the attacker, +2Ch against +2D8h.
+                if (entry.last_attacker_set
+                    && std::find(entry.last_attacker_ids.begin(), entry.last_attacker_ids.end(),
+                           attacker_id) == entry.last_attacker_ids.end()) {
+                    continue;
+                }
+                if (!entry.last_attacker_player_indices.empty()
+                    && std::find(entry.last_attacker_player_indices.begin(),
+                           entry.last_attacker_player_indices.end(), attacker_slot)
+                        == entry.last_attacker_player_indices.end()) {
+                    continue;
+                }
+                if (entry.attacker_filters_set) ++summary_.listener_kill_attacker_matched;
+            } else if (entry.attacker_filters_set) {
                 // SUBSTITUTION (labelled): the host's death row carries no
                 // attacker entity, so a non-empty lastAttacker or
                 // lastAttackerPlayerIndex set is not matched.
@@ -5023,6 +5056,29 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 continue;
             }
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        };
+        evaluate(attacker);
+        if (kLuaKillAttackerBound && callbacks.empty() && attacker > 0) {
+            // 00981AA4: nothing matched; 00981AC2..00981AE9: a plane attacker
+            // (IsKindOf(0Fh)) is replaced by vtable[140h]() = plane+9D4h, its
+            // squadron, and 00981C31 evaluates the channel again with it.
+            // SUBSTITUTION (labelled): a plane is a member of a squadron registry
+            // record; the wing-0 plane shares its squadron's slot, so it already
+            // matched as the squadron in the first pass.
+            const std::size_t shooter = static_cast<std::size_t>(attacker - 1);
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit == shooter) continue;
+                if (std::find(r.member_units.begin(), r.member_units.end(), shooter)
+                        == r.member_units.end()) {
+                    continue;
+                }
+                attacker = static_cast<int>(r.squadron_unit + 1);
+                evaluate(attacker);
+                ++summary_.listener_kill_second_passes;
+                if (!callbacks.empty()) ++summary_.listener_kill_second_pass_fires;
+                break;
+            }
         }
         for (const std::string& name : callbacks) {
             const int top = ::lua_gettop(state_);
@@ -5033,9 +5089,24 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
             }
             ++summary_.listener_kill_fires;
             const GameUnitRow* row = units_hooks_->unit_row(unit);
-            log_.notef("  kill listener 009813a0: victim \"%s\" -> %s() (packet cc9_lua_listeners)",
-                row != nullptr ? row->name.c_str() : "?", name.c_str());
-            if (::lua_pcall(state_, 0, 0, 0) != 0) {
+            const GameUnitRow* by = attacker > 0
+                ? units_hooks_->unit_row(static_cast<std::size_t>(attacker - 1)) : nullptr;
+            log_.notef("  kill listener 009813a0: victim \"%s\" attacker \"%s\" slot %d -> %s() "
+                "(packet cc9_lua_listeners)", row != nullptr ? row->name.c_str() : "?",
+                by != nullptr ? by->name.c_str() : "-", attacker_slot, name.c_str());
+            int pushed = 0;
+            if (kLuaListenerCallbackArgsBound) {
+                // 009818E8..00981977: victim (00884A90), lastAttacker (00884AC0; id 0
+                // boxes nil), +2D8h (00884A00).
+                if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
+                if (attacker <= 0 || !push_resolved_entity_by_id(state_, attacker)) {
+                    lua_pushnil(state_);
+                }
+                ::lua_pushnumber(state_, static_cast<lua_Number>(attacker_slot));
+                pushed = 3;
+                ++summary_.listener_args_pushed;
+            }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
                 const char* message = lua_tolstring(state_, -1, nullptr);
                 note_error(message != nullptr ? message : std::string("(no message)"));
             }
@@ -6162,7 +6233,8 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
         }
         };
-        evaluate(static_cast<int>(hit.shooter + 1));
+        int boxed_attacker = static_cast<int>(hit.shooter + 1);
+        evaluate(boxed_attacker);
         if (kLuaHitSquadronSecondPassBound && callbacks.empty()) {
             // 0098901A: no subscription matched; 00989047..00989060: a plane
             // attacker is replaced by vtable[140h]() = plane+9D4h, its squadron,
@@ -6173,7 +6245,8 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                         == r.member_units.end()) {
                     continue;
                 }
-                evaluate(static_cast<int>(r.squadron_unit + 1));
+                boxed_attacker = static_cast<int>(r.squadron_unit + 1);
+                evaluate(boxed_attacker);
                 ++summary_.listener_hit_second_passes;
                 if (!callbacks.empty()) ++summary_.listener_hit_second_pass_fires;
                 break;
@@ -6191,7 +6264,37 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             log_.notef("  hit listener 00988510: target \"%s\" type \"%s\" damage %.1f -> %s() "
                 "(packet cc9_lua_hit_listeners)", row != nullptr ? row->name.c_str() : "?",
                 type.c_str(), static_cast<double>(hit.damage), name.c_str());
-            if (::lua_pcall(state_, 0, 0, 0) != 0) {
+            int pushed = 0;
+            if (kLuaListenerCallbackArgsBound) {
+                // Packet cc9_lua51_listener_args, 00988D87..00988F2C: target,
+                // targetDevice, attacker (00884A90), attackType (00884FC0),
+                // attackerPlayerIndex (00884A00), damage, fire, leak (008849D0).
+                // SUBSTITUTIONS (labelled): the target is the hit unit (the image
+                // boxes hitEntity->vtable[140h](), a plane's squadron); the device is
+                // nil (the host builds no device entities); a kamikaze shooter's
+                // forced attackType index 11h is not modelled.
+                if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
+                lua_pushnil(state_);
+                if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);
+                // The attack-type name table 00E08E58 (char*[], read from the PE),
+                // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
+                static constexpr const char* kAttackTypeNames[] = {
+                    "NONE", "BULLET", "MACHINEGUN", "AAMACHINEGUN", "ARTILLERY",
+                    "LIGHTARTILLERY", "MEDIUMARTILLERY", "HEAVYARTILLERY", "EXTRAPOLATED",
+                    "BOMB", "TORPEDO", "DEPTHCHARGE", "DUMMYTARGET", "DUMMYKAMIKAZEPLANE",
+                    "DUMMYSUBMARINE", "PARATROOPER", "FLAK", "KAMIKAZE", "ROCKET", "WATERMINE"};
+                const int kind = hit.ordnance_kind;
+                ::lua_pushstring(state_, kind >= 0 && kind < static_cast<int>(
+                    sizeof(kAttackTypeNames) / sizeof(kAttackTypeNames[0]))
+                    ? kAttackTypeNames[kind] : "");
+                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
+                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
+                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
+                ::lua_pushnumber(state_, static_cast<lua_Number>(hit.leak_caused));
+                pushed = 8;
+                ++summary_.listener_args_pushed;
+            }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
                 const char* message = lua_tolstring(state_, -1, nullptr);
                 note_error(message != nullptr ? message : std::string("(no message)"));
             }
@@ -7828,6 +7931,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
         summary_.listener_hit_second_passes, summary_.listener_hit_second_pass_fires);
+    log_.notef("summary mission script listener args bound=%d kill_attacker_bound=%d pushed=%llu "
+        "kill_with_attacker=%llu attacker_matched=%llu kill_second_passes=%llu kill_second_fired=%llu "
+        "(009813A0 / 00988510, packet cc9_lua51_listener_args)", kLuaListenerCallbackArgsBound ? 1 : 0,
+        kLuaKillAttackerBound ? 1 : 0, summary_.listener_args_pushed,
+        summary_.listener_kill_with_attacker, summary_.listener_kill_attacker_matched,
+        summary_.listener_kill_second_passes, summary_.listener_kill_second_pass_fires);
     log_.notef("summary mission script hit rate limit bound=%d passed=%llu throttled=%llu "
         "pairs=%zu (00988510 this+168h, packet cc9_hit_rate_limit)", kLuaHitRateLimitBound ? 1 : 0,
         summary_.listener_hit_throttle_passed, summary_.listener_hit_throttled,
