@@ -459,6 +459,13 @@ inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/L
 // once per install; the dive draw is made then. False: they run per think (the
 // moveto gate per 0.5 s refresh), as before.
 inline constexpr bool kTaskProfileActivationOnlyBound = true;  // GUNNERY 193: ON by pair verdict
+// Packet cc13-audit13 (docs/CC13_AUDIT13_RECENT_FLIPS.md, A3). The dive profile's
+// third block, the +39Ch release-altitude gate (009C89E4-009C8A17: +38Eh, +384h < 0,
+// +3ABh, the 9999 write 009C8A0E, the lock clear 009C8A17), is in the same leader
+// branch as the +398h block. True: with kTaskProfileActivationOnlyBound it runs at
+// activation only, so a non-forced SquadronSetReleaseAlt lasts for the task. False:
+// per think, which ends the script value one think after its 0.5 s countdown.
+inline constexpr bool kDiveReleaseAltActivationOnlyBound = false;
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
@@ -470,6 +477,13 @@ inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (do
 // True: the steer altitude drops the random offset while a script altitude is
 // live. False: cruise - offset always.
 inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON by pair verdict
+// Packet cc13-audit13 (docs/CC13_AUDIT13_RECENT_FLIPS.md, A4). With the moveto
+// activation draws ON, the leader's +3ADh = 1 store (009C375A / 009C3906) belongs
+// after the activation's own refresh 009C36BF, not after the install's 009C1D9D.
+// True: the store moves there, so a script altitude that the activation retires
+// still zeroes the freshly drawn +2Ch. False: the store follows the install's
+// refresh, and the activation's +2Ch survives.
+inline constexpr bool kMoveToActivationLuaAltOrderBound = false;
 
 class GameUnitsHost {
 public:
