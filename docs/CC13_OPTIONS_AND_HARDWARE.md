@@ -136,9 +136,9 @@ in every host projection, so a C++ version would only restate the standard destr
 
 - `./scripts/build.ps1` in this worktree: exit 0, `options_hardware_cc13.cpp` compiled, 2/2 CTest
   suites passed (run after each source change).
-- `python tools/verify_report_calls.py reports/cc13_options1_calls.json`: 15 call rows, 0 failed.
+- `python tools/verify_report_calls.py reports/cc13_options1_calls.json`: 25 call rows, 0 failed.
 - Ghidra: function defined at `008D6B70..008D6BFF` (`reports/cc13_options1_defined_functions.json`)
-  and the 14 ledger names applied through `tools/ghidra_annotate.py --apply`. The prior values
+  and all 31 ledger names from this doc applied through `tools/ghidra_annotate.py --apply`. The prior values
   are in the worktree's `local/ghidra-annotations-*.json`.
 - No test was added. The comparator is a table over the listing, and the save mirrors an existing
   fixture-tested restore. Neither body has a concrete regression risk that a test would catch
