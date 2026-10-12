@@ -141,6 +141,50 @@ were defined; the rest are held. Record: `reports/cc13_undefined_function_sweep_
   00C0AC8F). This packet only defined bodies that contain a not-code site. An
   image-wide pass using the same start rules would find them.
 
+## Pass 3: RNG call sites outside functions, and four suspect seg-0 bodies (cc13-define3, 2026-10-12)
+
+Input: the 20 `reports/cc13_rng_stream_census.json` rows that `tools/verify_report_calls.py` failed
+as "in no Ghidra function" (docs/CC13_RNG_STREAM_CENSUS.md 1.3), and the four segment-0 bodies that
+docs/CC13_DYN_LIBRARY.md flagged as possibly running past their INT3 padding. Record of every write:
+`reports/cc13_define3.json`. Ghidra listing state only; nothing reconstructed or tested.
+
+- **Method.** Capstone recursive descent from each start over the disk image, bounded by the next
+  indexed entry (conditional branches, rel jumps and `jmp [reg*4+table]` followed; every descent
+  closed without tail jumps, tables or out-of-gap branches). Containment checked two ways: every start
+  is 16-aligned with INT3 before it, every body ends on RET followed by INT3 padding (or, for
+  00AF7FB0, a RET directly before the aligned getter at 00AF7FF0); live `get_function_by_address` at
+  start, middle and last byte returned no function. "Non-Returning Functions - Discovered" was
+  checked disabled and `_free` (00BF9DC8) not noreturn before the write.
+- **Defined (20 bodies, end exclusive):** 0047B7F0-0047B808, 0048AEC0-0048AEF7, 006E2410-006E2431,
+  006E24E0-006E2504, 006E7C60-006E7C87, 006F23E0-006F2412, 006FCA50-006FCA71, 007B3D60-007B3D9B,
+  007B4890-007B48C3, 007EBF10-007EC177, 009B94B0-009B94DF, 009BA2F0-009BA6E6, 009BD6E0-009BD98C,
+  009CA730-009CA763, 009D5D60-009D5DCA, 009DA950-009DA9C2, 00AF5A30-00AF5A73, 00AF7F70-00AF7FA6,
+  00AF7FB0-00AF7FF0, 00BC7C10-00BC7DA3. One locked `ghidra_define_function.py` batch; re-read live,
+  all 20 bodies match the plan exactly. Left `FUN_` (no name evidence was gathered). References:
+  006E24E0, 006E7C60 (also CALL from 006E7DC6), 007EBF10, 009BA2F0, 009BD6E0 are in `.rdata`
+  tables; the other 15 have no rel32 or dword reference (`scan-bytes`, positive control
+  `10 bf 7e 00` = 1 hit). They were defined on the lead's instruction because they draw from the
+  RNG; they are structurally functions but may be unreached COMDAT copies.
+- **The two "past a short body" sites are separate functions, not mis-sized ones.** 006FCA40 is a
+  correct 8-byte adjustor thunk (`sub ecx,10h; jmp 006FCAD0`); site 006FCA6B is in its own body
+  006FCA50 after INT3 padding. 00AF7F40 `BSP_NativeParticleModel_ScalarDelete` correctly ends at
+  00AF7F5F; 00AF7F60 is a separate 15-byte `fld; fmul [00D7A358]; fstp [ecx]; ret 4` body (no
+  reference, not defined), and site 00AF7F92 is in 00AF7F70 (`x == 0 ? 0 : UnitFloat() * x`). The
+  census rows were corrected in place (`function`, `name`, `reach`; 00AF7F92 also `confidence`
+  `name` -> `band`, `reason`, and `host`: src/native_particle_model_lifetime.cpp cites only 00AF7F40).
+- **Seg-0 bodies are correctly sized.** 004019A0 (ends 00401B2D), 00404DC0 (004051BD), 00405D80
+  (00405F54), 0040C790 (0040CB8D): for each, the descent end equals Ghidra's body end, the body has
+  no internal gap, and only INT3 lies between it and the next entry. No `--recreate` was needed.
+  The dyn1 "inside existing bodies" result is probably a stale-index effect (those four starts were
+  already function entries when its live check ran); not confirmed from dyn1's planner output.
+- **Verify** (`tools/verify_report_calls.py reports/cc13_rng_stream_census.json`): before 759 rows,
+  20 failed; after defining, 2 failed (the two rows naming the wrong owner); after the row fix, 0.
+- **Snapshot** `--force` at 2026-10-12T08:10Z: function count 76586 -> 76606 (includes other
+  workers); index rebuilt, all 20 entries present.
+- **Neighbours not defined (no RNG, outside this packet):** more undefined bodies follow several of
+  these in the same gaps (after-padding starts 0047B810, 006E2440, 006E2510, 006E7C90, 006F2420,
+  007B48D0, 009BA6F0, 009BD990, 009CA770, 009D5DD0, 00AF5A80, plus 00AF7F60 and 00AF7FF0).
+
 ## Handoff
 
 Done: the analysis scripts are `local/df1_*.py` in the worktree (not committed; `local/` is

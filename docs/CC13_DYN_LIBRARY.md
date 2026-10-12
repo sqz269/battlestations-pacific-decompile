@@ -40,8 +40,8 @@ step and a bounds-checked lookup), 00412F40, and the vector destructors 004104E0
 - **Ghidra is missing about 665 more functions here.** That is the count of 16-aligned starts after INT3
   padding that are not function starts in the index (`local/dy1_gaps.py`). Of these, 97 lie below 00403610,
   388 in 00403610-00410240 and 180 above. A sample (00401030, `char_traits::assign`-shaped) is a real,
-  unreferenced function. They were **not defined**, because defining them is a Ghidra mutation of a scale the
-  lead should decide. One consequence: the index attributes call sites inside those gaps to the preceding
+  unreferenced function. They were not defined in the first pass. The lead then approved defining them, and 717 are now
+  defined (see "Defined bodies"). One consequence: the index attributes call sites inside those gaps to the preceding
   defined function. For example, the index lists "callers" 0040C520 and 0040C570 for 0040EE00, and both are
   wrong.
 
@@ -94,11 +94,102 @@ and it fixes the profiler's ticks-per-second in `[0109E9E8]`.
 - `0040D860` has callers `00407B71` (FindOrInsert) and a tail jump at `0040CD90`. That jump is code after
   `0040CBE0`, not in it.
 
-## Tag regeneration
+## Tag regeneration (fixed, commit 29dada4f2)
 
-`tools/build_tag_ledger.py` builds `block_dyn` only from the `00C30930` range of `rtti_middleware.json`, and
-it skips addresses that have ledger names. A regeneration therefore drops these 285 rows. The names survive
-in `config/names`, and the rows can be restored from this commit. `write_tags` was not used.
+`tools/build_tag_ledger.py` used to drop every kept tag row whose address has a ledger name. So a
+regeneration lost these 285 rows, and the 411 `cc13ll1` rows from the Lua pass too. The tool now keeps a row
+whose `source` is a `docs/` review pass for as long as the ledger name still equals the tag's name.
+
+To check it, I regenerated into the worktree with both the old tool and the new one, diffed each against
+HEAD, and then restored `config/tags`:
+- the old tool loses 2196 rows, including all 285 of `CC13_DYN_LIBRARY` and all 411 of `CC13_EMBEDDED_LUA_LIBRARY`;
+- the new tool loses 1500;
+- the difference is exactly those 696 rows.
+
+The other 1500 rows were already being dropped before this change. They are inventory rows that a review
+superseded or that the reports no longer derive. Evidence ids are renumbered on regeneration (`cc13dy1` becomes
+`eNNNN`), but their texts survive. The tag rows for the defined bodies (below) carry no ledger name, so they
+survive the same way as `stl_shape` does.
+
+## Tag ledger regeneration: the 1500 rows it already lost
+
+The lead asked about the 1500 rows that regeneration was already dropping. I regenerated in the worktree
+(never on main), diffed against HEAD with `local/dy1_lost.py`, and restored `config/tags` each time.
+
+**Cause.** Every lost row sits at a reviewed address, one that has a ledger name or a reconstruction record.
+`claim()` skips reviewed addresses, so these rows are never re-derived. The keep rule then drops any existing
+row at a reviewed address ("the review supersedes the tag"). No lost row was at an address that is not
+reviewed. The rows are in the shards at all only because the tags were written before the reviews, and nothing
+has regenerated the shards since.
+
+| why lost | rows | main categories (source, evidence id) |
+|---|---|---|
+| ledger name differs from the tag name | 1338 | `stl_probable` 434 (e0029), `cg_scalar_deleting_dtor` 201 (e0001), `trivial_body` 182 (e0002), `block_dyn` 130 (e0638, `DYN_physics_*` inside 00C30930), `block_pipe_ipc` 97, `static_init` 51, `stl_instantiation` 39, `cg_array_ctor_helper` 38, `cg_static_dtor_stub` 38, `cg_vector_deleting_dtor` 34, `crt_unmatched` 30, `stl_throw_site` 24, `cg_adjustor_thunk` 21, and 7 cc13-stl1 rows |
+| ledger name equals the tag name | 149 | `cg_scalar_deleting_dtor` 92, `stl_throw_site` 15, `stl_instantiation` 11, `crt_unmatched` 8, `cg_adjustor_thunk` 5, `trivial_body` 3, RTTI vslots such as `Dyn_Scene_LCPSolverTask_vslot0` |
+| reconstruction record only | 13 | `stl_instantiation`, `trivial_body`, `block_dyn`, `stl_probable` |
+
+Nearly all lost rows come from the inventories (`templates_and_generated.json`, `rtti_middleware.json`,
+`crt_stl.json`).
+
+**Fixed (commit 62bc77f26): the 149 rows whose name the ledger adopted.** When the review took the tag's own
+name, nothing was superseded. The keep rule from 29dada4f2 now applies to every row whose ledger name equals the
+tag name, whatever its source. The same check, run with the fixed tool: rows lost go from 1500 to 1351, and the
+difference is exactly those 149.
+
+**Left as policy (1351 rows).** Rows where the ledger chose a different name, or where only a reconstruction
+record exists, are dropped on purpose. Nothing that reads tags depends on them:
+- `ghidra_tag.py` never renames a non-`FUN_` function (`kept_existing`);
+- the brief's "untagged FUN_" count only looks at `FUN_` names;
+- what they do carry is the library category, which `lookup` and `status.py` display.
+
+If the category should survive review, a one-line change would keep these rows too: drop
+`address not in reviewed` from the keep rule. The tag name would then stay stale next to the ledger name.
+That is the lead's decision, so I have not made it.
+
+**The other direction.** A regeneration also adds 183 rows that the shards lack: `static_init` 114,
+`crt_unmatched` 43, `block_dyn` 10, `block_metrics_wrapper` 8, `block_telemetry` 6, `rtti_vslot` 2. One row
+changes category: 0094CAD0 from `cg_adjustor_thunk` to `block_telemetry_tmpl`. So the shards and the builder
+have drifted apart in both directions since the last real regeneration.
+
+## Defined bodies (follow-up, same day)
+
+Following `docs/CC13_UNDEFINED_FUNCTION_SWEEP.md`, I defined **717 functions** in 00401010-004138D0 and
+recorded them in `reports/cc13_dyn1_defined_functions.json`. The planner is `local/dy1_gapdef.py`.
+- **Start evidence.** A start is 16-byte aligned, follows INT3 padding and is not already an entry (703
+  candidates). I also took 23 `aligned_after_ret` starts: aligned code that directly follows a planned body's
+  RET or JMP, which the descent from that body does not reach.
+- **Body.** The body comes from a Capstone recursive descent bounded by the next entry. The descent fails on a
+  conditional branch out of the gap, a decode failure or a table jump. `jmp reg` and `jmp [reg+disp]` are
+  accepted as tail calls. The reached instructions must tile the body without overlap, and only INT3 may sit
+  between the body end and the next entry.
+- **Containment, checked two ways.** First, that padding test. Second, live `get_function_by_address` at the
+  start, middle and last byte: four candidates were inside existing bodies (`004019A0`, `00404DC0`, `00405D80`,
+  `0040C790`) and were skipped. Five more failed the descent (`00404E30`, `00406730`, `00406800`, `004086E0`,
+  `0040F070`).
+- **Writing.** I used `tools/ghidra_define_function.py` in batches of 80 under the write lock and a range lease.
+  It made 716 new definitions; `0040D9D0` already existed. Afterwards, all 717 have a Ghidra body that starts and
+  ends where planned (`local/dy1_verify.py`).
+- **After.** `_free` (00BF6989, 00BF65AC) keeps `void __cdecl _free(void *)`, and the code after a `_free` call
+  still decompiles (0040E050). One `snapshot --force` and an index rebuild followed.
+- **References.** 696 of the 717 have no rel32 or absolute reference. The 21 that do are the CRT
+  `memcpy_s`/`memmove_s` wrappers (00401060, 00401090), vtable slots (`00CE3744` slots 11-15 and 22, and
+  table entries at 0117DB74 and 0117DEB4), a thunk target (0040D9D0), and a few `.text` dword matches.
+- **What they are.** Mostly tiny: `char_traits` helpers, float wrappers around sin/cos/sqrt/abs/atan2,
+  min/max, register-ABI vector and matrix inlines, and getters.
+- **Tags:**
+  - 520 below 00410240 have generic names and the tag `block_dyn` `DYN_header_<addr>` (medium confidence,
+    evidence `cc13dy1h`). That is the first object's Dyn/Mit header-instantiation run; it includes the Mit core
+    math wrappers. The class of each is not identified.
+  - 8 are STL/CRT-shaped and tagged `stl_instantiation` `STL_inst_<addr>` (evidence `cc13dy1s`).
+  - 189 above 00410240 are game-side and stay untagged.
+- **Count.** Segment 0 now has 205 untagged `FUN_`: those 189, the 15 earlier ones, and 004138D0 (the next
+  segment's first entry). The brief's image-wide untagged count is 14917.
+- **Index.** The call sites inside the former gaps now resolve to their own functions.
+- **Tag names applied in Ghidra.** `local/dy1_applytags.py` runs `ghidra_tag.apply` on these 528 rows only,
+  in locked batches of 100; the logs are `local/ghidra-tags-dy1-*.json`, and `ghidra_tag.py --revert` can undo
+  them. 526 functions were renamed. Two were kept because Ghidra had already named them as thunks: 0040CD90
+  (`Mit_PoolAllocator_20_128_Allocate_0040D860`, a JMP to it) and 0040CDA0 (`thunk_FUN_0040d9d0`). Their tag
+  rows still carry `DYN_header_*` names. The index snapshot shows the new names after the next snapshot.
 
 ## Tools (worktree-local, not committed)
 
@@ -109,9 +200,10 @@ in `config/names`, and the rows can be restored from this commit. `write_tags` w
 ## Handoff
 
 Done: all 286 names are in the ledger and in Ghidra, the 285 tags are written, and the index is rebuilt.
+The follow-up is also done: the tag-regeneration fix and the 717 defined bodies (sections above).
 Open, for the lead:
-1. Decide whether to define the about 665 unreferenced functions Ghidra lacks in this segment
-   (`local/dy1_gaps.py` lists them). Defining them would raise the raw count. They are dead code, so they
-   could instead be bulk-tagged as dead once defined.
-2. The 15 game-side raw functions listed under Result.
+1. The 9 skipped candidates (listed under "Defined bodies"). The four inside existing bodies suggest those
+   Ghidra bodies (`004019A0`, `00404DC0`, `00405D80`, `0040C790`) span INT3 padding into further code. They
+   may be truncated, or merged with a neighbour, and are worth a look with `disasm-raw`.
+2. The 15 game-side raw functions listed under Result, plus the 189 game-side bodies defined above 00410240.
 3. The two 10h-element pools (SAPPair and SAPEndpoint) are told apart by address order only.
