@@ -267,11 +267,19 @@ void set_effect_priority_00b172e0(void* effect, std::int32_t priority) { wr<std:
 
 void set_material_alpha_ref_00b17310(void* material, std::int32_t value) { wr<std::int32_t>(material, 0x104, value); }
 
-void notify_clock_listeners_00b19a60(void* registry, ClockRegistryHost& host) {
+void clear_texture_source_children_00b19a60(void* registry, TextureSourceRegistryHost& host) {
     // B19A7D..B19A89: the end is recomputed from +8h/+0Ch after every call.
     for (std::uint8_t* entry = rd<std::uint8_t*>(registry, 0x8);
          entry != rd<std::uint8_t*>(registry, 0x8) + 0x2c * rd<std::uint32_t>(registry, 0xc); entry += 0x2c) {
-        host.listener_slot28(rd<void*>(entry, 0x28));
+        host.source_clear_children_slot28(rd<void*>(entry, 0x28));
+    }
+}
+
+void release_texture_source_frames_00b33a10(void* renderer, TextureSourceRegistryHost& host) {
+    clear_texture_source_children_00b19a60(host.registry_004de4b0(), host);
+    for (std::uint8_t* entry = rd<std::uint8_t*>(renderer, 0x1a9c);
+         entry != rd<std::uint8_t*>(renderer, 0x1a9c) + 0x2c * rd<std::uint32_t>(renderer, 0x1aa0); entry += 0x2c) {
+        wr<std::uint8_t>(rd<void*>(entry, 0x28), 0xb4, 0);
     }
 }
 
@@ -558,15 +566,15 @@ void render_scene_00b156c0(void* service, void* command, SceneRenderFrameHost& h
     host.batch_list_prepare_slotc(rd<void*>(command, 0x10), 1);
     host.batch_list_execute_slot8(rd<void*>(command, 0x10), 1, camera());
     host.camera_set_render_mode_00b6fdf0(camera(), saved_mode);
-    host.call_00b3cda0(rd<void*>(service, 0x5c), rd<void*>(service, 0x58));
+    host.surface_stretch_from_00b3cda0(rd<void*>(service, 0x5c), rd<void*>(service, 0x58));
     host.device_set_frame_targets_slot98(nullptr);
     host.camera_set_clear_color_00b6fe50(camera(), 0x01000000u);
-    // B1660E..B16998: the +0Ch object (role unread) brackets the second list-1
+    // B1660E..B16998: the cockpit helper +0Ch brackets the second list-1
     // pass when its node is visible; the passes between are the same.
-    void* object0c = rd<void*>(service, 0x0c);
-    const bool bracket = object0c != nullptr && host.object0c_visible_00b3c550(object0c);
+    void* cockpit = rd<void*>(service, 0x0c);
+    const bool bracket = cockpit != nullptr && host.cockpit_node_visible_00b3c550(cockpit);
     if (bracket) {
-        host.call_00b3c960(object0c, camera(), rd<void*>(service, 0x1cc));
+        host.cockpit_begin_frame_00b3c960(cockpit, camera(), rd<void*>(service, 0x1cc));
     }
     host.targets_set_color_00b1fab0(
         rd<void*>(service, 0x1cc), 0,
@@ -592,7 +600,7 @@ void render_scene_00b156c0(void* service, void* command, SceneRenderFrameHost& h
     host.batch_list_execute_slot8(rd<void*>(command, 0x10), 1, camera());
     host.camera_set_render_mode_00b6fdf0(camera(), saved_mode);
     if (bracket) {
-        host.call_00b3c6e0(rd<void*>(service, 0x0c), camera(), rd<void*>(service, 0x1cc));
+        host.cockpit_draw_00b3c6e0(rd<void*>(service, 0x0c), camera(), rd<void*>(service, 0x1cc));
     }
     host.holder_resolve_00b4caf0(host.shadow_map_texture_holder_00b4d170(rd<void*>(service, 0x64)));
     host.camera_set_clear_flags_00b6fe10(camera(), 7);
@@ -648,11 +656,11 @@ void render_scene_00b156c0(void* service, void* command, SceneRenderFrameHost& h
     const std::int32_t film = rd<std::int32_t>(service, 0x220);
     const float amount = rd<float>(service, 0x224);
     // B16D04..B16D2E: the distortion output replaces the +668h texture unless
-    // the +0Ch object reports visible. 00B3C550 is called on +0Ch without a null
+    // the cockpit node is visible. 00B3C550 is called on +0Ch without a null
     // check here (the native would fault on a null +0Ch).
-    auto distortion_texture = [&](bool check_object0c) -> void* {
+    auto distortion_texture = [&](bool check_cockpit) -> void* {
         if (rd<void*>(service, 0x30) != nullptr &&
-            (!check_object0c || !host.object0c_visible_00b3c550(rd<void*>(service, 0x0c)))) {
+            (!check_cockpit || !host.cockpit_node_visible_00b3c550(rd<void*>(service, 0x0c)))) {
             return host.holder_texture_00b4cb10(rd<void*>(rd<void*>(service, 0x30), 0x18));  // 00B4EC50
         }
         return rd<void*>(service, 0x668);
@@ -686,7 +694,7 @@ void render_scene_00b156c0(void* service, void* command, SceneRenderFrameHost& h
         void* pass = rd<void*>(service, alt ? 0x654 : 0x650);
         host.pass_assign_targets_00b4e2b0(pass, rd<void*>(service, 0x1d4));
         set_slot(pass, 0, host.holder_texture_00b4cb10(rd<void*>(service, 0x4c)), host);
-        // B16E64: the +654h variant skips the +0Ch test.
+        // B16E64: the +654h variant skips the cockpit test.
         set_slot(pass, 1, distortion_texture(!alt), host);
         set_slot(pass, 2, rd<void*>(service, alt ? 0x670 : 0x66c), host);
         host.pass_draw_00b4dcc0(pass, 0);
