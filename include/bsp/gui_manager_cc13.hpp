@@ -121,18 +121,18 @@ std::array<float, 2> scale_for_extent_00aa69e0(const GuiWidgetTransform& widget,
 // Widget +38h..+44h: four floats in the order left, right, top, bottom
 // (00AA8F30 builds them that way). Zeroed by the base constructor 00AA9390.
 // A hit-test clip: the reader is the hit walk 00AA8BD0, which rejects the
-// widget when its hit box leaves the rectangle on any edge whose limit is
-// non-zero (00AA8CDF left: limit > box left; 00AA8D41 right: box right >
-// limit; 00AA8D69 top; 00AA8D89 bottom; a limit of exactly 0.0 is off). The
+// widget only when its hit box lies wholly outside the rectangle (00AA8CDF:
+// left limit > box right; 00AA8D41: box left > right limit; 00AA8D69: top
+// limit > box bottom; 00AA8D89: box top > bottom limit; a limit of exactly
+// 0.0 is off). A partly visible widget stays hittable over its whole box. The
 // row builders that call 00AA8F30 copy a list box's extent onto each row, so
-// rows scrolled outside the box cannot be hit. A sweep of 00A90000-00AD8000
+// rows scrolled fully outside the box cannot be hit. A sweep of 00A90000-00AD8000
 // for functions touching all four offsets on one register found the writer
 // 00AA8EC0 (positive control), the constructors 00AA9390/00AA9520, the hit
 // walk, and seven others whose register is not a widget where checked (for
 // example 00AC2BC3 in BSP_GuiLine_Flush reads vertex element offsets); no
-// drawing use was found. include/bsp/gui_layer.hpp GuiHitLimits labels the same
-// four fields from its box naming (gate_right, min_left, ...); the edge
-// order here follows the writer 00AA8F30.
+// drawing use was found. include/bsp/gui_layer.hpp GuiHitLimits models the
+// same compares (its fields renamed to left/right/top/bottom by this packet).
 struct GuiWidgetRect {
     float left{0.0f};
     float right{0.0f};
