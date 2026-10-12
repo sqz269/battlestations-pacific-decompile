@@ -1284,7 +1284,7 @@ constexpr float kDegToRad = 0.01745329251994329577f;
 // qword 00CE3D28 = 3.1415927410125732 (pi as a float) and divide by the qword 180.0. On
 // the 24-bit main thread that is the float product below; on a 53-bit pool worker it is
 // the double chain. False: the double chain with 3.14159265358979.
-inline constexpr bool kGunAimDegreePrecisionBound = false;
+inline constexpr bool kGunAimDegreePrecisionBound = true;  // ON: USN12 / USN01 identical
 constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
     {10.0f * kDegToRad, 1.0f},  // 0 Stun
     {5.0f * kDegToRad, 1.0f},   // 1 SPNormal
