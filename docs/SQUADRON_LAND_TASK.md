@@ -15347,3 +15347,32 @@ run time would die in the image and survive in the host.
     In this installation the only use is `commandhelpers.lua:2540`, inside a `--[[ ... ]]` block, so it is inert.
   - luaMW_init.lua unprotected: the host runs it under `lua_pcall` (`LuaGameTuningHost::run_script`). An error
     there is logged (`plane globals: ... failed`) instead of ending the process.
+
+### 5fu, the pairs and the verdict (cc9-lua51, 2026-10-12)
+
+Pairs on `98eb4dd89` (`local\l51_A0` OFF, `local\l51_A1` both ON), 9000 frames unless noted; ESMP03 again on
+`129c418c5` (`l51_B0`/`l51_B1`) after the fix below.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| BSM01 (orders `l50_b1_a.txt`, 17000) | 1, gameplay identical | `attacker_filtered` 52 -> 0, `kill_with_attacker` 133, `attacker_matched` 0, 2 second passes. Donald (the controlled plane) kills nothing in this harness run (death-row killers: Raleigh 29, Sacramento 24, Nevada 19, ...), so `DonaldKillListener` correctly matches nothing. The win holds at 767.94 s, and both sides log the sus_prog.exe refusal |
+| BSM04 | 0/1 | 13 deaths with an attacker and 12 second passes, none matched: the Cat kills nothing before Donald dies at 114.05 s |
+| USN03 (LOMP02) | 1 | 11 deaths with an attacker. The row fails at 221.96 s (the commandhelpers.lua:330 Party hole) before the bomber phase that registers `luaGroundInstallationHit` |
+| JM06 | 1 | 10 deaths with an attacker. No player torpedo, no cargo kill by the player |
+| LOMP05 | 1 | no combat in 450 s |
+| ESMP03 | 1 on A; 1 on B | A: 13 `luaUSPlaneShotDown` calls with arguments, 12 of them for planes that died with **no** attacker (six USScouts at 271.06 s, six SBDs) matching `lastAttackerPlayerIndex = {PLAYER_1}` (= 0) because the host defaulted +2D8h to 0. **Fix** (`129c418c5`): the unit constructor `0077EED0` leaves `+2C8h = 0` (`0077EFDD`) and `+2D8h = -1` (`0077EFEF` `OR EAX,-1`, `0077F012`), so an unattributed victim boxes (nil, -1). B: no match, no call; gameplay identical |
+| ESMP08 (orders `l46_e8_orders2.txt`, 72000) | 3, presentation only | Deaths, hits, death rows and the unit table are identical, and the win holds at 3456.80 s with the refusal logged on both sides. `mission end ... entity=""` becomes `entity="Case"`, which `luaUSNSunk(entity)` stored as `Mission.VictoryShip`. The end camera then has a target: movie camera builds 2 -> 3, keyframes 24 -> 27, publishes 1020 -> 1821, with GetCameraState / GetRotation / TrulyDead called once or twice. The GuiText / UnitPickScreen / ocean-height call counts move by about 1%, in the same frames; the cause was not traced beyond the camera change |
+
+**Verdict: both ON.** The argument mechanism is the image's and visibly right on ESMP08. The attacker filter and
+the second pass are inert on every row run, because no subscription's named attacker lands a kill there, and the
+first ESMP03 run found the one default that was wrong. Still open: the hit target is the hit unit, not
+`vtable[140h]()` (a plane's squadron) — for a plane victim a `target = {squadron}` subscription does not match;
+targetDevice is always nil; the credited slot rides on the gunnery host's side stand-in for `unit+180h`.
+
+**The other channels** (census of `AddListener` in this installation's `scripts/missions`): kill 335, hit 235,
+recon 219, surrender 76, entityKilled 44, input 37, exitzone 36, gui 19, command 17, generate 17, hpEvent 12,
+ammoType 9, repair 6, shipLanded 5, target 2. The host dispatches only kill, hit and recon. On the reference rows:
+JM06 (`PRCPIJN/jm06.lua:1205`) subscribes `command` (`moveonpath` / `finish` on `Mission.IJNSubsGrp1`, sets
+`Mission.PathEnd`), JM05 subscribes `gui`, and the COTP-USN rows use `exitzone` and `hpEvent`. None was reached in
+the 450 s runs above (JM06 never registers `submove`). cc13's image bugs (unknown-channel AddListener, the re-add
+leak, RemoveListener of a missing id, filter save/load) were not re-checked against the host in this packet.
