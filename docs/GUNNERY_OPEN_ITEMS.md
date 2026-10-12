@@ -12490,7 +12490,10 @@ them flew ballistically under the sea and struck hulls from below. With ON, each
 a torpedo swims, and any other round dies on the water, the host's existing water branch. Only the image's
 classDesc+74h decides the other rounds, through vtable[30h] = 006E2580 `MOV AL,[[ECX+4]+74h]`: set means a static
 impact, clear means vtable[28h]. The host already ends every non-torpedo round at the water. The JM06 deaths are
-2 -> 8, against 10 in 181's combined pair. Flipped ON.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+2 -> 8, against 10 in 181's combined pair. Flipped ON.
+Condition: these exports carry this branch's held 126f79f83 (kWaveFieldLiveAmplitudeBound ON, so hulls ride the live sea),
+with kGunneryLiveWaterSurfaceBound OFF, so the crossing tested is the y = 0 one. Under the flat-sea crossing the mechanism
+does not depend on the amplitude switch.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
 
 Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
 disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of
@@ -12691,3 +12694,43 @@ are not repeated here.
 - **This installation's data:** its modded "Yamato 1945 Type 3 Flak Bullet" row (`bulletclasses.lua` arcade 2657,
   realistic 2613) has FlyTime 10, BlastRange 4500 and damage 3500-4000 (cc13). With the burst ON it dominates any
   mission that arms it; that is the installation's data, recorded as such.
+Same condition as 182: the live amplitude was ON on all three sides. The wins check below runs with it OFF on both sides, as main has it.
+
+**Wins check (c96f10979; local\p2w_off has both Dyn bounds false, local\p2w_on is as committed; both sides
+kWaveFieldLiveAmplitudeBound false, as on main; logs local\p2w_*):**
+
+| Row | Dyn OFF | Dyn ON |
+|---|---|---|
+| USN01 l50_u1_u2 | 475.21 s | 475.21 s |
+| USN02 s36_u2_p7 | 782.03 s | 782.03 s |
+| LOMP10 s37_l10_p2 | 1127.67 s | 1223.72 s |
+| USN12 s38_u12_p2 | 1549.74 s | 1589.38 s |
+| ESMP08 l46_e8_orders2 | 3456.80 s | **no completion in 72000 frames** (3600 s) |
+| LOMP06 l50_l6_q6 | 369.98 s | 369.98 s |
+
+The guard line is logged on every completion. ESMP08 moves chaotically: 28 / 32 one-sided deaths, almost all of them
+aircraft. OFF completes 143 s before the cap. An ON run extended to 90000 frames (local\p2w_on_e8x.log) separates
+late from lost; the result is below.
+ESMP08 extended to 90000 frames still does not complete. The win is `getn(alive USNFleet) == 0` (08_engano.lua).
+The only one-sided ship deaths are Cassin, sunk at 437.12 s in OFF by Zuikaku_sqn02 (cat 10) and alive in ON for
+the whole 4500 s, and Zuikaku, sunk at 1701.23 s in ON only. Every other one-sided death is an aircraft. Cassin's
+survival of that early air strike blocks the fleet-wipe condition. Verdict: a plan casualty decided by one air
+attack, the same kind as the live-sea losses. Not a contact-mechanism failure: the Dyn bounds stay ON.
+
+## 184. Handoff (cc9-physics2, 2026-10-12, at about 75% context)
+
+Branch `agent/cc9-physics1` in J:\PROG\battlestations-pacific-decompile-cc9-physics1. The lead still holds
+126f79f83 (live sea ON) off main. This session added: e51fe76e2 / 2c18fb04f (182, the submerged swim, ON),
+323f072ba / bee576619 / c96f10979 (183, the Dyn association and precision, ON), docs/OCEAN_WAVE_FIELD.md 16 (the
+LOMP10/USN12 losses), and 183's 11a answer. The tools are in local\: p2_x87sym.py (symbolic x87 over disk bytes;
+read its header for the limits: SSE stores are not tracked, and register-based memory is not memoised), p2_firstdiff.py,
+p2_sum.py, p2_health.py, p2_grepent.py, and p2_runs.ps1 (the swim/dyn/wins/e8x sets).
+
+Open:
+- 11a's impact: what 00C4B9B0's depth and drift tests do with distorted local points on a scaled (s = 1.415) fort.
+  Read 00C4B9B0, then decide whether the host should keep its correct normalized frame or reproduce the image.
+- 182's other rounds: classDesc+74h (vtable[30h] 006E2580) decides static impact vs water entry. The host ends
+  every non-torpedo round at the water. A census of +74h over the bullet classes would confirm that.
+- 006E8680 samples 0078CF20 at (x, y); projectile_impact.cpp's comment says (x, z). That is not this lane's file.
+- Wins casualties to report to the plan owners: ESMP08 (Cassin) with the Dyn bounds ON. With the live sea ON:
+  USN01, LOMP10 and USN12 (section 15/16).
