@@ -340,6 +340,37 @@ values as `"%f"` (`0043BDF0`). The punctuation constants are `"["` 00CF5980, `"]
 `"]="` 00D04248, `'"'` 00CE436C and `";"` 00CE5698. Which routine executes `msg+28h` on the client
 was not traced.
 
+## MT_ADDPLAYER and three small receivers (batch 4)
+
+`00773120` MT_ADDPLAYER (session, msg, &status), `RET 8`. `004BB550` fills the player record from
+the message (player `+18h`, name `+28h`, `&msg+48h`, xuid `+20h/+24h`, bytes `+58h`/`+54h`, `+5Ch`,
+`+B0h..+BCh`); then record `+90h = msg+60h`, `+94h = msg+61h`. The local player index is read after
+the fill (007731D1). The record's peer (`+50h`):
+
+- player 0 (the host, seen from a client): the first node's `+8h` of the client transport list
+  (`[+18Ch]+0Ch`), or null when `[+18Ch]+10h` is 0;
+- any other player: a new `0xDC0` peer target (`007839D0(0,0)`, vtable `00D03860`, then
+  `007827D0` with ECX = `target+D6Ch`). Its `sockaddr_in` at `+D74h..+D83h` is AF_INET, port
+  `htons(1000)` (`PUSH 3E8h` at 0077325B), address from `XNetXnAddrToInAddr(XNADDR copied from
+  msg+62h, [game+207Ch]+96Ch, &sin_addr)`, written only when `[00F8A2FC]->vtable[198h]()` is true.
+  `target+D50h = record` in both cases (007732F6).
+
+So clients hold direct targets to every other client on port 1000, which matches the
+`"__P2P_VOICE__ PeerTableToC"` string in `007752D0`. **Correction to earlier docs:** the "peer
+metadata" at `peer+D50h` that `docs/SESSION_TEARDOWN_LATCHES.md` and the MT_SCENETERM arm
+(`0076D260`, `[[msg+8]+D50h]+1Ah = 0`) touch is the sender's player record (written at 007732F6;
+for the server's own peers the same field is presumably set by `007752D0`, not checked here).
+With the online manager present it then calls `vtable[158h]({xuid, name}, msg+9Eh)`,
+`vtable[ACh](xuid)`, `00778620` on `session+190h` and `vtable[28h]()`; the local player's record
+finally goes to `007F8690(record, {game+734h, game+730h, 0})`. `vtable[198h]` is called without a
+null check, so a client without the online manager would fault on a non-zero player.
+
+`0076CD20` MT_CONNSTATE composes the existing `update_native_smoothed_remainder_triplet_007862C0`:
+for i = 0..7, ECX = `session+0Ch+i*1Ch`, floats `msg+18h+i*0Ch` and `+4h` (the third float of each
+group is unused). `00777820` MT_HINT: outside host mode, `00690FD0` on `004E1CA0(msg+18h, 1)`.
+`00772710` (MT_CHECKSCENELOAD client arm): `r = [00F8A2FC]->vtable[168h]()`, `005D6CD0()`, send
+0Dh with `+18h = (r == 0)` (SETZ at 00772746) to the server, `session+4h = 0`.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
@@ -350,31 +381,26 @@ replication, `0077D600` `BSP_Entity_IssueCommand`, `0077B0C0` and `0077FAD0` (th
 No ban-list code was found in this segment: the packet keyword `lastbanto` is the unit Lua field
 `lastBanto` read by `0077C160`/`0077FAD0` and `LastBanto` in `0077D270`.
 
-Routed but not reconstructed here (in segment, reachable from the ladder):
-`00773120` MT_ADDPLAYER (copies the record via `004BB550`, allocates a `0xDC0` session target for
-non-zero players and maps the XNADDR with `XNetXnAddrToInAddr`, registers the talker and the mute
-row `00778620`; `_free` near the end), `007746F0` MT_SESSION_MANAGER (online stats write handshake,
-states 1..5 on `game+7ECh+i*118h`), `007752D0` `MMultiPlayer::ServerAddPlayer` (23 callees, "Sending
-PIMPS to new client", "PeerTableToC" voice peer table), `007717A0` MT_REFRESHSCENE, `00772710`
-MT_CHECKSCENELOAD client arm, `0076CD20` MT_CONNSTATE (eight `007862C0` smoothed-triplet updates on
-`session+0Ch+i*1Ch` from float pairs at `msg+18h+i*0Ch`; the callee is already reconstructed),
-`00777820` MT_HINT (client: award-tracker hint from `msg+18h`), the presentation arms 2Bh..34h
-(blackout, countdown, movie camera: `0076F4C0`, `007709C0`, `0076D420`, `0076F560`, `0076F630`,
-`0076D760`). The MultiScore entity is covered above.
+Routed but not reconstructed here (in segment, reachable from the ladder): `007746F0`
+MT_SESSION_MANAGER (online stats write handshake, states 1..5 on `game+7ECh+i*118h`), `007752D0`
+`MMultiPlayer::ServerAddPlayer` (23 callees, "Sending PIMPS to new client", "PeerTableToC" voice
+peer table), `007717A0` MT_REFRESHSCENE, and the presentation arms 2Bh..34h (blackout, countdown,
+movie camera: `0076F4C0`, `007709C0`, `0076D420`, `0076F560`, `0076F630`, `0076D760`).
 
 Outside the segment, routed by the ladder: see the table (the `Other` and `MessageThis` rows).
 
 ## Checks
 
 - Build: `scripts/build.ps1` in the worktree, exit 0, no warnings from the new file.
-- `tools/verify_report_calls.py`: 36 call sites cited in this doc (CALL and tail-JMP rows, each with its
+- `tools/verify_report_calls.py`: 48 call sites cited in this doc (CALL and tail-JMP rows, each with its
   enclosing function) checked against live Ghidra, 0 failures.
 - Listing checks: 0076D840 (ECX session, `RET 8`), 0076D140 (tail jump to 00784B10 with
   `[ECX+188h]`), 0076D170 (`NEG/SBB/ADD 4`), 0076C7B0 (`__allshl` operands), 007712F0 (signed
   `JGE`), 00771630 (`ESI = [00F8ABE8]` for 00A3EB00, `LEA ECX,[EDI+190h]`), 00773420 (`JLE`, tail),
   007724A0 (both compares use `[game+5FCh]+90Ch`), and the ECX of every `00784790` call in this
   file (`[session+188h]`).
-- `_free` callers among the reconstructed bodies: only 00773420, tail confirmed above.
+- `_free` callers among the reconstructed bodies: 00773420 and 00773120; both tails were read in
+  the listing (00773587..007735AC and 007733C7..0077341D).
 
 ## Open questions
 
@@ -389,9 +415,9 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 
 ## Handoff
 
-Next steps, in order of value: (1) `00773120` MT_ADDPLAYER and `007752D0` ServerAddPlayer (the
-remaining player-slot spine; both touch XNet and `_free`, so read with `disasm-raw` past each
-`_free`); (2) the client-side consumer that executes the MultiScore text (`msg+28h` of E0h) and
+Next steps, in order of value: (1) `007752D0` ServerAddPlayer, the server half of the
+player-slot spine (XNet, the PIMPS/unlock sends and the P2P voice peer table; read past each
+`_free` in the listing); (2) the client-side consumer that executes the MultiScore text (`msg+28h` of E0h) and
 the `DFh` create message; (3) `007746F0` MT_SESSION_MANAGER together with the
-online-stats builder `004C9780`; (4) the scene-list arm `007717A0` and `00772710`. Leases for
+online-stats builder `004C9780`; (4) the scene-list arm `007717A0`. Leases for
 `0076AA00-00787040` were released at the end of this packet.

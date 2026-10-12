@@ -988,4 +988,62 @@ void net_table_sync_to_peer_00782020(void* peer, std::int32_t party, bool tables
     if (!changes.empty()) host.send_to_peer_00779fc0(peer, changes.data(), changes.size());
 }
 
+// ---------------------------------------------------------------------------
+// Batch 4
+// ---------------------------------------------------------------------------
+
+void receive_add_player_00773120(SessionState& session, GameView& game,
+                                 const AddPlayerMessage& msg, std::uint32_t game_734,
+                                 std::uint32_t game_730, AddPlayerHost& host) {
+    host.fill_player_record_004bb550(msg);
+    PlayerRecord& record = game.players[msg.player_18];
+    record.byte_90 = msg.byte_60;
+    record.word_94 = msg.byte_61;
+    const std::int32_t local_player = game.local_player;  // read at 007731D1
+    if (msg.player_18 == 0) {
+        record.peer_50 = host.client_first_peer();
+    } else {
+        void* target = host.create_peer_target();
+        TargetSockAddr address;
+        address.port_network = host.htons_00a4d494(kPeerVoicePort);
+        if (host.online_uses_network_addresses_198()) {
+            address.address = host.xnaddr_to_inaddr(msg.xnaddr_62);
+            host.set_target_address_d74(target, address);
+        }
+        host.set_target_record_d50(target, record);
+        record.peer_50 = target;
+    }
+    if (host.online_present_00f8a2fc()) {
+        host.online_add_player_158(msg.xuid_20, msg.name_28, msg.byte_9e);
+        host.online_add_remote_talker_ac(msg.xuid_20);
+        voice_mute_add_00778620(session.mute, msg.xuid_20);
+        host.online_refresh_28();
+    }
+    if (local_player == msg.player_18) {
+        host.place_local_record_007f8690(record, game_734, game_730);
+    }
+}
+
+void receive_conn_state_0076cd20(ConnStateRows& rows, const std::uint32_t (&float_bits)[8][3],
+                                 const NativeTripletSmoothingContext& context) {
+    for (int i = 0; i < 8; ++i) {
+        update_native_smoothed_remainder_triplet_007862c0(rows.rows[i], float_bits[i][0],
+                                                          float_bits[i][1], context);
+    }
+}
+
+void receive_hint_00777820(const SessionState& session, const void* hint_payload_18,
+                           HintHost& host) {
+    if (session.mode != SessionMode::kHost) host.trigger_hint(hint_payload_18);
+}
+
+void client_check_scene_load_00772710(std::uint8_t& session_04, CheckSceneLoadHost& host) {
+    const std::uint32_t result = host.online_scene_check_168();
+    host.gui_005d6cd0();
+    BuiltMessage m = make_message(0x0D, kVtableCheckSceneLoad0D);
+    m.put8(0x18, result == 0 ? 1 : 0);  // SETZ BL at 00772746
+    host.send_to_server_00770af0(m);
+    session_04 = 0;
+}
+
 }  // namespace bsp::mp_cc13

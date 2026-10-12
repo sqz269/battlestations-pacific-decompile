@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 
+#include "bsp/native_smoothed_remainder_triplet.hpp"
 #include "bsp/session_message_dispatch.hpp"
 
 // Multiplayer session plumbing in partition segment 43 (0076AA00..00787040):
@@ -191,6 +192,8 @@ struct PlayerRecord {
     std::uint64_t xuid_80{0};         // +80h/+84h
     std::uint8_t voice_registered_89{0}; // +89h, MT_ADD/REMOVEREMOTEVOICE, MT_VOICECHANGE
     std::uint32_t last_voice_time_8c{0}; // +8Ch, 007F7490 stores game+64Ch
+    std::uint8_t byte_90{0};             // +90h, MT_ADDPLAYER msg+60h
+    std::uint32_t word_94{0};            // +94h, MT_ADDPLAYER msg+61h zero-extended
     std::uint32_t unlock_class_110{0};   // +110h (game+858h + i*118h), MT_PLAYERUNLOCKUNIT
 };
 
@@ -653,5 +656,103 @@ void net_table_sync_to_peer_00782020(void* peer, std::int32_t party, bool tables
                                      const NetTablePair* pairs, std::size_t count,
                                      NetTableSyncHost& host);
 std::string net_table_snapshot_statement_00782020(std::int32_t party);
+
+// ---------------------------------------------------------------------------
+// Batch 4: MT_ADDPLAYER, MT_CONNSTATE, MT_HINT, MT_CHECKSCENELOAD (client)
+// ---------------------------------------------------------------------------
+
+// MT_ADDPLAYER payload fields 00773120 reads (offsets from msg+0).
+struct AddPlayerMessage {
+    std::int32_t player_18{0};
+    std::uint64_t xuid_20{0};
+    std::string name_28;             // inline char array at +28h
+    std::uint32_t word_48_address{0};  // msg+48h passed by address to 004BB550
+    std::uint8_t byte_54{0};
+    std::uint8_t byte_58{0};
+    std::uint32_t word_5c{0};
+    std::uint8_t byte_60{0};         // -> record+90h
+    std::uint8_t byte_61{0};         // -> record+94h (zero-extended)
+    std::array<std::uint8_t, 36> xnaddr_62{};  // XNADDR, copied by REP MOVSD (9 dwords)
+    std::uint8_t byte_9e{0};         // second argument of [00F8A2FC]->vtable[158h]
+    std::uint32_t words_b0[4]{};
+};
+
+// sockaddr_in written to target+D74h..D83h: AF_INET, port htons(1000)
+// (00A4D494, imported by ordinal; Ghidra labels it XSocketNTOHS, the same
+// byte swap), address from XNetXnAddrToInAddr.
+struct TargetSockAddr {
+    std::uint16_t family{2};
+    std::uint16_t port_network{0};
+    std::uint32_t address{0};
+    std::uint8_t zero[8]{};
+};
+inline constexpr std::uint16_t kPeerVoicePort = 1000;  // PUSH 3E8h at 0077325B
+
+struct AddPlayerHost {
+    virtual ~AddPlayerHost() = default;
+    // 004BB550 __thiscall(game, player, name, &msg+48h, xuid lo, xuid hi,
+    // msg+58h, msg+54h, msg+5Ch, msg+B0h..BCh): fills the player record.
+    virtual void fill_player_record_004bb550(const AddPlayerMessage& msg) = 0;
+    // Player 0: the first node's +8h of the client transport list
+    // ([+18Ch]+0Ch), or null when [+18Ch]+10h is 0. No +18Ch null check.
+    virtual void* client_first_peer() = 0;
+    // operator new(0DC0h); 007839D0(0, 0); vtable 00D03860; then 007827D0
+    // with ECX = target+D6Ch. Allocation failure is not handled downstream.
+    virtual void* create_peer_target() = 0;
+    virtual std::uint16_t htons_00a4d494(std::uint16_t value) = 0;
+    // [00F8A2FC]->vtable[198h](), called without a null check.
+    virtual bool online_uses_network_addresses_198() = 0;
+    // XNetXnAddrToInAddr(&xnaddr, [game+207Ch]+96Ch, &sin_addr); the result
+    // code is ignored.
+    virtual std::uint32_t xnaddr_to_inaddr(const std::array<std::uint8_t, 36>& xnaddr) = 0;
+    virtual void set_target_address_d74(void* target, const TargetSockAddr& address) = 0;
+    virtual void set_target_record_d50(void* target, PlayerRecord& record) = 0;
+    virtual bool online_present_00f8a2fc() = 0;
+    virtual void online_add_player_158(std::uint64_t xuid, const std::string& name,
+                                       std::uint8_t flag) = 0;
+    virtual void online_add_remote_talker_ac(std::uint64_t xuid) = 0;
+    virtual void online_refresh_28() = 0;
+    // 007F8690 __thiscall(record, &{game+734h, game+730h, 0}).
+    virtual void place_local_record_007f8690(PlayerRecord& record, std::uint32_t game_734,
+                                             std::uint32_t game_730) = 0;
+};
+
+// 00773120 MT_ADDPLAYER (session, msg, &status), RET 8. The local player
+// index is read after the record is filled (007731D1). Player 0's record peer is the
+// client transport's first peer; every other player gets a new peer target
+// whose +D50h points back at the record (which is why the peer metadata at
+// peer+D50h elsewhere is a player record).
+void receive_add_player_00773120(SessionState& session, GameView& game,
+                                 const AddPlayerMessage& msg, std::uint32_t game_734,
+                                 std::uint32_t game_730, AddPlayerHost& host);
+
+// 0076CD20 MT_CONNSTATE (session, msg, &status): for i = 0..7 the triplet
+// at session+0Ch+i*1Ch is updated (007862C0) with the float pair at
+// msg+18h+i*0Ch; the third float of each 0Ch group is unused.
+struct ConnStateRows {
+    NativeSmoothedRemainderTriplet* rows[8]{};
+};
+void receive_conn_state_0076cd20(ConnStateRows& rows, const std::uint32_t (&float_bits)[8][3],
+                                 const NativeTripletSmoothingContext& context);
+
+// 00777820 MT_HINT (session, msg), RET 4: outside host mode,
+// 00690FD0 on 004E1CA0(msg+18h, 1) (award-tracker hint).
+struct HintHost {
+    virtual ~HintHost() = default;
+    virtual void trigger_hint(const void* hint_payload_18) = 0;
+};
+void receive_hint_00777820(const SessionState& session, const void* hint_payload_18,
+                           HintHost& host);
+
+// 00772710 MT_CHECKSCENELOAD client arm (session, msg, &status): r =
+// [00F8A2FC]->vtable[168h](); 005D6CD0(); send 0Dh with +18h = (r == 0)
+// to the server; session+4h = 0.
+struct CheckSceneLoadHost {
+    virtual ~CheckSceneLoadHost() = default;
+    virtual std::uint32_t online_scene_check_168() = 0;
+    virtual void gui_005d6cd0() = 0;
+    virtual void send_to_server_00770af0(const BuiltMessage& message) = 0;
+};
+void client_check_scene_load_00772710(std::uint8_t& session_04, CheckSceneLoadHost& host);
 
 }  // namespace bsp::mp_cc13
