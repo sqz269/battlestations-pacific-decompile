@@ -12625,3 +12625,18 @@ it, because body B's angular terms multiply a zero velocity and a zero mass Jaco
 tests on the refreshed points do see it. Not quantified: what 00C4B9B0's thresholds then do with an s = 1.415 fort
 (the length-2.003 direction in the audit). The host's normalized `rigid_fort` frame gives undistorted points, so it
 differs from the image here. It is the correct geometry, and the image is not.
+
+**Pairs and verdict (local\p2s_off = e51fe76e2 both OFF; local\p2a = 323f072ba association ON; local\p2p = bee576619
+precision ON; reference form; logs local\p2d_{off,asc,prc}_*.log): both ON.** Every row is pair_diff exit 3. The
+first moved gameplay line (local\p2_firstdiff.py over the ship-AI step lines) always comes after the row's first
+Dyn contact, and it differs in the last printed digit:
+
+| Row | First contact | First move, association | First move, precision | Deaths OFF / asc / prc | End |
+|---|---|---|---|---|---|
+| JM08 3000 | Helena-Missouri pair, step 353 | step 490 (Helena's line) | step 460, LSM 01 throttle 0.526 -> 0.525 | 19 / 19 / 19 | - |
+| USNOS 9000 | Enterprise-DM1 pair, step 365 | step 420, DM1 target -1.5338 -> -1.5339 | step 380, Midway throttle 0.355 -> 0.356 | 108 / 108 / 108 | - |
+| BSM01 l50_b1_a | Raleigh terrain, t = 0.05 | step 400, HenryPT d32c 400.81 -> 400.82 | step 60, Cassin heading 0.5197 -> 0.5198 | 191 / 197 / 191 | EndMission 770.94 / 770.94 / 767.94 |
+
+The mechanism matches: the ULP-level divergence starts at a contact and then spreads chaotically. USNOS keeps its
+headline numbers. BSM01's EndMission holds on all three. Both flipped ON (precision implies the association).
+Wins check: the next pair, below.
