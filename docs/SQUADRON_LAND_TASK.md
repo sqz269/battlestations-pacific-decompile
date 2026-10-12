@@ -15453,8 +15453,8 @@ section scopes the other path, watching the whole movie. No code was written.
   re-creates the `+28h` scene records (`0046BA7B..0046BBCD`). That puts every scene unit back to its authored
   state, and then `luaPrecacheUnits` / `luaStageInitMulti` / `luaStageInit` run (5fm, 5fp). The residue is:
   - the mission clock, `Movielen` plus the ramp later than a skip;
-  - every generator draw the movie's simulation made, which shifts all later draws (see the memory note on the
-    shared RNG stream);
+  - every generator draw the movie's simulation made, which shifts all later draws, because `00BD2F10` is one
+    process-wide stream;
   - Lua globals written by the timers that fired;
   - whatever a non-`+28h` root did, and on PRCP01 the eight `GenerateObject` ships (5fv).
 - **Why it is not a small bind.** The host has no real "kill and re-create from the `+28h` records". Its skip
@@ -15462,8 +15462,9 @@ section scopes the other path, watching the whole movie. No code was written.
   (shared). Otherwise the units keep their movie-time damage, poses and orders. Then it needs the tracks and
   actions wired, or else an honest LABELLED stand-in that runs the simulation without them. The `.ema` reader
   pieces (`0045EFB0` CreateTrack, `0045D8A0` PointList, `0045ECA0`) are named in docs/CC13_SCENE_BROWSER.md;
-  `004581E0` (Hermite PointPos/InTangent/OutTangent, `004581E0`-`00458A63`) and the camera update `0045BD90` (not yet
-  a function body of note, `0045BD90`-`0045BDAA`) are unread.
+  `004581E0` (Hermite PointPos/InTangent/OutTangent, `004581E0`-`00458A63`) and the camera update `0045BD90` (`0045BD90`-`0045BDAB`,
+  `RET 4`: it runs the entity update `00459020(time)` on the camera track, then `0045ACC0(track)`) are unread
+  beyond that; `0045ACC0` is the camera-specific part.
 - **Recommended order** if 2b is taken up:
   1. the `0046BA7B..0046BBCD` re-create, read whole, and a units-host reset that reproduces it;
   2. playback with no tracks (the simulation, the clock and the timers, then the stop), paired against the skip
