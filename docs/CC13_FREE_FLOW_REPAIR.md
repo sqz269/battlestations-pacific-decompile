@@ -295,8 +295,9 @@ from site+5, and re-create the owning function if its body does not cover the ne
 - 0062C2C0 `BSP_RewardsScreen_Enter`: both `_free` sites, 0063169B and 00632A54, are OK and inside
   the body (00636D78 end, 43678 bytes, the same as after cc13-rewards1's repair).
 - The exports of the 2029 affected functions that already had an export folder were re-exported with
-  `ghidra_export.py decompile --force`. `bsp.py snapshot --force` refreshes the inventory and call
-  graph only.
+  `ghidra_export.py decompile --force` (2029 exported, 0 failed). `bsp.py snapshot --force`
+  refreshes the inventory and call graph only. Spot check: exports/bsp/functions/00b8d660/assembly.txt
+  now lists 00B8D686 `MOV EDX,[ESI+28h]` after the call, and decompiled.c has the +1E0h renumber loop.
 
 Validation level: Ghidra listing state, verified live by census and flow metadata. There are no source
 or behaviour changes.
