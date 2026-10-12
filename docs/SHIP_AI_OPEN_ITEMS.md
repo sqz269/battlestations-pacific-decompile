@@ -16114,6 +16114,26 @@ OFF `local\s42_cpoff_<row>.log` (tree build of `f9fde7416`), ON `local\s42_cpon_
   Enterprise is sunk by DM1 at 1553.34 s, and the mission fails at 1554.69 s. The f12/f17 plans, the capture-party
   pair, 206 item 1 and the primary-3 reroute all need a re-plan on current main.
 
+### 207.4 The pair on a row that reaches the HQ2 SetParty: **ON** (cc9-ships43, 2026-10-11; 209 item 2)
+
+207's predictions stand as written; only the row changed. cc9-ships42's variant d (`s42_os_d.txt`, copied as
+`local\s43_os_d.txt`, 44000 frames) reproduces on main `fa36636cd` exactly: HQ2 neutralized (prior party 1) at 1456.15 s,
+`SetParty 008a8930: unit=HQ2 party 2 -> 0` and `Bases captured: 1.00` at 1703.34 s, the Enterprise sunk by DM1 at
+1729.26 s, failure at 1733.07 s. OFF is this tree's build of `fa36636cd`; ON is `pair_export.py --commit fa36636cd
+--flip kCaptureStatePartyFromUnitBound=true` (`local\s43_cp`). AF launch form (`local\s43_rows.ps1`).
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| USNOS d 44000 (`s43_p1_osd` / `s43_cpon_osd`) | 3 | **one** resync, `HQ2 party 2 -> 0 from the unit's +54h at t=1702.90`; no `prior party=0` on either side; death rows identical (310), mission end equal (1733.07 s) |
+| USN02 + `g32_ord_u2` 16000 (control, `s43_cpoff_u2` / `s43_cpon_u2`) | 0 | identical apart from noise; completes at 782.03 s on both |
+
+- **What moved on d.** The unit table's HQ2 side (2 -> 0), the capture summary's `countdown_fires` (744 -> 247: OFF keeps
+  counting down on a state that still holds party 2 after the SetParty), and the six known ShipAi clearance/sector-scan
+  noise counters. No death row moved because the mission ends 30 s after the resync.
+- **Verdict: ON.** The mechanism matches 207's flip rule exactly (one resync per SetParty, no party-0 neutralization)
+  and the control does not move. The post-resync gameplay prediction (the HQ's guns take the new side) is not exercised
+  by a 30 s tail; a completing USNOS row (210) is the first to run past it.
+
 ## 208. A shot-down squadron's landing-queue records: the Kill notification, not the land task (cc9-ships42, 2026-10-11; 206 item 3)
 
 ### The destructor path does not erase at a death (read)
