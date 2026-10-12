@@ -1908,6 +1908,22 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         }
     }
 
+    // kEngineMovieStopRosterBound (docs/SQUADRON_LAND_TASK.md 5fr). An entity the
+    // mode-9 gate admitted through the GenerateInEngineMovie fallback (0046CC37-
+    // 0046CC43) has no +24h record: only the GenerateInGame arm builds one
+    // (0046CB9C-0046CC01). 0046B730 kills it at the movie's stop and re-creates
+    // only from the records, so it is not in the mission. LABELLED: with the
+    // skip on the first frame (kEngineMovieEntryBound) it is not created at all
+    // instead of created and killed; the registration pass is left as it was.
+    if (bsp::game::kEngineMovieEntryBound && bsp::game::kEngineMovieStopRosterBound
+            && gate.generate && gate.rule == SceneGateRule::EngineMovieFallback) {
+        gate.generate = false;
+        record.generated = false;
+        rule_name = "EngineMovieFallback, killed at the movie's stop (0046B730)";
+        owner.log.notef("scene movie-only entity dropped: %s (%s), admitted by the "
+            "GenerateInEngineMovie fallback with no +24h record (kEngineMovieStopRosterBound)",
+            entity.name.c_str(), entity.class_name.c_str());
+    }
     if (!gate.generate) {
         record.skipped_because = std::string("gate rejected: ") + rule_name;
         ++tally.rejected;

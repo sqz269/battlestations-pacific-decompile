@@ -445,6 +445,14 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // rows move by the one-frame stage-init shift; USNOS is gameplay-identical.
 inline constexpr bool kEngineMovieEntryBound = true;
 
+// Packet cc9_lua50_stop_roster (docs/SQUADRON_LAND_TASK.md 5fr). True, with
+// kEngineMovieEntryBound: an entity the mode-9 gate admitted only through the
+// GenerateInEngineMovie fallback (0046CC37-0046CC43, no +24h record) is not
+// created on the instantiate pass, standing in for 0046B730 killing it at the
+// movie's stop and re-creating only from the +24h records. False: it lives on
+// through the mission, as before.
+inline constexpr bool kEngineMovieStopRosterBound = false;
+
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag
 // (`NumSlots`, "Stock 1".."Stock 12", "Hangar 1".."Hangar 12", "Slot 1".."Slot n") into
