@@ -18,11 +18,11 @@ strings the type-descriptor initializers store.
 
 | Level | What |
 | --- | --- |
-| Reconstruction records added | 258 (list by `python tools/bsp.py range 00aa0f70 00ad5360` or grep the shards for `CC13_GUI_1`) |
-| Reconstructed, build-tested | all 258; `./scripts/build.ps1` passes (2/2 tests) |
+| Reconstruction records added | 329 (grep `config/reconstruction/00a*.jsonl` for `CC13_GUI_1`) |
+| Reconstructed, build-tested | all 329; `./scripts/build.ps1` passes (2/2 tests) |
 | Of which backfilled records for existing source | 00AA6750 (`src/gui_widget.cpp`), 00AB1680 (`src/gui_icon.cpp`), 00AA1FE0 (`include/bsp/gui_aspect_extent.hpp`), 00AA3E00 (`src/gui_render_order.cpp`), each re-checked against the listing |
 | Fixture-tested / ABI-compatible / game-validated | none. The C++ is new interfaces over raw native storage and host objects; no native adapter; no game run |
-| Renamed in the ledger | 00AC8320 -> BSP_GuiScrollbarPool_Trim; nine GetTypeChain -> GetOwnTypeId and nine GetTypeId -> GetTypeName (what they return was read); new ledger names for 76 pool/type routines that only had Ghidra-side names |
+| Renamed in the ledger | 21 replacements: 00AC8320 -> BSP_GuiScrollbarPool_Trim; nine GetTypeChain -> GetOwnTypeId and nine GetTypeId -> GetTypeName (what they return was read); 00AB0220/00AB0350 PushSubtitleRecord/PushExtratitleRecord -> ResizeSubtitles/ResizeExtratitles. 64 new ledger names for pool, stub and type routines that only had Ghidra-side names |
 
 Ghidra was not modified by this packet (no renames applied, no functions created); the ledger
 names above still need `tools/ghidra_annotate.py --apply` by whoever next holds the write lock.
@@ -39,8 +39,8 @@ names above still need `tools/ghidra_annotate.py --apply` by whoever next holds 
   `name_less_00aa2420`, `GuiIconDelayedLoads`.
 - Native widget objects are raw storage: the reconstructions write the fixed offsets the image
   writes (vtable words keep their image addresses as values).
-- `reports/cc13_gui1_calls.json` lists 196 direct CALL/JMP sites from the reconstructed routines
-  to the addresses the headers name; `tools/verify_report_calls.py` checks all 196 (0 failures).
+- `reports/cc13_gui1_calls.json` lists 421 direct CALL/JMP sites from the reconstructed routines
+  to the addresses the headers name; `tools/verify_report_calls.py` checks all 421 (0 failures).
 
 ## What was reconstructed
 
@@ -154,12 +154,55 @@ byte-identical twin of the already reconstructed predicate 00AA2420.
    00AC8535/00AC8585, 00ACEA55/00ACEAA5, 00AD07B5/00AD0805, 00AA937C in STL_MakeHeap 00AA92E0,
    00AB31B5/00AB3205 in 00AB3180). These need function creation by a flow-repair packet.
 
+### Later batches (71 records)
+
+- Icon: describer, copy constructor, destructor, the 00F8BD98 delayed-load singleton accessor,
+  destructor and file-loaded callback (over the existing `GuiIconDelayedLoads`).
+- Movie: position reset, video-texture binding (three slots), player forwarder, subtitle clear,
+  and the two record-vector resizes (renamed: they are `std::vector::resize`, not push).
+- Readers with sub-tables: Line "Points", Group (a five-byte JMP), Curve "PosArray" plus Texture.
+- FrameBox: stream accessor, state count (2Ch records), destructor, state-record insert.
+- AnimIcon: loaded hook and the update (x87 read from the bytes; see the header comment).
+- Named and timed entries, the hoisted-widget adopt, owned-object deletes, Layer copy, Scrollbar
+  loaded hook, manager cursor position, render-queue reset, Curve SetTexture and destructor,
+  Model copy.
+- 35 VS2008 container internals (tree head/clear/destroy/_Max/_Dec, list sentinel/buy node/
+  clear/destroy/construct/copy, `_Allocate` with its overflow check, deallocate, free helpers,
+  vector size).
+
+More findings from these batches:
+
+7. The Scrollbar loaded hook 00AC8890 looks up its four arrow/background/slider children and
+   discards every result (EAX is never read); it only matters for the lookups' side effects.
+8. The Layer copy constructor 00AC6040 resets the store descriptor (+108h..+11Ch) to its defaults
+   (near 0.1, far 1000, authored Priority 0, RenderOrder 0.0) instead of copying it, and does not
+   copy +F4h; the Model copy does not copy the scene (+ECh/+F0h) but reloads the model.
+9. `_Dec` 00AA1210: the out-of-range test after the climb tests the iterator's node, which the
+   climb only moves to non-nil parents, so decrementing begin() silently yields the head.
+10. 00AA2B30 and 00ABDD80 pass an uninitialized stack pair as the resolver's size argument.
+
 ## Remaining in the range (not reconstructed here)
 
-About 120 of the 276 originally listed targets (ledger name, no record, no tag) remain, mostly:
-the STL container internals of segment 76/77 (tree/list/allocator helpers 00AA1040..00AACD90),
-Movie (subtitles, video textures, describer 00AAD9A0), Icon state/texture routines (00AB10D0,
-00AB3840, 00AB3B30, 00AB44B0, 00AB64C0), Text describer 00AB7B60, Curve/Line geometry
-(00ABCC70, 00AC2430) and readers (00ABE1D0, 00AC2DE0), Group reader 00AC6FD0, Model material
-and load (00ACC8A0, 00ACCB90, 00ACCCF0), FrameBox state records, AnimIcon update, and the
-render-mode worker 00AA4040.
+Of the 276 functions listed at the start (ledger name, no record, no tag), 19 remain:
+00AA2020 (GUI ortho projection), 00AA4040 (render-mode worker start), 00AA5A00 (existing
+`collect_sorted_children_00aa5a00` uses std::sort, so equal names do not permute as the image
+does; it should call `msvc9_sort::sort` before it gets a record), 00AA5B40 (Listbox copy),
+00AAD9A0 (Movie describer), 00AB10D0, 00AB3840, 00AB3B30, 00AB44B0, 00AB64C0 (Icon state and
+texture routines), 00AB7B60 (Text describer), 00ABC7A0 (Curve describer), 00ABCC70 and
+00AC2430 (Curve/Line geometry), 00AC0C90, 00AC6BE0 (unreferenced), 00ACC8A0, 00ACCB90,
+00ACCCF0 (Model material and load).
+
+## Handoff
+
+- Ghidra: apply the 85 ledger name changes (`tools/ghidra_annotate.py --apply` over
+  `config/names/00aa0000.jsonl`..`00ad0000.jsonl` for the cc13-gui1 records), and create
+  functions for 00AA7880, 00AA7CF0 and the hidden type-descriptor initializers listed in
+  finding 6 (a flow-repair packet; check the INT3 padding and run the shape comparison first).
+- Next reconstruction targets, in order of value: the describers 00AAD9A0, 00AB7B60, 00ABC7A0
+  (pattern: `gui_widget_describe_properties_00aaaed0` plus `write_unless_default`; read names
+  from the listing because the decompiler drops the describer's stack arguments), then the
+  Icon state routines (layout in `gui_icon.hpp`), then the geometry writers (x87; read DC-form
+  operands from the bytes).
+- Scripts used (in the worktree's `local/`, prefix `gui1_`): `gui1_poolscan.py` (pool constants),
+  `gui1_shape.py` / `gui1_pair.py` (normalized instruction comparison), `gui1_dis.py` (compact
+  disassembly), `gui1_rec.py` + `gui1_mk.py` (record batches), `gui1_callrows.py` (call report).
