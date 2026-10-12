@@ -106,18 +106,6 @@ bool read_position(const MeshVertexStreamPayload& stream, int type, std::uint32_
     return true;
 }
 
-// Row-vector 4x4 product a * b.
-void multiply(const float a[16], const float b[16], float out[16]) {
-    float r[16];
-    for (int i = 0; i != 4; ++i)
-        for (int j = 0; j != 4; ++j) {
-            float s = 0.0f;
-            for (int k = 0; k != 4; ++k) s += a[i * 4 + k] * b[k * 4 + j];
-            r[i * 4 + j] = s;
-        }
-    std::memcpy(out, r, sizeof(r));
-}
-
 std::string base_name(const std::string& effect) {
     const std::size_t slash = effect.rfind('/');  // 00CE7898 is "/" alone
     return slash == std::string::npos ? effect : effect.substr(slash + 1);
@@ -225,22 +213,14 @@ std::string ocean_coverage_add_landscape_00ba1370(OceanCoverageRegions& out,
         return "regions=0 (model parse: " + error + ")";
     }
 
-    // World frames, parents first (every item's parent index precedes it).
-    std::vector<std::array<float, 16>> world(model.hierarchy.size());
-    std::vector<bool> placed(model.hierarchy.size(), false);
+    // 00ADE820 deep-clones a parentless 'Terrain Visibility Group' node whose local matrix
+    // is the landscape's +74h frame (00B6F8F0 / 00B6F150), and 00BA0C00 recurses over all
+    // geometry nodes adding that ROOT node's [+120h] / [+128h] every time: an item's own
+    // and its parents' translations are never applied (docs/CC13_AUDIT_CC9_RECENT_2.md).
+    const float node_x = landscape_world[12];
+    const float node_z = landscape_world[14];
     std::size_t added = 0, sections = 0, refused = 0;
     std::string notes;
-    for (std::size_t i = 0; i != model.hierarchy.size(); ++i) {
-        const HierarchyItem& item = model.hierarchy[i];
-        if (!item.matrix) continue;  // native leaves it uninitialised: no claim
-        const float* parent = landscape_world;
-        if (item.parent != 0xffffffffu) {
-            if (item.parent >= i || !placed[item.parent]) continue;
-            parent = world[item.parent].data();
-        }
-        multiply(item.matrix->data(), parent, world[i].data());
-        placed[i] = true;
-    }
     for (std::size_t i = 0; i != model.hierarchy.size(); ++i) {
         const HierarchyItem& item = model.hierarchy[i];
         for (const std::uint32_t resource : item.resources) {
@@ -251,12 +231,6 @@ std::string ocean_coverage_add_landscape_00ba1370(OceanCoverageRegions& out,
                 if (base_name(subset.effect_name).find("oceanwavedamp") == std::string::npos) continue;
                 ++sections;
                 char line[160];
-                if (!placed[i]) {
-                    ++refused;
-                    std::snprintf(line, sizeof(line), " [%s: no world frame]", item.name.c_str());
-                    notes += line;
-                    continue;
-                }
                 std::uint32_t stream_index = 0;
                 const MeshTextureRequest* texture = nullptr;
                 for (const MeshSubsetEvent& event : subset.events) {
@@ -295,8 +269,6 @@ std::string ocean_coverage_add_landscape_00ba1370(OceanCoverageRegions& out,
                     continue;
                 }
                 // 00BA0FD9..00BA1077: + [node+120h] / [node+128h].
-                const float node_x = world[i][12];
-                const float node_z = world[i][14];
                 x1 = node_x + x1;
                 z1 = node_z + z1;
                 x0 = node_x + x0;

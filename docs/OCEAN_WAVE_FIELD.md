@@ -547,3 +547,12 @@ logs local\p1w_on_<key>.log and, for the two pair rows, local\p1b_on_{u1w,u2w}.l
 | LOMP06 l50_l6_q6 | 486.80 s | completes 520.05 s, guard line logged |
 
 Three wins lost to the live sea (plan casualties), three hold with moved times.
+
+## 14. Correction: the damp boxes take the landscape frame only (cc13 audit8)
+
+docs/CC13_AUDIT_CC9_RECENT_2.md: 00ADE820 deep-clones a parentless 'Terrain Visibility Group' node whose local
+matrix is the landscape's +74h frame (00B6F8F0 / 00B6F150), and 00BA0C00 recurses over every geometry node adding
+that root's [+120h] / [+128h]. Item translations are never applied. Section 10(b)'s composed item frames were wrong;
+the host now adds landscape_world[12] / [14] for every damp section. Census of the damp items' own composed
+translations (local p1 script over the 107 terrain models): 86 of 87 are (0, 0), so their boxes did not move. Only
+dlc_pu_04's `DLC_PU_04:waterdamp` was misplaced, by (-3.639, -22.063). None of the pair rows' landscapes is affected.
