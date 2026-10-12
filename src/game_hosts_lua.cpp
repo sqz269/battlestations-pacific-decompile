@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/lua_exec_guard.hpp"
+#include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -2578,6 +2579,8 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // (004DFAC3 writes 00F89B3C in BSP_Game_ConstructWorld and 004D2D7E clears
     // it in BSP_Game_DestroyWorld), so a request cannot outlive its mission.
     bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);
+    // Packet cc9_lua52_kamikaze_wiring: the released rounds live with the world.
+    bsp::dummy_kamikaze_rounds().clear();
     if (orders == nullptr) {
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
@@ -3417,6 +3420,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     dispatch_hit_listeners_00988510();
     if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
     if (kReconPublishBound) publish_recon_slot_tables_00806b10();
+    if constexpr (bsp::kDropKamikazeTaskBound) run_dummy_kamikaze_rounds_006fec00(step_seconds);
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
@@ -3809,6 +3813,36 @@ void GameMissionLuaHost::report_spawn_queue() {
             "removes=%llu removed=%llu (00945850/00945A20, packet cc9_spawn_new_id_queries)",
             g_spawn_id_census.requested, g_spawn_id_census.answered_true,
             g_spawn_id_census.removes, g_spawn_id_census.removed);
+    }
+}
+
+// Packet cc9_lua52_kamikaze_wiring. 006FEC00 for every released
+// DummyKamikazePlane round. SUBSTITUTION, labelled: the image ticks the round in
+// the bomb pass of the fixed step; here it is stepped once per mission frame,
+// ahead of the spawn queue, and the unit it makes takes the same route as an
+// air-ops squadron (create, AutoAttackTarget, the SEntity init push).
+void GameMissionLuaHost::run_dummy_kamikaze_rounds_006fec00(float step_seconds) {
+    if (script_orders_ == nullptr) return;
+    const std::vector<bsp::DummyKamikazeSpawn> spawns =
+        bsp::dummy_kamikaze_rounds().step(step_seconds);
+    for (const bsp::DummyKamikazeSpawn& s : spawns) {
+        const std::size_t units_before = script_orders_->units().count();
+        std::string name;
+        const std::uint32_t entity =
+            script_orders_->create_dummy_kamikaze_squadron_006fec00(s, name);
+        if (entity == 0u) continue;
+        // 006FEE41-006FEE5F: AutoAttackTarget only with a target at +98h;
+        // 007F4BA0 turns it into the attack order (007F15F0 -> 007EEC50).
+        if (s.target_plus_one > 0) {
+            script_orders_->queue_auto_attack_target_007f15f0(
+                entity, static_cast<std::uint32_t>(s.target_plus_one));
+        }
+        if constexpr (kSEntityInitAllBound) {
+            route_push_squadron(static_cast<int>(entity), name, s.plane_class, units_before);
+        } else if (attach_created_entity_00928a00(static_cast<int>(entity), name,
+                                                  s.plane_class)) {
+            attach_wing_member_tables(units_before, entity, s.plane_class);
+        }
     }
 }
 

@@ -1353,6 +1353,8 @@ public:
     // frame's, because the native's own clock is the world time at DAT_00F876A4.
     void run_spawn_queue_0094c490(float step_seconds) override;
     void report_spawn_queue();
+    // Packet cc9_lua52_kamikaze_wiring: 006FEC00 over the released rounds.
+    void run_dummy_kamikaze_rounds_006fec00(float step_seconds);
 
     // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------
     // 006C5050's seam. The unit is made by the script-orders host, which owns the
