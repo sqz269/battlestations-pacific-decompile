@@ -312,9 +312,10 @@ float unit_steering_angle_target_00834ed7(float steering_source) noexcept {
         // (s - bias) * blend in ST1; 00834F05 DE E9 (FSUBP ST1,ST0) then gives
         // (s - bias) * blend - blend.
         return static_cast<float>(biased * kUnitSteeringBlend - kUnitSteeringBlend);
+    } else {
+        // 00834EF5..00834F05 as first transcribed: (s - bias) - blend * (s - bias).
+        return static_cast<float>(biased - kUnitSteeringBlend * biased);
     }
-    // 00834EF5..00834F05 as first transcribed: (s - bias) - blend * (s - bias).
-    return static_cast<float>(biased - kUnitSteeringBlend * biased);
 }
 
 float unit_propeller_base_rate_008350f2(float throttle, float steering, float load,
