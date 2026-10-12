@@ -12939,4 +12939,7 @@ plane/task line classes.
   decisive). Together on `d9f13f80e` (`local\g37_a9all{off,on}_*`): first divergence the dive bombers' aim lead;
   USN04 phase 2 dive releases 10/44 -> 13/40 (turndown 1227 -> 61, now reached only through the latched arm;
   aimglide 33 -> 2482); JM08 5/42 -> 12/42 and its HQ loss at 984.18 s disappears; LOMP10's win comes back (none ->
-  completed 1327.37 s); USN01 none on both sides (its convoy strike). This base is before the live sea.
+  completed 1327.37 s); USN01 none on both sides (its convoy strike). This base is before the live sea.- **`kLandStructureMeshHitTestBound` control pair (routed, committed OFF in `57b3684ba`; lua51 judges it on JM08).**
+  On `ba92657b9` (`local\g37_hqm{off,on}_*`): USN02 win gameplay-identical (203.01 s both); BSM01 exit 3 (deaths
+  194 -> 201, torpedo releases 18/56 -> 28/56) with its win unchanged (`EndMission` 767.94 s both). The first log
+  difference is the extra structure GeomMesh loads (`vehicle class 534 geom meshes=2 triangles=102`), as expected.
