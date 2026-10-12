@@ -11906,7 +11906,7 @@ carry a step the host reconstruction lacks?
   is the 3-byte case.
 - `local\g35_freesites.py` decodes each site with its context. The site list comes from the report's `functions`.
 
-**37 of 43 rows hid only the `ADD ESP,4` after the call.** These are `006D40D0 00718C70 00719FA0 0071AAE0 0071BA20
+**34 of 43 rows hid only the `ADD ESP,4` after the call.** These are `006D40D0 00718C70 00719FA0 0071AAE0 0071BA20
 00729600 0072AD20 0072E6D0 0072F6E0 00747CC0 0076E520 007CAAD0 007D5D20 007F5A10 007F7110 0081DE10 0081E350 0081F980
 00824B60 00849F70 0084ACB0 0084BAD0 008509F0 00853630 00864D90 00882AC0 0092AAE0 00934150 00935540 00935D30 0094BFF0
 00A08460 00A0F680 00A250A0`.
@@ -11924,7 +11924,7 @@ carry a step the host reconstruction lacks?
   - **`0072E6D0`, `00849F70`, `0084ACB0`, `0084BAD0`, `00729600`.** A temporary string or vector is freed at the
     end of a scope and the epilogue follows. No step.
 
-**Six rows hid real code:**
+**Nine rows hid real code:**
 - **`006FAD70`** (245 bytes; the end moved `006FADEF -> 006FAEE4`). This is the ConvexObject parse tail: copy the
   points (`006FAE40`), `006F9EE0` box centre, subtract it (`006FAEA0`), then `00C5DEB0` hull replace at
   `shape+0Ch`. `hull_terrain_contact.cpp` (`006FAD70's shape build`) and `mmod_hull_convex_box.hpp` carry each step,
