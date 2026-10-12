@@ -281,9 +281,13 @@ successes in `[00F1AF2C]`. `007724A0` (MT_SCENEIDX) compares `[game+5FCh]+90Ch` 
 name before and after `004C6890(msg+20h)`: a change before un-readies the local player and leaves
 the tactical library; a mismatch after clears `[+18Ch]+C4h` and requests MT_REFRESHSCENE, a match
 sets it; it then refreshes the lobby scene panel and stores `msg+28h/+2Ch` in `game+2060h/+2064h`.
-The server's MT_REFRESHSCENE arm `007717A0` (not reconstructed; uses the scene list walk at
-`game+5F4h` and the builders `00770FF0`/`00771190`) re-sends every scene name and the current index
-to the asking peer.
+The server's MT_REFRESHSCENE arm `007717A0` (batch 5, ECX session, push `[msg+8]`) re-sends every
+scene to the asking peer, then the selected index. Scenes are the `game+5F0h` nodes of the list at
+`game+5F4h` (node `+4h` next, `+8h` record; record `+90Ch` name, `+920h` second string); the walk
+stops at the last node when a next pointer is null. Builders: `00770FF0` MT_SCENENAME (vtable
+`00D036D0`, strings `+18h`/`+20h`, index `+28h`) and `00771190` MT_SCENEIDX (vtable `00D036F8`,
+name `+18h`, index `+20h`, `game+2060h/+2064h` at `+28h/+2Ch`), which is the layout `0076E710` and
+`007724A0` read on the client.
 
 `00773420` MT_REMOVEPLAYER (msg+18h = player): with the online manager present, unregister the
 remote talker and remove the xuid from the mute table; destroy the record's peer; slot > 0 is
@@ -384,7 +388,7 @@ No ban-list code was found in this segment: the packet keyword `lastbanto` is th
 Routed but not reconstructed here (in segment, reachable from the ladder): `007746F0`
 MT_SESSION_MANAGER (online stats write handshake, states 1..5 on `game+7ECh+i*118h`), `007752D0`
 `MMultiPlayer::ServerAddPlayer` (23 callees, "Sending PIMPS to new client", "PeerTableToC" voice
-peer table), `007717A0` MT_REFRESHSCENE, and the presentation arms 2Bh..34h (blackout, countdown,
+peer table), and the presentation arms 2Bh..34h (blackout, countdown,
 movie camera: `0076F4C0`, `007709C0`, `0076D420`, `0076F560`, `0076F630`, `0076D760`).
 
 Outside the segment, routed by the ladder: see the table (the `Other` and `MessageThis` rows).
@@ -392,7 +396,7 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 ## Checks
 
 - Build: `scripts/build.ps1` in the worktree, exit 0, no warnings from the new file.
-- `tools/verify_report_calls.py`: 48 call sites cited in this doc (CALL and tail-JMP rows, each with its
+- `tools/verify_report_calls.py`: 52 call sites cited in this doc (CALL and tail-JMP rows, each with its
   enclosing function) checked against live Ghidra, 0 failures.
 - Listing checks: 0076D840 (ECX session, `RET 8`), 0076D140 (tail jump to 00784B10 with
   `[ECX+188h]`), 0076D170 (`NEG/SBB/ADD 4`), 0076C7B0 (`__allshl` operands), 007712F0 (signed
@@ -415,9 +419,13 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 
 ## Handoff
 
+Totals for the packet: 68 Ghidra renames with evidence comments (ledger `config/names/`), 61
+reconstruction records, about 60 reconstructed C++ functions in `src/multiplayer_session_cc13.cpp`,
+all build-tested only.
+
 Next steps, in order of value: (1) `007752D0` ServerAddPlayer, the server half of the
 player-slot spine (XNet, the PIMPS/unlock sends and the P2P voice peer table; read past each
 `_free` in the listing); (2) the client-side consumer that executes the MultiScore text (`msg+28h` of E0h) and
 the `DFh` create message; (3) `007746F0` MT_SESSION_MANAGER together with the
-online-stats builder `004C9780`; (4) the scene-list arm `007717A0`. Leases for
+online-stats builder `004C9780`; (4) the presentation arms 2Bh..34h. Leases for
 `0076AA00-00787040` were released at the end of this packet.

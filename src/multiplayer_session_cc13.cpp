@@ -1046,4 +1046,41 @@ void client_check_scene_load_00772710(std::uint8_t& session_04, CheckSceneLoadHo
     session_04 = 0;
 }
 
+// ---------------------------------------------------------------------------
+// Batch 5
+// ---------------------------------------------------------------------------
+
+SceneNameMessage build_scene_name_00770ff0(std::uint32_t index, const std::string& name,
+                                           const std::string& second) {
+    SceneNameMessage m;
+    m.name_18 = name;
+    m.second_20 = second;
+    m.index_28 = index;
+    return m;
+}
+
+SceneIndexMessage build_scene_index_00771190(std::uint32_t index, const std::string& name,
+                                             std::uint32_t word_28, std::uint32_t word_2c) {
+    SceneIndexMessage m;
+    m.name_18 = name;
+    m.index_20 = index;
+    m.word_28 = word_28;
+    m.word_2c = word_2c;
+    return m;
+}
+
+void host_refresh_scene_007717a0(bool game_present, const SceneListView& scenes, void* peer,
+                                 RefreshSceneHost& host) {
+    if (!game_present) return;
+    for (std::int32_t i = 0; i < scenes.count_5f0; ++i) {
+        const SceneListView::Scene& scene = scenes.scenes[i];
+        host.send_scene_name(peer, build_scene_name_00770ff0(static_cast<std::uint32_t>(i),
+                                                             scene.name_90c, scene.second_920));
+    }
+    if (scenes.selected_5fc != nullptr) {
+        host.send_scene_index(peer, build_scene_index_00771190(scenes.selected_index_60c,
+            scenes.selected_5fc->name_90c, scenes.word_2060, scenes.word_2064));
+    }
+}
+
 }  // namespace bsp::mp_cc13

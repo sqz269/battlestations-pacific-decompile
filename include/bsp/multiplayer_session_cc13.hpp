@@ -755,4 +755,63 @@ struct CheckSceneLoadHost {
 };
 void client_check_scene_load_00772710(std::uint8_t& session_04, CheckSceneLoadHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch 5: MT_REFRESHSCENE (server) and the scene message builders
+// ---------------------------------------------------------------------------
+
+inline constexpr std::uint32_t kVtableSceneName08 = 0x00D036D0u;
+inline constexpr std::uint32_t kVtableSceneIdx09 = 0x00D036F8u;
+
+// 00770FF0 __thiscall(msg, index, &name, &second), RET 0Ch: MT_SCENENAME,
+// strings at +18h and +20h, index at +28h (0076E710 passes +28h on).
+struct SceneNameMessage {
+    std::uint32_t vtable{kVtableSceneName08};
+    std::string name_18;
+    std::string second_20;
+    std::uint32_t index_28{0};
+};
+SceneNameMessage build_scene_name_00770ff0(std::uint32_t index, const std::string& name,
+                                           const std::string& second);
+
+// 00771190 __thiscall(msg, index, &name, word_28, word_2c), RET 10h:
+// MT_SCENEIDX, name at +18h, index at +20h, words at +28h/+2Ch.
+struct SceneIndexMessage {
+    std::uint32_t vtable{kVtableSceneIdx09};
+    std::string name_18;
+    std::uint32_t index_20{0};
+    std::uint32_t word_28{0};
+    std::uint32_t word_2c{0};
+};
+SceneIndexMessage build_scene_index_00771190(std::uint32_t index, const std::string& name,
+                                             std::uint32_t word_28, std::uint32_t word_2c);
+
+// The scene list as 007717A0 walks it: game+5F0h entries of the list at
+// game+5F4h (node+4h next, node+8h record), record+90Ch name, +920h second.
+struct SceneListView {
+    struct Scene {
+        std::string name_90c;
+        std::string second_920;
+    };
+    const Scene* scenes{nullptr};
+    std::int32_t count_5f0{0};
+    const Scene* selected_5fc{nullptr};
+    std::uint32_t selected_index_60c{0};
+    std::uint32_t word_2060{0};
+    std::uint32_t word_2064{0};
+};
+struct RefreshSceneHost {
+    virtual ~RefreshSceneHost() = default;
+    // 00770B50 then the inline destructor (BSP_SessionMessage08/09_Destroy).
+    virtual void send_scene_name(void* peer, const SceneNameMessage& message) = 0;
+    virtual void send_scene_index(void* peer, const SceneIndexMessage& message) = 0;
+};
+// 007717A0 (session, peer) RET 4, the server arm of MT_REFRESHSCENE (the
+// ladder passes [msg+8]): nothing without a game; every scene name to the
+// asking peer, then the selected index when a scene is selected. The node
+// walk stops at the last node when a next pointer is null (so it clamps
+// rather than running off), and only a null head yields a null record; this
+// projection assumes count_5f0 matches the list length.
+void host_refresh_scene_007717a0(bool game_present, const SceneListView& scenes, void* peer,
+                                 RefreshSceneHost& host);
+
 }  // namespace bsp::mp_cc13
