@@ -15140,3 +15140,30 @@ moving, or a dropped entity the mission script later uses as a live unit.
 `009B5323` tail is `009B5320`'s attack-run command (`00438AA0`, plane `+2C0h`, `+2CCh` = 2), which
 `level_bomb_attackrun_009b5320` writes. Both were reachable before the repair through the non-grow path (the functions
 grew by 6 instructions), so nothing in them is new to the host.
+
+## 5fs. Event channels against cc13's CC13_EVENT_CHANNELS.md: the hit second pass (cc9-lua50, 2026-10-12)
+
+**The plane's `vtable[140h]`, resolved** (cc13's open item 1). The plane vtable `00D05F20` holds `007B97E0` at
+`+140h` (bytes at `00D06060`), and `007B97E0` is `MOV EAX,[ECX+9D4h]; RET`: plane `+9D4h`, the squadron (the
+same field `006C4790` reads, 5ff). So the kill/hit second pass keys on the plane's squadron, as cc13 suspected.
+
+**The host's two dispatchers** (`src/game_hosts_lua.cpp`):
+- `dispatch_hit_listeners_00988510` evaluates once with `hit.shooter` (a member plane's own slot; the squadron is a
+  separate slot, `PlaneSquadronHostRecord::squadron_unit`). A subscription keyed on a squadron
+  (`["attacker"] = {Mission.Fighters}`) never matches a plane's hit.
+- `dispatch_kill_listeners_009813a0` has no attacker at all: any subscription with an attacker filter is skipped
+  (`listener_attacker_filtered`), so the kill second pass cannot be modelled until the host's death rows carry
+  `victim+2B0h`. Recorded, not bound.
+- Both call the callbacks with **no arguments**; the image passes (victim, lastAttacker, lastAttackerPlayerIndex) for
+  `kill` and (target, targetDevice, attacker, attackType, attackerPlayerIndex, damage, fire, leak) for `hit`. Left
+  for a later packet.
+
+**The bind `kLuaHitSquadronSecondPassBound`** (`include/bsp/game_hosts_lua.hpp`, OFF): when a hit matched no
+subscription and its shooter is a member of a squadron, evaluate the channel again with the squadron as attacker and
+fire whatever matches (`summary mission script hit second pass`).
+
+**Scripts it can reach** (this installation, `["attacker"] = {...}` on `hit`): PRCPIJN `jm13.lua`/`prcpjm13.lua`
+(`luaDonaldHit`, attacker `Mission.Fighters`; `SaipanHit`, `Mission.Kamikaze`), `bsm_04` (`Mission.FortressRed`),
+`bsm_08` (`Mission.Fortress`), USNRM `usn_1_pearl` (`ArizonaKillers`/`OklahomaKillers`), `jm06` (`Mission.PlayerUnit`).
+**Predictions:** rows whose hit subscriptions key on ships are identical (pair_diff 0/1); a row with a squadron-keyed
+subscription whose squadron lands hits moves, with `fired > 0` and that callback's log line appearing ON only.

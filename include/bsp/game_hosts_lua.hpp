@@ -201,6 +201,16 @@ inline constexpr bool kLuaAddDamageBound = true;  // ON: phase-2 pair held (docs
 // `hit` entries. False: `hit` entries never fire (the queue is still drained).
 inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua50_hit_second_pass (docs/SQUADRON_LAND_TASK.md 5fs, from
+// docs/CC13_EVENT_CHANNELS.md section 5). 00988510: when no `hit` subscription
+// matched (0098901A, +105h clear) and the attacker answers IsKindOf(0Fh), the
+// attacker is replaced by attacker->vtable[140h]() (00989047..00989060) and the
+// channel is evaluated again (009892E4). For a plane (vtable 00D05F20, slot 140h =
+// 007B97E0, `MOV EAX,[ECX+9D4h]; RET`) that is its squadron. True: a hit whose
+// shooter is a squadron member and that matched nothing is re-evaluated with the
+// shooter's squadron. False: one pass, as before.
+inline constexpr bool kLuaHitSquadronSecondPassBound = false;
+
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,
 // 0071E050 sends session message 5Ah sub-kind 4 with the flag, which the director
@@ -632,6 +642,8 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_events{0};
     unsigned long long listener_hit_fires{0};
     unsigned long long listener_hit_unmodelled{0};
+    unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
+    unsigned long long listener_hit_second_pass_fires{0};
     // Packet cc9_set_invincible_native.
     unsigned long long invincible_calls{0};
     unsigned long long invincible_units{0};
