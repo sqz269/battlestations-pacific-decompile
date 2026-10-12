@@ -12447,3 +12447,181 @@ A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 
 - USN04's Vals still release once in 33; the brake floor is not the "never release" cause (175(a) remains).
 
 **Verdict: the mechanism matches the read; flipped ON.**
+
+## 182. `kSubmergedTorpedoLaunchSwimBound`: a torpedo launched below the surface starts its swim (cc9-physics2, 2026-10-12; src/game_hosts_gunnery.cpp on loan; committed OFF)
+
+Found in 181's combined pair: with the live crossing ON, JM06's player-sub torpedoes swim and sink eight US ships.
+The question is whether the image does that with a flat sea too. It does; the evidence is all from disk bytes.
+
+- **No spawn-time medium for a torpedo.** The base create 006E8430 (class vtable slot at 00CFA158) samples
+  0078CF20 at 006E8680 and calls the shot's vtable[24h] or [28h] at 006E8694..006E869E. MTorpedo's class table
+  00CFA56C puts 00856420 in that slot. 00856420..008566A0 (RET 1Ch) has no 0078CF20 call and no vtable[24h]/[28h]
+  call. A torpedo leaves its create with the base underwater byte (shot+44h) clear.
+- **The first step decides.** 0084C11C calls vtable[2Ch] (MTorpedo 00855F00: 2 when 2*[+47Ch] > [+100h], otherwise
+  [+354h] != 0). In medium 0, 0084C146..0084C14C runs 0084B380, which samples at the segment END and hits when
+  end.y <= surface (0084B3F8). The start point is never tested. On the hit, 0084C356..0084C3F5: vtable[2Ch] still 0,
+  then vtable[30h]. A round that survives the water (the torpedo) gets vtable[28h](1) = 008568E0, the water entry:
+  the MaxWaterHitVel/MaxFall break-up test, otherwise 006E6450 sets +44h. So a torpedo launched at y < 0 enters the
+  water on its first step. A torpedo deeper than twice its swim depth already reads as in-water through 00855F00's
+  depth arm. That is a second route to the same result. LABELLED: vtable[30h]'s torpedo body is not read; the
+  existing host already treats a torpedo crossing as an entry.
+- **Host defect.** `crossed = position.y <= 0 && from.y > 0`. `from > 0` has no counterpart in 0084B380, so a
+  submerged launch never swam: it fell ballistically under the sea until it expired. The bound drops `from > 0`
+  for a round that is neither swimming nor a depth charge in the water (the 0084C11C medium gate). Every other
+  round with end.y <= 0 and start.y <= 0 now takes the existing water branch: a torpedo enters its swim (or breaks
+  up), a depth charge takes its entry, and a shell dies on the water, as 0084C3CF's static impact does. Counter:
+  `summary mission gunnery submerged launch entries=N bound=b`.
+
+Prediction, flat sea (kWaveFieldLiveAmplitudeBound and kGunneryLiveWaterSurfaceBound OFF):
+- JM06 3000: the player subs' torpedoes swim. The `swims_started` count rises from 0, entries > 0, and US deaths
+  rise toward the combined pair's 10. The ON pair already showed this mechanism.
+- LOMP06 l50_l6_q6: entries > 0 if the Narwhal launches submerged. The win should hold; the time may move.
+- Rows without a submerged launcher: entries = 0, gameplay identical.
+
+**Pair and verdict (e51fe76e2, local\p2s_off vs local\p2s; reference form; logs local\p2s_{off,on}_*.log): ON.**
+
+| Row | OFF | ON |
+|---|---|---|
+| JM06 3000 | rounds 233, entity impacts 134, water 4, swims 0, deaths 2 | rounds 155, entries **155**, water 155, entity impacts 12, swims **18**, deaths 8 (two troop transports, two tankers, a cargo ship and two Fletchers, all to PlayerSub torpedoes, cat 7) |
+| LOMP06 l50_l6_q6 | completed 520.05 s, swims 27 | entries 40, swims 33, completed **389.93 s**, guard line logged |
+
+pair_diff exit 3 on both rows. The mechanism matches. Every JM06 round is launched below y = 0. With OFF, 134 of
+them flew ballistically under the sea and struck hulls from below. With ON, each enters the water on its first step:
+a torpedo swims, and any other round dies on the water, the host's existing water branch. Only the image's
+classDesc+74h decides the other rounds, through vtable[30h] = 006E2580 `MOV AL,[[ECX+4]+74h]`: set means a static
+impact, clear means vtable[28h]. The host already ends every non-torpedo round at the water. The JM06 deaths are
+2 -> 8, against 10 in 181's combined pair. Flipped ON.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+
+Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
+disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of
+FSUB(R)P/FDIV(R)P from the opcode byte. A chain without a spill stays on the stack, so it is double at a worker's
+53 bits. Chains in 00C4DE40, for one point. "sp" is a float spill. g(j,v) = sp((j1 v1 + j0 v0) + j2 v2).
+
+| Piece | Listing | OFF C++ before |
+|---|---|---|
+| transform 00C4DFBA..4E0A8 | sp(((r0 l0 + r1 l1) + r2 l2) + p) per component | y, z added as (r2 l2 + r0 l0) + r1 l1 |
+| lever arm, warm start | single operations | same |
+| contact Jacobian 00C4E1F7..4E31E | each angular entry sp(a b - c d) | same order, rounded products |
+| angular mass Jacobian 00C4E380..4E499 | sp((I[3+c] J1 + I[c] J0) + I[6+c] J2) | (I[6+c] J2 + ...) + I[3+c] J1, reversed |
+| w x r, relative velocity 00C4E4A6..4E63B | sp(a b - c d), then each add spilled | same |
+| normal velocity 00C4E655..4E671 | sp((rx nx + ry ny) + rz nz) | (rz nz + ry ny) + rx nx |
+| restitution 00C4E675..4E690 | sp(sp(nv e) + 0.05 **double** at 00D7A270); zero unless < 0 (NaN -> 0) | + 0.05f; NaN kept |
+| bias 00C4E63F..4E651 | sp((c d) / dt) | same |
+| normal J.u 00C4E6B2..4E759 | sp(-t - ((g(angA) + g(linA)) + g(linB)) + g(angB)), the sum on the stack | same order, sum rounded per add |
+| effective mass 00C4E773..4E7FC | sp(1 / (((g(J,M) angA + linA) + linB) + angB)) | one 12-term chain 5,3,4,2,0,1,... |
+| perpendicular length 00C4E90F..4E92B | sp((p1^2 + p0^2) + p2^2) | (p2^2 + p0^2) + p1^2 |
+| along_q, along_p 00C4E9D0..4EA49 | sp((qx vx + qy vy) + qz vz), sp((vx px + vy py) + pz vz) | z-first order |
+| tangent 00C4EA82..4EAA6 | each product and the sum spilled | same |
+| tangent length 00C4EAC6 | sp((tx^2 + ty^2) + tz^2) | z-first |
+| friction J.u 00C4EE84..4EEFB, eff. mass 00C4EF2D..4EF99 | as the normal row; rhs sp(-sum) | as above |
+
+The solve loops 00C42530, 00C42230 and the warm start 00C42BA0 (checked the same way) keep only the group dots on
+the stack, which `dyn_row_group_dot` already rounds once under the switch. 00C37B50 is single adds and 00C35020
+is copies, so neither needs a change.
+
+**Two switches.** `kDynListingAssociationBound` (new, include/bsp/hull_terrain_contact.hpp) runs the builder in
+the listing's association at float. That is the image at 24 bits, and it moves OFF rows by itself because the
+before-order rounds differently. `kDynWorkerPrecisionBound` runs the same template with the stack in double and
+implies the association. The OFF arm is the old code, unchanged. LABELLED: at 24 bits the restitution add is
+`float(double(product) + 0.05)`; the x87 rounds the exact sum once, which differs only on a double-rounding tie.
+
+Prediction: per-ULP differences in every Dyn contact row. Rows with no hull contact are identical (gameplay exit
+0/1). Contact-heavy rows (USNOS long, JM08, BSM01 l50_b1_a) move after their first contact solve, and the moves are
+chaotic, not directional. The verdict is mechanism-only: the first moved line must come after a contact census
+entry.
+
+**00C535E0 (cc13 audit residual 11a).** Not read in this pass.
+## 182. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
+
+### 182.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+**The read.**
+- `00729BC0` (decompile) picks the ammunition variant 1 only for weapon kind 6 against a target answering
+  `IsKindOf(0Fh)` (a plane), and then dispatches on that record's projectile kind. For a LIGHTARTILLERYFLAK mount the
+  plane variant is a Flak class (slot `+394h`, the AAFlakBot `008FBFC0`), and the surface variant an artillery class
+  (slot `+398h`, the ArtilleryGunnerBot `006DEF30`; GUNNERY 164.2's table).
+- `008FBFC0` runs the fire window `0085A9A0` before the gun's `vtable[1D4h]` (`008FBFEC`, cc13).
+- `006DEF30` (disk bytes, `006DEF30`..`006DEFED`, `RET 4` at `006DEFE2`/`006DEFEA`, INT3 at `006DEFED`):
+  - refuses unless `[bot+50h]` and `[[bot+50h]+3Ch]` are non-zero;
+  - calls `00955630` with `ECX = [[bot+50h]+3Ch]`, `EDX = target+FCh` and the stack `gun+FCh`, speed
+    `[[[gun+3F8h]+34h]+50h]`, `&vert` (the argument slot), `&horz` (the pushed local); refuses on 0;
+  - calls `0085A8B0(horz, vert)` (`006DEFB3`..`006DEFC8`: `[esp]` takes the local, `[esp+4]` the argument slot);
+    refuses on 0;
+  - only then returns `gun->vtable[1D4h](target)`, which is `0072F6E0`, the line-of-fire memo and its expiry draw.
+- **The host** sent kind 6 straight to `line_of_fire_refuses()`. So it queried (and cached for good, the record has no
+  live expiry) the line of fire, and drew the expiry, for (gun, target) pairs the image's gates refuse, and it accepted
+  those targets.
+
+**The binding.** `kAaKind6GateBound`. ON: kind 6 against a plane falls through to the kind-5 path (window, then line
+of fire); against anything else the gravity solve (`solve_gun_gravity_arc_00955630`, mount NULL, the seat path's
+hull-relative conversion) and the traverse window `gun_traverse_allowed_007f5fc0` on the `0085ABBD`-wrapped pair run
+first, and a refusal refuses the slot as a window refusal (applied, since `kAaFireWindowBound` is ON). OFF: unchanged.
+The non-plane gate is evaluated OFF too and counted: `kind6_gate_rejects` on the `aa acceptance` summary line.
+**LABELLED:** `[[bot+50h]+3Ch]` is taken as present; the solve is the host's world-frame convention, not the
+mount-frame round trip.
+
+**Predictions (before any pair).**
+- OFF identical by construction. `kind6_gate_rejects` > 0 on rows where dual-purpose ships see surface targets out of
+  their traverse window or beyond the arc's reach.
+- ON moves those rows (exit 3): kind-6 guns stop accepting the refused surface targets, and the line-of-fire cache is
+  filled later. Rows without kind-6 guns facing ships stay identical. The plane arm adds window refusals to kind-6
+  flak; GUNNERY 164's census of `window_rejects` rises.
+
+### 182.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
+
+- In cc9-gunnery35's JM06 pair (`local\g35_pt{off,on}_j6.log`), `torpedo gyro launches=24` on both sides, while ON
+  PlayerSub 01 launches its two player-ordered shots (`torpedo launch t=30.00 shooter=PlayerSub 01`). The two shots
+  did not enter the gyro block: `torpedo_lead_xz` was zero on that pass, so the player's heading stood.
+- The case the audit describes (a player press while the tube's bot has a snapped target in the same pass) does not
+  arise on JM06. The precedence remains UNCERTAIN in the image (whether `008FFF20` runs and calls `0072AC20` while the
+  seat is player-held is unread); nothing is bound until a row shows the override (`torpedo_gyro_launches` rising by
+  the player's shots).
+
+### 182.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
+
+| row | exit | `window_rejects` OFF -> ON | `kind6_gate_rejects` OFF (counted) -> ON (applied) | other |
+|---|---|---|---|---|
+| USN04 E2 (9000) | 3 | 13157 -> 17165 | 0 -> 0 | the plane arm alone; torpedo releases 5 -> 4 of 16 |
+| USN02 (9000) | 3 | 0 -> 0 | 345 -> 1103 | hull hits 74 -> 91, damage 11836.7 -> 12570.6 |
+| USN13 long (9000) | 3 | 10518 -> 13157 | 197 -> 1576 | deaths 47 -> 46 |
+| USN01 win (`l50_u1_u2`, 22000) | 3 | 9360 -> 9266 | 15 -> 120 | **completes 475.21 -> 425.72 s**; deaths 92 -> 91 |
+
+- **Mechanism.** OFF counts surface refusals on every row with dual-purpose mounts facing ships, and none on E2 (no
+  surface contact in 9000 frames); E2 moves through the plane arm alone (the window ahead of the line of fire), as
+  predicted. The ON counts are larger than OFF's because a refused target stays a candidate and is asked again.
+- The win holds and completes earlier.
+
+**Verdict: the mechanism matches the read; flipped ON.**
+
+## 183. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
+
+- **The set.** `00844FC0` (the shipyard build) puts `"ShipYardLaunch" = 1` into the new unit's init table
+  (`0084509C PUSH 1; PUSH 00D0659C; CALL 008F3940`; the string is read from the PE). `BSP_UnitInstance_SEntityInit`
+  reads it back (`0082356C..0082357F`: `008F2260(table, "ShipYardLaunch")`, `BL = [entry+0Ch]`; the native init
+  struct's arm takes `BL = [desc+11Ch]` at `00823555`), and `0082373D..00823742` store `BL ? 5 : 0` to `+1130h`.
+- **The countdown.** `BSP_UnitInstance_UpdateShipMotion` runs with `EDI = this` and `ESI = EDI - 310h`
+  (`00825F2A`, `00825F32`): it is entered on the unit's `+310h` sub-object. So its `[EDI+E20h]` is **unit+1130h**
+  itself. `0082639C..008263B5`: when non-zero, decrement, and on reaching 0 call `00813830(unit)`, which sends
+  message 7Ah with byte 0; `0082227B` then stores `byte ? 5 : 0` = 0 (already 0).
+- **The other 7Ah senders.** `0080F960` (the constructor taking the byte) has no caller: a rel32 and absolute-dword
+  scan of the PE (`local\g36_rel32.py`) finds none. `009CFBA4` (inside `BSP_TakeoffStateSlow_ShouldLeave`) sends
+  byte 0. `007604C0` is the default constructor (vtable `00D03310`, the deserialiser's).
+- **Readers.** `0081DE31` (the hangar test: `> 0` answers 1, so the ship is blind as an LOS observer), `00813AA2`
+  (copies `!= 0` into an init struct's `+11Ch`, the respawn/replication arm), `0081FDB7` (a Lua property
+  `shipYardLaunch`, `00BD6830`), `00818651` (a property dump), and `0064B97D` (the HUD order controls).
+- **Reach.** A shipyard-built ship is blind for its first five ship-motion ticks. `00864680` refreshes the cached
+  answer every 0.5 s, so this decides at most the first refresh after a build, and only when that refresh falls in
+  the five-tick window. UNCERTAIN: whether every ship-motion call reaches the join at `0082639C`.
+- **Not bound.** The reach is a fraction of a second per build; the host's units lane owns the ship-motion tick. If
+  it is bound, the host needs a per-unit counter set to 5 by `shipyard_build_00844fc0`, decremented on each
+  ship-motion tick, and `ship_in_shipyard_hangar_0081de10` answering 1 while it is non-zero.
+**00C535E0 (cc13 audit residual 11a): yes, by the transpose.** 00C535E0 is a 68-byte thunk to 00C53010, whose
+contact projection 00C48BE0 writes the body-local witnesses. 00C48D15..00C48D89 for A and 00C48D8C..00C48E0A for B
+first form d = p - t, with t the body frame's +2Ch row (B's frame is reached as [[work+4]+4]+8). They then store
+local_k = row_k . d, where row_k is the frame's k-th row at +08h/+14h/+20h. That is the transpose. It inverts the
+frame only when the rows are orthonormal. With rows s*u_k it gives local = s^2 x the true local point, and
+00C4DE40's transform (and 00C4B9B0's refresh) map that back to t + s^2 d. For a static fort the solve does not see
+it, because body B's angular terms multiply a zero velocity and a zero mass Jacobian. 00C4B9B0's depth and drift
+tests on the refreshed points do see it. Not quantified: what 00C4B9B0's thresholds then do with an s = 1.415 fort
+(the length-2.003 direction in the audit). The host's normalized `rigid_fort` frame gives undistorted points, so it
+differs from the image here. It is the correct geometry, and the image is not.

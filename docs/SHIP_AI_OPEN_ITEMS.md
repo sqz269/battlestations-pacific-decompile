@@ -16604,3 +16604,39 @@ handler.
   `Enterprise_sqn01|.-2` at 288.40 against 288.95 s; from there the shared RNG stream
   spreads it (ON: Enterprise elevator intakes 3, releases 42; OFF: 9 and 33). **Verdict: ON** (the store is
   unconditional in the image; no mechanism beyond the height to check).
+
+### 210.4 USNOS completes: variant x (cc9-ships43, 2026-10-12; lead item 2)
+
+**Result.** On this branch at 794e37ae7 (both 210 bounds ON), `local\s43_os_x.txt` (200000 frames, log
+`local\s43_p9_osxf.log`) **completes USNOS at 7475.82 s**: `summary mission end: completed at 7475.82 s
+(Mission.MissionStatus) text="The Japanese Empire is finished! - Mission Complete!" entity="Enterprise" objectives=9`.
+The exec guard logs `bsp: refused a mission script's process launch: sus_prog.exe` just before the end.
+
+**What the script needs** (this installation's `scripts/missions/COTP-USN/us_osumi.lua`, 2024-10-29):
+- `Mission.BaseCapped`: HQ1, HQ2 and CB2 all `PARTY_ALLIED` (lines 1080-1136).
+- `Mission.ReinDead`: every entry of `Mission.FinalTrgs` dead (lines 1181-1187). FinalTrgs is built in `luaReinTime`
+  (lines 1698-1704) and holds **Yamato and Musashi as well as Haku1-4**. Variant w had everything else and stalled
+  because Musashi lived.
+- Then `luaBombFadeOut` (line 973), and the end follows about 75 s later.
+
+**The chain** (each file is the previous one plus the change; all in this tree's `local\`):
+
+| variant | change | outcome on 794e37ae7 |
+| --- | --- | --- |
+| n (cf1e64d55) | j + DM1 moved 1 km NW at 47800 + Lexington/Reprisal strikes on the Hakus | Enterprise lives; 3 bases by 4234.58 s; Haku1/2 never hit; no end |
+| q | n + Loui1 and NH moved toward HakuNav1 (1000,-18000) at 118000, then attacking Haku1/2 | on 794e37ae7 TroopTrans3 dies at 1760.09 s (Bettys) and DM1 sinks the Enterprise at 2366.58 s, before the 47800 move |
+| s | q with the DM1 move at 30000 | Shima14 sinks the Enterprise at 2468.83 s |
+| t | q with the DM1 move at 44000 | Enterprise lives; an AI transport captures HQ1 at 2628.55 s; Loui1/Loui2 sink Haku2 6188.51 s and Haku1 6264.67 s; no CB2 (TroopTrans3 is dead) |
+| u | s + Enterprise 810s over TroopTrans3 at 31990-33990 | TroopTrans3 still dies (1759.54 s); fails at 2283.05 s |
+| w | t + TroopTrans5/6 on TroopTrans3's CB2 route from 53100 | CB2 captured 4237.30 s ("Bases captured: 3.00"); all four Hakus dead; Musashi alive, so no ReinDead |
+| **x** | w + Loui1 attacking Musashi every 600 frames in 78000-117400 | Loui2 sinks Musashi at 4100.40 s; NH sinks Haku1 7272.07 s and Haku2 7398.52 s; `HideScoreDisplay(4, 0)` at 7400.06 s; **completed 7475.82 s** |
+
+- p (n + the Enterprise moved south at 2395 s) is worse: the carrier turns toward Shima4-7, parked at about
+  (10700, -1800), and Shima4 sinks it at 2454.62 s.
+- The runs are deterministic: q, r (q without attack orders after 118000) and n re-run on 794e37ae7 all fail at 2367.28 s
+  with logs within one byte of each other, because they are identical until frame 118000.
+- Any change to the build moves USNOS from a few hundred seconds in (the lift-height flip moved the first death row
+  at 288 s). Plans are tied to the build they were tuned on; re-tune from x rather than from d.
+- **y** (x + NH also on Musashi in 78300-117300; log `local\s43_p9_osyf.log`) completes too, at 7687.83 s (entity
+  Essex): Loui2 sinks Musashi at 4092.27 s, Loui1 sinks Haku1 at 7505.75 s and Loui2 Haku2 at 7608.65 s, and the
+  `sus_prog.exe` refusal is logged. Two different endings from one plan, so the plan is not a knife-edge.
