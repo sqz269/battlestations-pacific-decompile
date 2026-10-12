@@ -203,7 +203,10 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
   - It sorts the 12Ch records at +690h with std::sort (00B148E0 and its helpers 00B13790, 00B13BF0,
     00B13C90, 00B13D00, 00B13F80, 00B14400, iter_swap 00B13350). The order is 00B0DAA0 on the key
     at +124h.
-  - It prints the records whose name (+11Ch) is in the +69Ch filter (00B105B0).
+  - The records come from 00B16F80 (docs/NATIVE_MATERIAL_DIAGNOSTICS_DRAW_CN.md): +11Ch is the pass
+    label current at record time, +124h is label + effect name, and +4h/+3Ch/+74h/+ACh/+E4h count
+    draws, primitives, vertices and shader registers per render mode.
+  - It prints the records whose label (+11Ch) is in the +69Ch label list (00B105B0).
   - Each of the 14 render modes with draw calls gets a line `"%s : %s - RM(%i) - DP(%i) - PRM(%i) -
     VSF4(%i) - PSF4(%i)"`, then a total line. Lines are 18 px apart, in 500 px columns that wrap at
     600.

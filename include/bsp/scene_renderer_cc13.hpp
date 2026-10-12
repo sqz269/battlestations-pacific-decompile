@@ -289,16 +289,19 @@ void render_scene_00b156c0(void* service, void* command, SceneRenderFrameHost& h
 
 // Typed projection of the 12Ch render-statistics record at service +690h..+694h.
 // Not the native layout: native names are NativeString {length, text} at
-// +11Ch (display name) and +124h (sort key), and records swap by deep copy.
+// +11Ch (the pass label current when the producer 00B16F80 created the
+// record) and +124h (label + effect name, the sort key); records swap by deep
+// copy. Counters per render mode, added by 00B16F80
+// (docs/NATIVE_MATERIAL_DIAGNOSTICS_DRAW_CN.md).
 struct RenderStatsRecord {
     const void* effect{};                 // +0
     std::int32_t draw_calls[14]{};        // +4,   "DP"
     std::int32_t primitives[14]{};        // +3Ch, "PRM"
-    std::int32_t unused_74[14]{};         // +74h, not printed
+    std::int32_t vertices[14]{};          // +74h, not printed
     std::int32_t vs_float4[14]{};         // +ACh, "VSF4"
     std::int32_t ps_float4[14]{};         // +E4h, "PSF4"
-    std::string name;                     // +11Ch
-    std::string sort_key;                 // +124h
+    std::string name;                     // +11Ch, label (DRSH/SCNE/POST)
+    std::string sort_key;                 // +124h, label + effect name
 };
 
 class StatsOverlayHost {
