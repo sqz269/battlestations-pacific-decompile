@@ -428,6 +428,21 @@ inline constexpr bool kSceneRaceAndScriptIdentityBound = true;
 // the held-back rows GenerateObject/SpawnNew create. False: never called.
 inline constexpr bool kSceneHomeBaseContractBound = true;
 
+// Packet cc9_lua50_engine_movie (docs/SQUADRON_LAND_TASK.md 5fm). True: a load
+// whose scene contents forced game mode 9 (004D4DF0: the `.ema` resolves and no
+// checkpoint) takes 004E0A50's mode-9 arm, `luaEngineMovieInit` only, and the
+// first in-mission frame runs BSP_EngineMovie_Stop 0045F600's tail: mode 8,
+// `luaPrecacheUnits` (forced), `luaStageInitMulti` (forced), `luaStageInit`
+// (thread safe). LABELLED: the player skips the movie on the frame
+// BSP_Game_BeginEngineMovie 004CCE50 starts it (004C6B20's skip path); the
+// movie itself, 0045F970's clock and 004560E0's tracks, is not played, and the
+// class-table resets between the entry points stay records. So does
+// 0046B730's kill pass over entities whose class is not in the scene
+// database's class map (+158h), which very probably removes the
+// luaEngineMovieInit timers the ON run lets play; that is why it stays OFF
+// (JM05 pair, 5fm). False: the mode-8 arm runs at load, as before.
+inline constexpr bool kEngineMovieEntryBound = false;
+
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag
 // (`NumSlots`, "Stock 1".."Stock 12", "Hangar 1".."Hangar 12", "Slot 1".."Slot n") into
