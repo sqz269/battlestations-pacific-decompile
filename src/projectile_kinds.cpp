@@ -335,8 +335,9 @@ ProjectileSpawnState create_projectile_006e8430(const ProjectileClassInfo& info,
     host.refresh_world_pose(projectile);
 
     // 006E8680: the water/air mode is decided once, at the muzzle, and holds
-    // for the whole flight.
-    const float water_height = host.sample_water_height(state.position[0], state.position[2]);
+    // for the whole flight. 006E8673/006E867D push +100h and +0FCh, so the image
+    // samples (x, y), the axis defect of docs/PROJECTILE_HELPERS.md section 1.
+    const float water_height = host.sample_water_height(state.position[0], state.position[1]);
     state.underwater = state.position[1] <= water_height;
     if (state.underwater) {
         host.set_water_mode(projectile);
