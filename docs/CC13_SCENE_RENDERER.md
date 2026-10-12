@@ -199,6 +199,9 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
     satisfy, so in practice the newest pair is used.
   - With one slot the fraction is ±inf/NaN. -inf clamps to 0. NaN would pass the clamp
     unchanged; the native does the same.
+- **00B0E970** `(command, index)`, RET 4: list vtable +0Ch(index) and +8h(index, camera) for
+  command+0Ch+4·index, the unthreaded batch step. Nothing references it (rel32, absolute and Ghidra
+  scans), so it is named but not reconstructed.
 - **00B151E0.** The per-effect render-statistics overlay, enabled by byte +681h.
   - It sorts the 12Ch records at +690h with std::sort (00B148E0 and its helpers 00B13790, 00B13BF0,
     00B13C90, 00B13D00, 00B13F80, 00B14400, iter_swap 00B13350). The order is 00B0DAA0 on the key
@@ -241,4 +244,5 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
   - The device vtable +114h words {0, 10h, 70h}.
   - Service byte +B0h, which gates the camera retain in 00B101C0.
   - The +2ACh old-film parameter block.
-- **00BA0090** also calls 00B0EB10 and 00B0D160 (+21Ch). It is a likely next target.
+- **00BA0090** (BSP_OceanWaveField_Update, cc13-water1) also calls 00B0EB10 (its cCorner0..3 are the
+  far-corner rays) and 00B0D160 (+21Ch). It belongs to the water lane.
