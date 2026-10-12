@@ -8,9 +8,9 @@
 //   007DAFD0  the angular kick the law applies twice (body 007DAFD0-007DB1C9)
 //   007DA3D0  007DA380's mode-2 factor arm (007DA3D0-007DA53F)
 //   007CBC36  007CBA50's lift-off flag (007CBC36-007CBD6D)
-// Every descriptive name is a hypothesis, not a recovered symbol. The main thread runs
-// these at the 24-bit x87 precision control, so every term below is float arithmetic
-// with the listing's float stores (docs/X87_CONTROL_WORD.md).
+// Every descriptive name is a hypothesis, not a recovered symbol. The plane step 007CE040
+// is a fixed-step pool job (24 or 53 bits by the claiming thread); the host policy runs it at
+// 24 bits, so every term below is float arithmetic (docs/X87_CONTROL_WORD.md, the policy).
 
 #include "bsp/plane_flight.hpp"
 
