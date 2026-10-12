@@ -1498,7 +1498,8 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     bsp::UnitSelectableInputs in{};
     // 00645091..006450B3: +5Ch set, +5Dh/+60h/+5Eh clear. The units host
     // answers the four together (its 0043F080 test, the same four bytes).
-    const bool alive = units->unit_alive_and_visible(unit);
+    const bool alive = units->unit_alive_and_visible(unit)
+        || bsp::plane_squadron_live_fused_slot(unit) != nullptr;   // CC13 item A, OFF
     in.alive_5c = alive;
     // 006450B9..006450BF: [unit+54h] == [[game+18CCh]+28h]. SUBSTITUTION
     // (labelled, as game_hosts_ai.cpp does for the same read): the local

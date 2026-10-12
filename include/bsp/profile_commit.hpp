@@ -52,7 +52,7 @@ void complete_profile_settings_restore_008d79a0(GameSettingsBlock& settings,
 
 // 008d5030's content manager/platform operations remain required call sites.
 // Presence must be queried again after construction: allocation or publication
-// can fail. The manager's vector is separate from settings.downloaded_content.
+// can fail. The manager's vector is separate from settings.disabled_downloaded_content.
 struct SettingsDownloadedContentHost {
     virtual ~SettingsDownloadedContentHost() = default;
     virtual bool has_download_manager_00f8a304() = 0;
@@ -61,8 +61,14 @@ struct SettingsDownloadedContentHost {
     virtual void try_construct_download_manager_009955f0(std::uint32_t bytes) = 0;
     virtual bool download_manager_ready_1c() = 0;
     virtual void refresh_download_manager_virtual_24() = 0;
-    virtual void filter_downloaded_content_0043ea80(std::vector<std::string>& names) = 0;
-    virtual void apply_downloaded_content_virtual_14(std::vector<std::string>& names) = 0;
+    // 0043EA80 (thiscall manager, names*): keeps each name that is a
+    // case-sensitive PREFIX of some package record name (not an exact match);
+    // an unmatched name is swapped with the last entry and popped (unordered).
+    virtual void keep_known_package_prefixes_0043ea80(std::vector<std::string>& names) = 0;
+    // Download-manager virtual +14h = 0043E940: enabled(+10h) = !blocked(+12h)
+    // for every package, then virtual +8 (set_enabled_by_name) with false for
+    // each listed name. The settings list is therefore a disable list.
+    virtual void disable_listed_packages_virtual_14(std::vector<std::string>& names) = 0;
     virtual void finish_download_manager_virtual_20() = 0;
     virtual void register_localization_table_00aa0d30(std::string_view name) = 0;
     virtual void reload_localization_tables_00aa06d0(bool flag) = 0;
@@ -75,7 +81,7 @@ void refresh_settings_downloaded_content_008d5030(
 
 struct ProfileCommitState {
     // Native profile+CC list, header+D0/signed count+D4. This collection is
-    // distinct from profile bonus+AC and settings' downloaded-content vector.
+    // distinct from profile bonus+AC and settings' disabled-content vector (+98h).
     std::vector<std::string> downloaded_content_names_cc;
 };
 

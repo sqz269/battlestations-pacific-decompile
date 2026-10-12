@@ -1,0 +1,198 @@
+{
+  "packet": "cc13_win_path_natives",
+  "document": "docs/CC13_WIN_PATH_NATIVES.md",
+  "host_steps": [
+    {
+      "function": "0088eff0",
+      "address": "0088f0ee",
+      "native": "00888aa0",
+      "host": "SetFailure argument 0"
+    },
+    {
+      "function": "0088eff0",
+      "address": "0088f121",
+      "native": "00b662b0",
+      "host": "SetFailure argument 1 string"
+    },
+    {
+      "function": "0088f1d0",
+      "address": "0088f2ce",
+      "native": "00888aa0",
+      "host": "GetFailure argument 0"
+    },
+    {
+      "function": "0088f1d0",
+      "address": "0088f301",
+      "native": "00b662b0",
+      "host": "GetFailure argument 1 string"
+    },
+    {
+      "function": "0088f1d0",
+      "address": "0088f373",
+      "native": "00b66450",
+      "host": "GetFailure pushes out's low byte"
+    },
+    {
+      "function": "008132c0",
+      "address": "008133dd",
+      "native": "0075b430",
+      "host": "message 6Ah base"
+    },
+    {
+      "function": "008132c0",
+      "address": "00813441",
+      "native": "0077c2a0",
+      "host": "message 6Ah routed"
+    },
+    {
+      "function": "008132c0",
+      "address": "00813530",
+      "native": "007619b0",
+      "host": "message 6Ch constructor"
+    },
+    {
+      "function": "008132c0",
+      "address": "00813546",
+      "native": "0077c2a0",
+      "host": "message 6Ch routed"
+    },
+    {
+      "function": "008132c0",
+      "address": "0081356f",
+      "native": "0093bd80",
+      "host": "EngineJam record push"
+    },
+    {
+      "function": "008132c0",
+      "address": "00813595",
+      "native": "009373c0",
+      "host": "Periscope arm"
+    },
+    {
+      "function": "0093bd80",
+      "address": "0093be89",
+      "native": "0093bc30",
+      "host": "failure record {5, EngineJam, seconds}"
+    },
+    {
+      "function": "00899500",
+      "address": "008995ef",
+      "native": "00b677e0",
+      "host": "TrulyDead argument 0"
+    },
+    {
+      "function": "00899500",
+      "address": "00899609",
+      "native": "00b67800",
+      "host": "GetByName Ptr"
+    },
+    {
+      "function": "00899500",
+      "address": "00899618",
+      "native": "00b662d0",
+      "host": "ToUserdata"
+    },
+    {
+      "function": "00899500",
+      "address": "0089964a",
+      "native": "00b66450",
+      "host": "push Ptr == null"
+    },
+    {
+      "function": "008af020",
+      "address": "008af11e",
+      "native": "008889c0",
+      "host": "entity handle test"
+    },
+    {
+      "function": "008af020",
+      "address": "008af153",
+      "native": "00888aa0",
+      "host": "entity arm"
+    },
+    {
+      "function": "008af020",
+      "address": "008af1ac",
+      "native": "00888760",
+      "host": "vector arm"
+    },
+    {
+      "function": "008af020",
+      "address": "008af1ef",
+      "native": "0071c4f0",
+      "host": "outside the map"
+    },
+    {
+      "function": "008af020",
+      "address": "008af1ff",
+      "native": "00489c40",
+      "host": "zone record at point"
+    },
+    {
+      "function": "008af020",
+      "address": "008af20c",
+      "native": "00b664b0",
+      "host": "push side"
+    },
+    {
+      "function": "0089f950",
+      "address": "0089fa4e",
+      "native": "00888aa0",
+      "host": "argument 0"
+    },
+    {
+      "function": "0089f950",
+      "address": "0089fa80",
+      "native": "00b66250",
+      "host": "argument 1 boolean"
+    },
+    {
+      "function": "00825f20",
+      "address": "00826b29",
+      "native": "0092d300",
+      "host": "speed command, engine gate applied"
+    },
+    {
+      "function": "00825f20",
+      "address": "00826b54",
+      "native": "0092e8c0",
+      "host": "rudder slew, skipped by +9E4h"
+    },
+    {
+      "function": "008a24e0",
+      "address": "008a25e6",
+      "native": "00888aa0",
+      "host": "argument 0"
+    },
+    {
+      "function": "008a24e0",
+      "address": "008a2617",
+      "native": "00b66270",
+      "host": "argument 1 altitude"
+    },
+    {
+      "function": "008a24e0",
+      "address": "008a2634",
+      "native": "00b663f0",
+      "host": "argument count == 3"
+    },
+    {
+      "function": "008a24e0",
+      "address": "008a265f",
+      "native": "00b66250",
+      "host": "argument 2 force"
+    },
+    {
+      "function": "009c8920",
+      "address": "009c8a7c",
+      "native": "009c7a80",
+      "host": "dive approach update after the release block"
+    },
+    {
+      "function": "00649860",
+      "address": "0064a200",
+      "native": "00647080",
+      "host": "HUD root toggle"
+    }
+  ]
+}

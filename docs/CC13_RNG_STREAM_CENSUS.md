@@ -579,3 +579,108 @@ For cc9, in value order:
 
 Census owner: reclassify the 12 ship-part effect sites, `0084C19F`, `0082571D`, `008546E4` and
 `007EC5A0` as PRESENTATION.
+
+## 12. Sound effect instance `00873AE0` (packet cc13-stlreview1, 2026-10-12)
+
+Section 4.2 counts `00873AE0` with the particles. cc13-sweep8E named it
+`BSP_EffectSoundInstance_Construct`, the sound component's instance: `BSP_EffectSound_CreateInstance`
+`00868D00` (sound component vtable `00D0DA18` slot `+18h`) does `operator_new(20h)` and calls it.
+It is presentation (audio), not a particle. It makes two draws from the **shared thread generator,
+stream 0**. There is no private generator: ECX is zeroed at each site.
+
+| site | entry | ECX | draw | use |
+| --- | --- | --- | --- | --- |
+| `00873B63` | `00BD2FC0` raw word | `00873B61 XOR ECX,ECX`, so 0 | one word | `DIV` by the sample count `[def+24h]`; the remainder picks the sample from `[def+20h]`, which `BSP_SoundManager_CreateTrackedSound` (`00A7E490`) starts |
+| `00873C39` | `00BD2F10` U(lo, hi) | `00873C26 XOR ECX,ECX`, so 0; no call between | U(0, 2s), s = `[def+38h]` (`00873C1B FLD`, `FADD ST0,ST0`) | `[inst+20h]` = 1.0 + U(0, 2s) - 2s*0.5 (`00D7A280` = 0.5, `00D7A210` = 1.0), so a factor in 1 +/- s. Pitch or volume is not decoded |
+
+- Both draws sit behind `00873B5B JE 00873C60`, taken when the sample count `[def+24h]` is 0. A
+  definition with samples costs two stream-0 draws per instance.
+- `00BD2ED0` maps stream 0 to the calling thread's slot. On the main thread that is slot 0 stream 0,
+  the shared gameplay stream. The thread that creates effect instances was not traced (open item 2
+  of section 8 applies). If effects are created from gameplay events such as hits and explosions
+  (a hypothesis; the creation path was not followed), these draws interleave with the gameplay
+  stream-0 draws on whichever thread runs that code.
+- Host: no file under `src/` references `00873AE0`, `00868D00` or the instance (checked
+  2026-10-12). If a host ever wires effect sounds, the RNG rule applies: use a presentation stream,
+  or keep it behind an OFF switch with a comment that the image draws stream 0 here.
+
+## 13. Band-sweep follow-up: named sites, ten reclassified, rescan (packet cc13-leftovers1, 2026-10-12)
+
+Worker cc13-leftovers1, base origin/main 7929dbd4a. Listing-read (disk bytes via `bsp.py disasm-raw`)
+and doc cross-check; no C++ and no Ghidra writes in this section. The report
+`reports/cc13_rng_stream_census.json` was edited in place: each changed row keeps `class_prev`
+and carries `revision`. The script is `local/lo1_census_update.py` in the worker tree.
+
+### 13.1 Rescan: no draw site is missing
+
+An independent rel32 `E8`/`E9` scan of every executable section, plus an absolute-dword scan of
+all sections, covered the five entries, `00BD2ED0`, and the housekeeping routines `00BD2FE0`,
+`00BD3050`, `00BD2E00`, `00BD2E20`, `00BF0CF0` and `00BF0DF0` (`local/lo1_rng_scan.py`).
+- Positive control: `00BD2F10` gives 625 sites, the same as section 1.1. `00BD2FC0` gives 112
+  (94 + 18), `00BD2F40` 14, `00BD2F90` 2 and `00BD2FD0` 6, all equal to the table in 1.2.
+- Every one of the 759 census sites is found again. None is missing from the scan.
+- The scan finds 24 sites that the census does not have. None of them is a stream consumer:
+  - the five entries calling `00BD2ED0` and the generator core (`00BD2F22`, `00BD2F41`, `00BD2FA2`,
+    `00BD2FA9`, `00BD2FC0`, `00BD2FD1`, `00BD2FD8`);
+  - registration `00BD2FE0` (`008F7CF3`, `008F82E7` in `BSP_WinMain`, `00BE2EBE` in the worker
+    main) and `BSP_RandomThreads_UnregisterCurrent 00BD3050` (`008F7D00`, `008F7D63`, `008F7D8A`,
+    `008F8478`, `00BE2F85`);
+  - `BSP_RandomThreads_Initialize 00BD2E20` from `BSP_WinMain` (`008F82D2`);
+  - the separate generators that section 2 already lists (`00B94B0C`, `00B9579B`, `00B957D9`,
+    `00B957F4`, `00CD889A`, `00CD88BA`, `00CD8A1A`, `00BD2E19`).
+- Absolute dwords: one, `00BD2E00` at `00CD8A36`, the vector-construct argument of section 2's
+  static initialiser. No entry is reached through a pointer.
+
+The band sweeps therefore found no new draw sites. They did correct or settle the classes and
+streams of the sites below.
+
+### 13.2 The named sites
+
+ECX was read at each call in the listing; "no branch" means no jump target lies between the ECX
+write and the call in the window read.
+
+| site | function | ECX | draw | stream | class |
+| --- | --- | --- | --- | --- | --- |
+| `007093F4` | `BSP_FishSchoolModel_Init 00709310` | `007093DF XOR ECX,ECX` | U(-0.5, 0.5) (`00CE69D0`, `00CE3800`) times extent `[esi+8]`, per fish | 0 | presentation |
+| `00709440` | same | `0070942B XOR ECX,ECX` | the same, times `[esi+0Ch]` | 0 | presentation |
+| `006D87E7` | `BSP_MarkerInstance_Construct 006D8750` | `006D87DD MOV ECX,1` | U(0, 4242.0) (`00CF8F74`), the marker's bob/spin phase | **1** | presentation (the report had it as a band-guess GAMEPLAY row) |
+| `006F1D40`, `006F1D80`, `006F1DC0` | `BSP_FogCloudField_Build 006F1C80` | `XOR ECX,ECX` at `006F1D2D`, `006F1D52`, `006F1D93` | three draws mixed into a 2-D jitter | 0 | presentation, **dead**: the builder has no reference |
+| `0060AAD4` | `BSP_HudPlaneScreen_UpdateInstruments 00609BD0` | `0060AAA2 MOV ECX,1`, no branch | instrument jitter | **1** | presentation |
+| `00489FC6` | entity base ctor `00489F30` (class 37h) | `00489FA4 XOR ECX,ECX` | U(-C/4, C/4), C = SoldierGlobals ClipDistance `+0Ch`; `00489FA2` is `DC C9` = `FMUL ST(1),ST(0)` with qword 0.25 at `00D7A348` | 0 | presentation; one draw per anim, bullet-visual, buoy, cloud or vehicle-visual entity constructed |
+| `0048A7D7` .. `0048C1FD` (20 sites) | soldier/traffic group, `docs/CC13_SOLDIER_TRAFFIC.md` section 6 | `XOR ECX,ECX`; spot-read at `0048AD7E`, `0048B987` and `0048C1F2` | see that table | 0 | 10 gameplay-coupled, 10 presentation (13.3) |
+| `004B102F` | play-animation `004B0F80` | 0 | U(0, duration) when the random-start argument is set | 0 | presentation |
+| `007AB94A` | paratrooper ctor `007AB8C0` | `007AB8E9 XOR EBX,EBX`, `007AB941 LEA ECX,[EBX+1]` | U(ParachuteOpenAltitudeMin, Max) into `+468h` | 1 | gameplay (sets the descent, so landing time and place) |
+| `00873B63`, `00873C39` | `BSP_EffectSoundInstance_Construct 00873AE0` | see section 12 | see section 12 | 0 | presentation (audio) |
+
+### 13.3 Reclassified: ten stream-0 gameplay sites
+
+The report had all twenty soldier sites as PRESENTATION ("only caller 004A2FC0, scene object
+factory"). `docs/CC13_SOLDIER_TRAFFIC.md` read the bodies. Ten of the draws pace or decide the
+troops' exposure, which reaches landing-ship damage. They are now GAMEPLAY:
+
+`0048A7D7` (die-roll weights), `0048A880` (die-roll pacing), `0048AD8B` (die roll), `0048B253`
+(hold U(3,15)), `0048B2AC` (die timer U(8,14)), `0048B91B` (withdraw U(10,20)), `0048B98F` (fire
+stationary time), `0048BB01` (run stationary time), `0048BD9A` (outing delay), `0048C1FD` (U(3,10)
+in `0048C190`).
+
+The other ten (scatter offsets, animation picks, muzzle flashes, and the unreferenced `0048AED0`)
+stay presentation.
+
+Counts after this section: stream 0 has **26 gameplay** sites (16 + these 10), 303 presentation, 1
+neutral and 3 meta. Stream 1 has 371 gameplay, 51 presentation (with the marker) and 4 meta.
+
+### 13.4 For cc9 and the file owners
+
+- **Gameplay, stream 0, not modelled:** the ten soldier sites above. A host that runs the soldier
+  groups must take them on stream 0 in image order, or land them behind an OFF switch, as section
+  4.1's other couplings were.
+- **Stream 1 carries presentation that interleaves with gameplay:** the marker phase (`006D87E7`,
+  one draw per marker instance) and the HUD instruments (`0060AAD4`, on the update path that
+  reaches it; its guard was not read) both sit on the stream that the parachute altitude (`007AB94A`) and the plane
+  tasks use. In the image, opening the plane HUD or spawning an objective marker shifts later
+  stream-1 gameplay draws. A host must keep these two on a presentation stream.
+- **Correction for `docs/CC13_BAND_0060_0066.md`:** it says `00609BD0` draws stream 0. The listing
+  gives stream 1 (`0060AAA2 MOV ECX,1`). This census already listed it as stream 1.
+- **Stream 0 per-entity draw:** `00489F30` draws once for every class-37h entity constructed,
+  bullet visuals included. Like the projectile draw `006E7B97`, gunfire volume moves stream 0
+  through it.

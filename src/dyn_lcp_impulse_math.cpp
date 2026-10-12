@@ -264,8 +264,9 @@ float dyn_row_group_dot(float j0, float j1, float j2, float v0, float v1,
         // rounding to float at a worker's 53 bits. The float products are exact in double.
         return static_cast<float>((static_cast<double>(j1) * v1 + static_cast<double>(j0) * v0) +
                                   static_cast<double>(j2) * v2);
+    } else {
+        return (j1 * v1 + j0 * v0) + j2 * v2;
     }
-    return (j1 * v1 + j0 * v0) + j2 * v2;
 }
 
 float dyn_row_residual(float rhs, const float jacobian[12], const float linear_a[3],

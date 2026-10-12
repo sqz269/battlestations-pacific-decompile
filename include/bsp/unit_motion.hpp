@@ -279,7 +279,8 @@ inline constexpr float kUnitPropellerMirror = -0.0f;                 // 00D7A208
 
 // 00834ED7..00834F0F: the target the shared steering angle at +1088h chases, stepped at
 // exactly the frame delta. The bias and blend are the two doubles named above; the
-// expression is literally (s - bias) - blend * (s - bias).
+// image computes (s - bias) * blend - blend (00834F03 is DC C9); the OFF arm of
+// kUnitSteeringDcFormBound keeps the listing transcription (s - bias) - blend * (s - bias).
 float unit_steering_angle_target_00834ed7(float steering_source) noexcept;
 
 // 008350F2..00835175: the load-dependent term every propeller target shares.

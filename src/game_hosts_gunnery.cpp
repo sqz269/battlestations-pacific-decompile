@@ -67,6 +67,7 @@
 #include "bsp/ship_hit_record.hpp"
 #include "bsp/part_damage_reachability.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_crash_sweep.hpp"
 #include "bsp/unit_fire_flooding.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
@@ -306,6 +307,27 @@ constexpr float kTailGunnerHoldSum = 0.15707963705062866f;      // 00D18388, 9 d
 // robots.lua TailGunnerBot ShootRange by skill index (Stun, SPNormal, SPVeteran,
 // MPNormal, MPVeteran, Elite), read into the bot row +18h (008FCAF8).
 constexpr float kTailGunnerShootRange[6] = {950.0f, 750.0f, 800.0f, 800.0f, 850.0f, 950.0f};
+//  * kTailGunnerAimErrorBound: packet cc13-tailgun1, docs/CC13_TAIL_GUNNER_AIM_ERROR.md.
+//    TailGunnerBot 008FFA20 (a category-1 gun under a plane) holds its angle pair
+//    bot+70h/+74h for an aim period: countdown bot+6Ch -= dt (008FFB35) and only
+//    below zero is the pair re-solved, each axis plus U(0, AngleError) degrees
+//    (008FFCD9 / 008FFD05, stream 1, never negative) and the next period drawn
+//    U(AimPeriodMin, AimPeriodMax) (008FFD37). 008FEA40, the class's SetFireTarget
+//    that 00727F10 calls on every gunnery think, sets the countdown to -1.0
+//    (00D7A260). OFF: the pair is solved every tick with no error.
+//  * kTailGunnerOwnAimBound: the same bot's aim point is target->vtable[100h],
+//    which for a plane is 0042D810 (three zeroes), moved by the target pose
+//    (00414D10 at 008FFC3D): the target origin, with no 00901C20 lead. Nor does
+//    008FFA20 halve a negative vertical (00902F76 is 00902920's). OFF: the AA
+//    gunner's lead and halving.
+constexpr bool kTailGunnerAimErrorBound = true;  // GUNNERY 193: ON by pair verdict
+constexpr bool kTailGunnerOwnAimBound = true;  // GUNNERY 193: ON by pair verdict
+// This installation's robots.lua (2025-06-01), TailGunnerBot, by skill index:
+// {AngleError (+0Ch), AimPeriodMin (+10h), AimPeriodMax (+14h)}, copied to
+// bot+84h/+88h/+8Ch by 008FBEF0.
+constexpr float kTailGunnerAimRows[6][3] = {
+    {4.0f, 0.6f, 1.2f}, {3.0f, 0.1f, 0.8f}, {2.5f, 0.1f, 0.5f},
+    {2.5f, 0.1f, 0.3f}, {1.5f, 0.1f, 0.2f}, {0.0f, 0.0f, 0.1f}};
 constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
 constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
 // DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
@@ -364,6 +386,21 @@ constexpr bool kAaTargetTurnAverageBound = true;
 //    along its track (0070C210, the radial blast). OFF: direct strikes only.
 //    Packet cc9_flak_proximity_burst.
 constexpr bool kFlakProximityBurstBound = true;
+//  * kFlakFlyTimeBurstBound: a Flak-type round whose flight time passes FlyTime
+//    bursts where it is. 0070C3B1 -> 0070C210(proj, 0): the argument is never
+//    read, so the expiry runs the same detonation as the proximity lock - the
+//    U(BlastDamageMin, BlastDamageMax) draw (0070C247, stream 1) and the radial
+//    blast 0084BAD0 with ignoreFalloff = 1 (0070C26E) - before the lock search.
+//    OFF: the life bound below removes the round silently.
+//    Packet cc13-flak1, docs/CC13_FLAK_FLYTIME_BURST.md.
+constexpr bool kFlakFlyTimeBurstBound = true;  // GUNNERY 193: ON by pair verdict
+//  * kFlakBlastIgnoreFalloffBound: every flak blast takes full damage inside
+//    BlastRange. The detonation pushes ignoreFalloff = 1 (0070C26E) and the
+//    impact burst sets it from classDesc+8h == 10h, the Flak sub-type
+//    (0084BE74 SETE); 004705C0 then lifts a positive falloff fraction to 1.
+//    OFF: the proximity and impact bursts of a flak round fall off with
+//    distance. Packet cc13-flak1.
+constexpr bool kFlakBlastIgnoreFalloffBound = true;  // GUNNERY 193: ON by pair verdict
 //  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
 //    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
 //    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
@@ -454,8 +491,9 @@ constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
 //    +FCh/+104h; LABELLED: held at its equilibrium on the surface, as the y = 0 hold
 //    was). The depth charge's depth test stays on absolute y (006FCD20 compares
 //    +100h with -|+470h| and -5.0; its 0078D1B0 only moves the record for effects).
-//    OFF: y = 0 throughout, as before.
-inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
+//    OFF: y = 0 throughout, as before. ON with kWaveFieldLiveAmplitudeBound
+//    (docs/OCEAN_WAVE_FIELD.md section 17).
+inline constexpr bool kGunneryLiveWaterSurfaceBound = true;
 //  * kSubmergedTorpedoLaunchSwimBound: packet cc9_physics2_submerged_swim (loan,
 //    docs/GUNNERY_OPEN_ITEMS.md 182). While a round is in medium 0 (vtable[2Ch] == 0),
 //    0084C11C runs 0084B380, which hits when the segment END is at or below the
@@ -465,8 +503,8 @@ inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //    water on its first step. MTorpedo's create 00856420 does not run 006E8430's
 //    spawn-time medium choice (no 0078CF20 call, no vtable[24h]/[28h]). The host's
 //    `from > 0` term kept a submerged launch from ever starting its swim.
-//    OFF: the crossing needs from.y > 0, as before.
-inline constexpr bool kSubmergedTorpedoLaunchSwimBound = false;
+//    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
+inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -569,6 +607,26 @@ constexpr bool kAaLineOfFireExpiryDrawBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    refusals that would be lifted are counted (armour_rejects_tail).
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
 constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
+//  * kAaKind6GateBound: GUNNERY 184 (cc13 switch audit 2a). 00729BC0 sends a
+//    kind-6 (LIGHTARTILLERYFLAK) gun to the AAFlakBot 008FBFC0 against a plane
+//    (variant 1) and to the ArtilleryGunnerBot 006DEF30 otherwise; each runs a
+//    gate before the gun's vtable[1D4h] = 0072F6E0. 008FBFC0 runs the fire
+//    window 0085A9A0 first; 006DEF30 runs 00955630 (ECX [[bot+50h]+3Ch], EDX
+//    target+FCh, gun+FCh, speed [[gun+3F8h]+34h]+50h, &vert, &horz) and then
+//    0085A8B0(horz, vert). ON: kind 6 takes those gates first, so the line-of-
+//    fire query, its cache entry and its expiry draw happen only past them,
+//    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
+//    goes straight to the line-of-fire query (the host before section 184).
+constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
+//  * kAaKind6GateMountFrameBound (cc13-audit12 section P3): 00955630 builds the
+//    solved WORLD direction (004B4D80 of its pitch and yaw, 00955752..00955765) and
+//    carries that vector into the mount frame [[bot+50h]+3Ch] (0095576A..009557F3:
+//    0042D0D0, then asin of local y and atan2(local x, local z), negated at
+//    009557F8). [gun+3Ch] is oriented as the hull (docs/AA_FIRE_WINDOW_MOUNT.md 2);
+//    unit scale is taken (docs/MOUNT_FRAME_SCALE.md). ON: horz and vert are the
+//    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
+//    the world lift added to the hull-frame elevation (184.1's substitution).
+constexpr bool kAaKind6GateMountFrameBound = false;
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -932,6 +990,27 @@ constexpr bool kHullElementSegmentBound = true;
 //    docs/AA_LETHALITY_AUDIT.md section 9.5.
 //    Packet cc9_plane_mesh_hit.
 constexpr bool kPlaneMeshHitTestBound = true;
+//  * kLandStructureMeshHitTestBound: a shell's direct-hit test against a LAND
+//    STRUCTURE (IsKindOf 1Bh: MLandFort, MCommandBuilding) uses the triangles of
+//    its model's GeomMesh, as kPlaneMeshHitTestBound does for a plane. 0087BCC0
+//    builds the unit-part instance for every unit and picks the land-structure
+//    LOD constant [00CED9E0] by vtable[5Ch](1Bh) at 0087BE0D, so a fort's 00CFD768
+//    shapes carry its GeomMesh too. JM08's Headquarter 01 (command_hq.mmod) spans
+//    x -29.2..7.6, y -0.1..15.6, z -36..35 against the host's 65 x 26 x 80 box
+//    centred on the origin: AA truck 05's muzzle is 2.6 m from the box and 27.5 m
+//    from the mesh (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md). Labelled substitutions
+//    as for the plane: every triangle of every mesh in the file, and the record
+//    keeps 0Ah / -1. The blast distance stays the class box. OFF: the class box.
+//    Packet cc13_jm08_aa_truck_hq_damage.
+constexpr bool kLandStructureMeshHitTestBound = false;
+//  * kLandStructureBlastElementEntriesBound: a burst's distance to a LAND
+//    STRUCTURE is taken per GeomMesh element, as kPlaneBlastElementEntriesBound
+//    does for a plane (the image's sphere test is 0070F720 -> 00723F80 on the
+//    same unit-part shapes). UNCERTAIN: how the structure damage path consumes
+//    per-element entries (a structure's elements are `body`, kind 9) is unread
+//    (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 4). OFF: the class box.
+//    Packet cc13_jm08_aa_truck_hq_damage.
+constexpr bool kLandStructureBlastElementEntriesBound = false;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -1118,6 +1197,15 @@ constexpr bool kReconAggregatesBound = true;
 //    wrote it on every hit, so a zero-damage hit could take the credit. OFF:
 //    every hit. Packet cc9_kill_credit, docs/KILL_CREDIT.md.
 constexpr bool kKillCreditDamageGateBound = true;
+//  * kLuaKillBoxFromHitBound: the `kill` channel boxes victim+2C8h and +2D8h
+//    (009813A0) as 0077CE60 writes them. +2D8h is attacker+180h when 8 or below,
+//    else the shot's [src+1Ch] (0077CFA3-0077CFC5); when the victim's
+//    vtable[140h]() is another unit answering IsKindOf(2) (a plane's squadron),
+//    that unit gets the same attacker (0077D114) and [src+1Ch] (0077D0E8-0077D128).
+//    LABELLED: unit+180h is taken as 9 (unauthored), so +2D8h is the shot's team
+//    stamp; scoring keeps attribution.credited_slot. OFF: the kill box reads
+//    last_attacker and the side stand-in. docs/CC13_AUDIT_LUA51_FLIPS.md item 1a.
+constexpr bool kLuaKillBoxFromHitBound = true;  // ON: SQUADRON_LAND_TASK 5fz/5ga (cc9-lua51 pairs: LOMP05 side stand-ins 30 -> 0, gameplay identical; BSM01 win 767.94 s)
 //  * kPlaneNullFireTargetProviderBound: 008636A0 (called once, 00864C18, from
 //    the attach 00864BD0) installs the director-backed fire-target provider
 //    00D0D324 (slot +4h 00863640, director+238h) only when the unit answers
@@ -1191,6 +1279,12 @@ float intercept_time_00901c20(const float rel[3], const float vel[3], float spee
 // SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5. MaxAngleError is
 // DEG(x) in the file.
 constexpr float kDegToRad = 0.01745329251994329577f;
+// cc9-physics4 (docs/X87_CONTROL_WORD.md, the host precision policy): the gun bot's aim
+// error 00902CF5..00902D07 and the torpedo gyro jitter 00900856..00900876 multiply by the
+// qword 00CE3D28 = 3.1415927410125732 (pi as a float) and divide by the qword 180.0. On
+// the 24-bit main thread that is the float product below; on a 53-bit pool worker it is
+// the double chain. False: the double chain with 3.14159265358979.
+inline constexpr bool kGunAimDegreePrecisionBound = true;  // ON: USN12 / USN01 identical
 constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
     {10.0f * kDegToRad, 1.0f},  // 0 Stun
     {5.0f * kDegToRad, 1.0f},   // 1 SPNormal
@@ -1423,6 +1517,9 @@ struct GameGunneryHost::Impl {
         // The kill attribution block at victim+2C4h..+2E8h, as 0077CE60 leaves it.
         bsp::KillAttributionFields attribution{};
         std::size_t last_attacker{0};   // victim+2C4h, one based
+        // kLuaKillBoxFromHitBound: +2C8h (one based) and +2D8h as 009813A0 boxes them.
+        std::size_t lua_kill_attacker{0};
+        int lua_kill_slot{-1};
         // The per-step scratch the pass fills.
         std::vector<bsp::GunneryCandidate> candidates;
         std::vector<int> order;
@@ -1559,6 +1656,7 @@ struct GameGunneryHost::Impl {
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
     unsigned long long aa_window_rejects{0};
+    unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
@@ -1612,7 +1710,9 @@ struct GameGunneryHost::Impl {
         depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
         depth_charge_launch = 24, // 006FDA4F / 006FDAE3 / 006FDB26, the activate's three draws, key (gun, 0..2)
         line_of_fire_ttl = 25, // 0072F76D, the cache record's unread expiry, key (gun, target)
+        tail_gunner_error = 26, // 008FFCD9 / 008FFD05 offsets, 008FFD37 period, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
+        plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1661,6 +1761,14 @@ struct GameGunneryHost::Impl {
         float delay_5c{0.0f};
     };
     std::map<std::size_t, TailGunnerFire> tail_gunner_fire;
+    // Packet cc13-tailgun1: 008FFA20's +6Ch countdown and +70h/+74h pair per gun.
+    struct TailGunnerAim {
+        float countdown{0.0f};
+        float horz{0.0f}, vert{0.0f};
+    };
+    std::map<std::size_t, TailGunnerAim> tail_gunner_aim;
+    unsigned long long tail_gunner_aim_rolls{0};
+    unsigned long long tail_gunner_aim_resets{0};
     unsigned long long aa_test_gunner{0};
     unsigned long long aa_test_flak{0};
     unsigned long long aa_test_tail{0};
@@ -2184,6 +2292,7 @@ struct GameGunneryHost::Impl {
     std::string smoke_first_unit;
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
+    unsigned long long flak_expiry_bursts{0};   // packet cc13-flak1, 0070C3C8
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
     // per device class (the image does it once per weapon class, 007325A0).
     struct DeviceFirePoints {
@@ -2411,9 +2520,21 @@ struct GameGunneryHost::Impl {
         const ShipModelSlots& model = ship_model_slots(type_id);
         return model.has_mesh ? &model : nullptr;
     }
+    // Packet cc13_jm08_aa_truck_hq_damage. See kLandStructureMeshHitTestBound.
+    // `blast` asks for the blast switch (kLandStructureBlastElementEntriesBound) instead.
+    const ShipModelSlots* land_structure_mesh_of(std::size_t index, bool blast = false) {
+        if (!(blast ? kLandStructureBlastElementEntriesBound : kLandStructureMeshHitTestBound)
+            || index >= unit_state.size()) return nullptr;
+        if (!units.unit_is_kind_of(index, bsp::kUnitKindQueryLandStructure)) return nullptr;
+        const int type_id = unit_state[index].row.type_id;
+        if (type_id < 0) return nullptr;
+        const ShipModelSlots& model = ship_model_slots(type_id);
+        return model.has_mesh ? &model : nullptr;
+    }
     const ShipModelSlots* hit_mesh_of(std::size_t index) {
         if (const ShipModelSlots* ship = ship_mesh_of(index)) return ship;
-        return plane_mesh_of(index);
+        if (const ShipModelSlots* plane = plane_mesh_of(index)) return plane;
+        return land_structure_mesh_of(index);
     }
     // Packet cc9_aa_turn_average: 00901C20's turn-rate average, 00901CC1..00901EEE,
     // on the target velocity `v` in place. See kAaTargetTurnAverageBound.
@@ -2597,6 +2718,9 @@ struct GameGunneryHost::Impl {
         // (what kHullRepairEnableRouteBound withholds).
         int script_hull_repair{-1};
         double withheld{0.0};
+        // Packet cc13_natives1: unit+9E4h / +9E5h, the jam bytes 008198A0 sets.
+        bool steering_jam_9e4{false};
+        bool engine_jam_9e5{false};
     };
     std::vector<DamageControl> damage_control;
     unsigned long long repair_enable_calls{0};
@@ -3089,6 +3213,25 @@ struct GameGunneryHost::Impl {
     unsigned long long kz_blast_records{0};
     unsigned long long kz_self_records{0};
     double kz_blast_damage{0.0};
+    // Packet cc9_lua53_kamikaze_impact (bsp::kPlaneCrashSweepBound): 007C0910,
+    // the plane's crash shot. include/bsp/plane_crash_sweep.hpp.
+    void run_plane_crash_sweeps_007c0910(float step);
+    void plane_crash_impact_0084bc60(std::size_t plane, std::size_t victim,
+        const float point[3], const float direction[3], const GameBulletClassRow& weapon);
+    const GameBulletClassRow* plane_crash_bullet(int id);
+    struct PlaneCrashPrev {
+        bool valid{false};
+        float points[3][3]{};
+        float cooldown_9dc{0.0f};   // unit+9DCh stand-in
+    };
+    std::vector<PlaneCrashPrev> crash_prev;
+    std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
+    unsigned long long pc_plane_steps{0}, pc_segments{0}, pc_unit_hits{0};
+    unsigned long long pc_same_squadron{0}, pc_land_hits{0}, pc_submerged{0};
+    unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
+    unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
+    unsigned long long pc_logged{0}, pc_cooldown_steps{0};
+    double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
     double kz_min_gap_t{-1.0};
@@ -3112,8 +3255,9 @@ struct GameGunneryHost::Impl {
     // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
     // radial burst every class with a Blast table makes on impact, and the one
     // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
+    // ignore_falloff is 0084BAD0's [ESP+8] byte, copied into record+2Ch.
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
-        const float point[3], const float direction[3]);
+        const float point[3], const float direction[3], bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
@@ -5561,8 +5705,56 @@ public:
             ++owner_.line_of_fire_refusals;
             return true;
         };
-        if (kind == 6) { line_of_fire_refuses(); return; }
-        if (kind != 1 && kind != 5) return;
+        if (kind == 6 && !(kAaKind6GateBound && plane)) {
+            // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
+            // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
+            // present (an unread precondition, labelled), and the solve takes
+            // this host's world-frame convention (mount NULL) turned into the
+            // hull-relative pair, as the seat path does.
+            if (!plane && (len <= 0.0f || row.arcs.empty())) {
+                if constexpr (kAaKind6GateBound) return;   // as kind 5 below
+            } else if (!plane) {
+                bsp::GunGravityArcQuery q;
+                q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
+                q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+                q.muzzle_speed = row.muzzle_speed;
+                q.mount_frame = nullptr;
+                const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+                bool reach = arc.solved;                                // 006DEFAD
+                if (reach) {
+                    const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                    const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+                    float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                    float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                        + (arc.angles.vert - direct);
+                    if constexpr (kAaKind6GateMountFrameBound) {
+                        // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
+                        const float p = arc.angles.vert;
+                        const float y = -arc.angles.horz;
+                        const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
+                            std::cos(y) * std::cos(p)};
+                        horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
+                        vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
+                    }
+                    const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                    reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                        bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+                }
+                if (!reach) {
+                    ++owner_.aa_kind6_gate_rejects;
+                    if constexpr (kAaKind6GateBound) {
+                        in.slot_accepts_target = false;
+                        last_refusal_ = AaRefusal::window;
+                        return;
+                    }
+                }
+            }
+            line_of_fire_refuses();
+            return;
+        }
+        // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
+        // below and then the line of fire, as kind 5.
+        if (kind != 1 && kind != 5 && kind != 6) return;
         if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
             const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
@@ -5626,6 +5818,12 @@ public:
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
         row.target_is_fire_target = is_fire_target;
+        if (kTailGunnerAimErrorBound && row.category == 1) {
+            // 00727F13..00727F2D: +390h's vtable[38h], for TailGunnerBot 008FEA40,
+            // which ends with bot+6Ch = -1.0 (00D7A260) whatever the target.
+            owner_.tail_gunner_aim[slot].countdown = -1.0f;
+            ++owner_.tail_gunner_aim_resets;
+        }
         if (is_fire_target && row.category == bsp::kUnitGunneryTorpedoCategory
             && !state_.torpedo_takes_fire_target_7d) {
             ++state_.byte_7d_fire_target_assigns_at_0;
@@ -6781,6 +6979,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         lead[i] = origin_of_target[i] + target_velocity[i] * flight;
                     }
                 }
+                if (kTailGunnerOwnAimBound && gun.category == 1
+                    && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    // 008FFBC6..008FFC3D: TailGunnerBot takes no 00901C20 lead; it
+                    // aims at target->vtable[100h] moved by the target pose. For a
+                    // plane that is 0042D810's zero offset, the origin. LABELLED: a
+                    // ship target's 00816650 hull-box draw is not made.
+                    for (int i = 0; i < 3; ++i) lead[i] = origin_of_target[i];
+                }
                 pitch = 0.0f;
                 ++aa_direct_aims;
                 record("GunBot::intercept_solution_00901c20", 0x00901c20u);
@@ -6924,9 +7130,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                             }
                         }
                         // 00902CF5..00902D07: double pi / 180, then the float sum.
-                        e = static_cast<float>(static_cast<double>(
-                            draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
-                            * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        if constexpr (kGunAimDegreePrecisionBound) {
+                            const float d = draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]);
+                            e = d * 3.1415927f / 180.0f + e;
+                        } else {
+                            e = static_cast<float>(static_cast<double>(
+                                draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
+                                * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        }
                         if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
                             e /= role_ai_held_00521e70(target, 0) ? kAaGunnerModifierVersusAi
                                                                   : kAaGunnerModifierVersusPlayer;
@@ -6961,6 +7172,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     aa_gunner_miss_sum += std::sqrt(static_cast<double>(sw.h) * sw.h
                         + static_cast<double>(sw.v) * sw.v) * distance;
                 }
+                if (kTailGunnerAimErrorBound && gun.category == 1
+                    && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    // 008FFB35..008FFD3C (see kTailGunnerAimErrorBound): the pair is
+                    // re-solved only when the countdown falls below zero, then held.
+                    TailGunnerAim& ta = tail_gunner_aim[g];
+                    if (bsp::gun_bot_turret_recompute_due_008ffa20(ta.countdown, dt)) {
+                        const float* row = kTailGunnerAimRows[aa_level];
+                        ta.horz = bsp::gun_bot_apply_aim_error_008ffa20(want_horz,
+                            draw(Draw::tail_gunner_error, g, 0, 0.0f, row[0]));   // 008FFCD9
+                        ta.vert = bsp::gun_bot_apply_aim_error_008ffa20(want_vert,
+                            draw(Draw::tail_gunner_error, g, 0, 0.0f, row[0]));   // 008FFD05
+                        ta.countdown = draw(Draw::tail_gunner_error, g, 0, row[1], row[2]); // 008FFD37
+                        ++tail_gunner_aim_rolls;
+                    }
+                    want_horz = ta.horz;
+                    want_vert = ta.vert;
+                }
                 if (kAaFlakAimErrorBound
                     && (gun.category == 5
                         || (gun.category == 6 && dp_air_ammo(g, gun.category, target) != nullptr))) {
@@ -6991,7 +7219,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         aa_flak_dist_abs_sum += d;
                     }
                 }
-                if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f) {
+                if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f
+                    && !(kTailGunnerOwnAimBound
+                         && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase))) {
                     want_vert *= 0.5f;    // 00902F76 FMUL [00D7A280]
                     ++aa_negative_halvings;
                 }
@@ -7875,8 +8105,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
                 const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
                     ? -1.0f : 1.0f;
-                shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
-                    + sign * magnitude * 3.14159265358979 / 180.0);
+                if constexpr (kGunAimDegreePrecisionBound) {
+                    // 00900513..00900526: the run heading is stored as a float first.
+                    const float run = static_cast<float>(std::atan2(static_cast<double>(dx),
+                        static_cast<double>(dz)));
+                    shot.commanded_heading = sign * magnitude * 3.1415927f / 180.0f + run;
+                } else {
+                    shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
+                        + sign * magnitude * 3.14159265358979 / 180.0);
+                }
                 const float vyaw = std::atan2(shot.flight.velocity.x, shot.flight.velocity.z);
                 torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.commanded_heading, vyaw)) * 57.2957795;
@@ -8091,8 +8328,6 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     // The hull box in its own frame: a slab test along the three pose rows.
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
-    const GameGunneryHost::Impl::ShipModelSlots* plane_model = owner_.ship_mesh_of(index) == nullptr
-        ? owner_.plane_mesh_of(index) : nullptr;
     if (const GameGunneryHost::Impl::ShipModelSlots* census = owner_.ship_mesh_of(index) == nullptr
             ? owner_.plane_mesh_of(index, true) : nullptr) {
         // Census only, on both sides of the switch: the class box's and the
@@ -8160,8 +8395,10 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         float best = 2.0f;
         int best_kind = 0x0A;
         int best_index = kDirectHitHullSegment;
+        // A plane's or a land structure's record keeps 0Ah / -1 (see the switches).
+        const bool ship_model = model == owner_.ship_mesh_of(index);
         const bool by_element = kHullElementSegmentBound && !model->element_tris.empty()
-            && plane_model == nullptr;
+            && ship_model;
         const auto& tri = by_element ? model->element_tris : model->tris;
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
@@ -8206,7 +8443,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
         hit_landscape = 0;
-        if (plane_model == nullptr) ++owner_.shell_mesh_hits;
+        if (ship_model) ++owner_.shell_mesh_hits;
         return true;
     }
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
@@ -8895,6 +9132,42 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // FLT_MAX, 0070C4B1), and on that tick +284h is still FLT_MAX from
         // 0070CB30, so 0070C7CE records the distance and never draws.
         // docs/AA_LETHALITY_AUDIT.md section 11.
+        //
+        // Packet cc13-flak1. 0070C3AA..0070C3C8 run after the base tick and
+        // before the lock search: flight time (+1C4h) > FlyTime (+54h, FCOMI /
+        // JBE) clears +294h and calls 0070C210(proj, 0), which never reads its
+        // argument (RET 4; no [ESP+..] read before 0070C280). So the expiry is
+        // the same detonation as the lock's, at the round's own position
+        // (proj+FCh): the 0070C247 draw, then 0084BAD0 with radius BlastRange
+        // (+70h), ignoreFalloff 1 and the round's source entity (+238h)
+        // skipped. The base tick's own expiry pair at 006E6584 (00696350,
+        // 00926D90(proj, 2)) only marks the round dead first; 0070C210 does
+        // not test that, and its 00926D90(proj, 1) returns on +5Fh.
+        // SUBSTITUTIONS, labelled: the test is the life bound's own
+        // life * V0 > FlyTime * V0 (the row keeps the derived range, not
+        // FlyTime), so ON and OFF expire on the same tick; the source entity
+        // is the owner unit, as for the lock's burst; the point effect
+        // (0070C2EC, class+2Ch) and the trail's world point (0070C350) are
+        // presentation and are not modelled.
+        if constexpr (kFlakFlyTimeBurstBound) {
+            const GameBulletClassRow* const xc = bullet(shot.bullet_class);
+            if (xc != nullptr && xc->type == "Flak" && xc->range > 0.0f
+                && xc->muzzle_speed > 0.0f && shot.life * xc->muzzle_speed > xc->range) {
+                const float no_dir[3] = {0.0f, 0.0f, 0.0f};
+                const float at[3] = {shot.position[0], shot.position[1], shot.position[2]};
+                shot.flak_target = 0;   // 0070C3C1
+                ++flak_expiry_bursts;
+                ++summary.expired;
+                shot.fate = 5;
+                round_bullet_class = shot.bullet_class;
+                apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
+                    no_dir, true);
+                round_bullet_class = -1;
+                done("FlakProjectile::expiry_detonate_0070c3c8", 0x0070c3c8u);
+                shot.alive = false;
+                continue;
+            }
+        }
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
@@ -9703,6 +9976,18 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
             attacker, kamikaze, true);
         target.last_attacker = shooter + 1;
+        if (kLuaKillBoxFromHitBound) {
+            target.lua_kill_attacker = shooter + 1;
+            target.lua_kill_slot = team_id;   // +180h = 9, so [src+1Ch]
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit && sqn->squadron_unit != victim
+                    && sqn->squadron_unit < unit_state.size()) {
+                    unit_state[sqn->squadron_unit].lua_kill_attacker = shooter + 1;
+                    unit_state[sqn->squadron_unit].lua_kill_slot = team_id;
+                }
+            }
+        }
     }
     ++summary.attributions;
     {
@@ -10176,8 +10461,222 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
     return out;
 }
 
+// Packet cc9_lua53_kamikaze_impact: the plane's crash class (unit+730h, class
+// +210h KamikazeBulletClass) as 0084BF00's shot class. Its row is not one a
+// gun loads, so the Bullets row is read here on first use.
+const GameBulletClassRow* GameGunneryHost::Impl::plane_crash_bullet(int id) {
+    if (id < 0) return nullptr;
+    for (const GameBulletClassRow& row : crash_bullets) {
+        if (row.id == id) return &row;
+    }
+    GameBulletClassRow row;
+    row.id = id;
+    row.type = lua.read_bullet_class_string(id, "Type");
+    row.name = lua.read_bullet_class_string(id, "Name");
+    row.found = !row.type.empty();
+    row.damage_min = lua.read_bullet_class_number(id, "DamageMin", 0.0f);
+    row.damage_max = lua.read_bullet_class_number(id, "DamageMax", 0.0f);
+    row.blast_damage_min = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMin", 0.0f);
+    row.blast_damage_max = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMax", 0.0f);
+    row.blast_range = lua.read_bullet_class_nested_number(id, "Blast", "BlastRange", 0.0f);
+    crash_bullets.push_back(row);
+    log.notef("gunnery: plane crash class %d \"%s\" Type=%s damage=%.0f..%.0f blast=%.0f..%.0f "
+        "range=%.0f (007C0910 [unit+730h], packet cc9_lua53_kamikaze_impact)", id,
+        row.name.c_str(), row.type.c_str(), static_cast<double>(row.damage_min),
+        static_cast<double>(row.damage_max), static_cast<double>(row.blast_damage_min),
+        static_cast<double>(row.blast_damage_max), static_cast<double>(row.blast_range));
+    return &crash_bullets.back();
+}
+
+// 007C0910 BSP_Plane_SweepCollisionPoints, once per fixed step for every
+// plane (007CEF67 in 007CE040). include/bsp/plane_crash_sweep.hpp has the
+// image read and the labelled substitutions. The cooldown unit+9DCh is armed
+// on the first free-flight step (below). OMITTED, labelled: unit+61h, the player-plane skip (007CEF00) and unit+9E0h's drop of
+// entity/plane hits (007CF02D; the pilot control-state byte the host does not
+// carry), and the 0.75 folded-wing scale (the shot record's vtable[38h]).
+void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
+    crash_prev.resize(unit_state.size());
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        PlaneCrashPrev& prev = crash_prev[i];
+        const UnitState& st = unit_state[i];
+        if (st.dead || st.kamikaze_bullet_class < 0
+            || !units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
+            prev.valid = false;
+            continue;
+        }
+        int state_900 = 0;
+        bool landed = false, enabled = false;
+        unsigned int command_class = 0;
+        const bool airborne = units.plane_order_view(i, state_900, landed, enabled, command_class)
+            && !landed && state_900 == 7;   // 7: free flight (007C6481, 007D6600)
+        float r[3], u[3], f[3], c[3];
+        unit_pose(i, r, u, f, c);
+        // The origin and the bbox fallback's two wing points (007D57F0..007D583F).
+        const float half = st.hull_width * bsp::kPlaneCrashWingPointRatio;
+        const int point_count = half > 0.0f ? 3 : 1;
+        float now[3][3];
+        for (int a = 0; a < 3; ++a) {
+            now[0][a] = c[a];
+            now[1][a] = c[a] - r[a] * half;
+            now[2][a] = c[a] + r[a] * half;
+        }
+        const bool had_prev = prev.valid;
+        float from_points[3][3];
+        std::memcpy(from_points, prev.points, sizeof(from_points));
+        std::memcpy(prev.points, now, sizeof(now));
+        prev.valid = airborne;
+        // 007C091C..007C092D / 007C0C43: the cooldown unit+9DCh, decremented by
+        // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
+        // 00CE3854): armed on the first free-flight step, because a host plane is
+        // in state 7 while still on its deck.
+        if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        if (!airborne || !had_prev) continue;
+        if (prev.cooldown_9dc > 0.0f) {
+            prev.cooldown_9dc -= step;
+            ++pc_cooldown_steps;
+            continue;
+        }
+        ++pc_plane_steps;
+        for (int p = 0; p < point_count; ++p) {
+            const float* from = from_points[p];
+            float to[3] = {now[p][0], now[p][1], now[p][2]};
+            // 007C0ABA..007C0ACE: both ends under -1.0 end the sweep (mode 2).
+            if (from[1] < bsp::kPlaneCrashSubmergedY && to[1] < bsp::kPlaneCrashSubmergedY) {
+                ++pc_submerged;
+                break;
+            }
+            // 007C0AD4..007C0B53: pull a current end under -2.0 back to y = -2.
+            if (to[1] < bsp::kPlaneCrashSurfaceCutY && from[1] > to[1]) {
+                const float t = (from[1] - bsp::kPlaneCrashSurfaceCutY) / (from[1] - to[1]);
+                for (int a = 0; a < 3; ++a) to[a] = from[a] + t * (to[a] - from[a]);
+                ++pc_surface_cuts;
+            }
+            const bsp::TickPoint3 seg_a{from[0], from[1], from[2]};
+            const bsp::TickPoint3 seg_b{to[0], to[1], to[2]};
+            if (!bsp::projectile_segment_is_sweepable(seg_a, seg_b)) continue;
+            ++pc_segments;
+            std::size_t hit_unit = 0;
+            float hit_point[3] = {0.0f, 0.0f, 0.0f};
+            bool land = false;
+            const bool hit = query_segment_units_impl(*this, from, to, i + 1, hit_unit,
+                hit_point, &land);
+            if (!hit) {
+                if (land) ++pc_land_hits;
+                continue;
+            }
+            const std::size_t victim = hit_unit - 1;
+            const GameBulletClassRow* weapon = plane_crash_bullet(st.kamikaze_bullet_class);
+            // 0084BF00 step 6: a Kamikaze-type (11h) shot skips its squadron.
+            if (weapon != nullptr && weapon->type == "Kamikaze") {
+                const auto* own =
+                    bsp::plane_squadron_registry().find_by_member_unit(i);
+                if (own != nullptr && own == bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                    ++pc_same_squadron;
+                    continue;
+                }
+            }
+            ++pc_unit_hits;
+            switch (st.kamikaze_bullet_class) {
+            case 21: ++pc_hits_21; break;
+            case 98: ++pc_hits_98; break;
+            case 99: ++pc_hits_99; break;
+            default: ++pc_hits_other; break;
+            }
+            const float direction[3] = {to[0] - from[0], to[1] - from[1], to[2] - from[2]};
+            if (pc_logged < 60) {
+                ++pc_logged;
+                log.notef("plane crash sweep: plane=%s class=%d point=%d victim=%s t=%.2f "
+                    "at=(%.1f %.1f %.1f) width=%.1f bound=%d (007C0910 -> 0084BF00)",
+                    st.row.name.c_str(), st.kamikaze_bullet_class, p,
+                    unit_state[victim].row.name.c_str(), static_cast<double>(clock_seconds),
+                    static_cast<double>(hit_point[0]), static_cast<double>(hit_point[1]),
+                    static_cast<double>(hit_point[2]), static_cast<double>(st.hull_width),
+                    bsp::kPlaneCrashSweepBound ? 1 : 0);
+            }
+            if constexpr (bsp::kPlaneCrashSweepBound) {
+                if (weapon != nullptr) {
+                    plane_crash_impact_0084bc60(i, victim, hit_point, direction, *weapon);
+                }
+            }
+            break;   // 0084BF00 takes the first hit of the list
+        }
+    }
+}
+
+// 0084BC60 for the plane's crash shot: the class's blast (0084BAD0, the source
+// skipped at 0084BBF9), then the impact message 0CAh's Kill(1) (007BBA10).
+// LABELLED, as kamikaze_detonate_00819a20's blast arm: the hull-box distance
+// with one part entry, no element gather, no weapon scale or attribution; the
+// direct record is not queued because no crash class authors DamageMin/Max.
+void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::size_t victim,
+    const float point[3], const float direction[3], const GameBulletClassRow& weapon) {
+    ++pc_impacts;
+    float centre[3] = {point[0], point[1], point[2]};
+    const float length = std::sqrt(dot3(direction, direction));
+    if (length > 0.0f) {
+        for (int a = 0; a < 3; ++a) centre[a] -= (direction[a] / length) * kBlastCentreBackOff;
+    }
+    std::size_t reached = 0;
+    double dealt = 0.0;
+    if (weapon.blast_range > 0.0f) {
+        const float damage = draw(Draw::plane_crash_blast, plane, 0, weapon.blast_damage_min,
+            weapon.blast_damage_max);
+        for (std::size_t i = 0; i < unit_state.size(); ++i) {
+            if (i == plane) continue;
+            if (unit_state[i].dead) continue;
+            if (hit_index_detached(i)) continue;
+            const UnitState& st = unit_state[i];
+            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
+                st.hull_length * 0.5f};
+            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+            float r[3], u[3], f[3], c[3];
+            unit_pose(i, r, u, f, c);
+            const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
+            const float* axes[3] = {r, u, f};
+            float outside = 0.0f;
+            for (int a = 0; a < 3; ++a) {
+                const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
+                if (excess > 0.0f) outside += excess * excess;
+            }
+            const float distance = std::sqrt(outside);
+            if (distance > weapon.blast_range) continue;
+            bsp::HitPartEntry entry;
+            entry.kind = 0;
+            entry.part_index = 0;
+            entry.distance = distance;
+            bsp::HitRecord blast;
+            blast.hull_damage_base = 0.0f;
+            blast.part_damage_base = damage;
+            blast.falloff_range = weapon.blast_range;
+            blast.ignore_falloff = false;
+            blast.armour_selector = 0.0f;
+            blast.hull_segment = kDirectHitHullSegment;
+            blast.weapon_scale = 1.0f;
+            blast.owner_modifier = 1.0f;
+            blast.part_hits = &entry;
+            blast.part_hit_count = 1;
+            ++pc_blast_records;
+            const float before = unit_state[i].health;
+            apply_gunless_blast_hit(plane, i, point, blast);
+            dealt += before - unit_state[i].health;
+            ++reached;
+        }
+    }
+    pc_blast_damage += dealt;
+    log.notef("plane crash impact: plane=%s victim=%s t=%.2f class=%d blast=%.0f..%.0f range=%.0f "
+        "reached=%zu dealt=%.1f victim_health=%.1f (0084BC60 / 007BBA10, packet "
+        "cc9_lua53_kamikaze_impact)", unit_state[plane].row.name.c_str(),
+        unit_state[victim].row.name.c_str(), static_cast<double>(clock_seconds), weapon.id,
+        static_cast<double>(weapon.blast_damage_min), static_cast<double>(weapon.blast_damage_max),
+        static_cast<double>(weapon.blast_range), reached, dealt,
+        static_cast<double>(unit_state[victim].health));
+    // 007BBA10: Kill(1) for an entity or plane hit.
+    if (!unit_state[plane].dead) kill_unit(plane);
+}
+
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
-    std::size_t gun_row, int team_id, const float point[3], const float direction[3]) {
+    std::size_t gun_row, int team_id, const float point[3], const float direction[3],
+    bool ignore_falloff) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
     const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
@@ -10283,6 +10782,10 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
             }
             if (kPlaneBlastElementEntriesBound) model = plane_mesh;
         }
+        // See kLandStructureBlastElementEntriesBound.
+        if (model == nullptr && plane_mesh == nullptr) {
+            if (const ShipModelSlots* structure = land_structure_mesh_of(i, true)) model = structure;
+        }
         if (model != nullptr && !model->element_ranges.empty()) {
             gather_elements(*model, element_entries);
             for (const bsp::HitPartEntry& e : element_entries) {
@@ -10300,7 +10803,8 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
         blast.part_damage_base = damage;
         blast.falloff_range = weapon->blast_range;
-        blast.ignore_falloff = false;
+        blast.ignore_falloff = ignore_falloff
+            || (kFlakBlastIgnoreFalloffBound && weapon->type == "Flak");   // 0084BE74
         blast.armour_selector = 0.0f;
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
@@ -10340,6 +10844,19 @@ namespace {
 // over this host's unit rows (bsp/unit_fire_flooding.hpp's sequences). Every
 // other site of the interface belongs to steps this binding does not run and
 // throws if reached.
+// Packet cc13_natives1: _stricmp / 00425850, the case-blind compares of
+// 008132C0, 008135C0 and 00813660.
+bool failure_name_is(const std::string& name, const char* literal) {
+    std::size_t i = 0;
+    for (; literal[i] != '\0'; ++i) {
+        if (i >= name.size()) return false;
+        const unsigned char a = static_cast<unsigned char>(name[i]);
+        const unsigned char b = static_cast<unsigned char>(literal[i]);
+        if (std::tolower(a) != std::tolower(b)) return false;
+    }
+    return i == name.size();
+}
+
 class FailureBinding final : public bsp::UnitFireFloodingHost {
 public:
     FailureBinding(GameGunneryHost::Impl& owner, std::size_t unit)
@@ -10405,8 +10922,13 @@ public:
     // 0093C520's expiry: vtable[19Ch] and the clear message (6Dh / 6Eh for
     // the two jams, 008137B0). The failure leaves task+18h, which is all
     // unit_failure_active reads.
-    void unit_named_state_dispatch(std::uint32_t, const std::string&) override {
+    void unit_named_state_dispatch(std::uint32_t, const std::string& name) override {
         ++owner_.cf_retired;
+        // Packet cc13_natives1: 00813660 routes 6Dh / 6Eh for the two jams and
+        // 008137B0 clears +9E4h / +9E5h.
+        GameGunneryHost::Impl::DamageControl& dc = owner_.damage_control[unit_];
+        if (failure_name_is(name, "SteeringJam")) dc.steering_jam_9e4 = false;
+        if (failure_name_is(name, "EngineJam")) dc.engine_jam_9e5 = false;
     }
     void session_route_failure_cleared(std::uint32_t, const std::string&) override {
         owner_.record("Failure::clear_message_0077c2a0", 0x0077c2a0u);
@@ -10498,7 +11020,51 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
         record(name == "SteeringJam" ? "Failure::steering_jam_flag_0081999d"
                                      : "Failure::engine_jam_flag_008199c7",
             name == "SteeringJam" ? 0x0081999du : 0x008199c7u);
+        // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
+        if (name == "SteeringJam") damage_control[unit].steering_jam_9e4 = true;
+        else damage_control[unit].engine_jam_9e5 = true;
     }
+}
+
+int GameGunneryHost::script_set_failure_008132c0(std::size_t unit_index,
+    const std::string& name, float engine_jam_seconds, float explosion_damage) {
+    Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size() || unit_index >= host.unit_state.size()) {
+        return 0;
+    }
+    Impl::DamageControl& dc = host.damage_control[unit_index];
+    if (failure_name_is(name, "Explosion")) {
+        // 008133D5 message 6Ah -> 008198A0 -> 00818110, whose step applies
+        // vtable[1ACh](msg+30h). LABELLED: msg+24h/+28h/+2Ch/+34h are not kept.
+        host.pending_explosions.emplace_back(unit_index, explosion_damage);
+        return 1;
+    }
+    if (failure_name_is(name, "SteeringJam")) {
+        dc.steering_jam_9e4 = true;   // 008134C4 message 6Bh -> 0081999D
+        return 2;
+    }
+    if (failure_name_is(name, "EngineJam")) {
+        dc.engine_jam_9e5 = true;     // 00813530 007619B0 message 6Ch -> 008199C7
+        // 0081356F 0093BD80 -> 0093BE89 0093BC30: no active-name test.
+        bsp::ActiveFailure record;
+        record.id = 5;
+        record.name = "EngineJam";
+        record.seconds_remaining = engine_jam_seconds;
+        dc.task.failures.push_back(record);
+        return 3;
+    }
+    if (failure_name_is(name, "Periscope")) {
+        host.record("Failure::periscope_shape_bits_009373c0", 0x009373c0u);
+        return 4;
+    }
+    return 0;
+}
+
+bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size()) return false;
+    const Impl::DamageControl& dc = host.damage_control[unit_index];
+    return steering ? dc.steering_jam_9e4 : dc.engine_jam_9e5;
 }
 
 bool GameGunneryHost::unit_failure_active(std::size_t unit_index, const char* name) const {
@@ -11970,6 +12536,8 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+    // Packet cc9_lua53_kamikaze_impact: 007C0910 (a census while OFF).
+    host.run_plane_crash_sweeps_007c0910(step_seconds);
     if constexpr (kKamikazeContactDetonationBound) {
         host.run_kamikaze_contacts(step_seconds);
     }
@@ -12146,11 +12714,13 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
 
 std::size_t GameGunneryHost::kill_last_attacker(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return 0;
+    if (kLuaKillBoxFromHitBound) return impl_->unit_state[unit_index].lua_kill_attacker;
     return impl_->unit_state[unit_index].last_attacker;
 }
 
 int GameGunneryHost::kill_credited_slot(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return 0;
+    if (kLuaKillBoxFromHitBound) return impl_->unit_state[unit_index].lua_kill_slot;
     return impl_->unit_state[unit_index].attribution.credited_slot;
 }
 
@@ -12196,6 +12766,8 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
     s.health = s.max_health;
     s.row.health = s.health;
     s.last_attacker = 0;
+    s.lua_kill_attacker = 0;
+    s.lua_kill_slot = -1;
     s.fire_target = 0;
     s.command_target = 0;
     s.attribution = {};
@@ -13205,6 +13777,13 @@ void GameGunneryHost::report() {
                 "flak=%llu tail=%llu (00902920 / 009030C0 / 008FFA20 + 008FEF40, packet "
                 "cc9_aa_bot_fire_tests)", kAaBotFireTestsBound ? 1 : 0, host.aa_test_gunner,
                 host.aa_test_flak, host.aa_test_tail);
+            if constexpr (kTailGunnerAimErrorBound || kTailGunnerOwnAimBound) {
+                host.log.notef("summary mission gunnery tail gunner aim error_bound=%d "
+                    "own_aim_bound=%d rolls=%llu resets=%llu (008FFA20 / 008FEA40, packet "
+                    "cc13-tailgun1)", kTailGunnerAimErrorBound ? 1 : 0,
+                    kTailGunnerOwnAimBound ? 1 : 0, host.tail_gunner_aim_rolls,
+                    host.tail_gunner_aim_resets);
+            }
             host.log.notef("summary mission gunnery wave order bound=%d pre_steps=%llu "
                 "(wave 1 0085AD80 before wave 2 006DF520, packet cc9_fire_request_timing)",
                 kGunWaveOrderBound ? 1 : 0, host.wave_order_pre_steps);
@@ -13260,6 +13839,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak expiry bursts=%llu bound=%d "
+            "ignore_falloff_bound=%d (0070C3C8 -> 0070C210, packet cc13-flak1)",
+            host.flak_expiry_bursts, kFlakFlyTimeBurstBound ? 1 : 0,
+            kFlakBlastIgnoreFalloffBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa bot error gunner_rolls=%llu (by level %llu/%llu/"
             "%llu/%llu/%llu/%llu) clamps=%llu ticks=%llu mean_miss_m=%.2f gunner_bound=%d "
             "flak_rolls=%llu (by level %llu/%llu/%llu/%llu/%llu/%llu) mean_angle_deg=%.3f "
@@ -13468,11 +14051,12 @@ void GameGunneryHost::report() {
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
-            "lof_expiry_draw=%d (packet cc9_aa_targeting)",
+            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips, host.aa_armour_rejects_tail,
-            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0);
+            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0,
+            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "
@@ -13719,6 +14303,14 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    host.log.notef("summary mission gunnery plane crash sweep plane_steps=%llu segments=%llu "
+        "unit_hits=%llu (c21=%llu c98=%llu c99=%llu other=%llu) same_squadron=%llu "
+        "land_hits=%llu submerged=%llu surface_cuts=%llu cooldown_steps=%llu impacts=%llu blast_records=%llu "
+        "blast_damage=%.1f bound=%d (007C0910 -> 0084BF00, packet cc9_lua53_kamikaze_impact)",
+        host.pc_plane_steps, host.pc_segments, host.pc_unit_hits, host.pc_hits_21,
+        host.pc_hits_98, host.pc_hits_99, host.pc_hits_other, host.pc_same_squadron,
+        host.pc_land_hits, host.pc_submerged, host.pc_surface_cuts, host.pc_cooldown_steps, host.pc_impacts,
+        host.pc_blast_records, host.pc_blast_damage, bsp::kPlaneCrashSweepBound ? 1 : 0);
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);

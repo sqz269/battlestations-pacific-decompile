@@ -148,3 +148,65 @@ from the running game.
    not traced.
 3. Whether any thread other than the one that creates the device sees a different control word
    was not examined; `D3DCREATE_MULTITHREADED` is set, and the x87 control word is per thread.
+
+## Host precision policy (cc9-physics4, 2026-10-12)
+
+The per-thread control word is settled in `docs/CC13_FPU_PRECISION.md`; the host's departures from
+it are counted in `docs/CC13_HOST_PRECISION_CENSUS.md`. The policy the cc9 lanes reconstruct to:
+
+| Image thread | x87 precision | What runs there | Host rule |
+| --- | --- | --- | --- |
+| Main thread, after `CreateDevice` (no `D3DCREATE_FPU_PRESERVE`) | 24-bit (`007Fh`) | the frame, the fixed-step driver `00875BB0`, Lua, the camera and world-view jobs | C++ `float` expressions in the listing's operation order. At 24 bits every x87 operation rounds like a float operation, so the spill pattern does not matter. A `double` only for a single operation with a qword constant that is not exact as a float |
+| Dyn task workers (`_beginthreadex`, `00C37690`) | 53-bit (`027Fh`) | the Dyn solver fork-join and the collision pass | `double` intermediates up to each `FSTP dword` spill the listing makes, then a float store; the inline-x87 narrow phase bracketed at `_PC_53` (`kDynWorkerPrecisionBound`, ON since `c96f10979`) |
+| Frame-job pool workers (`CreateThread`, `00BE2C70`) | 53-bit | their share of the fixed-step unit jobs | see the next row |
+| Fixed-step unit jobs (ship motion `00825F20`, the plane step `007CE040`, gun ticks, projectiles) | 24 **or** 53, by which thread claims the job from the LIFO array | | The host runs every job on one thread at 24 bits, which is the image's `SetSingleThread(true)` mode exactly and its default mode only statistically. A host `double` chain reproduces the 53-bit case exactly (SSE2 double rounds each operation to 53 bits, as the x87 at `027Fh` does, barring the exponent range); a host `float` chain reproduces the 24-bit case |
+| CRT transcendentals (`00BF84E8` atan, `00BFE638` sin, `00BFE798` cos, `00BFA968` log, `00BFA078` tan) | switch to 53 internally and return a 53-bit result | | a `double` call narrowed straight to float |
+| CRT `sqrt` (`00BF7030`) | keeps the caller's precision | | `sqrtf` on 24-bit threads, `sqrt` on 53-bit ones |
+
+Lua script arithmetic (stock `lua_Number` double against the image's 24-bit main thread) is the
+census's class C and stays open: it needs a decision, not a patch.
+
+So a reconstruction states which thread its routine runs on, and a pair that changes a routine's
+precision is a behaviour change like any other: the fixed-step unit jobs are RNG-coupled through
+`00BD2F10` wherever an aim or spawn draw follows.
+
+**Correction to the Answer above.** "The ship motion at `00825F20` therefore runs at a 24-bit
+mantissa" holds for the main thread only. `00825F20` is a fixed-step pool job, and a pool worker
+that claims it runs it at 53 bits (`docs/CC13_FPU_PRECISION.md` section 3). The `0.05` / `1.0`
+double-constant note under "What this changes" applies to the 24-bit case.
+
+### The first RNG-coupled spots (cc9-physics4, 2026-10-12)
+
+| Site | Image | Host before | Binding |
+| --- | --- | --- | --- |
+| gun bot aim error `00902CF5`..`00902D07` (`BSP_GunBot_LeadAimTick`, run by `run_gun_aim_and_fire` 00953CC0) | draw `*` qword `00CE3D28` (3.1415927410125732) `/` qword `00CE3D20` (180.0) `+` float e | double chain with 3.14159265358979 | `kGunAimDegreePrecisionBound` (`f1ad57b30`, OFF): `d * 3.1415927f / 180.0f + e` |
+| torpedo gyro jitter `00900856`..`00900876` | `FILD` sign `*` qword magnitude `*` the same pi `/` 180 `+` the run heading stored as a float at `00900526` | `atan2` kept in double, 3.14159265358979 | same switch: the heading narrowed first, then the float chain |
+| flak reroll `008FDC65`..`008FDC7F` | sign `*` magnitude `*` pi_f `/` 180 | float, `3.14159265358979f` (= pi_f) | none: already the 24-bit case |
+
+The image multiplies by the **double** 3.1415927410125732 on a 24-bit thread, so its product rounds to
+24 bits at once: a float product is the main-thread case. On a 53-bit pool worker the same code is the
+double chain with that constant, which the old host expression was not either (it used the wider pi).
+
+**Predictions, before the pair** (USN12 `s38_u12_p2`, AA-heavy win; USN01 `p3_u1_z4`, torpedoes): every
+aim error moves by at most a float ulp, so pair_diff verdict 3 (moved) is likely through the shared
+stream once any hit flips; both wins should hold; death counts within a few percent.
+
+**The pair** (OFF = tree build at `f1ad57b30`, ON = its flip, `local\p4g_{off,on}_{u12,u1z4}.log`): USN12
+completed 1539.83 s both sides with the guard, pair_diff gameplay identical (108 deaths, 2766 hits; 1374
+gunner rolls and 24 gyro launches ran); USN01 completed 1014.63 s both sides, verdict 0, identical apart from
+noise (2379 gunner rolls). The float-ulp changes flipped no draw and no hit on these two missions;
+the prediction of a moved verdict did not hold. **Flipped ON**: the rule is the listing's and nothing moved.
+
+### Census row 18, the gun gravity arc (`kGunArcFloatPrecisionBound`, OFF)
+
+`00955630` (`src/gun_gravity_arc.cpp`), the launch elevation of every shell, runs in the fixed-step gun tick.
+Read from the listing: `hsq = dz*dz + dx*dx` (`00955659`-`00955669`), `k = (hsq * g) / (v * (v + v))`
+(`009556AE`-`009556C4`, g the qword 9.81f), `D = R*R - (k * 4.0) * float(k + h)` (`009556C8`-`009556EE`),
+`T = (R - sqrt(D)) / (k + k)` (`0095571B`-`00955734`), `atan` at 53 bits inside the CRT. The host computed
+each in double; ON computes them as floats in that order (sqrt as `sqrtf`, the CRT keeping the caller's
+precision), the 24-bit case. Predictions: last-bit elevation changes; on USN12 / USN01 likely gameplay
+identical as the aim pair was, or verdict 3 through a flipped hit; both wins hold.
+
+**The pair** (OFF = tree build at `d597ad880`, ON = its flip; `local\p4a_{off,on}_{u12,u1z4}.log`): USN12 completed
+1539.83 s and USN01 1014.63 s on both sides with the guard, gameplay identical; the only moved summary row is the
+known `ship ai free` refill noise. **Flipped ON.**

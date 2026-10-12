@@ -454,6 +454,16 @@ inline constexpr bool kEngineMovieEntryBound = true;
 // three TypeB_Jake subs no script names; USNOS identical.
 inline constexpr bool kEngineMovieStopRosterBound = true;
 
+// docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
+// a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
+// is registered for GenerateObject, never created, so 0046B730 has nothing to
+// kill; and 0046B730 queues only roots whose class is outside the scene
+// database's +158h set (44h, 5Eh, 1Dh, 47h, 3Dh; 0046F26C-0046F2E1), and of an
+// exempt root only the children outside it (0046B7CA). True, with
+// kEngineMovieStopRosterBound: those entities are not dropped. False: every
+// GenerateInEngineMovie admit is dropped, as before.
+inline constexpr bool kEngineMovieStopRosterExemptBound = false;
+
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag
 // (`NumSlots`, "Stock 1".."Stock 12", "Hangar 1".."Hangar 12", "Slot 1".."Slot n") into

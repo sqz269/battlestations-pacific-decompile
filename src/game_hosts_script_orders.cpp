@@ -29,6 +29,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
+#include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
 #include "bsp/mission_camera.hpp"        // packet cc9_lua_camera_state
 #include "bsp/mission_lua_host.hpp"
@@ -894,6 +895,93 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     return made.entity_id;
 }
 
+// Packet cc9_lua52_kamikaze_wiring. 006FED18-006FEED3: the bag of the released
+// kamikaze (Type = KamikazePlaneClass's class, WingCount 1, Skill, Race, Party,
+// OwnerPlayer, State 7, VelocitySI, Vel3D, Invincible 0.0, FireStance 2,
+// AutoAttackTarget, DummyObjectID) into 004F0AD0 at the round's matrix, the
+// creator create_air_ops_squadron_006c5050 already reaches. SUBSTITUTIONS,
+// labelled: VelocitySI/Vel3D, Invincible, FireStance and DummyObjectID have no
+// reader in create_units (the plane starts at the units host's seeded speed);
+// the name is the carrier's plus a counter, where 004F0AD0 takes
+// [desc+DCh]+13Ch. The AutoAttackTarget is the caller's.
+std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
+    const bsp::DummyKamikazeSpawn& spawn, std::string& created_name) {
+    created_name.clear();
+    if (spawn.plane_class <= 0) return 0u;
+    const GameUnitRow* carrier = units_.unit_row(spawn.carrier);
+    GameSceneEntityRecord record;
+    char suffix[32];
+    std::snprintf(suffix, sizeof(suffix), "_kz%02u", spawn.dummy_id);
+    record.name = (carrier != nullptr ? carrier->name : std::string("DummyKamikaze")) + suffix;
+    record.class_name = "PlaneSquadronGen";
+    record.class_id = 0x18;
+    record.type_id = spawn.plane_class;
+    record.party = spawn.party;
+    record.race = spawn.race;
+    record.owner_player = spawn.owner_player;
+    record.bag_skill = spawn.skill;
+    record.bag_skill_source = "Skill";
+    record.created = true;
+    for (int i = 0; i < 16; ++i) record.world[i] = spawn.world[static_cast<std::size_t>(i)];
+
+    bsp::PlaneSquadronSpawnRequest request;
+    request.squadron_name = record.name;
+    request.type_class_id = spawn.plane_class;
+    request.wing_count_present = true;
+    request.wing_count_raw = 1;                       // 006FED63 PUSH 1, WingCount
+    const bsp::PlaneSquadronSpawnPlan plan = bsp::plane_squadron_plan_members_007f4580(request);
+
+    const std::size_t before = units_.count();
+    bsp::PlaneSquadronHostRecord& squadron = bsp::plane_squadron_registry().add(record.name);
+    squadron.wing_count = plan.wing_count;
+    squadron.behaviour = plan.behaviour;
+    squadron.type_class_id = spawn.plane_class;
+    squadron.party = record.party;
+    squadron.from_air_ops_launch = true;               // a mission-time creation
+    squadron.bag_state = 7;                            // 006FEDC7 PUSH 7, State
+    squadron.squadron_unit = before;
+    squadron.member_names.clear();
+    squadron.member_units.clear();
+    squadron.member_spawn_index.clear();
+    if (!plan.members.empty()) {
+        squadron.member_names.push_back(record.name);
+        squadron.member_units.push_back(before);
+        squadron.member_spawn_index.push_back(plan.members[0].spawn_index);
+    }
+    std::vector<GameSceneEntityRecord> batch;
+    batch.push_back(record);
+    units_.create_units(batch);
+    if (units_.count() <= before) {
+        squadron.member_names.clear();
+        squadron.member_units.clear();
+        squadron.member_spawn_index.clear();
+        squadron.squadron_unit = bsp::kPlaneSquadronNoUnit;
+        log_.notef("dummy kamikaze spawn: create_units made no instance for class %d",
+                   spawn.plane_class);
+        return 0u;
+    }
+    AirOpsSquadron made;
+    made.unit_index = before;
+    made.entity_id = static_cast<std::uint32_t>(made.unit_index + 1);
+    made.wing_count = 1;
+    made.name = record.name;
+    squadrons_.push_back(made);
+    created_name = made.name;
+    const GameUnitRow* target = spawn.target_plus_one > 0
+        ? units_.unit_row(spawn.target_plus_one - 1) : nullptr;
+    log_.notef("dummy kamikaze spawn: %s class=%d party=%d skill=%d -> unit %zu at "
+        "(%.1f %.1f %.1f) v=(%.1f %.1f %.1f) |v|=%.1f target=%s dummy=%u "
+        "(006FEC00 -> 004F0AD0, packet cc9_lua52_kamikaze_wiring)",
+        made.name.c_str(), spawn.plane_class, spawn.party, spawn.skill, made.unit_index,
+        static_cast<double>(record.world[12]), static_cast<double>(record.world[13]),
+        static_cast<double>(record.world[14]), static_cast<double>(spawn.velocity[0]),
+        static_cast<double>(spawn.velocity[1]), static_cast<double>(spawn.velocity[2]),
+        static_cast<double>(spawn.speed), target != nullptr ? target->name.c_str() : "-",
+        spawn.dummy_id);
+    log_.implemented("DummyKamikazePlane::spawn_kamikaze", "006fec00");
+    return made.entity_id;
+}
+
 // 006CDC70 BSP_AirOps_Update, once per fixed step over every deck this process
 // built. POSITION IS A DEVIATION, and a deliberate one: the executable reaches
 // 006CDC70 from the owning unit's own motion pass, 00758270
@@ -1531,13 +1619,14 @@ std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
 
 // ---------------------------------------------------------------------------
 // Packet cc9_player_air_ops_launch (bsp::kAirOpsPlayerLaunchBound). The Support
-// Manager screen's launch, 00675C40 at 0067A57D-0067A5E6, for the harness's
-// `launch` line. docs/AIROPS_LAUNCH_TICK.md, "The player's launch".
+// Manager's targeted launch, 00673A10 (00674765-006748D7, reached from 00675C40 at
+// 0067A642), for the harness's `launch` line. docs/AIROPS_LAUNCH_TICK.md, "The player's launch".
 // ---------------------------------------------------------------------------
 namespace {
 // class+134h DefaultEquipment, which 006C0F00 copies into slot+10h when the
 // class changes. The mission Lua host, which holds the class table, sets it.
 int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
+// kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
 }  // namespace
 
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)) {
@@ -1570,11 +1659,15 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     // 006CCDD3: order 3 with no target answers 0 and does nothing.
     if (target_index >= units_.count()) return refuse("no unit by the target name");
     int slot = slot_number - 1;
-    if (slot_number <= 0) slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
+    if (slot_number <= 0) {
+        // 00673A10 at 00674765: the first slot in state 1 or 5, the same walk as
+        // 006C7210 without its growth (none: slots.size(), refused below as at 006747E7).
+        slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
+    }
     if (slot < 0 || static_cast<std::size_t>(slot) >= deck->slots.size())
         return refuse("no such slot");
     const bsp::AirOpsSlotState state = deck->slots[static_cast<std::size_t>(slot)].state;
-    // 0067A565 and 006C0E70: the screen fills only a slot in state 1 or 5.
+    // 00673A10 at 00674785-006747C2: the targeted launch takes only a slot in state 1 or 5.
     if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
         return refuse("the slot is not in state 1 or 5");
     std::vector<std::int32_t> live(deck->slots.size(), 0);
@@ -1582,7 +1675,7 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
         live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
     const int arm = g_class_default_arm_reader != nullptr
         ? g_class_default_arm_reader(vehicle_class) : 0;
-    // Packet cc9_player_launch_group: 0067A584..0067A592 hands 006C0F00
+    // Packet cc9_player_launch_group: 00674801..0067482B hands 006C0F00
     // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
     // stock clamp is 006C0F00's own; this applies the screen's.
     int screen_count = count;
@@ -1594,12 +1687,12 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
             screen_count = bsp::kSupportManagerLaunchGroup;
         }
     }
-    // 0067A5A7 -> 006C4780 -> 006C0F00.
+    // 00674848 -> 006C4780 -> 006C0F00.
     out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
         static_cast<std::uint32_t>(vehicle_class), screen_count, arm, live.data());
     if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
-    // 0067A5D1 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
-    // 0067A5E6 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
+    // 006748C0 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
+    // 006748D7 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
     // LABELLED: delivered at once; the player id is 0.
     const int answer = bsp::air_ops_slot_command_006ccda0(*deck, slot, 3,
         static_cast<std::uint32_t>(target_index + 1u), 0, true);
