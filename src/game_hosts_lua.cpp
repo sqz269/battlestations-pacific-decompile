@@ -5015,15 +5015,20 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         ++summary_.listener_kill_deaths;
         const int victim = static_cast<int>(unit + 1);
         // Packet cc9_lua51_listener_args: the boxed lastAttacker (+2C8h, one based, 0 =
-        // none) and +2D8h. SUBSTITUTION (labelled): +2D8h is the host's credited slot
-        // from its 0077CE60 rule, 0 for a victim no attributed hit reached.
+        // none) and +2D8h. The unit constructor 0077EED0 leaves +2C8h = 0 (0077EFDD)
+        // and +2D8h = -1 (0077EFEF OR EAX,-1; 0077F012), and only 0077CE60's block
+        // write changes them, so a victim no attributed hit reached boxes (nil, -1).
+        // SUBSTITUTION (labelled): +2D8h otherwise is the host's credited slot from
+        // its 0077CE60 rule, whose owning slot is the gunnery host's side stand-in.
         const GameGunneryHost* gunnery = units_hooks_->gunnery();
         int attacker = 0;
-        int attacker_slot = 0;
+        int attacker_slot = -1;
         if ((kLuaKillAttackerBound || kLuaListenerCallbackArgsBound) && gunnery != nullptr) {
             attacker = static_cast<int>(gunnery->kill_last_attacker(unit));
-            attacker_slot = gunnery->kill_credited_slot(unit);
-            if (attacker != 0) ++summary_.listener_kill_with_attacker;
+            if (attacker != 0) {
+                attacker_slot = gunnery->kill_credited_slot(unit);
+                ++summary_.listener_kill_with_attacker;
+            }
         }
         std::vector<std::string> callbacks;
         auto evaluate = [&](int attacker_id) {
