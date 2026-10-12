@@ -289,7 +289,7 @@ struct PlaneCockpitCamera {
     Vec3 head_move_3dc;             // +3DCh, sum of the three wanders, rescaled
     Mat4Rows look_frame_3e8;        // +3E8h: plane world matrix, position +418h moved
     RandomWander wander[3];         // +428h, +470h, +4B8h
-    void* modifier_514{nullptr};    // +514h
+    void* observed_514{nullptr};    // +514h, target of the observer at +500h
 };
 
 struct PlaneCockpitHost : MoverHost {
@@ -306,7 +306,8 @@ struct PlaneCockpitHost : MoverHost {
     virtual Vec3 global_vector_00f87574() = 0;
     // 0042D0D0(out, &v, &m, 0): 3x3 direction transform, no normalize.
     virtual Vec3 transform_direction_0042d0d0(const Vec3& v, const Mat4Rows& m) = 0;
-    // modifier->vtable[8Ch]() -> bool; modifier->vtable[94h](&out) returns a
+    // The entity observed at +514h (the target of the observer at +500h, set by
+    // the cockpit's owner): vtable[8Ch]() -> bool; vtable[94h](&out) returns a
     // matrix M and 00413920 makes pose = M x pose.
     virtual bool modifier_active_8c(void* modifier) = 0;
     virtual void premultiply_modifier_94(void* modifier, Mat4Rows& pose) = 0;
@@ -319,7 +320,7 @@ struct PlaneCockpitHost : MoverHost {
 // 2.0, 1.2, r) with r = |sum| / CockpitMaxHeadMoveDist; ease the three angles;
 // pose = plane world matrix, eye moved by (eye offset + head move) in the
 // plane's frame, then premultiplied by Y(yaw), X(pitch), Z(-roll) about the
-// eye (each only when |angle| > 1e-4) and the modifier; the look frame is the
+// eye (each only when |angle| > 1e-4) and the observed entity's matrix; the look frame is the
 // plane matrix moved by (look offset + head move). Always: +2B8h = pose, then
 // 004329D0(dt). The wanders draw the random source: see 0042C1B0.
 void plane_cockpit_camera_step_00434810(PlaneCockpitCamera& camera, float dt,
@@ -544,5 +545,310 @@ void mover_build_frustum_planes_0042e180(MoverFrustum& f, MoverFrustumHost& host
 
 bool camera_mover_turn_toward_0042c750(float& yaw_384, float& pitch_388, float yaw, float yaw_step,
                                        float pitch, float pitch_step) noexcept;
+
+// ---- cc13-camera2: construction, destruction and the class slots ---------
+//
+// Every mover is a scene node (00925CE0) with a tick element at +170h
+// (00875890) and four vtables: +0 main, +10h the target-observer interface
+// the mover registers with its target (006952A0 / 00694A60 with EDX =
+// mover+10h), +24h the ref-counted interface, +170h the tick element. Slot
+// 5Ch of the main vtable is IsKindOf(class id) and accepts the class's own id,
+// its parents, 4Ch, 0 and the id stored at +C4h.
+
+// The vtable quadruples (+0, +10h, +24h, +170h) each constructor writes.
+struct MoverVtables {
+    std::uint32_t main_00{0}, observer_10{0}, refcounted_24{0}, tick_170{0};
+};
+inline constexpr MoverVtables kMoverBaseVtables{0x00CE3B28u, 0x00CE3B0Cu, 0x00CE3B04u, 0x00CE3AECu};
+inline constexpr MoverVtables kAirfieldCameraVtables{0x00CEC1F8u, 0x00CEC1DCu, 0x00CEC1D4u, 0x00CEC1BCu};
+inline constexpr MoverVtables kShipCameraVtables{0x00CEC440u, 0x00CEC424u, 0x00CEC41Cu, 0x00CEC404u};
+inline constexpr MoverVtables kBomberViewVtables{0x00CEC5F0u, 0x00CEC5D8u, 0x00CEC5D0u, 0x00CEC5B8u};
+inline constexpr MoverVtables kSubmarineCameraVtables{0x00CF6250u, 0x00CF6238u, 0x00CF6230u, 0x00CF6218u};
+inline constexpr MoverVtables kPlaneChaseCameraVtables{0x00CF4238u, 0x00CF421Cu, 0x00CF4214u, 0x00CF41FCu};
+inline constexpr MoverVtables kPlaneCockpitCameraVtables{0x00CF4410u, 0x00CF43F4u, 0x00CF43ECu, 0x00CF43D4u};
+inline constexpr MoverVtables kShipyardCameraVtables{0x00D044B8u, 0x00D0449Cu, 0x00D04494u, 0x00D0447Cu};
+
+// The embedded target observer (vtable 00CE3CF0; destroyed by 0042BCA0, whose
+// own vtable store is 00CE3C8C). Ship cameras embed one at +3B0h, the cockpit
+// at +500h, the INTF_BOMBVIEW pair at +384h.
+struct TargetObserver {
+    std::uint32_t vtable_00{0x00CE3CF0u};
+    std::uint32_t f_04{0}, f_08{0}, f_0c{0};
+    std::uint8_t armed_10{1};
+    void* target_14{nullptr};
+};
+
+// The fields 00432750 BSP_CameraMover_ConstructBase writes after the scene
+// node and tick element are built.
+struct MoverBaseState {
+    MoverVtables vtables;
+    std::uint32_t class_id_c4{0};      // +C4h = 4Ch
+    std::uint32_t tick_group_184{0};   // +184h = 4
+    void* camera_node_1bc{nullptr};    // +1BCh, the published-to camera node
+    float f_1c0{0.0f};
+    float fov_1c4{0.0f};               // [00432650()]+78h
+    float f_1c8{0.0f};
+    float f_1cc{0.0f};                 // [00432650()]+7Ch
+    Vec3 shake_amplitude_1d0;          // 0
+    Vec3 shake_scale_1dc;              // 1.0 each
+    Vec3 shake_phase_1e8;              // three random draws in [0, 2 pi)
+    std::uint8_t frustum_built_1f4{0}; // the 0042E180 gate
+    Mat4Rows chase_2b8;                // identity
+    Mat4Rows matrix_2f8;               // identity
+    void* counted_child_338{nullptr};
+    std::uint8_t byte_33c{0};
+    std::uint8_t active_380{0};        // set to 1
+};
+
+struct MoverCtorHost {
+    virtual ~MoverCtorHost() = default;
+    virtual void scene_node_construct_00925ce0() = 0;             // ECX = mover
+    virtual void tick_registration_construct_00875890() = 0;      // ECX = mover+170h, (mover, 0)
+    virtual float global_config_float(std::uint32_t offset) = 0;  // [00432650()]+offset
+};
+
+// 00432750 __fastcall(mover) -> mover. RNG: three draws of 00BD2F10 with
+// ECX = 0 (shared gameplay stream 0), U(0, 6.2831855 [00CE3D9C]) at
+// 00432938, 00432955, 00432972, stored to +1E8h, +1ECh, +1F0h in that order.
+// Every camera construction therefore consumes three stream-0 values; the C++
+// takes them from the caller's source (cc13 RNG rule).
+void construct_mover_base_00432750(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng);
+
+// 00519290 __fastcall(mover) -> mover (BSP_ShipCamera_ConstructBase, class 56h,
+// vtable 00CEC440): the base of the bomber view (00519490), the submarine
+// (00650830) and cc9's ship captain (0064B650).
+struct ShipCameraBaseState {
+    MoverBaseState base;
+    float height_factor_39c{0.0f};   // 0.2 [00CE54A0]; eye y = distance x this
+    TargetObserver focus_3b0;        // focus target at +3C4h
+    float focus_3d4{0.0f};
+    std::uint8_t focus_on_entity_3d8{0};
+    float focus_3dc{0.0f};           // 1.0
+    std::int32_t adopted_countdown_3e8{0};
+    float pitch_min_3ec{0.0f};       // -1.5533431 [00CEC574] (-89 degrees)
+    float pitch_max_3f0{0.0f};       //  1.5533431 [00CEC400]
+};
+void construct_ship_camera_base_00519290(ShipCameraBaseState& m, MoverCtorHost& host, WanderRandom& rng);
+// 00519490: 00519290, then the bomber-view vtables.
+void construct_bomber_view_00519490(ShipCameraBaseState& m, MoverCtorHost& host, WanderRandom& rng);
+// 00650830: 00519290, then the submarine vtables and +405h = 0.
+void construct_submarine_camera_00650830(ShipCameraBaseState& m, std::uint8_t& lost_405,
+                                         MoverCtorHost& host, WanderRandom& rng);
+// 005176F0 (airfield) and 0078E830 (kind 46h, MShipyard): the base and their vtables.
+void construct_airfield_camera_005176f0(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng);
+void construct_shipyard_camera_0078e830(MoverBaseState& m, MoverCtorHost& host, WanderRandom& rng);
+// 00605130 BSP_PlaneChaseCamera_Construct: base, vtables, +3F8h = 0, +384h = 1.0.
+void construct_plane_chase_camera_00605130(MoverBaseState& m, PlaneChaseCamera& c, MoverCtorHost& host,
+                                           WanderRandom& rng);
+// 006065D0 BSP_PlaneCockpitCamera_Construct: base, vtables, angle periods and
+// rates 1.0, plane reference 0, look frame identity, the three wanders
+// {elapsed 1, period 1, budget 0, life 1, radius 1..1, azimuth 0, period 1..1},
+// observer at +500h.
+void construct_plane_cockpit_camera_006065d0(MoverBaseState& m, PlaneCockpitCamera& c,
+                                             TargetObserver& observer_500, MoverCtorHost& host,
+                                             WanderRandom& rng);
+
+// Destruction. 0042BCA0 (observer): its vtable 00CE3C8C, then 006952A0(target,
+// observer) when +14h is set, then 00695870. 0042A830 (base): restore the base
+// vtables, 00875490 on the tick element, 00925780 on the node. The class
+// destructors run their observer first: 00519240 (+3B0h), 00435210 /
+// 004353A0 (+384h), 00606800 (+500h, then releases the counted plane
+// reference +3C0h: InterlockedDecrement [ref+4] through [00CE2220], and
+// ref->vtable[0]() at zero). Slot 0 of every vtable is the scalar deleting
+// destructor: the class destructor, then operator delete (00BF6989) when bit 0
+// of the flag is set.
+struct MoverDtorHost {
+    virtual ~MoverDtorHost() = default;
+    virtual void observer_unregister_006952a0(void* target, TargetObserver& observer) = 0;
+    virtual void observer_base_destruct_00695870(TargetObserver& observer) = 0;
+    virtual void tick_registration_destruct_00875490() = 0;
+    virtual void scene_node_destruct_00925780() = 0;
+    // InterlockedDecrement(&ref+4) via [00CE2220]; returns the new count.
+    virtual long reference_decrement(void* reference) = 0;
+    virtual void reference_destroy_vtable0(void* reference) = 0;
+    virtual void operator_delete_00bf6989(void* mover) = 0;
+};
+enum class MoverClass {
+    Base, Airfield, ShipBase, BomberView, Submarine, PlaneChase, PlaneCockpit, Shipyard, TorpedoView, BombView
+};
+struct MoverDtorState {
+    MoverVtables vtables;
+    TargetObserver* observer{nullptr};   // +3B0h / +500h / +384h, or null
+    void** counted_plane_3c0{nullptr};   // cockpit only
+};
+void destroy_target_observer_0042bca0(TargetObserver& o, MoverDtorHost& host);
+// 0042A830 / 00517880... : the class destructor chain for `cls`.
+void destroy_mover(MoverClass cls, MoverDtorState& m, MoverDtorHost& host);
+// Slot 0: 0042C3A0, 00517880, 005193B0, 00519500, 006508F0, 00605250,
+// 00606880, 007926F0, 00435260, 004353F0 (__thiscall(mover, flags) RET 4).
+void* scalar_deleting_destructor(MoverClass cls, MoverDtorState& m, void* self, std::uint32_t flags,
+                                 MoverDtorHost& host);
+
+// Slot 5Ch IsKindOf for the camera classes (__thiscall(mover, id) RET 4):
+// 0042C010 base 4Ch, 005177D0 53h, 00519380 56h, 006508B0 4Fh then 56h,
+// 006051E0 51h, 0078FAC0 52h, 004351E0 / 00435360 4Eh (the cockpit keeps the
+// base test). Each accepts its ids, 4Ch, 0 and the mover's +C4h.
+bool mover_is_kind(MoverClass cls, std::uint32_t id, std::uint32_t class_id_c4) noexcept;
+
+// Post-construction setters EnsureCamera calls.
+struct MoverSetupHost {
+    virtual ~MoverSetupHost() = default;
+    virtual void observer_unregister_006952a0(void* target) = 0;   // EDX = mover+10h
+    virtual void observer_register_00694a60(void* target) = 0;
+    virtual void reference_increment(void* reference) = 0;         // [00CE221C](&ref+4)
+    virtual long reference_decrement(void* reference) = 0;         // [00CE2220]
+    virtual void reference_destroy_vtable0(void* reference) = 0;
+    virtual void step_dc(float dt) = 0;                            // mover->vtable[DCh](dt)
+    virtual void attach_ac(void* parent) = 0;                      // mover->vtable[ACh](parent)
+    virtual bool entity_is_kind(void* entity, std::uint32_t kind) = 0;   // vtable[5Ch]
+    virtual Mat4Rows entity_matrix_18(void* entity) = 0;           // *entity->vtable[18h]()
+    virtual Mat4Rows entity_matrix_730(void* entity) = 0;          // entity+730h
+    virtual void* entity_view_object_006bcd20(void* entity) = 0;   // 006BCD20(ECX entity, DL 0)
+    virtual void* entity_ptr(void* entity, std::uint32_t offset) = 0;
+    virtual std::uint32_t entity_u32(void* entity, std::uint32_t offset) = 0;
+    virtual std::uint8_t entity_byte(void* entity, std::uint32_t offset) = 0;
+    virtual float entity_world_y(void* entity) = 0;                // +100h after 00414DB0
+    virtual void ship_camera_set_target_0042f650(void* target) = 0;   // cc9's BSP_CameraMover_SetTarget
+};
+// 0042E030 __thiscall(cockpit, plane, &eye, &look) RET 0Ch: release the old
+// counted plane reference, take the new one (increment when non-null), copy
+// +3C4h/+3D0h, then vtable[DCh](0.0).
+void cockpit_set_plane_0042e030(PlaneCockpitCamera& c, void* plane, const Vec3& eye, const Vec3& look,
+                                MoverSetupHost& host);
+// 0042AAF0 __thiscall(chase, target) RET 4: re-register the target observer
+// (+388h); unless an adopted countdown +3F8h runs, clear the offsets
+// +39Ch..+3C0h and +3D4h..+3ECh, +3F4h = 1.0, +3F0h = 0.
+void chase_set_target_0042aaf0(PlaneChaseCamera& c, void* target, MoverSetupHost& host);
+// 0042F6C0 __thiscall(sub, target, node, &offset) RET 0Ch: +405h = 0,
+// 0042F650(target); mode 1 when [target+1268h] != 0 and byte [+1281h] == 0,
+// otherwise mode 0 above y -8 and 1 at or below; +3F4h = node; +3F8h = offset
+// unless adopted (+3E8h); +404h = 1.
+void submarine_setup_0042f6c0(SubmarineCamera& c, void* target, void* node, const Vec3& offset,
+                              MoverSetupHost& host);
+// 0042CB70 __thiscall(sub, bool periscope) RET 4 (callers 00650750 periscope
+// screen, 00651800): periscope -> mode 2; otherwise from the target's y
+// against -8 (mode 1 and +404h = 1 below it, mode 0 and +404h = 1 above);
+// nothing without a target.
+void submarine_select_mode_0042cb70(SubmarineCamera& c, bool periscope, MoverSetupHost& host);
+// 0042EB20 __thiscall(shipyard camera, entity) RET 4: vtable[ACh](entity); chase = the
+// entity's +730h matrix for kind 46h, else the 006BCD20 object's vtable[18h]
+// matrix when there is one.
+void shipyard_camera_setup_0042eb20(Mat4Rows& chase_2b8, void* entity, MoverSetupHost& host);
+// 0042CB30 __thiscall(airfield cam, airfield) RET 4: vtable[ACh]([airfield+7Ch]);
+// chase = airfield->vtable[18h] matrix.
+void airfield_camera_setup_0042cb30(Mat4Rows& chase_2b8, void* airfield, MoverSetupHost& host);
+
+// Ship-camera focus slots: 0042C5A0 (slot 118h, RET 1Ch) stores a point focus;
+// 0042EA40 (slot 11Ch, RET 14h) focuses the observer +3B0h on an entity.
+struct ShipFocus {
+    Vec3 point_3c8;
+    float f_3d4{0.0f};
+    std::uint8_t on_entity_3d8{0};
+    float f_3dc{0.0f}, f_3e0{0.0f}, f_3e4{0.0f};
+};
+void ship_camera_focus_point_0042c5a0(ShipFocus& f, float x, float y, float z, float a3, float a4,
+                                      float a5, float a6) noexcept;
+void ship_camera_focus_entity_0042ea40(ShipFocus& f, TargetObserver& o, void* entity, float a1, float a2,
+                                       float a3, float a4, MoverSetupHost& host);
+
+// Slot A0h (activate/reset; base 0042A910 = JMP 00923840, the node's own):
+// 0042F5C0 ship family, 0042F760 cockpit, 0042CC30 chase. Each runs 00923840
+// first (`host.node_reset_00923840`).
+struct ResetHost {
+    virtual ~ResetHost() = default;
+    virtual void node_reset_00923840() = 0;
+    virtual float tuning_float(std::uint32_t offset) = 0;   // [0042E740()]+offset
+};
+struct ShipCameraResetFields {
+    Mat4Rows pose_74, chase_2b8;
+    std::uint8_t byte_3a0{0};
+    float f_3a4{0.0f}, f_3a8{0.0f};
+    std::int32_t adopted_countdown_3e8{0};
+    ShipFocus focus;
+};
+void ship_camera_reset_0042f5c0(ShipCameraResetFields& s, TargetObserver& o, ResetHost& host,
+                                MoverDtorHost& dtor_host);
+// 0042F760: periods +390h/+3A4h/+3B8h = CockpitSmooth (+88h; 0.1 when below 0.1);
+// wander 0 is the gunfire kick: radius CockpitGunfireEffectSize (+B0h),
+// period CockpitGunfireEffectTime (+B4h), life = time + 0.2.
+void cockpit_reset_0042f760(PlaneCockpitCamera& c, ResetHost& host);
+// 0042CC30: unless adopted (+3F8h), clear the chase offsets and look angles
+// and set the chase matrix from the pose.
+void chase_reset_0042cc30(PlaneChaseCamera& c, ResetHost& host);
+
+// Slot 124h (adopt state from another camera of the same class; base 0042A8D0
+// is a no-op): 0042EB90 submarine (class 4Fh, or a class-54h holder through
+// 00798D70) -> 0042DFD0 -> 0042DC20; 0042CEA0 chase (51h) -> 0042CD50.
+// Both copy only when the two follow the same target and set the adopted
+// countdown to 10.
+struct ShipCameraCopyFields {
+    float yaw_384{0.0f}, pitch_388{0.0f}, distance_38c{0.0f}, f_390{0.0f}, f_394{0.0f}, f_398{0.0f};
+    std::uint8_t byte_3a0{0};
+    float f_3a4{0.0f}, f_3a8{0.0f};
+    std::int32_t adopted_countdown_3e8{0};
+    float pitch_min_3ec{0.0f}, pitch_max_3f0{0.0f};
+    Mat4Rows chase_2b8;
+};
+// 0042DC20 __thiscall(dst, src) RET 4 (tail-jumps into 004134F0 for the matrix).
+void ship_camera_copy_state_0042dc20(ShipCameraCopyFields& dst, const ShipCameraCopyFields& src) noexcept;
+// 0042DFD0 __thiscall(dst, src) RET 4: +404h = 1; when the targets match,
+// 0042DC20 then +3F8h..+400h, +40Ch, +405h = 0.
+void submarine_adopt_0042dfd0(SubmarineCamera& dst, ShipCameraCopyFields& dst_ship,
+                              const SubmarineCamera& src, const ShipCameraCopyFields& src_ship) noexcept;
+// 0042CD50 __thiscall(dst, src) RET 4: when the targets match, countdown
+// +3F8h = 10, +398h, +39Ch..+3BCh, +3C4h..+3F4h (not +3C0h) and the chase matrix.
+void chase_adopt_0042cd50(PlaneChaseCamera& dst, float& dst_398, const PlaneChaseCamera& src,
+                          float src_398) noexcept;
+
+// 00432CB0 __thiscall(mover, float dt) RET 4: slot DCh of the class-56h base
+// 00CEC440 (overridden by every concrete ship-family class). Countdown
+// +3E8h; 0042DCD0(dt, 0); chase = RotY(-yaw); offset = distance x
+// (-forward.x, +39Ch, -forward.z); chase = RotX(-pitch) x chase; eye = target
+// position (00F87574 without a target) + offset; 0042C610; when +380h,
+// pose = chase and 004329D0(dt).
+struct ShipCameraBaseStepHost : MoverHost {
+    virtual Mat4Rows rotation_y(float angle) = 0;   // 00B646E0 into a matrix
+    virtual bool entity_position(void* entity, Vec3& out) = 0;   // +FCh after 00414DB0
+    virtual Vec3 global_vector_00f87574() = 0;
+};
+struct ShipCameraBaseStepFields {
+    Mat4Rows pose_74, chase_2b8;
+    std::uint8_t active_380{0};
+    float yaw_384{0.0f}, pitch_388{0.0f}, distance_38c{0.0f}, height_factor_39c{0.0f};
+    void* target_3ac{nullptr};
+    std::int32_t adopted_countdown_3e8{0};
+};
+void ship_camera_base_step_00432cb0(ShipCameraBaseStepFields& s, float dt, ShipCameraBaseStepHost& host);
+// 00433560 slot DCh of 00D044B8 (kind 46h, MShipyard): when +380h, pose = chase, 004329D0(dt).
+void shipyard_camera_step_00433560(Mat4Rows& pose, const Mat4Rows& chase, bool active_380, float dt,
+                                 MoverHost& host);
+
+// Small base slots specific to the movers (referenced only by mover vtables).
+// 0042A8A0 slot 60h: &mover+170h (null for a null mover); 0042A8E0 slot 128h:
+// 2 (chase 00605190: 1, submarine 00650870 and bomb view 00435320: 0);
+// 0042A8F0 slot 12Ch: "Default" (00CE3C5C; the chase's 00605180: "PlanePilot",
+// 00CF436C); 0042A900 slot 130h: null (ship family 00519340: +3ACh, chase
+// 0042ABD0: +388h, bomb view 00435390: +398h); 0042A8B0 / 0042A8C0 / 0042A8D0
+// slots 11Ch / 118h / 124h: no-ops (RET 14h / 1Ch / 4); 0042C040 slot 34h:
+// copy +1B0h..+1B8h; 0042C560 slot 114h: copy the chase matrix (the cockpit's
+// 0042CC00 first sets it from the pose); 0042CBE0 cockpit slot 120h: copy the
+// look frame +3E8h; 0042DA30 slot 120h: the camera node's world matrix, or
+// identity without a node.
+std::uint32_t mover_slot_128_kind(MoverClass cls) noexcept;
+const char* mover_slot_12c_name(MoverClass cls) noexcept;
+struct MoverReleaseHost {
+    virtual ~MoverReleaseHost() = default;
+    virtual void detach_00b6d890(void* child, void* scene_root_19ec) = 0;
+    virtual void* scene_root_19ec() = 0;                 // [[00E188A8]+19ECh]
+    virtual long reference_decrement(void* reference) = 0;
+    virtual void reference_destroy_vtable0(void* reference) = 0;
+    virtual bool is_game_camera_mover() = 0;             // [[00E188A8]+1ED4h] == mover
+    virtual void game_set_camera_mover_004bc410(void* mover) = 0;
+    virtual void node_slot84_00923060() = 0;             // the node's own slot (tail jump)
+};
+// 0042DBA0 slot 84h: detach and release the counted child +338h, drop the
+// camera node +1BCh (clearing the game's camera mover first when it is this
+// one), then the node's own slot 84h.
+void mover_release_0042dba0(MoverBaseState& m, MoverReleaseHost& host);
 
 }  // namespace bsp::seg2_cc13
