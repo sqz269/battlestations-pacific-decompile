@@ -14910,8 +14910,9 @@ tables.
 - The entry latch (`MissionEntry::engine_movie_check`) and `004CCE50` are records, so the movie never starts and
   `0045F600` never runs.
 
-**Proposed bind (`kEngineMovieEntryBound`, OFF; edits in `src/game_hosts_mission_frame.cpp`, cc9-ships42's
-lane):**
+**The bind, `kEngineMovieEntryBound`** (`include/bsp/game_hosts_scene_contents.hpp`, packet
+`cc9_lua50_engine_movie`; the edits are in `src/game_hosts_mission_frame.cpp`, on loan from the cc9-ships42 lane).
+It is committed OFF with these predictions:
 - On a load whose scene contents forced mode 9, the `lua_call_entry_point_a/b` steps take the image's mode-9 arm:
   `luaEngineMovieInit` only.
 - At the first in-mission frame, the host runs `0045F600`'s tail as the player skipping the movie (LABELLED: the
@@ -14921,5 +14922,19 @@ lane):**
   - JM05 and JM06 move: stage init runs one frame later, after `luaEngineMovieInit`'s own globals.
   - Every other row is identical (pair_diff 0), because no other reference scene has a `.ema`.
   - A mechanism failure would be any row other than JM05/JM06 moving, or JM05 losing its phase-1 objectives.
-- Playing the movie itself (cc13's clock and tracks in `src/engine_movie_actions.cpp`, not wired) is a larger
-  packet. It would hold stage init back by 90 s on JM05 and 43 s on JM06 while the tracks move units.
+- **The next step is the faithful no-skip path: playing the movie.** That means cc13's Advance `0045F970` and the
+  per-track dispatch `004560E0` in `src/engine_movie_actions.cpp`, reconstructed but not wired.
+  - Its tracks move real units and fire guns for 90 s on JM05 and 43 s on JM06.
+  - Stage init would run only when the clock passes `Movielen`.
+  - The skip path is the player's choice to skip, so it is only a stand-in for that.
+
+### Oddities left for later
+
+1. **USN01 t2** (`local\l50_u1_t2.txt`, switch-back at 3550) kills all six Nells by 1096.94 s but has not completed at
+   1800 s (`MissionPhase=3`, `EndMission=nil`).
+2. **The SBD bombs.** Every SBD bomb in the USN01 runs lands about 20 m from `009C7D71`'s own predicted point (the
+   "vs predicted" column of the bomb lines), for the AI dive bombers and the Nells alike. This may be a systematic
+   release or drag bias; the lead routes it to gunnery.
+3. **A queued run dies silently.** `tools/run_game.ps1` waits at most `-WaitSeconds` (default 2400 s) for a slot, then
+   throws. The log file is never created, and the `.out` stays empty. With three slots held by long runs, four of
+   this packet's JM08 runs vanished that way. `local\l50_lane.ps1` now passes `-WaitSeconds 14400`.

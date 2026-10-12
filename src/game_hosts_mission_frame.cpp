@@ -260,6 +260,9 @@ struct GameMissionFrameHost::Impl {
     bool cinematic_hidden{false};             // game+634h
     bool cinematic_allow_simulation{false};   // game+635h
     int script_reentry_depth{0};              // game+644h
+    // kEngineMovieEntryBound: the load took the mode-9 arm, so the first
+    // in-mission frame owes 0045F600's tail (the player's skip).
+    bool engine_movie_skip_pending{false};
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
     float world_clock{0.0f};                  // 00f876a4
     // Packet cc9_warning_manager_tick: the manager's fields this process holds.
@@ -1337,6 +1340,26 @@ public:
         InMissionTickBinding tick(owner_);
         bsp::run_in_mission_subsystem_tick_004c40a0(owner_.frame_state.scaled_delta, tick);
         owner_.done("MissionFrame::update_in_mission_subsystems", 0x004c40a0u);
+        if (owner_.engine_movie_skip_pending) {
+            // kEngineMovieEntryBound. LABELLED: 004C9E1D's latch (+1EE0h, no
+            // checkpoint in this process) makes 004E5147 call 004CCE50 on the
+            // first simulated frame, and the player skips the movie at once
+            // (004C6B20 -> 0045F600). The tail of 0045F600 in its order:
+            // 0046B730 (SetGameMode 8 at 0046B99B), 004518B0, luaPrecacheUnits
+            // (0045F520), the class-table resets, collectgarbage, then under
+            // block 4_<short name> luaStageInitMulti (0045F520) and
+            // luaStageInit (0045F440). The resets and the GC stay records.
+            owner_.engine_movie_skip_pending = false;
+            owner_.record("EngineMovie::begin_004cce50", 0x004cce50u);
+            owner_.record("EngineMovieStop::scene_database_reset_0046b730", 0x0046b730u);
+            owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
+            owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
+            owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
+            owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
+            owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
+                "luaStageInitMulti and luaStageInit on the first in-mission frame "
+                "(kEngineMovieEntryBound)");
+        }
     }
     void begin_engine_movie_004cce50() override {
         owner_.record("MissionFrame::begin_engine_movie", 0x004cce50u);
@@ -2369,6 +2392,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "lua_call_entry_point_a") {
+            // kEngineMovieEntryBound: 004D4DF0 forced game+614h to 9, and
+            // 004E0A50 reads the raw mode, so the precache and stage-init arm
+            // (004E0A75..004E0E03) is skipped and _b runs luaEngineMovieInit.
+            if (bsp::game::kEngineMovieEntryBound && host.scene_contents
+                && host.scene_contents->summary().game_mode_forced_to_9) {
+                host.load.engine_movie_arm = true;
+                host.engine_movie_skip_pending = true;
+                host.log.notef("engine movie entry: scene contents forced mode 9, so the load "
+                    "takes 004E0A50's mode-9 arm (luaEngineMovieInit only); 0045F600's tail "
+                    "runs on the first in-mission frame (kEngineMovieEntryBound, player skip)");
+                ++host.load.concrete;
+                continue;
+            }
             host.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;
