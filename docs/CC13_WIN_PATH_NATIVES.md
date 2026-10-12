@@ -1061,3 +1061,277 @@ index 7272a6905..1c02f73e0 100644
 4. **IsInBorderZone.** Log Lexington against the map bounds on JM06 phase 2 before flipping the switch.
 5. **Ship test.** Diff 1 uses `IsKindOf(4)` through the units host in place of the eight vtables' identity. It has not
    been checked that every `IsKindOf(4)` class uses one of those eight vtables.
+
+## 7. SquadronSetReleaseAlt 008A24E0 (added after the first landing)
+
+The cc13 lead added this native after sections 0-6 landed. Sections 1-6 are unchanged; their diffs keep their
+numbers: 1 SetFailure, 2 TrulyDead, 3 IsInBorderZone and 4 SquadronForceGunnerMode. The ReleaseAlt diff is
+**diff 7**, and its addendum for smalldiffs item 1 is **7a**.
+
+Checks:
+- Diff 7 alone builds (`./scripts/build.ps1`, exit 0).
+- Diff 7 passes `git apply --check` alone on origin/main, and also after diffs 1-4 applied in order. It is cut with
+  one line of context (`git diff -U1`) because its `handled` entry sits just above the list's last line, next to
+  diff 3's entry. **Apply it after diff 3, not before.**
+- Diff 7 + smalldiffs 5.1 + 7a build together (exit 0).
+- `reports/cc13_win_path_natives_calls.json` now has 32 rows (the 27 above plus five for this native), 0 failed.
+
+
+**Image** (008A24E0-008A2702 RET):
+1. `00888AA0` reads argument 0 (008A25E6, ESI). There is no null or class test.
+2. `00B66270` reads argument 1, a number (008A2617).
+3. Argument 2 is read as a boolean (`00B66250`, 008A265F) only when `00B663F0` (008A2634) counts exactly three
+   arguments; otherwise the force flag is 0.
+4. Five stores on the squadron block:
+
+| site | store | |
+| --- | --- | --- |
+| 008A2692 | `+384h = [00CE3800]` | `00 00 00 3F` = 0.5, countdown 2 |
+| 008A26A0 | `+38Eh = force` | freeze byte |
+| 008A26AA | `+39Ch = altitude` | the release altitude |
+| 008A26B2 | `+3ABh = 1` | lock |
+| 008A26B9 | `+3ADh = 0` | the shared "script altitude live" byte (smalldiffs item 1) |
+
+Nothing is pushed. This is the third of three parallel blocks:
+- travel (`0089F550`): `+380h`, `+38Dh`, `+394h`, `+3A9h`;
+- attack (`008A22B0`): `+37Ch`, `+38Ch`, `+398h`, `+3AAh`;
+- release: the stores above.
+
+**Readers of `+39Ch`.** The disp32 scan `9C 03 00 00` over the plane code finds only this native and the tuning
+loader. Every other access goes through `block+37Ch` as a base:
+- **Dive profile `009C8920`**, flight leader only. The leader gate `009C8931 007B8AD0` jumps past it at `009C8A1B`.
+  `EAX = [ESI+404h] + 37Ch` (009C89E4..009C89EA), then:
+  - `[EAX+12h]` (`+38Eh`) set: skip the whole block (009C89EF / JNE 009C8A1B).
+  - Otherwise, if `0 > [EAX+8]` (`+384h` has run out, 009C89FA) and `[EAX+2Fh]` (`+3ABh`) is clear:
+    - `[EAX+20h]` (`+39Ch`) = `[00CE4C04]` = 9999.0 (009C8A0E);
+    - `[EAX+31h]` (`+3ADh`) = 1 (009C8A13).
+  - In every non-skipped case, `+3ABh = 0` (009C8A17).
+
+  The lock therefore delays the overwrite by one profile call after the countdown runs out, and the force flag
+  holds the script value indefinitely.
+- **`009C7A80`**, the dive-bomb approach update, which 009C8920 calls at 009C8A7C after the block.
+  - It loads `+39Ch` at 009C7AB3 into the dive-altitude decay 009C7AB3..009C7AC7.
+  - The host reconstructs that decay as `bsp::dive_bomb_decay_dive_altitude_009c7a94(a8, control_alt_39c)`. At
+    `src/game_hosts_units.cpp:3978` it always passes the 9999 constant `kCruisingAltitudeThird`.
+
+**Host.**
+- `SquadronSetReleaseAlt` is listed in `src/mission_lua_host.cpp:206` but not bound, so it is UNIMPLEMENTED.
+- The units host has no third block: `+39Ch` is always 9999 in the decay.
+
+**The diff:**
+- Adds the block to `GameUnitSlot`: `sq_release_alt_set`, `sq_alt_39c`, `sq_freeze_38e`, `sq_lock_3ab` and
+  `sq_timer_expiry_384`. The countdown is held as an expiry clock, as the other two blocks hold theirs.
+- Adds the setter `GameUnitsHost::set_squadron_release_alt_008a24e0`.
+- Adds the binding `run_squadron_set_release_alt_008a24e0` behind `kLuaSquadronSetReleaseAltBound` (OFF).
+- Replaces the decay's constant with the block's value while the script value is live, after the 009C8920 gate
+  above.
+
+The units-host part is inert until the binding stores something, so it needs no switch of its own.
+
+What is LABELLED:
+- The per-tick approach update stands for the profile's call.
+- The leader test is `007B8AD0` without the departed-wingman case that the attack block handles.
+- A unit with no squadron slot stores nothing (the image would write through whatever `00888AA0` returned).
+
+**Composition with `docs/CC13_SMALL_DIFFS_BATCH_2.md` item 1 (diff 5.1, `kMoveToLuaAltZeroOffsetBound`).**
+- Diff 7 and diff 5.1 touch disjoint lines. Each applies alone on origin/main, and each applies on top of the other.
+- Item 1's field `sq_lua_alt_3ad` does not exist on origin/main, so diff 7 cannot set it.
+- **Order dependency:** apply addendum 7a only after **both** diff 7 and diff 5.1. It adds the two writes item 1
+  needs from this native:
+  - `sq_lua_alt_3ad = true` in the setter (008A26B9 `+3ADh = 0`);
+  - `sq_lua_alt_3ad = false` where the release gate overwrites `+39Ch` (009C8A13 `+3ADh = 1`).
+- Diff 7 + 5.1 + 7a build together (exit 0).
+
+**Call sites in this installation** (every file 2024-07-13 08:26, untouched bulk):
+
+| script | lines | call |
+| --- | --- | --- |
+| `COTP-USN/usn_01_battle_of_eastern_solomons.lua` | 621, 1055 | `SquadronSetReleaseAlt(unit, 700, true)` |
+| `COTP-USN/usn_04_defend_guadalcanal.lua` | 2580 | `SquadronSetReleaseAlt(pEntity, altitude)` |
+| `COTP-USN/usn_07_invasion_of_tarawa.lua` | 1708 | `SquadronSetReleaseAlt(unit,400)` |
+| `COTP-USN/usn_12_indochina.lua` | 1114, 1251, 1547 | B-29 1100, `planeSquad` altitude, B-17 800 |
+| `COTP-USN/PRCPUS/usn_12_indochina.lua` | 1317, 1507, 1807 | the same three |
+| `bsm/bsm_09_battle_of_the_coral_sea.lua` | 321 | `SquadronSetReleaseAlt( squad, 220 )` |
+
+`scripts/global/commandhelpers.lua` does not call it, and neither does any script in `CC13_WIN_READINESS.md`'s
+not-yet-won list.
+
+**Which missions would move.** Only USN01, USN04 (guadalcanal), USN07, USN12 and BSM09, and only for a dive-bomb
+approach of a squadron that the script gave a release altitude:
+- That squadron's dive altitude decays toward the script value (700, 400, 220, ...) instead of toward 9999.
+- With `force` (USN01), it stays there.
+- Without `force`, it stays there until the leader's second profile call after 0.5 s.
+- No win-path mission moves. Good pair candidates are USN01 and USN12.
+
+```diff
+diff --git a/include/bsp/game_hosts_lua.hpp b/include/bsp/game_hosts_lua.hpp
+index 00c3ba0b3..cce21c6eb 100644
+--- a/include/bsp/game_hosts_lua.hpp
++++ b/include/bsp/game_hosts_lua.hpp
+@@ -402,2 +402,9 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
+ // reads. True: the row sets the flag below; false: the row stays unimplemented.
++// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
++// SquadronSetReleaseAlt(squadron, altitude[, force]) writes the squadron's third
++// block: +384h = 0.5, +38Eh = force (only with exactly three arguments), +39Ch =
++// altitude, +3ABh = 1, +3ADh = 0. 009C8920 overwrites +39Ch with 9999 once the
++// countdown and lock allow, and 009C7A80 reads it into the dive altitude. True:
++// route the row to the units host's third block. False: unimplemented.
++inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
+ inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
+@@ -1300,2 +1307,4 @@ public:
+     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
++    // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.
++    int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
+     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
+diff --git a/include/bsp/game_hosts_units.hpp b/include/bsp/game_hosts_units.hpp
+index a4452f30f..3eb17fd39 100644
+--- a/include/bsp/game_hosts_units.hpp
++++ b/include/bsp/game_hosts_units.hpp
+@@ -566,2 +566,5 @@ public:
+     bool set_squadron_attack_alt_008a22b0(std::size_t unit_index, float altitude, bool force);
++    // Packet cc13_natives1: 008A24E0's five stores on the squadron's third block
++    // (+384h, +38Eh, +39Ch, +3ABh, +3ADh); 009C8920 / 009C7A80 read +39Ch.
++    bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
+     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
+diff --git a/src/game_hosts_lua.cpp b/src/game_hosts_lua.cpp
+index 7272a6905..a8b508fa9 100644
+--- a/src/game_hosts_lua.cpp
++++ b/src/game_hosts_lua.cpp
+@@ -504,2 +504,5 @@ int binding_trampoline(lua_State* state) {
+         && dispatch_row.address == 0x0089f550u;
++    // Packet cc13_natives1.
++    const bool release_alt_row = kLuaSquadronSetReleaseAltBound
++        && dispatch_row.address == 0x008a24e0u;
+     // Packet cc9_squadron_attack_alt.
+@@ -575,2 +578,3 @@ int binding_trampoline(lua_State* state) {
+         || select_unit_row || movie_add_row || force_select_row
++        || release_alt_row
+         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
+@@ -706,2 +710,6 @@ int binding_trampoline(lua_State* state) {
+     }
++    if (release_alt_row) {
++        if (!host->error_replay()) host->run_squadron_set_release_alt_008a24e0(state, argc);
++        return 0;
++    }
+     if (in_formation_row && !host->error_replay()) {
+@@ -5950,2 +5958,27 @@ int GameMissionLuaHost::run_squadron_set_attack_alt_008a22b0(lua_State* state,
+ 
++// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
++// SquadronSetReleaseAlt(squadron, altitude[, force]), 008A24E0-008A2702 RET:
++// 008A25E6 00888AA0 on argument 0 (ESI), 008A2617 00B66270 on argument 1, and
++// argument 2 through 00B66250 (008A265F) only when 008A2634 00B663F0 counts
++// exactly three arguments; then the five stores 008A2692..008A26B9. No result.
++// SUBSTITUTION (labelled): an entity with no squadron slot stores nothing.
++int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
++    int argument_count) {
++    GameUnitsHost* units = units_hooks_;
++    const int id = air_ops_entity_id(state);
++    const float altitude = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
++    const bool force = argument_count == 3 && ::lua_toboolean(state, 3) != 0;
++    bool stored = false;
++    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
++        stored = units->set_squadron_release_alt_008a24e0(static_cast<std::size_t>(id - 1),
++            altitude, force);
++    }
++    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
++    log_.notef("  SquadronSetReleaseAlt 008a24e0: \"%s\" alt=%.1f force=%d stored=%d (packet "
++        "cc13_natives1)", row != nullptr ? row->name.c_str() : "?",
++        static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
++    log_.implemented("MissionLuaNative::SquadronSetReleaseAlt", "008a24e0");
++    return 0;
++}
++
+ // Packet cc9_lua_formation_query. 008996A0 IsInFormation(unit): argument 0 through
+diff --git a/src/game_hosts_units.cpp b/src/game_hosts_units.cpp
+index 95cc4a213..ee31751cc 100644
+--- a/src/game_hosts_units.cpp
++++ b/src/game_hosts_units.cpp
+@@ -1761,2 +1761,10 @@ struct GameUnitSlot {
+     unsigned long long sq_profile_writes{0};
++    // Packet cc13_natives1: the third block 008A24E0 writes (+384h countdown 2
++    // held as its expiry clock, +38Eh freeze, +39Ch release altitude, +3ABh lock).
++    // sq_release_alt_set: +39Ch holds the script value, not 009C8A0E's 9999.
++    bool sq_release_alt_set{false};
++    float sq_alt_39c{0.0f};
++    bool sq_freeze_38e{false};
++    bool sq_lock_3ab{false};
++    double sq_timer_expiry_384{-1.0};
+     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
+@@ -3992,4 +4000,21 @@ struct GameUnitsHost::Impl {
+         // about 9523 and this is a ceiling, not a decay, at these altitudes.
++        // Packet cc13_natives1: 009C8920's third block, run for the flight leader
++        // only (009C8931 007B8AD0, JE 009C8A1B) before its 009C7A80 call. +38Eh set:
++        // skip (009C89EF). Countdown +384h expired and +3ABh clear: +39Ch = 9999
++        // (009C8A0E) and +3ADh = 1 (009C8A13). Then +3ABh = 0 (009C8A17). LABELLED:
++        // this per-tick update stands for the profile's call; the leader test is
++        // 007B8AD0 without the departed-wingman case.
++        float control_alt_39c = bsp::dive_bomb_constant::kCruisingAltitudeThird;
++        if (GameUnitSlot* rb = squadron_slot_of(slot.process_index);
++            rb != nullptr && rb->sq_release_alt_set) {
++            if (unit_is_flight_leader_007b8ad0(slot.process_index) && !rb->sq_freeze_38e) {
++                if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
++                    rb->sq_release_alt_set = false;
++                }
++                rb->sq_lock_3ab = false;
++            }
++            if (rb->sq_release_alt_set) control_alt_39c = rb->sq_alt_39c;
++        }
+         slot.db_dive_alt_a8 = bsp::dive_bomb_decay_dive_altitude_009c7a94(
+-            slot.db_dive_alt_a8, bsp::dive_bomb_constant::kCruisingAltitudeThird);
++            slot.db_dive_alt_a8, control_alt_39c);
+         // 009C8A5E, the cruise profile's clamp on task+4B0h == approach+B8h.
+@@ -15977,2 +16002,20 @@ bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
+ 
++// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
++// SquadronSetReleaseAlt's five stores on the squadron block, 008A2692..008A26B9:
++// +384h = [00CE3800] (0.5), +38Eh = the force flag, +39Ch = altitude, +3ABh = 1,
++// +3ADh = 0. A unit with no squadron is refused (the image has no null test).
++bool GameUnitsHost::set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude,
++                                                      bool force) {
++    Impl& host = *impl_;
++    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
++    if (sq == nullptr) return false;
++    sq->sq_timer_expiry_384 = host.summary.simulated_seconds + 0.5;  // +384h = [00CE3800]
++    sq->sq_freeze_38e = force;                                        // +38Eh
++    sq->sq_alt_39c = altitude;                                        // +39Ch
++    sq->sq_lock_3ab = true;                                           // +3ABh = 1
++    sq->sq_release_alt_set = true;                                    // +3ADh = 0
++    host.done("PlaneSquadron::set_release_alt_008a24e0", 0x008a24e0u);
++    return true;
++}
++
+ int GameUnitsHost::skill_level(std::size_t unit_index) const {
+```
+
+Addendum 7a (only after diff 7 **and** smalldiffs diff 5.1):
+
+```diff
+diff --git a/src/game_hosts_units.cpp b/src/game_hosts_units.cpp
+index 1e91d26c0..d013318c8 100644
+--- a/src/game_hosts_units.cpp
++++ b/src/game_hosts_units.cpp
+@@ -4015,6 +4015,7 @@ struct GameUnitsHost::Impl {
+             if (unit_is_flight_leader_007b8ad0(slot.process_index) && !rb->sq_freeze_38e) {
+                 if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
+                     rb->sq_release_alt_set = false;
++                    rb->sq_lua_alt_3ad = false;   // 009C8A13 +3ADh = 1
+                 }
+                 rb->sq_lock_3ab = false;
+             }
+@@ -16021,6 +16022,7 @@ bool GameUnitsHost::set_squadron_release_alt_008a24e0(std::size_t unit_index, fl
+     sq->sq_alt_39c = altitude;                                        // +39Ch
+     sq->sq_lock_3ab = true;                                           // +3ABh = 1
+     sq->sq_release_alt_set = true;                                    // +3ADh = 0
++    sq->sq_lua_alt_3ad = true;                                        // 008A26B9
+     host.done("PlaneSquadron::set_release_alt_008a24e0", 0x008a24e0u);
+     return true;
+ }
+```
+
+**Verdict.**
+- Image: the third block, `+384h/+38Eh/+39Ch/+3ABh`, and `+3ADh = 0`. `+39Ch` feeds the dive altitude.
+- Host: unimplemented, and `+39Ch` is fixed at 9999.
+- Diff: diff 7 (+ 7a), behind `kLuaSquadronSetReleaseAltBound`, OFF.
+- Missions that could move: the USN01, USN04, USN07, USN12 and BSM09 dive bombers. No win path.
+
+**Open item for cc9:** pair it on USN01 and USN12. Land it after smalldiffs item 1, then apply 7a.
