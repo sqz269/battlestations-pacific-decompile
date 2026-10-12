@@ -473,4 +473,32 @@ bool input_actions_share_binding_00a92910(const std::vector<InputActionBinding>&
     return false;
 }
 
+GuiSoundSetState construct_gui_sound_set_00940dd0() noexcept
+{
+    return GuiSoundSetState{};
+}
+
+void init_gui_sound_set_00940ec0(GuiSoundSetState& set, GuiSoundSetHost& host)
+{
+    set.sound_class = host.find_sound_class(kGuiSoundClassName); // +24h
+    // 00940F3B..00941060: assign each acquired sample to its RefPtr slot; the previous
+    // reference is released after the new one is held.
+    for (int i = 0; i < 5; ++i) {
+        void* sample = host.acquire_sample(kGuiSoundSampleNames[i]);
+        void* previous = set.samples[i];
+        if (previous != sample) {
+            set.samples[i] = sample;
+            if (previous != nullptr) host.release_sample(previous);
+        } else if (sample != nullptr) {
+            host.release_sample(sample); // the temporary's reference
+        }
+    }
+}
+
+void play_gui_sound_00941070(const GuiSoundSetState& set, std::int32_t slot,
+    GuiSoundSetHost& host)
+{
+    if (slot == 5) return; // 0094108E
+    host.play_tracked_sound(set.samples[slot], set.sound_class, kGuiSoundTypeName, true);
+}
 } // namespace bsp::cc13_audio

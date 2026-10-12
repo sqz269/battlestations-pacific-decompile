@@ -315,4 +315,53 @@ bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionB
 bool input_actions_share_binding_00a92910(const std::vector<InputActionBinding>& first,
     const std::vector<InputActionBinding>& second) noexcept;
 
+// ---------------------------------------------------------------------------
+// GUI sound set (segment 61, cc13-warnings1). The object behind
+// BSP_SoundRequestQueue_GetSingleton 004C1B90: vtable 00D198F8, five sample
+// RefPtrs at +4h..+14h, the request bytes +18h..+1Dh and forced slot +20h of
+// bsp::SoundRequestQueue (render_tail.hpp), and the sound-class handle +24h.
+// ---------------------------------------------------------------------------
+
+// 00E0CF60..00E0CF73, the slot order of +4h..+14h (slot 5 is silent).
+inline constexpr const char* kGuiSoundSampleNames[5] = {
+    "sound/gui/onmause_select.fsb", // 00D198D4
+    "sound/gui/select.fsb",         // 00D198BC
+    "sound/gui/start.fsb",          // 00D198A8
+    "sound/gui/back.fsb",           // 00D19894
+    "sound/gui/error.fsb",          // 00D19880
+};
+inline constexpr const char* kGuiSoundClassName = "InPauseGUI"; // 00D198FC (00940F0B)
+inline constexpr const char* kGuiSoundTypeName = "Normal";      // 00CECD20 (0094109A)
+
+struct GuiSoundSetState {
+    void* samples[5]{};             // +4h..+14h, refcounted
+    std::uint8_t requested[6]{};    // +18h..+1Dh
+    std::int32_t forced_slot{6};    // +20h
+    void* sound_class{nullptr};     // +24h, not set by the constructor
+};
+
+struct GuiSoundSetHost {
+    virtual ~GuiSoundSetHost() = default;
+    // BSP_SoundManager_FindClassByName (00940F28).
+    virtual void* find_sound_class(const char* name) = 0;
+    // BSP_SoundSampleCache_AcquireByName on [00F8BBE8]; returns an owned reference.
+    virtual void* acquire_sample(const char* name) = 0;
+    virtual void release_sample(void* sample) noexcept = 0;
+    // BSP_SoundManager_FindTypeByName + BSP_SoundManager_CreateTrackedSound on [00F8BBD8]
+    // (sample, class, type, flag 1); the returned handle is released at once.
+    virtual void play_tracked_sound(void* sample, void* sound_class, const char* type_name,
+        bool flag) = 0;
+};
+
+// 00940DD0, __thiscall(this), RET: vtable, five null RefPtrs (eh vector constructor with
+// 004BA0D0 / 004C3810), +18h dword and +1Ch word cleared, +20h = 6. Ghidra names it
+// CG_array_ctor_helper_00940dd0; 00940E40 is the matching destructor body.
+GuiSoundSetState construct_gui_sound_set_00940dd0() noexcept;
+// 00940EC0, __fastcall(this), RET. Caller BSP_Game_OnInitOnce 004DD6F6.
+void init_gui_sound_set_00940ec0(GuiSoundSetState& set, GuiSoundSetHost& host);
+// 00941070, __thiscall(this, slot), RET 4. Slot 5 returns at once; the native does not
+// range-check other values.
+void play_gui_sound_00941070(const GuiSoundSetState& set, std::int32_t slot,
+    GuiSoundSetHost& host);
+
 } // namespace bsp::cc13_audio
