@@ -16896,3 +16896,26 @@ USNOS j (44000) exit 0; USN04 `s39_u4_p1` (0.0222 s, jitter `20,3`) exit 1, game
 `SetParty 008a8930: unit=` line, so the mechanism is not exercised on current main (USNOS j reached HQ2's
 `us_osumi.lua:1106` SetParty only on older builds, `s43_*_osj`; 211.5). Verdict: flipped ON by construction (it
 only re-syncs gunnery's cached side to +54h, which the image reads), routed to gunnery37 by the lead.
+
+## 216. The AI group's party-change removal, `kAiGroupPartyChangeRemovalBound` (cc9-ships44, 2026-10-12; lead item b, OFF)
+
+Image (disk bytes): the base SetParty `00923B80` ends with `00696350(ECX = entity, EDX = 6, party)`
+(`00923BC8`-`00923BD0`, section 213). The AI group's observer slot `00A2DB50` (`RET 0Ch`, ECX = group+10h):
+event 6 and a party different from `[ECX+5628h]` = group+5638h, the team the constructor copies from the seed's
++54h (`00A2E042`/`00A2E045`) -> `00A2D9D0(entity, 1)` on the group (`00A2DB6A ADD ECX,-10h`). `00A2D9D0`:
+`0077BEA0` unlinks the entity from +563Ch, clears entity+16Ch when it names this group, drops the observer pair
+(`006956A0`), and with the population (+5644h) at 0 and the flag set queues the group on the pending list
+`00F8AA78` (`00A2DA09`-`00A2DA4F`).
+
+Host: the 00A2DDE0 eviction (`evict_invalid_members`) already drops a member whose side no longer matches the
+group's team when it next runs; the event-6 path removes it at once. The bound pass (`src/game_hosts_ai.cpp`,
+`apply_party_change_removals_00a2db50`, run at the start of each AI fixed step) compares every candidate's +54h
+with the value it saw on the previous step and, on a change to a party other than the group's team, removes the
+unit and queues an emptied group like the eviction does. SUBSTITUTION, labelled: no observer edge exists in the
+host, so the removal lands at the next AI step rather than inside SetParty.
+
+Predictions: smoke identical (exit 0). USN04 `s39_u4_p1` and USNOS j identical or gameplay identical (no unit
+party change reaches a grouped unit on current main, 213.1). LOMP10 (30000 frames, CB4 flips to party 1 at about
+1100-1200 s): if CB4 sits in an AI group, ON logs `ai group party change: CB4 ...` and moves from there (exit 3);
+if it is in no group, identical. Mechanism check: every ON removal line names a unit whose +54h just changed and a
+team different from the new party.
