@@ -1,4 +1,5 @@
 #include "bsp/dyn_lcp_impulse_math.hpp"
+#include "bsp/hull_terrain_contact.hpp"  // kDynWorkerPrecisionBound
 
 #include <cmath>
 
@@ -30,6 +31,18 @@ inline void add_scaled3(float dst[3], const float src[3], float scale) noexcept 
 // Both bodies inside 00C4DF5F..00C4E092; body B's third row is 00C4E08C..00C4E092.
 void transform_point(const DynSolverBodyInput& body, const float local[3],
                      float world[3]) noexcept {
+    if constexpr (kDynWorkerPrecisionBound) {
+        // 00C4DFBA..00C4E0A8 at a worker's 53 bits: each component stays on the x87 stack
+        // until its FSTP, as ((row0*l0 + row1*l1) + row2*l2) + position (body A's first
+        // component adds row1*l1 first, the same value).
+        for (int k = 0; k < 3; ++k) {
+            const double sum = (static_cast<double>(body.row0[k]) * local[0] +
+                                static_cast<double>(body.row1[k]) * local[1]) +
+                               static_cast<double>(body.row2[k]) * local[2];
+            world[k] = static_cast<float>(sum + body.position[k]);
+        }
+        return;
+    }
     world[0] = local[1] * body.row1[0] + local[0] * body.row0[0] +
                local[2] * body.row2[0] + body.position[0];
     world[1] = body.row2[1] * local[2] + body.row0[1] * local[0] +
@@ -70,6 +83,13 @@ float dyn_row_group_dot(float j0, float j1, float j2, float v0, float v1,
                         float v2) noexcept {
     // 00C42638 FMULP gives j1*v1 first, 00C4263A..00C42641 folds in j0*v0, then
     // 00C42643..00C4264B folds in j2*v2.
+    if constexpr (kDynWorkerPrecisionBound) {
+        // The three products and two sums stay on the x87 stack until the FSTP at
+        // 00C4264F (00C4267F, 00C426AA, 00C426DC; 00C42320, 00C4234F in 00C42230): one
+        // rounding to float at a worker's 53 bits. The float products are exact in double.
+        return static_cast<float>((static_cast<double>(j1) * v1 + static_cast<double>(j0) * v0) +
+                                  static_cast<double>(j2) * v2);
+    }
     return (j1 * v1 + j0 * v0) + j2 * v2;
 }
 

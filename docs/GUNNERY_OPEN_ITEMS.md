@@ -12343,3 +12343,50 @@ consequence.
 - `g35_dispscan.py` (displacements per body)
 - `g35_queue.ps1` and `g35_ref_jobs.py` (run queue)
 - the env-gated `BSP_HANGAR_CENSUS=1`
+
+## 181. Handoff: the live sea and the Dyn worker precision (cc9-physics1, 2026-10-12, at about 70% context)
+
+**Branch `agent/cc9-physics1`.** Held off main by the lead: `126f79f83` (`kWaveFieldLiveAmplitudeBound = true`) and
+the docs after it. On the branch since: `e0e3afc4e` (the NaN fix in 00B9CF50, docs/CC13_AUDIT_CC9_RECENT.md 6) and
+the uncommitted-then-committed Dyn precision work below. The sea's record is docs/OCEAN_WAVE_FIELD.md sections 8-13.
+Pair builds: `local\p1_on` (e103dabd0 + flip) and `local\p1_off` (3c7a5ade9, flip false). Both export trees carry
+LOCAL diagnostics that must not be reused for reference rows: a per-round `p1diag` hit/water log in
+src/game_hosts_gunnery.cpp (both) and a control-word dump in src/hull_terrain_contact.cpp (`p1_off`). Re-export
+before any measured pair.
+
+**Waiting on the lead:** cc13-audit8's answer on the wave-damp meshes and frame (00ADE820 / 00BA1370 / 00BA0C00;
+the host walks every hierarchy item with its composed translation, the image passes one terrain node +3CCh), then
+the combined pair: `kWaveFieldLiveAmplitudeBound` + `kGunneryLiveWaterSurfaceBound` (main ec19522f3, GUNNERY 179)
+both ON against both OFF on USN04 3000, JM06, USN01 l50_u1_u2, LOMP10, plus the seven wins (BSM01 l50_b1_a too),
+reference form (BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, `--stop-after-end 40`; local\p1_pairs.ps1 and
+p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (lead accepted the explanation).
+
+**Dyn worker precision (`kDynWorkerPrecisionBound`, include/bsp/hull_terrain_contact.hpp, committed OFF).**
+- Measured: the host's main thread is at x87 control word `007Fh` (24 bits) inside the first
+  `HullTerrainContactSolver::world_step` (local export diagnostic, USN04).
+- (a) Done: `DynWorkerPrecisionScope` sets `_PC_53` around the narrow phase (IntersectTask2) and around each
+  group's solve (LCPSolverTask) in `world_step`, and around the narrow phase and solve of the legacy `step`. The
+  ManifoldUpdate, group formation and event pass stay at 24 bits (main thread in the image).
+- (b) Started in src/dyn_lcp_impulse_math.cpp, both under the switch:
+  - `dyn_row_group_dot`: one rounding of the whole 3-term dot (00C4264F; the same pattern in 00C42230 and in the
+    build's J.u groups 00C4E6E0/00C4E721/00C4E745). Checked: the residual's subtractions, the `res*eff + impulse`
+    chain, the clamp, `dyn_row_apply_impulse` and the warm start 00C42BA0 all spill each step to float, so they
+    need no change.
+  - `transform_point`: one rounding per component, ((row0*l0 + row1*l1) + row2*l2) + position
+    (00C4DFBA..00C4E0A8).
+- (b) Left, with what the listing showed:
+  - 00C4E6BE..00C4E759, J.u: each group dot is spilled, but the running sum of the four dots stays on the stack,
+    and FSUBRP with the target precedes the one FSTP. So `jacobian_dot_velocity` and its caller must keep the sum
+    and the subtraction in double.
+  - 00C4E773.., the effective mass: group dots are spilled at 00C4E78E..; check whether the sum of groups and the
+    FDIVRP at 00C4E7FA stay on the stack. The term order in the C++ (5,3,4 / 2,0,1 ...) needs re-checking against
+    the operand offsets (EDX may be a row offset).
+  - The rest of 00C4DE40 (cross 00C4E4A6.., restitution 00C4E675, bias 00C4E0DC, friction direction with its
+    sqrt), and 00C37B50 and 00C35020: not yet read. The 29 FSTP spill points in 00C4E125..00C4E4A6 are listed by
+    `python local\p1_x87.py <listing> 00C4E125 00C4E4A6`.
+- **A defect at 24 bits too (not fixed, OFF unchanged):** `transform_point`'s OFF code adds world[1] and world[2]
+  as (row2*l2 + row0*l0) + row1*l1, but the listing associates ((row0*l0 + row1*l1) + row2*l2). At 24 bits each add
+  rounds, so the association matters. Fixing it moves OFF; it needs its own pair.
+- Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
+- Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
+  points by the transpose of the fort frame. Not started.
