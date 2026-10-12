@@ -2668,6 +2668,9 @@ struct GameGunneryHost::Impl {
         // (what kHullRepairEnableRouteBound withholds).
         int script_hull_repair{-1};
         double withheld{0.0};
+        // Packet cc13_natives1: unit+9E4h / +9E5h, the jam bytes 008198A0 sets.
+        bool steering_jam_9e4{false};
+        bool engine_jam_9e5{false};
     };
     std::vector<DamageControl> damage_control;
     unsigned long long repair_enable_calls{0};
@@ -10534,6 +10537,19 @@ namespace {
 // over this host's unit rows (bsp/unit_fire_flooding.hpp's sequences). Every
 // other site of the interface belongs to steps this binding does not run and
 // throws if reached.
+// Packet cc13_natives1: _stricmp / 00425850, the case-blind compares of
+// 008132C0, 008135C0 and 00813660.
+bool failure_name_is(const std::string& name, const char* literal) {
+    std::size_t i = 0;
+    for (; literal[i] != '\0'; ++i) {
+        if (i >= name.size()) return false;
+        const unsigned char a = static_cast<unsigned char>(name[i]);
+        const unsigned char b = static_cast<unsigned char>(literal[i]);
+        if (std::tolower(a) != std::tolower(b)) return false;
+    }
+    return i == name.size();
+}
+
 class FailureBinding final : public bsp::UnitFireFloodingHost {
 public:
     FailureBinding(GameGunneryHost::Impl& owner, std::size_t unit)
@@ -10599,8 +10615,13 @@ public:
     // 0093C520's expiry: vtable[19Ch] and the clear message (6Dh / 6Eh for
     // the two jams, 008137B0). The failure leaves task+18h, which is all
     // unit_failure_active reads.
-    void unit_named_state_dispatch(std::uint32_t, const std::string&) override {
+    void unit_named_state_dispatch(std::uint32_t, const std::string& name) override {
         ++owner_.cf_retired;
+        // Packet cc13_natives1: 00813660 routes 6Dh / 6Eh for the two jams and
+        // 008137B0 clears +9E4h / +9E5h.
+        GameGunneryHost::Impl::DamageControl& dc = owner_.damage_control[unit_];
+        if (failure_name_is(name, "SteeringJam")) dc.steering_jam_9e4 = false;
+        if (failure_name_is(name, "EngineJam")) dc.engine_jam_9e5 = false;
     }
     void session_route_failure_cleared(std::uint32_t, const std::string&) override {
         owner_.record("Failure::clear_message_0077c2a0", 0x0077c2a0u);
@@ -10692,7 +10713,51 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
         record(name == "SteeringJam" ? "Failure::steering_jam_flag_0081999d"
                                      : "Failure::engine_jam_flag_008199c7",
             name == "SteeringJam" ? 0x0081999du : 0x008199c7u);
+        // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
+        if (name == "SteeringJam") damage_control[unit].steering_jam_9e4 = true;
+        else damage_control[unit].engine_jam_9e5 = true;
     }
+}
+
+int GameGunneryHost::script_set_failure_008132c0(std::size_t unit_index,
+    const std::string& name, float engine_jam_seconds, float explosion_damage) {
+    Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size() || unit_index >= host.unit_state.size()) {
+        return 0;
+    }
+    Impl::DamageControl& dc = host.damage_control[unit_index];
+    if (failure_name_is(name, "Explosion")) {
+        // 008133D5 message 6Ah -> 008198A0 -> 00818110, whose step applies
+        // vtable[1ACh](msg+30h). LABELLED: msg+24h/+28h/+2Ch/+34h are not kept.
+        host.pending_explosions.emplace_back(unit_index, explosion_damage);
+        return 1;
+    }
+    if (failure_name_is(name, "SteeringJam")) {
+        dc.steering_jam_9e4 = true;   // 008134C4 message 6Bh -> 0081999D
+        return 2;
+    }
+    if (failure_name_is(name, "EngineJam")) {
+        dc.engine_jam_9e5 = true;     // 00813530 007619B0 message 6Ch -> 008199C7
+        // 0081356F 0093BD80 -> 0093BE89 0093BC30: no active-name test.
+        bsp::ActiveFailure record;
+        record.id = 5;
+        record.name = "EngineJam";
+        record.seconds_remaining = engine_jam_seconds;
+        dc.task.failures.push_back(record);
+        return 3;
+    }
+    if (failure_name_is(name, "Periscope")) {
+        host.record("Failure::periscope_shape_bits_009373c0", 0x009373c0u);
+        return 4;
+    }
+    return 0;
+}
+
+bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size()) return false;
+    const Impl::DamageControl& dc = host.damage_control[unit_index];
+    return steering ? dc.steering_jam_9e4 : dc.engine_jam_9e5;
 }
 
 bool GameGunneryHost::unit_failure_active(std::size_t unit_index, const char* name) const {
