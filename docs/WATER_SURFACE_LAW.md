@@ -344,3 +344,31 @@ buoyancy holds). The only live state-6 entry on disk is JM08's scripted "Movie M
   it sinks under gravity (and `007DB9E7`'s extra term) and leaves the log's surface rows.
 - No `plane water lift-off` for a dead plane; `plane water powerlost` lines possible once a wreck
   passes the 6 m threshold, counted only.
+
+## 12. The pair, and the flip (cc9-physics4, 2026-10-12)
+
+Reference form, `--stop-after-end 40`, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`; OFF is the tree
+build at `1809e5771`, ON its `pair_export` flip (`local\p4_wl`). Logs `local\p4w_{off,on}_{u1z4,e8w}.log`.
+
+| Row | OFF | ON | pair_diff |
+| --- | --- | --- | --- |
+| USN01 `p3_u1_z4` | completed 1014.63 s, guard | completed 1014.63 s, guard | gameplay identical (90 deaths, 3965 hits, 19 water contacts) |
+| ESMP08 `l46_e8_orders2` | no end (lost, as on main) | no end | gameplay identical (803 deaths, 10815 hits, 310 water contacts) |
+
+What moved is the wrecks only: `007DA710` runs for state-6 aircraft (ESMP08 6.67M -> 19.37M calls),
+their poses turn (`heading_change` 3440 -> 111118 rad over the mission: the nose-down kick and the
+LiftRotate kick spin a sinking wreck), and every one of the 310 ESMP08 wrecks passes the drown test
+(`plane water powerlost`, counted). No `plane water lift-off`. Class values as logged: Jill
+`desc+508h` 1.744, Kate 1.417, Corsair 1.421, Zero 0.641.
+
+Predictions against the result: verdict 1 on both, held; the USN01 win held; wrecks sink, held - and
+further than predicted: with no depth kill for a dead plane in this host, a wreck sinks without
+limit (one summary row reads a land-task plane at -40558 m). The image's depth kill would call
+`BSP_MissionEntity_Kill(unit, 1)` on it at -30 m; on a unit that is already dead that is a
+presentation question here (the host's kill funnel skips dead units), recorded as open.
+
+**Flipped ON** by the verdict: the mechanism is the listing's and nothing scored moved.
+
+**Answer to "can a floating wreck touch gameplay?"** Not on these runs: every death, hit, damage and
+unit row is identical with the wrecks moving. Targeting skips dead units, the kill was credited at
+death, and the water arm itself kills nothing.
