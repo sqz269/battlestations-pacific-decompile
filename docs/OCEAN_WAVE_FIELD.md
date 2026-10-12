@@ -645,3 +645,77 @@ Per entity:
 
 Net: main holds six of seven (all but ESMP08); main + the flip holds five (USN02, USN12, ESMP08, LOMP06, BSM01).
 Lost by the flip: USN01 and LOMP10. Gained: ESMP08.
+
+## 19. classDesc+74h over the bullet classes, and 006E8680's (x, y) (cc9-physics3, 2026-10-12, read-only)
+
+**+74h.** `0084C11C..0084C14C` runs the exit trace `0084B4B0` only when the shot's vtable[2Ch] (its medium) is
+non-zero and `0084C133 cmp byte [edi+74h], 0` finds zero; otherwise the entry trace `0084B380`. The vtable[30h]
+accessor `006E2580` reads the same byte (`mov eax,[ecx+4]; mov al,[eax+74h]; ret`). The byte is the weapon class's
+`ExplWaterHit` (include/bsp/projectile_kinds.hpp `kWeaponClassOffExplWaterHit`, read with default false at
+projectile_kinds.cpp 191). Census of this installation's bulletclasses.lua (local\p3_explwater.py; realistic
+105 entries, mtime 2025-06-02; arcade 119 entries, mtime 2026-05-09, locally modified like vehicleclasses.lua):
+
+| Type | realistic | arcade |
+|---|---|---|
+| Artillery, Bomb, Bullet, Flak, Rocket, Kamikaze, DummyKamikazePlane, DummySubmarine, DummyTarget | all `true` (83) | all `true` (96) |
+| Torpedo, Depthcharge, WaterMine, Paratrooper | all absent, so false (22) | all absent (23) |
+
+So the exit trace can run only for a torpedo, depth charge, mine or paratrooper already in the water; every
+other round ends at the water whichever medium it is in. That is what the host does (GUNNERY 182).
+
+**006E8680.** `006E8673` stores `[esi+100h]` as the second argument and `006E867D` `[esi+0FCh]` as the first, then
+`006E8680` calls `0078CF20` (which passes both straight to `0078C890` and `00B9CF50`) and `006E8685` compares
+`[esi+100h]` with the result: y <= h selects vtable[28h], else [24h]. The spawn-time medium test therefore samples
+(x, y), the same axis defect as `0084B3D8` and `0078D29D` (docs/PROJECTILE_HELPERS.md section 1). The host's
+`create_projectile_006e8430` (projectile_kinds.cpp 339) samples (x, z); it has no caller in src, so nothing moves.
+The one-line correction was routed to the lead (not this lane's file).
+## 20. Re-planned USN01 and LOMP10 for main + the flip (cc9-physics3, 2026-10-12)
+
+All runs on local\p3_on (fe01ecf32), reference form, `--stop-after-end 40`; order files and logs in
+J:\PROG\battlestations-pacific-decompile-cc9-physics1\local (p3_u1_*.txt, p3_l10_*.txt, p3r_on_*.log). Each
+completion logs the exec guard's sus_prog.exe refusal.
+
+**LOMP10.** The win is `getn(alive SanJoseForce) == 3` of eight (this installation's usn\LOMP\10_san_jose.lua 557,
+mtime 2024-07-13): five of Ashigara, Oyodo, Kiyoshimo, Asashimo, Sugi, Kashi, Kaya, Kasumi must sink. Section 18's ON
+run sank four. s37_l10_p2's launches end at frame 11000 and most of its retries are refused ("slot not in state 1 or
+5"). The re-plan keeps s37_l10_p2 and adds a CB4_AF launch every 200 frames from 11400 to 26000, slots 1..4 with the
+same classes (118, 104, 135, 104). **p3_l10_b.txt** (targets alternate Kasumi, Kiyoshimo): completed 978.43 s, the
+fifth death Kiyoshimo at 863.86 s (CB4_AF_sqn17). p3_l10_a.txt (Kasumi, Kiyoshimo, Kashi): completed 1034.48 s.
+
+**USN01.** Phase 2 completes on `getn(alive Mission.Convoy) == 0` (usn\usn_1_marshall.lua 535, mtime 2024-07-13), and
+only the Con* squadrons are player units then: `select` of a cruiser is refused (00645060) and Enterprise's slots are
+empty for a Convoy6 launch (006C0F00). After the strike the squadrons are spent: retargets at 200-400 s apply but
+Convoy6 keeps 1348/2400 with damage control on, and the squadrons ditch at 23 m after 525 s (p3_u1_a..f). Retargets
+before the strike move which ship survives (p3_u1_g/h/i/k each leave one or two). What works is one retarget in the
+middle of the strike: ConTBD3, whose second plane sinks Convoy5 at 185.16 s, is pointed at Convoy6 for its remaining
+torpedo. **p3_u1_o.txt** (l50_u1_u2 + `3690 select ConTBD3`, `3691 target ConTBD3 Convoy6`): completed 618.72 s, Convoy6
+sunk at 200.36 s. p3_u1_m.txt (the same at 3704): completed 618.72 s. At 3720 (p3_u1_n) it is too late.
+## 21. The plane water laws next to the ocean object (cc9-physics3, 2026-10-12, read-only)
+
+cc13's band sweep (docs/CC13_BAND_0074_0078.md) left `0078D3D0`, `0078D6C0` and `0078D785` to this lane. Callers are
+from a rel32/absolute-dword scan of the image on disk (local\p3_xref.py; it finds the known calls, so a missing
+caller is a real absence of literal references, not a vacuous scan).
+
+| Address | What it is | Callers |
+|---|---|---|
+| `0078D3D0`..`0078D53E` (RET 0Ch, thiscall world) | the water-surface normal at (x, z): four `0078CF20` samples at x +- 1.0 and z +- 1.0 (the double `00D7A210` = 1.0), a cross product `004F9B30` of the two differences (with the float `00D7A24C` = 1.0 as the step component) and a normalize through `00419440` | `007DD034` and `007DD39D`, both in `007DCDD0`, the plane's state-6 water law |
+| `0078D6C0`..`0078D81E` (RET 1Ch) | a segment's water crossing: samples `0078CF20` at the start, then bisects with `0078D1B0` towards the entry (start above) or, from `0078D785`, the exit (start below) | one, `0053FC0A` in `0053F2D0`, the menu screen burst update (include/bsp/menu_screens_2.hpp 994): not gameplay |
+| `0078D785` | not a function: the start-below branch target of `0078D6C0` (`0078D6EB JBE`) | none |
+
+**What the host does against the live sea.**
+- The free-flight water line (`007CC523`..`007CC562`, game_hosts_units.cpp 17550) samples `0078CF20` through
+  `OceanFieldBinding`, which returns the live field when the sea is on. Logged contacts now show non-zero water
+  heights (USN01 p3r_on_u1o: Mav4 water -0.58, Mav3 1.07). Live; no gap.
+- The depth kill (`007CE313`..`007CE3AC`) compares the absolute altitude with -30.0, as the image does. No gap.
+- A live aircraft with a non-zero MinWaterSpd (every torpedo and dive bomber) ignores a contact (`007CB7F0`'s early
+  return) and stays in free flight, so a low torpedo run sees the live surface only through the line above. No gap.
+- **The gap is the state-6 arm `007CBA50` -> `007DCDD0`** (docs/WATER_SURFACE_LAW.md 2.3): the buoyancy law with the
+  `0078D3D0` normal, the `007DB680` water arm (partly unread at `007DC426`..`007DC64A`), the righting term, the
+  speed damping and the 1.5 m lift-off back to state 7. The host freezes a state-6 aircraft where it touched.
+
+**Reach of the gap.** Only aircraft in state 6: dead ones (a wreck that floats instead of freezing) and live
+classes with MinWaterSpd zero. In this installation's vehicleclasses.lua (mtime 2026-05-09) those are the nine
+floatplanes and flying boats: M6A Seiran, OS2U Kingfisher, PBY Catalina, F1M Pete, E13A Jake, H6K Mavis, H8K Emily,
+A6M-N Rufe, Black Cat (local\p3_minwater.py). In the logs on disk the only live state-6 entry is JM08's "Movie
+Mavis" (alive, MinWaterSpd 0, cc9-gunnery35 g35_*_jm08 logs), a scripted alighting. No win row and no torpedo row
+has one. Not bound: the binding would be the whole `007DCDD0` law with an unread arm, and nothing scored reaches it.

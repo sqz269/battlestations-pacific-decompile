@@ -6193,7 +6193,16 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             next = static_cast<float>(clock + (quick ? 9.99999974737875e-05 : 2.0));
             ++summary_.listener_hit_throttle_passed;
         }
-        const int victim = static_cast<int>(hit.victim + 1);
+        int victim = static_cast<int>(hit.victim + 1);
+        if (kLuaHitTargetSquadronBound) {
+            // 00988530..0098859B: target = hitEntity->vtable[140h](), a plane's squadron.
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(hit.victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit) {
+                    victim = static_cast<int>(sqn->squadron_unit + 1);
+                }
+            }
+        }
         const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
         const std::string type = bullet != nullptr ? bullet->type : std::string();
         std::vector<std::string> callbacks;
