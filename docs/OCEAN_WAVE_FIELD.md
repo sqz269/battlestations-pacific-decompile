@@ -604,3 +604,44 @@ run extended to 40000 frames (local\p2s_on_l10x.log) has no fifth death and no c
 (Ashigara, Oyodo at hull-water health 0.073, Kiyoshimo, Kashi) take no damage after the 1500 s cap, so this is not a
 frame-cap artefact. The first moved entity is Kasumi, 30 s earlier, to the same squadron. Verdict: chance, not a
 directional effect of the sea; the plan has no margin for one kill fewer.
+
+## 17. The flip: live sea and live water crossing ON (cc9-physics3, 2026-10-12)
+
+`kWaveFieldLiveAmplitudeBound` (include/bsp/ocean_spectrum.hpp) and `kGunneryLiveWaterSurfaceBound`
+(src/game_hosts_gunnery.cpp) are set true together, by the lead's decision. Basis: the mechanism matched every
+prediction in sections 11 and 15 (the scene's HeightScale as the +24h amplitude, one render step per frame, the
+predicted coverage regions, every round's water crossing at 0084B380 -> 0078D1B0 on the live surface), and each win
+the combined pair lost (USN01, LOMP10, USN12) was explained per entity as a knife-edge or chance, not a directional
+effect (section 16). The two switches go together because the crossing samples the live sea: with the sea alone a
+round still crosses at y = 0 while hulls ride the waves. The wins pair on main with and without this commit follows
+in its own section.
+
+## 18. The seven wins, main against main + the flip (cc9-physics3, 2026-10-12)
+
+Exports: OFF = origin/main db5ab3c4e (local\p3_off, SHA-256 8151D0015447), ON = fe01ecf32, section 17's commit
+(local\p3_on, B22D402CE8ED). Reference form with `--stop-after-end 40`, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1;
+logs local\p3w_{off,on}_<key>.log (local\p3_runs.ps1, summary local\p3_sum.py, one-sided deaths local\p3_deathdiff.py).
+Every row is pair_diff exit 3; every ON log has `live water crossings=N bound=1`, OFF has 0. Every completion logs
+the exec guard's sus_prog.exe refusal.
+
+| Row | OFF (main) | ON (main + flip) | Deaths OFF / ON |
+|---|---|---|---|
+| USN01 l50_u1_u2 | completed 425.72 s | **no completion** (22000 frames) | 91 / 61 |
+| USN02 s36_u2_p7 | completed 198.06 s | completed 203.01 s | 14 / 12 |
+| LOMP10 s37_l10_p2 | completed 1184.73 s | **no completion** (30000 frames) | 56 / 71 |
+| USN12 s38_u12_p2 | completed 1589.38 s | completed 1554.69 s | 109 / 109 |
+| ESMP08 l46_e8_orders2 | **no completion** (80000 frames) | completed 3714.45 s | 738 / 711 |
+| LOMP06 l50_l6_q6 | completed 369.98 s | completed 535.24 s | 7 / 4 |
+| BSM01 l50_b1_a | EndMission 767.94 s | EndMission 767.94 s | 194 / 188 |
+
+Per entity:
+- USN01: the only OFF-only ship death is Convoy6 (194.96 s, ConTBD3, cat 1), the same single roll as section 13.
+  The ON-only deaths are shore targets after 619 s. A plan casualty, as before.
+- LOMP10: OFF-only Kasumi (466.46 s, CB4 squadron) and Kiyoshimo (1167.96 s, Coastal gun 02); ON-only Oyodo
+  (950.69 s, CB4). The plan needs every ship, and one fewer falls. The same kind as section 16.
+- USN12 is back: it completes ON with the same 109 deaths.
+- ESMP08 is back: Cassin dies at 438.32 s in ON (Zuikaku_sqn02, cat 10), which is the strike main's Dyn precision
+  flip lost (GUNNERY 183). On main alone it is still lost (Cassin survives; Zuikaku dies at 1673.16 s).
+
+Net: main holds six of seven (all but ESMP08); main + the flip holds five (USN02, USN12, ESMP08, LOMP06, BSM01).
+Lost by the flip: USN01 and LOMP10. Gained: ESMP08.

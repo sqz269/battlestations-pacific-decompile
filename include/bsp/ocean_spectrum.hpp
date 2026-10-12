@@ -157,8 +157,9 @@ void ocean_live_field_render_frame_00ba0090(OceanLiveField& ocean, float mission
 // frame (job B 004B4820 -> 0068A0D0 -> 00BA0090, after the fixed steps of the same
 // frame), and every host reader of 0078C890 samples the live grid times the live
 // amplitude. False: the readers keep the flat sea (amplitude 0.0, a zero grid) and
-// the publish and step calls do nothing.
-inline constexpr bool kWaveFieldLiveAmplitudeBound = false;
+// the publish and step calls do nothing. ON together with kGunneryLiveWaterSurfaceBound
+// (docs/OCEAN_WAVE_FIELD.md section 17).
+inline constexpr bool kWaveFieldLiveAmplitudeBound = true;
 
 // The host's one ocean object (world+A8h). `ocean_live_field_ready` is true once a
 // scene was published while the switch is on.

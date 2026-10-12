@@ -5098,7 +5098,7 @@ The write-up stands unchanged; nothing is retracted there.
 | site | write | condition |
 | --- | --- | --- |
 | `009C659F` | `+18h = 0` | unconditional on the main path |
-| `009C680E` | `+18h = (B > approach+D4h)` | `BL != 0`; `009C67BF` `74` JE skips to `009C6A37` |
+| `009C680E` | `+18h = (B > approach+D4h)` | `BL != 0`; `009C67BF` `74` JE skips to `009C6A37`; and the `+1Ah` leave EDGE: `+1Ah` set this tick (`009C67D5`) and clear on entry (`009C67DE`, `[ESP+4Bh]`), else `009C6A35` (cc13-audit9) |
 | `009C66E3` | `+1Ah = 1` | `E > T1`, `T1 = InterpolateClamped(0, 20 deg, B4h*0.8 - S, pi, span)` |
 | `009C66E7` | `+19h = 0` | the same edge |
 | `009C66F2` | `+1Ah = 0` | `E <= T1` |
