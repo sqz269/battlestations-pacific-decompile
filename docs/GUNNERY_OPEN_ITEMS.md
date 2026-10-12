@@ -12518,3 +12518,64 @@ chaotic, not directional. The verdict is mechanism-only: the first moved line mu
 entry.
 
 **00C535E0 (cc13 audit residual 11a).** Not read in this pass.
+## 182. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
+
+### 182.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+**The read.**
+- `00729BC0` (decompile) picks the ammunition variant 1 only for weapon kind 6 against a target answering
+  `IsKindOf(0Fh)` (a plane), and then dispatches on that record's projectile kind. For a LIGHTARTILLERYFLAK mount the
+  plane variant is a Flak class (slot `+394h`, the AAFlakBot `008FBFC0`), and the surface variant an artillery class
+  (slot `+398h`, the ArtilleryGunnerBot `006DEF30`; GUNNERY 164.2's table).
+- `008FBFC0` runs the fire window `0085A9A0` before the gun's `vtable[1D4h]` (`008FBFEC`, cc13).
+- `006DEF30` (disk bytes, `006DEF30`..`006DEFED`, `RET 4` at `006DEFE2`/`006DEFEA`, INT3 at `006DEFED`):
+  - refuses unless `[bot+50h]` and `[[bot+50h]+3Ch]` are non-zero;
+  - calls `00955630` with `ECX = [[bot+50h]+3Ch]`, `EDX = target+FCh` and the stack `gun+FCh`, speed
+    `[[[gun+3F8h]+34h]+50h]`, `&vert` (the argument slot), `&horz` (the pushed local); refuses on 0;
+  - calls `0085A8B0(horz, vert)` (`006DEFB3`..`006DEFC8`: `[esp]` takes the local, `[esp+4]` the argument slot);
+    refuses on 0;
+  - only then returns `gun->vtable[1D4h](target)`, which is `0072F6E0`, the line-of-fire memo and its expiry draw.
+- **The host** sent kind 6 straight to `line_of_fire_refuses()`. So it queried (and cached for good, the record has no
+  live expiry) the line of fire, and drew the expiry, for (gun, target) pairs the image's gates refuse, and it accepted
+  those targets.
+
+**The binding.** `kAaKind6GateBound`. ON: kind 6 against a plane falls through to the kind-5 path (window, then line
+of fire); against anything else the gravity solve (`solve_gun_gravity_arc_00955630`, mount NULL, the seat path's
+hull-relative conversion) and the traverse window `gun_traverse_allowed_007f5fc0` on the `0085ABBD`-wrapped pair run
+first, and a refusal refuses the slot as a window refusal (applied, since `kAaFireWindowBound` is ON). OFF: unchanged.
+The non-plane gate is evaluated OFF too and counted: `kind6_gate_rejects` on the `aa acceptance` summary line.
+**LABELLED:** `[[bot+50h]+3Ch]` is taken as present; the solve is the host's world-frame convention, not the
+mount-frame round trip.
+
+**Predictions (before any pair).**
+- OFF identical by construction. `kind6_gate_rejects` > 0 on rows where dual-purpose ships see surface targets out of
+  their traverse window or beyond the arc's reach.
+- ON moves those rows (exit 3): kind-6 guns stop accepting the refused surface targets, and the line-of-fire cache is
+  filled later. Rows without kind-6 guns facing ships stay identical. The plane arm adds window refusals to kind-6
+  flak; GUNNERY 164's census of `window_rejects` rises.
+
+### 182.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
+
+- In cc9-gunnery35's JM06 pair (`local\g35_pt{off,on}_j6.log`), `torpedo gyro launches=24` on both sides, while ON
+  PlayerSub 01 launches its two player-ordered shots (`torpedo launch t=30.00 shooter=PlayerSub 01`). The two shots
+  did not enter the gyro block: `torpedo_lead_xz` was zero on that pass, so the player's heading stood.
+- The case the audit describes (a player press while the tube's bot has a snapped target in the same pass) does not
+  arise on JM06. The precedence remains UNCERTAIN in the image (whether `008FFF20` runs and calls `0072AC20` while the
+  seat is player-held is unread); nothing is bound until a row shows the override (`torpedo_gyro_launches` rising by
+  the player's shots).
+
+### 182.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
+
+| row | exit | `window_rejects` OFF -> ON | `kind6_gate_rejects` OFF (counted) -> ON (applied) | other |
+|---|---|---|---|---|
+| USN04 E2 (9000) | 3 | 13157 -> 17165 | 0 -> 0 | the plane arm alone; torpedo releases 5 -> 4 of 16 |
+| USN02 (9000) | 3 | 0 -> 0 | 345 -> 1103 | hull hits 74 -> 91, damage 11836.7 -> 12570.6 |
+| USN13 long (9000) | 3 | 10518 -> 13157 | 197 -> 1576 | deaths 47 -> 46 |
+| USN01 win (`l50_u1_u2`, 22000) | 3 | 9360 -> 9266 | 15 -> 120 | **completes 475.21 -> 425.72 s**; deaths 92 -> 91 |
+
+- **Mechanism.** OFF counts surface refusals on every row with dual-purpose mounts facing ships, and none on E2 (no
+  surface contact in 9000 frames); E2 moves through the plane arm alone (the window ahead of the line of fire), as
+  predicted. The ON counts are larger than OFF's because a refused target stays a candidate and is asked again.
+- The win holds and completes earlier.
+
+**Verdict: the mechanism matches the read; flipped ON.**
