@@ -80,8 +80,8 @@ void refresh_settings_downloaded_content_008d5030(
     }
     if (host.download_manager_ready_1c()) {
         host.refresh_download_manager_virtual_24();
-        host.filter_downloaded_content_0043ea80(settings.downloaded_content);
-        host.apply_downloaded_content_virtual_14(settings.downloaded_content);
+        host.keep_known_package_prefixes_0043ea80(settings.disabled_downloaded_content);
+        host.disable_listed_packages_virtual_14(settings.disabled_downloaded_content);
         host.finish_download_manager_virtual_20();
     }
     host.register_localization_table_00aa0d30("globals");

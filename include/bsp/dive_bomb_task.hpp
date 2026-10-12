@@ -217,6 +217,25 @@ inline constexpr float kGlidePullOutRatio = 0.6000000238418579f;    // 00CE3D30
 inline constexpr bool kDiveYawModeZeroBound = false;
 inline constexpr bool kDiveAimGlideArmsBound = false;
 inline constexpr bool kDiveFlyAboveTermsBound = false;
+// GUNNERY 192 (cc13-audit9, docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6,
+// ported onto the switches above), each OFF until its pair:
+//  * kDiveFlyAboveCarriedFlagsBound (items 8-12, diff parts 3 and 4): the
+//    fly-over's +18h/+19h/+1Ah are carried bytes. The state feed hands the
+//    transition 009C83E0 the previous tick's bytes, the enter 009C6270 seeds
+//    all four, the tick's flag step 009C659F-009C6A33 writes them (the 67B0
+//    roll-in test on heading vs the impact bearing, not the lead-point error)
+//    and 009C683A stores plan+2E8h = 1.4 on the tick that reaches the dive
+//    test. OFF: the feed recomputes the three flags from the current pose.
+//  * kDiveFlyAboveBankArmsBound (items 4, 7 and 15, parts 1, 2 and 6): BL's
+//    C is ctl+398h (009C64A8), not ACh + 50h; the bank limit plan+2C8h near
+//    the lead point (009C6678); and the latched arm 009C6929-009C6A33 (yaw
+//    slot, bank 0, 2D4h = 0, +19h = +18h behind). With the carried flags OFF
+//    the latched arm runs on every BL tick with +1Ch set. OFF: none of them.
+//  * kDiveFlyAboveCrossTrackBound (item 13, part 5): the bank arm's
+//    cross-track is (0.5 + 0.5 sin Eabs) R, not 1.5 sin(Eabs) R.
+inline constexpr bool kDiveFlyAboveCarriedFlagsBound = false;
+inline constexpr bool kDiveFlyAboveBankArmsBound = false;
+inline constexpr bool kDiveFlyAboveCrossTrackBound = false;
 // 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
 // path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
 // 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a
@@ -1211,7 +1230,11 @@ bool dive_bomb_flyabove_bank_arm_009c6530(bool is_recon_plane,
 //   Rt   = classDesc+268h TurnCircleRadius * 1.4, base[ESP+30h] at 009C6853
 //
 //   009C6861  +1Ch already set        -> skip the arm entirely (the latch)
-//   009C6889  1.5 * sin(Eabs) * R > Rt-> +19h = 0, T = 0 (009C6893's XMM0)
+//   009C6889  (0.5 + 0.5 sin(Eabs)) R > Rt -> +19h = 0, T = 0 (009C6893's XMM0)
+//             CORRECTED (cc13-audit9): 009C6875 FMUL ST(1),ST(0) leaves the 0.5
+//             in ST0 and 009C6877 FADDP adds it, so the factor is 0.5 + 0.5 sin,
+//             not 1.5 sin (tools/x87_sym.py 009C6842: `((sin * 0.5) + 0.5) * R`).
+//             The host keeps 1.5 sin while kDiveFlyAboveCrossTrackBound is OFF.
 //   009C68A0  otherwise                  approach+CCh = 3, the weapon selector
 //   009C68D4  cos(Eabs) * R - 120 <= 0-> +1Ch = 1, the LATCH; T untouched
 //             otherwise               -> +19h = 0 and 009C6911's
@@ -1236,10 +1259,98 @@ struct DiveBombFlyAboveBank {
     bool weapon_select_3 = false;   // 009C68A0 approach+CCh = 3
     float dead_band_t = 0.0f;       // base[ESP+20h] as it reaches 009C6A43
     float along_track = 0.0f;       // cos(Eabs) * R, kept for the census
-    float cross_track = 0.0f;       // 1.5 * sin(Eabs) * R
+    float cross_track = 0.0f;       // (0.5 + 0.5 sin(Eabs)) * R (1.5 sin OFF)
 };
 DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     const DiveBombFlyAboveBankInputs& in) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009C659F-009C6A33, the fly-over's flag step (cc13-audit9), for this
+// installation's +1Bh == 0 and squadron+3A8h == 0 (kOldStyleBombing1b). The
+// flags are state bytes that persist across ticks; 009C83E0 reads them at the
+// START of the next think (009C84FB +19h, 009C8508 +18h, 009C85E8 +1Ah), before
+// this tick runs again, so the transition sees the previous tick's values.
+//
+//   009C659F  +18h = 0, every tick
+//   009C66E1  Eabs > tol (009C663E)   -> +1Ah = 1, +19h = 0 (009C66E3/009C66E7)
+//             otherwise               -> +1Ah = 0 (009C66F2), and +19h = 1 when
+//             009C67B0's rule holds on the ROLL-IN error: |SubtractWrappedAngle(
+//             heading, bearing(aim - approach+D8h/E0h))| (009C6707-009C6796),
+//             not the lead-point error; +19h is never cleared on this arm
+//   009C67C1  BL == 0                 -> done
+//   009C67D8  +1Ah == 0               -> done (009C6A35)
+//   009C67E2  +1Ah was set on entry   -> done (009C6A35); [ESP+4Bh] is the
+//                                        entry byte saved at 009C653C
+//   009C67E8  +18h = B > approach+D4h (009C67F6 JBE), +1Ah = 0 (009C6822),
+//             +19h = its ENTRY value (009C6826 from [ESP+43h], 009C6540),
+//             plan+2E8h = 1.4 (009C683A, 00D06874)
+//   009C6861  +1Ch clear -> the bank arm 009C6857; done unless it latched
+//   009C6929  the latched arm: approach+CCh = 0, plan+2C4h = 0 with 2CCh = 1,
+//             yaw slot plan+284h = sign(E) * IC(40, 0, 120, 1, R)
+//             * IC(30 deg, 0, 70 deg, 1, Eabs) with +288h = 1 and +2D4h = 0,
+//             and +19h = +18h when Eabs > pi/2 and cos(Eabs) * R < -20
+//             (009C69F7-009C6A30)
+//
+// So with BL set the leave edge does not leave: it re-tests the height, and the
+// state reaches turndown only through 009C6A30 (+19h = +18h) on the latched
+// arm; 009C67B0's set always meets +18h == 0 and gives aimglide.
+// ---------------------------------------------------------------------------
+struct DiveBombFlyAboveFlags {
+    bool can_dive_18 = false;
+    bool ready_19 = false;
+    bool leave_1a = false;
+    bool latch_1c = false;
+};
+struct DiveBombFlyAboveStepInputs {
+    DiveBombFlyAboveFlags entry;   // the bytes as the previous tick left them
+    bool bank_arm_bl = false;      // 009C6530
+    bool leave_now = false;        // dive_bomb_flyabove_leave_009c66e3
+    float roll_in_error = 0.0f;    // 009C6765's result, signed
+    float span = 0.0f;             // base[ESP+30h], 009C65FD
+    float bearing_error = 0.0f;    // E, base[ESP+1Ch], 009C6421
+    float bearing_error_abs = 0.0f;  // Eabs, base[ESP+2Ch]
+    float height_above_aim_b = 0.0f; // B, base[ESP+38h]
+    float release_range_d4 = 0.0f;   // approach+D4h
+    float lead_range_r = 0.0f;       // R, base[ESP+28h]
+    float turn_circle_radius = 0.0f; // classDesc+268h
+    float span_dead_band = 0.0f;     // 009C6674's T
+    // Host switch only: false skips 009C6929-009C6A33 (kDiveFlyAboveBankArmsBound).
+    bool run_latched_arm = true;
+};
+// 009C6929-009C6A33 alone: the yaw slot value and whether the "behind" test
+// (Eabs > pi/2 and cos(Eabs) * R < -20) copies +18h into +19h.
+struct DiveBombFlyAboveLatchedArm {
+    float yaw_284 = 0.0f;          // plan+284h
+    bool copy_18_to_19 = false;    // 009C6A2D/009C6A30
+};
+DiveBombFlyAboveLatchedArm dive_bomb_flyabove_latched_arm_009c6929(
+    float bearing_error, float bearing_error_abs, float lead_range_r) noexcept;
+struct DiveBombFlyAboveStep {
+    DiveBombFlyAboveFlags flags;
+    bool reached_dive_test = false;  // 009C67E8 ran this tick
+    bool bank_arm_ran = false;       // 009C6857 ran this tick
+    DiveBombFlyAboveBank bank;       // valid when bank_arm_ran
+    float dead_band_t = 0.0f;        // base[ESP+20h] at 009C6A3D
+    bool latched_arm = false;        // 009C6929-009C6A33 ran this tick
+    float yaw_284 = 0.0f;            // plan+284h on the latched arm
+};
+inline constexpr float kLatchYawRangeNear = 40.0f;    // 00CE685C, 009C6952
+inline constexpr float kLatchYawRangeFar = 120.0f;    // 00D05804, 009C6942
+inline constexpr float kLatchYawErrorNear = 0.5235987901687622f;  // 00CEC724
+inline constexpr float kLatchYawErrorFar = 1.2217305898666382f;   // 00CE3988
+inline constexpr double kLatchBehindBearing = 1.5707963705062866; // 00CE3830, qword
+inline constexpr float kLatchBehindRange = -20.0f;    // 00CF180C, 009C6A21
+inline constexpr float kRollInTurnScale = 1.399999976158142f;     // 00D06874, 009C6832
+DiveBombFlyAboveStep dive_bomb_flyabove_flags_009c659f(
+    const DiveBombFlyAboveStepInputs& in) noexcept;
+
+// 009C6678-009C66D1: within approach+24h * 700 (qword 00D20D20) of the lead
+// point the tick sets approach+CCh = 3 and the bank limit plan+2C8h =
+// IC(400 (00CFD710), 0.2 (00CE54A0), 600 (00CE4BC4), 1.2 (00CE3814), R), which
+// 0099B55E reseeds to 20.0 every think. Returns false when the arm is skipped
+// (009C6687 JBE: 700 * ratio <= R).
+bool dive_bomb_flyabove_bank_limit_009c6678(float speed_ratio_24, float lead_range_r,
+                                            float* bank_limit_2c8) noexcept;
 
 // ---------------------------------------------------------------------------
 // 009C57C4-009C57FF, the aimglide's pull-out latch, state+18h = whole-object
