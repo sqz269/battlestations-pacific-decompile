@@ -15,6 +15,7 @@
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/pose_refresh.hpp"
@@ -1527,6 +1528,20 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
                 owner.log.notef("scene terrain refused: landscape=%s heightmap=%s: %s",
                     object.name.c_str(), object.heightmap_name.c_str(), error.c_str());
                 owner.log.unimplemented("Landscape::load_height_field", "00adda60");
+            }
+        }
+        // Packet cc9_physics1_sea: 00882AC0 at 008830AA hands the terrain node
+        // to the ocean (00BA1370), which keeps the model's wave-damp regions.
+        // Off, the call returns before any file is read.
+        if (bsp::ocean_live_field_ready()) {
+            const std::string coverage = bsp::ocean_live_field_add_landscape_008830aa(
+                object.model_name, object.world,
+                [&owner](const std::string& name, std::string& bytes) {
+                    return owner.read_vfs_file(name, bytes);
+                });
+            if (!coverage.empty()) {
+                owner.log.notef("ocean coverage: landscape=%s model=%s %s (008830aa, 00ba1370)",
+                    object.name.c_str(), object.model_name.c_str(), coverage.c_str());
             }
         }
     }
