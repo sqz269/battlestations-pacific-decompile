@@ -945,6 +945,12 @@ public:
     // "FlyTime" and "WaterTravelSpeed". docs/TORPEDO_CATEGORY_ADMISSION.md.
     float read_bullet_class_number(int index, const char* key, float fallback);
 
+    // `Bullets[index][key][nested_key]`: the Blast sub-table's numbers, which a
+    // dotted key does not reach through read_bullet_class_number. Packet
+    // cc9_lua53_kamikaze_impact (the plane crash class's blast, 007C0910).
+    float read_bullet_class_nested_number(int index, const char* key,
+        const char* nested_key, float fallback);
+
     // `Bullets[index][key]` as a string; "" when absent. Used for `Type`.
     std::string read_bullet_class_string(int index, const char* key);
 
