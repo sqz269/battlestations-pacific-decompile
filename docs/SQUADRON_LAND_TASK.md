@@ -15595,3 +15595,37 @@ only after the phase-1 end movie.
   Mechanism check: transitions follow moveto/follow -> gotowards -> aim, and `min_dist` falls under 50 m for some.
 - `kDropKamikazeTaskBound` ON: Betty carriers install kind 5, reach attackrun/release, rounds are pushed and each
   spawns one class-156 unit 3 s later that installs the kamikaze task (with the first switch on).
+
+### 5gb, the pairs (cc9-lua52, 2026-10-12)
+
+Launcher `local\l52_lane.ps1` (rows u19/u17/u21/u18/osx/u01/u02/u12/j6/j5); OFF = `local\l52_A0` (fe961edc1) or
+`local\l52_A1` (4e2687501), ON exports `local\l52_K1` (kz), `K4` (kz + drop, 4e2687501). All with
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+
+| run | frames | kamikaze installs / aim / locks | kamikaze contacts | deaths | hits |
+| --- | --- | --- | --- | --- | --- |
+| USN19 OFF (`l52L_A0_u19`) | 8000 | 0 (132 planes ordered `00E08F50`) | 0 | 172 | 2539 |
+| USN19 kz ON, mask FFh (`l52L_K1_u19`) | 8000 | 132 / 132 / 132 | 0 | 191 | 4324 |
+| USN19 kz+drop ON, mask bound (`l52L_K4_u19`) | 8000 | 132 / 132 / 132 | 0 | 168 | 7809 |
+
+- **The task flies as cc13 read it.** Leaders hold moveto (ratio 1.0, AttackRange 1200 m) until in range, then
+  gotowards -> aim; followers follow, then attack once in range; every plane locks and boosts in aim.
+- **Two host gaps.** (1) The avoidance layer took task+2E4h as FFh; the arm stores its band there (0 in aim), so the
+  planes swerved off their own target. Bound in 4e2687501 (`task_mask_2e4`, reset FFh each think, written only by
+  the two kamikaze arms; OFF unchanged). (2) **No impact.** 008145B0's kamikaze test `00779AA0` reads
+  `[unit+538h]+510h/+514h`, written only by `BSP_ShipClass_ReadLuaFields` (`00831A22`): it is the kaiten/boat path.
+  Kamikaze planes carry no KamikazeDamage; their damage is the crash impact of the plane class's
+  `KamikazeBulletClass` (`+20Ch`/`+210h`, written at `007D2BCA`; bullet 21 for classes 45/46/100/103, 98 for 156),
+  reached from the plane's own body contact, which this host does not have (planes have no Dyn body). With the mask
+  bound, 29 of 132 planes pass within 50 m of their target's origin (closest 14.4 m) and then die on the water by the
+  hull. A plane-box test through 008145B0 (export `K5`) is wrong for the same reason and was withdrawn.
+- **Verdict: `kKamikazeTaskBound` stays OFF (mechanism incomplete: no impact).** Open: read the plane-vs-ship
+  contact and the KamikazeBulletClass impact (who reads `+210h`, the point, the damage), then bind it and re-pair.
+
+**cc13 natives (fd3149538), OFF = A1 vs ON.**
+- n1 (`kLuaSetFailureBound` + `kShipJamMotionBound`): USN02 9000 moved (completion unchanged at 203.01 s, guard line
+  logged); JM05 9000 moved: GetFailure called 5 times (answers false, as nil was), and a hit-started EngineJam on
+  Mogami-class 01 at 46.45 s now stops it, as cc13 predicted for the jam motion; JM06 9000 identical (phase 4 not
+  reached). Mechanism matches.
+- n7 (`kLuaSquadronSetReleaseAltBound`): USN01 14000 and USN12 34000 identical; SquadronSetReleaseAlt is never called
+  in either run (USN12 completes at 1539.83 s, guard line logged). Unexercised, stays OFF.
