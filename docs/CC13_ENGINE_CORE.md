@@ -115,7 +115,7 @@ existing documents as the primary evidence:
   and the in-place iteration are modelled by value);
 - `00BDD520 BSP_VFS_ExistsInFlaggedMounts` (manager vtable +0Ch): `BSP_VFS_ExistsInMounts` with a
   visitor (`00D683A4`) whose callback `00BD9130` asks a provider only when the mount's `+0Ch` byte
-  is set. `00BD9130` and `00BD9160` lie in segment 95 and were left unnamed;
+  is set. `00BD9130` and `00BD9160` (segment 95) were defined and named in the follow-up packet: `BSP_VFS_FlaggedExistsMountCallback` (stores the provider's answer at visitor+4 only when mount+0Ch is set; RET 8) and `BSP_VfsFlaggedExistsVisitor_ReadResultByte`;
 - `00BE0AE0 BSP_FileBlockScope_Construct` (the frontend "open load block" that
   `src/game_hosts_menu.cpp` logs as unimplemented): refcounted object, name at `+14h`, then
   `BSP_VFS_EnterFileBlock`. EDX is a register input forwarded to `BSP_FileBlock_PrepareIdentifier`
@@ -133,6 +133,6 @@ existing documents as the primary evidence:
 
 ## Handoff
 
-Packet complete; nothing in flight. Next steps if wanted: carry the two profiler corrections into
-the owning header/docs, and name the two segment-95 visitor callbacks with the RNG owner's consent
-(segment 95 is cc9-sensitive).
+Packet complete; nothing in flight. Follow-up done (2026-10-12 06:09Z): the two profiler corrections were appended to
+`docs/APP_FRAME_GAME_STATE.md`, `docs/APP_RUN_FRAME.md`, `docs/GAME_EXECUTABLE.md` and as comments in
+`include/bsp/app_frame_game_state.hpp`; the two segment-95 visitor callbacks are named.
