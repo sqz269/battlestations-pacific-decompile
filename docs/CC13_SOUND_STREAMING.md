@@ -260,3 +260,36 @@ Open items, in suggested order:
 6. Wiring: the voice-playback hosts already call 00A7D120 as `set_sound_flag_00a7d120`, the
    in-mission interface calls 00A7B710 as `set_audio_environment`, and the simulation gate drives
    00A7F890; they could now bind to the reconstructions here instead of recording the call.
+
+## Segment 61 audio cluster `0093F520..00941550` (cc13-warnings1, 2026-10-11)
+
+Status: build-tested, reconstruct-only, not wired into a host. The section is appended to this
+file because its original owner has retired.
+
+**GUI sound set.** This is the object `BSP_SoundRequestQueue_GetSingleton` (`004C1B90`) returns.
+Its request queue part is `bsp::SoundRequestQueue` with `00941140` (`render_tail.hpp`) and
+`00941250` (`gui_listbox_runtime.hpp`).
+- `00940DD0` `BSP_GuiSoundSet_Construct` (`construct_gui_sound_set_00940dd0`). It sets vtable
+  `00D198F8` and five null sample RefPtrs at `+4h..+14h`, clears the request bytes
+  `+18h..+1Dh`, and sets the forced slot `+20h` = 6. It leaves `+24h` unset. Ghidra had named it
+  `CG_array_ctor_helper_00940dd0`.
+- `00940EC0` `BSP_GuiSoundSet_Init` (`init_gui_sound_set_00940ec0`). It sets `+24h` =
+  FindClassByName(`InPauseGUI`), then loads `sound/gui/onmause_select.fsb`, `select.fsb`,
+  `start.fsb`, `back.fsb` and `error.fsb` (table `00E0CF60..00E0CF73`) into slots 0..4 through
+  `BSP_SoundSampleCache_AcquireByName`. It is called once, from `BSP_Game_OnInitOnce` (`004DD6F6`).
+- `00941070` `BSP_GuiSoundSet_PlaySlot` (`play_gui_sound_00941070`). Slot 5 is silent
+  (`0094108E`). Any other slot creates a tracked sound from the slot's sample in class `+24h`,
+  with type `Normal` and flag 1, and releases the handle at once. The native does not
+  range-check the slot.
+- `00940E40` `BSP_GuiSoundSet_DestroyBody` is named only.
+
+**The rest of the cluster.**
+- `0093F520..0093FDF0` is `std::vector` plumbing for the 40h-byte `SoundSampleParameters`. It is
+  already named `BSP_SoundSampleParameters_*`, plus STL helpers `0093F590..0093FD90`, and was not
+  touched.
+- `0093FF10` `BSP_SoundOverlay_Draw` is a sound debug overlay (`Lin`/`Log`,
+  `%s(%d%%%%) %s:%d/%d/%dm:%d`) with no reference. Its helpers `0093FE90`, `0093EFC0`,
+  `0093F280` and `0093F4B0` are named only (`docs/CC13_STRATEGIC_MAP.md`).
+- `00941310..00941560` is STL.
+
+None of this code draws a random number (`local/wn1_rng.py`, zero hits over `0093F520..00941560`).
