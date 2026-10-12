@@ -180,7 +180,9 @@ void torpedo_view_step_00430020(WeaponViewCamera& camera, float dt, WeaponViewHo
                             f32(ky * (static_cast<double>(camera.v_3a8.y) - eye.y) + eye.y),
                             f32(t * (static_cast<double>(camera.v_3a8.z) - eye.z) + eye.z)};
         // 00430476: the look-at height is 3.0 above a target at or above 0, else 3.0.
-        const float look_y = 0.0f <= camera.v_39c.y
+        // COMISS 0.0, y / JBE takes the "+ 3.0" arm when unordered, so a NaN
+        // height propagates (cc13-audit3 N2).
+        const float look_y = !(0.0f > camera.v_39c.y)
                                  ? f32(static_cast<double>(camera.v_39c.y) + kTorpedoHeight)
                                  : kTorpedoHeight;
         std::array<float, 3> dir{f32(static_cast<double>(camera.v_39c.x) - position.x),
