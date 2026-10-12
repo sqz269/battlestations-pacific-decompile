@@ -15177,3 +15177,49 @@ subscription whose squadron lands hits moves, with `fired > 0` and that callback
 | USNOS (control) | 0/1, gameplay identical | nothing dropped |
 
 **Verdict: ON.** Every prediction holds and no dropped entity is named by its mission script.
+
+**5fs pairs on `442393418`** (`local\l50_H0` OFF, `local\l50_H1` ON; 9000 frames): BSM04, USNRM01 and JM13 are all
+gameplay-identical. The second pass runs 55 times on BSM04 and 58 on USNRM01, and matches nothing. BSM04's two hit
+subscriptions log `attacker_filters=0`. In these 450 s neither USNRM01 nor JM13 registers a hit subscription.
+**Verdict: ON**, because the mechanism is the image's and it is inert on every row run. No reference row yet fires a
+squadron-keyed hit subscription, so the firing arm is unexercised.
+
+## 5ft. Handoff (cc9-lua50, 2026-10-12, at about 72% context)
+
+Landed in this packet (all on `agent/cc9-lua50`):
+- 5fn/5fo/5fq: JM08 runs (parked; the TT04 lever and the dive-bomb misses went to gunnery35), the post-free audit,
+  and BSM01 completing at 773.93 s (`local\l50_b1_a.txt`).
+- 5fp: `kEngineMovieEntryBound` ON, with 0046B730's kill pass over the script entities.
+- 5fr: `kEngineMovieStopRosterBound` ON, which drops the mode-9 movie-only admits.
+- 5fs: `kLuaHitSquadronSecondPassBound` ON. MISSION_EVENTS_UPDATE got cc13's corrections.
+
+Open, in the lead's order:
+1. **Event-channel diff, the rest** (docs/CC13_EVENT_CHANNELS.md section 3 against `src/game_hosts_lua.cpp`):
+   - The `kill` second pass needs the attacker. The host's `dispatch_kill_listeners_009813a0` has none (the
+     victim's `+2B0h` handle and `+2D8h` player index), so every attacker-filtered kill subscription is skipped.
+     Carry the killer from the gunnery death row into `destroyed_units()` first.
+   - Callback arguments: the image pushes them (section 3, "Lua args"); the host calls with none, for kill and hit
+     alike. Grep the installation's scripts for callbacks that read their parameters before binding.
+   - Not yet diffed: `recon`, `exitzone` (the entity is replaced through `vtable[140h]`, the squadron for a
+     plane), `command`/`target`, `ammoType`, `stock`, `gui`/`musicOver` (the hooks), `entityKilled`/
+     `shipLanded`/`hpEvent` (the kind-44h parent gate; `hpEvent`'s strict threshold crossing) and `failure`/
+     `leak`/`fire`/`repair`.
+   - cc13's image bugs (unknown-channel AddListener dereferences null; only 5 of 23 subscription types save their
+     filters) are still to check against the host's loader.
+2. **docs/CC13_LUA_SCRIPT_LOADER.md** (the lead's queue, security-sensitive). Find which library mask
+   `00B6A020` gives the MISSION Lua state and whether `os` exists in it at all. Report before proposing anything.
+   Never touch `include/bsp/lua_exec_guard.hpp` or the guarded openers without the lead's explicit OK. Then
+   `math.random` absent, `loadfile`/`loadstring`, syntax errors surfacing as "attempt to call a string value",
+   `exit(1)` on unprotected errors, and `luaMW_init.lua`/`unlocks.lua`.
+3. **2b, the no-skip movie playback**, a scoped RE packet:
+   - the `.ema` loader (`0045DB40` and the track readers: Animations/Animation/PointList/ActionList, as in
+     `universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.ema`: 22 tracks, 120 points,
+     51 actions);
+   - the entity-track Hermite interpolation `00459020`/`004581E0` (PointPos/InTangent/OutTangent);
+   - the camera track `0045BD90`;
+   - the remaining action run bodies (`pTakeOffHack`, `sForceArtilleryTarget`, `cCameraShake`, the camera
+     actions).
+   Since the stop's 0046B730 undoes the tracks' unit motion, playing the movie leaves behind only the elapsed
+   time and what `luaEngineMovieInit`'s timers do before the stop.
+4. JM08 stays parked until gunnery35's dive-bomb fix lands. Then rerun r7 (`local\l50_j8_r7.txt`, deterministic to
+   1637 s), whose only survivor is TT04.
