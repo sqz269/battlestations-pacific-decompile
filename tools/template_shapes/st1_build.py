@@ -83,6 +83,8 @@ for line in (ROOT / 'tools/template_shapes/st1_decisions.txt').read_text().split
     if not line or line[0] == '#':
         continue
     ex, cat, prefix, key = line.split('|')
+    if ex not in T:  # example outside this run's segments; st1_auto matches it as a known twin
+        continue
     for a in groups[T[ex]['coarse']]:
         put(a, cat, prefix, key)
 for v, names in json.loads((ROOT / 'local/st1_auto.json').read_text()):
@@ -119,7 +121,11 @@ for k, v in json.loads((ROOT / 'local/st1_family.json').read_text()).items():
 leases = [l for l in coordination.active_leases() if l['owner'] != coordination.owner_name()]
 existing = {r['address'] for r in _read_dir(TAGS_DIR)}
 rows, skipped = [], collections.Counter()
+# --range LO HI (hex) limits the rows to one address band (cc13-sweep6D).
+lo_hi = (int(sys.argv[sys.argv.index('--range') + 1], 16), int(sys.argv[sys.argv.index('--range') + 2], 16)) if '--range' in sys.argv else (0, 1 << 32)
 for a, (cat, prefix, key, action, conf) in sorted(picks.items()):
+    if not lo_hi[0] <= int(a, 16) < lo_hi[1]:
+        continue
     if a in existing:
         skipped['already_tagged'] += 1
         continue
