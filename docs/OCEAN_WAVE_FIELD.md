@@ -328,3 +328,81 @@ So every host reader of the sea answers 0.0; none runs the spectrum, none reads 
 Open for packet (2): the full bodies of 00B95750, 00B94CA0, 00BF0CF0/00BF0DF0, 00B95D30,
 00B95AA0 and the FFT stages, the writer of [0109048C], and where the host's mission frame can run
 the step after the fixed-step driver.
+
+## 9. Binding the live sea (packet cc9_physics1_sea, item 2)
+
+Reconstruction: include/bsp/ocean_spectrum.hpp, src/ocean_spectrum.cpp. Switch:
+`bsp::kWaveFieldLiveAmplitudeBound` in that header, committed OFF. Read from disk listings
+(`disasm-raw`), never from a live decompile. Status: reconstructed and build-tested; the x87
+products are modelled in double and rounded at each native float store, so the grid is close to
+the image's but not bit-exact. Names are hypotheses.
+
+### (a) Routines
+
+| Routine | ABI | Rule | Coverage |
+|---|---|---|---|
+| 00BF0CF0 | `__thiscall(state, seed)`, RET 4 | the existing `random_seed_00bf0cf0` (seed \| 1, ×69069, index 624) | complete |
+| 00BF0DF0 | `float __thiscall(state, mean, sigma)`, RET 8 | polar Box-Muller: u = float(2·float(u32·2^-32) − 1) twice until s = float(u1²+u2²) < 1 (no zero test); float(float(sqrt(float(float(ln s)·−2/s)))·u1)·sigma + mean; the second deviate is discarded | complete; the ln/exp helpers 00BFA910/00BFEEEC are taken as the CRT's |
+| 00B94CA0 | `float __thiscall(spectrum, kx, ky)`, RET 8 | k = max(float(sqrt(float(ky²)+float(kx²))), 1e-8); A·exp(−1/(kL)² − (kl)²)·\|k̂·w\|^p / k⁴, with \|·\|^p = 0 when the dot is exactly 0 | complete |
+| 00B95750 | `__fastcall(spectrum)` | +78h = float(V²/g), +7Ch = float(+78h·+8Ch); a stack Mersenne state seeded 1105h; 41h×41h h0 = (s·g2, s·g1), s = float(1/√2 · float(sqrt(P(n·dk, m·dk)))), two normal draws per cell before the term; 64×64 1/k (k clamped) and ω = float(sqrt(float(k·g))) | complete (vtable+10h is a bare RET) |
+| 00B96B90 / 00B96C10 / 00B96C50 | RET 1Ch / 8 / 8 | the setters, each rebuilding through 00B95750 | complete |
+| 00B97100 | constructor | +84h = 0.5, then 00B96B90(1105h, 1.570796, 32, 60, 2.0, 0.02, 0.00005) | height path only |
+| 00B952D0 | `__thiscall(spectrum, dir, re*, im*)`, RET 0Ch | 64-point radix-2 FFT in place: bit reversal, six passes, twiddles c2 = float(float(sqrt(float(1−c1)))·1/√2)·−dir, c1 = float(float(sqrt(float(c1+1)))·1/√2); dir 1 divides by 64 | complete |
+| 00B95AA0 | `__thiscall(spectrum, dir, vector*)`, RET 8 | rows, then columns, through 00B952D0 | complete |
+| 00B95D30 | `__thiscall(spectrum, t)`, RET 4 | gate byte 00E130B4 (1 on disk, no writer); h(k,t) = h0(k)e^{iωt} + conj(h0(−k))e^{−iωt} into +20h at row m&3Fh, column n&3Fh; 00B95AA0(−1, +1Ch) | partial: the choppy vectors 00B95EBF..00B9604C and the second transform 00B960A7 are skipped (their only reader is 00BA2B50) |
+| 00BA0090 | `__thiscall(field, camera, t)`, RET 8 | [01090494] = float(t·10); step(float(t·+20h)); +2Ch = +B8h; +28h = +30h = float(+B8h·+88h); +24h = +2Ch | height path only; the render body is cc13's |
+| 0078C9B0 (ocean part) | | 00B96C50(WaveHeight, Choppy); 00B9A450 → 00B96C10(float(WindDirection·π), WindSpeed); +B8h = HeightScale; 00B9A4C0(Falloff, LayerScale, TimeScale) | ocean keys only |
+
+Constants: dk = 6.283184051513672 (00D638E8), g = 9.8100004196167 (00CF9058), k floor 1e-8
+(00CF7FE8), 1/√2 from the static initializer 00CD8870 into [0109048C], 0.1 (00D7A3A0, 0078D184),
+10.0 (00CE3DC0), π (00CE3D28).
+
+Self-check (local/p1_probe.cpp, not built by CMake): the transformed grid's imaginary part stays
+below 1% of its real part, as the conjugate-symmetric construction requires.
+
+### (b) Host wiring
+
+- **Build.** `ocean_live_field_publish_scene` parses `g_Ocean` (`0_SimpleOcean`) and
+  `g_Ocean/Waves` from the scene header (the 004CB420 default for a missing key) and builds the
+  object as 0078DAA0 + 0078C9B0 do. It is called from the mission host's header pass
+  (src/game_hosts_mission.cpp, routed edit).
+- **Step.** `ocean_live_field_render_job_0068a0d0(fixed_clock.simulation_clock)` from the mission
+  frame's `render_004ca440` (src/game_hosts_mission_frame.cpp, routed edit): after the frame's
+  fixed steps, as 004E4A40 orders them. LABELLED: every in-mission frame is taken as interface
+  level 1; the host runs no BSP_Game_Render view branch.
+- **Readers.** OceanFieldBinding (src/game_hosts_units.cpp: ship motion 00826985, hydro forces
+  00932D6B, the unit's ocean height, the plane water-surface law, the avoid-surface
+  substitution, the segment-occluder fallback) and CameraOceanField (src/game_hosts_hud.cpp,
+  0042F38B/0042F3B1) sample the live grid times the live amplitude when the switch is on.
+- **Not bound here:** the coverage regions (each landscape's, section 8(d); the host mask stays
+  1.0, so waves are over-stated next to islands), gunnery's inline y = 0 plane (torpedo, depth
+  charge, shell water crossings in src/game_hosts_gunnery.cpp), the dynamics buoyancy record
+  (src/game_hosts_fixed_step.cpp) and the interface-update record (src/game_hosts_hud.cpp 614).
+
+### (c) Predictions (written before any run)
+
+The sea the readers see, from the probe over this installation's scene keys (WindSpeed 1.0 and
+WindDirection 0.4 everywhere, so L = 0.102 and the shape is common; amplitude scales with
+sqrt(WaveHeight)·HeightScale):
+
+| Row | Scene | WaveHeight / Choppy / HeightScale / LayerScale | rms height | max | max slope per metre |
+|---|---|---|---|---|---|
+| USN01 | usn_1_marshall.scn | 200 / 2.5 / 2.0 / 100 | 1.04 m | 3.2 m | 0.25..0.33 |
+| USN04 | usn_19_coralus.scn (mtime 2024-08-09) | 250 / 1.3 / 3.0 / 125 | 1.75 m | 5.3 m | 0.40..0.44 |
+| JM06 | ijn_06_prelude_to_midway.scn | 150 / 1.5 / 2.0 / 100 | 0.90 m | 2.8 m | 0.22..0.29 |
+| USN12 (calm) | usn_12_augusta.scn | 100 / 1.5 / 0.5 / 70 | 0.18 m | 0.56 m | 0.05..0.08 |
+
+1. **Mechanism.** Each ON log has one `ocean waves:` line with these keys, then an
+   `ocean live field:` line whose amplitude is the row's HeightScale, and render steps equal to
+   the in-mission frames so far (one per frame). OFF logs carry neither line.
+2. **Hulls.** Ship heave, pitch and roll move on every row from the first in-mission frames; the
+   size grows with the table's rms (USN04 most, USN12 least). Hull positions drift through the
+   hydro forces, so ranges, gunnery and every RNG-coupled number after the first shot move
+   (pair_diff exit 3 on all four rows; USN12's moves are expected to be the smallest).
+3. **Planes.** The water-surface law and the avoid-surface substitution see the wave height, so
+   low-flying planes (torpedo runs) can move on USN01/USN04/JM06.
+4. **No crash, no lost win in the control row.** A win lost on any row is a plan casualty, listed
+   in item 3, not a regression.
+5. **Uncertain.** Whether a hull's motion is large enough to change a scripted win's timing; the
+   ship-motion wave gate (00826985) could also change throttle or keel behaviour, which this
+   inventory did not trace.
