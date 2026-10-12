@@ -16458,3 +16458,71 @@ OFF is `7107b671b` (tree build). ON is the same commit exported with the switch 
     slot is ready at about 1200 s), or set NH/Portland on Takao1.
   - Or move the Enterprise south while it still faces south: before the `300 moveto Enterprise 12500 -4000` leg
     parks it facing west, add a waypoint so it parks facing east.
+## 210. Carrier recovery works; one recalled squadron loses its land task to the 0071EBF0 refresh (cc9-ships43, 2026-10-12; lead item 1)
+
+**The question.** In the USNOS j run (below) launches of 331/339 at the Enterprise kept failing with "no such slot",
+and the first read was that no Enterprise squadron ever lands, because `Enterprise_sqn05`'s land task is retired
+4.4 s after the 28000 recall (`009B34D0`).
+
+**Recovery is not broken (a read of `local\s43_p3_osjf.log`).**
+- The 28000 recall (`order Enterprise 1 2`, 006CCDA0 state 3 -> 4) installs land tasks on `Enterprise_sqn05`, `_sqn15`
+  and `_sqn16` (49 installs in the run, 3 retired).
+- `_sqn15` and `_sqn16` fly the whole approach (1400 -> 1880 s, 38 km), touch down (`plane touchdown ... 1837.87 s`),
+  taxi to the lift (`land park ... z=79-80`), and are taken and stowed by the elevator (`carrier elevator Enterprise:
+  stows ...`, summary `intakes=6 stowed=6`). The stock return hands the slot back on each squadron's last member
+  (`slots returned 1` at 1882.36 s and 1920.10 s). The `land park ... done=0` summary is expected: the elevator ends
+  the park, not 009B21D0.
+- The earlier "touchdowns=0" was wrong; I had read a counter that this path does not move.
+- Item 3 (209) therefore stands as the native 4-slot screen limit: `air_ops_pick_launch_slot_006c7210` answers one
+  past the last slot when none is in state 1 or 5, and the player screen refuses that index. Slots in state 3/4 hold
+  squadrons that are still airborne. The refusals run 16000-31030 (810), 32000-50006 (331) and 49000-49006 (339)
+  before the Enterprise sinks; launches are accepted whenever a squadron has been stowed (`slot=3 class=331 ... Shima6` at 1900.6 s, 18 s after `_sqn16` returned its slot).
+
+**What retires `_sqn05`.** `009B34D0` (009B34D0-009B3551, `__thiscall(approach)`, RET; disk bytes) keeps the site
+only while the squadron's current command (`[approach+0Ch]` vtable[174h]) is `land` (00E08FA0, 009B34FB) AND that
+command's own target (vtable[178h] at 009B3507, then 00521EA0 at 009B3516) is `approach+30h` (009B351B).
+- The host keeps both "the current command's own target" and the 0071EBF0 answer in one field,
+  `command_target_plus_one` (section 56 recorded this and suggested a separate field).
+- `land_at_site_0099a3dd` writes the site there. The gunnery host's `refresh_command_targets()` (0071EBF0's rule)
+  then rewrites it from the unit's last current category 1/2 row. `_sqn05` still has a current attack row (target
+  `plane #4.6`); `_sqn15/16` have none, so the keep packet leaves them alone.
+- At 1406.10 s the refresh writes `plane #4.6` over the site, 009B34D0's target test fails, and the task is retired
+  (the queue record goes too, 208.6). `_sqn05` then flies on at about 11 km from the carrier and never lands, so its
+  slot is held for the rest of the run.
+- In the image the land command's target is read from the command object, and 0071EBF0 only looks at slot entries of
+  category 1/2. A land command is category 3, so nothing the refresh does reaches it.
+
+**The binding, `kLandCommandOwnTargetBound`, committed OFF** (`src/game_hosts_units.cpp`, packet
+`cc9_land_command_own_target`).
+- New field `land_command_target_plus_one`, written next to `command_target_plus_one` at both land installs
+  (the RTB arm's 00465080 owner, and `land_at_site_0099a3dd`'s site). The refresh never writes it.
+- ON: 009B34D0's explicit-site test reads the new field. OFF: it reads `command_target_plus_one` as before.
+- The retire line now prints the class, both targets and the site. A summary line `summary land command own target`
+  counts `own_target_ok`: retires that ON would not make (the class is still `land` and the own target is the site).
+- LABELLED: the class test still reads `attack_command_class`, which the host updates when a new order arrives. A
+  later non-land order still retires the task under ON, as in the image.
+
+**Predictions (written before the pairs).**
+- **smoke (ESMP08 300):** identical (exit 0). No land task is installed in 300 frames.
+- **u2 (USN02 16000):** identical. The OFF log has `installs=0`.
+- **osj (USNOS j, 44000 frames):** identical to 1406.10 s. OFF: `retired_invalid=3 own_target_ok=3`. ON:
+  `retired_invalid=0`; `_sqn05` keeps its task, joins the Enterprise queue behind `_sqn15/16` (the landing sequencer
+  record is not erased), and lands after them, at roughly 1950-2000 s. Its slot is then returned, so one of the
+  `no such slot` 331 launches after that point should be accepted. The rest moves from 1406 s on through the shared
+  RNG stream (gameplay differs, exit 3).
+- Mechanism check for the flip: under ON, no `009B34D0` retire with `own target == site`; `_sqn05` shows a
+  `plane touchdown` and an elevator `stows`.
+
+### 210.1 USNOS variants j, m, n, o (cc9-ships43, 2026-10-11/12; before the outage)
+
+All with `kCaptureStatePartyFromUnitBound` ON (207.4) on main at bb41112c2, order files in this tree's `local\`.
+- **j** (`s43_os_j.txt`, d plus Midway 331/339 x4 at Takao1 from frame 30000; log `s43_p3_osjf.log`, 200000
+  frames): Takao1 sunk 1583.77 s (Midway_sqn28), HQ2 captured 1703.34 s, HQ1 captured 2387.10 s (`Bases captured:
+  2.00`), CB2 neutralized 2047.15 s. DM1 (41 m off) sinks the Enterprise at 2521.28 s while the Haku group closes;
+  the mission fails at 2525.84 s.
+- **m** (j plus `47800 moveto DM1 12100 -3200`) and **o** (j plus `47800 moveto DM1 12800 -2700`): cut by the power
+  outage before they produced a log.
+- **n** (m plus Lexington and Reprisal 331/339 on Haku1-4 from frame 47810; log `s43_p4_osnf.log`, cut at the
+  outage): the same captures as j (HQ2 1703.34 s, HQ1 2387.10 s). DM1 no longer sinks the Enterprise; the Shima
+  group does, at 2856.16 s (Shima5, 2814 m). TroopTrans3's route reaches CB2 only at frame 82500 (4125 s), so the
+  Enterprise must last about 1300 s longer.
