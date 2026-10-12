@@ -16496,7 +16496,7 @@ command's own target (vtable[178h] at 009B3507, then 00521EA0 at 009B3516) is `a
 `cc9_land_command_own_target`).
 - New field `land_command_target_plus_one`, written next to `command_target_plus_one` at both land installs
   (the RTB arm's 00465080 owner, and `land_at_site_0099a3dd`'s site). The refresh never writes it.
-- ON: 009B34D0's explicit-site test reads the new field. OFF: it reads `command_target_plus_one` as before.
+- ON (210.1): 009B34D0's explicit-site test reads the new field. OFF: it reads `command_target_plus_one` as before.
 - The retire line now prints the class, both targets and the site. A summary line `summary land command own target`
   counts `own_target_ok`: retires that ON would not make (the class is still `land` and the own target is the site).
 - LABELLED: the class test still reads `attack_command_class`, which the host updates when a new order arrives. A
@@ -16513,7 +16513,30 @@ command's own target (vtable[178h] at 009B3507, then 00521EA0 at 009B3516) is `a
 - Mechanism check for the flip: under ON, no `009B34D0` retire with `own target == site`; `_sqn05` shows a
   `plane touchdown` and an elevator `stows`.
 
-### 210.1 USNOS variants j, m, n, o (cc9-ships43, 2026-10-11/12; before the outage)
+### 210.1 Pairs and the flip: **ON** (cc9-ships43, 2026-10-12)
+
+Same tree at 93544e367, OFF = the tree build, ON = `local\s43_lo` (`pair_export --flip kLandCommandOwnTargetBound=true`).
+Logs `local\s43_lo_{off,on}_{smoke,u2,osj}.log`.
+
+| row | pair_diff | as predicted? |
+| --- | --- | --- |
+| smoke (ESMP08 300) | exit 1, gameplay identical (only the bound's summary value) | yes |
+| u2 (USN02 16000) | exit 1, gameplay identical; `retired_invalid=0` both | yes |
+| osj (USNOS j 44000) | exit 3, gameplay moved | mechanism yes, timing no |
+
+- **osj OFF:** `retired_invalid=3 own_target_ok=3`. Each retire line reads `class 00E08FA0, refresh target 465, own
+  target 324, site 324`: the class is still `land`, the own target is the site, and only the refreshed target
+  (`plane #4.6`) differs.
+- **osj ON:** `retired_invalid=0`. `Enterprise_sqn05` keeps its task and is FIRST in, not last as predicted (it was
+  11 km out against 35-38 km for `_sqn15/16`): touchdowns at 1565.25, 1580.12 and 1593.08 s, stowed at 1581.17,
+  1595.98 and 1608.49 s, and its slot comes back on the last member at 1608.54 s. The next 331 launch is then
+  accepted into slot 4 (`target="Shima6"`). Takao1 still sinks at 1583.77 s and HQ2 is still captured at 1703.34 s.
+- **Verdict: ON** (a spread miss on the landing time; the mechanism matches the read).
+- Effect beyond USNOS: any squadron that is recalled (006CCDA0 state 3 -> 4) while it still has a current category
+  1/2 command row lost its land task at the next command-target refresh and never landed. That held its launch slot
+  for the rest of the mission.
+
+### 210.2 USNOS variants j, m, n, o (cc9-ships43, 2026-10-11/12; before the outage)
 
 All with `kCaptureStatePartyFromUnitBound` ON (207.4) on main at bb41112c2, order files in this tree's `local\`.
 - **j** (`s43_os_j.txt`, d plus Midway 331/339 x4 at Takao1 from frame 30000; log `s43_p3_osjf.log`, 200000

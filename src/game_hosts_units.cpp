@@ -5371,7 +5371,7 @@ struct GameUnitsHost::Impl {
     // which the 0071EBF0 refresh rewrites from a still-current category 1/2 row, so a
     // recalled squadron with a current attack row loses its land task (USNOS j:
     // Enterprise_sqn05 at 1406.10 s, 4.4 s after the recall).
-    static constexpr bool kLandCommandOwnTargetBound = false;
+    static constexpr bool kLandCommandOwnTargetBound = true;   // ON by its pairs (SHIP_AI 210.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
