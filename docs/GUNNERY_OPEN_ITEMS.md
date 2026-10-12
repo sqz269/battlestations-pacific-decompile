@@ -12994,3 +12994,32 @@ hung in this tree since the morning; harmless.
 - **JM08 mesh verdict** for `kLandStructureMeshHitTestBound` is lua51/lua52's (JM08 b3 with the switch ON); my
   control pair is in 193.
 - Leases released.
+
+## 196. cc13-audit13's A3 and A4 and the strafe activation seed O1, applied OFF (lead queue; cc9-gunnery38, 2026-10-12)
+
+Source: docs/CC13_AUDIT13_RECENT_FLIPS.md. Image sites re-read here (`disasm-raw`):
+- **A3** `009C8920` (dive cruise profile): `009C8931 007B8AD0 / 009C8938 JE 009C8A1B` puts all three blocks in the
+  leader branch; the `+39Ch` block is `009C89E4..009C8A17` (`+38Eh` clear, `0 > +384h`, `+3ABh` clear: `+39Ch =
+  [00CE4C04]`, `+3ADh = 1`; `+3ABh = 0` at `009C8A17`). Applied as written: `kDiveReleaseAltActivationOnlyBound`
+  (`include/bsp/game_hosts_units.hpp`), OFF.
+- **A4** `009C3650` (moveto profile): draws `009C367C` (+460h) and `009C36A3` (+424h), `+464h = 0`, refresh
+  `009C36BF CALL 009BEBA0`, then the leader test `009C36CA` and `+3ADh = 1` at `009C375A`. Applied as written:
+  `kMoveToActivationLuaAltOrderBound`, OFF.
+- **O1** `009CD020` (strafe cruise profile; the doc's listing): leader branch `009CD02E/009CD035`, glide seed
+  `009CD0AA CALL 009CA3B0` (`009CA41E U(0.8, 1.2)`, `009CA459 U(-10, 40)`). cc13 offered no diff. New
+  `GameUnitsHost::Impl::kStrafeProfileActivationSeedBound` (OFF, `src/game_hosts_units.cpp`): the install and each
+  manoeuvre retire (`0099B690`, the strafe task is head again) set `st_profile_activation_pending`; the next arm call
+  consumes it and, ON, re-runs `st_glide_seed_009ca3b0()` for the flight leader. New census line `summary mission
+  strafe profile activations bound=%d activations=%d leader_seeds=%d` (both builds). LABELLED: the profile's
+  `+394h/+398h` gates and its every-unit `009CCED0(0)` call stay unhosted (the seed keeps its alt substitution); the
+  activation is consumed on the next arm call rather than inside the retire's think.
+
+**Predictions (before any ON run).**
+- A3: reach only where a dive-bomber squadron has a non-forced `SquadronSetReleaseAlt` (this installation's
+  `bsm_09` 321, 220 m; `usn_07` 1708, 400 m). BSM09 and USN07 9000 frames: exit 3, the dive pull-out capped
+  lower (`control_alt_39c` holds the script value for the task). Win rows (USN01, USN02): exit 0/1.
+- A4: USNRM01 9000 and JM08 `l50_j8_r7`: exit 3; second-activation movetos after a script altitude fly at the
+  default cruise altitude, i.e. up to TravelAltRandom HIGHER than OFF (OFF keeps the drawn offset); draw counts
+  unchanged. USN01 win: identical (no Lua altitude call there, 193).
+- O1: ESMP08 9000 and USNOS 9000 (the 193 strafe rows): `activations` equal in both builds, `leader_seeds` > 0 ON
+  only; exit 3 on ESMP08 (leader glide angle/offset re-drawn), USNOS possibly exit 1; non-strafe rows identical.

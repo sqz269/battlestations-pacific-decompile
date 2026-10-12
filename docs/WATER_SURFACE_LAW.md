@@ -261,3 +261,86 @@ the `635e7b27b` reference. **The frozen live Val no longer occurs on current mai
 - **The depth-kill limit.** The `(unit+360h)->+160h->+0Ch->vtable[48h]()` chain was not read; 30.0f
   stands in for it.
 - The artillery section point, the barrel count and the seven intercept callers are in section 7.
+
+## 10. The state-6 arm, read whole (packet `cc9_plane_water_law`, cc9-physics4, 2026-10-12)
+
+Ghidra read only. Every routine below was read from the listing, with the pseudocode as a
+cross-check; `tools/x87_dc_form_scan.py` over all three bodies finds one DC-form multiply,
+`007DCF89 DC CA` (ST2 = ST2 * ST0), and it is transcribed as such. Rules in
+`include/bsp/plane_water_law.hpp` / `src/plane_water_law.cpp`. Names are hypotheses.
+
+| routine | what it is | coverage |
+| --- | --- | --- |
+| `0078D3D0` (RET 0Ch) | `n = normalize(b x a)`, `a = (1, h(x+1) - h(x-1), 0)`, `b = (0, h(z+1) - h(z-1), 1)` (`004F9B30` with EDX = b at `0078D4C0`): `normalize(-dhx, 1, -dhz)` over 2 m | complete |
+| `007DCDD0`-`007DD45F` | the sample. MinWaterSpd zero: the origin and body points (8, 0, 0) / (-8, 0, 0) (`00CE3918`, `00CE3CC8`); a tip higher than the origin by `d`, `c = clamp(4d, 0, 1)` (double `00D7A328`), pulls the normal's horizontal part away from it by `max(cos(heading to tip - heading of n), 0) * |n_xz| * c`, headings `pi/2 - atan2(z, x)` wrapped to [0, 2pi). MinWaterSpd non-zero: the origin only. `depth = SwimHeight + h - y`; the normal is renormalised | complete |
+| `007DC205`-`007DC68C` | the water band of `007DB680`, below | complete, `007DC426`-`007DC64A` included |
+| `007DD48E`-`007DD9AA` | the tail: the LiftRotate kick, the `ctl+94h` nose-down kick, `ctl+8Ch = 0`, the sub-StallSpd angular damping | complete |
+| `007DAFD0` (RET 14h) | an **angular** kick on the world angular velocity `ctl+24h`, not a force: `axis = normalize(dir x R(point))` (`unit+674h` when shorter than 0.001), and per component `w += step * accel * axis` until `w` reaches `1000 * accel * axis` | complete |
+| `007DA3D0`-`007DA53F` | `007DA380`'s mode-2 factors: `outA = IC(MaxCtrlAngle, 1, MinCtrlAngle, 0, up.y) * authority`; `outB = YawControlFactor * (1, or below NormalYawControlSpd: IC(0, 0, 0.8 MaxYawControlSpd, throttle > 0 ? MaxYawControl : 1, v), or with throttle above MaxYawControlSpd: IC(1.25 MaxYawControlSpd, MaxYawControl, NormalYawControlSpd, 1, v))`; byte 0 | complete |
+| `007CBC36`-`007CBD6D` | the lift-off byte: the plane stays while `-depth < desc+508h + 1.5`; above that, with `unit+770h`, it stays while any `desc+5BCh` hull point is under the water | complete |
+
+**The water band (`ctl+FCh == 2`).** `fade = max(1 - DeadMeat * 0.5, 0)`, `s = 1 - clamp(unit+90Ch / 10, 0, 1)`:
+- `L`: under the line, `clamp((depth + 1)^LiftDepthRatio, 1, LiftMax)`; above it,
+  `max(0, depth / (desc+508h * LiftBeginDiveMul) + 1)^2`.
+- `D = min(m * vy^2 * DecelSpeed, 6.0)` while `unit+ACCh < 0`, `m` 1 under the line and `L` above.
+- `dyn+28h += AccelCheatMul * 9.81 * L * s * fade * n` (buoyancy along the normal);
+  `dyn+10h += AccelCheatMul * 9.81 * D * s * fade * n` (the sink brake).
+- Above a world speed of 0.01: `depth' = depth (+0.5 when MinWaterSpd != 0)`,
+  `H = desc+508h` (`max(2, H)` when `depth' > 0`), `r = clamp((H + depth') / H, 0, 1.8)`; with
+  `r > 0`, `r = 1 - (1 - r)^2` below 1, `dyn+34h += r * max(speed, MinDragSpd)^2 * WaterDecel *
+  (vx, 0, vz) / speed` (the third fold carries it into `dyn+40h`), and
+  `dyn+04h += clamp(-sgn(ctl+3Ch) * r * ctl+3Ch^2 * SideDragRatio, +-MaxSideDrag)`.
+
+**The tail.** `f = (depth + 1)^LiftRotateDepthRatio` under the line, else
+`max(0, depth / (desc+508h * LiftBeginDiveMul) + 1)^2`; times `|2 - R(0, cos WaterPitch,
+sin WaterPitch) . n|^LiftRotateAngleRatio`, capped at LiftRotateMax; one `007DAFD0` kick of
+`WaterRotAccel * f` about `n x R(v)`, `v = (0, cos WaterPitch, sin WaterPitch)`; since `0085E4D0`
+turns the pose about `-w` (`include/bsp/plane_angular_velocity.hpp`), that turns `v` toward `n`.
+With `ctl+94h`: a kick of `min(2|roll|, 1) * max(1 - |pitch|, 0) * IC(0, 3, 83.33, 16, horizontal
+speed)` on the nose `(0, 0, 1)` against world down. Then below StallSpd,
+`q = IC(0, 0, StallSpd, 1, ctl+44h)` and each component of `ctl+24h` loses `(1 - q^2) * step` of
+itself, never past zero.
+
+**`ctl+94h` has a producer after all.** `007D8180` (`ctl+94h = 1` on the authority, net modes 0
+and 1) is called from `007CBC02` for a dying plane (`unit+5Dh`) whose byte is still clear, which
+then sets `unit+C10h = 99.0` (`00D059A0`); also from `007CE1D9` (ECX = `unit+7A0h`), `007BBB01`
+and `007D1449`, not read here. So on the water a wreck takes the nose-down kick and the core law's
+second gravity term (`007DB9E7`-`007DBA2F`).
+
+**`desc+508h`** is `-[desc+50h]+2Ch - SwimHeight` (`007C4CF8`-`007C4D03`): `[desc+50h]` is the
+class model and `+28h..3Ch` its BoundingBox (min xyz, max xyz; `docs/UNIT_HULL_EXTENTS.md`), so it
+is the belly's depth below the origin less the swim height.
+
+## 11. The binding (`kPlaneWaterSurfaceLawBound`, OFF) and the predictions
+
+`src/game_hosts_units.cpp`, `PlaneBinding::water_surface_step_007cba50`, in `007CBA50`'s order: the
+pilot pass (the gate `0099AE5F` admits state 6) and `007C5AC0`; step 3 (`ctl+94h` and
+`unit+C10h = 99.0` for a dying plane); the sample; `run_core_law_007db680` with `ctl+FCh = 2`
+(the water band replaces the ceiling, no turbo, `ctl+94h` drives `007DB9E7`'s second gravity
+term, `007DA380`'s mode-2 factors in the rate law, the tail on the angular velocity before the
+pose turns); the lift-off byte; the drown test; the accumulator; the state-7 request. The class
+fields are read once per class and logged (`plane water class ...`), `desc+508h` from the Mesh
+BoundingBox.
+
+SUBSTITUTIONS, labelled in the source: the `"splash"` effect (presentation) is not raised; the
+hull list `desc+5BCh` and `unit+770h` are not carried, so the lift-off is the 1.5 m test alone;
+vtable `+204h` is the world speed; `"powerlost"` is counted, not raised; the `C3h` request is
+applied at once; the host keeps the body angular rates as its state, so the tail goes through
+the pose rows to the world vector and back; `unit+674h` (the degenerate-axis fallback) is pose
+row 0. The free-flight contact line keeps its origin-crossing substitution (`[EDI+4]` = 0, section
+4); with `desc+508h` now known that line is a separate, unbound change.
+
+**Can a floating wreck touch gameplay?** Every aircraft that reaches state 6 on the logs on disk is
+dead (section 10's reach). Its kill was credited and its death mode chosen when it died; the
+gunnery host's targeting and kill funnel skip a dead unit; and the water arm kills nothing (no
+depth kill in state 6: a live state-6 plane has MinWaterSpd 0, so `unit+90Ch` never grows and its
+buoyancy holds). The only live state-6 entry on disk is JM08's scripted "Movie Mavis".
+
+**Predictions, written before the pair** (USN01 `p3_u1_z4`, a win; ESMP08 `l46_e8_orders2`):
+- pair_diff verdict 1 (gameplay identical) on both; the win holds on USN01; ESMP08 stays as it is
+  on main (a loss on 355b60167).
+- Moved rows confined to the wreck: its pose after contact, `plane water law` lines (ON only).
+  A wreck on the water has `DeadMeat > 2 s` at once, so `fade = 0`: no buoyancy and no sink brake;
+  it sinks under gravity (and `007DB9E7`'s extra term) and leaves the log's surface rows.
+- No `plane water lift-off` for a dead plane; `plane water powerlost` lines possible once a wreck
+  passes the 6 m threshold, counted only.

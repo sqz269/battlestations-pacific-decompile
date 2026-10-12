@@ -148,3 +148,29 @@ from the running game.
    not traced.
 3. Whether any thread other than the one that creates the device sees a different control word
    was not examined; `D3DCREATE_MULTITHREADED` is set, and the x87 control word is per thread.
+
+## Host precision policy (cc9-physics4, 2026-10-12)
+
+The per-thread control word is settled in `docs/CC13_FPU_PRECISION.md`; the host's departures from
+it are counted in `docs/CC13_HOST_PRECISION_CENSUS.md`. The policy the cc9 lanes reconstruct to:
+
+| Image thread | x87 precision | What runs there | Host rule |
+| --- | --- | --- | --- |
+| Main thread, after `CreateDevice` (no `D3DCREATE_FPU_PRESERVE`) | 24-bit (`007Fh`) | the frame, the fixed-step driver `00875BB0`, Lua, the camera and world-view jobs | C++ `float` expressions in the listing's operation order. At 24 bits every x87 operation rounds like a float operation, so the spill pattern does not matter. A `double` only for a single operation with a qword constant that is not exact as a float |
+| Dyn task workers (`_beginthreadex`, `00C37690`) | 53-bit (`027Fh`) | the Dyn solver fork-join and the collision pass | `double` intermediates up to each `FSTP dword` spill the listing makes, then a float store; the inline-x87 narrow phase bracketed at `_PC_53` (`kDynWorkerPrecisionBound`, ON since `c96f10979`) |
+| Frame-job pool workers (`CreateThread`, `00BE2C70`) | 53-bit | their share of the fixed-step unit jobs | see the next row |
+| Fixed-step unit jobs (ship motion `00825F20`, the plane step `007CE040`, gun ticks, projectiles) | 24 **or** 53, by which thread claims the job from the LIFO array | | The host runs every job on one thread at 24 bits, which is the image's `SetSingleThread(true)` mode exactly and its default mode only statistically. A host `double` chain reproduces the 53-bit case exactly (SSE2 double rounds each operation to 53 bits, as the x87 at `027Fh` does, barring the exponent range); a host `float` chain reproduces the 24-bit case |
+| CRT transcendentals (`00BF84E8` atan, `00BFE638` sin, `00BFE798` cos, `00BFA968` log, `00BFA078` tan) | switch to 53 internally and return a 53-bit result | | a `double` call narrowed straight to float |
+| CRT `sqrt` (`00BF7030`) | keeps the caller's precision | | `sqrtf` on 24-bit threads, `sqrt` on 53-bit ones |
+
+Lua script arithmetic (stock `lua_Number` double against the image's 24-bit main thread) is the
+census's class C and stays open: it needs a decision, not a patch.
+
+So a reconstruction states which thread its routine runs on, and a pair that changes a routine's
+precision is a behaviour change like any other: the fixed-step unit jobs are RNG-coupled through
+`00BD2F10` wherever an aim or spawn draw follows.
+
+**Correction to the Answer above.** "The ship motion at `00825F20` therefore runs at a 24-bit
+mantissa" holds for the main thread only. `00825F20` is a fixed-step pool job, and a pool worker
+that claims it runs it at 53 bits (`docs/CC13_FPU_PRECISION.md` section 3). The `0.05` / `1.0`
+double-constant note under "What this changes" applies to the 24-bit case.
