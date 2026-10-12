@@ -1,0 +1,307 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a776b0",
+    "end_address": "00a776c4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a776b0",
+    "end_address": "00a776c3",
+    "bytes_disassembled": 20,
+    "message": "Successfully disassembled 20 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a776b0",
+    "disassemble_first": false,
+    "name": "BSP_DialogChannelRecord_SetSpeakerLayout"
+   },
+   "result": {
+    "success": true,
+    "address": "00a776b0",
+    "function_name": "BSP_DialogChannelRecord_SetSpeakerLayout",
+    "entry_point": "00a776b0",
+    "body_size": 20,
+    "message": "Function created successfully at 00a776b0",
+    "warnings": [
+     "Function name 'BSP_DialogChannelRecord_SetSpeakerLayout' \u2014 main part 'DialogChannelRecord_SetSpeakerLayout' is not PascalCase. Expected: DialogchannelrecordSetspeakerlayout",
+     "Function name 'BSP_DialogChannelRecord_SetSpeakerLayout' \u2014 main part 'DialogChannelRecord_SetSpeakerLayout' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DialogChannelRecord_SetSpeakerLayout' does not start with a recognized verb. First word 'Dialog' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a776b0",
+   "end": "00a776c4",
+   "name": "BSP_DialogChannelRecord_SetSpeakerLayout",
+   "after": "Function: BSP_DialogChannelRecord_SetSpeakerLayout at 00a776b0\nSignature: undefined BSP_DialogChannelRecord_SetSpeakerLayout(void)\nEntry: 00a776b0\nBody: 00a776b0 - 00a776c3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a776d0",
+    "end_address": "00a776e5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a776d0",
+    "end_address": "00a776e4",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a776d0",
+    "disassemble_first": false,
+    "name": "BSP_SoundStream_IsActive"
+   },
+   "result": {
+    "success": true,
+    "address": "00a776d0",
+    "function_name": "BSP_SoundStream_IsActive",
+    "entry_point": "00a776d0",
+    "body_size": 21,
+    "message": "Function created successfully at 00a776d0",
+    "warnings": [
+     "Function name 'BSP_SoundStream_IsActive' \u2014 main part 'SoundStream_IsActive' is not PascalCase. Expected: SoundstreamIsactive",
+     "Function name 'BSP_SoundStream_IsActive' \u2014 main part 'SoundStream_IsActive' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SoundStream_IsActive' does not start with a recognized verb. First word 'Sound' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a776d0",
+   "end": "00a776e5",
+   "name": "BSP_SoundStream_IsActive",
+   "after": "Function: BSP_SoundStream_IsActive at 00a776d0\nSignature: undefined BSP_SoundStream_IsActive(void)\nEntry: 00a776d0\nBody: 00a776d0 - 00a776e4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a776f0",
+    "end_address": "00a776fa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a776f0",
+    "end_address": "00a776f9",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a776f0",
+    "disassemble_first": false,
+    "name": "BSP_SoundStream_IsOver"
+   },
+   "result": {
+    "success": true,
+    "address": "00a776f0",
+    "function_name": "BSP_SoundStream_IsOver",
+    "entry_point": "00a776f0",
+    "body_size": 10,
+    "message": "Function created successfully at 00a776f0",
+    "warnings": [
+     "Function name 'BSP_SoundStream_IsOver' \u2014 main part 'SoundStream_IsOver' is not PascalCase. Expected: SoundstreamIsover",
+     "Function name 'BSP_SoundStream_IsOver' \u2014 main part 'SoundStream_IsOver' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SoundStream_IsOver' does not start with a recognized verb. First word 'Sound' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a776f0",
+   "end": "00a776fa",
+   "name": "BSP_SoundStream_IsOver",
+   "after": "Function: BSP_SoundStream_IsOver at 00a776f0\nSignature: undefined BSP_SoundStream_IsOver(void)\nEntry: 00a776f0\nBody: 00a776f0 - 00a776f9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a77700",
+    "end_address": "00a7770a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a77700",
+    "end_address": "00a77709",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a77700",
+    "disassemble_first": false,
+    "name": "BSP_StreamedDialogLogical_SetByte4E"
+   },
+   "result": {
+    "success": true,
+    "address": "00a77700",
+    "function_name": "BSP_StreamedDialogLogical_SetByte4E",
+    "entry_point": "00a77700",
+    "body_size": 10,
+    "message": "Function created successfully at 00a77700",
+    "warnings": [
+     "Function name 'BSP_StreamedDialogLogical_SetByte4E' \u2014 main part 'StreamedDialogLogical_SetByte4E' is not PascalCase. Expected: StreameddialoglogicalSetbyte4e",
+     "Function name 'BSP_StreamedDialogLogical_SetByte4E' \u2014 main part 'StreamedDialogLogical_SetByte4E' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_StreamedDialogLogical_SetByte4E' does not start with a recognized verb. First word 'Streamed' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a77700",
+   "end": "00a7770a",
+   "name": "BSP_StreamedDialogLogical_SetByte4E",
+   "after": "Function: BSP_StreamedDialogLogical_SetByte4E at 00a77700\nSignature: undefined BSP_StreamedDialogLogical_SetByte4E(void)\nEntry: 00a77700\nBody: 00a77700 - 00a77709"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a77710",
+    "end_address": "00a77714"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a77710",
+    "end_address": "00a77713",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a77710",
+    "disassemble_first": false,
+    "name": "BSP_StreamedDialogLogical_GetByte4E"
+   },
+   "result": {
+    "success": true,
+    "address": "00a77710",
+    "function_name": "BSP_StreamedDialogLogical_GetByte4E",
+    "entry_point": "00a77710",
+    "body_size": 4,
+    "message": "Function created successfully at 00a77710",
+    "warnings": [
+     "Function name 'BSP_StreamedDialogLogical_GetByte4E' \u2014 main part 'StreamedDialogLogical_GetByte4E' is not PascalCase. Expected: StreameddialoglogicalGetbyte4e",
+     "Function name 'BSP_StreamedDialogLogical_GetByte4E' \u2014 main part 'StreamedDialogLogical_GetByte4E' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_StreamedDialogLogical_GetByte4E' does not start with a recognized verb. First word 'Streamed' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a77710",
+   "end": "00a77714",
+   "name": "BSP_StreamedDialogLogical_GetByte4E",
+   "after": "Function: BSP_StreamedDialogLogical_GetByte4E at 00a77710\nSignature: undefined BSP_StreamedDialogLogical_GetByte4E(void)\nEntry: 00a77710\nBody: 00a77710 - 00a77713"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a77720",
+    "end_address": "00a77724"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a77720",
+    "end_address": "00a77723",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a77720",
+    "disassemble_first": false,
+    "name": "BSP_StreamedDialogLogical_GetCategory"
+   },
+   "result": {
+    "success": true,
+    "address": "00a77720",
+    "function_name": "BSP_StreamedDialogLogical_GetCategory",
+    "entry_point": "00a77720",
+    "body_size": 4,
+    "message": "Function created successfully at 00a77720",
+    "warnings": [
+     "Function name 'BSP_StreamedDialogLogical_GetCategory' \u2014 main part 'StreamedDialogLogical_GetCategory' is not PascalCase. Expected: StreameddialoglogicalGetcategory",
+     "Function name 'BSP_StreamedDialogLogical_GetCategory' \u2014 main part 'StreamedDialogLogical_GetCategory' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_StreamedDialogLogical_GetCategory' does not start with a recognized verb. First word 'Streamed' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a77720",
+   "end": "00a77724",
+   "name": "BSP_StreamedDialogLogical_GetCategory",
+   "after": "Function: BSP_StreamedDialogLogical_GetCategory at 00a77720\nSignature: undefined BSP_StreamedDialogLogical_GetCategory(void)\nEntry: 00a77720\nBody: 00a77720 - 00a77723"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bf0390",
+    "end_address": "00bf03b0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bf0390",
+    "end_address": "00bf03af",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bf0390",
+    "disassemble_first": false,
+    "name": "BSP_StreamWriter_WriteStringAndDebit"
+   },
+   "result": {
+    "success": true,
+    "address": "00bf0390",
+    "function_name": "BSP_StreamWriter_WriteStringAndDebit",
+    "entry_point": "00bf0390",
+    "body_size": 32,
+    "message": "Function created successfully at 00bf0390",
+    "warnings": [
+     "Function name 'BSP_StreamWriter_WriteStringAndDebit' \u2014 main part 'StreamWriter_WriteStringAndDebit' is not PascalCase. Expected: StreamwriterWritestringanddebit",
+     "Function name 'BSP_StreamWriter_WriteStringAndDebit' \u2014 main part 'StreamWriter_WriteStringAndDebit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_StreamWriter_WriteStringAndDebit' does not start with a recognized verb. First word 'Stream' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bf0390",
+   "end": "00bf03b0",
+   "name": "BSP_StreamWriter_WriteStringAndDebit",
+   "after": "Function: BSP_StreamWriter_WriteStringAndDebit at 00bf0390\nSignature: undefined BSP_StreamWriter_WriteStringAndDebit(void)\nEntry: 00bf0390\nBody: 00bf0390 - 00bf03af"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
