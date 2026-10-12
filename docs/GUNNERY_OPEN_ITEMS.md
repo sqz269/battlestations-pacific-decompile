@@ -12061,3 +12061,25 @@ per class at load from the decoded GeomMesh; `local\g35_census_usn13.log`).
 
 **Verdict: the mechanism matches; flipped ON.** The USN13 mission failure is recorded as a knife-edge consequence
 for the next reference, not as a mechanism failure.
+
+### 171.1 The controls the lead asked for (2026-10-12)
+
+- **(a) Positive control on the store.** The same displacement scan, run over the setter and the loader bodies
+  (`local\g35_dispscan.py ... 34 00445A30 00444D20`), finds both `+34h` writers: `00445A93 FSTP [ESI+34h]` and
+  `004451F1 MOVSS [ESI+34h]`. A `+34h` access is visible to the scan whenever it exists in a body.
+- **(b) Wholesale copies and indexed pointers.** `local\g35_wx34b.py` lists every `MOV r,[r+21C4h]` in `.text`;
+  there are 18. Each one is accounted for:
+  - Six call a config method or the destructor (`004BC479`, `007A59CA` -> `00445790`; `008B1E64`, `008B1FA9`
+    daytime; `008B22B9` the setter; `004D2CBC` the destructor).
+  - Eleven read `+74h`/`+78h`.
+  - `00A47C07` reads a different object.
+  - None reaches a `REP MOVS` or a `LEA` on the pointer before the next call. The only other writer of
+    `game+21C4h` is the constructor store (`004DC913`), so no second copy of the pointer exists.
+- **(c) Other readers of the name.**
+  - The string `"WeatherReconModifiers"` (`00CE4838`) has one absolute reference in the image, `0044505D`, inside
+    the loader `00444D20`.
+  - In this installation's Lua, the name appears in `scripts\datatables\globals.lua:83` (its definition) and in no
+    other script file. The scripts only call `SetWeather(...)`.
+  - The per-unit `"ReconModifier"` (`00D1AAF4`) is a different key with one reference (`0096239B`).
+
+All three are negative, so 171's verdict stands: the image has no reader of the weather recon modifier.
