@@ -854,4 +854,185 @@ void camera_history_00b0db00(void* history, float time, void* camera, SceneRende
     }
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13_seg83_queue.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// B1F631..B1F666 / B1F55A..B1F587: grow to max(2 * capacity, 1) when full,
+// then store at data[count] (skipped for a null slot address) and count + 1.
+void append_command(void* queue, void* command, RenderQueueHost& host) {
+    const std::int32_t capacity = rd<std::int32_t>(queue, 0x1c);
+    if (rd<std::int32_t>(queue, 0x18) == capacity) {
+        const std::int32_t grown = capacity * 2;
+        host.command_pointers_reserve_00b1c6c0(at(queue, 0x14), grown > 1 ? grown : 1);
+    }
+    void** slot = rd<void**>(queue, 0x14) + rd<std::int32_t>(queue, 0x18);
+    if (slot != nullptr) {
+        *slot = command;
+    }
+    wr<std::int32_t>(queue, 0x18, rd<std::int32_t>(queue, 0x18) + 1);
+}
+
+void refresh_node(void* node, CockpitHost& host) {
+    if ((rd<std::uint8_t>(node, 0x5c) & 2) == 0) {
+        host.transform_refresh_world_00b6db70(node);
+    }
+}
+
+// B3C974..B3C9A3 / B3C6F0..B3C724: a hidden helper node is released and cleared.
+bool drop_hidden_node(void* helper, CockpitHost& host) {
+    void* node = rd<void*>(helper, 0x8);
+    if (rd<std::uint8_t>(node, 0x44) == 0) {
+        return false;
+    }
+    host.release(node);
+    wr<void*>(helper, 0x8, nullptr);
+    return true;
+}
+
+}  // namespace
+
+void submit_drawable_00b1f5e0(void* queue, void* scene, void* camera, void* targets, void* node,
+                              RenderQueueHost& host) {
+    void* command = host.render_command_new_00b1f170(scene, camera, targets);
+    append_command(queue, command, host);
+    if ((rd<std::uint32_t>(node, 0x48) & rd<std::uint32_t>(camera, 0x19c)) != 0) {
+        host.node_collect_slot20(node, rd<void*>(command, 0x28), 0.0f, 1.0f, 0);
+        host.instance_groups_upload_00b1e990(command);
+    }
+}
+
+void submit_scene_00b1f4d0(void* queue, void* scene, void* camera, void* targets, const std::uint32_t label[2],
+                           RenderQueueHost& host) {
+    void* command = host.render_command_new_00b1f170(scene, camera, targets);
+    // B1F521..B1F557: command+14h = label (skipped when they alias, which a
+    // fresh command never does; a null command would fault here).
+    host.native_string_assign(at(command, 0x14), label);
+    append_command(queue, command, host);
+    host.scene_traverse_00b72190(scene, rd<void*>(command, 0x28));
+    host.instance_groups_upload_00b1e990(command);
+    if (label[1] != 0) {
+        host.native_string_free(label);  // the callee owns the by-value argument
+    }
+}
+
+void execute_last_00b1e6d0(void* queue, RenderQueueHost& host) {
+    if (rd<std::int32_t>(queue, 0x18) == 0) {
+        return;
+    }
+    host.command_execute_slot0(rd<void**>(queue, 0x14)[rd<std::int32_t>(queue, 0x18) - 1]);
+    // B1E6EA: the slot is reread after the call.
+    if (void* command = rd<void**>(queue, 0x14)[rd<std::int32_t>(queue, 0x18) - 1]) {
+        host.command_destroy_00b1ddd0(command);
+        host.free_00bf65ac(command);
+    }
+    if (const std::int32_t count = rd<std::int32_t>(queue, 0x18); count != 0) {
+        wr<std::int32_t>(queue, 0x18, count - 1);
+    }
+}
+
+void draw_world_labels_00b1ef60(void* queue, void* camera, RenderQueueHost& host) {
+    if (camera != nullptr) {
+        for (std::uint8_t* row = rd<std::uint8_t*>(queue, 0x24);
+             row != rd<std::uint8_t*>(queue, 0x24) + 0x14 * rd<std::uint32_t>(queue, 0x28); row += 0x14) {
+            const float source[4] = {rd<float>(row, 0x8), rd<float>(row, 0xc), rd<float>(row, 0x10), 1.0f};
+            float p[4];
+            host.transform4_00b62d10(source, p, host.camera_view_projection_00b70490(camera));
+            const float neg_w = -p[3];
+            // B1EFE2..B1F028: every FCOMI is followed by JB, which an unordered
+            // compare also takes, so a NaN coordinate skips the label.
+            if (!(p[0] >= neg_w) || !(p[3] >= p[0]) || !(p[1] >= neg_w) || !(p[3] >= p[1]) || !(p[2] >= 0.0f) ||
+                !(p[3] >= p[2])) {
+                continue;
+            }
+            const float sx = static_cast<float>(static_cast<double>(p[0]) / p[3]);
+            const float sy = static_cast<float>(static_cast<double>(p[1]) / p[3]);
+            const float u = static_cast<float>(sx * 0.5 + 0.5);
+            const float v = static_cast<float>(0.5 - sy * 0.5);
+            // FISTP qword with truncation, low DWORD kept.
+            const auto x = static_cast<std::uint32_t>(static_cast<std::int64_t>(u * 1024.0));  // [00CE42B8]
+            const auto y = static_cast<std::uint32_t>(static_cast<std::int64_t>(v * 768.0));   // [00CE42B0]
+            const char* text = rd<const char*>(row, 0x4);
+            host.debug_print_004b47e0(static_cast<float>(x), static_cast<float>(y), "%s\n", text ? text : "");
+        }
+    }
+    host.label_rows_resize_00b1e7f0(at(queue, 0x24), 0);
+}
+
+void cockpit_begin_frame_00b3c960(void* helper, void* main_camera, void*, CockpitHost& host) {
+    if (rd<void*>(helper, 0x8) == nullptr || drop_hidden_node(helper, host)) {
+        return;
+    }
+    void* cockpit_camera = rd<void*>(helper, 0xc);
+    std::uint32_t size[2];
+    std::memcpy(size, at(host.camera_viewport_00b6fde0(main_camera), 0x10), sizeof size);  // 00B1F740
+    std::memcpy(at(host.camera_viewport_00b6fde0(cockpit_camera), 0x10), size, sizeof size);  // 00B1F940
+    host.camera_set_fov_00b6fbb0(cockpit_camera, rd<float>(main_camera, 0x1c4));
+    host.camera_set_fog_owner_00b71940(cockpit_camera, rd<void*>(main_camera, 0x184));
+    host.camera_set_aspect_00b6fbd0(cockpit_camera, rd<float>(main_camera, 0x1c8));
+    void* node = rd<void*>(helper, 0x8);
+    refresh_node(node, host);
+    refresh_node(main_camera, host);
+    float delta[3];
+    {
+        const float main_pos[3] = {rd<float>(main_camera, 0x120), rd<float>(main_camera, 0x124),
+                                   rd<float>(main_camera, 0x128)};
+        refresh_node(node, host);
+        for (std::uint32_t i = 0; i < 3; ++i) {
+            delta[i] = rd<float>(node, 0x120 + 4 * i) - main_pos[i];
+        }
+    }
+    float view[16];
+    std::memcpy(view, host.camera_view_matrix_00b6fcb0(main_camera), sizeof view);
+    view[12] = view[13] = view[14] = 0.0f;
+    refresh_node(node, host);
+    float world[16];
+    std::memcpy(world, at(node, 0xf0), sizeof world);
+    world[12] = delta[0];
+    world[13] = delta[1];
+    world[14] = delta[2];
+    host.node_set_world_slot34(node, world);
+    host.camera_set_view_matrix_00b71490(cockpit_camera, view);
+    void* lighting = host.scene_lighting_owner_00b72110(rd<void*>(node, 0xa4));
+    host.node_set_visibility_factor_00b6da70(node, 1.0f, 0);
+    const std::uint8_t* options = host.render_options_00f8bbf0();
+    if (options[0xc] == 0 || options[0xd] == 0 || lighting == nullptr) {
+        return;
+    }
+    void* shadow = host.light_shadow_map_owner_00b7aab0(host.first_light_node(lighting));
+    if (shadow == nullptr) {
+        return;
+    }
+    float bounds[4];
+    const float radius = host.node_bounds_slot44(rd<void*>(helper, 0x8), bounds)[3];
+    refresh_node(cockpit_camera, host);
+    float max[3];
+    for (std::uint32_t i = 0; i < 3; ++i) {
+        max[i] = rd<float>(cockpit_camera, 0x120 + 4 * i) + radius;
+    }
+    refresh_node(cockpit_camera, host);
+    float min[3];
+    for (std::uint32_t i = 0; i < 3; ++i) {
+        min[i] = rd<float>(cockpit_camera, 0x120 + 4 * i) - radius;
+    }
+    host.shadow_render_single_view_00a8e180(shadow, rd<void*>(helper, 0x8), rd<void*>(helper, 0xc), min, max);
+    host.execute_last_00b1e6d0();
+}
+
+void cockpit_draw_00b3c6e0(void* helper, void* main_camera, void* targets, CockpitHost& host) {
+    if (rd<void*>(helper, 0x8) == nullptr || drop_hidden_node(helper, host)) {
+        return;
+    }
+    host.node_set_visibility_factor_00b6da70(rd<void*>(helper, 0x8), 1.0f, 0);
+    host.camera_set_render_mode_00b6fdf0(rd<void*>(helper, 0xc), 12);
+    host.submit_drawable_00b1f5e0(rd<void*>(main_camera, 0xa4), rd<void*>(helper, 0xc), targets,
+                                  rd<void*>(helper, 0x8));
+    host.execute_last_00b1e6d0();
+    host.node_set_visibility_factor_00b6da70(rd<void*>(helper, 0x8), 0.0f, 0);
+    static constexpr float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    host.node_set_local_slot38(rd<void*>(helper, 0x8), identity);
+}
+
 }  // namespace bsp::scene_renderer
