@@ -1,0 +1,39 @@
+# cc13-sweep79: decision per stl_probable row in 00790000-007FFFFF (docs/CC13_BAND_0079_007F.md)
+# addr|old_evidence|decision|category|name|evidence_key|anchors
+00797980|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: walks the HudMovieCamera list at this+6Ch, element +0F8h state and +1Ch id
+00797a00|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: list at this+6Ch, writes owner(+74h)+3B0h from element +0F0h; caller HudMovieCamera_Update
+00797c60|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: list at this+6Ch, element short +0DAh match; caller HudMovieCamera_Update
+00797d20|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: list at this+6Ch, element +0F8h state and +1Ch
+00797e40|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: list at this+6Ch, element +0F8h state, vcall through element +0E4h slot 10h
+00797f50|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: list at this+6Ch, element +0DAh/+0F0h, global 00CF87D0
+0079a190|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: class destructor installing vtable 00D04714, virtual-deletes list elements; caller BSP_HudMovieCamera_Destruct
+007a4590|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_007a4590|st1_mapsubscript|read: _Lbound (STL_Tree_LowerBound_007968c0) with BSP_NativeString_LessCaseInsensitive, on miss InsertHint of value_type(key,T()), return node+14h
+007a4860|st1_scl97|keep_library||||read: container-only body, no anchors
+007ae650|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: property writer interface vcall slot 0Ch (1,index,5,elem) over a 12-byte vector
+007af090|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: property writer interface vcall slot 0Ch (1,index,3,bool) over a pointer vector
+007b0e60|st1_scl97|keep_library||||read: container-only body, no anchors
+007b1a80|e0029|upgrade_named|stl_instantiation|BSP_Point3PtrArray_Destruct|cc13_sweep79_named_library|read: installs vtable 00D053A4, frees every element of the pointer vector at +4 (first +8, last +0Ch), frees storage, zeroes the triple
+007b1b40|e0029|upgrade_named|stl_instantiation|BSP_Point3PtrArray_EraseAt|cc13_sweep79_named_library|read: frees element [index] of the pointer vector at +4, _memmove_s the tail down, last -= 4
+007b21a0|e0029|upgrade_named|stl_instantiation|BSP_Point3PtrArray_Clear|cc13_sweep79_named_library|read: pops and frees every element of the pointer vector at +4 from the back
+007b2850|e0029|upgrade_named|stl_instantiation|BSP_Point3PtrArray_InsertAt|cc13_sweep79_named_library|read: allocates an element through vtable slot 20h, copies 3 dwords, vector::insert(first+index) STL_Vector_InsertOne_007b26f0
+007b2b90|e0029|keep_library||||read: container-only body, no anchors
+007b3730|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|strings PathPoints/Point%002i/PathPointType/RotRefEntity; BSP_ScenePropertyBag_Find
+007b7cc0|st1_scl97|upgrade_named|stl_instantiation|STL_String_AppendPtrCount_007b7cc0|cc13_sweep79_named_library|read: basic_string::append(ptr,count): _Inside test against [_Myptr,_Myptr+size) forwards to append(*this,off,count) 004C90D0, else length_error 00BF5695, _Grow, memcpy, _Eos
+007c3000|st1_scl97|keep_library||||read: container-only body, no anchors
+007c3700|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|fields to +0AA4h; BSP_PointEffect_SetWorldPoint; caller BSP_Plane_DriveActuatorChannels
+007c4dd0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|1136 lines; fields to +0B1Ch; BSP_PointEffect_CreateFromMatrix; caller BSP_Plane_DriveActuatorChannels
+007caad0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|BSP_Random_UniformFloatRange, BSP_GameDynamicsList_Add; caller BSP_Plane_HandleStateMessageKinds
+007cd5e0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|fields to +0DDCh; BSP_PartNamedRecord_CopyLegacyName; caller BSP_Plane_ReadPropertyBag
+007d05e0|e0029|keep_library||||read: container-only body, no anchors
+007d06a0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|BSP_Model_FindNoteNode, __itoa; caller 007D0820 (engine/rotor note nodes)
+007d0820|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|strings engine/rotor/rotor_still/rotor_still_dam; field +4A4h; caller BSP_Plane_HandleStateMessageKinds
+007d5ac0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|fields to +0A54h; BSP_PointEffect_CreateFromMatrix; global 00E188A8
+007e27b0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|BSP_UnitInstance_GetHealth, BSP_Random_UniformFloatRange; caller BSP_Plane_DriveActuatorChannels
+007ec5a0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|strings DyingSmallPlane/DyingBigPlane/FallingSmallPlane; BSP_EffectHandle_AcquireByName
+007f8e00|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: case-insensitive search of the string list at this+0Ch; callers BSP_AwardTracker_* hint methods
+007f93f0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: sets at this+70h and this+7Ch, __stricmp; caller BSP_RewardsScreen_Enter
+007fb520|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string DL_Content_; global 00F8745C; _atol
+007fbb20|e0029|upgrade_named|stl_instantiation|STL_Tree_EraseKey_007fbb20|cc13_sweep79_named_library|read: map::erase(key): equal_range (007F84E0/007F8400), _Distance 007F8650, erase(first,last) STL_ProfileTransientTree_EraseRange, return count
+007fbba0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_007fbba0|st1_treeinserthint|read: empty-tree and begin/end fast paths, _Dec/_Inc of the hint (STL_TreeIter_Dec_007f7830/Inc_007f78c0), case-insensitive string key at node+0Ch
+007fc370|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string VehicleClass; BSP_LuaObject_GetByName; main-menu callers
+007fcd90|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string RANK; BSP_MissionScoring_GetCommitRecord; caller BSP_RewardsScreen_Enter

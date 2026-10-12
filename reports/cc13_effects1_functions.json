@@ -1,0 +1,787 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0086b9a0",
+    "end_address": "0086b9ab"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0086b9a0",
+    "end_address": "0086b9aa",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0086b9a0",
+    "disassemble_first": false,
+    "name": "CG_adjustor_thunk_0086B9A0"
+   },
+   "result": {
+    "success": true,
+    "address": "0086b9a0",
+    "function_name": "CG_adjustor_thunk_0086B9A0",
+    "entry_point": "0086b9a0",
+    "body_size": 11,
+    "message": "Function created successfully at 0086b9a0",
+    "warnings": [
+     "Function name 'CG_adjustor_thunk_0086B9A0' \u2014 main part 'CG_adjustor_thunk_0086B9A0' is not PascalCase. Expected: CgAdjustorThunk0086b9a0",
+     "Function name 'CG_adjustor_thunk_0086B9A0' \u2014 main part 'CG_adjustor_thunk_0086B9A0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0086b9a0",
+   "end": "0086b9ab",
+   "name": "CG_adjustor_thunk_0086B9A0",
+   "after": "Function: CG_adjustor_thunk_0086B9A0 at 0086b9a0\nSignature: undefined CG_adjustor_thunk_0086B9A0(void)\nEntry: 0086b9a0\nBody: 0086b9a0 - 0086b9aa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00871ff0",
+    "end_address": "00872008"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00871ff0",
+    "end_address": "00872007",
+    "bytes_disassembled": 24,
+    "message": "Successfully disassembled 24 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00871ff0",
+    "disassemble_first": false,
+    "name": "BSP_RegisteredModelEffect_SetEmitterValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00871ff0",
+    "function_name": "BSP_RegisteredModelEffect_SetEmitterValue",
+    "entry_point": "00871ff0",
+    "body_size": 24,
+    "message": "Function created successfully at 00871ff0",
+    "warnings": [
+     "Function name 'BSP_RegisteredModelEffect_SetEmitterValue' \u2014 main part 'RegisteredModelEffect_SetEmitterValue' is not PascalCase. Expected: RegisteredmodeleffectSetemittervalue",
+     "Function name 'BSP_RegisteredModelEffect_SetEmitterValue' \u2014 main part 'RegisteredModelEffect_SetEmitterValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RegisteredModelEffect_SetEmitterValue' does not start with a recognized verb. First word 'Registered' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00871ff0",
+   "end": "00872008",
+   "name": "BSP_RegisteredModelEffect_SetEmitterValue",
+   "after": "Function: BSP_RegisteredModelEffect_SetEmitterValue at 00871ff0\nSignature: undefined BSP_RegisteredModelEffect_SetEmitterValue(void)\nEntry: 00871ff0\nBody: 00871ff0 - 00872007"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872080",
+    "end_address": "00872097"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872080",
+    "end_address": "00872096",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872080",
+    "disassemble_first": false,
+    "name": "BSP_RegisteredType4Effect_SetAlpha_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00872080",
+    "function_name": "BSP_RegisteredType4Effect_SetAlpha_Provisional",
+    "entry_point": "00872080",
+    "body_size": 23,
+    "message": "Function created successfully at 00872080",
+    "warnings": [
+     "Function name 'BSP_RegisteredType4Effect_SetAlpha_Provisional' \u2014 main part 'RegisteredType4Effect_SetAlpha_Provisional' is not PascalCase. Expected: Registeredtype4effectSetalphaProvisional",
+     "Function name 'BSP_RegisteredType4Effect_SetAlpha_Provisional' \u2014 main part 'RegisteredType4Effect_SetAlpha_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RegisteredType4Effect_SetAlpha_Provisional' does not start with a recognized verb. First word 'Registered' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872080",
+   "end": "00872097",
+   "name": "BSP_RegisteredType4Effect_SetAlpha_Provisional",
+   "after": "Function: BSP_RegisteredType4Effect_SetAlpha_Provisional at 00872080\nSignature: undefined BSP_RegisteredType4Effect_SetAlpha_Provisional(void)\nEntry: 00872080\nBody: 00872080 - 00872096"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008720a0",
+    "end_address": "008720c3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008720a0",
+    "end_address": "008720c2",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008720a0",
+    "disassemble_first": false,
+    "name": "BSP_EffectFlareInstance_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "008720a0",
+    "function_name": "BSP_EffectFlareInstance_Update",
+    "entry_point": "008720a0",
+    "body_size": 35,
+    "message": "Function created successfully at 008720a0",
+    "warnings": [
+     "Function name 'BSP_EffectFlareInstance_Update' \u2014 main part 'EffectFlareInstance_Update' is not PascalCase. Expected: EffectflareinstanceUpdate",
+     "Function name 'BSP_EffectFlareInstance_Update' \u2014 main part 'EffectFlareInstance_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectFlareInstance_Update' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008720a0",
+   "end": "008720c3",
+   "name": "BSP_EffectFlareInstance_Update",
+   "after": "Function: BSP_EffectFlareInstance_Update at 008720a0\nSignature: undefined BSP_EffectFlareInstance_Update(void)\nEntry: 008720a0\nBody: 008720a0 - 008720c2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872100",
+    "end_address": "00872101"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872100",
+    "end_address": "00872100",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872100",
+    "disassemble_first": false,
+    "name": "BSP_EffectThunderStormInstance_Stop"
+   },
+   "result": {
+    "success": true,
+    "address": "00872100",
+    "function_name": "BSP_EffectThunderStormInstance_Stop",
+    "entry_point": "00872100",
+    "body_size": 1,
+    "message": "Function created successfully at 00872100",
+    "warnings": [
+     "Function name 'BSP_EffectThunderStormInstance_Stop' \u2014 main part 'EffectThunderStormInstance_Stop' is not PascalCase. Expected: EffectthunderstorminstanceStop",
+     "Function name 'BSP_EffectThunderStormInstance_Stop' \u2014 main part 'EffectThunderStormInstance_Stop' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectThunderStormInstance_Stop' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872100",
+   "end": "00872101",
+   "name": "BSP_EffectThunderStormInstance_Stop",
+   "after": "Function: BSP_EffectThunderStormInstance_Stop at 00872100\nSignature: undefined BSP_EffectThunderStormInstance_Stop(void)\nEntry: 00872100\nBody: 00872100 - 00872100"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872630",
+    "end_address": "0087264a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872630",
+    "end_address": "00872649",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872630",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_Stop"
+   },
+   "result": {
+    "success": true,
+    "address": "00872630",
+    "function_name": "BSP_EffectSoundInstance_Stop",
+    "entry_point": "00872630",
+    "body_size": 26,
+    "message": "Function created successfully at 00872630",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_Stop' \u2014 main part 'EffectSoundInstance_Stop' is not PascalCase. Expected: EffectsoundinstanceStop",
+     "Function name 'BSP_EffectSoundInstance_Stop' \u2014 main part 'EffectSoundInstance_Stop' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_Stop' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872630",
+   "end": "0087264a",
+   "name": "BSP_EffectSoundInstance_Stop",
+   "after": "Function: BSP_EffectSoundInstance_Stop at 00872630\nSignature: undefined BSP_EffectSoundInstance_Stop(void)\nEntry: 00872630\nBody: 00872630 - 00872649"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872650",
+    "end_address": "0087266a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872650",
+    "end_address": "00872669",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872650",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_IsComplete"
+   },
+   "result": {
+    "success": true,
+    "address": "00872650",
+    "function_name": "BSP_EffectSoundInstance_IsComplete",
+    "entry_point": "00872650",
+    "body_size": 26,
+    "message": "Function created successfully at 00872650",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_IsComplete' \u2014 main part 'EffectSoundInstance_IsComplete' is not PascalCase. Expected: EffectsoundinstanceIscomplete",
+     "Function name 'BSP_EffectSoundInstance_IsComplete' \u2014 main part 'EffectSoundInstance_IsComplete' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_IsComplete' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872650",
+   "end": "0087266a",
+   "name": "BSP_EffectSoundInstance_IsComplete",
+   "after": "Function: BSP_EffectSoundInstance_IsComplete at 00872650\nSignature: undefined BSP_EffectSoundInstance_IsComplete(void)\nEntry: 00872650\nBody: 00872650 - 00872669"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872670",
+    "end_address": "00872690"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872670",
+    "end_address": "0087268f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872670",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_ScaleVolume"
+   },
+   "result": {
+    "success": true,
+    "address": "00872670",
+    "function_name": "BSP_EffectSoundInstance_ScaleVolume",
+    "entry_point": "00872670",
+    "body_size": 32,
+    "message": "Function created successfully at 00872670",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_ScaleVolume' \u2014 main part 'EffectSoundInstance_ScaleVolume' is not PascalCase. Expected: EffectsoundinstanceScalevolume",
+     "Function name 'BSP_EffectSoundInstance_ScaleVolume' \u2014 main part 'EffectSoundInstance_ScaleVolume' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_ScaleVolume' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872670",
+   "end": "00872690",
+   "name": "BSP_EffectSoundInstance_ScaleVolume",
+   "after": "Function: BSP_EffectSoundInstance_ScaleVolume at 00872670\nSignature: undefined BSP_EffectSoundInstance_ScaleVolume(void)\nEntry: 00872670\nBody: 00872670 - 0087268f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872690",
+    "end_address": "008726b3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872690",
+    "end_address": "008726b2",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872690",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_SetPitch"
+   },
+   "result": {
+    "success": true,
+    "address": "00872690",
+    "function_name": "BSP_EffectSoundInstance_SetPitch",
+    "entry_point": "00872690",
+    "body_size": 35,
+    "message": "Function created successfully at 00872690",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_SetPitch' \u2014 main part 'EffectSoundInstance_SetPitch' is not PascalCase. Expected: EffectsoundinstanceSetpitch",
+     "Function name 'BSP_EffectSoundInstance_SetPitch' \u2014 main part 'EffectSoundInstance_SetPitch' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_SetPitch' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872690",
+   "end": "008726b3",
+   "name": "BSP_EffectSoundInstance_SetPitch",
+   "after": "Function: BSP_EffectSoundInstance_SetPitch at 00872690\nSignature: undefined BSP_EffectSoundInstance_SetPitch(void)\nEntry: 00872690\nBody: 00872690 - 008726b2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872720",
+    "end_address": "00872740"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872720",
+    "end_address": "0087273f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872720",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_SampleFlag15"
+   },
+   "result": {
+    "success": true,
+    "address": "00872720",
+    "function_name": "BSP_EffectSoundInstance_SampleFlag15",
+    "entry_point": "00872720",
+    "body_size": 32,
+    "message": "Function created successfully at 00872720",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_SampleFlag15' \u2014 main part 'EffectSoundInstance_SampleFlag15' is not PascalCase. Expected: EffectsoundinstanceSampleflag15",
+     "Function name 'BSP_EffectSoundInstance_SampleFlag15' \u2014 main part 'EffectSoundInstance_SampleFlag15' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_SampleFlag15' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872720",
+   "end": "00872740",
+   "name": "BSP_EffectSoundInstance_SampleFlag15",
+   "after": "Function: BSP_EffectSoundInstance_SampleFlag15 at 00872720\nSignature: undefined BSP_EffectSoundInstance_SampleFlag15(void)\nEntry: 00872720\nBody: 00872720 - 0087273f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872770",
+    "end_address": "00872784"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872770",
+    "end_address": "00872783",
+    "bytes_disassembled": 20,
+    "message": "Successfully disassembled 20 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872770",
+    "disassemble_first": false,
+    "name": "BSP_RegisteredModelEffect_SetValue1DC"
+   },
+   "result": {
+    "success": true,
+    "address": "00872770",
+    "function_name": "BSP_RegisteredModelEffect_SetValue1DC",
+    "entry_point": "00872770",
+    "body_size": 20,
+    "message": "Function created successfully at 00872770",
+    "warnings": [
+     "Function name 'BSP_RegisteredModelEffect_SetValue1DC' \u2014 main part 'RegisteredModelEffect_SetValue1DC' is not PascalCase. Expected: RegisteredmodeleffectSetvalue1dc",
+     "Function name 'BSP_RegisteredModelEffect_SetValue1DC' \u2014 main part 'RegisteredModelEffect_SetValue1DC' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RegisteredModelEffect_SetValue1DC' does not start with a recognized verb. First word 'Registered' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872770",
+   "end": "00872784",
+   "name": "BSP_RegisteredModelEffect_SetValue1DC",
+   "after": "Function: BSP_RegisteredModelEffect_SetValue1DC at 00872770\nSignature: undefined BSP_RegisteredModelEffect_SetValue1DC(void)\nEntry: 00872770\nBody: 00872770 - 00872783"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872e30",
+    "end_address": "00872e67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872e30",
+    "end_address": "00872e66",
+    "bytes_disassembled": 55,
+    "message": "Successfully disassembled 55 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872e30",
+    "disassemble_first": false,
+    "name": "BSP_EffectSplashInstance_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "00872e30",
+    "function_name": "BSP_EffectSplashInstance_Update",
+    "entry_point": "00872e30",
+    "body_size": 55,
+    "message": "Function created successfully at 00872e30",
+    "warnings": [
+     "Function name 'BSP_EffectSplashInstance_Update' \u2014 main part 'EffectSplashInstance_Update' is not PascalCase. Expected: EffectsplashinstanceUpdate",
+     "Function name 'BSP_EffectSplashInstance_Update' \u2014 main part 'EffectSplashInstance_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSplashInstance_Update' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872e30",
+   "end": "00872e67",
+   "name": "BSP_EffectSplashInstance_Update",
+   "after": "Function: BSP_EffectSplashInstance_Update at 00872e30\nSignature: undefined BSP_EffectSplashInstance_Update(void)\nEntry: 00872e30\nBody: 00872e30 - 00872e66"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872e70",
+    "end_address": "00872e7c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872e70",
+    "end_address": "00872e7b",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872e70",
+    "disassemble_first": false,
+    "name": "BSP_NativeDwordVector_At_00872E70"
+   },
+   "result": {
+    "success": true,
+    "address": "00872e70",
+    "function_name": "BSP_NativeDwordVector_At_00872E70",
+    "entry_point": "00872e70",
+    "body_size": 12,
+    "message": "Function created successfully at 00872e70",
+    "warnings": [
+     "Function name 'BSP_NativeDwordVector_At_00872E70' \u2014 main part 'NativeDwordVector_At_00872E70' is not PascalCase. Expected: NativedwordvectorAt00872e70",
+     "Function name 'BSP_NativeDwordVector_At_00872E70' \u2014 main part 'NativeDwordVector_At_00872E70' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_NativeDwordVector_At_00872E70' does not start with a recognized verb. First word 'Native' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872e70",
+   "end": "00872e7c",
+   "name": "BSP_NativeDwordVector_At_00872E70",
+   "after": "Function: BSP_NativeDwordVector_At_00872E70 at 00872e70\nSignature: undefined BSP_NativeDwordVector_At_00872E70(void)\nEntry: 00872e70\nBody: 00872e70 - 00872e7b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872f40",
+    "end_address": "00872fb0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872f40",
+    "end_address": "00872faf",
+    "bytes_disassembled": 112,
+    "message": "Successfully disassembled 112 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872f40",
+    "disassemble_first": false,
+    "name": "BSP_EffectSoundInstance_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "00872f40",
+    "function_name": "BSP_EffectSoundInstance_Update",
+    "entry_point": "00872f40",
+    "body_size": 112,
+    "message": "Function created successfully at 00872f40",
+    "warnings": [
+     "Function name 'BSP_EffectSoundInstance_Update' \u2014 main part 'EffectSoundInstance_Update' is not PascalCase. Expected: EffectsoundinstanceUpdate",
+     "Function name 'BSP_EffectSoundInstance_Update' \u2014 main part 'EffectSoundInstance_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_EffectSoundInstance_Update' does not start with a recognized verb. First word 'Effect' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872f40",
+   "end": "00872fb0",
+   "name": "BSP_EffectSoundInstance_Update",
+   "after": "Function: BSP_EffectSoundInstance_Update at 00872f40\nSignature: undefined BSP_EffectSoundInstance_Update(void)\nEntry: 00872f40\nBody: 00872f40 - 00872faf"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00874ac0",
+    "end_address": "00874ae9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00874ac0",
+    "end_address": "00874ae8",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00874ac0",
+    "disassemble_first": false,
+    "name": "BSP_SingletonHolder_F878D4_DeletingDtor"
+   },
+   "result": {
+    "success": true,
+    "address": "00874ac0",
+    "function_name": "BSP_SingletonHolder_F878D4_DeletingDtor",
+    "entry_point": "00874ac0",
+    "body_size": 41,
+    "message": "Function created successfully at 00874ac0",
+    "warnings": [
+     "Function name 'BSP_SingletonHolder_F878D4_DeletingDtor' \u2014 main part 'SingletonHolder_F878D4_DeletingDtor' is not PascalCase. Expected: SingletonholderF878d4Deletingdtor",
+     "Function name 'BSP_SingletonHolder_F878D4_DeletingDtor' \u2014 main part 'SingletonHolder_F878D4_DeletingDtor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SingletonHolder_F878D4_DeletingDtor' does not start with a recognized verb. First word 'Singleton' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00874ac0",
+   "end": "00874ae9",
+   "name": "BSP_SingletonHolder_F878D4_DeletingDtor",
+   "after": "Function: BSP_SingletonHolder_F878D4_DeletingDtor at 00874ac0\nSignature: undefined BSP_SingletonHolder_F878D4_DeletingDtor(void)\nEntry: 00874ac0\nBody: 00874ac0 - 00874ae8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00874b00",
+    "end_address": "00874b29"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00874b00",
+    "end_address": "00874b28",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00874b00",
+    "disassemble_first": false,
+    "name": "BSP_SingletonHolder_F878D8_DeletingDtor"
+   },
+   "result": {
+    "success": true,
+    "address": "00874b00",
+    "function_name": "BSP_SingletonHolder_F878D8_DeletingDtor",
+    "entry_point": "00874b00",
+    "body_size": 41,
+    "message": "Function created successfully at 00874b00",
+    "warnings": [
+     "Function name 'BSP_SingletonHolder_F878D8_DeletingDtor' \u2014 main part 'SingletonHolder_F878D8_DeletingDtor' is not PascalCase. Expected: SingletonholderF878d8Deletingdtor",
+     "Function name 'BSP_SingletonHolder_F878D8_DeletingDtor' \u2014 main part 'SingletonHolder_F878D8_DeletingDtor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SingletonHolder_F878D8_DeletingDtor' does not start with a recognized verb. First word 'Singleton' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00874b00",
+   "end": "00874b29",
+   "name": "BSP_SingletonHolder_F878D8_DeletingDtor",
+   "after": "Function: BSP_SingletonHolder_F878D8_DeletingDtor at 00874b00\nSignature: undefined BSP_SingletonHolder_F878D8_DeletingDtor(void)\nEntry: 00874b00\nBody: 00874b00 - 00874b28"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ],
+ "steps": [
+  {
+   "address": "00873B63",
+   "native": "00BD2FC0",
+   "function": "00873AE0",
+   "note": "sample index draw, ECX=0 (00873B61)"
+  },
+  {
+   "address": "00873C39",
+   "native": "00BD2F10",
+   "function": "00873AE0",
+   "note": "pitch draw U(0, 2*PitchRnd), ECX=0 (00873C26)"
+  },
+  {
+   "address": "00873B8D",
+   "native": "00A7E490",
+   "function": "00873AE0",
+   "note": "create tracked sound"
+  },
+  {
+   "address": "00873B9A",
+   "native": "0054D4C0",
+   "function": "00873AE0",
+   "note": "assign sound to +1Ch"
+  },
+  {
+   "address": "00873C0B",
+   "native": "006E0CD0",
+   "function": "00873AE0",
+   "note": "point world position"
+  },
+  {
+   "address": "00874313",
+   "native": "00BD2FC0",
+   "function": "008742A0",
+   "note": "model variant draw, ECX=0 (00874306)"
+  },
+  {
+   "address": "00872688",
+   "native": "00A79880",
+   "function": "00872670",
+   "note": "scale volume"
+  },
+  {
+   "address": "00872737",
+   "native": "00A81860",
+   "function": "00872720",
+   "note": "sample options"
+  },
+  {
+   "address": "00872F82",
+   "native": "00B6DB70",
+   "function": "00872F40",
+   "note": "refresh node world matrix"
+  },
+  {
+   "address": "008720F7",
+   "native": "00B8B670",
+   "function": "008720F0",
+   "note": "flare pair test",
+   "kind": "tail_jump"
+  },
+  {
+   "address": "008720BB",
+   "native": "00B8D150",
+   "function": "008720A0",
+   "note": "flare update"
+  },
+  {
+   "address": "00872139",
+   "native": "00BC1150",
+   "function": "00872120",
+   "note": "waterdrops finished",
+   "kind": "tail_jump"
+  },
+  {
+   "address": "00872BFA",
+   "native": "00B6DFA0",
+   "function": "00872BF0",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "00872D3A",
+   "native": "00B7C160",
+   "function": "00872D30",
+   "note": "unlink light models"
+  },
+  {
+   "address": "00872D46",
+   "native": "00B6DFA0",
+   "function": "00872D30",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "00872E18",
+   "native": "00B9E4A0",
+   "function": "00872DF0",
+   "note": "remove water ring"
+  },
+  {
+   "address": "008720DA",
+   "native": "00B6DFA0",
+   "function": "008720D0",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "0081C072",
+   "native": "00865FE0",
+   "function": "0081C050",
+   "note": "prune finished effects caller"
+  }
+ ]
+}

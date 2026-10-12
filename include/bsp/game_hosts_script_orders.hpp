@@ -58,6 +58,10 @@
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_blackout.hpp"
 
+namespace bsp {
+struct DummyKamikazeSpawn;
+}
+
 struct lua_State;
 
 namespace bsp::game {
@@ -647,6 +651,12 @@ public:
     std::uint32_t create_air_ops_squadron_006c5050(std::uint32_t vehicle_class,
         std::int32_t wing_count, std::int32_t equipment, const std::string& home_base,
         std::string& created_name, std::int32_t& wing_count_out);
+    // Packet cc9_lua52_kamikaze_wiring: 006FEC00's spawn (006FED18-006FEED3), the
+    // released Ohka/Funryu. The bag goes to the same 004F0AD0 creator as above,
+    // with WingCount 1 and State 7 at the round's matrix; the caller queues the
+    // bag's AutoAttackTarget. Returns the entity id, or 0 when nothing was made.
+    std::uint32_t create_dummy_kamikaze_squadron_006fec00(
+        const bsp::DummyKamikazeSpawn& spawn, std::string& created_name);
 
     // Packet cc8_lua_generate_object. 0046DB4B runs the descriptor's own
     // instantiate-pass creator on an authored record; this host owns the units

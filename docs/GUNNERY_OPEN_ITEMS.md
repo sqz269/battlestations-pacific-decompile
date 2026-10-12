@@ -12905,4 +12905,41 @@ plane/task line classes.
   (`Lightning 01|.-3` at 107.15 s, `killer_cat=6 killer_blast=1`), and the two B-25s die 1.5 and 13.4 s earlier:
   full-damage blasts, as predicted. E2 torpedo releases 5/16 -> 1/16 (the predicted lost release). Wins held:
   LOMP10 1184.73 -> 1226.57 s, USN01 425.72 -> 410.87 s, USN12 1589.38 s, BSM01 767.94 s, LOMP06 and USN02
-  identical; ESMP08 no completion on either side.
+  identical; ESMP08 no completion on either side.- **`kMoveToLuaAltZeroOffsetBound` (190): ON.** No reach on its first rows (USN01, USN04 4500, USN12: no Lua altitude
+  call inside those windows, so exit 1 everywhere). Re-paired where the scripts call it (`local\g37_aBoff_*` against
+  `local\g37_sbron_*`, base `4593a252d`): USNRM01 9000 (67 calls) exit 3, first divergence the formation geometry of
+  `Jap #5.1` at tick 800, the squadron `SquadronSetTravelAlt`/`SquadronSetAttackAlt` set to 150 m; JM08 `l50_j8_r7`
+  exit 3 (torpedo releases 4/57 -> 7/57). No win key in the re-pair; the win rows have no Lua altitude call.- **Strafe (190: `kStrafeDoubleConstantsBound`, `kStrafeAttackrunSeedDrawBound`): ON as a group.** No reach on
+  IJN01, JM08 or USN01 (`strafe task: planes=0`). Re-paired where strafers fly (`local\g37_sbs2{off,on}_*`, base
+  `fa1af26c2`): ESMP08 9000 (33 strafers, 22 attackruns) exit 0, USNOS 9000 (12, 9) exit 1. Predicted identical (the
+  constants are under 1 ulp); the attackrun seed `-U(0, 1)` is a keyed draw (`#star1c`) and leaves no observable
+  trace on these rows. Image-faithful and inert here.- **USN01's convoy strike (the lead's ruling (a)).** USN01 with `g36_ord_u1` wins only when the first AI strike
+  (ConTBD/ConSBD) sinks all six Convoy ships at 181-198 s; if one survives, the mission does not complete in
+  1100 s. Every plane-path change re-rolls it: `kRollArmBaseNumeratorBound` leaves Convoy4 afloat, the audit7 A/C/D/E
+  pair Convoy6, the torpedo-aim group Convoy1 and Convoy6; the draw pins, cadence, moveto draws and flak switches
+  happen to keep all six. It is a plan casualty (USN01 is also lost on main to the live sea, ecb1c55d1), so the three
+  groups below are judged by mechanism.
+- **`kRollArmBaseNumeratorBound` (186): ON.** First divergence on USN04 phase 2 is the formation geometry of the
+  movie flight at tick 400 (wing distances 108.0 -> 109.8 m), the mode-2 heading holds banking less; torpedo
+  releases 2/36 -> 4/39 as predicted (with `kBandShaperPlan264Bound` as well: 2/36 -> 6/60, units 149 -> 211,
+  `local\g37_rabon_*` against `local\g37_aBoff_*`). Wins held: LOMP10 1184.73 -> 1215.16 s, LOMP06 identical,
+  USN12 1589.38 -> 1742.97 s, USN02 identical, BSM01 767.94 s; USN01 lost (above); ESMP08 no completion on either side.- **Torpedo-aim group (190): ON.** First divergence `torpedo Mav3 aim census tick=51` on USN01 (cmd_2C0 -2.0110 ->
+  -2.0104, yaw_desired -0.0709 -> -0.0551), its own path. USN04 phase 2 torpedo releases 2/36 -> 1/36 alone, but 6/60
+  with the roll arm (above), whose pairing the lead asked for; USNRM01 exit 3. USN01 lost (convoy strike, above). The
+  leave-one-out was dropped with the ruling.- **`kDiveAimGlideArmsBound` + `kDiveFlyAboveTermsBound` (189 A, C, C2, D, E): ON.** JM08 first divergence is an
+  `aimglide -> goaway` exit of `MainAirFieldEntity 01_sqn02|.-2` at tick 1606 (the pull-out latch's arm B), USN01's is
+  the `ScoutDauntless` aim lead (projtime 10.02 -> 10.10): both on the switched paths. JM08 dive releases 26/33 ->
+  20/33. USN04 phase 2 is identical with zero native counts moved: there `plan+2E8h` is capped by the turn-roll limit
+  (`plane_ai_control.cpp` `max_bank = min(2E8h * TurnRoll, cap)`) and no arm-B latch fires. USN01 lost (convoy strike).- **audit9's trio (192: `kDiveFlyAboveCarriedFlagsBound`, `kDiveFlyAboveBankArmsBound`, `kDiveFlyAboveCrossTrackBound`):
+  ON.** Alone (bases `7d61ca8d6`/`4593a252d`, `local\g37_aAoff_*`/`g37_aBoff_*` against `g37_a9{c,b,x}on_*`), per
+  aircraft by `local\g37_peracft.py`: carried flags take every dive bomber from flyabove straight to aimglide
+  (turndown 1447 -> 0 ticks, aimdive 3441 -> 0, goaway 1736 -> 0 on USN04 phase 2; releases 1/33 -> 13/41; JM08
+  18/24 -> 29/33), the audit's "aimglide on any 67B0 set"; bank arms alone move JM08 (18/24 -> 26/27, one latch) but
+  not USN04's state counts; cross-track alone is identical (cross-track about 400 m against Rt 1820 m, never
+  decisive). Together on `d9f13f80e` (`local\g37_a9all{off,on}_*`): first divergence the dive bombers' aim lead;
+  USN04 phase 2 dive releases 10/44 -> 13/40 (turndown 1227 -> 61, now reached only through the latched arm;
+  aimglide 33 -> 2482); JM08 5/42 -> 12/42 and its HQ loss at 984.18 s disappears; LOMP10's win comes back (none ->
+  completed 1327.37 s); USN01 none on both sides (its convoy strike). This base is before the live sea.- **`kLandStructureMeshHitTestBound` control pair (routed, committed OFF in `57b3684ba`; lua51 judges it on JM08).**
+  On `ba92657b9` (`local\g37_hqm{off,on}_*`): USN02 win gameplay-identical (203.01 s both); BSM01 exit 3 (deaths
+  194 -> 201, torpedo releases 18/56 -> 28/56) with its win unchanged (`EndMission` 767.94 s both). The first log
+  difference is the extra structure GeomMesh loads (`vehicle class 534 geom meshes=2 triangles=102`), as expected.

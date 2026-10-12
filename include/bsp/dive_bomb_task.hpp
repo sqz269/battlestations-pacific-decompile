@@ -215,8 +215,8 @@ inline constexpr float kGlidePullOutRatio = 0.6000000238418579f;    // 00CE3D30
 //    approach+0Ch unconditionally), and the descent reference's numerator
 //    2 * err (009C6F33), not 2 * A. OFF: the host before section 189.
 inline constexpr bool kDiveYawModeZeroBound = true;  // GUNNERY 193: ON by pair verdict
-inline constexpr bool kDiveAimGlideArmsBound = false;
-inline constexpr bool kDiveFlyAboveTermsBound = false;
+inline constexpr bool kDiveAimGlideArmsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveTermsBound = true;  // GUNNERY 193: ON by pair verdict
 // GUNNERY 192 (cc13-audit9, docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6,
 // ported onto the switches above), each OFF until its pair:
 //  * kDiveFlyAboveCarriedFlagsBound (items 8-12, diff parts 3 and 4): the
@@ -233,9 +233,9 @@ inline constexpr bool kDiveFlyAboveTermsBound = false;
 //    the latched arm runs on every BL tick with +1Ch set. OFF: none of them.
 //  * kDiveFlyAboveCrossTrackBound (item 13, part 5): the bank arm's
 //    cross-track is (0.5 + 0.5 sin Eabs) R, not 1.5 sin(Eabs) R.
-inline constexpr bool kDiveFlyAboveCarriedFlagsBound = false;
-inline constexpr bool kDiveFlyAboveBankArmsBound = false;
-inline constexpr bool kDiveFlyAboveCrossTrackBound = false;
+inline constexpr bool kDiveFlyAboveCarriedFlagsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveBankArmsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveCrossTrackBound = true;  // GUNNERY 193: ON by pair verdict
 // 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
 // path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
 // 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a

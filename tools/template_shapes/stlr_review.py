@@ -23,20 +23,33 @@ EV_NEW = {
     'st1_listremove': 'cc13-stlreview1 shape: list::remove(val): walk the ring, compare each value, erase matches through checked iterators (std::list::remove)',
     'st1_listerase': 'cc13-stlreview1 shape: list::erase(where): checked hooks, unlink node, destroy value, free node, --size (std::list::erase)',
     'st1_listinsertrange': 'cc13-stlreview1 shape: list::_Insert(where,first,last): loop over source nodes, _Buynode(where,prev,value), _Incsize(1) length_error check, link (std::list::insert range)',
+    'st1_listeraserange': 'cc13-stlreview2 shape: list::erase(first,last): begin()/end() pair calls clear(), otherwise loops erase(where) unlinking and freeing each node with checked-iterator hooks (std::list::erase(first,last))',
+    'st1_vecreserve': 'cc13-stlreview2 shape: vector::reserve(n): max_size length_error check, capacity()<n -> allocate n, _Umove the old range under an EH state, destroy+free old storage, reset first/last/end (std::vector::reserve)',
     'cc13_stlreview1_named_instance': 'cc13-stlreview1: bookmark-only stl_probable row upgraded; the function already carries a container-operation ledger name from an earlier sweep and has no string, game-global or game-call anchors',
     'cc13_stlreview1_game_named': 'cc13-stlreview1: not a template copy. Named game code (ledger name from an earlier sweep) that inlines checked-iterator hooks to _invalid_parameter_noinfo; the stl_probable bookmark (e0029 / st1_scl97) was a false positive',
 }
 
 
 def main():
+    global SOURCE
+    args = sys.argv[1:]
+    decisions = 'tools/template_shapes/stlr_decisions.txt'
+    if '--decisions' in args:
+        i = args.index('--decisions')
+        decisions = args[i + 1]
+        del args[i:i + 2]
+    if '--source' in args:
+        i = args.index('--source')
+        SOURCE = args[i + 1]
+        del args[i:i + 2]
     dec = {}
-    for line in (ROOT / 'tools/template_shapes/stlr_decisions.txt').read_text(encoding='utf-8').splitlines():
+    for line in (ROOT / decisions).read_text(encoding='utf-8').splitlines():
         if not line or line[0] == '#':
             continue
         a, old, d, cat, name, key, anch = line.split('|')
         if d in ('upgrade_shape', 'upgrade_named', 'reviewed_game', 'drop_game'):
             dec[a] = (old, d, cat, name, key, anch)
-    only = sys.argv[1:]  # optional band prefixes, e.g. 0080 0081
+    only = args  # optional band prefixes, e.g. 0080 0081
     if only:
         dec = {a: v for a, v in dec.items() if a[:4] in only}
     tagdir = ROOT / 'config/tags'

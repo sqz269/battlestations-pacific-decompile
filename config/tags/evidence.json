@@ -749,5 +749,8 @@
  "st1_veccopyctor": "cc13-stlreview1 shape: vector copy constructor: zero first/last/end, n=(last-first)/sizeof(T), _Buy(n) then _Ucopy under an EH state (std::vector::vector(const vector&))",
  "st1_listinsertrange": "cc13-stlreview1 shape: list::_Insert(where,first,last): loop over source nodes, _Buynode(where,prev,value), _Incsize(1) length_error check, link (std::list::insert range)",
  "st1_listremove": "cc13-stlreview1 shape: list::remove(val): walk the ring, compare each value, erase matches through checked iterators (std::list::remove)",
- "st1_listerase": "cc13-stlreview1 shape: list::erase(where): checked hooks, unlink node, destroy value, free node, --size (std::list::erase)"
+ "st1_listerase": "cc13-stlreview1 shape: list::erase(where): checked hooks, unlink node, destroy value, free node, --size (std::list::erase)",
+ "st1_listeraserange": "cc13-stlreview2 shape: list::erase(first,last): begin()/end() pair calls clear(), otherwise loops erase(where) unlinking and freeing each node with checked-iterator hooks (std::list::erase(first,last))",
+ "st1_vecreserve": "cc13-stlreview2 shape: vector::reserve(n): max_size length_error check, capacity()<n -> allocate n, _Umove the old range under an EH state, destroy+free old storage, reset first/last/end (std::vector::reserve)",
+ "cc13_sweep79_named_library": "cc13-sweep79: bookmark-only stl_probable row upgraded after reading the body; it is a container or string operation (named in the ledger by this sweep) with no string, game-global or game-call anchors"
 }

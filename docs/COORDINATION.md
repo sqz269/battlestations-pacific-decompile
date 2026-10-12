@@ -212,3 +212,13 @@ nothing wakes the worker when it lands, so note the expected end time and check 
 disconnected remote-desktop session still fails every run at FMOD init. Launchers from trees that
 have not merged this change still use the old single lock and wait for every `bsp_game.exe` to
 exit, so merge `main` before the next run.
+
+## Deleted shard rows and merges (cc13-tombstone1, 2026-10-12)
+
+`tools/merge_resolve.py` now merges `config/tags/*.jsonl` conflicts three-way by row: a row one
+side deleted stays deleted, rows either side added are kept, and a delete on one side against an
+edit or add at the same address on the other is left as a conflict. Before this, tag shards had no
+handler, and a hand-written per-address union in merge `044466966` brought back 19 rows that a
+review had dropped. If the tool refuses a tag shard, do not union it by hand: read the base with
+`git show :1:<path>` and keep each base row only if both sides still have it. Details in
+`docs/CC13_MERGE_TOMBSTONES.md`.
