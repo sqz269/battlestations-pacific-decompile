@@ -328,3 +328,149 @@ So every host reader of the sea answers 0.0; none runs the spectrum, none reads 
 Open for packet (2): the full bodies of 00B95750, 00B94CA0, 00BF0CF0/00BF0DF0, 00B95D30,
 00B95AA0 and the FFT stages, the writer of [0109048C], and where the host's mission frame can run
 the step after the fixed-step driver.
+
+## 9. Binding the live sea (packet cc9_physics1_sea, item 2)
+
+Reconstruction: include/bsp/ocean_spectrum.hpp, src/ocean_spectrum.cpp. Switch:
+`bsp::kWaveFieldLiveAmplitudeBound` in that header, committed OFF. Read from disk listings
+(`disasm-raw`), never from a live decompile. Status: reconstructed and build-tested; the x87
+products are modelled in double and rounded at each native float store, so the grid is close to
+the image's but not bit-exact. Names are hypotheses.
+
+### (a) Routines
+
+| Routine | ABI | Rule | Coverage |
+|---|---|---|---|
+| 00BF0CF0 | `__thiscall(state, seed)`, RET 4 | the existing `random_seed_00bf0cf0` (seed \| 1, ×69069, index 624) | complete |
+| 00BF0DF0 | `float __thiscall(state, mean, sigma)`, RET 8 | polar Box-Muller: u = float(2·float(u32·2^-32) − 1) twice until s = float(u1²+u2²) < 1 (no zero test); float(float(sqrt(float(float(ln s)·−2/s)))·u1)·sigma + mean; the second deviate is discarded | complete; the ln/exp helpers 00BFA910/00BFEEEC are taken as the CRT's |
+| 00B94CA0 | `float __thiscall(spectrum, kx, ky)`, RET 8 | k = max(float(sqrt(float(ky²)+float(kx²))), 1e-8); A·exp(−1/(kL)² − (kl)²)·\|k̂·w\|^p / k⁴, with \|·\|^p = 0 when the dot is exactly 0 | complete |
+| 00B95750 | `__fastcall(spectrum)` | +78h = float(V²/g), +7Ch = float(+78h·+8Ch); a stack Mersenne state seeded 1105h; 41h×41h h0 = (s·g2, s·g1), s = float(1/√2 · float(sqrt(P(n·dk, m·dk)))), two normal draws per cell before the term; 64×64 1/k (k clamped) and ω = float(sqrt(float(k·g))) | complete (vtable+10h is a bare RET) |
+| 00B96B90 / 00B96C10 / 00B96C50 | RET 1Ch / 8 / 8 | the setters, each rebuilding through 00B95750 | complete |
+| 00B97100 | constructor | +84h = 0.5, then 00B96B90(1105h, 1.570796, 32, 60, 2.0, 0.02, 0.00005) | height path only |
+| 00B952D0 | `__thiscall(spectrum, dir, re*, im*)`, RET 0Ch | 64-point radix-2 FFT in place: bit reversal, six passes, twiddles c2 = float(float(sqrt(float(1−c1)))·1/√2)·−dir, c1 = float(float(sqrt(float(c1+1)))·1/√2); dir 1 divides by 64 | complete |
+| 00B95AA0 | `__thiscall(spectrum, dir, vector*)`, RET 8 | rows, then columns, through 00B952D0 | complete |
+| 00B95D30 | `__thiscall(spectrum, t)`, RET 4 | gate byte 00E130B4 (1 on disk, no writer); h(k,t) = h0(k)e^{iωt} + conj(h0(−k))e^{−iωt} into +20h at row m&3Fh, column n&3Fh; 00B95AA0(−1, +1Ch) | partial: the choppy vectors 00B95EBF..00B9604C and the second transform 00B960A7 are skipped (their only reader is 00BA2B50) |
+| 00BA0090 | `__thiscall(field, camera, t)`, RET 8 | [01090494] = float(t·10); step(float(t·+20h)); +2Ch = +B8h; +28h = +30h = float(+B8h·+88h); +24h = +2Ch | height path only; the render body is cc13's |
+| 0078C9B0 (ocean part) | | 00B96C50(WaveHeight, Choppy); 00B9A450 → 00B96C10(float(WindDirection·π), WindSpeed); +B8h = HeightScale; 00B9A4C0(Falloff, LayerScale, TimeScale) | ocean keys only |
+
+Constants: dk = 6.283184051513672 (00D638E8), g = 9.8100004196167 (00CF9058), k floor 1e-8
+(00CF7FE8), 1/√2 from the static initializer 00CD8870 into [0109048C], 0.1 (00D7A3A0, 0078D184),
+10.0 (00CE3DC0), π (00CE3D28).
+
+Self-check (local/p1_probe.cpp, not built by CMake): the transformed grid's imaginary part stays
+below 1% of its real part, as the conjugate-symmetric construction requires.
+
+### (b) Host wiring
+
+- **Build.** `ocean_live_field_publish_scene` parses `g_Ocean` (`0_SimpleOcean`) and
+  `g_Ocean/Waves` from the scene header (the 004CB420 default for a missing key) and builds the
+  object as 0078DAA0 + 0078C9B0 do. It is called from the mission host's header pass
+  (src/game_hosts_mission.cpp, routed edit).
+- **Step.** `ocean_live_field_render_job_0068a0d0(fixed_clock.simulation_clock)` from the mission
+  frame's `render_004ca440` (src/game_hosts_mission_frame.cpp, routed edit): after the frame's
+  fixed steps, as 004E4A40 orders them. LABELLED: every in-mission frame is taken as interface
+  level 1; the host runs no BSP_Game_Render view branch.
+- **Readers.** OceanFieldBinding (src/game_hosts_units.cpp: ship motion 00826985, hydro forces
+  00932D6B, the unit's ocean height, the plane water-surface law, the avoid-surface
+  substitution, the segment-occluder fallback) and CameraOceanField (src/game_hosts_hud.cpp,
+  0042F38B/0042F3B1) sample the live grid times the live amplitude when the switch is on.
+- **Not bound here:** the coverage regions (bound since in section 10), gunnery's inline y = 0 plane (torpedo, depth
+  charge, shell water crossings in src/game_hosts_gunnery.cpp), the dynamics buoyancy record
+  (src/game_hosts_fixed_step.cpp) and the interface-update record (src/game_hosts_hud.cpp 614).
+
+### (c) Predictions (written before any run)
+
+The sea the readers see, from the probe over this installation's scene keys (WindSpeed 1.0 and
+WindDirection 0.4 everywhere, so L = 0.102 and the shape is common; amplitude scales with
+sqrt(WaveHeight)·HeightScale):
+
+| Row | Scene | WaveHeight / Choppy / HeightScale / LayerScale | rms height | max | max slope per metre |
+|---|---|---|---|---|---|
+| USN01 | usn_1_marshall.scn | 200 / 2.5 / 2.0 / 100 | 1.04 m | 3.2 m | 0.25..0.33 |
+| USN04 | usn_19_coralus.scn (mtime 2024-08-09) | 250 / 1.3 / 3.0 / 125 | 1.75 m | 5.3 m | 0.40..0.44 |
+| JM06 | ijn_06_prelude_to_midway.scn | 150 / 1.5 / 2.0 / 100 | 0.90 m | 2.8 m | 0.22..0.29 |
+| USN12 (calm) | usn_12_augusta.scn | 100 / 1.5 / 0.5 / 70 | 0.18 m | 0.56 m | 0.05..0.08 |
+
+1. **Mechanism.** Each ON log has one `ocean waves:` line with these keys, then an
+   `ocean live field:` line whose amplitude is the row's HeightScale, and render steps equal to
+   the in-mission frames so far (one per frame). OFF logs carry neither line.
+2. **Hulls.** Ship heave, pitch and roll move on every row from the first in-mission frames; the
+   size grows with the table's rms (USN04 most, USN12 least). Hull positions drift through the
+   hydro forces, so ranges, gunnery and every RNG-coupled number after the first shot move
+   (pair_diff exit 3 on all four rows; USN12's moves are expected to be the smallest).
+3. **Planes.** The water-surface law and the avoid-surface substitution see the wave height, so
+   low-flying planes (torpedo runs) can move on USN01/USN04/JM06.
+4. **No crash, no lost win in the control row.** A win lost on any row is a plan casualty, listed
+   in item 3, not a regression.
+5. **Uncertain.** Whether a hull's motion is large enough to change a scripted win's timing; the
+   ship-motion wave gate (00826985) could also change throttle or keel behaviour, which this
+   inventory did not trace.
+
+## 10. The coverage regions (packet cc9_physics1_sea, queue item 2)
+
+Reconstruction: include/bsp/ocean_coverage_regions.hpp, src/ocean_coverage_regions.cpp, driven by
+`ocean_live_field_add_landscape_008830aa` (src/ocean_spectrum.cpp) under the same switch
+`kWaveFieldLiveAmplitudeBound`. Read from the live decompile (both bodies are clear of the _free
+repair) and the 00BA0C00 listing. Status: reconstructed, build-tested, probe-checked over every
+terrain model of this installation. Names are hypotheses.
+
+### (a) The chain
+
+| Address | ABI | Rule |
+|---|---|---|
+| 008830AA | in 00882AC0 | `call 00BA1370` with ECX = [world+A8h] and the terrain render node +3CCh, after 00ADE820 built it (00883058) and 00B6D890 registered it (0088308C); only when [[00E188A8]+19F0h] is set |
+| 00BA1370 | `__thiscall(ocean, node)`, RET 4 | 00BA0C00(node), then append node to ocean+5F4h (count +5F8h) |
+| 00BA0C00 | `__stdcall(node)`, ocean in EDI | for a geometry node: every draw section whose effect name after its last `/` (00CE7898) holds `oceanwavedamp` is collected; then per section: box over all vertices of its stream (+3Ch) through 004768D0, start x0 = z0 = 1e10 (00CE4970), x1 = z1 = −1e10 (00CE4ADC), each FCOMI/JBE taking the vertex on below/equal/unordered; x0, x1 += [node+120h], z0, z1 += [node+128h] (node world translation, no rotation); sx = float(1/(x1−x0)), sz = float(1/(z1−z0)); the mask from the material's first texture (+10h when the short +34h ≥ 1, else a null and no region); a region record is appended to +620h only when 00B9E170 succeeds; the section moves to the ocean's own draw list (render only); then the children (+34h, siblings +3Ch) |
+| 00B9E170 | `bool __thiscall(texture, region*)`, RET 8 | size = texture vt+3Ch, halved while > 80h counting the level; size 0 → log 00D63960, false; level ≥ level count (00B33E50) → log 00D6392C, false; a 1-level A8R8G8B8 texture (renderer vt+88h, pool 2) gets the level through 00B3CD70 = D3DXLoadSurfaceFromSurface(filter NONE); the red byte of each pixel fills a w·h byte vector; +28h = float(w), +2Ch = float(h) |
+
+The region record matches 00B9CF50's reads (section 2): +4h bitmap, +10h..+1Ch box, +20h/+24h
+scales, +28h/+2Ch width and height.
+
+### (b) Host
+
+- **Model.** The landscape's `models/terrain/<FilePath>.mmod` through the recovered structured
+  reader (00B7F430 with the Mesh/Note/GroupParams parsers). Each Hierarchy item is a node; its
+  world frame is its Matrix times its parent's (row vectors), the top items' parent being the
+  landscape's world frame. LABELLED: the terrain render node is taken to sit at that frame, and
+  items are walked in file order (only overlapping regions depend on order; every terrain model
+  here has at most one damp section).
+- **Positions.** 004768D0's two paths: float3 at the element offset with no compressed data,
+  else the typed lanes (FLOAT3 `pf43`, FLOAT4 `pf44`, FLOAT16 `pf24`) times record 0's scale plus
+  its bias, every step in float. LABELLED: the half conversion treats exponent 31 as a number.
+- **Texture.** Read through the scene host's VFS reader (the 00B31C20 → 00BDF4C0 route, so a
+  `.tga` name finds the `.dds`); an unresolved name falls back to `error.tga` as 00B31C20 does.
+  The loader 00B3FCAF keeps the file's levels when renderer+1D84h (= 2 − TextureDetail) is 0;
+  LABELLED: 0 is assumed (this installation's options.txt has TextureDetail 2). A file without
+  DDSD_MIPMAPCOUNT has one level (D3DXGetImageInfo).
+- **Red channel.** DXT1/DXT5 colour blocks decoded as d3dx9_40 does, FITTED, not recovered: red =
+  r5·float(1/31); the third and fourth colours a + (b−a)·float(1/3) and b + (a−b)·float(1/3);
+  DXT1's three-colour midpoint a + (b−a)·0.5 and fourth colour 0; byte = int(float(v·255) + 0.5).
+  Checked against the actual DLL (local p1_dxt_probe: D3DXCreateTextureFromFileInMemoryEx with
+  00B3FCAF's arguments, then D3DXLoadSurfaceFromSurface filter NONE): all 54 damp textures and
+  error.dds, 2422 distinct (mode, r0, r1, index) keys, 0 mismatches.
+- **Hook.** The scene-contents host calls `ocean_live_field_add_landscape_008830aa` once per
+  Landscape at the pass-A point, after the terrain load (routed edit in
+  src/game_hosts_scene_contents.cpp), and logs `ocean coverage:` per landscape. The unit host's
+  OceanFieldBinding and the camera's CameraOceanField read `ocean_live_field_coverage_mask`, which
+  is 1.0 while the switch is off.
+
+### (c) Census over this installation (local p1_probe, identity frame)
+
+107 terrain models: 87 damp sections, 84 regions. Refused as the image refuses: dlc_pu_01 and
+ijn09c (no texture on the section), usn09_leyte (Leyte_oceanwavedamp.dds has one level, the mask
+needs level 2: 00D6392C). dlc_pu_02 and dlc_pu_07 name `waterdamp_DLC3_PU2.tga`, absent from the
+loose files, so they take error.dds's red channel. truk01.mmod is refused by the host's Subset
+reader (`Could not read Subset child header`); it has no damp section. Every mask is 128×128.
+
+### (d) Predictions for the rows (written before any run)
+
+| Row | Landscapes | Regions | Expected |
+|---|---|---|---|
+| USN01 | m07_a, 3 × DLC_L_03_S | 4 | waves damped near the atoll; the convoy and carrier near islands move less than in a regions-less ON run |
+| USN04 | none (usn_19_coralus.scn) | 0 | identical to the regions-less ON run |
+| JM06 | ijn06_cure_atoll | 1 (30 km box) | damping inside the box, which covers the whole play area |
+| USN12 | invasion_of_fiji_islands, s07_s | 2 | calm sea, small effect |
+
+1. Each ON log has one `ocean coverage:` line per Landscape with the counts above; OFF logs have
+   none.
+2. OFF is unchanged (the mask reader returns 1.0 as before).

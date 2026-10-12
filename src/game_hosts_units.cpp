@@ -86,6 +86,7 @@
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/ship_hydro_forces.hpp"
 #include "bsp/ship_buoyancy_elements.hpp"
 #include "bsp/unit_death_sink.hpp"
@@ -1681,6 +1682,10 @@ struct GameUnitSlot {
     // the same answer the weapon director already has rather than a second
     // resolution of its own.
     std::size_t command_target_plus_one{0};
+    // Packet cc9_land_command_own_target: the `land` command's own target (its
+    // vtable[178h] -> 00521EA0), plus one, stored where the land command is
+    // installed. The refresh above never writes it.
+    std::size_t land_command_target_plus_one{0};
     // The plane row's rate and acceleration keys, read once at creation.
     bsp::PlaneControlClass plane_class;
     // desc+184h StallSpd, the divisor the control authority ramp uses. The
@@ -2448,6 +2453,7 @@ struct GameUnitsHost::Impl {
         kill_cause_by_unit[unit] = cause;
     }
     unsigned long long land_retired_invalid{0};
+    unsigned long long land_retired_own_target_ok{0};   // packet cc9_land_command_own_target
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
     unsigned long long yaw_rate_calls_00811940{0};
     unsigned long long yaw_rate_nonzero_00811940{0};
@@ -2835,6 +2841,8 @@ struct GameUnitsHost::Impl {
 
     // The notes are logged once per kind, not once per unit tick.
     bool logged_ocean{false};
+    bool logged_ocean_live{false};       // packet cc9_physics1_sea
+    bool logged_ocean_live_1000{false};
     bool logged_scale{false};
     bool logged_curve{false};
     bool logged_integrator{false};
@@ -5356,6 +5364,14 @@ struct GameUnitsHost::Impl {
     // timer 0, or 5.0 with +34h cleared). 006BF150's slot publication is not carried.
     // False: the retire leaves the deck's records as they were.
     static constexpr bool kLandTaskRetireQueueEraseBound = true;   // ON by its pairs (SHIP_AI 208.6.1)
+    // Packet cc9_land_command_own_target (docs/SHIP_AI_OPEN_ITEMS.md 210). 009B34D0
+    // compares the squadron's current command's own target (vtable[178h] at 009B3507,
+    // 00521EA0 at 009B3516) with approach+30h. True: the host reads the land command's
+    // own target, stored at the land install. False: it reads command_target_plus_one,
+    // which the 0071EBF0 refresh rewrites from a still-current category 1/2 row, so a
+    // recalled squadron with a current attack row loses its land task (USNOS j:
+    // Enterprise_sqn05 at 1406.10 s, 4.4 s after the recall).
+    static constexpr bool kLandCommandOwnTargetBound = true;   // ON by its pairs (SHIP_AI 210.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -8371,7 +8387,8 @@ namespace {
 // and the coverage mask returns exactly 1.0f when no region covers the point.
 // Packet cc9_ocean_waves, docs/OCEAN_WAVE_FIELD.md. True: both leaves run their
 // reconstructed rules over the field state this process can establish: amplitude
-// field+24h = 0.0f (00BA19C9, the only store), +B4h = 1/100 (00B9A4C0 over the
+// field+24h = 0.0f (00BA19C9; the per-frame store 00BA0B93 is bound separately by
+// kWaveFieldLiveAmplitudeBound, OCEAN_WAVE_FIELD.md section 9), +B4h = 1/100 (00B9A4C0 over the
 // 004CB420 default tile 100.0 at authored +30h), +F9h clear, no coverage regions
 // (00BA0C00 / 00BA1370 build them from bitmaps this process does not load) and a
 // labelled zero grid for the field+BCh spectrum. False: the records, as before.
@@ -8393,6 +8410,28 @@ public:
             owner_.record("ShipMotion::ocean_wave_field", 0x0078c890u);
             return 0.0f;
         }
+        // Packet cc9_physics1_sea (docs/OCEAN_WAVE_FIELD.md section 9): the live
+        // field the render step 00BA0090 keeps, amplitude +24h = HeightScale
+        // (00BA0B93) over the stepped 00B95D30 grid. Off, or before a scene was
+        // published, the flat sea below stands.
+        if (bsp::ocean_live_field_ready()) {
+            const bsp::OceanLiveField& live = bsp::ocean_live_field_process();
+            if (!owner_.logged_ocean_live || (live.render_steps >= 1000u && !owner_.logged_ocean_live_1000)) {
+                owner_.logged_ocean_live = true;
+                if (live.render_steps >= 1000u) owner_.logged_ocean_live_1000 = true;
+                owner_.log.notef("ocean live field: render steps %u amplitude +24h %.3f "
+                    "tile %.1f +F9h %d clock %.3f sample(%.1f,%.1f) %.4f",
+                    live.render_steps, static_cast<double>(live.field.amplitude_24),
+                    static_cast<double>(1.0f / live.field.inv_tile_b4),
+                    live.field.flat_f9 ? 1 : 0, static_cast<double>(live.clock_01090494),
+                    static_cast<double>(x), static_cast<double>(z),
+                    static_cast<double>(bsp::ocean_wave_field_sample_0078c890(live.field,
+                        bsp::ocean_spectrum_grid(live.spectrum), x, z)));
+            }
+            owner_.done("ShipMotion::ocean_wave_field", 0x0078c890u);
+            return bsp::ocean_wave_field_sample_0078c890(live.field,
+                bsp::ocean_spectrum_grid(live.spectrum), x, z);
+        }
         bsp::OceanWaveFieldState field;
         field.flat_f9 = false;        // [[game+5FCh]+0C20h]: no scene record here
         field.inv_tile_b4 = static_cast<float>(1.0 / 100.0);   // FLD1; FDIVRP at 00B9A4D2
@@ -8406,9 +8445,10 @@ public:
             owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
             return 1.0f;
         }
-        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
         owner_.done("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
-        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
+        // Packet cc9_physics1_sea: the landscapes' wave-damp regions (008830AA ->
+        // 00BA1370); 1.0 everywhere while the live sea is off.
+        return bsp::ocean_live_field_coverage_mask(x, z);
     }
 
 private:
@@ -11544,6 +11584,7 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.level_bomb_state = bsp::LevelBombState::kNone;
     unit.attack_command_class = 0x00E08FA0u;        // `land`
     unit.command_target_plus_one = owner + 1u;      // 00465080(block+7Ch, 0.0)
+    unit.land_command_target_plus_one = owner + 1u;
     // 009B41C0 -> 009B3240 -> 009B2E50 -> 009AFE70. The draws, in order.
     float angle = 0.20943952f, pitch = 0.10471976f;   // DEG(12), DEG(6)
     if (lua.plane_globals_loaded()) {
@@ -11607,9 +11648,11 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     if (unit.land_explicit_site) {
         // The plane's current command is still `land` with this site as its
         // target (vtable[174h] / vtable[178h] -> 00521EA0).
+        const std::size_t target = kLandCommandOwnTargetBound
+            ? unit.land_command_target_plus_one : unit.command_target_plus_one;
         return unit.land_site_plus_one - 1u < slots.size()
             && unit.attack_command_class == 0x00E08FA0u
-            && unit.command_target_plus_one == unit.land_site_plus_one;
+            && target == unit.land_site_plus_one;
     }
     const ReturnToBaseCensus* entry = nullptr;
     for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
@@ -11660,6 +11703,7 @@ std::size_t GameUnitsHost::land_at_site_0099a3dd(std::size_t unit_index,
         GameUnitSlot& plane = *host.slots[m];
         plane.attack_command_class = 0x00E08FA0u;          // `land`
         plane.command_target_plus_one = site_index + 1u;   // the command target
+        plane.land_command_target_plus_one = site_index + 1u;
         ++host.land_census_for(sq->name).placements;
         if (host.install_land_task_core_009b41c0(m, *sq, site_index, deck, site_name, true)) {
             ++installed;
@@ -29164,11 +29208,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009B3F15 skips the rule and the state, and 009B3560
                             // answers 0, so 0099A4C0 retires the task.
                             ++owner_.land_retired_invalid;
+                            if (unit_.land_explicit_site
+                                && unit_.attack_command_class == 0x00E08FA0u
+                                && unit_.land_command_target_plus_one == unit_.land_site_plus_one)
+                                ++owner_.land_retired_own_target_ok;
                             owner_.land_task_retire_006c8800(unit_, "009B34D0 invalid");
                             owner_.log.notef("  land task %s: retired, the squadron's command "
-                                "is no longer land at this site (009B34D0) at %.2f s",
+                                "is no longer land at this site (009B34D0) at %.2f s "
+                                "(class %08X, refresh target %zu, own target %zu, site %zu)",
                                 unit_.row.name.c_str(),
-                                static_cast<double>(owner_.summary.simulated_seconds));
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                unit_.attack_command_class, unit_.command_target_plus_one,
+                                unit_.land_command_target_plus_one, unit_.land_site_plus_one);
                             unit_.land_task_installed = false;
                             unit_.land_state = LS::kNone;
                             unit_.land_site_plus_one = 0;
@@ -33998,6 +34049,10 @@ void GameUnitsHost::report() {
         Impl::kLandTaskRetireQueueEraseBound ? 1 : 0, host.land_retire_leader_calls,
         host.land_retire_queue_erases, host.land_retire_assignment_erases,
         host.land_retire_slot_states);
+    host.log.notef("summary land command own target bound=%d retired_invalid=%llu "
+        "own_target_ok=%llu (009B34D0 vtable[178h], packet cc9_land_command_own_target)",
+        Impl::kLandCommandOwnTargetBound ? 1 : 0, host.land_retired_invalid,
+        host.land_retired_own_target_ok);
     host.log.notef("summary squadron kill queue erase bound=%d kills=%llu erases=%llu "
         "(00926D90 -> 009273A0 slot+4 -> 006C4B30, packet cc9_squadron_kill_queue_erase)",
         Impl::kSquadronKillQueueEraseBound ? 1 : 0, host.squadron_kill_queue_kills,

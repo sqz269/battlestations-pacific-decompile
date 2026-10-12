@@ -26,6 +26,7 @@
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
@@ -1259,6 +1260,20 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
                 parties[i] = ordinal;
             }
             ai_publish_scene_slot_parties(parties);
+        }
+        // Packet cc9_physics1_sea: the g_Ocean/Waves keys 0078C9B0 (called at
+        // 004DF87F) loads into the ocean object; a no-op while
+        // kWaveFieldLiveAmplitudeBound is off.
+        {
+            const bsp::OceanSceneWaves waves =
+                bsp::ocean_live_field_publish_scene(document.header.properties);
+            if (bsp::kWaveFieldLiveAmplitudeBound) {
+                log.notef("ocean waves: path=%s authored=%d simple=%d height_scale=%.3f "
+                    "wave_height=%.3f wind_speed=%.3f choppy=%.3f time_scale=%.3f",
+                    scene_path.c_str(), waves.authored ? 1 : 0, waves.simple_ocean ? 1 : 0,
+                    waves.height_scale_5c, waves.wave_height_54, waves.wind_speed_50,
+                    waves.choppy_58, waves.time_scale_34);
+            }
         }
         log.notef("scene participant scalar: path=%s available=1 max_players=%d "
             "authored=%d", scene_path.c_str(), table.max_player_num,
