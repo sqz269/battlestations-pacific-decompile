@@ -241,10 +241,67 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
 - **Rounding.** x87 extended intermediates are modelled with double, with float roundings where
   the listing stores. Sums of three products and divisions can differ in the last bit in rare
   cases. Float copies made with x87 (memcpy here) would quiet a signalling NaN in the native.
-- **Out of scope.** The 00B1F5E0 / 00B1E6D0 queue helpers (segment 83) are left unnamed. The
-  cockpit helper calls 00B3C550/00B3C960/00B3C6E0 and 00B3CDA0 are named (section 6) but not
-  reconstructed.
+- **Later packets.** The queue helpers and the cockpit frame calls are in section 10.
 
+## 10. Segment 83 queue helpers and the cockpit frame (packet cc13_seg83_queue)
+
+Queue storage follows docs/RENDER_COMMAND_QUEUE.md: command pointers at +14h/+18h/+1Ch, plus a
+world-label row vector at +24h/+28h/+2Ch with 14h rows {NativeString text, float pos[3]}.
+
+| Routine | Name | Coverage |
+| --- | --- | --- |
+| 00B1F5E0 | BSP_RenderCommandQueue_SubmitDrawable | complete; confirms cc13-shadow1's Ghidra name |
+| 00B1F4D0 | BSP_RenderCommandQueue_SubmitScene | complete |
+| 00B1E6D0 | BSP_RenderCommandQueue_ExecuteAndPopLast | complete |
+| 00B1EF60 | BSP_RenderCommandQueue_DrawWorldLabels | complete |
+| 00B3C960 | BSP_CockpitHelper_BeginFrame | complete |
+| 00B3C6E0 | BSP_CockpitHelper_DrawCockpit | complete |
+| 00B1BF40, 00B1ECA0, 00B1E770, 00B1DAD0, 00B1D830, 00B1CCD0, 00B1CA90, 00B1C610, 00B1FF70, 00B214E0, 00B215D0 | named only | listing |
+
+- **SubmitDrawable** `(queue, scene, camera, targets, node)`, RET 10h.
+  - It appends a new command (00B1F170). Growth is max(2·capacity, 1).
+  - When node+48h & camera+19Ch, it calls node vtable +20h(command+28h, 0.0, 1.0, 0), then
+    00B1E990.
+  - A failed allocation appends null and then faults on null+28h.
+- **SubmitScene** `(queue, scene, camera, targets, NativeString label by value)`, RET 14h.
+  - The label goes to command+14h. 00B72190 traverses the whole scene into command+28h.
+  - The callee frees the label argument.
+  - Callers: the GUI order, the game frame and the sound/shadow paths.
+- **ExecuteAndPopLast.** It runs the last command's vtable +0, rereads the slot, destroys
+  (00B1DDD0) and frees the command, and decrements the count.
+  - Unlike 00B1EBE0, it does not publish the queue's current context. 00B10500, 00B3C960 and
+    00B3C6E0 use it right after a submit, to run that command immediately.
+- **DrawWorldLabels** `(queue, camera)`, RET 4. It runs once per frame from the game render frame.
+  - Each label is projected through the camera view-projection.
+  - It prints only inside the clip volume. The compares are FCOMI/JB, so NaN coordinates skip.
+  - Screen position is (x/w·0.5+0.5)·1024, (0.5-y/w·0.5)·768, truncated. The format is "%s\n".
+  - The print is the bare-RET 004B47E0, so nothing appears.
+  - The rows are then cleared.
+  - The only producer, 00B1ECA0 AddWorldLabel (under the 00B1CCD0 lock), has no reference. The rows
+    therefore stay empty in this image.
+- **Renderer slots.** 00B214E0 (+7Ch) hands the back buffer to a target object. 00B215D0 (+84h)
+  creates a system-memory offscreen surface wrapped in a BSP_D3D9Surface. 00B1FF70 is
+  GetRenderTargetData (the luminance readback).
+- **Unreferenced bodies.** The other 23 unnamed segment-83 entries have no rel32, absolute or Ghidra
+  reference (local/sc2_rel32.py), except 00B20FD0, which only the unreferenced 00B23080 calls. They
+  are left as COMDAT leftovers.
+- **Cockpit.** service+0Ch is the helper (cockpit docs cover construction and lifetime only).
+  Helper +8h is the node and +0Ch the cockpit camera. Either call drops a hidden node (release,
+  clear +8h).
+  - **BeginFrame** `(helper, main camera, targets)`, RET 8.
+    - It copies the main camera's viewport size, fov, fog owner and aspect to the cockpit camera.
+    - The node world translation becomes node − camera position (node vtable +34h).
+    - The cockpit view is the main view with its translation zeroed.
+    - It shows the node.
+    - With both [00F8BBF0]+0Ch/+0Dh shadow switches on, the first scene light's shadow-map owner
+      renders the node (00A8E180). The box is the cockpit camera position ± the node bound radius
+      (vtable +44h result +0Ch). That command is then run.
+  - **DrawCockpit** `(helper, main camera, targets)`, RET 8.
+    - It shows the node and sets the cockpit camera to render mode 12.
+    - It submits (main camera+A4h scene, cockpit camera, targets, node) and runs it.
+    - It hides the node and resets its local matrix to identity (vtable +38h).
+- **004DE4B0.** The ledger name says particle clock, but the evidence in section 4 shows the
+  registry holds texture sources. The rename is left to its owning lane.
 ## 9. Handoff
 
 - **Closed since the first handoff:**
@@ -258,6 +315,6 @@ Camera = command+28h -> +8h (00B1BF40). The steps run in this order.
   - The +2ACh old-film parameter block is initialized by 00B0CD80
     (docs/NATIVE_RENDER_SERVICE_*.md) and consumed by 00B529A0 (docs/CC13_POST_EFFECTS_AND_RESOURCES.md).
   - Slot +28h of 00B19A60 and the +0Ch object: see sections 4 and 6.
-- **Open:** the 00B1F5E0 / 00B1E6D0 queue helpers (segment 83) are unnamed; 004DE4B0's ledger name
-  says particle clock but the registry holds texture sources (owner lane to decide).- **00BA0090** (BSP_OceanWaveField_Update, cc13-water1) also calls 00B0EB10 (its cCorner0..3 are the
+- **Open:** 004DE4B0's ledger name says particle clock but the registry holds texture sources
+  (owner lane to decide). The segment 83 queue helpers are covered in section 10.- **00BA0090** (BSP_OceanWaveField_Update, cc13-water1) also calls 00B0EB10 (its cCorner0..3 are the
   far-corner rays) and 00B0D160 (+21Ch). It belongs to the water lane.

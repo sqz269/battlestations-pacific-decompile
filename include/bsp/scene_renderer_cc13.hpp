@@ -342,4 +342,96 @@ void stats_overlay_00b151e0(StatsOverlayHost& host);
 // the scene render copies to service+5A8h).
 void camera_history_00b0db00(void* history, float time, void* camera, SceneRenderFrameHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13_seg83_queue: render command queue helpers (segment 83) and the
+// cockpit helper frame calls. Queue layout as docs/RENDER_COMMAND_QUEUE.md:
+// command pointers data/count/capacity +14h/+18h/+1Ch; world-label rows
+// data/count/capacity +24h/+28h/+2Ch, 14h each {NativeString text, float pos[3]}.
+// ---------------------------------------------------------------------------
+
+class RenderQueueHost {
+public:
+    virtual ~RenderQueueHost() = default;
+    // operator new(44h) + 00B1F170(scene, camera, targets); null when the allocation fails.
+    virtual void* render_command_new_00b1f170(void* scene, void* camera, void* targets) = 0;
+    virtual void command_pointers_reserve_00b1c6c0(void* vector14, std::int32_t capacity) = 0;
+    virtual void node_collect_slot20(void* node, void* context, float a, float b, std::uint32_t c) = 0;
+    virtual void instance_groups_upload_00b1e990(void* command) = 0;
+    virtual void native_string_assign(void* destination, const std::uint32_t source[2]) = 0;  // inline 0041DD40 + memcpy
+    virtual void native_string_free(const std::uint32_t source[2]) = 0;  // pool return of the by-value argument
+    virtual void scene_traverse_00b72190(void* scene, void* context) = 0;
+    virtual void command_execute_slot0(void* command) = 0;
+    virtual void command_destroy_00b1ddd0(void* command) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    // 00B1EF60.
+    virtual const float* camera_view_projection_00b70490(void* camera) = 0;
+    virtual const float* transform4_00b62d10(const float source[4], float* out, const float* matrix) = 0;
+    virtual void label_rows_resize_00b1e7f0(void* rows24, std::uint32_t count) = 0;
+    virtual void debug_print_004b47e0(float x, float y, const char* format, const char* text) = 0;  // bare RET
+};
+
+// 00B1BF40 `camera __thiscall(command)`, RET: command+28h (context) -> +8h.
+// (SceneRendererHost::command_prefix_00b1bf40 above is this camera.)
+
+// 00B1F5E0 `void __thiscall(queue, scene, camera, targets, node)`, RET 10h:
+// append a new command for (scene, camera, targets); when node+48h &
+// camera+19Ch, node vtable +20h(command+28h, 0.0, 1.0, 0) collects the node and
+// 00B1E990 uploads it. A failed allocation appends null and then faults on
+// null+28h in the native. Callers 00B10500, 00B3C6E0, 00A8E180.
+void submit_drawable_00b1f5e0(void* queue, void* scene, void* camera, void* targets, void* node,
+                              RenderQueueHost& host);
+// 00B1F4D0 `void __thiscall(queue, scene, camera, targets, NativeString label)`,
+// RET 14h: as 00B1F5E0 but command+14h = label, the whole scene is traversed
+// (00B72190(scene, command+28h)), and the by-value label is freed.
+void submit_scene_00b1f4d0(void* queue, void* scene, void* camera, void* targets, const std::uint32_t label[2],
+                           RenderQueueHost& host);
+// 00B1E6D0 `void __thiscall(queue)`, RET: run the last command (vtable +0),
+// destroy and free it, drop it from the count.
+void execute_last_00b1e6d0(void* queue, RenderQueueHost& host);
+// 00B1EF60 `void __thiscall(queue, camera)`, RET 4: project each world label
+// through the camera view-projection; inside the clip volume (|x|,|y| <= w,
+// 0 <= z <= w) print "%s\n" at (x/w*0.5+0.5)*1024, (0.5-y/w*0.5)*768 (the
+// print is a bare RET); then clear the rows. Null camera clears only.
+void draw_world_labels_00b1ef60(void* queue, void* camera, RenderQueueHost& host);
+
+class CockpitHost {
+public:
+    virtual ~CockpitHost() = default;
+    virtual void release(void* object) = 0;  // InterlockedDecrement(+4), vtable +0 at zero
+    virtual void* camera_viewport_00b6fde0(void* camera) = 0;
+    virtual void camera_set_fov_00b6fbb0(void* camera, float fov) = 0;
+    virtual void camera_set_fog_owner_00b71940(void* camera, void* owner) = 0;
+    virtual void camera_set_aspect_00b6fbd0(void* camera, float aspect) = 0;
+    virtual const float* camera_view_matrix_00b6fcb0(void* camera) = 0;
+    virtual void camera_set_view_matrix_00b71490(void* camera, const float* matrix) = 0;
+    virtual void camera_set_render_mode_00b6fdf0(void* camera, std::int32_t mode) = 0;
+    virtual void transform_refresh_world_00b6db70(void* node) = 0;
+    virtual void node_set_world_slot34(void* node, const float* matrix) = 0;
+    virtual void node_set_local_slot38(void* node, const float* matrix) = 0;
+    virtual const float* node_bounds_slot44(void* node, float* out) = 0;  // +0Ch radius
+    virtual void node_set_visibility_factor_00b6da70(void* node, float factor, std::uint8_t recurse) = 0;
+    virtual void* scene_lighting_owner_00b72110(void* scene) = 0;
+    virtual const std::uint8_t* render_options_00f8bbf0() = 0;  // +0Ch, +0Dh shadow switches
+    virtual void* first_light_node(void* lighting) = 0;  // list +1Ch head ->next; CRT check when empty
+    virtual void* light_shadow_map_owner_00b7aab0(void* light) = 0;
+    virtual void shadow_render_single_view_00a8e180(void* shadow, void* node, void* camera, const float min[3],
+                                                    const float max[3]) = 0;
+    virtual void submit_drawable_00b1f5e0(void* scene, void* camera, void* targets, void* node) = 0;
+    virtual void execute_last_00b1e6d0() = 0;
+};
+
+// 00B3C960 `void __thiscall(helper, main camera, targets)`, RET 8. Helper +8h
+// node, +0Ch cockpit camera. A hidden node (+44h) is released and cleared.
+// Otherwise: cockpit viewport size, fov, fog owner and aspect from the main
+// camera; node world translation = node - main camera position; cockpit view
+// = main view with zero translation; node visibility 1.0; with both shadow
+// switches on, the first light's shadow owner renders the node over the
+// cockpit camera position +- the node's bound radius and the command runs.
+void cockpit_begin_frame_00b3c960(void* helper, void* main_camera, void* targets, CockpitHost& host);
+// 00B3C6E0 `void __thiscall(helper, main camera, targets)`, RET 8: hidden node
+// released; else visibility 1.0, cockpit camera render mode 12, submit
+// (main camera+A4h scene, cockpit camera, targets, node) and run it,
+// visibility 0.0, node vtable +38h(identity).
+void cockpit_draw_00b3c6e0(void* helper, void* main_camera, void* targets, CockpitHost& host);
+
 }  // namespace bsp::scene_renderer
