@@ -12256,3 +12256,32 @@ had two.
   TT04 misses) and USN01 u1 (a dive-heavy win, as the control).
 - **What this does not explain:** the cross-track divergence of 175(a), if the dives stay above -40 deg. That would
   then point at the roll response, not the steering law.
+
+## 179. `kGunneryLiveWaterSurfaceBound`: cc9-physics1's crossing edit applied, and its three questions (routed by the lead; cc9-gunnery35, 2026-10-12; committed OFF)
+
+**The edit** is cc9-physics1's text as relayed: the includes, the switch, and the air-to-water test replaced by
+`0084B380 -> 0078D1B0` against `ocean_live_field_water_height_0078cf20`. The prerequisite is on main as
+`4ce2c2bd0`. It keeps the image's axis defect: the trace samples `(x, y)`. One addition: under the switch a round
+already swimming, or a depth charge already in the water, is not tested for a crossing at all (`crossed = false`).
+The hold in (1) puts such rounds on a surface that is not y = 0, and the old `y <= 0 && from > 0` test would
+otherwise re-enter them.
+
+**The three questions.**
+1. **Does the swim levelling follow the surface? Yes.**
+   - `00857480` (the swim advance) calls `BSP_TorpedoProjectile_Steer` `00856BB0`, which samples the sea every step
+     (`BSP_GameWorld_SampleWaterHeight` at `+FCh`/`+104h`; it is among `0078CF20`'s callers).
+   - It drives `vy += -((y - +47Ch) * +480h - +484h * h) * dt`, clamped to +-5. The equilibrium therefore moves with
+     the live height.
+   - The host never modelled that controller; it held the round on y = 0. Under the switch the entry level and every
+     swim step take the live height at (x, z) instead. **LABELLED:** the controller is held at its surface
+     equilibrium, as the y = 0 hold was. `+47Ch`, `+480h` and `+484h` are not kept.
+2. **Does the depth-charge test use absolute y or depth below the surface? Absolute y.**
+   - `006FCD20` compares `+100h` with `-|+470h|` and gates its scan on `+100h <= -5.0` (`00CFBC84`).
+   - Its `0078D1B0` call runs only after detonation, to move the record to the surface for the effects. The host's
+     `depth_charge_should_detonate(y, depth)` is unchanged.
+3. **Must `flight.local_position` and `snapshot_current` take the crossing point? Yes.** The image has one pose
+   (`+FCh`), and the crossing replaces it. The host keeps three copies, and the next step integrates from
+   `snapshot_current`, so all three take the point.
+
+**Census:** `summary mission gunnery live water crossings= bound=`. OFF it is 0 and the run is identical by
+construction. It is to be paired together with cc9-physics1's live-sea flip.
