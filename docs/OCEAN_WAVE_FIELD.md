@@ -521,3 +521,13 @@ wins are plan casualties of an image-faithful sea: their order files were tuned 
 Still flat after the flip: gunnery's inline y = 0 crossing (src/game_hosts_gunnery.cpp, a
 separate proposed switch), the dynamics buoyancy record and the interface-update record
 (section 9(b)).
+
+## 12. The horizontal-displacement sampler 00BA2B50 has no gameplay reader (item 4)
+
+A scan of the PE on disk (local p1_xscan.py: every E8/E9 rel32 in .text and every absolute
+dword in every section; control: 0078CF20 returns 49 references) finds one reference to 00BA2B50:
+the call at 00BA36CB in 00BA2FF0 (BSP_OceanBeams_Update). 00BA2FF0 itself has one reference, the
+call at 0078D02C inside 0078CFF0, the ocean's render job (0068A0D0 -> 0078CFF0, section 8(a)), and
+no absolute dword. So the displacement reaches only the light-beam render effect; no simulation
+path reads it, and the skipped choppy vectors of 00B95D30 (section 9(a)) change no gameplay
+value. Recorded and closed.
