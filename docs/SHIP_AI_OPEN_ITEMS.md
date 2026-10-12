@@ -16721,3 +16721,52 @@ order, one variant per run, and read each failure before changing more than one 
 dies at 2717.13 s (Shimotsuke) and TroopTrans6 at 3118.47 s (Ada3). No base is captured, Takao1 sinks only at
 2047.22 s, and the run reaches 200000 frames with `summary mission end: none`. As agreed, not re-tuned: start from
 x with 211.3, beginning with the HQ2 approach (TroopTrans3's legs at 31000 and 39960).
+
+## 212. The player's targeted launch is 00673A10, which takes state 1 or 5; the state-5 gate is the cursor key (cc9-ships44, 2026-10-12; lead item 1, a read)
+
+211.5 assumed a hidden configuration step moves a slot from state 1 to state 5 before the screen launches it. There
+is none. The Support Manager screen (00675C40) has two launch paths, and the harness's `launch base class count
+target` line is the second one.
+
+| path | where | slot | states accepted | target |
+| --- | --- | --- | --- | --- |
+| A, the cursor key | 0067A441-0067A5F3, screen mode `[screen+5Ch] == 0` and input byte `+0Bh` set | the cursor `+324h` | **5 only** (0067A565) | the screen's stored `+21Ch` |
+| B, the targeted launch | 0067A5F9-0067A649 -> **00673A10** (00674317-006748D7) | the **first slot in state 1 or 5**, walking 0 .. block+50h | 1 or 5 | the hovered unit (0067A60E-0067A62B, input byte `+10h`), or none |
+
+Evidence for path B (disk bytes, `disasm-raw`; 00673A10's live decompile is truncated):
+- 0067A5F9: screen mode `[screen+5Ch] == 2` (the target-pick mode). 0067A60E reads the hovered unit
+  (`[[00E198C4]+CCh]+4Ch`); none -> 0065F170 (the unavailable sound). 0067A62B `0065BE80` stores it in
+  `screen+21Ch` (it clears `+21Ch` for a unit that fails vtable+5Ch(2)). With the other input byte the same call
+  gets 0 and clears the target. 0067A642 calls 00673A10 when `[screen+0Ch]` equals the 0.0 at 00D7A218 (UCOMISS / LAHF / `TEST AH,44h` / JP).
+- 00673A43: `screen+34Ch == 0` -> 00674317: `screen+1F4h` non-zero (a base is selected, the same test path A makes
+  at 0067A4C8), and the base answers vtable+5Ch with 45h or 9 (airfield / carrier) -> 0067469F. ESI is the air-ops
+  block (`entity+72Ch` for 45h, `+1188h` otherwise, 006746CD-006746F5), as in path A.
+- 00674765-006747E5, the slot walk: copy slot `i` (`0065CAF0`), read the copy's +2Ch state and +28h squadron.
+  Accepted: state 1 or 5 (with or without a squadron); states 2, 3, 4 and 6 are skipped. **The first accepted slot is
+  used; when none is, the function returns with no launch and no sound (006747E7). There is no deck growth.**
+- 00674801-0067484D: `006BF310(class = screen+2A0h)`; stock <= 0 -> 00674B46 (nothing); count =
+  `min(stock, screen+2B4h)`; `006C4780 -> 006C0F00(slot, class, count)`.
+- 0067485D `006BA4B0` (a one-store setter: slot+10h = `screen+334h`, the screen's equipment pick).
+- 0067486A: target `screen+21Ch` alive (0043F080) -> `006C4F70(slot, target)` and the 82h message
+  {slot, order 3, target, game+18ECh} through 00656280 / 0077C2A0 (006748B5-006748D7); no target -> 006748DE (an
+  order without a target, not read).
+- `screen+34Ch != 0` takes 00673A49-00674316 instead (a unit-list search on `+3A4h`/`+3D8h`; not read, provisional:
+  a non-air support order).
+
+Consequences:
+1. **The OFF code is already path B**: `air_ops_pick_launch_slot_006c7210` returns the first slot in state 1 or 5
+   and otherwise `slots.size()`, which `player_air_ops_launch` refuses as "no such slot" (no growth, as at 006747E7);
+   the state test is "1 or 5". Only its citations are wrong (it cites path A's 0067A57D-0067A5E6 and 006C7210).
+2. **`kPlayerLaunchScreenCursorBound` models path A** (the cursor and state 5), which the harness's targeted `launch`
+   line never is. 211.5's ON result (53 of 56 refused, "not in state 5") is that mismatch, not a missing player
+   step. Verdict: **stays OFF; retire it** rather than re-pair. A pair of path B against OFF would be identical in
+   effect, so none was run.
+3. Remaining differences in OFF against path B, recorded, not bound: (a) path B sets slot+10h from the screen's
+   equipment pick `screen+334h` after 006C0F00, while the harness uses the class default (class+134h through
+   006C0F00); `+334h`'s producer is not read, so whether a player who never touches the equipment gets the default
+   is open. (b) The harness's explicit `slot_number > 0` has no image counterpart on path B (the player cannot pick
+   a slot there); it remains a harness convenience.
+4. Path A is the player relaunching a slot whose squadron is gone (006C0510 promotes a squadron-less state 3/4 slot
+   to 5) at the stored target. The harness has no line for it; none is needed for the wins so far.
+
+Exact edit routed to the lead for `src/game_hosts_script_orders.cpp` (cc9-lua51's file): see the 212 report.
