@@ -14922,6 +14922,32 @@ It is committed OFF with these predictions:
   - JM05 and JM06 move: stage init runs one frame later, after `luaEngineMovieInit`'s own globals.
   - Every other row is identical (pair_diff 0), because no other reference scene has a `.ema`.
   - A mechanism failure would be any row other than JM05/JM06 moving, or JM05 losing its phase-1 objectives.
+**Pairs on `7ae13124b`** (`local\l50_E0` OFF, `local\l50_E1` ON; 3000 frames each):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | deaths 16 = 16, but the airfield's sqn01 dies 0.3-1.9 s later to other killers; 71 unit rows; shots 2028 -> 2214 |
+| JM06 | 3, moved | the scripted Gato kill moves from 0.00 to 0.05 s; hits 149 -> 150 |
+| USNOS (control) | 1, gameplay identical | - |
+
+- **What moves JM05.** Stage init now runs one frame later. `luaEngineMovieInit`'s own `luaDelay` chain also runs:
+  `luaJM5EMDlgA` at 10 s, then B, C and D.
+  - So `Intro_dlg_a..c` play. That doubles the dialog starts (4 -> 8) and the sequencer messages (8 -> 17).
+  - The mission's own dialogs, and the scripts that wait on them, shift as a result, and the ships' paths follow.
+- **Verdict: OFF, a mechanism mismatch.**
+  - `0046B730` (read from the snapshot export, which predates the `_free` truncation) is not only the mode reset.
+  - It walks the entity list at `[game+19CCh]+8` (next pointer at `+44h`). It kills (`BSP_MissionEntity_Kill(2)`)
+    every entity whose class `+C4h` is not in the scene database's class map at `+158h`.
+  - It then steps the world (`BSP_Game_RunExtraFixedStep` x4, `BSP_EntityWorld_FlushActivations`), sets mode 8, and
+    re-resolves the scene's entities by name (`BSP_EntityRegistry_FindEntityByName`, `BSP_SEntity_InitAll` x2,
+    `BSP_SceneDatabase_ResolveDeferredReferences`).
+  - The script entities `luaEngineMovieInit` created (its `luaDelay` timers among them) are very probably among the
+    killed, since a script entity's class is not a scene class. If so, the image's skip never plays the intro
+    dialogs that the ON run plays.
+  - Before this can flip, the stand-in must:
+    - read which classes `+158h` holds;
+    - kill the non-scene entities;
+    - re-initialise the scene ones.
 - **The next step is the faithful no-skip path: playing the movie.** That means cc13's Advance `0045F970` and the
   per-track dispatch `004560E0` in `src/engine_movie_actions.cpp`, reconstructed but not wired.
   - Its tracks move real units and fire guns for 90 s on JM05 and 43 s on JM06.

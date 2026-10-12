@@ -436,8 +436,11 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // (thread safe). LABELLED: the player skips the movie on the frame
 // BSP_Game_BeginEngineMovie 004CCE50 starts it (004C6B20's skip path); the
 // movie itself, 0045F970's clock and 004560E0's tracks, is not played, and the
-// class-table resets between the entry points stay records. False: the
-// mode-8 arm runs at load, as before.
+// class-table resets between the entry points stay records. So does
+// 0046B730's kill pass over entities whose class is not in the scene
+// database's class map (+158h), which very probably removes the
+// luaEngineMovieInit timers the ON run lets play; that is why it stays OFF
+// (JM05 pair, 5fm). False: the mode-8 arm runs at load, as before.
 inline constexpr bool kEngineMovieEntryBound = false;
 
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
