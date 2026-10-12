@@ -158,6 +158,14 @@ inline constexpr bool kAvoidZoneDraftBodiesBound = true;
 // after), and the LCP C++ keeps in double what the listing keeps on the x87 stack between
 // float spills. False: both at 24 bits as before.
 inline constexpr bool kDynWorkerPrecisionBound = false;
+// Packet cc9_physics1_dyn_precision, the association half (docs/GUNNERY_OPEN_ITEMS.md 183).
+// 00C4DE40's sums and differences are associated as the listing does, and the row
+// builder's 0.05 restitution offset is the double at 00D7A270. This changes results at 24
+// bits too: the OFF C++ sums several chains in another order, among them transform_point,
+// the angular mass Jacobian, the normal velocity, the effective mass and the friction
+// direction's projections and lengths. True: the listing's association at 24 bits (implied
+// by kDynWorkerPrecisionBound, which adds the 53-bit stack). False: the order used before.
+inline constexpr bool kDynListingAssociationBound = false;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
