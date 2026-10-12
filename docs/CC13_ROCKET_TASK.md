@@ -94,7 +94,7 @@ the same instruction with the same data value.
 | `007B6830` approach ctor | `009CC020` | 114/128 | gotowards seed 1400 (strafe 800); aim `+18h` 0 (strafe 0.5) | complete |
 | `007B6A40` task ctor | `009CC230` | 43/47 | kind `0Bh`, offsets | complete |
 
-Rocket-only slots: `+50h` `007B6F90` (2 in the aim state, else 0; the base `007B4140` answers 0), and
+Rocket-only slots: `+50h` `007B6F90` (2 in the aim state, else 0; the base `007B4140` answers 1: its bytes are `MOV EAX,1; RET`, corrected by cc13-gp7a, docs/CC13_GP_007A_007F.md finding 2), and
 the debug draw `+04h` `007B7290` (`+35Dh`-gated, not reconstructed).
 
 ## 3. The object
