@@ -215,3 +215,125 @@ bool game_settings_equal_008d4af0(
 }
 
 } // namespace bsp
+
+namespace bsp {
+
+bool raise_entity_warning(WarningReportHost& host, WarningEntity entity,
+    std::string_view id, std::int32_t excluded_kind)
+{
+    host.lock_24();
+    struct Unlock {
+        WarningReportHost& host;
+        ~Unlock() { host.unlock_24(); }
+    } unlock{host};
+    if (host.suppressed_d0()) return false;
+    const std::int32_t slot = host.local_slot_18ec();
+    if (slot < 0 || slot >= 8) return false;
+    if (!(host.mission_clock_f876a4() > kWarningReportGrace)) return false; // COMISS/JBE
+    const WarningEntityFlags flags = host.entity_flags(entity);
+    if (!flags.present_5c || flags.flag_5d || flags.flag_60 || flags.flag_5e) return false;
+    if (host.entity_suppressed_0077edf0(entity)) return false;
+    if (!host.is_player_controlled_00965810(entity)) return false;
+    if (excluded_kind >= 0 && host.is_kind_5c(entity, excluded_kind)) return false;
+    host.report_entity_warning_00974150(entity, id);
+    return true;
+}
+
+bool report_submarine_air_low_00977050(WarningReportHost& host, WarningEntity entity)
+{
+    return raise_entity_warning(host, entity, kWarningIdSubmarineAirLow);
+}
+
+bool report_submarine_air_critical_009771e0(WarningReportHost& host, WarningEntity entity)
+{
+    return raise_entity_warning(host, entity, kWarningIdSubmarineAirCritical);
+}
+
+bool report_submarine_depth_damage_00977370(WarningReportHost& host, WarningEntity entity)
+{
+    return raise_entity_warning(host, entity, kWarningIdSubmarineDepthDamage);
+}
+
+bool report_submarine_periscope_broken_00977500(WarningReportHost& host, WarningEntity entity)
+{
+    return raise_entity_warning(host, entity, kWarningIdSubmarinePeriscopeBroken);
+}
+
+bool report_torpedo_00977690(WarningReportHost& host, WarningEntity entity)
+{
+    return raise_entity_warning(host, entity, kWarningIdTorpedo, kTorpedoWarningExcludedKind);
+}
+
+std::string warning_id_newunit_009756a0() { return "newunit"; }
+
+std::string warning_id_powerup_009757b0(bool network_session)
+{
+    std::string id = "powerup";
+    if (network_session) id += "multi";
+    return id;
+}
+
+std::string warning_id_named_powerup_009758e0(std::string_view name, bool network_session)
+{
+    std::string id = "powerup"; // 009758E0: BSP_NativeString_ConstructPrefixedHeader
+    id += name;
+    if (network_session) id += "multi";
+    return id;
+}
+
+std::string warning_id_score_00975a10() { return "score"; }
+
+std::string warning_id_exit_zone_00975340(WarningSubjectHost& host, WarningEntity entity,
+    bool exiting)
+{
+    std::string id = "exitzone";      // 00D19074
+    if (exiting) return id;           // 009753AD
+    id += "enter";                    // 00D1B1B0
+    if (!entity) return id;           // 00975418
+    WarningEntity owner = entity;
+    if (host.is_kind_5c(entity, 0x0F)) owner = host.plane_owner_9d4(entity); // 0097542E
+    if (owner != host.controlled_unit_e188d8()) return id;                  // 00975434
+    id += "player";                   // 00D199D0
+    if (host.is_kind_5c(entity, 6)) id += "ship"; // 009754A8, 00D186D4
+    return id;
+}
+
+std::string warning_id_confirm_00975540(WarningSubjectHost& host, WarningEntity entity,
+    std::string_view order)
+{
+    if (host.is_kind_5c(entity, 6)) return "confirmship";  // 0097557F, 00D1B44C
+    if (!host.is_kind_5c(entity, 0x18)) return {};         // 009755C5
+    std::string id = "confirmplane";                       // 00D1B43C
+    id += order;
+    const std::string text(order);
+    const bool land_or_retreat = _stricmp(text.c_str(), "land") == 0 ||
+        _stricmp(text.c_str(), "retreat") == 0;            // 00975620, 00975633
+    if (land_or_retreat && host.field_3cc(entity) == 1) id += "player"; // 0097563C
+    return id;
+}
+
+void post_friendly_fire_warning_0096e8f0(WarningHitFeedbackState& state, float clock,
+    WarningTextHost& host)
+{
+    state.text_state_180 = 2;
+    state.text_deadline_17c = static_cast<float>(clock + kHitFeedbackWindow);
+    host.post_text_00682990("ingame.warning_friendly", kFriendlyFireRgba, 2);
+}
+
+void report_hit_feedback_0096ef60(WarningHitFeedbackState& state, float clock, bool damaging,
+    bool friendly, WarningTextHost& host)
+{
+    state.deadline_174 = static_cast<float>(clock + kHitFeedbackWindow); // 0096EF8E
+    state.kind_178 = damaging ? 1 : 2;                                   // 0096EF88..0096EF9E
+    if (friendly) {
+        post_friendly_fire_warning_0096e8f0(state, clock, host);
+        return;
+    }
+    if (state.text_state_180 == 0 && state.kind_178 == 2) {
+        state.text_state_180 = 1;
+        state.text_deadline_17c = static_cast<float>(kHitFeedbackWindow + clock);
+        host.post_text_00682990("ingame.warning_ineffective", kIneffectiveFireRgba, 1);
+    }
+}
+
+} // namespace bsp

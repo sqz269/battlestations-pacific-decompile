@@ -136,9 +136,9 @@ in every host projection, so a C++ version would only restate the standard destr
 
 - `./scripts/build.ps1` in this worktree: exit 0, `options_hardware_cc13.cpp` compiled, 2/2 CTest
   suites passed (run after each source change).
-- `python tools/verify_report_calls.py reports/cc13_options1_calls.json`: 25 call rows, 0 failed.
+- `python tools/verify_report_calls.py reports/cc13_options1_calls.json`: 34 call rows, 0 failed.
 - Ghidra: function defined at `008D6B70..008D6BFF` (`reports/cc13_options1_defined_functions.json`)
-  and all 31 ledger names from this doc applied through `tools/ghidra_annotate.py --apply`. The prior values
+  and all 44 ledger names from this doc applied through `tools/ghidra_annotate.py --apply`. The prior values
   are in the worktree's `local/ghidra-annotations-*.json`.
 - No test was added. The comparator is a table over the listing, and the save mirrors an existing
   fixture-tested restore. Neither body has a concrete regression risk that a test would catch
@@ -246,6 +246,87 @@ Consequence for cc9: if a checkpoint or save ever serializes a bot task through 
 path. Nothing here shows that a save path reaches those task methods, and no run has exercised
 one. A host that reconstructs task save and load must decide whether to keep the -1.
 
+## Segments 65 and 64, `0097AB70..0098C510` and `00968E80..0097AAF0`: the WarningManager
+
+Both bands belong to one object, the WarningManager (singleton `[00F8A0C4]` = game+21E0h), the
+warning and radio-chatter director described in `docs/MISSION_EVENTS_UPDATE.md` and
+`docs/WARNING_MANAGER.md`. Neither band contains a music system. `musicOver` is only one of the
+Lua event channels: `00985C50` looks the channel up and runs its listeners with the track name.
+`oldLevel`/`newLevel` are fields of the recon listener (`00972450`), and `ambient` is a warning
+category.
+
+### Triage
+
+| Cluster | Range | Owner / decision | Reason |
+| --- | --- | --- | --- |
+| Lua channel dispatchers | `00980C10..00988510` | cc9, name list only | Each one locks the manager, looks up a channel in the map at `+F8h` (`00980150`), boxes its arguments, runs `0097B8C0` and hands matching listeners to mission Lua. These are `exitzone` `00982120`, `surrender` `00982990`, `failure` `00982C50`, `leak` `009832F0`, `fire` `00983780`, `repair` `00983C10`, `zone` `00983F50`, `target` `00984800`, `ammoType` `00984BA0`, `stock` `00984EB0`, `gui` `00985250`, `generate` `00985590`, `player` `00985920`, `musicOver` `00985C50`, `chat` `00985F30`, `entityKilled` `00986480`, `shipLanded` `00986820`, `hpEvent` `00986B00`, `hit` `00988510`, `recon` `00980E50` and `kill` `009813A0` (cc9's `LOSS_WARNING.md`). The listeners can change mission and unit state. `src/mission_events.cpp` already holds the name-to-address table. |
+| Lua listener subscriptions | `0096AA90..00972FE0` | cc9, not touched | `BSP_KillSubscription_*`, `BSP_ReconSubscription_Load`, `00972FE0` (callback/entity/reason), `0096E850`, `0096AAD0` (min/max). These are mission-script plumbing. |
+| Manager core | `0096D540`, `00973F20`, `009763E0`, `00979730..`, `009870A0..0098A020` | done earlier | `mission_events.cpp`, `warning_owner.cpp`, `WARNING_MESSAGE_TABLE.md`. |
+| Voice/text report helpers and Warning constructors | `0096E8F0..0096F08F`, `00973A90..00975AC0`, `00977050..0097781F` | **this packet** | Event-to-voice/text mapping (message ids, guards, HUD text colours). These functions only read unit state. |
+| Larger report builders | `00974C70` (`weareunderattack`, `planesquadron`), `009744C0` (`neutral`/`unknown`/`own`), `00977DA0` (captureship), `009781E0` (capture point), `00978A70` (command building), `0096E5E0` ("Message from"), `009766D0`, `009768F0`, `00976C60`, `0096CF10`, `0096DD30` | open | Same family as the reconstructed constructors. Each needs its own listing pass: `00977DA0` mixes x87 distance tests with string building. |
+| Spatial index / collision | `0098A2C0..0098C510` | done earlier | `SPATIAL_INDEX.md`, `COLLISION_SHAPES.md`. |
+
+### Reconstructed (build-tested, reconstruct-only)
+
+**Entity report template.** These are `report_submarine_air_low_00977050`,
+`report_submarine_air_critical_009771e0`, `report_submarine_depth_damage_00977370`,
+`report_submarine_periscope_broken_00977500` and `report_torpedo_00977690`, all built on
+`raise_entity_warning`. Each takes manager `+24h`'s critical section, then checks, in listing
+order:
+
+1. `+D0h` is clear.
+2. game+18ECh is in `[0,8)`.
+3. The clock is above 4.0f.
+4. Entity `+5Ch` is set and `+5Dh`/`+60h`/`+5Eh` are clear.
+5. The byte from `0077EDF0` on the map at `+D4h` is clear. That call is a map `operator[]`, so
+   a miss inserts a zero byte.
+6. `00965810` reports the player's unit.
+7. Torpedo only: the entity is not kind 8.
+
+When every check passes, it reports `operator_new(84h)` + `00974150(entity, id)` through
+`009763E0`. cc9's `game_warning_report_torpedo_00977690` binds the torpedo entry in its own host.
+The C++ here is the shared, unbound rule set, so cc9 can choose to call it instead of
+maintaining a copy.
+
+**Warning constructors as message-id rules.**
+- `newunit` (`009756A0`).
+- `powerup` (`009757B0`), or `powerup` + name (`009758E0`); either takes `multi` when
+  game+1FE4h != 0.
+- `score` (`00975A10`).
+- `exitzone` (`00975340`). Unless it is exiting, it appends `enter`. When the entity, or a
+  kind-0Fh plane's `+9D4h` owner, is the controlled unit, it also appends `player`, and `ship`
+  for kind 6.
+- `confirmship` / `confirmplane` + order (`00975540`), with `player` appended for `land` or
+  `retreat` when entity `+3CCh == 1`.
+
+**Hit feedback** (`0096EF60`, `0096E8F0`), called from the `hit` channel:
+- `+174h = clock + 0.25`.
+- `+178h = damaging ? 1 : 2`, where damaging means the hit's `+48h > 0.0`.
+- A friendly hit posts `ingame.warning_friendly` in RGBA (0.1, 0.9, 0.1, 1.0), mode 2, and
+  sets `+180h = 2`.
+- An ineffective hit while no text is showing posts `ingame.warning_ineffective` in
+  (0.9, 0.9, 0.9, 1.0), mode 1, and sets `+180h = 1`.
+- The second deadline is `+17Ch`. `00968550` clears both states when their deadlines pass.
+
+**Correction.** `MISSION_EVENTS_UPDATE.md` (rows `+174h`/`+17Ch`), `WARNING_MANAGER.md`
+section 2 and `mission_events.hpp` (`air_raid_*`, `collision_*`) attribute these four words to
+`airRaidSoundExpires`/`collisionSoundDisableTime` written by `00980380`. Byte scans for `89/C7 ?? disp32` (dword stores), `D9 ?? disp32` (x87 stores) and
+`F3 0F 11 ?? disp32` (MOVSS) at `+174h`, `+178h`, `+17Ch` and `+180h` find writers only in
+`009870A0` (init), `00968550` (clear), `0096EF60` and `0096E8F0`. `00980380` has no literal-offset write to
+either word. In the image they are the hit-feedback deadline and kind, and `+17Ch`/`+180h` are
+its text latch. The sound in `00968550`'s `+180h` expiry path still fits a "collision"/hit
+sound. The two Lua keys must therefore land in other fields, not yet located.
+
+### Named only
+
+| Address | Name | Evidence |
+| --- | --- | --- |
+| `00973A90` | `BSP_Warning_ConstructBase` | Vtable `00D1B104`, empty id, embedded sub-objects (vtable `00CE75CC`) at `+24h` and `+3Ch`. |
+| `00973BA0` | `BSP_EntityWarning_ConstructBase` | Second base at `+6Ch`, entity at `+80h` (the id `00976F10` cancels by), observer registration. |
+| `00974150` | `BSP_EntityWarning_ConstructWithId` | `00973BA0` + id copy; the 84h record of the template reports. |
+| `00975AC0` | `BSP_MessageWarning_ConstructWithId` | The 6Ch entity-less warning, vtable `00D1B4D4` (shared with `score`). |
+| `009741E0` | `BSP_ReconWarning_Construct` | `recon`; on old level <= 1 and new level >= 2, appends `identified` + the party name from `00E0B080[00803CE0()]` + `ship`/`plane`/`other`. `+98h` records whether the side's recon source is the player's unit. Not reconstructed: `00803CE0`'s inputs are unread. |
+
 ## Handoff
 
 Segment 56 has no options or hardware-settings body left open, by the triage above. Open items:
@@ -263,3 +344,5 @@ Segment 56 has no options or hardware-settings body left open, by the triage abo
    needs a units-lane packet. The `+34h` consumers of the weather setter are cc9's.
 6. Segment 0: nobody has checked whether a save reaches the bot-task `WriteCurrent` callers
    (the -1 `stateIndex`). A breakpoint on `00411450` during a checkpoint save would settle it.
+7. Segments 64/65: the larger report builders listed as open above, and where the Lua keys
+   `airRaidSoundExpires`/`collisionSoundDisableTime` (`00980380`) actually land.
