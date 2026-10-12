@@ -617,6 +617,15 @@ constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
 //    goes straight to the line-of-fire query (the host before section 184).
 constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
+//  * kAaKind6GateMountFrameBound (cc13-audit12 section P3): 00955630 builds the
+//    solved WORLD direction (004B4D80 of its pitch and yaw, 00955752..00955765) and
+//    carries that vector into the mount frame [[bot+50h]+3Ch] (0095576A..009557F3:
+//    0042D0D0, then asin of local y and atan2(local x, local z), negated at
+//    009557F8). [gun+3Ch] is oriented as the hull (docs/AA_FIRE_WINDOW_MOUNT.md 2);
+//    unit scale is taken (docs/MOUNT_FRAME_SCALE.md). ON: horz and vert are the
+//    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
+//    the world lift added to the hull-frame elevation (184.1's substitution).
+constexpr bool kAaKind6GateMountFrameBound = false;
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -5688,9 +5697,18 @@ public:
                 if (reach) {
                     const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
                     const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
-                    const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
-                    const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                    float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                    float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
                         + (arc.angles.vert - direct);
+                    if constexpr (kAaKind6GateMountFrameBound) {
+                        // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
+                        const float p = arc.angles.vert;
+                        const float y = -arc.angles.horz;
+                        const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
+                            std::cos(y) * std::cos(p)};
+                        horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
+                        vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
+                    }
                     const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
                     reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
                         bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));

@@ -12977,3 +12977,20 @@ from several exe dirs, so several ONs can share one OFF), `g37_res.ps1` (diff + 
 with foreground loops; a `-BuildOnly` copies `build\` for OFF at its start, so do not rebuild a changed tree until
 its OFF copy exists. A stale `pair_export ... g36_loo_yard` python (PID 51076, dd31c362a, cc9-gunnery36's) has
 hung in this tree since the morning; harmless.
+
+## 195. Pause (cc9-gunnery37, 2026-10-12; the user paused the goal)
+
+- **`kAaKind6GateMountFrameBound`** (docs/CC13_AUDIT12_RECENT_FLIPS.md diff P3: the kind-6 gate solves in the
+  mount frame `[gun+3Ch]`, as the image does before 0085A8B0, instead of with mount NULL) is applied as written and
+  committed OFF. **Not paired.** Pair it on USN02 and USN13 (the most `kind6_gate_rejects`) and flip by verdict.
+- **Reference AH (194) was stopped before any run finished**: the queue and its waiting launches were killed; no
+  `local\g37_{anc,ah}_*` log is complete, and the anchor build `local\g37_anc` is on `89e89ffa1`, which is now stale.
+  Redo AH on main `2eea6749e` or later: anchor = every switch flipped since AG OFF (`local\g36_switches.py
+  10bef4a99 <base>`, then `local\g37_ah.ps1` with a fresh switch list); wins with the WINS_TABLE.md order files
+  (USN01 `p3_u1_o`, LOMP10 `p3_l10_b`, ESMP08 `l46_e8_orders2`, USN02 `s36_u2_p7`, USN12 `s38_u12_p2`, LOMP06
+  `l50_l6_q6`, BSM01 `l50_b1_a`) plus info rows USN15 `s44_u15_h` and USNOS `s43_os_x` (update `g36_ref_jobs.py`'s
+  WINS table first); leave-one-out only on rows whose outcome moves. The "Final AH" plan in GAME_EXECUTABLE.md is
+  superseded by that.
+- **JM08 mesh verdict** for `kLandStructureMeshHitTestBound` is lua51/lua52's (JM08 b3 with the switch ON); my
+  control pair is in 193.
+- Leases released.
