@@ -15429,3 +15429,44 @@ run is 48000 frames and uses r7's lists. The Hosho list is `Nevada,Missouri,LSM 
 - **Parked.** The order file has no lever left before 1256 s that keeps 7000 hp on the HQ. The next step is to
   settle the AA truck's friendly damage on the gunnery side, then rerun b3 (`local\l51_j8_b3.txt`), which is
   deterministic to the HQ's fall. No completion, so no sus_prog line is expected.
+
+## 5fy. 2b, full engine-movie playback: what it would take (cc9-lua51, 2026-10-12, scoping read only)
+
+The host takes the player's immediate skip on the first simulated frame (`kEngineMovieEntryBound`, LABELLED). This
+section scopes the other path, watching the whole movie. No code was written.
+
+- **Length.** Each `.ema` starts `Animations { Movielen: <s> ...`. This installation's 39 files (`universe\scenes\missions\...`)
+  run from 30 s (`ijn_08_defend_guadalcanal`, JM08) to 90 s (`ijn_01`, `ijn_05` = JM05). `ijn_06` (JM06) is 43 s,
+  `usn_03_Battle_of_Santa_Cruz` (PRCP01) 40 s, and the files carry 3-38 `Animation` tracks. 0045F970's clock
+  (`src/engine_movie_actions.cpp`, reconstructed by cc13) clamps a delta above 1.0 s to 0.01 and steps by the mean
+  of the last 21 deltas. At the harness's fixed 0.05 s the step ramps over the first 21 frames, so playback lasts
+  about `Movielen / 0.05 + 10` frames (JM08 about 610, JM05 about 1810).
+- **The simulation runs underneath.** `004C6B20` (the cutscene advance) is gated by `game+634h == 0 || game+635h != 0`,
+  the same test as the simulation gate `004E50B0` (docs/GAME_FRAME_CONTROL.md, docs/GAME_SIMULATION_GATE.md).
+  So every frame of the movie is also a simulated frame:
+  - units think, fire and draw from the shared generator `00BD2F10`;
+  - the entity tracks (`00459020` via `004581E0`'s PointList) override the actors' poses;
+  - the actions (`004560E0` dispatch: `pTakeOffHack`, `sForceArtilleryTarget`, `cCameraShake`, ...) run;
+  - `luaEngineMovieInit`'s `luaDelay` timers fire when due. PRCP01's `luaUS03StartIntroDialog` at 16 s fires; its
+    88 s one is killed at the stop.
+- **What survives the stop.** `0045F600` -> `0046B730` kills every queued root (the script entities included) and
+  re-creates the `+28h` scene records (`0046BA7B..0046BBCD`). That puts every scene unit back to its authored
+  state, and then `luaPrecacheUnits` / `luaStageInitMulti` / `luaStageInit` run (5fm, 5fp). The residue is:
+  - the mission clock, `Movielen` plus the ramp later than a skip;
+  - every generator draw the movie's simulation made, which shifts all later draws, because `00BD2F10` is one
+    process-wide stream;
+  - Lua globals written by the timers that fired;
+  - whatever a non-`+28h` root did, and on PRCP01 the eight `GenerateObject` ships (5fv).
+- **Why it is not a small bind.** The host has no real "kill and re-create from the `+28h` records". Its skip
+  relies on nothing having moved by frame 1. Playing the movie needs that re-create first, in the units host
+  (shared). Otherwise the units keep their movie-time damage, poses and orders. Then it needs the tracks and
+  actions wired, or else an honest LABELLED stand-in that runs the simulation without them. The `.ema` reader
+  pieces (`0045EFB0` CreateTrack, `0045D8A0` PointList, `0045ECA0`) are named in docs/CC13_SCENE_BROWSER.md;
+  `004581E0` (Hermite PointPos/InTangent/OutTangent, `004581E0`-`00458A63`) and the camera update `0045BD90` (`0045BD90`-`0045BDAB`,
+  `RET 4`: it runs the entity update `00459020(time)` on the camera track, then `0045ACC0(track)`) are unread
+  beyond that; `0045ACC0` is the camera-specific part.
+- **Recommended order** if 2b is taken up:
+  1. the `0046BA7B..0046BBCD` re-create, read whole, and a units-host reset that reproduces it;
+  2. playback with no tracks (the simulation, the clock and the timers, then the stop), paired against the skip
+     on JM08 (30 s) and JM06 (43 s);
+  3. the tracks and actions.
