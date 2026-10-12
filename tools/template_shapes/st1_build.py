@@ -59,6 +59,7 @@ EV = {
     'lowerbound': 'cc13-stl1 shape: root walk with key compare and _Isnil byte, returns candidate node (std::_Tree::_Lbound)',
     'destroyrange': 'cc13-stl1 shape: loop over [first,last) running the element destructor (std::_Destroy_range)',
     'stringtidy': 'cc13-stl1 shape: if cap>=16: _free(buf); cap=15; size=0; buf[0]=0 (std::basic_string::_Tidy)',
+    'treefind': 'cc13-sweep6D shape: _Lbound walk, then end() unless key < node key fails; returns the iterator pair by hidden pointer (std::_Tree::find)',
     'twin': 'cc13-stl1: masked body identical to an existing STL_/CG_/TRIV_ reference function',
     'scl96': 'calls _invalid_parameter_noinfo 00bf6713 (_SECURE_SCL hook) and body <= 96 bytes (precision ~0.95)',
     'scl97': 'calls _invalid_parameter_noinfo 00bf6713 with body > 96 bytes; bookmark only',

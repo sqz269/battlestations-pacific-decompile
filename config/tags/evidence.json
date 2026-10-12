@@ -728,5 +728,6 @@
  "cc13dy1": "Segment-0 Dyn/Mit header code, STL and CRT helpers identified by cc13-dyn1: rel32 + absolute-dword reference scan of the PE, live decompile and shape review of every raw FUN_ in 00401010-004138D0; per-address evidence in config/names and docs/CC13_DYN_LIBRARY.md",
  "cc13dy1h": "Body after INT3 padding (696 of the 717 so defined have no rel32 or absolute reference), defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md, 'Defined bodies'): inside 00401010-00410240, the first object's Dyn/Mit header-instantiation run; generic name, class not identified",
  "cc13dy1s": "Body after INT3 padding defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md); STL/CRT shape: memcpy_s/memmove_s wrapper, std exception construction or throw, _Allocate overflow check, free(p) or char_traits::assign",
- "st1_treeminmax": "cc13-stl1 shape: follow left/right link until child _Isnil byte set (std::_Tree::_Min/_Max)"
+ "st1_treeminmax": "cc13-stl1 shape: follow left/right link until child _Isnil byte set (std::_Tree::_Min/_Max)",
+ "st1_treefind": "cc13-sweep6D shape: _Lbound walk, then end() unless key < node key fails; returns the iterator pair by hidden pointer (std::_Tree::find)"
 }
