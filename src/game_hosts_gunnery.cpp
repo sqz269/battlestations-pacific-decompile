@@ -443,7 +443,7 @@ constexpr bool kGunneryLosRoleSwapBound = true;
 //    object's frame. LABELLED: the +364h list is the shipyard registry; unit+1130h
 //    (the launch sentinel) is not kept, so its arm never fires; the test runs at each
 //    LOS test, not on the 0.5 s point refresh. OFF: 0081DE10 answers 0, as before.
-constexpr bool kShipyardHangarHiddenBound = false;
+constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -11456,6 +11456,15 @@ bool GameGunneryHost::Impl::ship_in_shipyard_hangar_0081de10(std::size_t ship) {
                 const float d[3] = {p[0] - eo[0], p[1] - eo[1], p[2] - eo[2]};
                 const float lx = d[0] * er[0] + d[1] * er[1] + d[2] * er[2];
                 const float lz = d[0] * ef[0] + d[1] * ef[1] + d[2] * ef[2];
+                static const bool hangar_census = aa_env("BSP_HANGAR_CENSUS") == "1";
+                if (hangar_census && hangar_hidden_tests % 50 == 1) {
+                    // Diagnostic only (BSP_HANGAR_CENSUS=1): where the end sits in the object frame.
+                    log.notef("hangar census: ship=%s obj=%s lx=%.1f lz=%.1f lim=(%.1f %.1f) obj_pos=(%.1f %.1f) ship_pos=(%.1f %.1f)",
+                        unit_state[ship].row.name.c_str(), yard->hangars[h].object.c_str(),
+                        static_cast<double>(lx), static_cast<double>(lz), static_cast<double>(lim_x),
+                        static_cast<double>(lim_z), static_cast<double>(eo[0]), static_cast<double>(eo[2]),
+                        static_cast<double>(so[0]), static_cast<double>(so[2]));
+                }
                 if (std::fabs(lx) < lim_x && std::fabs(lz) < lim_z) {
                     done("Gunnery::ship_in_shipyard_hangar_0081de10", 0x0081de10u);
                     return true;   // 0081E33E..0081E34B, MOV AL,1

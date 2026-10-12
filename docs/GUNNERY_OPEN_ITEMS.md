@@ -12164,3 +12164,29 @@ Nothing is bound here.
 - **What moves:** those boats cannot see while inside, which delays their first gun and torpedo targets. Anything
   further cascades.
 - On rows with no shipyard, or no ship near a hangar: `tests > 0, hidden = 0`, gameplay identical.
+
+### 176.1 The pairs (export `0949e06c1`; logs `local\g35_hg{off,on}_{j8r7,jm05l}.log`)
+
+| row | exit | census ON |
+|---|---|---|
+| JM08, lua50's r7 orders (`l50_j8_r7.txt`, 20000 frames: Gyoraitei builds from frame 300) | 1 | `tests=16345 hidden=0` |
+| JM05 long (9000) | 1 | `tests=1995 hidden=0` |
+
+**Why `hidden=0`.** A local run with the env-gated census (`BSP_HANGAR_CENSUS=1`, `local\g35_hgdiag.log`) shows why.
+- JM08's only shipyard hangar is `PTHangar 01` (type 597, `boathangar03.mmod`, Length 33, Width 33), at
+  (-201.0, -3213.4). Its footprint is `|x| < 19.8`, `|z| < 24.8`, and its right axis lies along world z.
+- The host's builds spawn at `Shipyard1Path`'s first point, (-200.6, -3148.7), 65 m from the hangar. The first
+  test on Gyoraitei #Y2 puts its ends at `lx` -134 and -97. Neither end ever enters the footprint.
+
+**Verdict: the footprint arm matches the image and is identical on both rows; flipped ON.**
+
+**The arm that would matter for fresh boats is still unbound: `unit+1130h`.**
+- **Its writers** (byte scan `89 ?? 30 11 00 00`) are only `SEntityInit` (`00823521` zero, `00823742` from the
+  scene key) and the message 7Ah arm `0082227B` (`byte ? 5 : 0`).
+- **The clear.** `00813830` sends 7Ah with byte 0. Its one caller, `BSP_UnitInstance_UpdateShipMotion`, runs it
+  when the countdown `unit+E20h` reaches 0 (`0082639C..008263B5`).
+- **The set.** It comes from one of the other `PUSH 7Ah` senders: `0080F960` (no rel32 caller), `0079C040`,
+  `009CFBA4`, `009FD0E0`. None of them was read.
+- **Next step.** Read which sender sets byte 1 for a shipyard-built unit, and who seeds `+E20h`. The host's
+  `shipyard_build_00844fc0` would then keep a per-unit launch state, and `ship_in_shipyard_hangar_0081de10` would
+  answer 1 while it is set. Until then a fresh boat is never blind in the host.
