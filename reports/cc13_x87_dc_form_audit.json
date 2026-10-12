@@ -1,0 +1,3305 @@
+{
+ "packet": "cc13-x87dc1",
+ "ghidra": "12.0.4 PUBLIC, ia.sinc",
+ "defect": {
+  "listing": "D8 C8+i and DC C8+i both print `FMUL STi` (ia.sinc 5684/5690); every other D8/DC/DE register form prints unambiguously",
+  "pcode": "correct for every D8/DC/DE register form (ia.sinc bodies; decompiler spot checks 00401CD0, 00417FA0, 00405AB0, 00438AA0, 00C08390, 00401D30, 00668D40)",
+  "undecoded": "DC D0-DF and DE D0-D7/DA-DF (undocumented FCOM/FCOMP aliases) have no constructor; none occur in .text"
+ },
+ "census_dc_register_forms_excluding_st0": {
+  "sites": 835,
+  "functions": 470,
+  "by_op": {
+   "dc:fmul": 488,
+   "dc:fdiv": 76,
+   "dc:fsub": 113,
+   "dc:fadd": 157,
+   "dc:fsubr": 1
+  },
+  "fmul_sites": 488,
+  "fmul_functions": 306,
+  "past_end_sites": 40
+ },
+ "verification": {
+  "verdicts": {
+   "CORRECT": 238,
+   "NOT_RECONSTRUCTED": 75,
+   "NOT_COVERED": 4,
+   "WRONG": 5
+  },
+  "records": [
+   {
+    "function": "0040C790",
+    "name": "DYN_ConvexHull_StableSupportVertex_0040C790",
+    "site": "0040C90E",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:147",
+    "evidence": "around=(u*sin+v*cos) is scaled by double 0.025 [00D7A380 = (double)0.025f] into stack, 0.025 stays in ST0 for y/z, then added to direction; C++ add(direction, mul(around,0.025f)) matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0040C790",
+    "name": "DYN_ConvexHull_StableSupportVertex_0040C790",
+    "site": "0040CA80",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:147",
+    "evidence": "Second (fine-step) copy of the same sample block: around*0.025 per component, then direction + it; same C++ lambda.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00414F50",
+    "name": "BSP_Geometry_ContainsPoint",
+    "site": "00414FEF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Site is in the unlisted function at 00414FE0 (rect centre: out=((b0+b2)*0.5,(b1+b3)*0.5), 0.5 kept for y); no C++ references 00414FE0. contains_point_00414f50 does not reach it.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00423190",
+    "name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+    "site": "00423229",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_clearance.cpp:88",
+    "evidence": "dir(+10h)*800 and 800*dir(+14h) (800 kept in ST0) then + base; offset_point(base,record,800) computes radius*offset_dir_x/z + base.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00423190",
+    "name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+    "site": "0042330A",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_clearance.cpp:484",
+    "evidence": "dir_x*1600 stored, then 1600*[esi+14h]; far_point = offset_point(base, record, 1600.0f) matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0043A660",
+    "name": "BSP_Camera_ProjectWorldToScreen",
+    "site": "0043A792",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_markers_runtime.cpp:47",
+    "evidence": "mode 0: (x+1)*0.5 -> out.x, 0.5 stays for (1-y)*0.5; C++ screen_x/screen_y match; Ghidra pseudocode agrees.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0043A660",
+    "name": "BSP_Camera_ProjectWorldToScreen",
+    "site": "0043A7D8",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_markers_runtime.cpp:53",
+    "evidence": "modes 1/3: FLD1; FADD ST1 gives x+1 with 1 kept; DC CA writes (x+1)*0.5 to ST2; then (1 - y)*0.5 with the kept 1 and 0.5. Matches C++.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0043A660",
+    "name": "BSP_Camera_ProjectWorldToScreen",
+    "site": "0043A838",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_markers_runtime.cpp:58",
+    "evidence": "mode 2: (x+1)*0.5*[CE42B8] and (1-y)*0.5*[CE42B0]; C++ Pixels arm matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0043ABA0",
+    "name": "BSP_HudDigitIcon_RollUv",
+    "site": "0043ACF5",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "0043ABA0 is only a host record (game_hosts_hud.cpp:2512, HudShipScreen::gauge_digit_uv); no UV roll arithmetic in C++.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "004D5BD0",
+    "name": "BSP_Game_ApplyMapBounds",
+    "site": "004D615A",
+    "verdict": "CORRECT",
+    "cpp": "src/world_map_bounds.cpp:140",
+    "evidence": "Default arm: -X*0.5 -> NW.x, Y*0.5 -> NW.z, X*0.5 -> SE.x, -Y*0.5 -> SE.z with 0.5 kept in ST0; half_size() inline asm (FCHS then FMULP by double 0.5) reproduces each product.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "004DE610",
+    "name": "BSP_Game_ConstructWorld",
+    "site": "004DEA51",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "004B4D80 direction * 1e6 [00CE4C08] for the light; world_construct.cpp only names offset +100Ch, no arithmetic.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00526A40",
+    "name": "BSP_HudUnitPickScreen_PickUnit",
+    "site": "00526BD6",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_warning_screen.cpp:342",
+    "evidence": "camera forward (+110h..118h) * 10000.0 [00CE4BD8] per component, 10000 kept in ST0; C++ forward[i]*kPickRayLength + from[i].",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00546A20",
+    "name": "BSP_HudWeaponGroupScreen_Layout",
+    "site": "00546E0E",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Extent*0.5 in the cross_F2 placement; host place_f2 (game_hosts_hud.cpp:933) is a record only.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "005C0F20",
+    "name": "BSP_HudMinimapScreen_Update",
+    "site": "005C0FCD",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_updates.cpp:398",
+    "evidence": "pulse*0.5 into ST1, then FADDP adds the kept 0.5: 0.5*pulse+0.5; hud_minimap_pulse_alpha matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "005C0F20",
+    "name": "BSP_HudMinimapScreen_Update",
+    "site": "005C12F5",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_updates.cpp:398",
+    "evidence": "Second copy of the pulse block (005C12C6); same helper.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006394B0",
+    "name": "BSP_InGameHudMarkersScreen_UpdateScreenHeading",
+    "site": "006394DF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "refresh_screen_state() is a record only (game_hosts_hud_world.cpp:1006).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0063A6C0",
+    "name": "BSP_HudMarker_ProjectUnitScreenBounds",
+    "site": "0063A837",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_markers_runtime.cpp:292",
+    "evidence": "Stack trace: anchor += up*extent_up, then 2.0 [00D7A308] in ST0 scales u0 (DC CA), u1, u2 into up_row; C++ up_row[i] *= kHudMarkerUpAxisScale (2.0).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0063A6C0",
+    "name": "BSP_HudMarker_ProjectUnitScreenBounds",
+    "site": "0063AB02",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_markers_runtime.cpp:193",
+    "evidence": "DC CB: (width - margin) * -0.5 [00CEC9E0] into ST3, min -= half, max += half; the -0.5 stays on the stack and is reused by the y axis (0063AB5B); C++ uses kHudMarkerWidenHalfStep (-0.5) for both.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00640D70",
+    "name": "BSP_InGameHudMarkers_UpdateTargetSectionCallout",
+    "site": "006411EE",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "00640D70 is only a record in flush_markers (game_hosts_hud_world.cpp:1141).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00640D70",
+    "name": "BSP_InGameHudMarkers_UpdateTargetSectionCallout",
+    "site": "006412AC",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As above.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00640D70",
+    "name": "BSP_InGameHudMarkers_UpdateTargetSectionCallout",
+    "site": "006413DE",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As above.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006435D0",
+    "name": "BSP_InGameHudMarkersScreen_Update",
+    "site": "00643625",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_updates.cpp:213",
+    "evidence": "GUI width*K [00CF5990] stored, K kept and times height; hud_marker_clip_rect scales both by kHudMarkerClipHalfExtent.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0064B170",
+    "name": "BSP_HudDamageDirection_Register",
+    "site": "0064B267",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only the virtual push_damage_direction (ship_hit_record.hpp:261) names it; no body.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0064B170",
+    "name": "BSP_HudDamageDirection_Register",
+    "site": "0064B2D0",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As above.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0064DA40",
+    "name": "BSP_HudShipView_BindUnitCamera",
+    "site": "0064DBA3",
+    "verdict": "CORRECT",
+    "cpp": "src/mission_camera.cpp:187",
+    "evidence": "MaxAngle(+45Ch)*pi then FDIV ST2 by 180 -> +3F0h; the kept pi * MinAngle(+458h) / 180 (FDIVRP) -> +3ECh; C++ min/max pitch formulas match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006AC5D0",
+    "name": "FUN_006ac5d0",
+    "site": "006AC6CC",
+    "verdict": "CORRECT",
+    "cpp": "src/building_pads.cpp:204",
+    "evidence": "Inside-zone arm: fx*-100000 [00CF81F8] and -100000*fz (kept factor), each rounded then + p; C++ far_point matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006AC5D0",
+    "name": "FUN_006ac5d0",
+    "site": "006AC727",
+    "verdict": "CORRECT",
+    "cpp": "src/building_pads.cpp:199",
+    "evidence": "Outside-zone arm with +100000 [00CF81F0]; matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006AC5D0",
+    "name": "FUN_006ac5d0",
+    "site": "006AC86A",
+    "verdict": "CORRECT",
+    "cpp": "src/building_pads.cpp:224",
+    "evidence": "Traced: fx*5 [00D7A370], 5 kept, fz*5 via FMULP ST2; start = (5fx+p0, 5fz+p1); fx/fz stay live for end = p + run*f. C++ start/end match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006BC530",
+    "name": "BSP_AirOpsHolder_OverRunway",
+    "site": "006BC543",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:12073",
+    "evidence": "B0h*0.5 and 0.5*B4h stored as floats, compared with |local x| and |local z|; hw/hl in C++ match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006CDF70",
+    "name": "FUN_006cdf70",
+    "site": "006CE081",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:12583",
+    "evidence": "a.Length(A0h)*0.5 added to the 00415550 max -> D; kept 0.5 * a.Width(A4h) -> hwa; C++ D and hwa match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006F9EE0",
+    "name": "FUN_006f9ee0",
+    "site": "006FA297",
+    "verdict": "CORRECT",
+    "cpp": "src/hull_terrain_contact.cpp:197",
+    "evidence": "Each (min+max) float sum * 0.5 with 0.5 kept -> shape+14h..1Ch; C++ centre[k] = f32(f32(lo+hi)*0.5). Also mmod_hull_convex_box.cpp:249 (float sum, same operands).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "006FCD20",
+    "name": "BSP_DepthChargeProjectile_AdvanceInWater",
+    "site": "006FCEFA",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:8718",
+    "evidence": "|lx|-W*0.5, |ly|-H*0.5 (FMUL ST2 of kept 0.5), |lz|-L*0.5 (FMULP), each < 10; C++ half[] = width/height/length*0.5 matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0070C370",
+    "name": "BSP_FlakProjectile_TickAdvance",
+    "site": "0070C4E1",
+    "verdict": "CORRECT",
+    "cpp": "src/projectile_helpers.cpp:16",
+    "evidence": "midpoint (float sum)*0.5 per component; the kept 0.5 later multiplies step length at 0070C51E; midpoint_of and flak_search_radius_squared_0070c50f (L*0.5 + 2r)^2 match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00723030",
+    "name": "BSP_GeomMeshElement_RootBoxCentre",
+    "site": "0072309B",
+    "verdict": "CORRECT",
+    "cpp": "src/approach_target_ref.cpp:297",
+    "evidence": "(lo+hi)*0.5 per axis with 0.5 kept; C++ (lo[k]+hi[k])*0.5f.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00742400",
+    "name": "BSP_LandConvoy_PlaceMembers",
+    "site": "007425D0",
+    "verdict": "CORRECT",
+    "cpp": "src/land_and_structures.cpp:250",
+    "evidence": "Reverse: tangent (+20h..28h, the 007B03C0 tangent out) * -1.0 with -1 kept; C++ negates all three tangent components.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0074AF50",
+    "name": "BSP_LandingShip_Update",
+    "site": "0074B1C8",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Half-length offset vector (0074B1A7..0074B1FD) feeding the troop-path work; building_pads.cpp covers only the ramp/unload latch, 006AC370 is a record.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0078D1B0",
+    "name": "BSP_GameWorld_BisectWaterCrossing",
+    "site": "0078D1FC",
+    "verdict": "CORRECT",
+    "cpp": "src/projectile_helpers.cpp:55",
+    "evidence": "Initial midpoint: float sums * 0.5 (FMUL [mem] consumes the 0.5); midpoint_of matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0078D1B0",
+    "name": "BSP_GameWorld_BisectWaterCrossing",
+    "site": "0078D34E",
+    "verdict": "CORRECT",
+    "cpp": "src/projectile_helpers.cpp:84",
+    "evidence": "Loop midpoint * 0.5; the kept 0.5 then multiplies working_length at 0078D382; C++ midpoint_of and working_length*kProjectileHalf match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0079A3B0",
+    "name": "HudMovieCamera_Update",
+    "site": "0079A8C1",
+    "verdict": "NOT_COVERED",
+    "cpp": null,
+    "evidence": "Site is in the editor block 0079A584..0079B2A2 that hud_movie_camera.hpp:20-21 explicitly excludes; movie_camera_update_0079a3b0 skips it.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007A0EB0",
+    "name": "MovieCameraKeyframe_ParseLua",
+    "site": "007A1575",
+    "verdict": "NOT_COVERED",
+    "cpp": null,
+    "evidence": "Integer `deckpos` arm (row*1000 [00CE47A0] + offset); hud_movie_camera.cpp:453 assumes no integer deckpos and never computes it.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007AFE80",
+    "name": "BSP_CameraPath_SampleLocalCubic",
+    "site": "007B02D0",
+    "verdict": "CORRECT",
+    "cpp": "src/camera_path_sampler.cpp:318",
+    "evidence": "Inline-asm transcription writes `fmul st(1), st(0)` (MSVC encodes DC C9) with the correct annotation.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007BB6E0",
+    "name": "BSP_Plane_QuantizeControlAxes",
+    "site": "007BB6F0",
+    "verdict": "CORRECT",
+    "cpp": "src/pilot_plan_slots.cpp:95",
+    "evidence": "v*127 into ST1, +128.5 via FADD ST2, ftol; 127 kept and reused as the divisor (FDIV ST3); all three C++ copies (pilot_plan_slots.cpp:95, pilot_controls.cpp:38, plane_flight.cpp:52) compute ftol(v*127+128.5) and (q-128)/127. Nit: the two float-typed copies form v*127+128.5 in float rather than extended.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007BB6E0",
+    "name": "BSP_Plane_QuantizeControlAxes",
+    "site": "007BB843",
+    "verdict": "CORRECT",
+    "cpp": "src/pilot_controls.cpp:96",
+    "evidence": "Throttle arm: v*127, 127 kept in ST0 as the divisor (FDIV ST1 at 007BB875); same formula.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007D3E60",
+    "name": "BSP_PlaneClass_BindModelData_Provisional",
+    "site": "007D4630",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Vector negation before the atan2 at 007D4654; only 007D4812..007D4953 and the +158h line are reconstructed.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007D3E60",
+    "name": "BSP_PlaneClass_BindModelData_Provisional",
+    "site": "007D57DC",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Point list fed to 004215D0 in the tail; no C++.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007D3E60",
+    "name": "BSP_PlaneClass_BindModelData_Provisional",
+    "site": "007D5850",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As above.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007D9360",
+    "name": "BSP_PlaneClass_TrialIntegrateAtClimbAngle",
+    "site": "007D9663",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "plane_flight.hpp:551 labels 007D9360 a substituted predicate, not reconstructed.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007DA380",
+    "name": "BSP_PlaneFlight_ControllerModeFactors",
+    "site": "007DA417",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Site is in the mode-2 (water) arm 007DA3D0; only the mode-0/1 factors are reconstructed (game_hosts_units.cpp:31460-31490).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007DB680",
+    "name": "BSP_PlaneFlight_CoreLaw",
+    "site": "007DC7E1",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Blend (new*s + old*(0.25-s))*4 into ctl+30h..38h (007DC762..007DC80B); game_hosts_units.cpp:15870 says the ctl+30h copy has no host field.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007DCDD0",
+    "name": "BSP_PlaneFlight_WaterSurfaceLaw",
+    "site": "007DCF89",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "game_hosts_units.cpp:17651 calls the water surface law a contract; no body.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007F16D0",
+    "name": "BSP_Plane_ResolveReturnToBase",
+    "site": "007F18CB",
+    "verdict": "CORRECT",
+    "cpp": "src/return_to_base.cpp:108",
+    "evidence": "sum_x*0.25 -> record+0Ch, kept 0.25*sum_z -> +14h; C++ retreat_x/z match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007F23A0",
+    "name": "BSP_PlaneSquadron_FormationStationPoint",
+    "site": "007F26E1",
+    "verdict": "NOT_COVERED",
+    "cpp": null,
+    "evidence": "Site is in the shape-3 body 007F26AD; plane_formation.cpp:105-107 reconstructs shape 1 only and returns early for others.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "007F31A0",
+    "name": "BSP_PlaneSquadron_OnPlaneLeftMap",
+    "site": "007F33AA",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "007F3323..007F3418 vector arithmetic not in C++; host only kills the plane and records 007F31A0.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00810020",
+    "name": "BSP_UnitPoseHistoryRing_Fill",
+    "site": "0081008C",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_wake_trail.cpp:72",
+    "evidence": "cos*50 -> step x, kept 50 * 0 -> y, 50 * sin -> z; C++ step[] and the inline-asm copy native_unit_wake_fill.cpp:51 (fmul st(1), st(0) = DC C9) both match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00810F60",
+    "name": "BSP_Unit_InitializeDirectorAndHullDimensions",
+    "site": "0081100C",
+    "verdict": "CORRECT",
+    "cpp": "src/unit_hull_extents.cpp:55",
+    "evidence": "Inline asm keeps 2.0 in ST0 after the width store and reuses it for length, exactly as DC C9.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00816650",
+    "name": "BSP_UnitInstance_PickBodyFrameAimPoint",
+    "site": "0081683D",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_bot_remainder.cpp:199",
+    "evidence": "Width(A4h)*0.5 -> [ESP+38h], kept 0.5 * Length(A0h) -> [ESP+30h], Height*0.25; x uses the half width (0081694A), z the half length (008168E8); C++ out[0]/out[2] use 0.5*width / 0.5*length.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00819A20",
+    "name": "BSP_UnitInstance_KamikazeDetonate",
+    "site": "00819ABB",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Direct-arm 1000x segment trace is recorded, not computed (game_hosts_gunnery.cpp:10070).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0081F980",
+    "name": "BSP_ShipUnit_BindSectionPoints_Provisional",
+    "site": "0081FA03",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "The width*2 -> +9CCh duplicate of 0081100C inside 0081F980 has no C++ of its own (ship_section_points_0081f980 covers only the section boxes); the identical 00810F60 code is reconstructed correctly.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008206F0",
+    "name": "BSP_TroopTransport_LaunchLandingCraft",
+    "site": "008211EC",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_ship_ai.cpp:13321",
+    "evidence": "Traced: craft L*dir_x, L*dir_z, then each *0.5 (0.5 kept), endpoints c -/+ half*dir; seg_b matches. Nits: the image rounds L*dir to float before halving and lists c-half first; C++ works in double and lists c+half first (endpoint order only matters if 004F49F0 is asymmetric).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008206F0",
+    "name": "BSP_TroopTransport_LaunchLandingCraft",
+    "site": "008215BF",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_ship_ai.cpp:13339",
+    "evidence": "Local point (0,0,-L*0.5) through the other ship's matrix: 0*m10 (this DC C9), 0*m00, h*m20 + m30 = t - half*f; seg_a[0..1] matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008206F0",
+    "name": "BSP_TroopTransport_LaunchLandingCraft",
+    "site": "008217B6",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_ship_ai.cpp:13342",
+    "evidence": "craftW*0.5 + kept 0.5*otherW compared with the float-rounded gap; C++ gap < ok.width*0.5 + craft.width*0.5 (gap kept in double: width nit).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008206F0",
+    "name": "BSP_TroopTransport_LaunchLandingCraft",
+    "site": "008218AA",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_ship_ai.cpp:13366",
+    "evidence": "Row 0 = up x dir with dir_y = 0: uy*dz - uz*0 (this DC C9 is uz*0); with up=(0,1,0) C++ {dir_z, 0, -dir_x} is equal (sign of zero aside).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008227E0",
+    "name": "BSP_UnitDamageSmoke_Tick",
+    "site": "0082284C",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:12444",
+    "evidence": "A4h*0.3, kept 0.3*A0h, 0.3*A8h; 00CE3DC8 is (double)0.3f so float 0.3f*x is exact-equal; the first box draw reads the A0h product, as C++ draws half_a0 first.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00824B60",
+    "name": "BSP_UnitInstance_OnWrecked",
+    "site": "00825015",
+    "verdict": "CORRECT",
+    "cpp": "src/unit_death_sink.cpp:33",
+    "evidence": "I.y*2 (DC C9), kept 2 * I.z (D8 C9), 2*I.x; stored as x,y,z of the 00C37E70 vector; wreck_settle_00824fe5 and the host copy game_hosts_units.cpp:3143 both double every component.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0082FE30",
+    "name": "BSP_ShipClass_BindModelData_Provisional",
+    "site": "00830A18",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Half extents (A4h, A8h, A0h)*0.5 for the +584h list; only 0082FEA9..0082FEE8 is reconstructed.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00834E90",
+    "name": "BSP_UnitInstance_UpdatePropellers",
+    "site": "00834F03",
+    "verdict": "WRONG",
+    "cpp": "src/unit_motion.cpp:306",
+    "evidence": "Bytes DC C9 DE E9: ST1 = (s - -1.0)*K, ST0 = K (pi/4, 00CEDCD0); FSUBP ST1,ST0 gives (s+1)*K - K. Ghidra pseudocode agrees: (local_100 - _DAT_00d7a250) * _DAT_00cedcd0 - _DAT_00cedcd0. C++ computes (s+1) - K*(s+1), the st0*=st1 misread (s=0: image 0, C++ 0.2146).",
+    "fix": "--- src/unit_motion.cpp:304-306\n-    // 00834EF5..00834F05: (s - bias) then subtract blend * (s - bias).\n-    const double biased = static_cast<double>(steering_source) - kUnitSteeringBias;\n-    return static_cast<float>(biased - kUnitSteeringBlend * biased);\n+    // 00834EF5..00834F05: DC C9 leaves blend in ST0 and (s - bias) * blend in ST1;\n+    // DE E9 (FSUBP ST1,ST0) then gives (s - bias) * blend - blend.\n+    const double biased = static_cast<double>(steering_source) - kUnitSteeringBias;\n+    return static_cast<float>(biased * kUnitSteeringBlend - kUnitSteeringBlend);\n--- include/bsp/unit_motion.hpp:282\n-// expression is literally (s - bias) - blend * (s - bias).\n+// expression is literally (s - bias) * blend - blend.\n(The same wrong expression is in the Ghidra plate comment of 00834E90 and config/names/00830000.jsonl line 5.)",
+    "list": "A"
+   },
+   {
+    "function": "0084BC60",
+    "name": "BSP_Projectile_OnImpact",
+    "site": "0084BE6C",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:10372",
+    "evidence": "dir*0.05 [00D7A270 = (double)0.05f] per component (kept factor), centre = hit - that; C++ centre[i] -= dir_unit[i]*0.05f.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085A3D0",
+    "name": "BSP_TurningGun_SetupFromDescriptor",
+    "site": "0085A5B6",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:1307",
+    "evidence": "DC CA: (lo+hi)*0.5 into ST2 -> +480h, then the lo/mid/hi clamp; C++ midpoint() = (lo+hi)*0.5 with the same clamp.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085C910",
+    "name": "BSP_Math_BoxMeetsSegment2D",
+    "site": "0085C93D",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_geometry.cpp:112",
+    "evidence": "(b1-b0)*0.5 (abs'd, segment) via DC CA, kept 0.5 for (max-min)*0.5 via FMUL ST4; C++ segment_x/extent_x match. Naked copy avoid_zone_clearance.cpp:188 writes FMUL st(2),st(0).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085C910",
+    "name": "BSP_Math_BoxMeetsSegment2D",
+    "site": "0085C988",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_geometry.cpp:114",
+    "evidence": "((b0+b1)-(max+min))*0.5 via DC C9; delta_x matches; naked copy line 212 is DC C9.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085CAD0",
+    "name": "BSP_Geometry_SegmentOverlapsAabb",
+    "site": "0085CAFD",
+    "verdict": "CORRECT",
+    "cpp": "src/hit_narrowphase.cpp:139",
+    "evidence": "Same layout as 0085C910: |(to-from)*0.5| and (max-min)*0.5 with the kept 0.5; seg_ax/box_x match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085CAD0",
+    "name": "BSP_Geometry_SegmentOverlapsAabb",
+    "site": "0085CB48",
+    "verdict": "CORRECT",
+    "cpp": "src/hit_narrowphase.cpp:142",
+    "evidence": "((from+to)-(min+max))*0.5; dx matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085DF60",
+    "name": "BSP_Geometry_SphereTriangleDistance",
+    "site": "0085E2A4",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "game_hosts_gunnery.cpp:10204-10207 is a self-described re-derivation (Eberly in float, distance from the closest point), not a transcription; the 2.0 [00D7A308] term of the closed form is not reproduced, so no misread is possible.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "0085DF60",
+    "name": "BSP_Geometry_SphereTriangleDistance",
+    "site": "0085E45E",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As above.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00891B20",
+    "name": "BSP_LuaBinding_Sink",
+    "site": "00891CCF",
+    "verdict": "CORRECT",
+    "cpp": "src/unit_damage.cpp:336",
+    "evidence": "Width*sign_x*0.5 -> pivot.x, kept 0.5 * Length*step (FMULP) -> pivot.z; sink_pivot_00891b20 matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008A4300",
+    "name": "FUN_008a4300",
+    "site": "008A4512",
+    "verdict": "CORRECT",
+    "cpp": "src/pilot_order_bindings.cpp:64",
+    "evidence": "sum_x*0.25 then kept 0.25*sum_z; C++ out[0]/out[2] match (its comment says FMUL ST1 but the code is right).",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008FFF20",
+    "name": "BSP_GunBot_HeadingAimTick",
+    "site": "009004AD",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_bot_remainder.cpp:395",
+    "evidence": "(axis*degrees).x*2.0 and kept 2.0*(axis*degrees).z; ox/oz match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008FFF20",
+    "name": "BSP_GunBot_HeadingAimTick",
+    "site": "00900543",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_bot_remainder.cpp:407",
+    "evidence": "dir.x*1000 and kept 1000*dir.z, then + gun; run end matches.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "008FFF20",
+    "name": "BSP_GunBot_HeadingAimTick",
+    "site": "0090066B",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_bot_remainder.cpp:426",
+    "evidence": "forward(+94h)*1000 and kept 1000*forward(+9Ch); fx/fz match.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00901C20",
+    "name": "BSP_GunBot_InterceptSolution",
+    "site": "00901EC0",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:2508",
+    "evidence": "(V+V') float sums * 0.5 with kept 0.5; C++ v[i] = (v+turned)*0.5.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00902290",
+    "name": "FUN_00902290",
+    "site": "0090245E",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Kind-6 lead is a record (game_hosts_gunnery.cpp:11443-11448); no body.",
+    "fix": null,
+    "list": "A"
+   },
+   {
+    "function": "00902920",
+    "name": "BSP_GunBot_LeadAimTick",
+    "site": "00902E8F",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:7060",
+    "evidence": "After the h clamp the image stores bot+6Ch = h*(-0.5) and bot+70h = (-0.5)*v ([00CEC9E0] = -0.5 double stays in ST0 for the second FMUL); C++ sw.rh = -0.5f*sw.h, sw.rv = -0.5f*sw.v.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00902920",
+    "name": "BSP_GunBot_LeadAimTick",
+    "site": "00902F11",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:7067",
+    "evidence": "Same idiom after the v clamp: +6Ch = -0.5*h, +70h = -0.5*v; C++ lines 7067-7068 match (double-vs-float constant is a width nit only).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0092AAE0",
+    "name": "BSP_TickableGameEntity_InstallCollision",
+    "site": "0092AF65",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only the tail 0092B289-0092B30C is reconstructed (include/bsp/collision_shapes.hpp:195); the box-extent arithmetic around 0092AF65 has no C++.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0092AAE0",
+    "name": "BSP_TickableGameEntity_InstallCollision",
+    "site": "0092AF85",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "As 0092AF65; no C++ reproduces 0092AF2F-0092AFAF.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0092E250",
+    "name": "FUN_0092e250",
+    "site": "0092E2B2",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only named as a callee in include/bsp/unit_parts.hpp:207.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0092E5B0",
+    "name": "BSP_UnitController_ApplyNetworkCorrection",
+    "site": "0092E7A0",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "src/game_hosts_units.cpp:8997 is a host hook that only records the call (gate closed, no network message); no arithmetic.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00934150",
+    "name": "BSP_UnitParts_DetachPart",
+    "site": "00934D42",
+    "verdict": "WRONG",
+    "cpp": "src/unit_parts.cpp:245",
+    "evidence": "DC CA writes 0*vy into ST2, and the sequence stores spin = (vz - 0*vy, 0*vx - 0*vz, 0*vy - vx) = (vz, 0, -vx) (x87_sym 00934D00..00934D78 and Ghidra pseudocode agree). C++ has spin.x = -velocity[2]: a sign error, not the DC-misread class (the misread would give vz - vy). Separately, the C++ velocity at lines 230-240 omits the random scaling seen in the pseudocode before 00934D00 (outside this site).",
+    "fix": "--- src/unit_parts.cpp:245\n-            float spin[3] = {-velocity[2], 0.0f, -velocity[0]};\n+            float spin[3] = {velocity[2], 0.0f, -velocity[0]};",
+    "list": "B"
+   },
+   {
+    "function": "00948CC0",
+    "name": "BSP_SpawnRequest_Construct",
+    "site": "00948F8D",
+    "verdict": "CORRECT",
+    "cpp": "src/lua_spawn_new.cpp:147",
+    "evidence": "Image stores (w[a+1]+w[a])*0.5 ([00D7A280]=0.5) then max with the running value, 0.5 kept live for the next pair; C++ half() = (a+b)*0.5 in double, max'd per pair.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0094A140",
+    "name": "BSP_SpawnRequest_SolvePlacement",
+    "site": "0094A310",
+    "verdict": "CORRECT",
+    "cpp": "src/lua_spawn_new.cpp:308",
+    "evidence": "x87_sym: [18] = (rec+68h + rec+6Ch)*0.5, [1C] = rec+6Ch - rec+68h, then |..| and the retained 0.5 multiplies it (0094A351); C++ mid = (hi+lo)*0.5, halfwidth = 0.5*|hi-lo| (lines 308-311).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00957740",
+    "name": "BSP_Aim_ResolveRayToWorldPoint",
+    "site": "00957A89",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:11457",
+    "evidence": "Image: n.x*20000, 0*20000, 20000*n.z added to the camera ([00CE3CB8]=20000.0 kept in ST0); C++ aim = camera + n*20000, aim.y = camera.y.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00957BD0",
+    "name": "FUN_00957bd0",
+    "site": "00957D1A",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_gunnery.cpp:11166",
+    "evidence": "Image: dir.x*1000, dir.y*1000, dir.z*1000 ([00CE47A0]=1000.0 reused) plus camera; C++ to[] = dir*reach + camera.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0098A920",
+    "name": "BSP_SpatialNode_SetLocalBounds",
+    "site": "0098A96B",
+    "verdict": "CORRECT",
+    "cpp": "src/spatial_index.cpp:134",
+    "evidence": "Image scales all six corners by 0.5 (min.x*0.5 via DC C9, the rest via D8 with 0.5 in ST1) then max*0.5 - min*0.5; spatial_local_extent_0098a920 matches, and the inline-asm replica src/native_unit_part_collision.cpp:150 uses MSVC 'fmul st(1), st(0)' which assembles to DC C9.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099D300",
+    "name": "BSP_PilotBot_PlanControls",
+    "site": "0099E14C",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_ai_control.cpp:508",
+    "evidence": "Image builds InterpolateClamped(-c, 0.3*(-c), c, 0.3*c, h): DC C9 stores c*0.3 (y1) and the retained 0.3 multiplies -c (y0). C++ matches. Nit: the constant is double [00CE3DC8] = (double)0.3f = 0.30000001192, C++ uses 0.3.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099EC40",
+    "name": "BSP_PilotBot_AvoidGunfire",
+    "site": "0099F09D",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:7155",
+    "evidence": "Image x = n.x*0.8, y = 0.8*n.y ([00CE3D40] = (double)0.8f reused); C++ x = nx*0.8000000119, y = ny*0.8000000119 (double-vs-float normalised input is a width nit).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099F1C0",
+    "name": "BSP_PilotBot_AvoidTerrain",
+    "site": "0099F6BB",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:10297",
+    "evidence": "Image stores f.x*10, f.y*10, f.z*10 ([00CE3DC0]=10.0 retained) into +3FCh..+404h for p0 = p - f*10; C++ p0[i] = p_now[i] - f[i]*10.0.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099F1C0",
+    "name": "BSP_PilotBot_AvoidTerrain",
+    "site": "0099F7D4",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:10299",
+    "evidence": "Image: (r*(f+l)) per component, then each *0.8 ([00CE3D40] retained) + p0; C++ a[i] = r*(f[i]+l[i])*0.8 + p0[i].",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099F1C0",
+    "name": "BSP_PilotBot_AvoidTerrain",
+    "site": "0099FB1B",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:10309",
+    "evidence": "Image: up = row1 (+DCh,+E0h,+E4h) * 1.25 ([00CF87C0] retained); C++ up[i] = m[4+i]*1.25.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "0099F1C0",
+    "name": "BSP_PilotBot_AvoidTerrain",
+    "site": "0099FD3B",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:10321",
+    "evidence": "Image: ((f-up)*r) per component then *0.75 ([00CEC9D8] retained) + p0; C++ a[i] = r*(f[i]-up[i])*0.75 + p0[i] (same operands, product order commutes).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009AA630",
+    "name": "BSP_BotTaskDogfight_SelectTarget",
+    "site": "009AA7E4",
+    "verdict": "CORRECT",
+    "cpp": "src/dogfight_task.cpp:63",
+    "evidence": "st1 = ShootDistance*0.8 (double 00CE3D40) stored at 009AA7ED as R; 0.8 stays in ST0 and 009AA81C FMULP gives R*0.8 for the near branch. C++ r = sd*0.8, then r*0.8f. Nit: r*0.8f is evaluated in float, the image keeps it extended until the float arg store.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B0300",
+    "name": "BSP_BotStateLandLine_Tick",
+    "site": "009B03CD",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:27170",
+    "evidence": "st1 = cos(m)*100 (00D7A220) stored [esp+58]; 100 stays in ST0 and 009B03D5 FMUL gives 100*sin(m) into [esp+60]. C++ ox = cm*100, oz = sm*100.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B09C0",
+    "name": "BSP_BotStateLandAbort_Tick",
+    "site": "009B0B87",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:28380",
+    "evidence": "Look-ahead: 007BA2E0 direction x 100 per component (x by DC C9, y by D8 C9 at 009B0B9A, z by FMUL m32 with the kept 100). C++ look_ahead adds dx*100 / 0 / dz*100 to pos (y term of 007BA2E0 taken as 0).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B09C0",
+    "name": "BSP_BotStateLandAbort_Tick",
+    "site": "009B0D7D",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:28380",
+    "evidence": "Second copy of the same 100 m look-ahead block (009B0D5D-009B0E4C); same lambda reproduces it.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B09C0",
+    "name": "BSP_BotStateLandAbort_Tick",
+    "site": "009B0F4A",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:28350",
+    "evidence": "st1 = ys*0.5 -> arg x1 (half); then FXCH/FCHS/FMULP gives (-ys)*0.5 -> arg x0. C++ interp(-half, -1.1, half, 1.1, e).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B1420",
+    "name": "BSP_BotStateLandBegin_Steer",
+    "site": "009B184E",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:27579",
+    "evidence": "st1 = Z*0.5 -> half; the 0.5 stays live and is later FADDP'd as the 0.5 term of H (009B18BC), 100 from the compare is reused as the 100*t2 factor. C++ half = Z*0.5, m = max(100, half), H = 0.5 + ... matches.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B22C0",
+    "name": "BSP_PlaneBot_ApproachBaseStep",
+    "site": "009B2937",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:28214",
+    "evidence": "st1 = f18*0.5 stored [esp+50]; the kept 0.5 is the left operand of the FCOMPI, c = max(0.5, half). C++ matches.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009B22C0",
+    "name": "BSP_PlaneBot_ApproachBaseStep",
+    "site": "009B2B59",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:28251",
+    "evidence": "st1 = ys*0.5 -> x1; FXCH/FCHS/FMULP gives -ys*0.5 -> x0 of 00419010. C++ passes -ys*0.5 and ys*0.5.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009BE3E0",
+    "name": "BSP_BotStateFollow_WaitValue",
+    "site": "009BE9AD",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "The site is not in 009BE3E0 (which ends at 009BE58A; padding 009BE58B-F). It is in an undefined function 009BE590-009BEA9E, follow-state vtable 00D20AB8 slot +14h (also in 00D1F710/00D1FC1C/00D201B4/00D20D3C/00D21334). No C++ references 009BE590 or the station + 100*dir it computes. follow_wait_value_009be3e0 covers only 009BE3E0.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009BEE30",
+    "name": "BSP_BotStateFollow_CommandStep",
+    "site": "009BF5E3",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_follow_hold.cpp:164",
+    "evidence": "st1 = nx*8 (00CE3DB0) clamped to [-1,1]; the kept 8 is multiplied into ny at 009BF638 FMULP st(2). C++ yaw_to = clamp(nx*8), pitch_to = clamp(ny*8). Nit: normalization is done in double, the image normalizes in float (00419510).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009BFEE0",
+    "name": "BSP_BotStateFollow_SteerGeometry",
+    "site": "009C04D4",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_follow_law.cpp:251",
+    "evidence": "st1 = r*2; 2 stays and gives phi*2*iw at 009C04E6/009C04EE; stores x28 - r*2*(1-cos phi) and T - phi*2*iw. C++ lines 251-252 match. Nit: C++ rounds (1-cos phi) to float via F(); the image keeps it extended.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009BFEE0",
+    "name": "BSP_BotStateFollow_SteerGeometry",
+    "site": "009C0D6D",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_follow_law.cpp:350",
+    "evidence": "Same pattern in quadrant 4: x38 - r*2*(1-cos phi) into [esp+6C], then t6 - (phi*2)*iw into [esp+24], with 2 kept in ST0. C++ lines 350-351 match (same F(1-cos) rounding nit).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009BFEE0",
+    "name": "BSP_BotStateFollow_SteerGeometry",
+    "site": "009C118E",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_follow_law.cpp:538",
+    "evidence": "m[i] = n[i]*0.2 (00CE3D10), with 0.2 kept for y and z, each stored as float; then p[i] += D*m[i] (D = [esp+38] from 009C10AE). C++ p[i] += float(0.2*D)*n[i]. Same operands. Nit: the association differs: the image rounds n*0.2, C++ rounds 0.2*D.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009C62B0",
+    "name": "BSP_BotStateDiveBombFlyAbove_Tick",
+    "site": "009C6328",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:4509",
+    "evidence": "st1 = dx*3.0 (00D7A2B0) and the kept 3.0 times dz; then aim - 3*(dx,dz) - pose. C++ lead_x/z = target - 3*rel_v - own.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009C62B0",
+    "name": "BSP_BotStateDiveBombFlyAbove_Tick",
+    "site": "009C6875",
+    "verdict": "WRONG",
+    "cpp": "src/dive_bomb_task.cpp:922",
+    "evidence": "The image computes ST1 = 0.5*sin with 0.5 left in ST0, then 009C6877 FADDP gives (0.5*sin + 0.5)*R. The live default arm (kDiveFlyAboveCrossTrackBound = false, include/bsp/dive_bomb_task.hpp:238) computes sin*1.5*R, which is the exact st0*=st1 misreading. A correct arm already exists (cc13-audit9, lines 916-920) but it is switched OFF.",
+    "fix": "--- include/bsp/dive_bomb_task.hpp:238\n-inline constexpr bool kDiveFlyAboveCrossTrackBound = false;\n+inline constexpr bool kDiveFlyAboveCrossTrackBound = true;\n(or delete the else arm at src/dive_bomb_task.cpp:921-925:\n-    } else {\n-        out.cross_track = static_cast<float>(\n-            std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *\n-            range);\n-    }\n)",
+    "list": "B"
+   },
+   {
+    "function": "009C7F00",
+    "name": "BSP_BotStateDiveBombGoAway_IsComplete",
+    "site": "009C7F12",
+    "verdict": "CORRECT",
+    "cpp": "src/dive_bomb_task.cpp:640",
+    "evidence": "st1 = travel_20*0.9 stored [esp]; 0.9 stays in ST0 and is reused at 009C7F7A (FMUL [esp]) when all three flags are set, or popped. C++ term = travel*0.9, again *0.9 under the flags. Nit: C++ keeps term in double; the image rounds it to float after each multiply.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009C8D40",
+    "name": "BSP_BotApproachZone_RefreshZone",
+    "site": "009C8E40",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_retreat_task.cpp:62",
+    "evidence": "The corner sums (x, z) times 0.25 (00D7A348), with 0.25 kept for z. C++ to_x/to_z use kRetreatQuarter on both. Nit: the image rounds every partial sum to float; C++ sums in double.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009C8D40",
+    "name": "BSP_BotApproachZone_RefreshZone",
+    "site": "009C8E6E",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_retreat_task.cpp:60",
+    "evidence": "mid = (edge sums)*0.5 (00D7A280) for x, with the kept 0.5 for z; stored as float [14]/[18]; to = quarter - mid. C++ mid_x/mid_z use kRetreatHalf. Nit: C++ keeps mid in double; the image stores it as float.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009C8D40",
+    "name": "BSP_BotApproachZone_RefreshZone",
+    "site": "009C8EFB",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_retreat_task.cpp:67",
+    "evidence": "(R*dir0)*3.0 for x with the kept 3.0 times R*dir1 for z, then plus mid -> +50h/+54h. C++ enter_point = R*dir*3 + mid. Nit: no intermediate float rounding of R*dir in C++.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009CA4A0",
+    "name": "FUN_009ca4a0",
+    "site": "009CA65E",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:20892",
+    "evidence": "+34h *= k and the kept k times +3Ch, both stored back. C++ scales both fields. Nit: C++ uses the literal 1.4; 00D045F0 holds 1.399999976158142 (header kTurnCircleMul), a constant-width difference, not a DC error.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009CD540",
+    "name": "BSP_PlaneBot_TaxiStep",
+    "site": "009CDB63",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "include/bsp/airfield_taxi.hpp:241-245 says taxi_step_009cd540 is structure only and that the x87 yaw/speed arithmetic between 009CD6AB and 009CDC48 is host-supplied. The yaw interp at 009CDB57-009CDB8E is not reproduced.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D15F0",
+    "name": "BSP_BotStateTorpedoAim_Tick",
+    "site": "009D177E",
+    "verdict": "CORRECT",
+    "cpp": "src/torpedo_aim_tick.cpp:141",
+    "evidence": "f14 *= 0.9 and the kept 0.9 times f0c, both scaled; C++ lines 141-142 scale both. Nit: kTightenScale is 0.9f float while 00D7A390 is read as a qword.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D56F0",
+    "name": "BSP_ShipAi_AddThrottleProfileBand",
+    "site": "009D5706",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:308",
+    "evidence": "DC CA leaves (low+2.0)*16.0 in ST2 for the low-end ftol and keeps 16.0 and 2.0 live for the high end (009D5723 FADD, 009D5727 FMULP). The C++ index helper computes (v+2.0)*16.0 for both ends.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D6B40",
+    "name": "BSP_ShipAi_SnapThrottleToProfile",
+    "site": "009D6B8D",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_obstacle_tables.cpp:49",
+    "evidence": "DC CA puts (v+2)*16 in ST2, then +0.5 and ftol, with 16, 2 and 0.5 kept live for the two repeats at 009D6BA0 and 009D6BAF. The C++ computes ((v+2)*16+0.5) truncated for all three indices.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D6B40",
+    "name": "BSP_ShipAi_SnapThrottleToProfile",
+    "site": "009D6DC9",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "The site is outside 009D6B40's real body, which ends with RET at 009D6D55, then INT3 padding. It belongs to an uncreated function at 009D6D60 that builds a 256-bin byte table using the 256.0 double at 00D0DEE0. No C++ references 009D6D60 or the site.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D7050",
+    "name": "BSP_ShipAiAvoidZoneSearcher_RefreshCachedQuery",
+    "site": "009D7119",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_avoid_zone_search.cpp:110",
+    "evidence": "The image stores width*0.5 to [esp+0Ch], then multiplies height by the 0.5 still in ST0. The C++ has old_x=width*half and old_z=height*half.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009D7050",
+    "name": "BSP_ShipAiAvoidZoneSearcher_RefreshCachedQuery",
+    "site": "009D7132",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_avoid_zone_search.cpp:111",
+    "evidence": "The image stores query+8 * 1.2 (00CEC160), and the 1.2 stays live until 009D7185 FMULP multiplies query+0Ch. The C++ multiplies both half_width and half_height (line 114) by expansion.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E09DA",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:411",
+    "evidence": "DC CA gives [24]=(-b - root)*0.5 (DE EA = st2-st0), and the 0.5 in ST0 then multiplies (-b + root) for [18]. This matches lower_solution and upper_solution, including the average<lower select.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E0AE9",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:429",
+    "evidence": "This is the same shape with -0.5 (00CEC9E0): [10]=(-b - root)*-0.5 and [20]=-0.5*(-b + root). It matches the lower-end C++ and its lower<average select.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E0D7A",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:542",
+    "evidence": "The image stores dir_x*-2.0 (00D19660), then multiplies dir_z by the -2.0 still in ST0, and adds both to blk+34C/+350. The C++ returns {dir_x*course_sign, course_sign*dir_z} with course_sign=-2 in the wide arm.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E0E02",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:542",
+    "evidence": "This is a second wide-arm copy of the same -2.0 step; the factor is reused for dir_z.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E0EF8",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:542",
+    "evidence": "In the inside-quarter-turn arm, the image stores dir_x*+2.0 (00D7A308) and multiplies dir_z by the retained +2.0. The C++ course_sign=+2 matches.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E04E0",
+    "name": "BSP_ShipAi_BuildThrottleCostProfile",
+    "site": "009E0F7D",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_clearance_profile.cpp:542",
+    "evidence": "This is a second inside-arm copy of the +2.0 step.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E1950",
+    "name": "BSP_ShipAi_LandStateStep",
+    "site": "009E1CF0",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_follow_land.cpp:398",
+    "evidence": "The image stores dir.x*100.0 (00D7A220) and multiplies dir.z by the retained 100.0, then adds the position. The C++ goal.x and goal.z both use kShipAiLandHoldCarrotDistance.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E4330",
+    "name": "BSP_ShipAi_NavigationBlockConstruct",
+    "site": "009E44F9",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_nav_block_ctor.cpp:39",
+    "evidence": "The image stores MaxSpeed*1.5 (00CE3D78) as the speed term. The 1.5 stays in ST0 and multiplies the chosen max at 009E4533 to give +3D8h. The C++ has speed_term = MaxSpeed*kShipAiNavBlockStopSeconds, and start_radius = kShipAiNavBlockStopSeconds*stop_radius (line 117).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009E6E80",
+    "name": "BSP_ShipAi_ApproachChooseStandoffRange",
+    "site": "009E7451",
+    "verdict": "WRONG",
+    "cpp": "src/ship_ai_approach_update.cpp:812",
+    "evidence": "DC C9 puts (c+c*c)*0.5 in ST1, and that product is what 009E7455 float-stores, with 0.5 left in ST0. The C++ stores q=c+c*c without the 0.5, which is the st0*=st1 misreading. Ghidra pseudocode agrees with the image: (pi + (c*c+c)*0.5*pi)*0.5.",
+    "fix": "--- src/ship_ai_approach_update.cpp:810-816\n-            // 009E7441..009E7469: q = c + c*c, float-stored at 009E7455, then\n-            // (0.5 * q) * (q + pi * q).\n-            const float q = static_cast<float>(static_cast<double>(capped) +\n-                                               static_cast<double>(capped) * capped);\n-            side_weight = static_cast<float>(\n-                (kApproachSideCurveScale * q) *\n-                (static_cast<double>(q) + kApproachHalfTurn * q));\n+            // 009E7441..009E7469: h = (c + c*c) * 0.5, float-stored at 009E7455\n+            // (DC C9 leaves 0.5 in ST0); then 009E7463 DC C9 gives h*pi with pi\n+            // left in ST0, FADDP gives h*pi + pi, FMULP by the retained 0.5.\n+            const float h = static_cast<float>(\n+                (static_cast<double>(capped) + static_cast<double>(capped) * capped) *\n+                kApproachSideCurveScale);\n+            side_weight = static_cast<float>(\n+                (static_cast<double>(h) * static_cast<double>(kApproachHalfTurn) +\n+                 static_cast<double>(kApproachHalfTurn)) *\n+                kApproachSideCurveScale);",
+    "list": "B"
+   },
+   {
+    "function": "009E6E80",
+    "name": "BSP_ShipAi_ApproachChooseStandoffRange",
+    "site": "009E7463",
+    "verdict": "WRONG",
+    "cpp": "src/ship_ai_approach_update.cpp:814",
+    "evidence": "DC C9 gives ST1=h*pi (00CE3D28 is the exact double of the float pi in kApproachHalfTurn) with pi left in ST0. FADDP then gives h*pi + pi, and FMULP multiplies by the 0.5 kept from 009E7451. The C++ computes (0.5*q)*(q + pi*q). Same fix as 009E7451.",
+    "fix": "see 009E7451 (one combined fix)",
+    "list": "B"
+   },
+   {
+    "function": "009ED6B0",
+    "name": "BSP_ShipAi_ControlsStep",
+    "site": "009EEE8A",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_navigation_arm_tail.cpp:138",
+    "evidence": "The image stores dir_x*20.0 (00CE3D88). At 009EEE99, D8 FMUL ST1 multiplies dir_z by the same 20.0, and 009EEED0 adds the retained 20.0 to walked. The C++ step*dir_x, step*dir_z and walked+step match.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009F1BC0",
+    "name": "BSP_ShipAi_ApproachFrameState",
+    "site": "009F259D",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_approach_update.cpp:1296",
+    "evidence": "The image stores dir_x*100.0 (00D7A220) and multiplies dir_z by the retained 100.0. The C++ sea_x and sea_z both use kApproachRetargetSeaward.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009F1BC0",
+    "name": "BSP_ShipAi_ApproachFrameState",
+    "site": "009F26AF",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_ai_approach_update.cpp:1321",
+    "evidence": "The image stores dir_x*k (00CE3DC0), then uses the retained k for dir_y (FMUL ST1) and dir_z (FMUL [esi]). The C++ off_x, off_y and off_z all use kApproachRetargetOffshore.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009F9FC0",
+    "name": "BSP_BotTaskGun_SetAimSticks",
+    "site": "009FA039",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_units.cpp:19960",
+    "evidence": "The image stores e0*8.0 (00CE3DB0), and the 8.0 stays on the stack until 009FA096 FMULP multiplies e1 by it. Each axis's |8e|/(spd*spd/accel) is then capped at 1. The C++ stick lambda uses |8*e|/den for both axes.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009F9FC0",
+    "name": "BSP_BotTaskGun_SetAimSticks",
+    "site": "009FA156",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_aim_terms.cpp:65",
+    "evidence": "DC CA gives ST2=(t1/r1)*0.35 (00D04690 is the exact double of 0.35f), stored to [esp+8], with 0.35 kept for the other axis (009FA173 FMULP: t0/r2*0.35). gun_aim_damped_cap gives 0.35f*t/(spd/accel) per axis.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "009FA7E0",
+    "name": "BSP_BotTaskGun_AimWanderStep",
+    "site": "009FA95B",
+    "verdict": "CORRECT",
+    "cpp": "src/gun_aim_terms.cpp:46",
+    "evidence": "The image stores (vx*h)*3.0 (00D7A2B0) and multiplies vy*h by the retained 3.0, then adds both to the position. The C++ pos += vel*h*3.0f on both axes matches.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00A11690",
+    "name": "BSP_AiCommand_FormationWedge",
+    "site": "00A11850",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_command_tick.cpp:608",
+    "evidence": "Image: st1=v[0]*(-1.0 double D7A250) stored to v[0], then FMULP with the kept -1.0 stores v[1]*(-1.0); C++ flips both components by kWedgeFlip.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00A13B60",
+    "name": "BSP_AiCommand_CloseAttackTargetPass",
+    "site": "00A14CDB",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_close_attack_tick.cpp:160",
+    "evidence": "Image: own pose (+FCh..+104h) each times 0.4 (CE65D0, kept in ST0 and reused by D8 FMUL ST1 / FMUL m32); C++ member_position[k]*kCloseFallbackOwnWeight. Nit: image rounds each product to binary32 before the add, C++ adds in double then rounds once.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00A13B60",
+    "name": "BSP_AiCommand_CloseAttackTargetPass",
+    "site": "00A14D03",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_close_attack_tick.cpp:160",
+    "evidence": "Image: centre[0..2] each times 0.6 (CEFF98, kept in ST0), then summed with the 0.4 terms; C++ centre[k]*kCloseFallbackCentreWeight. Same rounding-width nit as 00A14CDB.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00A14DD0",
+    "name": "BSP_AiCommand_CautiousApproachPass",
+    "site": "00A14FC6",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_command_tick.cpp:457",
+    "evidence": "Image: turned[0]*0.3 (CE3DC8) stored, 0.3 kept and reused for turned[1] (FMUL ST2) and turned[2] (FMULP ST3); C++ multiplies all three by kCautiousRouteOffset.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00A179E0",
+    "name": "BSP_AiPartyBrain_EngagementPass",
+    "site": "00A17C82",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_planners.cpp:186",
+    "evidence": "Image: st1=own*factor(D7A280) compared against enemy (JA rejects), then the kept factor times enemy compared against own; C++ accepts own*factor<=enemy && factor*enemy<=own. Nit: factor is a double in the image, float field in C++.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00ADF1B0",
+    "name": "FUN_00adf1b0",
+    "site": "00ADF1D0",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_scene_contents.cpp:3511",
+    "evidence": "Image: st1=tile_x*300.0 (CE3CA8) used unrounded for p0-ox and q0-ox; the kept 300.0 then FIMULs tile_z. C++ ox/oz = tile*300 (exact in binary32).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00ADF1B0",
+    "name": "FUN_00adf1b0",
+    "site": "00ADF2E3",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_scene_contents.cpp:3526",
+    "evidence": "Image (after ADD ESP,8 offset shift): [20]=f32(floor(lx0/cell))*9.375 stored as cell_x; kept 9.375 used for cell_x+cell and then [24]*cell for cell_z. C++ cell_x/cell_z and +cellf match.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00ADF1B0",
+    "name": "FUN_00adf1b0",
+    "site": "00ADF460",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_scene_contents.cpp:3545",
+    "evidence": "Image: st1=i*9.375 then + x_base, stored binary32; kept 9.375 reused by FMUL ST1 for the next index. C++ terrain_f32(x_base + i*cell).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00AE9D80",
+    "name": "FUN_00ae9d80",
+    "site": "00AEA061",
+    "verdict": "CORRECT",
+    "cpp": "src/game_hosts_scene_contents.cpp:3635",
+    "evidence": "Image: st2=(tx0+tx1)*0.5 (D7A280) stored, kept 0.5 reused by FMULP ST3 for (tz0+tz1); C++ txm/tzm = (t1+t0)*0.5.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C358A0",
+    "name": "DYN_ConvexHull_FindSupportVertex_00C358A0",
+    "site": "00C358CD",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_support.cpp:38",
+    "evidence": "Verbatim inline-asm transcription `fmul st(1), st(0)` (assembles to DC C9); hull_terrain_contact.cpp:1012 is only a comment.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C35E80",
+    "name": "DYN_ConvexHull_CleanupPoints_00C35E80",
+    "site": "00C35FC5",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:340",
+    "evidence": "Image: extent.x*0.5 added to lo.x, the kept 0.5 reused (FMUL ST5) for y and z; C++ center=add(mul(extent,0.5f),lo).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C41550",
+    "name": "Dyn_World_IntegrateVelocities",
+    "site": "00C41A0B",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_world_integration.cpp:374",
+    "evidence": "Native kernel is a verbatim asm transcription. The C++ port rigid_body_integration.cpp:162-177 multiplies the row-0/row-2 terms by 0.0 and keeps the zero for the next rows, matching DC CD/CC (st5,st4 *= 0) followed by D8 FMUL ST3 with the kept zero. Operand identity of the zeroed terms only matters for non-finite inputs.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C41550",
+    "name": "Dyn_World_IntegrateVelocities",
+    "site": "00C41A0D",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_world_integration.cpp:375",
+    "evidence": "As 00C41A0B; also matches rigid_body_integration.cpp:163-164 (both zeroed terms summed with the row-1 term).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C517D0",
+    "name": "DYN_ConvexHull_OrthogonalVector_00C517D0",
+    "site": "00C517EE",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:104",
+    "evidence": "Image: st1=z*0.0, then y - z*0 etc. = cross(v,{0,0,1}); C++ cross(v,{0,0,1}). Only 0/1 factors involved.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C51C20",
+    "name": "DYN_GeneralConvex_SelectFallbackDirection_00C51C20",
+    "site": "00C51C55",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_general_convex.cpp:244",
+    "evidence": "Verbatim inline-asm transcription (`fmul st(1), st(0)` then `fmul st(0), st(1)` with the kept 0.5); no separate C++ port of the arithmetic.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C55FC0",
+    "name": "Dyn_Body_RecomputeLocalAABB",
+    "site": "00C561EC",
+    "verdict": "CORRECT",
+    "cpp": "src/dyn_body_creation.cpp:132",
+    "evidence": "Image proxy refresh: (min+max)*0.5 per axis, then (max-min)*the kept 0.5; C++ transform_bounds center=half(add), extent=half(sub), called from refresh_proxy (line 309).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C55FC0",
+    "name": "Dyn_Body_RecomputeLocalAABB",
+    "site": "00C564C9",
+    "verdict": "CORRECT",
+    "cpp": "src/dyn_body_creation.cpp:132",
+    "evidence": "Identical inlined copy of the 00C561EC pattern (centre then half-extent with the kept 0.5).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C55FC0",
+    "name": "Dyn_Body_RecomputeLocalAABB",
+    "site": "00C567B3",
+    "verdict": "CORRECT",
+    "cpp": "src/dyn_body_creation.cpp:132",
+    "evidence": "Identical inlined copy of the 00C561EC pattern.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C55FC0",
+    "name": "Dyn_Body_RecomputeLocalAABB",
+    "site": "00C56A9B",
+    "verdict": "CORRECT",
+    "cpp": "src/dyn_body_creation.cpp:132",
+    "evidence": "Identical inlined copy of the 00C561EC pattern.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C56CF0",
+    "name": "DYN_physics_00c56cf0",
+    "site": "00C56D81",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "game_hosts_script_orders.cpp:2231 is a labelled substitution (006E00A0 store covers the body pose); no C++ of the centre/half-extent arithmetic.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C57880",
+    "name": "Dyn_BoxShape_vslot0",
+    "site": "00C5793E",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only an enum comment (ship_hull_shapes.hpp:68) names it.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C57C40",
+    "name": "Dyn_ConvexMeshShape_vslot0",
+    "site": "00C57D07",
+    "verdict": "CORRECT",
+    "cpp": "src/ship_hull_shapes.cpp:47",
+    "evidence": "Image: three sums times 0.5 (D7A280, kept), then (hi-lo) times the same 0.5; ship_hull_shapes.cpp:47-51 and dyn_body_creation.cpp:132 both compute centre=(lo+hi)*0.5, half=(hi-lo)*0.5.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C57FF0",
+    "name": "Dyn_CylinderShape_vslot0",
+    "site": "00C58090",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only an enum comment (ship_hull_shapes.hpp:69).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C582E0",
+    "name": "DYN_physics_00c582e0",
+    "site": "00C583CA",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only an enum comment (ship_hull_shapes.hpp:69).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C58920",
+    "name": "DYN_ConvexHull_SelectSimplex_00C58920",
+    "site": "00C58A66",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:170",
+    "evidence": "x87_sym from 00C58A24: u=(0.02*bz-0*by, 0*bx-bz, by-0.02*bx)=cross({1,0.02,0},b); v=(bz-0*by, 0*bx+0.02*bz, -0.02*by-bx)=cross({-0.02,1,0},b). C++ matches.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C58920",
+    "name": "DYN_ConvexHull_SelectSimplex_00C58920",
+    "site": "00C58A70",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:170",
+    "evidence": "Same symbolic trace: the 0.02 (D7A2F8) product and the kept 0.02 land in u as cross({1,0.02,0},b).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C58920",
+    "name": "DYN_ConvexHull_SelectSimplex_00C58920",
+    "site": "00C58AC6",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:170",
+    "evidence": "Same symbolic trace: -0.02 (D7A388) times bz into v.y and the kept -0.02 times by into v.z, = cross({-0.02,1,0},b).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C5B1B0",
+    "name": "Dyn_World_IntegratePositions",
+    "site": "00C5BA8E",
+    "verdict": "CORRECT",
+    "cpp": "src/rigid_body_integration.cpp:317",
+    "evidence": "Image: all six velocity floats esi+0..+14h times 0.9 (D7A390, kept in ST0); C++ scales linear and angular velocity by kDynSleepVelocityScale=0.9f; native_dyn_world_integration.cpp:1124 is verbatim asm.",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00C5CAE0",
+    "name": "DYN_ConvexHull_BuildTriangles_00C5CAE0",
+    "site": "00C5CF5B",
+    "verdict": "CORRECT",
+    "cpp": "src/avoid_zone_dyn_hull.cpp:266",
+    "evidence": "Image: sum of four simplex points, each component times the double at D7A348 kept in ST0; C++ center=mul(sum,0.25f).",
+    "fix": null,
+    "list": "B"
+   },
+   {
+    "function": "00401CD0",
+    "name": "BSP_Vec3d_ScaleInPlace",
+    "site": "00401CD6",
+    "verdict": "CORRECT",
+    "cpp": "src/math.cpp:20",
+    "evidence": "Image stores x*f, keeps f, then y*f and f*z; scale_00401cd0 multiplies all three by factor; the naked references in native_dyn_convex_ray.cpp:67 / native_dyn_convex_simplex.cpp:36 use the capstone DC form.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0042E460",
+    "name": "BSP_CameraMover_FrustumTestBox_0042E460",
+    "site": "0042E4D5",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a comment naming it as an unreferenced thunk caller; no C++ of its arithmetic.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0042F0C0",
+    "name": "BSP_CameraMover_KeepAboveWater",
+    "site": "0042F429",
+    "verdict": "CORRECT",
+    "cpp": "src/mission_camera.cpp:126",
+    "evidence": "Image (q.x+b.x)*0.5 -> r, 0.5 stays in ST0 for (q.z+b.z)*0.5 via FMULP; C++ multiplies both sums by kHalf.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00430020",
+    "name": "BSP_TorpedoViewCamera_Step",
+    "site": "0043019A",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:161",
+    "evidence": "flat.x*100 stored, 100 kept for 100*flat.z; C++ uses 100.0 for both (comment already names the DC form).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00430970",
+    "name": "BSP_BombViewCamera_UpdateVelocity",
+    "site": "00430B13",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:249",
+    "evidence": "velocity.x*1.6 stored, 1.6 reused for y and z; C++ lx/ly/lz all use lead (00CE3D48 is the widened 1.6f, bytes checked).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00430970",
+    "name": "BSP_BombViewCamera_UpdateVelocity",
+    "site": "00430C50",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:269",
+    "evidence": "vx*0.8 stored, 0.8 reused for vy and vz; C++ damps all three (00CE3D40 is widened 0.8f).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00431480",
+    "name": "BSP_PlaneChaseCamera_UpdateChase",
+    "site": "00431CB0",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:695",
+    "evidence": "right.x*5 stored, 5 reused for y and z, then each times step; C++ r5 = 5*r then drift = r5*step.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00434140",
+    "name": "BSP_SubmarineCamera_Step",
+    "site": "00434485",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:859",
+    "evidence": "forward.x*150 stored, 150 reused for y and z, then + position; C++ aa uses 150 on all three.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00434140",
+    "name": "BSP_SubmarineCamera_Step",
+    "site": "00434524",
+    "verdict": "CORRECT",
+    "cpp": "src/segment2_camera_cc13.cpp:866",
+    "evidence": "Second forward*150 after mode1; C++ ab uses 150 on all three.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00452BD0",
+    "name": "BSP_LensFlare_UpdateFromCamera",
+    "site": "00452C89",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only named in a hud_warning_screen.hpp comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00476180",
+    "name": "BSP_LogicalVertexStream_ReadColour",
+    "site": "004761BE",
+    "verdict": "CORRECT",
+    "cpp": "src/native_vertex_position_read.cpp:206",
+    "evidence": "colour channel * 255 truncated, 255 kept for the next channel; the inline asm in float_colour reproduces the DC form (fmul st(1), st(0); fxch) exactly.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "004B4850",
+    "name": "BSP_Game_GetMapBoxCenter",
+    "site": "004B488F",
+    "verdict": "CORRECT",
+    "cpp": "src/band_004b_cc13.cpp:142",
+    "evidence": "Each sum *0.5, 0.5 kept for the next; C++ multiplies x, y, z sums by kHalf.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "004FB850",
+    "name": "BSP_Color_ConvertFloatRgbaToArgb",
+    "site": "004FB860",
+    "verdict": "CORRECT",
+    "cpp": "src/camera_frame_state.cpp:1086",
+    "evidence": "red*255 truncated, 255 kept for green/blue/alpha; scale_and_truncate multiplies each channel by 255.0, and native_ambient_color.cpp:21 uses the explicit DC form.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00503510",
+    "name": "BSP_FrontEndPreview_Draw",
+    "site": "0050389C",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual render_front_end_preview_00503510; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0052EE30",
+    "name": "BSP_CreditsScreen_Enter",
+    "site": "0052F762",
+    "verdict": "CORRECT",
+    "cpp": "src/menu_screens_2.cpp:1355",
+    "evidence": "Align 2: frame size*0.5 + left, 0.5 kept and multiplied by width (FMULP st2), then FSUBRP; C++ size*0.5 + left - width*0.5.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00535430",
+    "name": "BSP_InterfaceView_DrawTargetOrtho",
+    "site": "005355B8",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual render_interface_ortho_view_00535430; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0053A8E0",
+    "name": "BSP_HudFormationScreen_Update",
+    "site": "0053AA85",
+    "verdict": "CORRECT",
+    "cpp": "src/menu_screens_2.cpp:2668",
+    "evidence": "axis_2994*0.02 stored, 0.02 kept for 0.02*axis_29c4; C++ step_x/step_y both scale by kFormationCursorStep.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0054E6B0",
+    "name": "BSP_HudHintsScreen_Update",
+    "site": "0054E870",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_screens_3.cpp:224",
+    "evidence": "Pause branch: s0*0.5, s1*0.5, s0*0.5 again and 0.5*s1, then t*(s*0.5)/dur + s*0.5; C++ (t*s*0.5)/dur + s*0.5 (association nit only: *0.5 is exact).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0054E6B0",
+    "name": "BSP_HudHintsScreen_Update",
+    "site": "0054E912",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_screens_3.cpp:220",
+    "evidence": "Normal branch, same idiom on +68h/+6Ch; C++ matches with the same exact-0.5 association nit.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0057CA00",
+    "name": "BSP_LoadingScreen_WorkerTick",
+    "site": "0057CABF",
+    "verdict": "CORRECT",
+    "cpp": "src/loading_screen_elements.cpp:85",
+    "evidence": "seconds*1000 stored as now_ms, 1000 stays in ST0 and divides the delta at 0057CAFD (FDIVR); clock_sample_milliseconds and worker_tick_delta_seconds (line 98) model both.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0059D7B0",
+    "name": "BSP_InterfaceView_DrawGroundOrtho",
+    "site": "0059D85B",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual render_interface_ortho_view_0059d7b0; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0059D7B0",
+    "name": "BSP_InterfaceView_DrawGroundOrtho",
+    "site": "0059D8BC",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual render_interface_ortho_view_0059d7b0; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0059D7B0",
+    "name": "BSP_InterfaceView_DrawGroundOrtho",
+    "site": "0059D8C4",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual render_interface_ortho_view_0059d7b0; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005A9770",
+    "name": "FUN_005a9770",
+    "site": "005A98AB",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a caller list comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005AB190",
+    "name": "BSP_HudMapScreen_Register",
+    "site": "005AB200",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a registration table entry (hud_screens.cpp:629).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005AB190",
+    "name": "BSP_HudMapScreen_Register",
+    "site": "005AB489",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a registration table entry (hud_screens.cpp:629).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005ADDA0",
+    "name": "FUN_005adda0",
+    "site": "005AEB2C",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005ADDA0",
+    "name": "FUN_005adda0",
+    "site": "005AEE60",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005ADDA0",
+    "name": "FUN_005adda0",
+    "site": "005AF232",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "005ADDA0",
+    "name": "FUN_005adda0",
+    "site": "005B1B71",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00606C60",
+    "name": "BSP_HudPlaneScreen_LoadLayout",
+    "site": "00606F81",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a registration table entry (hud_screens.cpp:634).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0060ABD0",
+    "name": "BSP_HudPlaneEffectsScreen_Update",
+    "site": "0060B133",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0060ABD0",
+    "name": "BSP_HudPlaneEffectsScreen_Update",
+    "site": "0060B1A2",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only caller-list comments.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0060CD50",
+    "name": "BSP_PlaneSpawnCamera_SetTargets",
+    "site": "0060CEE0",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_widgets.cpp:1032",
+    "evidence": "px*K back stored, K reused for b*K and K*pz, then + a/b/c; plane_spawn_camera_eye_offset multiplies px, b, pz by kPlaneSpawnEyeBack.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "006113A0",
+    "name": "BSP_HudPowerupCarousel_AnimateScroll",
+    "site": "006113B8",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Host virtual carousel_animate_006113a0; body not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0062C2C0",
+    "name": "BSP_RewardsScreen_Enter",
+    "site": "0062EB18",
+    "verdict": "CORRECT",
+    "cpp": "src/ingame_gui.cpp:530",
+    "evidence": "lines*L, L kept: (A - lines*L) - (L+gap)*sections, / (sections+1); C++ layout.spacing matches.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0062C2C0",
+    "name": "BSP_RewardsScreen_Enter",
+    "site": "0062ECD3",
+    "verdict": "CORRECT",
+    "cpp": "src/ingame_gui.cpp:477",
+    "evidence": "Secondary box height count*L, L kept and added (FADDP); C++ count*L + L.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0062C2C0",
+    "name": "BSP_RewardsScreen_Enter",
+    "site": "0062F180",
+    "verdict": "CORRECT",
+    "cpp": "src/ingame_gui.cpp:477",
+    "evidence": "Primary box height count*L + L, same shared helper.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0062C2C0",
+    "name": "BSP_RewardsScreen_Enter",
+    "site": "0062FA89",
+    "verdict": "CORRECT",
+    "cpp": "src/ingame_gui.cpp:477",
+    "evidence": "Hidden box height count*L + L, same shared helper.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00791020",
+    "name": "MovieCameraKeyframe_Begin",
+    "site": "0079116C",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_movie_camera.cpp:90",
+    "evidence": "forward.x*300 stored, 300 kept for y and z, then + position; C++ kTargetReach*fwd[i] for all i.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00795EE0",
+    "name": "BSP_GameCameraModifier_Evaluate",
+    "site": "0079650E",
+    "verdict": "CORRECT",
+    "cpp": "src/cc13_camera_controllers.cpp:549",
+    "evidence": "w[8]*200 stored, 200 kept for w[9], w[10], then + work_40; C++ step = w[8+i]*kLinkedForward.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00798130",
+    "name": "MovieCameraTrack_Evaluate",
+    "site": "00798B54",
+    "verdict": "CORRECT",
+    "cpp": "src/hud_movie_camera.cpp:372",
+    "evidence": "(z[a+1]+z[a])*0.5 stored, 0.5 kept for (w[a+1]+w[a])*0.5; C++ zoom and window both use kHalf.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "007998C0",
+    "name": "BSP_MovCam_SetPosRotZoom",
+    "site": "00799999",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only an enum comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0079F710",
+    "name": "FUN_0079f710",
+    "site": "0079F8D6",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a caller-list comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "007A91A0",
+    "name": "BSP_MovCam_Step",
+    "site": "007AA6DF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "007AC000",
+    "name": "FUN_007ac000",
+    "site": "007AC253",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a fixed-step callback table entry for 007AC095; the site arithmetic is not reconstructed.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00853E10",
+    "name": "BSP_SubmarineUnit_Serialize",
+    "site": "0085414F",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only cited as the save schema source for field names.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00892660",
+    "name": "BSP_LuaBinding_FreeCameraGetPos",
+    "site": "008927CC",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Lua binding table entry only.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00893380",
+    "name": "FUN_00893380",
+    "site": "00893529",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Lua binding table entry only.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "008AF700",
+    "name": "FUN_008af700",
+    "site": "008AF9BD",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Lua binding table entry and a shared-callee comment only.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "008C7BE0",
+    "name": "BSP_LuaBinding_MemoryStatus",
+    "site": "008C7CA8",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Lua binding table entry only.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0092B350",
+    "name": "BSP_TickableGameEntity_TickAdvance",
+    "site": "0092B5BF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "tick_element_overrides marks it Partial, read as a call sequence only; the x87 body is not projected.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0093CB10",
+    "name": "BSP_Simple3dScene_Construct",
+    "site": "0093CB66",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a constructor-default comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0093DE10",
+    "name": "BSP_MapScene_BuildQuad",
+    "site": "0093DFFD",
+    "verdict": "CORRECT",
+    "cpp": "src/strategic_map_cc13.cpp:20",
+    "evidence": "-w*0.5 stored, 0.5 kept for h*0.5, w*0.5 and -h*0.5; C++ hw/hh = *0.5f with signs per vertex (exact halves).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0093DE10",
+    "name": "BSP_MapScene_BuildQuad",
+    "site": "0093E242",
+    "verdict": "CORRECT",
+    "cpp": "src/strategic_map_cc13.cpp:51",
+    "evidence": "sum.x*0.5 stored, 0.5 reused for y and z sums; map_quad_position multiplies all three by 0.5.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "0093FF10",
+    "name": "BSP_SoundOverlay_Draw",
+    "site": "009404FF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a comment.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00942CB0",
+    "name": "BSP_LuaSpawn_PlaceDirectly",
+    "site": "009430F7",
+    "verdict": "CORRECT",
+    "cpp": "src/lua_spawn_cc13.cpp:353",
+    "evidence": "unit.x*40000 stored, 40000 reused for y and z, then + near point; C++ unit[i]*kSpawnDirectFallbackReach for all i.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00A113D0",
+    "name": "BSP_AiCommand_WedgeThreatDirection",
+    "site": "00A11440",
+    "verdict": "CORRECT",
+    "cpp": "src/ai_command_tick.cpp:545",
+    "evidence": "750*sin stored as x, 750 kept and multiplied by cos for z; C++ dx = 750*s, dz = 750*c (comment names the DC form).",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00A126C0",
+    "name": "FUN_00a126c0",
+    "site": "00A129BF",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "REGROUPINGMOVE body read only to its first dispatch (ai_command_tick.hpp:27); no C++ of the site arithmetic.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00A126C0",
+    "name": "FUN_00a126c0",
+    "site": "00A12A04",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "REGROUPINGMOVE body read only to its first dispatch (ai_command_tick.hpp:27); no C++ of the site arithmetic.",
+    "fix": null,
+    "list": "C"
+   },
+   {
+    "function": "00A26210",
+    "name": "BSP_AiPlanner_EscortThink",
+    "site": "00A26450",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a planner-table entry (src/ai_planners.cpp:21) and a header comment name the address; no C++ reproduces the vector*k (00D7A280) arithmetic.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A2C9F0",
+    "name": "FUN_00a2c9f0",
+    "site": "00A2CAD3",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Appears only as a boolean gate input (target_position_accepted / `gate`) in ai_command_lifetime and ai_planners; its arithmetic is not reproduced.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8AAA0",
+    "name": "BSP_ShadowOwner_BuildViewportMatrix",
+    "site": "00A8AB21",
+    "verdict": "CORRECT",
+    "cpp": "src/native_shadow_viewport_matrix.cpp:60",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` (DC C9) with an explicit comment; FXCH/FST order matches the image.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8AAA0",
+    "name": "BSP_ShadowOwner_BuildViewportMatrix",
+    "site": "00A8ABCF",
+    "verdict": "CORRECT",
+    "cpp": "src/native_shadow_viewport_matrix.cpp:107",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` (DC C9) at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8AEB0",
+    "name": "BSP_DirectionalShadow_FitSingleView_Provisional",
+    "site": "00A8B141",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:201",
+    "evidence": "Image stores owner+38/3C/40 each * 10000.0 (00CE4BD8) with the constant kept in ST0; C++ ox/oy/oz all multiply by reach.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8B930",
+    "name": "BSP_ShadowMath_BuildTrapezoidHomography_Unreferenced",
+    "site": "00A8B956",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:97",
+    "evidence": "Image: ux=(diff0)*0.5 stored, 0.5 kept in ST0 and consumed by FMULP for uy=(diff1)*0.5 at 00A8B97F; C++ ux and uy both *0.5.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8BD20",
+    "name": "BSP_DirectionalShadow_FitCascade",
+    "site": "00A8BFE8",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:358",
+    "evidence": "Image scales the three summed components by 0.25 (00D7A348) reused from ST0; C++ quarter_sum multiplies each axis by 0.25.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8BD20",
+    "name": "BSP_DirectionalShadow_FitCascade",
+    "site": "00A8C0E9",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:365",
+    "evidence": "Image: middle = sum*0.5 for all three axes with 0.5 retained; C++ middle[axis] = sum*0.5.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8BD20",
+    "name": "BSP_DirectionalShadow_FitCascade",
+    "site": "00A8C11A",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:368",
+    "evidence": "Image: owner+38/3C/40 * 10000.0 (00CE4BD8) with the constant reused; C++ lx/ly/lz all *10000.0.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8BD20",
+    "name": "BSP_DirectionalShadow_FitCascade",
+    "site": "00A8D25B",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:493",
+    "evidence": "Image: box centre = (hi+lo)*0.5 per axis, 0.5 retained for y and z; C++ centre[axis] = sum*0.5.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8BD20",
+    "name": "BSP_DirectionalShadow_FitCascade",
+    "site": "00A8D318",
+    "verdict": "CORRECT",
+    "cpp": "src/shadow_cascades_cc13.cpp:498",
+    "evidence": "Image: four-corner sums * 0.25 (00D7A348) for all three axes with 0.25 retained; C++ reuses quarter_sum (*0.25) per axis.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00A8F3B0",
+    "name": "BSP_ShadowMap_UpdateViewFromCamera",
+    "site": "00A8F939",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only a host hook update_shadow_map_view_00a8f3b0 (src/game_render_frame.cpp:134) and a header comment; the dir*100000 arithmetic is not reproduced.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AA3910",
+    "name": "BSP_GuiManager_UpdatePointer",
+    "site": "00AA3A4E",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_layer.cpp:160",
+    "evidence": "Image: dx*k1 and k1*dy (00D5BEC8), each spilled to float; C++ scale_pointer_delta applies kGuiPointerScaleFirst to each delta with float rounding.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AA3910",
+    "name": "BSP_GuiManager_UpdatePointer",
+    "site": "00AA3A6B",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_layer.cpp:162",
+    "evidence": "Image: (dx*k1)*k2 and k2*(dy*k1) (00D7A308), k2 retained; C++ multiplies each scaled delta by kGuiPointerScaleSecond.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AA70E0",
+    "name": "BSP_GuiWidget_RefreshLocalBounds",
+    "site": "00AA710B",
+    "verdict": "CORRECT",
+    "cpp": "src/native_gui_widget_bounds.cpp:32",
+    "evidence": "Inline asm writes `fmul st(1), st(0)` (DC C9) then D8 C9 for the second lane; the C++ model local_bounds (src/gui_widget.cpp:156) halves both width and height.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABCED0",
+    "name": "BSP_GuiCurve_Tessellate",
+    "site": "00ABD318",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_render.cpp:56",
+    "evidence": "Image: p2*3 and p1*3 with 3.0 (00D7A2B0) retained, then -p0+3p1-3p2+p3; C++ cubic = ((-a + b*3) - c*3) + d.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABCED0",
+    "name": "BSP_GuiCurve_Tessellate",
+    "site": "00ABD43B",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_render.cpp:57",
+    "evidence": "Image: p2 x/y * 4.0 (00D7A328) with the constant reused; C++ quadratic term c*4.0f.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABCED0",
+    "name": "BSP_GuiCurve_Tessellate",
+    "site": "00ABD45C",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_render.cpp:57",
+    "evidence": "Image: p1 x/y * 5.0 (00D7A370) with the constant reused; C++ quadratic term b*5.0f.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABF8F5",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:112",
+    "evidence": "Instruction-level inline asm transliteration uses `fmul st(1), st(0)` (DC C9) at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABF97E",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:182",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABF9BB",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:214",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)`, and the following D8 site 00ABF9DB as `fmul st(0), st(1)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABFB46",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:762",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABFE96",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:382",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ABF770",
+    "name": "BSP_GuiSection_EmitGeometry",
+    "site": "00ABFEB8",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_section_runtime.cpp:406",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AC06C0",
+    "name": "BSP_GuiWidget_MeasurePaddedRelativeBounds",
+    "site": "00AC0714",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_widget_relative_bounds.cpp:38",
+    "evidence": "Inline asm initial_measure writes `fmul st(1), st(0)` then `fmul negative_h`, matching (-pad.w)*0.5 and 0.5*(-pad.h).",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ACE120",
+    "name": "BSP_GuiClipBox_UpdateParameters",
+    "site": "00ACE1BA",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_clip_box.cpp:77",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` (DC C9) with an explicit comment.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ACE120",
+    "name": "BSP_GuiClipBox_UpdateParameters",
+    "site": "00ACE1F0",
+    "verdict": "CORRECT",
+    "cpp": "src/gui_clip_box.cpp:89",
+    "evidence": "Inline asm transliteration uses `fmul st(1), st(0)` and notes the D8 C9 form at 00ACE1C6.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00ADA600",
+    "name": "BSP_Aabb_BoundingSphere",
+    "site": "00ADA65B",
+    "verdict": "CORRECT",
+    "cpp": "src/terrain_render.cpp:13",
+    "evidence": "Image scales the three (max-min) differences by 0.5 with 0.5 retained; C++ extent = (max-min)*half for all three axes.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AE0F10",
+    "name": "BSP_BushQuadNode_Read",
+    "site": "00AE0FFA",
+    "verdict": "CORRECT",
+    "cpp": "src/terrain_render.cpp:144",
+    "evidence": "DC CA: st2=(y0+y1)*0.5 stored as centre.y, then 0.5 reused by FMULP on (y1-y0) for half_extent.y; C++ lines 144-145 match.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AE2450",
+    "name": "BSP_BushGroup_Initialise",
+    "site": "00AE29D5",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only named in a header comment (include/bsp/terrain_render.hpp:104); no C++ body.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AE2450",
+    "name": "BSP_BushGroup_Initialise",
+    "site": "00AE2C1A",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only named in a header comment (include/bsp/terrain_render.hpp:104); no C++ body.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AE5550",
+    "name": "BSP_FoliageQuadNode_Read",
+    "site": "00AE5628",
+    "verdict": "CORRECT",
+    "cpp": "src/terrain_render.cpp:163",
+    "evidence": "Image: mx=(x1-x0)*0.5+x0, then 0.5 reused by FMULP for mz=(z1-z0)*0.5+z0; C++ matches.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AEE620",
+    "name": "BSP_TextureAtlasItem_ParseParams",
+    "site": "00AEE950",
+    "verdict": "CORRECT",
+    "cpp": "src/texture_atlas.cpp:66",
+    "evidence": "Image: u0*65535 FISTP'd, 65535 (00CE5F90) stays in ST and is reused (fmul st(2..4)) for v0,u1,v1 and the extents; C++ pack() multiplies every value by 65535.0.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AF1EB0",
+    "name": "BSP_NativeParticleSubmodel_Update",
+    "site": "00AF21ED",
+    "verdict": "CORRECT",
+    "cpp": "src/native_particle_emitter_update.cpp:457",
+    "evidence": "Naked asm transliteration writes `fmul st(1),st(0)` at 00af21ed and `fmul st(0),st(1)` at the D8 site 00af21f9.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00AF26A0",
+    "name": "BSP_NativeTraceline_FillAndSubmitGeometry",
+    "site": "00AF2E47",
+    "verdict": "CORRECT",
+    "cpp": "src/native_traceline_render.cpp:1598",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` at 00af2e47, then FXCH and D8 `fmul st(1)` reuse of 0.5 for the y and z centre components.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B05110",
+    "name": "BSP_NativeParticleEmitterContainer_Update",
+    "site": "00B052FA",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "The site lies past 00B05110's RET 4 (00B05204) and INT3 padding, in a separate routine starting 00B052F0 (life percent clamp); no C++ names 00B052F0. The B05110 asm transliteration ends before the site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B05550",
+    "name": "BSP_ParticleContainer_BuildGeometry",
+    "site": "00B056BA",
+    "verdict": "CORRECT",
+    "cpp": "src/particle_emitters_cc13.cpp:59",
+    "evidence": "Image: (age*100)/life clamped to 100; C++ life_percent computes rd(0x40)*100.0/rd(0x44) and clamps.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B05D00",
+    "name": "BSP_AxialParticle_RefreshAxis",
+    "site": "00B05D20",
+    "verdict": "CORRECT",
+    "cpp": "src/native_particle_axial_loading.cpp:211",
+    "evidence": "Both inline-asm copies (also src/native_particle_axial_raw.cpp:122) write `fmul st(1),st(0)`, so the scale is reused for angles[1] = base - scale*def+84h.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B0B6A0",
+    "name": "BSP_NativeParticleTracer_InitializeState",
+    "site": "00B0BE24",
+    "verdict": "CORRECT",
+    "cpp": "src/native_particle_tracer_state.cpp:1078",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B0B6A0",
+    "name": "BSP_NativeParticleTracer_InitializeState",
+    "site": "00B0C237",
+    "verdict": "CORRECT",
+    "cpp": "src/native_particle_tracer_state.cpp:1464",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B0B6A0",
+    "name": "BSP_NativeParticleTracer_InitializeState",
+    "site": "00B0C476",
+    "verdict": "CORRECT",
+    "cpp": "src/native_particle_tracer_state.cpp:1681",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B0C8B0",
+    "name": "BSP_ParticleState_AdvanceTextureFrame",
+    "site": "00B0C8D3",
+    "verdict": "CORRECT",
+    "cpp": "src/particle_emitters_cc13.cpp:145",
+    "evidence": "Image: percent = age*100/life (clamped), then the retained 100.0 divides life (FDIVRP at 00B0C905) giving scale = life/100; C++ life_percent plus scale = rd(0x44)/100.0.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B156C0",
+    "name": "BSP_SceneRenderer_RenderScene",
+    "site": "00B157EA",
+    "verdict": "CORRECT",
+    "cpp": "src/scene_renderer_cc13.cpp:435",
+    "evidence": "Image: both dot products multiplied by -0.5 (00CEC9E0) with the constant reused; C++ writes -0.5*dot_x and -0.5*dot_y. Which dot goes to +1A8 vs +1AC was not re-checked (not a DC issue).",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B1EF60",
+    "name": "BSP_RenderCommandQueue_DrawWorldLabels",
+    "site": "00B1F05A",
+    "verdict": "CORRECT",
+    "cpp": "src/scene_renderer_cc13.cpp:952",
+    "evidence": "Image: u = sx*0.5+0.5, v = (-sy)*0.5+0.5 with 0.5 retained; C++ u and v match.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B33C20",
+    "name": "BSP_RendererControlWorker_Thread",
+    "site": "00B33C8A",
+    "verdict": "CORRECT",
+    "cpp": "src/native_renderer_control_worker.cpp:121",
+    "evidence": "Inline asm transliteration writes `fmul st(1),st(0)` then FXCH/FSTP, storing seconds*1000.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B4CC50",
+    "name": "BSP_PostEffect_SampleOffsetsDownScale4x4",
+    "site": "00B4CCD4",
+    "verdict": "CORRECT",
+    "cpp": "src/post_effects_cc13.cpp:65",
+    "evidence": "Image: col3 = inv_w*1.5, then the retained 1.5 is subtracted from the row index for y=(row-1.5)*inv_h; C++ col[3]=1.5*inv_w and y=(row-1.5)*inv_h.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B4CDE0",
+    "name": "BSP_PostEffect_SampleOffsetsAvgLum3x3",
+    "site": "00B4CE01",
+    "verdict": "CORRECT",
+    "cpp": "src/post_effects_cc13.cpp:76",
+    "evidence": "Image: tu = 1/(W*3), the retained 3.0 then multiplies H for tv = 1/(H*3); C++ matches.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B65710",
+    "name": "BSP_PlaneSet_ClassifyAabb",
+    "site": "00B65770",
+    "verdict": "CORRECT",
+    "cpp": "src/post_effects_cc13.cpp:263",
+    "evidence": "Image: the three (min+max) sums times 0.5 with 0.5 retained (and later reused for the extents); C++ multiplies each sum and difference by 0.5. Width nit: the image spills the centre and half-extents to float32 before the dot products, but the C++ keeps them in double.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B75580",
+    "name": "BSP_AnimTrack_BezierValue",
+    "site": "00B755A0",
+    "verdict": "CORRECT",
+    "cpp": "src/scene_graph_cc13.cpp:160",
+    "evidence": "DC CA: st2=(p1-p0)*3 stored as float c, then the retained 3.0 multiplies (p2-p1) for b = 3(p2-p1)-c; C++ c and b match.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B960C0",
+    "name": "BSP_OceanSpectrum_SampleGrid",
+    "site": "00B960CF",
+    "verdict": "CORRECT",
+    "cpp": "src/ocean_wave_field.cpp:42",
+    "evidence": "Image: fu=u*k and fv=k*v (00D099A0), both spilled; C++ fu/fv both scale by kOceanGridScale.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9A990",
+    "name": "BSP_OceanGrid_AverageQuad",
+    "site": "00B9AA2A",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:421",
+    "evidence": "Image: the three sums times 0.25 (00D7A348) with 0.25 reused; C++ out.x/height/z all *0.25.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9AE00",
+    "name": "BSP_OceanWaveField_ComputeProjectorMatrices",
+    "site": "00B9B782",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:184",
+    "evidence": "Image: x*0 + y + 0*z with the zero reused for z; C++ up_dot = (x*0 + y) + z*0.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9AE00",
+    "name": "BSP_OceanWaveField_ComputeProjectorMatrices",
+    "site": "00B9B946",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:308",
+    "evidence": "Same up_dot pattern on the eye position, spilled to float; C++ eye_up = float(up_dot(eye)).",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9AE00",
+    "name": "BSP_OceanWaveField_ComputeProjectorMatrices",
+    "site": "00B9B988",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:312",
+    "evidence": "DC CE: st6 = eye_up*2.0 (00D7A308), then (h+7) minus that when the eye is below the plane, otherwise (h+7)-eye_up; C++ lift matches both arms.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9AE00",
+    "name": "BSP_OceanWaveField_ComputeProjectorMatrices",
+    "site": "00B9BBBC",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:346",
+    "evidence": "Image: forward x/y/z * 10.0 (00CE3DC0) with the constant reused; C++ ahead = forward*10.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00B9AE00",
+    "name": "BSP_OceanWaveField_ComputeProjectorMatrices",
+    "site": "00B9BC02",
+    "verdict": "CORRECT",
+    "cpp": "src/water_render.cpp:189",
+    "evidence": "Image: d = x*0+y+z*0 spilled, then d0 = d*0 spilled, subtracting (d0,d,d0); C++ flatten_to_water_plane matches.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BAABB0",
+    "name": "BSP_SkinedWaterTracer_Update",
+    "site": "00BAB26D",
+    "verdict": "CORRECT",
+    "cpp": "src/native_tracer_update.cpp:849",
+    "evidence": "Naked asm transliteration writes `FMUL st(2),st(0)` with the comment 'DC CA writes ST2, not ST0'.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BBE8B0",
+    "name": "BSP_CloudInstance_Update",
+    "site": "00BBEC63",
+    "verdict": "CORRECT",
+    "cpp": "src/weather_render.cpp:501",
+    "evidence": "Image: the three (dir*delta*speed) components times 30.0 (00CE7630) with 30 reused; C++ step = b*30 for x, y and z.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BBF8A0",
+    "name": "BSP_SkyBox_Construct",
+    "site": "00BBFCFB",
+    "verdict": "NOT_RECONSTRUCTED",
+    "cpp": null,
+    "evidence": "Only named in a header comment (include/bsp/weather_render.hpp:267).",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BC1A20",
+    "name": "BSP_Waterdrops_Spawn",
+    "site": "00BC1B8D",
+    "verdict": "CORRECT",
+    "cpp": "src/weather_render.cpp:161",
+    "evidence": "Image (with the PUSH ECX offset shift): along = a*1.4142 (00D64758), then the retained constant times float(1-b*b); C++ along and across match.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BC3930",
+    "name": "BSP_CloudClass_ComputeLighting",
+    "site": "00BC3995",
+    "verdict": "CORRECT",
+    "cpp": "src/weather_render.cpp:628",
+    "evidence": "Image: dir.x*0 + dir.y + 0*dir.z with the zero reused; C++ dot matches.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BC3930",
+    "name": "BSP_CloudClass_ComputeLighting",
+    "site": "00BC39E6",
+    "verdict": "CORRECT",
+    "cpp": "src/weather_render.cpp:630",
+    "evidence": "Image: dir x/y/z * 1000.0 (00CE47A0) with the constant reused; C++ look-at eye = dir*1000.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00BC47D0",
+    "name": "BSP_CloudClass_Load",
+    "site": "00BC4964",
+    "verdict": "CORRECT",
+    "cpp": "src/weather_render.cpp:430",
+    "evidence": "Image: the three (min+max) sums times 0.5 with 0.5 reused, stored to +84/+88/+8C; C++ c.center matches.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C3CC30",
+    "name": "DYN_GeneralConvex_ReduceSimplex_00C3CC30",
+    "site": "00C3CDC0",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_simplex.cpp:158",
+    "evidence": "Naked asm transliteration writes `fmul st(2), st(0)`, matching DC CA.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C3CC30",
+    "name": "DYN_GeneralConvex_ReduceSimplex_00C3CC30",
+    "site": "00C3DECE",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_simplex.cpp:1213",
+    "evidence": "Naked asm transliteration writes `fmul st(2), st(0)`, matching DC CA.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C44B89",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:388",
+    "evidence": "Naked asm transliteration writes `fmul st(1), st(0)` at this site.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C4545F",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:1168",
+    "evidence": "Naked asm writes `fmul st(2), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45489",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:1184",
+    "evidence": "Naked asm writes `fmul st(4), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45D3E",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:1936",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45E22",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2012",
+    "evidence": "Naked asm writes `fmul st(2), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45E4C",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2028",
+    "evidence": "Naked asm writes `fmul st(4), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45FC9",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2158",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45FD4",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2161",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C45FE1",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2165",
+    "evidence": "Naked asm writes `fmul st(4), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C462C0",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2399",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C462D4",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2404",
+    "evidence": "Naked asm writes `fmul st(3), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C46598",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2632",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C46872",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:2866",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C46B4F",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:3098",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C46B5A",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:3101",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C44780",
+    "name": "Dyn_ConvexRayIntersection_vslot0",
+    "site": "00C46B67",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_convex_ray.cpp:3105",
+    "evidence": "Naked asm writes `fmul st(4), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C49230",
+    "name": "DYN_BoxBox_BuildFaceContacts_00C49230",
+    "site": "00C49334",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_box_box.cpp:2032",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C49230",
+    "name": "DYN_BoxBox_BuildFaceContacts_00C49230",
+    "site": "00C497C2",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_box_box.cpp:2379",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C50470",
+    "name": "DYN_Body_RegisterSAPBroadPhase_00C50470",
+    "site": "00C504C5",
+    "verdict": "CORRECT",
+    "cpp": "src/dyn_body_creation.cpp:132",
+    "evidence": "Image: centre = (lo+hi)*0.5 per axis with 0.5 retained (then used for the extents); C++ transform_bounds halves both centre and extent for each axis.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C51EF0",
+    "name": "DYN_GeneralConvex_SearchWitnesses_00C51EF0",
+    "site": "00C51F2E",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_general_convex.cpp:493",
+    "evidence": "Naked asm writes `fmul st(1), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C51EF0",
+    "name": "DYN_GeneralConvex_SearchWitnesses_00C51EF0",
+    "site": "00C52C79",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_general_convex.cpp:1516",
+    "evidence": "Naked asm writes `fmul st(3), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00C51EF0",
+    "name": "DYN_GeneralConvex_SearchWitnesses_00C51EF0",
+    "site": "00C52E2F",
+    "verdict": "CORRECT",
+    "cpp": "src/native_dyn_general_convex.cpp:1643",
+    "evidence": "Naked asm writes `fmul st(3), st(0)`.",
+    "fix": null,
+    "list": "D"
+   },
+   {
+    "function": "00809E10",
+    "name": "BSP_Rocket_FlightTimeToRange",
+    "site": "00809E7D",
+    "verdict": "CORRECT",
+    "cpp": "src/rocket_task_cc13.cpp:439",
+    "evidence": "DC C9 leaves 0.5*v0 in ST1 and 0.5 in ST0 for 0.5*VMax*VMax; C++ uses kHalf on both. Rounding nit fixed: the image float-rounds (VMax-v0)/a at 00809EB7, not the cruise quotient.",
+    "fix": "applied (rounding only)",
+    "list": "own"
+   },
+   {
+    "function": "0080A000",
+    "name": "BSP_Rocket_AirStep",
+    "site": "0080A130",
+    "verdict": "CORRECT",
+    "cpp": "src/rocket_homing_cc13.cpp:87",
+    "evidence": "DC CB writes g*dt into ST3, FSUBRP gives vy - g*dt, the kept g multiplies -credit; C++ v -= g*pre then v -= g*-credit.",
+    "fix": null,
+    "list": "own"
+   },
+   {
+    "function": "009FD570",
+    "name": "BSP_Bot_FlyToPointHeading",
+    "site": "009FD5B7",
+    "verdict": "CORRECT",
+    "cpp": "src/plane_fly_to_solver.cpp:115",
+    "evidence": "3.0 stays in ST0 and scales all three lead components; C++ scales all three by kLeadSeconds.",
+    "fix": null,
+    "list": "own"
+   },
+   {
+    "function": "009FD570",
+    "name": "BSP_Bot_FlyToPointHeading",
+    "site": "009FDDB9",
+    "verdict": "NOT_COVERED",
+    "cpp": "include/bsp/plane_fly_to_solver.hpp:54",
+    "evidence": "centre = 0.5*(min+max) in x and z is documented correctly, but every host passes near_edge = false, so no C++ computes it.",
+    "fix": null,
+    "list": "own"
+   }
+  ]
+ },
+ "wrong": [
+  {
+   "function": "00834E90",
+   "name": "BSP_UnitInstance_UpdatePropellers",
+   "site": "00834F03",
+   "verdict": "WRONG",
+   "cpp": "src/unit_motion.cpp:306",
+   "evidence": "Bytes DC C9 DE E9: ST1 = (s - -1.0)*K, ST0 = K (pi/4, 00CEDCD0); FSUBP ST1,ST0 gives (s+1)*K - K. Ghidra pseudocode agrees: (local_100 - _DAT_00d7a250) * _DAT_00cedcd0 - _DAT_00cedcd0. C++ computes (s+1) - K*(s+1), the st0*=st1 misread (s=0: image 0, C++ 0.2146).",
+   "fix": "--- src/unit_motion.cpp:304-306\n-    // 00834EF5..00834F05: (s - bias) then subtract blend * (s - bias).\n-    const double biased = static_cast<double>(steering_source) - kUnitSteeringBias;\n-    return static_cast<float>(biased - kUnitSteeringBlend * biased);\n+    // 00834EF5..00834F05: DC C9 leaves blend in ST0 and (s - bias) * blend in ST1;\n+    // DE E9 (FSUBP ST1,ST0) then gives (s - bias) * blend - blend.\n+    const double biased = static_cast<double>(steering_source) - kUnitSteeringBias;\n+    return static_cast<float>(biased * kUnitSteeringBlend - kUnitSteeringBlend);\n--- include/bsp/unit_motion.hpp:282\n-// expression is literally (s - bias) - blend * (s - bias).\n+// expression is literally (s - bias) * blend - blend.\n(The same wrong expression is in the Ghidra plate comment of 00834E90 and config/names/00830000.jsonl line 5.)",
+   "list": "A"
+  },
+  {
+   "function": "00934150",
+   "name": "BSP_UnitParts_DetachPart",
+   "site": "00934D42",
+   "verdict": "WRONG",
+   "cpp": "src/unit_parts.cpp:245",
+   "evidence": "DC CA writes 0*vy into ST2, and the sequence stores spin = (vz - 0*vy, 0*vx - 0*vz, 0*vy - vx) = (vz, 0, -vx) (x87_sym 00934D00..00934D78 and Ghidra pseudocode agree). C++ has spin.x = -velocity[2]: a sign error, not the DC-misread class (the misread would give vz - vy). Separately, the C++ velocity at lines 230-240 omits the random scaling seen in the pseudocode before 00934D00 (outside this site).",
+   "fix": "--- src/unit_parts.cpp:245\n-            float spin[3] = {-velocity[2], 0.0f, -velocity[0]};\n+            float spin[3] = {velocity[2], 0.0f, -velocity[0]};",
+   "list": "B"
+  },
+  {
+   "function": "009C62B0",
+   "name": "BSP_BotStateDiveBombFlyAbove_Tick",
+   "site": "009C6875",
+   "verdict": "WRONG",
+   "cpp": "src/dive_bomb_task.cpp:922",
+   "evidence": "The image computes ST1 = 0.5*sin with 0.5 left in ST0, then 009C6877 FADDP gives (0.5*sin + 0.5)*R. The live default arm (kDiveFlyAboveCrossTrackBound = false, include/bsp/dive_bomb_task.hpp:238) computes sin*1.5*R, which is the exact st0*=st1 misreading. A correct arm already exists (cc13-audit9, lines 916-920) but it is switched OFF.",
+   "fix": "--- include/bsp/dive_bomb_task.hpp:238\n-inline constexpr bool kDiveFlyAboveCrossTrackBound = false;\n+inline constexpr bool kDiveFlyAboveCrossTrackBound = true;\n(or delete the else arm at src/dive_bomb_task.cpp:921-925:\n-    } else {\n-        out.cross_track = static_cast<float>(\n-            std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *\n-            range);\n-    }\n)",
+   "list": "B"
+  },
+  {
+   "function": "009E6E80",
+   "name": "BSP_ShipAi_ApproachChooseStandoffRange",
+   "site": "009E7451",
+   "verdict": "WRONG",
+   "cpp": "src/ship_ai_approach_update.cpp:812",
+   "evidence": "DC C9 puts (c+c*c)*0.5 in ST1, and that product is what 009E7455 float-stores, with 0.5 left in ST0. The C++ stores q=c+c*c without the 0.5, which is the st0*=st1 misreading. Ghidra pseudocode agrees with the image: (pi + (c*c+c)*0.5*pi)*0.5.",
+   "fix": "--- src/ship_ai_approach_update.cpp:810-816\n-            // 009E7441..009E7469: q = c + c*c, float-stored at 009E7455, then\n-            // (0.5 * q) * (q + pi * q).\n-            const float q = static_cast<float>(static_cast<double>(capped) +\n-                                               static_cast<double>(capped) * capped);\n-            side_weight = static_cast<float>(\n-                (kApproachSideCurveScale * q) *\n-                (static_cast<double>(q) + kApproachHalfTurn * q));\n+            // 009E7441..009E7469: h = (c + c*c) * 0.5, float-stored at 009E7455\n+            // (DC C9 leaves 0.5 in ST0); then 009E7463 DC C9 gives h*pi with pi\n+            // left in ST0, FADDP gives h*pi + pi, FMULP by the retained 0.5.\n+            const float h = static_cast<float>(\n+                (static_cast<double>(capped) + static_cast<double>(capped) * capped) *\n+                kApproachSideCurveScale);\n+            side_weight = static_cast<float>(\n+                (static_cast<double>(h) * static_cast<double>(kApproachHalfTurn) +\n+                 static_cast<double>(kApproachHalfTurn)) *\n+                kApproachSideCurveScale);",
+   "list": "B"
+  },
+  {
+   "function": "009E6E80",
+   "name": "BSP_ShipAi_ApproachChooseStandoffRange",
+   "site": "009E7463",
+   "verdict": "WRONG",
+   "cpp": "src/ship_ai_approach_update.cpp:814",
+   "evidence": "DC C9 gives ST1=h*pi (00CE3D28 is the exact double of the float pi in kApproachHalfTurn) with pi left in ST0. FADDP then gives h*pi + pi, and FMULP multiplies by the 0.5 kept from 009E7451. The C++ computes (0.5*q)*(q + pi*q). Same fix as 009E7451.",
+   "fix": "see 009E7451 (one combined fix)",
+   "list": "B"
+  }
+ ]
+}

@@ -16888,3 +16888,44 @@ OFF = the tree at `bdc1a5f21`, ON = `local\s44_fsq_on` (pair_export); logs `loca
   MissionPhase 1 -> **2**. Every added kill is by an orphaned wing member; mechanism as predicted (cc13's
   25/25 by 612.22 s was measured on an older base).
 - **Verdict: ON.**
+
+### 213.1 The pair (cc9-ships44, 2026-10-12; switch on main `b0ef887a1`)
+
+OFF = this tree at `6c4a6f7f6`, ON = pair_export (`local\s44_pr_on`); logs `local\s44_pr{off,on}_*.log`. smoke exit 0;
+USNOS j (44000) exit 0; USN04 `s39_u4_p1` (0.0222 s, jitter `20,3`) exit 1, gameplay identical. No log carries a
+`SetParty 008a8930: unit=` line, so the mechanism is not exercised on current main (USNOS j reached HQ2's
+`us_osumi.lua:1106` SetParty only on older builds, `s43_*_osj`; 211.5). Verdict: flipped ON by construction (it
+only re-syncs gunnery's cached side to +54h, which the image reads), routed to gunnery37 by the lead.
+
+## 216. The AI group's party-change removal, `kAiGroupPartyChangeRemovalBound` (cc9-ships44, 2026-10-12; lead item b, OFF)
+
+Image (disk bytes): the base SetParty `00923B80` ends with `00696350(ECX = entity, EDX = 6, party)`
+(`00923BC8`-`00923BD0`, section 213). The AI group's observer slot `00A2DB50` (`RET 0Ch`, ECX = group+10h):
+event 6 and a party different from `[ECX+5628h]` = group+5638h, the team the constructor copies from the seed's
++54h (`00A2E042`/`00A2E045`) -> `00A2D9D0(entity, 1)` on the group (`00A2DB6A ADD ECX,-10h`). `00A2D9D0`:
+`0077BEA0` unlinks the entity from +563Ch, clears entity+16Ch when it names this group, drops the observer pair
+(`006956A0`), and with the population (+5644h) at 0 and the flag set queues the group on the pending list
+`00F8AA78` (`00A2DA09`-`00A2DA4F`).
+
+Host: the 00A2DDE0 eviction (`evict_invalid_members`) already drops a member whose side no longer matches the
+group's team when it next runs; the event-6 path removes it at once. The bound pass (`src/game_hosts_ai.cpp`,
+`apply_party_change_removals_00a2db50`, run at the start of each AI fixed step) compares every candidate's +54h
+with the value it saw on the previous step and, on a change to a party other than the group's team, removes the
+unit and queues an emptied group like the eviction does. SUBSTITUTION, labelled: no observer edge exists in the
+host, so the removal lands at the next AI step rather than inside SetParty.
+
+Predictions: smoke identical (exit 0). USN04 `s39_u4_p1` and USNOS j identical or gameplay identical (no unit
+party change reaches a grouped unit on current main, 213.1). LOMP10 (30000 frames, CB4 flips to party 1 at about
+1100-1200 s): if CB4 sits in an AI group, ON logs `ai group party change: CB4 ...` and moves from there (exit 3);
+if it is in no group, identical. Mechanism check: every ON removal line names a unit whose +54h just changed and a
+team different from the new party.
+
+### 216.1 Pairs (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `e9ba96058`, ON = `local\s44_gp_on`; logs `local\s44_gp{off,on}_*.log`. smoke exit 0; USN04
+`s39_u4_p1` exit 0; LOMP10 30000 exit 1, gameplay identical: its 20 capture flips/neutralizations (CB4 to party 1
+at about 1100-1200 s) touch no grouped unit, and no `ai group party change` line is logged. The mechanism is not
+exercised by any row at hand; candidates that SetParty grouped ships are `usn_16_endgame_at_kure.lua` (eleven
+ships to neutral), `islandcapture*.lua` and `usn_09_leyte.lua`. Verdict: stays OFF until one of those is paired, or
+flipped by construction on the lead's word (the image removes the member at once; the host's 00A2DDE0 eviction
+already removes it later).
