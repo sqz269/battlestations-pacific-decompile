@@ -65,8 +65,10 @@ bool segment_intersect_triangle_0085d020(const Vec3f& p0, const Vec3f& p1, const
     const float hx = static_cast<float>(double(dy) * e2z - double(dz) * e2y);
     const float hy = static_cast<float>(double(e2x) * dz - double(dx) * e2z);
     const float hz = static_cast<float>(double(e2y) * dx - double(dy) * e2x);
-    // 0085D129 stores det to a float slot before the two FCOMI tests.
-    const float det = static_cast<float>(double(hz) * e1z + double(hx) * e1x + double(hy) * e1y);
+    // 0085D10B..0085D129: (hx*e1x + hy*e1y) + hz*e1z, stored to a float slot before the two FCOMI
+    // tests. The summation order and the float stores of each dot product below were corrected
+    // after the native fixture (docs/CC13_FIXTURE_PASS_1.md) showed last-place differences.
+    const float det = static_cast<float>(double(hx) * e1x + double(hy) * e1y + double(hz) * e1z);
     if (double(det) > -0.0000999999974737875 && double(det) < 0.0000999999974737875) {
         return false;
     }
@@ -74,7 +76,9 @@ bool segment_intersect_triangle_0085d020(const Vec3f& p0, const Vec3f& p1, const
     const float sx = p0.x - a.x;
     const float sy = p0.y - a.y;
     const float sz = p0.z - a.z;
-    const float u = static_cast<float>((double(sz) * hz + double(sx) * hx + double(sy) * hy) * inv);
+    // 0085D184..0085D1B0: (hy*sy + hx*sx) + hz*sz stored as a float, times inv, stored again.
+    const float u_dot = static_cast<float>(double(hy) * sy + double(hx) * sx + double(hz) * sz);
+    const float u = static_cast<float>(double(u_dot) * inv);
     if (u < 0.0f || u > 1.0f) {
         return false;
     }
@@ -82,11 +86,15 @@ bool segment_intersect_triangle_0085d020(const Vec3f& p0, const Vec3f& p1, const
     const float qx = static_cast<float>(double(sy) * e1z - double(sz) * e1y);
     const float qy = static_cast<float>(double(sz) * e1x - double(e1z) * sx);
     const float qz = static_cast<float>(double(e1y) * sx - double(sy) * e1x);
-    const float v = static_cast<float>(inv * (double(qz) * dz + double(qx) * dx + double(qy) * dy));
+    // 0085D215..0085D23F: (qy*dy + qx*dx) + qz*dz stored as a float, times inv, stored again.
+    const float v_dot = static_cast<float>(double(qy) * dy + double(qx) * dx + double(qz) * dz);
+    const float v = static_cast<float>(double(v_dot) * inv);
     if (v < 0.0f || 1.0 < double(v) + u) {
         return false;
     }
-    const float t = static_cast<float>(inv * (double(qz) * e2z + double(qx) * e2x + double(e2y) * qy));
+    // 0085D269..0085D28D: (qy*e2y + qx*e2x) + qz*e2z stored as a float, times inv, stored again.
+    const float t_dot = static_cast<float>(double(qy) * e2y + double(qx) * e2x + double(qz) * e2z);
+    const float t = static_cast<float>(double(t_dot) * inv);
     if (t < 0.0f || t > 1.0f) {
         return false;
     }
