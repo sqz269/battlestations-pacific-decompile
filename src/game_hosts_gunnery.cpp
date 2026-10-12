@@ -12127,6 +12127,16 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     return state.dead || state.health <= 0.0f;
 }
 
+std::size_t GameGunneryHost::kill_last_attacker(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return 0;
+    return impl_->unit_state[unit_index].last_attacker;
+}
+
+int GameGunneryHost::kill_credited_slot(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return 0;
+    return impl_->unit_state[unit_index].attribution.credited_slot;
+}
+
 void GameGunneryHost::refresh_unit_side(std::size_t unit_index) {
     if (unit_index >= impl_->unit_state.size()) return;
     impl_->unit_state[unit_index].row.side = impl_->units.unit_side_0054(unit_index);
