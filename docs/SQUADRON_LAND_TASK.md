@@ -15553,3 +15553,45 @@ own prefix):
 - `l51_movieinit.py`.
 - `l51_mkexp.ps1`: an export with a patch applied.
 - `l51_diag_hq.py` (5fg's HQ hit diagnostic).
+
+## 5gb. The kamikaze tasks wired, and the Ohka spawn (packet `cc9_lua52_kamikaze_wiring`, cc9-lua52, 2026-10-12)
+
+**What is bound.** cc13's reconstruction (`include/bsp/kamikaze_task_cc13.hpp`, docs/CC13_KAMIKAZE_TASK.md) is driven
+from `src/game_hosts_units.cpp` next to the strafe arm, behind two switches in `include/bsp/kamikaze_task_host.hpp`:
+- `kKamikazeTaskBound`: an order of class `00E08F50` (kind `0Ch`) runs `009AF510` each think through an adapter
+  (`KzHost`) over the slot. The task's sub-object is copied into the host's one per-shooter target reference
+  (`hull_aim_ref`) on its dirty byte, so the aim error `009ABF60` (Kamikaze* robot fields) and the spread
+  `009AF0A0` reach the pick, and its projtime reaches the lead tail. moveto is the generic `009C18C0` with the ranges
+  `009AED20` stores (`+4Ch`, `+4Ch`, `+48h`); follow and prepare are the generic `009C1FD0`.
+- `kDropKamikazeTaskBound`: an order of class `00E08F30` (kind 5) runs `009AE8A0` (`DkzHost`). Its release
+  `007BBBA0` takes one round off the rack whose bullet is a `DummyKamikazePlane` and pushes it into the process-wide
+  round registry (`bsp::dummy_kamikaze_rounds()`). The mission Lua host steps the rounds once per mission frame
+  (`run_dummy_kamikaze_rounds_006fec00`) with **`006FEC00`** reconstructed: the launch stamp on the first detached
+  tick, the frame turned to the velocity, and one spawn (`this+B8h` latch) once `now - launch > OpenAfterTime`
+  (3.0 s for bullet 143). The spawn is the air-ops creator (`create_dummy_kamikaze_squadron_006fec00`, WingCount 1,
+  State 7, the carrier's party and skill) and the bag's `AutoAttackTarget` = the carrier's target, served by the
+  existing `007F15F0` queue. The Ohka (156) and Funryu (370) are kind `17h` without PilotFires, so the chooser gives
+  them `00E08F50` and, with both switches on, they run the kamikaze task RocketLike.
+- `plan_boost_2e4` (plan+2E4h) is a new slot field, recorded only (its reader `007BB7B9` is not hosted).
+
+**Labelled substitutions.** The gun-block writes are not carried; the cruise profiles `009AF480`/`009AE9D0` run once
+at the install (a script attack altitude keeps `+398h`); the bay/rack chain of the release is one release per call;
+the round flies gravity-only and drowns at y <= 0 (no water blast); Race, OwnerPlayer, VelocitySI/Vel3D, Invincible,
+FireStance and DummyObjectID are not carried into the new unit; `unit+C25h` is a one-think flag; the step parity is
+the arm-tick parity; `0099C230` is taken as true (no player-attached AI plane). The gunless kind-`17h` throttle law
+(`007BB796`: throttle 1 only while the boost latch `unit+9F8h` holds) is not hosted, so the Ohka flies powered.
+
+**Mission ids.** The lead's "USN18 and USN15" are tree comments: Cape Engano is id `USN17` (`luaKamikaze`, phase 3)
+and Sibuyan Sea is id `USN21` (the phase-4 wave). Id `USN19` (Okinawa, `prcp_14_okinawa.lua` 2024-08-26) is the one
+with kamikaze orders inside 3000 frames (`luaBomberWave` at line 885; SHIP_AI_OPEN_ITEMS census: 33 kamikaze-capable
+PilotSetTarget calls), and its `SpawnEvent1` sends `BettyOhka` carriers. Id `USN18` (Iwo Jima) spawns the OkhaGang
+only after the phase-1 end movie.
+
+**Predictions (written before the pairs).**
+- OFF build: gameplay identical to main (pair_diff 0 or 1); the new census lines report `ordered_planes` for each class.
+- `kKamikazeTaskBound` ON, USN19 3000 frames: every kamikaze-class plane with a target installs (fighter-like, ratio
+  1.0, AttackRange 1200 m); leaders hold moveto until within 1200 m planar, then gotowards and aim; kamikaze
+  detonations (`summary mission gunnery kamikaze ... detonations`) go from 0 to > 0 and allied ship damage rises.
+  Mechanism check: transitions follow moveto/follow -> gotowards -> aim, and `min_dist` falls under 50 m for some.
+- `kDropKamikazeTaskBound` ON: Betty carriers install kind 5, reach attackrun/release, rounds are pushed and each
+  spawns one class-156 unit 3 s later that installs the kamikaze task (with the first switch on).

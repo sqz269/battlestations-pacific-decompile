@@ -1,0 +1,99 @@
+{
+ "events": [
+  {
+   "delete_inside": "00721c6e",
+   "range": [
+    "00721c60",
+    "00721c8e"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00721c6e"
+   },
+   "result": {
+    "success": true,
+    "address": "00721c6e",
+    "deleted_function": "FUN_00721c6e",
+    "body_size": 32,
+    "message": "Function 'FUN_00721c6e' deleted at 00721c6e"
+   }
+  },
+  {
+   "recreate": "00721c60",
+   "previous": "Function: FUN_00721c60 at 00721c60\nSignature: undefined FUN_00721c60(void)\nEntry: 00721c60\nBody: 00721c60 - 00721c6d",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00721c60"
+   },
+   "result": {
+    "success": true,
+    "address": "00721c60",
+    "deleted_function": "FUN_00721c60",
+    "body_size": 14,
+    "message": "Function 'FUN_00721c60' deleted at 00721c60"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00721c60",
+    "end_address": "00721c8e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00721c60",
+    "end_address": "00721c8d",
+    "bytes_disassembled": 46,
+    "message": "Successfully disassembled 46 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00721c60",
+    "disassemble_first": false,
+    "name": "BSP_AabbTree_CountNodes"
+   },
+   "result": {
+    "success": true,
+    "address": "00721c60",
+    "function_name": "BSP_AabbTree_CountNodes",
+    "entry_point": "00721c60",
+    "body_size": 46,
+    "message": "Function created successfully at 00721c60",
+    "warnings": [
+     "Function name 'BSP_AabbTree_CountNodes' \u2014 main part 'AabbTree_CountNodes' is not PascalCase. Expected: AabbtreeCountnodes",
+     "Function name 'BSP_AabbTree_CountNodes' \u2014 main part 'AabbTree_CountNodes' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AabbTree_CountNodes' does not start with a recognized verb. First word 'Aabb' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00721c60",
+   "end": "00721c8e",
+   "name": "BSP_AabbTree_CountNodes",
+   "after": "Function: BSP_AabbTree_CountNodes at 00721c60\nSignature: undefined BSP_AabbTree_CountNodes(void)\nEntry: 00721c60\nBody: 00721c60 - 00721c8d"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+  "doc": "docs/CC13_AUDIT12_RECENT_FLIPS.md",
+  "steps": [
+    {"address": "009C5F9E", "native": "00419010", "function": "009C58D0", "note": "aimdive tail power cap InterpolateClamped(0, +44h, 1, +48h, x1)"},
+    {"address": "009C5FCB", "native": "00419010", "function": "009C58D0", "note": "aimdive tail brake floor InterpolateClamped(0, +50h, 1, +4Ch, [ESP+24h] = x1)"},
+    {"address": "009C5101", "native": "00438B10", "function": "009C4F80", "note": "aim heading blend d = SubtractWrapped(B, E)"},
+    {"address": "009C5144", "native": "00419010", "function": "009C4F80", "note": "aim heading blend t = InterpolateClamped(-60 deg, 0, -40 deg, 1, pitch)"},
+    {"address": "009C5163", "native": "00438B10", "function": "009C4F80", "note": "aim heading blend SubtractWrapped(B, t*d)"},
+    {"address": "009C50E6", "native": "00438AA0", "function": "009C4F80", "note": "aim heading blend E + pi past a folded bank of pi/2"},
+    {"address": "009C5473", "native": "00419010", "function": "009C5180", "note": "aimglide heading arm bank scale plan+2E8h = InterpolateClamped(100, 1, 250, 1.5, [ESP+1Ch])"},
+    {"address": "009C555E", "native": "00419010", "function": "009C5180", "note": "aimglide pitch arm p1 -> [ESP+6Ch] at 009C5563"},
+    {"address": "009C55AB", "native": "00419010", "function": "009C5180", "note": "aimglide pitch arm p2 -> [ESP+28h] at 009C55B0"},
+    {"address": "009C51A8", "native": "009C4F80", "function": "009C5180", "note": "aimglide tick reads the aim heading"},
+    {"address": "009C5935", "native": "009C4F80", "function": "009C58D0", "note": "aimdive tick reads the aim heading"},
+    {"address": "009CACDA", "native": "00BD2F10", "function": "009CAC80", "note": "strafe attackrun constructor seed -U(0,1), ECX = 1"},
+    {"address": "009C7A9F", "native": "009FADA0", "function": "009C7A80", "note": "approach feed, immediately before the +0Ch -> +398h -> approach+ACh copy at 009C7AA4"},
+    {"address": "00928F7D", "native": "00923B80", "function": "00928F50", "note": "SetPartyRace writes the party (+54h) through 00923B80"}
+  ]
+}
