@@ -256,6 +256,7 @@ public:
         // reallocates the vector whose element addresses the body descriptor holds).
         unsigned long long forts{0}, fort_shapes{0}, fort_pairs_near{0}, fort_shape_tests{0};
         unsigned long long fort_hits{0}, fort_hit_steps{0}, forts_over_reserve{0};
+        unsigned long long forts_rescaled{0};   // GUNNERY_OPEN_ITEMS 167
         float fort_max_depth{0.0f};
         // Packet cc9_avoid_zone_draft_bodies: draft bodies, (draft, hull) pairs refused by the
         // filter, pairs whose boxes met, shape tests, hits, pairs with a hit, the deepest hit.
@@ -324,6 +325,18 @@ private:
     std::map<std::size_t, bool> forts_seen_;
     struct FortBox { float lo[3], hi[3]; bool ok; };
     std::map<std::size_t, FortBox> fort_boxes_;   // world box of a fort's shapes (static)
+    // A fort whose world rows are not unit length (an authored scale): the scale moved into
+    // the points and the rows normalized, so the convex support kernel's seed table
+    // (00C358A0 reads support_seed with trunc(d * 1.99) per axis, a unit local direction
+    // assumed) is never indexed past its 27 slots. GUNNERY_OPEN_ITEMS 167.
+    struct RigidFort {
+        const std::vector<std::vector<OceanVec3>>* source{nullptr};
+        float source_frame[12]{};
+        std::vector<std::vector<OceanVec3>> shapes;
+        FortWorldEntry entry;
+    };
+    std::map<std::size_t, RigidFort> fort_rigid_;
+    const FortWorldEntry& rigid_fort(const FortWorldEntry& fort);
     std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> pair_manifolds_;
     std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> hull_pairs_;
     unsigned long long manifold_serial_{0};
