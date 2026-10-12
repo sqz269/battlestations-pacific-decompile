@@ -469,7 +469,7 @@ inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (do
 // 008A24E0 store and the profile writes 009C375A / 009C3906 / 009C89D6 undo.
 // True: the steer altitude drops the random offset while a script altitude is
 // live. False: cruise - offset always.
-inline constexpr bool kMoveToLuaAltZeroOffsetBound = false;  // OFF: not pair-tested
+inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON by pair verdict
 
 class GameUnitsHost {
 public:
