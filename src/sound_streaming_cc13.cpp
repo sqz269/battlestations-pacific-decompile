@@ -397,6 +397,57 @@ void submit_shadow_cascades_00a8ea20(void* owner, ShadowCascadeSubmitHost& host)
     host.flush_frame_jobs();
 }
 
+namespace {
+// Shared body of 00A8E860 and 00A8E180; `ground` selects the 00A8E860 tail.
+void render_shadow_view(void* owner, const void* settings, std::uint32_t argument, void* camera,
+    std::uint32_t a, std::uint32_t b, bool ground, ShadowSingleViewHost& host)
+{
+    if (read<std::uint8_t>(settings, 0xc) == 0 || read<std::uint8_t>(settings, 0xd) == 0) return;
+    void* const previous = read<void*>(owner, 0x30);
+    if (previous != camera) {
+        write(owner, 0x30, camera);
+        if (camera) host.retain(camera);
+        if (previous) host.release(previous);
+    }
+    float viewport_matrix[16];
+    host.build_viewport_matrix(owner, viewport_matrix, read<void*>(owner, 0x504));
+    host.set_viewport(read<void*>(owner, 0x20), read<void*>(owner, 0x504));
+    host.fit_single_view(owner, camera, a, b);
+    host.multiply_into_shader_matrix(owner, static_cast<const float*>(at(owner, 0x44)), viewport_matrix);
+    x87_copy_float(owner, 0x14c, owner, 0x4ac);
+    x87_copy_float(owner, 0x15c, owner, 0x4b0);
+    x87_copy_float(owner, 0x16c, owner, 0x4b4);
+    x87_copy_float(owner, 0x17c, owner, 0x4b8);
+    if (ground) {
+        host.prepare_ground_casters(camera, 1.0f);
+        host.queue_named_command(read<void*>(owner, 0x34), read<void*>(owner, 0x20),
+            read<void*>(owner, 0x500), "SHBU"); // 00D5B5D0
+    } else {
+        host.queue_command(read<void*>(owner, 0x34), read<void*>(owner, 0x20),
+            read<void*>(owner, 0x500), argument);
+    }
+    const std::uint32_t metadata[3] = {0u, 0x62u, 0x1eu};
+    host.set_last_command_metadata(metadata);
+    if (void* const retained = read<void*>(owner, 0x30)) {
+        host.release(retained);
+        write<void*>(owner, 0x30, nullptr);
+    }
+}
+} // namespace
+
+void render_shadow_ground_ortho_view_00a8e860(void* owner, const void* settings_00f8bbf0,
+    void* camera, std::uint32_t a, std::uint32_t b, ShadowSingleViewHost& host)
+{
+    render_shadow_view(owner, settings_00f8bbf0, 0u, camera, a, b, true, host);
+}
+
+void render_shadow_single_view_00a8e180(void* owner, const void* settings_00f8bbf0,
+    std::uint32_t argument, void* camera, std::uint32_t a, std::uint32_t b,
+    ShadowSingleViewHost& host)
+{
+    render_shadow_view(owner, settings_00f8bbf0, argument, camera, a, b, false, host);
+}
+
 bool any_input_binding_forces_unit_scale_00a92050(const std::vector<InputActionBinding>& bindings) noexcept
 {
     for (const auto& binding : bindings)

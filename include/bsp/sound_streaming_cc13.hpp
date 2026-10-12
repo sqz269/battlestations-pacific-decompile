@@ -257,6 +257,47 @@ public:
 // null and native then calls through it. Caller BSP_ShadowMap_UpdateViewFromCamera.
 void submit_shadow_cascades_00a8ea20(void* owner, ShadowCascadeSubmitHost& host);
 
+class ShadowSingleViewHost {
+public:
+    virtual ~ShadowSingleViewHost() = default;
+    virtual void retain(void* camera) = 0;  // InterlockedIncrement(camera+4), [00CE221C]
+    virtual void release(void* camera) = 0; // InterlockedDecrement(camera+4), vslot0 at zero
+    // 00A8AAA0, __thiscall(owner, out float16, viewport), RET 8.
+    virtual void build_viewport_matrix(void* owner, float* out16, void* viewport) = 0;
+    virtual void set_viewport(void* camera, void* viewport) = 0; // 00B71990
+    // 00A8AEB0, __thiscall(owner, camera, a, b), RET 0Ch.
+    virtual void fit_single_view(void* owner, void* camera, std::uint32_t a, std::uint32_t b) = 0;
+    // 00413920 left*right into destination, then 004134F0 copy into owner+144h.
+    virtual void multiply_into_shader_matrix(void* owner, const float* left16, const float* right16) = 0;
+    // [00F8C210] 00AD7A30(camera, 1.0f); only the ground-ortho path calls it.
+    virtual void prepare_ground_casters(void* camera, float weight) = 0;
+    // 004C11F0 queue, 00B1F4D0(owner +34h, camera +20h, target +500h, name by value).
+    virtual void queue_named_command(void* command_owner, void* camera, void* target, const char* name) = 0;
+    // 004C11F0 queue, 00B1F5E0(owner +34h, camera +20h, target +500h, first argument).
+    virtual void queue_command(void* command_owner, void* camera, void* target, std::uint32_t argument) = 0;
+    // 004C11F0 queue, 00B1CB50(&metadata3).
+    virtual void set_last_command_metadata(const std::uint32_t* metadata3) = 0;
+};
+
+// 00A8E860, __thiscall(owner, camera, a, b), SEH frame, RET 0Ch. Caller
+// BSP_InterfaceView_DrawGroundOrtho. Only when the settings object at
+// [00F8BBF0] has bytes +0Ch and +0Dh set: retain camera into +30h (assign on
+// change: store, retain new, release old), build the viewport matrix for
+// viewport +504h, set it on the shadow camera +20h, fit the view (00A8AEB0 with
+// camera, a, b), shader matrix +144h = (+44h) * viewport matrix, overwrite its
+// third column (+14Ch/+15Ch/+16Ch/+17Ch) with +4ACh..+4B8h through FLD/FSTP,
+// prepare ground casters for the camera with weight 1.0, queue the SHBU command
+// for target +500h with metadata {0, 62h, 1Eh}, then release and clear +30h.
+void render_shadow_ground_ortho_view_00a8e860(void* owner, const void* settings_00f8bbf0,
+    void* camera, std::uint32_t a, std::uint32_t b, ShadowSingleViewHost& host);
+
+// 00A8E180, __thiscall(owner, argument, camera, a, b), RET 10h. Caller 00B3C960.
+// Same as 00A8E860 except that it has no caster preparation and queues
+// 00B1F5E0 with its first argument instead of the named SHBU command.
+void render_shadow_single_view_00a8e180(void* owner, const void* settings_00f8bbf0,
+    std::uint32_t argument, void* camera, std::uint32_t a, std::uint32_t b,
+    ShadowSingleViewHost& host);
+
 // ---------------------------------------------------------------------------
 // Input action binding queries (same segment; InputActionBinding projection)
 // ---------------------------------------------------------------------------

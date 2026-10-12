@@ -2,7 +2,7 @@
 
 Addresses: 00A7A440-00A9AC40 (partition segment 74). Worker cc13-audio1, branch `agent/cc13-audio1`.
 Source: `src/sound_streaming_cc13.cpp`, `include/bsp/sound_streaming_cc13.hpp`.
-Call-site report: `reports/cc13_audio1_calls.json` (48 rows, `tools/verify_report_calls.py` clean).
+Call-site report: `reports/cc13_audio1_calls.json` (64 rows, `tools/verify_report_calls.py` clean).
 Functions defined in Ghidra: `reports/cc13_audio1_defined.json`.
 
 All names are hypotheses, not recovered symbols. Status vocabulary: *named* (ledger + Ghidra
@@ -16,7 +16,7 @@ The partition keywords say "sound", but the band is four unrelated areas:
 | band | content | prior coverage |
 |---|---|---|
 | 00A7A440-00A8A820 | sound manager, classes, channels, events, samples, streams | heavy (docs/SOUND_*.md, src/sound_*.cpp) |
-| 00A8A820-00A90000 | directional shadow owner, shadow jobs, shadow camera fitting | owner/jobs done; six camera-fitting bodies raw |
+| 00A8A820-00A90000 | directional shadow owner, shadow jobs, shadow camera fitting | owner/jobs done before; submit and single-view paths reconstructed here, fitters named |
 | 00A90000-00A98000 | input backend, actions, bindings, gamepad force, text input | heavy; remaining raw are STL instances |
 | 00A98000-00A9AC40 | input backend tails | heavy |
 
@@ -45,6 +45,8 @@ append fragment 00A80EBA), `sound_configuration` (00A7AE00, 00A7AE80), `sound_di
 | 00A89600 | `update_sound_event_00a89600` | complete | listing 00A89600-00A896CE |
 | 00A8AC90 | `project_shadow_point_00a8ac90` | complete | listing 00A8AC90-00A8AD1E (x87) |
 | 00A8B860 | `intersect_lines_2d_00a8b860` | complete; aliasing order kept | listing 00A8B860-00A8B925 mapped per x87 instruction |
+| 00A8E860 | `render_shadow_ground_ortho_view_00a8e860` | complete normal path; settings object passed explicitly | listing 00A8E860-00A8EA15 |
+| 00A8E180 | `render_shadow_single_view_00a8e180` | complete | listing 00A8E180-00A8E2D9 |
 | 00A8EA20 | `submit_shadow_cascades_00a8ea20` | complete normal path; allocation-failure path not modelled | listing 00A8EA20-00A8ECA0 |
 | 00A92050 | `any_input_binding_forces_unit_scale_00a92050` | complete | decompile + listing |
 | 00A92910 | `input_actions_share_binding_00a92910` | complete | decompile 00A92910-00A929A4 |
@@ -142,9 +144,17 @@ render camera, target +4F0h + 4i) with metadata {0, 62h, 1Eh} and diagnostic nam
 appends it to the shadow queue (00B1EB80, immediate 0) and submits it as a shadow frame job
 (00A8E090). The frame-job pool is flushed after the fourth cascade.
 
+The two single-view paths share one body. Gated on the settings object at `[00F8BBF0]` (bytes
++0Ch and +0Dh), they retain the caller's camera in owner +30h, build the viewport matrix for
+viewport +504h (00A8AAA0) and set it on the shadow camera +20h, fit the view (00A8AEB0), form the
+shader matrix +144h = (+44h) x viewport matrix and overwrite its third column with +4ACh..+4B8h,
+queue one render command for target +500h with metadata {0, 62h, 1Eh}, and release +30h. The
+ground-ortho variant 00A8E860 (from `BSP_InterfaceView_DrawGroundOrtho`) also calls
+`[00F8C210]` 00AD7A30(camera, 1.0) and queues 00B1F4D0 named `SHBU`; 00A8E180 (from 00B3C960)
+queues 00B1F5E0 with its first argument. 00AD7A30, 00B1F4D0 and 00B1F5E0 are unnamed host calls.
+
 Not reconstructed, named only: the cascade fitter 00A8BD20 (2007h bytes of x87), the single-view
-fitter 00A8AEB0 and its two callers 00A8E180 (from 00B3C960) and 00A8E860 (ground-ortho interface
-view), and the unreferenced 00A8ECB0 (an older fit-and-submit path that uses 00A8AC90) and
+fitter 00A8AEB0, and the unreferenced 00A8ECB0 (an older fit-and-submit path that uses 00A8AC90) and
 00A8B930 (the only caller of the reconstructed line intersection 00A8B860). These are the next
 shadow packet; they need listing-level x87 work.
 
@@ -224,3 +234,29 @@ ends from a linear sweep that stops at the last RET past every local branch targ
 
 The band still has about 450 INT3-aligned starts with no Ghidra function and no reference of
 either kind; they were left undefined.
+
+## Status and handoff (2026-10-12)
+
+Totals for this packet: 23 reconstructed routines (24 C++ entry points; 00A83120 has a formatter
+and an apply entry), 117 ledger names applied to Ghidra with evidence comments, 26 bodies newly
+defined in Ghidra. Everything is build-tested only (Win32 build plus the two existing CTests);
+nothing is fixture-tested, ABI-compatible or game-validated. None of the new entry points is wired
+into a host or the game executable yet.
+
+Open items, in suggested order:
+
+1. Shadow fitters: 00A8BD20 (cascade, 2007h bytes), 00A8AEB0 (single view), 00A8ECB0 and
+   00A8B930 (unreferenced). Heavy x87; use the ESP-anchored listing sweep. The submit/single-view
+   reconstructions here already define their host contracts (`ShadowCascadeSubmitHost::fit_cascade`,
+   `ShadowSingleViewHost::fit_single_view`).
+2. Unnamed host calls the shadow paths use: 00AD7A30 (on `[00F8C210]`), 00B1F4D0, 00B1F5E0.
+3. Input band: about 60 STL instances (vector/deque/tree for backend device groups, gamepad force
+   queues, text-owner events) remain raw; `BSP_InputAction_Update_Provisional` 00A92A20 looks like
+   an out-of-line copy of logic inlined in 00A92C40 and has no caller.
+4. Meaning of sound-instance vtable slots +34 (six-dword setter) and +38 (three-float getter),
+   and of the sample resource field +08h tested by 00A818D0.
+5. The `.def` round trip: 00A83120 writes `Decompress <n>` but the parser takes `Decompress` as a
+   bare keyword; check whether a written file re-parses.
+6. Wiring: the voice-playback hosts already call 00A7D120 as `set_sound_flag_00a7d120`, the
+   in-mission interface calls 00A7B710 as `set_audio_environment`, and the simulation gate drives
+   00A7F890; they could now bind to the reconstructions here instead of recording the call.
