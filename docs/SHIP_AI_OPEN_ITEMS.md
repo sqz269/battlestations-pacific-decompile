@@ -16863,3 +16863,15 @@ the order file with
 If it stops winning, the levers are, in order: the BB hold point (open water; (-6000, 6000) grounds them), when
 the BBs commit relative to Yamashiro's turn north (it passes (2630, 3991) at 2200 s), and keeping the right group
 off Fuso's track until Fuso is dead (about 1100 s).
+
+## 215. `kFusedSquadronSlotSelectableBound` (cc13's diff A, applied by cc9-ships44, 2026-10-12)
+
+docs/CC13_AUDIT_REATTACK_AND_SKILL.md part A (origin `ba711c180`): the host fuses a squadron with the plane that
+carries its name, so once that plane dies every `select <squadron>` is refused and the surviving wing never gets
+another order; in the image the PlaneSquadronGen stays selectable until `+3CCh == 0`. The diff is applied verbatim
+(`include/bsp/plane_squadron_host.hpp`, `src/game_hosts_hud.cpp`, `src/game_hosts_mission_frame.cpp`), committed
+OFF. Predictions (cc13's measurements, to be reproduced in this tree): smoke identical; IJN01 with
+`s38_i1_p1` (24200/24000, 0.05 s) moves from A7M_2's first refused order (frame 2802), StrafeShip deaths 13 -> 25
+of 25 and MissionPhase 1 -> 2 by 1200 s; USN04 with `s39_u4_p1` (45200/45000, 0.0222 s, jitter `20,3`) gameplay
+identical (exit 1). Mechanism check: every added IJN01 kill is by an orphaned wing member (`A7M_n|.-k`) whose
+order was accepted through the squadron slot.
