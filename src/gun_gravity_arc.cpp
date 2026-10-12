@@ -153,10 +153,11 @@ float gun_gravity_arc_drop_term(float horizontal_distance_squared,
     if constexpr (kGunArcFloatPrecisionBound) {
         return (horizontal_distance_squared * kGunBotGravity)
             / (muzzle_speed * (muzzle_speed + muzzle_speed));
+    } else {
+        const double numerator = static_cast<double>(horizontal_distance_squared) * kGravity;
+        const double speed = static_cast<double>(muzzle_speed);
+        return static_cast<float>(numerator / (speed * (speed + speed)));
     }
-    const double numerator = static_cast<double>(horizontal_distance_squared) * kGravity;
-    const double speed = static_cast<double>(muzzle_speed);
-    return static_cast<float>(numerator / (speed * (speed + speed)));
 }
 
 float gun_gravity_arc_discriminant(float horizontal_distance,
@@ -168,14 +169,15 @@ float gun_gravity_arc_discriminant(float horizontal_distance,
     if constexpr (kGunArcFloatPrecisionBound) {
         const float sum = drop_term + height_delta;
         return horizontal_distance * horizontal_distance - drop_term * 4.0f * sum;
+    } else {
+        const double distance = static_cast<double>(horizontal_distance);
+        const double distance_sq = distance * distance;
+        const float sum = static_cast<float>(static_cast<double>(drop_term) +
+                                             static_cast<double>(height_delta));
+        const double scaled_drop =
+            static_cast<double>(drop_term) * kGunGravityArcDiscriminantFactor;
+        return static_cast<float>(distance_sq - static_cast<double>(sum) * scaled_drop);
     }
-    const double distance = static_cast<double>(horizontal_distance);
-    const double distance_sq = distance * distance;
-    const float sum = static_cast<float>(static_cast<double>(drop_term) +
-                                         static_cast<double>(height_delta));
-    const double scaled_drop =
-        static_cast<double>(drop_term) * kGunGravityArcDiscriminantFactor;
-    return static_cast<float>(distance_sq - static_cast<double>(sum) * scaled_drop);
 }
 
 float gun_gravity_arc_max_range(float muzzle_speed, float height_delta) noexcept
