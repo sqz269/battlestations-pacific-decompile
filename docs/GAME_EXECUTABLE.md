@@ -15687,3 +15687,79 @@ Append-only correction; the text above is left as written.
 - `0109db48` is counter ticks per second. Its only writer is the static initializer at `00cd8f30` (`CALL 00be3310; FSTP qword [0109db48]; RET`). `00be3310` (`BSP_PerfCounter_CalibrateTicksPerSecond`) takes QueryPerformanceCounter before and after `Sleep(100)` and returns the difference times 10 (`__allmul` `00bf7df0`). Every converted profiler value is therefore in seconds, consistent with the 0.1 full scale and the 1/60 grid step of the overlay.
 
 Evidence: docs/CC13_ENGINE_CORE.md.
+
+
+## Mission reference baselines, 2026-10-12 ah (main dd31c362a)
+
+Packet `cc9_reference_rebaseline_36`, worker cc9-gunnery36. The base is main `dd31c362a`; the previous reference is AG
+(`10bef4a99`, `local\g35_ag` in cc9-gunnery35's tree, whose binary is re-run here).
+
+### The switch diff and the plan
+
+`local\g36_switches.py 10bef4a99 dd31c362a` lists fifteen switches that are new and ON, or flipped ON, since AG.
+The anchor (`local\g36_anc`) is `dd31c362a` with all fifteen set false; AH (`local\g36_ah`) is `dd31c362a` unflipped.
+New switches still OFF at the base (`kGunneryLiveWaterSurfaceBound`, `kMissionCheckpointBound`,
+`kWaveFieldLiveAmplitudeBound`, `kDynWorkerPrecisionBound`) are not part of AH. `kAimDiveBrakeRatioBound` (GUNNERY 181.2,
+ON on `agent/cc9-gunnery36`) is not on main and not in AH.
+
+| group | switches | record |
+| --- | --- | --- |
+| `aa` | `kAaLineOfFireExpiryDrawBound`, `kTailGunnerNoArmourTestBound` | GUNNERY 164 |
+| `ptg` | `kPlayerTorpedoGroupFireBound` | GUNNERY 170 |
+| `dive` | `kBombDropDriftBound`, `kDiveAimHeadingBlendBound` | GUNNERY 173, 178 |
+| `yard` | `kShipyardHangarHiddenBound` | GUNNERY 176 |
+| `sqn` | `kSquadronKillQueueEraseBound`, `kLandTaskRetireQueueEraseBound`, `kLandCommandOwnTargetBound`, `kCarrierLiftHeightFromRunwayBound` | SHIP_AI 208, 210 |
+| `cap` | `kCaptureStatePartyFromUnitBound` | SHIP_AI 207 |
+| `lua` | `kLuaHitSquadronSecondPassBound` | SQUADRON_LAND_TASK 5ft |
+| `movie` | `kEngineMovieEntryBound`, `kEngineMovieStopRosterBound`, `kMovieKeyframeModifierBound` | SQUADRON_LAND_TASK 5fj, 5fp, 5fr |
+
+**Rows.** AG's twenty-two in AG's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player) plus `--stop-after-end 40`, and the seven scripted wins with their current order files, copied to
+`local\g36_ord_<key>.txt`: USN02 `s36_u2_p7`, LOMP10 `s37_l10_p2`, USN12 `s38_u12_p2`, ESMP08 `l46_e8_orders2`, USN01
+`l50_u1_u2`, LOMP06 `l50_l6_q6`, BSM01 `l50_b1_a`. AG's own binary, the anchor and AH each run all twenty-nine.
+Leave-one-out is by group, on every row AH moves against the anchor and on all seven wins.
+
+### Predictions (written before any reference run started)
+
+- **Anchor against AG:** not identical. Unswitched gameplay fixes landed between the bases (among them the hull-contact
+  rescale), so rows with ship-terrain or ship-ship contact may move; rows with no contact stay exit 0/1. Every move is
+  bisected to a commit range before it is attributed.
+- **AH against the anchor.**
+  - `aa` moves every row with AA fire at planes (the expiry draw consumes the shared stream): USN04, E2, JM08 rows,
+    LOMP10, USN13, JM05, IJN rows. Exit 3 almost everywhere a plane flies.
+  - `dive` moves rows with dive or level bombing (USN04 phase rows, JM08, USN01 win).
+  - `ptg` is inert on idle rows (no player torpedo order) and may move wins whose orders fire torpedoes (USN02, LOMP06).
+  - `yard` is inert except where a shipyard hangar hides a ship (JM08, JM05 were identical in 176).
+  - `sqn` moves rows where squadrons die or land (JM08, USN04 long, USNOS). `cap` moves USNOS (HQ captures).
+  - `lua` moves rows whose scripts call the squadron hit query; uncertain which.
+  - `movie` moves presentation only, except where a script waits on a movie end (JM05, JM06, USNOS per 5fp/5fr).
+- **Wins (AH).** All seven complete and log the exec guard's `sus_prog.exe` refusal, at the times their owners
+  recorded or within a few seconds: USN02 782.03, LOMP10 957.54, USN12 1529.92, ESMP08 3204.10, USN01 702.85, LOMP06
+  486.80, BSM01 773.93 s. GUNNERY 181.2's control already shows USN01 at 475.21 s on `b58e2621e`, so USN01's time has
+  moved since its owner's base; the other six are not predicted to the second.
+
+### Interim results (stopped by the lead before leave-one-out; a fresh AH follows the pending plane and flak fixes)
+
+- **Anchor = AG** on all twenty-two rows and the seven wins, up to each mission end. AG's binary predates
+  `--stop-after-end`, so it ran without it (rows: cc9-gunnery35's `g35_ag_<row>.log`; wins: `local\g36_agw_<key>.log`);
+  the only differences are the post-end tails (exit 3 on USN02 9000 and JM08 long, both failing at the same time on
+  both sides, every changed death row after the end). The unswitched changes since AG move nothing on these rows.
+  The first prediction missed: the anchor was predicted to move.
+- **AH against the anchor** (`local\g36_dAH_<row>.txt`, `local\g36_dAHw_<key>.txt`):
+  - exit 3: E2, JM05, **JM05 long (now fails at 321.05 s; the anchor ran 9000 frames)**, JM06, LOMP10, LOMP10 long,
+    USN04, **USN13 long (fails at 366.33 s, the drift knife-edge of GUNNERY 173.1)**, USNOS, USNOS long, USNRM01;
+  - exit 1: BSM01, ESMP08 long, IJN01, IJN11, JM08, JM08 long, LOMP06, USN01, USN02, USN12, USN13.
+- **No win lost.** All seven complete on AH and log the exec guard's `sus_prog.exe` refusal:
+
+| win | orders | anchor | AH |
+| --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 782.03 s | 782.03 s (exit 1) |
+| LOMP06 | `l50_l6_q6` | 486.80 s | 486.80 s (exit 1) |
+| USN12 | `s38_u12_p2` | 1529.92 s | 1529.92 s (exit 1) |
+| BSM01 | `l50_b1_a` | `EndMission` 767.94 s | 767.94 s (exit 3 inside) |
+| USN01 | `l50_u1_u2` | 712.75 s | **475.21 s** |
+| LOMP10 | `s37_l10_p2` | 957.54 s | **1127.67 s** |
+| ESMP08 | `l46_e8_orders2` | 3204.10 s | **3456.80 s** |
+
+- Leave-one-out was not run (cancelled with 8 of its 144 runs done), so the moves are not attributed to groups, and
+  no `reports/cc9_reference_rebaseline_36.json` is written for this interim.

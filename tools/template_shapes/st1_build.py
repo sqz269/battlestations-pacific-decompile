@@ -59,6 +59,8 @@ EV = {
     'lowerbound': 'cc13-stl1 shape: root walk with key compare and _Isnil byte, returns candidate node (std::_Tree::_Lbound)',
     'destroyrange': 'cc13-stl1 shape: loop over [first,last) running the element destructor (std::_Destroy_range)',
     'stringtidy': 'cc13-stl1 shape: if cap>=16: _free(buf); cap=15; size=0; buf[0]=0 (std::basic_string::_Tidy)',
+    'treefind': 'cc13-sweep6D shape: _Lbound walk, then end() unless key < node key fails; returns the iterator pair by hidden pointer (std::_Tree::find)',
+    'vdd': 'cc13-sweep6D shape: flags&2 -> eh_vector_destructor_iterator over the count at this-4, free(this-4); else inlined destructor, flags&1 -> free(this) (compiler vector deleting destructor)',
     'twin': 'cc13-stl1: masked body identical to an existing STL_/CG_/TRIV_ reference function',
     'scl96': 'calls _invalid_parameter_noinfo 00bf6713 (_SECURE_SCL hook) and body <= 96 bytes (precision ~0.95)',
     'scl97': 'calls _invalid_parameter_noinfo 00bf6713 with body > 96 bytes; bookmark only',
@@ -83,6 +85,8 @@ for line in (ROOT / 'tools/template_shapes/st1_decisions.txt').read_text().split
     if not line or line[0] == '#':
         continue
     ex, cat, prefix, key = line.split('|')
+    if ex not in T:  # example outside this run's segments; st1_auto matches it as a known twin
+        continue
     for a in groups[T[ex]['coarse']]:
         put(a, cat, prefix, key)
 for v, names in json.loads((ROOT / 'local/st1_auto.json').read_text()):
@@ -119,7 +123,11 @@ for k, v in json.loads((ROOT / 'local/st1_family.json').read_text()).items():
 leases = [l for l in coordination.active_leases() if l['owner'] != coordination.owner_name()]
 existing = {r['address'] for r in _read_dir(TAGS_DIR)}
 rows, skipped = [], collections.Counter()
+# --range LO HI (hex) limits the rows to one address band (cc13-sweep6D).
+lo_hi = (int(sys.argv[sys.argv.index('--range') + 1], 16), int(sys.argv[sys.argv.index('--range') + 2], 16)) if '--range' in sys.argv else (0, 1 << 32)
 for a, (cat, prefix, key, action, conf) in sorted(picks.items()):
+    if not lo_hi[0] <= int(a, 16) < lo_hi[1]:
+        continue
     if a in existing:
         skipped['already_tagged'] += 1
         continue

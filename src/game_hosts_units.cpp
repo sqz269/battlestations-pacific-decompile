@@ -143,6 +143,11 @@ namespace {
 
 constexpr double kPi = 3.14159265358979323846;
 
+// Packet cc9_party_change_gunnery_side (SHIP_AI 213), OFF until paired: after a
+// party write (set_unit_side_0054), re-read unit+54h into the unit's gunnery row
+// so the gunnery side matches the image's single unit field.
+constexpr bool kPartyChangeRefreshesGunneryBound = false;
+
 // SUBSTITUTION, labelled: Pilot/Torpedo/ReferenceSpeed, the divisor of
 // 009F9D30's run-profile speed ratio. The PilotBot tuning block is not
 // reachable from this host, so the value is the authored one recorded against
@@ -529,6 +534,12 @@ struct GameUnitSlot {
     // attack order, which is what every aircraft in IJN01 and USN01 has.
     unsigned int attack_command_class{0};
     bool dive_bomb_task_installed{false};
+    // kTaskProfileActivationOnlyBound: set at each task install, cleared by the
+    // profile call it stands for (0099AEB3 -> task vt[54h]).
+    bool db_profile_activation_pending{false};
+    bool lb_profile_activation_pending{false};
+    bool moveto_profile_activation_pending{false};
+    bool land_profile_activation_pending{false};
     bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
     // Packet cc9_dogfight_task: the dogfight task (kind 2), installed when
     // 007EEC50 chose class 00E08F58. docs/DOGFIGHT_TASK.md.
@@ -667,6 +678,9 @@ struct GameUnitSlot {
     // fields, named by their offset in that object.
     std::size_t moveto_target_plus_one{0};   // approach+44h, the order's target
     float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
+    // approach+68h: 50.0 (00CEB4D4) from 009C1C30, redrawn U(FollowDist/1,
+    // FollowDist/2) by the activation's 009C3650 (kMoveToActivationDrawsBound).
+    float moveto_follow_dist_68{50.0f};
     float moveto_refresh_58{0.0f};           // countdown; period +54h = 0.5 (009C1CE0)
     float moveto_dwell_60{0.0f};             // the arrival dwell
     float moveto_distance_64{0.0f};          // planar distance, 009BEBA0
@@ -1237,6 +1251,7 @@ struct GameUnitSlot {
     float db_glide_bearing_max{0.0f};     // the census arm A needs either way
     int db_aimglide_pull_outs{0};
     bool db_flyabove_bank_latch_1c{false};
+    int db_flyabove_side_20{0};   // flyabove+20h = task+798h, 0 / +1 / -1
     float db_flyabove_dead_band_t{0.0f};
     float db_flyabove_along_track{0.0f};
     float db_flyabove_cross_track{0.0f};
@@ -1741,6 +1756,10 @@ struct GameUnitSlot {
     float sq_alt_398{0.0f};
     bool sq_freeze_38c{false};
     bool sq_lock_3aa{false};
+    // The one byte +3ADh both natives clear: true while it is 0 (a script
+    // altitude live). 007F2C1A sets it to 1 at block init; the moveto and dive
+    // profiles set it to 1 with their +394h / +398h writes.
+    bool sq_lua_alt_3ad{false};
     double sq_timer_expiry_37c{-1.0};
     unsigned long long sq_attack_alt_reads{0};
     float sq_last_attack_alt{0.0f};
@@ -1776,6 +1795,10 @@ struct GameUnitSlot {
     // another packet. docs/PILOT_THROTTLE_CUT_RAISER.md.
     float plane_desired_speed_2b4{0.0f};
     int plane_air_brake_mode_2d8{0};
+    // plan+264h, the start of 0099CAB0's pass-0 bank ramp. 0099D300 zeroes it
+    // at 0099EB9D on every think; only the torpedo aim tick (009D1F36) writes
+    // anything else. cc13-audit10, behind kBandShaperPlan264Bound.
+    float plan_band_bank_264{0.0f};
     // plan+2B0h, a byte. Its only reader in the plane-AI range is 0099D924
     // `CMP byte [ESI+2B0h],0` in 0099D300's speed-demand arm: ZERO lets
     // 0099D92D-0099D970 raise the speed-error divisor plan+2B8h to
@@ -2126,6 +2149,19 @@ constexpr bool kDiveAimLeadBound = true;      // ON: TORPEDO_AIM_LEAD 11.4
 // hull-point spread, the dive's section chance and weights, and the time error
 // on projtime (dive approach+C8h, torpedo approach+9Ch). Paired ON.
 constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
+// cc13-audit10 (docs/CC13_AUDIT_TORPEDO_BOMBER.md finding 4): the aim tick's
+// plan stores this host drops - plan+2E8h = 1.4f (009D1D02), throttle 1.0 and
+// air brake 0.0 with their bytes (009D1F42-009D1F64), plan+2D8h = 0 (009D1F6B)
+// and the plan+264h fade (009D1F36). Behaviour-changing; pair before ON.
+constexpr bool kTorpedoAimPlanWritesBound = false;
+// cc13-audit10 finding 5: desc+25Ch TurnRoll (009D1C51), desc+A4h Width
+// (009D1C84) and desc+268h TurnCircleRadius (009D1962) into the aim tick, in
+// place of the 1.0 / 1.0 / 0 stand-ins. Behaviour-changing; pair before ON.
+constexpr bool kTorpedoAimClassInputsBound = false;
+// cc13-audit10 finding 3: 0099CAB0's pass-0 ramp starts at pilot+264h, which
+// 0099D300 zeroes at 0099EB9D on every think; the 0.12 stored at 0099EB95 is
+// pilot+260h. Only the torpedo aim tick (009D1F36) writes +264h otherwise.
+constexpr bool kBandShaperPlan264Bound = false;
 // Packet cc9_ship_section_points (docs/TORPEDO_AIM_LEAD.md section 14): the pick
 // 009FA260 hands 00816650 the TARGET ship's section records, the engine room /
 // magazine / fuel tank points 0081F980 builds from the model's GeomMesh
@@ -3919,7 +3955,13 @@ struct GameUnitsHost::Impl {
                 }
             }
             GameUnitSlot& block = sq != nullptr ? *sq : slot;
-            if (leader) {
+            bool profile_runs = true;
+            if constexpr (kTaskProfileActivationOnlyBound) {
+                // 0099AEB3: 009C8920 runs once, when the task becomes the head.
+                profile_runs = slot.db_profile_activation_pending;
+                slot.db_profile_activation_pending = false;
+            }
+            if (leader && profile_runs) {
                 const float value = static_cast<float>(
                     static_cast<double>(release_altitude_draw_00bd2f10(
                         slot.row.name + "#dp", 0.0f, 15.0f))
@@ -3940,6 +3982,7 @@ struct GameUnitsHost::Impl {
                 if (open) {
                     block.sq_profile_398 = value;               // 009C89CE
                     block.sq_profile_398_valid = true;
+                    block.sq_lua_alt_3ad = false;               // 009C89D6 +3ADh = 1
                     ++block.sq_profile_writes;
                 }
             }
@@ -4491,6 +4534,20 @@ struct GameUnitsHost::Impl {
             const bsp::DiveBombFlyAboveSpan span =
                 bsp::dive_bomb_flyabove_span_009c65fd(height_above, lead_range);
             slot.db_flyabove_span = span.span;
+            if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveCarriedFlagsBound) {
+            // +18h/+19h/+1Ah are state bytes, not per-think predicates
+            // (cc13-audit9, GUNNERY 192). 009C83E0 reads them at
+            // 009C84FB/009C8508/009C85E8 before this think's flyabove tick
+            // runs, so the transition sees what the PREVIOUS tick left; the
+            // tick writes them in dive_bomb_flyabove_flags_009c659f and the
+            // enter 009C6270 seeds them. The OFF arm below recomputes them
+            // from the current pose: one think early, +18h on every high tick
+            // (the image clears it at 009C659F and sets it only at 009C680E),
+            // and `ready` beating the 009C66E7 clear.
+            in.flyabove_can_dive_790 = slot.db_flyabove_can_dive_18;
+            in.flyabove_ready_791 = slot.db_flyabove_ready_19;
+            in.flyabove_leave_792 = slot.db_flyabove_leave_1a;
+            } else {
             // +18h at 009C680E: dive once higher above the aim point than
             // approach+D4h, which is now the real 675.0 m.
             in.flyabove_can_dive_790 = bsp::dive_bomb_flyabove_can_dive_009c680e(
@@ -4513,6 +4570,7 @@ struct GameUnitsHost::Impl {
             // which the transition rule already models by taking `ready` first.
             in.flyabove_leave_792 = bsp::dive_bomb_flyabove_leave_009c66e3(
                 lead_bearing_error, span, slot.db_attack_dist_b4);
+            }
             // Packet cc9_dive_modes, diagnostic only: the fly-over's roll-in
             // inputs per tick, to tell 009C67B0's two arms apart.
             if (kHullAimTrace && slot.dive_bomb_state == bsp::DiveBombState::kFlyAbove) {
@@ -4534,6 +4592,9 @@ struct GameUnitsHost::Impl {
             }
         }
         in.flyabove_turn_side_798 = 0;
+        if constexpr (kDiveTurnSideLatchBound) {
+            in.flyabove_turn_side_798 = slot.db_flyabove_side_20;  // 009C8515
+        }
         in.aimdive_alive_74d = slot.db_aim_alive_19;
         in.aimdive_pull_out_74c = slot.db_aim_pull_out_18;
         // 009C86B2/009C86BF. Packet cc8_dive_flyover, the ONE line the
@@ -4582,6 +4643,12 @@ struct GameUnitsHost::Impl {
         in.unit_bank_c68 = slot.plane_bank_angle_c68;
         in.bank_high_00ce398c = 0.0f;
         in.bank_low_00d1fbc0 = 0.0f;
+        if constexpr (kDiveTurnSideBankBound) {
+            in.bank_high_00ce398c = 0.3490658700466156f;   // 00CE398C, 20 deg
+            in.bank_low_00d1fbc0 = -0.3490658700466156f;   // 00D1FBC0
+        }
+        // The coin is drawn lazily in write_turn_direction (kDiveTurnSideCoinBound),
+        // so it is drawn only when 009C7800 runs on the coin arm, as in the image.
         in.random_turn_side = 1;
         return in;
     }
@@ -4598,7 +4665,7 @@ struct GameUnitsHost::Impl {
         // FLD1) from 00BD2F10 with ECX = 1 after each release and stores it
         // to state+1Ch; this host takes the low end and draws nothing. It
         // gates only a second release within one aimdive (cc13 plane-bot
-        // audit 7a, GUNNERY 181).
+        // audit 7a, GUNNERY 181.2).
         in.rearm_draw = bsp::dive_bomb_constant::kAimDiveRearmLow;
         // 009C59BA-009C5C9B, reconstructed.
         bsp::DiveBombAimErrorInputs e;
@@ -5636,6 +5703,11 @@ struct GameUnitsHost::Impl {
     // Packet cc9_near_field_probe: 007F0280 at the dive-bomb attack run
     // (009C42B8) and the fly-over speed slot (009C6B3A). docs/NEAR_FIELD_PROBE.md.
     static constexpr bool kNearFieldProbeBound = true;
+    // cc13-audit10 (docs/CC13_AUDIT_PLANNER_ROLL.md finding 1): the roll arm's
+    // h is the yaw base numerator [ESP+6Ch] (0099DF87), not the raw heading
+    // error. 0099E127 loads it for the deadband and the bank ask, and 0099E02B
+    // for the pitch-floor ramp. Behaviour-changing; pair before ON.
+    static constexpr bool kRollArmBaseNumeratorBound = false;
     // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
     // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
@@ -6240,6 +6312,21 @@ struct GameUnitsHost::Impl {
     // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
     // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
     static constexpr bool kAttackDistDrawBound = true;
+    // Packet cc13-draws1 (docs/CC13_UNLABELLED_DRAWS_BATCH.md). Each is OFF until
+    // its pair runs. The draws use release_altitude_draw_00bd2f10 with a per-site
+    // key, never stream 0; the image draws all four on stream 1 (ECX = 1).
+    // 009C6CAE-009C6D3B: the fly-over latches its roll side +20h (task+798h).
+    static constexpr bool kDiveTurnSideLatchBound = false;
+    // 009C8531/009C855B: the bank thresholds +-20 deg (00CE398C, 00D1FBC0).
+    static constexpr bool kDiveTurnSideBankBound = false;
+    // 009C8587-009C85B6: the coin trunc(U(0, 1024)) >= 512 -> +1, else -1.
+    static constexpr bool kDiveTurnSideCoinBound = false;
+    // 009C7839: the turndown roll magnitude U(0.8, 1.0), pinned at 0.8 before.
+    static constexpr bool kDiveTurnRollDrawBound = false;
+    // 009C579E: the aimglide re-arm U(0.2, 0.5), pinned at 0.2 before.
+    static constexpr bool kAimGlideRearmDrawBound = false;
+    // 009C6114: the aimdive re-arm U(0.5, 1.0), pinned at 0.5 before.
+    static constexpr bool kAimDiveRearmDrawBound = false;
     // Packet cc9_fighter_gun_lead (docs/FIGHTER_GUN_LEAD.md): the gun's lead
     // point +5Ch from 009FC931-009FC9F6 (two passes of the target's vtable[48h]
     // 00954650, both arms, t = d / 007C2610), the envelope against it, and the
@@ -7138,6 +7225,14 @@ struct GameUnitsHost::Impl {
     // is within TurnCircleRadius + approach+68h (50.0) and faster than 007C47F0.
     // False: squadron+3A0h always (a record).
     static constexpr bool kMoveToTargetSpeedOverrideBound = true;  // ON: five rows identical (PILOT_MOVETO_TASK)
+// Packet cc13-cadence3 (docs/CC13_TASK_PROFILE_CADENCE.md section 10). The
+// moveto task's activation (0099AEB3 -> vt[54h] 009C3650) draws approach+68h =
+// U(FollowDist/1, FollowDist/2) at 009C367C and approach+2Ch = U(0,
+// TravelAltRandom) at 009C36A3, both stream 1, then refreshes (009C36BF).
+// True: the install makes both draws on "#mt" keys after the construction
+// draws and refreshes again. False: +68h stays 50.0 and +2Ch keeps its
+// construction draw U(0, MaxAltOffset).
+static constexpr bool kMoveToActivationDrawsBound = false;
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};
@@ -7158,7 +7253,7 @@ struct GameUnitsHost::Impl {
         const bsp::OceanVec3& v = t.motion.linear_velocity;
         const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
             + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
-        const float reach = unit.plane_turn_circle_radius + 50.0f;          // 009C23E3 FSTP
+        const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
         ++ts_override_within;
         if (!(static_cast<double>(speed) >
@@ -9909,9 +10004,12 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
                                         float lo, float hi, float dlo, float dhi, float r,
                                         float bank_f, float level_flight_speed, float speed) {
     if (!(lo < hi)) return;                                          // 0099CABC
-    // 0099CAD4-0099CB19; pilot+264h = 0.12 ([00CE81A8]), stored by 0099D300
-    // at 0099EB95 every think.
-    const float g = pass == 0 ? avoid_interp(0.12f, 0.0f, 0.35f, 1.0f, bank_f)   // [00CF6560]
+    // 0099CAD4-0099CB19; x0 is pilot+264h (0099CAF2). 0099D300 stores 0.0 there
+    // at 0099EB9D (XORPS 0099EB89) every think; the 0.12 ([00CE81A8]) stored at
+    // 0099EB95 goes to pilot+260h. The 0.12 below is the old reading, kept
+    // until the switch is paired (cc13-audit10 finding 3).
+    const float bank_lo = kBandShaperPlan264Bound ? u.plan_band_bank_264 : 0.12f;
+    const float g = pass == 0 ? avoid_interp(bank_lo, 0.0f, 0.35f, 1.0f, bank_f)   // [00CF6560]
                               : avoid_interp(1.3f, 1.0f, 1.7f, 0.0f, bank_f);   // [00CEB4B4] [00D1F3C4]
     if (1.0f > g) {
         lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
@@ -11625,6 +11723,7 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_deck_plus_one = deck + 1u;
     unit.land_explicit_site = explicit_site;
     unit.land_task_installed = true;
+    unit.land_profile_activation_pending = true;    // 0099AEB3
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
     // a wing member in follow (land); then the state's enter, vtable[4].
@@ -15855,6 +15954,7 @@ bool GameUnitsHost::set_squadron_attack_alt_008a22b0(std::size_t unit_index, flo
     sq->sq_alt_398 = altitude;                                        // +398h
     sq->sq_lock_3aa = true;                                           // +3AAh = 1
     sq->sq_attack_alt_set = true;                                     // +3ADh = 0
+    sq->sq_lua_alt_3ad = true;                                        // 008A2489
     host.done("PlaneSquadron::set_attack_alt_008a22b0", 0x008a22b0u);
     return true;
 }
@@ -15869,6 +15969,7 @@ bool GameUnitsHost::set_squadron_travel_alt_0089f550(std::size_t unit_index, flo
     sq->sq_alt_394 = altitude;                                        // +394h
     sq->sq_lock_3a9 = true;                                           // +3A9h = 1
     sq->sq_alt_set = true;                                            // +3ADh = 0
+    sq->sq_lua_alt_3ad = true;                                        // 0089F729
     sq->sq_ever_set = true;
     host.done("PlaneSquadron::set_travel_alt_0089f550", 0x0089f550u);
     return true;
@@ -18860,12 +18961,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bsp::DiveBombTransitionInputs read_transition_inputs(
                             void*) override {
-                            return owner_.dive_bomb_transition_inputs(slot_);
+                            transition_in_ = owner_.dive_bomb_transition_inputs(slot_);
+                            return transition_in_;
                         }
                         void set_dive_bomb_state(void*, bsp::DiveBombState) override {
                             ++slot_.dive_bomb_transitions;
                         }
                         void write_turn_direction(void*, float roll) override {
+                            if constexpr (GameUnitsHost::Impl::kDiveTurnSideCoinBound) {
+                                // 009C8587-009C85B6: with +798h 0 and the bank inside
+                                // both thresholds, the side is the coin: 00BD2F10(0.0,
+                                // 1024.0 at 00D05B54) on ECX = 1, 00BF7420 truncates,
+                                // 009C85AA CMP 200h / SETGE gives +1, else -1. The
+                                // host side was the placeholder +1, so the roll is
+                                // magnitude * +1 and -1 flips it exactly. The image
+                                // draws the coin before 009C7839's magnitude; the
+                                // keys are separate, so only the unkeyed sequence
+                                // (BSP_GUNNERY_RNG_STREAMS unset) sees the order swap.
+                                const bsp::DiveBombTransitionInputs& t = transition_in_;
+                                if (t.flyabove_turn_side_798 == 0 &&
+                                    !(t.unit_bank_c68 > t.bank_high_00ce398c) &&
+                                    !(t.unit_bank_c68 < t.bank_low_00d1fbc0)) {
+                                    const float coin = owner_.release_altitude_draw_00bd2f10(
+                                        slot_.row.name + "#db_side", 0.0f,
+                                        bsp::dive_bomb_constant::kTurnCoinRange);
+                                    if (static_cast<int>(coin) < 0x200) roll = -roll;
+                                }
+                            }
                             slot_.db_turn_roll_18 = roll;  // 009C7800
                         }
                         bsp::DiveBombAimDiveReleaseInputs read_aimdive_inputs(
@@ -18876,6 +18998,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         void apply_aimdive_result(
                             void*, const bsp::DiveBombAimDiveReleaseResult& r) override {
                             slot_.db_aim_rearm_1c = r.rearm_timer_1c;
+                            if constexpr (GameUnitsHost::Impl::kAimDiveRearmDrawBound) {
+                                // 009C6114 on ECX = 1: U(0.5 at 00CE3800, FLD1),
+                                // drawn only on a release, stored by 009C6119.
+                                if (r.released) {
+                                    slot_.db_aim_rearm_1c = owner_.release_altitude_draw_00bd2f10(
+                                        slot_.row.name + "#db_ad1c", 0.5f, 1.0f);
+                                }
+                            }
                             slot_.db_aim_pull_out_18 = r.pull_out;
                             if (r.released) owner_.note_dive_bomb_release(slot_);
                         }
@@ -18886,6 +19016,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         void apply_aimglide_result(
                             void*, const bsp::DiveBombAimGlideReleaseResult& r) override {
                             slot_.db_aim_rearm_1c = r.rearm_timer_1c;
+                            if constexpr (GameUnitsHost::Impl::kAimGlideRearmDrawBound) {
+                                // 009C579E on ECX = EBX = 1: U(0.2 at 00CE54A0, 0.5 at
+                                // 00CE3800), stored by 009C57A6. 009C5786 is reached
+                                // whenever the 009C5755 gate passes, salvo or not,
+                                // which is gate 6 in the reconstruction.
+                                if (r.gate_reached == 6) {
+                                    slot_.db_aim_rearm_1c = owner_.release_altitude_draw_00bd2f10(
+                                        slot_.row.name + "#db_ag1c", 0.2f, 0.5f);
+                                }
+                            }
                             slot_.db_glide_travel_20 = r.travel_accumulator_20;
                             // Packet cc8_dive_glide's census: which gate of
                             // 009C5689-009C5755 stopped this call, and the lead
@@ -18916,7 +19056,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // that list, so the count comes from there.
                             return owner_.dive_bomb_rounds_remaining(slot_);
                         }
-                        float uniform_between(float low, float) override { return low; }
+                        float uniform_between(float low, float high) override {
+                            // The one caller is the turndown roll magnitude
+                            // (dive_bomb_task.cpp, 009C7839, U(0.8, 1.0) on ECX = 1).
+                            // A second caller needs its own key.
+                            if constexpr (GameUnitsHost::Impl::kDiveTurnRollDrawBound) {
+                                return owner_.release_altitude_draw_00bd2f10(
+                                    slot_.row.name + "#db_roll", low, high);
+                            }
+                            (void)high;
+                            return low;
+                        }
                         bool approach_has_bomb_ordnance(void*) override {
                             return slot_.db_has_bomb_d1;
                         }
@@ -18949,6 +19099,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         GameUnitsHost::Impl& owner_;
                         GameUnitSlot& slot_;
+                        bsp::DiveBombTransitionInputs transition_in_{};  // this think's
                     };
 
                     // 0099A170 builds a kind 8 task for an ordered aircraft
@@ -20757,7 +20908,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // asks the head's vt[40h] 0099C2C0, not read).
                         unit_.st_mv_kind = 0;
                         unit_.st_ar_period_18 = 0.4f;
-                        unit_.st_ar_countdown_1c = 0.0f;
+                        // 009CACDA: -U(0, 1), after goaway's draws (009CC154,
+                        // then 009CC165 builds the attackrun).
+                        unit_.st_ar_countdown_1c = bsp::kStrafeAttackrunSeedDrawBound
+                            ? -st_draw("ar1c", 0.0f, 1.0f) : 0.0f;
                         unit_.st_ar_offset_20 = 0.0f;
                         // 008A4C41 -> 007ED430(2) at the order; the leader's first
                         // think lowers it to 1 (as db_attack_mode_370 is seeded).
@@ -20988,7 +21142,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // [00D7A250] (-1.0): a bank away from the target side.
                         unit_.st_ga_bank_1c = static_cast<float>(
                             static_cast<double>(st_draw("ga1c", r - 1.0f, r + 1.0f)) *
-                            0.3490658402442932 * -1.0);
+                            (bsp::kStrafeDoubleConstantsBound ? 0.3490658700466156
+                                                              : 0.3490658402442932) * -1.0);
                     }
                     // 009CB650 (009CB650-009CB77E): the goaway pitch re-plan.
                     void st_goaway_pitch_009cb650() {
@@ -21017,7 +21172,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             const float lo = 0.0f < p ? 0.0f : p;
                             float hi = unit_.plane_climb_angle_1ec;
-                            const float ph = static_cast<float>(p + 0.1745329201221466);  // [00D05850]
+                            const float ph = static_cast<float>(p +                     // [00D05850]
+                                (bsp::kStrafeDoubleConstantsBound ? 0.1745329350233078
+                                                                  : 0.1745329201221466));
                             if (ph < hi) hi = ph;
                             unit_.st_ga_pitch_20 = st_draw("ga20", lo, hi);
                             return;
@@ -21183,7 +21340,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009CAB1B-009CAB94: +20h when |wrap(h - heading)| < 35 deg.
                         const float err = bsp::wrapped_angle_subtract_00438b10(
                             h, unit_.plane_heading_c6c);
-                        unit_.st_gt_aligned_20 = std::fabs(err) < 0.6108652353286743;
+                        unit_.st_gt_aligned_20 = std::fabs(err) <                    // [00D057D8]
+                            (bsp::kStrafeDoubleConstantsBound ? 0.6108652551968893
+                                                              : 0.6108652353286743);
                         // 009CAB90-009CAC2D: the glide-limited height above the aim
                         // point, then 009F9ED0(-that, +1Ch).
                         float yp = -dy;
@@ -21451,6 +21610,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void lb_install_009b7990() {
                         using namespace bsp::level_bomb;
                         unit_.level_bomb_task_installed = true;
+                        unit_.lb_profile_activation_pending = true;   // 0099AEB3
                         unit_.lb_target_plus_one = unit_.command_target_plus_one;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
                         a = bsp::LevelBombApproach{};
@@ -21585,7 +21745,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // profile re-runs is the arm's own update a moment later.
                     void lb_cruise_profile_009b8c90(bool leader) {
                         bsp::LevelBombApproach& a = unit_.lb_ap;
-                        if (leader) {
+                        bool profile_runs = true;
+                        if constexpr (kTaskProfileActivationOnlyBound) {
+                            // 0099AEB3: the body runs once, when the task becomes
+                            // the head; the 0099B740 below stands for 0099993C.
+                            profile_runs = unit_.lb_profile_activation_pending;
+                            unit_.lb_profile_activation_pending = false;
+                        }
+                        if (leader && profile_runs) {
                             GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
                             if (sq != nullptr) {
                                 const double now = owner_.summary.simulated_seconds;
@@ -21608,7 +21775,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B8D47-009B8D69: +4B0h = max(AttackDist x +41Ch, +4B0h).
                         const float floor_b8 = lb_tuning(
                             &bsp::GameTuningBlock::pilot_level_bomb_attack_dist, 2000.0f) * a.speed_ratio_24;
-                        if (!(floor_b8 < a.in_range_b8)) a.in_range_b8 = floor_b8;
+                        if (profile_runs && !(floor_b8 < a.in_range_b8)) a.in_range_b8 = floor_b8;
                         // 0099B740: the leader authorises the attack (vt[38h] is
                         // 0099B710, true), and the squadron's +370h is what every
                         // member reads.
@@ -22394,6 +22561,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
+                            unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
                             // 007B8AD0 picks: 009C7777 CALL / 009C777C TEST AL,AL
                             // / 009C777E LEA ECX,[ESI+4F0h] / 009C7784 JNZ over
@@ -22743,8 +22911,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // sets +1Ah from `approach+D1h == 0`. Only the
                                 // +1Ch clear needs state here: the other three
                                 // are recomputed every tick by the state feed.
+                                // With kDiveFlyAboveCarriedFlagsBound all four
+                                // are carried state (cc13-audit9; 009C6298 CMP /
+                                // 009C62A1 SETE for +1Ah).
+                                if constexpr (bsp::dive_bomb_constant::
+                                                  kDiveFlyAboveCarriedFlagsBound) {
+                                    unit_.db_flyabove_can_dive_18 = false;
+                                    unit_.db_flyabove_ready_19 = false;
+                                    unit_.db_flyabove_leave_1a = !unit_.db_has_bomb_d1;
+                                }
                                 unit_.db_flyabove_bank_latch_1c = false;
                                 unit_.db_flyabove_latch_tick = -1;
+                                unit_.db_flyabove_side_20 = 0;   // 009C628C
                                 if constexpr (kAimErrorDrawBound) {
                                     // 009C6276: every fly-over enter re-draws.
                                     unit_.db_aim_time_error_c8 = owner_.redraw_aim_error(
@@ -23718,12 +23896,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_heading_2c0_written = false;
                                 unit_.plan_slots[bsp::kPilotSlotYaw].desired = st.yaw_284;
                                 unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                                // 009C5420 plan+2D4h = 0: 0099E756 then skips
+                                // the planner's yaw arm 0099E81A, which would
+                                // overwrite the 284h just written.
+                                if constexpr (bsp::dive_bomb_constant::kDiveYawModeZeroBound) {
+                                    unit_.gl_yaw_mode_2d4_zero = true;
+                                }
                             }
                         }
                         if (r.wrote_heading && !glide_yaw_arm) {
                             unit_.plan_heading_2c0 = r.heading_2c0;
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                            // 009C5444-009C547E: the same arm writes the bank
+                            // scale plan+2E8h = InterpolateClamped(100 (00CE3D08),
+                            // 1, 250 (00CE77B0), 1.5 (00CE380C), miss [ESP+1Ch]);
+                            // 0099B52C reseeds 1.0 every think.
+                            if constexpr (bsp::dive_bomb_constant::kDiveAimGlideArmsBound) {
+                            unit_.plan_state.turn_scale_2e8 =
+                                bsp::clamped_interpolate_00419010(
+                                    100.0f, 1.0f, 250.0f, 1.5f,
+                                    unit_.db_impact_planar_5c);
+                            }
                         }
                         if (kAimGlideThrottleBound) {
                             // [ESP+10h] is the planar distance to the fed aim
@@ -23765,6 +23959,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_target_2bc = gp.pitch_target_2bc;
                             unit_.plan_state.pitch_mode_2d0 =
                                 bsp::dive_bomb_glide_pitch_constant::kPitchMode;
+                            // 009C57D3-009C57FD, the pull-out latch's arm B:
+                            // [ESP+24h] is the 009C5353 ratio, [ESP+6Ch] p1
+                            // (009C5563) and [ESP+28h] p2 (009C55B0).
+                            if (bsp::dive_bomb_constant::kDiveAimGlideArmsBound &&
+                                !unit_.db_aimglide_pull_out_76c &&
+                                bsp::dive_bomb_aimglide_pull_out_arm_b_009c57d3(
+                                    pin.ratio_24, unit_.plane_pitch_angle_c64,
+                                    gp.p1, gp.p2)) {
+                                unit_.db_aimglide_pull_out_76c = true;
+                                ++unit_.db_aimglide_pull_outs;
+                            }
                         }
                     }
 
@@ -23805,11 +24010,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // point, the same quantity 009C7A80 keeps in
                             // approach+BCh; the flyabove recomputes it locally.
                             ain.planar_distance = unit_.db_planar_bc;
-                            // SUBSTITUTION, labelled: approach+0Ch is unit+9D4h
-                            // and nothing in this reconstruction fills it, so
-                            // the arm takes 009C64B2's fall-back. The ordered
-                            // cruise altitude ctl+398h is unreachable here.
-                            ain.has_control_block_0c = false;
+                            // approach+0Ch is never null here: 009C7A80 reads
+                            // [approach+0Ch]+398h unconditionally at
+                            // 009C7AA4/009C7AA7 every think, before this tick
+                            // (009C87EA precedes 009C884C), and copies it to
+                            // approach+ACh. So 009C64A8 always takes ctl+398h,
+                            // which is db_begin_alt_ac this think; the 009C64B2
+                            // fall-back (ACh + 50h) is never taken.
+                            ain.has_control_block_0c = bsp::dive_bomb_constant::kDiveFlyAboveTermsBound;
+                            if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveTermsBound) {
+                                ain.cruise_altitude_398 = unit_.db_begin_alt_ac;
+                            }
                             const bsp::DiveBombFlyAboveAltitudeCommand a =
                                 bsp::dive_bomb_flyabove_altitude_009c6e10(ain);
                             ++unit_.db_fa_alt_calls;
@@ -23887,6 +24098,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float w[3] = {30.0f, 0.0f, 0.0f};  // 00CE38C8
                                 const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
                                 slot_entry_108 = bsp::near_field_flyover_slot_009c6b75(pr, b18);
+                                if constexpr (GameUnitsHost::Impl::kDiveTurnSideLatchBound) {
+                                    // 009C6CAE-009C6D3B, behind 009C6B75's
+                                    // |a0| > float(0.05) (qword 00D7A270): with
+                                    // +19h, +18h set and +20h still 0, a probe
+                                    // whose |a0| is within 0.01 (00D7A238) of b0
+                                    // latches +20h = a0 < 0 ? +1 : -1. The arm's
+                                    // other half (009C6D23, +19h = 0 when not
+                                    // within) is not modelled: this host derives
+                                    // +19h in the state feed every think.
+                                    const float a0 = pr.out_a[0];
+                                    const float abs_a0 = std::fabs(a0);
+                                    if (static_cast<double>(abs_a0) > static_cast<double>(0.05f) &&
+                                        unit_.db_flyabove_ready_19 && b18 &&
+                                        unit_.db_flyabove_side_20 == 0) {
+                                        const float d = abs_a0 - pr.out_b[0];   // 009C6CF0
+                                        if (!(std::fabs(d) > 0.01f)) {          // 009C6D1A JBE
+                                            unit_.db_flyabove_side_20 = a0 < 0.0f ? 1 : -1;
+                                        }
+                                    }
+                                }
                                 if (slot_entry_108 != 0.0f) {
                                     ++unit_.nf_flyover_slot_writes;
                                     if (slot_entry_108 < unit_.nf_flyover_slot_min) unit_.nf_flyover_slot_min = slot_entry_108;
@@ -23935,8 +24166,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // at 009C6532. Reading limit_c here would compare
                         // approach+D4h (675 m) against 210 m and veto the bank
                         // arm on every tick of every mission.
-                        const float unclamped_c = unit_.db_begin_alt_ac +
-                                                  unit_.db_aim_point_height_50;
+                        // GUNNERY 192 (cc13-audit9 item 4): C is ctl+398h.
+                        // approach+0Ch is never null on this path (cc13-audit7
+                        // item 11), so 009C64A8 loads it and it is
+                        // db_begin_alt_ac this think; ACh + 50h is the OFF arm.
+                        const float unclamped_c =
+                            bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound
+                                ? unit_.db_begin_alt_ac
+                                : unit_.db_begin_alt_ac +
+                                      unit_.db_aim_point_height_50;
                         const bool bank_arm_bl =
                             bsp::dive_bomb_flyabove_bank_arm_009c6530(
                                 /*is_recon_plane=*/false,
@@ -23946,6 +24184,87 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.db_flyabove_lead_range,
                                 unit_.db_flyabove_height);
                         if (bank_arm_bl) ++unit_.db_flyabove_bl_ticks;
+                        // 009C6678-009C66D1 (item 7): the bank limit plan+2C8h
+                        // near the lead point. approach+24h is taken as 1.0, the
+                        // substitution the break-off feed makes (b.speed_ratio_41c).
+                        if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound) {
+                            float limit = 0.0f;
+                            if (bsp::dive_bomb_flyabove_bank_limit_009c6678(
+                                    1.0f, unit_.db_flyabove_lead_range, &limit)) {
+                                unit_.plan_state.bank_limit_2c8 = limit;
+                            }
+                        }
+                        // The latched arm's writes (009C69B1/009C69B9: bank target
+                        // 0 with plan+2CCh = 1; 009C69E1-009C69F1: yaw slot
+                        // desired, active, plan+2D4h = 0), item 15.
+                        auto apply_latched_arm = [this](float yaw_284) {
+                            unit_.plan_state.bank_target_2c4 = 0.0f;
+                            unit_.plan_heading_mode_2cc = 1;
+                            unit_.plan_heading_2c0_written = false;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = yaw_284;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            unit_.gl_yaw_mode_2d4_zero = true;
+                        };
+                        bool suppress_heading_1c = false;
+                        float dead_band_t = 0.0f;
+                        bool reached_dive_test = false;
+                        if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveCarriedFlagsBound) {
+                        // 009C659F-009C6A33, the flag step (cc13-audit9 items
+                        // 8-12): the carried bytes, the roll-in test on the
+                        // impact bearing, the dive test on the BL leave edge.
+                        const bsp::DiveBombFlyAboveSpan fa_span =
+                            bsp::dive_bomb_flyabove_span_009c65fd(
+                                unit_.db_flyabove_height,
+                                unit_.db_flyabove_lead_range);
+                        bsp::DiveBombFlyAboveStepInputs fin;
+                        fin.entry.can_dive_18 = unit_.db_flyabove_can_dive_18;
+                        fin.entry.ready_19 = unit_.db_flyabove_ready_19;
+                        fin.entry.leave_1a = unit_.db_flyabove_leave_1a;
+                        fin.entry.latch_1c = unit_.db_flyabove_bank_latch_1c;
+                        fin.bank_arm_bl = bank_arm_bl;
+                        // Item 15 is kDiveFlyAboveBankArmsBound's.
+                        fin.run_latched_arm =
+                            bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound;
+                        // 009C663E-009C66E1 on Eabs.
+                        fin.leave_now = bsp::dive_bomb_flyabove_leave_009c66e3(
+                            bearing_error, fa_span, unit_.db_attack_dist_b4);
+                        // 009C66FB-009C6765: the roll-in error is measured from
+                        // approach+D8h/E0h to the aim point, the bearing
+                        // 009C7A80 left in db_impact_bearing_18 this think,
+                        // against the heading. Not the lead-point error.
+                        fin.roll_in_error = bsp::wrapped_angle_subtract_00438b10(
+                            unit_.plane_heading_c6c, unit_.db_impact_bearing_18);
+                        fin.span = fa_span.span;
+                        fin.bearing_error = bearing_error;
+                        fin.bearing_error_abs = bearing_error_abs;
+                        fin.height_above_aim_b = unit_.db_flyabove_height;
+                        fin.release_range_d4 = unit_.db_release_range_d4;
+                        fin.lead_range_r = unit_.db_flyabove_lead_range;
+                        fin.turn_circle_radius = unit_.plane_turn_circle_radius;
+                        fin.span_dead_band =
+                            bsp::dive_bomb_flyabove_span_dead_band_009c6674(
+                                fa_span.span);
+                        const bsp::DiveBombFlyAboveStep fstep =
+                            bsp::dive_bomb_flyabove_flags_009c659f(fin);
+                        if (fstep.flags.latch_1c &&
+                            !unit_.db_flyabove_bank_latch_1c) {
+                            unit_.db_flyabove_latch_tick =
+                                unit_.dive_bomb_arm_ticks;
+                        }
+                        unit_.db_flyabove_can_dive_18 = fstep.flags.can_dive_18;
+                        unit_.db_flyabove_ready_19 = fstep.flags.ready_19;
+                        unit_.db_flyabove_leave_1a = fstep.flags.leave_1a;
+                        unit_.db_flyabove_bank_latch_1c = fstep.flags.latch_1c;
+                        unit_.db_flyabove_dead_band_t = fstep.dead_band_t;
+                        if (fstep.bank_arm_ran) {
+                            unit_.db_flyabove_along_track = fstep.bank.along_track;
+                            unit_.db_flyabove_cross_track = fstep.bank.cross_track;
+                        }
+                        if (fstep.latched_arm) apply_latched_arm(fstep.yaw_284);
+                        suppress_heading_1c = fstep.flags.latch_1c;
+                        dead_band_t = fstep.dead_band_t;
+                        reached_dive_test = fstep.reached_dive_test;
+                        } else {
                         bsp::DiveBombFlyAboveBankInputs bin;
                         bin.latched_1c = unit_.db_flyabove_bank_latch_1c;
                         bin.bank_arm_bl = bank_arm_bl;
@@ -23975,10 +24294,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // it means giving +19h its own carried state, which is
                         // the 009C6A30/009C6826 pair as well, and that is a
                         // packet rather than a line. `bank.clear_roll_in_19` is
-                        // carried for the census only.
+                        // carried for the census only (kDiveFlyAboveCarriedFlagsBound
+                        // models it).
+                        // Item 15 without the carried flags: the latched arm on
+                        // every BL tick with +1Ch set. Its 009C6A30 +19h copy
+                        // is dropped here; the feed recomputes +19h.
+                        if (bsp::dive_bomb_constant::kDiveFlyAboveBankArmsBound &&
+                            bank_arm_bl && bank.latched_1c) {
+                            apply_latched_arm(
+                                bsp::dive_bomb_flyabove_latched_arm_009c6929(
+                                    bearing_error, bearing_error_abs,
+                                    unit_.db_flyabove_lead_range)
+                                    .yaw_284);
+                        }
+                        suppress_heading_1c = bank.latched_1c;
+                        dead_band_t = bank.dead_band_t;
+                        }
                         bsp::DiveBombFlyAboveCommandInputs in;
                         // 009C6DCD / 009C6DDA: the latch suppresses the write.
-                        in.suppress_heading_1c = bank.latched_1c;
+                        in.suppress_heading_1c = suppress_heading_1c;
                         // 009C6A37-009C6A9F then 009C6D6F-009C6DC8. A is
                         // AddWrappedAngle(C, deadband) when 009C6A46's JBE is
                         // not taken and the raw bearing otherwise; the slew
@@ -23993,7 +24327,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::wrapped_angle_add_00438aa0(
                                     unit_.plane_heading_c6c,
                                     bsp::dive_bomb_flyabove_dead_band_009c6a37(
-                                        bearing_error, bank.dead_band_t)),
+                                        bearing_error, dead_band_t)),
                                 bsp::dive_bomb_flyabove_constant::
                                     kHeadingSlewLimit);
                         const bsp::DiveBombFlyAboveCommand r =
@@ -24008,6 +24342,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_2c0 = r.heading_2c0;
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        }
+                        // 009C6DF5-009C6E08: with flyabove+18h clear the bank
+                        // scale plan+2E8h is 1.5 (00CE380C), whether or not the
+                        // heading was written. The 1.4 (00D06874) store at
+                        // 009C683A, on the tick that reached the dive test, is
+                        // modelled with kDiveFlyAboveCarriedFlagsBound (item 12):
+                        // in this installation +18h is set only at 009C680E,
+                        // so the tick leaves 1.4 exactly when +18h is set.
+                        if (reached_dive_test) {
+                            unit_.plan_state.turn_scale_2e8 = bsp::kRollInTurnScale;
+                        }
+                        if (bsp::dive_bomb_constant::kDiveFlyAboveTermsBound && !unit_.db_flyabove_can_dive_18) {
+                            unit_.plan_state.turn_scale_2e8 = 1.5f;
                         }
                     }
 
@@ -24149,6 +24496,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C5E5D, 009C5E3F, 009C5E63 (+2D4h = 0).
                             unit_.plan_slots[bsp::kPilotSlotYaw].desired = tail.yaw_284;
                             unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            // 009C5E63 is that +2D4h = 0: without it the
+                            // planner's yaw arm 0099E81A overwrites the 284h.
+                            if constexpr (bsp::dive_bomb_constant::kDiveYawModeZeroBound) {
+                                unit_.gl_yaw_mode_2d4_zero = true;
+                            }
                             // 009C605F/009C5F37 and 009C606A.
                             unit_.plan_slots[bsp::kPilotSlotThrottle].desired = tail.throttle_278;
                             unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
@@ -26097,6 +26449,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.turn_radius_26c = 0.0f;
                         in.cruise_speed_25c = 1.0f;
                         in.alt_fold_a4 = 1.0f;
+                        // That comment is wrong for three of them: 009D1C51
+                        // [desc+25Ch] TurnRoll and 009D1C84 [desc+A4h] Width
+                        // shape plan+2C8h, the BANK limit, and 009D1962
+                        // [desc+268h] TurnCircleRadius sets the turn-room
+                        // escape. cc13-audit10 finding 5. desc+26Ch stays 0;
+                        // 009D1966 then picks +268h.
+                        if constexpr (kTorpedoAimClassInputsBound) {
+                            in.turn_radius_268 = unit_.plane_turn_circle_radius;
+                            in.cruise_speed_25c = unit_.plane_class_turn_roll;
+                            in.alt_fold_a4 = unit_.class_width_00a4;
+                        }
                         // CORRECTED, packet cc8_torpedo_release_timer: both of
                         // these were the stand-in 1.0f, and both are inputs to
                         // the aim tick's DIVE command.
@@ -26308,6 +26671,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009D20C4, easing to zero as the height above the
                         // floor closes. docs/TORPEDO_RELEASE_TIMER.md.
                         unit_.plan_state.pitch_target_2bc = r.commanded_altitude_2bc;
+                        if constexpr (kTorpedoAimPlanWritesBound) {
+                            // cc13-audit10 finding 4: the stores the aim tick
+                            // makes every think and this host dropped.
+                            unit_.plan_state.turn_scale_2e8 = r.roll_limit_2e8;              // 009D1D02
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = r.flag_278;  // 009D1F4A
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = r.flag_27c;   // 009D1F55
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = r.flag_2a8;  // 009D1F5C
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = r.flag_2ac;   // 009D1F64
+                            unit_.plane_air_brake_mode_2d8 = r.flag_2d8;                     // 009D1F6B
+                            if (r.fade_264_written) {
+                                unit_.plan_band_bank_264 = r.fade_264;                       // 009D1F36
+                            }
+                        }
                         unit_.torpedo_approach.aim_solution_130 = r.aim_solution_130;
                         if (r.aim_complete_2c && !unit_.torpedo_aim_complete_2c) {
                             unit_.torpedo_aim_complete_tick = unit_.torpedo_aim_ticks;
@@ -26345,6 +26721,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
                         if (unit_.moveto_task_installed) return;
                         unit_.moveto_task_installed = true;
+                        unit_.moveto_profile_activation_pending = true;   // 0099AEB3
                         unit_.moveto_arrived_454 = false;       // 009C1D0A
                         unit_.moveto_timer_548 = 1.0f;          // 009C307C
                         unit_.moveto_stagger_54c = -0.5f;       // 009C3089, midpoint
@@ -26372,6 +26749,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 n + "#mt54c", 0.0f, 1.0f);
                             unit_.moveto_dwell_60 = 0.0f;       // 009C1CFD
                             moveto_refresh_009beba0();          // 009C1D9D
+                            if constexpr (kMoveToLuaAltZeroOffsetBound) {
+                                // The activation profile 009C3650 refreshes first
+                                // (009C36BF), then, for the flight leader only
+                                // (009C36CA 007B8AD0), stores +3ADh = 1 with its
+                                // +394h write (009C375A / 009C3906). LABELLED: the
+                                // refresh above stands for that call, and its gate
+                                // leaves sq_alt_set clear exactly when it writes.
+                                GameUnitSlot* blk =
+                                    owner_.squadron_slot_of(unit_.process_index);
+                                if (leader && blk != nullptr && !blk->sq_alt_set) {
+                                    blk->sq_lua_alt_3ad = false;
+                                }
+                            }
                             if (leader) {
                                 // 009C1D32-009C1D9A: min(planar distance to the
                                 // target, TurnCircleRadius) / TravelSpeed.
@@ -26387,6 +26777,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ? (unit_.moveto_arrived_454 ? GameUnitSlot::MoveToTaskState::kCircle
                                                         : GameUnitSlot::MoveToTaskState::kMoveTo)
                             : GameUnitSlot::MoveToTaskState::kFollow;   // 009C3097-009C30BF
+                        unit_.moveto_follow_dist_68 = 50.0f;            // 009C1D0D, 00CEB4D4
+                        if constexpr (GameUnitsHost::Impl::kMoveToActivationDrawsBound &&
+                                      bsp::kMoveToTaskTickBound) {
+                            // 0099AEB3 -> 009C3650, the task's activation right
+                            // after this install (the head changed). Draws 6 and 7
+                            // on stream 1 in the image; keyed here. Every unit,
+                            // before 009C36CA's leader gate. LABELLED: the host
+                            // install stands for the head change.
+                            float fd1 = 20.0f, fd2 = 200.0f, rnd = 50.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                fd1 = g.pilot_move_to_follow_dist_1;     // tuning+368h
+                                fd2 = g.pilot_move_to_follow_dist_2;     // tuning+36Ch
+                                rnd = g.pilot_move_to_travel_alt_random; // tuning+364h
+                            }
+                            const std::string& n = unit_.row.name;
+                            unit_.moveto_follow_dist_68 = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt68", fd1, fd2);                 // 009C367C, +460h
+                            unit_.moveto_alt_offset_2c = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt424", 0.0f, rnd);               // 009C36A3, +424h
+                            unit_.moveto_approach_6c = 0.0f;            // 009C36B7, +464h
+                            moveto_refresh_009beba0();                  // 009C36BF
+                        }
                         owner_.log.notef("  moveto task %s: installed kind 7, leader=%d state=%s "
                             "range=%.1f (009C3000)", unit_.row.name.c_str(), leader ? 1 : 0,
                             unit_.moveto_state == GameUnitSlot::MoveToTaskState::kFollow
@@ -26409,6 +26822,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C3650's per-call redraw of +2Ch is not. 009FD050 and the
                     // +28h path leg (009BD400 / 009FC260) are records.
                     void moveto_refresh_009beba0() {
+                        if constexpr (kMoveToLuaAltZeroOffsetBound) {
+                            // 009BEBAA-009BEBB7: +2Ch = 0 while ctl+3ADh == 0. It
+                            // is a store, so the offset stays 0 for this task.
+                            const GameUnitSlot* blk =
+                                owner_.squadron_slot_of(unit_.process_index);
+                            if (blk != nullptr && blk->sq_lua_alt_3ad) {
+                                unit_.moveto_alt_offset_2c = 0.0f;
+                            }
+                        }
                         if (unit_.moveto_target_plus_one != 0 &&
                             unit_.moveto_target_plus_one - 1 < owner_.slots.size()) {
                             const GameUnitSlot& t =
@@ -26435,8 +26857,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const double now = owner_.summary.simulated_seconds;
                                 const bool below_zero = !sq->sq_freeze_38d
                                     && now >= sq->sq_timer_expiry_380;
+                                bool profile_runs = true;
+                                if constexpr (kTaskProfileActivationOnlyBound) {
+                                    // 0099AEB3: the gate is 009C3650's, run once at
+                                    // the head change and by the leader only
+                                    // (009C36CA 007B8AD0); 009BEBA0 itself just
+                                    // reads +394h. LABELLED: consumed by the
+                                    // install's refresh (009C1D9D), one call early.
+                                    profile_runs = unit_.moveto_profile_activation_pending
+                                        && owner_.unit_is_flight_leader_007b8ad0(
+                                               unit_.process_index);
+                                }
                                 if (sq->sq_freeze_38d) {
                                     cruise = sq->sq_alt_394;             // 009C372A JNZ, return
+                                } else if (!profile_runs) {
+                                    cruise = sq->sq_alt_394;             // no profile call
                                 } else if (below_zero && !sq->sq_lock_3a9) {
                                     sq->sq_alt_set = false;             // the profile overwrites
                                 } else {
@@ -26445,6 +26880,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                                 ++owner_.summary.squadron_travel_alt_refreshes;
                                 sq->sq_last_cruise = cruise;
+                            }
+                            if constexpr (kTaskProfileActivationOnlyBound) {
+                                unit_.moveto_profile_activation_pending = false;
                             }
                         }
                         unit_.moveto_point[1] = cruise - unit_.moveto_alt_offset_2c;
@@ -28382,6 +28820,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // arm stands for the profile's call, the block is the
                     // squadron's slot, and the dirty byte +3ADh is not modelled.
                     void land_cruise_profile_009b3c60() {
+                        if constexpr (kTaskProfileActivationOnlyBound) {
+                            // 0099AEB3: once, when the land task becomes the head.
+                            if (!unit_.land_profile_activation_pending) return;
+                            unit_.land_profile_activation_pending = false;
+                        }
                         if (!owner_.unit_is_flight_leader_007b8ad0(unit_.process_index)) return;
                         GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
                         if (sq == nullptr) return;
@@ -30081,6 +30524,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 009A17D0, before 0099D300.
                                 owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
                             }
+                            if constexpr (kBandShaperPlan264Bound) {
+                                // 0099EB9D, at the end of 0099D300. Nothing
+                                // between here and there reads pilot+264h.
+                                unit_.plan_band_bank_264 = 0.0f;
+                            }
                             unit_.plane_think_dt = elapsed;   // 0099D300's argument
                             if constexpr (GameUnitsHost::Impl::kFighterLowTraceDiag) {
                                 if (unit_.dogfight_task_installed && !unit_.plane_death_c3a &&
@@ -30437,6 +30885,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // never leave them in.
                         bsp::PilotBotRollInputs rin;
                         rin.heading_error = term.heading_error;
+                        if constexpr (GameUnitsHost::Impl::kRollArmBaseNumeratorBound) {
+                            // 0099E127 FLD [ESP+80h] after SUB ESP,14h at
+                            // 0099E110 is frame [ESP+6Ch], which 0099DF87
+                            // stored: SoftHdgZone-deadbanded, SoftHdgMul-scaled.
+                            // 0099E02B reads the same slot for the ramp. Both
+                            // are 0 outside mode 2, and the arm then does not
+                            // run (0099E275).
+                            rin.heading_error = scratch.base_num;
+                        }
                         rin.bank = unit_.plane_bank_angle_c68;
                         rin.dt_scale = 1.0f;
                         rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;
@@ -33625,6 +34082,9 @@ void GameUnitsHost::set_unit_side_0054(std::size_t index, int party) {
     // write, from a CommandBuilding's neutralize or flip (006F4D10).
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->row.party = party;
+    if constexpr (kPartyChangeRefreshesGunneryBound) {
+        if (impl_->gunnery != nullptr) impl_->gunnery->refresh_unit_side(index);
+    }
 }
 
 float GameUnitsHost::command_building_landing_range_07c4(std::size_t unit_index) const {

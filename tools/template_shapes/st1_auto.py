@@ -5,7 +5,7 @@ for a,t in T.items():
   if t['tag'] or t['ledger'] or t['recon']: continue
   g[t['coarse']].append(a)
 dec={l.split('|')[0] for l in open('tools/template_shapes/st1_decisions.txt') if l[0]!='#'}
-decsig={T[e]['coarse'] for e in dec}
+decsig={T[e]['coarse'] for e in dec if e in T}
 out=[]
 for s,v in g.items():
   if s in decsig or s not in kc: continue

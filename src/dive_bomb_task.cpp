@@ -778,10 +778,16 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
         out.level_arm = true;
         return out;
     }
+    // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV. ST0 there is the height error:
+    // 009C6F11 FCOMI / 009C6F13 FSTP ST1 keep err in ST0, and 009C6F17 FLD A is
+    // popped again by 009C6F1D FCOMIP and 009C6F1F FSTP ST0 (cc13-audit7,
+    // tools/x87_sym.py 009C6E10: `(v9c6e44 + v9c6e44) / divisor`).
     const float v = static_cast<float>(
-        (static_cast<double>(in.planar_distance) +
-         static_cast<double>(in.planar_distance)) /
-        static_cast<double>(divisor));  // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV
+        (static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                 ? out.height_error : in.planar_distance) +
+         static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                 ? out.height_error : in.planar_distance)) /
+        static_cast<double>(divisor));
     // 009C6F4D FCOMIP against the 0.8 at 00CE3D40, 009C6F51 `76` JBE.
     out.reference = (static_cast<double>(v) <=
                      dive_bomb_flyabove_constant::kLeaveSpanScale)
@@ -901,11 +907,22 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     const float turn_circle = static_cast<float>(
         static_cast<double>(in.turn_circle_radius) *
         dive_bomb_flyabove_constant::kTurnCircleMul);
-    // 009C6857-009C687D. FSIN, then (sin + 0.5 * sin), then * R, stored as a
-    // float at 009C687D and reloaded at 009C6885.
-    out.cross_track = static_cast<float>(
-        std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *
-        range);
+    // 009C6857-009C687D. FSIN stored as a float at 009C685D, then 009C686F
+    // FLD 0.5, 009C6875 FMUL ST(1),ST(0) (ST1 = 0.5 sin, ST0 = 0.5) and
+    // 009C6877 FADDP: (0.5 + 0.5 sin) * R, stored as a float at 009C687D.
+    // CORRECTED (cc13-audit9) behind kDiveFlyAboveCrossTrackBound; OFF keeps
+    // the earlier `1.5 * sin` reading.
+    if constexpr (dive_bomb_constant::kDiveFlyAboveCrossTrackBound) {
+        const double sin_f = static_cast<double>(static_cast<float>(std::sin(eabs)));
+        out.cross_track = static_cast<float>(
+            (sin_f * dive_bomb_flyabove_constant::kRollInSinHalf +
+             dive_bomb_flyabove_constant::kRollInSinHalf) *
+            range);
+    } else {
+        out.cross_track = static_cast<float>(
+            std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *
+            range);
+    }
     // 009C6889 FCOMIP ST0,ST1 with ST0 = cross-track and ST1 = the turn circle,
     // 009C688D `76` JBE: only a strictly wider offset leaves.
     if (out.cross_track > turn_circle) {
@@ -936,11 +953,106 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     return out;
 }
 
+// 009C6929-009C6A33, the latched arm's yaw slot and its "behind" test.
+DiveBombFlyAboveLatchedArm dive_bomb_flyabove_latched_arm_009c6929(
+    float bearing_error, float bearing_error_abs, float lead_range_r) noexcept {
+    DiveBombFlyAboveLatchedArm out;
+    const float v1 = dive_bomb_interpolate_clamped_00419010(
+        kLatchYawRangeNear, 0.0f, kLatchYawRangeFar, 1.0f, lead_range_r);  // 009C695B
+    const float v2 = dive_bomb_interpolate_clamped_00419010(
+        kLatchYawErrorNear, 0.0f, kLatchYawErrorFar, 1.0f, bearing_error_abs);  // 009C698E
+    const float mag = static_cast<float>(static_cast<double>(v2) * v1);  // 009C6993/009C69A5
+    // 009C69A9 COMISS 0,E / JBE -> -1; 009C69CB COMISS E,0 / JA -> 1; else 0.
+    const int sign = (0.0f > bearing_error) ? -1 : ((bearing_error > 0.0f) ? 1 : 0);
+    out.yaw_284 = static_cast<float>(static_cast<double>(sign) * mag);  // 009C69D8-009C69EB
+    // 009C6A01 FCOMIP Eabs against the qword pi/2, 009C6A05 JBE.
+    if (static_cast<double>(bearing_error_abs) > kLatchBehindBearing) {
+        const float c = static_cast<float>(std::cos(static_cast<double>(bearing_error_abs)));
+        const float along = static_cast<float>(static_cast<double>(c) * lead_range_r);
+        // 009C6A27 FCOMIP with ST0 = -20 and ST1 = cos * R, 009C6A2B JBE.
+        out.copy_18_to_19 = kLatchBehindRange > along;
+    }
+    return out;
+}
+
+// 009C659F-009C6A33, the flag step. Header carries the branch table.
+DiveBombFlyAboveStep dive_bomb_flyabove_flags_009c659f(
+    const DiveBombFlyAboveStepInputs& in) noexcept {
+    DiveBombFlyAboveStep out;
+    out.flags = in.entry;
+    out.dead_band_t = in.span_dead_band;  // 009C6674 -> base[ESP+20h]
+    out.flags.can_dive_18 = false;        // 009C659F
+    if (in.leave_now) {
+        out.flags.leave_1a = true;   // 009C66E3
+        out.flags.ready_19 = false;  // 009C66E7
+    } else {
+        out.flags.leave_1a = false;  // 009C66F2
+        // 009C67A7 JA / 009C67AE JB: only a set; nothing on this arm clears it.
+        if (dive_bomb_flyabove_roll_in_009c67b0(in.roll_in_error, in.span)) {
+            out.flags.ready_19 = true;  // 009C67B0
+        }
+    }
+    if (!in.bank_arm_bl) return out;  // 009C67C1
+    // 009C67D5 CMP [ESI+1Ah],DL / JE and 009C67DE CMP [ESP+4Bh],DL / JNE, DL = 0.
+    if (!out.flags.leave_1a || in.entry.leave_1a) return out;  // 009C6A35
+    out.reached_dive_test = true;
+    // 009C67EA-009C67F6: FCOMIP with ST0 = B and ST1 = approach+D4h, JBE.
+    out.flags.can_dive_18 =
+        dive_bomb_flyabove_can_dive_009c680e(in.height_above_aim_b, in.release_range_d4);
+    out.flags.leave_1a = false;           // 009C6822
+    out.flags.ready_19 = in.entry.ready_19;  // 009C6826, [ESP+43h] from 009C6540
+    if (!in.entry.latch_1c) {
+        DiveBombFlyAboveBankInputs bin;
+        bin.bank_arm_bl = true;
+        bin.bearing_error_abs = in.bearing_error_abs;
+        bin.lead_range_r = in.lead_range_r;
+        bin.turn_circle_radius = in.turn_circle_radius;
+        bin.span_dead_band = in.span_dead_band;
+        out.bank = dive_bomb_flyabove_bank_009c6857(bin);
+        out.bank_arm_ran = true;
+        if (out.bank.clear_roll_in_19) out.flags.ready_19 = false;  // 009C688F/009C68E1
+        out.flags.latch_1c = out.bank.latched_1c;
+        out.dead_band_t = out.bank.dead_band_t;
+        if (!out.flags.latch_1c) return out;  // 009C6923
+    }
+    if (!in.run_latched_arm) return out;
+    // 009C6929-009C6A33, the latched arm.
+    out.latched_arm = true;
+    const DiveBombFlyAboveLatchedArm arm = dive_bomb_flyabove_latched_arm_009c6929(
+        in.bearing_error, in.bearing_error_abs, in.lead_range_r);
+    out.yaw_284 = arm.yaw_284;
+    if (arm.copy_18_to_19) out.flags.ready_19 = out.flags.can_dive_18;  // 009C6A2D/009C6A30
+    return out;
+}
+
+// 009C6678-009C66D1.
+bool dive_bomb_flyabove_bank_limit_009c6678(float speed_ratio_24, float lead_range_r,
+                                            float* bank_limit_2c8) noexcept {
+    // 009C667F FMUL qword 700 (00D20D20), 009C6685 FCOMPI against R, 009C6687 JBE.
+    if (!(static_cast<double>(speed_ratio_24) * 700.0 > static_cast<double>(lead_range_r))) {
+        return false;
+    }
+    *bank_limit_2c8 = dive_bomb_interpolate_clamped_00419010(
+        400.0f, 0.2000000029802322f, 600.0f, 1.2000000476837158f, lead_range_r);  // 009C66C1
+    return true;
+}
+
 // 009C57C4-009C57FF, arm A. Header carries arm B and why it is not modelled.
 bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept {
     // 009C57CA COMISS XMM0,[00CE380C] with XMM0 = [ESP+18h] and 009C57D1 `77`
     // JA: only a strictly wider error latches on this arm.
     return bearing_error_abs > dive_bomb_constant::kGlidePullOutBearing;
+}
+
+// 009C57D3-009C57FD, arm B.
+bool dive_bomb_aimglide_pull_out_arm_b_009c57d3(float ratio_24, float pitch_c64,
+                                                float p1, float p2) noexcept {
+    // 009C57DB COMISS 0.6,[ESP+24h] / 009C57E0 JBE.
+    if (!(dive_bomb_constant::kGlidePullOutRatio > ratio_24)) return false;
+    // 009C57E8 COMISS 0,unit+C64h / 009C57EF JBE.
+    if (!(0.0f > pitch_c64)) return false;
+    // 009C57F1 FLD p1, 009C57F5 FLD p2, 009C57F9 FCOMIP / 009C57FD JBE.
+    return p2 > p1;
 }
 
 // 009C6A37-009C6A7F.

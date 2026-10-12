@@ -5,7 +5,7 @@ for a,t in T.items():
   if t['tag'] or t['ledger'] or t['recon']: continue
   g[t['coarse']].append(a)
 dec={l.split('|')[0] for l in open('tools/template_shapes/st1_decisions.txt') if l[0]!='#'}
-decsig={T[e]['coarse'] for e in dec}
+decsig={T[e]['coarse'] for e in dec if e in T}
 auto={a for v,_ in json.load(open('local/st1_auto.json')) for a in v}
 rem=[a for s,v in g.items() if s not in decsig for a in v if a not in auto]
 def rule(t):
