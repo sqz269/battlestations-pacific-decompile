@@ -266,7 +266,7 @@ PlaneSquadronRegistry& plane_squadron_registry();
 // the squadron are refused and its surviving wing is never ordered again.
 // ON: a fused squadron slot answers those four bytes with the squadron's
 // liveness. LABELLED: the dead plane's slot stays the controlled unit.
-inline constexpr bool kFusedSquadronSlotSelectableBound = false;
+inline constexpr bool kFusedSquadronSlotSelectableBound = true;
 
 // The record whose fused slot is `unit`, when the switch is on and the squadron
 // still holds a plane (+3CCh > 0); nullptr otherwise.
