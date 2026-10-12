@@ -1,0 +1,679 @@
+# cc13-stlreview2: second-pass decision per stl_probable bookmark row (docs/CC13_STL_PROBABLE_REVIEW.md section 9)
+# addr|old_evidence|decision|category|name|evidence_key|anchors
+0041ded0|e0029|keep_library||||
+0041e000|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+0041e960|e0029|keep_uncertain||||calls:DYN_physics_00c34f70
+004219a0|e0029|keep_library||||
+00429b00|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_BitCursor_WriteBits
+0042a480|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_BitCursor_ReadBits
+0043dab0|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_0043dab0|st1_vecresize|
+0043dd80|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float params
+00443a30|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+00450210|st1_scl97|keep_library||||
+004514a0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: panel sequence map + string compare
+00451b90|e0029|keep_library||||
+004564e0|e0029|keep_library||||
+00458160|e0029|keep_library||||
+0045a210|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: this[43h] field
+0045a320|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float params
+0045b220|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: this field +198h
+0045b420|st1_scl97|keep_library||||
+0045c690|e0029|keep_library||||
+0045d110|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0045dda0|e0029|keep_uncertain||||rconst
+00468050|st1_scl97|keep_library||||
+0046b680|e0029|keep_library||||
+0046bd10|st1_scl97|keep_library||||
+00473ce0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0047b4e0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0047ba40|st1_scl97|keep_library||||
+004809f0|e0029|keep_library||||
+00480a90|e0029|keep_uncertain||||rconst
+00481430|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionEntity_Kill
+00484a10|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionEntity_Kill
+004872d0|e0029|keep_library||||
+00487940|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionEntity_Kill
+004881f0|e0029|keep_uncertain||||vcall
+00489690|e0029|upgrade_shape|stl_shape|STL_List_EraseRange_00489690|st1_listeraserange|
+00489dd0|e0029|keep_library||||
+0048c9a0|e0029|keep_library||||
+0048ca60|e0029|keep_library||||
+0048cb30|e0029|keep_library||||
+0048cbb0|e0029|keep_library||||
+0048d9e0|e0029|keep_library||||
+0048f2e0|e0029|keep_library||||
+0048f4e0|e0029|keep_library||||
+0048f930|e0029|keep_library||||
+004913b0|e0029|keep_library||||
+00491e70|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_LandingTroop_OnShipLeft
+00492e50|e0029|keep_library||||
+004946e0|e0029|keep_library||||
+00494770|e0029|keep_library||||
+00494850|e0029|keep_library||||
+00495d40|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00495d40|st1_vecresize|
+00495e20|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00495e20|st1_vecresize|
+00496670|e0029|keep_library||||
+00496720|e0029|keep_library||||
+00499ac0|e0029|keep_library||||
+0049cb60|e0029|keep_library||||
+0049cc50|e0029|keep_library||||
+0049e150|e0029|keep_library||||
+004a48d0|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_004a48d0|st1_vecresize|
+004a5750|e0029|keep_library||||
+004a5aa0|e0029|keep_library||||
+004a5b90|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionEntity_Kill
+004ab9a0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_Random_UniformFloatRange
+004ad380|e0029|keep_library||||
+004bfb50|e0029|keep_uncertain||||rconst
+004c8630|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_004c8630|st1_veceraserange|
+004c90d0|st1_scl97|keep_library||||
+004cecf0|e0029|upgrade_shape|stl_shape|STL_List_Erase_004cecf0|st1_listerase|
+004d6ea0|e0029|keep_library||||
+004dc2c0|st1_scl97|keep_library||||
+004f7db0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_004f7db0|st1_veceraserange|
+004fa8f0|e0029|keep_library||||
+004faa00|e0029|keep_library||||
+004faac0|e0029|keep_library||||
+005056c0|e0029|keep_library||||
+0050a110|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_0050a110|st1_veceraserange|
+0051e050|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: front-end screen teardown
+00524dc0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_00524dc0|st1_veceraserange|
+005251c0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_InputManager
+00525a10|e0029|keep_library||||
+00538a80|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: front-end screen teardown
+00540d50|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: free-camera HUD
+00541a10|e0029|keep_library||||
+00542620|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_GuiText_SetLocalisedCString
+005427e0|e0029|keep_library||||
+00542890|e0029|keep_library||||
+005431a0|e0029|keep_library||||
+00543210|e0029|keep_library||||
+00544570|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00544570|st1_vecresize|
+00544620|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00544620|st1_vecresize|
+00544a70|e0029|keep_library||||
+00544e60|st1_scl97|keep_library||||
+0054b2e0|e0029|keep_library||||
+0054b400|e0029|keep_library||||
+00562f80|e0029|keep_library||||
+0056a9b0|st1_scl97|keep_library||||
+0056ba80|st1_scl97|keep_library||||
+0056bcd0|e0029|keep_library||||
+0056f160|st1_scl97|keep_library||||
+0056f280|e0029|keep_library||||
+00573490|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_00573490|st1_veceraserange|
+0058aac0|e0029|keep_library||||
+0058b870|e0029|keep_library||||
+0059aa40|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+005a7af0|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_005a7af0|st1_mapsubscript|
+005ba6d0|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_005ba6d0|st1_vecresize|
+005c49c0|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_005c49c0|st1_mapsubscript|
+005c92f0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_005c92f0|st1_veceraserange|
+005c93c0|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_005c93c0|st1_veccopyctor|
+005da670|e0029|keep_library||||
+005da800|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_005da800|st1_treeeraserange|calls:BSP_PooledStringList_ClearStorage
+005dae00|st1_scl97|keep_uncertain||||calls:BSP_NativeAliasList_GrowCount
+005dee40|st1_scl97|keep_uncertain||||calls:BSP_NativeAliasList_GrowCount
+005f4fa0|st1_scl97|keep_uncertain||||
+005f6190|e0029|keep_library||||
+005f6ef0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_InputManager
+005fe8b0|st1_scl97|keep_library||||
+005ff5d0|e0029|keep_library||||
+005ffb20|e0029|keep_library||||
+006226f0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_006226f0|st1_veceraserange|
+00625f50|e0029|keep_library||||
+006407a0|e0029|keep_library||||
+00640860|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00640940|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0065a4d0|e0029|keep_library||||
+006658d0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_006658d0|st1_treeinserthint|
+00667eb0|e0029|keep_library||||
+006680b0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_006680b0|st1_veceraserange|
+0066d650|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_0066d650|st1_treeinserthint|
+0066e2b0|st1_scl97|keep_library||||
+0066e3c0|st1_scl97|keep_library||||
+0066e590|e0029|keep_library||||
+0066e610|st1_scl97|keep_library||||
+0066e770|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_0066e770|st1_treeinserthint|
+0066fc30|st1_scl97|keep_library||||
+00670020|st1_scl97|deferred_leased||||string;global;rconst;calls:BSP_EntityPose_RefreshWorld,BSP_GuiIcon_AddState,BSP_GuiText_SetLocalisedSource;field+34c
+00671d60|st1_scl97|deferred_leased||||string;calls:BSP_Game_GetEffectiveGameMode,BSP_GuiText_SetLocalisedCString,BSP_GuiText_SetLocalisedSource;field+324
+00672660|st1_scl97|deferred_leased||||calls:BSP_GuiManager_RemoveAndDestroyPage,BSP_Observer_UnregisterPair;field+10b
+00673130|st1_scl97|deferred_leased||||string;global;calls:BSP_Game_GetEffectiveGameMode,BSP_GuiText_SetLocalisedSource,BSP_GuiWidget_GetSize;field+16c
+00673a10|st1_scl97|deferred_leased||||string;global;calls:BSP_Game_GetEffectiveGameMode,BSP_Session_RouteMessage,BSP_SupportManager_PlayUnavailableSound;field
+00675c40|st1_scl97|deferred_leased||||string;global;rconst;calls:BSP_AirOpsSlotRecord_IsOut,BSP_AwardTracker_CopyActiveHintName,BSP_AwardTracker_IsActiveHintB
+0067c970|e0029|deferred_leased||||
+0067d5a0|st1_scl97|deferred_leased||||
+0067d6e0|st1_scl97|deferred_leased||||string;global;calls:BSP_Game_RebindPrimaryInput,BSP_InputBackend_ActivateDeviceSlot_Prov,BSP_XenonSystemManager_FindSlot
+0067e580|e0029|deferred_leased||||global;calls:BSP_GuiMovie_Stop,BSP_MainMenu_StartTitleMusic
+0067e9a0|st1_scl97|deferred_leased||||string;global;rconst;calls:BSP_GuiListbox_SelectIndex,BSP_GuiListbox_SetListener,BSP_GuiMovie_Stop
+0067ed30|st1_scl97|deferred_leased||||field+114
+00680b00|e0029|deferred_leased||||
+00680b90|e0029|deferred_leased||||
+00680cc0|e0029|deferred_leased||||
+00680d30|e0029|deferred_leased||||
+00683c80|e0029|deferred_leased||||
+00683d10|e0029|deferred_leased||||
+00684700|e0029|deferred_leased||||
+00684d00|e0029|deferred_leased||||
+00685070|e0029|deferred_leased||||
+00686b90|e0029|deferred_leased||||
+00686c20|e0029|deferred_leased||||
+00687860|e0029|deferred_leased||||
+006881f0|e0029|deferred_leased||||
+006886f0|e0029|deferred_leased||||
+00688830|e0029|deferred_leased||||
+00688b20|st1_scl97|deferred_leased||||string;global;calls:BSP_FrontEndManager_PushInterfaceRequest,BSP_MultiMenu_PopRequestInterface,BSP_Session_SetMode
+00688c70|st1_scl97|deferred_leased||||global;calls:BSP_FrontEndManager_PushInterfaceRequest,BSP_Game_RequestState
+00688e40|st1_scl97|deferred_leased||||string
+006890b0|st1_scl97|deferred_leased||||global;calls:BSP_Game_EndScene,BSP_Game_RequestState,BSP_MultiErrorScreen_SetErrorCode
+0068bc80|st1_scl97|deferred_leased||||global
+0068e450|e0029|deferred_leased||||
+0068e4c0|e0029|deferred_leased||||
+00694760|e0029|deferred_leased||||
+006950d0|e0029|deferred_leased||||
+00695170|e0029|deferred_leased||||
+00695bc0|e0029|deferred_leased||||
+00695c50|e0029|deferred_leased||||
+00695d00|e0029|deferred_leased||||
+00695dd0|e0029|deferred_leased||||
+006962c0|e0029|deferred_leased||||
+006977f0|e0029|deferred_leased||||
+00697dc0|e0029|deferred_leased||||
+00697f40|e0029|deferred_leased||||
+00698380|st1_scl97|deferred_leased||||
+006988f0|e0029|deferred_leased||||
+00698980|e0029|deferred_leased||||
+0069ab10|e0029|deferred_leased||||
+0069aba0|e0029|deferred_leased||||
+0069ac30|e0029|deferred_leased||||
+0069acc0|e0029|deferred_leased||||
+0069ad50|e0029|deferred_leased||||
+0069adc0|e0029|deferred_leased||||
+0069ae50|e0029|deferred_leased||||
+0069aec0|e0029|deferred_leased||||
+0069deb0|e0029|deferred_leased||||
+0069e860|e0029|deferred_leased||||
+006a0db0|e0029|deferred_leased||||
+006a1b70|e0029|deferred_leased||||
+006a4710|e0029|deferred_leased||||
+006a6350|e0029|deferred_leased||||
+006a6a20|e0029|deferred_leased||||
+006a79a0|e0029|deferred_leased||||
+006a7aa0|e0029|deferred_leased||||
+006a9ea0|e0029|deferred_leased||||
+006aa1c0|st1_scl97|deferred_leased||||
+006aa2d0|st1_scl97|deferred_leased||||
+006ac370|st1_scl97|deferred_leased||||calls:BSP_CameraPath_DeriveKnots,BSP_EntityPose_RefreshWorld,BSP_Matrix_BuildOrthogonalScaledAffineIn;field+200
+006ac4d0|e0029|deferred_leased||||global;field+200
+006ac550|e0029|deferred_leased||||global;field+200
+006acb40|st1_scl97|deferred_leased||||calls:BSP_Observer_UnregisterPair
+006b8ce0|e0029|deferred_leased||||
+006b91f0|e0029|deferred_leased||||
+006b9450|st1_scl97|deferred_leased||||string;rconst;calls:BSP_AwardRegistry_EraseActualSubtree,BSP_LuaObject_GetBoolean,BSP_LuaObject_GetByIndex
+006bae90|e0029|deferred_leased||||
+006bb280|e0029|deferred_leased||||
+006bb310|e0029|deferred_leased||||
+006bcd80|e0029|deferred_leased||||
+006bce60|e0029|deferred_leased||||
+006bf230|e0029|deferred_leased||||
+006bf350|e0029|deferred_leased||||
+006c48f0|e0029|deferred_leased||||
+006c58a0|e0029|deferred_leased||||
+006c64b0|e0029|deferred_leased||||
+006c6540|e0029|deferred_leased||||
+006c6f90|e0029|deferred_leased||||
+006c7030|e0029|deferred_leased||||
+006c8750|e0029|deferred_leased||||
+006c8840|e0029|deferred_leased||||
+006c93f0|e0029|deferred_leased||||
+006c9dc0|e0029|deferred_leased||||
+006c9f60|e0029|deferred_leased||||
+006ca010|e0029|deferred_leased||||
+006ca0f0|e0029|deferred_leased||||
+006ca640|e0029|deferred_leased||||rconst;calls:BSP_AirOps_PublishSlot
+006caa10|e0029|deferred_leased||||
+006cab40|e0029|deferred_leased||||
+006fbad0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: float math + vcalls
+00701bc0|e0029|deferred_leased||||
+00701fc0|e0029|deferred_leased||||
+00702910|e0029|deferred_leased||||
+00703020|e0029|deferred_leased||||global
+007030d0|e0029|deferred_leased||||
+00703b10|e0029|deferred_leased||||
+00703c20|e0029|deferred_leased||||
+00705c50|e0029|deferred_leased||||
+00705d30|e0029|deferred_leased||||
+00712040|e0029|deferred_leased||||
+00713270|e0029|deferred_leased||||
+00717f20|e0029|deferred_leased||||
+00718000|e0029|deferred_leased||||
+0071a1e0|e0029|deferred_leased||||
+0071a270|e0029|deferred_leased||||
+0071a300|e0029|deferred_leased||||
+0071a390|e0029|deferred_leased||||
+0071a420|e0029|deferred_leased||||
+0071ad50|e0029|deferred_leased||||
+0071af30|e0029|deferred_leased||||
+0071afc0|e0029|deferred_leased||||
+0071b050|e0029|deferred_leased||||
+0071b0e0|e0029|deferred_leased||||
+0071b170|e0029|deferred_leased||||
+00723840|e0029|deferred_leased||||
+00725aa0|e0029|deferred_leased||||
+00725b40|e0029|deferred_leased||||
+007262a0|e0029|deferred_leased||||
+007263b0|e0029|deferred_leased||||
+00726490|e0029|deferred_leased||||
+007265e0|e0029|deferred_leased||||
+00726670|e0029|deferred_leased||||
+007271b0|e0029|deferred_leased||||
+00727260|e0029|deferred_leased||||
+0072e370|e0029|deferred_leased||||
+0072e430|e0029|deferred_leased||||
+00730db0|e0029|deferred_leased||||
+00731ef0|e0029|deferred_leased||||calls:BSP_EffectReference_AdoptWithoutRetain,BSP_PointEffect_StopChildren
+00734d20|e0029|deferred_leased||||
+00741a40|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_NetEntityCreateMessage +130h
+00747cc0|e0029|upgrade_shape|stl_shape|STL_Vector_Reserve_00747cc0|st1_vecreserve|
+0074ba20|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_0074ba20|st1_vecresize|
+00766e30|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00766e30|st1_vecresize|
+00773fd0|e0029|keep_library||||
+00774280|e0029|keep_library||||
+007743e0|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_007743e0|st1_treeeraserange|
+00774f90|st1_scl97|keep_library||||
+00776050|st1_scl97|keep_library||||
+0077d980|e0029|keep_library||||
+0078bea0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_0078bea0|st1_treeinserthint|
+0078c0e0|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_0078c0e0|st1_mapsubscript|
+00797980|e0029|keep_library||||
+00797a00|e0029|keep_library||||
+00797af0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+00797c60|e0029|keep_library||||
+00797d20|e0029|keep_library||||
+00797e40|e0029|keep_library||||
+00797ed0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MovieKeyframe_Tick
+00797f50|st1_scl97|keep_uncertain||||rconst
+0079a190|e0029|keep_uncertain||||vcall
+007a4590|e0029|keep_library||||
+007a4860|st1_scl97|keep_library||||
+007a4e10|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_007a4e10|st1_mapsubscript|
+007ae650|e0029|keep_library||||
+007ae6d0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+007aed10|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math + sqrt
+007af090|e0029|keep_library||||
+007af740|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_Vector4f_Transform
+007b0e60|st1_scl97|keep_library||||
+007b1a80|e0029|keep_uncertain||||
+007b1b40|e0029|keep_library||||
+007b1fb0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math + sqrt
+007b21a0|e0029|keep_library||||
+007b2850|e0029|keep_library||||
+007b2950|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_NetEntityCreateMessage +11Ch
+007b2b90|e0029|keep_library||||
+007d05e0|e0029|keep_library||||
+007f8e00|e0029|keep_library||||
+007fbb20|e0029|keep_library||||
+0081d0c0|e0029|keep_library||||
+00822770|st1_scl97|keep_library||||
+0082c560|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_0082c560|st1_vecresize|
+0082e990|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_0082e990|st1_vecresize|
+0082f3c0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_0082f3c0|st1_veceraserange|
+0082f4e0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_0082f4e0|st1_veceraserange|
+00839b40|st1_scl97|keep_library||||
+0083a9e0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_0083a9e0|st1_veceraserange|
+0083b350|st1_scl97|keep_library||||
+0083b480|st1_scl97|upgrade_shape|stl_shape|STL_Vector_Resize_0083b480|st1_vecresize|
+00848220|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_00848220|st1_veceraserange|
+008484a0|e0029|keep_library||||
+00848ea0|st1_scl97|upgrade_shape|stl_shape|STL_Vector_Resize_00848ea0|st1_vecresize|
+00876e20|e0029|keep_library||||
+00884b60|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionLuaVariant
+00884d20|e0029|keep_library||||
+0088b120|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_MissionLuaVariant
+008cccf0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_008cccf0|st1_treeinserthint|
+008cfc10|st1_scl97|keep_library||||
+008dc500|e0029|keep_library||||
+008dd1c0|e0029|keep_uncertain||||vcall
+008dd240|e0029|keep_library||||
+008ddbe0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: 7 virtual calls
+008e0fc0|e0029|keep_library||||
+008e6cb0|e0029|keep_library||||
+008e8370|e0029|keep_library||||
+008facc0|e0029|keep_library||||
+009042b0|e0029|drop_game|||cc13_stlreview1_game_unnamed|string;field+4b4
+00904f70|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string
+009080a0|e0029|keep_uncertain||||rconst
+00908120|e0029|keep_library||||
+0090abb0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|global
+0090cdd0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: string formatting with ints
+0090de80|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_0090de80|st1_treeinserthint|
+0090e0d0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_0090e0d0|st1_treeinserthint|
+0090e6c0|e0029|keep_library||||
+0090f5a0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;calls:BSP_MissionScoring_GrantAward
+0090f6c0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;calls:BSP_MissionScoring_GrantAward
+0090f860|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;calls:BSP_MissionScoring_GrantAward
+00910920|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_00910920|st1_treeinserthint|
+00910f10|e0029|keep_library||||
+009114e0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_009114e0|st1_treeinserthint|
+009116a0|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_009116a0|st1_treeinserthint|
+00911890|st1_scl97|upgrade_shape|stl_shape|STL_Map_Subscript_00911890|st1_mapsubscript|
+009119e0|st1_scl97|upgrade_shape|stl_shape|STL_Map_Subscript_009119e0|st1_mapsubscript|
+00913ab0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;calls:BSP_MissionScoring_GrantAward
+00913d80|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;calls:BSP_MissionScoring_GrantAward,BSP_OrdnanceKind_ToCategory
+00914100|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_UnitInstance_GetHealth;field+144
+00915450|st1_scl97|upgrade_shape|stl_shape|STL_Tree_InsertHint_00915450|st1_treeinserthint|
+00915610|st1_scl97|upgrade_shape|stl_shape|STL_Map_Subscript_00915610|st1_mapsubscript|
+00915f20|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_MissionScoring_GrantAward,BSP_Party_RelativeTo;vcall;field+140
+0091a080|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: 4.7 KB body, field +1E8h, float math
+0091d780|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_Game_GetEffectiveGameMode,BSP_MissionProgress_SumMultiScores,BSP_MissionScoring_GrantAwar
+00921360|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_LuaObject_IsLightUserdata,BSP_LuaObject_IsTable,BSP_LuaObject_ResolveDotPath
+00927610|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|global;calls:BSP_SEntity_InitAll
+0093b920|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_PointEffect_StopChildren
+0093ba80|e0029|keep_library||||
+00943e40|e0029|keep_library||||
+00943ec0|e0029|keep_library||||
+00946970|e0029|keep_library||||
+00947bc0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_SessionMessage + vehicle class
+009487d0|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_009487d0|st1_veccopyctor|
+0094edc0|st1_scl97|keep_library||||
+00951060|e0029|keep_library||||
+009575d0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|field+538
+0095a880|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_DeviceClass_ResolveAndActivate;field+538
+0095ca70|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;rconst;calls:BSP_LuaMachine_RunString,BSP_LuaObject_GetByName,BSP_LuaObject_GetInteger
+0095d850|st1_scl97|keep_library||||
+0095de00|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_FlagParams_InitDefaults,BSP_GameResource_LookupNamedPointGroup,BSP_Matrix_Copy4x4X87
+0095f1c0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: field +130h, 4 vcalls
+009685b0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: 8 virtual calls
+00968710|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968810|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+009688c0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968940|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+009689c0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968a40|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968bd0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968c50|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968cd0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968d80|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968e00|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968e80|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968f40|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00968ff0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+009690b0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0096bf70|e0029|drop_game|||cc13_stlreview1_game_unnamed|global;vcall
+0096ce00|e0029|drop_game|||cc13_stlreview1_game_unnamed|global;vcall
+0096e3a0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0096e460|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0096e520|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+0096ed00|e0029|drop_game|||cc13_stlreview1_game_unnamed|global
+00975d00|e0029|keep_uncertain||||rconst
+0097dc80|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_RandomThreads_NextU32
+00980270|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00980270|st1_treeeraserange|
+00980d30|e0029|reviewed_game|game_code|BSP_WarningManager_RemoveListener|cc13_stlreview1_game_named|
+00985f30|st1_scl97|reviewed_game|game_code|BSP_WarningManager_DispatchChatChannel|cc13_stlreview1_game_named|
+00986b00|st1_scl97|reviewed_game|game_code|BSP_WarningManager_DispatchHpEventChannel|cc13_stlreview1_game_named|
+009882f0|st1_scl97|upgrade_shape|stl_shape|STL_Map_Subscript_009882f0|st1_mapsubscript|
+00988440|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00988440|st1_treeeraserange|
+00988510|st1_scl97|reviewed_game|game_code|BSP_WarningManager_DispatchHitChannel|cc13_stlreview1_game_named|
+0098c3b0|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_0098c3b0|st1_vecinsertone|
+0098c460|e0029|upgrade_named|stl_instantiation|BSP_HitRecordVector_Append|st1_vecpushback|
+0098de50|st1_scl97|keep_library||||
+0098e0e0|e0029|reviewed_game|game_code|BSP_HardwareInfo_SupportsDisplayMode|cc13_stlreview1_game_named|
+0098e4e0|st1_scl97|keep_library||||
+0098e910|st1_scl97|reviewed_game|game_code|BSP_HardwareInfo_BuildDefaultOptionsText|cc13_stlreview1_game_named|
+0098f180|st1_scl97|keep_library||||
+0098f9a0|st1_scl97|keep_library||||
+0098fa90|st1_scl97|keep_library||||
+0098fb50|st1_scl97|keep_library||||
+0098fc20|st1_scl97|keep_uncertain||||calls:FID_conflict__getc
+0098ffe0|st1_scl97|keep_library||||
+00990340|st1_scl97|keep_uncertain||||calls:FID_conflict__fputc
+00991150|st1_scl97|keep_library||||
+009911f0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:facet_Register
+00991610|st1_scl97|keep_library||||
+00991d60|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:facet_Register
+00991e80|st1_scl97|keep_library||||
+00991ef0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;calls:BSP_HardwareInfo_SupportsDisplayMode;field+b34
+00992180|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;rconst
+00992480|st1_scl97|keep_library||||
+00992830|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string
+00993220|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|global;calls:BSP_Game_GetEffectiveGameMode,BSP_ScoreTable_IsBadgeEarned
+00993b70|e0029|keep_library||||
+00994310|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|global
+009bafc0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_EntityPose_RefreshWorld;field+101
+009d6e50|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_Math_ClampInPlace;field+100
+009f7b00|e0029|keep_library||||
+009fff70|e0029|keep_library||||
+00a02180|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: float math + vcalls
+00a03b90|e0029|keep_library||||
+00a06260|e0029|upgrade_shape|stl_shape|STL_Vector_Resize_00a06260|st1_vecresize|
+00a079b0|e0029|keep_library||||
+00a12580|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_AiGroup_LeaderPoint
+00a12cd0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00a12db0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_EntityPose_RefreshWorld
+00a12ea0|e0029|drop_game|||cc13_stlreview1_game_unnamed|vcall/registry cluster
+00a12fd0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_EntityPose_RefreshWorld
+00a214f0|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_00a214f0|st1_veccopyctor|
+00a22f60|e0029|keep_library||||
+00a27a00|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_00a27a00|st1_mapsubscript|
+00a27ae0|e0029|upgrade_shape|stl_shape|STL_Map_Subscript_00a27ae0|st1_mapsubscript|
+00a443e0|e0029|keep_library||||
+00a44700|e0029|keep_library||||
+00a45620|e0029|upgrade_shape|stl_shape|STL_List_Erase_00a45620|st1_listerase|
+00a457b0|e0029|upgrade_shape|stl_shape|STL_List_Erase_00a457b0|st1_listerase|
+00a45e70|e0029|keep_library||||
+00a46150|e0029|keep_library||||
+00a46800|e0029|keep_library||||
+00a81ad0|e0029|upgrade_named|stl_instantiation|STL_SoundSampleTree_IncrementCheckedIterator|cc13_stlreview1_named_instance|
+00a81b80|e0029|upgrade_named|stl_instantiation|STL_SoundSampleTree_DecrementCheckedIterator|cc13_stlreview1_named_instance|
+00a88490|e0029|upgrade_named|stl_instantiation|STL_SoundSampleTree_EraseRange|cc13_stlreview1_named_instance|
+00a90ee0|e0029|reviewed_game|game_code|BSP_InputBackend_RemoveActiveDevice_Provisional|cc13_stlreview1_game_named|
+00a90f90|e0029|reviewed_game|game_code|BSP_InputBackend_AnyDeviceHasInput|cc13_stlreview1_game_named|
+00a91020|e0029|reviewed_game|game_code|BSP_InputDeviceTable_AnyDynamicDeviceButtonDown|cc13_stlreview1_game_named|
+00a91430|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00a91430|st1_vecinsertone|
+00a91500|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00a91500|st1_vecpushback|
+00a917e0|e0029|reviewed_game|game_code|BSP_InputBackend_ConfigureClass|cc13_stlreview1_game_named|
+00a94230|e0029|upgrade_shape|stl_shape|STL_TreeIter_Inc_00a94230|st1_iterinc|
+00a942b0|e0029|upgrade_shape|stl_shape|STL_TreeIter_Dec_00a942b0|st1_iterdec|
+00a94b50|e0029|reviewed_game|game_code|BSP_GamepadForce_FindRequest|cc13_stlreview1_game_named|
+00a94bc0|e0029|reviewed_game|game_code|BSP_GamepadForce_SetRequestPayload|cc13_stlreview1_game_named|
+00a94c50|e0029|reviewed_game|game_code|BSP_GamepadForce_SetEnabled|cc13_stlreview1_game_named|
+00a94d40|e0029|reviewed_game|game_code|BSP_GamepadForce_FindCurrentRequest|cc13_stlreview1_game_named|
+00a95330|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00a95330|st1_treeeraserange|
+00a95410|e0029|reviewed_game|game_code|BSP_GamepadForce_RemoveRequest|cc13_stlreview1_game_named|
+00a957f0|e0029|reviewed_game|game_code|BSP_GamepadForce_RemoveCurrentRequest|cc13_stlreview1_game_named|
+00a95890|e0029|reviewed_game|game_code|BSP_GamepadForce_ClearRequests|cc13_stlreview1_game_named|
+00a95960|e0029|reviewed_game|game_code|BSP_GamepadForce_PumpCurrentRequests|cc13_stlreview1_game_named|
+00a95bf0|e0029|reviewed_game|game_code|BSP_GamepadForce_SubmitRequest|cc13_stlreview1_game_named|
+00a95cb0|e0029|reviewed_game|game_code|BSP_GamepadForce_ClearAllChannels|cc13_stlreview1_game_named|
+00a961b0|e0029|upgrade_shape|stl_shape|STL_TreeIter_Inc_00a961b0|st1_iterinc|
+00a96fb0|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00a96fb0|st1_treeeraserange|
+00a97f10|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00a97f10|st1_vecinsertone|
+00a97fa0|e0029|upgrade_named|stl_instantiation|BSP_InputGuidVector_Append_Provisional|st1_vecpushback|
+00a9b7f0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;calls:BSP_GuiWidget_DescribeProperties;field+11c
+00a9ba90|e0029|reviewed_game|game_code|BSP_GuiListbox_ApplyRowState|cc13_stlreview1_game_named|
+00a9bb70|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GuiWidget_GetSize;field+124
+00a9bd50|e0029|upgrade_named|stl_instantiation|BSP_GuiWidget_ListRemoveMatchingValues|st1_listremove|
+00a9bec0|e0029|reviewed_game|game_code|BSP_GuiListbox_ClearRows|cc13_stlreview1_game_named|
+00a9bf90|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: this[45h] field
+00a9c310|e0029|reviewed_game|game_code|BSP_GuiListbox_SelectFirstSelectable|cc13_stlreview1_game_named|
+00a9c380|e0029|reviewed_game|game_code|BSP_GuiListControl_SetItemVisible|cc13_stlreview1_game_named|
+00a9c740|e0029|reviewed_game|game_code|BSP_GuiListbox_SelectRow|cc13_stlreview1_game_named|
+00a9c7c0|e0029|reviewed_game|game_code|BSP_GuiListbox_SelectIndex|cc13_stlreview1_game_named|
+00a9c860|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: this[43h] field
+00a9c920|e0029|reviewed_game|game_code|BSP_GuiListbox_GetSelectedIndex|cc13_stlreview1_game_named|
+00a9c990|e0029|reviewed_game|game_code|BSP_GuiListbox_GetSelectedData|cc13_stlreview1_game_named|
+00a9cc50|e0029|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GuiWidget_GetLocalPosition,BSP_GuiWidget_GetSize,BSP_GuiWidget_SetLocalY;field+100
+00a9cd20|e0029|reviewed_game|game_code|BSP_GuiListControl_SetActive|cc13_stlreview1_game_named|
+00a9ceb0|e0029|reviewed_game|game_code|BSP_GuiListbox_SetField124|cc13_stlreview1_game_named|
+00a9cf30|e0029|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_GuiListbox_SetField124,BSP_GuiManager_SelectHighlightWidget,BSP_GuiWidget_FitRelativeToSource;field+124
+00a9d360|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GuiWidget_GetLocalPosition,BSP_GuiWidget_GetSize,BSP_GuiWidget_SetLocalY;field+11d
+00a9d560|e0029|upgrade_named|stl_instantiation|BSP_PointerList_InsertRange|cc13_stlreview1_named_instance|
+00a9e428|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;calls:BSP_GuiListbox_InsertRow,BSP_GuiWidget_FindChildByName
+00a9eba0|e0029|reviewed_game|game_code|BSP_Localization_UppercaseCodeUnit|cc13_stlreview1_game_named|
+00a9ff20|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00a9ff20|st1_vecinsertone|
+00a9ffb0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00a9ffb0|st1_vecpushback|
+00aa1210|e0029|upgrade_named|stl_instantiation|STL_GuiTree_IteratorDecrement|st1_iterdec|
+00aa30c0|e0029|reviewed_game|game_code|BSP_GuiManager_RemovePagePointer|cc13_stlreview1_game_named|
+00aa3140|e0029|reviewed_game|game_code|BSP_GuiManager_FindPageByName|cc13_stlreview1_game_named|
+00aa3f70|e0029|reviewed_game|game_code|BSP_GuiManager_UpdatePageList|cc13_stlreview1_game_named|
+00aa45a0|e0029|reviewed_game|game_code|BSP_GuiManager_DrawLayers|cc13_stlreview1_game_named|
+00aa49e0|e0029|upgrade_named|stl_instantiation|STL_GuiTree_EraseRange_00aa49e0|cc13_stlreview1_named_instance|
+00aa4b30|e0029|reviewed_game|game_code|BSP_GuiManager_RemoveCameraStore|cc13_stlreview1_game_named|
+00aa4c50|e0029|upgrade_named|stl_instantiation|STL_PointerVector_CopyConstruct_00aa4c50|st1_veccopyctor|
+00aa4ef0|e0029|reviewed_game|game_code|BSP_GuiManager_RelayoutAllPagesWideScreen|cc13_stlreview1_game_named|
+00aa4f80|e0029|reviewed_game|game_code|BSP_GuiManager_Update|cc13_stlreview1_game_named|
+00aa52a0|e0029|reviewed_game|game_code|BSP_GuiManager_RegisterPageByPriority|cc13_stlreview1_game_named|
+00aa7e00|e0029|reviewed_game|game_code|BSP_GuiWidget_FindChildByName|cc13_stlreview1_game_named|
+00aa8450|e0029|reviewed_game|game_code|BSP_GuiWidget_PropagateVisibility|cc13_stlreview1_game_named|
+00aa8610|e0029|reviewed_game|game_code|BSP_GuiWidget_SetAlphaRecursive|cc13_stlreview1_game_named|
+00aa8710|e0029|reviewed_game|game_code|BSP_GuiWidget_ApplyWideScreenLayout|cc13_stlreview1_game_named|
+00aa8e40|e0029|reviewed_game|game_code|BSP_GuiWidget_PauseMovieDescendants|cc13_stlreview1_game_named|
+00aa8ec0|e0029|reviewed_game|game_code|BSP_GuiWidget_SetHitClipRectRecursive|cc13_stlreview1_game_named|
+00aaa3e0|e0029|reviewed_game|game_code|BSP_GuiWidget_RefreshClip|cc13_stlreview1_game_named|
+00aaa650|e0029|reviewed_game|game_code|BSP_GuiWidget_MoveChildrenTo|cc13_stlreview1_game_named|
+00aab4c0|e0029|reviewed_game|game_code|BSP_GuiWidget_CloneSubtree|cc13_stlreview1_game_named|
+00aac310|e0029|upgrade_named|stl_instantiation|STL_ButtonList_Remove|st1_listremove|
+00ab1ef0|e0029|reviewed_game|game_code|BSP_GuiIcon_SetSize|cc13_stlreview1_game_named|
+00ab1f60|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: GUI widget this[3Bh]+vcall
+00ab4ce0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GuiWidget_VisitChildPaths,BSP_LogicalTextureBase_GetNameAddress
+00ab58f0|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_00ab58f0|st1_veccopyctor|
+00ab6070|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ab6070|st1_vecinsertone|
+00ab63a0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ab63a0|st1_vecpushback|
+00ab6430|st1_scl97|keep_library||||
+00ab7a40|e0029|reviewed_game|game_code|BSP_GuiText_RegisterClipParameters|cc13_stlreview1_game_named|
+00ac2090|e0029|reviewed_game|game_code|BSP_GuiLine_DescribeProperties|cc13_stlreview1_game_named|
+00ac2950|e0029|reviewed_game|game_code|BSP_GuiLine_Reset|cc13_stlreview1_game_named|
+00ac5820|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global
+00ac6880|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ac6880|st1_vecinsertone|
+00ac6910|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ac6910|st1_vecinsertone|
+00ac69a0|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ac69a0|st1_vecinsertone|
+00ac6a30|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ac6a30|st1_vecpushback|
+00ac6ac0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ac6ac0|st1_vecpushback|
+00ac6b50|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ac6b50|st1_vecpushback|
+00ac9ab0|e0029|keep_library||||
+00acb290|e0029|keep_library||||
+00acb870|st1_scl97|keep_library||||
+00acb9b0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: this[41h] field
+00acf120|e0029|reviewed_game|game_code|BSP_GuiFrameBox_SetSize|cc13_stlreview1_game_named|
+00acf1d0|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: GUI widget this[3Bh]+vcall
+00ad0290|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;global;rconst;calls:BSP_GuiWidget_DescribeProperties;field+100
+00ad0680|e0029|drop_game|||cc13_stlreview1_game_unnamed|read: GUI widget this[3Eh] + 2 vcalls
+00ad1590|e0029|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GUI_ResolveTextureAndAtlasUV
+00ad1670|e0029|keep_library||||
+00ad1a80|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_GuiWidget_VisitChildPaths,BSP_LogicalTextureBase_GetNameAddress
+00ad2230|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_00ad2230|st1_veccopyctor|
+00ad2900|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ad2900|st1_vecinsertone|
+00ad29d0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ad29d0|st1_vecpushback|
+00ad4040|e0029|upgrade_shape|stl_shape|STL_TreeIter_Dec_00ad4040|st1_iterdec|
+00ad40d0|e0029|upgrade_shape|stl_shape|STL_TreeIter_Inc_00ad40d0|st1_iterinc|
+00ad4b60|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00ad4b60|st1_treeeraserange|
+00ad51d0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_Font_LoadGlyphDataAndTextures
+00ad7140|e0029|reviewed_game|game_code|BSP_FoliageSystem_SetBushDiffuseFactor|cc13_stlreview1_game_named|
+00ad71c0|e0029|reviewed_game|game_code|BSP_FoliageSystem_SetEnabled|cc13_stlreview1_game_named|
+00ad72a0|e0029|reviewed_game|game_code|BSP_FoliageSystem_DebugDraw_Provisional|cc13_stlreview1_game_named|
+00ad7360|e0029|reviewed_game|game_code|BSP_FoliageSystem_RenderGroups_Provisional|cc13_stlreview1_game_named|
+00ad7440|e0029|reviewed_game|game_code|BSP_ShadowOwner_DispatchEntryPass|cc13_stlreview1_game_named|
+00ad8a00|e0029|upgrade_named|stl_instantiation|STL_BushGroupVector_InsertAt|st1_vecinsertone|
+00ad8a90|e0029|upgrade_named|stl_instantiation|STL_TreeGroupVector_InsertAt|st1_vecinsertone|
+00ad8b50|e0029|upgrade_named|stl_instantiation|STL_BushGroupVector_PushBack|st1_vecpushback|
+00ad8bc0|e0029|upgrade_named|stl_instantiation|STL_TreeGroupVector_PushBack|st1_vecpushback|
+00ada810|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_Transform_RefreshWorldMatrix
+00adb6f0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+00adf1b0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+00ae4e70|e0029|keep_library||||
+00ae6fb0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_00ae6fb0|st1_veceraserange|
+00ae7030|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_00ae7030|st1_veccopyctor|
+00ae7700|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ae7700|st1_vecinsertone|
+00ae7910|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ae7910|st1_vecpushback|
+00ae7f40|e0029|upgrade_shape|stl_shape|STL_Vector_CopyConstruct_00ae7f40|st1_veccopyctor|
+00ae8380|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00ae8380|st1_vecinsertone|
+00ae8430|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00ae8430|st1_vecpushback|
+00aeab30|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math
+00aeb0b0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float grid stepping
+00aeb1f0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math + fmod
+00aeb310|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: float math + fmod
+00b105b0|e0029|reviewed_game|game_code|BSP_SceneRenderer_FindStatsFilterName|cc13_stlreview1_game_named|
+00b14480|e0029|upgrade_named|stl_instantiation|BSP_RendererRecords_Erase|st1_veceraserange|
+00b150d0|e0029|upgrade_named|stl_instantiation|BSP_MaterialRecordVector_InsertOne|cc13_stlreview1_named_instance|
+00b15610|e0029|upgrade_named|stl_instantiation|BSP_MaterialRecordVector_Append|cc13_stlreview1_named_instance|
+00b171c0|e0029|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_SceneRenderer_FindStatsFilterName;field+6a4
+00b19890|e0029|upgrade_named|stl_instantiation|BSP_ResourceRegistryTree_IncrementIterator|st1_iterinc|
+00b19d60|e0029|upgrade_named|stl_instantiation|BSP_ResourceFactoryTree_Find|st1_treefind|
+00b19e90|e0029|reviewed_game|game_code|BSP_ResourceRegistry_CreateResource|cc13_stlreview1_game_named|
+00b1a2f0|e0029|upgrade_named|stl_instantiation|BSP_ResourceRegistryTree_EraseRange|cc13_stlreview1_named_instance|
+00b1ab40|e0029|upgrade_named|stl_instantiation|BSP_ResourceRegistry_IteratorDecrement|st1_iterdec|
+00b1b2b0|e0029|upgrade_named|stl_instantiation|BSP_ResourceRegistry_FindOrInsertValue|st1_mapsubscript|
+00b20d30|e0029|upgrade_named|stl_instantiation|BSP_HardwareLayoutTree_DecrementIterator|st1_iterdec|
+00b20dc0|e0029|upgrade_named|stl_instantiation|BSP_HardwareVertexLayoutTree_AdvanceIterator|st1_iterinc|
+00b28220|e0029|upgrade_named|stl_instantiation|BSP_HardwareLayoutTree_Find|cc13_stlreview1_named_instance|
+00b2f3a0|e0029|upgrade_named|stl_instantiation|BSP_HardwareLayoutTree_EraseRange|cc13_stlreview1_named_instance|
+00b2f4c0|e0029|upgrade_named|stl_instantiation|BSP_HardwareVertexLayoutTree_RemoveFirstValue|cc13_stlreview1_named_instance|
+00b687d0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_LuaObject_ArgumentAt,BSP_LuaObject_IterateFirst,BSP_LuaObject_IterateNext
+00b68ad0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_LuaObject_IterateFirst,BSP_LuaObject_IterateNext,BSP_LuaObject_SetNewTable
+00b6a390|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;rconst;calls:BSP_LuaObject_ArgumentAt,BSP_LuaObject_GetTypeName,BSP_LuaObject_IterateFirst
+00b6c7b0|e0029|keep_library||||
+00b6c990|e0029|keep_library||||
+00b6ce40|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00b6ce40|st1_vecinsertone|
+00b6cef0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00b6cef0|st1_vecpushback|
+00b76ae0|e0029|upgrade_shape|stl_shape|STL_TreeIter_Inc_00b76ae0|st1_iterinc|
+00b76bb0|e0029|upgrade_named|stl_instantiation|STL_AnimationNameTree_DecrementIterator|st1_iterdec|
+00b77f80|e0029|keep_uncertain||||
+00b78310|e0029|upgrade_named|stl_instantiation|STL_AnimationNameTree_Find|st1_treefind|
+00b78670|e0029|keep_library||||
+00b78750|e0029|reviewed_game|game_code|BSP_ResourceInstance_GetCompactTrackBindingRange|cc13_stlreview1_game_named|
+00b78810|e0029|reviewed_game|game_code|BSP_ResourceInstance_GetTrackBindingRange|cc13_stlreview1_game_named|
+00b788d0|e0029|reviewed_game|game_code|BSP_ResourceInstance_GetSkinBindingRange|cc13_stlreview1_game_named|
+00b78990|e0029|reviewed_game|game_code|BSP_ResourceInstance_GetCameraBindingRange|cc13_stlreview1_game_named|
+00b798c0|e0029|upgrade_shape|stl_shape|STL_Tree_EraseRange_00b798c0|st1_treeeraserange|
+00b7cdf0|e0029|upgrade_named|stl_instantiation|BSP_DecrementNativeResourceCacheIterator|st1_iterdec|
+00b7ce80|e0029|upgrade_named|stl_instantiation|BSP_ResourceCacheIterator_Increment|cc13_stlreview1_named_instance|
+00b7cef0|e0029|upgrade_named|stl_instantiation|BSP_ResourceParserIterator_Decrement|cc13_stlreview1_named_instance|
+00b80210|e0029|keep_library||||
+00b82900|e0029|upgrade_shape|stl_shape|STL_List_EraseRange_00b82900|st1_listeraserange|
+00b82bf0|e0029|upgrade_named|stl_instantiation|BSP_SceneRegistryVector_ErasePairRange|cc13_stlreview1_named_instance|
+00b832f0|e0029|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_SceneRegistry_AllocateListNode,BSP_SceneRegistry_GrowListSizeChecked
+00b83490|e0029|upgrade_named|stl_instantiation|BSP_SceneRegistry_ResizeBucketBoundaries|st1_vecresize|
+00b83560|e0029|reviewed_game|game_code|BSP_SceneRegistry_AssignBucketBoundaries|cc13_stlreview1_game_named|
+00b83d90|e0029|upgrade_named|stl_instantiation|BSP_SceneRegistry_EraseRange|cc13_stlreview1_named_instance|
+00b86e40|e0029|upgrade_named|stl_instantiation|STL_ResourceInstanceTypeTree_IteratorDecrement|st1_iterdec|
+00b86ed0|e0029|upgrade_named|stl_instantiation|STL_ResourceInstanceTypeTree_IteratorIncrement|st1_iterinc|
+00b87ce0|e0029|reviewed_game|game_code|BSP_ResourceInstance_GetMeshBindingRange|cc13_stlreview1_game_named|
+00b887d0|e0029|upgrade_named|stl_instantiation|STL_PairVector_CopyConstruct|st1_veccopyctor|
+00b88b60|e0029|upgrade_named|stl_instantiation|STL_ResourceNodeVector_Resize_00b88b60|st1_vecresize|
+00b88c20|e0029|upgrade_named|stl_instantiation|STL_PairVector_Insert|st1_vecinsertone|
+00b88d50|e0029|upgrade_named|stl_instantiation|STL_PairVector_PushBack|st1_vecpushback|
+00b89980|e0029|upgrade_named|stl_instantiation|STL_ResourceInstanceTypeTree_EraseRange|cc13_stlreview1_named_instance|
+00b89c50|e0029|upgrade_named|stl_instantiation|STL_ResourceInstanceTypeTree_Subscript|st1_mapsubscript|
+00bb5ac0|e0029|reviewed_game|game_code|BSP_Scene_ResolvePreloadAliases|cc13_stlreview1_game_named|
+00bb6180|e0029|upgrade_named|stl_instantiation|STL_DwordVector_CopyConstruct_00bb6180|cc13_stlreview1_named_instance|
+00bb7590|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00bb7590|st1_vecinsertone|
+00bb7a20|e0029|upgrade_named|stl_instantiation|STL_MpakFileVector_PushBack_00bb7a20|cc13_stlreview1_named_instance|
+00bb7ad0|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00bb7ad0|st1_vecinsertone|
+00bb7ba0|e0029|upgrade_named|stl_instantiation|STL_MpakDirectoryVector_PushBack_00bb7ba0|cc13_stlreview1_named_instance|
+00bba500|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|calls:BSP_Stream_ConvertToMemory,BSP_Stream_CopyRangeToMemory
+00bba650|e0029|reviewed_game|game_code|BSP_MSARFile_FindFileIndex|cc13_stlreview1_game_named|
+00bbad60|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_ProviderName_MatchesEnumerationFilter
+00bbb710|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00bbb710|st1_vecinsertone|
+00bbb7e0|e0029|upgrade_shape|stl_shape|STL_Vector_PushBack_00bbb7e0|st1_vecpushback|
+00bcfca0|e0029|reviewed_game|game_code|BSP_SingletonLifetime_Unregister|cc13_stlreview1_game_named|
+00bd0600|e0029|upgrade_named|stl_instantiation|BSP_PointerVector_Reserve|cc13_stlreview1_named_instance|
+00bd08d0|e0029|upgrade_named|stl_instantiation|BSP_PointerVector_InsertOneChecked|cc13_stlreview1_named_instance|
+00bd0a90|st1_scl97|keep_library||||
+00bd0c60|st1_scl97|keep_library||||
+00bd23e0|st1_scl97|keep_uncertain||||rconst
+00bd2760|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|string;rconst;calls:BSP_StringBuilder_AppendCString,BSP_StringBuilder_AppendHeader,BSP_StringBuilder_AppendInt
+00bd3ca0|e0029|upgrade_shape|stl_shape|STL_Vector_EraseRange_00bd3ca0|st1_veceraserange|
+00bd4720|e0029|upgrade_shape|stl_shape|STL_Vector_InsertOne_00bd4720|st1_vecinsertone|
+00bd4860|e0029|upgrade_named|stl_instantiation|BSP_ArchiveBlockVector_Append|st1_vecpushback|
+00bd5eb0|e0029|reviewed_game|game_code|BSP_LuaReader_HasKey|cc13_stlreview1_game_named|
+00bd6830|e0029|reviewed_game|game_code|BSP_LuaReader_ReadField|cc13_stlreview1_game_named|
+00bd68d0|e0029|reviewed_game|game_code|BSP_LuaReader_ReadFieldOrDefault|cc13_stlreview1_game_named|
+00bd8e20|e0029|reviewed_game|game_code|BSP_LuaReader_EnterKey|cc13_stlreview1_game_named|
+00bd8ec0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|read: BSP_LuaReader_LookupChild
+00bd97e0|e0029|upgrade_named|stl_instantiation|BSP_VFS_AdvanceMountIterator|st1_iterinc|
+00bd9860|e0029|upgrade_named|stl_instantiation|BSP_PhysicalDirectory_AdvanceIndexIterator|st1_iterinc|
+00bd99b0|e0029|upgrade_named|stl_instantiation|BSP_VfsMountTree_IteratorDecrement|st1_iterdec|
+00bd9a40|e0029|upgrade_named|stl_instantiation|BSP_NativePhysicalIndex_IteratorDecrement|st1_iterdec|
+00bdb1e0|e0029|reviewed_game|game_code|BSP_VFS_FindFirstExtensionGroup|cc13_stlreview1_game_named|
+00bdb2e0|e0029|reviewed_game|game_code|BSP_VfsSearchGroup_SelectValueList|cc13_stlreview1_game_named|
+00bf0df0|st1_scl97|drop_game|||cc13_stlreview1_game_unnamed|rconst;calls:BSP_RandomState_Refill;field+9c5

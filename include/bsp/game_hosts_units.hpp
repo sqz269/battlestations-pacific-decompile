@@ -469,7 +469,7 @@ inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (do
 // 008A24E0 store and the profile writes 009C375A / 009C3906 / 009C89D6 undo.
 // True: the steer altitude drops the random offset while a script altitude is
 // live. False: cruise - offset always.
-inline constexpr bool kMoveToLuaAltZeroOffsetBound = false;  // OFF: not pair-tested
+inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON by pair verdict
 
 class GameUnitsHost {
 public:
@@ -571,6 +571,9 @@ public:
     // unit has no slot.
     // Packet cc9_squadron_attack_alt: 008A22B0's five stores on the squadron's slot.
     bool set_squadron_attack_alt_008a22b0(std::size_t unit_index, float altitude, bool force);
+    // Packet cc13_natives1: 008A24E0's five stores on the squadron's third block
+    // (+384h, +38Eh, +39Ch, +3ABh, +3ADh); 009C8920 / 009C7A80 read +39Ch.
+    bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
@@ -1128,6 +1131,10 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Packet cc13_natives1: unit+720h, the byte 0095AD0A sets on message 7Dh
+    // (InferiorFailure); here the airfield destruction rule's inferior arm has
+    // run at least once. What 00953E60 answers for "InferiorFailure".
+    bool inferior_failure_720(std::size_t index) const;
     // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
     // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
     // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:

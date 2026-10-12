@@ -346,6 +346,15 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // tubes reload without limit, as before.
 inline constexpr bool kTorpedoStockBound = true;
 
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 1.4). The ship's
+// jam bytes unit+9E4h (steering) and +9E5h (engine), set by 008198A0's message
+// 6Bh / 6Ch arms (0081999D / 008199C7) and cleared by 008137B0's 6Dh / 6Eh arms,
+// which 00813660 (vtable[19Ch]) routes when 0093C520 retires the record. The
+// motion reads them at 00826754 (engine gate, target speed 0) and 00826B2E (the
+// rudder slew 0092E8C0 skipped). True: the units host copies them into the ship
+// motion state before each 00825F20 step. False: the motion never sees a jam.
+inline constexpr bool kShipJamMotionBound = false;
+
 // Packet cc9_torpedo_supply_tick (docs/UNIT_WEAPON_DEVICES.md, "The supply
 // tick"). True: every ship runs 00825450 once per fixed step, and the stock
 // set of kTorpedoStockBound unloads random loaded barrels (0081DCB0, shared
@@ -914,6 +923,17 @@ public:
     // turns into unit+9E4h / unit+9E5h through messages 6Bh / 6Ch, the flags the
     // ship motion reads; this host applies "Explosion" and "Fire" itself.
     bool unit_failure_active(std::size_t unit_index, const char* name) const;
+    // Packet cc13_natives1: the ship SetFailure virtual 008132C0 (vtable[194h]) as
+    // the Lua binding 0088EFF0 reaches it. "Explosion" schedules message 6Ah's
+    // object with msg+30h = explosion_damage; "SteeringJam" sets +9E4h (6Bh only,
+    // no record); "EngineJam" sets +9E5h (6Ch) and 0093BD80 pushes {5, "EngineJam",
+    // engine_jam_seconds}; "Periscope" is recorded. Names compare case-blind.
+    // Returns the arm: 1 Explosion, 2 SteeringJam, 3 EngineJam, 4 Periscope, 0 none.
+    int script_set_failure_008132c0(std::size_t unit_index, const std::string& name,
+                                    float engine_jam_seconds, float explosion_damage);
+    // unit+9E4h (steering) or +9E5h (engine), what 008135C0 answers for the two
+    // jam names and what 00826754 / 00826B2E read.
+    bool ship_jam_flag(std::size_t unit_index, bool steering) const;
 
     // Packet cc9_blast_element_parts: the hull segments (0..19, controller+310h
     // slots) of unit `unit_index` that 0092D1F0 drove to zero, in the order they

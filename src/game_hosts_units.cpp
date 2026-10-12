@@ -146,7 +146,7 @@ constexpr double kPi = 3.14159265358979323846;
 // Packet cc9_party_change_gunnery_side (SHIP_AI 213), OFF until paired: after a
 // party write (set_unit_side_0054), re-read unit+54h into the unit's gunnery row
 // so the gunnery side matches the image's single unit field.
-constexpr bool kPartyChangeRefreshesGunneryBound = false;
+constexpr bool kPartyChangeRefreshesGunneryBound = true;  // ON: SHIP_AI 213, cc9-ships44\local\s44_pr{off,on}_* gameplay-identical; faithful by construction (the image reads +54h live)
 
 // SUBSTITUTION, labelled: Pilot/Torpedo/ReferenceSpeed, the divisor of
 // 009F9D30's run-profile speed ratio. The PilotBot tuning block is not
@@ -1769,6 +1769,14 @@ struct GameUnitSlot {
     float sq_profile_398{0.0f};
     unsigned long long sq_profile_draws{0};
     unsigned long long sq_profile_writes{0};
+    // Packet cc13_natives1: the third block 008A24E0 writes (+384h countdown 2
+    // held as its expiry clock, +38Eh freeze, +39Ch release altitude, +3ABh lock).
+    // sq_release_alt_set: +39Ch holds the script value, not 009C8A0E's 9999.
+    bool sq_release_alt_set{false};
+    float sq_alt_39c{0.0f};
+    bool sq_freeze_38e{false};
+    bool sq_lock_3ab{false};
+    double sq_timer_expiry_384{-1.0};
     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
     // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
     // the aim tick's dive command as the dive steepens.
@@ -2153,15 +2161,15 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // plan stores this host drops - plan+2E8h = 1.4f (009D1D02), throttle 1.0 and
 // air brake 0.0 with their bytes (009D1F42-009D1F64), plan+2D8h = 0 (009D1F6B)
 // and the plan+264h fade (009D1F36). Behaviour-changing; pair before ON.
-constexpr bool kTorpedoAimPlanWritesBound = false;
+constexpr bool kTorpedoAimPlanWritesBound = true;  // GUNNERY 193: ON by pair verdict
 // cc13-audit10 finding 5: desc+25Ch TurnRoll (009D1C51), desc+A4h Width
 // (009D1C84) and desc+268h TurnCircleRadius (009D1962) into the aim tick, in
 // place of the 1.0 / 1.0 / 0 stand-ins. Behaviour-changing; pair before ON.
-constexpr bool kTorpedoAimClassInputsBound = false;
+constexpr bool kTorpedoAimClassInputsBound = true;  // GUNNERY 193: ON by pair verdict
 // cc13-audit10 finding 3: 0099CAB0's pass-0 ramp starts at pilot+264h, which
 // 0099D300 zeroes at 0099EB9D on every think; the 0.12 stored at 0099EB95 is
 // pilot+260h. Only the torpedo aim tick (009D1F36) writes +264h otherwise.
-constexpr bool kBandShaperPlan264Bound = false;
+constexpr bool kBandShaperPlan264Bound = true;  // GUNNERY 193: ON by pair verdict
 // Packet cc9_ship_section_points (docs/TORPEDO_AIM_LEAD.md section 14): the pick
 // 009FA260 hands 00816650 the TARGET ship's section records, the engine room /
 // magazine / fuel tank points 0081F980 builds from the model's GeomMesh
@@ -4018,8 +4026,26 @@ struct GameUnitsHost::Impl {
         // 009C7A9E-009C7AB4, reconstructed. ctl+39Ch is the 9999.0f at
         // 00CE4C04 the same profile writes, so the min leaves +A8h alone below
         // about 9523 and this is a ceiling, not a decay, at these altitudes.
+        // Packet cc13_natives1: 009C8920's third block, run for the flight leader
+        // only (009C8931 007B8AD0, JE 009C8A1B) before its 009C7A80 call. +38Eh set:
+        // skip (009C89EF). Countdown +384h expired and +3ABh clear: +39Ch = 9999
+        // (009C8A0E) and +3ADh = 1 (009C8A13). Then +3ABh = 0 (009C8A17). LABELLED:
+        // this per-tick update stands for the profile's call; the leader test is
+        // 007B8AD0 without the departed-wingman case.
+        float control_alt_39c = bsp::dive_bomb_constant::kCruisingAltitudeThird;
+        if (GameUnitSlot* rb = squadron_slot_of(slot.process_index);
+            rb != nullptr && rb->sq_release_alt_set) {
+            if (unit_is_flight_leader_007b8ad0(slot.process_index) && !rb->sq_freeze_38e) {
+                if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
+                    rb->sq_release_alt_set = false;
+                    rb->sq_lua_alt_3ad = false;   // 009C8A13 +3ADh = 1
+                }
+                rb->sq_lock_3ab = false;
+            }
+            if (rb->sq_release_alt_set) control_alt_39c = rb->sq_alt_39c;
+        }
         slot.db_dive_alt_a8 = bsp::dive_bomb_decay_dive_altitude_009c7a94(
-            slot.db_dive_alt_a8, bsp::dive_bomb_constant::kCruisingAltitudeThird);
+            slot.db_dive_alt_a8, control_alt_39c);
         // 009C8A5E, the cruise profile's clamp on task+4B0h == approach+B8h.
         {
             const float wanted = kPilotDiveBombAttackDist * 1.0f;
@@ -5707,7 +5733,7 @@ struct GameUnitsHost::Impl {
     // h is the yaw base numerator [ESP+6Ch] (0099DF87), not the raw heading
     // error. 0099E127 loads it for the deadband and the bank ask, and 0099E02B
     // for the pitch-floor ramp. Behaviour-changing; pair before ON.
-    static constexpr bool kRollArmBaseNumeratorBound = false;
+    static constexpr bool kRollArmBaseNumeratorBound = true;  // GUNNERY 193: ON by pair verdict
     // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
     // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
@@ -16045,6 +16071,25 @@ bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
         return true;
     }
     return false;
+}
+
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
+// SquadronSetReleaseAlt's five stores on the squadron block, 008A2692..008A26B9:
+// +384h = [00CE3800] (0.5), +38Eh = the force flag, +39Ch = altitude, +3ABh = 1,
+// +3ADh = 0. A unit with no squadron is refused (the image has no null test).
+bool GameUnitsHost::set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude,
+                                                      bool force) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->sq_timer_expiry_384 = host.summary.simulated_seconds + 0.5;  // +384h = [00CE3800]
+    sq->sq_freeze_38e = force;                                        // +38Eh
+    sq->sq_alt_39c = altitude;                                        // +39Ch
+    sq->sq_lock_3ab = true;                                           // +3ABh = 1
+    sq->sq_release_alt_set = true;                                    // +3ADh = 0
+    sq->sq_lua_alt_3ad = true;                                        // 008A26B9
+    host.done("PlaneSquadron::set_release_alt_008a24e0", 0x008a24e0u);
+    return true;
 }
 
 int GameUnitsHost::skill_level(std::size_t unit_index) const {
@@ -32059,6 +32104,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // this step sets it again). LABELLED order: here at the motion step.
         slot.ground_contact_1011 = slot.ground_contact_1010;
         slot.ground_contact_1010 = false;
+        // Packet cc13_natives1: unit+9E4h / +9E5h as 00826B2E / 00826754 read them.
+        if (kShipJamMotionBound && host.gunnery != nullptr) {
+            slot.motion.steering_jam = host.gunnery->ship_jam_flag(index, true);
+            slot.motion.engine_jam = host.gunnery->ship_jam_flag(index, false);
+        }
         UnitRudderBinding rudder(host, slot);
         ShipMotionBinding motion(host, slot, rudder);
         const float before[3] = {slot.motion.position[0], slot.motion.position[1],
@@ -33792,6 +33842,11 @@ bool GameUnitsHost::store_pending_destroy_0060(const void* identity, bool pendin
 bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     if (index >= impl_->slots.size()) return false;
     return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
+}
+
+bool GameUnitsHost::inferior_failure_720(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    return impl_->slots[index]->inferior_failure_steps != 0;
 }
 
 // Packet cc9_unit_class_lands_troops. Slot 2Ch of the class descriptor vtables

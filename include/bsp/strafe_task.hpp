@@ -40,7 +40,7 @@ inline constexpr bool kStrafeTaskBound = true;   // ON: SQUADRON_LAND_TASK 5cb
 // attackrun constructor 009CAC80 seeds its countdown +1Ch = -U(0, 1)
 // (009CACDA, stream 1); the enter 009CAD90 resets only +18h and +20h. True: the
 // install draws it on the "#star1c" key. False: +1Ch starts at 0.
-inline constexpr bool kStrafeAttackrunSeedDrawBound = false;   // OFF: not pair-tested
+inline constexpr bool kStrafeAttackrunSeedDrawBound = true;   // GUNNERY 193: ON by pair verdict
 
 // 007EEC50's guns inputs in the PilotSetTarget choice (src/
 // game_hosts_script_orders.cpp): guns_available = PilotFires (plane+C24h,
@@ -113,7 +113,7 @@ inline constexpr bool kStrafeBreakoffBound = true;   // ON: SQUADRON_LAND_TASK 5
 // qword [00D05850]) and the gotowards alignment test 009CAB7B (FLD qword
 // [00D057D8]) load doubles that are not a widened float. True: the image's
 // doubles. False: the float values the host used before.
-inline constexpr bool kStrafeDoubleConstantsBound = false;   // OFF: not pair-tested
+inline constexpr bool kStrafeDoubleConstantsBound = true;   // GUNNERY 193: ON by pair verdict
 
 // 009BAFC0's pitch reference for tightturn (009BB018-009BB12B, read from the
 // listing). altitude = unit+100h, speed = unit vtable[38h], pitch = unit+C64h,

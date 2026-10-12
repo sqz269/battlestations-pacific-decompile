@@ -32,3 +32,22 @@ Order files (absolute paths; o-files live in the worker trees' local\ directorie
 
 Logs: local\p3w_on_<row>.log and local\p3r_on_u1o.log / p3r_on_l10b.log in the cc9-physics1 tree;
 docs/OCEAN_WAVE_FIELD.md 18 and 20 have the per-entity reasons.
+## 2026-10-12, main 8e2e2fba9 (after gunnery37's dive yaw, move-start draws, draw pins, tail gunner), SHA-256 095812FC1494
+
+Logs local\p3k1_on_<row>.log (local\p3_runs.ps1 -Set keep -Tag k1; summary local\p3_keep.py k1).
+
+| Row | Result | Guard |
+|---|---|---|
+| USN01 p3_u1_o | **no completion** (22000 frames) | no |
+| USN02 s36_u2_p7 | completed 203.01 s | yes |
+| LOMP10 p3_l10_b | completed 1132.43 s | yes |
+| USN12 s38_u12_p2 | completed 1554.69 s | yes |
+| ESMP08 l46_e8_orders2 | completed 3446.89 s | yes |
+| LOMP06 l50_l6_q6 | completed 535.24 s | yes |
+| BSM01 l50_b1_a | EndMission 767.94 s | yes |
+
+USN01: Convoy3, 5, 2 and 1 sink (181.61 to 194.86 s); Convoy4 and Convoy6 survive. The strike has no margin by
+construction: the three TBD squadrons carry nine torpedoes, a transport has 2400 health and a torpedo takes about
+1190, and this run landed six (two each on Convoy3 and Convoy5, one each on Convoy2 and Convoy1). The rest of the kills
+come from gunfire on damaged ships. Any plane-AI change re-rolls which ship survives. Re-plan held until gunnery37's
+torpedo-aim and roll-arm flips land (lead, 2026-10-12).
