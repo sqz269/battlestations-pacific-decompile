@@ -75,8 +75,8 @@ still goes to Convoy2 first. All six transports sink by 279 s. Neighbours also w
 retarget at 3720 (p3_u1_z5) completes 460.36 s, and z4 plus SBD2/SBD3 retargets at 3730/3740 (p3_u1_z6) completes
 490.05 s. Splits that leave the TBD1 retarget at 3650 (p3_u1_q1..q3) lose Convoy2, because TBD1|.-3 now drops after
 3650. Late convoy kills do not count: in p3_u1_x3 / y5 the cruisers sink the last three transports at about 900 s
-and the mission still does not complete. The phase-2 check is gated on Mission.MainAttackHere, and the squadrons
-have ditched by then.
+and the mission still does not complete within 1600 s. Why is unexplained: on 355b60167 (below) z4 completes 178 s after a
+late Convoy6 kill at 836 s, so late kills can count.
 Orders in the file must stay in frame order (the generator sorts them).
 **ESMP08 on cd761bb52, not yet re-planned.** The win is `getn(alive USNFleet) == 0` (08_engano.lua). Torpedoes,
 not bombs, sink the fleet. B6N Jill is class 163 and B5N Kate 162 (this installation's vehicleclasses.lua);
@@ -107,3 +107,20 @@ failure is plane-AI behaviour (cruise altitude, descent, torpedo approach), whic
   the controlled unit, so re-select before any later `target` of another squadron. Keep files frame-sorted.
 - Open: ESMP08 (above), after gunnery37's next batch. The state-6 seaplane law (OCEAN_WAVE_FIELD 21) and the
   scaled-fort pruning (DYN_COLLISION_PASS) stay unbound by the lead's decision.
+## 2026-10-12, main 355b60167 (contains gunnery37's batch 088103ce0 / ba92657b9 and the audit9 dive fly-above trio), SHA-256 4EF43E5C88B4
+
+Logs local\p3k3_on_<row>.log.
+
+| Row | Result | Guard |
+|---|---|---|
+| USN01 p3_u1_z4 | completed 1014.63 s (Convoy1 at 330 s, Convoy6 at 836 s, so less margin than on cd761bb52) | yes |
+| USN02 s36_u2_p7 | completed 203.01 s | yes |
+| LOMP10 p3_l10_b | completed 1002.18 s | yes |
+| USN12 s38_u12_p2 | completed 1539.83 s | yes |
+| ESMP08 l46_e8_orders2 | **no completion** (90000 frames) | - |
+| LOMP06 l50_l6_q6 | completed 535.24 s | yes |
+| BSM01 l50_b1_a | EndMission 767.94 s | yes |
+
+ESMP08 against the k1 win: Cummings, Dunlap, Grayson and Woodworth now survive (in k1 they died between 1353 and
+2814 s, all to torpedoes). The batch did not restore it. Next keeper: re-plan ESMP08 from its torpedo budget (the
+mechanism is in the cd761bb52 section above).
