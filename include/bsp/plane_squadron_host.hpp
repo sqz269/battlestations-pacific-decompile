@@ -257,6 +257,27 @@ class PlaneSquadronRegistry {
 
 PlaneSquadronRegistry& plane_squadron_registry();
 
+// docs/CC13_AUDIT_REATTACK_AND_SKILL.md item A. The image's squadron entity
+// (PlaneSquadronGen, 007F2C60) is not one of its planes: 007F3970 compacts +3D0h
+// at a plane's death and kills the squadron (007F3A2A -> 00926D90) only at
+// +3CCh == 0, so its +5Ch/+5Dh/+60h/+5Eh bytes pass 0043F080 / 00645091..006450AF
+// while any plane lives. This host fuses the squadron into its wing-0 plane
+// (squadron_unit), so once that plane dies the player's select and target on
+// the squadron are refused and its surviving wing is never ordered again.
+// ON: a fused squadron slot answers those four bytes with the squadron's
+// liveness. LABELLED: the dead plane's slot stays the controlled unit.
+inline constexpr bool kFusedSquadronSlotSelectableBound = true;
+
+// The record whose fused slot is `unit`, when the switch is on and the squadron
+// still holds a plane (+3CCh > 0); nullptr otherwise.
+inline const PlaneSquadronHostRecord* plane_squadron_live_fused_slot(std::size_t unit) {
+    if (!kFusedSquadronSlotSelectableBound || unit == kPlaneSquadronNoUnit) return nullptr;
+    for (const PlaneSquadronHostRecord& r : plane_squadron_registry().records()) {
+        if (r.squadron_unit == unit) return r.live_count() > 0 ? &r : nullptr;
+    }
+    return nullptr;
+}
+
 // cc11_land_retained_hook: source-only views for 009B33F0 -> 007EFB60 ->
 // 007EEE50. These borrow a particular old task's squadron; they do not resolve
 // current plane membership, retain/refcount native objects, or supply a bot

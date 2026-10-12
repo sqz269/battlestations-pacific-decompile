@@ -1,0 +1,15 @@
+{
+ "packet": "cc13-sweep4B",
+ "document": "docs/CC13_BAND_004B_004F.md",
+ "source": "src/band_004b_cc13.cpp",
+ "status": "reconstructed_build_tested",
+ "call_sites": [
+  {"function": "004bb850", "address": "004bb872", "native": "004bb770", "name": "BSP_Game_CountActiveParticipantsBySide"},
+  {"function": "004bb8a0", "address": "004bb8ce", "native": "004bb850", "name": "BSP_Game_ParticipantSideHasRoom"},
+  {"function": "004b43b0", "address": "004b43b3", "native": "00a91020", "name": "BSP_InputDeviceTable_AnyDynamicDeviceButtonDown"},
+  {"function": "004c5070", "address": "004c5070", "native": "004bec00", "name": "BSP_InputManager_GetSingleton"},
+  {"function": "004c5090", "address": "004c5090", "native": "004bec00", "name": "BSP_InputManager_GetSingleton"},
+  {"function": "004c50d0", "address": "004c50d0", "native": "004bec00", "name": "BSP_InputManager_GetSingleton"},
+  {"function": "004bb550", "address": "004bb5f3", "native": "[[00F8A2FC]]+28h", "name": "XLiveSystem virtual +28h", "kind": "indirect"}
+ ]
+}

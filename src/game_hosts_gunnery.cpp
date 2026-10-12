@@ -306,6 +306,27 @@ constexpr float kTailGunnerHoldSum = 0.15707963705062866f;      // 00D18388, 9 d
 // robots.lua TailGunnerBot ShootRange by skill index (Stun, SPNormal, SPVeteran,
 // MPNormal, MPVeteran, Elite), read into the bot row +18h (008FCAF8).
 constexpr float kTailGunnerShootRange[6] = {950.0f, 750.0f, 800.0f, 800.0f, 850.0f, 950.0f};
+//  * kTailGunnerAimErrorBound: packet cc13-tailgun1, docs/CC13_TAIL_GUNNER_AIM_ERROR.md.
+//    TailGunnerBot 008FFA20 (a category-1 gun under a plane) holds its angle pair
+//    bot+70h/+74h for an aim period: countdown bot+6Ch -= dt (008FFB35) and only
+//    below zero is the pair re-solved, each axis plus U(0, AngleError) degrees
+//    (008FFCD9 / 008FFD05, stream 1, never negative) and the next period drawn
+//    U(AimPeriodMin, AimPeriodMax) (008FFD37). 008FEA40, the class's SetFireTarget
+//    that 00727F10 calls on every gunnery think, sets the countdown to -1.0
+//    (00D7A260). OFF: the pair is solved every tick with no error.
+//  * kTailGunnerOwnAimBound: the same bot's aim point is target->vtable[100h],
+//    which for a plane is 0042D810 (three zeroes), moved by the target pose
+//    (00414D10 at 008FFC3D): the target origin, with no 00901C20 lead. Nor does
+//    008FFA20 halve a negative vertical (00902F76 is 00902920's). OFF: the AA
+//    gunner's lead and halving.
+constexpr bool kTailGunnerAimErrorBound = true;  // GUNNERY 193: ON by pair verdict
+constexpr bool kTailGunnerOwnAimBound = true;  // GUNNERY 193: ON by pair verdict
+// This installation's robots.lua (2025-06-01), TailGunnerBot, by skill index:
+// {AngleError (+0Ch), AimPeriodMin (+10h), AimPeriodMax (+14h)}, copied to
+// bot+84h/+88h/+8Ch by 008FBEF0.
+constexpr float kTailGunnerAimRows[6][3] = {
+    {4.0f, 0.6f, 1.2f}, {3.0f, 0.1f, 0.8f}, {2.5f, 0.1f, 0.5f},
+    {2.5f, 0.1f, 0.3f}, {1.5f, 0.1f, 0.2f}, {0.0f, 0.0f, 0.1f}};
 constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
 constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
 // DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
@@ -1640,6 +1661,7 @@ struct GameGunneryHost::Impl {
         depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
         depth_charge_launch = 24, // 006FDA4F / 006FDAE3 / 006FDB26, the activate's three draws, key (gun, 0..2)
         line_of_fire_ttl = 25, // 0072F76D, the cache record's unread expiry, key (gun, target)
+        tail_gunner_error = 26, // 008FFCD9 / 008FFD05 offsets, 008FFD37 period, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -1689,6 +1711,14 @@ struct GameGunneryHost::Impl {
         float delay_5c{0.0f};
     };
     std::map<std::size_t, TailGunnerFire> tail_gunner_fire;
+    // Packet cc13-tailgun1: 008FFA20's +6Ch countdown and +70h/+74h pair per gun.
+    struct TailGunnerAim {
+        float countdown{0.0f};
+        float horz{0.0f}, vert{0.0f};
+    };
+    std::map<std::size_t, TailGunnerAim> tail_gunner_aim;
+    unsigned long long tail_gunner_aim_rolls{0};
+    unsigned long long tail_gunner_aim_resets{0};
     unsigned long long aa_test_gunner{0};
     unsigned long long aa_test_flak{0};
     unsigned long long aa_test_tail{0};
@@ -5695,6 +5725,12 @@ public:
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
         row.target_is_fire_target = is_fire_target;
+        if (kTailGunnerAimErrorBound && row.category == 1) {
+            // 00727F13..00727F2D: +390h's vtable[38h], for TailGunnerBot 008FEA40,
+            // which ends with bot+6Ch = -1.0 (00D7A260) whatever the target.
+            owner_.tail_gunner_aim[slot].countdown = -1.0f;
+            ++owner_.tail_gunner_aim_resets;
+        }
         if (is_fire_target && row.category == bsp::kUnitGunneryTorpedoCategory
             && !state_.torpedo_takes_fire_target_7d) {
             ++state_.byte_7d_fire_target_assigns_at_0;
@@ -6850,6 +6886,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         lead[i] = origin_of_target[i] + target_velocity[i] * flight;
                     }
                 }
+                if (kTailGunnerOwnAimBound && gun.category == 1
+                    && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    // 008FFBC6..008FFC3D: TailGunnerBot takes no 00901C20 lead; it
+                    // aims at target->vtable[100h] moved by the target pose. For a
+                    // plane that is 0042D810's zero offset, the origin. LABELLED: a
+                    // ship target's 00816650 hull-box draw is not made.
+                    for (int i = 0; i < 3; ++i) lead[i] = origin_of_target[i];
+                }
                 pitch = 0.0f;
                 ++aa_direct_aims;
                 record("GunBot::intercept_solution_00901c20", 0x00901c20u);
@@ -7030,6 +7074,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     aa_gunner_miss_sum += std::sqrt(static_cast<double>(sw.h) * sw.h
                         + static_cast<double>(sw.v) * sw.v) * distance;
                 }
+                if (kTailGunnerAimErrorBound && gun.category == 1
+                    && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    // 008FFB35..008FFD3C (see kTailGunnerAimErrorBound): the pair is
+                    // re-solved only when the countdown falls below zero, then held.
+                    TailGunnerAim& ta = tail_gunner_aim[g];
+                    if (bsp::gun_bot_turret_recompute_due_008ffa20(ta.countdown, dt)) {
+                        const float* row = kTailGunnerAimRows[aa_level];
+                        ta.horz = bsp::gun_bot_apply_aim_error_008ffa20(want_horz,
+                            draw(Draw::tail_gunner_error, g, 0, 0.0f, row[0]));   // 008FFCD9
+                        ta.vert = bsp::gun_bot_apply_aim_error_008ffa20(want_vert,
+                            draw(Draw::tail_gunner_error, g, 0, 0.0f, row[0]));   // 008FFD05
+                        ta.countdown = draw(Draw::tail_gunner_error, g, 0, row[1], row[2]); // 008FFD37
+                        ++tail_gunner_aim_rolls;
+                    }
+                    want_horz = ta.horz;
+                    want_vert = ta.vert;
+                }
                 if (kAaFlakAimErrorBound
                     && (gun.category == 5
                         || (gun.category == 6 && dp_air_ammo(g, gun.category, target) != nullptr))) {
@@ -7060,7 +7121,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         aa_flak_dist_abs_sum += d;
                     }
                 }
-                if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f) {
+                if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f
+                    && !(kTailGunnerOwnAimBound
+                         && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase))) {
                     want_vert *= 0.5f;    // 00902F76 FMUL [00D7A280]
                     ++aa_negative_halvings;
                 }
@@ -13312,6 +13375,13 @@ void GameGunneryHost::report() {
                 "flak=%llu tail=%llu (00902920 / 009030C0 / 008FFA20 + 008FEF40, packet "
                 "cc9_aa_bot_fire_tests)", kAaBotFireTestsBound ? 1 : 0, host.aa_test_gunner,
                 host.aa_test_flak, host.aa_test_tail);
+            if constexpr (kTailGunnerAimErrorBound || kTailGunnerOwnAimBound) {
+                host.log.notef("summary mission gunnery tail gunner aim error_bound=%d "
+                    "own_aim_bound=%d rolls=%llu resets=%llu (008FFA20 / 008FEA40, packet "
+                    "cc13-tailgun1)", kTailGunnerAimErrorBound ? 1 : 0,
+                    kTailGunnerOwnAimBound ? 1 : 0, host.tail_gunner_aim_rolls,
+                    host.tail_gunner_aim_resets);
+            }
             host.log.notef("summary mission gunnery wave order bound=%d pre_steps=%llu "
                 "(wave 1 0085AD80 before wave 2 006DF520, packet cc9_fire_request_timing)",
                 kGunWaveOrderBound ? 1 : 0, host.wave_order_pre_steps);

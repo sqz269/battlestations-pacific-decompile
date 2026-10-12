@@ -125,8 +125,11 @@ struct GameSettingsBlock {
     ControlSettings control{};
     PresentationSettings presentation{};
     // +98h data / +9Ch count, the stride-8 vector emitted under the
-    // DownloadedContent section. Each entry's +4h is a char*.
-    std::vector<std::string> downloaded_content{};
+    // DownloadedContent section. Each entry's +4h is a char*. 008D5030 passes
+    // it to download-manager virtual +14h (0043E940), which re-enables every
+    // unblocked package and then switches OFF each listed name, so the list
+    // holds the packages to DISABLE (renamed from downloaded_content).
+    std::vector<std::string> disabled_downloaded_content{};
 };
 
 // 008d41c0 game reset, __thiscall(void), RET. Writes +08h, +09h, +0Ch, +10h,

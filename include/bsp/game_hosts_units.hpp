@@ -458,11 +458,18 @@ inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/L
 // level-bomb (009B8C90), land (009B3C60) and moveto (009C3650) profile bodies run
 // once per install; the dive draw is made then. False: they run per think (the
 // moveto gate per 0.5 s refresh), as before.
-inline constexpr bool kTaskProfileActivationOnlyBound = false;
+inline constexpr bool kTaskProfileActivationOnlyBound = true;  // GUNNERY 193: ON by pair verdict
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
 inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
+// Packet cc13-smalldiffs1 (docs/CC13_SMALL_DIFFS_BATCH_2.md item 1). The moveto
+// refresh 009BEBA0 zeroes approach+2Ch (009BEBAA-009BEBB7) while the squadron
+// byte +3ADh is 0, which the Lua altitude natives 0089F550 / 008A22B0 /
+// 008A24E0 store and the profile writes 009C375A / 009C3906 / 009C89D6 undo.
+// True: the steer altitude drops the random offset while a script altitude is
+// live. False: cruise - offset always.
+inline constexpr bool kMoveToLuaAltZeroOffsetBound = false;  // OFF: not pair-tested
 
 class GameUnitsHost {
 public:

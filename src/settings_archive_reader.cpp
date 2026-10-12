@@ -56,13 +56,13 @@ void read_settings_archive_008d6dc0(GameSettingsBlock& s, GuiLuaReader& reader,
         reader.read_or_default_00bd68d0(gui_lua_key_by_name("ClanText"),
             gui_lua_field(Type::String, &s.gameplay.clan_text_b4), gui_lua_key_by_name(""));
     }
-    s.downloaded_content.clear();
+    s.disabled_downloaded_content.clear();
     if (reader.has_key_00bd5eb0(gui_lua_key_by_name("DownloadedContent"))) {
         reader.enter_00bd8e20(gui_lua_key_by_name("DownloadedContent"));
         for (std::int32_t index = 0; reader.has_key_00bd5eb0(gui_lua_key_by_index(index)); ++index) {
             std::string value;
             reader.read_00bd6830(gui_lua_key_by_index(index), gui_lua_field(Type::String, &value));
-            s.downloaded_content.push_back(std::move(value));
+            s.disabled_downloaded_content.push_back(std::move(value));
         }
         reader.leave_00bd7a20();
     }

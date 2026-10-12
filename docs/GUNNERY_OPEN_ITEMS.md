@@ -12734,3 +12734,167 @@ Open:
 - 006E8680 samples 0078CF20 at (x, y); projectile_impact.cpp's comment says (x, z). That is not this lane's file.
 - Wins casualties to report to the plan owners: ESMP08 (Cassin) with the Dyn bounds ON. With the live sea ON:
   USN01, LOMP10 and USN12 (section 15/16).
+
+## 189. cc13-audit7's plane-state diff behind three switches: `kDiveYawModeZeroBound` (B), `kDiveAimGlideArmsBound` (A, C) and `kDiveFlyAboveTermsBound` (C2, D, E) (lead queue; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_AUDIT_PLANE_BOT_STATES_2.md section 9, applied as written, then put behind three OFF
+switches in `include/bsp/dive_bomb_task.hpp` (`bsp::dive_bomb_constant`); the doc corrections it makes to the
+header comments (E's numerator, C settled) are kept as written. The reads are cc13's.
+- **B** (`kDiveYawModeZeroBound`): aimglide's yaw arm (`009C5420`) and the aimdive tail (`009C5E63`) set
+  `gl_yaw_mode_2d4_zero`, so the planner's yaw arm `0099E81A` no longer overwrites the state's `284h` each think.
+- **A, C** (`kDiveAimGlideArmsBound`): the pull-out latch's arm B (`009C57D3`) and aimglide's bank scale
+  `plan+2E8h = InterpolateClamped(100, 1, 250, 1.5; miss)` (`009C5444`).
+- **C2, D, E** (`kDiveFlyAboveTermsBound`): flyabove's `plan+2E8h = 1.5` with `+18h` clear (`009C6DF5`); `C` =
+  `ctl+398h` (`db_begin_alt_ac`); and the descent reference `min(2 err / max(A, 1), 0.8)` (`009C6F33`).
+- Not in this section: audit9's fly-over diff (CC13_AUDIT_PLANE_BOT_STATES_3.md), which is based on this diff
+  applied without switches and does not apply over the switched form; it is handed off (see the handoff).
+
+**Predictions (before any pair).**
+- B: every dive-bomb yaw command now survives the planner, so aimglide and aimdive steer laterally as commanded:
+  the cross-track error at release should shrink and USN04 phase 2's dive-bomb releases should rise (cc13's
+  candidate for 175(a)). Exit 3 on every dive row; the USN01 win may move.
+- A/C/D/E: aimglide banks up to 1.5x harder on a wide miss and can latch the pull-out by arm B; flyabove's bank scale
+  is 1.5 and its descent reference smaller for small height errors (slower descents). Exit 3 on dive rows.
+
+## 190. Four ready cc13 diffs applied OFF: the torpedo-bomber aim, the unlabelled draw pins, small batch 2 and the tail gunner's aim (lead queue; cc9-gunnery36, 2026-10-12; committed OFF, not yet paired)
+
+Each is applied as written (`git apply --check` clean on 189, then applied in this order); the reads are cc13's.
+- docs/CC13_AUDIT_TORPEDO_BOMBER.md: `kTorpedoAimPlanWritesBound` (aim's `plan+2E8h` = 1.4, the throttle/brake slots,
+  `+2D8h` = 0, the `+264h` fade), `kTorpedoAimClassInputsBound` (TurnRoll/Width/TurnCircleRadius feeding the bank
+  limit `plan+2C8h`), `kBandShaperPlan264Bound` (`pilot+264h` = 0.0 at `0099EB9D`; the lead's pilot+264h item uses
+  this switch). It also replaces `torpedo_approach_update.cpp`'s `roll_limit_2e8 = 0` under its switch.
+- docs/CC13_UNLABELLED_DRAWS_BATCH.md: `kDiveTurnSideLatchBound`, `kDiveTurnSideBankBound`, `kDiveTurnSideCoinBound`
+  (`009C859E`), `kAimGlideRearmDrawBound` (`009C579E`), `kAimDiveRearmDrawBound` (`009C6114`, superseding 181.2's
+  label) and `kDiveTurnRollDrawBound` (`009C7839`). It applied without audit9's diff.
+- docs/CC13_SMALL_DIFFS_BATCH_2.md: `kMoveToLuaAltZeroOffsetBound`, `kStrafeDoubleConstantsBound`,
+  `kStrafeAttackrunSeedDrawBound`.
+- docs/CC13_TAIL_GUNNER_AIM_ERROR.md: `kTailGunnerAimErrorBound` and `kTailGunnerOwnAimBound`
+  (`Draw::tail_gunner_error` = 26, free here).
+
+**Predictions** are the docs' own, recorded before any pair: TBDs hold slightly higher with `kBandShaperPlan264Bound`
+alone and lower with the roll arm (186); the draw pins move dive rows only (USN04, JM08); a script altitude is held
+exactly with `kMoveToLuaAltZeroOffsetBound` (USN01/USN04/USN12 move, JM08 and USN02 do not); the strafe constants
+are under 1 ulp (identical expected); the tail gunner switches move every row where bombers' tail guns fire (more
+bombers shot down, fewer fighter losses), and USN02 and LOMP06 do not move.
+
+## 191. Handoff (cc9-gunnery36, 2026-10-12, at about 75% context)
+
+**Landed or on `agent/cc9-gunnery36`, newest first.** Every switch below is committed OFF unless marked ON.
+
+| sha | section | what |
+|---|---|---|
+| `212e4bfb4` | 190 | torpedo-bomber aim (3), draw pins (6), small batch 2 (3), tail gunner (2): cc13 diffs as written |
+| `05ece33b3` | 189 | audit7 section 9 behind `kDiveYawModeZeroBound` (B), `kDiveAimGlideArmsBound` (A, C), `kDiveFlyAboveTermsBound` (C2, D, E) |
+| `8160e604f` | 188 | `kFlakFlyTimeBurstBound`, `kFlakBlastIgnoreFalloffBound` |
+| `c69233ebb` | 187 | `kTaskProfileActivationOnlyBound`, `kMoveToActivationDrawsBound` |
+| `16a54625b` | 186 | `kRollArmBaseNumeratorBound`; renumbering 181.2/184/185 |
+| `6a88d4e6f` | GAME_EXECUTABLE | reference AH interim: anchor = AG, no win lost |
+| `90493a7c3` | 184.3 | `kAaKind6GateBound` **ON** |
+| `c9a426a89` | 181.2.1 | `kAimDiveBrakeRatioBound` **ON** |
+| `800e376ac` | 185 | the shipyard-launch sentinel is a five-tick countdown (read) |
+
+**Pairs in flight** (all same-commit, reference launch form, `local\g36_pair.ps1`; OFF `local\g36_<tag>OFF`, ON
+`local\g36_<tag>ON`; logs `local\g36_<tag>{off,on}_<key>.log`; progress `local\g36_q_<tag>.jobs.progress`;
+`local\g36_res.ps1 <tags>` diffs finished keys into `local\g36_d_<tag>_<key>.txt`; `local\g36_wait.ps1` shows the
+queues). Keys: `u4p1` = USN04 phase 2 (`s39_u4_p1`, 0.0222, jitter `20,3`, 45000); `j8r7` = JM08 `l50_j8_r7` 20000;
+`w<key>` = the seven wins with `local\g36_ord_<key>.txt`; the rest are AG's idle rows.
+
+| tag | switch(es) ON | keys | first results (OFF -> ON) |
+|---|---|---|---|
+| `ra` | `kRollArmBaseNumeratorBound` | u4p1 j8r7 lomp10l e2 + 7 wins | u4p1 exit 3: torpedo releases 2/36 -> 4/39, deaths 68 -> 69 |
+| `cad` | `kTaskProfileActivationOnlyBound` | ijn01 e2 j8r7 wu1 | **ijn01 exit 1 (predicted to move: check whether `ijn_1_pearl.lua` 1009-1011 runs inside 3000 frames)**; j8r7 exit 3, deaths 154 -> 126, dive releases 26/33 -> 18/24 |
+| `mvd` | `kMoveToActivationDrawsBound` | e2 usn04 j8r7 wu1 | pending |
+| `fb` / `ff` | flak burst / falloff, separately | e2 usn13l lomp10l + 7 wins | ff e2 exit 3: torpedo releases 5/16 -> 1/16 |
+| `a7b` | `kDiveYawModeZeroBound` | u4p1 j8r7 wu1 | j8r7 exit 3: dive releases 26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173 |
+| `a7r` | `kDiveAimGlideArmsBound` + `kDiveFlyAboveTermsBound` | u4p1 j8r7 wu1 | **u4p1 exit 1** (no aimglide/flyabove reach on that row?); j8r7 exit 3, dive releases 26/33 -> 20/33 |
+| `tb` | the three torpedo-aim switches | u4p1 usnrm01 wu1 | usnrm01 exit 3, deaths 152 -> 149 |
+| `dp` | the six draw-pin switches | u4p1 j8r7 wu1 | pending |
+| `sb1` | `kMoveToLuaAltZeroOffsetBound` | usn01 usn04 usn12 jm08 usn02 | pending |
+| `sbs` | the two strafe switches | ijn01 jm08 wu1 | pending |
+| `tg` | the two tail-gunner switches | usnosl esmp08l usn12 usn13l bsm01 jm08 usn04 usn02 lomp06 | pending |
+
+**Still to do, in the lead's order.**
+1. Judge each pair above by mechanism (first divergence on the switch's own path), then flip or record. The lead
+   also wants `kRollArmBaseNumeratorBound` paired together with `kBandShaperPlan264Bound`, and the wins checked for
+   `ra` before it flips.
+2. **audit9's fly-over diff** (docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6) is NOT applied. It is based on
+   audit7's diff without switches, so it does not apply over 189's switched form (it applies on raw audit7 +
+   `dd31c362a`; tested here). It has no switches and rewrites the fly-over feed (the `+18h/+19h/+1Ah` carried
+   flags), the enter seeds, the flag step, BL's C, the 2C8h arm, 2E8h, the cross-track and the latched arm. Plan:
+   apply it on raw audit7 in a scratch tree, then rebase the result onto 189's switches with the old feed kept
+   under a `kDiveFlyAboveCarriedFlagsBound` (parts 3, 4) and the rest under `kDiveFlyAboveTermsBound` or a second
+   switch; pair 9/10 per aircraft on USN04 and JM08. Also its doc corrections to DIVE_BOMB_FLYOVER_FLAGS.md section 2
+   and DIVE_BOMB_TASK.md's flag table.
+3. Reference AH last, on a main with all of the above (AH interim: GAME_EXECUTABLE.md '2026-10-12 ah').
+
+**Notes.** `g36_pair.ps1` takes several flips as ONE comma-joined `-Flip` string (a space-separated second value
+was bound to `-OffFlip` once and that export was discarded). This tree must stay until the pairs are judged: the
+logs live in its `local\`.
+
+## 192. cc13-audit9's fly-over diff ported onto 189's switches: `kDiveFlyAboveCarriedFlagsBound`, `kDiveFlyAboveBankArmsBound` and `kDiveFlyAboveCrossTrackBound` (lead queue; cc9-gunnery37, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6. It is written against audit7's unswitched diff and
+does not apply over 189 (tested: `git apply --3way` fails in all three files; it does apply on `dd31c362a` + audit7,
+rebuilt in a scratch copy). It was ported by hand, behind three OFF switches in `include/bsp/dive_bomb_task.hpp`; the
+reads are cc13's and are not repeated here. With all three OFF the host is the one before this section (build-tested
+OFF and with all three ON).
+- `kDiveFlyAboveCarriedFlagsBound` (audit9 items 8-12, diff parts 3 and 4): the state feed hands 009C83E0 the
+  previous tick's `+18h/+19h/+1Ah`; the enter 009C6270 seeds `+18h = +19h = 0`, `+1Ah = (approach+D1h == 0)`; the
+  tick runs the flag step `dive_bomb_flyabove_flags_009c659f` (the 67B0 roll-in test on heading vs
+  `db_impact_bearing_18`, the dive test only on the BL leave edge, the bank arm only there) and stores
+  `plan+2E8h = 1.4` on the tick that reaches the dive test (009C683A).
+- `kDiveFlyAboveBankArmsBound` (items 4, 7 and 15, parts 1, 2 and 6): BL's C is `ctl+398h` (not `ACh + 50h`); the
+  bank limit `plan+2C8h = IC(400, 0.2, 600, 1.2, R)` within 700 m (approach+24h substituted 1.0, as the break-off
+  feed); the latched arm 009C6929 (yaw slot `sign(E) IC(40,0,120,1,R) IC(30 deg,0,70 deg,1,Eabs)`, bank 0, `2D4h = 0`,
+  and `+19h = +18h` when behind). With the carried flags OFF the latched arm runs on every BL tick with `+1Ch` set
+  and its `+19h` copy is dropped (the feed recomputes `+19h`).
+- `kDiveFlyAboveCrossTrackBound` (item 13, part 5): the bank arm's cross-track is `(0.5 + 0.5 sin Eabs) R`.
+- Not ported: item 18 (the avoidance increment, `+20h`) and approach+CCh, as in the diff. The doc corrections
+  (DIVE_BOMB_FLYOVER_FLAGS.md section 2, DIVE_BOMB_TASK.md's `009C680E` row) are applied.
+
+**Predictions (before any pair).**
+- Carried flags: the fly-over leaves later and differently: turndown only after the latched overfly (the 009C6A30
+  copy needs the bank-arms switch, so with this switch alone turndown needs a `+19h` set by 67B0 that survives, and
+  aimglide takes every 67B0 set); no goaway while BL holds. Exit 3 on USN04 phase 2 and JM08; per-aircraft
+  fly-over exits (transition `f18`/`f19`, `db_flyabove_bl_ticks`, `db_flyabove_latch_tick`) move on every dive bomber
+  that reaches flyabove. Rows without a dive bomber in flyabove stay identical.
+- Bank arms: the cross-track tests near the lead point bank harder (2C8h up to 1.2 instead of the planner's reseed),
+  and latched aircraft steer on the yaw slot instead of flying straight. Exit 3 on the dive rows.
+- Cross-track: `(0.5 + 0.5 s)` is below `1.5 s` for `s > 0.5` and above it for `s < 0.5`, so near-aligned
+  aircraft (Eabs below 30 deg) fail 009C6889 more often (a wider cross-track) and latch less; wide ones pass it
+  more and reach the 120 m latch test. Exit 3 on the dive rows.
+
+## 193. Verdicts on the 186-190 pairs (cc9-gunnery37, 2026-10-12)
+
+Pairs are cc9-gunnery36's (section 191's table; logs `local\g36_<tag>{off,on}_<key>.log` in its tree, diffs
+`local\g36_d_<tag>_<key>.txt`). First divergence by `local\g37_firstdiff.py` (a copy of g33_firstdiff.py) on the
+plane/task line classes.
+
+- **`kTaskProfileActivationOnlyBound` (187): ON.** IJN01 exit 1: the only moved count is `BotTaskLand::cruise_profile
+  009b3c60` calls 1636 -> 2 (the B-17 land tasks, one call per install as predicted); the land profile is idempotent
+  there, so gameplay holds. The predicted IJN01 move was wrong for a reason in the row, not the switch:
+  `ijn_1_pearl.lua` 1003-1013 (this installation, 2024-08-26) runs inside the window (SquadronSetTravelAlt/
+  SquadronSetAttackAlt 300 logged for A7M_1..8), but it issues `NavigatorAttackMove`, not a moveto (bindings
+  `attackmove=8 moveto=0`), so the moveto altitude gate never runs. JM08 exit 3, first divergence the
+  `hull_aim inrange` shooter altitude of `MainAirFieldEntity 01_sqn02` (1402.1 -> 1397.8 m): the dive profile's
+  altitude written once per install. USN01 win held (425.72 -> 430.67 s).
+- **Torpedo-aim group (190: `kTorpedoAimPlanWritesBound`, `kTorpedoAimClassInputsBound`, `kBandShaperPlan264Bound`):
+  LOSES THE USN01 WIN** (wu1: completed 425.72 s -> no completion in 1100 s; deaths 91 -> 64). First divergence:
+  `torpedo Mav3 aim census tick=51` (cmd_2C0 -2.0110 -> -2.0104), the switch's own path. USN04 phase 2 torpedo
+  releases 2/36 -> 1/36; USNRM01 exit 3. Stays OFF; leave-one-out on USN01 to name the switch.
+- **`kDiveYawModeZeroBound` (189 B): ON.** USN04 phase 2: dive-bomb releases 0/32 -> 12/32 (the prediction), deaths
+  68 -> 67; first divergence `aim lead D3A Val #1.1|.-4` projtime 19.01 -> 19.32, the yaw command surviving the
+  planner; in ON the aimglide gate passes (e.g. `#1.1|.-2` passed=1, lead -5.89 m). JM08 exit 3 (dive releases
+  26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173). USN01 win held (425.72 -> 396.03 s).- **`kMoveToActivationDrawsBound` (187): ON.** E2 (USN04 9000) exit 3, first divergence `moveto task A6M Zero
+  #1.2|.-2: arrived d=1111.9 -> 1149.1`, the activation draws; JM08 first divergence `Movie Mavis` dying 9 m lower
+  (762 -> 753 m), the moveto flying lower as predicted. USN04 4500 exit 3 (torpedo releases 5/16 -> 2/16). USN01 win
+  identical. **Recorded:** JM08 `l50_j8_r7` now FAILS at 993.68 s ("The HQ has been destroyed!"; OFF has no end in
+  1000 s; deaths 154 -> 139, dive releases 26/33 -> 11/22): an outcome of the moved air battle on a non-win row.- **The six draw pins (190: `kDiveTurnSideLatchBound`, `kDiveTurnSideBankBound`, `kDiveTurnSideCoinBound`,
+  `kDiveTurnRollDrawBound`, `kAimGlideRearmDrawBound`, `kAimDiveRearmDrawBound`): ON as a group.** Dive rows only, as
+  predicted: USN04 phase 2 exit 3, first divergence the dive bombers' aim lead (`D3A Val #3.1` takes the
+  `#3.1|.-2` slot's approach: the turn-side draws); JM08 exit 3 (dive releases 26/33 -> 19/15, torpedo 0/13 ->
+  10/65); USN01 win held (425.72 -> 643.47 s, all six convoy ships sunk).- **Tail gunner (190: `kTailGunnerAimErrorBound`, `kTailGunnerOwnAimBound`): ON as a group.** Reach is rare: of nine
+  rows only USN04 4500 rolls the error (`rolls=103`); its one change is the Kates' tail-gun fire (`B5N Kate #2.1`
+  shots 6 -> 0, `#2.1|.-2` 4 -> 9) and one US fighter (`Yorktown-class01_sqn04|.-3`) surviving: fewer fighter losses,
+  as predicted. The other eight (BSM01, ESMP08, JM08, LOMP06, USN02, USN12, USN13, USNOS) are gameplay-identical;
+  five of them only reset the own-aim state. USN02 and LOMP06 identical as predicted.

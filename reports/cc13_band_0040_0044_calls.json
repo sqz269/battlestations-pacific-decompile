@@ -1,0 +1,20 @@
+{
+  "packet": "cc13-sweep40",
+  "doc": "docs/CC13_BAND_0040_0044.md",
+  "steps": [
+    {"function": "00412070", "address": "00412098", "native": "00412010", "note": "grid step before the bounds test"},
+    {"function": "0043B700", "address": "0043B727", "native": "00BF924E", "note": "CRT toupper per sampled character"},
+    {"function": "0043E840", "address": "0043E883", "native": "00BF7FBF", "note": "_stricmp(query, record name)"},
+    {"function": "00439BD0", "address": "00439BFD", "native": "00BF7030", "note": "sqrt of the discriminant"},
+    {"function": "00438E80", "address": "00438E87", "native": "00BF86F0", "note": "strchr(text, '.')"},
+    {"function": "00438E80", "address": "00438E99", "native": "00BF86F0", "note": "strchr(dot, ' ')"},
+    {"function": "00438E80", "address": "00438EEC", "native": "00BF87E0", "note": "memmove deleting one trailing '0'"},
+    {"function": "00438E80", "address": "00438F01", "native": "00BF86F0", "note": "strchr(dot + 1, '.')"},
+    {"function": "0043EA80", "address": "0043EB2F", "native": "0041DD40", "note": "BSP_NativeString_Resize for the unordered-erase assignment"},
+    {"function": "0043EA80", "address": "0043EB45", "native": "00BF7680", "note": "memcpy of the last name over the erased slot"},
+    {"function": "0043EA80", "address": "0043EB6A", "native": "00419CC0", "note": "BSP_SizedStoragePool_GetSingleton before releasing the popped name"},
+    {"function": "0043EA80", "address": "0043EB71", "native": "00BD1510", "note": "pool block return of the popped name"},
+    {"function": "0043E8F0", "address": "0043E8F0+vtable08", "native": "0043E840", "note": "vslot 2 per listed name, enable"},
+    {"function": "0043E940", "address": "0043E940+vtable08", "native": "0043E840", "note": "vslot 2 per listed name, disable"}
+  ]
+}

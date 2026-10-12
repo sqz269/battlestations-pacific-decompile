@@ -1,0 +1,33 @@
+{
+  "packet": "cc13-sweep6D",
+  "doc": "docs/CC13_BAND_006D_006F.md",
+  "steps": [
+    {"address": "006d74c9", "native": "006b8ad0", "function": "006d74b0", "note": "MarkerClasses=nil through BSP_LuaMachine_RunString"},
+    {"address": "006d87ad", "native": "00b6d890", "function": "006d8750", "note": "scene instance root registration"},
+    {"address": "006d87e7", "native": "00bd2f10", "function": "006d8750", "note": "random start phase, ECX=1 (stream 1)"},
+    {"address": "006d87fd", "native": "006d7fc0", "function": "006d8750", "note": "initial pose"},
+    {"address": "006d8cd6", "native": "006d8750", "function": "006d8c70", "note": "CreateInstance -> Construct"},
+    {"address": "006d80c4", "native": "00b64640", "function": "006d7fc0", "note": "mode 1 rotation X"},
+    {"address": "006d810a", "native": "00b646e0", "function": "006d7fc0", "note": "mode 2 rotation Y"},
+    {"address": "006d813d", "native": "0042b4d0", "function": "006d7fc0", "note": "mode 3 rotation Z wrapper"},
+    {"address": "006dae37", "native": "006da5b0", "function": "006dae20", "note": "insert into recursiveGuiHighlights (+38h)"},
+    {"address": "006dae6f", "native": "006da5b0", "function": "006dae20", "note": "insert into +44h or +2Ch"},
+    {"address": "006dc5cd", "native": "006d8870", "function": "006dc5a0", "note": "find in guiHighlights"},
+    {"address": "006dc609", "native": "006d9bf0", "function": "006dc5a0", "note": "erase from guiHighlights"},
+    {"address": "006dc652", "native": "006d9bf0", "function": "006dc5a0", "note": "erase from recursiveGuiHighlights"},
+    {"address": "006dc665", "native": "006dbac0", "function": "006dc5a0", "note": "pulse reset (1,0,1.0f)"},
+    {"address": "006dc6a6", "native": "006d9bf0", "function": "006dc5a0", "note": "erase from tinted highlights (+44h)"},
+    {"address": "008ca3ed", "native": "006dae20", "function": "008ca1f0", "note": "luaMW_SetGUIHighlight add"},
+    {"address": "008ca401", "native": "006dc5a0", "function": "008ca1f0", "note": "luaMW_SetGUIHighlight remove"},
+    {"address": "006deb0c", "native": "006dc5a0", "function": "006deac0", "note": "manager destructor removes highlights"},
+    {"address": "006dd684", "native": "006d6170", "function": "006dd590", "note": "Vec3 key compare in insert-unique"},
+    {"address": "006de195", "native": "006d6170", "function": "006de150", "note": "Vec3 key compare in operator[]"},
+    {"address": "006d9a1f", "native": "006d9300", "function": "006d95d0", "note": "guiHighlights element path"},
+    {"address": "006f1469", "native": "006f0960", "function": "006f1440", "note": "fog-cloud model pool slot"},
+    {"address": "006f0c45", "native": "006f03a0", "function": "006f0c30", "note": "return block to pool"},
+    {"address": "006f06f6", "native": "006f03a0", "function": "006f06f0", "note": "pool operator delete"},
+    {"address": "006faf31", "native": "006f9cd0", "function": "006faf00", "note": "ConvexObject construct"},
+    {"address": "006faf47", "native": "006fad70", "function": "006faf00", "note": "ConvexObject payload"},
+    {"address": "006fae89", "native": "006f9ee0", "function": "006fad70", "note": "hull geometry"}
+  ]
+}

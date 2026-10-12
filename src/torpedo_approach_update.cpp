@@ -586,7 +586,10 @@ TorpedoAimCommand torpedo_aim_tick_009d15f0(const TorpedoAimTickInputs& in) noex
     // commanded speed and the ceiling at 00CE3814 and leaves the shaping out.
     cmd.commanded_throttle_2c8 = in.commanded_speed;
 
-    cmd.roll_limit_2e8 = 0.0f;          // 009D1D02, [00D06874]
+    // 009D1CFA MOVSS XMM0,[00D06874] = 1.4f, stored unconditionally at
+    // 009D1D02. The 0.0f this used to write contradicted its own citation.
+    // This function has no caller: the host runs torpedo_aim_tick_full_009d15f0.
+    cmd.roll_limit_2e8 = 1.4f;          // 009D1D02, [00D06874]
     cmd.flag_278 = 1.0f;                // 009D1F4A, [00D7A24C]
     cmd.flag_27c = 1;                   // 009D1F55
     cmd.flag_2a8 = 0.0f;                // 009D1F5C

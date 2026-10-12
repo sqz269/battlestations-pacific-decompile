@@ -1,0 +1,3470 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a3a160",
+    "end_address": "00a3a2f4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a3a160",
+    "end_address": "00a3a2f3",
+    "bytes_disassembled": 404,
+    "message": "Successfully disassembled 404 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a3a160",
+    "disassemble_first": false,
+    "name": "BSP_cNetworkClient_HandlePacket"
+   },
+   "result": {
+    "success": true,
+    "address": "00a3a160",
+    "function_name": "BSP_cNetworkClient_HandlePacket",
+    "entry_point": "00a3a160",
+    "body_size": 404,
+    "message": "Function created successfully at 00a3a160",
+    "warnings": [
+     "Function name 'BSP_cNetworkClient_HandlePacket' \u2014 main part 'BSP_cNetworkClient_HandlePacket' is not PascalCase. Expected: BspCnetworkclientHandlepacket",
+     "Function name 'BSP_cNetworkClient_HandlePacket' \u2014 main part 'BSP_cNetworkClient_HandlePacket' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a3a160",
+   "end": "00a3a2f4",
+   "name": "BSP_cNetworkClient_HandlePacket",
+   "after": "Function: BSP_cNetworkClient_HandlePacket at 00a3a160\nSignature: undefined BSP_cNetworkClient_HandlePacket(void)\nEntry: 00a3a160\nBody: 00a3a160 - 00a3a2f3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a3a320",
+    "end_address": "00a3a325"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a3a320",
+    "end_address": "00a3a324",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a3a320",
+    "disassemble_first": false,
+    "name": "BSP_cNetworkClient_HandlePacket_Thunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a3a320",
+    "function_name": "BSP_cNetworkClient_HandlePacket_Thunk",
+    "entry_point": "00a3a320",
+    "body_size": 5,
+    "message": "Function created successfully at 00a3a320",
+    "warnings": [
+     "Function name 'BSP_cNetworkClient_HandlePacket_Thunk' \u2014 main part 'BSP_cNetworkClient_HandlePacket_Thunk' is not PascalCase. Expected: BspCnetworkclientHandlepacketThunk",
+     "Function name 'BSP_cNetworkClient_HandlePacket_Thunk' \u2014 main part 'BSP_cNetworkClient_HandlePacket_Thunk' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a3a320",
+   "end": "00a3a325",
+   "name": "BSP_cNetworkClient_HandlePacket_Thunk",
+   "after": "Function: BSP_cNetworkClient_HandlePacket_Thunk at 00a3a320\nSignature: undefined BSP_cNetworkClient_HandlePacket_Thunk(void)\nEntry: 00a3a320\nBody: 00a3a320 - 00a3a324"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a3dab0",
+    "end_address": "00a3daf8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a3dab0",
+    "end_address": "00a3daf7",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a3dab0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00a3dab0",
+    "function_name": "FUN_00a3dab0",
+    "entry_point": "00a3dab0",
+    "body_size": 72,
+    "message": "Function created successfully at 00a3dab0"
+   }
+  },
+  {
+   "defined": "00a3dab0",
+   "end": "00a3daf8",
+   "name": null,
+   "after": "Function: FUN_00a3dab0 at 00a3dab0\nSignature: undefined FUN_00a3dab0(void)\nEntry: 00a3dab0\nBody: 00a3dab0 - 00a3daf7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a3e000",
+    "end_address": "00a3e39a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a3e000",
+    "end_address": "00a3e399",
+    "bytes_disassembled": 922,
+    "message": "Successfully disassembled 922 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a3e000",
+    "disassemble_first": false,
+    "name": "BSP_cNetworkServer_HandlePacket"
+   },
+   "result": {
+    "success": true,
+    "address": "00a3e000",
+    "function_name": "BSP_cNetworkServer_HandlePacket",
+    "entry_point": "00a3e000",
+    "body_size": 922,
+    "message": "Function created successfully at 00a3e000",
+    "warnings": [
+     "Function name 'BSP_cNetworkServer_HandlePacket' \u2014 main part 'BSP_cNetworkServer_HandlePacket' is not PascalCase. Expected: BspCnetworkserverHandlepacket",
+     "Function name 'BSP_cNetworkServer_HandlePacket' \u2014 main part 'BSP_cNetworkServer_HandlePacket' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a3e000",
+   "end": "00a3e39a",
+   "name": "BSP_cNetworkServer_HandlePacket",
+   "after": "Function: BSP_cNetworkServer_HandlePacket at 00a3e000\nSignature: undefined BSP_cNetworkServer_HandlePacket(void)\nEntry: 00a3e000\nBody: 00a3e000 - 00a3e399"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a3e3a0",
+    "end_address": "00a3e3a5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a3e3a0",
+    "end_address": "00a3e3a4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a3e3a0",
+    "disassemble_first": false,
+    "name": "BSP_cNetworkServer_HandlePacket_Thunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a3e3a0",
+    "function_name": "BSP_cNetworkServer_HandlePacket_Thunk",
+    "entry_point": "00a3e3a0",
+    "body_size": 5,
+    "message": "Function created successfully at 00a3e3a0",
+    "warnings": [
+     "Function name 'BSP_cNetworkServer_HandlePacket_Thunk' \u2014 main part 'BSP_cNetworkServer_HandlePacket_Thunk' is not PascalCase. Expected: BspCnetworkserverHandlepacketThunk",
+     "Function name 'BSP_cNetworkServer_HandlePacket_Thunk' \u2014 main part 'BSP_cNetworkServer_HandlePacket_Thunk' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a3e3a0",
+   "end": "00a3e3a5",
+   "name": "BSP_cNetworkServer_HandlePacket_Thunk",
+   "after": "Function: BSP_cNetworkServer_HandlePacket_Thunk at 00a3e3a0\nSignature: undefined BSP_cNetworkServer_HandlePacket_Thunk(void)\nEntry: 00a3e3a0\nBody: 00a3e3a0 - 00a3e3a4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a410f0",
+    "end_address": "00a410fb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a410f0",
+    "end_address": "00a410fa",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a410f0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_Slot4C_AdjustorThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a410f0",
+    "function_name": "BSP_MNetworkServerXLive_Slot4C_AdjustorThunk",
+    "entry_point": "00a410f0",
+    "body_size": 11,
+    "message": "Function created successfully at 00a410f0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_Slot4C_AdjustorThunk' \u2014 main part 'MNetworkServerXLive_Slot4C_AdjustorThunk' is not PascalCase. Expected: MnetworkserverxliveSlot4cAdjustorthunk",
+     "Function name 'BSP_MNetworkServerXLive_Slot4C_AdjustorThunk' \u2014 main part 'MNetworkServerXLive_Slot4C_AdjustorThunk' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a410f0",
+   "end": "00a410fb",
+   "name": "BSP_MNetworkServerXLive_Slot4C_AdjustorThunk",
+   "after": "Function: BSP_MNetworkServerXLive_Slot4C_AdjustorThunk at 00a410f0\nSignature: undefined BSP_MNetworkServerXLive_Slot4C_AdjustorThunk(void)\nEntry: 00a410f0\nBody: 00a410f0 - 00a410fa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41120",
+    "end_address": "00a41128"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41120",
+    "end_address": "00a41127",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41120",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_EndLanSearch"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41120",
+    "function_name": "BSP_MNetworkClientXLive_EndLanSearch",
+    "entry_point": "00a41120",
+    "body_size": 8,
+    "message": "Function created successfully at 00a41120",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_EndLanSearch' \u2014 main part 'MNetworkClientXLive_EndLanSearch' is not PascalCase. Expected: MnetworkclientxliveEndlansearch",
+     "Function name 'BSP_MNetworkClientXLive_EndLanSearch' \u2014 main part 'MNetworkClientXLive_EndLanSearch' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41120",
+   "end": "00a41128",
+   "name": "BSP_MNetworkClientXLive_EndLanSearch",
+   "after": "Function: BSP_MNetworkClientXLive_EndLanSearch at 00a41120\nSignature: undefined BSP_MNetworkClientXLive_EndLanSearch(void)\nEntry: 00a41120\nBody: 00a41120 - 00a41127"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a411a0",
+    "end_address": "00a411f2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a411a0",
+    "end_address": "00a411f1",
+    "bytes_disassembled": 82,
+    "message": "Successfully disassembled 82 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a411a0",
+    "disassemble_first": false,
+    "name": "BSP_XnAddr_Equals"
+   },
+   "result": {
+    "success": true,
+    "address": "00a411a0",
+    "function_name": "BSP_XnAddr_Equals",
+    "entry_point": "00a411a0",
+    "body_size": 82,
+    "message": "Function created successfully at 00a411a0",
+    "warnings": [
+     "Function name 'BSP_XnAddr_Equals' \u2014 main part 'XnAddr_Equals' is not PascalCase. Expected: XnaddrEquals",
+     "Function name 'BSP_XnAddr_Equals' \u2014 main part 'XnAddr_Equals' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_XnAddr_Equals' does not start with a recognized verb. First word 'Xn' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a411a0",
+   "end": "00a411f2",
+   "name": "BSP_XnAddr_Equals",
+   "after": "Function: BSP_XnAddr_Equals at 00a411a0\nSignature: undefined BSP_XnAddr_Equals(void)\nEntry: 00a411a0\nBody: 00a411a0 - 00a411f1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41220",
+    "end_address": "00a41241"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41220",
+    "end_address": "00a41240",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41220",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_OnDisconnected"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41220",
+    "function_name": "BSP_MNetworkClientXLive_OnDisconnected",
+    "entry_point": "00a41220",
+    "body_size": 33,
+    "message": "Function created successfully at 00a41220",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_OnDisconnected' \u2014 main part 'MNetworkClientXLive_OnDisconnected' is not PascalCase. Expected: MnetworkclientxliveOndisconnected",
+     "Function name 'BSP_MNetworkClientXLive_OnDisconnected' \u2014 main part 'MNetworkClientXLive_OnDisconnected' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41220",
+   "end": "00a41241",
+   "name": "BSP_MNetworkClientXLive_OnDisconnected",
+   "after": "Function: BSP_MNetworkClientXLive_OnDisconnected at 00a41220\nSignature: undefined BSP_MNetworkClientXLive_OnDisconnected(void)\nEntry: 00a41220\nBody: 00a41220 - 00a41240"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41280",
+    "end_address": "00a41294"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41280",
+    "end_address": "00a41293",
+    "bytes_disassembled": 20,
+    "message": "Successfully disassembled 20 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41280",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_StopReceive"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41280",
+    "function_name": "BSP_MNetworkClientXLive_StopReceive",
+    "entry_point": "00a41280",
+    "body_size": 20,
+    "message": "Function created successfully at 00a41280",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_StopReceive' \u2014 main part 'MNetworkClientXLive_StopReceive' is not PascalCase. Expected: MnetworkclientxliveStopreceive",
+     "Function name 'BSP_MNetworkClientXLive_StopReceive' \u2014 main part 'MNetworkClientXLive_StopReceive' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41280",
+   "end": "00a41294",
+   "name": "BSP_MNetworkClientXLive_StopReceive",
+   "after": "Function: BSP_MNetworkClientXLive_StopReceive at 00a41280\nSignature: undefined BSP_MNetworkClientXLive_StopReceive(void)\nEntry: 00a41280\nBody: 00a41280 - 00a41293"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a413d0",
+    "end_address": "00a413dd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a413d0",
+    "end_address": "00a413dc",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a413d0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_Slot50_Forward"
+   },
+   "result": {
+    "success": true,
+    "address": "00a413d0",
+    "function_name": "BSP_MNetworkServerXLive_Slot50_Forward",
+    "entry_point": "00a413d0",
+    "body_size": 13,
+    "message": "Function created successfully at 00a413d0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_Slot50_Forward' \u2014 main part 'MNetworkServerXLive_Slot50_Forward' is not PascalCase. Expected: MnetworkserverxliveSlot50Forward",
+     "Function name 'BSP_MNetworkServerXLive_Slot50_Forward' \u2014 main part 'MNetworkServerXLive_Slot50_Forward' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a413d0",
+   "end": "00a413dd",
+   "name": "BSP_MNetworkServerXLive_Slot50_Forward",
+   "after": "Function: BSP_MNetworkServerXLive_Slot50_Forward at 00a413d0\nSignature: undefined BSP_MNetworkServerXLive_Slot50_Forward(void)\nEntry: 00a413d0\nBody: 00a413d0 - 00a413dc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a413e0",
+    "end_address": "00a413ed"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a413e0",
+    "end_address": "00a413ec",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a413e0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_Slot54_Forward"
+   },
+   "result": {
+    "success": true,
+    "address": "00a413e0",
+    "function_name": "BSP_MNetworkServerXLive_Slot54_Forward",
+    "entry_point": "00a413e0",
+    "body_size": 13,
+    "message": "Function created successfully at 00a413e0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_Slot54_Forward' \u2014 main part 'MNetworkServerXLive_Slot54_Forward' is not PascalCase. Expected: MnetworkserverxliveSlot54Forward",
+     "Function name 'BSP_MNetworkServerXLive_Slot54_Forward' \u2014 main part 'MNetworkServerXLive_Slot54_Forward' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a413e0",
+   "end": "00a413ed",
+   "name": "BSP_MNetworkServerXLive_Slot54_Forward",
+   "after": "Function: BSP_MNetworkServerXLive_Slot54_Forward at 00a413e0\nSignature: undefined BSP_MNetworkServerXLive_Slot54_Forward(void)\nEntry: 00a413e0\nBody: 00a413e0 - 00a413ec"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a413f0",
+    "end_address": "00a413fd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a413f0",
+    "end_address": "00a413fc",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a413f0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_Slot58_Forward"
+   },
+   "result": {
+    "success": true,
+    "address": "00a413f0",
+    "function_name": "BSP_MNetworkServerXLive_Slot58_Forward",
+    "entry_point": "00a413f0",
+    "body_size": 13,
+    "message": "Function created successfully at 00a413f0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_Slot58_Forward' \u2014 main part 'MNetworkServerXLive_Slot58_Forward' is not PascalCase. Expected: MnetworkserverxliveSlot58Forward",
+     "Function name 'BSP_MNetworkServerXLive_Slot58_Forward' \u2014 main part 'MNetworkServerXLive_Slot58_Forward' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a413f0",
+   "end": "00a413fd",
+   "name": "BSP_MNetworkServerXLive_Slot58_Forward",
+   "after": "Function: BSP_MNetworkServerXLive_Slot58_Forward at 00a413f0\nSignature: undefined BSP_MNetworkServerXLive_Slot58_Forward(void)\nEntry: 00a413f0\nBody: 00a413f0 - 00a413fc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41400",
+    "end_address": "00a41433"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41400",
+    "end_address": "00a41432",
+    "bytes_disassembled": 51,
+    "message": "Successfully disassembled 51 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41400",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_DisconnectPeer"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41400",
+    "function_name": "BSP_MNetworkServerXLive_DisconnectPeer",
+    "entry_point": "00a41400",
+    "body_size": 51,
+    "message": "Function created successfully at 00a41400",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_DisconnectPeer' \u2014 main part 'MNetworkServerXLive_DisconnectPeer' is not PascalCase. Expected: MnetworkserverxliveDisconnectpeer",
+     "Function name 'BSP_MNetworkServerXLive_DisconnectPeer' \u2014 main part 'MNetworkServerXLive_DisconnectPeer' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41400",
+   "end": "00a41433",
+   "name": "BSP_MNetworkServerXLive_DisconnectPeer",
+   "after": "Function: BSP_MNetworkServerXLive_DisconnectPeer at 00a41400\nSignature: undefined BSP_MNetworkServerXLive_DisconnectPeer(void)\nEntry: 00a41400\nBody: 00a41400 - 00a41432"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41440",
+    "end_address": "00a41466"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41440",
+    "end_address": "00a41465",
+    "bytes_disassembled": 38,
+    "message": "Successfully disassembled 38 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41440",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_GetPeerLatency"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41440",
+    "function_name": "BSP_MNetworkServerXLive_GetPeerLatency",
+    "entry_point": "00a41440",
+    "body_size": 38,
+    "message": "Function created successfully at 00a41440",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_GetPeerLatency' \u2014 main part 'MNetworkServerXLive_GetPeerLatency' is not PascalCase. Expected: MnetworkserverxliveGetpeerlatency",
+     "Function name 'BSP_MNetworkServerXLive_GetPeerLatency' \u2014 main part 'MNetworkServerXLive_GetPeerLatency' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41440",
+   "end": "00a41466",
+   "name": "BSP_MNetworkServerXLive_GetPeerLatency",
+   "after": "Function: BSP_MNetworkServerXLive_GetPeerLatency at 00a41440\nSignature: undefined BSP_MNetworkServerXLive_GetPeerLatency(void)\nEntry: 00a41440\nBody: 00a41440 - 00a41465"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41470",
+    "end_address": "00a41491"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41470",
+    "end_address": "00a41490",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41470",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_GetPeerProfileValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41470",
+    "function_name": "BSP_MNetworkServerXLive_GetPeerProfileValue",
+    "entry_point": "00a41470",
+    "body_size": 33,
+    "message": "Function created successfully at 00a41470",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_GetPeerProfileValue' \u2014 main part 'MNetworkServerXLive_GetPeerProfileValue' is not PascalCase. Expected: MnetworkserverxliveGetpeerprofilevalue",
+     "Function name 'BSP_MNetworkServerXLive_GetPeerProfileValue' \u2014 main part 'MNetworkServerXLive_GetPeerProfileValue' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41470",
+   "end": "00a41491",
+   "name": "BSP_MNetworkServerXLive_GetPeerProfileValue",
+   "after": "Function: BSP_MNetworkServerXLive_GetPeerProfileValue at 00a41470\nSignature: undefined BSP_MNetworkServerXLive_GetPeerProfileValue(void)\nEntry: 00a41470\nBody: 00a41470 - 00a41490"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a414a0",
+    "end_address": "00a414c4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a414a0",
+    "end_address": "00a414c3",
+    "bytes_disassembled": 36,
+    "message": "Successfully disassembled 36 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a414a0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_GetPeerPendingCount"
+   },
+   "result": {
+    "success": true,
+    "address": "00a414a0",
+    "function_name": "BSP_MNetworkServerXLive_GetPeerPendingCount",
+    "entry_point": "00a414a0",
+    "body_size": 36,
+    "message": "Function created successfully at 00a414a0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_GetPeerPendingCount' \u2014 main part 'MNetworkServerXLive_GetPeerPendingCount' is not PascalCase. Expected: MnetworkserverxliveGetpeerpendingcount",
+     "Function name 'BSP_MNetworkServerXLive_GetPeerPendingCount' \u2014 main part 'MNetworkServerXLive_GetPeerPendingCount' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a414a0",
+   "end": "00a414c4",
+   "name": "BSP_MNetworkServerXLive_GetPeerPendingCount",
+   "after": "Function: BSP_MNetworkServerXLive_GetPeerPendingCount at 00a414a0\nSignature: undefined BSP_MNetworkServerXLive_GetPeerPendingCount(void)\nEntry: 00a414a0\nBody: 00a414a0 - 00a414c3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41590",
+    "end_address": "00a41597"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41590",
+    "end_address": "00a41596",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41590",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_GetHostInfo"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41590",
+    "function_name": "BSP_MNetworkClientXLive_GetHostInfo",
+    "entry_point": "00a41590",
+    "body_size": 7,
+    "message": "Function created successfully at 00a41590",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_GetHostInfo' \u2014 main part 'MNetworkClientXLive_GetHostInfo' is not PascalCase. Expected: MnetworkclientxliveGethostinfo",
+     "Function name 'BSP_MNetworkClientXLive_GetHostInfo' \u2014 main part 'MNetworkClientXLive_GetHostInfo' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41590",
+   "end": "00a41597",
+   "name": "BSP_MNetworkClientXLive_GetHostInfo",
+   "after": "Function: BSP_MNetworkClientXLive_GetHostInfo at 00a41590\nSignature: undefined BSP_MNetworkClientXLive_GetHostInfo(void)\nEntry: 00a41590\nBody: 00a41590 - 00a41596"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a415a0",
+    "end_address": "00a415ab"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a415a0",
+    "end_address": "00a415aa",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a415a0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_SetState2"
+   },
+   "result": {
+    "success": true,
+    "address": "00a415a0",
+    "function_name": "BSP_MNetworkClientXLive_SetState2",
+    "entry_point": "00a415a0",
+    "body_size": 11,
+    "message": "Function created successfully at 00a415a0",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_SetState2' \u2014 main part 'MNetworkClientXLive_SetState2' is not PascalCase. Expected: MnetworkclientxliveSetstate2",
+     "Function name 'BSP_MNetworkClientXLive_SetState2' \u2014 main part 'MNetworkClientXLive_SetState2' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a415a0",
+   "end": "00a415ab",
+   "name": "BSP_MNetworkClientXLive_SetState2",
+   "after": "Function: BSP_MNetworkClientXLive_SetState2 at 00a415a0\nSignature: undefined BSP_MNetworkClientXLive_SetState2(void)\nEntry: 00a415a0\nBody: 00a415a0 - 00a415aa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41900",
+    "end_address": "00a419a2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41900",
+    "end_address": "00a419a1",
+    "bytes_disassembled": 162,
+    "message": "Successfully disassembled 162 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41900",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_Disconnect"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41900",
+    "function_name": "BSP_MNetworkClientXLive_Disconnect",
+    "entry_point": "00a41900",
+    "body_size": 162,
+    "message": "Function created successfully at 00a41900",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_Disconnect' \u2014 main part 'MNetworkClientXLive_Disconnect' is not PascalCase. Expected: MnetworkclientxliveDisconnect",
+     "Function name 'BSP_MNetworkClientXLive_Disconnect' \u2014 main part 'MNetworkClientXLive_Disconnect' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41900",
+   "end": "00a419a2",
+   "name": "BSP_MNetworkClientXLive_Disconnect",
+   "after": "Function: BSP_MNetworkClientXLive_Disconnect at 00a41900\nSignature: undefined BSP_MNetworkClientXLive_Disconnect(void)\nEntry: 00a41900\nBody: 00a41900 - 00a419a1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41bd0",
+    "end_address": "00a41bf1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41bd0",
+    "end_address": "00a41bf0",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41bd0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_GetPeerProfileValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41bd0",
+    "function_name": "BSP_MNetworkClientXLive_GetPeerProfileValue",
+    "entry_point": "00a41bd0",
+    "body_size": 33,
+    "message": "Function created successfully at 00a41bd0",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_GetPeerProfileValue' \u2014 main part 'MNetworkClientXLive_GetPeerProfileValue' is not PascalCase. Expected: MnetworkclientxliveGetpeerprofilevalue",
+     "Function name 'BSP_MNetworkClientXLive_GetPeerProfileValue' \u2014 main part 'MNetworkClientXLive_GetPeerProfileValue' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41bd0",
+   "end": "00a41bf1",
+   "name": "BSP_MNetworkClientXLive_GetPeerProfileValue",
+   "after": "Function: BSP_MNetworkClientXLive_GetPeerProfileValue at 00a41bd0\nSignature: undefined BSP_MNetworkClientXLive_GetPeerProfileValue(void)\nEntry: 00a41bd0\nBody: 00a41bd0 - 00a41bf0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a41c00",
+    "end_address": "00a41c24"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a41c00",
+    "end_address": "00a41c23",
+    "bytes_disassembled": 36,
+    "message": "Successfully disassembled 36 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a41c00",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkClientXLive_GetPeerPendingCount"
+   },
+   "result": {
+    "success": true,
+    "address": "00a41c00",
+    "function_name": "BSP_MNetworkClientXLive_GetPeerPendingCount",
+    "entry_point": "00a41c00",
+    "body_size": 36,
+    "message": "Function created successfully at 00a41c00",
+    "warnings": [
+     "Function name 'BSP_MNetworkClientXLive_GetPeerPendingCount' \u2014 main part 'MNetworkClientXLive_GetPeerPendingCount' is not PascalCase. Expected: MnetworkclientxliveGetpeerpendingcount",
+     "Function name 'BSP_MNetworkClientXLive_GetPeerPendingCount' \u2014 main part 'MNetworkClientXLive_GetPeerPendingCount' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a41c00",
+   "end": "00a41c24",
+   "name": "BSP_MNetworkClientXLive_GetPeerPendingCount",
+   "after": "Function: BSP_MNetworkClientXLive_GetPeerPendingCount at 00a41c00\nSignature: undefined BSP_MNetworkClientXLive_GetPeerPendingCount(void)\nEntry: 00a41c00\nBody: 00a41c00 - 00a41c23"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a422f0",
+    "end_address": "00a4240d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a422f0",
+    "end_address": "00a4240c",
+    "bytes_disassembled": 285,
+    "message": "Successfully disassembled 285 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a422f0",
+    "disassemble_first": false,
+    "name": "BSP_MNetworkServerXLive_ResolvePacketSource"
+   },
+   "result": {
+    "success": true,
+    "address": "00a422f0",
+    "function_name": "BSP_MNetworkServerXLive_ResolvePacketSource",
+    "entry_point": "00a422f0",
+    "body_size": 282,
+    "message": "Function created successfully at 00a422f0",
+    "warnings": [
+     "Function name 'BSP_MNetworkServerXLive_ResolvePacketSource' \u2014 main part 'MNetworkServerXLive_ResolvePacketSource' is not PascalCase. Expected: MnetworkserverxliveResolvepacketsource",
+     "Function name 'BSP_MNetworkServerXLive_ResolvePacketSource' \u2014 main part 'MNetworkServerXLive_ResolvePacketSource' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a422f0",
+   "end": "00a4240d",
+   "name": "BSP_MNetworkServerXLive_ResolvePacketSource",
+   "after": "Function: BSP_MNetworkServerXLive_ResolvePacketSource at 00a422f0\nSignature: undefined BSP_MNetworkServerXLive_ResolvePacketSource(void)\nEntry: 00a422f0\nBody: 00a422f0 - 00a4240c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42690",
+    "end_address": "00a4269b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42690",
+    "end_address": "00a4269a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42690",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsEthernetLinkUp"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42690",
+    "function_name": "BSP_XLiveSystem_IsEthernetLinkUp",
+    "entry_point": "00a42690",
+    "body_size": 11,
+    "message": "Function created successfully at 00a42690",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsEthernetLinkUp' \u2014 main part 'XLiveSystem_IsEthernetLinkUp' is not PascalCase. Expected: XlivesystemIsethernetlinkup",
+     "Function name 'BSP_XLiveSystem_IsEthernetLinkUp' \u2014 main part 'XLiveSystem_IsEthernetLinkUp' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42690",
+   "end": "00a4269b",
+   "name": "BSP_XLiveSystem_IsEthernetLinkUp",
+   "after": "Function: BSP_XLiveSystem_IsEthernetLinkUp at 00a42690\nSignature: undefined BSP_XLiveSystem_IsEthernetLinkUp(void)\nEntry: 00a42690\nBody: 00a42690 - 00a4269a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a426d0",
+    "end_address": "00a426d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a426d0",
+    "end_address": "00a426d6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a426d0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetBlock174"
+   },
+   "result": {
+    "success": true,
+    "address": "00a426d0",
+    "function_name": "BSP_XLiveSystem_GetBlock174",
+    "entry_point": "00a426d0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a426d0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetBlock174' \u2014 main part 'XLiveSystem_GetBlock174' is not PascalCase. Expected: XlivesystemGetblock174",
+     "Function name 'BSP_XLiveSystem_GetBlock174' \u2014 main part 'XLiveSystem_GetBlock174' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a426d0",
+   "end": "00a426d7",
+   "name": "BSP_XLiveSystem_GetBlock174",
+   "after": "Function: BSP_XLiveSystem_GetBlock174 at 00a426d0\nSignature: undefined BSP_XLiveSystem_GetBlock174(void)\nEntry: 00a426d0\nBody: 00a426d0 - 00a426d6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42830",
+    "end_address": "00a4285e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42830",
+    "end_address": "00a4285d",
+    "bytes_disassembled": 46,
+    "message": "Successfully disassembled 46 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42830",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsRemoteTalking"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42830",
+    "function_name": "BSP_XLiveSystem_IsRemoteTalking",
+    "entry_point": "00a42830",
+    "body_size": 46,
+    "message": "Function created successfully at 00a42830",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsRemoteTalking' \u2014 main part 'XLiveSystem_IsRemoteTalking' is not PascalCase. Expected: XlivesystemIsremotetalking",
+     "Function name 'BSP_XLiveSystem_IsRemoteTalking' \u2014 main part 'XLiveSystem_IsRemoteTalking' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42830",
+   "end": "00a4285e",
+   "name": "BSP_XLiveSystem_IsRemoteTalking",
+   "after": "Function: BSP_XLiveSystem_IsRemoteTalking at 00a42830\nSignature: undefined BSP_XLiveSystem_IsRemoteTalking(void)\nEntry: 00a42830\nBody: 00a42830 - 00a4285d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42860",
+    "end_address": "00a42865"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42860",
+    "end_address": "00a42864",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42860",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_SlotC0"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42860",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_SlotC0",
+    "entry_point": "00a42860",
+    "body_size": 5,
+    "message": "Function created successfully at 00a42860",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_SlotC0' \u2014 main part 'XLiveSystem_ReturnFalse_SlotC0' is not PascalCase. Expected: XlivesystemReturnfalseSlotc0",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_SlotC0' \u2014 main part 'XLiveSystem_ReturnFalse_SlotC0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42860",
+   "end": "00a42865",
+   "name": "BSP_XLiveSystem_ReturnFalse_SlotC0",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_SlotC0 at 00a42860\nSignature: undefined BSP_XLiveSystem_ReturnFalse_SlotC0(void)\nEntry: 00a42860\nBody: 00a42860 - 00a42864"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42870",
+    "end_address": "00a42891"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42870",
+    "end_address": "00a42890",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42870",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetSlotFlag1C02"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42870",
+    "function_name": "BSP_XLiveSystem_GetSlotFlag1C02",
+    "entry_point": "00a42870",
+    "body_size": 33,
+    "message": "Function created successfully at 00a42870",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetSlotFlag1C02' \u2014 main part 'XLiveSystem_GetSlotFlag1C02' is not PascalCase. Expected: XlivesystemGetslotflag1c02",
+     "Function name 'BSP_XLiveSystem_GetSlotFlag1C02' \u2014 main part 'XLiveSystem_GetSlotFlag1C02' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42870",
+   "end": "00a42891",
+   "name": "BSP_XLiveSystem_GetSlotFlag1C02",
+   "after": "Function: BSP_XLiveSystem_GetSlotFlag1C02 at 00a42870\nSignature: undefined BSP_XLiveSystem_GetSlotFlag1C02(void)\nEntry: 00a42870\nBody: 00a42870 - 00a42890"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a428a0",
+    "end_address": "00a428a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a428a0",
+    "end_address": "00a428a6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a428a0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetBlock1F1C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a428a0",
+    "function_name": "BSP_XLiveSystem_GetBlock1F1C",
+    "entry_point": "00a428a0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a428a0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetBlock1F1C' \u2014 main part 'XLiveSystem_GetBlock1F1C' is not PascalCase. Expected: XlivesystemGetblock1f1c",
+     "Function name 'BSP_XLiveSystem_GetBlock1F1C' \u2014 main part 'XLiveSystem_GetBlock1F1C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a428a0",
+   "end": "00a428a7",
+   "name": "BSP_XLiveSystem_GetBlock1F1C",
+   "after": "Function: BSP_XLiveSystem_GetBlock1F1C at 00a428a0\nSignature: undefined BSP_XLiveSystem_GetBlock1F1C(void)\nEntry: 00a428a0\nBody: 00a428a0 - 00a428a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a428b0",
+    "end_address": "00a428c8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a428b0",
+    "end_address": "00a428c7",
+    "bytes_disassembled": 24,
+    "message": "Successfully disassembled 24 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a428b0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetVoiceMaskRecord"
+   },
+   "result": {
+    "success": true,
+    "address": "00a428b0",
+    "function_name": "BSP_XLiveSystem_GetVoiceMaskRecord",
+    "entry_point": "00a428b0",
+    "body_size": 24,
+    "message": "Function created successfully at 00a428b0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetVoiceMaskRecord' \u2014 main part 'XLiveSystem_GetVoiceMaskRecord' is not PascalCase. Expected: XlivesystemGetvoicemaskrecord",
+     "Function name 'BSP_XLiveSystem_GetVoiceMaskRecord' \u2014 main part 'XLiveSystem_GetVoiceMaskRecord' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a428b0",
+   "end": "00a428c8",
+   "name": "BSP_XLiveSystem_GetVoiceMaskRecord",
+   "after": "Function: BSP_XLiveSystem_GetVoiceMaskRecord at 00a428b0\nSignature: undefined BSP_XLiveSystem_GetVoiceMaskRecord(void)\nEntry: 00a428b0\nBody: 00a428b0 - 00a428c7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a428f0",
+    "end_address": "00a428ff"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a428f0",
+    "end_address": "00a428fe",
+    "bytes_disassembled": 15,
+    "message": "Successfully disassembled 15 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a428f0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetFlag2060"
+   },
+   "result": {
+    "success": true,
+    "address": "00a428f0",
+    "function_name": "BSP_XLiveSystem_GetFlag2060",
+    "entry_point": "00a428f0",
+    "body_size": 15,
+    "message": "Function created successfully at 00a428f0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetFlag2060' \u2014 main part 'XLiveSystem_GetFlag2060' is not PascalCase. Expected: XlivesystemGetflag2060",
+     "Function name 'BSP_XLiveSystem_GetFlag2060' \u2014 main part 'XLiveSystem_GetFlag2060' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a428f0",
+   "end": "00a428ff",
+   "name": "BSP_XLiveSystem_GetFlag2060",
+   "after": "Function: BSP_XLiveSystem_GetFlag2060 at 00a428f0\nSignature: undefined BSP_XLiveSystem_GetFlag2060(void)\nEntry: 00a428f0\nBody: 00a428f0 - 00a428fe"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42900",
+    "end_address": "00a4290f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42900",
+    "end_address": "00a4290e",
+    "bytes_disassembled": 15,
+    "message": "Successfully disassembled 15 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42900",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetFlag205C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42900",
+    "function_name": "BSP_XLiveSystem_GetFlag205C",
+    "entry_point": "00a42900",
+    "body_size": 15,
+    "message": "Function created successfully at 00a42900",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetFlag205C' \u2014 main part 'XLiveSystem_GetFlag205C' is not PascalCase. Expected: XlivesystemGetflag205c",
+     "Function name 'BSP_XLiveSystem_GetFlag205C' \u2014 main part 'XLiveSystem_GetFlag205C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42900",
+   "end": "00a4290f",
+   "name": "BSP_XLiveSystem_GetFlag205C",
+   "after": "Function: BSP_XLiveSystem_GetFlag205C at 00a42900\nSignature: undefined BSP_XLiveSystem_GetFlag205C(void)\nEntry: 00a42900\nBody: 00a42900 - 00a4290e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42910",
+    "end_address": "00a42920"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42910",
+    "end_address": "00a4291f",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42910",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ClearFlag2060"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42910",
+    "function_name": "BSP_XLiveSystem_ClearFlag2060",
+    "entry_point": "00a42910",
+    "body_size": 16,
+    "message": "Function created successfully at 00a42910",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ClearFlag2060' \u2014 main part 'XLiveSystem_ClearFlag2060' is not PascalCase. Expected: XlivesystemClearflag2060",
+     "Function name 'BSP_XLiveSystem_ClearFlag2060' \u2014 main part 'XLiveSystem_ClearFlag2060' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42910",
+   "end": "00a42920",
+   "name": "BSP_XLiveSystem_ClearFlag2060",
+   "after": "Function: BSP_XLiveSystem_ClearFlag2060 at 00a42910\nSignature: undefined BSP_XLiveSystem_ClearFlag2060(void)\nEntry: 00a42910\nBody: 00a42910 - 00a4291f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42920",
+    "end_address": "00a42930"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42920",
+    "end_address": "00a4292f",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42920",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ClearFlag205C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42920",
+    "function_name": "BSP_XLiveSystem_ClearFlag205C",
+    "entry_point": "00a42920",
+    "body_size": 16,
+    "message": "Function created successfully at 00a42920",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ClearFlag205C' \u2014 main part 'XLiveSystem_ClearFlag205C' is not PascalCase. Expected: XlivesystemClearflag205c",
+     "Function name 'BSP_XLiveSystem_ClearFlag205C' \u2014 main part 'XLiveSystem_ClearFlag205C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42920",
+   "end": "00a42930",
+   "name": "BSP_XLiveSystem_ClearFlag205C",
+   "after": "Function: BSP_XLiveSystem_ClearFlag205C at 00a42920\nSignature: undefined BSP_XLiveSystem_ClearFlag205C(void)\nEntry: 00a42920\nBody: 00a42920 - 00a4292f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42930",
+    "end_address": "00a42935"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42930",
+    "end_address": "00a42934",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42930",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_Slot130"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42930",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_Slot130",
+    "entry_point": "00a42930",
+    "body_size": 5,
+    "message": "Function created successfully at 00a42930",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot130' \u2014 main part 'XLiveSystem_ReturnFalse_Slot130' is not PascalCase. Expected: XlivesystemReturnfalseSlot130",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot130' \u2014 main part 'XLiveSystem_ReturnFalse_Slot130' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42930",
+   "end": "00a42935",
+   "name": "BSP_XLiveSystem_ReturnFalse_Slot130",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_Slot130 at 00a42930\nSignature: undefined BSP_XLiveSystem_ReturnFalse_Slot130(void)\nEntry: 00a42930\nBody: 00a42930 - 00a42934"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42940",
+    "end_address": "00a4295a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42940",
+    "end_address": "00a42959",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42940",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetSlotFlag1C12"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42940",
+    "function_name": "BSP_XLiveSystem_GetSlotFlag1C12",
+    "entry_point": "00a42940",
+    "body_size": 26,
+    "message": "Function created successfully at 00a42940",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetSlotFlag1C12' \u2014 main part 'XLiveSystem_GetSlotFlag1C12' is not PascalCase. Expected: XlivesystemGetslotflag1c12",
+     "Function name 'BSP_XLiveSystem_GetSlotFlag1C12' \u2014 main part 'XLiveSystem_GetSlotFlag1C12' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42940",
+   "end": "00a4295a",
+   "name": "BSP_XLiveSystem_GetSlotFlag1C12",
+   "after": "Function: BSP_XLiveSystem_GetSlotFlag1C12 at 00a42940\nSignature: undefined BSP_XLiveSystem_GetSlotFlag1C12(void)\nEntry: 00a42940\nBody: 00a42940 - 00a42959"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42960",
+    "end_address": "00a42977"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42960",
+    "end_address": "00a42976",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42960",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_SetSlotFlag1C12"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42960",
+    "function_name": "BSP_XLiveSystem_SetSlotFlag1C12",
+    "entry_point": "00a42960",
+    "body_size": 23,
+    "message": "Function created successfully at 00a42960",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_SetSlotFlag1C12' \u2014 main part 'XLiveSystem_SetSlotFlag1C12' is not PascalCase. Expected: XlivesystemSetslotflag1c12",
+     "Function name 'BSP_XLiveSystem_SetSlotFlag1C12' \u2014 main part 'XLiveSystem_SetSlotFlag1C12' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42960",
+   "end": "00a42977",
+   "name": "BSP_XLiveSystem_SetSlotFlag1C12",
+   "after": "Function: BSP_XLiveSystem_SetSlotFlag1C12 at 00a42960\nSignature: undefined BSP_XLiveSystem_SetSlotFlag1C12(void)\nEntry: 00a42960\nBody: 00a42960 - 00a42976"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a429a0",
+    "end_address": "00a429a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a429a0",
+    "end_address": "00a429a6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a429a0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetList168"
+   },
+   "result": {
+    "success": true,
+    "address": "00a429a0",
+    "function_name": "BSP_XLiveSystem_GetList168",
+    "entry_point": "00a429a0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a429a0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetList168' \u2014 main part 'XLiveSystem_GetList168' is not PascalCase. Expected: XlivesystemGetlist168",
+     "Function name 'BSP_XLiveSystem_GetList168' \u2014 main part 'XLiveSystem_GetList168' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a429a0",
+   "end": "00a429a7",
+   "name": "BSP_XLiveSystem_GetList168",
+   "after": "Function: BSP_XLiveSystem_GetList168 at 00a429a0\nSignature: undefined BSP_XLiveSystem_GetList168(void)\nEntry: 00a429a0\nBody: 00a429a0 - 00a429a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a429e0",
+    "end_address": "00a42a13"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a429e0",
+    "end_address": "00a42a12",
+    "bytes_disassembled": 51,
+    "message": "Successfully disassembled 51 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a429e0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_SetSessionUserProperties"
+   },
+   "result": {
+    "success": true,
+    "address": "00a429e0",
+    "function_name": "BSP_XLiveSystem_SetSessionUserProperties",
+    "entry_point": "00a429e0",
+    "body_size": 51,
+    "message": "Function created successfully at 00a429e0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_SetSessionUserProperties' \u2014 main part 'XLiveSystem_SetSessionUserProperties' is not PascalCase. Expected: XlivesystemSetsessionuserproperties",
+     "Function name 'BSP_XLiveSystem_SetSessionUserProperties' \u2014 main part 'XLiveSystem_SetSessionUserProperties' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a429e0",
+   "end": "00a42a13",
+   "name": "BSP_XLiveSystem_SetSessionUserProperties",
+   "after": "Function: BSP_XLiveSystem_SetSessionUserProperties at 00a429e0\nSignature: undefined BSP_XLiveSystem_SetSessionUserProperties(void)\nEntry: 00a429e0\nBody: 00a429e0 - 00a42a12"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42a30",
+    "end_address": "00a42a45"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42a30",
+    "end_address": "00a42a44",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42a30",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ShutdownVoice"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42a30",
+    "function_name": "BSP_XLiveSystem_ShutdownVoice",
+    "entry_point": "00a42a30",
+    "body_size": 21,
+    "message": "Function created successfully at 00a42a30",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ShutdownVoice' \u2014 main part 'XLiveSystem_ShutdownVoice' is not PascalCase. Expected: XlivesystemShutdownvoice",
+     "Function name 'BSP_XLiveSystem_ShutdownVoice' \u2014 main part 'XLiveSystem_ShutdownVoice' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42a30",
+   "end": "00a42a45",
+   "name": "BSP_XLiveSystem_ShutdownVoice",
+   "after": "Function: BSP_XLiveSystem_ShutdownVoice at 00a42a30\nSignature: undefined BSP_XLiveSystem_ShutdownVoice(void)\nEntry: 00a42a30\nBody: 00a42a30 - 00a42a44"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a43310",
+    "end_address": "00a43327"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a43310",
+    "end_address": "00a43326",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a43310",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ClearLastError"
+   },
+   "result": {
+    "success": true,
+    "address": "00a43310",
+    "function_name": "BSP_XLiveSystem_ClearLastError",
+    "entry_point": "00a43310",
+    "body_size": 23,
+    "message": "Function created successfully at 00a43310",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ClearLastError' \u2014 main part 'XLiveSystem_ClearLastError' is not PascalCase. Expected: XlivesystemClearlasterror",
+     "Function name 'BSP_XLiveSystem_ClearLastError' \u2014 main part 'XLiveSystem_ClearLastError' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a43310",
+   "end": "00a43327",
+   "name": "BSP_XLiveSystem_ClearLastError",
+   "after": "Function: BSP_XLiveSystem_ClearLastError at 00a43310\nSignature: undefined BSP_XLiveSystem_ClearLastError(void)\nEntry: 00a43310\nBody: 00a43310 - 00a43326"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a44230",
+    "end_address": "00a442d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a44230",
+    "end_address": "00a442d6",
+    "bytes_disassembled": 167,
+    "message": "Successfully disassembled 167 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a44230",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ResetVoice16"
+   },
+   "result": {
+    "success": true,
+    "address": "00a44230",
+    "function_name": "BSP_XLiveSystem_ResetVoice16",
+    "entry_point": "00a44230",
+    "body_size": 167,
+    "message": "Function created successfully at 00a44230",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ResetVoice16' \u2014 main part 'XLiveSystem_ResetVoice16' is not PascalCase. Expected: XlivesystemResetvoice16",
+     "Function name 'BSP_XLiveSystem_ResetVoice16' \u2014 main part 'XLiveSystem_ResetVoice16' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a44230",
+   "end": "00a442d7",
+   "name": "BSP_XLiveSystem_ResetVoice16",
+   "after": "Function: BSP_XLiveSystem_ResetVoice16 at 00a44230\nSignature: undefined BSP_XLiveSystem_ResetVoice16(void)\nEntry: 00a44230\nBody: 00a44230 - 00a442d6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a44800",
+    "end_address": "00a44815"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a44800",
+    "end_address": "00a44814",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a44800",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IgnoreString_Slot98"
+   },
+   "result": {
+    "success": true,
+    "address": "00a44800",
+    "function_name": "BSP_XLiveSystem_IgnoreString_Slot98",
+    "entry_point": "00a44800",
+    "body_size": 21,
+    "message": "Function created successfully at 00a44800",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IgnoreString_Slot98' \u2014 main part 'XLiveSystem_IgnoreString_Slot98' is not PascalCase. Expected: XlivesystemIgnorestringSlot98",
+     "Function name 'BSP_XLiveSystem_IgnoreString_Slot98' \u2014 main part 'XLiveSystem_IgnoreString_Slot98' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a44800",
+   "end": "00a44815",
+   "name": "BSP_XLiveSystem_IgnoreString_Slot98",
+   "after": "Function: BSP_XLiveSystem_IgnoreString_Slot98 at 00a44800\nSignature: undefined BSP_XLiveSystem_IgnoreString_Slot98(void)\nEntry: 00a44800\nBody: 00a44800 - 00a44814"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a44820",
+    "end_address": "00a44835"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a44820",
+    "end_address": "00a44834",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a44820",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IgnoreString_Slot9C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a44820",
+    "function_name": "BSP_XLiveSystem_IgnoreString_Slot9C",
+    "entry_point": "00a44820",
+    "body_size": 21,
+    "message": "Function created successfully at 00a44820",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IgnoreString_Slot9C' \u2014 main part 'XLiveSystem_IgnoreString_Slot9C' is not PascalCase. Expected: XlivesystemIgnorestringSlot9c",
+     "Function name 'BSP_XLiveSystem_IgnoreString_Slot9C' \u2014 main part 'XLiveSystem_IgnoreString_Slot9C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a44820",
+   "end": "00a44835",
+   "name": "BSP_XLiveSystem_IgnoreString_Slot9C",
+   "after": "Function: BSP_XLiveSystem_IgnoreString_Slot9C at 00a44820\nSignature: undefined BSP_XLiveSystem_IgnoreString_Slot9C(void)\nEntry: 00a44820\nBody: 00a44820 - 00a44834"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a45010",
+    "end_address": "00a4507d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a45010",
+    "end_address": "00a4507c",
+    "bytes_disassembled": 109,
+    "message": "Successfully disassembled 109 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a45010",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_SetVoiceMaskByName"
+   },
+   "result": {
+    "success": true,
+    "address": "00a45010",
+    "function_name": "BSP_XLiveSystem_SetVoiceMaskByName",
+    "entry_point": "00a45010",
+    "body_size": 109,
+    "message": "Function created successfully at 00a45010",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_SetVoiceMaskByName' \u2014 main part 'XLiveSystem_SetVoiceMaskByName' is not PascalCase. Expected: XlivesystemSetvoicemaskbyname",
+     "Function name 'BSP_XLiveSystem_SetVoiceMaskByName' \u2014 main part 'XLiveSystem_SetVoiceMaskByName' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a45010",
+   "end": "00a4507d",
+   "name": "BSP_XLiveSystem_SetVoiceMaskByName",
+   "after": "Function: BSP_XLiveSystem_SetVoiceMaskByName at 00a45010\nSignature: undefined BSP_XLiveSystem_SetVoiceMaskByName(void)\nEntry: 00a45010\nBody: 00a45010 - 00a4507c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a46620",
+    "end_address": "00a466d1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a46620",
+    "end_address": "00a466d0",
+    "bytes_disassembled": 177,
+    "message": "Successfully disassembled 177 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a46620",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ResetVoice"
+   },
+   "result": {
+    "success": true,
+    "address": "00a46620",
+    "function_name": "BSP_XLiveSystem_ResetVoice",
+    "entry_point": "00a46620",
+    "body_size": 177,
+    "message": "Function created successfully at 00a46620",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ResetVoice' \u2014 main part 'XLiveSystem_ResetVoice' is not PascalCase. Expected: XlivesystemResetvoice",
+     "Function name 'BSP_XLiveSystem_ResetVoice' \u2014 main part 'XLiveSystem_ResetVoice' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a46620",
+   "end": "00a466d1",
+   "name": "BSP_XLiveSystem_ResetVoice",
+   "after": "Function: BSP_XLiveSystem_ResetVoice at 00a46620\nSignature: undefined BSP_XLiveSystem_ResetVoice(void)\nEntry: 00a46620\nBody: 00a46620 - 00a466d0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47220",
+    "end_address": "00a4734f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47220",
+    "end_address": "00a4734e",
+    "bytes_disassembled": 303,
+    "message": "Successfully disassembled 303 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47220",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_AddLanLocalPlayer"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47220",
+    "function_name": "BSP_XLiveSystem_AddLanLocalPlayer",
+    "entry_point": "00a47220",
+    "body_size": 303,
+    "message": "Function created successfully at 00a47220",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_AddLanLocalPlayer' \u2014 main part 'XLiveSystem_AddLanLocalPlayer' is not PascalCase. Expected: XlivesystemAddlanlocalplayer",
+     "Function name 'BSP_XLiveSystem_AddLanLocalPlayer' \u2014 main part 'XLiveSystem_AddLanLocalPlayer' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47220",
+   "end": "00a4734f",
+   "name": "BSP_XLiveSystem_AddLanLocalPlayer",
+   "after": "Function: BSP_XLiveSystem_AddLanLocalPlayer at 00a47220\nSignature: undefined BSP_XLiveSystem_AddLanLocalPlayer(void)\nEntry: 00a47220\nBody: 00a47220 - 00a4734e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47890",
+    "end_address": "00a47897"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47890",
+    "end_address": "00a47896",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47890",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsOnlineStarted"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47890",
+    "function_name": "BSP_XLiveSystem_IsOnlineStarted",
+    "entry_point": "00a47890",
+    "body_size": 7,
+    "message": "Function created successfully at 00a47890",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsOnlineStarted' \u2014 main part 'XLiveSystem_IsOnlineStarted' is not PascalCase. Expected: XlivesystemIsonlinestarted",
+     "Function name 'BSP_XLiveSystem_IsOnlineStarted' \u2014 main part 'XLiveSystem_IsOnlineStarted' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47890",
+   "end": "00a47897",
+   "name": "BSP_XLiveSystem_IsOnlineStarted",
+   "after": "Function: BSP_XLiveSystem_IsOnlineStarted at 00a47890\nSignature: undefined BSP_XLiveSystem_IsOnlineStarted(void)\nEntry: 00a47890\nBody: 00a47890 - 00a47896"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a478a0",
+    "end_address": "00a478a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a478a0",
+    "end_address": "00a478a6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a478a0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetFlag124"
+   },
+   "result": {
+    "success": true,
+    "address": "00a478a0",
+    "function_name": "BSP_XLiveSystem_GetFlag124",
+    "entry_point": "00a478a0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a478a0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetFlag124' \u2014 main part 'XLiveSystem_GetFlag124' is not PascalCase. Expected: XlivesystemGetflag124",
+     "Function name 'BSP_XLiveSystem_GetFlag124' \u2014 main part 'XLiveSystem_GetFlag124' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a478a0",
+   "end": "00a478a7",
+   "name": "BSP_XLiveSystem_GetFlag124",
+   "after": "Function: BSP_XLiveSystem_GetFlag124 at 00a478a0\nSignature: undefined BSP_XLiveSystem_GetFlag124(void)\nEntry: 00a478a0\nBody: 00a478a0 - 00a478a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a478b0",
+    "end_address": "00a478b7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a478b0",
+    "end_address": "00a478b6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a478b0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_HasLastError"
+   },
+   "result": {
+    "success": true,
+    "address": "00a478b0",
+    "function_name": "BSP_XLiveSystem_HasLastError",
+    "entry_point": "00a478b0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a478b0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_HasLastError' \u2014 main part 'XLiveSystem_HasLastError' is not PascalCase. Expected: XlivesystemHaslasterror",
+     "Function name 'BSP_XLiveSystem_HasLastError' \u2014 main part 'XLiveSystem_HasLastError' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a478b0",
+   "end": "00a478b7",
+   "name": "BSP_XLiveSystem_HasLastError",
+   "after": "Function: BSP_XLiveSystem_HasLastError at 00a478b0\nSignature: undefined BSP_XLiveSystem_HasLastError(void)\nEntry: 00a478b0\nBody: 00a478b0 - 00a478b6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a478c0",
+    "end_address": "00a478c7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a478c0",
+    "end_address": "00a478c6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a478c0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetFlag1BDC"
+   },
+   "result": {
+    "success": true,
+    "address": "00a478c0",
+    "function_name": "BSP_XLiveSystem_GetFlag1BDC",
+    "entry_point": "00a478c0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a478c0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetFlag1BDC' \u2014 main part 'XLiveSystem_GetFlag1BDC' is not PascalCase. Expected: XlivesystemGetflag1bdc",
+     "Function name 'BSP_XLiveSystem_GetFlag1BDC' \u2014 main part 'XLiveSystem_GetFlag1BDC' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a478c0",
+   "end": "00a478c7",
+   "name": "BSP_XLiveSystem_GetFlag1BDC",
+   "after": "Function: BSP_XLiveSystem_GetFlag1BDC at 00a478c0\nSignature: undefined BSP_XLiveSystem_GetFlag1BDC(void)\nEntry: 00a478c0\nBody: 00a478c0 - 00a478c6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47920",
+    "end_address": "00a4792b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47920",
+    "end_address": "00a4792a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47920",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsVoiceActive"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47920",
+    "function_name": "BSP_XLiveSystem_IsVoiceActive",
+    "entry_point": "00a47920",
+    "body_size": 11,
+    "message": "Function created successfully at 00a47920",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsVoiceActive' \u2014 main part 'XLiveSystem_IsVoiceActive' is not PascalCase. Expected: XlivesystemIsvoiceactive",
+     "Function name 'BSP_XLiveSystem_IsVoiceActive' \u2014 main part 'XLiveSystem_IsVoiceActive' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47920",
+   "end": "00a4792b",
+   "name": "BSP_XLiveSystem_IsVoiceActive",
+   "after": "Function: BSP_XLiveSystem_IsVoiceActive at 00a47920\nSignature: undefined BSP_XLiveSystem_IsVoiceActive(void)\nEntry: 00a47920\nBody: 00a47920 - 00a4792a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47930",
+    "end_address": "00a47933"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47930",
+    "end_address": "00a47932",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47930",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_SlotF8"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47930",
+    "function_name": "BSP_XLiveSystem_Nop_SlotF8",
+    "entry_point": "00a47930",
+    "body_size": 3,
+    "message": "Function created successfully at 00a47930",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_SlotF8' \u2014 main part 'XLiveSystem_Nop_SlotF8' is not PascalCase. Expected: XlivesystemNopSlotf8",
+     "Function name 'BSP_XLiveSystem_Nop_SlotF8' \u2014 main part 'XLiveSystem_Nop_SlotF8' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47930",
+   "end": "00a47933",
+   "name": "BSP_XLiveSystem_Nop_SlotF8",
+   "after": "Function: BSP_XLiveSystem_Nop_SlotF8 at 00a47930\nSignature: undefined BSP_XLiveSystem_Nop_SlotF8(void)\nEntry: 00a47930\nBody: 00a47930 - 00a47932"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47940",
+    "end_address": "00a47943"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47940",
+    "end_address": "00a47942",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47940",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_SlotFC"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47940",
+    "function_name": "BSP_XLiveSystem_Nop_SlotFC",
+    "entry_point": "00a47940",
+    "body_size": 3,
+    "message": "Function created successfully at 00a47940",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_SlotFC' \u2014 main part 'XLiveSystem_Nop_SlotFC' is not PascalCase. Expected: XlivesystemNopSlotfc",
+     "Function name 'BSP_XLiveSystem_Nop_SlotFC' \u2014 main part 'XLiveSystem_Nop_SlotFC' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47940",
+   "end": "00a47943",
+   "name": "BSP_XLiveSystem_Nop_SlotFC",
+   "after": "Function: BSP_XLiveSystem_Nop_SlotFC at 00a47940\nSignature: undefined BSP_XLiveSystem_Nop_SlotFC(void)\nEntry: 00a47940\nBody: 00a47940 - 00a47942"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47950",
+    "end_address": "00a47953"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47950",
+    "end_address": "00a47952",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47950",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_Slot100"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47950",
+    "function_name": "BSP_XLiveSystem_Nop_Slot100",
+    "entry_point": "00a47950",
+    "body_size": 3,
+    "message": "Function created successfully at 00a47950",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_Slot100' \u2014 main part 'XLiveSystem_Nop_Slot100' is not PascalCase. Expected: XlivesystemNopSlot100",
+     "Function name 'BSP_XLiveSystem_Nop_Slot100' \u2014 main part 'XLiveSystem_Nop_Slot100' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47950",
+   "end": "00a47953",
+   "name": "BSP_XLiveSystem_Nop_Slot100",
+   "after": "Function: BSP_XLiveSystem_Nop_Slot100 at 00a47950\nSignature: undefined BSP_XLiveSystem_Nop_Slot100(void)\nEntry: 00a47950\nBody: 00a47950 - 00a47952"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47960",
+    "end_address": "00a47963"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47960",
+    "end_address": "00a47962",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47960",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_Slot104"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47960",
+    "function_name": "BSP_XLiveSystem_Nop_Slot104",
+    "entry_point": "00a47960",
+    "body_size": 3,
+    "message": "Function created successfully at 00a47960",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_Slot104' \u2014 main part 'XLiveSystem_Nop_Slot104' is not PascalCase. Expected: XlivesystemNopSlot104",
+     "Function name 'BSP_XLiveSystem_Nop_Slot104' \u2014 main part 'XLiveSystem_Nop_Slot104' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47960",
+   "end": "00a47963",
+   "name": "BSP_XLiveSystem_Nop_Slot104",
+   "after": "Function: BSP_XLiveSystem_Nop_Slot104 at 00a47960\nSignature: undefined BSP_XLiveSystem_Nop_Slot104(void)\nEntry: 00a47960\nBody: 00a47960 - 00a47962"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47970",
+    "end_address": "00a47975"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47970",
+    "end_address": "00a47974",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47970",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_Slot10C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47970",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_Slot10C",
+    "entry_point": "00a47970",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47970",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot10C' \u2014 main part 'XLiveSystem_ReturnFalse_Slot10C' is not PascalCase. Expected: XlivesystemReturnfalseSlot10c",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot10C' \u2014 main part 'XLiveSystem_ReturnFalse_Slot10C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47970",
+   "end": "00a47975",
+   "name": "BSP_XLiveSystem_ReturnFalse_Slot10C",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_Slot10C at 00a47970\nSignature: undefined BSP_XLiveSystem_ReturnFalse_Slot10C(void)\nEntry: 00a47970\nBody: 00a47970 - 00a47974"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47980",
+    "end_address": "00a47985"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47980",
+    "end_address": "00a47984",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47980",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_Slot110"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47980",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_Slot110",
+    "entry_point": "00a47980",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47980",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot110' \u2014 main part 'XLiveSystem_ReturnFalse_Slot110' is not PascalCase. Expected: XlivesystemReturnfalseSlot110",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot110' \u2014 main part 'XLiveSystem_ReturnFalse_Slot110' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47980",
+   "end": "00a47985",
+   "name": "BSP_XLiveSystem_ReturnFalse_Slot110",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_Slot110 at 00a47980\nSignature: undefined BSP_XLiveSystem_ReturnFalse_Slot110(void)\nEntry: 00a47980\nBody: 00a47980 - 00a47984"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47990",
+    "end_address": "00a47995"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47990",
+    "end_address": "00a47994",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47990",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnZeroFloat_Slot108"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47990",
+    "function_name": "BSP_XLiveSystem_ReturnZeroFloat_Slot108",
+    "entry_point": "00a47990",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47990",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnZeroFloat_Slot108' \u2014 main part 'XLiveSystem_ReturnZeroFloat_Slot108' is not PascalCase. Expected: XlivesystemReturnzerofloatSlot108",
+     "Function name 'BSP_XLiveSystem_ReturnZeroFloat_Slot108' \u2014 main part 'XLiveSystem_ReturnZeroFloat_Slot108' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47990",
+   "end": "00a47995",
+   "name": "BSP_XLiveSystem_ReturnZeroFloat_Slot108",
+   "after": "Function: BSP_XLiveSystem_ReturnZeroFloat_Slot108 at 00a47990\nSignature: undefined BSP_XLiveSystem_ReturnZeroFloat_Slot108(void)\nEntry: 00a47990\nBody: 00a47990 - 00a47994"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a479a0",
+    "end_address": "00a479a5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a479a0",
+    "end_address": "00a479a4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a479a0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_Slot114"
+   },
+   "result": {
+    "success": true,
+    "address": "00a479a0",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_Slot114",
+    "entry_point": "00a479a0",
+    "body_size": 5,
+    "message": "Function created successfully at 00a479a0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot114' \u2014 main part 'XLiveSystem_ReturnFalse_Slot114' is not PascalCase. Expected: XlivesystemReturnfalseSlot114",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot114' \u2014 main part 'XLiveSystem_ReturnFalse_Slot114' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a479a0",
+   "end": "00a479a5",
+   "name": "BSP_XLiveSystem_ReturnFalse_Slot114",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_Slot114 at 00a479a0\nSignature: undefined BSP_XLiveSystem_ReturnFalse_Slot114(void)\nEntry: 00a479a0\nBody: 00a479a0 - 00a479a4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a479b0",
+    "end_address": "00a479b5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a479b0",
+    "end_address": "00a479b4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a479b0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnFalse_Slot11C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a479b0",
+    "function_name": "BSP_XLiveSystem_ReturnFalse_Slot11C",
+    "entry_point": "00a479b0",
+    "body_size": 5,
+    "message": "Function created successfully at 00a479b0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot11C' \u2014 main part 'XLiveSystem_ReturnFalse_Slot11C' is not PascalCase. Expected: XlivesystemReturnfalseSlot11c",
+     "Function name 'BSP_XLiveSystem_ReturnFalse_Slot11C' \u2014 main part 'XLiveSystem_ReturnFalse_Slot11C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a479b0",
+   "end": "00a479b5",
+   "name": "BSP_XLiveSystem_ReturnFalse_Slot11C",
+   "after": "Function: BSP_XLiveSystem_ReturnFalse_Slot11C at 00a479b0\nSignature: undefined BSP_XLiveSystem_ReturnFalse_Slot11C(void)\nEntry: 00a479b0\nBody: 00a479b0 - 00a479b4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a479c0",
+    "end_address": "00a479c3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a479c0",
+    "end_address": "00a479c2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a479c0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_Slot118"
+   },
+   "result": {
+    "success": true,
+    "address": "00a479c0",
+    "function_name": "BSP_XLiveSystem_Nop_Slot118",
+    "entry_point": "00a479c0",
+    "body_size": 3,
+    "message": "Function created successfully at 00a479c0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_Slot118' \u2014 main part 'XLiveSystem_Nop_Slot118' is not PascalCase. Expected: XlivesystemNopSlot118",
+     "Function name 'BSP_XLiveSystem_Nop_Slot118' \u2014 main part 'XLiveSystem_Nop_Slot118' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a479c0",
+   "end": "00a479c3",
+   "name": "BSP_XLiveSystem_Nop_Slot118",
+   "after": "Function: BSP_XLiveSystem_Nop_Slot118 at 00a479c0\nSignature: undefined BSP_XLiveSystem_Nop_Slot118(void)\nEntry: 00a479c0\nBody: 00a479c0 - 00a479c2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a479f0",
+    "end_address": "00a479f7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a479f0",
+    "end_address": "00a479f6",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a479f0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetFloat1D40"
+   },
+   "result": {
+    "success": true,
+    "address": "00a479f0",
+    "function_name": "BSP_XLiveSystem_GetFloat1D40",
+    "entry_point": "00a479f0",
+    "body_size": 7,
+    "message": "Function created successfully at 00a479f0",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetFloat1D40' \u2014 main part 'XLiveSystem_GetFloat1D40' is not PascalCase. Expected: XlivesystemGetfloat1d40",
+     "Function name 'BSP_XLiveSystem_GetFloat1D40' \u2014 main part 'XLiveSystem_GetFloat1D40' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a479f0",
+   "end": "00a479f7",
+   "name": "BSP_XLiveSystem_GetFloat1D40",
+   "after": "Function: BSP_XLiveSystem_GetFloat1D40 at 00a479f0\nSignature: undefined BSP_XLiveSystem_GetFloat1D40(void)\nEntry: 00a479f0\nBody: 00a479f0 - 00a479f6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a00",
+    "end_address": "00a47a05"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a00",
+    "end_address": "00a47a04",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a00",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnTrue_Slot134"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a00",
+    "function_name": "BSP_XLiveSystem_ReturnTrue_Slot134",
+    "entry_point": "00a47a00",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47a00",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot134' \u2014 main part 'XLiveSystem_ReturnTrue_Slot134' is not PascalCase. Expected: XlivesystemReturntrueSlot134",
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot134' \u2014 main part 'XLiveSystem_ReturnTrue_Slot134' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a00",
+   "end": "00a47a05",
+   "name": "BSP_XLiveSystem_ReturnTrue_Slot134",
+   "after": "Function: BSP_XLiveSystem_ReturnTrue_Slot134 at 00a47a00\nSignature: undefined BSP_XLiveSystem_ReturnTrue_Slot134(void)\nEntry: 00a47a00\nBody: 00a47a00 - 00a47a04"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a10",
+    "end_address": "00a47a15"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a10",
+    "end_address": "00a47a14",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a10",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnTrue_Slot138"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a10",
+    "function_name": "BSP_XLiveSystem_ReturnTrue_Slot138",
+    "entry_point": "00a47a10",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47a10",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot138' \u2014 main part 'XLiveSystem_ReturnTrue_Slot138' is not PascalCase. Expected: XlivesystemReturntrueSlot138",
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot138' \u2014 main part 'XLiveSystem_ReturnTrue_Slot138' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a10",
+   "end": "00a47a15",
+   "name": "BSP_XLiveSystem_ReturnTrue_Slot138",
+   "after": "Function: BSP_XLiveSystem_ReturnTrue_Slot138 at 00a47a10\nSignature: undefined BSP_XLiveSystem_ReturnTrue_Slot138(void)\nEntry: 00a47a10\nBody: 00a47a10 - 00a47a14"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a20",
+    "end_address": "00a47a25"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a20",
+    "end_address": "00a47a24",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a20",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnTrue_Slot13C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a20",
+    "function_name": "BSP_XLiveSystem_ReturnTrue_Slot13C",
+    "entry_point": "00a47a20",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47a20",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot13C' \u2014 main part 'XLiveSystem_ReturnTrue_Slot13C' is not PascalCase. Expected: XlivesystemReturntrueSlot13c",
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot13C' \u2014 main part 'XLiveSystem_ReturnTrue_Slot13C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a20",
+   "end": "00a47a25",
+   "name": "BSP_XLiveSystem_ReturnTrue_Slot13C",
+   "after": "Function: BSP_XLiveSystem_ReturnTrue_Slot13C at 00a47a20\nSignature: undefined BSP_XLiveSystem_ReturnTrue_Slot13C(void)\nEntry: 00a47a20\nBody: 00a47a20 - 00a47a24"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a30",
+    "end_address": "00a47a33"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a30",
+    "end_address": "00a47a32",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a30",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_Nop_Slot148"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a30",
+    "function_name": "BSP_XLiveSystem_Nop_Slot148",
+    "entry_point": "00a47a30",
+    "body_size": 3,
+    "message": "Function created successfully at 00a47a30",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_Nop_Slot148' \u2014 main part 'XLiveSystem_Nop_Slot148' is not PascalCase. Expected: XlivesystemNopSlot148",
+     "Function name 'BSP_XLiveSystem_Nop_Slot148' \u2014 main part 'XLiveSystem_Nop_Slot148' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a30",
+   "end": "00a47a33",
+   "name": "BSP_XLiveSystem_Nop_Slot148",
+   "after": "Function: BSP_XLiveSystem_Nop_Slot148 at 00a47a30\nSignature: undefined BSP_XLiveSystem_Nop_Slot148(void)\nEntry: 00a47a30\nBody: 00a47a30 - 00a47a32"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a40",
+    "end_address": "00a47a47"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a40",
+    "end_address": "00a47a46",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a40",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_GetBlock8C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a40",
+    "function_name": "BSP_XLiveSystem_GetBlock8C",
+    "entry_point": "00a47a40",
+    "body_size": 7,
+    "message": "Function created successfully at 00a47a40",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_GetBlock8C' \u2014 main part 'XLiveSystem_GetBlock8C' is not PascalCase. Expected: XlivesystemGetblock8c",
+     "Function name 'BSP_XLiveSystem_GetBlock8C' \u2014 main part 'XLiveSystem_GetBlock8C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a40",
+   "end": "00a47a47",
+   "name": "BSP_XLiveSystem_GetBlock8C",
+   "after": "Function: BSP_XLiveSystem_GetBlock8C at 00a47a40\nSignature: undefined BSP_XLiveSystem_GetBlock8C(void)\nEntry: 00a47a40\nBody: 00a47a40 - 00a47a46"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a50",
+    "end_address": "00a47a55"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a50",
+    "end_address": "00a47a54",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a50",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ReturnTrue_Slot14C"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a50",
+    "function_name": "BSP_XLiveSystem_ReturnTrue_Slot14C",
+    "entry_point": "00a47a50",
+    "body_size": 5,
+    "message": "Function created successfully at 00a47a50",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot14C' \u2014 main part 'XLiveSystem_ReturnTrue_Slot14C' is not PascalCase. Expected: XlivesystemReturntrueSlot14c",
+     "Function name 'BSP_XLiveSystem_ReturnTrue_Slot14C' \u2014 main part 'XLiveSystem_ReturnTrue_Slot14C' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a50",
+   "end": "00a47a55",
+   "name": "BSP_XLiveSystem_ReturnTrue_Slot14C",
+   "after": "Function: BSP_XLiveSystem_ReturnTrue_Slot14C at 00a47a50\nSignature: undefined BSP_XLiveSystem_ReturnTrue_Slot14C(void)\nEntry: 00a47a50\nBody: 00a47a50 - 00a47a54"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a60",
+    "end_address": "00a47a72"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a60",
+    "end_address": "00a47a71",
+    "bytes_disassembled": 18,
+    "message": "Successfully disassembled 18 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a60",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_HasPlayers"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a60",
+    "function_name": "BSP_XLiveSystem_HasPlayers",
+    "entry_point": "00a47a60",
+    "body_size": 18,
+    "message": "Function created successfully at 00a47a60",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_HasPlayers' \u2014 main part 'XLiveSystem_HasPlayers' is not PascalCase. Expected: XlivesystemHasplayers",
+     "Function name 'BSP_XLiveSystem_HasPlayers' \u2014 main part 'XLiveSystem_HasPlayers' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a60",
+   "end": "00a47a72",
+   "name": "BSP_XLiveSystem_HasPlayers",
+   "after": "Function: BSP_XLiveSystem_HasPlayers at 00a47a60\nSignature: undefined BSP_XLiveSystem_HasPlayers(void)\nEntry: 00a47a60\nBody: 00a47a60 - 00a47a71"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a47a80",
+    "end_address": "00a47a92"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a47a80",
+    "end_address": "00a47a91",
+    "bytes_disassembled": 18,
+    "message": "Successfully disassembled 18 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a47a80",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_HasPlayers_Copy"
+   },
+   "result": {
+    "success": true,
+    "address": "00a47a80",
+    "function_name": "BSP_XLiveSystem_HasPlayers_Copy",
+    "entry_point": "00a47a80",
+    "body_size": 18,
+    "message": "Function created successfully at 00a47a80",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_HasPlayers_Copy' \u2014 main part 'XLiveSystem_HasPlayers_Copy' is not PascalCase. Expected: XlivesystemHasplayersCopy",
+     "Function name 'BSP_XLiveSystem_HasPlayers_Copy' \u2014 main part 'XLiveSystem_HasPlayers_Copy' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a47a80",
+   "end": "00a47a92",
+   "name": "BSP_XLiveSystem_HasPlayers_Copy",
+   "after": "Function: BSP_XLiveSystem_HasPlayers_Copy at 00a47a80\nSignature: undefined BSP_XLiveSystem_HasPlayers_Copy(void)\nEntry: 00a47a80\nBody: 00a47a80 - 00a47a91"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a48330",
+    "end_address": "00a4844c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a48330",
+    "end_address": "00a4844b",
+    "bytes_disassembled": 284,
+    "message": "Successfully disassembled 284 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a48330",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_EnsureLocalPlayerListed"
+   },
+   "result": {
+    "success": true,
+    "address": "00a48330",
+    "function_name": "BSP_XLiveSystem_EnsureLocalPlayerListed",
+    "entry_point": "00a48330",
+    "body_size": 284,
+    "message": "Function created successfully at 00a48330",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_EnsureLocalPlayerListed' \u2014 main part 'XLiveSystem_EnsureLocalPlayerListed' is not PascalCase. Expected: XlivesystemEnsurelocalplayerlisted",
+     "Function name 'BSP_XLiveSystem_EnsureLocalPlayerListed' \u2014 main part 'XLiveSystem_EnsureLocalPlayerListed' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a48330",
+   "end": "00a4844c",
+   "name": "BSP_XLiveSystem_EnsureLocalPlayerListed",
+   "after": "Function: BSP_XLiveSystem_EnsureLocalPlayerListed at 00a48330\nSignature: undefined BSP_XLiveSystem_EnsureLocalPlayerListed(void)\nEntry: 00a48330\nBody: 00a48330 - 00a4844b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a48e90",
+    "end_address": "00a48e99"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a48e90",
+    "end_address": "00a48e98",
+    "bytes_disassembled": 9,
+    "message": "Successfully disassembled 9 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a48e90",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4"
+   },
+   "result": {
+    "success": true,
+    "address": "00a48e90",
+    "function_name": "BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4",
+    "entry_point": "00a48e90",
+    "body_size": 9,
+    "message": "Function created successfully at 00a48e90",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4' \u2014 main part 'XLiveSystem_ClearByte4AndContinue_Slot1B4' is not PascalCase. Expected: XlivesystemClearbyte4andcontinueSlot1b4",
+     "Function name 'BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4' \u2014 main part 'XLiveSystem_ClearByte4AndContinue_Slot1B4' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a48e90",
+   "end": "00a48e99",
+   "name": "BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4",
+   "after": "Function: BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4 at 00a48e90\nSignature: undefined BSP_XLiveSystem_ClearByte4AndContinue_Slot1B4(void)\nEntry: 00a48e90\nBody: 00a48e90 - 00a48e98"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c730",
+    "end_address": "00a4c733"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c730",
+    "end_address": "00a4c732",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c730",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_Nop_Ret4"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c730",
+    "function_name": "BSP_MovieDecoder_Nop_Ret4",
+    "entry_point": "00a4c730",
+    "body_size": 3,
+    "message": "Function created successfully at 00a4c730",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_Nop_Ret4' \u2014 main part 'MovieDecoder_Nop_Ret4' is not PascalCase. Expected: MoviedecoderNopRet4",
+     "Function name 'BSP_MovieDecoder_Nop_Ret4' \u2014 main part 'MovieDecoder_Nop_Ret4' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_Nop_Ret4' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c730",
+   "end": "00a4c733",
+   "name": "BSP_MovieDecoder_Nop_Ret4",
+   "after": "Function: BSP_MovieDecoder_Nop_Ret4 at 00a4c730\nSignature: undefined BSP_MovieDecoder_Nop_Ret4(void)\nEntry: 00a4c730\nBody: 00a4c730 - 00a4c732"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c7e0",
+    "end_address": "00a4c7e8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c7e0",
+    "end_address": "00a4c7e7",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c7e0",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_ReturnFalse_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c7e0",
+    "function_name": "BSP_MovieDecoder_ReturnFalse_VtordispThunk",
+    "entry_point": "00a4c7e0",
+    "body_size": 8,
+    "message": "Function created successfully at 00a4c7e0",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_ReturnFalse_VtordispThunk' \u2014 main part 'MovieDecoder_ReturnFalse_VtordispThunk' is not PascalCase. Expected: MoviedecoderReturnfalseVtordispthunk",
+     "Function name 'BSP_MovieDecoder_ReturnFalse_VtordispThunk' \u2014 main part 'MovieDecoder_ReturnFalse_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_ReturnFalse_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c7e0",
+   "end": "00a4c7e8",
+   "name": "BSP_MovieDecoder_ReturnFalse_VtordispThunk",
+   "after": "Function: BSP_MovieDecoder_ReturnFalse_VtordispThunk at 00a4c7e0\nSignature: undefined BSP_MovieDecoder_ReturnFalse_VtordispThunk(void)\nEntry: 00a4c7e0\nBody: 00a4c7e0 - 00a4c7e7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c810",
+    "end_address": "00a4c818"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c810",
+    "end_address": "00a4c817",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c810",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_GetFieldMinus8_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c810",
+    "function_name": "BSP_MovieDecoder_GetFieldMinus8_VtordispThunk",
+    "entry_point": "00a4c810",
+    "body_size": 8,
+    "message": "Function created successfully at 00a4c810",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_GetFieldMinus8_VtordispThunk' \u2014 main part 'MovieDecoder_GetFieldMinus8_VtordispThunk' is not PascalCase. Expected: MoviedecoderGetfieldminus8Vtordispthunk",
+     "Function name 'BSP_MovieDecoder_GetFieldMinus8_VtordispThunk' \u2014 main part 'MovieDecoder_GetFieldMinus8_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_GetFieldMinus8_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c810",
+   "end": "00a4c818",
+   "name": "BSP_MovieDecoder_GetFieldMinus8_VtordispThunk",
+   "after": "Function: BSP_MovieDecoder_GetFieldMinus8_VtordispThunk at 00a4c810\nSignature: undefined BSP_MovieDecoder_GetFieldMinus8_VtordispThunk(void)\nEntry: 00a4c810\nBody: 00a4c810 - 00a4c817"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c820",
+    "end_address": "00a4c828"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c820",
+    "end_address": "00a4c827",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c820",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_ScalarDelete_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c820",
+    "function_name": "BSP_MovieDecoder_ScalarDelete_VtordispThunk",
+    "entry_point": "00a4c820",
+    "body_size": 8,
+    "message": "Function created successfully at 00a4c820",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_ScalarDelete_VtordispThunk' \u2014 main part 'MovieDecoder_ScalarDelete_VtordispThunk' is not PascalCase. Expected: MoviedecoderScalardeleteVtordispthunk",
+     "Function name 'BSP_MovieDecoder_ScalarDelete_VtordispThunk' \u2014 main part 'MovieDecoder_ScalarDelete_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_ScalarDelete_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c820",
+   "end": "00a4c828",
+   "name": "BSP_MovieDecoder_ScalarDelete_VtordispThunk",
+   "after": "Function: BSP_MovieDecoder_ScalarDelete_VtordispThunk at 00a4c820\nSignature: undefined BSP_MovieDecoder_ScalarDelete_VtordispThunk(void)\nEntry: 00a4c820\nBody: 00a4c820 - 00a4c827"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c830",
+    "end_address": "00a4c838"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c830",
+    "end_address": "00a4c837",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c830",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_PrepareFrame_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c830",
+    "function_name": "BSP_MovieDecoder_PrepareFrame_VtordispThunk",
+    "entry_point": "00a4c830",
+    "body_size": 8,
+    "message": "Function created successfully at 00a4c830",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_PrepareFrame_VtordispThunk' \u2014 main part 'MovieDecoder_PrepareFrame_VtordispThunk' is not PascalCase. Expected: MoviedecoderPrepareframeVtordispthunk",
+     "Function name 'BSP_MovieDecoder_PrepareFrame_VtordispThunk' \u2014 main part 'MovieDecoder_PrepareFrame_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_PrepareFrame_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c830",
+   "end": "00a4c838",
+   "name": "BSP_MovieDecoder_PrepareFrame_VtordispThunk",
+   "after": "Function: BSP_MovieDecoder_PrepareFrame_VtordispThunk at 00a4c830\nSignature: undefined BSP_MovieDecoder_PrepareFrame_VtordispThunk(void)\nEntry: 00a4c830\nBody: 00a4c830 - 00a4c837"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c850",
+    "end_address": "00a4c85b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c850",
+    "end_address": "00a4c85a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c850",
+    "disassemble_first": false,
+    "name": "BSP_MovieDecoder_ApplyVolume_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c850",
+    "function_name": "BSP_MovieDecoder_ApplyVolume_VtordispThunk",
+    "entry_point": "00a4c850",
+    "body_size": 11,
+    "message": "Function created successfully at 00a4c850",
+    "warnings": [
+     "Function name 'BSP_MovieDecoder_ApplyVolume_VtordispThunk' \u2014 main part 'MovieDecoder_ApplyVolume_VtordispThunk' is not PascalCase. Expected: MoviedecoderApplyvolumeVtordispthunk",
+     "Function name 'BSP_MovieDecoder_ApplyVolume_VtordispThunk' \u2014 main part 'MovieDecoder_ApplyVolume_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieDecoder_ApplyVolume_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c850",
+   "end": "00a4c85b",
+   "name": "BSP_MovieDecoder_ApplyVolume_VtordispThunk",
+   "after": "Function: BSP_MovieDecoder_ApplyVolume_VtordispThunk at 00a4c850\nSignature: undefined BSP_MovieDecoder_ApplyVolume_VtordispThunk(void)\nEntry: 00a4c850\nBody: 00a4c850 - 00a4c85a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c900",
+    "end_address": "00a4c903"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c900",
+    "end_address": "00a4c902",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c900",
+    "disassemble_first": false,
+    "name": "BSP_MovieFileBase_ReturnZero"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c900",
+    "function_name": "BSP_MovieFileBase_ReturnZero",
+    "entry_point": "00a4c900",
+    "body_size": 3,
+    "message": "Function created successfully at 00a4c900",
+    "warnings": [
+     "Function name 'BSP_MovieFileBase_ReturnZero' \u2014 main part 'MovieFileBase_ReturnZero' is not PascalCase. Expected: MoviefilebaseReturnzero",
+     "Function name 'BSP_MovieFileBase_ReturnZero' \u2014 main part 'MovieFileBase_ReturnZero' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieFileBase_ReturnZero' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c900",
+   "end": "00a4c903",
+   "name": "BSP_MovieFileBase_ReturnZero",
+   "after": "Function: BSP_MovieFileBase_ReturnZero at 00a4c900\nSignature: undefined BSP_MovieFileBase_ReturnZero(void)\nEntry: 00a4c900\nBody: 00a4c900 - 00a4c902"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c910",
+    "end_address": "00a4c915"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c910",
+    "end_address": "00a4c914",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c910",
+    "disassemble_first": false,
+    "name": "BSP_MovieFileBase_ReturnZero_Ret4"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c910",
+    "function_name": "BSP_MovieFileBase_ReturnZero_Ret4",
+    "entry_point": "00a4c910",
+    "body_size": 5,
+    "message": "Function created successfully at 00a4c910",
+    "warnings": [
+     "Function name 'BSP_MovieFileBase_ReturnZero_Ret4' \u2014 main part 'MovieFileBase_ReturnZero_Ret4' is not PascalCase. Expected: MoviefilebaseReturnzeroRet4",
+     "Function name 'BSP_MovieFileBase_ReturnZero_Ret4' \u2014 main part 'MovieFileBase_ReturnZero_Ret4' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieFileBase_ReturnZero_Ret4' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c910",
+   "end": "00a4c915",
+   "name": "BSP_MovieFileBase_ReturnZero_Ret4",
+   "after": "Function: BSP_MovieFileBase_ReturnZero_Ret4 at 00a4c910\nSignature: undefined BSP_MovieFileBase_ReturnZero_Ret4(void)\nEntry: 00a4c910\nBody: 00a4c910 - 00a4c914"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c940",
+    "end_address": "00a4c948"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c940",
+    "end_address": "00a4c947",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c940",
+    "disassemble_first": false,
+    "name": "BSP_MovieFileBase_ScalarDelete_VtordispThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c940",
+    "function_name": "BSP_MovieFileBase_ScalarDelete_VtordispThunk",
+    "entry_point": "00a4c940",
+    "body_size": 8,
+    "message": "Function created successfully at 00a4c940",
+    "warnings": [
+     "Function name 'BSP_MovieFileBase_ScalarDelete_VtordispThunk' \u2014 main part 'MovieFileBase_ScalarDelete_VtordispThunk' is not PascalCase. Expected: MoviefilebaseScalardeleteVtordispthunk",
+     "Function name 'BSP_MovieFileBase_ScalarDelete_VtordispThunk' \u2014 main part 'MovieFileBase_ScalarDelete_VtordispThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieFileBase_ScalarDelete_VtordispThunk' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c940",
+   "end": "00a4c948",
+   "name": "BSP_MovieFileBase_ScalarDelete_VtordispThunk",
+   "after": "Function: BSP_MovieFileBase_ScalarDelete_VtordispThunk at 00a4c940\nSignature: undefined BSP_MovieFileBase_ScalarDelete_VtordispThunk(void)\nEntry: 00a4c940\nBody: 00a4c940 - 00a4c947"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4ccc0",
+    "end_address": "00a4cd2f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4ccc0",
+    "end_address": "00a4cd2e",
+    "bytes_disassembled": 111,
+    "message": "Successfully disassembled 111 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4ccc0",
+    "disassemble_first": false,
+    "name": "BSP_MovieTextureBase_Slot04"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4ccc0",
+    "function_name": "BSP_MovieTextureBase_Slot04",
+    "entry_point": "00a4ccc0",
+    "body_size": 111,
+    "message": "Function created successfully at 00a4ccc0",
+    "warnings": [
+     "Function name 'BSP_MovieTextureBase_Slot04' \u2014 main part 'MovieTextureBase_Slot04' is not PascalCase. Expected: MovietexturebaseSlot04",
+     "Function name 'BSP_MovieTextureBase_Slot04' \u2014 main part 'MovieTextureBase_Slot04' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovieTextureBase_Slot04' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a4ccc0",
+   "end": "00a4cd2f",
+   "name": "BSP_MovieTextureBase_Slot04",
+   "after": "Function: BSP_MovieTextureBase_Slot04 at 00a4ccc0\nSignature: undefined BSP_MovieTextureBase_Slot04(void)\nEntry: 00a4ccc0\nBody: 00a4ccc0 - 00a4cd2e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4d670",
+    "end_address": "00a4d67f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4d670",
+    "end_address": "00a4d67e",
+    "bytes_disassembled": 15,
+    "message": "Successfully disassembled 15 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4d670",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00a4d670",
+    "function_name": "FUN_00a4d670",
+    "entry_point": "00a4d670",
+    "body_size": 15,
+    "message": "Function created successfully at 00a4d670"
+   }
+  },
+  {
+   "defined": "00a4d670",
+   "end": "00a4d67f",
+   "name": null,
+   "after": "Function: FUN_00a4d670 at 00a4d670\nSignature: undefined FUN_00a4d670(void)\nEntry: 00a4d670\nBody: 00a4d670 - 00a4d67e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00994100",
+    "end_address": "00994108"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00994100",
+    "end_address": "00994107",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00994100",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsLiveMode"
+   },
+   "result": {
+    "success": true,
+    "address": "00994100",
+    "function_name": "BSP_XLiveSystem_IsLiveMode",
+    "entry_point": "00994100",
+    "body_size": 8,
+    "message": "Function created successfully at 00994100",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsLiveMode' \u2014 main part 'XLiveSystem_IsLiveMode' is not PascalCase. Expected: XlivesystemIslivemode",
+     "Function name 'BSP_XLiveSystem_IsLiveMode' \u2014 main part 'XLiveSystem_IsLiveMode' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00994100",
+   "end": "00994108",
+   "name": "BSP_XLiveSystem_IsLiveMode",
+   "after": "Function: BSP_XLiveSystem_IsLiveMode at 00994100\nSignature: undefined BSP_XLiveSystem_IsLiveMode(void)\nEntry: 00994100\nBody: 00994100 - 00994107"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00994110",
+    "end_address": "00994118"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00994110",
+    "end_address": "00994117",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00994110",
+    "disassemble_first": false,
+    "name": "BSP_XLiveSystem_IsSystemLinkMode"
+   },
+   "result": {
+    "success": true,
+    "address": "00994110",
+    "function_name": "BSP_XLiveSystem_IsSystemLinkMode",
+    "entry_point": "00994110",
+    "body_size": 8,
+    "message": "Function created successfully at 00994110",
+    "warnings": [
+     "Function name 'BSP_XLiveSystem_IsSystemLinkMode' \u2014 main part 'XLiveSystem_IsSystemLinkMode' is not PascalCase. Expected: XlivesystemIssystemlinkmode",
+     "Function name 'BSP_XLiveSystem_IsSystemLinkMode' \u2014 main part 'XLiveSystem_IsSystemLinkMode' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00994110",
+   "end": "00994118",
+   "name": "BSP_XLiveSystem_IsSystemLinkMode",
+   "after": "Function: BSP_XLiveSystem_IsSystemLinkMode at 00994110\nSignature: undefined BSP_XLiveSystem_IsSystemLinkMode(void)\nEntry: 00994110\nBody: 00994110 - 00994117"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
