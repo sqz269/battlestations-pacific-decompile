@@ -143,6 +143,11 @@ namespace {
 
 constexpr double kPi = 3.14159265358979323846;
 
+// Packet cc9_party_change_gunnery_side (SHIP_AI 213), OFF until paired: after a
+// party write (set_unit_side_0054), re-read unit+54h into the unit's gunnery row
+// so the gunnery side matches the image's single unit field.
+constexpr bool kPartyChangeRefreshesGunneryBound = false;
+
 // SUBSTITUTION, labelled: Pilot/Torpedo/ReferenceSpeed, the divisor of
 // 009F9D30's run-profile speed ratio. The PilotBot tuning block is not
 // reachable from this host, so the value is the authored one recorded against
@@ -33945,6 +33950,9 @@ void GameUnitsHost::set_unit_side_0054(std::size_t index, int party) {
     // write, from a CommandBuilding's neutralize or flip (006F4D10).
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->row.party = party;
+    if constexpr (kPartyChangeRefreshesGunneryBound) {
+        if (impl_->gunnery != nullptr) impl_->gunnery->refresh_unit_side(index);
+    }
 }
 
 float GameUnitsHost::command_building_landing_range_07c4(std::size_t unit_index) const {
