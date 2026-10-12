@@ -9,3 +9,4 @@ cc13-stlreview1 pipeline (docs/CC13_STL_PROBABLE_REVIEW.md). Run from the repo r
   9. stlr_ghidra_apply.py   (Ghidra renames + bookmark deletes; takes the write lock)
 stlr_fix_assign.py was the one-off STL_Tree_Assign -> STL_Map_Subscript correction. stlr_view.py prints a saved decompile.
 LEASES: stlr_export.py hard-codes the ranges leased to other sweeps on 2026-10-12 (EXCL, SINGLE); edit them before re-running.
+cc13-stlreview2 (doc section 9): after steps 1-5 and stlr_final.py, run stlr2_final.py (read-based overrides, EXCL = sweep67 lease only) -> tools/template_shapes/stlr2_decisions.txt, then stlr_review.py --decisions tools/template_shapes/stlr2_decisions.txt --source docs/CC13_STL_PROBABLE_REVIEW.md, then stlr_ghidra_apply.py.
