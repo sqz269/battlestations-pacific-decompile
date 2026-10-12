@@ -325,9 +325,10 @@ struct PlaneCockpitHost : MoverHost {
 void plane_cockpit_camera_step_00434810(PlaneCockpitCamera& camera, float dt,
                                         PlaneCockpitHost& host, WanderRandom& rng);
 
-// The default unit camera fields read by 00434E50 (vtable 00CF4238, built by
-// 00605130 for every kind without its own class).
-struct DefaultUnitCamera {
+// The plane chase (third-person) camera fields read by 00434E50 (vtable
+// 00CF4238, built by 00605130 BSP_PlaneChaseCamera_Construct: EnsureCamera's
+// kind-0Fh arm when the fps byte is clear; 006065D0 / 00CF4410 is the cockpit).
+struct PlaneChaseCamera {
     Mat4Rows pose;                 // +74h
     Mat4Rows chase_2b8;            // +2B8h, written by 00431480; position row +2E8h
     std::uint8_t active_380{0};    // +380h
@@ -373,10 +374,10 @@ struct ChaseCameraHost : MoverHost {
 // Reads the target's rotation rates +B50h/+B54h/+B58h, +B28h, +900h, +970h,
 // +9B4h, [class+200h] and the PlaneCamera / BombCamera tunables (offsets 54h..80h,
 // 13Ch..154h), and eases the chase offsets and look angles.
-void chase_camera_update_offsets_0042f800(DefaultUnitCamera& camera, float dt,
+void chase_camera_update_offsets_0042f800(PlaneChaseCamera& camera, float dt,
                                           ChaseCameraHost& host);
 
-// 00431480 __thiscall(camera, float dt) RET 4 (BSP_DefaultUnitCamera_UpdateChase):
+// 00431480 __thiscall(camera, float dt) RET 4 (BSP_PlaneChaseCamera_UpdateChase):
 // returns at once when dt < 0; otherwise sub-steps of min(rest, 0.01) while
 // rest (reduced by 0.01 each pass) stays >= 0. With a live target (non-null,
 // +5Dh and +911h clear) the chase matrix is rebuilt from the target pose and
@@ -387,10 +388,10 @@ void chase_camera_update_offsets_0042f800(DefaultUnitCamera& camera, float dt,
 // second and the same push-out at 100), the
 // forward and up rows ease toward the target direction and world up, and the
 // height is pulled toward 45 when below it. Then 0085DC80.
-void default_unit_camera_update_chase_00431480(DefaultUnitCamera& camera, float dt,
+void plane_chase_camera_update_chase_00431480(PlaneChaseCamera& camera, float dt,
                                                ChaseCameraHost& host);
 
-struct DefaultUnitCameraHost : MoverHost {
+struct PlaneChaseCameraHost : MoverHost {
     // [00E188A8]+635h; when set, [mover+170h]->vtable[4]([game+21ECh]).
     virtual bool game_flag_635() = 0;
     virtual void element_170_slot4(float game_21ec) = 0;
@@ -415,15 +416,15 @@ struct DefaultUnitCameraHost : MoverHost {
 };
 
 // 00434E50 __thiscall(camera, float dt) RET 4, vtable 00CF4238 slot DCh
-// (BSP_DefaultUnitCamera_Step). Body 00434E50..0043511C; Ghidra's function
+// (BSP_PlaneChaseCamera_Step). Body 00434E50..0043511C; Ghidra's function
 // stops at 00434F4F because of a stale misaligned unit at 00434F52, so the
 // stretch 00434F50..00434FF1 (the ground clamp) is read with disasm-raw.
 // Updates the timer and the target position, runs the chase update, lifts
 // the chase matrix to 5.0 above the ground (stored back into +2E8h), sets the
 // pose from it; when active, lifts it again below 10.0 to 2.0 above the water
 // (at least 2.0), publishes (004329D0) and forwards the target velocity.
-void default_unit_camera_step_00434e50(DefaultUnitCamera& camera, float dt,
-                                       DefaultUnitCameraHost& host);
+void plane_chase_camera_step_00434e50(PlaneChaseCamera& camera, float dt,
+                                       PlaneChaseCameraHost& host);
 
 // The submarine camera fields (vtable 00CF6250; cc13-camera2).
 struct SubmarineCamera {
@@ -491,8 +492,8 @@ void submarine_camera_step_00434140(SubmarineCamera& camera, float dt,
 // toward the request by at most the steps, scaling the smaller axis's step so
 // both arrive together; snaps an axis already within its step. Returns 1 only
 // when both were within their steps; nothing moves when both steps are below
-// 0.001. Ghidra splits the pitch-step tail into a bogus FUN_0042C8F3
-// (0042C8F3..0042C931, no callers; reached by the JBE at 0042C8D8).
+// 0.001. Ghidra had split the pitch-step tail into a bogus FUN_0042C8F3
+// (0042C8F3..0042C931); re-created over 0042C750..0042C933 by cc13-camera2.
 // The fields 0042C940 reads (an orbit mover; callers 00545270 / 005452B0 in
 // segment 16).
 struct OrbitMover {

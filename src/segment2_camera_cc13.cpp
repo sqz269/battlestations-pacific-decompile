@@ -498,7 +498,7 @@ float wrap_once(float r) noexcept {
 
 }  // namespace
 
-void chase_camera_update_offsets_0042f800(DefaultUnitCamera& c, float dt, ChaseCameraHost& host) {
+void chase_camera_update_offsets_0042f800(PlaneChaseCamera& c, float dt, ChaseCameraHost& host) {
     void* t = c.target_388;   // dereferenced before the null test (0042F818)
     const float a = -0.0f - host.entity_float(t, 0xB54);    // pitch rate, negated
     const float b = -0.0f - host.entity_float(t, 0xB50);    // roll rate, negated
@@ -591,7 +591,7 @@ void chase_camera_update_offsets_0042f800(DefaultUnitCamera& c, float dt, ChaseC
     c.look_pitch_3d0 = ease(c.look_pitch_3d0, c.look_pitch_want_3c8, kl);
 }
 
-void default_unit_camera_update_chase_00431480(DefaultUnitCamera& c, float dt,
+void plane_chase_camera_update_chase_00431480(PlaneChaseCamera& c, float dt,
                                                ChaseCameraHost& host) {
     if (!(dt >= 0.0f)) return;   // 0043149F JC
     Mat4Rows& m = c.chase_2b8;
@@ -971,8 +971,8 @@ bool camera_mover_turn_toward_0042c750(float& yaw_384, float& pitch_388, float y
     return false;
 }
 
-void default_unit_camera_step_00434e50(DefaultUnitCamera& camera, float dt,
-                                       DefaultUnitCameraHost& host) {
+void plane_chase_camera_step_00434e50(PlaneChaseCamera& camera, float dt,
+                                       PlaneChaseCameraHost& host) {
     if (host.game_flag_635()) host.element_170_slot4(host.game_float_21ec());
     if (void* target = camera.target_388; target != nullptr) {
         if (camera.timer_3ec > 0.0f) {
