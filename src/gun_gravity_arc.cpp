@@ -30,6 +30,12 @@ namespace {
 // kGunBotGravity (gun_bot_ticks.hpp) is the same number as a float.
 constexpr double kGravity = static_cast<double>(kGunBotGravity);
 
+// cc9-physics4 (census row 18; docs/X87_CONTROL_WORD.md, the host precision policy):
+// 00955630 at 24 bits, where every x87 operation rounds like a float operation and the
+// CRT sqrt keeps the caller's precision. False: the double chains, the 53-bit
+// pool-worker case. The listing order (00955659..0095574D) is kept either way.
+constexpr bool kGunArcFloatPrecisionBound = false;
+
 // 0042B260's length floor: at or below 1e-10 (00CE3820) the divisor is the
 // fixed 1e-5 (00CE3C70) instead of sqrt(lenSq). Both are doubles in the image.
 constexpr double kNormalizeLengthSqFloor = 1e-10;
@@ -144,6 +150,10 @@ float gun_gravity_arc_drop_term(float horizontal_distance_squared,
                                 float muzzle_speed) noexcept
 {
     // 009556AE..009556C4: (hsq * g) / (v * (v + v)), one FSTP at the end.
+    if constexpr (kGunArcFloatPrecisionBound) {
+        return (horizontal_distance_squared * kGunBotGravity)
+            / (muzzle_speed * (muzzle_speed + muzzle_speed));
+    }
     const double numerator = static_cast<double>(horizontal_distance_squared) * kGravity;
     const double speed = static_cast<double>(muzzle_speed);
     return static_cast<float>(numerator / (speed * (speed + speed)));
@@ -155,6 +165,10 @@ float gun_gravity_arc_discriminant(float horizontal_distance,
 {
     // 009556C8..009556EE. R*R stays in a register; k + h is round-tripped
     // through a float slot at 009556DA/009556DE; the 4.0 multiplies k first.
+    if constexpr (kGunArcFloatPrecisionBound) {
+        const float sum = drop_term + height_delta;
+        return horizontal_distance * horizontal_distance - drop_term * 4.0f * sum;
+    }
     const double distance = static_cast<double>(horizontal_distance);
     const double distance_sq = distance * distance;
     const float sum = static_cast<float>(static_cast<double>(drop_term) +
@@ -189,13 +203,16 @@ GunGravityArcSolution solve_gun_gravity_arc_00955630(
     delta.z = query.aim_point.z - query.muzzle_position.z;
 
     // 00955659..00955669: dz*dz + dx*dx, in that operand order.
-    const float horizontal_distance_sq = static_cast<float>(
-        static_cast<double>(delta.z) * static_cast<double>(delta.z) +
-        static_cast<double>(delta.x) * static_cast<double>(delta.x));
+    const float horizontal_distance_sq = kGunArcFloatPrecisionBound
+        ? delta.z * delta.z + delta.x * delta.x
+        : static_cast<float>(
+            static_cast<double>(delta.z) * static_cast<double>(delta.z) +
+            static_cast<double>(delta.x) * static_cast<double>(delta.x));
 
     // 0095566D..00955682: R, spilled twice before 0042B260 destroys the delta.
-    const float horizontal_distance =
-        static_cast<float>(std::sqrt(static_cast<double>(horizontal_distance_sq)));
+    const float horizontal_distance = kGunArcFloatPrecisionBound
+        ? std::sqrt(horizontal_distance_sq)
+        : static_cast<float>(std::sqrt(static_cast<double>(horizontal_distance_sq)));
 
     // 0095568E then 00955693..009556AC. The yaw is produced FIRST, in the
     // world frame, and is never rewritten by the failure path.
@@ -215,10 +232,14 @@ GunGravityArcSolution solve_gun_gravity_arc_00955630(
     if (result.solved) {
         // 0095571B..0095574D: the MINUS root, i.e. the low flat trajectory.
         // k*T^2 - R*T + (k + h) = 0 with T = tan(pitch).
-        const float root = static_cast<float>(std::sqrt(static_cast<double>(discriminant)));
-        const float tangent = static_cast<float>(
-            (static_cast<double>(horizontal_distance) - static_cast<double>(root)) /
-            (static_cast<double>(drop_term) + static_cast<double>(drop_term)));
+        const float root = kGunArcFloatPrecisionBound
+            ? std::sqrt(discriminant)
+            : static_cast<float>(std::sqrt(static_cast<double>(discriminant)));
+        const float tangent = kGunArcFloatPrecisionBound
+            ? (horizontal_distance - root) / (drop_term + drop_term)
+            : static_cast<float>(
+                (static_cast<double>(horizontal_distance) - static_cast<double>(root)) /
+                (static_cast<double>(drop_term) + static_cast<double>(drop_term)));
         pitch = static_cast<float>(std::atan(static_cast<double>(tangent)));
     } else {
         // 00955702: pi/4 from 00CEB5A8, the same constant 006DF520 step 6

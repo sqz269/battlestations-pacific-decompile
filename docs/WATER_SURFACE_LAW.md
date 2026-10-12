@@ -372,3 +372,15 @@ presentation question here (the host's kill funnel skips dead units), recorded a
 **Answer to "can a floating wreck touch gameplay?"** Not on these runs: every death, hit, damage and
 unit row is identical with the wrecks moving. Targeting skips dead units, the kill was credited at
 death, and the water arm itself kills nothing.
+
+## 13. The wreck's floor (`kPlaneWreckDepthRemovalBound`, OFF)
+
+Section 12 left a wreck sinking without limit. The image has a floor: the depth kill `007CE313`-`007CE3AC`
+runs at the top of every tick in every flight state, and below -30 m it calls `00926D90
+BSP_MissionEntity_Kill(unit, 1)`. Kill returns only when `+5Fh` is already set; a shot-down plane reaches
+`+5Fh` only through the explosion path (`007D0CFD`), so a PowerLost or delayed wreck is killed there: `+5Fh`
+set and the entity queued on `00F899B4` for `009273A0`'s on-killed dispatch, which takes it out of the
+world. The host already removes an exploded plane that way (`plane_death_removed`, skipped by the step),
+so the binding sets that flag for a dead state-6 plane below -30 m (the 30.0f fallback, as at the state-7
+gate) at the head of the arm. Predictions: gameplay identical (the wreck was already dead and credited);
+`plane wreck depth kill` lines ON only, one per sinking wreck; no -40 km summary rows.

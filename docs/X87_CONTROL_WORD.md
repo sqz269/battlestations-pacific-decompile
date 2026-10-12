@@ -196,3 +196,13 @@ completed 1539.83 s both sides with the guard, pair_diff gameplay identical (108
 gunner rolls and 24 gyro launches ran); USN01 completed 1014.63 s both sides, verdict 0, identical apart from
 noise (2379 gunner rolls). The float-ulp changes flipped no draw and no hit on these two missions;
 the prediction of a moved verdict did not hold. **Flipped ON**: the rule is the listing's and nothing moved.
+
+### Census row 18, the gun gravity arc (`kGunArcFloatPrecisionBound`, OFF)
+
+`00955630` (`src/gun_gravity_arc.cpp`), the launch elevation of every shell, runs in the fixed-step gun tick.
+Read from the listing: `hsq = dz*dz + dx*dx` (`00955659`-`00955669`), `k = (hsq * g) / (v * (v + v))`
+(`009556AE`-`009556C4`, g the qword 9.81f), `D = R*R - (k * 4.0) * float(k + h)` (`009556C8`-`009556EE`),
+`T = (R - sqrt(D)) / (k + k)` (`0095571B`-`00955734`), `atan` at 53 bits inside the CRT. The host computed
+each in double; ON computes them as floats in that order (sqrt as `sqrtf`, the CRT keeping the caller's
+precision), the 24-bit case. Predictions: last-bit elevation changes; on USN12 / USN01 likely gameplay
+identical as the aim pair was, or verdict 3 through a flipped hit; both wins hold.
