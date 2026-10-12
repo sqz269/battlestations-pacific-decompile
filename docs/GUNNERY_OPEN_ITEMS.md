@@ -12889,4 +12889,8 @@ plane/task line classes.
   #1.2|.-2: arrived d=1111.9 -> 1149.1`, the activation draws; JM08 first divergence `Movie Mavis` dying 9 m lower
   (762 -> 753 m), the moveto flying lower as predicted. USN04 4500 exit 3 (torpedo releases 5/16 -> 2/16). USN01 win
   identical. **Recorded:** JM08 `l50_j8_r7` now FAILS at 993.68 s ("The HQ has been destroyed!"; OFF has no end in
-  1000 s; deaths 154 -> 139, dive releases 26/33 -> 11/22): an outcome of the moved air battle on a non-win row.
+  1000 s; deaths 154 -> 139, dive releases 26/33 -> 11/22): an outcome of the moved air battle on a non-win row.- **The six draw pins (190: `kDiveTurnSideLatchBound`, `kDiveTurnSideBankBound`, `kDiveTurnSideCoinBound`,
+  `kDiveTurnRollDrawBound`, `kAimGlideRearmDrawBound`, `kAimDiveRearmDrawBound`): ON as a group.** Dive rows only, as
+  predicted: USN04 phase 2 exit 3, first divergence the dive bombers' aim lead (`D3A Val #3.1` takes the
+  `#3.1|.-2` slot's approach: the turn-side draws); JM08 exit 3 (dive releases 26/33 -> 19/15, torpedo 0/13 ->
+  10/65); USN01 win held (425.72 -> 643.47 s, all six convoy ships sunk).
