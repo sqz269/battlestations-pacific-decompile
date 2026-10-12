@@ -15,6 +15,8 @@ namespace bsp {
 // 00E0CF40: map extent per zoom level (metres), read by 0093CCC0, BSP_HudMapScreen_Register
 // 005AB190, BSP_HudFormationScreen_Register 00538F80 and the map-screen update 005B45C0.
 inline constexpr std::array<float, 4> kMapZoomExtents{48000.0f, 18000.0f, 8000.0f, 3000.0f};
+// 00E0CF50: a second per-level table the map-screen update lerps (005B4EE5, 005B4F7A).
+inline constexpr std::array<float, 4> kMapZoomCrossfade{0.25f, 0.5f, 0.75f, 1.0f};
 inline constexpr double kMapExtentAspect = 0.75;   // 00CEC9D8 (also float 00D19720 "cAspectRatio")
 
 // The scene fields 0093CCC0 initialises (offsets from the scene; the map screen keeps its
