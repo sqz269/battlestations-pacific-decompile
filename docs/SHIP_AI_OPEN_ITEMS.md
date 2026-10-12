@@ -16807,3 +16807,59 @@ The edit (units host, the one setter every path goes through; switch `kPartyChan
 lead because `src/game_hosts_units.cpp` is leased by cc9-gunnery36. Predictions: smoke identical (exit 0); USNOS
 moves from the first `us_osumi.lua:1106` SetParty that reaches a unit (exit 3, or 1 if none does), where gunnery's side for the bunker changes in the same step instead of never
 (expected: its guns and its attackers re-pick targets).
+
+## 214. USN15 (Surigao): idle rows, and a player-order win (cc9-ships44, 2026-10-12; lead item 2)
+
+Build: origin/main `e7e2dd1e8` plus this branch's doc commits (gameplay identical to main). Env
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, launcher `local\s44_rows.ps1` (reference AD/AF form, `-WaitSeconds
+14400`, `--stop-after-end 40`, `--mission-frame-seconds 0.05`). Logs in `J:\PROG\battlestations-pacific-decompile-
+cc9-ships44\local\`.
+
+**The mission** (this installation's `scripts/missions/COTP-USN/PRCPUS/usn_15_battle_of_surigao_strait.lua`,
+2024-08-09, modded; scene `usn_15_battle_of_surigao_strait.scn`, same date). `luaCheckObjs` (every 5 s): win when
+`IJNKeyTrgs` = {Fuso, Yamashiro, Nachi, Ashigara} are all dead while other IJN ships live (`luaCompleteAll`,
+`FLAGWIN`), or when all 17 IJN ships are dead; fail when every `USShips` entry is dead, or when
+`luaGetShipsAround(JapanGoTo, 3000, "enemy")` finds a ship (JapanGoTo is a NavPoint at (0, 12000) with Party
+Allied in the scene, so the search is `recon[0].enemy`). The US groups get `JoinFormation` and no move orders; the
+IJN groups run to `JapanEdgeMove1/2` and `JapanGoTo`.
+
+**Idle rows** (`s44_a_u15i.log`, 36000 frames; `s44_a_u15if.log`, 120000 frames): no end. Mogami (497 s, killed by
+Fuso), Nachi (515), Ashigara (566) and Fuso (853, Minneapolis) die; Yamashiro destroys both shipyards (the
+secondary fails), then stops at (-798, 10924), 1.3 km from JapanGoTo, from about 3000 s to 6000 s at 94% health,
+and the escape fail never fires (presumably unsighted: the US survivors are 10 km south; not investigated). The
+right group (Phoenix) and the advance group (Fletcher-class22) have no orders and steam south at their start speed
+to z = -19000.
+
+**Observations for the gunnery lane** (recorded, not investigated here):
+1. Fuso alone sinks all six US battleships in the idle row (Mississippi 611 s, 35 s after its first damage; the six
+   by 808 s) at 2.0-2.8 km, after they stop near z = 1000 and it steams past at 12.6 m/s. Their death rows show
+   hits c0..c6 = 0. With the BBs held west (variant b), Fuso instead sinks the whole left group.
+2. Every US 5"/6" blast impact on Fuso and Yamashiro reads `armour=130.0 took=0.0`.
+3. No US destroyer launches a torpedo: every Fletcher's `torpedo candidates ... accepted=0 mask=0 (00863990)`.
+4. Friendly kills: Portland <- Pennsylvania, Fletcher-class09 <- Minneapolis, Mogami <- Fuso, Fubuki-class07 <-
+   Yamashiro.
+
+**Variants** (`local\s44_u15_<v>.txt`, written by `local\s44_mk.py`; logs `s44_b_u15<v>.log`):
+
+| v | orders | result |
+| --- | --- | --- |
+| a | Phoenix, Boise, Shropshire, Fletcher-class22/24 attack Yamashiro at frame 6000 | Yamashiro sinks about 20 US ships; all US dead, fail at 1631 s |
+| b | the BB group (leader Mississippi) moves to (-6000, 6000) at 200 | the BBs ground near (-5800, 7200) and stay there (`navigate_astern`, speed 0); no end |
+| c | b, then the six BBs attack Yamashiro at 36000 | the grounded BBs never close; no end. A repeated `attack` is refused for any unit but the last selected ("not the controlled unit"), so only the last line of a group carries `repeat` |
+| d | the BB group holds at (-3000, 9500); all six attack Yamashiro at 36000 | the BBs engage at about 2640 s and all die by 2892 s; Yamashiro left at 6.4% |
+| e | d, plus Phoenix recalled at 14000, the right group attacking at 54000 | Phoenix and Fletcher-class16 die to Fuso on the way; fail at 3078 s |
+| f | BBs and the left cruisers attack Fuso at 9000, Yamashiro at 36000 | all six BBs still die to Fuso; Yamashiro at 90% |
+| g | d, plus Phoenix recalled to (-1500, 6000) at 23000, the right group attacking at 52000 | the right group meets Yamashiro first, then the BBs; Yamashiro left at 0.66%; all US dead, fail at 2652 s |
+| **h** | the BB group holds at (-3000, 9500) (frame 200); at 23000 Phoenix to (-2000, 9000) and Fletcher-class24/25/26 to about (-1500, 8500); from 40000 all fifteen attack Yamashiro (select + attack, 10 frames apart; Mississippi last with `repeat 30`) | **WIN** |
+
+**h, the win** (`s44_b_u15h.log`): Fuso dies at 1111 s, Yamashiro at 2581.24 s (credited to Fletcher-class11, with
+water 38796 against a capacity of 19243); Nachi and Ashigara died earlier and Fubuki-class06 still lives, so
+`luaCompleteAll` runs and `FLAGWIN` plays from 2582.39 s. `Mission.EndMission` at 2582.34 s, `MissionStatus=true`,
+and stderr/log carry `bsp: refused a mission script's process launch: sus_prog.exe` (the exec guard, main
+`bb30ca8c7`, in luaMissionCompletedNew). West Virginia, the last BB, dies at 2584 s, so the margin is a few
+seconds: expect any build change to move it (the mission is chaotic in the same way USNOS is, 211.3). Re-generate
+the order file with
+`python local\s44_mk.py local\s44_u15_h.txt "<comment>" 200:moveto:Mississippi:-3000:9500 23000:moveto:Phoenix:-2000:9000 23010:moveto:Fletcher-class24:-1500:8500 23020:moveto:Fletcher-class25:-1500:8000 23030:moveto:Fletcher-class26:-1000:8500 "40000:attack:Yamashiro:Phoenix,Boise,Fletcher-class16,Fletcher-class18,Fletcher-class19,Fletcher-class24,Fletcher-class25,Fletcher-class26,Shropshire,Maryland,West Virginia,Tennessee,California,Pennsylvania,Mississippi:repeat"`.
+If it stops winning, the levers are, in order: the BB hold point (open water; (-6000, 6000) grounds them), when
+the BBs commit relative to Yamashiro's turn north (it passes (2630, 3991) at 2200 s), and keeping the right group
+off Fuso's track until Fuso is dead (about 1100 s).
