@@ -208,8 +208,9 @@ inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs
 // channel is evaluated again (009892E4). For a plane (vtable 00D05F20, slot 140h =
 // 007B97E0, `MOV EAX,[ECX+9D4h]; RET`) that is its squadron. True: a hit whose
 // shooter is a squadron member and that matched nothing is re-evaluated with the
-// shooter's squadron. False: one pass, as before.
-inline constexpr bool kLuaHitSquadronSecondPassBound = false;
+// shooter's squadron. False: one pass, as before. ON (5fs): BSM04, USNRM01 and
+// JM13 9000 frames identical (55 / 58 / 0 second passes, none matched).
+inline constexpr bool kLuaHitSquadronSecondPassBound = true;
 
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,
