@@ -673,7 +673,9 @@ inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
 // the head of each capture step the state's copy is re-read from the row, so a
 // party set elsewhere (SetParty on an HQ) is what the capture arms see, and the
 // building's guns take the new side. False: the state keeps its own copy.
-inline constexpr bool kCaptureStatePartyFromUnitBound = false;
+// ON by section 207.4: USNOS variant d resyncs HQ2 once (2 -> 0 at 1702.90 s) with
+// no prior-party-0 neutralization; the USN02 control is identical.
+inline constexpr bool kCaptureStatePartyFromUnitBound = true;
 // Packet cc9_landed_ship_remainder (section 161). The landing ship's own motion
 // override 00749B20 (ESI = unit+310h, RET 4), after the ship motion 00825F20:
 //   - dead with +118Ch (landed) set: 00926D90(unit, 2) (00749B59), the wreck's removal;
