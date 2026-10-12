@@ -12447,3 +12447,33 @@ A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 
 - USN04's Vals still release once in 33; the brake floor is not the "never release" cause (175(a) remains).
 
 **Verdict: the mechanism matches the read; flipped ON.**
+
+## 182. `kSubmergedTorpedoLaunchSwimBound`: a torpedo launched below the surface starts its swim (cc9-physics2, 2026-10-12; src/game_hosts_gunnery.cpp on loan; committed OFF)
+
+Found in 181's combined pair: with the live crossing ON, JM06's player-sub torpedoes swim and sink eight US ships.
+The question is whether the image does that with a flat sea too. It does; the evidence is all from disk bytes.
+
+- **No spawn-time medium for a torpedo.** The base create 006E8430 (class vtable slot at 00CFA158) samples
+  0078CF20 at 006E8680 and calls the shot's vtable[24h] or [28h] at 006E8694..006E869E. MTorpedo's class table
+  00CFA56C puts 00856420 in that slot. 00856420..008566A0 (RET 1Ch) has no 0078CF20 call and no vtable[24h]/[28h]
+  call. A torpedo leaves its create with the base underwater byte (shot+44h) clear.
+- **The first step decides.** 0084C11C calls vtable[2Ch] (MTorpedo 00855F00: 2 when 2*[+47Ch] > [+100h], otherwise
+  [+354h] != 0). In medium 0, 0084C146..0084C14C runs 0084B380, which samples at the segment END and hits when
+  end.y <= surface (0084B3F8). The start point is never tested. On the hit, 0084C356..0084C3F5: vtable[2Ch] still 0,
+  then vtable[30h]. A round that survives the water (the torpedo) gets vtable[28h](1) = 008568E0, the water entry:
+  the MaxWaterHitVel/MaxFall break-up test, otherwise 006E6450 sets +44h. So a torpedo launched at y < 0 enters the
+  water on its first step. A torpedo deeper than twice its swim depth already reads as in-water through 00855F00's
+  depth arm. That is a second route to the same result. LABELLED: vtable[30h]'s torpedo body is not read; the
+  existing host already treats a torpedo crossing as an entry.
+- **Host defect.** `crossed = position.y <= 0 && from.y > 0`. `from > 0` has no counterpart in 0084B380, so a
+  submerged launch never swam: it fell ballistically under the sea until it expired. The bound drops `from > 0`
+  for a round that is neither swimming nor a depth charge in the water (the 0084C11C medium gate). Every other
+  round with end.y <= 0 and start.y <= 0 now takes the existing water branch: a torpedo enters its swim (or breaks
+  up), a depth charge takes its entry, and a shell dies on the water, as 0084C3CF's static impact does. Counter:
+  `summary mission gunnery submerged launch entries=N bound=b`.
+
+Prediction, flat sea (kWaveFieldLiveAmplitudeBound and kGunneryLiveWaterSurfaceBound OFF):
+- JM06 3000: the player subs' torpedoes swim. The `swims_started` count rises from 0, entries > 0, and US deaths
+  rise toward the combined pair's 10. The ON pair already showed this mechanism.
+- LOMP06 l50_l6_q6: entries > 0 if the Narwhal launches submerged. The win should hold; the time may move.
+- Rows without a submerged launcher: entries = 0, gameplay identical.
