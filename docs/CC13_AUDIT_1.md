@@ -175,9 +175,24 @@ resolved by d5c458063 and aa0d0496c, and the 00A93690 empty-array case is now do
 | 00B9AE00 step 9 (B9BA2A..B9BD41) | src/water_render.cpp:318 | CONFIRMED for finite input. The XOR of the two side flags selects the reflection, and the blend matches. NaN-only difference: both side flags are formed as "JB -> 0", so an unordered dot gives flag 0, while the C++ `!(0 < d)` gives 1. This was not changed because it only affects NaN camera vectors. |
 | 00A8BD20 00A8D808..00A8DA20 near/far, mirror, final multiply | src/shadow_cascades_cc13.cpp:523 | CONFIRMED. 00D7A318 is (double)0.001f and 00CEFF98 is (double)0.6f. On the w < 0 branch, near = -0.0 - max(0.001, lo.z) and far = lo.z, as the C++ has it. The ortho result is copied to ESP+D4h, which is the left operand of the final 00413920 at 00A8DA09; mirror[0] (ESP+88h) is -1 unless the w flag is set. |
 
-Still not reviewed: 00B9AE00 steps 10..12 (matrix helper calls), the debriefing, scoreboard,
-objectives and scoring builders between 0062CBE0 and 006359A3, and 00B156C0's DRSH/SCNE
-host-call ordering beyond the spots above.
+## Third pass (2026-10-12)
+
+b0d15112c fixes the step-9 NaN side flags: they are now the ordered `d <= 0`, matching the
+FCOMI/JB at B9BA48/B9BA74.
+
+| Routine / range | Source | Verdict |
+|---|---|---|
+| 0062C2C0 scoring layout 0063018D..0063089E | src/ingame_gui.cpp:561 | CONFIRMED. The mode is 2 when +1FE4h is set, otherwise +6ACh. The done-to width is total.x - done_to.x - 1/48 [00CF0000]. The row step 0.0305556 [00CF53B8] is used at 00631665 and the group gap 0.0027778 [00CF53B0] at 006316F2. |
+| 0062C2C0 player damage table 00630C13..0063181C (sampled) | src/ingame_gui.cpp:677 | CONFIRMED on the points calls. 00911CE0 is called at 00630EB7 with (by, [ESI] target category, side, [ESI+4] damage, mode, +24Dh). The kills are CVTSI2SS (0063104B) and passed as float to 00911C00 at 0063107F. |
+| 0062C2C0 map usage time 00634851..00634900 | src/ingame_gui.cpp:727 | CONFIRMED. CVTTSS2SI; "%d:%02d:%02d" [00CF52C4] from 3600 (E10h), "%d:%02d" [00CF52BC] from 60, otherwise "%d" of at least 1. |
+| 0062C2C0 debriefing page 0062CC42..0062D2F6 (sampled) | src/ingame_gui.cpp:326 | CONFIRMED. The scroller range is the text height (float) - +D0h (0062CDC1..0062CDDA). The voice gate is NEG/SBB/TEST EAX,00E18B5Ch on +10h (0062D111). |
+| 00B156C0 DRSH and SCNE call order 00B15DD4..00B1625B | src/scene_renderer_cc13.cpp:498..538 | CONFIRMED. Clear colour FFFFFFFFh comes from BL = FFh (00B1573D, the only EBX write). The three targets are 38h/3Ch/40h. The batch lists take the job-pool path only when the guard byte [0108D6DC] is 0 and both counts exceed 32h; the list +8 word is EBP = 0 (00B15E2D) and 1. The restore order after DRSH matches. |
+| 00B9AE00 steps 10..12 B9C24B..B9C6F3 | src/water_render.cpp:362..406 | Min/max CONFIRMED: unrolled FCOMI/JBE, so updates are strict and NaN updates nothing. The output-matrix chain (two 00413920, 00B632D0 twice, 00B63B30, then a 00413920 pair whose second product takes the 00B63B30 result) has the same shape as the C++. I did not trace which stack slot each operand comes from. |
+
+Still not reviewed: the scoreboard page 0062D304..0062E9A4, the objectives page, the party
+damage table and the remaining command-table groups (all are host-call sequences built from
+helpers the passes above already confirmed), and the exact operand slots of the 00B9AE00
+output matrices.
 
 ## Handoff
 
