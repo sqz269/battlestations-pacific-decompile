@@ -32,6 +32,9 @@ Origin: cc13-water2's local/wa2_sym.py (particle and water x87 verification), ma
 standalone. Different from tools/x87_sym_walker.py, which forks depth-first over a
 tools/x87trace.py listing and tracks frame slots; this one runs directly from the image,
 follows a single forced path, and also models general registers and scalar SSE.
+
+Regression (cc13-shadow1): `x + 0.0` terms are printed, never folded. Before the fix,
+`python tools/x87_sym.py 00A8C636 --stop 00A8C67D --fpu 0.0,S` lost (the 00A8C679 line now ends `+ 0.0`) the `+ 0.0` that turns -0 into +0.
 """
 import json
 import sys
@@ -115,8 +118,8 @@ def binop(op, a, b):
         return {'+': a + b, '-': a - b, '*': a * b, '/': a / b if b else float('nan')}[op]
     if op == '*' and (a == 1.0 or b == 1.0):
         return b if a == 1.0 else a
-    if op == '+' and (a == 0.0 or b == 0.0) and not (isinstance(a, float) and isinstance(b, float)):
-        return b if a == 0.0 else a
+    # No `x + 0.0` folding: it maps -0 to +0, and native code adds stack zeros on purpose
+    # (00A8C636 FADD ST(7)). Only `-0.0 - x` is folded, because that is an exact negation.
     if op == '-' and isinstance(a, float) and a == 0.0 and str(a) == '-0.0':
         return 'neg(' + fmt(b) + ')'
     return '%s %s %s' % (atom(a), op, atom(b))
