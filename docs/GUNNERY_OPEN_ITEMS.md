@@ -12923,4 +12923,7 @@ plane/task line classes.
   movie flight at tick 400 (wing distances 108.0 -> 109.8 m), the mode-2 heading holds banking less; torpedo
   releases 2/36 -> 4/39 as predicted (with `kBandShaperPlan264Bound` as well: 2/36 -> 6/60, units 149 -> 211,
   `local\g37_rabon_*` against `local\g37_aBoff_*`). Wins held: LOMP10 1184.73 -> 1215.16 s, LOMP06 identical,
-  USN12 1589.38 -> 1742.97 s, USN02 identical, BSM01 767.94 s; USN01 lost (above); ESMP08 no completion on either side.
+  USN12 1589.38 -> 1742.97 s, USN02 identical, BSM01 767.94 s; USN01 lost (above); ESMP08 no completion on either side.- **Torpedo-aim group (190): ON.** First divergence `torpedo Mav3 aim census tick=51` on USN01 (cmd_2C0 -2.0110 ->
+  -2.0104, yaw_desired -0.0709 -> -0.0551), its own path. USN04 phase 2 torpedo releases 2/36 -> 1/36 alone, but 6/60
+  with the roll arm (above), whose pairing the lead asked for; USNRM01 exit 3. USN01 lost (convoy strike, above). The
+  leave-one-out was dropped with the ruling.

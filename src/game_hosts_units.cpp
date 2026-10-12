@@ -2161,15 +2161,15 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // plan stores this host drops - plan+2E8h = 1.4f (009D1D02), throttle 1.0 and
 // air brake 0.0 with their bytes (009D1F42-009D1F64), plan+2D8h = 0 (009D1F6B)
 // and the plan+264h fade (009D1F36). Behaviour-changing; pair before ON.
-constexpr bool kTorpedoAimPlanWritesBound = false;
+constexpr bool kTorpedoAimPlanWritesBound = true;  // GUNNERY 193: ON by pair verdict
 // cc13-audit10 finding 5: desc+25Ch TurnRoll (009D1C51), desc+A4h Width
 // (009D1C84) and desc+268h TurnCircleRadius (009D1962) into the aim tick, in
 // place of the 1.0 / 1.0 / 0 stand-ins. Behaviour-changing; pair before ON.
-constexpr bool kTorpedoAimClassInputsBound = false;
+constexpr bool kTorpedoAimClassInputsBound = true;  // GUNNERY 193: ON by pair verdict
 // cc13-audit10 finding 3: 0099CAB0's pass-0 ramp starts at pilot+264h, which
 // 0099D300 zeroes at 0099EB9D on every think; the 0.12 stored at 0099EB95 is
 // pilot+260h. Only the torpedo aim tick (009D1F36) writes +264h otherwise.
-constexpr bool kBandShaperPlan264Bound = false;
+constexpr bool kBandShaperPlan264Bound = true;  // GUNNERY 193: ON by pair verdict
 // Packet cc9_ship_section_points (docs/TORPEDO_AIM_LEAD.md section 14): the pick
 // 009FA260 hands 00816650 the TARGET ship's section records, the engine room /
 // magazine / fuel tank points 0081F980 builds from the model's GeomMesh
