@@ -12390,7 +12390,7 @@ p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (le
 - Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
 - Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
   points by the transpose of the fort frame. Not started.
-## 181. `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
+## 181.2 `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
 
 **The read** (`009C5F50`-`009C5FCB`, disk bytes through `disasm-raw`; frame base `E`, the ESP after the prologue):
 - `009C5F57`/`009C5F66` `MOVSS [ESP+24h]` store `|pitch command|` to `E+24h`.
@@ -12430,7 +12430,7 @@ The re-arm draw (audit 7a): `009C6106`-`009C6119` call `00BD2F10` with `ECX = 1`
 bytes `00 00 00 3F`) and `[ESP+4] = 1.0` (`FLD1`), and `009C6119 FSTP [ESI+1Ch]` stores the draw. The host's fixed
 `kAimDiveRearmLow` is now labelled a SUBSTITUTION in `src/game_hosts_units.cpp` (comment only).
 
-### 181.1 The pairs (OFF = this tree's build of `e9bcc627c`, copied to `local\g36_brOFF`; ON = `pair_export.py --flip kAimDiveBrakeRatioBound=true`, `local\g36_br`; logs `local\g36_br{off,on}_<row>.log`, diffs `local\g36_bd_<row>.txt`)
+### 181.2.1 The pairs (OFF = this tree's build of `e9bcc627c`, copied to `local\g36_brOFF`; ON = `pair_export.py --flip kAimDiveBrakeRatioBound=true`, `local\g36_br`; logs `local\g36_br{off,on}_<row>.log`, diffs `local\g36_bd_<row>.txt`)
 
 A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 1 (gameplay identical).
 
@@ -12490,7 +12490,10 @@ them flew ballistically under the sea and struck hulls from below. With ON, each
 a torpedo swims, and any other round dies on the water, the host's existing water branch. Only the image's
 classDesc+74h decides the other rounds, through vtable[30h] = 006E2580 `MOV AL,[[ECX+4]+74h]`: set means a static
 impact, clear means vtable[28h]. The host already ends every non-torpedo round at the water. The JM06 deaths are
-2 -> 8, against 10 in 181's combined pair. Flipped ON.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+2 -> 8, against 10 in 181's combined pair. Flipped ON.
+Condition: these exports carry this branch's held 126f79f83 (kWaveFieldLiveAmplitudeBound ON, so hulls ride the live sea),
+with kGunneryLiveWaterSurfaceBound OFF, so the crossing tested is the y = 0 one. Under the flat-sea crossing the mechanism
+does not depend on the amplitude switch.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
 
 Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
 disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of
@@ -12531,9 +12534,9 @@ chaotic, not directional. The verdict is mechanism-only: the first moved line mu
 entry.
 
 **00C535E0 (cc13 audit residual 11a).** Not read in this pass.
-## 182. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
+## 184. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
 
-### 182.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+### 184.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
 
 **The read.**
 - `00729BC0` (decompile) picks the ammunition variant 1 only for weapon kind 6 against a target answering
@@ -12567,7 +12570,7 @@ mount-frame round trip.
   filled later. Rows without kind-6 guns facing ships stay identical. The plane arm adds window refusals to kind-6
   flak; GUNNERY 164's census of `window_rejects` rises.
 
-### 182.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
+### 184.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
 
 - In cc9-gunnery35's JM06 pair (`local\g35_pt{off,on}_j6.log`), `torpedo gyro launches=24` on both sides, while ON
   PlayerSub 01 launches its two player-ordered shots (`torpedo launch t=30.00 shooter=PlayerSub 01`). The two shots
@@ -12577,7 +12580,7 @@ mount-frame round trip.
   seat is player-held is unread); nothing is bound until a row shows the override (`torpedo_gyro_launches` rising by
   the player's shots).
 
-### 182.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
+### 184.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
 
 | row | exit | `window_rejects` OFF -> ON | `kind6_gate_rejects` OFF (counted) -> ON (applied) | other |
 |---|---|---|---|---|
@@ -12593,7 +12596,7 @@ mount-frame round trip.
 
 **Verdict: the mechanism matches the read; flipped ON.**
 
-## 183. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
+## 185. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
 
 - **The set.** `00844FC0` (the shipyard build) puts `"ShipYardLaunch" = 1` into the new unit's init table
   (`0084509C PUSH 1; PUSH 00D0659C; CALL 008F3940`; the string is read from the PE). `BSP_UnitInstance_SEntityInit`
@@ -12640,3 +12643,94 @@ Dyn contact, and it differs in the last printed digit:
 The mechanism matches: the ULP-level divergence starts at a contact and then spreads chaotically. USNOS keeps its
 headline numbers. BSM01's EndMission holds on all three. Both flipped ON (precision implies the association).
 Wins check: the next pair, below.
+
+## 186. `kRollArmBaseNumeratorBound`: the planner roll arm reads the yaw base numerator (lead queue, cc13-audit10's diff; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_AUDIT_PLANNER_ROLL.md's, applied as written (`git apply --check` clean on this branch, merged
+with origin/main). Under the switch the roll input `rin.heading_error` takes `scratch.base_num`
+(`yaw_base_numerator_0099de8a`: the heading error less the 0.01 SoftHdgZone and times SoftHdgMul 0.35 below the soft
+limit), the slot `0099DF87` stores at frame `+6Ch` and `0099E127`/`0099E02B` reload. cc13's read of the ESP walk
+`0099DF87..0099E10E` (net zero; `00419010` RET 14h, `0099D0A0` RET 4) is taken as given; the reload is not re-read here.
+
+**Predictions (cc13's, before any pair).**
+- Every mode-2 heading hold (moveto, follow, attackrun, torpedo aim, the aimglide command arm, dogfights) banks less for
+  a small error: at h = 0.02/0.035/0.05 rad about 0.04/0.12/0.15 rad instead of 0.18/0.22/0.26, and nothing inside
+  0.01 rad. Aimdive is not reached (`plan+2CCh = 0`).
+- Every row with flying planes moves (exit 3). USN04 phase 2: the TBDs bank less in `aim`, so the band shaper's `g`
+  falls and their aim descent goes lower than 106 m; torpedo releases should rise. Fighter rows (LOMP10): dogfight
+  turns at small error are gentler; kill times move both ways.
+- Rows with no plane in the window stay identical.
+
+## 187. `kTaskProfileActivationOnlyBound` and `kMoveToActivationDrawsBound`: the cruise profile runs once per task install (lead queue, cc13-cadence2/3's diffs; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diffs** are docs/CC13_TASK_PROFILE_CADENCE.md sections 6 and 10, applied as written on top of 186
+(`git apply --check` clean). The image dispatches a task's cruise profile (`vt[+54h]`) once per install and again
+when a prepended task retires; the host ran the dive (`009C8920`), level-bomb (`009B8C90`) and land (`009B3C60`)
+profiles every think and the moveto altitude gate every 0.5 s. Section 10: the moveto activation draws
+`+460h = U(20, 200)` and `+424h = U(0, 50)` replace the constructor's `U(0, 5)` and 50.0. The reads are cc13's and
+are not repeated here.
+
+**Predictions (cc13's, before any pair), each switch alone.**
+- Cadence: IJN01's strafers keep 300 m (`ijn_1_pearl.lua` 1009-1011) instead of reverting after 0.5 s; USN04's movie
+  aircraft holds 1100 m; dive leaders draw the begin altitude once per install; JM08's six non-forced altitude calls
+  hold. Exit 3 on IJN01, USN04 and JM08.
+- Moveto draws: every row with a plane moveto install moves (USN04's escorts and waves); the moveto flies about
+  22.5 m lower on average and switches to the target's speed earlier.
+
+## 188. `kFlakFlyTimeBurstBound` and `kFlakBlastIgnoreFalloffBound`: the flak expiry burst and the full-damage flak blast (lead queue, cc13-flak1's diff; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_FLAK_FLYTIME_BURST.md section 5, applied as written (`git apply --check` clean on 187).
+- `kFlakFlyTimeBurstBound`: a Flak round reaching FlyTime runs `0070C210(proj, 0)`, the `U(BlastDamageMin,
+  BlastDamageMax)` draw and the radial blast `0084BAD0`, before the proximity block, instead of dying silently.
+- `kFlakBlastIgnoreFalloffBound`: every flak blast ignores the distance falloff, as the image's; the host's
+  `apply_impact_blast` hard-coded the falloff for them.
+- The reads (`0070C370`..`0070C3D7`, `0070C210`, `0084BAD0`) are cc13's and are not repeated here.
+
+**Predictions (cc13's section 6, before any pair), each switch alone, in the reference launch form.**
+- Burst: up to about 150 more blasts on USN04 9000, of which at most about 20 reach a plane; category 5/6 hits +0 to
+  +25; Kate deaths move by a few seconds; no friendly hits. Rows with more flak against bombers (USN13, LOMP10) move
+  similarly; more plane deaths overall.
+- Falloff: category 5/6 damage per hit +10-50%; Kates die a few seconds earlier; a carrier release may be lost.
+- **This installation's data:** its modded "Yamato 1945 Type 3 Flak Bullet" row (`bulletclasses.lua` arcade 2657,
+  realistic 2613) has FlyTime 10, BlastRange 4500 and damage 3500-4000 (cc13). With the burst ON it dominates any
+  mission that arms it; that is the installation's data, recorded as such.
+Same condition as 182: the live amplitude was ON on all three sides. The wins check below runs with it OFF on both sides, as main has it.
+
+**Wins check (c96f10979; local\p2w_off has both Dyn bounds false, local\p2w_on is as committed; both sides
+kWaveFieldLiveAmplitudeBound false, as on main; logs local\p2w_*):**
+
+| Row | Dyn OFF | Dyn ON |
+|---|---|---|
+| USN01 l50_u1_u2 | 475.21 s | 475.21 s |
+| USN02 s36_u2_p7 | 782.03 s | 782.03 s |
+| LOMP10 s37_l10_p2 | 1127.67 s | 1223.72 s |
+| USN12 s38_u12_p2 | 1549.74 s | 1589.38 s |
+| ESMP08 l46_e8_orders2 | 3456.80 s | **no completion in 72000 frames** (3600 s) |
+| LOMP06 l50_l6_q6 | 369.98 s | 369.98 s |
+
+The guard line is logged on every completion. ESMP08 moves chaotically: 28 / 32 one-sided deaths, almost all of them
+aircraft. OFF completes 143 s before the cap. An ON run extended to 90000 frames (local\p2w_on_e8x.log) separates
+late from lost; the result is below.
+ESMP08 extended to 90000 frames still does not complete. The win is `getn(alive USNFleet) == 0` (08_engano.lua).
+The only one-sided ship deaths are Cassin, sunk at 437.12 s in OFF by Zuikaku_sqn02 (cat 10) and alive in ON for
+the whole 4500 s, and Zuikaku, sunk at 1701.23 s in ON only. Every other one-sided death is an aircraft. Cassin's
+survival of that early air strike blocks the fleet-wipe condition. Verdict: a plan casualty decided by one air
+attack, the same kind as the live-sea losses. Not a contact-mechanism failure: the Dyn bounds stay ON.
+
+## 184. Handoff (cc9-physics2, 2026-10-12, at about 75% context)
+
+Branch `agent/cc9-physics1` in J:\PROG\battlestations-pacific-decompile-cc9-physics1. The lead still holds
+126f79f83 (live sea ON) off main. This session added: e51fe76e2 / 2c18fb04f (182, the submerged swim, ON),
+323f072ba / bee576619 / c96f10979 (183, the Dyn association and precision, ON), docs/OCEAN_WAVE_FIELD.md 16 (the
+LOMP10/USN12 losses), and 183's 11a answer. The tools are in local\: p2_x87sym.py (symbolic x87 over disk bytes;
+read its header for the limits: SSE stores are not tracked, and register-based memory is not memoised), p2_firstdiff.py,
+p2_sum.py, p2_health.py, p2_grepent.py, and p2_runs.ps1 (the swim/dyn/wins/e8x sets).
+
+Open:
+- 11a's impact: what 00C4B9B0's depth and drift tests do with distorted local points on a scaled (s = 1.415) fort.
+  Read 00C4B9B0, then decide whether the host should keep its correct normalized frame or reproduce the image.
+- 182's other rounds: classDesc+74h (vtable[30h] 006E2580) decides static impact vs water entry. The host ends
+  every non-torpedo round at the water. A census of +74h over the bullet classes would confirm that.
+- 006E8680 samples 0078CF20 at (x, y); projectile_impact.cpp's comment says (x, z). That is not this lane's file.
+- Wins casualties to report to the plan owners: ESMP08 (Cassin) with the Dyn bounds ON. With the live sea ON:
+  USN01, LOMP10 and USN12 (section 15/16).

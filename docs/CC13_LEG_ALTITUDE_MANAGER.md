@@ -197,7 +197,141 @@ are near-equal. This is uncertainty 2.
 
 ## 6. Host glue (suggested, not applied)
 
-GLUE_PLACEHOLDER
+This diff replaces the pass-through in the moveonpath glue (docs/CC13_MOVEONPATH_TASK.md section 8)
+behind `kLegAltitudeManagerBound`, which is committed OFF. It stacks on that glue and cannot stand alone,
+because it edits the glue's `Binding` overrides and the lines next to `kMoveOnPathTaskBound`.
+
+Checks:
+- Applied in this worktree on top of the moveonpath glue, `./scripts/build.ps1` passed (build and both
+  ctest suites), and the change was then reverted.
+- `git apply --check` against origin/main `63256d78f`:
+  - with the moveonpath glue applied first: clean;
+  - alone: fails at `pilot_order_bindings.hpp:68`, as expected.
+
+The pieces:
+- `GameUnitsHost::Impl` gains one `bsp::LegAltitudeManager`. The image has one per process; here it is
+  one per host. It also gains a `LegUnits` adapter:
+  - a record's unit is slot index + 1, and 0 stays null;
+  - `unit+5Dh` is replaced by the host's death predicate (`plane_death_c3a`, `plane_death_removed`,
+    gunnery `unit_dead`). This is a LABELLED substitution;
+  - `[unit+538h]+268h` is `plane_turn_circle_radius`.
+- The three overrides keep their records. With the switch ON they also call the manager.
+  - `009FC260` receives `Pilot/MoveTo/CircleAltDiff` and `Dynamics/Ceiling` from `plane_globals()`.
+    When the globals are not loaded, it uses the image-less defaults 30 / 1500.
+- LABELLED: the moveto and attackmove refresh (`moveto_refresh_009beba0`, cc9's lane) still only records
+  `009FD050`. With the switch ON, moveonpath planes therefore separate only against each other.
+  Binding moveto is a separate cc9 change, using the same manager member.
+
+```diff
+diff --git a/include/bsp/pilot_order_bindings.hpp b/include/bsp/pilot_order_bindings.hpp
+index a8359222a..3e4bd3465 100644
+--- a/include/bsp/pilot_order_bindings.hpp
++++ b/include/bsp/pilot_order_bindings.hpp
+@@ -68,6 +68,11 @@ inline constexpr bool kMoveToCircleSteerBound = true;
+ // 009BD990 (src/moveonpath_task_cc13.cpp). Committed OFF: the plane keeps the
+ // task it already had while its director holds the path command.
+ inline constexpr bool kMoveOnPathTaskBound = false;
++// Packet cc13-legmgr1 (docs/CC13_LEG_ALTITUDE_MANAGER.md): the converging-leg
++// manager 009BD400 (009FC000 / 009FC1C0 / 009FC260) behind the moveonpath task's
++// leg calls. Committed OFF: registration and release stay records and the
++// altitude is the steer point's own height.
++inline constexpr bool kLegAltitudeManagerBound = false;
+ // 008A44EF. `retreat`.
+ inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
+ // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.
+diff --git a/src/game_hosts_units.cpp b/src/game_hosts_units.cpp
+index 4b9ea270b..52a9e8d15 100644
+--- a/src/game_hosts_units.cpp
++++ b/src/game_hosts_units.cpp
+@@ -74,6 +74,7 @@
+ #include "bsp/torpedo_release_spawn.hpp"
+ #include "bsp/bot_tasks.hpp"
+ #include "bsp/moveonpath_task_cc13.hpp"
++#include "bsp/leg_altitude_manager_cc13.hpp"   // packet cc13-legmgr1
+ #include "bsp/game_hosts_ship_ai.hpp"
+ #include "bsp/unit_hull_extents.hpp"
+ 
+@@ -6346,6 +6347,29 @@ struct GameUnitsHost::Impl {
+     // head of the next motion step, which is the same frame boundary.
+     int squadron_leaves_{0};
+     int squadron_promotions_{0};
++    // Packet cc13-legmgr1 (docs/CC13_LEG_ALTITUDE_MANAGER.md), kLegAltitudeManagerBound:
++    // the process-wide converging-leg manager 009BD400 (one per host here) and its
++    // two unit reads. A record's unit is slot index + 1. unit+5Dh stands as the
++    // host's death predicate (plane_death_c3a / removed / gunnery dead), a
++    // LABELLED substitution; [unit+538h]+268h is plane_turn_circle_radius.
++    struct LegUnits final : bsp::LegAltitudeUnitHost {
++        explicit LegUnits(const Impl& h) : h_(h) {}
++        const GameUnitSlot* slot(bsp::LegUnitId id) const {
++            return id != 0 && id - 1 < h_.slots.size() ? h_.slots[id - 1].get() : nullptr;
++        }
++        bool out_of_action_5d(bsp::LegUnitId id) const override {
++            const GameUnitSlot* s = slot(id);
++            return s == nullptr || s->plane_death_c3a || s->plane_death_removed ||
++                (h_.gunnery != nullptr && h_.gunnery->unit_dead(s->process_index));
++        }
++        float turn_circle_radius_268(bsp::LegUnitId id) const override {
++            const GameUnitSlot* s = slot(id);
++            return s != nullptr ? s->plane_turn_circle_radius : 0.0f;
++        }
++        const Impl& h_;
++    };
++    bsp::LegAltitudeManager leg_manager_cc13_;
++    LegUnits leg_units_cc13_{*this};
+     void squadron_leave_on_death_007bcaa0() {
+         for (const auto& owned : slots) {
+             GameUnitSlot& s = *owned;
+@@ -29496,7 +29520,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
+                     // 0099A170's arm (0099A24A) and ticked through its vtable+64h
+                     // 009BD990. The squadron slot stands for ctl (unit+9D4h).
+                     // LABELLED substitutions: the converging-leg manager 009BD400
+-                    // is not modelled (no separation; its altitude is the input);
++                    // runs only under kLegAltitudeManagerBound (packet cc13-legmgr1,
++                    // docs/CC13_LEG_ALTITUDE_MANAGER.md; OFF: no separation, its
++                    // altitude is the input), and then only moveonpath planes
++                    // register (the moveto refresh still records 009FD050);
+                     // slot +54h runs once, at the install (no re-activation hook);
+                     // the follow state is the moveto task's (same vtable
+                     // 00D20AB8); the circle state, unreachable live, is a record.
+@@ -29507,16 +29534,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
+                                 return pb_.owner_.release_altitude_draw_00bd2f10(
+                                     pb_.unit_.row.name + "#mp" + key, lo, hi);
+                             }
+-                            void leg_register_009fc000(const std::array<float, 3>&) override {
++                            void leg_register_009fc000(const std::array<float, 3>& p) override {
+                                 pb_.owner_.record("BotPathLegManager::register", 0x009fc000u);
++                                if (!bsp::kLegAltitudeManagerBound) return;
++                                pb_.owner_.leg_manager_cc13_.register_009fc000(
++                                    pb_.owner_.leg_units_cc13_, leg_id(), p);
+                             }
+                             void leg_remove_009fc1c0() override {
+                                 pb_.owner_.record("BotPathLegManager::remove", 0x009fc1c0u);
++                                if (!bsp::kLegAltitudeManagerBound) return;
++                                pb_.owner_.leg_manager_cc13_.remove_009fc1c0(
++                                    pb_.owner_.leg_units_cc13_, leg_id());
+                             }
+                             float leg_altitude_009fc260(const std::array<float, 3>& p,
+-                                                        float) override {
++                                                        float w) override {
+                                 pb_.owner_.record("BotPathLegManager::altitude", 0x009fc260u);
+-                                return p[1];
++                                if (!bsp::kLegAltitudeManagerBound) return p[1];
++                                bsp::LegAltitudeTuning t;
++                                if (pb_.owner_.lua.plane_globals_loaded()) {
++                                    const bsp::GameTuningBlock& g = pb_.owner_.lua.plane_globals();
++                                    t.circle_alt_diff_378 = g.pilot_move_to_circle_alt_diff;
++                                    t.ceiling_210 = g.dynamics_ceiling;
++                                }
++                                return pb_.owner_.leg_manager_cc13_.altitude_009fc260(
++                                    pb_.owner_.leg_units_cc13_, t, leg_id(), p, w);
++                            }
++                            // The record's unit pointer: process index + 1 (0 is null).
++                            bsp::LegUnitId leg_id() const {
++                                return static_cast<bsp::LegUnitId>(pb_.unit_.process_index + 1);
+                             }
+                             bsp::MoveOnPathApproachInputs approach_inputs() override {
+                                 bsp::MoveOnPathApproachInputs in;
+```
 
 ## 7. Open questions
 

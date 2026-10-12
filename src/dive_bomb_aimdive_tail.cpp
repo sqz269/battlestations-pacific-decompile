@@ -13,11 +13,11 @@ namespace {
 // and 009C5E91 (the -0.0 at 00D7A208).
 float fold(float v) noexcept { return (v > 0.0f) ? v : (-0.0f - v); }
 
-// GUNNERY 181 (cc13 plane-bot audit row 6): 009C5F79's FSTP float writes
+// GUNNERY 181.2 (cc13 plane-bot audit row 6): 009C5F79's FSTP float writes
 // AimPitchRatio x |pitch| over [ESP+24h] (frame base E, ESP = E-14h there),
 // the slot that held |pitch|; 00419010 is RET 14h, so 009C5FA7's FLD
 // [ESP+24h] reloads the product. ON: the brake floor takes x1, as the image
-// does. OFF: the brake floor takes |pitch| (the host before section 181).
+// does. OFF: the brake floor takes |pitch| (the host before section 181.2).
 inline constexpr bool kAimDiveBrakeRatioBound = true;
 
 }  // namespace
