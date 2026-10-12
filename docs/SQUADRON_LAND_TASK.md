@@ -15510,3 +15510,46 @@ three OFF), `l51_E1` (A ON), `l51_F1` (B ON).
   the side stand-in over-counted. JM01 needs a harness route to the mission before primary 4 can be shown.
 - **C: stays OFF**, recorded. It is latent on every row run, and no reference row admits a Hidden or exempt-class
   entity in mode 9.
+
+## 5ga. Handoff (cc9-lua51, 2026-10-12, at about 67% context)
+
+Landed or ready on `agent/cc9-lua51`:
+- 5fu: `kLuaListenerCallbackArgsBound` and `kLuaKillAttackerBound` ON.
+- 5fz: `kLuaHitTargetSquadronBound` ON. `kEngineMovieStopRosterExemptBound` is committed OFF (latent).
+- 5fv/5fw/5fy: reads only.
+- 5fx: the JM08 runs.
+
+Open, in the lead's order:
+1. **Diff A** (`kLuaKillBoxFromHitBound`, `src/game_hosts_gunnery.cpp`, held by the gunnery lane) has been routed
+   as `local\l51_audit_gunnery.patch` (this tree). The recommendation is ON. JM01 cannot be reached by
+   `--menu-select JM01` (`selected=TRN1 step=Stopped`), so primary 4 needs a harness route first.
+2. **Kamikaze wiring** (not started). Use `include/bsp/kamikaze_task_cc13.hpp`, `src/kamikaze_task_cc13.cpp`, and the
+   glue sketch in docs/CC13_KAMIKAZE_TASK.md section 6. It goes in `src/game_hosts_units.cpp` (shared: claim,
+   apply, build, commit, release), next to `run_strafe_task_arm_009cd170`, behind `kKamikazeTaskBound` /
+   `kDropKamikazeTaskBound`, both OFF. Two gaps:
+   - the boost byte plan+2E4h has no host field;
+   - the drop must spawn the `DummyKamikazePlane`, whose tick `006FEC00` spawns `desc+DCh` (Ohka 156 /
+     Funryu 370) after `OpenAfterTime`, with `AutoAttackTarget`. That needs the lead-approved loan of the drop
+     site in `game_hosts_gunnery.cpp`.
+   Pairs: USNOS x (`cc9-ships43\local\s43_os_x.txt`, 200000 frames; the win must hold), USN18 and USN15, plus a
+   control.
+3. **JM08**: rerun `local\l51_j8_b3.txt` once the gunnery lane lands `kLandStructureMeshHitTestBound` (the
+   AA truck's "friendly fire" on the HQ is a building box-vs-mesh hit-test defect). Then look at phase 2: CAP or
+   fighters on `B-17 #2.x` before 1256 s, and C-47 kills for the win. cc13's docs/CC13_JM08_HQ.md also asks to bind
+   `RemoveAllAirBasePlanes 008975B0` (the host keeps the 10 authored stock, about 10 extra Hosho planes).
+   Grep every caller mission. Note that `SetRoleAvailable`'s inner `008ABA51` is a record, behaviour unverified.
+4. **Dogfight diff** (docs/CC13_DOGFIGHT_DRAWS.md, three OFF switches in `game_hosts_units.cpp`), paired on
+   LOMP10, USN01 (`l50_u1_u2`) and USNOS with `BSP_GUNNERY_RNG_STREAMS=1`.
+5. **Undispatched event channels** (5fu census: surrender 76, entityKilled 44, input 37, exitzone 36, gui 19,
+   command 17, generate 17, hpEvent 12, ammoType 9, repair 6, shipLanded 5, target 2). List which missions'
+   critical paths need them. JM06's `command`/`submove` sets `Mission.PathEnd`.
+
+Tools in `J:\PROG\battlestations-pacific-decompile-cc9-lua51\local\` (read-only for the next worker; copy to its
+own prefix):
+- `l51_lane.ps1`: row launcher with `-Orders`, `-Frames` and `-Exe`.
+- `l51_j8gen.py`: JM08 orders.
+- `l51_listener_args.py`: the kill/hit callback census.
+- `l51_missionmap.py`: menu id to scene.
+- `l51_movieinit.py`.
+- `l51_mkexp.ps1`: an export with a patch applied.
+- `l51_diag_hq.py` (5fg's HQ hit diagnostic).
