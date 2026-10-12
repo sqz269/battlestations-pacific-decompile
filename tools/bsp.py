@@ -626,7 +626,7 @@ def state(args):
     db = connect(required=False)
     if db:
         fun = db.execute("SELECT COUNT(*) FROM functions WHERE name LIKE 'FUN_%' AND thunk=0").fetchone()[0]
-        funclets = db.execute("SELECT COUNT(*) FROM functions WHERE name LIKE 'Unwind@%' OR name LIKE 'Catch_All@%'").fetchone()[0]
+        funclets = db.execute("SELECT COUNT(*) FROM functions WHERE name LIKE 'Unwind@%' OR name LIKE 'Catch_All@%' OR name LIKE 'EHHandler@%'").fetchone()[0]
         exported = db.execute('SELECT COUNT(*) FROM functions WHERE exported=1').fetchone()[0]
         print(f"functions: {fun} untagged FUN_, {funclets} EH funclets, {exported} exported")
         meta = index_meta()
