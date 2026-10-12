@@ -79,32 +79,42 @@ were defined; the rest are held. Record: `reports/cc13_undefined_function_sweep_
 | class | selected | defined | reference that qualified it |
 |---|---|---|---|
 | EH handler stubs | 6,780 | 6,780 | `mov eax,FuncInfo; jmp ___CxxFrameHandler3` (FuncInfo magic 19930522), `PUSH stub` in the parent's SEH prologue confirmed in the listing |
-| `.rdata` table entries | 1,860 | 1,845 | dword in an `.rdata` function-pointer table beside a known entry, plus a structural start |
+| `.rdata` table entries | 1,860 | 1,859 | dword in an `.rdata` function-pointer table beside a known entry, plus a structural start |
 | unwind-map entries | 121 | 121 | dword in an unwind-map-shaped `.rdata` record |
-| called / pushed | 76 | 75 | rel32 CALL or `push imm32` from code |
-| total | 8,837 | 8,821 | |
+| called / pushed | 76 | 76 | rel32 CALL or `push imm32` from code |
+| total | 8,837 | 8,836 | |
 
 - A power outage stopped the first run after 2,469 bodies. The resume re-read every candidate
   live (`get_function_by_address`: entry and body end against the planned end) and defined only
   the missing ones, so nothing was defined twice. Same tool and rules as pass 1
   (`tools/ghidra_define_function.py`, explicit `disassemble_bytes` then `create_function` without
   flow discovery), 100 bodies per write-lock hold with a per-batch lease, released between.
+  The 15 bodies first skipped in agent/cc13-net2's ranges 0076B630..00786C56 were defined after
+  that lease was released (`lease check`: unleased).
 - "Non-Returning Functions - Discovered" was checked disabled (`list_analyzers`) before the resume.
-- Names: none assigned except the reviewed ledger names the define tool applies on its own (18
-  `BSP_`, 14 `thunk_`, 1 `TRIV_` bodies). The handler stubs and table entries are `FUN_`.
-- Not defined (15): all in agent/cc13-net2's ranges 0076B630..00786C56 (listed in
-  `not_defined` with the holder). One defined body is short: **00726930** (`.rdata` table
-  00CFDBE4) ends at 0072693F; the loop at 00726940..00726957 is not instructions in Ghidra even
-  after `--recreate` reported 40 bytes disassembled (`get_instruction` at 00726940: none). Needs a
-  CodeBrowser look (Clear + Disassemble at 00726940).
-- Counts after the forced snapshot (2026-10-12T05:29Z): Ghidra 66,483 -> 75,410 functions
-  (includes other workers' concurrent definitions); `bsp brief` untagged `FUN_` 16,370 -> 24,827,
-  EH funclets unchanged at 27,955. The handler stubs are therefore counted as untagged `FUN_`.
-  bsp counts EH funclets by name prefix only (`Unwind@` / `Catch_All@`, tools/bsp.py:629,
-  tools/status.py:29, tools/progress_board.py:68) and had no convention for handler stubs (8
-  hand-named `EHHandler_<ctx>_<addr>`). Proposed to the lead, not applied: rename the 6,780 stubs
-  `EHHandler@<addr>` and add that prefix to the three counters. `local/df3_rename.py --apply`
-  in the cc13-define1 worktree does the rename (locked batches of 500, prior names logged).
+- Names (lead-approved convention, applied in one locked pass, 500 per lock hold, prior names in
+  the worktree's `local/df3_rename_log.jsonl`): the 6,780 handler stubs are `EHHandler@<addr>`,
+  the 121 unwind-map entries `Unwind@<addr>` (Ghidra's own funclet convention). Table and
+  call/push entries stay `FUN_` unless the define tool applied a reviewed ledger name.
+- Counters: bsp classifies EH funclets by name prefix only. `EHHandler@` was added next to
+  `Unwind@` / `Catch_All@` in tools/bsp.py (brief), tools/status.py, tools/progress_board.py and
+  tools/ledger_backfill.py (the only places in tools/ that use those prefixes). The 8 earlier
+  hand-named handler stubs keep their reviewed ledger names and are not matched by the prefix:
+  00CB7571, 00CB8A93, 00CBD458 (`BSP_Renderer_DrawDebugLineRecords_EHHandler`), 00CBEF88,
+  00CC59A1, 00CC5AF8, 00CC5B18, 00CC5B38 (`EHHandler_<ctx>_<addr>`).
+- Counts (`bsp brief`):
+
+  | state | snapshot total | untagged `FUN_` | EH funclets |
+  |---|---|---|---|
+  | before pass 2 (2026-10-12T03:59Z) | 66,483 | 16,370 | 27,955 |
+  | defined, unnamed (05:29Z) | 75,410 | 24,827 | 27,955 |
+  | renamed, counters updated (06:01Z) | 75,434 | 17,629 | 34,856 |
+
+  The snapshot totals include other workers' concurrent definitions and renames.
+- One defined body is short: **00726930** (`.rdata` table 00CFDBE4) ends at 0072693F; the loop at
+  00726940..00726957 is not instructions in Ghidra even after `--recreate` reported 40 bytes
+  disassembled (`get_instruction` at 00726940: none). Needs a CodeBrowser look (Clear +
+  Disassemble at 00726940, then `ghidra_define_function.py 00726930 00726958 --recreate`).
 - Held (31,225): no confirmed reference (unreferenced COMDAT copies, gap-start heuristics, 30
   table hits dropped for lacking structural start evidence). Not defined on purpose; the list is
   in the report for a later pass with stronger evidence.
