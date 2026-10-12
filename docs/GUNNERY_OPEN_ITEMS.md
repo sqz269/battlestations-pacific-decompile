@@ -11624,3 +11624,41 @@ The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the 
     no death moves.
   - The expiry draw is inert in the reference form, as predicted: five of the six rows are identical with it ON.
 - **Verdict: both ON.**
+
+## 165. A hull-contact access violation on USNOS f17 (found by reference AG; cc9-gunnery35, 2026-10-11, open)
+
+**Two crashes, the same frame.**
+
+| build | where | when | fault |
+| --- | --- | --- | --- |
+| The anchor of reference AG (`10bef4a99`, the five AG switches OFF; `local\g35_anc`) | USNOS `s41_os_f17` | mission_frame 84570, t = 4230 s | `0xC0000005` at `bsp_game.exe+307DFB`, reading `17401624` |
+| Its `/Zi /DEBUG` twin (same sources; `local\g35_dbg`, `CL=/Zi /FS`, `_LINK_=/DEBUG /OPT:REF /OPT:ICF`) | the same row | mission_frame 84560, t = 4229.80 s | `+307DEB`, reading `16A521BC` |
+
+- Both crashes come after the mission's 1554.69 s failure. The harness keeps simulating to the frame limit.
+- Minidumps: `local\g35_ancw_os.dmp` and `local\g35_dbgw_os.dmp`.
+- **Stack** (`local\g35_stack.py`, a call-preceded return-address scan symbolized through the twin's PDB):
+  - `local_support_kernel` (`src/native_dyn_convex_support.cpp:93`, the transcribed `00C35969` loop)
+  - `support64_kernel` `:319`
+  - `search_kernel` (`src/native_dyn_general_convex.cpp:648`)
+  - `intersect_kernel` `:2009`, then `intersect_shim` / `dispatch_kernel` `:2248`
+  - `dispatch_native_dyn_general_convex_00c535e0` `:2308`
+  - `HullTerrainContactSolver::hull_fort_narrow_phase` (`src/hull_terrain_contact.cpp:1057`; the scan also shows stale
+    `hull_hull_narrow_phase :917` words)
+  - `world_step` `:1401`
+- **Registers** (twin): EBX = 0xB0AF (the best vertex so far), EBP = 0x41C1 (the neighbour count read from the
+  adjacency list), ECX = 0x6025 (the adjacency offset), EAX = 0x1B980 (the next vertex index x 16).
+  - A fort or hull convex with 45231 vertices and 16833 neighbours is not a hull. So the adjacency words being walked
+    are not a hull's.
+- **Layout-dependent.**
+  - A third build, `c2a886a8a` with the anchor's switches plus the two GUNNERY 164 switches OFF, reproduces the anchor
+    log line for line through the crash frame. Its lines 731782..731785 equal the anchor's, which crashed at 731788.
+  - That build ran all 150000 frames with no fault. Its `BSP_HULL_REBUILD_TRACE` logged no hull-shape rebuild.
+  - The same data therefore faults in two builds and not in a third: a read of stale or uninitialized memory, not bad
+    geometry.
+- **Next.**
+  - Log every fort-hull pair `hull_fort_narrow_phase` dispatches from step 84500 on: fort unit, shape, the convex's
+    `handle->data` vertex count and adjacency size, and whether either unit is dead.
+  - Check whether a fort's `FortWorldEntry::shapes` can outlive its vector. `fort_boxes_` caches a fort's box for
+    the run.
+  - Check whether a unit index can sit in both the fort and the hull lists, since `fort_convex` and `hull_convex`
+    share `hulls_`'s (unit, shape) keys.
