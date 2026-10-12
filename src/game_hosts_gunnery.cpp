@@ -175,6 +175,16 @@ constexpr bool kCommandBuildingGunfireArmourBound = true;
 // and the origin is the plane's. UNCERTAIN: Val/Kate slot 50 may add ~2.0 deg
 // nose-down if the unread gun-entity placement store applies the slot frame.
 constexpr bool kBombDropScatterBound = true;
+//  * kBombDropDriftBound: packet cc9_bomb_drift (docs/GUNNERY_OPEN_ITEMS.md
+//    173). The drift kBombDropScatterBound draws is applied. 006E4D50 builds
+//    rack+4ECh = r1 (n Vz, 0, -n Vx) + r2 n V from the owner's vtable[34h] world
+//    velocity V (n = 1/|V|), r1 = U(-w, w), r2 = U(-0.5w, 0.3w), w = rack Wind;
+//    006E1F00 copies it to block+38h with y zeroed; 006E1510, the bomb family's
+//    air advance, adds record+348h * dt to the velocity each step inside its
+//    NoGravity test. LABELLED: the owner is the dropping plane, its velocity is
+//    unit_linear_velocity; the host's step applies it after the position slot.
+//    OFF: drawn and discarded, as before.
+constexpr bool kBombDropDriftBound = false;
 // This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
 // LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
 // SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
@@ -2123,6 +2133,9 @@ struct GameGunneryHost::Impl {
     unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
     double scatter_max_angle{0.0};
     double scatter_max_turn_deg{0.0};
+    unsigned long long bomb_drift_drops{0};        // packet cc9_bomb_drift
+    unsigned long long bomb_drift_steps{0};
+    double bomb_drift_max{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
     unsigned long long cb_gate_passes{0};
     unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
@@ -8604,6 +8617,16 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
+        if (kBombDropDriftBound && shot.is_bomb && !shot.flight.class_disables_gravity
+            && shot.flight.mode == bsp::ProjectileMotionMode::kBallistic
+            && (shot.bomb_drift[0] != 0.0f || shot.bomb_drift[2] != 0.0f)) {
+            // 006E1510 (inside the classDesc+20h NoGravity test): v += record+348h * dt.
+            // LABELLED: the host's velocity slot runs after its position slot, so the
+            // drift reaches the position one step later, as gravity's velocity part does.
+            shot.flight.velocity.x += shot.bomb_drift[0] * dt;
+            shot.flight.velocity.z += shot.bomb_drift[2] * dt;
+            ++bomb_drift_steps;
+        }
         shot.position[0] = shot.flight.local_position.x;
         shot.position[1] = shot.flight.local_position.y;
         shot.position[2] = shot.flight.local_position.z;
@@ -12536,6 +12559,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
             if (speed > 1.3888888f) velocity[1] -= 3.0f;   // 006E0A93..006E0AB3
         }
     }
+    float drift[3] = {0.0f, 0.0f, 0.0f};
     if (kBombDropScatterBound) {
         // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
         // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
@@ -12549,8 +12573,25 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float t = std::tan(h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             s));                                                            // 006E4FB1
         const float w = chosen->wind_amount;
-        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);             // 006E513C
-        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w, 0.3f * w); // 006E51AC
+        const float r1 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);     // 006E513C
+        const float r2 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w,
+            0.3f * w);                                                              // 006E51AC
+        if (kBombDropDriftBound) {
+            // 006E5054: [rack+3F0h]->vtable[34h], the owner's world velocity V;
+            // n = 1/|V| (0 when |V| <= 0, 006E50B9). 006E50E3..006E5123:
+            // rack+4ECh = (n Vz, 0, -n Vx); 006E5148..006E517E scales it by r1;
+            // 006E51B5..006E51EE adds r2 n V. 006E1F00 zeroes y (block+3Ch).
+            float v[3] = {0.0f, 0.0f, 0.0f};
+            h.units.unit_linear_velocity(unit_index, v);
+            const float len = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+            const float n = len > 0.0f ? 1.0f / len : 0.0f;
+            drift[0] = n * v[2] * r1 + r2 * (n * v[0]);
+            drift[2] = -n * v[0] * r1 + r2 * (n * v[2]);
+            ++h.bomb_drift_drops;
+            const double mag = std::sqrt(static_cast<double>(drift[0]) * drift[0]
+                + static_cast<double>(drift[2]) * drift[2]);
+            if (mag > h.bomb_drift_max) h.bomb_drift_max = mag;
+        }
         // 006E1F00 after vtable[190h]: |v| (D.x r0 + D.y r1 + D.z r2), D not normalised.
         const float dx = t * std::cos(a);
         const float dy = -t * std::sin(a);
@@ -12603,6 +12644,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     shot.is_bomb = true;
+    for (int i = 0; i < 3; ++i) shot.bomb_drift[i] = drift[i];
     // Packet cc8_dive_aim item 2: the tf in force at THIS tick, not the one the
     // aimdive summary prints after the dive has ended.
     shot.release_fall_time = release_fall_time;
@@ -13008,6 +13050,10 @@ void GameGunneryHost::report() {
                 host.scatter_drops, host.scatter_max_angle * 57.29577951308232,
                 host.scatter_max_turn_deg);
         }
+        host.log.notef("summary mission bomb drop drift drops=%llu steps=%llu max_accel=%.4f bound=%d "
+            "(006E4D50 rack+4ECh -> 006E1F00 block+38h -> 006E1510 +348h, packet cc9_bomb_drift)",
+            host.bomb_drift_drops, host.bomb_drift_steps, host.bomb_drift_max,
+            kBombDropDriftBound ? 1 : 0);
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
                 "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "
