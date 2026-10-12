@@ -34,6 +34,12 @@ DROP = {
     '007ae6d0': 'float math', '007b2950': 'BSP_NetEntityCreateMessage +11Ch', '0091a080': '4.7 KB body, field +1E8h, float math',
     '0095f1c0': 'field +130h, 4 vcalls', '00a9bf90': 'this[45h] field', '00a9c860': 'this[43h] field', '00acb9b0': 'this[41h] field',
     '00ad0680': 'GUI widget this[3Eh] + 2 vcalls',
+    # third run (--s67), rows released by cc13-sweep67
+    '006bf350': 'critical section + field +50h (air ops)', '006c7540': 'critical section + field +0ACh (air ops)',
+    '006c77e0': 'critical section + field +0ACh (air ops)', '006cd6c0': 'BSP_VehicleClass_GetOrCreate + field +0E4h',
+    '006acb40': 'BSP_GameEntity_Destruct + field +204h', '006cc800': 'BSP_VehicleClass_GetRegistryId under a critical section',
+    '0071ba20': 'BSP_ModelNoteNameEquals_Predicate + field +84h', '00725380': 'float math (66 float ops)',
+    '0072d950': 'BSP_UnitTickableEntity_Destruct + field +47Ch',
 }
 c = collections.Counter()
 for x in d:
@@ -42,11 +48,21 @@ for x in d:
         x['dec'], x['shape'] = 'upgrade_named', NAMED[a]
     elif a in DROP:
         x['dec'], x['anch'] = 'drop_game', ['read: ' + DROP[a]]
+import sys
+OUT = 'stlr2_decisions.txt'
+MINE = None
+if '--s67' in sys.argv:
+    # rows cc13-sweep67 held; cc13-leftovers1 still leases three ranges and 00675C40 belongs to cc9
+    OUT = 'stlr3_decisions.txt'
+    EXCL = [(0x73eba0, 0x73ffff), (0x721c00, 0x721dff), (0x7240e0, 0x7242ff), (0x675c40, 0x675c40)]
+    MINE = {a for a in open(os.path.join(root, 'local', 's2_s67.txt')).read().split()}
 lines = ['# cc13-stlreview2: second-pass decision per stl_probable bookmark row (docs/CC13_STL_PROBABLE_REVIEW.md section 9)',
          '# addr|old_evidence|decision|category|name|evidence_key|anchors']
 for x in sorted(d, key=lambda x: x['a']):
     a = int(x['a'], 16)
     dec = 'deferred_leased' if any(lo <= a <= hi for lo, hi in EXCL) else x['dec']
+    if MINE is not None and x['a'] not in MINE:
+        dec = 'out_of_scope'
     cat = name = key = ''
     if dec == 'upgrade_shape':
         cat, name, key = 'stl_shape', f"{x['shape'][0]}_{x['a']}", 'st1_' + x['shape'][1]
@@ -60,6 +76,6 @@ for x in sorted(d, key=lambda x: x['a']):
     an = ';'.join(x.get('anch', []))[:120]
     lines.append('|'.join([x['a'], x['ev'], dec, cat, name, key, an]))
     c[(dec, x['ev'])] += 1
-open(os.path.join(root, 'tools', 'template_shapes', 'stlr2_decisions.txt'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
+open(os.path.join(root, 'tools', 'template_shapes', OUT), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
 for k, v in sorted(c.items()):
     print(v, k)

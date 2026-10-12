@@ -252,7 +252,8 @@ vocabulary as above: tag and name metadata from static evidence, nothing reconst
 
 All 677 `stl_probable` bookmark rows still present were re-featured, re-decompiled (live Ghidra,
 read-only) and re-clustered with the section 2 pipeline. The 137 rows inside cc13-sweep67's lease
-(`00670000-006CFFFF`, `00700000-0073FFFF`) stay deferred. The other 540 were decided:
+(`00670000-006CFFFF`, `00700000-0073FFFF`) were deferred at first and decided later (9.6). The other
+540 were decided:
 
 | origin of the row | upgraded (shape) | upgraded (name kept) | reviewed (game) | dropped | kept library | kept uncertain |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -352,21 +353,43 @@ templates: `_Lockit`, `_Locinfo_dtor`, `_Init`, `basic_streambuf` init (`0098DE5
 `00990340`, `0098FFE0`, `00992480`). They need names from the MSVC 8 `<fstream>`/`<xlocale>`
 sources, not a container shape.
 
-### 9.6 Per-rule reliability, both passes
+### 9.6 The sweep67 rows (third run)
 
-| rule | decided (both passes) | game code | template copy | kept library | kept uncertain |
+cc13-sweep67 landed while this pass was running (merged at `76aa016f4`) and released its lease. Its
+range then held 173 rows: the 137 deferred ones and 36 new bookmarks from that sweep. The same
+pipeline ran on them (`stlr2_final.py --s67`, which writes `tools/template_shapes/stlr3_decisions.txt`
+and adds nine read-based drops: air-ops bodies under a critical section, `BSP_VehicleClass_*`
+callers, entity destructors with fields past `200h`, and one 66-float-op body):
+
+| origin | upgraded (shape) | upgraded (name kept) | reviewed (game) | dropped | kept library | not touched |
+| --- | --- | --- | --- | --- | --- | --- |
+| deferred by stlreview1 | 61 | 22 | 14 | 23 | 16 | 1 |
+| new cc13-sweep67 bookmarks | 1 | 0 | 0 | 30 | 4 | 1 |
+
+Not touched: `00675C40` (cc9's support-manager update; the common brief reserves it) and `007240E0`
+(inside cc13-leftovers1's lease). No new cluster labels were needed: every multi-row cluster here
+already had one. Ghidra: 62 renames, 22 `stl_instantiation` bookmarks on named rows, 151
+`stl_probable` bookmarks deleted (`local/stlr-ghidra-*-20261012T145044Z.json`); `_free` unchanged.
+
+196 `stl_probable` bookmarks remain image-wide: 176 library-shaped, 18 uncertain, and the 2 above.
+
+### 9.7 Per-rule reliability, all passes
+
+| rule | decided | game code | template copy | kept library | kept uncertain |
 | --- | --- | --- | --- | --- | --- |
-| `st1_scl97` (no size cap) | 397 | 320 (81%) | 29 (7%) | 41 | 7 |
-| `e0029` (97-256 bytes) | 1378 | 370 (27%) | 882 (64%) | 115 | 11 |
+| `st1_scl97` (no size cap) | 452 | 366 (81%) | 30 (7%) | 49 | 7 |
+| `e0029` (97-256 bytes) | 1494 | 391 (26%) | 965 (65%) | 127 | 11 |
 
-Counts take each row's latest decision across both passes (1775 rows; the 137 sweep67 rows are excluded). The 62 new
-cc13-sweep9x bookmarks fit the earlier picture: 39 game, 9 template, 12 library, 2 uncertain; most
-of the game rows are `st1_scl97` hits carrying strings (scoring awards, Lua bindings, the hardware
-options text). Section 3.1's proposal stands: cap or drop `scl_97plus`, and do not bookmark on the
-`_invalid_parameter_noinfo` call alone.
+Counts take each row's latest decision across the three decision files (1946 rows). The 98 bookmarks
+the band sweeps added after stlreview1 (62 from cc13-sweep9x, 36 from cc13-sweep67) were 70% game
+code, nearly all `st1_scl97` hits with strings or game calls (scoring awards, Lua bindings, the
+hardware options text, air-ops stock). Section 3.1's proposal stands: cap or drop `scl_97plus`, and
+do not bookmark on the `_invalid_parameter_noinfo` call alone.
 
-### 9.7 Still to do
+### 9.8 Still to do
 
-- The 137 rows in cc13-sweep67's lease: run `stlr2_final.py` with `EXCL` emptied once the lease is
-  released, review its output, and apply with `stlr_review.py --decisions`.
-- Name the 134 dropped game rows in the band sweeps.
+- `007240E0` once cc13-leftovers1 releases it; `00675C40` belongs to cc9.
+- Name the 187 dropped game rows of this pass in the band sweeps (anchors in the decision files).
+- Name the 0098-0099 iostream/locale bodies (9.5).
+- Section 9.4: a union merge of tag shards undoes deletions; whoever owns `tools/merge_resolve.py`
+  should decide whether it needs a tombstone for removed rows.
