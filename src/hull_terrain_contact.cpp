@@ -981,6 +981,66 @@ HullTerrainContactSolver::HullShape* HullTerrainContactSolver::fort_convex(
     return &h;
 }
 
+// CORRECTNESS (GUNNERY_OPEN_ITEMS 167): the fort body's frame is the unit's world matrix
+// (00C336C0 copies unit+CCh as is), so an authored scale stays in its rows. The convex
+// support kernel 00C358A0 picks its start vertex from support_seed[27] by trunc(d * 1.99)
+// per axis of the LOCAL direction, a unit vector assumed; a scale-2 frame doubles the local
+// direction and indexes past the table (USNOS f17: rows of length 2.003, an access violation
+// in local_support_kernel at t = 4230 s). The world geometry is kept: each local axis i is
+// scaled by |row i| in the points and the row is normalized. Unit-length frames are passed
+// through untouched, so unscaled forts are bit-identical.
+const FortWorldEntry& HullTerrainContactSolver::rigid_fort(const FortWorldEntry& fort) {
+    float scale[3];
+    bool rigid = true;
+    for (int r = 0; r < 3; ++r) {
+        const float* row = fort.frame + 3 * r;
+        scale[r] = std::sqrt(row[0] * row[0] + row[1] * row[1] + row[2] * row[2]);
+        if (std::fabs(scale[r] - 1.0f) > 1e-4f || !(scale[r] > 0.0f)) rigid = false;
+    }
+    if (rigid) return fort;
+    RigidFort& rf = fort_rigid_[fort.unit];
+    if (rf.source == fort.shapes && std::memcmp(rf.source_frame, fort.frame, sizeof(fort.frame)) == 0) {
+        return rf.entry;
+    }
+    rf.source = fort.shapes;
+    std::memcpy(rf.source_frame, fort.frame, sizeof(fort.frame));
+    rf.shapes.clear();
+    rf.shapes.reserve(fort.shapes->size());
+    for (const std::vector<OceanVec3>& shape : *fort.shapes) {
+        std::vector<OceanVec3> scaled;
+        scaled.reserve(shape.size());
+        for (const OceanVec3& p : shape) {
+            scaled.push_back(OceanVec3{p.x * scale[0], p.y * scale[1], p.z * scale[2]});
+        }
+        rf.shapes.push_back(std::move(scaled));
+    }
+    rf.entry.unit = fort.unit;
+    for (int r = 0; r < 3; ++r) {
+        const float inv = scale[r] > 0.0f ? 1.0f / scale[r] : 1.0f;
+        for (int k = 0; k < 3; ++k) rf.entry.frame[3 * r + k] = fort.frame[3 * r + k] * inv;
+    }
+    for (int k = 9; k < 12; ++k) rf.entry.frame[k] = fort.frame[k];
+    rf.entry.shapes = &rf.shapes;
+    ++census_.forts_rescaled;
+    // DIAGNOSTIC, env-gated (BSP_FORT_RESCALE_TRACE=<file>): each fort rescaled, once per change.
+    static std::FILE* rescale_trace = [] {
+        char* path = nullptr;
+        std::size_t length = 0;
+        std::FILE* f = nullptr;
+        if (_dupenv_s(&path, &length, "BSP_FORT_RESCALE_TRACE") == 0 && path) {
+            fopen_s(&f, path, "w");
+            std::free(path);
+        }
+        return f;
+    }();
+    if (rescale_trace) {
+        std::fprintf(rescale_trace, "step=%llu fort unit=%zu shapes=%zu row_scale=%.4f,%.4f,%.4f\n",
+            census_.steps, fort.unit, fort.shapes->size(), scale[0], scale[1], scale[2]);
+        std::fflush(rescale_trace);
+    }
+    return rf.entry;
+}
+
 // 00C44090 for every (fort, hull) pair the broad phase would hand it, with the same LABELLED
 // substitutions as the hull pairs (a world-box test widened by 0.1 m; shape order) and body A
 // taken as the fort (the terrain's place: the SAP pair order is not read). No contact event
@@ -1025,8 +1085,9 @@ void HullTerrainContactSolver::hull_fort_narrow_phase(std::vector<HullWorldEntry
         game::game_native_dyn_process(game::application_camera_axes_crt());
     DynGeneralConvexIntersectStorage& owner = process.general_convex_owner();
     const CameraAxesCrtAccess& crt = game::application_camera_axes_crt();
-    for (const FortWorldEntry& fort : forts) {
-        if (fort.shapes == nullptr) continue;
+    for (const FortWorldEntry& fort_in : forts) {
+        if (fort_in.shapes == nullptr) continue;
+        const FortWorldEntry& fort = rigid_fort(fort_in);
         auto fb = fort_boxes_.find(fort.unit);
         if (fb == fort_boxes_.end()) {
             FortBox box = empty_box();

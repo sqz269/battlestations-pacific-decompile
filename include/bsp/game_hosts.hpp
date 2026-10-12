@@ -485,6 +485,7 @@ private:
     long screenshot_mission_frame_{-1};
     bool capture_requested_{};
     unsigned long long frames_{};
+    bool stop_after_end_exit_{false};   // harness only: --stop-after-end
 };
 
 // What one run produced, for the report.

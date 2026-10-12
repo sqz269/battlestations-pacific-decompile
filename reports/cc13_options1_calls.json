@@ -2,20 +2,175 @@
   "packet": "cc13-options1",
   "documentation": "docs/CC13_OPTIONS_AND_HARDWARE.md",
   "steps": [
-    {"function": "008d6c00", "address": "008d6c30", "native": "00a3e510"},
-    {"function": "008d6c00", "address": "008d6c61", "native": "007f8ca0"},
-    {"function": "008d6c00", "address": "008d6c79", "native": "00425f40"},
-    {"function": "008d6c00", "address": "008d6c87", "native": "004c5e00"},
-    {"function": "008d6c00", "address": "008d6cc4", "native": "00436710"},
-    {"function": "008d6c00", "address": "008d6cce", "native": "00449af0"},
-    {"function": "008d6c00", "address": "008d6d0c", "native": "00bd3e10"},
-    {"function": "008d6c00", "address": "008d6d16", "native": "006adb50"},
-    {"function": "008d6b70", "address": "008d6bb3", "native": "008d64a0"},
-    {"function": "008d6b70", "address": "008d6bc8", "native": "006adb50"},
-    {"function": "008d4af0", "address": "008d4d1b", "native": "008d48e0"},
-    {"function": "008d4af0", "address": "008d4db1", "native": "00435c40"},
-    {"function": "008d48e0", "address": "008d4929", "native": "00bf7fbf"},
-    {"function": "0055f9b0", "address": "0055f9bd", "native": "008d6c00"},
-    {"function": "005f65c0", "address": "005f6e58", "native": "008d6c00"}
+    {
+      "function": "008d6c00",
+      "address": "008d6c30",
+      "native": "00a3e510"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6c61",
+      "native": "007f8ca0"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6c79",
+      "native": "00425f40"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6c87",
+      "native": "004c5e00"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6cc4",
+      "native": "00436710"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6cce",
+      "native": "00449af0"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6d0c",
+      "native": "00bd3e10"
+    },
+    {
+      "function": "008d6c00",
+      "address": "008d6d16",
+      "native": "006adb50"
+    },
+    {
+      "function": "008d6b70",
+      "address": "008d6bb3",
+      "native": "008d64a0"
+    },
+    {
+      "function": "008d6b70",
+      "address": "008d6bc8",
+      "native": "006adb50"
+    },
+    {
+      "function": "008d4af0",
+      "address": "008d4d1b",
+      "native": "008d48e0"
+    },
+    {
+      "function": "008d4af0",
+      "address": "008d4db1",
+      "native": "00435c40"
+    },
+    {
+      "function": "008d48e0",
+      "address": "008d4929",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "0055f9b0",
+      "address": "0055f9bd",
+      "native": "008d6c00"
+    },
+    {
+      "function": "005f65c0",
+      "address": "005f6e58",
+      "native": "008d6c00"
+    },
+    {
+      "function": "00445790",
+      "address": "004457f2",
+      "native": "00444be0"
+    },
+    {
+      "function": "00445790",
+      "address": "00445805",
+      "native": "00444be0"
+    },
+    {
+      "function": "00445790",
+      "address": "004458a0",
+      "native": "0042c4c0"
+    },
+    {
+      "function": "00445a30",
+      "address": "00445a8c",
+      "native": "00444be0"
+    },
+    {
+      "function": "00445a30",
+      "address": "00445aa4",
+      "native": "00445790"
+    },
+    {
+      "function": "00445bf0",
+      "address": "00445cbd",
+      "native": "00445a30"
+    },
+    {
+      "function": "00411450",
+      "address": "00411458",
+      "native": "00411350"
+    },
+    {
+      "function": "00411430",
+      "address": "00411435",
+      "native": "004113c0"
+    },
+    {
+      "function": "00410d80",
+      "address": "00410de7",
+      "native": "00410630"
+    },
+    {
+      "function": "00410e00",
+      "address": "00410e7f",
+      "native": "004107b0"
+    },
+    {
+      "function": "00977690",
+      "address": "0097774f",
+      "native": "0077edf0"
+    },
+    {
+      "function": "00977690",
+      "address": "0097775f",
+      "native": "00965810"
+    },
+    {
+      "function": "00975340",
+      "address": "00975368",
+      "native": "00973ba0"
+    },
+    {
+      "function": "00975340",
+      "address": "009754ca",
+      "native": "00425e10"
+    },
+    {
+      "function": "00975540",
+      "address": "00975568",
+      "native": "00973ba0"
+    },
+    {
+      "function": "00975540",
+      "address": "009755de",
+      "native": "0041e350"
+    },
+    {
+      "function": "00975540",
+      "address": "00975620",
+      "native": "00425850"
+    },
+    {
+      "function": "0096ef60",
+      "address": "0096efa8",
+      "native": "0096e8f0"
+    },
+    {
+      "function": "00988510",
+      "address": "00988819",
+      "native": "0096ef60"
+    }
   ]
 }

@@ -11625,7 +11625,7 @@ The decision object sits at `gun+424h`. Its vtable `00CFDEA0` has one slot, the 
   - The expiry draw is inert in the reference form, as predicted: five of the six rows are identical with it ON.
 - **Verdict: both ON.**
 
-## 165. A hull-contact access violation on USNOS f17 (found by reference AG; cc9-gunnery35, 2026-10-11, open)
+## 165. A hull-contact access violation on USNOS f17 (found by reference AG; cc9-gunnery35, 2026-10-11; cause and fix in 167)
 
 **Two crashes, the same frame.**
 
@@ -11686,3 +11686,127 @@ MiniSub. Variants of `s38_b1_p6` (cc9-gunnery32's `g32_ord_b1.txt`), each 40000 
   last-leg change fixes it.
 - **Not adopted.** p6 already completes on this branch (779.93 s). The file to keep, if the lead wants one, is `v3`
   (`local\g35_ord_b1_v3_keep.txt`).
+
+## 167. The cause of 165: a scale-2 fort indexes past the convex support seed table (fixed, unconditional; cc9-gunnery35, 2026-10-11)
+
+**The read.**
+- `00C336C0` (from disk, `00C336C0..00C3370A`) copies the fort unit's 4x4 world matrix (`unit+CCh`) into the Dyn
+  body's 3x4 element by element. It does not normalize, so an authored scale stays in the rows (GUNNERY 96.1: the fort
+  body's frame is that matrix).
+- The host's `FortWorldEntry::frame` copies `s.world` the same way (`src/game_hosts_units.cpp`).
+- `local_support_kernel` (the transcribed `00C358A0`) picks its start vertex from
+  `AvoidZoneDynHullData::support_seed[27]`. The slot is `13 + 9*trunc(dx*1.99) + 3*trunc(dy*1.99) + trunc(dz*1.99)`
+  of the LOCAL direction, read at `[data + slot*2 + 30h]` (`00C35904`), so a unit vector is assumed.
+- The local direction is the world direction through the shape's frame, so a scale-2 frame doubles it. The slot
+  then leaves the table and reads whatever follows the 68h-byte block. That garbage start vertex is then walked
+  through the adjacency list.
+
+**The run evidence.**
+- **The crash dump.** A build of the anchor config with a counter on the slot test (`local\g35_poison`, local only)
+  crashed at mission_frame 84452.
+  - ESI = 0xFFFFFFE8 was the slot offset -24, and the seed read back was 0x4DC0.
+  - The stack held the local direction (1.21, 1.48, 0.60), length 2.003, and three matrix rows of length 2.003.
+- **The fix run.** The same config on `d13436eb4` plus the counters (`local\g35_ctr3`), USNOS `s41_os_f17` to 90000
+  frames, past the 4230 s fault time:
+  - `BSP_FORT_RESCALE_TRACE`: one fort, `unit=72 shapes=1 row_scale=2.0030,2.0030,2.0030`, from step 73.
+  - The counters: `center_hits=0 out_of_table=0`.
+  - No fault; exit 0.
+- **Which pair.** The crash stacks show `hull_fort_narrow_phase` (165), which agrees.
+
+**The fix (`HullTerrainContactSolver::rigid_fort`, `src/hull_terrain_contact.cpp`, unconditional).**
+- A fort whose rows are not unit length (beyond 1e-4) gets per-unit copies of its points, scaled on each local axis
+  by that row's length, and normalized rows.
+- The world geometry is the same: `t + sum_i (s_i p_i) R_i`. Contact points come back in the scaled local frame and
+  are mapped through the normalized rows.
+- Unit-length forts pass through untouched (bit-identical).
+- Uncertainty:
+  - The image builds the same scaled frame. If its fort carries the scale too, the image indexes past the table
+    the same way and reads heap bytes.
+  - The fix changes no world geometry, only that read. It is a host correctness fix, not a switch.
+- **Pairs** (`98e8c70d3` against `d13436eb4`, AF's launch form): USNOS, USNOS long, JM08, USN13, JM05 and USN01 are
+  all exit 0/1. Smoke: USNOS 300 frames, exit 0.
+- **Not checked:** whether any other Dyn body (hull frames from `DynBody`, terrain tiles) can carry a scale. Hull
+  frames come from the motion state's orthonormal rows.
+
+## 168. The live sea: what binding it takes (lead queue, after 167; cc9-gunnery35, 2026-10-11, scope only, nothing bound)
+
+The image's gameplay reader `0078C890` returns `grid(u, v) * [field+24h]`. `00BA0B93` rewrites `+24h` from
+`Waves.HeightScale` every render frame (docs/CC13_WATER_RENDER.md section 1; cc13 confirmed the same object).
+
+**What the host has.** `OceanFieldBinding::wave_height_0078c890` (`src/game_hosts_units.cpp`, under
+`kOceanWaveFieldBound`) samples with `amplitude_24 = 0.0f` and a **labelled zero grid** (`OceanWaveGridView{}`). So
+writing `+24h = HeightScale` alone changes nothing. The grid itself has to be produced.
+
+**The grid's producer: the field+BCh spectrum** (a Tessendorf FFT ocean; object `00B97100`, 90h bytes, vtable
+`00D638F8`, set by `00B9DD90` from the world's `0078DAA0`):
+
+| step | address | body | role |
+| --- | --- | --- | --- |
+| build | `00B95750` BSP_OceanSpectrum_BuildInitial | `00B95750..00B95A99` | its own Mersenne state seeded 1105h (reuse `random_seed_00bf0cf0`); the 65x65 h0 at `+10h` = `sqrt(Phillips) * [0109048C] * (N(0,1), N(0,1))` through `00BF0DF0` (polar Box-Muller, `draw_normal` in the gunnery host shows the form); `+60h` = 1/k (min `[00CF7FE8]`), `+50h` = omega; `+78h` = `V^2/[00CF9058]` (V = `+74h`), `+7Ch` = `+78h * +8Ch` |
+| Phillips | `00B94CA0` | about 300 bytes, x87 | k clamped at `[00CF7FE8]`; `exp(-1/(kL)^2)` through `00BFEEEC`; the wind direction `+6Ch/+70h`, the damping `+84h` |
+| advance | `00B95D30` BSP_OceanSpectrum_Advance | `00B95D30..00B960B5` | gated by `[00E130B4]` (static 1); `h(k,t) = h0(k) e^{i w t} + conj(h0(-k)) e^{-i w t}` into the 64x64 grid at `+20h` (index `(x & 3Fh) + (y & 3Fh) * 40h`); the choppy pair to `+2Ch` |
+| FFT | `00B95AA0` BSP_OceanSpectrum_InverseFft, `00B952D0` BSP_OceanFft_Transform | `00B95AA0..00B95D24`, `00B952D0..00B95591` | the inverse transform of `+1Ch` and `+2Ch` |
+| step slot | `00B96C80` | vtable `+8` | slot `+14h`, then `00B95D30(t)`, then `[+8]`'s slot 0, then slot `+10h` |
+| per frame | `00BA0090` | `00BA00C0..00BA00E7` | `t = [arg] * 0.1 * [field+20h]` (TimeScale); arg = `[00F876A4]`, the mission clock (cc13); then vtable `+18h` |
+| setters | `00B96C50` (`+80h`, `+88h`: WaveHeight, ChoppyWavesFactor), `00B96B90` and `00B96C10` (wind angle into cos/sin `+6Ch/+70h`, speed `+74h`, `+80h..+8Ch`) | | each reruns `00B95750` |
+
+**Plan for the binding (`kWaveFieldLiveAmplitudeBound`, OFF first).**
+1. Reconstruct `00B94CA0`, `00B95750`, `00B95D30`, `00B95AA0` and `00B952D0` in C++. Model the extended products in
+   double and round at the native stores, as `water_render.cpp` does. Bit parity with x87 `FSIN`/`FCOS` is not
+   claimed; say so.
+2. Load the scene's `Waves` keys through the existing `0078C9B0` path: HeightScale, WaveHeight, ChoppyWavesFactor,
+   wind, TimeScale.
+3. Each mission frame:
+   - Step the spectrum at `0.1 * clock * TimeScale`.
+   - Feed the 64x64 grid to `ocean_wave_field_sample_0078c890`.
+   - Set `amplitude_24 = HeightScale` from the first rendered frame on (`ocean_wave_scale_00ba0b32` in
+     `src/water_render.cpp` is the reconstructed store).
+4. **Pairs.** USN01 and USN04 (HeightScale 2.0), a calm row and JM06. Expect hull pitch/heave, torpedo depth and
+   depth-charge moves.
+
+The work is x87-heavy. AGENTS.md routes such packets to the stronger model. It is about 2.5 KB of FP code plus the
+data plumbing.
+
+## 169. Handoff (cc9-gunnery35, 2026-10-11, at about 55% context)
+
+### 169.1 Landed on agent/cc9-gunnery35 (based on origin/main 98e8c70d3)
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference AG (docs/GAME_EXECUTABLE.md '2026-10-11 ag', reports/cc9_reference_rebaseline_35.json) | `106cec107`, `8fc4445a6` | landed on main |
+| 164 friendly fire: `kTailGunnerNoArmourTestBound`, `kAaLineOfFireExpiryDrawBound` | `43da2ae09`, `acd45f8c1` | **ON**, landed |
+| 165/167 the hull-contact AV: scaled forts index past the support seed table (`rigid_fort`) | `d13436eb4`, `99eb0d7b5`, `032165ed6` | fixed, unconditional |
+| env-gated `BSP_HULL_REBUILD_TRACE` (hull shape rebuilds), `BSP_FORT_RESCALE_TRACE` | `c2a886a8a`, `d13436eb4` | diagnostics, reads only |
+| 166 BSM01 p6 order variants | `cb96b064a` | recorded, not adopted |
+| 168 the live sea: scope | this commit | nothing bound |
+
+### 169.2 Remaining queue (the lead's order)
+
+1. **The live sea (168).** Reconstruct the field+BCh spectrum and the FFT, then bind `kWaveFieldLiveAmplitudeBound`
+   OFF and pair it.
+2. **`kPlayerTorpedoGroupFireBound`.** The `torpedo` harness line is on main (41903666e).
+   - Before flipping, check the trigger against the image's player tube path. lua49's JM08 runs t1-t4
+     (`cc9-lua49\local\l49_*`) show the presses training the tubes but `trigger_ons=0` and `tube_fires=0`: bow-on
+     bearings snap-fail, and 19 s holds never reach the 5-degree trigger.
+   - The primary pair is JM06 3000 with `cc9-gunnery33\local\g33_ord_j6t4.txt`, plus an idle control.
+3. **Level bombs.**
+   - 006E4D50's drift (`U(-w, w)`, `U(-0.5w, 0.3w)`, scaling two vectors at `006E513C..006E51EE`) is drawn and added
+     into `[edi]`, but the host leaves it unapplied (block+38h, "reader unread"). Find what `edi` is (set before
+     `006E5117`) and who reads it. This is the likely lever on USN13's level-bomb hit volume (158).
+   - The magazine element trace: whether a falling bomb's segment can reach a `magazine` element is set by
+     `00723D60`'s "a triangle outside every element is never tested". Check Intrepid's GeomMesh elements.
+4. **BSM01 p6** (166): the lead's question is answered. The 1503.34 s end is HenryPT's death; there is no completion.
+
+### 169.3 Notes and tools (this tree's `local\`)
+
+- **Reference:** `g35_ref_jobs.py` (AF launch form plus the USNOS f17 win), `g35_queue.ps1`, `g35_lane.ps1` (leave-one-out),
+  `g35_status.ps1`, `g35_loo_status.ps1`, `g35_report.py`, `g35_table.py`, `g35_bisect.ps1`, `g35_switches.py`.
+- **Crash work:**
+  - `g35_stack.py` (a minidump stack scan through a PDB) and `g35_map.py` (maps Release addresses into a `/Zi` twin
+    by byte context).
+  - `g35_regs.py` (crash registers), `g35_sym.py`, `g35_dis.py`.
+  - The `/Zi` twin build recipe: `CL=/Zi /FS`, `_LINK_=/DEBUG /OPT:REF /OPT:ICF` on an export's own `build.ps1`.
+- **The harness simulates to the frame limit after EndMission,** so a lost USNOS f17 run burns about an hour of slot
+  time. A `--stop-after-end` proposal went to the lead for ships42.
+- **Slot contention:** three workers share three `run_game` slots. A 150000-frame USNOS run holds one slot for about
+  an hour.
