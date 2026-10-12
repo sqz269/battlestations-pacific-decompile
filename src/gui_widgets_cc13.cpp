@@ -574,4 +574,119 @@ void gui_button_destroy_00aac530(void* self, GuiWidgetMemberHost& host, GuiButto
     release_native_string(self, 0xF4, host);
     host.destroy_widget_base_00aa9730(self);
 }
+
+void gui_icon_describe_properties_00ab2b70(void* icon, GuiPropertyWriter& writer, GuiDescribeHost& host,
+    GuiIconDescribeHost& icon_host) {
+    const auto* first = read_field<const std::byte*>(icon, 0xF4);
+    const auto* last = read_field<const std::byte*>(icon, 0xF8);
+    const std::size_t count = first != nullptr ? static_cast<std::size_t>(last - first) / 0x40 : 0;
+    const float width = read_field<float>(icon, 0x20);
+    const float height = read_field<float>(icon, 0x24);
+    if (first != nullptr && count == 1 && read_field<std::int16_t>(icon, 0xEC) == 0) {
+        const auto native = icon_host.state_texture_size_00ab27a0(icon, 0);
+        if (width == native[0] && height == native[1]) {
+            write_field<float>(icon, 0x20, 0.0f);
+            write_field<float>(icon, 0x24, 0.0f);
+        }
+    }
+    gui_widget_describe_properties_00aaaed0(icon, writer, host);
+    write_field<float>(icon, 0x20, width);
+    write_field<float>(icon, 0x24, height);
+
+    write_unless_default(writer, "DynamicVB", boolean(read_field<std::uint8_t>(icon, 0x10C) != 0), boolean(false));
+    write_unless_default(writer, "HasTexture", boolean(read_field<std::uint8_t>(icon, 0x100) != 0), boolean(true));
+    GuiTaggedValue type;
+    type.tag = kGuiValueTagInt;
+    type.i = read_field<std::int32_t>(icon, 0x110);
+    GuiTaggedValue type_default;
+    type_default.tag = kGuiValueTagInt;
+    write_unless_default(writer, "PartialDisplayType", type, type_default);
+    write_unless_default(writer, "PartialDisplayRatio", floats(GuiValueTag::Float, icon, 0x114, 1),
+        constant(GuiValueTag::Float, 1.0f));
+    write_unless_default(writer, "DelayedTextureLoad", boolean(read_field<std::uint8_t>(icon, 0x101) != 0),
+        boolean(false));
+    write_unless_default(writer, "AutoRotate", floats(GuiValueTag::Float, icon, 0x130, 1),
+        constant(GuiValueTag::Float, 0.0f));
+    if (read_field<std::uint32_t>(icon, 0x104) != 0)
+        write_unless_default(writer, "ShaderName", string(native_c_str(icon, 0x104, kEmpty)),
+            string("GuiDefault.mshd"));
+
+    if (count == 0) return;
+    writer.open_table("States");
+    for (std::size_t i = 0; i < count; ++i) {
+        writer.open_index_table(static_cast<std::int32_t>(i + 1));
+        const std::byte* state = read_field<const std::byte*>(icon, 0xF4) + i * 0x40;
+        write_unless_default(writer, "Texture", string(native_c_str(state, 0x04, kEmpty)), string(kEmpty));
+        write_unless_default(writer, "Size", floats(GuiValueTag::Vec2, state, 0x34, 2),
+            floats(GuiValueTag::Vec2, icon, 0x20, 2));
+        write_unless_default(writer, "Pivot", floats(GuiValueTag::Vec2, state, 0x2C, 2),
+            floats(GuiValueTag::Vec2, icon, 0x18, 2));
+        const float l = read_field<float>(state, 0x1C), u = read_field<float>(state, 0x20);
+        const float r = read_field<float>(state, 0x24), b = read_field<float>(state, 0x28);
+        if (l != 0.0f || u != 0.0f || r != 1.0f || b != 1.0f) {
+            writer.open_table("UV_LURB");
+            std::int32_t key = 1;
+            for (float v : {l, u, r, b}) writer.write_index(key++, constant(GuiValueTag::Float, v));
+            writer.close_table();
+        }
+        writer.close_table();
+    }
+    writer.close_table();
+}
+
+void* gui_icon_copy_construct_00ab5d30(void* self, const void* source, GuiIconLifetimeHost& host) {
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, kGuiIconVtable);
+    write_field<std::int16_t>(self, 0xEC, read_field<std::int16_t>(source, 0xEC));
+    host.copy_states_00ab58f0(static_cast<std::byte*>(self) + 0xF0, static_cast<const std::byte*>(source) + 0xF0);
+    write_field<std::uint8_t>(self, 0x100, read_field<std::uint8_t>(source, 0x100));
+    write_field<std::uint8_t>(self, 0x101, read_field<std::uint8_t>(source, 0x101));
+    write_field<std::uint32_t>(self, 0x104, 0); // ShaderName is not copied
+    write_field<std::uint32_t>(self, 0x108, 0);
+    write_field<std::uint8_t>(self, 0x10C, read_field<std::uint8_t>(source, 0x10C));
+    copy_dword(self, source, 0x110);
+    write_field<float>(self, 0x114, read_field<float>(source, 0x114));
+    for (std::size_t offset : {0x118u, 0x11Cu, 0x120u, 0x124u}) copy_dword(self, source, offset);
+    write_field<float>(self, 0x128, read_field<float>(source, 0x128));
+    write_field<std::uint16_t>(self, 0x12C, read_field<std::uint16_t>(source, 0x12C));
+    write_field<float>(self, 0x130, read_field<float>(source, 0x130));
+    write_field<std::uint8_t>(self, 0x134, read_field<std::uint8_t>(source, 0x134));
+    host.rebuild_00ab3cb0(self, read_field<std::uint16_t>(self, 0xEC));
+    return self;
+}
+
+void gui_icon_destroy_00ab5e70(void* self, GuiIconLifetimeHost& host) {
+    write_field<std::uint32_t>(self, 0, kGuiIconVtable);
+    host.cancel_delayed_loads(self);
+    if (auto* buffer = read_field<void*>(self, 0x108))
+        host.release_string_buffer(buffer, read_field<std::uint32_t>(self, 0x104) + 1u);
+    host.destroy_states_00ab5850(static_cast<std::byte*>(self) + 0xF0);
+    host.destroy_widget_base_00aa9730(self);
+}
+
+GuiIconDelayedLoads& gui_icon_delayed_loads_00ab5700(GuiIconDelayedLoads*& global_00f8bd98,
+    GuiIconDelayedLoadsHost& host) {
+    if (global_00f8bd98 == nullptr) {
+        host.lock();
+        if (global_00f8bd98 == nullptr) {
+            global_00f8bd98 = new GuiIconDelayedLoads(); // 10h bytes, fields zeroed
+            host.register_singleton(*global_00f8bd98);
+        }
+        host.unlock();
+    }
+    return *global_00f8bd98;
+}
+
+void gui_icon_delayed_loads_destroy_00ab5560(GuiIconDelayedLoads& singleton,
+    GuiIconDelayedLoads*& global_00f8bd98) {
+    // 00AB4850(0) then _free of the array block: no entry survives.
+    while (!singleton.entries().empty()) singleton.cancel_owner_00ab50e0(singleton.entries().back().owner);
+    global_00f8bd98 = nullptr;
+}
+
+std::vector<const void*> gui_icon_delayed_loads_on_file_loaded_00ab58d0(const std::string& name,
+    GuiIconDelayedLoads*& global_00f8bd98, GuiIconDelayedLoadsHost& host) {
+    return gui_icon_delayed_loads_00ab5700(global_00f8bd98, host).deliver_00ab51b0(name);
+}
+
 } // namespace bsp::gui_widgets_cc13

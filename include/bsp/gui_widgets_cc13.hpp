@@ -21,6 +21,7 @@
 
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_widget.hpp"
+#include "bsp/gui_render.hpp"
 #include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 
@@ -251,6 +252,7 @@ struct GuiTaggedValue {
     std::array<float, 4> f{};
     bool b{false};
     const char* s{nullptr};
+    std::int32_t i{0}; // tag 1 (an integer; PartialDisplayType)
 };
 
 // A describer visitor (the object a widget's vtable +1Ch receives).
@@ -263,6 +265,9 @@ struct GuiPropertyWriter {
     // visitor +04h / +08h: open a named sub-table, close it.
     virtual void open_table(const char* name) = 0;
     virtual void close_table() = 0;
+    // The same two calls with an integer key (variant tag 1).
+    virtual void open_index_table(std::int32_t key) = 0;
+    virtual void write_index(std::int32_t key, const GuiTaggedValue& value) = 0;
 };
 
 // A reader visitor (vtable +18h). +0Ch reads with a default (six dwords), +10h
@@ -786,5 +791,87 @@ void* gui_button_copy_construct_00aa3c60(void* self, const void* source, GuiWidg
 // this button), the string buffer is returned, base destructor.
 void gui_button_destroy_00aac530(void* self, GuiWidgetMemberHost& host, GuiButtonRegistry& registry,
     std::uint32_t& global_00f8bcf8);
+
+// ---------------------------------------------------------------------------
+// Icon (cGuiIcon, vtable 00D5C4C0; layout in include/bsp/gui_icon.hpp)
+// ---------------------------------------------------------------------------
+
+// Icon fields used here: +ECh current state (int16), +F0h..+FCh the
+// std::vector of 40h-byte state records (first +F4h, last +F8h), +100h
+// HasTexture, +101h DelayedTextureLoad, +104h ShaderName (8-byte native
+// string), +10Ch DynamicVB, +110h PartialDisplayType (int), +114h
+// PartialDisplayRatio, +118h..+124h crop, +128h/+12Ch temporary state, +130h
+// AutoRotate, +134h cached filter flag. State record: +4h texture name (native
+// string), +1Ch..+28h UV_LURB, +2Ch Pivot, +34h Size.
+inline constexpr std::uint32_t kGuiIconVtable = 0x00D5C4C0;
+inline constexpr GuiValueTag kGuiValueTagInt = static_cast<GuiValueTag>(1); // PartialDisplayType
+
+struct GuiIconDescribeHost {
+    virtual ~GuiIconDescribeHost() = default;
+    // 00AB27A0, __thiscall(icon, float out[2], state index): the state's texture size.
+    virtual std::array<float, 2> state_texture_size_00ab27a0(const void* icon, std::int32_t state) = 0;
+};
+
+// 00AB2B70, __thiscall(icon, writer), RET 4. When the icon has exactly one
+// state, the current state is 0 and the widget Size (+20h/+24h) equals that
+// state's texture size, Size is zeroed around the base describer 00AAAED0 (so
+// the default-size icon does not serialise Size) and restored after. Then,
+// each when it differs: DynamicVB (false), HasTexture (true),
+// PartialDisplayType (Int 0), PartialDisplayRatio (1), DelayedTextureLoad
+// (false), AutoRotate (0); ShaderName only when its length is nonzero, against
+// "GuiDefault.mshd" (00D5C3D8). With states: open "States", and per state i an
+// integer-keyed table i+1 holding Texture (default ""), Size (default the
+// WIDGET's Size), Pivot (default the widget's Pivot) and, only when the UV is
+// not (0,0,1,1), a "UV_LURB" table of four Floats keyed 1..4.
+void gui_icon_describe_properties_00ab2b70(void* icon, GuiPropertyWriter& writer, GuiDescribeHost& host,
+    GuiIconDescribeHost& icon_host);
+
+struct GuiIconLifetimeHost {
+    virtual ~GuiIconLifetimeHost() = default;
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    virtual void destroy_widget_base_00aa9730(void* self) = 0;
+    // 00AB58F0 vector<state> copy (ECX = destination +F0h, source +F0h);
+    // 00AB5850 vector<state> destructor (ECX = +F0h).
+    virtual void copy_states_00ab58f0(void* destination, const void* source) = 0;
+    virtual void destroy_states_00ab5850(void* states) = 0;
+    // Icon vtable +80h (00AB3CB0 rebuild) with the current state index.
+    virtual void rebuild_00ab3cb0(void* icon, std::int32_t state) = 0;
+    // 00AB5700 singleton + 00AB50E0 cancel_owner(icon).
+    virtual void cancel_delayed_loads(void* icon) = 0;
+    // 00419CC0 + 00BD1510.
+    virtual void release_string_buffer(void* buffer, std::uint32_t bytes) = 0;
+};
+
+// 00AB5D30, __thiscall(this, source), RET 4: base copy, vtable 00D5C4C0, then
+// +ECh, the state vector (00AB58F0), +100h, +101h, +10Ch..+134h copied, but
+// ShaderName (+104h/+108h) is set EMPTY rather than copied; finally vtable
+// +80h(current state).
+void* gui_icon_copy_construct_00ab5d30(void* self, const void* source, GuiIconLifetimeHost& host);
+// 00AB5E70, __fastcall(ECX = this): vtable, cancel pending delayed loads,
+// return the ShaderName buffer, destroy the state vector, base destructor.
+void gui_icon_destroy_00ab5e70(void* self, GuiIconLifetimeHost& host);
+
+// The delayed-load registry singleton at 00F8BD98 (GuiIconDelayedLoads in
+// gui_render.hpp): 10h bytes, vtable 00D5C4B8, entry array at +4h.
+struct GuiIconDelayedLoadsHost {
+    virtual ~GuiIconDelayedLoadsHost() = default;
+    // 00415350 lifetime manager: its lock (+10h, EnterCriticalSection with a
+    // +18h recursion count) and 00BD0C30 registration of a new singleton.
+    virtual void lock() = 0;
+    virtual void unlock() = 0;
+    virtual void register_singleton(GuiIconDelayedLoads& singleton) = 0;
+};
+// 00AB5700, cdecl, EAX = the singleton: double-checked creation under the
+// lifetime-manager lock, then registration.
+GuiIconDelayedLoads& gui_icon_delayed_loads_00ab5700(GuiIconDelayedLoads*& global_00f8bd98,
+    GuiIconDelayedLoadsHost& host);
+// 00AB5560, __fastcall(ECX = singleton): clear the entry array (00AB4850(0)),
+// free its block, clear 00F8BD98, restore the base vtable 00CE3818.
+void gui_icon_delayed_loads_destroy_00ab5560(GuiIconDelayedLoads& singleton,
+    GuiIconDelayedLoads*& global_00f8bd98);
+// 00AB58D0, cdecl(name, data), RET 8: singleton()->deliver(00AB51B0)(name,
+// data). Returns the owners deliver_00ab51b0 hands to 00AB3840.
+std::vector<const void*> gui_icon_delayed_loads_on_file_loaded_00ab58d0(const std::string& name,
+    GuiIconDelayedLoads*& global_00f8bd98, GuiIconDelayedLoadsHost& host);
 
 } // namespace bsp::gui_widgets_cc13
