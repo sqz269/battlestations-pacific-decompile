@@ -1,7 +1,12 @@
 # Scene-header weather, fog, lights, sky and music readers (cc13-weather1)
 
 Addresses: 004ECA30 004E5C00 004EA870 004EE450 004ED690 004ED2D0 004ED530 004B6800 004B6980
-004CB420 004F1D70 00865900 004DE610 0078C9B0
+004CB420 004F1D70 00865900 004DE610 0078C9B0 004EB9B0 004EB180 004EB5A0 004E5D20 004EE9E0 004ED910
+004E8510 00469BF0
+
+The second packet (`cc13_scene_headers2`, sections from "004EB9B0 g_Ocean" on) adds the ocean,
+terrain, terrain-texture and post-process readers in the same files. Its call-site report is
+`reports/cc13_scene_environment_calls.json` (16 rows, 0 failed).
 
 Packet `cc13_scene_weather`. Code: `include/bsp/scene_weather_cc13.hpp`,
 `src/scene_weather_cc13.cpp` (namespace `bsp::scene_weather_cc13`, target `bsp_core`). Call-site
@@ -311,16 +316,149 @@ then read the structs. The rain emitter must stay off unless it gets its own RNG
   that is, and which callers set it, was not read.
 - 00A79480's stream construction past the slot store is unread.
 - The meaning of camera +178h is inferred ("clip distance") from the three keys that feed it.
-- Not covered by this packet:
-  - water `g_Ocean` 004EB9B0; its block offsets are already in `water_render.hpp`.
-  - `g_Terrain` 004EE9E0.
-  - the terrain texture header 004ED910.
-  - `g_PostProcess` 004E8510.
+- What writes record+90Ch, the string the terrain LUT name comes from (004DFB70 also takes its
+  address), was not read.
+- 004EB5A0 is a separate routine that Ghidra folds into 004EB9B0's body (body 004EB5A0-004ECA23,
+  entry 004EB9B0). It was left undefined; defining it would split that body.
+
+## 004EB9B0 `BSP_SceneRecord_ReadWaterProperties` (g_Ocean)
+
+`__fastcall(ECX = g_Ocean bag, EDX = record)`, caller 004F2205. The record offsets equal
+`water_render::block` + 990h for every key; `include/bsp/water_render.hpp` already names them, and
+`SceneOceanFields` in the header lists them with their record offsets.
+
+| section | gate | keys and treatment |
+|---|---|---|
+| `0_SimpleOcean` | required; stored only for type 3 | C20h byte |
+| `Optics` | required; skipped unless type 6 | the tints `1LocalReflectionTint` AE4h, `1ReflectionTint` AF4h, `1RefractionTint` B04h, `1UWRefractionTint` B14h, `RefrSpecularColor` B74h (rgb, child unchecked, linearized when 00F88A0C) and `1SprayTintColor` B30h, which is linearized **always**: 004EBB21 calls 004E5C00 with no flag test. `7SkyRefl*` AD4h..AE0h, the `2*`, `9ShadowStrength`, `3*`, `4Fresnel*`, `5ShoreFade*`, `UnderWaterRefrIndex`, `6ReflectionMultiplier` and `6FinalMultiplier` are required numbers. `8UWBaseGlow/SkyGlow/SunSpotStrength` (B24h..B2Ch) are optional. |
+| `Waves` | required; type 6 | WindDirection 9DCh, WindSpeed 9E0h, WaveHeight 9E4h, ChoppyWavesFactor 9E8h, HeightScale 9ECh, Falloff 9BCh, LayerScale 9C0h, TimeScale 9C4h, `1WaveDampeningDepth/Power/Scale` 9C8h..9D0h, `1WaveDampModel` string 9D4h; all required |
+| `NormalMaps` | required; type 6 | `layer0..2_Scale` BF0h.., `layer0..2_ScrollSpeed` C00h.., `Texture` C10h; required |
+| `Foam` | required; type 6 | UseFoam 99Ch byte, ScrollSpeed 990h, NoiseScrollSpeed 994h, Height 9A0h, FadeRange 998h, Scale 9A4h, NoiseScale 9A8h, Texture 9ACh, NoiseTexture 9B4h; required |
+| `Caustics` | optional; child unchecked | `CausticsColor` (presence) ABCh rgb, linearized; `CausticsScale` AB8h and `CausticsType` (string ACCh) optional |
+| `Fog` | optional; a null child skips to WaterParticle | `UWExpDistMaxdist` A94h, `UWExpDistMinvalue` A98h x0.01, `UWExpHeightCutdepth` A9Ch, `UWExpHeightMaxdepth` AA0h, `UWExpHeightMaxvalue` AA4h x0.01, each optional (the x0.01 is `FMUL qword 0.01` (00CE6638) on the x87). `UWFogColor` (presence, null child skips): rgb, then 004E5D20 multiplies all four floats (including the old AB4h) by L, then `MaxDarken` overwrites AB4h, then linearize. |
+| `WaterParticle` | optional; type 6 | 004EB180 into the object at [record+C18h] |
+| `Beam` | optional; type 6 | tail jump at 004ECA1B to 004EB5A0, into the object at [record+C1Ch] |
+
+The two particle-set readers share one layout (`SceneParticleSetFields`):
+
+| offset | content |
+|---|---|
+| +0 | count (`NumParticles` or `NumBeams`, raw dword) |
+| +4 | `Speed` |
+| +8 | `TextureFile` string |
+| +10h | `Color` RGBA, rgb linearized when the flag is set |
+| +20h..+5Ch | `Tex00`..`Tex15`, read as numbers |
+
+In 004EB180 only, Tex04 is halved (004EB3C0 `FMUL qword 0.5`). `BSP_Color_ScaleRgbaByScalar`
+004E5D20 is `__thiscall(float* rgba, float s)`, RET 4. Its register forms are DE CA and D8 C9 per
+the bytes, so it is four plain products.
+
+## 004EE9E0 `BSP_SceneRecord_ReadStaticShadowAndShaderTextures` (g_Terrain)
+
+`__fastcall(ECX = g_Terrain bag, EDX = record)`, caller 004F232A. The scalars do not go into the
+record. They go to terrain shader globals at 00E18808..00E18988, which are read by
+`BSP_Landscape_BindTerrainMaterialParams`, `BSP_MapScene_SetupOceanMaterials`,
+`BSP_MapScene_BuildQuad` and 0078C9B0 (00E1891Ch). `BSP_SceneEnvironmentBlock_ConstructDefault`
+004CB420 writes their defaults.
+
+- **Optional scalars.** There are 26 (presence test, then a number). `kTerrainScalars` in the
+  source maps each key to its global; examples: `a_UW_Coral_Sand_Slope` 00E188F8,
+  `d_Shore_Height` 00E18928, `f_NmPower_Rock` 00E18918.
+- **`h_UW_Color0..2`.** Each lookup is required; a null child skips that colour. The rgb goes to
+  00E18960 / 00E18970 / 00E18980. It is not linearized.
+- **Subtype groups.** Each group has five required numbers (`x0_width, x0x1_delta, x1_width,
+  x1x2_delta, x2_width`), multiplied by 0.01 after all five are stored (`FMUL ST,ST(1)`, D8 C9).
+  - `i_UW_subtypes`: `coral_subtypes` to 00E18894 and `rock_subtypes` to 00E1886C.
+  - `i_GROUND_subtypes`: `grass_subtypes` 00E18830, `dirt_subtypes` 00E1881C and `rock_subtypes`
+    00E18808.
+  - Each `i_*` child is null-tested.
+- **Quirk at 004EF2D3.** `i_SHORE_subtypes` is only tested for a non-null child. The values for its
+  slot (00E18844) are then read from `rock_subtypes` of the **i_UW_subtypes** bag that is still in
+  EDI. All 258 terrain blocks in this installation author both. Their shore rock values differ
+  from the UW ones (r0r1_delta is 25 in 180 files against 40 in 118 for UW), so the authored shore
+  values are never used. If UW is absent and SHORE is present, the image looks the key up in a
+  null bag; the host refuses that case.
+- **Textures.** `g_DiffAtlas` BC4h, `g_NormAtlas` BCCh, `g_MaskTexture` BD4h, `g_NoiseTexture`
+  BDCh and `g_StaticShadowTexture` BE4h are optional. When present, each must be a string; the
+  image takes strlen with no null test.
+- **Static shadow shot.** `ga_StaticShadowShotSize/OffsetX/OffsetZ` (optional) go to
+  00E1891C/20/24.
+- **LUT name** (004EFB2E..004EFEB6). The source is `[[00E188A8]+5FCh]+90Ch`: the game's current
+  record, not EDX. If it is empty, the global string 00E18990 is left alone. Otherwise:
+  1. Cut through the last `/` (00CE7898), or else the last `\`, together with the 4-character
+     extension: `substr(i+1, size-i-5)`.
+  2. Cap the result at 14h characters.
+  3. Store `"LUT_" + name + ".tga"` in 00E18990.
+
+  004ED910 publishes the result as `TerrainLUT`.
+
+## 004ED910 `BSP_SceneFile_ApplyTerrainTextureHeader`
+
+`__fastcall(ECX = record)`, RET. Caller `BSP_SceneFile_ReadHeaderBlock` 00469BF0 at 00469D53,
+right after 004F1D70 and only when a stack flag byte of 00469BF0 is set. It is a publish step, not
+a bag reader:
+
+1. **World parameter strings** (00B1B830 on [00F8D434]), in this order:
+   - `ReflectionCubeMap` (B98h) and `CloudShadowMap` (BA8h)
+   - `DiffAtlas_A` (BC4h) and `DiffAtlas_B`, which also gets **BC4h**: 004EDAE6 pushes the same
+     address
+   - `NormAtlas` (BCCh), `MaskTexture` (BD4h) and `NoiseTexture` (BDCh)
+   - `TerrainLUT` (global 00E18990) and `StaticShadowTexture` (BE4h)
+2. `[00F8D394]` vtable+120h, contract unread.
+3. **Environment sounds.** For each slot at record D5Ch + i*14h: when the sample handle at +0 is
+   null and the path at +4 is non-empty, acquire the sample (00A83FD0) into the slot, then call
+   00A7F2F0 on [00F8BBD8] (slot, i).
+4. **Aliases.** `BSP_VFS_ClearAliases`; then, when `FileSystemLua` (record+918h, written by
+   004F1D91) is non-empty, run that Lua file and call `BSP_VFS_AddAlias(name, newname)` for each
+   `Files[i]` (i = 1 while non-nil).
+5. `BSP_FoliageSystem_RefreshBushTextures`.
+
+## 004E8510 `BSP_SceneRecord_ApplyPostEffectProperties` (g_PostProcess)
+
+`__fastcall(ECX = g_PostProcess bag, EDX = record)`, caller 004F2349. `HDR`, `MotionBlur`,
+`UnderWaterWave` and `Colorize` are required keys, each gated on type 6, with every inner key
+required.
+
+| block | setter | contents |
+|---|---|---|
+| HDR | 00B0E9B0 | BrightPassTreshold, BrightPassOffset, MiddleGray, `1 - AdaptationPercent/100` (x87 FDIV qword / FLD1 / FSUBRP), BloomScale, Min/MaxLuminance, NewHDRParam0, NewHDRParam1 (read 1 before 0), AntiBandingON byte, ParticleLuminanceMul |
+| MotionBlur | 00B0EA20 | MaxVelocity, VelocityScale, MinSpeed, Divider (+0Ch), MaxBlur (+10h), three zero floats |
+| UnderWaterWave | 00B0EA70 | Horiz/Vert Speed, Scale and Phase, and the two amplitudes divided by 1000 |
+| Colorize | record | TextureName C24h, TextureNameUW C2Ch, TextureNameOldFilm C34h, TextureNameOldFilmUW C3Ch |
+
+All three setters take ECX = [00F8D39C]. The stack defaults that the image builds first are the
+member initializers. A successful read overwrites every one of them.
+
+## Second-packet probe and consumers
+
+The probe (`local/wx1_probe2.cpp`, not committed) ran over the 259 files: g_Ocean, g_Terrain and
+g_PostProcess each read without error in 258 files. `ijn_02_force_z.scn` lacks all three. The
+SHORE-subtype quirk is hit in all 258 files. Every file has both a WaterParticle and a Beam set.
+One sample was checked by hand: wind 0.4/1, WaveHeight 150, NormalMaps texture
+`oceannormalmap08.tga`, 20000 particles with Tex04 0.05, and HDR adaptation 0.95.
+
+The consumer census used the same displacement scan as the first packet:
+
+- **Gameplay (cc9).** `0_SimpleOcean` (C20h) and the `Waves` keys feed the ocean wave field and
+  `BSP_OceanWaveField_SampleHeight` 0078C890, the water height used by ship motion.
+  - `0_SimpleOcean`: 004DF7E1 passes it to the world constructor 0078DAA0 as the flat-sea byte
+    field+F9h.
+  - `Waves`: 0078C9B0 hands them to the field (WindDirection/WindSpeed 00B9A450, WaveHeight
+    00B96C50, LayerScale k = field+B4h, HeightScale field+B8h, Falloff/TimeScale +18h/+20h).
+  - `docs/OCEAN_WAVE_FIELD.md` (cc9) already reconstructs the field and notes that the host does
+    not parse these keys. `read_water_properties_004eb9b0` now provides that parse. No cc9 file
+    was edited.
+- **Presentation.** Everything else:
+  - `1WaveDampening*` goes to the ocean shader parameters through 00B9A0D0 (ocean +5E0h..).
+  - The optics go through the 00B99E60.. setters, and the caustics scale through 004DEF1F.
+  - The particle and beam objects are reached through 004DF8A2/004DF8C1.
+  - The terrain globals feed the landscape/map material binders.
+  - The post-process blocks go to the renderer service.
+  - The Colorize strings have no direct displacement reader.
+- **RNG.** None of these readers draws. Ocean motion consumes no RNG in these routines.
 
 ## Handoff
 
-The packet is done. The next useful step is 004EB9B0 (g_Ocean, about 31 KB of pseudocode), which
-is table-driven over the same value reads and the same 004E5C00 linearization. After that come
-004EE9E0 and 004E8510 in the same style. Leases `cc13_scene_weather` (ranges 004EA870-004EF2FF,
-004E5C00-004E5CFF and this packet's four files) and `cc13_scene_weather_defaults` (004B6800,
-004B6980, 004CB420) are released at the end.
+Both packets are done. Remaining leads: the 004EB5A0 function definition (left to the
+integrator), the writer of record+90Ch, and the `[00F8D394]` vtable+120h call in 004ED910. Leases
+of both packets are released at the end.
