@@ -87,6 +87,27 @@ struct WeaponViewHost {
     // 0042ED50 on each child of +48h, then 00414DB0 on the camera, then
     // [camera+1BCh]->vtable[34h](&camera+CCh).
     virtual void invalidate_children_and_publish() = 0;
+    // cc13-render5. The entity's world forward row x and z (+ECh, +F4h of the
+    // world matrix at +CCh), after 00414DB0 when +C8h is clear.
+    virtual void entity_forward_xz(void* entity, float& x, float& z) = 0;
+    // cc13-render5. 0042E630 BSP_SpatialIndex_GetSingleton, then
+    // 0098ADD0 BSP_SpatialIndex_QuerySegment(&start, &end, 0, &hit, 0) on a
+    // hit record reset by 00470470 and destroyed by 004704B0. True when the
+    // query hits and the record's part (+38h of the record) is non-null; then
+    // part_top = [part+24h]+4h and entity_y = hit entity +100h (after 00414DB0).
+    virtual bool segment_obstacle(const Vec3& start, const Vec3& end, float& part_top,
+                                  float& entity_y) = 0;
+    // cc13-render5. 00903860 BSP_World_GroundHeightAt([[00E188A8]+19CCh], &p, &out).
+    virtual float ground_height_at(const Vec3& p) = 0;
+    // cc13-render5. entity->vtable[5Ch](kind): 2Bh MTorpedo, 33h, 2Ah.
+    virtual bool entity_is_kind(void* entity, std::uint32_t kind) = 0;
+    // cc13-render5. entity->vtable[34h](&out): the entity's velocity vector.
+    virtual Vec3 entity_velocity_34(void* entity) = 0;
+    // cc13-render5. [0042E740()]+offset, the BombCamera tunables
+    // (docs/GAME_TUNING_SINGLETON.md): F0h CamVelBlenderAcceleration, F4h
+    // MaxCamVelBlender, FCh/100h/104h Torpedo NearAlt/1, FollowDistNear/Far,
+    // 10Ch/110h/114h Rocket, 11Ch/120h/124h Bomb, 138h FinalDist.
+    virtual float tuning_float(std::uint32_t offset) = 0;
 };
 
 // 00435120 __fastcall(obj) and 00435280 __fastcall(obj): the constructors'
@@ -107,5 +128,88 @@ void orbit_about_axis_0042d610(Mat4Rows& m, const Vec3& point, const Vec3& axis,
                                WeaponViewHost& host);
 // 00430DA0 __thiscall(camera, float dt) RET 4, vtable 00CE3FD0 slot DCh.
 void bomb_view_step_00430da0(WeaponViewCamera& camera, float dt, WeaponViewHost& host);
+
+// Torpedo view tunables, initialized .data read only by 00430020.
+inline constexpr float kTorpedoStepMax = 0.03f;        // 00E08074, fixed sub-step
+inline constexpr float kTorpedoBlendXZ = 0.08f;        // 00E08078, per max step
+inline constexpr float kTorpedoBlendY = 0.04f;         // 00E0807C, per sub-step
+inline constexpr float kTorpedoTrailDistance = 30.0f;  // 00E08080
+inline constexpr float kTorpedoHeight = 3.0f;          // 00E08084
+
+// 00430020 __thiscall(camera, float dt) RET 4, vtable 00CE3E60 slot DCh
+// (cc13-render5). Torpedo view fields: +39Ch target position, +3A8h smoothed
+// eye, +3B4h smoothed view direction, +3C0h smoothed up. The aim point trails
+// the target by 30 along its flattened forward (100 along the camera's own
+// flattened forward when there is no target) at height 3 above the target, or
+// 30 without a target; a segment query from the eye's x/z at height 3 to the
+// target raises it to 4 above any hit part. dt is consumed in sub-steps of at
+// most 0.03.
+void torpedo_view_step_00430020(WeaponViewCamera& camera, float dt, WeaponViewHost& host);
+
+// 00430970 __fastcall(element), RET: slot 4h of the bomb view's +170h element
+// (vtable 00CE3F94); ECX = camera+170h, so element+228h is the target, +244h
+// the target point +3B4h, +250h the camera position +3C0h, +25Ch the
+// velocity +3CCh, +268h the blend +3D8h (cc13-render5). Steers the camera
+// velocity towards keeping the follow distance from the target point led by
+// 1.6 s of target velocity: distance interpolated over height above ground
+// (floored at 8.0) per weapon kind, FinalDist without a target.
+void bomb_view_update_velocity_00430970(WeaponViewCamera& camera, WeaponViewHost& host);
+
+// Services the airfield and bomber-view steps call (cc13-render5).
+struct MoverHost {
+    virtual ~MoverHost() = default;
+    // 004329D0 BSP_CameraMover_ApplyShakeAndPublishPose(dt) (cc9's
+    // docs/MISSION_CAMERA.md), the common tail.
+    virtual void apply_shake_and_publish_004329d0(float dt) = 0;
+    // 0042DCD0 BSP_CameraMover_UpdateFocus(dt, 1).
+    virtual void update_focus_0042dcd0(float dt, std::uint32_t mode) = 0;
+    // 0042C610 BSP_CameraMover_ApplyZoom (ECX mover).
+    virtual void apply_zoom_0042c610() = 0;
+    virtual void entity_world_pose(void* entity, Vec3& position, float& forward_x,
+                                   float& forward_z) = 0;   // +FCh.., +ECh/+F4h after 00414DB0
+    virtual void orthonormalize_0085dc80(Mat4Rows& m) = 0;
+    // 00B646E0 / 00B64640 BSP_Matrix_BuildRotationY / X (ECX out, EDX &angle),
+    // then 00413920 BSP_Matrix_Multiply4x4 with ECX = the rotation, stack
+    // (out, &pose): pose = rotation x pose.
+    virtual void premultiply_rotation_y(Mat4Rows& pose, float angle) = 0;
+    virtual void premultiply_rotation_x(Mat4Rows& pose, float angle) = 0;
+};
+
+// 00433590 __thiscall(mover, float dt) RET 4, vtable 00CEC1F8 slot DCh
+// (MAirfield): when byte +380h is set, copy the matrix at +2B8h into the pose
+// (004134F0) and run 004329D0(dt); otherwise nothing.
+void airfield_camera_step_00433590(Mat4Rows& pose, bool active_380, const Mat4Rows& matrix_2b8,
+                                   float dt, MoverHost& host);
+
+// Global override written by luaMW_PlayerSetBomberView (008A0850): a nonzero
+// float flag at 00E17670 with pitch 00E17674 and yaw 00E17678.
+struct BomberViewOverride {
+    float flag_e17670{0.0f}, pitch_e17674{0.0f}, yaw_e17678{0.0f};
+};
+// The class-56 (vtable 00CEC5F0) fields.
+struct BomberViewCamera {
+    Mat4Rows pose;            // +74h
+    float yaw_384{0.0f};      // +384h
+    float pitch_388{0.0f};    // +388h
+    float distance_38c{0.0f}; // +38Ch
+    void* target_3ac{nullptr};
+};
+// 004335C0 __thiscall(mover, float dt) RET 4, vtable 00CEC5F0 slot DCh: the
+// player's bomber view (provisional: the only override writer is the Lua
+// binding PlayerSetBomberView). Orbits the target: forward = the target's
+// flattened forward, up = (0,1,0), then rotations by -yaw about Y and -pitch
+// about X, eye = target position + (0, 10, 0) - distance * forward.
+void bomber_view_step_004335c0(BomberViewCamera& camera, BomberViewOverride& override_state,
+                               float dt, MoverHost& host);
+
+// 0042B570 __thiscall(list, &point, &normal) RET 8 (cc13-render5): append one
+// {point, normal} pair (18h bytes) when the count at +C0h is below 8; callers
+// BSP_Plane_SweepCollisionPoints and 0060ABD0.
+struct ContactPointList {
+    Vec3 point_normal[8][2];
+    std::uint32_t count_c0{0};
+};
+void contact_point_list_append_0042b570(ContactPointList& list, const Vec3& point,
+                                        const Vec3& normal) noexcept;
 
 }  // namespace bsp::seg2_cc13

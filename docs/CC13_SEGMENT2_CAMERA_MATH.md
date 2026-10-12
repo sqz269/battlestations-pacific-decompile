@@ -155,3 +155,78 @@ Next, in order of value:
 - The 4Ch base slots (`0042B8xx..0042BBxx`, mostly small accessors), and the math helpers with
   callers outside the segment: `0042B570`, `0042C1B0`, `0042C750`, `0042C940`, `0042E180`.
 - The overlap at `00434F52`.
+
+
+## Continuation by cc13-render5 (2026-10-12 06:20Z)
+
+cc13-net3 retired; cc13-render5 took the handoff above (tree `cc13-render4`). New code is in the
+same two files and is **build-tested only**.
+
+### `00430020` BSP_TorpedoViewCamera_Step (reconstructed)
+
+`__thiscall(camera, float dt)`, RET 4. Read with `tools/x87_sym.py 00430020` on both target
+branches (`--out 0042B260=c:0c`). The `.data` tunables, read only here: `00E08074` 0.03 (sub-step),
+`00E08078` 0.08 (x/z blend per full sub-step), `00E0807C` 0.04 (height blend), `00E08080` 30.0
+(trail distance), `00E08084` 3.0 (height).
+
+- Aim point. With a target: `+39Ch` = its world position; the target's world forward row x/z
+  (`+ECh`, `+F4h`) flattened and normalized (`0042B260`) gives aim = position - 30 * forward, and
+  the aim height is 3.0 when that is below 0, else 3.0 above it. Without a target: the camera's own
+  flattened forward times 100.0 (`00D7A220`) behind `+39Ch`, height 30.0 (`00CE38C8`). The listing
+  at `0043019A` is `DC C9` (FMUL ST1,ST0), so both products use 100.0; Ghidra's pseudocode
+  hides the normalized values entirely.
+- `dt` is consumed in sub-steps of at most 0.03 (`while dt > 0`, `dt -= 0.03` stored to float).
+  Per sub-step, t = 0.08 * step / 0.03:
+  - a segment query (`BSP_SpatialIndex_QuerySegment`, `0098ADD0`) from the eye's x/z at height 3.0
+    to `+39Ch`; when it hits a part, aim height = max(aim height, part `[+24h]+4h` + hit entity y +
+    4.0). The raise persists for later sub-steps;
+  - smoothed eye `+3A8h` eases to the aim (x/z by t, y by 0.04), the pose position eases to it
+    likewise;
+  - the look direction (target position with height +3.0 when the target is at or above 0, else
+    3.0, minus the new position, normalized) is eased into `+3B4h` and then into the forward row;
+    `+3C0h` eases to (0,1,0) and the up row to it; every ease is three float spills; then
+    `0085DC80` orthonormalizes.
+- Always: `+C8h`/`+10Ch` cleared, children invalidated, published (as the bomb step).
+
+### `00430970`, renamed BSP_BombViewCamera_UpdateVelocity (reconstructed)
+
+ECX is the bomb view's `+170h` element, so element `+228h/+244h/+250h/+25Ch/+268h` are camera
+`+398h` (target), `+3B4h` (target point), `+3C0h` (position), `+3CCh` (velocity) and `+3D8h`
+(blend, set to 1.0 by `004307F0`). Ground height under the target point
+(`BSP_World_GroundHeightAt`) is floored at 8.0 (`00CE3918`); the follow distance is
+`BSP_Math_InterpolateClamped(0, FollowDistFar, NearAlt/1, FollowDistNear, height)` with the
+Torpedo (kind 2Bh), Rocket (33h) or Bomb (anything else; the 2Ah query's result is unused) row of
+the BombCamera tunables, or FinalDist (`+138h`) without a target. The aim is the target point plus
+1.6 (`00CE3D48`) x the target's velocity (vtable `34h`). The wanted velocity is the unit vector to
+the aim times (length - distance) / 1.6 (unguarded division when the length is 0); without a
+target it is damped by 0.8 and its y is raised to at least half its horizontal speed. Velocity =
+blend x old + (1 - blend) x wanted; the blend drops by CamVelBlenderAcceleration (`+F0h`) while it
+is above MaxCamVelBlender (`+F4h`).
+
+### Other per-class steps
+
+| address | name | status |
+|---|---|---|
+| `00433590` | BSP_AirfieldCamera_Step | reconstructed: when byte `+380h` is set, pose = matrix `+2B8h`, then `004329D0(dt)` |
+| `004335C0` | **BSP_BomberViewCamera_Step** (renamed from the class-56 placeholder) | reconstructed (host matrix ops). The override globals `00E17670` (flag), `00E17674` (pitch), `00E17678` (yaw) are written only by the Lua binding at `008A0850` ("luaMW_PlayerSetBomberView failed:"), so class 56 is the player's bomber view. Orbit with eye height +10.0 (`00CE3DC0`) |
+| `00434140` | BSP_SubmarineCamera_Step | named earlier; selects `00433800` (`+40Ch == 0`) or `00433CB0(dt, flag)`, now named StepMode0/StepMode1 (structural) |
+| `00434810` | BSP_PlaneCamera_Step | not read in this packet |
+| `00434E50` | BSP_DefaultUnitCamera_Step | not read; its callee `00431480` is now BSP_DefaultUnitCamera_UpdateChase and `0042F800` BSP_UnitCamera_EvaluateChaseTunables (both provisional, not reconstructed) |
+
+### Math helpers
+
+| address | name | status |
+|---|---|---|
+| `0042B570` | BSP_ContactPointList_Append | reconstructed (8 x {point, normal}, count `+C0h`) |
+| `0042C1B0` | BSP_RandomWander_Retarget (provisional) | named only. It draws four times from the shared gameplay RNG `00BD2F10`, so a host wiring it in must follow the cc13 RNG rule (separate presentation stream or OFF switch); callers `0042DAF0` and the plane code `007C7800` |
+| `0042C750` | BSP_CameraMover_AnglesWithinTolerance (provisional) | named only |
+| `0042C940` | BSP_CameraMover_OrbitTargetFromYaw (provisional) | named only; callers in segment 16 |
+| `0042E180` | - | not named: gated on byte `+1F4h`, calls `0042D0D0`, `00B6DB70`, `00B6FC30`; callers are the two otherwise-unreferenced thunks `0042E3D0`/`0042E460` |
+
+### Handoff (cc13-render5)
+
+Remaining, in order: `00434810` (plane step, 1.6 KB, calls `0042DAF0` which uses
+`0042C1B0`'s RNG), `00434E50` with `00431480`/`0042F800` (read `00434F50..00434FF1` with
+`disasm-raw`; the misaligned instruction at `00434F52` is still unrepaired), `00434140` with
+`00433800`/`00433CB0`, then `0042C750`, `0042C940`, `0042E180`. All five provisional names above
+should be revisited when their bodies are read.
