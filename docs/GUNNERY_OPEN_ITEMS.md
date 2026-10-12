@@ -12712,3 +12712,24 @@ header comments (E's numerator, C settled) are kept as written. The reads are cc
   candidate for 175(a)). Exit 3 on every dive row; the USN01 win may move.
 - A/C/D/E: aimglide banks up to 1.5x harder on a wide miss and can latch the pull-out by arm B; flyabove's bank scale
   is 1.5 and its descent reference smaller for small height errors (slower descents). Exit 3 on dive rows.
+
+## 190. Four ready cc13 diffs applied OFF: the torpedo-bomber aim, the unlabelled draw pins, small batch 2 and the tail gunner's aim (lead queue; cc9-gunnery36, 2026-10-12; committed OFF, not yet paired)
+
+Each is applied as written (`git apply --check` clean on 189, then applied in this order); the reads are cc13's.
+- docs/CC13_AUDIT_TORPEDO_BOMBER.md: `kTorpedoAimPlanWritesBound` (aim's `plan+2E8h` = 1.4, the throttle/brake slots,
+  `+2D8h` = 0, the `+264h` fade), `kTorpedoAimClassInputsBound` (TurnRoll/Width/TurnCircleRadius feeding the bank
+  limit `plan+2C8h`), `kBandShaperPlan264Bound` (`pilot+264h` = 0.0 at `0099EB9D`; the lead's pilot+264h item uses
+  this switch). It also replaces `torpedo_approach_update.cpp`'s `roll_limit_2e8 = 0` under its switch.
+- docs/CC13_UNLABELLED_DRAWS_BATCH.md: `kDiveTurnSideLatchBound`, `kDiveTurnSideBankBound`, `kDiveTurnSideCoinBound`
+  (`009C859E`), `kAimGlideRearmDrawBound` (`009C579E`), `kAimDiveRearmDrawBound` (`009C6114`, superseding 181.2's
+  label) and `kDiveTurnRollDrawBound` (`009C7839`). It applied without audit9's diff.
+- docs/CC13_SMALL_DIFFS_BATCH_2.md: `kMoveToLuaAltZeroOffsetBound`, `kStrafeDoubleConstantsBound`,
+  `kStrafeAttackrunSeedDrawBound`.
+- docs/CC13_TAIL_GUNNER_AIM_ERROR.md: `kTailGunnerAimErrorBound` and `kTailGunnerOwnAimBound`
+  (`Draw::tail_gunner_error` = 26, free here).
+
+**Predictions** are the docs' own, recorded before any pair: TBDs hold slightly higher with `kBandShaperPlan264Bound`
+alone and lower with the roll arm (186); the draw pins move dive rows only (USN04, JM08); a script altitude is held
+exactly with `kMoveToLuaAltZeroOffsetBound` (USN01/USN04/USN12 move, JM08 and USN02 do not); the strafe constants
+are under 1 ulp (identical expected); the tail gunner switches move every row where bombers' tail guns fire (more
+bombers shot down, fewer fighter losses), and USN02 and LOMP06 do not move.
