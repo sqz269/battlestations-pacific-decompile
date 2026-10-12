@@ -671,5 +671,117 @@
     "message": "Program saved successfully"
    }
   }
+ ],
+ "steps": [
+  {
+   "address": "00873B63",
+   "native": "00BD2FC0",
+   "function": "00873AE0",
+   "note": "sample index draw, ECX=0 (00873B61)"
+  },
+  {
+   "address": "00873C39",
+   "native": "00BD2F10",
+   "function": "00873AE0",
+   "note": "pitch draw U(0, 2*PitchRnd), ECX=0 (00873C26)"
+  },
+  {
+   "address": "00873B8D",
+   "native": "00A7E490",
+   "function": "00873AE0",
+   "note": "create tracked sound"
+  },
+  {
+   "address": "00873B9A",
+   "native": "0054D4C0",
+   "function": "00873AE0",
+   "note": "assign sound to +1Ch"
+  },
+  {
+   "address": "00873C0B",
+   "native": "006E0CD0",
+   "function": "00873AE0",
+   "note": "point world position"
+  },
+  {
+   "address": "00874313",
+   "native": "00BD2FC0",
+   "function": "008742A0",
+   "note": "model variant draw, ECX=0 (00874306)"
+  },
+  {
+   "address": "00872688",
+   "native": "00A79880",
+   "function": "00872670",
+   "note": "scale volume"
+  },
+  {
+   "address": "00872737",
+   "native": "00A81860",
+   "function": "00872720",
+   "note": "sample options"
+  },
+  {
+   "address": "00872F82",
+   "native": "00B6DB70",
+   "function": "00872F40",
+   "note": "refresh node world matrix"
+  },
+  {
+   "address": "008720F7",
+   "native": "00B8B670",
+   "function": "008720F0",
+   "note": "flare pair test",
+   "kind": "tail_jump"
+  },
+  {
+   "address": "008720BB",
+   "native": "00B8D150",
+   "function": "008720A0",
+   "note": "flare update"
+  },
+  {
+   "address": "00872139",
+   "native": "00BC1150",
+   "function": "00872120",
+   "note": "waterdrops finished",
+   "kind": "tail_jump"
+  },
+  {
+   "address": "00872BFA",
+   "native": "00B6DFA0",
+   "function": "00872BF0",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "00872D3A",
+   "native": "00B7C160",
+   "function": "00872D30",
+   "note": "unlink light models"
+  },
+  {
+   "address": "00872D46",
+   "native": "00B6DFA0",
+   "function": "00872D30",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "00872E18",
+   "native": "00B9E4A0",
+   "function": "00872DF0",
+   "note": "remove water ring"
+  },
+  {
+   "address": "008720DA",
+   "native": "00B6DFA0",
+   "function": "008720D0",
+   "note": "node unlink and release"
+  },
+  {
+   "address": "0081C072",
+   "native": "00865FE0",
+   "function": "0081C050",
+   "note": "prune finished effects caller"
+  }
  ]
 }
