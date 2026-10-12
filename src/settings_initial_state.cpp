@@ -11,7 +11,7 @@ bool initialize_game_settings_008d7710(
     settings.gameplay.target_indicator_4a = true; // 008d7747
     settings.options_file.firewall_94 = false;    // 008d7759
     settings.presentation.hardware_reported_95 = false; // 008d775f
-    settings.downloaded_content.clear();          // +98/+9c/+a0 zeroed
+    settings.disabled_downloaded_content.clear();          // +98/+9c/+a0 zeroed
     settings.control.xbox_compatibility_b0 = false; // 008d77a1
     settings.gameplay.show_safe_area_b1 = false;   // 008d77a7
     settings.gameplay.cockpit_mode_b2 = true;      // 008d77ad

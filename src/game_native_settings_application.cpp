@@ -60,9 +60,9 @@ void copy_native_game_settings_read_view(const NativeGameSettingsStorage& storag
     c.invert_plane_y_43=flag(p,0x43);c.swap_map_sticks_44=flag(p,0x44);c.xbox_compatibility_b0=flag(p,0xb0);
     v.gamma_64=read<float>(p,0x64);v.unknown_34=read<float>(p,0x34);v.unknown_70=read<int>(p,0x70);
     v.shader_flag_8c=read<std::uint8_t>(p,0x8c);v.motion_blur_8d=flag(p,0x8d);v.old_film_effect_90=read<int>(p,0x90);
-    v.hardware_reported_95=flag(p,0x95);view.downloaded_content.clear();
+    v.hardware_reported_95=flag(p,0x95);view.disabled_downloaded_content.clear();
     const auto* entries=read<const char*>(p,0x98);const auto count=read<int>(p,0x9c);
-    for(int i=0;i<count;++i)view.downloaded_content.push_back(raw_text(entries+static_cast<std::size_t>(i)*8));
+    for(int i=0;i<count;++i)view.disabled_downloaded_content.push_back(raw_text(entries+static_cast<std::size_t>(i)*8));
 }
 struct GameNativeSettingsApplication::Impl {
     enum class Phase{prepared,loading,ready,failed};

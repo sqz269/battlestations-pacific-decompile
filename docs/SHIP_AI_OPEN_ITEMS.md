@@ -16863,3 +16863,28 @@ the order file with
 If it stops winning, the levers are, in order: the BB hold point (open water; (-6000, 6000) grounds them), when
 the BBs commit relative to Yamashiro's turn north (it passes (2630, 3991) at 2200 s), and keeping the right group
 off Fuso's track until Fuso is dead (about 1100 s).
+
+## 215. `kFusedSquadronSlotSelectableBound` (cc13's diff A, applied by cc9-ships44, 2026-10-12)
+
+docs/CC13_AUDIT_REATTACK_AND_SKILL.md part A (origin `ba711c180`): the host fuses a squadron with the plane that
+carries its name, so once that plane dies every `select <squadron>` is refused and the surviving wing never gets
+another order; in the image the PlaneSquadronGen stays selectable until `+3CCh == 0`. The diff is applied verbatim
+(`include/bsp/plane_squadron_host.hpp`, `src/game_hosts_hud.cpp`, `src/game_hosts_mission_frame.cpp`), committed
+OFF. Predictions (cc13's measurements, to be reproduced in this tree): smoke identical; IJN01 with
+`s38_i1_p1` (24200/24000, 0.05 s) moves from A7M_2's first refused order (frame 2802), StrafeShip deaths 13 -> 25
+of 25 and MissionPhase 1 -> 2 by 1200 s; USN04 with `s39_u4_p1` (45200/45000, 0.0222 s, jitter `20,3`) gameplay
+identical (exit 1). Mechanism check: every added IJN01 kill is by an orphaned wing member (`A7M_n|.-k`) whose
+order was accepted through the squadron slot.
+
+### 215.1 Pairs and the flip: **ON** (cc9-ships44, 2026-10-12)
+
+OFF = the tree at `bdc1a5f21`, ON = `local\s44_fsq_on` (pair_export); logs `local\s44_fsq{off,on}_*.log`.
+- smoke: exit 0.
+- USN04 (`s39_u4_p1`, 45200/45000, 0.0222 s, jitter `20,3`): exit 1, gameplay identical, as predicted.
+- USN15 variant h (control): exit 1, gameplay identical. (On this merged main, h no longer wins: Yamashiro is left
+  at 2.8% and the mission fails at 3211.61 s, the knife-edge 214 warned about; re-tune later.)
+- IJN01 (`s38_i1_p1`, 24200/24000): exit 3. Refused helm orders 545 -> 340, applied 104 -> 309; deaths 44 -> 56,
+  kills by A7M wing members (`A7M_n|.-k`) 17 -> 29 (LST1-LST11, PT1-PT4 and the tenders all die by 471 s);
+  MissionPhase 1 -> **2**. Every added kill is by an orphaned wing member; mechanism as predicted (cc13's
+  25/25 by 612.22 s was measured on an older base).
+- **Verdict: ON.**

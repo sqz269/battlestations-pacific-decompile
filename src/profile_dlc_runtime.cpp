@@ -12,8 +12,8 @@ bool VfsProfileDlcHost::xenon_has_selected_user_00a3e510() { return content_.xen
 void VfsProfileDlcHost::try_construct_download_manager_009955f0(std::uint32_t bytes) { content_.try_construct_download_manager_009955f0(bytes); }
 bool VfsProfileDlcHost::download_manager_ready_1c() { return content_.download_manager_ready_1c(); }
 void VfsProfileDlcHost::refresh_download_manager_virtual_24() { content_.refresh_download_manager_virtual_24(); }
-void VfsProfileDlcHost::filter_downloaded_content_0043ea80(std::vector<std::string>& names) { content_.filter_downloaded_content_0043ea80(names); }
-void VfsProfileDlcHost::apply_downloaded_content_virtual_14(std::vector<std::string>& names) { content_.apply_downloaded_content_virtual_14(names); }
+void VfsProfileDlcHost::keep_known_package_prefixes_0043ea80(std::vector<std::string>& names) { content_.keep_known_package_prefixes_0043ea80(names); }
+void VfsProfileDlcHost::disable_listed_packages_virtual_14(std::vector<std::string>& names) { content_.disable_listed_packages_virtual_14(names); }
 void VfsProfileDlcHost::finish_download_manager_virtual_20() { content_.finish_download_manager_virtual_20(); }
 void VfsProfileDlcHost::register_localization_table_00aa0d30(std::string_view name) { content_.register_localization_table_00aa0d30(name); }
 void VfsProfileDlcHost::reload_localization_tables_00aa06d0(bool flag) { content_.reload_localization_tables_00aa06d0(flag); }
