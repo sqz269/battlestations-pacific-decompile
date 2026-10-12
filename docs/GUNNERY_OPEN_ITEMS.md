@@ -12657,3 +12657,19 @@ limit), the slot `0099DF87` stores at frame `+6Ch` and `0099E127`/`0099E02B` rel
   falls and their aim descent goes lower than 106 m; torpedo releases should rise. Fighter rows (LOMP10): dogfight
   turns at small error are gentler; kill times move both ways.
 - Rows with no plane in the window stay identical.
+
+## 187. `kTaskProfileActivationOnlyBound` and `kMoveToActivationDrawsBound`: the cruise profile runs once per task install (lead queue, cc13-cadence2/3's diffs; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diffs** are docs/CC13_TASK_PROFILE_CADENCE.md sections 6 and 10, applied as written on top of 186
+(`git apply --check` clean). The image dispatches a task's cruise profile (`vt[+54h]`) once per install and again
+when a prepended task retires; the host ran the dive (`009C8920`), level-bomb (`009B8C90`) and land (`009B3C60`)
+profiles every think and the moveto altitude gate every 0.5 s. Section 10: the moveto activation draws
+`+460h = U(20, 200)` and `+424h = U(0, 50)` replace the constructor's `U(0, 5)` and 50.0. The reads are cc13's and
+are not repeated here.
+
+**Predictions (cc13's, before any pair), each switch alone.**
+- Cadence: IJN01's strafers keep 300 m (`ijn_1_pearl.lua` 1009-1011) instead of reverting after 0.5 s; USN04's movie
+  aircraft holds 1100 m; dive leaders draw the begin altitude once per install; JM08's six non-forced altitude calls
+  hold. Exit 3 on IJN01, USN04 and JM08.
+- Moveto draws: every row with a plane moveto install moves (USN04's escorts and waves); the moveto flies about
+  22.5 m lower on average and switches to the target's speed earlier.
