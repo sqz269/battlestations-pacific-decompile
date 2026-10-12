@@ -12,7 +12,7 @@ section 1.
 **Status.** Exported, reconstructed and **build-tested** only: `include/bsp/moveonpath_task_cc13.hpp`,
 `src/moveonpath_task_cc13.cpp` (target `bsp_game`). The host glue of section 8 was applied in this
 worktree with its switch OFF, built (`scripts/build.ps1`, both tests passed), reverted, and checked with
-`git apply --check` against origin/main `1c5294dfe`. Nothing was run, so nothing is game-validated.
+`git apply --check` against origin/main `d8b34c2cc`. Nothing was run, so nothing is game-validated.
 
 ## 1. Short answers
 
@@ -203,7 +203,8 @@ has no plane `moveonpath` (scope doc 1.4).
 - The plane then flies the path itself instead of drifting on its old task.
 - Wingmen run the moveto task's follow body.
 - `#mp`-keyed draws are added through `release_altitude_draw_00bd2f10`: construction makes four per
-  plane, and every tick makes one through slot +54h. Stream 0 is untouched.
+  plane, and one more through slot +54h at the install (its only activation in the host). Stream 0 is
+  untouched.
 - The squadron's sq_alt_394 / sq_alt_set / sq_lock_3a9 follow the cruise channel rule.
 
 ## 6. RNG draw sites (stream 1, ECX = 1)
@@ -241,18 +242,22 @@ key`) is a labelled substitution for that order. It is faithful in distribution 
     unit list; read only far enough to see the lock and the per-unit loop);
   - `0071E430`.
 - Open: slot +10h returns 3 and slot +5Ch returns `&[00F8A534]`, and neither meaning is known. The
-  caller and cadence of slot +54h were not read, so the glue runs it every arm tick. That is labelled.
+  cadence of slot +54h is settled by docs/CC13_TASK_PROFILE_CADENCE.md: the image dispatches it
+  only on activation (`0099AEB3` when the task becomes the bot's head, `0099AE2B` when a task
+  prepended over it retires), never per think.
 
 ## 8. Host glue for cc9 (suggested, not applied)
 
 Applied in this worktree with `kMoveOnPathTaskBound = false`, built, reverted. `git apply --check` is
-clean against origin/main `1c5294dfe`. The pieces:
+clean against origin/main `d8b34c2cc`. The pieces:
 - `PilotMoveOnPath`/`NavigatorMoveOnPath` delivery installs the task on a plane (kind 0Fh) through the
   existing `bot_install_command_task_0099a170` (`ScriptOrderAttackCommandHost`) and stores the class.
 - The units host constructs the task on the next think and ticks it next to the moveto task.
 - Two accessors on the commands host give the cursor point with its height and `007B1350`.
 
-Labelled substitutions are in the method comment: no leg manager, slot +54h on the arm's cadence, the
+Labelled substitutions are in the method comment: no leg manager, slot +54h run once at the install
+(the image's `0099AEB3` activation, same think, before the arm; the host has no prepended tasks, so
+the `0099AE2B` re-activation has no hook), the
 moveto follow body, and the circle state kept as a record. Speed ctl+3A0h is
 `retreat_squadron_speed_3a0`. ctl is the squadron slot (`squadron_slot_of`), falling back to the plane's
 own position.
@@ -326,10 +331,10 @@ index e70b09aee..277de8df3 100644
      float unit_x, float unit_z, float unit_radius, float turn_radius) {
      Impl& host = *impl_;
 diff --git a/src/game_hosts_script_orders.cpp b/src/game_hosts_script_orders.cpp
-index d73347100..686682b6f 100644
+index 7186a98a6..b972ebbbc 100644
 --- a/src/game_hosts_script_orders.cpp
 +++ b/src/game_hosts_script_orders.cpp
-@@ -2699,6 +2699,19 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
+@@ -2732,6 +2732,19 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
                  "path \"%s\": 007ADC30 then answers `no legs` on the first state step "
                  "and the ship holds its heading", path_name.c_str());
          }
@@ -350,7 +355,7 @@ index d73347100..686682b6f 100644
      });
  }
 diff --git a/src/game_hosts_units.cpp b/src/game_hosts_units.cpp
-index f8634b115..e06ed814f 100644
+index f8634b115..4b9ea270b 100644
 --- a/src/game_hosts_units.cpp
 +++ b/src/game_hosts_units.cpp
 @@ -73,6 +73,7 @@
@@ -372,7 +377,7 @@ index f8634b115..e06ed814f 100644
      bool moveto_stage_logged{false};   // cc9_moveto_arrival_end_command, one note per member
      MoveToTaskState moveto_state{MoveToTaskState::kNone};
      bool moveto_arrived_454{false};        // task+454h, cleared by 009C1D0A
-@@ -29486,6 +29491,169 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
+@@ -29486,6 +29491,175 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                          }
                      }
  
@@ -382,8 +387,8 @@ index f8634b115..e06ed814f 100644
 +                    // 009BD990. The squadron slot stands for ctl (unit+9D4h).
 +                    // LABELLED substitutions: the converging-leg manager 009BD400
 +                    // is not modelled (no separation; its altitude is the input);
-+                    // slot +54h runs on this arm's cadence (its caller's was not
-+                    // read); the follow state is the moveto task's (same vtable
++                    // slot +54h runs once, at the install (no re-activation hook);
++                    // the follow state is the moveto task's (same vtable
 +                    // 00D20AB8); the circle state, unreachable live, is a record.
 +                    void run_moveonpath_task_arm_009bd990(float dt) {
 +                        struct Binding final : bsp::MoveOnPathTaskHost, bsp::MoveOnPathRandom {
@@ -494,14 +499,20 @@ index f8634b115..e06ed814f 100644
 +                        if (owner_.lua.plane_globals_loaded()) {
 +                            max_alt_offset = owner_.lua.plane_globals().pilot_general_max_alt_offset;
 +                        }
++                        bool activated = false;
 +                        if (!unit_.moveonpath_task_installed) {
 +                            bsp::moveonpath_task_construct_009bce50(unit_.moveonpath_task, h, h,
 +                                                                    max_alt_offset);
 +                            unit_.moveonpath_task_installed = true;
++                            activated = true;
 +                        }
 +                        ++unit_.moveonpath_ticks;
-+                        // Slot +54h, 009BD6E0, over the squadron's cruise block.
-+                        if (sq != nullptr && owner_.lua.plane_globals_loaded()) {
++                        // Slot +54h, 009BD6E0, over the squadron's cruise block. The image
++                        // dispatches it only on activation (docs/CC13_TASK_PROFILE_CADENCE.md
++                        // sections 1-2): 0099AEB3 when the new task becomes the head, in the
++                        // same think, before the vt[64h] tick. LABELLED: the host has no
++                        // prepended tasks (0099AE2B), so there is no re-activation.
++                        if (activated && sq != nullptr && owner_.lua.plane_globals_loaded()) {
 +                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
 +                            const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
 +                            bsp::MoveOnPathCruiseInputs ci;
@@ -542,7 +553,7 @@ index f8634b115..e06ed814f 100644
                      // 009C1FD0, the follow state's tick (vtable 00D20AB8 +0Ch), for
                      // the kind-7 task's wingman, packet cc9_pilot_moveto_task part 3.
                      // Its enter 009BED80 assigns the squadron's formation indices
-@@ -30000,6 +30168,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
+@@ -30000,6 +30174,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                      run_moveto_task_tick_009c3950(elapsed);
                                  }
                              }
@@ -568,7 +579,6 @@ moveto approach `009BEBA0` and `009FD050`.
 Done: the reconstruction, the names, the Ghidra repair and the glue check. Open for cc9:
 - decide whether to wire the glue;
 - model the leg manager `009FC260`, needed for JM06's final approach;
-- read slot +54h's caller cadence.
 
 Scripts are in `local/`: `mp1_dis.py`, `mp1_pe.py`, `mp1_refs.py`, `mp1_ends.py`, `mp1_names.py`. The
 glue diff is `local/mp1_glue.diff`.
