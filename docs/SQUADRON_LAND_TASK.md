@@ -15145,7 +15145,7 @@ grew by 6 instructions), so nothing in them is new to the host.
 
 **The plane's `vtable[140h]`, resolved** (cc13's open item 1). The plane vtable `00D05F20` holds `007B97E0` at
 `+140h` (bytes at `00D06060`), and `007B97E0` is `MOV EAX,[ECX+9D4h]; RET`: plane `+9D4h`, the squadron (the
-same field `006C4790` reads, 5ff). So the kill/hit second pass keys on the plane's squadron, as cc13 suspected.
+same field the deck test `006C4790` is handed). So the kill/hit second pass keys on the plane's squadron, as cc13 suspected.
 
 **The host's two dispatchers** (`src/game_hosts_lua.cpp`):
 - `dispatch_hit_listeners_00988510` evaluates once with `hit.shooter` (a member plane's own slot; the squadron is a

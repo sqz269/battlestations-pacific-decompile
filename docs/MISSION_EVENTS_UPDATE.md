@@ -496,3 +496,26 @@ written only when the effect handle at record `+8h` is set (`0096E314`). `009803
 `00980ABC..00980BF0` (default `-1.0e10`, `00CE4ADC`) and calls `0096C070` when the air-raid value is
 not the default. `00977820` arms record `+0h` and `00977990` arms record `+4h`. Details:
 `docs/CC13_WARNING_REPORTS.md`.
+
+## Correction (2026-10-12, cc9-lua50, from docs/CC13_EVENT_CHANNELS.md section 6)
+
+The "Channel producers" table above is superseded by docs/CC13_EVENT_CHANNELS.md section 3. Item by item:
+
+1. **Was:** `recon` has no producer. **Is:** `0077B0C0`, the virtual reconlevel writer (fire site `0077B16B`).
+2. **Was:** `ammoType` has no producer. **Is:** `006E4D50` BSP_MBombPlatform_Drop (`006E5633`).
+3. **Was:** `gui` and `musicOver` have no producer. **Is:** both fire through hooks that Init installs:
+   `gui` from `[00F8BF4C]` (`009874F6`), called by GUI layer visibility `00AC4450`; `musicOver` from
+   `[00F8BBCC]+230h` (`009874EC`), called by the streamed-dialog update `00A789C0`.
+4. `zone` is the only channel with no fire site.
+5. **Was:** `exitzone` one producer, `failure` three, `command` three. **Is:** `exitzone` four (adds `007C6C30`,
+   `0081BEB0`, `00826D70`), `failure` four (adds `0081B630`), `command` six (adds the ship-AI states `009E5770`
+   and `009E59C0`).
+6. **Was:** `entityKilled`'s producer is `0077CE60`. **Is:** `0077D1A0`; `0077CE60` produces `hit`.
+7. `failureshipyard`/`failureairfield` are warning ids built after the `failure` channel, `damage`/`repair` are
+   `hpEvent` reasons and `globals.warn_uslost` is loss text; none is a channel.
+8. **Was** (the COMMAND_COMPLETION correction above): the `+105h` store at `0098473F` is on the channel object.
+   **Is:** on the manager. EBP is reloaded from the prologue slot at `009845B2` and not written again before
+   `0098473F` (cc13's EH-state-anchored sweep).
+
+Also from cc13: `+105h` gates the kill/hit second listener pass (plane attacker replaced by its squadron,
+`vtable[140h]` = `007B97E0` = plane `+9D4h`; docs/SQUADRON_LAND_TASK.md 5fs), not the default warning blocks.
