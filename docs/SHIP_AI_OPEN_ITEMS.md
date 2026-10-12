@@ -16422,3 +16422,19 @@ OFF is `7107b671b` (tree build). ON is the same commit exported with the switch 
 | `s42_pursuit.py` | distance, heading against bearing, throttle of one unit chasing another |
 | `s42_patch_*.py` | the applied patches |
 | `s42_bisect_list.txt` | the 400 first-parent main commits from 207.3's bisect |
+
+### 209.1 Variants e and f (cc9-ships42, 2026-10-11)
+
+- **e** (`s42_os_e.txt`, d plus bombers 331/339 at Takao1 from frame 24040): every bomber launch is refused with
+  "no such slot", so e plays out exactly as d: HQ2 is captured at 1703.34 s, and DM1 sinks the Enterprise at
+  1729.26 s. The `-Traj` CSVs (`local\s42_p4_ose.*.csv`) show the Enterprise and DM1 parked at (12805, -3865) and
+  (12767, -3889) while Takao1 closes from (10981, -1733) at 1600 s to (11751, -2633) at 1730 s.
+- **f** (`s42_os_f.txt`, d plus `29000 moveto Enterprise 18000 -5000`): worse. DM1 sinks the Enterprise at 1602.44 s
+  (killer range 70 m), and the mission fails at 1604.24 s. Like f17's `27950` order, an eastward moveto from that
+  parked, west-facing pose swings the carrier toward the blockade first.
+- **Next for the re-plan:**
+  - Keep d's escort.
+  - Deal with Takao1 before about 1650 s. Either free a bomber slot (drop some of f17's early 331/339 launches so one
+    slot is ready at about 1200 s), or set NH/Portland on Takao1.
+  - Or move the Enterprise south while it still faces south: before the `300 moveto Enterprise 12500 -4000` leg
+    parks it facing west, add a waypoint so it parks facing east.
