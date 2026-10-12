@@ -16557,7 +16557,7 @@ treated as non-returning) and docs/CC13_FREE_FLOW_REPAIR.md's grew-list. For eac
 SQUADRON_LAND_TASK doc, the code after every repaired site was read from disk bytes (`disasm-raw`; tool
 `local\s43_audit_sites.py`), and the host's reconstruction was checked where one exists.
 
-**Bound: `kCarrierLiftHeightFromRunwayBound`, committed OFF** (`src/game_hosts_units.cpp`, packet
+**Bound: `kCarrierLiftHeightFromRunwayBound`, committed OFF, then ON (pairs at the end of this section)** (`src/game_hosts_units.cpp`, packet
 `cc9_carrier_lift_height`).
 - `00759120` (MotherShip class model bind) ends, after the runwaycenter read and its string free, with
   `0075927C FLD [ESI+818h]` / `00759287 FSTP [ESI+80Ch]`: the lift exit point's height (class+80Ch, read at
@@ -16598,3 +16598,9 @@ lost the store, but no other function reads it before the next entry clears it. 
 written from the truncated bodies. 00929800 (PublishLuaDead) continues after its free with the think-message branch,
 which the Lua host already labels as not modelled. 004E27E0 is the command-line parser; 00A38DA0 is a multiplayer
 handler.
+- **Pairs (99c1c0c92, both sides exported: `local\s43_lh_off`, `local\s43_lh_on`).** smoke: exit 0 (identical apart
+  from noise). osj (USNOS j, 44000): exit 3, as predicted. ON logs `lift height 15.366, runway centre height 15.401,
+  replaced` for the Enterprise (Midway 15.916 -> 15.931, Essex 18.246 -> 18.251). The first differing death row is
+  `Enterprise_sqn01|.-2` at 288.40 against 288.95 s; from there the shared RNG stream
+  spreads it (ON: Enterprise elevator intakes 3, releases 42; OFF: 9 and 33). **Verdict: ON** (the store is
+  unconditional in the image; no mechanism beyond the height to check).

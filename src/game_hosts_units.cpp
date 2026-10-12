@@ -5377,7 +5377,7 @@ struct GameUnitsHost::Impl {
     // truncated): class+80Ch, the lift exit point's height, = class+818h, the runway
     // centre's. True: the host's lift[1] takes the runway centre's height. False: it
     // keeps the model's liftexitpoint height.
-    static constexpr bool kCarrierLiftHeightFromRunwayBound = false;
+    static constexpr bool kCarrierLiftHeightFromRunwayBound = true;   // ON by its pairs (SHIP_AI 210.3)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
