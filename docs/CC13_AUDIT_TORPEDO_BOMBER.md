@@ -171,7 +171,7 @@ opens the countdown.
 - After `009D1CF7` the aim tick stores `plan+2E8h = [00D06874]` (1.4f) unconditionally (`009D1D02`).
   - The host's live tick returns it as `r.roll_limit_2e8`, and nothing copies it into `plan_state.turn_scale_2e8`.
   - The planner's reset reseeds 1.0 every think (`0099B52C`), so the host's aim TBD banks at 1.0 x TurnRoll.
-  - In the image the roll arm's `max_bank = min(1.4 x TurnRoll, cap)`, and the bank request `raw * max_bank` scales
+  - **Correction (part 2, docs/CC13_AUDIT_PLANNER_ROLL.md finding 3):** for a TBD wingman the cap binds both ways:`n    TurnRollLimitLarge 56 deg = 0.977 < 1.0 x 1.047. The 1.4 is therefore neutral for TBDs, and the sentences below hold`n    only for classes whose TurnRoll is under the cap.`n  - In the image the roll arm's `max_bank = min(1.4 x TurnRoll, cap)`, and the bank request `raw * max_bank` scales
     with it (`plane_ai_control.cpp`, `0099DFAA`..`0099E1C9`). The image banks **more** for the same heading error.
 - **The throttle block** `009D1F42`..`009D1F6B`: throttle desired 1.0 (`[00D7A24C]`) with its byte, air brake desired
   0.0 with its byte, and `plan+2D8h = 0`.
