@@ -12897,4 +12897,12 @@ plane/task line classes.
   rows only USN04 4500 rolls the error (`rolls=103`); its one change is the Kates' tail-gun fire (`B5N Kate #2.1`
   shots 6 -> 0, `#2.1|.-2` 4 -> 9) and one US fighter (`Yorktown-class01_sqn04|.-3`) surviving: fewer fighter losses,
   as predicted. The other eight (BSM01, ESMP08, JM08, LOMP06, USN02, USN12, USN13, USNOS) are gameplay-identical;
-  five of them only reset the own-aim state. USN02 and LOMP06 identical as predicted.
+  five of them only reset the own-aim state. USN02 and LOMP06 identical as predicted.- **`kFlakFlyTimeBurstBound` (188): ON.** The burst fires on its own path (E2: `flak expiry: bursts 0 -> 126`,
+  `blast_radial_damage_0084bad0` calls 1145 -> 1271) and reaches planes only on USN13 (exit 3: extra damage on the
+  bombers, e.g. `bruh #1.11|.-3` taken 380 -> 404, no death moved). Every other row and all seven win keys are
+  gameplay-identical (USN01, USN02, LOMP06, LOMP10, USN12, BSM01, ESMP08). Note: ESMP08 `g36_ord_e8` does not
+  complete in 72000 frames on either side (the Cassin loss of 183), so it is not a live win on this base.- **`kFlakBlastIgnoreFalloffBound` (188): ON.** First divergence on LOMP10 9000 is a flak-blast kill
+  (`Lightning 01|.-3` at 107.15 s, `killer_cat=6 killer_blast=1`), and the two B-25s die 1.5 and 13.4 s earlier:
+  full-damage blasts, as predicted. E2 torpedo releases 5/16 -> 1/16 (the predicted lost release). Wins held:
+  LOMP10 1184.73 -> 1226.57 s, USN01 425.72 -> 410.87 s, USN12 1589.38 s, BSM01 767.94 s, LOMP06 and USN02
+  identical; ESMP08 no completion on either side.

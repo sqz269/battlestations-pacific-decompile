@@ -12,7 +12,14 @@ EV_NEW = {
     'st1_treeeraserange': 'cc13-sweep6D shape: erase(first,last): begin()/end() pair takes the _Erase(root)+reset fast path, otherwise loops erase(where) with checked-iterator hooks (std::_Tree::erase(first,last))',
     'st1_mapsubscript': 'cc13-sweep6D shape: _Lbound walk; on miss builds a default value (inner map head _Buynode) and calls insert(hint,pair); returns &node->value.second (std::map::operator[])',
 }
-rows = [l.strip().split('|') for l in open(sys.argv[1]) if l.strip() and not l.startswith('#')]
+# Usage: st1_retag.py <input> [--source DOC]; DOC defaults to the 006D doc that introduced these shapes.
+args = sys.argv[1:]
+source = 'docs/CC13_BAND_006D_006F.md'
+if '--source' in args:
+    i = args.index('--source')
+    source = args[i + 1]
+    del args[i:i + 2]
+rows = [l.strip().split('|') for l in open(args[0]) if l.strip() and not l.startswith('#')]
 want = {a: (cat, prefix, key) for a, cat, prefix, key in rows}
 tagdir = ROOT / 'config/tags'
 entries = []
@@ -26,7 +33,7 @@ for band in sorted({a[:4] + '0000' for a in want}):
         if r['address'] in want:
             cat, prefix, key = want.pop(r['address'])
             r = {'address': r['address'], 'name': f"{prefix}_{r['address']}", 'category': cat, 'confidence': 'high',
-                 'action': 'rename', 'create': False, 'source': 'docs/CC13_BAND_006D_006F.md', 'evidence_id': f'st1_{key}'}
+                 'action': 'rename', 'create': False, 'source': source, 'evidence_id': f'st1_{key}'}
             entries.append(r)
         out.append(json.dumps(r))
     path.write_text('\n'.join(out) + '\n', encoding='utf-8', newline='\n')
