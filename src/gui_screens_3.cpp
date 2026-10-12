@@ -631,16 +631,16 @@ std::string hint_string_or_empty(HintLuaEntry& e, std::string_view key) { return
 // at +98h is default-constructed per entry (005FD650 clears the strings only), filled, then
 // assigned to map[id] (005FFB20 + 005FDD90). The initial map find on the id (0068F136) is kept
 // in a slot and never used.
-// cooldowntime is read only when present and 005FD650 does not clear +120h, so a missing key
-// keeps the previous entry's value (an uninitialised stack word for the first entry); `carry`
-// reproduces that across calls of this function only.
+// cooldowntime: 005FD650 does not clear +120h, but the loader writes it on both branches:
+// 0068FFF4 stores EDI when the key is nil (0 on every path: XOR EDI,EDI at 0068FF7B, or at
+// 0068FD78 through 0068FF27) and 00690029 the integer otherwise. A missing key gives 0.
 // TitleDescList rows are written in iteration order with no bound (0069090F loop): a ninth
 // element would overwrite +114h onwards. The reconstruction stops at eight and says so here.
-void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category, HintDefinition& carry) {
+void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category) {
     while (HintLuaEntry* e = host.next_entry()) {
         const std::string id = e->id();                                 // 0068F0CE
         HintDefinition def;
-        def.cooldown_time = carry.cooldown_time;                        // stale +120h
+        def.cooldown_time = 0;                                          // 0068FFF4, EDI = 0
         def.title = hint_string_or_empty(*e, "Title");                  // 0068F1EB (nil -> 00CE3A0C "")
         def.description = hint_string_or_empty(*e, "Description");
         def.lua_command = hint_string_or_empty(*e, "LuaCommand");
@@ -653,7 +653,7 @@ void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_cate
         def.critical = e->is_nil("critical") ? false : e->boolean("critical");  // 0068FDCB
         def.loader_flag_50 = other_category;                            // 0068FE65..0068FE7A
         def.storing_rule = e->is_nil("storingrule") ? std::string(kHintDefaultRule) : e->string("storingrule");
-        if (!e->is_nil("cooldowntime")) def.cooldown_time = e->integer("cooldowntime");  // 0068FFCE
+        if (!e->is_nil("cooldowntime")) def.cooldown_time = e->integer("cooldowntime");  // 00690029
         def.duration = e->is_nil("duration") ? kHintDefaultDuration : e->integer("duration");  // 00690067
         def.type = e->is_nil("Type") ? std::string(kHintDefaultType) : e->string("Type");      // 00690104
         def.hidden = e->is_nil("hidden") ? false : e->boolean("hidden");                         // 0069025F
@@ -671,7 +671,6 @@ void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_cate
             def.title_desc_list.fill(HintTitleDescRow{});                     // 00690944..00690982
         }
         host.store_definition_005fdd90(id, def);                              // 00690A1A..00690A21
-        carry.cooldown_time = def.cooldown_time;
     }
 }
 

@@ -413,8 +413,8 @@ struct HintTableHost {
 };
 
 // 0068F030: __thiscall(tracker, LuaObject table by value, char other_category), RET 18h.
-// `carry` holds the stack definition between entries (see the cooldowntime note in the source).
-void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category, HintDefinition& carry);
+// A missing cooldowntime gives 0 (0068FFF4 stores EDI = 0); nothing carries between entries.
+void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category);
 
 struct HintReloadHost {
     virtual ~HintReloadHost() = default;

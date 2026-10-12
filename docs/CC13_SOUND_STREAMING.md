@@ -179,6 +179,11 @@ input-manager singleton base destructors 00A92180/00A92230, and
 `BSP_InputAction_RemoveMatchingBinding` 00A93690. The latter has a native quirk: when no binding
 matches, the end iterator is not the last element, so the last binding is copied into the slot
 past the end and then destroyed, i.e. a miss removes the last binding.
+With an empty array (count +14h = 0) it is worse (cc13-audit1, 2026-10-12, bytes
+00A93690..00A93748). The search loop is skipped, so ESI = begin. That is compared with
+begin - 34h (00A936D6..00A936DE), and they differ, so the record at begin - 34h, which lies
+before the array start, is copied over begin (00A936E2..00A9372C). Then 00A93070 destroys the
+record at begin - 34h (00A9373C), and the count is decremented to -1 (00A93741).
 
 About 60 raw functions remain in 00A90000-00A9AC40. They are `std::vector`/`std::deque`/
 `std::_Tree` instances for the input backend device groups, gamepad force request queues and the
