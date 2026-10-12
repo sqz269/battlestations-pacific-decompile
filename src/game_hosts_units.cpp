@@ -2208,7 +2208,7 @@ constexpr bool kAimDiveTailBound = true;
 //    pitch between -60 and -40 degrees the body-axis bearing B is blended toward the
 //    inverted-corrected Euler heading E, B - t wrap(B - E), t rising 0 -> 1 from -60 to
 //    -40 degrees. OFF: B for every pitch at or below -40 degrees, as before.
-constexpr bool kDiveAimHeadingBlendBound = false;
+constexpr bool kDiveAimHeadingBlendBound = true;  // ON: GUNNERY 178.1
 // Packet cc9_dive_flight_response: class+164h Accel as the image's reader leaves
 // it (007D20F3-007D2127). docs/DIVE_FLIGHT_RESPONSE.md. OFF, measured: main 32 -> 24
 // releases (local/S1fr_9000.log); the throttle-fix pair lacks its control.

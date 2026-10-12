@@ -12285,3 +12285,24 @@ otherwise re-enter them.
 
 **Census:** `summary mission gunnery live water crossings= bound=`. OFF it is 0 and the run is identical by
 construction. It is to be paired together with cc9-physics1's live-sea flip.
+
+### 178.1 The pairs (export `d82a607b2`, `local\g35_dr{OFF,ON}`; logs `local\g35_bl{off,on}_<row>.log`, diffs `local\g35_db_<row>.txt`)
+
+| row | exit | dive-bomb-task releases | other |
+|---|---|---|---|
+| USN04 phase 2 (`s39_u4_p1.txt`, 40000 frames) | 3 | 3 of 19 -> **0 of 19** | torpedo releases 5 -> 4; hull hits 141 -> 134; deaths 52 = 52 (33 rows move, mostly D3A Vals) |
+| JM08 r7 (`l50_j8_r7.txt`, 20000 frames) | 3 | 5 of 27 -> **10 of 15** | deaths 136 -> 161, units 475 -> 497 (a cascade: torpedo releases 1 -> 6 of 58) |
+| USN01 u1 (`g32_ord_u1.txt`, 22000 frames) | 3 | 4 of 9 -> 5 of 9 | **OFF fails at 920.60 s** ("Game Over", MissionStatus); ON reaches the frame limit with no end; deaths 68 -> 65 |
+
+- The mechanism is the image's own third arm, read whole and continuous with the other two: B at -60 deg, E at
+  -40 deg. Every row moves, which shows the band is crossed in real dives.
+- The release counts move both ways:
+  - USN04's Vals stop releasing altogether.
+  - JM08's airfield dive bombers release twice as often.
+- So the blend does not answer "why USN04's dive bombers don't release" on its own. 175(a)'s cross-track divergence
+  needs the roll response next, which is the plane lane.
+- **USN01 u1, an AF win row, already fails at 920.60 s on the OFF build** (current main plus this branch). That is a
+  reference-row regression from before this switch, for the next reference to bisect.
+
+**Verdict: the mechanism matches the read; flipped ON.** The spread is recorded. The USN04 release loss is the open
+consequence.
