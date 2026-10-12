@@ -474,3 +474,85 @@ reader (`Could not read Subset child header`); it has no damp section. Every mas
 1. Each ON log has one `ocean coverage:` line per Landscape with the counts above; OFF logs have
    none.
 2. OFF is unchanged (the mask reader returns 1.0 as before).
+
+## 11. The pairs and the flip (packet cc9_physics1_sea, queue item 3)
+
+Same-tree pairs from e103dabd0: OFF is the tree's build, ON `pair_export --flip
+kWaveFieldLiveAmplitudeBound=true` (local\p1_on, bsp_game.exe SHA-256 B29453BB75C8). Reference
+launch form: BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, `--stop-after-end 40`. Logs
+local\p1b_{off,on}_<row>.log; trajectories local\p1t_{off,on}.*.csv.
+
+### (a) Mechanism (predictions 9(c)1 and 10(d)1)
+
+| Row | `ocean waves:` HeightScale | amplitude +24h at 1000 render steps | `ocean coverage:` regions | verdict |
+|---|---|---|---|---|
+| USN12 (calm) | 0.5 | 0.500 | 2 (invasion_of_fiji_islands, s07_s) | as predicted |
+| USN04 | 3.0 | 3.000 | 0 | as predicted |
+| JM06 | 2.0 | 2.000 | 1 (ijn06_cure_atoll) | as predicted |
+| USN01 (l50_u1_u2) | 2.0 | 2.000 | 4 (m07_a, 3 × DLC_L_03_S) | as predicted |
+| USN02 (s36_u2_p7, control) | 1.0 | 1.000 | 0 | as predicted |
+
+Render steps equal the in-mission frames (1000 at clock 50.000 s). The first fixed steps see
+amplitude 0.0 (render steps 0), as the image's 00BA19C9 initial value before the first render.
+OFF logs carry none of the three lines.
+
+Hulls (USN04, 1200 frames, trajectory CSV, t > 5 s): OFF the destroyers sit still (y standard
+deviation 0.001..0.013 m); ON they heave, standard deviation 0.50..0.80 m, ranges about 2.5..3.8 m,
+against the predicted sea rms of 1.75 m (a hull averages the wave over its length).
+
+### (b) Outcomes (pair_diff, all exit 3)
+
+| Row | OFF | ON |
+|---|---|---|
+| USN12 | 3 deaths, 56 hits | 3 deaths, 56 hits; damage 1526.0 -> 1530.3, shots 132 -> 126 (smallest move, as predicted) |
+| USN04 | 27 deaths | 27 deaths; shots 7396 -> 8116, torpedo drops 3 -> 2 |
+| JM06 | 2 deaths | 2 deaths; damage 3587.2 -> 3565.0 |
+| USN01 l50_u1_u2 | **completed 702.85 s** (sus_prog.exe refused) | **no completion** in 22000 frames; deaths 95 -> 57, units 123 -> 93 (the later phases never spawn) |
+| USN02 s36_u2_p7 | **completed 782.03 s** (sus_prog.exe refused) | **no completion** in 16000 frames; deaths 18 -> 11 |
+
+No ON ship dies without a weapon killer; the killer-less rows (USN04's movie planes, JM06's Gato at
+t = 0, USN01's aircraft) appear OFF too. The two OFF wins reproduce
+the AG references exactly.
+
+### (c) Verdict
+
+The mechanism matches every prediction, so `kWaveFieldLiveAmplitudeBound` is ON. The two lost
+wins are plan casualties of an image-faithful sea: their order files were tuned on a flat one.
+Still flat after the flip: gunnery's inline y = 0 crossing (src/game_hosts_gunnery.cpp, a
+separate proposed switch), the dynamics buoyancy record and the interface-update record
+(section 9(b)).
+
+## 12. The horizontal-displacement sampler 00BA2B50 has no gameplay reader (item 4)
+
+A scan of the PE on disk (local p1_xscan.py: every E8/E9 rel32 in .text and every absolute
+dword in every section; control: 0078CF20 returns 49 references) finds one reference to 00BA2B50:
+the call at 00BA36CB in 00BA2FF0 (BSP_OceanBeams_Update). 00BA2FF0 itself has one reference, the
+call at 0078D02C inside 0078CFF0, the ocean's render job (0068A0D0 -> 0078CFF0, section 8(a)), and
+no absolute dword. So the displacement reaches only the light-beam render effect; no simulation
+path reads it, and the skipped choppy vectors of 00B95D30 (section 9(a)) change no gameplay
+value. Recorded and closed.
+
+## 13. The six wins with the live sea on (queue item 3, after section 11)
+
+Runs from local\p1_on (e103dabd0 with the flip, the same code as 126f79f83), reference launch form;
+logs local\p1w_on_<key>.log and, for the two pair rows, local\p1b_on_{u1w,u2w}.log.
+
+| Win | AG / OFF | ON |
+|---|---|---|
+| USN02 s36_u2_p7 | 782.03 s | **lost** (no completion in 16000 frames) |
+| LOMP10 s37_l10_p2 | 957.54 s | completes 1333.08 s, guard line logged |
+| USN12 s38_u12_p2 | 1529.92 s | **lost** (no completion in 36000 frames) |
+| ESMP08 l46_e8_orders2 | 3204.10 s | completes 2307.28 s, guard line logged |
+| USN01 l50_u1_u2 | 702.85 s | **lost** (no completion in 22000 frames) |
+| LOMP06 l50_l6_q6 | 486.80 s | completes 520.05 s, guard line logged |
+
+Three wins lost to the live sea (plan casualties), three hold with moved times.
+
+## 14. Correction: the damp boxes take the landscape frame only (cc13 audit8)
+
+docs/CC13_AUDIT_CC9_RECENT_2.md: 00ADE820 deep-clones a parentless 'Terrain Visibility Group' node whose local
+matrix is the landscape's +74h frame (00B6F8F0 / 00B6F150), and 00BA0C00 recurses over every geometry node adding
+that root's [+120h] / [+128h]. Item translations are never applied. Section 10(b)'s composed item frames were wrong;
+the host now adds landscape_world[12] / [14] for every damp section. Census of the damp items' own composed
+translations (local p1 script over the 107 terrain models): 86 of 87 are (0, 0), so their boxes did not move. Only
+dlc_pu_04's `DLC_PU_04:waterdamp` was misplaced, by (-3.639, -22.063). None of the pair rows' landscapes is affected.
