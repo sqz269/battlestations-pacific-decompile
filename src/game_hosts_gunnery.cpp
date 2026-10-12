@@ -1279,6 +1279,12 @@ float intercept_time_00901c20(const float rel[3], const float vel[3], float spee
 // SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5. MaxAngleError is
 // DEG(x) in the file.
 constexpr float kDegToRad = 0.01745329251994329577f;
+// cc9-physics4 (docs/X87_CONTROL_WORD.md, the host precision policy): the gun bot's aim
+// error 00902CF5..00902D07 and the torpedo gyro jitter 00900856..00900876 multiply by the
+// qword 00CE3D28 = 3.1415927410125732 (pi as a float) and divide by the qword 180.0. On
+// the 24-bit main thread that is the float product below; on a 53-bit pool worker it is
+// the double chain. False: the double chain with 3.14159265358979.
+inline constexpr bool kGunAimDegreePrecisionBound = false;
 constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
     {10.0f * kDegToRad, 1.0f},  // 0 Stun
     {5.0f * kDegToRad, 1.0f},   // 1 SPNormal
@@ -7123,9 +7129,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                             }
                         }
                         // 00902CF5..00902D07: double pi / 180, then the float sum.
-                        e = static_cast<float>(static_cast<double>(
-                            draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
-                            * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        if constexpr (kGunAimDegreePrecisionBound) {
+                            const float d = draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]);
+                            e = d * 3.1415927f / 180.0f + e;
+                        } else {
+                            e = static_cast<float>(static_cast<double>(
+                                draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
+                                * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        }
                         if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
                             e /= role_ai_held_00521e70(target, 0) ? kAaGunnerModifierVersusAi
                                                                   : kAaGunnerModifierVersusPlayer;
@@ -8093,8 +8104,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
                 const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
                     ? -1.0f : 1.0f;
-                shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
-                    + sign * magnitude * 3.14159265358979 / 180.0);
+                if constexpr (kGunAimDegreePrecisionBound) {
+                    // 00900513..00900526: the run heading is stored as a float first.
+                    const float run = static_cast<float>(std::atan2(static_cast<double>(dx),
+                        static_cast<double>(dz)));
+                    shot.commanded_heading = sign * magnitude * 3.1415927f / 180.0f + run;
+                } else {
+                    shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
+                        + sign * magnitude * 3.14159265358979 / 180.0);
+                }
                 const float vyaw = std::atan2(shot.flight.velocity.x, shot.flight.velocity.z);
                 torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.commanded_heading, vyaw)) * 57.2957795;
