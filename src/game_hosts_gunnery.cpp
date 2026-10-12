@@ -399,7 +399,7 @@ constexpr bool kFlakFlyTimeBurstBound = true;  // GUNNERY 193: ON by pair verdic
 //    (0084BE74 SETE); 004705C0 then lifts a positive falloff fraction to 1.
 //    OFF: the proximity and impact bursts of a flak round fall off with
 //    distance. Packet cc13-flak1.
-constexpr bool kFlakBlastIgnoreFalloffBound = false;
+constexpr bool kFlakBlastIgnoreFalloffBound = true;  // GUNNERY 193: ON by pair verdict
 //  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
 //    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
 //    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
