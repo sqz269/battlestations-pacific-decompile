@@ -12083,3 +12083,52 @@ for the next reference, not as a mechanism failure.
   - The per-unit `"ReconModifier"` (`00D1AAF4`) is a different key with one reference (`0096239B`).
 
 All three are negative, so 171's verdict stands: the image has no reader of the weather recon modifier.
+
+## 175. JM08's bomb misses on a stopped TT04: not the drift; three separate errors (lead request; cc9-gunnery35, 2026-10-12, analysis only)
+
+**Data.** `cc9-lua50\local\l50_w3_j8.log` (main `e423cd42b`, so the drift of 173 is not applied). A new script,
+`local\g35_bombmiss.py`, pairs each `bomb from ... vs predicted 009C7D71` line with the shooter's latest
+`hull_aim draw`.
+
+1. **The drift cannot be the cause.** At the measured maximum of 0.33 m/s^2 the drift moves a bomb at most
+   `0.5 * 0.33 * t^2`: 1-6 m for the dive falls of 2.2-6.6 s here, and about 41 m only for a 15.8 s level fall.
+   The misses below are larger and systematic.
+2. **The ballistics run about 14 m long against the predictor (level bombs), and the cause is identified.**
+   - **The data.** On sqn25|.-3's 16-bomb stick (release 1768.50 s, alt 1227 m, |v| 60.5 m/s, pitch 0.0006), every
+     impact lies 8-19 m from its `009C7D71` prediction. Projected on the track `(-0.47, 0.88)` that is
+     consistently about +14 m along track, with under 3 m across.
+   - **The cause.** The predictor's `tf` is `007BCC80(h, v.y - 3.0) + 0.1` = 15.61 s. That is the fall with the 5do
+     launch velocity, the aircraft's minus 3.0 m/s on y.
+   - The bombs take 15.70-15.85 s. That is the zero-vy fall, `sqrt(2 * 1227 / 9.81)` = 15.82 s. The scatter
+     cone (`kBombDropScatterBound`, `006E1F00`) replaces the 5do direction with the round's forward row, which on
+     the host is the plane's nose. In level flight that is horizontal, so the -3.0 m/s is lost and the bomb falls
+     about 0.3 s longer: about 18 m at 60 m/s.
+   - **The open label it points at.** 130.6 marks the round's attach frame as UNCERTAIN: "slot 50 may add about
+     2.0 deg nose-down". A nose-down of `atan(3 / 60.5)` = 2.8 deg would make the image's predictor and launch
+     agree.
+   - The dive bombs' mean 12 m impact-to-prediction gap has the same source plus the dive's angle of attack. That is
+     the SBD 20 m offset.
+3. **Dive bombers (sqn20-27): the release point is wrong before the bomb leaves.**
+   - In all 31 dive releases on TT04, the prediction at release is already 20-150 m from the drawn aim point. The
+     bomb then lands within about 12 m of the prediction.
+   - The release gate (`009C60C1`, 25 m) tests only the along-track error. sqn27|.-3: `aim error 009C5C9B = -7.44 m`
+     passes, while the predicted impact is 40-85 m from the aim point.
+   - The cross-track error is never nulled. The aim trace shows the bearing growing during the dive: 0.07 rad at
+     aimdive entry (908 m), then 0.09, -0.05, 0.69 and 0.45 rad at 813, 639, 484 and 373 m.
+   - The bank flips to -1.40/-1.12 once the along-track error changes sign (+63 -> -48 m). That sign change switches
+     `dive_bomb_aimdive_steer_009c5c9f` from its wide-band roll arm (bearing from the predicted impact point) to its
+     default arm (bearing from the aircraft). The roll then grows the bearing instead of nulling it.
+   - That is the plane lane's steering (`009C58D0`/`009C5D33`/`009C5D60`), not ballistics. It needs a read of the
+     two arms' bearing signs against the image.
+4. **The level stick runs beside the hull.**
+   - The bot's own solution is good: the first bomb is predicted 2.0 m from its aim point (`min_miss=2.0-2.4`).
+   - But the aim point `(-373.7, -18.6)` lies about 9.9 m off TT04's keel (the hull_aim `W=16`, so outside the
+     beam), and the track is about 8 deg off the hull axis.
+   - The 16-bomb stick (0.1 s apart, about 7.6 m) therefore walks aft 12-26 m from the keel, and only 2 of 16 hit.
+
+**Levers, in order of size:**
+- (3) the aimdive roll arms, plane lane;
+- (4) where the level bomber's aim point is drawn;
+- (2) the round's attach frame, 130.6's open label: a nose-down slot frame would remove the 14-18 m long bias.
+
+Nothing is bound here.
