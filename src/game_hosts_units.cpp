@@ -4598,7 +4598,7 @@ struct GameUnitsHost::Impl {
         // FLD1) from 00BD2F10 with ECX = 1 after each release and stores it
         // to state+1Ch; this host takes the low end and draws nothing. It
         // gates only a second release within one aimdive (cc13 plane-bot
-        // audit 7a, GUNNERY 181).
+        // audit 7a, GUNNERY 181.2).
         in.rearm_draw = bsp::dive_bomb_constant::kAimDiveRearmLow;
         // 009C59BA-009C5C9B, reconstructed.
         bsp::DiveBombAimErrorInputs e;
@@ -5636,6 +5636,11 @@ struct GameUnitsHost::Impl {
     // Packet cc9_near_field_probe: 007F0280 at the dive-bomb attack run
     // (009C42B8) and the fly-over speed slot (009C6B3A). docs/NEAR_FIELD_PROBE.md.
     static constexpr bool kNearFieldProbeBound = true;
+    // cc13-audit10 (docs/CC13_AUDIT_PLANNER_ROLL.md finding 1): the roll arm's
+    // h is the yaw base numerator [ESP+6Ch] (0099DF87), not the raw heading
+    // error. 0099E127 loads it for the deadband and the bank ask, and 0099E02B
+    // for the pitch-floor ramp. Behaviour-changing; pair before ON.
+    static constexpr bool kRollArmBaseNumeratorBound = false;
     // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
     // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
@@ -30437,6 +30442,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // never leave them in.
                         bsp::PilotBotRollInputs rin;
                         rin.heading_error = term.heading_error;
+                        if constexpr (GameUnitsHost::Impl::kRollArmBaseNumeratorBound) {
+                            // 0099E127 FLD [ESP+80h] after SUB ESP,14h at
+                            // 0099E110 is frame [ESP+6Ch], which 0099DF87
+                            // stored: SoftHdgZone-deadbanded, SoftHdgMul-scaled.
+                            // 0099E02B reads the same slot for the ramp. Both
+                            // are 0 outside mode 2, and the arm then does not
+                            // run (0099E275).
+                            rin.heading_error = scratch.base_num;
+                        }
                         rin.bank = unit_.plane_bank_angle_c68;
                         rin.dt_scale = 1.0f;
                         rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;

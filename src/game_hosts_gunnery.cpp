@@ -569,7 +569,7 @@ constexpr bool kAaLineOfFireExpiryDrawBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    refusals that would be lifted are counted (armour_rejects_tail).
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
 constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
-//  * kAaKind6GateBound: GUNNERY 182 (cc13 switch audit 2a). 00729BC0 sends a
+//  * kAaKind6GateBound: GUNNERY 184 (cc13 switch audit 2a). 00729BC0 sends a
 //    kind-6 (LIGHTARTILLERYFLAK) gun to the AAFlakBot 008FBFC0 against a plane
 //    (variant 1) and to the ArtilleryGunnerBot 006DEF30 otherwise; each runs a
 //    gate before the gun's vtable[1D4h] = 0072F6E0. 008FBFC0 runs the fire
@@ -578,8 +578,8 @@ constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    0085A8B0(horz, vert). ON: kind 6 takes those gates first, so the line-of-
 //    fire query, its cache entry and its expiry draw happen only past them,
 //    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
-//    goes straight to the line-of-fire query (the host before section 182).
-constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 182.3
+//    goes straight to the line-of-fire query (the host before section 184).
+constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1570,7 +1570,7 @@ struct GameGunneryHost::Impl {
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
     unsigned long long aa_window_rejects{0};
-    unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 182
+    unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};

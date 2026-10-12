@@ -15699,7 +15699,7 @@ Packet `cc9_reference_rebaseline_36`, worker cc9-gunnery36. The base is main `dd
 `local\g36_switches.py 10bef4a99 dd31c362a` lists fifteen switches that are new and ON, or flipped ON, since AG.
 The anchor (`local\g36_anc`) is `dd31c362a` with all fifteen set false; AH (`local\g36_ah`) is `dd31c362a` unflipped.
 New switches still OFF at the base (`kGunneryLiveWaterSurfaceBound`, `kMissionCheckpointBound`,
-`kWaveFieldLiveAmplitudeBound`, `kDynWorkerPrecisionBound`) are not part of AH. `kAimDiveBrakeRatioBound` (GUNNERY 181,
+`kWaveFieldLiveAmplitudeBound`, `kDynWorkerPrecisionBound`) are not part of AH. `kAimDiveBrakeRatioBound` (GUNNERY 181.2,
 ON on `agent/cc9-gunnery36`) is not on main and not in AH.
 
 | group | switches | record |
@@ -15735,7 +15735,7 @@ Leave-one-out is by group, on every row AH moves against the anchor and on all s
   - `movie` moves presentation only, except where a script waits on a movie end (JM05, JM06, USNOS per 5fp/5fr).
 - **Wins (AH).** All seven complete and log the exec guard's `sus_prog.exe` refusal, at the times their owners
   recorded or within a few seconds: USN02 782.03, LOMP10 957.54, USN12 1529.92, ESMP08 3204.10, USN01 702.85, LOMP06
-  486.80, BSM01 773.93 s. GUNNERY 181's control already shows USN01 at 475.21 s on `b58e2621e`, so USN01's time has
+  486.80, BSM01 773.93 s. GUNNERY 181.2's control already shows USN01 at 475.21 s on `b58e2621e`, so USN01's time has
   moved since its owner's base; the other six are not predicted to the second.
 
 ### Interim results (stopped by the lead before leave-one-out; a fresh AH follows the pending plane and flak fixes)

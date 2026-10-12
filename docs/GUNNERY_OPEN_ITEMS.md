@@ -12390,7 +12390,7 @@ p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (le
 - Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
 - Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
   points by the transpose of the fort frame. Not started.
-## 181. `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
+## 181.2 `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
 
 **The read** (`009C5F50`-`009C5FCB`, disk bytes through `disasm-raw`; frame base `E`, the ESP after the prologue):
 - `009C5F57`/`009C5F66` `MOVSS [ESP+24h]` store `|pitch command|` to `E+24h`.
@@ -12430,7 +12430,7 @@ The re-arm draw (audit 7a): `009C6106`-`009C6119` call `00BD2F10` with `ECX = 1`
 bytes `00 00 00 3F`) and `[ESP+4] = 1.0` (`FLD1`), and `009C6119 FSTP [ESI+1Ch]` stores the draw. The host's fixed
 `kAimDiveRearmLow` is now labelled a SUBSTITUTION in `src/game_hosts_units.cpp` (comment only).
 
-### 181.1 The pairs (OFF = this tree's build of `e9bcc627c`, copied to `local\g36_brOFF`; ON = `pair_export.py --flip kAimDiveBrakeRatioBound=true`, `local\g36_br`; logs `local\g36_br{off,on}_<row>.log`, diffs `local\g36_bd_<row>.txt`)
+### 181.2.1 The pairs (OFF = this tree's build of `e9bcc627c`, copied to `local\g36_brOFF`; ON = `pair_export.py --flip kAimDiveBrakeRatioBound=true`, `local\g36_br`; logs `local\g36_br{off,on}_<row>.log`, diffs `local\g36_bd_<row>.txt`)
 
 A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 1 (gameplay identical).
 
@@ -12531,9 +12531,9 @@ chaotic, not directional. The verdict is mechanism-only: the first moved line mu
 entry.
 
 **00C535E0 (cc13 audit residual 11a).** Not read in this pass.
-## 182. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
+## 184. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
 
-### 182.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+### 184.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
 
 **The read.**
 - `00729BC0` (decompile) picks the ammunition variant 1 only for weapon kind 6 against a target answering
@@ -12567,7 +12567,7 @@ mount-frame round trip.
   filled later. Rows without kind-6 guns facing ships stay identical. The plane arm adds window refusals to kind-6
   flak; GUNNERY 164's census of `window_rejects` rises.
 
-### 182.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
+### 184.2 9b: the player's torpedo heading against the bot's gyro block (read; nothing bound)
 
 - In cc9-gunnery35's JM06 pair (`local\g35_pt{off,on}_j6.log`), `torpedo gyro launches=24` on both sides, while ON
   PlayerSub 01 launches its two player-ordered shots (`torpedo launch t=30.00 shooter=PlayerSub 01`). The two shots
@@ -12577,7 +12577,7 @@ mount-frame round trip.
   seat is player-held is unread); nothing is bound until a row shows the override (`torpedo_gyro_launches` rising by
   the player's shots).
 
-### 182.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
+### 184.3 The 2a pairs (OFF = this tree's build of `ad61cd0b6`, `local\g36_k6OFF`; ON = `local\g36_k6`; logs `local\g36_k6{off,on}[w]_<row>.log`, diffs `local\g36_k6d_<row>.txt`)
 
 | row | exit | `window_rejects` OFF -> ON | `kind6_gate_rejects` OFF (counted) -> ON (applied) | other |
 |---|---|---|---|---|
@@ -12593,7 +12593,7 @@ mount-frame round trip.
 
 **Verdict: the mechanism matches the read; flipped ON.**
 
-## 183. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
+## 185. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
 
 - **The set.** `00844FC0` (the shipyard build) puts `"ShipYardLaunch" = 1` into the new unit's init table
   (`0084509C PUSH 1; PUSH 00D0659C; CALL 008F3940`; the string is read from the PE). `BSP_UnitInstance_SEntityInit`
@@ -12640,3 +12640,20 @@ Dyn contact, and it differs in the last printed digit:
 The mechanism matches: the ULP-level divergence starts at a contact and then spreads chaotically. USNOS keeps its
 headline numbers. BSM01's EndMission holds on all three. Both flipped ON (precision implies the association).
 Wins check: the next pair, below.
+
+## 186. `kRollArmBaseNumeratorBound`: the planner roll arm reads the yaw base numerator (lead queue, cc13-audit10's diff; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_AUDIT_PLANNER_ROLL.md's, applied as written (`git apply --check` clean on this branch, merged
+with origin/main). Under the switch the roll input `rin.heading_error` takes `scratch.base_num`
+(`yaw_base_numerator_0099de8a`: the heading error less the 0.01 SoftHdgZone and times SoftHdgMul 0.35 below the soft
+limit), the slot `0099DF87` stores at frame `+6Ch` and `0099E127`/`0099E02B` reload. cc13's read of the ESP walk
+`0099DF87..0099E10E` (net zero; `00419010` RET 14h, `0099D0A0` RET 4) is taken as given; the reload is not re-read here.
+
+**Predictions (cc13's, before any pair).**
+- Every mode-2 heading hold (moveto, follow, attackrun, torpedo aim, the aimglide command arm, dogfights) banks less for
+  a small error: at h = 0.02/0.035/0.05 rad about 0.04/0.12/0.15 rad instead of 0.18/0.22/0.26, and nothing inside
+  0.01 rad. Aimdive is not reached (`plan+2CCh = 0`).
+- Every row with flying planes moves (exit 3). USN04 phase 2: the TBDs bank less in `aim`, so the band shaper's `g`
+  falls and their aim descent goes lower than 106 m; torpedo releases should rise. Fighter rows (LOMP10): dogfight
+  turns at small error are gentler; kill times move both ways.
+- Rows with no plane in the window stay identical.
