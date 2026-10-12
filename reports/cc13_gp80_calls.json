@@ -1,0 +1,17 @@
+{
+  "packet": "cc13-gp80",
+  "doc": "docs/CC13_GP_0080_0084.md",
+  "steps": [
+    {"address": "00847057", "function": "00847030", "native": "00844d60", "note": "shipyard dispatcher case A7h, change slot class"},
+    {"address": "0084706e", "function": "00847030", "native": "008436f0", "note": "shipyard dispatcher case A8h, change slot equipment"},
+    {"address": "00847085", "function": "00847030", "native": "00846d90", "note": "shipyard dispatcher case A9h, launch slot"},
+    {"address": "0080e2a9", "function": "0080e290", "native": "0085ad00", "note": "every kind-22h device aims to its rest angles"},
+    {"address": "008127f9", "function": "008127e0", "native": "00812550", "note": "live artillery barrels for the firepower ratio"},
+    {"address": "00812825", "function": "008127e0", "native": "00812600", "note": "aa mount count for the firepower ratio"},
+    {"address": "0081287d", "function": "008127e0", "native": "00812730", "note": "live depth-charge barrels for the firepower ratio"},
+    {"address": "00805a12", "function": "00805990", "native": "00bf7fbf", "note": "party name compare with _stricmp"},
+    {"address": "0080e0f6", "function": "0080e0f0", "native": "0092d730", "kind": "tail_jump", "note": "body axis speed through the motion controller at unit+1018h"},
+    {"address": "0080e1b6", "function": "0080e1b0", "native": "0071be40", "kind": "tail_jump", "note": "current command through the weapon director at unit+738h"},
+    {"address": "0083584c", "function": "00835840", "native": "00803d40", "kind": "tail_jump", "note": "director target filtered by recon detection"}
+  ]
+}
