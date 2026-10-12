@@ -16929,3 +16929,22 @@ exercised by any row at hand; candidates that SetParty grouped ships are `usn_16
 ships to neutral), `islandcapture*.lua` and `usn_09_leyte.lua`. Verdict: stays OFF until one of those is paired, or
 flipped by construction on the lead's word (the image removes the member at once; the host's 00A2DDE0 eviction
 already removes it later).
+
+## 217. Three x87 transcription defects in ship-lane files (cc13's audit W1, W2, W4; cc9-ships44, 2026-10-12, OFF)
+
+docs/CC13_X87_DC_FORM_AUDIT.md section 3 (origin `7929dbd4a`): Ghidra's listing prints `DC C8+i` (STi = STi*ST0)
+like `D8 C8+i`. Re-read here from disk bytes (`disasm-raw`, Capstone prints the DC form as `fmul st(1), st(0)`):
+- **W1** `00834F03` in 00834E90 (`src/unit_motion.cpp`, `kUnitSteeringDcFormBound`): `FSUB qword [00D7A250]` (-1.0),
+  `FLD qword [00CEDCD0]`, `DC C9`, `DE E9` -> (s+1)*K - K; the OFF arm computes (s+1) - K*(s+1). At s = 0: 0 against
+  0.2146.
+- **W2** `009E7451` / `009E7463` in 009E6E80 (`src/ship_ai_approach_update.cpp`, `kApproachSideWeightDcFormBound`):
+  h = float(0.5*(c + c*c)) stored at 009E7455, then 0.5*(h*pi + pi); the OFF arm computes (0.5q)*(q + pi*q). Only
+  the `0 > offset` side weight of the standoff approach uses it.
+- **W4** `00934D40`-`00934D5C` in 00934150 (`src/unit_parts.cpp`, `kUnitPartSpinSignBound`): the detached part's
+  spin axis is (vz - 0*vy, 0*vx - 0*vz, 0*vy - vx) = (vz, 0, -vx); the OFF arm has -vz. Not a DC misread.
+
+Predictions: smoke identical for all three. W1 changes the steering-angle target of every unit that steers through
+00834E90 from the first steered step: USNOS j, JM08 and LOMP10 move (exit 3), wins at risk only through the
+shared RNG. W2 moves only rows where a ship enters the standoff approach on the negative-offset side (JM08's
+torpedo boats, USNOS); identical elsewhere. W4 moves only the detached-part debris spin (presentation; exit 0 or 1
+unless a part's motion feeds collisions): USN15 idle (many sinkings) is the check.

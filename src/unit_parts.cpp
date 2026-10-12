@@ -13,6 +13,11 @@
 namespace bsp {
 namespace {
 
+// Packet cc9_x87_spin_sign_w4 (docs/CC13_X87_DC_FORM_AUDIT.md W4, docs/SHIP_AI_OPEN_ITEMS.md 217).
+// True: the detached part's spin axis x is +vz (00934D46 FSUB leaves vz - 0*vy). False:
+// the earlier -vz.
+constexpr bool kUnitPartSpinSignBound = false;
+
 void vec_add(float out[3], const float a[3]) noexcept {
     out[0] += a[0];
     out[1] += a[1];
@@ -242,7 +247,10 @@ PartDetachResult unit_parts_detach_part_00934150(UnitPartDetachHost& host,
             // 00934D4x: the spin axis is the cross product of the velocity with
             // the constant axis at 00CECA0C, whose two zero components collapse
             // most of the expression in the listing.
-            float spin[3] = {-velocity[2], 0.0f, -velocity[0]};
+            // 00934D40..00934D5C store (vz - 0*vy, 0*vx - 0*vz, 0*vy - vx) = (vz, 0, -vx);
+            // kUnitPartSpinSignBound (SHIP_AI 217, cc13 x87 audit W4) takes that x.
+            float spin[3] = {kUnitPartSpinSignBound ? velocity[2] : -velocity[2], 0.0f,
+                -velocity[0]};
             normalize_in_place(spin);
 
             host.unit_detail_for_lod();

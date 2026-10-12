@@ -25,6 +25,11 @@ namespace bsp {
 
 namespace {
 
+// Packet cc9_x87_dc_form_w2 (docs/CC13_X87_DC_FORM_AUDIT.md W2, docs/SHIP_AI_OPEN_ITEMS.md 217).
+// True: 009E7441..009E7469 as the bytes compute it, 0.5 * (h*pi + pi). False: the
+// transcription from Ghidra's listing text, (0.5q) * (q + pi*q).
+constexpr bool kApproachSideWeightDcFormBound = false;
+
 // The image makes a float non-negative by masking the sign bit of its storage
 // (AND ECX, 0x7FFFFFFF at 009E7619, 009E7688, 009E75A3, 009E6D7A, 009E6DE2,
 // 009E7412 and 009E738C), not by calling fabsf. The two agree except that the
@@ -807,13 +812,26 @@ void ship_ai_approach_choose_standoff_009e6e80(ShipAiApproachState& state,
                                  ? kApproachBearingGain
                                  : magnitude;
         if (0.0f > offset) { // 009E7436, COMISS then JBE
-            // 009E7441..009E7469: q = c + c*c, float-stored at 009E7455, then
-            // (0.5 * q) * (q + pi * q).
-            const float q = static_cast<float>(static_cast<double>(capped) +
-                                               static_cast<double>(capped) * capped);
-            side_weight = static_cast<float>(
-                (kApproachSideCurveScale * q) *
-                (static_cast<double>(q) + kApproachHalfTurn * q));
+            if constexpr (kApproachSideWeightDcFormBound) {
+                // 009E7441..009E7469: h = (c + c*c) * 0.5, float-stored at 009E7455
+                // (009E7451 DC C9 leaves 0.5 in ST0); 009E7463 DC C9 gives h*pi with
+                // pi left in ST0, FADDP gives h*pi + pi, FMULP by the retained 0.5.
+                const float h = static_cast<float>(
+                    (static_cast<double>(capped) + static_cast<double>(capped) * capped) *
+                    kApproachSideCurveScale);
+                side_weight = static_cast<float>(
+                    (static_cast<double>(h) * static_cast<double>(kApproachHalfTurn) +
+                     static_cast<double>(kApproachHalfTurn)) *
+                    kApproachSideCurveScale);
+            } else {
+                // As first transcribed from the listing text: q = c + c*c, then
+                // (0.5 * q) * (q + pi * q).
+                const float q = static_cast<float>(static_cast<double>(capped) +
+                                                   static_cast<double>(capped) * capped);
+                side_weight = static_cast<float>(
+                    (kApproachSideCurveScale * q) *
+                    (static_cast<double>(q) + kApproachHalfTurn * q));
+            }
         }
     }
 
