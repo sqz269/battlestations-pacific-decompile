@@ -11962,3 +11962,124 @@ unidentified.
 - **Proposed:** `kShipyardHangarHiddenBound`, OFF, on `line_of_sight_00864680`. A pair needs a shipyard mission
   with a produced ship (the JM05/USNOS production rows).
 - **Uncertainty:** the `+364h` list's identity rests on the `+780h` layout match. Its producer was not read.
+
+## 173. The bomb drop drift: `006E4D50`'s fourth and fifth draws are an acceleration that `006E1510` applies (lead queue item 4; cc9-gunnery35, 2026-10-12; `kBombDropDriftBound`, committed OFF)
+
+**The read** (disk bytes, `006E4FB1..006E51EE`; `006E1F00` and `006E1510` from the live decompile).
+- **`V`** (`006E5054..006E5066`) is `[rack+3F0h]->vtable[34h](&tmp)`, the owner's world velocity (`vtable[34h]` as
+  in `AA_LEAD.md`). `|V|` goes through `00BF7030` (sqrt), and `n = 1/|V|`, or 0 when `|V| <= 0` (`006E50B9..006E50D4`).
+- **`edi = rack+4ECh`** (`006E50E3`). The rack gets `+4ECh = n Vz`, `+4F0h = 0`, `+4F4h = -n Vx` (`006E50F5`,
+  `006E5117`, `006E511F`): the horizontal side axis.
+- **The two draws.** `r1 = U(-w, w)` (`006E513C`, stream 1) scales that vector (`006E5148..006E517E`).
+  `r2 = U(-0.5w, 0.3w)` (`006E51AC`) adds `r2 n V` (`006E51B5..006E51EE`). `w` is the rack descriptor's Wind
+  (`[rack+3F8h]+8h`).
+- **`006E1F00`** (the bullet block's slot `+34h`, block = `record+310h`) copies the vector into `block+38h..+40h`
+  and zeroes `+3Ch` (y).
+- **The reader** is `006E1510` `BSP_BombProjectile_AdvanceInAir`, the entity slot `+19Ch` of MBomb, MDepthCharge
+  and MTorpedo. Inside the `classDesc+20h` NoGravity test it runs `v.y -= 9.81 dt; v += record+348h * dt`, with
+  `record+348h = block+38h`. A byte scan for `FLD [r+348h]` finds it at `006E153E`/`006E154A`.
+- **So the drift is a constant horizontal acceleration for the whole fall.** It is `r1` across the owner's track
+  and `r2` along it. The host's `bomb_air_velocity` in `bomb_torpedo_tick.cpp` already models the term, but the
+  game host never called it, so the draws were discarded.
+
+**The binding** (`src/game_hosts_gunnery.cpp`).
+- The scatter arm keeps the two draws it already took (same stream, same order).
+- Under `kBombDropDriftBound` it builds `(n Vz r1 + r2 n Vx, 0, -n Vx r1 + r2 n Vz)` from `unit_linear_velocity`
+  and stores it on the shot (`GameProjectileRow::bomb_drift`).
+- After each `projectile_flight_step` of a ballistic, gravity-enabled bomb, `velocity += drift * dt`.
+- The census line is `summary mission bomb drop drift drops= steps= max_accel= bound=`.
+- **LABELLED:**
+  - The owner `[rack+3F0h]` is taken to be the dropping plane.
+  - The host's velocity slot runs after its position slot, so the drift reaches the position one step late, as
+    gravity's velocity half already does.
+  - Bombs only: the drop arm is the only host path through `006E4D50`.
+
+**Predictions.**
+- **OFF:** identical to today, with `drops=0 steps=0`.
+- **ON:** the RNG stream is unchanged, because the draws were already taken. Only bomb trajectories move.
+- **The size of the move.** With this installation's Wind (0.05), the drift's horizontal displacement over a
+  fall of `t` seconds is at most `0.5 * 0.05 * t^2`.
+  - A level bomb from about 1400 m falls about 16.9 s, so at most about 7.1 m across the track and -3.6 to
+    +4.3 m along it.
+  - A dive bomb's fall of 3 to 5 s gives under 0.6 m.
+- **Expected by mission:** USN13's level-bomb rows move (hull hits are likely fewer, given 158's 135 direct hits).
+  Dive-bomb missions (USN01, LOMP10) are mostly unchanged, but a single flipped hit cascades.
+
+## 174. Can a level bomb's element trace land on a `magazine` element? Yes, on Essex the magazine is the forward hull section (lead queue item 4; cc9-gunnery35, 2026-10-12)
+
+**Question** (163 item 5, 169.2 item 3). `00723D60` keeps the closest hit over the GeomMesh elements, and a triangle
+outside every element is never tested. Is a falling bomb's segment ever able to reach a `magazine` element (kind 8),
+or does the deck always come first?
+
+**Evidence: the new census line** (`gunnery: vehicle class N section element kind= ... box= mesh_y=`, printed once
+per class at load from the decoded GeomMesh; `local\g35_census_usn13.log`).
+- Every class prints `triangles == element_triangles`, so no triangle lies outside an element. That clause of
+  `00723D60` excludes nothing on these hulls.
+- **Essex** (`models/ships/us/Essex.mmod`, class 256: Intrepid on USN13). The magazine element is 894 triangles,
+  boxed at x `-22.3..17.1`, y `-9.6..18.2`, z `54.0..108.9`. Fuel is z `-85.7..-54.0`, y up to 18.2. Engine is z
+  `-21.5..9.1`, y up to 35.0 (the island). The mesh's y range is `-9.6..35.0`.
+- So the three section elements are slices of the hull along z, from the keel up to the flight deck (about 18 m),
+  not compartments inside it. A bomb that strikes the forward 55 m of the deck (or the hull side there) hits a
+  magazine triangle first.
+- The other classes printed follow the same pattern: a forward magazine slice, a central engine slice, an aft fuel
+  slice, each spanning the hull's height.
+
+**Consistent with the run.** In `g35_ag_usn13l.log` the first `component failure Explosion on Intrepid` is at
+171.31 s, in the step of a `bullet=78` blast on Intrepid. Any magazine hit of 100 hp or more explodes (`p = damage /
+100`, 163 item 5).
+
+**Verdict.**
+- The host's trace already lands level bombs on the magazine, as the image's would.
+- The open item is closed, with no binding.
+- USN13's hit volume therefore depends on where along the deck the bombs land. 173's drift is the remaining lever.
+
+**Uncertainty.**
+- The box shows that the element reaches deck height. It does not show that the deck triangles in that slice belong
+  to the magazine element rather than to `body`. Whatever the deck triangles' kind, the hull-side triangles in the
+  slice belong to it.
+- One run's explosion was attributed by timing only; the hit record's element kind is not logged per hit.
+
+### 173.1 The pairs (export `75544aa7a`, `local\g35_drOFF` / `g35_drON`; diffs `local\g35_dd_<row>.txt`)
+
+| row | exit | drift census ON | what moved |
+|---|---|---|---|
+| USN13 long (9000) | 3 | drops=573 steps=194628 max_accel=0.329 | hull hits 224 -> 203, damage 35180 -> 34131, hit records 1614 -> 1621; **Cowpens sinks (fire, 366.18 s) and the mission fails at 366.33 s** ("Game Over") |
+| USN01 (3000) | 1 | drops=2 max_accel=0.040 | gameplay identical |
+| JM05 long (9000) | 1 | drops=2 max_accel=0.031 | gameplay identical |
+| LOMP10 long (9000) | 3 | (dive bombs, 16 releases) | hull hits 118 -> 115, damage 4100 -> 3641; PT 01/02 deaths 8-9 s later; deaths 5 = 5 |
+
+- **The mechanism matches the prediction.** The draws were already taken, so the RNG stream is unchanged.
+  - Level-bomb hull hits fall on USN13 (224 -> 203).
+  - Dive bombs (falls of a few seconds) barely move: USN01 and JM05 are identical, and LOMP10 moves by a few hits.
+- **One prediction was wrong: the drift is larger than 0.05.** `max_accel` is 0.33 m/s^2 on USN13, so some rack has
+  a Wind several times 0.05. The displacement bound in 173 scales with it, to about 47 m over a 16.9 s fall.
+- **The USN13 failure is a knife-edge.**
+  - OFF, Cowpens ends the run at `health=0.152`, already burning from the first water at 206.91 s.
+  - ON, a changed bomb sequence burns it out (`fire_total=3541`). Its sinking ends the mission through
+    `Mission.MissionStatus`.
+  - The reference row's outcome therefore rests on a carrier that is at 15% health either way.
+
+**Verdict: the mechanism matches; flipped ON.** The USN13 mission failure is recorded as a knife-edge consequence
+for the next reference, not as a mechanism failure.
+
+### 171.1 The controls the lead asked for (2026-10-12)
+
+- **(a) Positive control on the store.** The same displacement scan, run over the setter and the loader bodies
+  (`local\g35_dispscan.py ... 34 00445A30 00444D20`), finds both `+34h` writers: `00445A93 FSTP [ESI+34h]` and
+  `004451F1 MOVSS [ESI+34h]`. A `+34h` access is visible to the scan whenever it exists in a body.
+- **(b) Wholesale copies and indexed pointers.** `local\g35_wx34b.py` lists every `MOV r,[r+21C4h]` in `.text`;
+  there are 18. Each one is accounted for:
+  - Six call a config method or the destructor (`004BC479`, `007A59CA` -> `00445790`; `008B1E64`, `008B1FA9`
+    daytime; `008B22B9` the setter; `004D2CBC` the destructor).
+  - Eleven read `+74h`/`+78h`.
+  - `00A47C07` reads a different object.
+  - None reaches a `REP MOVS` or a `LEA` on the pointer before the next call. The only other writer of
+    `game+21C4h` is the constructor store (`004DC913`), so no second copy of the pointer exists.
+- **(c) Other readers of the name.**
+  - The string `"WeatherReconModifiers"` (`00CE4838`) has one absolute reference in the image, `0044505D`, inside
+    the loader `00444D20`.
+  - In this installation's Lua, the name appears in `scripts\datatables\globals.lua:83` (its definition) and in no
+    other script file. The scripts only call `SetWeather(...)`.
+  - The per-unit `"ReconModifier"` (`00D1AAF4`) is a different key with one reference (`0096239B`).
+
+All three are negative, so 171's verdict stands: the image has no reader of the weather recon modifier.
