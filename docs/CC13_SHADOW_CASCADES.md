@@ -291,9 +291,11 @@ after their ledger callees. 00AE2FE0 is a host method too, so it can bind to
 
 ## Ghidra
 
-All seven first-batch ledger names and evidence comments were applied with `tools/ghidra_annotate.py --apply` on 2026-10-12 and the project was saved. The prior names and comments are recorded in the worker tree's `local/ghidra-annotations-20261012T005723Z.json`. Exports were not refreshed, because the snapshot is shared and cc13-flowfix1's body repair is still in progress. The second batch (00AD7A30, 00AD7360, 00AD72A0, 00AE1670) was applied the same way; its prior values are in `local/ghidra-annotations-20261012T013625Z.json`.
+All seven first-batch ledger names and evidence comments were applied with `tools/ghidra_annotate.py --apply` on 2026-10-12 and the project was saved. The prior names and comments are recorded in the worker tree's `local/ghidra-annotations-20261012T005723Z.json`. Exports were not refreshed, because the snapshot is shared and cc13-flowfix1's body repair is still in progress. The second batch (00AD7A30, 00AD7360, 00AD72A0, 00AE1670) was applied the same way; its prior values are in `local/ghidra-annotations-20261012T013625Z.json`. The third batch (00AE0A50, 00AE15E0, 00AE1670, 00AE47E0, 00AE4CF0, 00AE37F0, 00AE4040) is in `local/ghidra-annotations-20261012T015610Z.json`. Lead note: scene2's ledger names for 00B1F4D0/00B1F5E0 supersede the ones given here.
 
-## Handoff
+## Handoff (cc13-shadow1, 2026-10-12)
+
+Status at handoff: 14 routines reconstructed and 2 named across the four batches. All are build-tested only, and `reports/cc13_shadow1_calls.json` (129 rows) passes. Next candidates:
 
 - Bind `fit_shadow_cascade_00a8bd20` / `fit_shadow_box_view_00a8aeb0` behind audio1's
   `ShadowCascadeSubmitHost::fit_cascade` / `ShadowSingleViewHost::fit_single_view` once a host
