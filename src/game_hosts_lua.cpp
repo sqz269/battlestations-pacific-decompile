@@ -7067,6 +7067,33 @@ float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
     return value;
 }
 
+float GameMissionLuaHost::read_bullet_class_nested_number(int index, const char* key,
+    const char* nested_key, float fallback) {
+    // Packet cc9_lua53_kamikaze_impact: Bullets[index].Blast.BlastDamageMin and
+    // its siblings, one table deeper than read_bullet_class_number reaches.
+    if (state_ == nullptr || index < 0 || key == nullptr || nested_key == nullptr) {
+        return fallback;
+    }
+    const int top = ::lua_gettop(state_);
+    float value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, nested_key);
+                if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                    value = static_cast<float>(::lua_tonumber(state_, -1));
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* key) {
     // The string companion of read_bullet_class_number. `Type` is what
     // 006EA910's case-insensitive name chain switches on to pick a weapon

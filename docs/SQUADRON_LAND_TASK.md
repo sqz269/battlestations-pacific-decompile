@@ -15629,3 +15629,58 @@ Launcher `local\l52_lane.ps1` (rows u19/u17/u21/u18/osx/u01/u02/u12/j6/j5); OFF 
   reached). Mechanism matches.
 - n7 (`kLuaSquadronSetReleaseAltBound`): USN01 14000 and USN12 34000 identical; SquadronSetReleaseAlt is never called
   in either run (USN12 completes at 1539.83 s, guard line logged). Unexercised, stays OFF.
+
+## 5gc. The kamikaze impact is the plane's crash shot, 007C0910 (packet `cc9_lua53_kamikaze_impact`, cc9-lua53, 2026-10-12)
+
+**Who reads `+210h`.** A census of every `+210h` / `+20Ch` access form (`8B`, `FF`, `83`, `39`, SIB) leaves one gameplay
+reader outside the class reader and the target weight `00A08DEE`: **`007D627D`** in `007D5D20` (the plane's pass B)
+copies class`+210h` into **`unit+730h`**. `unit+72Ch`/`+730h` is the plane's pseudo-shot record: `+730h` is read by
+`007BBA10` (the impact message), `007BC4E0` (the crash effect) and **`007C0910` `BSP_Plane_SweepCollisionPoints`**.
+
+**`007C0910`** (`__thiscall`, `RET 10h`, body `007C0910`-`007C0C5F`, read whole from the listing; one caller,
+`007CEF67` in the plane fixed step `007CE040`), the full read is in `include/bsp/plane_crash_sweep.hpp`:
+- gates: cooldown `unit+9DCh` (3.0 / 2.0 s after `007C5F60` puts the plane on a launch spot), `unit+61h`; the caller
+  skips a live player-controlled plane (`007CEF00`-`007CEF21`);
+- each collision point (class`+5BCh`: the model's `collipos` dummies, else four bbox points, `007D57AD`-`007D586C`)
+  from the previous pose (`unit+924h`) to the current one (`unit+CCh`); both ends below -1 -> mode 2 at once; a current
+  end below -2 is pulled back to y = -2;
+- **`0084BF00(list, unit+72Ch, unit, [unit+730h], ...)`**: the projectile sweep and impact shells use, with the plane
+  as the shot and its KamikazeBulletClass as the shot's class. Bullet Type `Kamikaze` is sub-type 11h, so the sweep
+  exempts the plane's own squadron (`+9D4h`).
+- the caller then (`007CF02D`-`007CF0CC`): `unit+9E0h` drops modes 1 and 4; any other hit routes message 0CAh
+  (`007BBA10`: the bullet's effect, `Kill(1)` for modes 1, 3, 4; the water arm `007D8180` for 2) and `0090EC40`.
+
+**So every aircraft is a shell of its crash class when it touches something.** This installation's
+`classtables/arcade/bulletclasses.lua` (2026-05-09): 21 "Kamikaze Plane Impact" blast 1400-1700 range 30 (classes 45,
+46, 100, 103), 98 "Okha Impact" 6000-9500 range 30 (156), 99 "Normal Plane Impact" 350-500 range 20 (the rest). None
+has DamageMin/Max, so the damage is the blast alone (`0084BAD0`).
+
+**A second, unconfirmed route.** `00779AA0` (the kamikaze test of `008145B0`) reads `[unit+538h]+510h/+514h`. On a
+plane class those are written by `007C4850` (`007C4A07`, `007C4A37`) as sin(YawLimitAngle) and sin(PitchLimitAngle),
+so the test answers true for any plane with positive limit angles. Whether a plane body (`unit+804h`, `00C5D580` at
+`007D6137`, kinematic) ever raises a hull contact into `009377E0` -> `008145B0` is not established. Not hosted.
+
+**The host** (`src/game_hosts_gunnery.cpp` `run_plane_crash_sweeps_007c0910`, `bsp::kPlaneCrashSweepBound`):
+planes in free flight (`+900h` == 7, not landed: LABELLED), the origin and the two bbox wing points (`+-0.49` hull width;
+no collipos dummies, no nose/tail pair: LABELLED), previous step to this step, through the gunnery host's const unit
+segment query (the shells' `0098ADD0` binding). A unit hit outside the plane's squadron runs the class's blast
+through the gunless blast path (box distance, no element gather, no attribution: LABELLED, as
+`kamikaze_detonate_00819a20`) and kills the plane. Land and water ends are counted only. OFF: census only.
+
+**Predictions (written before the pairs).**
+- OFF: gameplay identical to main; `summary mission gunnery plane crash sweep` counts unit hits by crash class.
+- Sweep ON alone, USN19 8000: kamikaze planes have no task, so unit hits are rare grazes (normal-plane hits on
+  hulls from low passes: torpedo bombers over their target); each kills the plane and blasts 350-500 within 20 m.
+- Sweep + `kKamikazeTaskBound` ON, USN19 8000: most of the 132 installed kamikaze planes that reach their target hit
+  it (lua52 measured 29 within 50 m of the origin with no impact; with the hull mesh the count should be at least
+  that); each detonation is 1400-1700 at distance 0, so allied ship deaths rise and kamikaze planes die on impact
+  instead of on the water.
+- **Bullet 99 moves non-kamikaze missions (the lead's note).** With the sweep ON every aircraft class carries a crash
+  class, so an ordinary plane whose origin or wing point crosses a hull mesh (a torpedo bomber's low pass over its
+  target, a shot-down plane falling onto a ship) blasts 350-500 within 20 m and dies. Predicted on USN19 OFF-task:
+  a handful of c99 hits; on USN01/USN02/USN12 (torpedo and dive attacks on and by the player's fleet) a few c99 hits
+  per run, each a small hull loss and one plane death. Read `c99` in the census before any flip.
+- **Omitted gates, labelled:** the cooldown `unit+9DCh` (the free-flight gate stands in: a plane on a launch spot
+  is in state 4/5 until it lifts off), `unit+61h`, the player-plane skip, `unit+9E0h`'s drop of entity/plane hits
+  (the pilot control-state byte, not carried), and the 0.75 folded-wing scale. The OFF census on USN19 1500
+  (`local\l53_S1_u19.log`): 195312 plane steps, 585936 segments, no unit hit (no kamikaze task OFF).
