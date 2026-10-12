@@ -465,3 +465,117 @@ The torpedo-approach reset draws its six values in a different order from the im
    report.
 4. Run the same read for the 62 "comments only" and 105 "no reference" rows. The
    "comments only" rows hold the known pins. Use `local/rn2_ctx.py <fn>` for the image side.
+
+## 11. Stream-1 host read, the "comments only" and "no reference" rows (packet cc13-rng2, part 2, 2026-10-12)
+
+Worker cc13-rng2, 2026-10-12 08:39 UTC, read-only, using section 10's method. This section covers
+169 stream-1 GAMEPLAY sites:
+- the 62 "site cited in comments only" rows;
+- the 105 rows with no host reference;
+- the torpedo AngleErr pair `00900830`/`0090083E`, which was a "cited at a host draw" row.
+
+For a function with no reference, the callers and callees were taken from the index and Ghidra
+xrefs. The class follows from whether any host runs the enclosing task or flow. Data:
+`reports/cc13_rng_stream1_host_status_part2.json`, same schema as section 10's report.
+`tools/verify_report_calls.py` checked all 169 call rows; none failed.
+
+### 11.1 Counts
+
+| class | sites | notes |
+| --- | --- | --- |
+| MODELLED | 49 | H-G 33, H-U 13, H-SO 3 (the Lua `random` native) |
+| MODELLED-DIFFERENTLY | 8 | 4 labelled, 4 unlabelled |
+| NOT-MODELLED | 46 | 10 labelled, 36 unlabelled; 12 of these are point-effect spawns (presentation) |
+| HOST-OMITS-FUNCTION | 66 | the rocket task (25), kamikaze (8), plane depth charge (6), moveonpath (4), closetoship (2), the AI coordinator (7, not run in single player by the image either), 5 unreached pieces, 9 unreferenced helpers |
+
+The census's "comments only" status undercounted. 37 of those 62 rows are drawn, in a
+multi-line call or through a binding interface the address grep could not tie to the site:
+- the bomb-drop dispersion;
+- the dive and torpedo aim-error redraws;
+- the AA gunner swing;
+- the ship-AI timer draws;
+- the Lua `random` native.
+
+### 11.2 For cc9: the unlabelled differences, gameplay first
+
+| site | function | class | image | host | host file:line |
+| --- | --- | --- | --- | --- | --- |
+| `008FFD37` (with `008FFCD9`/`008FFD05`) | TailGunnerBot `008FFA20` | NM | a gun under a plane draws its aim error `U(0, AimError)` degrees per axis and its next aim period `U(AimPeriodMin, Max)` | only the fire hysteresis `008FFDBE..` is hosted. `gun_bot_turret_tick_008ffa20` is a library function nothing calls, so plane tail gunners aim with no error. The AA gunner swing (`00902B5C..`) is explicitly limited to ship-owned guns | `src/game_hosts_gunnery.cpp:7301`, `:6883`; `src/gun_bot_ticks.cpp:342` |
+| `009C859E` | BSP_BotTaskDiveBomb_UpdateStateTransition | MD | the side of the roll into the dive comes from `+798h`, else the bank against `[00D1FBC0]`/`[00CE398C]`, else a coin `trunc(U(0, 1024)) < 512` | `random_turn_side = 1` and both bank thresholds are passed as `0.0`. The side follows the bank sign and the coin never varies | `src/game_hosts_units.cpp:4582-4585` |
+| `009C579E` | BSP_BotStateDiveBombAimGlide_Tick | MD | the re-arm timer `U(0.2, 0.5)` after each glide salvo | fixed 0.2 (`kAimGlideRearmLow`) | `src/game_hosts_units.cpp:4817` |
+| `00900830`, `0090083E` | BSP_GunBot_HeadingAimTick | MD | AngleErr `U(AngleErrMin, Max)` and its sign `NextU32 & 1`, on every pass of the heading-aim tick through `00900817` | drawn once per torpedo actually launched, in the fire path | `src/game_hosts_gunnery.cpp:7849-7866` |
+| `0099C765` | BSP_BotTask_ConstructBase | NM | `task+308h = -U(0, 1)` on every bot-task construction | not drawn | `include/bsp/bot_tasks.hpp:45` |
+| `007CAC5D`..`007CAD98` (6) | `007CAAD0` from BSP_Plane_HandleStateMessageKinds | NM | two `U(-0.001, 0.001)` and three `U(-1, 1)` (plus one more) before a part joins the dynamics list | not drawn | - |
+| `00856132` | BSP_TorpedoProjectile_Construct | NM | torpedo `+518h = U(0, 1)` | not drawn; its reader was not traced | - |
+| `008FBF5C` | BSP_GunBot_SetSkillTurretClass | NM | `bot+6Ch = U(bot+88h, bot+8Ch)` when the skill is set | not drawn; its reader was not traced | - |
+| `007AB94A` | `007AB8C0` (a bomb kind's create path) | NM | `+468h = U(+14h, ..)` | not drawn | - |
+| `009FB1B8`, `009CACDA`, `009C419A`, `009BA48C`, `009BB7ED` | task-state constructors | NM | state-phase draws (`-U(0, x)`, `U(-0.1, 0.1)`, `U(0.5, ..)`) | not drawn | - |
+| 12 ship-part sites (`00933BB0`, `00933DA0`, `0092A6D0`, `0092A8C0`) | effect spawns | NM | `NextU32` and two offsets, then `BSP_PointEffect_CreateFromMatrix` | not drawn. **Presentation**: reclassify | - |
+| `007ECA23`/`A41`/`ADD` | `007EC5A0` from Plane_ReadPropertyBag | NM | three draws around `BSP_EffectHandle_AcquireByName` | not drawn; probably presentation | - |
+
+Load-path rows (`0099C925`, `009B0077`, `009B750D`, `009C1E42`, `009C3A18`) are stream-construction
+variants, which the host does not have. They matter only for a saved or networked game.
+
+### 11.3 The known pins
+
+- **Aimglide re-arm** `009C579E`: `U(0.2, 0.5)` pinned to 0.2. It is unlabelled at `:4817`; the
+  aimdive comment next to it is the only label.
+- **Aimdive re-arm** `009C6114`: `U(0.5, 1.0)` fixed at 0.5, labelled (`src/game_hosts_units.cpp:4597`).
+- **Torpedo AngleErr** `00900830`/`0090083E`: drawn per launched shot instead of per aim pass.
+  The distribution per shot is the image's. The image draws more often, and only the last value
+  before the launch reaches the torpedo.
+
+### 11.4 Labelled differences
+
+- **Dive goaway:**
+  - the standoff jitter `009C49FC` `U(1.0, 1.25)` takes its low end, `:23557`;
+  - the countdown `009C4D33` `U(12, 15)` takes its low end, `:23402`, "as this host pins every
+    draw".
+- **Torpedo goaway:**
+  - climb jitter `009D0E71` `U(50, 100)` takes its low end, `:18640`;
+  - the window delays `009D0EA3`/`009D1000` `U(TorpFlikFlakTime 1, 2)` are left at 0 and logged
+    as a hole, because PilotBotParameters is not loaded (`:18645`, `:25948`).
+- **Ship wreck effect state** `008250BD`..`008251BC`: not run (the wreck handler is logged
+  unimplemented).
+- **The failure pick** `0093C351` is asserted unreachable (`src/game_hosts_gunnery.cpp:10423`).
+- **The attackmove construct seed** `009E84F8`: not drawn. Label: the routine "exists and does
+  nothing", at `include/bsp/ship_ai_attackmove_substates.hpp:609`.
+- **The AI entity record re-roll** `00A00083`: factors kept at 1.0; the coordinator is off in single
+  player.
+
+### 11.5 Correction to section 10
+
+The host field behind `0082571D` (`+BC8h = U(settings +64Ch, +650h)`) is the bubble-effect
+interval. Its hook `draw_bubble_interval` returns 0 (`src/game_hosts_units.cpp:8518`).
+`gameplay_settings.hpp` names the pair `Sounds.ShipDeadMeatSoundTimeMin/Max`. Either way the
+site is presentation. The section-10 report row now cites the hook.
+
+### 11.6 Uncertainty
+
+- **No-reference functions.** These were classified from their callers and callees, not read
+  through. The rocket-task attribution of `007B3D60..007B6240` rests on two things:
+  - their vtables sit at `00D057BC..00D05830`, beside the task's `00D05910`;
+  - `BSP_BotTaskRocket_*` calls into them.
+- **Unreferenced helpers.** `006FCA50`, `0085F7C0`, `0084DDC1` and `009F9C80` have no Ghidra xref.
+  They may be vtable slots the analysis missed. `006FCA50` and `0085F7C0` draw blast damage with the
+  shape the host already draws in `apply_impact_blast`.
+- **Unread state constructors.** The phase rows were not checked against each host state's own
+  seed field.
+
+### 11.7 Handoff
+
+The stream-1 GAMEPLAY rows of the census are now all classified:
+- the 160 rows of section 10;
+- the 169 rows here;
+- the 45 "cited at a host draw" rows, taken as modelled by the census. Only the AngleErr pair of
+  those was re-read.
+
+For cc9, in value order:
+1. The tail-gunner aim error and period (`008FFA20`). Plane tail gunners currently fire without
+   error.
+2. The dive transition side coin and bank thresholds (`009C859E`).
+3. The aimglide pin (`009C579E`).
+4. The torpedo AngleErr cadence (`00900830`).
+
+Census owner: reclassify the 12 ship-part effect sites, `0084C19F`, `0082571D`, `008546E4` and
+`007EC5A0` as PRESENTATION.

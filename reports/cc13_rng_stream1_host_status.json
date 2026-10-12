@@ -455,9 +455,9 @@
    "class": "NOT-MODELLED",
    "labelled": false,
    "label_note": "",
-   "image": "UnitInstance_Update: +BC8h = U(Sounds.ShipDeadMeatSoundTimeMin, Max) (settings +64Ch/+650h)",
-   "host": "not drawn. Consumer is a sound timer: suggest reclassifying PRESENTATION",
-   "host_ref": null,
+   "image": "UnitInstance_Update: +BC8h = U(settings +64Ch, +650h), the bubble-effect interval (gameplay_settings.hpp names the pair Sounds.ShipDeadMeatSoundTimeMin/Max)",
+   "host": "not drawn: the units host's draw_bubble_interval hook returns 0 and records 00BD2F10. Consumer is a bubble effect: suggest reclassifying PRESENTATION",
+   "host_ref": "src/game_hosts_units.cpp:8518",
    "host_generator": null
   },
   {
