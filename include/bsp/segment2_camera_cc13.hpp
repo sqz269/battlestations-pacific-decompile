@@ -87,6 +87,27 @@ struct WeaponViewHost {
     // 0042ED50 on each child of +48h, then 00414DB0 on the camera, then
     // [camera+1BCh]->vtable[34h](&camera+CCh).
     virtual void invalidate_children_and_publish() = 0;
+    // cc13-render5. The entity's world forward row x and z (+ECh, +F4h of the
+    // world matrix at +CCh), after 00414DB0 when +C8h is clear.
+    virtual void entity_forward_xz(void* entity, float& x, float& z) = 0;
+    // cc13-render5. 0042E630 BSP_SpatialIndex_GetSingleton, then
+    // 0098ADD0 BSP_SpatialIndex_QuerySegment(&start, &end, 0, &hit, 0) on a
+    // hit record reset by 00470470 and destroyed by 004704B0. True when the
+    // query hits and the record's part (+38h of the record) is non-null; then
+    // part_top = [part+24h]+4h and entity_y = hit entity +100h (after 00414DB0).
+    virtual bool segment_obstacle(const Vec3& start, const Vec3& end, float& part_top,
+                                  float& entity_y) = 0;
+    // cc13-render5. 00903860 BSP_World_GroundHeightAt([[00E188A8]+19CCh], &p, &out).
+    virtual float ground_height_at(const Vec3& p) = 0;
+    // cc13-render5. entity->vtable[5Ch](kind): 2Bh MTorpedo, 33h, 2Ah.
+    virtual bool entity_is_kind(void* entity, std::uint32_t kind) = 0;
+    // cc13-render5. entity->vtable[34h](&out): the entity's velocity vector.
+    virtual Vec3 entity_velocity_34(void* entity) = 0;
+    // cc13-render5. [0042E740()]+offset, the BombCamera tunables
+    // (docs/GAME_TUNING_SINGLETON.md): F0h CamVelBlenderAcceleration, F4h
+    // MaxCamVelBlender, FCh/100h/104h Torpedo NearAlt/1, FollowDistNear/Far,
+    // 10Ch/110h/114h Rocket, 11Ch/120h/124h Bomb, 138h FinalDist.
+    virtual float tuning_float(std::uint32_t offset) = 0;
 };
 
 // 00435120 __fastcall(obj) and 00435280 __fastcall(obj): the constructors'
@@ -107,5 +128,31 @@ void orbit_about_axis_0042d610(Mat4Rows& m, const Vec3& point, const Vec3& axis,
                                WeaponViewHost& host);
 // 00430DA0 __thiscall(camera, float dt) RET 4, vtable 00CE3FD0 slot DCh.
 void bomb_view_step_00430da0(WeaponViewCamera& camera, float dt, WeaponViewHost& host);
+
+// Torpedo view tunables, initialized .data read only by 00430020.
+inline constexpr float kTorpedoStepMax = 0.03f;        // 00E08074, fixed sub-step
+inline constexpr float kTorpedoBlendXZ = 0.08f;        // 00E08078, per max step
+inline constexpr float kTorpedoBlendY = 0.04f;         // 00E0807C, per sub-step
+inline constexpr float kTorpedoTrailDistance = 30.0f;  // 00E08080
+inline constexpr float kTorpedoHeight = 3.0f;          // 00E08084
+
+// 00430020 __thiscall(camera, float dt) RET 4, vtable 00CE3E60 slot DCh
+// (cc13-render5). Torpedo view fields: +39Ch target position, +3A8h smoothed
+// eye, +3B4h smoothed view direction, +3C0h smoothed up. The aim point trails
+// the target by 30 along its flattened forward (100 along the camera's own
+// flattened forward when there is no target) at height 3 above the target, or
+// 30 without a target; a segment query from the eye's x/z at height 3 to the
+// target raises it to 4 above any hit part. dt is consumed in sub-steps of at
+// most 0.03.
+void torpedo_view_step_00430020(WeaponViewCamera& camera, float dt, WeaponViewHost& host);
+
+// 00430970 __fastcall(element), RET: slot 4h of the bomb view's +170h element
+// (vtable 00CE3F94); ECX = camera+170h, so element+228h is the target, +244h
+// the target point +3B4h, +250h the camera position +3C0h, +25Ch the
+// velocity +3CCh, +268h the blend +3D8h (cc13-render5). Steers the camera
+// velocity towards keeping the follow distance from the target point led by
+// 1.6 s of target velocity: distance interpolated over height above ground
+// (floored at 8.0) per weapon kind, FinalDist without a target.
+void bomb_view_update_velocity_00430970(WeaponViewCamera& camera, WeaponViewHost& host);
 
 }  // namespace bsp::seg2_cc13
