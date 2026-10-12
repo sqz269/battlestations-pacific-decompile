@@ -206,3 +206,7 @@ Read from the listing: `hsq = dz*dz + dx*dx` (`00955659`-`00955669`), `k = (hsq 
 each in double; ON computes them as floats in that order (sqrt as `sqrtf`, the CRT keeping the caller's
 precision), the 24-bit case. Predictions: last-bit elevation changes; on USN12 / USN01 likely gameplay
 identical as the aim pair was, or verdict 3 through a flipped hit; both wins hold.
+
+**The pair** (OFF = tree build at `d597ad880`, ON = its flip; `local\p4a_{off,on}_{u12,u1z4}.log`): USN12 completed
+1539.83 s and USN01 1014.63 s on both sides with the guard, gameplay identical; the only moved summary row is the
+known `ship ai free` refill noise. **Flipped ON.**

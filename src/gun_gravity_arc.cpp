@@ -34,7 +34,7 @@ constexpr double kGravity = static_cast<double>(kGunBotGravity);
 // 00955630 at 24 bits, where every x87 operation rounds like a float operation and the
 // CRT sqrt keeps the caller's precision. False: the double chains, the 53-bit
 // pool-worker case. The listing order (00955659..0095574D) is kept either way.
-constexpr bool kGunArcFloatPrecisionBound = false;
+constexpr bool kGunArcFloatPrecisionBound = true;  // ON: USN12 / USN01 gameplay identical
 
 // 0042B260's length floor: at or below 1e-10 (00CE3820) the divisor is the
 // fixed 1e-5 (00CE3C70) instead of sqrt(lenSq). Both are doubles in the image.
