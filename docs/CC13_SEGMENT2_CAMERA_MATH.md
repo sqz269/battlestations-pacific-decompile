@@ -246,8 +246,8 @@ branches move values between the FPU stack and spilled slots. Ghidra renames app
 | `0042DAF0` | BSP_RandomWander_Advance (new) | `random_wander_advance_0042daf0` | below |
 | `0042C090` | BSP_RandomWander_Evaluate (new) | `random_wander_evaluate_0042c090` | below |
 | `0042C1B0` | BSP_RandomWander_Retarget | `random_wander_retarget_0042c1b0` | RNG, below |
-| `00434E50` | BSP_DefaultUnitCamera_Step | `default_unit_camera_step_00434e50` | body read past 00434F52 with `disasm-raw` |
-| `00431480` | BSP_DefaultUnitCamera_UpdateChase | `default_unit_camera_update_chase_00431480` | below |
+| `00434E50` | **BSP_PlaneChaseCamera_Step** (was BSP_DefaultUnitCamera_Step) | `plane_chase_camera_step_00434e50` | body read past 00434F52 with `disasm-raw` |
+| `00431480` | **BSP_PlaneChaseCamera_UpdateChase** (was BSP_DefaultUnitCamera_UpdateChase) | `plane_chase_camera_update_chase_00431480` | below |
 | `0042F800` | **BSP_PlaneChaseCamera_UpdateOffsets** (was BSP_UnitCamera_EvaluateChaseTunables) | `chase_camera_update_offsets_0042f800` | below |
 | `0042B6E0` | BSP_Matrix_PremultiplyYawThenPitch (new) | `rotate_yaw_then_pitch_0042b6e0` | m = RotY(-0-yaw) x m, then RotX(-0-pitch) x m |
 | `00434140` | BSP_SubmarineCamera_Step | `submarine_camera_step_00434140` | below |
@@ -321,8 +321,7 @@ horizontally closer than 60; with no target it drifts sideways 5/s along the rig
 radius is 100; height pulled toward 45 at (45 - y) x step when below. 0085DC80 each pass.
 
 `0042F800` reads the target's rotation rates +B50h (roll) / +B54h (pitch) / +B58h (yaw), +B28h, +900h,
-+970h, +9B4h and `[class+200h]`, so its target is a plane; the class at 00CF4238 may be the plane
-chase camera rather than a generic default (open). Wanted offsets: +39Ch = ZRotMul x (-roll), +3A0h =
++970h, +9B4h and `[class+200h]`, so its target is a plane: 00CF4238 is the plane chase camera (settled in the follow-up below). Wanted offsets: +39Ch = ZRotMul x (-roll), +3A0h =
 XDistMul x yaw - YDistRollMul x (-roll), +3A4h = -YDistMul x (-pitch) + +3C0h, +3A8h = ZDistMul x
 [+B28h], each eased at its smooth rate x dt, then +3B0h..+3BCh eased toward them at the same rates.
 States 4/5 below height 3.0 raise +3ECh to InterpolateClamped(1.0, 0.6, 4.0, 0, height) x
@@ -358,9 +357,8 @@ only when the flag is set), both rotations first, y + min([class+538h], 10) then
 
 - `0042C750` turns +384h/+388h toward (yaw, pitch) by at most the two steps, scaling the axis with the
   smaller error so both arrive together; an axis within its step snaps; returns 1 only when both snap;
-  does nothing when both steps are below 0.001. **Ghidra splits the function**: the pitch-step tail
-  0042C8F3..0042C931 is a separate bogus `FUN_0042C8F3` with no callers (reached by the JBE at
-  0042C8D8), so the decompile of 0042C750 omits it. Not repaired in Ghidra (lead's call).
+  does nothing when both steps are below 0.001. Ghidra had split the pitch-step tail 0042C8F3..0042C931
+  into a bogus `FUN_0042C8F3` (no callers, reached by the JBE at 0042C8D8); repaired, see the follow-up.
 - `0042C940`: pitch = clamp(pitch, +3ECh + (+3F0h - +3ECh) / 4, 0); chase = RotX(-0.075) x
   RotY(-(+384h + offset)); eye = target - 2 x +38Ch x forward; RotX(-0 - pitch); 0042C610; +400h = 1.
 - `0042E180` (once, byte +1F4h): local planes at +258h: near (0, 0, -1, node+1D4h), far (0, 0, 1,
@@ -368,13 +366,25 @@ only when the flag is set), both rotations first, y + min([class+538h], 10) then
   (+-cos h, 0, -sin h, 0) with h = 00B6FC30 / 2; world planes at +1F8h: 0042D0D0 normal, d = n . node
   position + local d.
 
-### Handoff (cc13-camera2)
+### Follow-up (cc13-camera2, 2026-10-12)
 
-Done: the whole render5 packet. Open:
-- The 00434F52 misaligned unit and the bogus `FUN_0042C8F3` are listing/function-boundary repairs
-  for whoever owns Ghidra structure edits; behaviour is already read around both.
-- Which class 00CF4238 really is (generic default vs plane chase camera): read 00605130 and the
-  EnsureCamera kind table.
-- `007C7800` (plane code) also calls `0042C1B0`; it is gameplay-side and draws stream 0 there too.
-- The `+3CCh` "short by kl x w" yaw update in `0042F800` is literal; confirm in game before anyone
-  "fixes" it.
+- **0042C750 repaired.** `tools/ghidra_define_function.py 0042c750 0042c934 --recreate --delete-inside`
+  under the write lock deleted the bogus `FUN_0042C8F3` and re-created `BSP_CameraMover_TurnTowardAngles`
+  over 0042C750..0042C933 (name, plate comment and the default signature kept; event log in the tree's
+  `local/cm2_define_0042c750.json`). The decompile now shows the pitch step (Add/SubtractWrappedAngle
+  on +388h). `_free` (00BF9DC8) still reads `void __cdecl _free(void * _Memory)`, body ..00BF9E55.
+- **Class settled.** `BSP_GameCameraModifier_EnsureCamera` (0079CBD0; src/cc13_camera_controllers.cpp,
+  docs/CC13_CAMERA_CONTROLLERS.md) builds kind 0Fh (planes) with 006065D0 when the fps byte is set and
+  00605130 otherwise; the only other caller of 00605130 is 00605E50 in the segment-24 plane code. So
+  vtable 00CF4238 is the plane chase (third-person) camera, not a generic default, and 00CF4410 the
+  cockpit. Renamed: 00605130 BSP_PlaneChaseCamera_Construct, 006065D0 BSP_PlaneCockpitCamera_Construct,
+  00434E50 BSP_PlaneChaseCamera_Step, 00431480 BSP_PlaneChaseCamera_UpdateChase; the C++ types and
+  functions follow (`PlaneChaseCamera`, `plane_chase_camera_step_00434e50`, ...). The class-map row
+  "any other kind" above is superseded.
+- **Call-site report** `reports/cc13_camera2_calls.json`: 152 direct CALL rows over the 15 functions,
+  `tools/verify_report_calls.py` 0 failed. The one call in 00434F50..00434FF1 (00434F8D ->
+  00903860) is listed separately: live Ghidra puts no function over that stretch because of the stale
+  unit at 00434F52, which stays for the user's CodeBrowser pass.
+
+Remaining open: 00434F52; `007C7800` (plane code) also calls `0042C1B0` on stream 0; the literal
+`+3CCh` "short by kl x w" yaw update in `0042F800` wants an in-game check.
