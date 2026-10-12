@@ -242,3 +242,41 @@ one-slot callable source table. Copied-native comparisons cover 205 cases,
 126,716,636 matching bytes after identified pointer normalization, all four
 replacement slots and all 12 x87 precision/rounding settings. Dispatcher geometry,
 parallel scheduling and application/gameplay admission remain unproved.
+
+## `00C4B9B0` against a scaled fort: every point is pruned at the next refresh (cc9-physics3, 2026-10-12)
+
+Question (docs/GUNNERY_OPEN_ITEMS.md 183/184, cc13 audit residual 11a): what `00C4B9B0`'s depth and drift tests do
+with the body-local witnesses `00C48BE0` writes on a fort whose frame rows are scaled. Read from disk bytes
+(`disasm-raw 00C4B9B0`, 669 bytes, EDX = manifold, RET).
+
+**The refresh.** For point k (48-byte records from `manifold+08h`, count `+0C8h`), with local witnesses A at `+14h`
+and B at `+20h` and the two body frames `[manifold+0CCh]` / `[manifold+0D0h]` (rows `+08h/+14h/+20h`, origin `+2Ch`):
+`wA = tA + sum_j lA_j rowA_j`, `wB = tB + sum_j lB_j rowB_j`, `sep = wA - wB`, `depth = n . sep` stored at the point's
+`+2Ch` (`00C4BB44`). `00C4BB41` COMISS against `-0.02f` (`00D7A320`): `depth < -0.02` removes the point. Otherwise the
+tangential drift `t = sep - depth n` is squared and `00C4BBDA` FCOMI against `0.0025` (`00D7A2D8`, 5 cm): a drift
+of 5 cm or more removes it. Removal copies the last record over it and revisits the slot.
+
+**On a scaled fort.** `00C48BE0` stores `lB_k = rowB_k . (p - tB)` (the transpose, GUNNERY 183). With rows of length
+s, `lB_k = s (u_k . d)` for `d = p - tB`, so the refresh rebuilds `wB = tB + s^2 d`. At insertion `wA = wB_true = p`,
+so the first refresh after insertion sees `sep = -(s^2 - 1) d`: `depth = -(s^2 - 1)(n . d)` and drift
+`(s^2 - 1)|d_t|`, where `d_t` is the part of the contact's offset from the fort origin perpendicular to the normal.
+The point survives only when `(s^2 - 1)|d_t| < 0.05` and `(s^2 - 1)(n . d) <= 0.02`. USNOS f17's fort has rows of
+length 2.003 (hull_terrain_contact.cpp `rigid_fort`, GUNNERY 167), so `s^2 - 1 = 3.01` and a point survives only
+within 1.7 cm (tangentially) of the fort's origin. A ship's contact with a fort hull is metres from its origin.
+
+**Consequence in the image.** Pass order is refresh (`00C549D0`, step 3) before the narrow phase (step 5,
+`00C3F760` inserts). So each frame's refresh drops every point of a hull-vs-scaled-fort manifold, `00C549D0`'s
+second pass retires the empty manifold, and the narrow phase inserts fresh points with `+24h = +28h = 0`
+(`00C3F9BD` / `00C3F9D2`). The solver therefore never warm-starts a contact on a scaled fort, and the manifold
+holds only the points the narrow phase produced this frame instead of accumulating up to four. Unscaled forts
+(`|s - 1| <= 1e-4`) and hull-vs-hull pairs are unaffected (orthonormal rows, the transpose is the inverse). The
+same frame's solve is not distorted: the depth it uses is written at insertion from true world points, and body
+B's angular terms vanish for a static fort.
+
+**The host.** `rigid_fort` normalizes the rows and scales the points, so the host's witnesses are undistorted,
+its points persist and warm-start. On scaled forts the host is the correct geometry and differs from the image in
+contact persistence, not in where contacts are. Not bound: a faithful variant would prune every scaled-fort point
+at the refresh (or equivalently clear its accumulated impulses each frame). Reach: only rows with hull contact
+against a fort whose authored scale is not 1 (USNOS f17 is the known one). Uncertainty: the narrow phase's
+per-frame point count for a hull-vs-fort convex pair (one or several) was not read, so how much contact support
+the image loses is not quantified.
