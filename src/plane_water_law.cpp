@@ -6,7 +6,7 @@
 
 // Packet cc9_plane_water_law. docs/WATER_SURFACE_LAW.md section 10 carries the read;
 // the comments below name the listing site of each term. Float arithmetic throughout:
-// the plane laws run on the main thread at the 24-bit precision control.
+// the host policy runs the fixed-step plane job at 24 bits (docs/X87_CONTROL_WORD.md).
 
 namespace bsp {
 namespace {
