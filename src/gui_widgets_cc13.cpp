@@ -337,6 +337,10 @@ void append_to_mit_vector(void* self, std::size_t header, T value, void (*reserv
 }
 } // namespace
 
+namespace {
+void curve_default_fields(void* self) noexcept;
+} // namespace
+
 void* gui_sound_construct_00acdb30(void* self, GuiWidgetMemberHost& host) {
     host.construct_widget_base_00aa9390(self, 0x0E);
     write_field<std::uint32_t>(self, 0, 0x00D5CFD0);
@@ -394,14 +398,7 @@ void gui_line_on_loaded_00ac1bb0(void* self, GuiWidgetMemberHost& host) {
 
 void* gui_curve_construct_00abe030(void* self, GuiWidgetMemberHost& host) {
     host.construct_widget_base_00aa9390(self, 0x0D);
-    write_field<std::uint32_t>(self, 0, 0x00D5C7F8);
-    for (std::size_t offset = 0xEC; offset <= 0x118; offset += 4) write_field<std::uint32_t>(self, offset, 0);
-    write_field<float>(self, 0x11C, 0.0f);
-    write_field<float>(self, 0x120, 0.0f);
-    write_field<float>(self, 0x124, 1.0f); // 00D7A24C
-    write_field<float>(self, 0x128, 1.0f);
-    write_field<std::uint32_t>(self, 0x12C, 0);
-    for (std::size_t offset = 0x134; offset <= 0x13C; offset += 4) write_field<std::uint32_t>(self, offset, 0);
+    curve_default_fields(self); // UV 1.0 is 00D7A24C
     return self;
 }
 
@@ -437,5 +434,144 @@ bool GuiWidgetNameLess::operator()(const void* left, const void* right) const {
 void sort_widgets_by_name(const void** first, const void** last, GuiWidgetNameSource& names) {
     GuiWidgetNameLess pred{&names};
     msvc9_sort::sort(first, last, last - first, pred);
+}
+namespace {
+void zero_range(void* self, std::size_t from, std::size_t to) noexcept {
+    for (std::size_t offset = from; offset <= to; offset += 4) write_field<std::uint32_t>(self, offset, 0);
+}
+void copy_dword(void* self, const void* source, std::size_t offset) noexcept {
+    write_field<std::uint32_t>(self, offset, read_field<std::uint32_t>(source, offset));
+}
+// The 00AC57E0 / 00AA3C60 string copy over two 8-byte native string headers.
+void copy_native_string(void* destination, const void* source, GuiNativeStringHost& strings) {
+    if (destination == source) return;
+    strings.resize_0041dd40(destination, read_field<std::uint32_t>(source, 0), true);
+    if (read_field<std::uint32_t>(source, 0) == 0) return;
+    std::memcpy(read_field<char*>(destination, 4), read_field<const char*>(source, 4),
+        read_field<std::uint32_t>(destination, 0));
+}
+void curve_default_fields(void* self) noexcept {
+    write_field<std::uint32_t>(self, 0, 0x00D5C7F8);
+    zero_range(self, 0xEC, 0x118);
+    write_field<float>(self, 0x11C, 0.0f);
+    write_field<float>(self, 0x120, 0.0f);
+    write_field<float>(self, 0x124, 1.0f);
+    write_field<float>(self, 0x128, 1.0f);
+    write_field<std::uint32_t>(self, 0x12C, 0);
+    zero_range(self, 0x134, 0x13C);
+}
+} // namespace
+
+void* gui_sound_copy_construct_00acdba0(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiWidgetCopyHost& copy) {
+    host.construct_widget_base_00aa9390(self, 0x0E);
+    write_field<std::uint32_t>(self, 0, 0x00D5CFD0);
+    write_field<std::uint32_t>(self, 0xEC, 0);
+    write_field<std::uint32_t>(self, 0xF0, 0);
+    zero_range(self, 0xF8, 0x104);
+    copy_dword(self, source, 0xF4);
+    copy.copy_sound_ref_00acd8e0(static_cast<std::byte*>(self) + 0xEC, static_cast<const std::byte*>(source) + 0xEC);
+    copy.copy_sound_ref_00acd9e0(static_cast<std::byte*>(self) + 0xF0, static_cast<const std::byte*>(source) + 0xF0);
+    return self;
+}
+
+void gui_sound_destroy_00acdc40(void* self, GuiWidgetMemberHost& host, GuiWidgetCopyHost& copy) {
+    write_field<std::uint32_t>(self, 0, 0x00D5CFD0);
+    if (auto* p = read_field<void*>(self, 0xEC)) release_ref(p, host);
+    write_field<void*>(self, 0xEC, nullptr);
+    if (auto* p = read_field<void*>(self, 0xF0)) copy.stop_sound_instance(p);
+    if (auto* p = read_field<void*>(self, 0xF0)) release_ref(p, host);
+    write_field<void*>(self, 0xF0, nullptr);
+    release_native_string(self, 0x100, host);
+    release_native_string(self, 0xF8, host);
+    // The member destructors of the two ref pointers find them null.
+    host.destroy_widget_base_00aa9730(self);
+}
+
+void* gui_grid_construct_00acb0a0(void* self, GuiWidgetMemberHost& host) {
+    host.construct_widget_base_00aa9390(self, 8);
+    write_field<std::uint32_t>(self, 0, 0x00D5CE60);
+    zero_range(self, 0xF0, 0x100);
+    write_field<float>(self, 0x104, 0.0f);
+    write_field<float>(self, 0x108, 0.0f);
+    write_field<std::uint8_t>(self, 0x10C, 1);
+    write_field<float>(self, 0x110, 0.0f);
+    write_field<float>(self, 0x114, 0.0f);
+    write_field<std::uint32_t>(self, 0x118, 0);
+    write_field<float>(self, 0x11C, 0.0f);
+    write_field<float>(self, 0x120, 0.0f);
+    return self;
+}
+
+void* gui_grid_copy_construct_00acb3f0(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiWidgetCopyHost& copy) {
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, 0x00D5CE60);
+    copy.grid_copy_columns_00acb290(static_cast<std::byte*>(self) + 0xEC, static_cast<const std::byte*>(source) + 0xEC);
+    for (std::size_t offset : {0x104u, 0x108u}) write_field<float>(self, offset, read_field<float>(source, offset));
+    write_field<std::uint8_t>(self, 0x10C, read_field<std::uint8_t>(source, 0x10C));
+    for (std::size_t offset : {0x110u, 0x114u, 0x11Cu, 0x120u})
+        write_field<float>(self, offset, read_field<float>(source, offset));
+    // A temporary native string "Visual_Group" (12 characters + NUL) is built
+    // and returned to the pool after the lookup.
+    write_field<void*>(self, 0x118, copy.find_child_00aa7e00(self, "Visual_Group"));
+    return self;
+}
+
+void gui_grid_destroy_00acbbf0(void* self, GuiWidgetMemberHost& host, GuiWidgetCopyHost& copy) {
+    write_field<std::uint32_t>(self, 0, 0x00D5CE60);
+    copy.grid_clear_00acb9b0(self);
+    void* vector = static_cast<std::byte*>(self) + 0xEC;
+    if (auto* begin = read_field<void*>(self, 0xF0)) {
+        copy.grid_destroy_columns_00aca730(begin, read_field<void*>(self, 0xF4), vector);
+        copy.free_block(read_field<void*>(self, 0xF0));
+    }
+    zero_range(self, 0xF0, 0xF8);
+    host.destroy_widget_base_00aa9730(self);
+}
+
+void* gui_anim_icon_copy_construct_00aa1c60(void* self, const void* source, GuiWidgetLifetimeHost& host) {
+    host.copy_icon_00ab5d30(self, source);
+    write_field<std::uint32_t>(self, 0, 0x00D5BCE0);
+    write_field<float>(self, 0x138, read_field<float>(source, 0x138));
+    copy_dword(self, source, 0x13C);
+    for (std::size_t offset : {0x140u, 0x141u, 0x142u})
+        write_field<std::uint8_t>(self, offset, read_field<std::uint8_t>(source, offset));
+    return self;
+}
+
+void* gui_curve_copy_construct_00abe100(void* self, const void* source, GuiWidgetMemberHost& host) {
+    host.copy_widget_base_00aa9520(self, source);
+    curve_default_fields(self);
+    return self;
+}
+
+void* gui_button_construct_00aac6f0(void* self, GuiWidgetMemberHost& host, GuiButtonRegistry& registry) {
+    host.construct_widget_base_00aa9390(self, 0x0F);
+    write_field<std::uint32_t>(self, 0, 0x00D5BED0);
+    zero_range(self, 0xEC, 0xF8);
+    registry.push_back(self);
+    return self;
+}
+
+void* gui_button_copy_construct_00aa3c60(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiNativeStringHost& strings) {
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, 0x00D5BED0);
+    copy_dword(self, source, 0xEC);
+    copy_dword(self, source, 0xF0);
+    write_field<std::uint32_t>(self, 0xF4, 0);
+    write_field<std::uint32_t>(self, 0xF8, 0);
+    copy_native_string(static_cast<std::byte*>(self) + 0xF4, static_cast<const std::byte*>(source) + 0xF4, strings);
+    return self;
+}
+
+void gui_button_destroy_00aac530(void* self, GuiWidgetMemberHost& host, GuiButtonRegistry& registry,
+    std::uint32_t& global_00f8bcf8) {
+    write_field<std::uint32_t>(self, 0, 0x00D5BED0);
+    registry.remove(self);
+    if (global_00f8bcf8 != 0) global_00f8bcf8 = 0;
+    release_native_string(self, 0xF4, host);
+    host.destroy_widget_base_00aa9730(self);
 }
 } // namespace bsp::gui_widgets_cc13

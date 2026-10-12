@@ -705,4 +705,86 @@ struct GuiWidgetNameLess {
 };
 // _Sort(first, last, last - first, pred), as 00AA5A00 and 00AAAED0 call it.
 void sort_widgets_by_name(const void** first, const void** last, GuiWidgetNameSource& names);
+
+// ---------------------------------------------------------------------------
+// Sound, Grid, AnimIcon, Curve-copy and Button members
+// ---------------------------------------------------------------------------
+
+struct GuiWidgetCopyHost {
+    virtual ~GuiWidgetCopyHost() = default;
+    // 00ACD8E0 / 00ACD9E0: the two ref-pointer copy-assignments of Sound,
+    // __fastcall(ECX = destination field, EDX = source field).
+    virtual void copy_sound_ref_00acd8e0(void* destination, const void* source) = 0;
+    virtual void copy_sound_ref_00acd9e0(void* destination, const void* source) = 0;
+    // Sound +F0h object vtable +8h(0), called before it is released.
+    virtual void stop_sound_instance(void* instance) = 0;
+    // Grid helpers: 00ACB9B0(this, 0), 00ACA730 (destroy [begin, end) of the
+    // column records), 00ACB290 (column vector copy, ECX = destination).
+    virtual void grid_clear_00acb9b0(void* grid) = 0;
+    virtual void grid_destroy_columns_00aca730(void* begin, void* end, void* vector) = 0;
+    virtual void grid_copy_columns_00acb290(void* destination, const void* source) = 0;
+    // 00AA7E00 BSP_GuiWidget_FindChildByName(this, name, 1).
+    virtual void* find_child_00aa7e00(void* widget, const char* name) = 0;
+    // 00BF65AC operator delete.
+    virtual void free_block(void* block) = 0;
+};
+
+// Sound: +ECh and +F0h ref pointers, +F4h a dword, +F8h SoundEfx and +100h
+// Category (8-byte native strings).
+// 00ACDBA0, __thiscall(this, source), RET 4. NOTE: it runs the DEFAULT base
+// constructor 00AA9390(0Eh), not the base copy, so position, size and the other
+// base fields are not copied; nor are the two strings. Only +F4h and the two
+// ref pointers come from the source.
+void* gui_sound_copy_construct_00acdba0(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiWidgetCopyHost& copy);
+// 00ACDC40, __fastcall(ECX = this): vtable 00D5CFD0, release +ECh, stop then
+// release +F0h, return the +100h and +F8h string buffers, base destructor.
+void gui_sound_destroy_00acdc40(void* self, GuiWidgetMemberHost& host, GuiWidgetCopyHost& copy);
+
+// Grid (hud_widgets.hpp GuiGridState): column vector +ECh..+F8h.
+// 00ACB0A0, __fastcall(ECX = this), EAX = this: base(8), vtable 00D5CE60,
+// +F0h..+100h = 0, CellSize 0, +10Ch = 1, scroll 0, Visual_Group 0, content 0.
+void* gui_grid_construct_00acb0a0(void* self, GuiWidgetMemberHost& host);
+// 00ACB3F0, __thiscall(this, source), RET 4: base copy, vtable, columns copied
+// (00ACB290), CellSize/+10Ch/scroll/content copied, then +118h re-resolved as
+// the copy's own child named "Visual_Group" (00D5CE24) through 00AA7E00.
+void* gui_grid_copy_construct_00acb3f0(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiWidgetCopyHost& copy);
+// 00ACBBF0, __fastcall(ECX = this): vtable, 00ACB9B0(0), destroy and free the
+// column vector, base destructor.
+void gui_grid_destroy_00acbbf0(void* self, GuiWidgetMemberHost& host, GuiWidgetCopyHost& copy);
+
+// 00AA1C60, __thiscall(this, source), RET 4: Icon copy 00AB5D30, vtable
+// 00D5BCE0, FPS +138h, the dword +13Ch and the three flags +140h..+142h
+// (PlaybyDefault, Loop, Forward).
+void* gui_anim_icon_copy_construct_00aa1c60(void* self, const void* source, GuiWidgetLifetimeHost& host);
+
+// 00ABE100, __thiscall(this, source), RET 4: base copy, then exactly the
+// default constructor's Curve fields. The copy has no points and the default
+// UV rectangle.
+void* gui_curve_copy_construct_00abe100(void* self, const void* source, GuiWidgetMemberHost& host);
+
+// Button: +ECh/+F0h dwords, +F4h an 8-byte native string. Every Button built by
+// the default constructor is appended to the global std::list<cGuiButton*> at
+// 00F8BD38 (head node 00F8BD3C, size 00F8BD40) and removed by the destructor.
+struct GuiButtonRegistry {
+    virtual ~GuiButtonRegistry() = default;
+    // 00AAC210 buy node + 00AAC5D0 size check + link: push_back(button).
+    virtual void push_back(void* button) = 0;
+    // 00AAC310 std::list::remove(button).
+    virtual void remove(void* button) = 0;
+};
+// 00AAC6F0, __fastcall(ECX = this), EAX = this: base(0Fh), vtable 00D5BED0,
+// +ECh..+F8h = 0, then registry push_back.
+void* gui_button_construct_00aac6f0(void* self, GuiWidgetMemberHost& host, GuiButtonRegistry& registry);
+// 00AA3C60, __thiscall(this, source), RET 4: base copy, vtable, +ECh/+F0h
+// copied, the +F4h string copied like 00AC57E0. The copy is NOT registered.
+void* gui_button_copy_construct_00aa3c60(void* self, const void* source, GuiWidgetMemberHost& host,
+    GuiNativeStringHost& strings);
+// 00AAC530, __fastcall(ECX = this): vtable, registry remove, then the global
+// dword 00F8BCF8 is cleared whenever it is nonzero (it is not compared with
+// this button), the string buffer is returned, base destructor.
+void gui_button_destroy_00aac530(void* self, GuiWidgetMemberHost& host, GuiButtonRegistry& registry,
+    std::uint32_t& global_00f8bcf8);
+
 } // namespace bsp::gui_widgets_cc13
