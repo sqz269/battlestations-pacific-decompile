@@ -389,6 +389,103 @@ bytes equal disk bytes, rel32 call to a `_free` target), under the Ghidra write 
 
 Fresh exports of both functions now run past every `_free` call.
 
+## Packet cc13-net2: ServerAddPlayer, SESSION_MANAGER, presentation arms, 0Dh server arm
+
+Written by cc13-net2 and committed by cc13-net3 after a power outage interrupted net2 before its
+commit; net3 re-checked that every Ghidra rename below survived the restart (all 24 present) and
+rebuilt. All C++ here is reconstructed and build-tested only; nothing is game-validated.
+
+### `007752D0` MMultiPlayer::ServerAddPlayer (session, peer), `RET 4`
+
+Named by the log string at `00D03C88` ("MMultiPlayer::ServerAddPlayer: slot: %d/%d, private: %d/%d,
+will: %d  Rank:[%d,%d]"). The order, from the listing:
+
+1. 007752EE..007754C7, claim a record through `004BB440`. The peer is the *local join* when it is
+   the first node of the server transport list (`[+188h]+0Ch`, count `+10h`) and not
+   (`session+F4h == 1` and `session+168h != 0`). A local join takes its name from the profile
+   (`game+6A0h`, else `+68Ch`), its tag from the char* at `00F88A38`, xuid `game+698h/69Ch`, and
+   rank from `00574050` (ECX `game+650h`); it also sets `game+18C8h = record+1Ch`. A remote join
+   first posts the host template chat `005CF320(8, 7, "", name)` and takes name/tag/xuid/bytes/rank
+   from the join info at `peer+8h`. `004BB440` returns null when all eight records are claimed, and
+   007752D0 dereferences it without a check. `peer+D50h = record` (the field the net1 correction
+   predicted).
+2. 007754C9..00775552: record `+94h` = the XNet platform (`XNetInAddrToXnAddr` then
+   `XNetGetXnAddrPlatform` on `peer+D78h`), or 2 when the peer has no address.
+3. MT_MYPLAYER (25h, vtable `00D030C0`) to the peer: player, then the session nonce
+   `+26Ch`/`+268h`.
+4. 007755C1..00775885: for every other claimed record, MT_ADDPLAYER built by `0076B760`, the
+   `"_ADD_PLAYER_ Server:... Peer:..."` trace, then MT_SELECTPLAYER (19h) when its slot `+20h >= 0`
+   and MT_READYPLAYER (1Dh, both bytes constant 1) when `+0Ch` is set.
+5. 0077588B..00775960: MT_AIENABLE (1Eh) and MT_AISKILLLEVEL (1Fh) for the eight current records
+   (`game+18CCh`).
+6. The `"__P2P_VOICE__ PeerTableToC"` trace and the new record as MT_ADDPLAYER to everyone
+   (`00784790`, no exclude), then MT_CHANGEMULTISETTINGS (17h, the 38h-byte BSS block `00E1955C`)
+   and MT_SUBSCENE (18h via `007710E0`) to the peer.
+7. 00775BF8..00775D01: `session+12Bh` ("will") decrements for a remote join, `0076DBE0` recounts the
+   slot counters, the log above, and MT_SERVERINFO (05h, `0076B670`) to everyone with the mean peer
+   quality from `00786030`.
+8. 00775D06..00775DC9: an automatic slot choice through `0076C840` HostSelectPlayer: in effective
+   game mode 7 (`004BCA50`) the first AI-held current record; otherwise the first AI-held record of
+   the team (`+28h`) with fewer human records (team 0 on a tie), -1 when that team has none.
+9. A local join ends in `007F8690(record, game+734h, game+730h)`. A remote join gets the "PIMPS":
+   `"Sending PIMPS to new client %d:"`, then for every other claimed record MT_PLAYERINFO (E3h,
+   record `+E0h..+E8h` and the player) and MT_PLAYERUNLOCKUNIT (DDh, record `+110h`), each traced.
+
+Helpers reconstructed with it: `0076B760` MT_ADDPLAYER builder (04h, vtable `00D03048`, `RET 80h`),
+`0076B670` MT_SERVERINFO builder (05h, vtable `00D02FF8`, `RET 30h`), `007710E0` MT_SUBSCENE
+builder, `0076DBE0` slot recount (ECX `session+100h`: `+128h` claimed records, `+12Ah` those whose
+join `+58h` is set), `00786030` mean of the conn-state quality floats of rows 1..7 (1.0f when none;
+row 1 carries a no-op `FADD double 0.0`).
+
+### `007746F0` MT_SESSION_MANAGER (E4h) and `004C9780`
+
+`004C9780` builds E4h (vtable `00CE7608`, `RET 8`): `+18h` state, `+19h` player, `+1Ch` an empty
+`std::list` of 38h-byte stats entries. `007746F0` logs " - - ONLINE - - SESSION_MANAGER PlayerIndex
+%d, State  %d" and runs a five-state handshake on record `+A4h`:
+
+| state | side | action |
+|---|---|---|
+| 1 | client, first time (`session+4h`) | `00772A40` sends the local score (MT_SCENESCORING 15h), reply state 2, flush peer buffers (`007848F0`) |
+| 2 | server | record `+A4h = 2`; when `0076C560` says every remote player is at 2: `00920A20` debrief (cc9's), `0076D1B0` ServerSendSceneScoring, online `+74h = 0`, online `vtable[184h]`; the local current record goes to 4 either way |
+| 3 | client | replace the online stats list `[00F8A2FC]+2200h` with the message entries (word 0 overwritten with `[game+207Ch]+9CCh`), then `004C04C0` on the first entry and `00626C50` |
+| 4 | server | record `+A4h = 4`; when all are at 4, online `vtable[58h]` and broadcast state 5 |
+| 5 | client | online `vtable[58h]`, reply state 5 |
+
+The status word is never written. `004C04C0` (XUSER property writes) and `00626C50` are not opened.
+
+### Presentation arms 2Bh..34h
+
+All `(session, msg, &status) RET 8`; none writes the status word or touches unit or mission state.
+
+| type | address | effect |
+|---|---|---|
+| 2Bh MT_BLACKOUT | `0076F4C0` | `005B9BA0` fade on `[HUD+A4h]` with an empty completion name (no Lua) |
+| 2Ch MT_COUNTDOWN | `007709C0` | start (`00733FF0`) or stop (`007340A0`) the countdown at `game+21E8h` and show/hide the HUD counter (`0052B9B0`/`0052AB90`); the client copy has an empty callback, so expiry runs no Lua |
+| 2Dh..2Fh | `0076D420`, `0076F560`, `0076F630` | resolve the uint16 entity id at `msg+18h` (`0076BD70`/`0076BE10`/`0076BEA0`, identical bodies, no bounds check) and call the movie camera's hand-mode / polar / radius setters (`007A6B40`, `007A6E60`, `007A7070`) |
+| 30h | `0076A870` | `007A7C60(camera, msg)` |
+| 31h | `0076A8A0` | new 18h interpolator (`0078E370`) added by `0079F6D0`, also when the allocation failed |
+| 32h | `0076A940` | `005CAF90` deviation factor on the screen `[HUD+98h]` |
+| 33h | `0076D760` | `007A2D30` with (tick - `[00F876B0]`)/1000.0 seconds; `session+284h += 1` outside host mode |
+| 34h MT_MOVCAM_BLACKBAR | `0076A970` | black bars on `[HUD+9Ch]` (`005CBC30`/`005CBCC0`) and `[HUD+A0h]` (`005CB0F0`/`005CB130`) |
+
+The first camera use switches the interface to mode 2Bh (`005CD160` -> `004CC460(HUD, 2Bh, ...)`).
+
+### `007F7460` MT_CHECKSCENELOAD (0Dh) server arm
+
+`__thiscall(record, byte) RET 4`, ECX = the sender's record `[msg+14h]`: record `+14h` = (byte != 0)
+as a dword (SETNZ). The byte is the client's `([00F8A2FC]->vtable[168h]() == 0)`. Readers of
+record `+14h` are not mapped.
+
+### Never-defined function bodies (24)
+
+The 24 bodies `reports/cc13_undefined_function_sweep.json` listed in this lease were disassembled
+and created with `disassemble_first=false` under the write lock, and the program saved; the event
+log is `reports/cc13_net2_defined_functions.json`. They are unnamed (`FUN_`):
+0076AAB0, 0076AB30, 0076AC40, 0076B090, 0076E190, 0076E240, 0076EC50, 00774D70, 007761D0,
+00776490, 00778950, 00778980, 007789C0, 00778E70, 00779090, 0077B780, 0077D910, 007810A0,
+00782910, 00782A80, 00783950, 00786E10, 00786E30, 00786F30. All 24 were present in Ghidra after
+the restart.
+
 ## Out of scope or not reconstructed
 
 Owned by cc9 (unit / mission state; listed, not touched): `0077A080`/`0077C880` formation
@@ -399,11 +496,10 @@ replication, `0077D600` `BSP_Entity_IssueCommand`, `0077B0C0` and `0077FAD0` (th
 No ban-list code was found in this segment: the packet keyword `lastbanto` is the unit Lua field
 `lastBanto` read by `0077C160`/`0077FAD0` and `LastBanto` in `0077D270`.
 
-Routed but not reconstructed here (in segment, reachable from the ladder): `007746F0`
-MT_SESSION_MANAGER (online stats write handshake, states 1..5 on `game+7ECh+i*118h`), `007752D0`
-`MMultiPlayer::ServerAddPlayer` (23 callees, "Sending PIMPS to new client", "PeerTableToC" voice
-peer table), and the presentation arms 2Bh..34h (blackout, countdown,
-movie camera: `0076F4C0`, `007709C0`, `0076D420`, `0076F560`, `0076F630`, `0076D760`).
+`007746F0`, `007752D0` and the presentation arms 2Bh..34h, listed here by net1 as routed but not
+reconstructed, are now covered in the cc13-net2 section above. Still not opened: `004C04C0`
+(XUSER stats property writes), `00626C50`, `00920A20` (cc9's debrief), and the movie-camera
+internals `007A6B40`/`007A6E60`/`007A7070`/`007A7C60`/`007A2D30`.
 
 Outside the segment, routed by the ladder: see the table (the `Other` and `MessageThis` rows).
 
@@ -419,11 +515,14 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
   file (`[session+188h]`).
 - `_free` callers among the reconstructed bodies: 00773420 and 00773120; both tails were read in
   the listing (00773587..007735AC and 007733C7..0077341D).
+- cc13-net2 section: 40 cited callee calls (in 007752D0, 007746F0 and the 2Bh..34h arms) checked
+  with `tools/verify_report_calls.py` on a JSON built from the live listing, 0 failures. Listing
+  checks by net3: 007F7460 (SETNZ, `RET 4`), 0076A970 (both screens, `[ESP+8]` = msg after the
+  push), the local-join test at 0077531A..00775332 (`session+F4h == 1` and `+168h`).
 
 ## Open questions
 
-1. `0Dh` MT_CHECKSCENELOAD server arm `007F7460` (ECX = `msg+14h` record, byte `msg+18h`) was not
-   opened.
+1. Who reads record `+14h`, the scene-check result `007F7460` stores (the 0Dh server arm).
 2. The client stage at `[+18Ch]+9Ch` takes 3/4 on MT_KICKED and 8 on entering play; the other
    values and their readers are not mapped.
 3. `msg+0Ch` is the send tick; whether 00777850's drop log can fire in a real session (state below
