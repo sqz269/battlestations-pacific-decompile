@@ -532,14 +532,33 @@ byte. In the stretch read (0078261D reads the holder at `[ESP+644h]` with the EH
 `[ESP+63Ch]`) the byte is not used; the rest of the body was not swept for it. The ledger
 evidence and the header comment are amended.
 
-A whole-image scan for the displacement `310h` has about 120 hits; the ones in MultiScore code
-are three (the others belong to functions of other classes and were not checked): the constructor
-stores 0 (00780E2F, `BL` from `XOR EBX,EBX` at 00780DE1) and `00780A00` reads and clears it. No
-literal-offset store in MultiScore code sets it, so unless one of the unchecked hits or a store
-through another base reaches it, the schedule is time-based only. Not opened: who writes `holder+4h`
-(the last-sync tick), the generic codec
-`00765000`/`00767E30`, `00766FC0`, and `0077C540` beyond the lines cited.
+**The force flag `+310h` (corrected by the follow-up scan).** The constructor stores 0 (00780E2F,
+`BL` from `XOR EBX,EBX` at 00780DE1), and `00780A00` reads and clears it. Its setter is the Lua
+binding **`ForceMultiScoreSend`**: the binding table entry `00E0C1F8` holds the name pointer
+`00D0F988` and the function `008AFEC0`. When `game+1FE4h == 1` (EBX = 1 at 008AFEDB), that function
+walks the list `[[game+19CCh]+49Ch]` (count `+498h`) and stores 1 at `[node+8]+310h` (008AFF95).
+Scan method: the opcodes `C6 /0 imm8` (with and without SIB) and `88 /r` for displacement 310h.
+The positive control is the clear at 00780A58, which the scan finds. The scan finds only these
+two register stores (00780E2F and 008AFF95) and no immediate store of 1. `008AFEC0` is a Lua
+binding (cc9's area), so it was not renamed.
 
+**`holder+4h` (the last-sync tick).** A holder is the node payload `node+8h` of the list at
+`entity+2A4h`. `0077EB50` (`__thiscall(entity, record)`, called at 0077ECC8 in `0077EC20`, 0077F072 in
+`BSP_UnitOwnerEntity_Construct`, 0077F0C0 in `0077F090` and 0077F26C in
+`BSP_UnitOwnerEntity_ActivateAndRegister`) appends `{record, FFF0BDC1h = -999999, u16 stamp 0, 0}` to it, appends
+the record to the list headed at `entity+29Ch`, and sets `00F87190 = 1`. `0077DA20` removes both. The only refresh of
+`holder+4h` is `00779F80` (`holder+4h = [00F876B0]`, `RET 4`). A rel32 scan of `.text` finds four
+call sites for it (positive control: the four `0077EB50` call sites are found), all unit sync
+senders: `0074D16B`, `007C29CB` (BSP_Plane_SendControlStateMessage), `00816B97`
+(BSP_UnitInstance_SendShipSyncMessage) and `00859AED` (BSP_TurningGun_WriteAimSnapshotFields).
+Nothing in MultiScore code refreshes it, and the only literal `[00F876B0]` read there is in the
+scheduler. So **for MultiScore the 20-tick test always passes**: every `0077C540` pass (once per
+`BSP_Session_FlushOutboundStep` on a server, from the fixed-step fan-out) queues a sync to every
+in-game peer. Each sync diffs `MultiScore[p]` and runs `MultiScore_save[p]=copy_table(...)`. That
+makes `ForceMultiScoreSend` redundant while the tick stays at its seed. This is an inference from
+the listing and has not been observed in a run.
+
+Not opened: `0077C540` beyond the lines cited.
 ## The generic net-entity create message (cc13-net3, second packet)
 
 Reconstructed in `src/net_entity_create_cc13.cpp` / `include/bsp/net_entity_create_cc13.hpp` on the
@@ -676,30 +695,40 @@ Outside the segment, routed by the ladder: see the table (the `Other` and `Messa
 
 ## Open questions
 
-1. Who reads record `+14h`, the scene-check result `007F7460` stores (the 0Dh server arm).
-2. The client stage at `[+18Ch]+9Ch` takes 3/4 on MT_KICKED and 8 on entering play; the other
+1. Who reads record `+14h`, the scene-check result `007F7460` stores (the 0Dh server arm). Searched
+   by net3 without a hit: the listings of every function in this segment and in `004BB*` that uses
+   the 118h record stride (looking for `[reg+14h]`, which also covers the biased base
+   `game+750h`), and a byte scan for the game-indexed displacement `75Ch`. Its 34 hits all belong
+   to other structures. A reader through a record pointer elsewhere would not show up in either
+   search.
+2. Record `+A4h` is the SESSION_MANAGER handshake state. It is written only by `007746F0` (00774809
+   = 2, 0077486B = 4, 007749FE) and read only by `0076C560` (through the base `game+750h` as
+   `+9Ch`), as far as the same searches reach (game-indexed `7ECh`: 11 hits, the only record one in
+   `007746F0`).
+3. The client stage at `[+18Ch]+9Ch` takes 3/4 on MT_KICKED and 8 on entering play; the other
    values and their readers are not mapped.
-3. `msg+0Ch` is the send tick; whether 00777850's drop log can fire in a real session (state below
+4. `msg+0Ch` is the send tick; whether 00777850's drop log can fire in a real session (state below
    0Ah with a queued message) is untested.
-4. The mute table's xuid lookup ignores the player records; a xuid added by MT_ADDPLAYER stays in the
+5. The mute table's xuid lookup ignores the player records; a xuid added by MT_ADDPLAYER stays in the
    table until MT_REMOVEPLAYER, so rows can outlive slot moves. Not observed in a run.
+6. Whether anything fills the listed-id vector `00E19458` (see `004C04C0`).
+7. Whether the MultiScore per-step resync (see the holder paragraph) costs anything noticeable in a
+   hosted session.
 
-## Handoff
 ## Handoff
 
 Packet cc13-net1 totals: 68 Ghidra renames with evidence comments, 61 reconstruction records,
 about 60 reconstructed C++ functions. Packet cc13-net2 (net2, finished by net3 after a power
-outage): 29 more renames, 24 reconstruction records, 26 never-defined bodies created in Ghidra; all
-C++ in `src/multiplayer_session_cc13.cpp` is build-tested only, nothing game-validated.
+outage): 29 more renames, 24 reconstruction records, 26 never-defined bodies created in Ghidra.
+cc13-net3's second packet: 7 renames (`00766FC0`, `00765000`, `00767E30`, `004C04C0`,
+`00779F80`, `0077EB50`, `0077DA20`) and 4 reconstruction records, with the codec in
+`src/net_entity_create_cc13.cpp`. All C++ is build-tested only; nothing is game-validated.
 
-Done from the net2 packet: (1) `007752D0` ServerAddPlayer; (2) `007746F0` with `004C9780`;
-(3) the 2Bh..34h arms (codec and HUD effects only); (4) `007F7460`; (5) the client execution of
-the MultiScore text (`00780B90`) and the DFh create path; (6) the 24 never-defined bodies.
+Done: the net2 packet items (1)-(6); the generic entity-create codec; `004C04C0`; the `+310h`
+setter (`ForceMultiScoreSend`, `008AFEC0`, cc9's Lua binding, not renamed); the `holder+4h`
+writer (`00779F80`, never called for MultiScore). Ghidra functions `00780A00` and `00780A70` were
+created under the write lock on the lead's go-ahead; `_free` still reads not-noreturn afterwards.
 
-Ghidra functions `00780A00` and `00780A70` were created under the write lock on the lead's go-ahead
-(bodies 00780A00..00780A61 and 00780A70..00780AAA), named and recorded; afterwards `_free`
-(`00BF9DC8`, thunks `00BF65AC`/`00BF6989`) still read `void __cdecl _free(void *)`, not noreturn.
-
-Left, in order of value: the writer of `holder+4h`; the readers of record `+14h` and `+A4h`;
-`004C04C0` (XUSER stats writes); the generic entity-create codec `00765000`/`00767E30` and
-`00766FC0`, which are outside this lease.
+Left: the open questions above; `00766E30` (vector resize, STL-like, unnamed); `0077C540`'s
+per-class bucket choice (`00F87150 = tick % 12`) for the other entity classes; the derived create
+codecs and unit factories, which belong to cc9.

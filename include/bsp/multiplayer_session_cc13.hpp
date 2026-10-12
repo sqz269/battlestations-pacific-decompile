@@ -1301,6 +1301,9 @@ void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& 
 // byte 0) to the sync queue whose count is 00F1B14C (arrays 00F86550,
 // 00F56550, 00F26E50; full at 300h, then nothing happens) and clear
 // entity+310h. 0077C540 later calls vtable[188h](holder, byte) per queued row.
+// holder+4h starts at -999999 (0077EB50) and only 00779F80 refreshes it,
+// which MultiScore never calls, so the time test always passes for it. The
+// force flag is set by the Lua binding ForceMultiScoreSend (008AFEC0).
 inline constexpr std::uint32_t kNetSyncQueueCapacity = 0x300;
 struct NetSyncQueueRow {
     const void* entity{nullptr};
