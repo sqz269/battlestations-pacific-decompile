@@ -219,7 +219,8 @@ inline constexpr bool kLuaHitSquadronSecondPassBound = true;
 // number); `hit` (00988510, 00988D87..00988F2C) passes (target, targetDevice, attacker
 // entities, attackType string, attackerPlayerIndex number, damage, fire, leak numbers).
 // True: the host pushes them. False: callbacks are called with no argument, as before.
-inline constexpr bool kLuaListenerCallbackArgsBound = false;
+// ON (5fu): ESMP08's win now ends on entity="Case" (luaUSNSunk's argument) instead of "".
+inline constexpr bool kLuaListenerCallbackArgsBound = true;
 
 // Packet cc9_lua51_listener_args. 009813A0 boxes the victim's last attacker (the
 // handle copied from victim+2B0h at 009816CA; its id word is +2C8h, which 0077CC80
@@ -229,7 +230,9 @@ inline constexpr bool kLuaListenerCallbackArgsBound = false;
 // replaced by vtable[140h]() (the plane's squadron, 007B97E0) and the channel is
 // evaluated again (00981C31). True: the host matches both sets and runs that second
 // pass. False: a subscription with either set non-empty is skipped (counted).
-inline constexpr bool kLuaKillAttackerBound = false;
+// ON (5fu): BSM01/BSM04/JM06/USN03/ESMP03/LOMP05 gameplay-identical; nothing the rows'
+// attacker sets name lands a kill in them.
+inline constexpr bool kLuaKillAttackerBound = true;
 
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,

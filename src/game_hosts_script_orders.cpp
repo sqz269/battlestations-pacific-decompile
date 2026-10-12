@@ -1538,6 +1538,12 @@ namespace {
 // class+134h DefaultEquipment, which 006C0F00 copies into slot+10h when the
 // class changes. The mission Lua host, which holds the class table, sets it.
 int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
+// Packet cc9_player_launch_screen_cursor (docs/CC13_AIR_OPS_SLOT_GROWTH.md section 4,
+// docs/SHIP_AI_OPEN_ITEMS.md 211). True: slot 0 is 00660190's opening cursor (never
+// 006C7210, whose one caller is 006CC690 LaunchSquadron) and the screen launches only
+// a slot in state 5 (0067A565). False: slot 0 takes 006C7210's pick and state 1 or 5
+// is accepted, as before.
+constexpr bool kPlayerLaunchScreenCursorBound = false;
 }  // namespace
 
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)) {
@@ -1570,13 +1576,40 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     // 006CCDD3: order 3 with no target answers 0 and does nothing.
     if (target_index >= units_.count()) return refuse("no unit by the target name");
     int slot = slot_number - 1;
-    if (slot_number <= 0) slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
+    if (slot_number <= 0) {
+        if constexpr (kPlayerLaunchScreenCursorBound) {
+            // 00660190: the first slot whose squadron is out (00658530: +28h set,
+            // state 3 or 4) or whose state is 2 or 5; none leaves the constructor's 0
+            // (0066FA11). Past row 3 the cursor is clamped to 3 (0066048A..00660498;
+            // the scroll at +320h is never read), and 0067A54A launches slot +324h.
+            slot = 0;
+            for (std::size_t i = 0; i < deck->slots.size(); ++i) {
+                const bsp::AirOpsSlot& s = deck->slots[i];
+                const bool out_and_away = s.launched_squadron != 0u
+                    && (s.state == bsp::AirOpsSlotState::kLaunched
+                        || s.state == bsp::AirOpsSlotState::kRecalled);
+                if (out_and_away || s.state == bsp::AirOpsSlotState::kLaunching
+                    || s.state == bsp::AirOpsSlotState::kReady) {
+                    slot = i > 3u ? 3 : static_cast<int>(i);
+                    break;
+                }
+            }
+        } else {
+            slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
+        }
+    }
     if (slot < 0 || static_cast<std::size_t>(slot) >= deck->slots.size())
         return refuse("no such slot");
     const bsp::AirOpsSlotState state = deck->slots[static_cast<std::size_t>(slot)].state;
-    // 0067A565 and 006C0E70: the screen fills only a slot in state 1 or 5.
-    if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
-        return refuse("the slot is not in state 1 or 5");
+    if constexpr (kPlayerLaunchScreenCursorBound) {
+        // 0067A565: the screen fills only a slot in state 5; otherwise the button does
+        // nothing (0067A56D). 006C0E70's "1 or 5" belongs to 006C47F0 on 006CD6C0's path.
+        if (state != bsp::AirOpsSlotState::kReady) return refuse("the slot is not in state 5");
+    } else {
+        // 0067A565 and 006C0E70: the screen fills only a slot in state 1 or 5.
+        if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
+            return refuse("the slot is not in state 1 or 5");
+    }
     std::vector<std::int32_t> live(deck->slots.size(), 0);
     for (std::size_t i = 0; i < deck->slots.size(); ++i)
         live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
