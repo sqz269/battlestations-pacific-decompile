@@ -191,3 +191,16 @@ behavior models over host data with new C++ interfaces; build-tested only.
 - `00BF0A30` (returns 1, caller 00B8174E) owner.
 - Undefined tiny bodies remain between `00BE5280` and `00BE5320` (allocator thunks that
   call 00BE4F30/00BE4FA0); not defined in Ghidra.
+
+## Handoff (2026-10-12)
+
+The segment is exhausted for game code. After this packet the index shows six raw entries
+in the band: the four cc12 application functions (`00BEA8B0`, `00BEA950`, `00BEA990`,
+`00BEA9A0`), `00BF0DF0` (cc9 gunnery reference) and `00C03B44` (newly defined CRT body
+with no references). The undefined allocator thunks at `00BE5280..00BE5320` and
+`00BEC480`/`00BEC490` have no references either; defining them would only add names.
+
+Next steps if anyone continues: name `004FB1F0` (in-place ASCII upper-case of a
+NativeString, used by `00BEFCB0`), `00BD2180` (error reporter singleton getter) and
+`00BD2B30` (fatal error caller of `BSP_ErrorReporter_Fail`), and `00A77730`. Wiring the
+TGA codec into a host would let the terrain path use `decode_tga_00befdc0` directly.
