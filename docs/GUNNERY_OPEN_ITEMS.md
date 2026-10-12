@@ -12132,3 +12132,35 @@ All three are negative, so 171's verdict stands: the image has no reader of the 
 - (2) the round's attach frame, 130.6's open label: a nose-down slot frame would remove the 14-18 m long bias.
 
 Nothing is bound here.
+
+## 176. `kShipyardHangarHiddenBound`: a ship inside a shipyard hangar's footprint is blind (lead queue; cc9-gunnery35, 2026-10-12; committed OFF)
+
+**The read** (172's follow-up; `0081DE10` from the live decompile and disk bytes, `00864680` as in section 5).
+- **The call.** `00864680` calls `0081DE10(owner)` on its 0.5 s refresh when the cache owner answers
+  `vtable[5Ch](6)`, a ship. A set byte at `record+20h` returns 0 (hidden) before the ray. With
+  `kGunneryLosRoleSwapBound` the owner is the observer.
+- **`0081DE10`.**
+  - `unit+1130h > 0` (the shipyard-launch sentinel) answers 1.
+  - Otherwise it walks `[[00E188A8]+19CCh]+364h`. Per node, `00848410` collects the `+780h` hangar Objects with
+    `+5Ch` set and `+5Dh`/`+5Eh`/`+60h` clear.
+  - It answers 1 when the ship's bow or stern (`+-0.5 * class+A0h` (Length) along its axis, `00D7A280`) lies in an
+    object's frame (`+110h`) with `|x| < 0.6 * Length` (`00CEFF98`, a double `0.6000000238`) and
+    `|z| < 0.75 * Width` (`00CEC9D8`).
+- **The binding.**
+  - `ship_in_shipyard_hangar_0081de10` walks the shipyard registry's hangars through `shipyard_hangars_usable` (the
+    same four-byte filter) and tests both ends.
+  - `line_of_sight_00864680` returns hidden when the owner is a ship and the test fires.
+  - The census line is `summary mission gunnery hangar hidden tests= hidden= bound=`.
+- **LABELLED:**
+  - The `+364h` list is taken to be the shipyard registry.
+  - `unit+1130h` is not kept, so that arm never fires.
+  - The test runs on every LOS test rather than on the 0.5 s refresh.
+  - The object's frame is taken at unit scale.
+
+**Predictions.**
+- **OFF:** identical.
+- **ON:** `hidden > 0` only where a ship sits within a usable hangar's footprint: JM08's Gyoraitei from the moment
+  they are built until they clear the hangar, and any moored ship that overlaps one.
+- **What moves:** those boats cannot see while inside, which delays their first gun and torpedo targets. Anything
+  further cascades.
+- On rows with no shipyard, or no ship near a hangar: `tests > 0, hidden = 0`, gameplay identical.
