@@ -15093,3 +15093,21 @@ made is killed in step 2.
   and the control is identical. Remaining substitutions, all LABELLED: the player skips on the movie's first frame
   (the no-skip path plays the 90 s / 43 s movie, `0045F970` and `004560E0`, not wired); the scene units are not
   killed and re-created; the ten `00874D00` steps and the class-table resets are records.
+
+## 5fq. BSM01 completes again (cc9-lua50, 2026-10-12, runs only)
+
+On main `6d9a8515f`'s build (`local\l50_lane.ps1` row `b1`, 30000 frames, `--stop-after-end 40`):
+- **Why gunnery35's v3 fails on AG** (`g35_b1v3_ag.log`). The last leg (frame 6850, toward the halted MiniSub at
+  (1072, -3017)) is given before HenryPT reaches the previous waypoint (1915, -3084). The boat cuts the corner and,
+  at about (1700, -2785), runs into Raleigh, which is on `pt_path3` (`NavigatorMoveOnPath`). The hull contact
+  census has HenryPT against Raleigh from step 7553 for 25079 steps (depth 11.9 m). HenryPT sits there at 0 m/s
+  under 1086 blasts from Raleigh's AA, and dies at 1501.74 s. On AF the same contact happens at the same place, but
+  the boat works free and the depth charge hits.
+- **a** (`local\l50_b1_a.txt`): v3 with the last leg moved to frame 7250, after the waypoint is reached, so the
+  approach runs west along y of about -3050.
+  - The depth charge hits the MiniSub (`hit listener 00988510 ... type "Depthcharge"`), then
+    `AddDamage("MiniSub", 9999)`.
+  - Phase 4 runs, `EndMission` at 773.93 s, and `"Donald is heading home - Mission Complete"` at 785.53 s.
+  - `bsp: refused a mission script's process launch: sus_prog.exe` is in the log.
+- **b** (`l50_b1_b.txt`, two legs west via (1500, -3080)) stops at (1421, -3260), 426 m short, and is still in phase 3
+  at 1500 s. **c** (`l50_b1_c.txt`, last leg at 7100) was not judged.
