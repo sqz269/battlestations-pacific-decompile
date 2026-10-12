@@ -556,4 +556,64 @@ void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_dis
     write(read<void*>(owner, 0x20 + c * 4), 0x178, read<float>(owner, 0x08));
 }
 
+namespace {
+
+// Checked walk of a native pointer vector whose descriptor sits at foliage+base
+// (begin +4, end +8), as 00AD7360/00AD72A0 inline it.
+template<class Visit>
+void walk_checked(void* foliage, std::size_t base, FoliageRenderHost& host, Visit visit) {
+    using Slot = void* const*;
+    Slot cursor = read<Slot>(foliage, base + 4);
+    if (cursor > read<Slot>(foliage, base + 8)) host.invalid_parameter();
+    for (;;) {
+        const Slot end = read<Slot>(foliage, base + 8);
+        if (read<Slot>(foliage, base + 4) > end) host.invalid_parameter();
+        if (cursor == end) return;
+        if (cursor >= read<Slot>(foliage, base + 8)) host.invalid_parameter();
+        visit(*cursor);
+        if (cursor >= read<Slot>(foliage, base + 8)) host.invalid_parameter();
+        ++cursor;
+    }
+}
+
+} // namespace
+
+void render_foliage_groups_00ad7360(void* foliage, void* camera, FoliageRenderHost& host)
+{
+    const auto pass = read<std::int32_t>(camera, 0x198);
+    if (pass != 2 && pass != 7) {
+        walk_checked(foliage, 0x64, host, [&](void* group) { host.render_bush_group(group, camera); });
+    }
+    walk_checked(foliage, 0x54, host, [&](void* entry) { host.clear_entry_nodes(entry); });
+}
+
+void debug_draw_foliage_00ad72a0(void* foliage, FoliageRenderHost& host)
+{
+    walk_checked(foliage, 0x64, host, [&](void* group) { host.debug_draw_bush_group(group); });
+    walk_checked(foliage, 0x54, host, [&](void* entry) { host.debug_draw_entry_group(entry); });
+}
+
+void render_foliage_for_camera_00ad7a30(void* foliage, const void* foliage_global_00f8c210,
+    void* camera, FoliageRenderHost& host)
+{
+    if (camera == nullptr) return;
+    void* const effect = read<void*>(foliage, 0xa4);
+    if (effect == nullptr) {
+        write(foliage, 0xa4, host.load_effect("bush.mshd")); // 00D5D224
+    } else {
+        // FLD32/FSTP32 copies; the third value is FMUL64 0.5 (00D7A280) then a float spill.
+        host.set_effect_float(effect, 0, read<float>(foliage_global_00f8c210, 0x08));
+        host.set_effect_float(read<void*>(foliage, 0xa4), 6, read<float>(foliage_global_00f8c210, 0x08));
+        host.set_effect_float(read<void*>(foliage, 0xa4), 2,
+            static_cast<float>(D(read<float>(foliage_global_00f8c210, 0x08)) * 0.5));
+        host.set_effect_byte_13c(read<void*>(foliage, 0xa4), 1);
+    }
+    if (read<std::uint8_t>(foliage, 0x06) == 0) {
+        host.dispatch_entry_pass(foliage);
+    } else {
+        render_foliage_groups_00ad7360(foliage, camera, host);
+    }
+    if (read<std::uint8_t>(foliage, 0x05) != 0) debug_draw_foliage_00ad72a0(foliage, host);
+}
+
 } // namespace bsp::cc13_shadow

@@ -119,4 +119,57 @@ void fit_and_submit_shadow_slice_00a8ecb0(void* owner, float near_distance, floa
 void fit_shadow_cascade_00a8bd20(void* owner, float near_distance, float far_distance,
     std::int32_t cascade, ShadowFitHost& host);
 
+// ---------------------------------------------------------------------------
+// Foliage system draw (segment 80); the ground-ortho shadow path 00A8E860 and
+// BSP_ShadowMap_UpdateViewFromCamera call it through [00F8C210].
+// ---------------------------------------------------------------------------
+
+class FoliageRenderHost {
+public:
+    virtual ~FoliageRenderHost() = default;
+    // 00BF6713 (_invalid_parameter_noinfo through the checked-iterator tests).
+    // The installed handler may return, and native code then carries on.
+    virtual void invalid_parameter() = 0;
+    // [00F8D394]->vslot 48h(&native string): load an effect by name. The
+    // temporary string is assigned by 0041E870 and returned to the pool after the call.
+    virtual void* load_effect(const char* name) = 0;
+    // 00B40820 BSP_MaterialEffect_SetIndexedFloatBits(ECX effect, index, float bits), RET 8.
+    virtual void set_effect_float(void* effect, std::int32_t index, float value) = 0;
+    // 00B400C0 BSP_MaterialEffect_SetByte13C(ECX effect, byte), RET 4.
+    virtual void set_effect_byte_13c(void* effect, std::uint8_t value) = 0;
+    // 00AD7440 BSP_ShadowOwner_DispatchEntryPass (cc12: dispatch_native_entry_pass_00ad7440).
+    virtual void dispatch_entry_pass(void* owner) = 0;
+    // 00AE4CF0 BSP_BushGroup_Render_Provisional(ECX group, camera), RET 4.
+    virtual void render_bush_group(void* group, void* camera) = 0;
+    // 00AE1C20 BSP_Shadow_ClearNodeArray(ECX entry) (cc12: release_native_shadow_entry_nodes_00ae1c20).
+    virtual void clear_entry_nodes(void* entry) = 0;
+    // 00AE4040 BSP_FoliageGroup_DebugDrawQuadtree(ECX group).
+    virtual void debug_draw_bush_group(void* group) = 0;
+    // 00AE1670 (ECX entry): 00AE15E0(ECX = entry+18h root, entry+0 model).
+    virtual void debug_draw_entry_group(void* entry) = 0;
+};
+
+// 00AD7360, __thiscall(foliage, camera), RET 4. Unless camera +198h is 2 or 7,
+// renders every bush group of the pointer vector at +64h (begin +68h, end +6Ch)
+// with the camera. Then, regardless of that test, it clears the nodes of every
+// entry of the vector at +54h (begin +58h, end +5Ch). The end pointer is reread
+// on every step, and the checked-iterator tests are kept (begin past end,
+// dereference and increment at or past end). The always-false
+// null/same-container tests are not reproduced.
+void render_foliage_groups_00ad7360(void* foliage, void* camera, FoliageRenderHost& host);
+
+// 00AD72A0, __thiscall(foliage), RET. Debug-draws the quadtrees of every +64h
+// group (00AE4040), then of every +54h entry (00AE1670), with the same
+// iterator checks.
+void debug_draw_foliage_00ad72a0(void* foliage, FoliageRenderHost& host);
+
+// 00AD7A30, __thiscall(foliage, camera, float unused), SEH frame, RET 8. Does
+// nothing for a null camera. Otherwise: when effect +A4h is null it loads
+// "bush.mshd" (00D5D224) into it. Otherwise it sets effect floats 0 and 6 to
+// the global foliage system's +08h (separate reads of [00F8C210]), float 2 to
+// +08h * 0.5 rounded to float, and byte 13Ch to 1. Then 00AD7440 when byte +6
+// is clear, else 00AD7360(camera), and 00AD72A0 when byte +5 is set.
+void render_foliage_for_camera_00ad7a30(void* foliage, const void* foliage_global_00f8c210,
+    void* camera, FoliageRenderHost& host);
+
 } // namespace bsp::cc13_shadow

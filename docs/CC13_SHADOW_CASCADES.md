@@ -1,6 +1,6 @@
 # Directional shadow view fitting (cc13-shadow1)
 
-Addresses: 00A8AEB0, 00A8B930, 00A8BD20, 00A8ECB0 (reconstructed); 00AD7A30, 00B1F4D0, 00B1F5E0 (named)
+Addresses: 00A8AEB0, 00A8B930, 00A8BD20, 00A8ECB0, 00AD7A30, 00AD7360, 00AD72A0 (reconstructed); 00B1F4D0, 00B1F5E0, 00AE1670 (named)
 
 Continues the shadow section of docs/CC13_SOUND_STREAMING.md (cc13-audio1), which reconstructed
 the cascade submit 00A8EA20, the two single-view paths 00A8E860/00A8E180, the point projection
@@ -12,8 +12,9 @@ recovered symbols.
 Overlap check: cc12's docs mention 00A8BD20 only as the cascade-setup boundary
 (docs/NATIVE_CAMERA_OWNER_NEXT.md, docs/NATIVE_CAMERA_COMMAND_NEXT.md) and treat 00AD7A30 as the
 incomplete parent of their shadow-entry leaves (docs/NATIVE_SHADOW_ENTRY_ITERATION.md,
-docs/NATIVE_SHADOW_UPDATE_LEAVES.md). No cc12 lease covered these addresses. 00AD7A30 is named
-here only, not reconstructed, so their parent boundary is unchanged.
+docs/NATIVE_SHADOW_UPDATE_LEAVES.md). No cc12 lease covered these addresses. The second batch reconstructs 00AD7A30 and its children
+00AD7360 and 00AD72A0. It calls cc12's complete 00AD7440, 00AE1C20 and setter leaves through
+host methods, so their native bodies stay theirs.
 
 ## Status
 
@@ -23,7 +24,10 @@ here only, not reconstructed, so their parent boundary is unchanged.
 | 00A8AEB0 | BSP_DirectionalShadow_FitSingleView_Provisional | `fit_shadow_box_view_00a8aeb0` | reconstructed, build-tested |
 | 00A8ECB0 | BSP_DirectionalShadow_FitAndSubmitView_Unreferenced | `fit_and_submit_shadow_slice_00a8ecb0` | reconstructed, build-tested |
 | 00A8B930 | BSP_ShadowMath_BuildTrapezoidHomography_Unreferenced | `build_trapezoid_homography_00a8b930` | reconstructed, build-tested |
-| 00AD7A30 | BSP_FoliageSystem_RenderForCamera_Provisional | none | named |
+| 00AD7A30 | BSP_FoliageSystem_RenderForCamera_Provisional | `render_foliage_for_camera_00ad7a30` | reconstructed, build-tested |
+| 00AD7360 | BSP_FoliageSystem_RenderGroups_Provisional | `render_foliage_groups_00ad7360` | reconstructed, build-tested |
+| 00AD72A0 | BSP_FoliageSystem_DebugDraw_Provisional | `debug_draw_foliage_00ad72a0` | reconstructed, build-tested |
+| 00AE1670 | BSP_FoliageEntry_DebugDrawQuadtree_Provisional | none | named |
 | 00B1F4D0 | BSP_RenderCommandQueue_SubmitNamedScene | none | named |
 | 00B1F5E0 | BSP_RenderCommandQueue_SubmitDrawable_Provisional | none | named |
 
@@ -50,7 +54,7 @@ The fitters call these reconstructions directly: `multiply_camera_matrices_00413
 `native_projection_tangent_00412e20` and audio1's `intersect_lines_2d_00a8b860` /
 `project_shadow_point_00a8ac90`. Everything that needs a camera object, the CRT or the render
 queue goes through `ShadowFitHost`. 00B6FC30 (FLD aspect +1C8h, FMUL fov +1C4h, FSTP32) is
-written out inline. `local/sh1_calls.json` lists all 82 modelled call sites, and
+written out inline. `reports/cc13_shadow1_calls.json` lists all 99 modelled call sites (both batches), and
 `tools/verify_report_calls.py` passes on all of them.
 
 ## Owner layout used
@@ -170,7 +174,7 @@ Native details kept:
 - The FLD1 that stays on the x87 stack through the third loop (00A8D665, popped at 00A8D600)
   has no arithmetic effect.
 
-## Named-only callees
+## Callee notes
 
 - 00AD7A30 is __thiscall(ECX = foliage system [00F8C210], camera, float), RET 8. The float slot is
   reused as a spill and is never read. When the camera is non-zero, it either loads "bush.mshd"
@@ -185,6 +189,27 @@ Native details kept:
 - 00B1F5E0 is __thiscall(queue, scene, camera, target, object), SEH, RET 10h. It builds and appends
   the command in the same way, with no name and no traversal. When object +48h & camera +19Ch is
   non-zero, it calls object vslot 20h(command +28h, 0, 1.0f, 0) and uploads.
+
+## Foliage draw (00AD7A30, 00AD7360, 00AD72A0)
+
+The foliage system is the object at [00F8C210]. Fields used: +05h debug-draw byte, +06h byte
+selecting the entry pass (clear) or the group render (set), +08h scalar, +54h and +64h native
+pointer vectors (begin +4, end +8 of each descriptor), and +A4h the bush effect. Host:
+`FoliageRenderHost`.
+
+- 00AD7A30 (ABI and steps in the named-callee notes below; listing 00AD7A30..00AD7B4D). It calls
+  00AD7360 and 00AD72A0 directly. The global is passed in separately, because the native
+  rereads [00F8C210] for each float rather than using ECX.
+- 00AD7360, RET 4. Camera +198h equal to 2 or 7 skips the bush groups (00AE4CF0 makes the same
+  test). The +54h entries are cleared (00AE1C20) in every case.
+- 00AD72A0, RET. Quadtree debug draw of the groups (00AE4040) and the entries (00AE1670 ->
+  00AE15E0, root +18h).
+
+Both loops reread the end pointer on every step and keep the checked-iterator 00BF6713 calls
+(begin past end, then dereference and increment at or past end). The native handler may return,
+and the walk then continues as the native does. The constant `test reg, reg` /
+`cmp reg, reg` container tests are omitted, because their reg is owner+54h or owner+64h and they
+can never fail.
 
 ## Uncertainty
 
@@ -209,8 +234,8 @@ All seven ledger names and evidence comments were applied with `tools/ghidra_ann
   `ShadowCascadeSubmitHost::fit_cascade` / `ShadowSingleViewHost::fit_single_view` once a host
   implements `ShadowFitHost` (camera getters/setters, 00B63F10 look-at, 00B62A10 ortho, 00419510 /
   00419440 with the CRT, 00BF7030).
-- 00AD7A30 and its children 00AD7360 / 00AD72A0 are the remaining foliage parents (cc12 holds
-  00AD7440).
+- Foliage: 00AE4CF0, 00AE4040 and 00AE15E0/00AE0A50 are the remaining callees (00AE4CF0 and 00AE4040
+  are documented in docs/CC13_TERRAIN_RENDER.md).
 - 00B1F4D0 / 00B1F5E0 could join the render-queue reconstructions (00B1F170, 00B1EB80, 00B1CB50
   are already complete in cc12's native slices).
 - A native differential test against the image bodies would move these from build-tested to
