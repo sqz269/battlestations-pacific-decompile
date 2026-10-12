@@ -184,4 +184,8 @@ std::string ocean_live_field_add_landscape_008830aa(const std::string& model_nam
 // switch is off).
 float ocean_live_field_coverage_mask(float x, float z);
 
+// 0078CF20 over the live ocean: the wave height times the coverage mask, rounded
+// once (0078CF69). 0.0 while the switch is off or before a scene was published.
+float ocean_live_field_water_height_0078cf20(float x, float z);
+
 }  // namespace bsp
