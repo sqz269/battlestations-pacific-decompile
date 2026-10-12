@@ -201,6 +201,22 @@ inline constexpr float kGlideDiveAngleLimit = 0.5235987901687622f;  // 00CEC724,
 // release gate above, and it is a latch rather than a per-tick gate. Packet
 // cc8_dive_flyover.
 inline constexpr float kGlidePullOutBearing = 1.5f;                 // 00CE380C, 85.9 deg
+// 009C57D3 MOVSS, the pull-out's arm B ratio bound (cc13-audit7).
+inline constexpr float kGlidePullOutRatio = 0.6000000238418579f;    // 00CE3D30
+// GUNNERY 189 (cc13-audit7 section 9), each OFF until its pair:
+//  * kDiveYawModeZeroBound (defect B): aimglide's yaw arm 009C5420 and the
+//    aimdive tail 009C5E63 store plan+2D4h = 0, so 0099E756 skips the planner
+//    yaw arm 0099E81A that would overwrite the state's 284h. OFF: not set.
+//  * kDiveAimGlideArmsBound (defects A and C): the pull-out latch's arm B
+//    009C57D3 and aimglide's bank scale plan+2E8h = InterpolateClamped(100,
+//    1, 250, 1.5; miss) at 009C5444. OFF: neither.
+//  * kDiveFlyAboveTermsBound (defects C2, D and E): flyabove's plan+2E8h =
+//    1.5 with +18h clear (009C6DF5), C = ctl+398h (009C7AA4 derefs
+//    approach+0Ch unconditionally), and the descent reference's numerator
+//    2 * err (009C6F33), not 2 * A. OFF: the host before section 189.
+inline constexpr bool kDiveYawModeZeroBound = false;
+inline constexpr bool kDiveAimGlideArmsBound = false;
+inline constexpr bool kDiveFlyAboveTermsBound = false;
 // 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
 // path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
 // 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a
@@ -877,20 +893,21 @@ inline constexpr bool kOldStyleBombing1b = false;
 //                                                           009C6EAF `76` JBE
 //   err <= band  : NO 009FB800 - cmd+2BCh = 0.0 with cmd+2D0h = 2, a dead band
 //                  that holds level flight                  009C6F15 `76` JBE
-//   otherwise    : 009FB800(target, min(2 * A / max(A, 1), 0.8))
+//   otherwise    : 009FB800(target, min(2 * err / max(A, 1), 0.8))
 //
 // The two references are the second argument 009FB800 caps its pitch demand
-// with, the same slot 009FBA50 fills for the run-in. On the dive arm A is the
-// planar range in metres and is never under 1, so `2 * A / A` is exactly 2 and
-// the cap at 00CE74F8 takes it: the reference is 0.8 at every geometry this
-// mission produces. That is transcribed rather than folded, because the divisor
-// is only pinned to A by the `1.0 <= A` test at 009C6F1D.
+// with, the same slot 009FBA50 fills for the run-in. CORRECTED (cc13-audit7):
+// the descent numerator is the height error, not A. 009C6F13 FSTP ST1 leaves
+// err in ST0, 009C6F17 FLD A is popped by 009C6F1D FCOMIP and 009C6F1F FSTP
+// ST0, so 009C6F33 FADD ST0,ST0 doubles err. The reference therefore grows with
+// the height error and reaches the 0.8 cap only at err >= 0.4 * max(A, 1).
 //
-// UNCERTAIN, and labelled at the call site: `C`. The image prefers the control
-// block's ordered cruise altitude ctl+398h and falls back to the approach's own
-// base; this host models no control block, so it takes the fall-back. The image
-// is not known to reach the other arm in this mission - approach+0Ch is
-// unit+9D4h (009F9CFC) and nothing in this reconstruction fills it.
+// `C` (SETTLED, cc13-audit7): the image prefers the control block's ordered
+// cruise altitude ctl+398h and falls back to the approach's own base. The
+// fall-back is dead: 009C7A80 dereferences approach+0Ch unconditionally at
+// 009C7AA4/009C7AA7 on every think (and copies ctl+398h to approach+ACh), and
+// the arm runs it before this tick, so the call site passes ctl+398h, which the
+// host keeps as db_begin_alt_ac.
 // ---------------------------------------------------------------------------
 struct DiveBombFlyAboveAltitudeInputs {
     float height_above_aim_b = 0.0f;    // B, 009C6493
@@ -1246,8 +1263,18 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
 // the image. Under-approximating is the safe direction: this latch fires
 // strictly less often than the image's. `bearing_error_abs` is the same
 // [ESP+18h] that DiveBombAimGlideReleaseInputs::bearing_error_18 carries.
-// coverage: partial, arm B (009C57D3-009C57FD) unbound.
+// coverage: arm A here; arm B below (cc13-audit7 walked its three slots).
 bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept;
+// 009C57D3-009C57FD, arm B, reached when arm A did not latch. The slots, walked
+// from frame base E (ESP after the four pushes; the argument slot is E+6Ch):
+//   [E+24h] the 009C5353 ratio (range / throw), not written again;
+//   [E+6Ch] p1, 009C5563's FSTP of the first 00419010 (the ratio arm);
+//   [E+28h] p2, 009C55B0's FSTP of the second 00419010 (the height arm).
+// Latch when 0.6 (00CE3D30) > ratio, unit+C64h < 0 (009C57E8 against the
+// XORPS zero of 009C562D/009C57AF), and p2 > p1 (009C57F9 FCOMIP, JBE).
+// tools/x87_sym.py 009C5180 confirms the three operands.
+bool dive_bomb_aimglide_pull_out_arm_b_009c57d3(float ratio_24, float pitch_c64,
+                                                float p1, float p2) noexcept;
 
 // 009C6A37-009C6A7F, the symmetric dead band on the signed bearing error E,
 // half-width T. 009C6A46's JBE skips the whole arm when T <= 0, and there the
