@@ -15077,3 +15077,19 @@ made is killed in step 2.
   4 and 8 (E1 had 8 and 17). The one-frame stage-init shift remains, so the row may still move slightly (exit 3).
 - JM06: as in E1, the scripted Gato kill moves by one frame; nothing else.
 - USNOS: identical (exit 0 or 1). A mechanism failure is JM05 still playing `Intro_dlg_a..c`, or USNOS moving.
+
+**Pairs on `ca93f2dcb`** (`local\l50_F0` OFF, `local\l50_F1` ON; 3000 frames, `local\l50_F{0,1}_{j5,j6,usnos}.log`):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | `StartDialog` calls 4 = 4 (Intro2, Cap_range, Map_hint1, RadarHint1; E1 had 8 with `Intro_dlg_a..d`); `engine movie stop: 0046B730 killed 1 script entity`; deaths 16 = 16, the airfield's sqn01 dies 0.3-1.9 s later; shots 2028 -> 2214 (the same numbers as E1) |
+| JM06 | 3, moved | one script entity killed; the scripted Gato kill moves 0.00 -> 0.05 s; hits 149 -> 150 |
+| USNOS (control) | 1, gameplay identical | only the known ShipAiClearance / ShipAiSectorScan noise |
+
+- **What still moves JM05.** Not the dialogs: every stage-init action is one frame later (`AddUntouchableUnit` at
+  t 0.05 instead of 0.00, the ships' first AI state picks), plus `luaEngineMovieInit`'s own `MissionNarrative` and
+  music level. That is the LABELLED skip at the first frame, which the prediction allowed.
+- **Verdict: ON.** The mechanism matches every prediction: the intro timers die, the dialog count returns to OFF's,
+  and the control is identical. Remaining substitutions, all LABELLED: the player skips on the movie's first frame
+  (the no-skip path plays the 90 s / 43 s movie, `0045F970` and `004560E0`, not wired); the scene units are not
+  killed and re-created; the ten `00874D00` steps and the class-table resets are records.

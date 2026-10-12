@@ -440,8 +440,10 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // pass runs for the script entities (class 3, not in the +158h set), so the
 // luaEngineMovieInit timers die before stage init (5fp); the scene units'
 // re-create and the ten 00874D00 steps stay records. False: the mode-8 arm
-// runs at load, as before.
-inline constexpr bool kEngineMovieEntryBound = false;
+// runs at load, as before. ON (5fp): JM05's StartDialog calls stay at OFF's 4
+// (no Intro_dlg_a..d), one script entity is killed on JM05 and JM06, and both
+// rows move by the one-frame stage-init shift; USNOS is gameplay-identical.
+inline constexpr bool kEngineMovieEntryBound = true;
 
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag
