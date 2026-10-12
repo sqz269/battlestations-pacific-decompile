@@ -204,3 +204,23 @@ Next steps if anyone continues: name `004FB1F0` (in-place ASCII upper-case of a
 NativeString, used by `00BEFCB0`), `00BD2180` (error reporter singleton getter) and
 `00BD2B30` (fatal error caller of `BSP_ErrorReporter_Fail`), and `00A77730`. Wiring the
 TGA codec into a host would let the terrain path use `decode_tga_00befdc0` directly.
+
+## `_free` flow repairs (2026-10-12)
+
+cc13-flowfix1 skipped three `_free` (`00BF65AC`) call sites inside this lease that still
+carried a `CALL_RETURN` override: `00BE98CB`, `00BED8DB`, `00BF153B`. None lay in a Ghidra
+function. Following `docs/CC13_FREE_FLOW_REPAIR.md` (step 3 and the outside-function case),
+each override was checked (instruction present, Ghidra bytes equal disk, rel32 CALL to
+`_free`), cleared to NONE under the write lock, and site+5 disassembled. Each site turned
+out to sit in an undefined slot-0 scalar-deleting destructor of a singleton base, so the
+three bodies were then defined with `tools/ghidra_define_function.py` (no previous name,
+comment or prototype to preserve):
+
+| Body | Name | Publication cleared | Vtable slot |
+| --- | --- | --- | --- |
+| 00BE98B0..00BE98D8 | BSP_FingerprintPayloadBase_ScalarDelete | 0109DB78 | 00D68BB0 |
+| 00BED8C0..00BED8E8 | BSP_PhysicalDirectoryFactoryBase_ScalarDelete | 0109DBE8 | 00D68CF4 |
+| 00BF1520..00BF1548 | BSP_ErrorReporterBase_ScalarDelete | 0109DBDC | 00D68E18 |
+
+The decompiles now show the `return` after the conditional `_free`. Event rows are in the
+worktree's `local/fi1_ff_events.jsonl`; definitions in `reports/cc13_files1_defined_functions.json`.
