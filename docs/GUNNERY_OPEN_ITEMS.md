@@ -12691,3 +12691,24 @@ are not repeated here.
 - **This installation's data:** its modded "Yamato 1945 Type 3 Flak Bullet" row (`bulletclasses.lua` arcade 2657,
   realistic 2613) has FlyTime 10, BlastRange 4500 and damage 3500-4000 (cc13). With the burst ON it dominates any
   mission that arms it; that is the installation's data, recorded as such.
+
+## 189. cc13-audit7's plane-state diff behind three switches: `kDiveYawModeZeroBound` (B), `kDiveAimGlideArmsBound` (A, C) and `kDiveFlyAboveTermsBound` (C2, D, E) (lead queue; cc9-gunnery36, 2026-10-12; committed OFF)
+
+**The diff** is docs/CC13_AUDIT_PLANE_BOT_STATES_2.md section 9, applied as written, then put behind three OFF
+switches in `include/bsp/dive_bomb_task.hpp` (`bsp::dive_bomb_constant`); the doc corrections it makes to the
+header comments (E's numerator, C settled) are kept as written. The reads are cc13's.
+- **B** (`kDiveYawModeZeroBound`): aimglide's yaw arm (`009C5420`) and the aimdive tail (`009C5E63`) set
+  `gl_yaw_mode_2d4_zero`, so the planner's yaw arm `0099E81A` no longer overwrites the state's `284h` each think.
+- **A, C** (`kDiveAimGlideArmsBound`): the pull-out latch's arm B (`009C57D3`) and aimglide's bank scale
+  `plan+2E8h = InterpolateClamped(100, 1, 250, 1.5; miss)` (`009C5444`).
+- **C2, D, E** (`kDiveFlyAboveTermsBound`): flyabove's `plan+2E8h = 1.5` with `+18h` clear (`009C6DF5`); `C` =
+  `ctl+398h` (`db_begin_alt_ac`); and the descent reference `min(2 err / max(A, 1), 0.8)` (`009C6F33`).
+- Not in this section: audit9's fly-over diff (CC13_AUDIT_PLANE_BOT_STATES_3.md), which is based on this diff
+  applied without switches and does not apply over the switched form; it is handed off (see the handoff).
+
+**Predictions (before any pair).**
+- B: every dive-bomb yaw command now survives the planner, so aimglide and aimdive steer laterally as commanded:
+  the cross-track error at release should shrink and USN04 phase 2's dive-bomb releases should rise (cc13's
+  candidate for 175(a)). Exit 3 on every dive row; the USN01 win may move.
+- A/C/D/E: aimglide banks up to 1.5x harder on a wide miss and can latch the pull-out by arm B; flyabove's bank scale
+  is 1.5 and its descent reference smaller for small height errors (slower descents). Exit 3 on dive rows.

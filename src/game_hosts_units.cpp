@@ -23756,12 +23756,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_heading_2c0_written = false;
                                 unit_.plan_slots[bsp::kPilotSlotYaw].desired = st.yaw_284;
                                 unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                                // 009C5420 plan+2D4h = 0: 0099E756 then skips
+                                // the planner's yaw arm 0099E81A, which would
+                                // overwrite the 284h just written.
+                                if constexpr (bsp::dive_bomb_constant::kDiveYawModeZeroBound) {
+                                    unit_.gl_yaw_mode_2d4_zero = true;
+                                }
                             }
                         }
                         if (r.wrote_heading && !glide_yaw_arm) {
                             unit_.plan_heading_2c0 = r.heading_2c0;
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                            // 009C5444-009C547E: the same arm writes the bank
+                            // scale plan+2E8h = InterpolateClamped(100 (00CE3D08),
+                            // 1, 250 (00CE77B0), 1.5 (00CE380C), miss [ESP+1Ch]);
+                            // 0099B52C reseeds 1.0 every think.
+                            if constexpr (bsp::dive_bomb_constant::kDiveAimGlideArmsBound) {
+                            unit_.plan_state.turn_scale_2e8 =
+                                bsp::clamped_interpolate_00419010(
+                                    100.0f, 1.0f, 250.0f, 1.5f,
+                                    unit_.db_impact_planar_5c);
+                            }
                         }
                         if (kAimGlideThrottleBound) {
                             // [ESP+10h] is the planar distance to the fed aim
@@ -23803,6 +23819,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_target_2bc = gp.pitch_target_2bc;
                             unit_.plan_state.pitch_mode_2d0 =
                                 bsp::dive_bomb_glide_pitch_constant::kPitchMode;
+                            // 009C57D3-009C57FD, the pull-out latch's arm B:
+                            // [ESP+24h] is the 009C5353 ratio, [ESP+6Ch] p1
+                            // (009C5563) and [ESP+28h] p2 (009C55B0).
+                            if (bsp::dive_bomb_constant::kDiveAimGlideArmsBound &&
+                                !unit_.db_aimglide_pull_out_76c &&
+                                bsp::dive_bomb_aimglide_pull_out_arm_b_009c57d3(
+                                    pin.ratio_24, unit_.plane_pitch_angle_c64,
+                                    gp.p1, gp.p2)) {
+                                unit_.db_aimglide_pull_out_76c = true;
+                                ++unit_.db_aimglide_pull_outs;
+                            }
                         }
                     }
 
@@ -23843,11 +23870,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // point, the same quantity 009C7A80 keeps in
                             // approach+BCh; the flyabove recomputes it locally.
                             ain.planar_distance = unit_.db_planar_bc;
-                            // SUBSTITUTION, labelled: approach+0Ch is unit+9D4h
-                            // and nothing in this reconstruction fills it, so
-                            // the arm takes 009C64B2's fall-back. The ordered
-                            // cruise altitude ctl+398h is unreachable here.
-                            ain.has_control_block_0c = false;
+                            // approach+0Ch is never null here: 009C7A80 reads
+                            // [approach+0Ch]+398h unconditionally at
+                            // 009C7AA4/009C7AA7 every think, before this tick
+                            // (009C87EA precedes 009C884C), and copies it to
+                            // approach+ACh. So 009C64A8 always takes ctl+398h,
+                            // which is db_begin_alt_ac this think; the 009C64B2
+                            // fall-back (ACh + 50h) is never taken.
+                            ain.has_control_block_0c = bsp::dive_bomb_constant::kDiveFlyAboveTermsBound;
+                            if constexpr (bsp::dive_bomb_constant::kDiveFlyAboveTermsBound) {
+                                ain.cruise_altitude_398 = unit_.db_begin_alt_ac;
+                            }
                             const bsp::DiveBombFlyAboveAltitudeCommand a =
                                 bsp::dive_bomb_flyabove_altitude_009c6e10(ain);
                             ++unit_.db_fa_alt_calls;
@@ -24047,6 +24080,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
                         }
+                        // 009C6DF5-009C6E08: with flyabove+18h clear the bank
+                        // scale plan+2E8h is 1.5 (00CE380C), whether or not the
+                        // heading was written. The 1.4 (00D06874) store at
+                        // 009C683A, on the 009C67BF-009C6829 roll-in path, is
+                        // not modelled here.
+                        if (bsp::dive_bomb_constant::kDiveFlyAboveTermsBound && !unit_.db_flyabove_can_dive_18) {
+                            unit_.plan_state.turn_scale_2e8 = 1.5f;
+                        }
                     }
 
                     // 009C58D0's steering, the part of the aimdive tick that
@@ -24187,6 +24228,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C5E5D, 009C5E3F, 009C5E63 (+2D4h = 0).
                             unit_.plan_slots[bsp::kPilotSlotYaw].desired = tail.yaw_284;
                             unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            // 009C5E63 is that +2D4h = 0: without it the
+                            // planner's yaw arm 0099E81A overwrites the 284h.
+                            if constexpr (bsp::dive_bomb_constant::kDiveYawModeZeroBound) {
+                                unit_.gl_yaw_mode_2d4_zero = true;
+                            }
                             // 009C605F/009C5F37 and 009C606A.
                             unit_.plan_slots[bsp::kPilotSlotThrottle].desired = tail.throttle_278;
                             unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
