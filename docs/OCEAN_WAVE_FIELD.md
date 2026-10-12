@@ -719,3 +719,9 @@ floatplanes and flying boats: M6A Seiran, OS2U Kingfisher, PBY Catalina, F1M Pet
 A6M-N Rufe, Black Cat (local\p3_minwater.py). In the logs on disk the only live state-6 entry is JM08's "Movie
 Mavis" (alive, MinWaterSpd 0, cc9-gunnery35 g35_*_jm08 logs), a scripted alighting. No win row and no torpedo row
 has one. Not bound: the binding would be the whole `007DCDD0` law with an unread arm, and nothing scored reaches it.
+## 22. Section 21's gap, closed (cc9-physics4, 2026-10-12)
+
+The state-6 arm `007CBA50` -> `007DCDD0` is read whole and bound: `kPlaneWaterSurfaceLawBound`, ON at
+`25d13aa63` (docs/WATER_SURFACE_LAW.md sections 10-12). `007DC426`-`007DC64A` is read. USN01 and ESMP08
+pairs are gameplay identical; only the wrecks move. `0078D6C0` (the menu burst's water crossing) stays
+unbound: not gameplay.
