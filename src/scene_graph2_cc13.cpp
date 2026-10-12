@@ -4,6 +4,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <stdexcept>
 
 // Segments 88/91, second scene-graph pass (cc13-scene2). Evidence and ABIs:
 // docs/CC13_SCENE_2.md. x87 expressions are evaluated in double and rounded to float
@@ -903,5 +904,548 @@ void flare_update_00b8d150(FlareView& flare, FlareCameraView& camera, float dt, 
     s.unlock_stream0(flare, 0);
     s.set_visibility_00b6da70(flare, 1.0f, false);
 }
+
+void flare_construct_00b8d9c0(void* self, FlareStorage& f, void* parent, float duration, bool flag,
+    FlareLifetimeServices& s) {
+    s.construct_generated_model_00b75030(self, "flare");  // temporary NativeString, returned to the pool after
+    f.vtable = 0x00D63420;
+    f.elements.clear();
+    f.ref_1cc = nullptr;
+    s.set_parent_00b6e680(self, parent);
+    f.timer_1c4 = 0.0f;
+    f.flag_1c8 = flag;
+    f.query_total_1d4 = nullptr;
+    f.query_visible_1d0 = nullptr;
+    f.duration_1c0 = duration;
+}
+
+void flare_destruct_00b8d8c0(void* self, FlareStorage& f, FlareLifetimeServices& s) {
+    f.vtable = 0x00D63420;
+    for (void** slot : {&f.ref_1cc, &f.query_visible_1d0, &f.query_total_1d4}) {
+        if (*slot) {
+            s.release_ref(*slot);
+            *slot = nullptr;
+        }
+    }
+    f.elements.clear();  // 0086AA10(0), then _free of the data pointer
+    f.elements.shrink_to_fit();
+    s.destroy_model_00b750c0(self);
+}
+
+void* flare_scalar_delete_00b8d9a0(void* self, FlareStorage& f, std::uint32_t flags, FlareLifetimeServices& s) {
+    flare_destruct_00b8d8c0(self, f, s);
+    if (flags & 1) s.pool_free_00b8c3a0(self);
+    return self;
+}
+
+void* flare_operator_new_00b8d840(FlareLifetimeServices& s) { return s.pool_allocate_00b8d700(); }
+void flare_operator_delete_00b8c6a0(void* p, FlareLifetimeServices& s) { s.pool_free_00b8c3a0(p); }
+
+void assign_element_pointers_00b8d850(PointerArray& dst, const PointerArray& src,
+    const std::function<void(PointerArray&, std::int32_t)>& resize,
+    const std::function<void(PointerArray&, std::int32_t)>& reserve) {
+    resize(dst, 0);
+    reserve(dst, src.count);
+    for (std::int32_t i = 0; i < src.count; ++i)
+        array_push_back_via_reserve(dst, src.data[i], capacity_double_min_one, reserve);
+}
+
+void flare_initialize_occlusion_00b8dac0(void* flare, FlareStorage& f, FlareOcclusionServices& s) {
+    void* material = s.create_material_00535320("flareocclusion.mshd");
+    void* mesh = s.create_mesh_object();
+    void* decl = s.create_declaration("simplecolor2.mvfm");
+    void* vertices = s.create_vertex_buffer(9, 1, decl);
+    s.release_ref(decl);
+    s.set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    s.release_ref(vertices);
+    void* indices = s.create_index_buffer(0x18, 1, 0x65);
+    s.set_index_stream_00b73b70(mesh, indices);
+    s.release_ref(indices);
+    void* section = s.create_draw_section_00533fa0();
+    s.set_section_fields(section, 4, 0, 9, 0, 8);
+    s.set_section_material_00b864c0(section, material);
+    s.rebuild_section_layout_00b865a0(section, mesh);
+    s.append_section_00b73c60(mesh, section);
+    s.release_ref(section);
+    const float radii[2] = {1.0f, 1.0f};  // [00D7A24C]
+    s.write_disc_fan_00b8b980(flare, mesh, radii, 8);
+    s.set_model_geometry_00b75170(flare, 1, mesh, -1.0f, -1.0f);  // [00D7A260]
+    s.release_ref(mesh);
+    s.release_ref(material);
+    f.query_visible_1d0 = s.create_query();
+    f.query_total_1d4 = s.create_query();
+}
+
+// ---------------------------------------------------------------------------
+// Mit pools.
+
+void mit_pool_construct(MitPoolOwner& pool, MitAllocatorListElem*& list_head_00e188b4, std::uint32_t vtable) {
+    pool.vtable = 0x00D7A0C0;
+    pool.link.prev = nullptr;
+    pool.link.next = list_head_00e188b4;
+    if (list_head_00e188b4) list_head_00e188b4->prev = &pool.link;
+    list_head_00e188b4 = &pool.link;
+    pool.vtable = vtable;
+    pool.recursion_24 = 0;  // after InitializeCriticalSection(+0Ch)
+    pool.blocks = NativeArray<MitBlockModel*>{};
+    pool.current_34 = -1;
+    if (static_cast<std::uint32_t>(pool.blocks.capacity) < 32) array_reallocate_exact(pool.blocks, 32);
+}
+
+void mit_pool_destruct(MitPoolOwner& pool, MitAllocatorListElem*& list_head_00e188b4) {
+    for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(pool.blocks.count); ++i) delete pool.blocks.data[i];
+    if (pool.blocks.data) ::operator delete(pool.blocks.data);
+    while (pool.recursion_24 > 0) --pool.recursion_24;  // LeaveCriticalSection per level, then Delete
+    pool.vtable = 0x00D7A0C0;
+    if (!pool.link.prev) list_head_00e188b4 = pool.link.next;
+    else pool.link.prev->next = pool.link.next;
+    if (pool.link.next) pool.link.next->prev = pool.link.prev;
+}
+
+void mit_pool_init_block(MitBlockModel& block, std::uint32_t index) {
+    block.free_count = 32;
+    block.slot_block_index.assign(32, index);
+    for (int i = 0; i < 32; ++i) block.stack[i] = static_cast<std::uint16_t>(31 - i);
+}
+
+namespace {
+
+constexpr MitPoolThunk kMitPoolThunks[] = {
+    {0x00B90470, 0x01090358, 0x00B90020},  // skin model operator delete
+    {0x00B90480, 0x01090390, 0x00B90150},  // bone model operator delete
+    {0x00B91BF0, 0x010903F0, 0x00B90020},  // quadtree node operator delete
+    {0x00B8C6A0, 0x010902A8, 0x00B8C3A0},  // flare operator delete
+    {0x00B8D840, 0x010902A8, 0x00B8D700},  // flare operator new (JMP)
+};
+
+constexpr ResourceItemConstructor kResourceItemConstructors[] = {
+    {0x00B8A780, 0x00D6328C, 2, 3},
+    {0x00B8A850, 0x00D632B8, 2, 2},
+    {0x00B8AA10, 0x00D632DC, 4, 2},
+    {0x00B92E70, 0x00D63700, 3, 3},
+};
+
+constexpr ModelWordsConstructor kModelWordsConstructors[] = {
+    {0x00B91220, 0x00D63590, 3},  // bone model: +184h..+18Ch
+    {0x00B915E0, 0x00D635F0, 4},  // skin model: +184h..+190h
+};
+
+}  // namespace
+
+const MitPoolThunk* find_mit_pool_thunk(std::uint32_t address) noexcept {
+    for (const MitPoolThunk& t : kMitPoolThunks)
+        if (t.address == address) return &t;
+    return nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// Resource items, tracks and group parameters.
+
+const ResourceItemConstructor* find_resource_item_constructor(std::uint32_t address) noexcept {
+    for (const ResourceItemConstructor& c : kResourceItemConstructors)
+        if (c.address == address) return &c;
+    return nullptr;
+}
+
+void construct_resource_item(std::uint32_t address, std::uint32_t words[8],
+    const std::function<void()>& construct_reference_base) {
+    const ResourceItemConstructor* c = find_resource_item_constructor(address);
+    if (!c) return;
+    construct_reference_base();
+    words[0] = c->vtable;
+    for (int i = 0; i < c->zero_count; ++i) words[c->zero_first + i] = 0;
+}
+
+void construct_mesh_resource(std::uint32_t address, MeshResourceWords& out, RefCounted* mesh, std::uint32_t word,
+    const std::function<void()>& construct_reference_base) {
+    construct_reference_base();
+    out.mesh_08 = mesh;
+    out.vtable = 0x00D63738;
+    out.word_0c = word;
+    ++mesh->refcount;
+    if (address == 0x00B93980) out.vtable = 0x00D6375C;
+    else if (address == 0x00B93A00) out.vtable = 0x00D63780;
+}
+
+void truncate_float_to_field_20_00b8b940(std::int32_t& field_20, float value) {
+    field_20 = static_cast<std::int32_t>(static_cast<std::int64_t>(value));
+}
+
+void copy_track_range_00b8e730(const float track_08[4], float out[4]) {
+    for (int i = 0; i < 4; ++i) out[i] = track_08[i];
+}
+
+void copy_track_key_block_00b8e750(const float track_18[6], float out[6]) {
+    for (int i = 0; i < 6; ++i) out[i] = track_18[i];
+}
+
+void group_params_apply_00b8eb20(float params_08, float& node_184, bool node_is_group) {
+    if (node_is_group) node_184 = params_08;
+}
+
+// ---------------------------------------------------------------------------
+// Groups.
+
+float lod_fade_from_projected_sphere(float projected_z, float projected_w, float camera_4c) {
+    const float d = projected_z > 0.01f ? projected_z : 0.01f;  // COMISS + JBE: NaN takes 0.01
+    const float q = std::fabs(f(static_cast<double>(projected_w) / d));
+    float k = f(1.0 - static_cast<double>(camera_4c) * q);
+    if (0.0f > k) k = 0.0f;
+    else if (k > 1.0f) k = 1.0f;
+    return k;
+}
+
+void group_render_00b8ef10(void* group, float visibility_ac, float threshold_184, std::uint8_t byte_138,
+    void* context, void* cull_camera, void* view_camera, float alpha, std::uint32_t flags,
+    const std::vector<GroupChildView>& children, GroupRenderServices& s) {
+    if (!(visibility_ac > 0.0f)) return;
+    std::uint32_t result = flags;
+    if ((flags & 0x555u) != 0x555u && (byte_138 & 3)) result = s.classify_sphere_00b71530(cull_camera, group);
+    if (result == 0xAAAu) return;
+    float z = 0, w = 0;
+    s.project_sphere(view_camera, group, z, w);
+    const float k = lod_fade_from_projected_sphere(z, w, s.view_camera_lod_4c(view_camera));
+    if (!(threshold_184 > k)) return;
+    const std::uint32_t mask = s.cull_camera_mask_19c(cull_camera);
+    for (const GroupChildView& c : children)
+        if (mask & c.mask_48)
+            s.render_child_slot_20(c.object, context, k, f(static_cast<double>(visibility_ac) * alpha), flags);
+}
+
+void group_detach_nodes_00b8f090(SceneNode& group, std::vector<void**>& attached_a0,
+    const std::function<void(SceneNode&)>& detach_children) {
+    detach_children(group);
+    while (!attached_a0.empty()) {
+        *attached_a0.back() = nullptr;
+        attached_a0.pop_back();
+    }
+}
+
+void group_move_typed_children_last_00b8f6f0(GroupSibling& group) {
+    GroupSibling* moved = nullptr;
+    for (GroupSibling* p = group.first; p;) {
+        GroupSibling* next = p->next;
+        if (p->movable) {
+            if (!p->prev) {
+                if (p->parent) p->parent->first = p->next;
+            } else {
+                p->prev->next = p->next;
+            }
+            if (p->next) p->next->prev = p->prev;
+            p->next = moved;
+            p->prev = nullptr;
+            if (moved) moved->prev = p;
+            moved = p;
+        }
+        p = next;
+    }
+    if (!moved) return;
+    GroupSibling* last = group.first;
+    if (!last) throw std::logic_error("00B8F6F0 reads [first child + 3Ch] with no child left");
+    while (last->next) last = last->next;
+    last->next = moved;
+    moved->prev = last;
+}
+
+void* group_clone_00b8f6f0(void* source, GroupSibling& children, const std::string& name, std::uint32_t flags,
+    void* parent, GroupCloneServices& s) {
+    group_move_typed_children_last_00b8f6f0(children);
+    void* slot = s.allocate_group_00b8f310();
+    void* clone = slot ? s.construct_group_00b8f5e0(slot, name) : nullptr;
+    s.copy_clone_base_state_00b6f150(source, clone, flags, parent);
+    s.copy_bytes_174_175(source, clone);
+    return clone;
+}
+
+// ---------------------------------------------------------------------------
+// Skin and bone models.
+
+void* skin_model_clone_00b8f960(const std::string& name, const std::function<void*()>& allocate_node,
+    const std::function<void*(void*, const std::string&)>& construct_node) {
+    void* slot = allocate_node();
+    return slot ? construct_node(slot, name) : nullptr;
+}
+
+void skin_model_update_animator_00b8fde0(void* model, const float*& frame_190, std::int32_t channel, float time,
+    std::int32_t flag, SkinModelAnimServices& s) {
+    void* animator = s.animator_130(model);
+    if (animator && s.animator_is_optimized(animator)) frame_190 = s.baked_frame_00b92500(animator, channel, time);
+    else frame_190 = nullptr;
+    s.apply_animation_00b6e150(model, channel, time, flag);
+}
+
+void animated_transform_construct_00b8fe50(AnimatedTransform& t) {
+    for (std::uint32_t& w : t.words) w = 0;
+    for (int i = 0; i < 16; ++i) t.matrix_20[i] = (i % 5 == 0) ? 1.0f : 0.0f;  // 004134F0 copy of identity
+}
+
+float skin_model_render_fade_00b90490(bool has_a0, float fade, float projected_z, float projected_w, float camera_4c) {
+    return has_a0 ? lod_fade_from_projected_sphere(projected_z, projected_w, camera_4c) : fade;
+}
+
+const ModelWordsConstructor* find_model_words_constructor(std::uint32_t address) noexcept {
+    for (const ModelWordsConstructor& c : kModelWordsConstructors)
+        if (c.address == address) return &c;
+    return nullptr;
+}
+
+void release_node_holder_00b917b0(void*& holder, const std::function<void(void*)>& unlink_and_release) {
+    if (holder) {
+        unlink_and_release(holder);
+        holder = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Quadtree.
+
+std::int32_t quadtree_clip_range_00b917d0(const QuadAabb& box, float a, float b, float c, float d) {
+    // FCOMIP + JBE selections: (hi > lo) ? lo : hi and (lo > hi) ? lo : hi keep the second
+    // operand on an unordered compare, as the native branches do.
+    auto smaller = [](float lo, float hi) { return hi > lo ? lo : hi; };
+    auto larger = [](float lo, float hi) { return lo > hi ? lo : hi; };
+    float nx, px, nz, pz;
+    if (a >= 0.0f) {  // COMISS + JB: NaN takes the negative arm
+        nx = smaller(box.min[0], box.max[0]);
+        px = larger(box.min[0], box.max[0]);
+    } else {
+        nx = box.min[0] > box.max[0] ? box.min[0] : box.max[0];
+        px = box.max[0] > box.min[0] ? box.min[0] : box.max[0];
+    }
+    const float ny = b >= 0.0f ? box.min[1] : box.max[1];
+    const float py = b >= 0.0f ? box.max[1] : box.min[1];
+    if (c >= 0.0f) {
+        nz = smaller(box.min[2], box.max[2]);
+        pz = larger(box.min[2], box.max[2]);
+    } else {
+        nz = box.min[2] > box.max[2] ? box.min[2] : box.max[2];
+        pz = box.max[2] > box.min[2] ? box.min[2] : box.max[2];
+    }
+    const float far_sum = f((static_cast<double>(b) * py + static_cast<double>(a) * px) + static_cast<double>(c) * pz);
+    const float far_dist = f(static_cast<double>(far_sum) - d);
+    if (0.0f > far_dist) return 0;
+    const float near_sum = f((static_cast<double>(a) * nx + static_cast<double>(b) * ny) + static_cast<double>(c) * nz);
+    const float near_dist = f(static_cast<double>(near_sum) - d);
+    return near_dist > 0.0f ? 1 : 10;
+}
+
+void quadtree_render_00b91a50(void* node, const QuadAabb& box, void* context, float a, float b, std::uint32_t flags,
+    QuadRenderServices& s) {
+    if (!(s.node_mask_48(node) & s.cull_camera_mask_19c(context))) return;
+    std::uint32_t out_flags = flags;
+    if ((flags & 0x555u) != 0x555u) {
+        std::uint32_t n = s.plane_count(context);
+        if (n > 6) n = 6;
+        std::int32_t sum = 0;
+        if (n > 0) {
+            for (std::int32_t i = static_cast<std::int32_t>(n) - 1; i >= 0; --i) {
+                float p[4];
+                s.plane(context, static_cast<std::uint32_t>(i), p);
+                const std::int32_t r = quadtree_clip_range_00b917d0(box, p[0], p[1], p[2], p[3]);
+                if (r == 0) return;
+                sum += r;
+            }
+            if (sum == 6) out_flags = flags | 0x555u;
+        }
+    }
+    s.render_children_00b6d990(node, context, a, b, out_flags);
+}
+
+void quadtree_include_child_bounds_00b91b20(void* node, QuadAabb& box, QuadBoundsServices& s) {
+    if (s.is_generated_model(node)) {
+        const float v = s.visibility_ac(node);
+        if (!(v == 0.0f)) {  // UCOMISS/LAHF: NaN counts as non-zero
+            QuadAabb w{};
+            s.world_box(node, w);
+            if (-100.0 > static_cast<double>(w.min[1])) w.min[1] = -100.0f;
+            s.include_point_00427d10(box, w.min);
+            s.include_point_00427d10(box, w.max);
+        }
+    }
+    for (void* c : s.children(node))
+        if (s.tagged_bit30(c)) quadtree_include_child_bounds_00b91b20(c, box, s);
+}
+
+void quadtree_build_00b91d70(void* node, QuadBuildServices& s) {
+    QuadAabb& own = s.bounds(node);
+    if (s.level_178(node) == 0) {
+        for (int i = 0; i < 3; ++i) {
+            own.min[i] = 1e10f;   // [00CE4970]
+            own.max[i] = -1e10f;  // [00CE4ADC]
+        }
+        std::uint32_t tagged = 0;
+        for (void* c : s.children(node))
+            if (s.tagged_bit30(c)) {
+                s.include_child_bounds_00b91b20(c, own);
+                ++tagged;
+            }
+        s.set_leaf_174(node, false);
+        if (tagged < 10) return;
+    } else if (s.child_count_38(node) < 5 || s.level_178(node) > 6) {
+        s.set_leaf_174(node, true);
+        return;
+    }
+    s.set_leaf_174(node, false);
+    void* quads[2];
+    for (int i = 0; i < 2; ++i) quads[i] = s.create_quad_child(node, s.level_178(node) + 1);
+    float sum_x = 0.0f, sum_z = 0.0f;
+    std::uint32_t count = 0;
+    for (void* c : s.children(node)) {
+        if (!s.tagged_bit30(c)) continue;
+        float p[3];
+        s.world_position(c, p);
+        ++count;
+        sum_x = f(static_cast<double>(p[0]) + sum_x);
+        sum_z = f(static_cast<double>(p[2]) + sum_z);
+    }
+    const float n = f(static_cast<double>(count));  // FILD + 2^32 when negative
+    const float mean_x = f(static_cast<double>(sum_x) / n);
+    const float mean_z = f(static_cast<double>(sum_z) / n);
+    const double extent_x = static_cast<double>(own.max[0]) - own.min[0];
+    const double extent_z = static_cast<double>(own.max[2]) - own.min[2];
+    float nx, nz, mean;
+    if (extent_x < extent_z) {
+        nx = 0.0f;
+        nz = 1.0f;
+        mean = mean_z;
+    } else {
+        nx = 1.0f;
+        nz = 0.0f;
+        mean = mean_x;
+    }
+    for (void* q : quads) {
+        QuadAabb& b = s.bounds(q);
+        for (int i = 0; i < 3; ++i) {
+            b.min[i] = 1e10f;
+            b.max[i] = -1e10f;
+        }
+    }
+    std::vector<void*> tagged;  // gathered first: re-parenting edits the sibling chain
+    for (void* c : s.children(node))
+        if (s.tagged_bit30(c)) tagged.push_back(c);
+    for (void* c : tagged) {
+        if (!s.tagged_bit30(c)) continue;
+        float p[3];
+        s.world_position(c, p);
+        const float dot = f((static_cast<double>(p[0]) * nx + static_cast<double>(p[1]) * 0.0) + static_cast<double>(p[2]) * nz);
+        const float dist = f(static_cast<double>(dot) - mean);
+        void* target = dist >= 0.0f ? quads[0] : quads[1];  // FCOMIP + JAE: NaN goes to the second
+        s.include_child_bounds_00b91b20(c, s.bounds(target));
+        s.set_parent_00b6e680(c, target);
+    }
+    for (void*& q : quads) {
+        if (s.child_count_38(q) == 0) {
+            if (q) {
+                s.unlink_and_release_00b6dfa0(q);
+                q = nullptr;
+            }
+        } else {
+            s.set_parent_00b6e680(q, node);
+            quadtree_build_00b91d70(q, s);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Animation values, model creation, readers and small containers.
+
+void push_back_animation_value_00b92650(NativeArray<AnimValue>& a, const AnimValue& v,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve) {
+    array_push_back_via_reserve(a, v, capacity_double_min_one, reserve);
+}
+
+void clear_animation_values_00b926a0(NativeArray<AnimValue>& a,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve) {
+    if (a.capacity < 0) reserve(a, 0);
+    a.count = 0;
+}
+
+void destroy_animation_values_00b92790(NativeArray<AnimValue>& a,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve) {
+    clear_animation_values_00b926a0(a, reserve);
+    ::operator delete(a.data);
+}
+
+void* create_model_from_resource(const std::function<void*()>& allocate,
+    const std::function<void*(void*)>& construct) {
+    void* slot = allocate();
+    return slot ? construct(slot) : nullptr;
+}
+
+void read_element_params_00b934d0(std::int32_t& element_index_08, StructuredReader& reader, bool with_extra,
+    const std::function<void(std::int32_t)>& lookup_element) {
+    lookup_element(element_index_08);
+    const std::uint32_t n = reader.read_dword_00be99f0();
+    std::uint32_t min_start = 0xFFFFFFFFu, max_end = 0;  // EBP/EBX; never stored
+    for (std::uint32_t i = 0; i < n; ++i) {
+        const std::uint32_t start = reader.read_dword_00be99f0();
+        const std::uint32_t length = reader.read_dword_00be99f0();
+        if (start < min_start) min_start = start;
+        if (start + length > max_end) max_end = start + length;
+        if (with_extra) {
+            (void)reader.read_dword_00be99f0();
+            (void)reader.read_float_00be99d0();
+        }
+    }
+    (void)min_start;
+    (void)max_end;
+    ++element_index_08;
+}
+
+void mesh_resource_visit_00b94020(void* self, std::uint32_t word_0c, void* a1, void* a2, void* node, std::int32_t lod,
+    MeshResourceVisitServices& s) {
+    s.base_dispatch_00b86820(self, a1, a2, node, lod);
+    if (node && s.is_generated_model(node)) {
+        void* geometry = s.create_geometry(self, lod);
+        s.set_geometry_00b75170(node, word_0c, geometry, -1.0f, -1.0f);
+        s.release_ref(geometry);
+        return;
+    }
+    void* child = s.create_child_model(self, "Object");
+    s.set_parent_00b6e680(child, node);
+    void* geometry = s.create_geometry(self, lod);
+    s.set_geometry_00b75170(child, word_0c, geometry, -1.0f, -1.0f);
+    s.release_ref(geometry);
+    s.release_ref(child);
+}
+
+void* allocate_8byte_elements_00b94bd0(std::uint32_t count, const std::function<void*(std::size_t)>& operator_new) {
+    if (count != 0 && 0xFFFFFFFFu / count < 8u) throw std::bad_alloc();
+    return operator_new(static_cast<std::size_t>(count) * 8);
+}
+
+void fill_pairs_00b96b60(PairRecord* first, std::int32_t n, const PairRecord& value) {
+    for (; n != 0; --n, ++first)
+        if (first) *first = value;
+}
+
+void free_vector_at_4(void*& data_4, void*& end_8, void*& cap_c, const std::function<void(void*)>& free_block) {
+    if (data_4) free_block(data_4);
+    data_4 = nullptr;
+    end_8 = nullptr;
+    cap_c = nullptr;
+}
+
+void free_pod_data(void* data, const std::function<void(void*)>& free_block) {
+    if (data) free_block(data);
+}
+
+// Explicit instantiations: compile every header template at least once.
+template NativeTreeNode<std::uint32_t>* tree_minimum<std::uint32_t>(NativeTreeNode<std::uint32_t>*);
+template NativeTreeNode<std::uint32_t>* tree_maximum<std::uint32_t>(NativeTreeNode<std::uint32_t>*);
+template NativeTree<std::uint32_t>& tree_initialize_empty<std::uint32_t>(NativeTree<std::uint32_t>&,
+    const std::function<NativeTreeNode<std::uint32_t>*()>&);
+template void tree_clear<std::uint32_t>(NativeTree<std::uint32_t>&,
+    const std::function<void(NativeTreeNode<std::uint32_t>*)>&);
+template void tree_destroy<std::uint32_t>(NativeTree<std::uint32_t>&,
+    const std::function<void(NativeTree<std::uint32_t>&, NativeTreeNode<std::uint32_t>*, NativeTreeNode<std::uint32_t>*)>&,
+    const std::function<void(void*)>&);
+template NativeTreeNode<std::uint32_t>* tree_find_uint_key<std::uint32_t>(const NativeTree<std::uint32_t>&, std::uint32_t,
+    const std::function<std::uint32_t(const std::uint32_t&)>&);
+template void owned_reserve_min_one<std::vector<std::string>>(OwnedArray<std::vector<std::string>>&, std::int32_t);
+template void owned_resize<std::vector<std::string>>(OwnedArray<std::vector<std::string>>&, std::int32_t);
+template void array_destroy<void*>(PointerArray&, const std::function<void(PointerArray&, std::int32_t)>&);
+template std::uint32_t& step_iterator<std::uint32_t>(std::uint32_t&, const std::function<void(std::uint32_t&)>&);
+template SceneNode* checked_cast<SceneNode>(SceneNode*, std::uint32_t, const std::function<bool(SceneNode&, std::uint32_t)>&);
 
 }  // namespace bsp::cc13_scene2

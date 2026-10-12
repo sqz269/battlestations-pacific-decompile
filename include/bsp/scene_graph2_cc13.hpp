@@ -792,4 +792,357 @@ void flare_update_billboard_00b8bdd0(FlareView& flare, FlareServices& s);
 // 00B8D150 (thiscall(flare, camera, float dt), RET 8): see the doc for the full order.
 void flare_update_00b8d150(FlareView& flare, FlareCameraView& camera, float dt, FlareServices& s);
 
+// Flare lifetime. Constructor 00B8D9C0 (thiscall(this, parent, float duration, byte flag),
+// RET 0Ch): generated-model constructor (00B75030) with the name "flare", vtable 00D63420,
+// element array cleared, +1CCh = 0, parent set (00B6E680), +1C4h = 0, byte +1C8h = flag,
+// +1D4h = +1D0h = 0, +1C0h = duration.
+struct FlareLifetimeServices {
+    virtual void construct_generated_model_00b75030(void* self, const std::string& name) = 0;
+    virtual void set_parent_00b6e680(void* self, void* parent) = 0;
+    virtual void release_ref(void* object) = 0;           // InterlockedDecrement +04h, slot 0 at zero
+    virtual void destroy_model_00b750c0(void* self) = 0;
+    virtual void* pool_allocate_00b8d700() = 0;           // pool 010902A8
+    virtual void pool_free_00b8c3a0(void* p) = 0;
+protected:
+    ~FlareLifetimeServices() = default;
+};
+struct FlareStorage {
+    std::uint32_t vtable = 0;
+    std::vector<FlareElement*> elements;   // +18Ch
+    void* ref_1cc = nullptr;
+    void* query_visible_1d0 = nullptr;
+    void* query_total_1d4 = nullptr;
+    float duration_1c0 = 0;
+    float timer_1c4 = 0;
+    bool flag_1c8 = false;
+};
+void flare_construct_00b8d9c0(void* self, FlareStorage& f, void* parent, float duration, bool flag,
+    FlareLifetimeServices& s);
+// 00B8D8C0: vtable 00D63420, release +1CCh, +1D0h, +1D4h (each cleared), element array
+// resized to 0 (0086AA10) and freed, then the model destructor (00B750C0).
+void flare_destruct_00b8d8c0(void* self, FlareStorage& f, FlareLifetimeServices& s);
+// 00B8D9A0 scalar delete: destruct, then return the slot to pool 010902A8 when flags & 1.
+void* flare_scalar_delete_00b8d9a0(void* self, FlareStorage& f, std::uint32_t flags, FlareLifetimeServices& s);
+// 00B8D840 operator new (JMP to the pool allocate with ECX = 010902A8) and 00B8C6A0
+// operator delete (pool free).
+void* flare_operator_new_00b8d840(FlareLifetimeServices& s);
+void flare_operator_delete_00b8c6a0(void* p, FlareLifetimeServices& s);
+// 00B8D850 (thiscall(dst, const src&), returns dst): resize dst to 0 (0086AA10), reserve
+// src.count (0086A280), then append every src pointer with the double/min-1 reserve rule.
+void assign_element_pointers_00b8d850(PointerArray& dst, const PointerArray& src,
+    const std::function<void(PointerArray&, std::int32_t)>& resize,
+    const std::function<void(PointerArray&, std::int32_t)>& reserve);
+
+// 00B8DAC0 (thiscall(flare)): occlusion geometry. Material from "flareocclusion.mshd"
+// (00535320); mesh object (00B73B60 + 00B73D70, null when the slot is null); vertex
+// declaration "simplecolor2.mvfm" (device vtable +38h); vertex buffer (+5Ch)(9, 1, decl),
+// set as stream 0; index buffer (+60h)(24, 1, 65h); draw section (00533FA0) with +08h = 4,
+// +0Ch = 0, +10h = 9, +14h = 0, +18h = 8, material, layout and append; disc fan 00B8B980 with
+// radii (1, 1) and 8 rim vertices; model geometry (00B75170)(1, mesh, -1, -1); then
+// +1D0h and +1D4h = device vtable +24h() (occlusion queries). Temporaries are released in
+// native order.
+struct FlareOcclusionServices {
+    virtual void* create_material_00535320(const std::string& effect) = 0;
+    virtual void* create_mesh_object() = 0;                             // 00B73B60 + 00B73D70
+    virtual void* create_declaration(const std::string& format) = 0;    // device +38h
+    virtual void* create_vertex_buffer(std::int32_t count, std::int32_t usage, void* decl) = 0;  // +5Ch
+    virtual void* create_index_buffer(std::int32_t count, std::int32_t usage, std::int32_t format) = 0;  // +60h
+    virtual void set_vertex_stream_00b73bb0(void* mesh, std::int32_t index, void* stream) = 0;
+    virtual void set_index_stream_00b73b70(void* mesh, void* indices) = 0;
+    virtual void* create_draw_section_00533fa0() = 0;
+    virtual void set_section_fields(void* section, std::int32_t primitive, std::int32_t first_vertex,
+        std::int32_t vertex_count, std::int32_t first_index, std::int32_t primitive_count) = 0;
+    virtual void set_section_material_00b864c0(void* section, void* material) = 0;
+    virtual void rebuild_section_layout_00b865a0(void* section, void* mesh) = 0;
+    virtual void append_section_00b73c60(void* mesh, void* section) = 0;
+    virtual void write_disc_fan_00b8b980(void* flare, void* mesh, const float radii[2], std::uint32_t rim) = 0;
+    virtual void set_model_geometry_00b75170(void* flare, std::uint32_t word, void* mesh, float a, float b) = 0;
+    virtual void* create_query() = 0;                                   // device +24h
+    virtual void release_ref(void* object) = 0;
+protected:
+    ~FlareOcclusionServices() = default;
+};
+void flare_initialize_occlusion_00b8dac0(void* flare, FlareStorage& f, FlareOcclusionServices& s);
+
+// ---------------------------------------------------------------------------
+// Mit::allocator block pools (owner layout and block format: bsp/post_effects_cc13.hpp
+// MitBlockPool, which models the allocate/free/trim slot order). This adds the owner
+// lifetime and the block initializer.
+struct MitAllocatorListElem {
+    MitAllocatorListElem* prev = nullptr;  // +04h
+    MitAllocatorListElem* next = nullptr;  // +08h
+};
+struct MitBlockModel {
+    std::vector<std::uint32_t> slot_block_index;  // last dword of each slot
+    std::uint16_t stack[32]{};
+    std::uint16_t free_count = 0;
+};
+struct MitPoolOwner {
+    MitAllocatorListElem link;
+    std::uint32_t vtable = 0;
+    std::int32_t recursion_24 = 0;
+    NativeArray<MitBlockModel*> blocks;    // +28h
+    std::int32_t current_34 = -1;
+};
+// Instantiations: payload 1E0h (slot 1E4h, flare, vtable D63410), 194h (slot 198h; pools
+// 010903F0 quadtree node and 01090358 skin model, vtable D6355C) and 190h (slot 194h; pool
+// 01090390 bone model, vtable D63560). The base vtable is Mit::allocator_list_elem 00D7A0C0. Constructors 00B8D580, 00B90680, 00B90940: link at the head of the
+// allocator list [00E188B4], set the pool vtable, initialise the critical section, clear the
+// recursion count and block vector, current = -1, then reserve 32 block pointers.
+void mit_pool_construct(MitPoolOwner& pool, MitAllocatorListElem*& list_head_00e188b4, std::uint32_t vtable);
+// Destructors 00B8C2E0, 00B8FF60, 00B90090: free every block and the vector, leave the
+// critical section once per outstanding recursion, delete it, restore the base vtable
+// 00D7A0C0 and unlink.
+void mit_pool_destruct(MitPoolOwner& pool, MitAllocatorListElem*& list_head_00e188b4);
+// Block initializers 00B8B6D0, 00B8FA80, 00B8FB50: free count 32, stack[i] = 31 - i, every
+// slot's block index = `index`.
+void mit_pool_init_block(MitBlockModel& block, std::uint32_t index);
+// Free thunks 00B90470, 00B90480, 00B91BF0 (operator delete for skin model, bone model and
+// quadtree node): the pool free with ECX = the pool global.
+struct MitPoolThunk { std::uint32_t address; std::uint32_t pool; std::uint32_t target; };
+const MitPoolThunk* find_mit_pool_thunk(std::uint32_t address) noexcept;
+
+// ---------------------------------------------------------------------------
+// Resource items. Constructors (fastcall(this, EDX name)): the reference base (00B868B0),
+// then the vtable and zeroed words.
+struct ResourceItemConstructor {
+    std::uint32_t address;
+    std::uint32_t vtable;
+    std::uint8_t zero_first;   // first zeroed dword index
+    std::uint8_t zero_count;
+};
+const ResourceItemConstructor* find_resource_item_constructor(std::uint32_t address) noexcept;
+void construct_resource_item(std::uint32_t address, std::uint32_t words[8],
+    const std::function<void()>& construct_reference_base);
+// 00B93680 / 00B93980 / 00B93A00 (fastcall(this, EDX name, mesh, word)): reference base,
+// +08h = mesh, vtable 00D63738, +0Ch = word, mesh retained (+04h), then the derived vtable
+// (00D6375C, 00D63780) for the last two.
+struct MeshResourceWords { std::uint32_t vtable = 0; RefCounted* mesh_08 = nullptr; std::uint32_t word_0c = 0; };
+void construct_mesh_resource(std::uint32_t address, MeshResourceWords& out, RefCounted* mesh, std::uint32_t word,
+    const std::function<void()>& construct_reference_base);
+// 00B8B940 (stdcall(object, float), RET 8): object +20h = low dword of the value truncated
+// toward zero (FISTP qword with RC = 11b). Renamed from RoundFloatToField20: it truncates.
+void truncate_float_to_field_20_00b8b940(std::int32_t& field_20, float value);
+// 00B8E730 / 00B8E750: copy track words +08h..+14h / +18h..+2Ch (FLD/FSTP float copies).
+void copy_track_range_00b8e730(const float track_08[4], float out[4]);
+void copy_track_key_block_00b8e750(const float track_18[6], float out[6]);
+// 00B8E690 (node vtable thunk): 00B6E150(this, channel, time, flag) with the time reloaded
+// as a float.
+// 00B8EB20 (cGroupParamsResource apply, thiscall(params, a, b, node), RET 0Ch): when the
+// node's IsType accepts [0109032C], node +184h = params +08h.
+void group_params_apply_00b8eb20(float params_08, float& node_184, bool node_is_group);
+
+// ---------------------------------------------------------------------------
+// cGroup (vtable slots at 00D63508 clone 00B8F6F0, 00D63518 render 00B8EF10, 00D63520 detach 00B8F090).
+// LOD fade of a node's bounding sphere seen from the view camera: the sphere is transformed
+// by the view-projection (00B70490, 007C1180), d = max(sphere.z, 0.01) (NaN gives 0.01),
+// k = f(1 - f(camera +4Ch * |f(sphere.w / d)|)), clamped to [0, 1] (NaN passes through).
+float lod_fade_from_projected_sphere(float projected_z, float projected_w, float camera_4c);
+struct GroupChildView {
+    std::uint32_t mask_48 = 0;
+    void* object = nullptr;
+};
+struct GroupRenderServices {
+    virtual std::uint32_t classify_sphere_00b71530(void* cull_camera, void* node) = 0;  // node vtable +48h sphere
+    virtual void project_sphere(void* view_camera, void* node, float& z, float& w) = 0; // 00B70490 + 007C1180
+    virtual float view_camera_lod_4c(void* view_camera) = 0;
+    virtual std::uint32_t cull_camera_mask_19c(void* cull_camera) = 0;
+    virtual void render_child_slot_20(void* child, void* context, float fade, float alpha, std::uint32_t flags) = 0;
+protected:
+    ~GroupRenderServices() = default;
+};
+// 00B8EF10 (thiscall(group, context, unused, float alpha, flags), RET 10h). Context +08h
+// is the cull camera, +0Ch the view camera. Nothing happens unless +ACh > 0. Unless all
+// clip bits are set (flags & 555h) and when byte +138h & 3, the sphere is classified;
+// AAAh (outside) stops. Otherwise k = lod fade; when +184h > k every child whose +48h mask
+// meets the cull camera +19Ch is rendered with (context, k, f(+ACh * alpha), flags).
+void group_render_00b8ef10(void* group, float visibility_ac, float threshold_184, std::uint8_t byte_138,
+    void* context, void* cull_camera, void* view_camera, float alpha, std::uint32_t flags,
+    const std::vector<GroupChildView>& children, GroupRenderServices& s);
+// 00B8F090: detach children (00B6D820), then pop the attached-node array (+178h data,
+// +17Ch count) from the end, clearing each node's +A0h back link.
+void group_detach_nodes_00b8f090(SceneNode& group, std::vector<void**>& attached_a0,
+    const std::function<void(SceneNode&)>& detach_children);
+// 00B8F6F0 step 1: children whose IsType accepts [010903C8] (00B8F9C0) are unlinked and
+// re-appended after the last remaining child, in REVERSE order of their appearance. When
+// every child moves, the native code dereferences a null first child (here:
+// std::logic_error). Sibling links: +3Ch next, +40h previous, parent +34h first child.
+struct GroupSibling {
+    GroupSibling* parent = nullptr;  // +30h
+    GroupSibling* first = nullptr;   // +34h
+    GroupSibling* next = nullptr;    // +3Ch
+    GroupSibling* prev = nullptr;    // +40h
+    bool movable = false;            // IsType([010903C8])
+};
+void group_move_typed_children_last_00b8f6f0(GroupSibling& group);
+// 00B8F6F0 step 2: allocate (00B8F310), construct with the name (00B8F5E0), copy the base
+// clone state (00B6F150), copy bytes +174h and +175h. Returns the clone (null slot passes
+// null to the copy, as in 00B6F8F0).
+struct GroupCloneServices {
+    virtual void* allocate_group_00b8f310() = 0;
+    virtual void* construct_group_00b8f5e0(void* slot, const std::string& name) = 0;
+    virtual void copy_clone_base_state_00b6f150(const void* source, void* clone, std::uint32_t flags, void* parent) = 0;
+    virtual void copy_bytes_174_175(const void* source, void* clone) = 0;
+protected:
+    ~GroupCloneServices() = default;
+};
+void* group_clone_00b8f6f0(void* source, GroupSibling& children, const std::string& name, std::uint32_t flags,
+    void* parent, GroupCloneServices& s);
+
+// ---------------------------------------------------------------------------
+// Skin and bone models.
+// 00B8F960 (skin model vtable 00D635F0 +10h Clone, thiscall(this, flags, parent), RET 8):
+// allocates a raw node slot (00B6ED70, ECX = 174h) and constructs a PLAIN c3dNode with this
+// node's name; no base state is copied and both arguments are ignored. Null when the slot
+// is null.
+void* skin_model_clone_00b8f960(const std::string& name, const std::function<void*()>& allocate_node,
+    const std::function<void*(void*, const std::string&)>& construct_node);
+// 00B8FDE0 (thiscall(model, channel, float time, flag), RET 0Ch): when the animator (+130h)
+// accepts the optimized-animator type (00B75E50), +190h = the baked frame address
+// (00B92500 on animator +34h), else 0; then 00B6E150(model, channel, time, flag).
+struct SkinModelAnimServices {
+    virtual void* animator_130(void* model) = 0;
+    virtual bool animator_is_optimized(void* animator) = 0;
+    virtual const float* baked_frame_00b92500(void* animator, std::int32_t channel, float time) = 0;
+    virtual void apply_animation_00b6e150(void* model, std::int32_t channel, float time, std::int32_t flag) = 0;
+protected:
+    ~SkinModelAnimServices() = default;
+};
+void skin_model_update_animator_00b8fde0(void* model, const float*& frame_190, std::int32_t channel, float time,
+    std::int32_t flag, SkinModelAnimServices& s);
+// 00B8FE50: +00h..+18h = 0 (seven dwords), then the identity matrix copied to +20h.
+struct AnimatedTransform { std::uint32_t words[7]{}; float matrix_20[16]{}; };
+void animated_transform_construct_00b8fe50(AnimatedTransform& t);
+// 00B90490 (thiscall(model, context, float fade, float alpha, flags), RET 10h): when
+// +A0h (00B6D810) is set, fade is replaced by the LOD fade of the view camera (context
+// +0Ch), as in 00B8EF10; then the generated-model render 00B748E0(context, fade, alpha, flags).
+float skin_model_render_fade_00b90490(bool has_a0, float fade, float projected_z, float projected_w, float camera_4c);
+// Constructors 00B91220 (bone model, vtable 00D63590, +184h..+18Ch = 0) and 00B915E0
+// (skin model, vtable 00D635F0, +184h..+190h = 0) after the generated-model constructor.
+// Destructors 00B91280 (bone; resize bone pointers 00B90630 to 0, free +184h, 00B750C0) and
+// 00B91650 (skin; vtable 00D635F0, resize bindings 00B91460 to 0, free +184h, 00B750C0;
+// renamed from ConstructWithBindings: it is the destructor). Scalar deletes 00B915A0 (pool
+// 01090390) and 00B916C0 (pool 01090358).
+struct ModelWordsConstructor { std::uint32_t address; std::uint32_t vtable; std::uint8_t zero_count; };
+const ModelWordsConstructor* find_model_words_constructor(std::uint32_t address) noexcept;
+// 00B917B0: when the holder is set, unlink and release the node (00B6DFA0) and clear it.
+void release_node_holder_00b917b0(void*& holder, const std::function<void(void*)>& unlink_and_release);
+
+// ---------------------------------------------------------------------------
+// Quadtree node (vtable 00D63650; bounds +17Ch min / +188h max, level +178h, leaf byte +174h).
+struct QuadAabb { float min[3]; float max[3]; };
+// 00B917D0 (thiscall(node, a, b, c, d), RET 10h): plane test of the box. For x and z the
+// near/far corners are the smaller/larger of the two stored values (chosen by the sign of
+// the coefficient; a NaN coefficient takes the negative arm); for y the stored min/max are
+// used as they are. far = f(f((b*py + a*px) + c*pz) - d): < 0 gives 0 (outside); near =
+// f(f((a*nx + b*ny) + c*nz) - d): > 0 gives 1 (inside), else 10 (straddling).
+std::int32_t quadtree_clip_range_00b917d0(const QuadAabb& box, float a, float b, float c, float d);
+// 00B91A50 (thiscall(node, context, a, b, flags), RET 10h): when node +48h meets the cull
+// camera +19Ch: unless flags & 555h is complete, test min(planes, 6) frustum planes from the
+// last down (00B70710, 00B65080, 00B6FDC0); any 0 stops; a sum of 6 adds 555h to the flags;
+// then render the children (00B6D990).
+struct QuadRenderServices {
+    virtual std::uint32_t node_mask_48(void* node) = 0;
+    virtual std::uint32_t cull_camera_mask_19c(void* context) = 0;
+    virtual std::uint32_t plane_count(void* context) = 0;
+    virtual void plane(void* context, std::uint32_t index, float out[4]) = 0;
+    virtual void render_children_00b6d990(void* node, void* context, float a, float b, std::uint32_t flags) = 0;
+protected:
+    ~QuadRenderServices() = default;
+};
+void quadtree_render_00b91a50(void* node, const QuadAabb& box, void* context, float a, float b, std::uint32_t flags,
+    QuadRenderServices& s);
+// 00B91B20 (thiscall(builder, node, QuadAabb* box), RET 8): when the node is a generated
+// model (00B74310) with +ACh != 0 (NaN passes), its world box (vtable +4Ch local bounds,
+// 0092E250 transform by +F0h) has min.y raised to -100 when below (-100 double D636A8,
+// float CE65D8) and both corners are added (00427D10); then recurse into children with
+// +48h bit 30.
+struct QuadBoundsServices {
+    virtual bool is_generated_model(void* node) = 0;
+    virtual float visibility_ac(void* node) = 0;
+    virtual void world_box(void* node, QuadAabb& out) = 0;   // refresh + vtable +4Ch + 0092E250
+    virtual void include_point_00427d10(QuadAabb& box, const float p[3]) = 0;
+    virtual std::vector<void*> children(void* node) = 0;
+    virtual bool tagged_bit30(void* node) = 0;
+protected:
+    ~QuadBoundsServices() = default;
+};
+void quadtree_include_child_bounds_00b91b20(void* node, QuadAabb& box, QuadBoundsServices& s);
+// 00B91C40 (Clone, thiscall(source, flags, parent), RET 8): allocate from pool 010903F0,
+// construct with the source name, vtable 00D63650, +178h = 0, then copy the base state.
+// 00B91C00 scalar delete: vtable 00D63650, node destroy (00B6F440), pool free when flags & 1.
+// 00B91D70 build: see the doc (binary split of the tagged children along the longer of the
+// x/z extents at the mean world position; depth limit 6, fewer than 5 children make a leaf).
+struct QuadBuildServices {
+    virtual std::uint32_t level_178(void* node) = 0;
+    virtual std::uint32_t child_count_38(void* node) = 0;
+    virtual QuadAabb& bounds(void* node) = 0;
+    virtual void set_leaf_174(void* node, bool leaf) = 0;
+    virtual std::vector<void*> children(void* node) = 0;   // sibling order
+    virtual bool tagged_bit30(void* node) = 0;
+    virtual void world_position(void* node, float out[3]) = 0;  // refresh + +120h
+    virtual void* create_quad_child(void* parent, std::uint32_t level) = 0;  // pool, "QuadTreeNode", 00B6D890
+    virtual void include_child_bounds_00b91b20(void* child, QuadAabb& box) = 0;
+    virtual void set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void unlink_and_release_00b6dfa0(void* node) = 0;
+protected:
+    ~QuadBuildServices() = default;
+};
+void quadtree_build_00b91d70(void* node, QuadBuildServices& s);
+
+// ---------------------------------------------------------------------------
+// Animation value arrays (30h-byte elements) and mesh resources.
+struct AnimValue { std::uint32_t words[12]; };
+// 00B92650: append with the double/min-1 reserve rule (00B92440).
+void push_back_animation_value_00b92650(NativeArray<AnimValue>& a, const AnimValue& v,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve);
+// 00B926A0: when capacity < 0, reserve(0); count = 0. 00B92790 additionally frees the data.
+void clear_animation_values_00b926a0(NativeArray<AnimValue>& a,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve);
+void destroy_animation_values_00b92790(NativeArray<AnimValue>& a,
+    const std::function<void(NativeArray<AnimValue>&, std::int32_t)>& reserve);
+// 00B93020 / 00B930F0 / 00B931F0: allocate a model slot (00B74EB0, pool 01090358 via
+// 00B90C10, pool 01090390 via 00B90C20) and construct (00B75030, 00B915E0, 00B91220) with
+// the name; null when the slot is null. Thunks 00B93080 / 00B93150 jump to the first two.
+void* create_model_from_resource(const std::function<void*()>& allocate,
+    const std::function<void*(void*)>& construct);
+// 00B934D0 (stdcall(state, reader, byte with_extra), RET 0Ch): looks up element state+08h
+// (00B732C0, result unused), reads a count, then per entry two dwords (start, length) and,
+// with the flag, a dword and a float; the min start and max end are computed in registers
+// and discarded. state+08h increments.
+struct StructuredReader {
+    virtual std::uint32_t read_dword_00be99f0() = 0;
+    virtual float read_float_00be99d0() = 0;
+protected:
+    ~StructuredReader() = default;
+};
+void read_element_params_00b934d0(std::int32_t& element_index_08, StructuredReader& reader, bool with_extra,
+    const std::function<void(std::int32_t)>& lookup_element);
+// 00B94020 (cRenderMeshResource visit, thiscall(this, a1, a2, node, lod), RET 10h): base
+// dispatch (00B86820); a generated-model node gets geometry = mesh(+08h)->vtable +10h(lod, 0)
+// through 00B75170(+0Ch word, geometry, -1, -1); any other node gets a new child model named
+// "Object" (this vtable +20h) parented to it (00B6E680) with that geometry. References are
+// released in native order.
+struct MeshResourceVisitServices {
+    virtual void base_dispatch_00b86820(void* self, void* a1, void* a2, void* node, std::int32_t lod) = 0;
+    virtual bool is_generated_model(void* node) = 0;
+    virtual void* create_geometry(void* self, std::int32_t lod) = 0;        // mesh vtable +10h(lod, 0)
+    virtual void set_geometry_00b75170(void* model, std::uint32_t word, void* geometry, float a, float b) = 0;
+    virtual void* create_child_model(void* self, const std::string& name) = 0;  // this vtable +20h
+    virtual void set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void release_ref(void* object) = 0;
+protected:
+    ~MeshResourceVisitServices() = default;
+};
+void mesh_resource_visit_00b94020(void* self, std::uint32_t word_0c, void* a1, void* a2, void* node, std::int32_t lod,
+    MeshResourceVisitServices& s);
+// 00B94BD0: allocator<8-byte>::allocate (count 0 allocates 0; overflow throws bad_alloc).
+void* allocate_8byte_elements_00b94bd0(std::uint32_t count, const std::function<void*(std::size_t)>& operator_new);
+// 00B96B60: fill n 8-byte pairs with a value (placement copies skip a null destination).
+void fill_pairs_00b96b60(PairRecord* first, std::int32_t n, const PairRecord& value);
+// 00B96D40 / 00B96D70: free the buffer at +04h (when non-null) and clear +04h..+0Ch.
+void free_vector_at_4(void*& data_4, void*& end_8, void*& cap_c, const std::function<void(void*)>& free_block);
+// PodVector FreeData 00B8B7B0, 00B8FC30, 00B8FC70: free +00h when non-null.
+void free_pod_data(void* data, const std::function<void(void*)>& free_block);
+
 }  // namespace bsp::cc13_scene2
