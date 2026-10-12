@@ -19,7 +19,7 @@ log = ROOT / 'local' / f'stlr-ghidra-tags-{stamp}.json'
 dlog = ROOT / 'local' / f'stlr-ghidra-unbookmark-{stamp}.json'
 old_ev = json.loads((ROOT / 'config/tags/evidence.json').read_text(encoding='utf-8'))
 done = []
-with ghidra_lock(ttl_seconds=7200, purpose='cc13-stlreview1 stl_probable review'):
+with ghidra_lock(ttl_seconds=7200, purpose='cc13-stlreview stl_probable review'):
     ch = apply(client, post, entries, log, False)
     for i, g in enumerate(rows):
         rec = {'address': g['address'], 'decision': g['decision'], 'deleted_category': 'Inventory: stl_probable'}
