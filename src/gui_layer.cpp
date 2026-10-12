@@ -242,16 +242,16 @@ bool hit_candidate_wins_00aa8bd0(float half_extent_x, float best_score) noexcept
 }
 
 bool hit_limits_allow_00aa8bd0(const GuiHitBox& box, const GuiHitLimits& limits) noexcept {
-    if (limits.gate_right != 0.0F && limits.gate_right > box.right) {
+    if (limits.left != 0.0F && limits.left > box.right) {
         return false;  // 00AA8CD3: the outer gate, skips the self-test
     }
-    if (limits.min_left != 0.0F && limits.min_left < box.left) {
+    if (limits.right != 0.0F && limits.right < box.left) {
         return false;  // 00AA8CE7
     }
-    if (limits.min_bottom != 0.0F && box.bottom < limits.min_bottom) {
+    if (limits.top != 0.0F && box.bottom < limits.top) {
         return false;  // 00AA8CFB
     }
-    if (limits.min_top != 0.0F && limits.min_top < box.top) {
+    if (limits.bottom != 0.0F && limits.bottom < box.top) {
         return false;  // 00AA8D0F
     }
     return true;

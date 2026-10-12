@@ -348,11 +348,18 @@ struct GuiHitBox {
 
 // The four fields at +38h, +3Ch, +40h and +44h. Each is disabled by an exact
 // +0.0f compare (00AA8CD3, 00AA8CE7, 00AA8CFB, 00AA8D0F) before it rejects.
+//
+// They are a hit-clip rectangle {left, right, top, bottom}: the writer 00AA8F30
+// stores {abs.x, abs.x + width, abs.y, abs.y + height} of a source widget through
+// 00AA8EC0 (docs/CC13_GUI_MANAGER.md). Each compare rejects only a box lying
+// wholly outside one edge (listing 00AA8CDF, 00AA8D41, 00AA8D69, 00AA8D89; the
+// box edge roles follow the pointer compares at 00AA8DAD..00AA8DD1).
+// Renamed 2026-10-12 (cc13-gui6); old names gate_right, min_left, min_bottom, min_top.
 struct GuiHitLimits {
-    float gate_right{0.0F};   // +38h: reject when non-zero and greater than right
-    float min_left{0.0F};     // +3Ch: reject when non-zero and less than left
-    float min_bottom{0.0F};   // +40h: reject when non-zero and greater than bottom
-    float min_top{0.0F};      // +44h: reject when non-zero and less than top
+    float left{0.0F};    // +38h: reject when non-zero and greater than box.right
+    float right{0.0F};   // +3Ch: reject when non-zero and less than box.left
+    float top{0.0F};     // +40h: reject when non-zero and greater than box.bottom
+    float bottom{0.0F};  // +44h: reject when non-zero and less than box.top
 };
 
 struct GuiHitNode {
