@@ -690,3 +690,32 @@ before the strike move which ship survives (p3_u1_g/h/i/k each leave one or two)
 middle of the strike: ConTBD3, whose second plane sinks Convoy5 at 185.16 s, is pointed at Convoy6 for its remaining
 torpedo. **p3_u1_o.txt** (l50_u1_u2 + `3690 select ConTBD3`, `3691 target ConTBD3 Convoy6`): completed 618.72 s, Convoy6
 sunk at 200.36 s. p3_u1_m.txt (the same at 3704): completed 618.72 s. At 3720 (p3_u1_n) it is too late.
+## 21. The plane water laws next to the ocean object (cc9-physics3, 2026-10-12, read-only)
+
+cc13's band sweep (docs/CC13_BAND_0074_0078.md) left `0078D3D0`, `0078D6C0` and `0078D785` to this lane. Callers are
+from a rel32/absolute-dword scan of the image on disk (local\p3_xref.py; it finds the known calls, so a missing
+caller is a real absence of literal references, not a vacuous scan).
+
+| Address | What it is | Callers |
+|---|---|---|
+| `0078D3D0`..`0078D53E` (RET 0Ch, thiscall world) | the water-surface normal at (x, z): four `0078CF20` samples at x +- 1.0 and z +- 1.0 (the double `00D7A210` = 1.0), a cross product `004F9B30` of the two differences (with the float `00D7A24C` = 1.0 as the step component) and a normalize through `00419440` | `007DD034` and `007DD39D`, both in `007DCDD0`, the plane's state-6 water law |
+| `0078D6C0`..`0078D81E` (RET 1Ch) | a segment's water crossing: samples `0078CF20` at the start, then bisects with `0078D1B0` towards the entry (start above) or, from `0078D785`, the exit (start below) | one, `0053FC0A` in `0053F2D0`, the menu screen burst update (include/bsp/menu_screens_2.hpp 994): not gameplay |
+| `0078D785` | not a function: the start-below branch target of `0078D6C0` (`0078D6EB JBE`) | none |
+
+**What the host does against the live sea.**
+- The free-flight water line (`007CC523`..`007CC562`, game_hosts_units.cpp 17550) samples `0078CF20` through
+  `OceanFieldBinding`, which returns the live field when the sea is on. Logged contacts now show non-zero water
+  heights (USN01 p3r_on_u1o: Mav4 water -0.58, Mav3 1.07). Live; no gap.
+- The depth kill (`007CE313`..`007CE3AC`) compares the absolute altitude with -30.0, as the image does. No gap.
+- A live aircraft with a non-zero MinWaterSpd (every torpedo and dive bomber) ignores a contact (`007CB7F0`'s early
+  return) and stays in free flight, so a low torpedo run sees the live surface only through the line above. No gap.
+- **The gap is the state-6 arm `007CBA50` -> `007DCDD0`** (docs/WATER_SURFACE_LAW.md 2.3): the buoyancy law with the
+  `0078D3D0` normal, the `007DB680` water arm (partly unread at `007DC426`..`007DC64A`), the righting term, the
+  speed damping and the 1.5 m lift-off back to state 7. The host freezes a state-6 aircraft where it touched.
+
+**Reach of the gap.** Only aircraft in state 6: dead ones (a wreck that floats instead of freezing) and live
+classes with MinWaterSpd zero. In this installation's vehicleclasses.lua (mtime 2026-05-09) those are the nine
+floatplanes and flying boats: M6A Seiran, OS2U Kingfisher, PBY Catalina, F1M Pete, E13A Jake, H6K Mavis, H8K Emily,
+A6M-N Rufe, Black Cat (local\p3_minwater.py). In the logs on disk the only live state-6 entry is JM08's "Movie
+Mavis" (alive, MinWaterSpd 0, cc9-gunnery35 g35_*_jm08 logs), a scripted alighting. No win row and no torpedo row
+has one. Not bound: the binding would be the whole `007DCDD0` law with an unread arm, and nothing scored reaches it.
