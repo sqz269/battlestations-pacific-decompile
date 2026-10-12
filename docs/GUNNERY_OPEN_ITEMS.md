@@ -12882,3 +12882,19 @@ plane/task line classes.
   LOSES THE USN01 WIN** (wu1: completed 425.72 s -> no completion in 1100 s; deaths 91 -> 64). First divergence:
   `torpedo Mav3 aim census tick=51` (cmd_2C0 -2.0110 -> -2.0104), the switch's own path. USN04 phase 2 torpedo
   releases 2/36 -> 1/36; USNRM01 exit 3. Stays OFF; leave-one-out on USN01 to name the switch.
+- **`kDiveYawModeZeroBound` (189 B): ON.** USN04 phase 2: dive-bomb releases 0/32 -> 12/32 (the prediction), deaths
+  68 -> 67; first divergence `aim lead D3A Val #1.1|.-4` projtime 19.01 -> 19.32, the yaw command surviving the
+  planner; in ON the aimglide gate passes (e.g. `#1.1|.-2` passed=1, lead -5.89 m). JM08 exit 3 (dive releases
+  26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173). USN01 win held (425.72 -> 396.03 s).- **`kMoveToActivationDrawsBound` (187): ON.** E2 (USN04 9000) exit 3, first divergence `moveto task A6M Zero
+  #1.2|.-2: arrived d=1111.9 -> 1149.1`, the activation draws; JM08 first divergence `Movie Mavis` dying 9 m lower
+  (762 -> 753 m), the moveto flying lower as predicted. USN04 4500 exit 3 (torpedo releases 5/16 -> 2/16). USN01 win
+  identical. **Recorded:** JM08 `l50_j8_r7` now FAILS at 993.68 s ("The HQ has been destroyed!"; OFF has no end in
+  1000 s; deaths 154 -> 139, dive releases 26/33 -> 11/22): an outcome of the moved air battle on a non-win row.- **The six draw pins (190: `kDiveTurnSideLatchBound`, `kDiveTurnSideBankBound`, `kDiveTurnSideCoinBound`,
+  `kDiveTurnRollDrawBound`, `kAimGlideRearmDrawBound`, `kAimDiveRearmDrawBound`): ON as a group.** Dive rows only, as
+  predicted: USN04 phase 2 exit 3, first divergence the dive bombers' aim lead (`D3A Val #3.1` takes the
+  `#3.1|.-2` slot's approach: the turn-side draws); JM08 exit 3 (dive releases 26/33 -> 19/15, torpedo 0/13 ->
+  10/65); USN01 win held (425.72 -> 643.47 s, all six convoy ships sunk).- **Tail gunner (190: `kTailGunnerAimErrorBound`, `kTailGunnerOwnAimBound`): ON as a group.** Reach is rare: of nine
+  rows only USN04 4500 rolls the error (`rolls=103`); its one change is the Kates' tail-gun fire (`B5N Kate #2.1`
+  shots 6 -> 0, `#2.1|.-2` 4 -> 9) and one US fighter (`Yorktown-class01_sqn04|.-3`) surviving: fewer fighter losses,
+  as predicted. The other eight (BSM01, ESMP08, JM08, LOMP06, USN02, USN12, USN13, USNOS) are gameplay-identical;
+  five of them only reset the own-aim state. USN02 and LOMP06 identical as predicted.
