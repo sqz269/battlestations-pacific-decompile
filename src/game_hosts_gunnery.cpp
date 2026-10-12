@@ -364,6 +364,21 @@ constexpr bool kAaTargetTurnAverageBound = true;
 //    along its track (0070C210, the radial blast). OFF: direct strikes only.
 //    Packet cc9_flak_proximity_burst.
 constexpr bool kFlakProximityBurstBound = true;
+//  * kFlakFlyTimeBurstBound: a Flak-type round whose flight time passes FlyTime
+//    bursts where it is. 0070C3B1 -> 0070C210(proj, 0): the argument is never
+//    read, so the expiry runs the same detonation as the proximity lock - the
+//    U(BlastDamageMin, BlastDamageMax) draw (0070C247, stream 1) and the radial
+//    blast 0084BAD0 with ignoreFalloff = 1 (0070C26E) - before the lock search.
+//    OFF: the life bound below removes the round silently.
+//    Packet cc13-flak1, docs/CC13_FLAK_FLYTIME_BURST.md.
+constexpr bool kFlakFlyTimeBurstBound = false;
+//  * kFlakBlastIgnoreFalloffBound: every flak blast takes full damage inside
+//    BlastRange. The detonation pushes ignoreFalloff = 1 (0070C26E) and the
+//    impact burst sets it from classDesc+8h == 10h, the Flak sub-type
+//    (0084BE74 SETE); 004705C0 then lifts a positive falloff fraction to 1.
+//    OFF: the proximity and impact bursts of a flak round fall off with
+//    distance. Packet cc13-flak1.
+constexpr bool kFlakBlastIgnoreFalloffBound = false;
 //  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
 //    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
 //    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
@@ -465,8 +480,8 @@ inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //    water on its first step. MTorpedo's create 00856420 does not run 006E8430's
 //    spawn-time medium choice (no 0078CF20 call, no vtable[24h]/[28h]). The host's
 //    `from > 0` term kept a submerged launch from ever starting its swim.
-//    OFF: the crossing needs from.y > 0, as before.
-inline constexpr bool kSubmergedTorpedoLaunchSwimBound = false;
+//    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
+inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -569,6 +584,17 @@ constexpr bool kAaLineOfFireExpiryDrawBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    refusals that would be lifted are counted (armour_rejects_tail).
 //    docs/GUNNERY_OPEN_ITEMS.md 164.
 constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS 164.4
+//  * kAaKind6GateBound: GUNNERY 184 (cc13 switch audit 2a). 00729BC0 sends a
+//    kind-6 (LIGHTARTILLERYFLAK) gun to the AAFlakBot 008FBFC0 against a plane
+//    (variant 1) and to the ArtilleryGunnerBot 006DEF30 otherwise; each runs a
+//    gate before the gun's vtable[1D4h] = 0072F6E0. 008FBFC0 runs the fire
+//    window 0085A9A0 first; 006DEF30 runs 00955630 (ECX [[bot+50h]+3Ch], EDX
+//    target+FCh, gun+FCh, speed [[gun+3F8h]+34h]+50h, &vert, &horz) and then
+//    0085A8B0(horz, vert). ON: kind 6 takes those gates first, so the line-of-
+//    fire query, its cache entry and its expiry draw happen only past them,
+//    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
+//    goes straight to the line-of-fire query (the host before section 184).
+constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1559,6 +1585,7 @@ struct GameGunneryHost::Impl {
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
     unsigned long long aa_window_rejects{0};
+    unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
@@ -2184,6 +2211,7 @@ struct GameGunneryHost::Impl {
     std::string smoke_first_unit;
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
+    unsigned long long flak_expiry_bursts{0};   // packet cc13-flak1, 0070C3C8
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
     // per device class (the image does it once per weapon class, 007325A0).
     struct DeviceFirePoints {
@@ -3112,8 +3140,9 @@ struct GameGunneryHost::Impl {
     // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
     // radial burst every class with a Blast table makes on impact, and the one
     // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
+    // ignore_falloff is 0084BAD0's [ESP+8] byte, copied into record+2Ch.
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
-        const float point[3], const float direction[3]);
+        const float point[3], const float direction[3], bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
@@ -5561,8 +5590,47 @@ public:
             ++owner_.line_of_fire_refusals;
             return true;
         };
-        if (kind == 6) { line_of_fire_refuses(); return; }
-        if (kind != 1 && kind != 5) return;
+        if (kind == 6 && !(kAaKind6GateBound && plane)) {
+            // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
+            // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
+            // present (an unread precondition, labelled), and the solve takes
+            // this host's world-frame convention (mount NULL) turned into the
+            // hull-relative pair, as the seat path does.
+            if (!plane && (len <= 0.0f || row.arcs.empty())) {
+                if constexpr (kAaKind6GateBound) return;   // as kind 5 below
+            } else if (!plane) {
+                bsp::GunGravityArcQuery q;
+                q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
+                q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+                q.muzzle_speed = row.muzzle_speed;
+                q.mount_frame = nullptr;
+                const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+                bool reach = arc.solved;                                // 006DEFAD
+                if (reach) {
+                    const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                    const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+                    const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                    const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                        + (arc.angles.vert - direct);
+                    const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                    reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                        bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+                }
+                if (!reach) {
+                    ++owner_.aa_kind6_gate_rejects;
+                    if constexpr (kAaKind6GateBound) {
+                        in.slot_accepts_target = false;
+                        last_refusal_ = AaRefusal::window;
+                        return;
+                    }
+                }
+            }
+            line_of_fire_refuses();
+            return;
+        }
+        // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
+        // below and then the line of fire, as kind 5.
+        if (kind != 1 && kind != 5 && kind != 6) return;
         if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
             const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
@@ -8895,6 +8963,42 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // FLT_MAX, 0070C4B1), and on that tick +284h is still FLT_MAX from
         // 0070CB30, so 0070C7CE records the distance and never draws.
         // docs/AA_LETHALITY_AUDIT.md section 11.
+        //
+        // Packet cc13-flak1. 0070C3AA..0070C3C8 run after the base tick and
+        // before the lock search: flight time (+1C4h) > FlyTime (+54h, FCOMI /
+        // JBE) clears +294h and calls 0070C210(proj, 0), which never reads its
+        // argument (RET 4; no [ESP+..] read before 0070C280). So the expiry is
+        // the same detonation as the lock's, at the round's own position
+        // (proj+FCh): the 0070C247 draw, then 0084BAD0 with radius BlastRange
+        // (+70h), ignoreFalloff 1 and the round's source entity (+238h)
+        // skipped. The base tick's own expiry pair at 006E6584 (00696350,
+        // 00926D90(proj, 2)) only marks the round dead first; 0070C210 does
+        // not test that, and its 00926D90(proj, 1) returns on +5Fh.
+        // SUBSTITUTIONS, labelled: the test is the life bound's own
+        // life * V0 > FlyTime * V0 (the row keeps the derived range, not
+        // FlyTime), so ON and OFF expire on the same tick; the source entity
+        // is the owner unit, as for the lock's burst; the point effect
+        // (0070C2EC, class+2Ch) and the trail's world point (0070C350) are
+        // presentation and are not modelled.
+        if constexpr (kFlakFlyTimeBurstBound) {
+            const GameBulletClassRow* const xc = bullet(shot.bullet_class);
+            if (xc != nullptr && xc->type == "Flak" && xc->range > 0.0f
+                && xc->muzzle_speed > 0.0f && shot.life * xc->muzzle_speed > xc->range) {
+                const float no_dir[3] = {0.0f, 0.0f, 0.0f};
+                const float at[3] = {shot.position[0], shot.position[1], shot.position[2]};
+                shot.flak_target = 0;   // 0070C3C1
+                ++flak_expiry_bursts;
+                ++summary.expired;
+                shot.fate = 5;
+                round_bullet_class = shot.bullet_class;
+                apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
+                    no_dir, true);
+                round_bullet_class = -1;
+                done("FlakProjectile::expiry_detonate_0070c3c8", 0x0070c3c8u);
+                shot.alive = false;
+                continue;
+            }
+        }
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
@@ -10177,7 +10281,8 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
 }
 
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
-    std::size_t gun_row, int team_id, const float point[3], const float direction[3]) {
+    std::size_t gun_row, int team_id, const float point[3], const float direction[3],
+    bool ignore_falloff) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
     const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
@@ -10300,7 +10405,8 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
         blast.part_damage_base = damage;
         blast.falloff_range = weapon->blast_range;
-        blast.ignore_falloff = false;
+        blast.ignore_falloff = ignore_falloff
+            || (kFlakBlastIgnoreFalloffBound && weapon->type == "Flak");   // 0084BE74
         blast.armour_selector = 0.0f;
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
@@ -13260,6 +13366,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak expiry bursts=%llu bound=%d "
+            "ignore_falloff_bound=%d (0070C3C8 -> 0070C210, packet cc13-flak1)",
+            host.flak_expiry_bursts, kFlakFlyTimeBurstBound ? 1 : 0,
+            kFlakBlastIgnoreFalloffBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa bot error gunner_rolls=%llu (by level %llu/%llu/"
             "%llu/%llu/%llu/%llu) clamps=%llu ticks=%llu mean_miss_m=%.2f gunner_bound=%d "
             "flak_rolls=%llu (by level %llu/%llu/%llu/%llu/%llu/%llu) mean_angle_deg=%.3f "
@@ -13468,11 +13578,12 @@ void GameGunneryHost::report() {
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
-            "lof_expiry_draw=%d (packet cc9_aa_targeting)",
+            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips, host.aa_armour_rejects_tail,
-            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0);
+            kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0,
+            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "
