@@ -69,6 +69,38 @@ and was not touched.
   because the bridge's `disassemble_bytes` sweeps the whole range linearly (seen at 00764940) and
   would turn the table into instructions.
 
+## Pass 2: referenced bodies image-wide (cc13-define1, resumed by cc13-define2)
+
+Scope approved by the lead: an image-wide gap census with the pass-1 start rules found 42,475
+candidate bodies (40,062 candidates, 2,413 rejected). Only the 8,837 with a confirmed reference
+were defined; the rest are held. Record: `reports/cc13_undefined_function_sweep_2.json`
+(`defined`, `not_defined`, `held`, `rejected`, compact column arrays).
+
+| class | selected | defined | reference that qualified it |
+|---|---|---|---|
+| EH handler stubs | 6,780 | 6,780 | `mov eax,FuncInfo; jmp ___CxxFrameHandler3` (FuncInfo magic 19930522), `PUSH stub` in the parent's SEH prologue confirmed in the listing |
+| `.rdata` table entries | 1,860 | 1,845 | dword in an `.rdata` function-pointer table beside a known entry, plus a structural start |
+| unwind-map entries | 121 | 121 | dword in an unwind-map-shaped `.rdata` record |
+| called / pushed | 76 | 75 | rel32 CALL or `push imm32` from code |
+| total | 8,837 | 8,821 | |
+
+- A power outage stopped the first run after 2,469 bodies. The resume re-read every candidate
+  live (`get_function_by_address`: entry and body end against the planned end) and defined only
+  the missing ones, so nothing was defined twice. Same tool and rules as pass 1
+  (`tools/ghidra_define_function.py`, explicit `disassemble_bytes` then `create_function` without
+  flow discovery), 100 bodies per write-lock hold with a per-batch lease, released between.
+- "Non-Returning Functions - Discovered" was checked disabled (`list_analyzers`) before the resume.
+- Names: none assigned except the reviewed ledger names the define tool applies on its own (18
+  `BSP_`, 14 `thunk_`, 1 `TRIV_` bodies). The handler stubs and table entries are `FUN_`.
+- Not defined (15): all in agent/cc13-net2's ranges 0076B630..00786C56 (listed in
+  `not_defined` with the holder). One defined body is short: **00726930** (`.rdata` table
+  00CFDBE4) ends at 0072693F; the loop at 00726940..00726957 is not instructions in Ghidra even
+  after `--recreate` reported 40 bytes disassembled (`get_instruction` at 00726940: none). Needs a
+  CodeBrowser look (Clear + Disassemble at 00726940).
+- Held (31,225): no confirmed reference (unreferenced COMDAT copies, gap-start heuristics, 30
+  table hits dropped for lacking structural start evidence). Not defined on purpose; the list is
+  in the report for a later pass with stronger evidence.
+
 ## Open items
 
 - **00764940** (scalar deleting destructor, vtable slot 00D0361C): an offcut instruction run at
