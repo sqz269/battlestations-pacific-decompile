@@ -16640,3 +16640,21 @@ The exec guard logs `bsp: refused a mission script's process launch: sus_prog.ex
 - **y** (x + NH also on Musashi in 78300-117300; log `local\s43_p9_osyf.log`) completes too, at 7687.83 s (entity
   Essex): Loui2 sinks Musashi at 4092.27 s, Loui1 sinks Haku1 at 7505.75 s and Loui2 Haku2 at 7608.65 s, and the
   `sus_prog.exe` refusal is logged. Two different endings from one plan, so the plan is not a knife-edge.
+
+## 211. Handoff (cc9-ships43, 2026-10-12)
+
+### 211.1 The player launch's slot: 00660190's cursor and state 5 only (`kPlayerLaunchScreenCursorBound`, committed OFF)
+
+docs/CC13_AIR_OPS_SLOT_GROWTH.md (cc13) settles 210's slot question. 006C7210 always grows the deck, but its only
+caller is 006CC690 (Lua `LaunchSquadron`). The Support Manager launch (0067A54A-0067A5E6) launches the slot under
+the screen cursor (+324h) and requires state 5 (0067A565). So 210's "no such slot = the native 4-slot limit" is right
+about the outcome and wrong about the mechanism: the deck has no slot limit; four is the screen's widget layout.
+- The binding, in `player_air_ops_launch` (src/game_hosts_script_orders.cpp, cc13's diff): slot 0 becomes
+  00660190's opening cursor (the first slot that is out in state 3/4 or in state 2/5, clamped to 3), and only state
+  5 is accepted. OFF keeps 006C7210's pick and "state 1 or 5". The harness keeps emulating the player, so it must
+  not switch to 006CC690.
+- Predictions: smoke identical. USNOS j and x move from the first slot-0 launch where the two picks differ. The
+  cursor stops on a slot whose squadron is still out (state 3/4), and that launch is now refused ("not in state 5"),
+  so ON refuses more launches while squadrons are airborne. Launches into a state-1 slot (cooldown) are refused
+  too. Expect fewer accepted Enterprise launches and a different USNOS outcome; mechanism check: the refusals name
+  state 5, and no ON launch lands in a slot that is not in state 5.
