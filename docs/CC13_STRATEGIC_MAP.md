@@ -40,8 +40,7 @@ keeps its scene at screen+8h (`005AB1B9`).
 
 The per-frame smoothing of `+14h` is **not in this segment**. The zoom table is also read by the
 map-screen update `005B45C0` (`005B4FAC`), which has no Ghidra function (`docs/CC13_FRONTEND_MENUS.md`)
-and keeps its own copies at screen `+5B0h`/`+5B4h`. That function is where the lerp has to be
-looked for.
+and keeps its own copies at screen `+5B0h`/`+5B4h`. The lerp is reconstructed in `docs/CC13_MAP_SCREEN_UPDATE.md`.
 
 The rest of `0093CCC0` builds the scene graph: `Simple3dSceneHandler`, `SceneHandlerCamera`, the
 viewport, `MapLights` and `TestDirectionalLight` normalised through `00419510`, and lighting from
@@ -106,7 +105,6 @@ This cluster makes no game-RNG draw. `local/wn1_rng.py` over `0093CB10..0093F520
 
 ## Handoff
 
-1. The `+14h` smooth-zoom update has to be found in `005B45C0`. It needs a Ghidra function first,
-   which belongs to the frontend-menus lane.
+1. Done: the `+14h` smooth-zoom update is in `docs/CC13_MAP_SCREEN_UPDATE.md`.
 2. `0093E510`'s self-recursion (clip or subdivision) was not traced.
 3. The audio rows (`0093F520..00941550`) and every cc9 row above are listed only, not touched.
