@@ -15491,3 +15491,22 @@ latent stop defect, each with a diff. Applied as written, all OFF:
 - B: BSM04's `FortressHitListener` (`UNDERATTACK`) can fire on the first hit to any B-17 rather than wing 0's:
   dialog timing only; otherwise identical.
 - C: latent; no reference row admits a Hidden or exempt-class entity in mode 9. Identical on JM05/JM06.
+
+### 5fz, the pairs and the verdicts (cc9-lua51, 2026-10-12)
+
+Exports of `0e5cd27a6` with cc13's diff A hunk applied to the export only (`local\l51_mkexp.ps1`): `l51_E0` (all
+three OFF), `l51_E1` (A ON), `l51_F1` (B ON).
+
+| row | pair | pair_diff | what moved |
+| --- | --- | --- | --- |
+| LOMP05, 24000 | E0/E1 (A) | 1, gameplay identical | `Listener_JPPlaneShotdown` (`{PLAYER_1}`) fired 30 times OFF, for kills by Hornet and the other US ships (side 0), and 0 times ON. AI guns stamp slot 8, and the player's Cushing makes no kills. The OFF count stays below 50, so the power-up is not affected in 900 s. The mission fails at 901.75 s on both sides |
+| BSM01, 17000 (win) | E0/E1 (A) | 1 | `kill_with_attacker` 131 -> 133 (two squadron victims now carry a member's attacker). The win holds at 767.94 s |
+| JM01, 24000 | E0/E1 (A) | 0 | **not measured**: the menu harness never reaches JM01 (`summary mission select=JM01 ... selected=TRN1 ... step=Stopped`, 0 mission frames). Primary 4's reach is still unrun |
+| BSM04 | E0/F1 (B) | 1, gameplay identical | `luaFortressHit` fires on the first hit to `B-17|.-2` (damage 2.2), and `UNDERATTACK1` starts at 73.95 s. OFF waits for a wing-0 hit. The mission fails at 90.05 s (Donald) on both sides |
+
+**Verdicts.**
+- **B: ON** (`kLuaHitTargetSquadronBound`, this branch). It behaves as predicted.
+- **A: recommended ON** to the gunnery lane, which holds the file. Its mechanism shows on LOMP05 as predicted:
+  the side stand-in over-counted. JM01 needs a harness route to the mission before primary 4 can be shown.
+- **C: stays OFF**, recorded. It is latent on every row run, and no reference row admits a Hidden or exempt-class
+  entity in mode 9.
