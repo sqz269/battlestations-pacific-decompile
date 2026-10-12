@@ -249,6 +249,33 @@ after their ledger callees. 00AE2FE0 is a host method too, so it can bind to
   in white, raised by 20, and recurses when +34h is set. Box ends are float spills. The y ends
   are float(float(c +/- h) + offset).
 
+## Terrain open items from docs/CC13_TERRAIN_RENDER.md (answered here)
+
+1. Which builder each terrain type uses: none of the three in this image.
+   - 00ADD3F0, 00ADE0E0 and 00ADC930 have no E8/E9 rel32 call or jump and no absolute dword in
+     any section.
+   - The scan is `local/sh1_rel32.py` in the shadow1 tree. As a control, it does find
+     00883058 CALL 00ADE820.
+   - Ghidra xrefs are empty as well.
+   - Live terrain goes BSP_Landscape_LoadTerrain (00882AC0) -> BSP_TerrainHeightField_LoadTdt
+     (00ADDA60) / BSP_TerrainHeightField_AttachModel (00ADE820) -> 00ADE500 -> 00ADDA60. These
+     load .tdt tiles (00ADFEB0 BSP_TerrainTile_ReadChunks) instead of building from a heightmap.
+2. 00ADC930 patch kind and edge test, from the listing:
+   - There is one patch type, not two. The 44h object is built by the base constructor
+     00AED9A0(21h, 21h) (vtable 00D5D2DC). The derived part then zeroes +38h..+40h, builds a
+     second 33x33 grid with 00ADAF50(21h, 21h) on ECX = object+38h (EH state 3), installs
+     vtable 00D5D314 and sets +0Ch = 2. That is ordinary constructor chaining.
+   - The edge test (00ADCA90..00ADCAB7) replaces the sample with 0.0 instead of reading the
+     source. It does so when `[esp+1Ch] - 20h == [esp+24h]` and the row index is 32, or when
+     `[esp+84h] - 20h == EBP` and the column index is 32. That reads as: the last patch along an
+     axis has no 33rd source sample. The slot meanings (size and origin) are provisional.
+   - A patch is created (00ADCE77, after `[00F8C218]` vslot 4) only once some sample exceeds
+     0.01 (00D7A238; COMISS/JB at 00ADCB04, then > 0 at 00ADCE3F), or the value at
+     `[esp+80h]` (computed in 00ADCB0A..00ADCE36, not traced) is above 0 (00ADCE44).
+     Otherwise, after 33x33 samples, the patch is skipped (00ADCE72).
+3. Whether the heightmap patch box top reaches a culling decision: not in this image, because
+   00ADD3F0 is unreferenced (item 1). The under-covering box top is latent.
+
 ## Uncertainty
 
 - x87 exponent range: the double model diverges only when an intermediate overflows or underflows
