@@ -242,3 +242,154 @@ Next steps:
 2. Run `bsp.py snapshot` so the renames reach the exports.
 3. Have the band sweeps name the dropped game rows.
 4. Change `st1_build.py` per section 3.1.
+
+## 9. Second pass (cc13-stlreview2)
+
+Packet cc13-stlreview2, 2026-10-12, on origin/main `afa6c36e3` (cc13-sweep9x landed). Same status
+vocabulary as above: tag and name metadata from static evidence, nothing reconstructed or run.
+
+### 9.1 Scope and counts
+
+All 677 `stl_probable` bookmark rows still present were re-featured, re-decompiled (live Ghidra,
+read-only) and re-clustered with the section 2 pipeline. The 137 rows inside cc13-sweep67's lease
+(`00670000-006CFFFF`, `00700000-0073FFFF`) were deferred at first and decided later (9.6). The other
+540 were decided:
+
+| origin of the row | upgraded (shape) | upgraded (name kept) | reviewed (game) | dropped | kept library | kept uncertain |
+| --- | --- | --- | --- | --- | --- | --- |
+| deferred by stlreview1 (0098, 00A5-00BF) | 47 | 54 | 74 | 26 | 12 | 2 |
+| new since stlreview1 (cc13-sweep9x bookmarks) | 9 | 0 | 1 | 38 | 12 | 2 |
+| stlreview1 `keep_library` | 46 | 0 | 0 | 14 | 132 | 0 |
+| stlreview1 `keep_uncertain` | 1 | 0 | 0 | 37 | 0 | 14 |
+| stlreview1 `drop_game`, resurrected (9.4) | 0 | 0 | 0 | 19 | 0 | 0 |
+| total (540) | 103 | 54 | 75 | 134 | 156 | 18 |
+
+The 62 "new" rows are 0090-00BF bookmarks that cc13-sweep9x added after stlreview1 ran.
+
+The decision file is `tools/template_shapes/stlr2_decisions.txt` (written by
+`tools/template_shapes/stlr/stlr2_final.py`). It was applied with
+`python tools/template_shapes/stlr_review.py --decisions tools/template_shapes/stlr2_decisions.txt
+--source docs/CC13_STL_PROBABLE_REVIEW.md`; `stlr_review.py` now takes both options.
+
+Ghidra, under the write lock (`stlr_ghidra_apply.py`; logs `local/stlr-ghidra-tags-20261012T143127Z.json`
+and `local/stlr-ghidra-unbookmark-20261012T143127Z.json` in the worker tree):
+
+- 103 `FUN_` renames to `<Shape>_<addr>`; 54 named rows got the `Inventory: stl_instantiation`
+  bookmark and kept their names.
+- 366 `Inventory: stl_probable` bookmarks deleted (every upgraded, reviewed and dropped row).
+- `_free` `00BF9DC8` read `void __cdecl _free(void * _Memory)` before and after;
+  'Non-Returning Functions - Discovered' was not touched.
+
+### 9.2 New cluster labels
+
+Each representative below was read in full; members share its normalised pseudocode (section 2,
+step 3). Labels were appended to `tools/template_shapes/stlr/stlr_labels_extra.txt`.
+
+| cluster | label | representative read | what the body does |
+| --- | --- | --- | --- |
+| `81b50eb021`, `6a3d68c0b1` | `STL_Tree_InsertHint` | `0078BEA0` (int key), `006658D0` (ushort key) | empty-tree and begin/end fast paths, then `_Dec`/`_Inc` of the hint, key compare at `node+0Ch`, `_Insert(addLeft, where, val)`; the callee carries the stale name `STL_xlen_throw_*` (section 3 hazard) |
+| `8c4a9bbc7d`, `aba6b8ad91`, `98214f377a`, `f420ed1592`, `7c1d281c35` | `STL_Vector_Resize` | `0043DAB0` (8-byte), `00495D40` (54h), `004A48D0`, `0082C560`, `0083B480` | `size()<n` -> `_Insert_n(end, n-size, val)`, else `erase(begin+n, end)` |
+| `c1b8adbc94`, `2060e75afd`, `be88bcae9a`, `51bf3bf305` | `STL_Vector_EraseRange` | `005C92F0` (434h records), `004C8630`, `0050A110`, `00524DC0` (virtual element dtor) | same-container hook, copy tail down, destroy `[newEnd, end)`, store end |
+| `cab4e3fbb7`, `0b84a17f3c` | `STL_Vector_CopyConstruct` | `005C93C0`, `009487D0` | zero the triple, `_Buy(n)` with max_size check, `_Ucopy` under an EH state |
+| `4575e47139` | `STL_List_Erase` | `004CECF0` | `list<std::string>::erase(where)`: unlink, string `_Tidy` (cap > 0Fh frees), free node, `--size` |
+| `7be01eafcd` | `STL_List_EraseRange` (new key `st1_listeraserange`) | `00489690` | begin/end pair -> `clear()`, else loop unlinking and freeing each node |
+| `5d81a9a118` | `STL_Vector_Reserve` (new key `st1_vecreserve`) | `00747CC0` | max_size (`38E38E3h` for 48h elements) length_error, allocate, move, free old |
+| `388fe031ae`, `5cf1f258d6`, `e669c5cad1` | `STL_Map_Subscript` | `0078C0E0`, `005A7AF0`, `00A27A00` | `_Lbound` walk, on miss `insert(hint, value_type(key, T()))`, return `node+10h` |
+| `d71d29abd2` | `STL_Tree_EraseRange` | `007743E0` | begin/end pair -> `_Erase(root)` + head reset, else erase(where) loop |
+
+Five clusters were read and labelled game code (unnamed members dropped): `d904e1bdd4`
+(`0096E3A0`: virtual writer interface `+4`/`+0Ch`/`+8` over a set), `818152624d` (`00473CE0`:
+`BSP_BulletVisualClassRegistry_GetSingleton` walk), `af54afaa58` (`00640860`: owner fields
+`+60h`/`+64h`/`+80h` and a 18h-byte pool block), `913d7c756a` (`00A12CD0`: `+5640h`/`+5644h` and
+`BSP_EntityPose_RefreshWorld`), `9ae8fad93e` (`0045D110`: removes a pointer from the vector at
+owner `+68h`; its twin is `BSP_GuiManager_RemovePagePointer`).
+
+Two named rows were moved from reviewed to upgraded after reading them: `00B14480`
+`BSP_RendererRecords_Erase` is `vector::erase(first,last)` over 300-byte records
+(`st1_veceraserange`), and `00B7CDF0` `BSP_DecrementNativeResourceCacheIterator` is `_Tree` iterator
+`_Dec` (`st1_iterdec`). Their names did not match the container-name regex in `stlr_bucket.py`.
+
+### 9.3 Reading the kept rows
+
+stlreview1 kept 52 rows as uncertain and 192 as library-shaped by rule, without reading them.
+`local/s2_sig.py` (worker tree) printed each in-scope row's signature, callees, largest `this` field
+offset (including the `param_1[N]` indexed form, which the section 2 field regex missed), float-op
+count and virtual-call count, and the outliers were read. Dropped as game code (reasons in the
+anchors column of the decision file):
+
+- 49 uncertain rows, among them `BSP_MissionEntity_Kill` loops (`00481430`, `00484A10`, `00487940`,
+  `004A5B90`), float geometry (`007AED10`, `007B1FB0`, `00AEB0B0`, `00AEB1F0`, `00AEB310`, `00ADF1B0`),
+  bit-stream serialisers (`00429B00`, `0042A480`), front-end and HUD teardown (`0051E050`,
+  `00538A80`, `00540D50`), and Lua/GUI/input callers (`00BD8EC0`, `00AB1F60`, `005251C0`).
+- 12 library-shaped rows with game anchors the rules missed: `0091A080` (4.7 KB, field `+1E8h`,
+  float math), `0095F1C0`, `00741A40` and `007B2950` (`BSP_NetEntityCreateMessage` with fields
+  past `100h`), the GUI widget methods `00A9BF90`, `00A9C860`, `00ACB9B0`, `00AD0680`, and
+  `0043DD80`, `0045A210`, `0045B220`, `007AE6D0`.
+
+Still kept, uncertain (18): `0041E960 0045DDA0 00480A90 004881F0 004BFB50 005DAE00 005DEE40
+005F4FA0 00797F50 0079A190 007B1A80 008DD1C0 009080A0 00975D00 00B77F80 00BD23E0` (deleting
+destructors and short loops with one ambiguous callee), plus `0098FC20` and `00990340`, which are
+in 9.5.
+
+### 9.4 Resurrected rows: a ledger-merge hazard
+
+19 rows that stlreview1 dropped (`009042B0`, the 15-row `00968710` vcall cluster, `0096BF70`,
+`0096CE00`, `0096ED00`) were back in `config/tags/00900000.jsonl` and `00960000.jsonl`. The merge
+`044466966` (origin/main into agent/cc13-sweep9x) restored them: a union merge of JSONL shards keeps
+every line from both sides, so a deleted row comes back when the other branch still has it. Their
+Ghidra bookmarks had already been deleted. This pass drops them again. A duplicate seen in passing:
+`00A44840` has two `stl_instantiation` rows in `config/tags/00a40000.jsonl` (stlreview1 and
+cc13-sweepA1, same name); it was left alone.
+
+Anyone deleting tag rows on a branch should expect a union merge to undo the deletion. Check
+`git diff` of the shard after the merge, or record deletions somewhere the merge tool can see them.
+
+### 9.5 Library code that is not a container template
+
+The 0098-0099 rows that stay `keep_library` are Dinkumware iostream/locale code, not container
+templates: `_Lockit`, `_Locinfo_dtor`, `_Init`, `basic_streambuf` init (`0098DE50`, `0098E4E0`,
+`0098F180`, `0098FB50`, `00991150`, `00991610`), `char_traits`/string `_Chassign` growth
+(`0098F9A0`, `0098FA90`), and `getc`/`fputc`/`fwrite`-driven `basic_filebuf` bodies (`0098FC20`,
+`00990340`, `0098FFE0`, `00992480`). They need names from the MSVC 8 `<fstream>`/`<xlocale>`
+sources, not a container shape.
+
+### 9.6 The sweep67 rows (third run)
+
+cc13-sweep67 landed while this pass was running (merged at `76aa016f4`) and released its lease. Its
+range then held 173 rows: the 137 deferred ones and 36 new bookmarks from that sweep. The same
+pipeline ran on them (`stlr2_final.py --s67`, which writes `tools/template_shapes/stlr3_decisions.txt`
+and adds nine read-based drops: air-ops bodies under a critical section, `BSP_VehicleClass_*`
+callers, entity destructors with fields past `200h`, and one 66-float-op body):
+
+| origin | upgraded (shape) | upgraded (name kept) | reviewed (game) | dropped | kept library | not touched |
+| --- | --- | --- | --- | --- | --- | --- |
+| deferred by stlreview1 | 61 | 22 | 14 | 23 | 16 | 1 |
+| new cc13-sweep67 bookmarks | 1 | 0 | 0 | 30 | 4 | 1 |
+
+Not touched: `00675C40` (cc9's support-manager update; the common brief reserves it) and `007240E0`
+(inside cc13-leftovers1's lease). No new cluster labels were needed: every multi-row cluster here
+already had one. Ghidra: 62 renames, 22 `stl_instantiation` bookmarks on named rows, 151
+`stl_probable` bookmarks deleted (`local/stlr-ghidra-*-20261012T145044Z.json`); `_free` unchanged.
+
+196 `stl_probable` bookmarks remain image-wide: 176 library-shaped, 18 uncertain, and the 2 above.
+
+### 9.7 Per-rule reliability, all passes
+
+| rule | decided | game code | template copy | kept library | kept uncertain |
+| --- | --- | --- | --- | --- | --- |
+| `st1_scl97` (no size cap) | 452 | 366 (81%) | 30 (7%) | 49 | 7 |
+| `e0029` (97-256 bytes) | 1494 | 391 (26%) | 965 (65%) | 127 | 11 |
+
+Counts take each row's latest decision across the three decision files (1946 rows). The 98 bookmarks
+the band sweeps added after stlreview1 (62 from cc13-sweep9x, 36 from cc13-sweep67) were 70% game
+code, nearly all `st1_scl97` hits with strings or game calls (scoring awards, Lua bindings, the
+hardware options text, air-ops stock). Section 3.1's proposal stands: cap or drop `scl_97plus`, and
+do not bookmark on the `_invalid_parameter_noinfo` call alone.
+
+### 9.8 Still to do
+
+- `007240E0` once cc13-leftovers1 releases it; `00675C40` belongs to cc9.
+- Name the 187 dropped game rows of this pass in the band sweeps (anchors in the decision files).
+- Name the 0098-0099 iostream/locale bodies (9.5).
+- Section 9.4: a union merge of tag shards undoes deletions; whoever owns `tools/merge_resolve.py`
+  should decide whether it needs a tombstone for removed rows.
