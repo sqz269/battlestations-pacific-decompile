@@ -488,7 +488,7 @@ xrefs. The class follows from whether any host runs the enclosing task or flow. 
 | NOT-MODELLED | 46 | 10 labelled, 36 unlabelled; 12 of these are point-effect spawns (presentation) |
 | HOST-OMITS-FUNCTION | 66 | the rocket task (25), kamikaze (8), plane depth charge (6), moveonpath (4), closetoship (2), the AI coordinator (7, not run in single player by the image either), 5 unreached pieces, 9 unreferenced helpers |
 
-The census's "comments only" status undercounted. 37 of those 62 rows are drawn, in a
+The census's "comments only" status undercounted. 46 of those 62 rows are drawn, in a
 multi-line call or through a binding interface the address grep could not tie to the site:
 - the bomb-drop dispersion;
 - the dive and torpedo aim-error redraws;
