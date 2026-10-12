@@ -989,7 +989,7 @@ void apply_terrain_texture_header_004ed910(const TerrainTextureHeaderInputs& in,
     host.set_world_parameter_string_00b1b830("NoiseTexture", in.noise_texture_bdc);
     host.set_world_parameter_string_00b1b830("TerrainLUT", in.terrain_lut_e18990);
     host.set_world_parameter_string_00b1b830("StaticShadowTexture", in.static_shadow_texture_be4);
-    host.renderer_slot_120();
+    host.refresh_material_textures_00b24dd0();
     for (int i = 0; i < kEnvironmentSoundCount; ++i) {
         if (!in.env_sample_present[i] && !in.env_path[i].empty()) {
             host.acquire_environment_sample(i, in.env_path[i]);

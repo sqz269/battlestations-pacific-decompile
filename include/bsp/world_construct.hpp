@@ -107,32 +107,39 @@ MarkerManagerLayout construct_marker_manager_006deca0() noexcept;
 // The record is game+5FCh, the block 0046DF00 filled on the pass before this
 // routine. include/bsp/mission_scene_load.hpp already names the offsets that
 // packet established; these are the ones only 004DE610 touches.
+// Names follow the header readers that write them (docs/CC13_SCENE_WEATHER.md):
+// 004ECA30 (DirFogColor, *RenderClip, BushShadowAllowed, CloudLights) and 004EE450
+// (Skybox, SkyboxRotate/Luminance, Sun, ThunderStorm). They replaced consumer-side guesses
+// (camera near, foliage density, ocean desc/vector/scalar, terrain/shore handle) on
+// 2026-10-12. The host hooks ocean_set_vector/ocean_set_scalar/create_ocean_owner keep
+// their older names; per that doc the calls they stand for are the cloud-manager colour
+// setters (00BBCD90/00BBCDE0/00BBCD50) and the sky creation and rotate/luminance setters.
 
-inline constexpr std::size_t kSceneRecordFogEntryOffset = 0xA20; // 004DF781
-inline constexpr std::size_t kSceneRecordFogEntryStride = 0x10;
-inline constexpr std::size_t kSceneRecordFogEntryCount = 4; // to A60h, 004DF79D
-inline constexpr std::size_t kSceneRecordCameraNearOffset = 0xA78; // 004DE952
-inline constexpr std::size_t kSceneRecordLightScalarOffset = 0xA84; // 004DF3FD
-inline constexpr std::size_t kSceneRecordFoliageDensityOffset = 0xA88; // 004DE96E
-inline constexpr std::size_t kSceneRecordFoliageRangeOffset = 0xA8C; // 004DE989
-inline constexpr std::size_t kSceneRecordFoliageEnableOffset = 0xA90; // byte, 004DE9A4
+inline constexpr std::size_t kSceneRecordDirFogColorOffset = 0xA20; // 004DF781
+inline constexpr std::size_t kSceneRecordDirFogColorStride = 0x10;
+inline constexpr std::size_t kSceneRecordDirFogColorCount = 4; // to A60h, 004DF79D
+inline constexpr std::size_t kSceneRecordObjectRenderClipOffset = 0xA78; // 004DE952
+inline constexpr std::size_t kSceneRecordShadowRenderClipOffset = 0xA84; // 004DF3FD
+inline constexpr std::size_t kSceneRecordFoliageRenderClipOffset = 0xA88; // 004DE96E
+inline constexpr std::size_t kSceneRecordFoliageLowResDistOffset = 0xA8C; // 004DE989
+inline constexpr std::size_t kSceneRecordBushShadowAllowedOffset = 0xA90; // byte, 004DE9A4
 inline constexpr std::size_t kSceneRecordCausticsScalar0Offset = 0xAB8; // 004DEF1F
 inline constexpr std::size_t kSceneRecordCausticsScalar1Offset = 0xABC; // 004DEF3B
 inline constexpr std::size_t kSceneRecordCausticsSourceOffset = 0xACC; // 004DECB9
 inline constexpr std::size_t kSceneRecordWaterTracerColorOffset = 0xC44; // 004DF59B
-inline constexpr std::size_t kSceneRecordOceanDescOffset = 0xC54; // 004DF457
-inline constexpr std::size_t kSceneRecordOceanScalar0Offset = 0xC5C; // 004DF549
-inline constexpr std::size_t kSceneRecordOceanScalar1Offset = 0xC60; // 004DF56B
+inline constexpr std::size_t kSceneRecordSkyboxNameOffset = 0xC54; // 004DF457
+inline constexpr std::size_t kSceneRecordSkyboxRotateOffset = 0xC5C; // 004DF549
+inline constexpr std::size_t kSceneRecordSkyboxLuminanceOffset = 0xC60; // 004DF56B
 inline constexpr std::size_t kSceneRecordSkyFlagOffset = 0xC20; // byte, 004DF7E1
 inline constexpr std::size_t kSceneRecordSkyParam0Offset = 0xC18; // 004DF8A2
 inline constexpr std::size_t kSceneRecordSkyParam1Offset = 0xC1C; // 004DF8C1
 inline constexpr std::size_t kSceneRecordCloudDescOffset = 0x990; // 004DF878
 inline constexpr std::size_t kSceneRecordTerrainVectorOffset = 0x100C; // 004DEA22
-inline constexpr std::size_t kSceneRecordTerrainHandleOffset = 0x1044; // 004DE9C4
-inline constexpr std::size_t kSceneRecordOceanVector0Offset = 0x1014; // 004DF495
-inline constexpr std::size_t kSceneRecordOceanVector1Offset = 0x1024; // 004DF4D1
-inline constexpr std::size_t kSceneRecordOceanVector2Offset = 0x1034; // 004DF50D
-inline constexpr std::size_t kSceneRecordShoreHandleOffset = 0x104C; // 004DEAFD
+inline constexpr std::size_t kSceneRecordSunEffectNameOffset = 0x1044; // 004DE9C4
+inline constexpr std::size_t kSceneRecordCloudLightsAmbientOffset = 0x1014; // 004DF495
+inline constexpr std::size_t kSceneRecordCloudLightsSunOffset = 0x1024; // 004DF4D1
+inline constexpr std::size_t kSceneRecordCloudLightsBottomOffset = 0x1034; // 004DF50D
+inline constexpr std::size_t kSceneRecordThunderStormEffectNameOffset = 0x104C; // 004DEAFD
 
 // ---------------------------------------------------------------------------
 // Literals

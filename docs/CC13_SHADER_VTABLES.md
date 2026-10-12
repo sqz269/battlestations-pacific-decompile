@@ -189,3 +189,14 @@ not Dinkumware, so they were named rather than tagged as library.
    names.
 2. The interface behind `00B34400`'s `[this+8]`.
 3. Repair the two mis-splits and define the two code islands (section 4), then re-run the census.
+
+## Correction (cc13-sceneloose1, 2026-10-12)
+
+Section 4 writes `00B405E0` as `SetMatrixRowsAt(i, rows, matrix)`. The argument order is
+`(index, matrix, rows)`, as `docs/CC13_MERGE_TOMBSTONES.md` records: `__thiscall(this, int index,
+const float* matrix, int rows)`, `RET 0Ch`. The listing shows it. At entry, `00B405E0 MOV EAX,
+[ESP+0Ch]` loads the third argument, and the switch on rows 2, 3 and 4 tests it. After `SUB ESP,
+20h`, `00B405FA MOV EDX, [ESP+24h]` (the first argument) is shifted left by 4 to form
+`this+4+index*10h`, and `00B405FE MOV EAX, [ESP+28h]` (the second argument) is the matrix pointer
+pushed to `00B404A0`. The function is now defined as
+`BSP_Float4Block_SetMatrixRowsAt_Unreferenced`.
