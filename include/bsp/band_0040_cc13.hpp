@@ -66,13 +66,13 @@ public:
 
     // 0043E940, vslot 5 (+14h), ECX manager, stack names*, RET 4. Sets every
     // enabled byte to (blocked == 0), then calls vslot 2 (name, false) for each
-    // listed name. profile_commit.cpp's apply_downloaded_content_virtual_14 is
+    // listed name. profile_commit.cpp's disable_listed_packages_virtual_14 is
     // this slot, run on settings+98h: the settings list names the packages to
     // switch OFF.
     void disable_only_0043e940(const std::vector<PackageName>& names);
 
     // 0043EA80, ECX manager, stack names*, RET 4 (profile_commit.cpp's
-    // filter_downloaded_content_0043ea80 on settings+98h). Keeps each name that
+    // keep_known_package_prefixes_0043ea80 on settings+98h). Keeps each name that
     // is a case-sensitive prefix of some record name (a record with null data
     // never matches; a null list entry reads as the empty string 00E17BF0, which
     // matches any record with data). A name with no match is replaced by the

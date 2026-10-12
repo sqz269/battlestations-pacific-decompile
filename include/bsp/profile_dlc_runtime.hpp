@@ -21,8 +21,8 @@ public:
     void try_construct_download_manager_009955f0(std::uint32_t) override;
     bool download_manager_ready_1c() override;
     void refresh_download_manager_virtual_24() override;
-    void filter_downloaded_content_0043ea80(std::vector<std::string>&) override;
-    void apply_downloaded_content_virtual_14(std::vector<std::string>&) override;
+    void keep_known_package_prefixes_0043ea80(std::vector<std::string>&) override;
+    void disable_listed_packages_virtual_14(std::vector<std::string>&) override;
     void finish_download_manager_virtual_20() override;
     void register_localization_table_00aa0d30(std::string_view) override;
     void reload_localization_tables_00aa06d0(bool) override;

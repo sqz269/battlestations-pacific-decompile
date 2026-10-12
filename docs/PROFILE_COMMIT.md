@@ -52,6 +52,11 @@ virtual `+24h`, `0043ea80(settings+98h)`, virtual `+14h(settings+98h)`, and virt
 and calls `00aa06d0(true)`, including a manager whose ready byte is clear.
 The platform manager's owned records and these virtual implementations remain
 required host operations. This routine does not apply all game settings.
+Virtual `+14h` is `0043e940`: it sets every package's enabled byte `+10h` to `blocked(+12h) == 0` and then
+calls virtual `+8` with `false` for each listed name, so settings `+98h` is a list of packages to
+**disable** (field renamed `disabled_downloaded_content`; the archive section is still `DownloadedContent`).
+`0043ea80` keeps each name that is a case-sensitive prefix of some package record name, not only exact names
+(cc13-sweep4B, 2026-10-12; evidence in docs/CC13_BAND_0040_0044.md).
 
 `007fae70` starts with `008d5030`, constructs a Lua owner, opens it with mask
 `4`, and runs `SCRIPTS/datatables/DLC.lua` through the existing script-with-
