@@ -50,6 +50,7 @@
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/mission_state_frame.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
@@ -1351,6 +1352,22 @@ public:
             // luaStageInit (0045F440). The resets and the GC stay records.
             owner_.engine_movie_skip_pending = false;
             owner_.record("EngineMovie::begin_004cce50", 0x004cce50u);
+            // 0046B730's kill pass (0046B795-0046B91B): every root entity, and
+            // every child of a kept root, whose class +C4h is not in the scene
+            // database's +158h set (44h, 5Eh, 1Dh, 47h, 3Dh) is killed with
+            // 00926D90(2) at 0046B906. CreateScript entities are class 3, so
+            // every luaDelay timer luaEngineMovieInit made dies here.
+            // LABELLED: the scene units' kill and re-create from the +28h
+            // records (0046BA7B-0046BBCD) stays a record; on a skip at the first
+            // frame nothing has moved. The ten 00874D00 calls (five CL=0 before
+            // the mode-8 set, five CL=1 after) stay records too: 00874D00 does
+            // not advance the mission clock, and its CL=0 think-list pass
+            // (00929460) finds only the entities just killed.
+            const std::size_t killed = owner_.lua.script_orders() != nullptr
+                ? owner_.lua.script_orders()->kill_live_script_entities(2) : 0;
+            owner_.log.notef("engine movie stop: 0046B730 killed %zu script entit%s "
+                "(class 3, not in the scene database's +158h set)", killed,
+                killed == 1 ? "y" : "ies");
             owner_.record("EngineMovieStop::scene_database_reset_0046b730", 0x0046b730u);
             owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
@@ -1565,6 +1582,11 @@ public:
     void begin_render_profile_block() override { begin_block(kRenderBlockSlot, "render"); }
     void render_004ca440() override {
         owner_.record("MissionFrame::render", 0x004ca440u);
+        // Packet cc9_physics1_sea: render job B 004B4820 -> 0068A0D0 -> 0078CFF0 ->
+        // 00BA0090 steps the ocean after this frame's fixed steps; the time is
+        // [00F876A4], the mission clock. A no-op while kWaveFieldLiveAmplitudeBound
+        // is off.
+        bsp::ocean_live_field_render_job_0068a0d0(owner_.fixed_clock.simulation_clock);
     }
     void end_render_profile_block() override { end_block(kRenderBlockSlot, "render"); }
     void finish_render_frame_004ca1f0() override {

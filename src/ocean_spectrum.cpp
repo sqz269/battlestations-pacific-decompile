@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <string>
 
+#include "bsp/ocean_height.hpp"
 #include "bsp/scene_file.hpp"
 
 namespace bsp {
@@ -365,6 +366,34 @@ OceanSceneWaves ocean_live_field_publish_scene(const ScenePropertyBlock& header_
 void ocean_live_field_render_job_0068a0d0(float mission_clock) {
     if (!ocean_live_field_ready()) return;
     ocean_live_field_render_frame_00ba0090(g_ocean_live_field, mission_clock);
+}
+
+std::string ocean_live_field_add_landscape_008830aa(const std::string& model_name,
+    const float landscape_world[16], const OceanCoverageFileReader& read_file) {
+    if (!ocean_live_field_ready()) return std::string();
+    std::string model_bytes;
+    if (!read_file(model_name, model_bytes)) model_bytes.clear();
+    return ocean_coverage_add_landscape_00ba1370(g_ocean_live_field.coverage, model_bytes,
+        landscape_world, read_file, 0);
+}
+
+float ocean_live_field_coverage_mask(float x, float z) {
+    if (!ocean_live_field_ready()) return 1.0f;
+    return ocean_coverage_mask_00b9cf50(g_ocean_live_field.coverage.regions, x, z);
+}
+
+float ocean_live_field_water_height_0078cf20(float x, float z) {
+    if (!ocean_live_field_ready()) return 0.0f;  // the flat sea: 0.0 * 1.0
+    struct LiveHost final : OceanHeightHost {
+        float wave_height_0078c890(float u, float v) override {
+            return ocean_wave_field_sample_0078c890(g_ocean_live_field.field,
+                ocean_spectrum_grid(g_ocean_live_field.spectrum), u, v);
+        }
+        float coverage_mask_00b9cf50(float u, float v) override {
+            return ocean_coverage_mask_00b9cf50(g_ocean_live_field.coverage.regions, u, v);
+        }
+    } host;
+    return ocean_water_height_0078cf20(x, z, host);
 }
 
 }  // namespace bsp

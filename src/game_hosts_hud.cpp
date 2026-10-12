@@ -78,8 +78,7 @@ public:
         return bsp::ocean_wave_field_sample_0078c890(field, zero_grid, x, z);
     }
     float coverage_mask_00b9cf50(float x, float z) override {
-        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
-        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
+        return bsp::ocean_live_field_coverage_mask(x, z);  // packet cc9_physics1_sea
     }
 };
 

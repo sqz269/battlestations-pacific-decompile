@@ -1,0 +1,3486 @@
+{
+ "packet": "cc13-render5 aligned starts (segments 84/85/90)",
+ "method": "docs/CC13_RENDER_SPRITES_AND_SHADOW_PASSES.md (aligned-start sweep section); rules of docs/CC13_UNDEFINED_FUNCTION_SWEEP.md",
+ "analyzer_non_returning_discovered": "disabled (checked before writes)",
+ "defined": [
+  {
+   "start": "00b25e00",
+   "end": "00b25e05",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b25e10",
+   "end": "00b25e48",
+   "evidence": "after_padding",
+   "size": 56,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b25e50",
+   "end": "00b25e58",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b25f30",
+   "end": "00b25f36",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b27a60",
+   "end": "00b27a71",
+   "evidence": "after_padding",
+   "size": 17,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b27f20",
+   "end": "00b27f49",
+   "evidence": "after_padding",
+   "size": 41,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b27fb0",
+   "end": "00b27fb8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28000",
+   "end": "00b28008",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28210",
+   "end": "00b28215",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28290",
+   "end": "00b282aa",
+   "evidence": "after_padding",
+   "size": 26,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b282f0",
+   "end": "00b282f8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28300",
+   "end": "00b28308",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28340",
+   "end": "00b28345",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b283d0",
+   "end": "00b283ed",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b28560",
+   "end": "00b28568",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2aea0",
+   "end": "00b2aea5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2c8a0",
+   "end": "00b2c8c3",
+   "evidence": "after_padding",
+   "size": 35,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2c8d0",
+   "end": "00b2c8d8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2f470",
+   "end": "00b2f47d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2f670",
+   "end": "00b2f687",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b2f840",
+   "end": "00b2f8a0",
+   "evidence": "after_padding",
+   "size": 96,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b304e0",
+   "end": "00b304e5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b304f0",
+   "end": "00b304f5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b30500",
+   "end": "00b30505",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b305c0",
+   "end": "00b305c8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b305d0",
+   "end": "00b305d8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b305e0",
+   "end": "00b305e8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b31d00",
+   "end": "00b31d17",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b31d60",
+   "end": "00b31d77",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b31fd0",
+   "end": "00b31fe7",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b321b0",
+   "end": "00b321c7",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b321e0",
+   "end": "00b321f7",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b32340",
+   "end": "00b32363",
+   "evidence": "after_terminator",
+   "size": 35,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b33a90",
+   "end": "00b33a9a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b33e70",
+   "end": "00b33e74",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b33ec0",
+   "end": "00b33f01",
+   "evidence": "after_padding",
+   "size": 65,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34070",
+   "end": "00b34073",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b341d0",
+   "end": "00b34206",
+   "evidence": "after_terminator",
+   "size": 54,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34300",
+   "end": "00b34303",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34310",
+   "end": "00b34314",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34320",
+   "end": "00b34324",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34330",
+   "end": "00b34334",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34340",
+   "end": "00b34344",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34350",
+   "end": "00b34354",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34360",
+   "end": "00b34364",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34370",
+   "end": "00b34374",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34380",
+   "end": "00b3438a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34390",
+   "end": "00b343a2",
+   "evidence": "after_padding",
+   "size": 18,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b343b0",
+   "end": "00b343ba",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b343c0",
+   "end": "00b343cc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b343d0",
+   "end": "00b343d7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b343e0",
+   "end": "00b343ed",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b343f0",
+   "end": "00b343f6",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34400",
+   "end": "00b3444a",
+   "evidence": "after_padding",
+   "size": 74,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34450",
+   "end": "00b34454",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34460",
+   "end": "00b34464",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34470",
+   "end": "00b34474",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34480",
+   "end": "00b34484",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34490",
+   "end": "00b34496",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344a0",
+   "end": "00b344a3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344b0",
+   "end": "00b344b9",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344c0",
+   "end": "00b344cb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344d0",
+   "end": "00b344db",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344e0",
+   "end": "00b344eb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b344f0",
+   "end": "00b344fb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34500",
+   "end": "00b34506",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34510",
+   "end": "00b34516",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34520",
+   "end": "00b34526",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34550",
+   "end": "00b34554",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34560",
+   "end": "00b34567",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34570",
+   "end": "00b34587",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34590",
+   "end": "00b3459c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345a0",
+   "end": "00b345ad",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345b0",
+   "end": "00b345bc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345c0",
+   "end": "00b345cd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345d0",
+   "end": "00b345dc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345e0",
+   "end": "00b345ec",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b345f0",
+   "end": "00b345fd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34600",
+   "end": "00b3460c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34610",
+   "end": "00b3461d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34740",
+   "end": "00b3474e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34750",
+   "end": "00b3475e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b347b0",
+   "end": "00b347bc",
+   "evidence": "after_terminator",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b347c0",
+   "end": "00b347cf",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b347d0",
+   "end": "00b347dd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34860",
+   "end": "00b34888",
+   "evidence": "after_padding",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b349f0",
+   "end": "00b349f8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34c10",
+   "end": "00b34c18",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34c20",
+   "end": "00b34c28",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34d60",
+   "end": "00b34d70",
+   "evidence": "after_terminator",
+   "size": 16,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b34e00",
+   "end": "00b34e1d",
+   "evidence": "after_terminator",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b38210",
+   "end": "00b3821e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b38220",
+   "end": "00b3822e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b38290",
+   "end": "00b382ae",
+   "evidence": "after_padding",
+   "size": 30,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b39070",
+   "end": "00b390b9",
+   "evidence": "after_padding",
+   "size": 73,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b390c0",
+   "end": "00b39109",
+   "evidence": "after_padding",
+   "size": 73,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3a6d0",
+   "end": "00b3a6d8",
+   "evidence": "after_terminator",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3b190",
+   "end": "00b3b1d4",
+   "evidence": "after_padding",
+   "size": 68,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3c4e0",
+   "end": "00b3c4eb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3c500",
+   "end": "00b3c501",
+   "evidence": "after_padding",
+   "size": 1,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3c570",
+   "end": "00b3c57f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3c580",
+   "end": "00b3c5bb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3cd40",
+   "end": "00b3cd5f",
+   "evidence": "after_padding",
+   "size": 31,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3cd60",
+   "end": "00b3cd6c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d060",
+   "end": "00b3d073",
+   "evidence": "after_padding",
+   "size": 19,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d090",
+   "end": "00b3d094",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d0a0",
+   "end": "00b3d0a4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d0b0",
+   "end": "00b3d0b4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d0d0",
+   "end": "00b3d100",
+   "evidence": "after_padding",
+   "size": 48,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d100",
+   "end": "00b3d104",
+   "evidence": "after_terminator",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d110",
+   "end": "00b3d11b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d160",
+   "end": "00b3d188",
+   "evidence": "after_terminator",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d190",
+   "end": "00b3d1c5",
+   "evidence": "after_padding",
+   "size": 53,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d1d0",
+   "end": "00b3d1dd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d220",
+   "end": "00b3d241",
+   "evidence": "after_terminator",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d250",
+   "end": "00b3d281",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d290",
+   "end": "00b3d29d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d2e0",
+   "end": "00b3d301",
+   "evidence": "after_terminator",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d310",
+   "end": "00b3d341",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d350",
+   "end": "00b3d35d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d360",
+   "end": "00b3d36d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d380",
+   "end": "00b3d384",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d390",
+   "end": "00b3d393",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d3a0",
+   "end": "00b3d3ad",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d3c0",
+   "end": "00b3d3c4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d3d0",
+   "end": "00b3d3d3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d3e0",
+   "end": "00b3d3ed",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d400",
+   "end": "00b3d404",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d410",
+   "end": "00b3d413",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d470",
+   "end": "00b3d49b",
+   "evidence": "after_padding",
+   "size": 43,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d4c0",
+   "end": "00b3d4c3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d4d0",
+   "end": "00b3d4d3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d4e0",
+   "end": "00b3d4e3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d500",
+   "end": "00b3d503",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d590",
+   "end": "00b3d5b4",
+   "evidence": "after_padding",
+   "size": 36,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d6d0",
+   "end": "00b3d6f9",
+   "evidence": "after_padding",
+   "size": 41,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d700",
+   "end": "00b3d718",
+   "evidence": "after_padding",
+   "size": 24,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d840",
+   "end": "00b3d84d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3d850",
+   "end": "00b3d85c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3dc50",
+   "end": "00b3dc78",
+   "evidence": "after_terminator",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3dd00",
+   "end": "00b3dd26",
+   "evidence": "after_padding",
+   "size": 38,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e340",
+   "end": "00b3e35d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e360",
+   "end": "00b3e36e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e370",
+   "end": "00b3e37a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e380",
+   "end": "00b3e385",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e4c0",
+   "end": "00b3e4dd",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e4e0",
+   "end": "00b3e4ee",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e4f0",
+   "end": "00b3e4fa",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e500",
+   "end": "00b3e505",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e640",
+   "end": "00b3e65d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e660",
+   "end": "00b3e66e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e670",
+   "end": "00b3e67a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e680",
+   "end": "00b3e685",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3e7f0",
+   "end": "00b3e7f8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ec30",
+   "end": "00b3ec35",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff30",
+   "end": "00b3ff33",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff40",
+   "end": "00b3ff43",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff50",
+   "end": "00b3ff53",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff60",
+   "end": "00b3ff63",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff70",
+   "end": "00b3ff75",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff80",
+   "end": "00b3ff8c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ff90",
+   "end": "00b3ff94",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ffa0",
+   "end": "00b3ffa4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ffb0",
+   "end": "00b3ffb4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ffc0",
+   "end": "00b3ffc4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ffd0",
+   "end": "00b3ffd7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3ffe0",
+   "end": "00b3ffe7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b3fff0",
+   "end": "00b3fff4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40000",
+   "end": "00b40007",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40010",
+   "end": "00b40017",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40020",
+   "end": "00b40027",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40030",
+   "end": "00b40037",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40040",
+   "end": "00b40047",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40050",
+   "end": "00b40061",
+   "evidence": "after_padding",
+   "size": 17,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40070",
+   "end": "00b40074",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40080",
+   "end": "00b40083",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b400a0",
+   "end": "00b400a4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b400b0",
+   "end": "00b400b7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b400d0",
+   "end": "00b400d3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b400e0",
+   "end": "00b400e4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b400f0",
+   "end": "00b400f6",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40100",
+   "end": "00b40103",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40110",
+   "end": "00b40119",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40120",
+   "end": "00b4012a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40130",
+   "end": "00b40134",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40140",
+   "end": "00b40143",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40150",
+   "end": "00b40156",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40160",
+   "end": "00b40164",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40170",
+   "end": "00b40174",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40180",
+   "end": "00b4018b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40190",
+   "end": "00b4019b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b401a0",
+   "end": "00b401ab",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b401b0",
+   "end": "00b401bb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b401c0",
+   "end": "00b401c4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40220",
+   "end": "00b40244",
+   "evidence": "after_padding",
+   "size": 36,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40250",
+   "end": "00b40285",
+   "evidence": "after_padding",
+   "size": 53,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40290",
+   "end": "00b4029d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b402a0",
+   "end": "00b402ad",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40300",
+   "end": "00b40303",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40310",
+   "end": "00b40313",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b403f0",
+   "end": "00b403ff",
+   "evidence": "after_terminator",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40400",
+   "end": "00b40437",
+   "evidence": "after_padding",
+   "size": 55,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40440",
+   "end": "00b4048d",
+   "evidence": "after_padding",
+   "size": 77,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40490",
+   "end": "00b40493",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40510",
+   "end": "00b40514",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40520",
+   "end": "00b4054d",
+   "evidence": "after_padding",
+   "size": 45,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40550",
+   "end": "00b40554",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40560",
+   "end": "00b40564",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40570",
+   "end": "00b40574",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40580",
+   "end": "00b40589",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b405d0",
+   "end": "00b405de",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b406b0",
+   "end": "00b406d8",
+   "evidence": "after_padding",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b406e0",
+   "end": "00b40708",
+   "evidence": "after_padding",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40710",
+   "end": "00b4073a",
+   "evidence": "after_padding",
+   "size": 42,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40740",
+   "end": "00b40747",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40750",
+   "end": "00b4077a",
+   "evidence": "after_padding",
+   "size": 42,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40780",
+   "end": "00b40798",
+   "evidence": "after_padding",
+   "size": 24,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40840",
+   "end": "00b4084e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40850",
+   "end": "00b40853",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40880",
+   "end": "00b40899",
+   "evidence": "after_terminator",
+   "size": 25,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408a0",
+   "end": "00b408aa",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408b0",
+   "end": "00b408bd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408c0",
+   "end": "00b408cd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408d0",
+   "end": "00b408dd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408e0",
+   "end": "00b408ec",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b408f0",
+   "end": "00b408fd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40900",
+   "end": "00b4090a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40910",
+   "end": "00b4091a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40920",
+   "end": "00b40933",
+   "evidence": "after_padding",
+   "size": 19,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40940",
+   "end": "00b4094a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40950",
+   "end": "00b4095c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40960",
+   "end": "00b4096f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40970",
+   "end": "00b40974",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40a20",
+   "end": "00b40a2f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40a30",
+   "end": "00b40a3e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40ab0",
+   "end": "00b40abc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40b30",
+   "end": "00b40b3f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40bd0",
+   "end": "00b40bdf",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40c70",
+   "end": "00b40c7c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40d60",
+   "end": "00b40d6e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40d70",
+   "end": "00b40da0",
+   "evidence": "after_padding",
+   "size": 48,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40da0",
+   "end": "00b40dd0",
+   "evidence": "after_terminator",
+   "size": 48,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40dd0",
+   "end": "00b40e00",
+   "evidence": "after_terminator",
+   "size": 48,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40e50",
+   "end": "00b40e80",
+   "evidence": "after_terminator",
+   "size": 48,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40e80",
+   "end": "00b40e8a",
+   "evidence": "after_terminator",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40f10",
+   "end": "00b40f15",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40fb0",
+   "end": "00b40feb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b40ff0",
+   "end": "00b41007",
+   "evidence": "after_padding",
+   "size": 23,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41010",
+   "end": "00b41026",
+   "evidence": "after_padding",
+   "size": 22,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41030",
+   "end": "00b41034",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41530",
+   "end": "00b41538",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41580",
+   "end": "00b415bb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41650",
+   "end": "00b4168b",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41690",
+   "end": "00b416cb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b416d0",
+   "end": "00b4170b",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41f30",
+   "end": "00b41f3d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b41fd0",
+   "end": "00b41ff1",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b42000",
+   "end": "00b4201f",
+   "evidence": "after_padding",
+   "size": 31,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b42020",
+   "end": "00b42041",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b42050",
+   "end": "00b4206f",
+   "evidence": "after_padding",
+   "size": 31,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b42070",
+   "end": "00b42091",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b420a0",
+   "end": "00b420bf",
+   "evidence": "after_padding",
+   "size": 31,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b436c0",
+   "end": "00b436fc",
+   "evidence": "after_padding",
+   "size": 60,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b45090",
+   "end": "00b4509b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b45190",
+   "end": "00b4519b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b45330",
+   "end": "00b4535c",
+   "evidence": "after_padding",
+   "size": 44,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47660",
+   "end": "00b47664",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47670",
+   "end": "00b4767b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b476d0",
+   "end": "00b476f4",
+   "evidence": "after_padding",
+   "size": 36,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47700",
+   "end": "00b47731",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47740",
+   "end": "00b4774d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47790",
+   "end": "00b477b6",
+   "evidence": "after_terminator",
+   "size": 38,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b477c0",
+   "end": "00b477f1",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47800",
+   "end": "00b4780d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47810",
+   "end": "00b4781d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47830",
+   "end": "00b47834",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47840",
+   "end": "00b47843",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47850",
+   "end": "00b4785d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47870",
+   "end": "00b47874",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47880",
+   "end": "00b47883",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47890",
+   "end": "00b47895",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b478a0",
+   "end": "00b478a8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b478b0",
+   "end": "00b478d5",
+   "evidence": "after_padding",
+   "size": 37,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b478e0",
+   "end": "00b478eb",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b478f0",
+   "end": "00b478f4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47920",
+   "end": "00b4792f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47930",
+   "end": "00b4793f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47940",
+   "end": "00b4794d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47c10",
+   "end": "00b47c1c",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47c80",
+   "end": "00b47c90",
+   "evidence": "after_terminator",
+   "size": 16,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47e90",
+   "end": "00b47e9f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47ea0",
+   "end": "00b47eae",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47eb0",
+   "end": "00b47eba",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b47ec0",
+   "end": "00b47ec5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48000",
+   "end": "00b4801d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48020",
+   "end": "00b4802e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48030",
+   "end": "00b4803a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48040",
+   "end": "00b48045",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b483a0",
+   "end": "00b483ef",
+   "evidence": "after_padding",
+   "size": 79,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48420",
+   "end": "00b48428",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48430",
+   "end": "00b48452",
+   "evidence": "after_padding",
+   "size": 34,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b489e0",
+   "end": "00b489f9",
+   "evidence": "after_padding",
+   "size": 25,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48d20",
+   "end": "00b48d2a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48d60",
+   "end": "00b48d6a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48e30",
+   "end": "00b48e54",
+   "evidence": "after_terminator",
+   "size": 36,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48e60",
+   "end": "00b48e91",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48ea0",
+   "end": "00b48ead",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48ef0",
+   "end": "00b48f16",
+   "evidence": "after_terminator",
+   "size": 38,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48f20",
+   "end": "00b48f55",
+   "evidence": "after_padding",
+   "size": 53,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48f60",
+   "end": "00b48f6d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48fb0",
+   "end": "00b48fd2",
+   "evidence": "after_terminator",
+   "size": 34,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b48fe0",
+   "end": "00b49011",
+   "evidence": "after_padding",
+   "size": 49,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49020",
+   "end": "00b4902d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49030",
+   "end": "00b4903d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49050",
+   "end": "00b49054",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49060",
+   "end": "00b49063",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49070",
+   "end": "00b4907d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49090",
+   "end": "00b49094",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b490a0",
+   "end": "00b490a3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b490b0",
+   "end": "00b490bd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b490d0",
+   "end": "00b490d4",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b490e0",
+   "end": "00b490e3",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b490f0",
+   "end": "00b4911b",
+   "evidence": "after_padding",
+   "size": 43,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49120",
+   "end": "00b4914b",
+   "evidence": "after_padding",
+   "size": 43,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49150",
+   "end": "00b49155",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49160",
+   "end": "00b4916b",
+   "evidence": "after_padding",
+   "size": 11,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49170",
+   "end": "00b49180",
+   "evidence": "after_padding",
+   "size": 16,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49430",
+   "end": "00b49446",
+   "evidence": "after_padding",
+   "size": 22,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49650",
+   "end": "00b4965d",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49750",
+   "end": "00b4975a",
+   "evidence": "after_terminator",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b49b10",
+   "end": "00b49b26",
+   "evidence": "after_padding",
+   "size": 22,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a220",
+   "end": "00b4a23d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a240",
+   "end": "00b4a24e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a250",
+   "end": "00b4a25a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a260",
+   "end": "00b4a265",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a3a0",
+   "end": "00b4a3bd",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a3c0",
+   "end": "00b4a3ce",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a3d0",
+   "end": "00b4a3da",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a3e0",
+   "end": "00b4a3e5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a520",
+   "end": "00b4a53d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a540",
+   "end": "00b4a54e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a550",
+   "end": "00b4a55a",
+   "evidence": "after_padding",
+   "size": 10,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a560",
+   "end": "00b4a565",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a8b0",
+   "end": "00b4a8eb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a8f0",
+   "end": "00b4a92b",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a970",
+   "end": "00b4a995",
+   "evidence": "after_padding",
+   "size": 37,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4a9a0",
+   "end": "00b4a9a8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4aac0",
+   "end": "00b4aafb",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4ab00",
+   "end": "00b4ab3e",
+   "evidence": "after_padding",
+   "size": 62,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b4ab40",
+   "end": "00b4ab7b",
+   "evidence": "after_padding",
+   "size": 59,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b86f80",
+   "end": "00b86f85",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b86ff0",
+   "end": "00b86ff1",
+   "evidence": "after_padding",
+   "size": 1,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87000",
+   "end": "00b87005",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87010",
+   "end": "00b87015",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87080",
+   "end": "00b87089",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87090",
+   "end": "00b87097",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b870a0",
+   "end": "00b870c4",
+   "evidence": "after_padding",
+   "size": 36,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b870d0",
+   "end": "00b870d5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b870e0",
+   "end": "00b870e7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b870f0",
+   "end": "00b870f7",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87100",
+   "end": "00b87107",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87110",
+   "end": "00b8711f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87120",
+   "end": "00b87121",
+   "evidence": "after_padding",
+   "size": 1,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87130",
+   "end": "00b87158",
+   "evidence": "after_padding",
+   "size": 40,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87160",
+   "end": "00b87164",
+   "evidence": "after_padding",
+   "size": 4,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87170",
+   "end": "00b87179",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b871a0",
+   "end": "00b871a9",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b871d0",
+   "end": "00b871d9",
+   "evidence": "after_padding",
+   "size": 9,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b872a0",
+   "end": "00b872ac",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b872b0",
+   "end": "00b872bd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b872c0",
+   "end": "00b872cc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b872d0",
+   "end": "00b872dd",
+   "evidence": "after_padding",
+   "size": 13,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b872e0",
+   "end": "00b872ec",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b873b0",
+   "end": "00b873b5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87460",
+   "end": "00b87466",
+   "evidence": "after_terminator",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87470",
+   "end": "00b8747e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87480",
+   "end": "00b87483",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b874c0",
+   "end": "00b874c6",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87580",
+   "end": "00b875b3",
+   "evidence": "after_padding",
+   "size": 51,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b875c0",
+   "end": "00b875c5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b875d0",
+   "end": "00b875de",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b875e0",
+   "end": "00b875f3",
+   "evidence": "after_padding",
+   "size": 19,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87600",
+   "end": "00b87607",
+   "evidence": "after_padding",
+   "size": 7,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87610",
+   "end": "00b87629",
+   "evidence": "after_padding",
+   "size": 25,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87630",
+   "end": "00b87633",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b876b0",
+   "end": "00b876b8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b876f0",
+   "end": "00b876fc",
+   "evidence": "after_padding",
+   "size": 12,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87700",
+   "end": "00b87703",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b877f0",
+   "end": "00b877f8",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87800",
+   "end": "00b87808",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87810",
+   "end": "00b87821",
+   "evidence": "after_padding",
+   "size": 17,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87850",
+   "end": "00b87883",
+   "evidence": "after_padding",
+   "size": 51,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87890",
+   "end": "00b878c4",
+   "evidence": "after_padding",
+   "size": 52,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87970",
+   "end": "00b87975",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87980",
+   "end": "00b8799a",
+   "evidence": "after_padding",
+   "size": 26,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87a00",
+   "end": "00b87a03",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87a50",
+   "end": "00b87a58",
+   "evidence": "after_padding",
+   "size": 8,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87a60",
+   "end": "00b87a81",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87bf0",
+   "end": "00b87bf5",
+   "evidence": "after_padding",
+   "size": 5,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87c00",
+   "end": "00b87c21",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87c30",
+   "end": "00b87c33",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87c80",
+   "end": "00b87ca1",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87cb0",
+   "end": "00b87cd1",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87e10",
+   "end": "00b87e13",
+   "evidence": "after_padding",
+   "size": 3,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87e20",
+   "end": "00b87e45",
+   "evidence": "after_padding",
+   "size": 37,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b87e50",
+   "end": "00b87e71",
+   "evidence": "after_padding",
+   "size": 33,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88780",
+   "end": "00b887c7",
+   "evidence": "after_padding",
+   "size": 71,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88b00",
+   "end": "00b88b1d",
+   "evidence": "after_padding",
+   "size": 29,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88b50",
+   "end": "00b88b5e",
+   "evidence": "after_padding",
+   "size": 14,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88cb0",
+   "end": "00b88cce",
+   "evidence": "after_padding",
+   "size": 30,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88d00",
+   "end": "00b88d3d",
+   "evidence": "after_padding",
+   "size": 61,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b88d40",
+   "end": "00b88d4f",
+   "evidence": "after_padding",
+   "size": 15,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b8a050",
+   "end": "00b8a056",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b8a130",
+   "end": "00b8a136",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  },
+  {
+   "start": "00b8a1d0",
+   "end": "00b8a1d6",
+   "evidence": "after_padding",
+   "size": 6,
+   "verified": "body matches plan"
+  }
+ ],
+ "not_defined": [
+  {
+   "start": "00b26720",
+   "reason": "already inside Function: Renderer_CacheNativeSamplerStates at 00b26680"
+  },
+  {
+   "start": "00b26740",
+   "reason": "flow leaves gap at 00b26754",
+   "bound": "00b26750"
+  },
+  {
+   "start": "00b26750",
+   "reason": "undecodable at 00b2675c",
+   "bound": "00b26770"
+  },
+  {
+   "start": "00b27610",
+   "reason": "already inside Function: BSP_D3D9Renderer_DrawDebugTextureQuad320 at 00b27440"
+  },
+  {
+   "start": "00b29d20",
+   "reason": "already inside Function: BSP_RendererCapabilityRecords_ScalarDelete_Unreferenced at 00b29d10"
+  },
+  {
+   "start": "00b29da0",
+   "reason": "already inside Function: BSP_RendererCapabilityHeaders_Reserve at 00b29d40"
+  },
+  {
+   "start": "00b2a000",
+   "reason": "already inside Function: BSP_D3D9Renderer_ChangePresentationMode at 00b29e60"
+  },
+  {
+   "start": "00b2c010",
+   "reason": "already inside Function: BSP_Renderer_DrawDebugSphereRecords at 00b2bb90"
+  },
+  {
+   "start": "00b2c980",
+   "reason": "already inside Function: BSP_D3D9Renderer_GatherCapabilities at 00b2c8e0"
+  },
+  {
+   "start": "00b2c9d0",
+   "reason": "already inside Function: BSP_D3D9Renderer_GatherCapabilities at 00b2c8e0"
+  },
+  {
+   "start": "00b2cb10",
+   "reason": "already inside Function: BSP_D3D9Renderer_GatherCapabilities at 00b2c8e0"
+  },
+  {
+   "start": "00b2d8c0",
+   "reason": "already inside Function: BSP_D3D9Renderer_GatherCapabilities at 00b2c8e0"
+  },
+  {
+   "start": "00b2db50",
+   "reason": "already inside Function: BSP_D3D9Renderer_EndFrameAndPresent at 00b2d8e0"
+  },
+  {
+   "start": "00b2e760",
+   "reason": "already inside Function: BSP_VertexDeclaration_DecodeFormatName at 00b2dbd0"
+  },
+  {
+   "start": "00b2ec70",
+   "reason": "already inside Function: BSP_MaterialEffectRegistry_Load at 00b2ebb0"
+  },
+  {
+   "start": "00b2ed90",
+   "reason": "already inside Function: BSP_MaterialEffectRegistry_Load at 00b2ebb0"
+  },
+  {
+   "start": "00b2f420",
+   "reason": "already inside Function: BSP_HardwareLayoutTree_EraseRange at 00b2f3a0"
+  },
+  {
+   "start": "00b2f550",
+   "reason": "already inside Function: BSP_HardwareLayoutTree_InsertPair at 00b2f540"
+  },
+  {
+   "start": "00b2f560",
+   "reason": "already inside Function: BSP_HardwareLayoutTree_InsertPair at 00b2f540"
+  },
+  {
+   "start": "00b2f610",
+   "reason": "already inside Function: BSP_HardwareLayoutTree_InsertPair at 00b2f540"
+  },
+  {
+   "start": "00b2fec0",
+   "reason": "already inside Function: BSP_NativeDeclarationRecordArray_Reserve at 00b2fe20"
+  },
+  {
+   "start": "00b2ffa0",
+   "reason": "already inside Function: BSP_NativeRenderResourceRecordArray_Reserve at 00b2ff00"
+  },
+  {
+   "start": "00b30080",
+   "reason": "already inside Function: BSP_MaterialEffectRecords_Reserve at 00b2ffe0"
+  },
+  {
+   "start": "00b31c40",
+   "reason": "already inside Function: BSP_TextureManager_ResolveName at 00b31c20"
+  },
+  {
+   "start": "00b328b0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Construct at 00b32410"
+  },
+  {
+   "start": "00b32a40",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b32ee0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b32fc0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33080",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33140",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33200",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b332c0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33380",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33440",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33500",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b336b0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33720",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b337e0",
+   "reason": "already inside Function: BSP_D3D9Renderer_Destroy at 00b32920"
+  },
+  {
+   "start": "00b33a40",
+   "reason": "already inside Function: BSP_D3D9Renderer_ReleaseTextureSourceFrames at 00b33a10"
+  },
+  {
+   "start": "00b33c50",
+   "reason": "already inside Function: BSP_RendererControlWorker_Thread at 00b33c20"
+  },
+  {
+   "start": "00b33ea0",
+   "reason": "register jump at 00b33ea5",
+   "bound": "00b33eb0"
+  },
+  {
+   "start": "00b33eb0",
+   "reason": "register jump at 00b33eb5",
+   "bound": "00b33ec0"
+  },
+  {
+   "start": "00b34710",
+   "reason": "already inside Function: BSP_ShaderInterpolatorWordArray_Reserve at 00b346e0"
+  },
+  {
+   "start": "00b348b0",
+   "reason": "already inside Function: BSP_ShaderBinaryCache_FindNextName at 00b34890"
+  },
+  {
+   "start": "00b34ba0",
+   "reason": "already inside Function: BSP_ShaderBuilder_AppendInterpolatorMapping at 00b34aa0"
+  },
+  {
+   "start": "00b360f0",
+   "reason": "already inside Function: BSP_ShaderBuilder_AppendVertexSystemFields at 00b35be0"
+  },
+  {
+   "start": "00b36380",
+   "reason": "already inside Function: BSP_ShaderBuilder_AppendVertexSystemFields at 00b35be0"
+  },
+  {
+   "start": "00b36cb0",
+   "reason": "already inside Function: BSP_ShaderBuilder_SelectInterpolatorFields at 00b36800"
+  },
+  {
+   "start": "00b37fd0",
+   "reason": "already inside Function: BSP_ShaderBuilder_AppendPixelSamplers at 00b37ef0"
+  },
+  {
+   "start": "00b38160",
+   "reason": "already inside Function: BSP_ShaderBuilder_AppendVertexSamplers at 00b38080"
+  },
+  {
+   "start": "00b384d0",
+   "reason": "already inside Function: BSP_NativeShaderConstantArray_Resize_Provisional at 00b38490"
+  },
+  {
+   "start": "00b38500",
+   "reason": "already inside Function: BSP_NativeShaderConstantArray_Resize_Provisional at 00b38490"
+  },
+  {
+   "start": "00b391e0",
+   "reason": "already inside Function: BSP_ShaderBuilder_GenerateVertexSource at 00b39110"
+  },
+  {
+   "start": "00b39e30",
+   "reason": "already inside Function: BSP_ShaderBuilder_GeneratePixelSource at 00b39880"
+  },
+  {
+   "start": "00b3a500",
+   "reason": "already inside Function: BSP_ShaderBuilder_GeneratePixelSource at 00b39880"
+  },
+  {
+   "start": "00b3a8d0",
+   "reason": "already inside Function: BSP_ShaderBuilder_DestroyNativeStorage at 00b3a7e0"
+  },
+  {
+   "start": "00b3ab50",
+   "reason": "already inside Function: BSP_ShaderBuilder_DestroyNativeStorage at 00b3a7e0"
+  },
+  {
+   "start": "00b3ac70",
+   "reason": "already inside Function: BSP_ShaderBuilder_DestroyNativeStorage at 00b3a7e0"
+  },
+  {
+   "start": "00b3ad00",
+   "reason": "already inside Function: BSP_ShaderBuilder_DestroyNativeStorage at 00b3a7e0"
+  },
+  {
+   "start": "00b3ad90",
+   "reason": "already inside Function: BSP_ShaderBuilder_DestroyNativeStorage at 00b3a7e0"
+  },
+  {
+   "start": "00b3ba50",
+   "reason": "already inside Function: BSP_ShaderBuilder_CompileMaterialPass at 00b3b3c0"
+  },
+  {
+   "start": "00b3bd00",
+   "reason": "already inside Function: BSP_ShaderBuilder_CompileMaterialPass at 00b3b3c0"
+  },
+  {
+   "start": "00b3c140",
+   "reason": "already inside Function: BSP_ShaderBuilder_CompileMaterialPass at 00b3b3c0"
+  },
+  {
+   "start": "00b3d150",
+   "reason": "already inside Function: D3D9SurfacePool_InitializeSlab at 00b3d120"
+  },
+  {
+   "start": "00b3d210",
+   "reason": "already inside Function: BSP_D3D9Texture2DPool_InitializeSlab at 00b3d1e0"
+  },
+  {
+   "start": "00b3d2d0",
+   "reason": "already inside Function: BSP_CubeTexturePool_InitializeSlab at 00b3d2a0"
+  },
+  {
+   "start": "00b3da60",
+   "reason": "already inside Function: BSP_TextureSurfaceCache_Resize at 00b3da20"
+  },
+  {
+   "start": "00b3e3e0",
+   "reason": "already inside Function: D3D9SurfacePool_TrimEmptySlabs at 00b3e390"
+  },
+  {
+   "start": "00b3e410",
+   "reason": "already inside Function: D3D9SurfacePool_TrimEmptySlabs at 00b3e390"
+  },
+  {
+   "start": "00b3e560",
+   "reason": "already inside Function: BSP_D3D9Texture2DPool_TrimEmptySlabs at 00b3e510"
+  },
+  {
+   "start": "00b3e590",
+   "reason": "already inside Function: BSP_D3D9Texture2DPool_TrimEmptySlabs at 00b3e510"
+  },
+  {
+   "start": "00b3e6e0",
+   "reason": "already inside Function: BSP_CubeTexturePool_TrimEmptySlabs at 00b3e690"
+  },
+  {
+   "start": "00b3e710",
+   "reason": "already inside Function: BSP_CubeTexturePool_TrimEmptySlabs at 00b3e690"
+  },
+  {
+   "start": "00b3ed10",
+   "reason": "already inside Function: D3D9SurfacePool_Construct at 00b3ec60"
+  },
+  {
+   "start": "00b3ef30",
+   "reason": "already inside Function: BSP_D3D9Texture2DPool_Construct at 00b3ee80"
+  },
+  {
+   "start": "00b3f140",
+   "reason": "already inside Function: BSP_CubeTexturePool_Initialize at 00b3f090"
+  },
+  {
+   "start": "00b40090",
+   "reason": "register jump at 00b40098",
+   "bound": "00b400a0"
+  },
+  {
+   "start": "00b40200",
+   "reason": "already inside Function: BSP_MaterialPassPoolSlab_Construct at 00b401d0"
+  },
+  {
+   "start": "00b40340",
+   "reason": "already inside Function: BSP_Optimized3dNodeAnimator_DynamicCast_Unreferenced at 00b40320"
+  },
+  {
+   "start": "00b40590",
+   "reason": "jcc out of gap to 00b405b0 at 00b40598",
+   "bound": "00b405b0"
+  },
+  {
+   "start": "00b405b0",
+   "reason": "end 00b405b3 not followed by padding",
+   "bound": "00b405d0"
+  },
+  {
+   "start": "00b405e0",
+   "reason": "jcc out of gap to 00b40630 at 00b405ea",
+   "bound": "00b40630"
+  },
+  {
+   "start": "00b40a10",
+   "reason": "flow leaves gap at 00b40a20",
+   "bound": "00b40a20"
+  },
+  {
+   "start": "00b40ba0",
+   "reason": "already inside Function: BSP_MaterialThirdStates_Reserve_Provisional at 00b40b40"
+  },
+  {
+   "start": "00b40c40",
+   "reason": "already inside Function: BSP_MaterialSamplerStates_Reserve at 00b40be0"
+  },
+  {
+   "start": "00b40e40",
+   "reason": "already inside Function: BSP_MaterialPassPairs_Resize at 00b40e00"
+  },
+  {
+   "start": "00b41140",
+   "reason": "already inside Function: BSP_MaterialPassPool_Construct at 00b41090"
+  },
+  {
+   "start": "00b41900",
+   "reason": "already inside Function: BSP_ShaderDescriptor_ReadSamplerTable at 00b41830"
+  },
+  {
+   "start": "00b427b0",
+   "reason": "already inside Function: BSP_MaterialPass_BuildShaderConstants at 00b42350"
+  },
+  {
+   "start": "00b427e0",
+   "reason": "already inside Function: BSP_MaterialPass_BuildShaderConstants at 00b42350"
+  },
+  {
+   "start": "00b43380",
+   "reason": "already inside Function: BSP_MaterialPass_BuildShaderConstants at 00b42350"
+  },
+  {
+   "start": "00b44150",
+   "reason": "already inside Function: BSP_ShaderDescriptor_ReadShaderTable at 00b43b00"
+  },
+  {
+   "start": "00b44270",
+   "reason": "already inside Function: BSP_ShaderDescriptor_ReadShaderTable at 00b43b00"
+  },
+  {
+   "start": "00b44c40",
+   "reason": "already inside Function: BSP_MaterialSection_ApplyInstanceGeneratorModes at 00b44c00"
+  },
+  {
+   "start": "00b45cd0",
+   "reason": "already inside Function: BSP_ShaderDescriptor_Destroy at 00b458a0"
+  },
+  {
+   "start": "00b45d20",
+   "reason": "already inside Function: BSP_ShaderDescriptor_Destroy at 00b458a0"
+  },
+  {
+   "start": "00b45e20",
+   "reason": "already inside Function: BSP_MaterialEffect_BuildSecondaryPass at 00b45e00"
+  },
+  {
+   "start": "00b46420",
+   "reason": "already inside Function: BSP_MaterialEffect_LoadDescriptorAndModePrograms at 00b45ee0"
+  },
+  {
+   "start": "00b476b0",
+   "reason": "already inside Function: BSP_NativeVertexDeclarationSlab_Initialize at 00b47680"
+  },
+  {
+   "start": "00b47780",
+   "reason": "already inside Function: BSP_HardwareLayoutSlab_Initialize at 00b47750"
+  },
+  {
+   "start": "00b47e80",
+   "reason": "flow leaves gap at 00b47e90",
+   "bound": "00b47e90"
+  },
+  {
+   "start": "00b480a0",
+   "reason": "already inside Function: BSP_HardwareVertexLayoutPool_TrimEmptySlabs at 00b48050"
+  },
+  {
+   "start": "00b480d0",
+   "reason": "already inside Function: BSP_HardwareVertexLayoutPool_TrimEmptySlabs at 00b48050"
+  },
+  {
+   "start": "00b48460",
+   "reason": "jmp out of gap to 00b483a0 at 00b48471",
+   "bound": "00b48480"
+  },
+  {
+   "start": "00b48530",
+   "reason": "already inside Function: BSP_VertexDeclarationPool_Construct at 00b48480"
+  },
+  {
+   "start": "00b48750",
+   "reason": "already inside Function: BSP_HardwareVertexLayoutPool_Construct at 00b486a0"
+  },
+  {
+   "start": "00b48e20",
+   "reason": "already inside Function: BSP_NativePhysicalBufferSlab_Initialize at 00b48df0"
+  },
+  {
+   "start": "00b48ee0",
+   "reason": "already inside Function: BSP_VertexStreamSlab_Initialize at 00b48eb0"
+  },
+  {
+   "start": "00b48fa0",
+   "reason": "already inside Function: BSP_LogicalIndexPool_InitializeSlab at 00b48f70"
+  },
+  {
+   "start": "00b49660",
+   "reason": "jcc out of gap to 00b49698 at 00b49670",
+   "bound": "00b49690"
+  },
+  {
+   "start": "00b49c00",
+   "reason": "already inside Function: BSP_LogicalIndexStream_Lock at 00b49b60"
+  },
+  {
+   "start": "00b49f70",
+   "reason": "flow leaves gap at 00b49f82",
+   "bound": "00b49f80"
+  },
+  {
+   "start": "00b4a2c0",
+   "reason": "already inside Function: BSP_PhysicalBufferPool_TrimEmptySlabs at 00b4a270"
+  },
+  {
+   "start": "00b4a2f0",
+   "reason": "already inside Function: BSP_PhysicalBufferPool_TrimEmptySlabs at 00b4a270"
+  },
+  {
+   "start": "00b4a440",
+   "reason": "already inside Function: BSP_LogicalVertexBufferPool_TrimEmptySlabs at 00b4a3f0"
+  },
+  {
+   "start": "00b4a470",
+   "reason": "already inside Function: BSP_LogicalVertexBufferPool_TrimEmptySlabs at 00b4a3f0"
+  },
+  {
+   "start": "00b4a5c0",
+   "reason": "already inside Function: BSP_LogicalIndexBufferPool_TrimEmptySlabs at 00b4a570"
+  },
+  {
+   "start": "00b4a5f0",
+   "reason": "already inside Function: BSP_LogicalIndexBufferPool_TrimEmptySlabs at 00b4a570"
+  },
+  {
+   "start": "00b4a660",
+   "reason": "already inside Function: BSP_PointerArray_PushBackGrow_Unreferenced_00b4a610 at 00b4a610"
+  },
+  {
+   "start": "00b4ac30",
+   "reason": "already inside Function: BSP_PhysicalBufferPool_Construct at 00b4ab80"
+  },
+  {
+   "start": "00b4ae50",
+   "reason": "already inside Function: BSP_LogicalVertexBufferPool_Construct at 00b4ada0"
+  },
+  {
+   "start": "00b4b070",
+   "reason": "already inside Function: BSP_LogicalIndexBufferPool_Construct at 00b4afc0"
+  },
+  {
+   "start": "00b86e90",
+   "reason": "already inside Function: STL_ResourceInstanceTypeTree_IteratorDecrement at 00b86e40"
+  },
+  {
+   "start": "00b87670",
+   "reason": "jcc out of gap to 00b876ab at 00b87693",
+   "bound": "00b876a0"
+  },
+  {
+   "start": "00b876a0",
+   "reason": "jcc out of gap to 00b87697 at 00b876a9",
+   "bound": "00b876b0"
+  },
+  {
+   "start": "00b87a10",
+   "reason": "jcc out of gap to 00b87a4b at 00b87a33",
+   "bound": "00b87a40"
+  },
+  {
+   "start": "00b87a40",
+   "reason": "jcc out of gap to 00b87a37 at 00b87a49",
+   "bound": "00b87a50"
+  },
+  {
+   "start": "00b87c70",
+   "reason": "already inside Function: STL_PairRange_CopyBackward at 00b87c40"
+  },
+  {
+   "start": "00b885a0",
+   "reason": "already inside Function: BSP_Resource_Destroy at 00b88430"
+  },
+  {
+   "start": "00b88f60",
+   "reason": "already inside Function: STL_xlen_throw_00b88de0 at 00b88de0"
+  },
+  {
+   "start": "00b891c0",
+   "reason": "already inside Function: BSP_Resource_BuildNodeInstanceGraph at 00b891a0"
+  },
+  {
+   "start": "00b89940",
+   "reason": "already inside Function: STL_ResourceInstanceTypeTree_InsertUnique at 00b898c0"
+  },
+  {
+   "start": "00b89a00",
+   "reason": "already inside Function: STL_ResourceInstanceTypeTree_EraseRange at 00b89980"
+  },
+  {
+   "start": "00b89bd0",
+   "reason": "already inside Function: STL_ResourceInstanceTypeTree_InsertHint at 00b89a50"
+  },
+  {
+   "start": "00b40630",
+   "reason": "after_terminator start is mid-function (code at 00B40615..00B4062D continues a body; ESP+28h frame use)"
+  },
+  {
+   "start": "00b49690",
+   "reason": "after_terminator start is the je target at 00B49682 inside an undefined loop body"
+  }
+ ],
+ "also_defined": [
+  {
+   "start": "00bd9130",
+   "end": "00bd9153"
+  },
+  {
+   "start": "00bd9160",
+   "end": "00bd9164"
+  }
+ ],
+ "define_log": "reports/cc13_render5_aligned_starts_define_log.json"
+}

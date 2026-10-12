@@ -29,8 +29,10 @@ public:
 // time until a one-byte read returns nothing. A NUL byte does not stop it.
 std::string read_stream_to_end_00be4770(ByteStream& stream);
 
-// 00BEF8F0: read the whole stream and drop each CR that is immediately followed by LF.
-// A CR before anything else (or at the end) is kept.
+// 00BEF8F0: read the whole stream and compact it in place, dropping a CR that is followed
+// by LF or by another CR. The result keeps the input length: the compacted text is
+// followed by the input's last (input - compacted) bytes, which the native never clears
+// (CC13_AUDIT_2.md). No caller or data reference to 00BEF8F0 was found in the image.
 std::string collapse_crlf_00bef8f0(const std::string& bytes);
 
 // ---------------------------------------------------------------------------

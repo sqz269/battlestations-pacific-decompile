@@ -168,8 +168,12 @@ at game+21C4h, a NativeString argument passed by value and destroyed by the call
 3. It calls `00445790` on the game's current camera mover `[game+1ED4h]` (`00445AA4`).
 
 The callers are `luaMW_SetWeather` `008B21A0` (registered in cc9's mission host) and
-`00445BF0`. Recon detection reads the `+34h` modifier (`docs/GUNNERY_RECON_DETECTION.md`).
-That consumer changes unit state and stays with cc9; only the setter is reconstructed here.
+`00445BF0`. No reader of the `+34h` modifier is known. This doc first said "recon detection reads
+the `+34h` modifier (`docs/GUNNERY_RECON_DETECTION.md`)"; that was taken from the doc, not scanned.
+Correction (2026-10-12, cc13 lead, from cc9-gunnery35, `docs/GUNNERY_OPEN_ITEMS.md` item 171):
+a scan of every `[r+21C4h]` config load and its register copies finds 0 reads of `+34h`, while
+the `+74h`/`+78h` positive controls hit 6 and 5 sites. The four ECX = config methods don't read
+it, and vtable `00CE4934` holds only the destructor. Only the setter is reconstructed here.
 
 `00445790` (`BSP_WeatherConfig_ApplyCameraShake`, ECX = config, `[ESP+4]` = mover, `RET 4`)
 does nothing for a null mover. Otherwise it:
@@ -341,7 +345,8 @@ Segment 56 has no options or hardware-settings body left open, by the triage abo
    unregistered, unreferenced gameplay natives.
 4. `008D8F10` (scene property bag) is still open, in the cc12 scene lane.
 5. Segment 3: the device-class factory family (`0043FEA0..00443490`) still has no source and
-   needs a units-lane packet. The `+34h` consumers of the weather setter are cc9's.
+   needs a units-lane packet. No `+34h` consumer of the weather setter is known (see the correction in the setter section);
+   any reader found later belongs to cc9's lanes.
 6. Segment 0: nobody has checked whether a save reaches the bot-task `WriteCurrent` callers
    (the -1 `stateIndex`). A breakpoint on `00411450` during a checkpoint save would settle it.
 7. Segments 64/65: done by cc13-warnings1, which reconstructed the larger report builders and

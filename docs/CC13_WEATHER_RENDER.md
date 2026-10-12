@@ -260,7 +260,7 @@ gameplay draws whenever it runs on the same thread.
 | `00BC1A20` loop | 0 | 6 per drop | waterdrops spawn |
 | `00BC14C8..00BC152F` | 0 | 3 per non-sticky live drop per tick (unless NoCameraMove) | waterdrops tick |
 | `00BC16BF` | 0 | 1 per live drop per tick | waterdrops tick |
-| `00BC40F0` loop | 0 | 6 per puff attempt | cloud class load |
+| `00BC40F0` loop | 0 | 5 per puff attempt (3 direction, radius, spin; the factory `00BC03C0` draws none) | cloud class load |
 | `00BC3930` loop | 0 | 1 per puff per light (2 lights) | first update of each cloud instance |
 | `00BC84A0` | 0 | 1 per expiry of the burst timer, plus several per segment | lightning strand model tick |
 

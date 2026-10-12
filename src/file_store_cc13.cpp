@@ -66,7 +66,8 @@ std::string read_stream_to_end_00be4770(ByteStream& stream) {
 
 std::string collapse_crlf_00bef8f0(const std::string& bytes) {
     // In-place compaction: a CR sets a pending flag; the next byte writes the CR back
-    // first unless it is LF. A final pending CR is dropped, as in the native loop.
+    // first unless it is LF, and a CR after a CR replaces it. A final pending CR is not
+    // written back by the loop.
     std::string out;
     out.reserve(bytes.size());
     bool pending_cr = false;
@@ -79,6 +80,11 @@ std::string collapse_crlf_00bef8f0(const std::string& bytes) {
         out.push_back(c);
         pending_cr = false;
     }
+    // 00BEF988: the compacted buffer is wrapped by 00BEF6D0, whose end is base + the
+    // backing length +0Ch set by 008D43C0 to the full stream length and never shortened.
+    // The bytes past the write cursor keep their original values, so the result is as
+    // long as the input and ends in its last (input - compacted) bytes.
+    out.append(bytes, out.size(), std::string::npos);
     return out;
 }
 
