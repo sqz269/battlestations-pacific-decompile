@@ -3495,6 +3495,33 @@ struct GameUnitsHost::Impl {
         if (!kSkillLevelBound || i < 0 || i > 5) return kPilotStrafeRows[1];
         return kPilotStrafeRows[i];
     }
+    // Packet cc13-dogfight1. AimShootTime and AimShootDelayTime of the six
+    // PilotBot rows, which 009FC7C0 reads through 0099C210 (00F8A30C +
+    // level * 248h + 0Ch): view +234h/+238h/+23Ch/+240h are robot_config.hpp's
+    // aim_shoot_time_2_240/_1_244 and aim_shoot_delay_time_2_248/_1_24c, so the
+    // draw's low end is the Lua table's second element. SUBSTITUTION, labelled,
+    // as above: this installation's scripts/datatables/robots.lua (mtime
+    // 2025-06-01 23:03 UTC), by line: SPNormal :607-608, SPVeteran :745-746,
+    // MPNormal :883-884, MPVeteran :1021-1022, Elite :1159-1160, Stun :1297-1298.
+    struct PilotAimShootRow {
+        float time_lo_234;
+        float time_hi_238;
+        float delay_lo_23c;
+        float delay_hi_240;
+    };
+    static constexpr PilotAimShootRow kPilotAimShootRows[6] = {
+        {2.0f, 3.0f, 1.0f, 2.0f},     // Stun
+        {3.0f, 4.5f, 0.7f, 1.6f},     // SPNormal
+        {8.0f, 10.0f, 0.0f, 0.1f},    // SPVeteran
+        {4.0f, 5.5f, 0.9f, 1.4f},     // MPNormal
+        {5.0f, 7.0f, 0.5f, 1.0f},     // MPVeteran
+        {8.0f, 10.0f, 0.0f, 0.1f},    // Elite
+    };
+    static const PilotAimShootRow& aim_shoot_row(const GameUnitSlot& slot) noexcept {
+        const int i = slot.pilot_skill_index;
+        if (!kSkillLevelBound || i < 0 || i > 5) return kPilotAimShootRows[1];
+        return kPilotAimShootRows[i];
+    }
 
     // Packet cc9_ship_motion_tail. ShipGlobals.Formacio.UpdateInterval (0083F0AD
     // stores it at settings+430h); 10.0 in this installation's shipglobals.lua.
@@ -5630,6 +5657,14 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightManeuverBodyBound = true;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
+    // Packet cc13-dogfight1 (docs/CC13_DOGFIGHT_DRAWS.md): three of those draws
+    // taken on keyed host streams (release_altitude_draw_00bd2f10, unit name +
+    // suffix) instead of at their midpoints: 009A8712 the maneuver-expiry roll
+    // against TurnAfterChance, 009A99C6 the avoid pick, 009FCED1 the gun burst
+    // clock from the pilot's skill row. False: the midpoints, as before.
+    static constexpr bool kDogfightTurnAfterDrawBound = false;
+    static constexpr bool kDogfightAvoidPickDrawBound = false;
+    static constexpr bool kDogfightGunBurstDrawBound = false;
     // ON since packet cc9_planner_heading_writes: with the torpedo moveto and
     // attackrun heading writes bound (kPilotStateHeadingWritesBound) the Kates
     // close again; pair PHW0/PHW1, docs/PLANNER_HEADING_WRITES.md section 6.
@@ -19477,6 +19512,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.mv_expires;
                         unit_.mv_mode_18 = 0;
                         float r = 0.5f;                                              // U(0, 1)
+                        if constexpr (GameUnitsHost::Impl::kDogfightTurnAfterDrawBound) {
+                            // 009A8712: 00BD2F10(0 [FLDZ], 1 [FLD1]) on ECX = 1, taken
+                            // on every call before the threat test; 009A8781 FCOMI and
+                            // 009A8783 JBE turn only when TurnAfterChance > r.
+                            r = owner_.release_altitude_draw_00bd2f10(
+                                unit_.row.name + "#dfta", 0.0f, 1.0f);
+                        }
                         const GameUnitSlot* t = df_target_slot();
                         if (t != nullptr && df_pilot_targets_us(*t)) r = r + r;     // 009A8763
                         const float c = unit_.df_row.turn_after_chance;             // row+218h
@@ -20134,6 +20176,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.st_gun_point_ticks;
                         }
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        if constexpr (GameUnitsHost::Impl::kDogfightGunBurstDrawBound) {
+                            // 009FCE70-009FCED6: each +4Bh edge stores one
+                            // 00BD2F10(low, high) on ECX = 1 in +50h, the tick's last
+                            // write, so replacing the midpoint here is the same.
+                            // On: U(row+234h, +238h); off: U(row+23Ch, +240h).
+                            if (unit_.df_gun.burst_4b != was_burst) {
+                                const GameUnitsHost::Impl::PilotAimShootRow& sr =
+                                    GameUnitsHost::Impl::aim_shoot_row(unit_);
+                                const bool on = unit_.df_gun.burst_4b;
+                                unit_.df_gun.burst_timer_50 = owner_.release_altitude_draw_00bd2f10(
+                                    unit_.row.name + "#dfgb", on ? sr.time_lo_234 : sr.delay_lo_23c,
+                                    on ? sr.time_hi_238 : sr.delay_hi_240);
+                            }
+                        }
                         if (strafe_point && unit_.df_gun.fire_48) ++unit_.st_gun_point_fires;
                         if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
                             const bool ran = df_fine_aim_009f9fc0(gi);
@@ -20565,7 +20621,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float sum = wt + wr;
                                 ti.avoid_pick_turn = !(wr >= sum * 0.5f);
                             }
-                            const bsp::DogfightTransition tr = bsp::dogfight_transition_009aafa0(ti);
+                            bsp::DogfightTransition tr = bsp::dogfight_transition_009aafa0(ti);
+                            if constexpr (GameUnitsHost::Impl::kDogfightAvoidPickBound &&
+                                          GameUnitsHost::Impl::kDogfightAvoidPickDrawBound) {
+                                // 009AB0AF calls 009A9970 only on aim with +6A0h set,
+                                // the transition's only aim -> avoid arm, so the draw
+                                // is taken there alone. 009A99C6 00BD2F10(0, wt + wr)
+                                // on ECX = 1; 009A99D1 FCOMPI, 009A99D5 JAE: roll
+                                // (+708h) when wr >= r, else turn (+730h).
+                                if (was == bsp::DogfightState::kAim &&
+                                    (tr.next == bsp::DogfightState::kAvoidRoll ||
+                                     tr.next == bsp::DogfightState::kAvoidTurn)) {
+                                    const float wr = df_avoid_roll_weight_009a7f70();
+                                    const float wt = df_avoid_turn_weight_009a83b0();
+                                    const float r = owner_.release_altitude_draw_00bd2f10(
+                                        unit_.row.name + "#dfap", 0.0f, wt + wr);
+                                    tr.next = wr >= r ? bsp::DogfightState::kAvoidRoll
+                                                      : bsp::DogfightState::kAvoidTurn;
+                                }
+                            }
                             unit_.dogfight_state = tr.next;
                             if (tr.maneuver_from_aim_8560) {
                                 unit_.mv_mode_18 = 0;   // 009A8567
