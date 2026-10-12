@@ -16996,3 +16996,4 @@ IJN01 writer). No leases held.
    need them.
 6. `kAiGroupPartyChangeRemovalBound` (216): pair on a mission that SetParties grouped ships (`usn_16_endgame_at_kure`,
    `islandcapture*`, `usn_09_leyte`) before flipping.
+7. **The shallow-water functions** (lead's list): not started in this lineage; take the addresses from the lead's queue.
