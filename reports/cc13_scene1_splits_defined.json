@@ -1,0 +1,181 @@
+{
+ "events": [
+  {
+   "delete_inside": "005220fa",
+   "range": [
+    "005220c0",
+    "005224b2"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "005220fa"
+   },
+   "result": {
+    "success": true,
+    "address": "005220fa",
+    "deleted_function": "FUN_005220fa",
+    "body_size": 952,
+    "message": "Function 'FUN_005220fa' deleted at 005220fa"
+   }
+  },
+  {
+   "recreate": "005220c0",
+   "previous": "Function: FUN_005220c0 at 005220c0\nSignature: undefined FUN_005220c0(void)\nEntry: 005220c0\nBody: 005220c0 - 005220f9",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "005220c0"
+   },
+   "result": {
+    "success": true,
+    "address": "005220c0",
+    "deleted_function": "FUN_005220c0",
+    "body_size": 58,
+    "message": "Function 'FUN_005220c0' deleted at 005220c0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005220c0",
+    "end_address": "005224b2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005220c0",
+    "end_address": "005224b1",
+    "bytes_disassembled": 1010,
+    "message": "Successfully disassembled 1010 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005220c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "005220c0",
+    "function_name": "FUN_005220c0",
+    "entry_point": "005220c0",
+    "body_size": 1010,
+    "message": "Function created successfully at 005220c0"
+   }
+  },
+  {
+   "defined": "005220c0",
+   "end": "005224b2",
+   "name": null,
+   "after": "Function: FUN_005220c0 at 005220c0\nSignature: undefined FUN_005220c0(void)\nEntry: 005220c0\nBody: 005220c0 - 005224b1"
+  },
+  {
+   "delete_inside": "009eb4d1",
+   "range": [
+    "009eafc0",
+    "009eb652"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "009eb4d1"
+   },
+   "result": {
+    "success": true,
+    "address": "009eb4d1",
+    "deleted_function": "BSP_ShipAi_NeighbourAvoidBoxArcArm",
+    "body_size": 320,
+    "message": "Function 'BSP_ShipAi_NeighbourAvoidBoxArcArm' deleted at 009eb4d1"
+   }
+  },
+  {
+   "recreate": "009eafc0",
+   "previous": "Function: BSP_ShipAi_NeighbourAvoidBoxRefresh at 009eafc0\nSignature: undefined BSP_ShipAi_NeighbourAvoidBoxRefresh(void)\nEntry: 009eafc0\nBody: 009eafc0 - 009eb651",
+   "plate": "[BSP reconstruction 009eafc0]\nHypothesis, not a recovered symbol. Packet cc_ai_box_refresh, read-only Ghidra. void __thiscall(node)(float self_x, float self_z, float self_vx, float self_vz, float self_half_length, float self_half_beam_unread, float self_bounds_max_y, float self_bounds_min_y, int accept), RET 24h at 009EAFE5, 009EB305, 009EB4CE, 009EB60E and 009EB64F; body 009EAFC0-009EB651, read whole. Sole call site 009F10FF in 009F0EA0; the nine arguments are built at 009F10A0..009F10FA and arg5 (self unit+9CCh * 0.75, 009F10DD) is never read by the body. Caches the observed hull's world Y bounds through vtable slot +20h and 0098A8E0 into node+80h (maximum) and node+84h (minimum) at 009EB014/009EB022, then bails to 009EB611 unless the two hulls overlap on Y against blk+1BCh/blk+1C0h. Sets node+69h = (accept == 0) at 009EB040 and node+68h = 0 at 009EB076. Fills the avoid box node+44h..+64h three ways: the near-box copy tail 009EB2C9 when the neighbour is close, the projection time runs out or the shrink collapses; a straight run along node+28h/+2Ch at 009EB472 when the projected turn is under 3 degrees (00D1A8A0); and a turning circle of radius |travel/turn| about node+20h/+24h +/- node+30h/+34h at 009EB4D1 otherwise. Reads ten settings rows through the ADD EDI,180h base at 009EB081/009EB087. docs/SHIP_AI_NEIGHBOUR_BOX.md\n\n[BSP reconstruction 009eafc0] update\nHypothesis, not a recovered symbol. Packet cc_ai_box_refresh, read-only Ghidra. void __thiscall(node)(float self_x, float self_z, float self_vx, float self_vz, float self_half_length, float self_half_beam_unread, float self_bounds_max_y, float self_bounds_min_y, int accept), RET 24h at 009EAFE5, 009EB305, 009EB4CE, 009EB60E and 009EB64F; body 009EAFC0-009EB651, read whole. Sole call site 009F10FF in 009F0EA0; the nine arguments are built at 009F10A0..009F10FA and arg5 (self unit+9CCh * 0.75, 009F10DD) is never read by the body. Caches the observed hull's world Y bounds through vtable slot +20h and 0098A8E0 into node+80h (maximum) and node+84h (minimum) at 009EB014/009EB022, then bails to 009EB611 unless the two hulls overlap on Y against blk+1BCh/blk+1C0h. Sets node+69h = (accept == 0) at 009EB040 and node+68h = 0 at 009EB076. Fills the avoid box node+44h..+64h three ways: the near-box copy tail 009EB2C9 when the neighbour is close, the projection time runs out or the shrink collapses; a straight run along node+28h/+2Ch at 009EB472 when the projected turn is under 3 degrees (00D1A8A0); and a turning circle of radius |travel/turn| about node+20h/+24h +/- node+30h/+34h at 009EB4D1 otherwise. Reads ten settings rows through the ADD EDI,180h base at 009EB081/009EB087. docs/SHIP_AI_NEIGHBOUR_BOX.md | Packet orch6_neighbour_box_math_o: corrected local min unordered-second, closing NaN preservation, clamp NaN preservation and009EB2B5 FCOMIP0,shrink/JC admitting positive OR unordered. Actual shrink reference multiply/rate divide-multiply/1-minus-product now x87 with original float spills; finite13.37f/0.37f case fixes PC24 extent40A3D71A to40A3D718. Existing typed normal flow unchanged; external actualowners/settingssnapshot/CRT sqrt/rawABI limits explicit. Full original avoid+arc and8math/bounds spans2307bytes fixture:14cases xPC24/PC53,1188words,0failures versus11baseline failures. Win32+2CTest and28callrows pass. docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md; reports/ship_ai_neighbour_box_math.json. No runtime/Ghidra writes; previous narrative retained."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "009eafc0"
+   },
+   "result": {
+    "success": true,
+    "address": "009eafc0",
+    "deleted_function": "BSP_ShipAi_NeighbourAvoidBoxRefresh",
+    "body_size": 1362,
+    "message": "Function 'BSP_ShipAi_NeighbourAvoidBoxRefresh' deleted at 009eafc0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009eafc0",
+    "end_address": "009eb652"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009eafc0",
+    "end_address": "009eb651",
+    "bytes_disassembled": 1682,
+    "message": "Successfully disassembled 1682 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009eafc0",
+    "disassemble_first": false,
+    "name": "BSP_ShipAi_NeighbourAvoidBoxRefresh"
+   },
+   "result": {
+    "success": true,
+    "address": "009eafc0",
+    "function_name": "BSP_ShipAi_NeighbourAvoidBoxRefresh",
+    "entry_point": "009eafc0",
+    "body_size": 1682,
+    "message": "Function created successfully at 009eafc0",
+    "warnings": [
+     "Function name 'BSP_ShipAi_NeighbourAvoidBoxRefresh' \u2014 main part 'ShipAi_NeighbourAvoidBoxRefresh' is not PascalCase. Expected: ShipaiNeighbouravoidboxrefresh",
+     "Function name 'BSP_ShipAi_NeighbourAvoidBoxRefresh' \u2014 main part 'ShipAi_NeighbourAvoidBoxRefresh' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShipAi_NeighbourAvoidBoxRefresh' does not start with a recognized verb. First word 'Ship' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "009eafc0",
+    "comment": "[BSP reconstruction 009eafc0]\nHypothesis, not a recovered symbol. Packet cc_ai_box_refresh, read-only Ghidra. void __thiscall(node)(float self_x, float self_z, float self_vx, float self_vz, float self_half_length, float self_half_beam_unread, float self_bounds_max_y, float self_bounds_min_y, int accept), RET 24h at 009EAFE5, 009EB305, 009EB4CE, 009EB60E and 009EB64F; body 009EAFC0-009EB651, read whole. Sole call site 009F10FF in 009F0EA0; the nine arguments are built at 009F10A0..009F10FA and arg5 (self unit+9CCh * 0.75, 009F10DD) is never read by the body. Caches the observed hull's world Y bounds through vtable slot +20h and 0098A8E0 into node+80h (maximum) and node+84h (minimum) at 009EB014/009EB022, then bails to 009EB611 unless the two hulls overlap on Y against blk+1BCh/blk+1C0h. Sets node+69h = (accept == 0) at 009EB040 and node+68h = 0 at 009EB076. Fills the avoid box node+44h..+64h three ways: the near-box copy tail 009EB2C9 when the neighbour is close, the projection time runs out or the shrink collapses; a straight run along node+28h/+2Ch at 009EB472 when the projected turn is under 3 degrees (00D1A8A0); and a turning circle of radius |travel/turn| about node+20h/+24h +/- node+30h/+34h at 009EB4D1 otherwise. Reads ten settings rows through the ADD EDI,180h base at 009EB081/009EB087. docs/SHIP_AI_NEIGHBOUR_BOX.md\n\n[BSP reconstruction 009eafc0] update\nHypothesis, not a recovered symbol. Packet cc_ai_box_refresh, read-only Ghidra. void __thiscall(node)(float self_x, float self_z, float self_vx, float self_vz, float self_half_length, float self_half_beam_unread, float self_bounds_max_y, float self_bounds_min_y, int accept), RET 24h at 009EAFE5, 009EB305, 009EB4CE, 009EB60E and 009EB64F; body 009EAFC0-009EB651, read whole. Sole call site 009F10FF in 009F0EA0; the nine arguments are built at 009F10A0..009F10FA and arg5 (self unit+9CCh * 0.75, 009F10DD) is never read by the body. Caches the observed hull's world Y bounds through vtable slot +20h and 0098A8E0 into node+80h (maximum) and node+84h (minimum) at 009EB014/009EB022, then bails to 009EB611 unless the two hulls overlap on Y against blk+1BCh/blk+1C0h. Sets node+69h = (accept == 0) at 009EB040 and node+68h = 0 at 009EB076. Fills the avoid box node+44h..+64h three ways: the near-box copy tail 009EB2C9 when the neighbour is close, the projection time runs out or the shrink collapses; a straight run along node+28h/+2Ch at 009EB472 when the projected turn is under 3 degrees (00D1A8A0); and a turning circle of radius |travel/turn| about node+20h/+24h +/- node+30h/+34h at 009EB4D1 otherwise. Reads ten settings rows through the ADD EDI,180h base at 009EB081/009EB087. docs/SHIP_AI_NEIGHBOUR_BOX.md | Packet orch6_neighbour_box_math_o: corrected local min unordered-second, closing NaN preservation, clamp NaN preservation and009EB2B5 FCOMIP0,shrink/JC admitting positive OR unordered. Actual shrink reference multiply/rate divide-multiply/1-minus-product now x87 with original float spills; finite13.37f/0.37f case fixes PC24 extent40A3D71A to40A3D718. Existing typed normal flow unchanged; external actualowners/settingssnapshot/CRT sqrt/rawABI limits explicit. Full original avoid+arc and8math/bounds spans2307bytes fixture:14cases xPC24/PC53,1188words,0failures versus11baseline failures. Win32+2CTest and28callrows pass. docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md; reports/ship_ai_neighbour_box_math.json. No runtime/Ghidra writes; previous narrative retained."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 009eafc0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "009eafc0",
+   "end": "009eb652",
+   "name": "BSP_ShipAi_NeighbourAvoidBoxRefresh",
+   "after": "Function: BSP_ShipAi_NeighbourAvoidBoxRefresh at 009eafc0\nSignature: undefined BSP_ShipAi_NeighbourAvoidBoxRefresh(void)\nEntry: 009eafc0\nBody: 009eafc0 - 009eb651"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

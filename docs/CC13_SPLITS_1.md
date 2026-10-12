@@ -123,3 +123,18 @@ The gameplay parents repaired here are `BSP_CommandBuilding_TakeLandingPad` (006
 `FUN_0078d6c0` (water crossing / height sampling, 0078D6C0) and the unnamed `00729FD0`, `0072A0D0`
 (the same property-setter shape as 00953DA0) and `0074A8D0`. Their decompiles now cover the whole body;
 host comments that cite the old split addresses still point at valid code, now interior labels.
+
+## Follow-up (branch agent/cc13-scene1, after the cc13-gp41 lease ended)
+
+The two gp41-leased splits were repaired the same way (record `reports/cc13_scene1_splits_defined.json`),
+after the same checks (linear sync, no reference but the parent's own branch, RET plus INT3 at the end,
+default prototypes, unleased):
+
+| parent | name | old body | split deleted | new body |
+| --- | --- | --- | --- | --- |
+| `005220C0` | FUN_005220c0 | 005220C0-005220F9 | `005220FA` FUN_005220fa (reached by the short jump at `005220E5`) | 005220C0-005224B1 |
+| `009EAFC0` | BSP_ShipAi_NeighbourAvoidBoxRefresh | 009EAFC0-009EB4D0, 009EB611-009EB651 | `009EB4D1` BSP_ShipAi_NeighbourAvoidBoxArcArm (JBE at `009EB470`) | 009EAFC0-009EB651 |
+
+`BSP_ShipAi_NeighbourAvoidBoxArcArm` keeps its ledger record as an interior label (its evidence already said
+it is not a function); the parent got the body-repair note, was re-annotated, and both exports were
+refreshed with `--force`. The splits leased to cc13-gp7a and cc13-gp85 were routed to them.
