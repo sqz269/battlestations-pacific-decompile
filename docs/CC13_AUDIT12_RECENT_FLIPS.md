@@ -1,72 +1,254 @@
-# Audit of cc9's recent ON flips, dive and strafe paths (cc13-audit12)
+# Audit of cc9's recent ON flips: cc9's priority list, then the dive and strafe paths (cc13-audit12)
 
-Addresses: 009C4F80 009C5080 009C5090 009C50B7 009C5101 009C5144 009C5149 009C5163 009C5180 009C53D8 009C5400
+Addresses: 0084B380 0084B3F8 0084B405 0084B485 0078CF20 0078D1B0 00856420 00856530 00C4DE40 00C4DFBA 00C4E1F7
+00C4E5C6 00C4E602 00C4E63B 00C4E655 00C4E671 00C4E67C 00C4E68A 00C4E6BE 00C4E74F 00C4E751 00C4E773 00C42622
+00C4264F 00C4265B 00C42683 00C549D0 00C5756C 006DEF30 006DEF4C 006DEFA8 006DEFAD 006DEFC8 006DEFDD 00955630
+00955752 0095576A 009557F8 0085A8B0 0085A9A0 009C4F80 009C5080 009C5090 009C50B7 009C5101 009C5144 009C5149 009C5163 009C5180 009C53D8 009C5400
 009C5420 009C542C 009C5473 009C547E 009C5563 009C55B0 009C57C4 009C57D3 009C57E8 009C57F1 009C57FF 009C58D0 009C58DE
 009C5DB8 009C5E63 009C5F4C 009C5F75 009C5F79 009C5F9E 009C5FA7 009C5FCB 009C6E10 009C64A6 009C64A8 009C6EB1 009C6F09
 009C6F33 009C6F3B 009C6F4D 009C7AA4 009C7AAD 009CAC80 009CACDA 009CACDF 00419010 00419030 00438B10 0099D300 0099D369
 0099E756 00928F50 00923B80
 
 Packet `cc13-audit12`, branch `agent/cc13-audit12`, 2026-10-12. Requested by the cc13 lead for cc9. **Read only:**
-no Ghidra writes, no ledger records, no edits to cc9's files on this branch. Base: `origin/main` at `33b553214`.
-No defect was found, so no diff was applied, built or reverted. Only this doc and
+no Ghidra writes, no ledger records, no edits to cc9's files on this branch. Base: `origin/main` at `9f5120c95`.
+The one diff below was applied in this tree, built with `./scripts/build.ps1` and reverted. Only this doc and
 `reports/cc13_audit12_recent_flips.json` are committed.
 
-**Selection.** I listed every `k*Bound` that went from `false` to `true` on `origin/main` since 2026-10-10
-(`git log -G"Bound = true"` over `src/` and `include/`, 36 commits). I dropped these:
-- switches already audited in a `docs/CC13_*.md`: the CC9_SWITCHES, CC9_RECENT, LUA51_FLIPS and MG_AA_LETHALITY
-  audits;
-- switches that a cc13 doc proposed and cc9 only flipped: the torpedo-aim group and `kRollArmBaseNumeratorBound`
-  (CC13_AUDIT_TORPEDO_BOMBER / PLANNER_ROLL), the six draw pins (UNLABELLED_DRAWS_BATCH), the cadence switches
-  (TASK_PROFILE_CADENCE), the flak and tail-gunner switches, and `kStrafeDoubleConstantsBound` / `kMoveToLuaAltZeroOffsetBound`
-  (SMALL_DIFFS_BATCH_2);
-- cc13's own dyn and submerged-launch flips.
+**Selection.** cc9's priority list, as the lead relayed it, in order:
+- P1 `kSubmergedTorpedoLaunchSwimBound`;
+- P2 `kDynListingAssociationBound` and `kDynWorkerPrecisionBound`;
+- P3 `kAaKind6GateBound`;
+- P4 `kAimDiveBrakeRatioBound`, against cc13's earlier brake-floor finding;
+- P5 the live-sea gunnery crossing.
 
-Of the rest I ranked the x87 and stack-slot paths first. I took six:
-- the two GUNNERY 193 "mechanism verdict" dive groups. cc13-audit7 described their defects, but cc9 wrote the
-  code, and no cc13 doc had read the code;
-- `kDiveYawModeZeroBound`;
-- the two older dive arithmetic flips (178.1, 181.2);
-- the one RNG flip.
+Before that list arrived I had audited seven switches of my own choosing. They are kept as extra sections E1-E7.
+E1 is the same switch as P4.
 
-`kPartyChangeRefreshesGunneryBound` was read as a light sixth (plumbing).
-
-**Method.** I read each switch's ON path on `origin/main` (`src/dive_bomb_aimdive_tail.cpp`, `src/dive_bomb_task.cpp`,
-`src/game_hosts_units.cpp`, `include/bsp/dive_bomb_task.hpp`, `include/bsp/strafe_task.hpp`). I compared it with
-the image listing (`bsp.py disasm-raw` on disk bytes, `bsp.py ghidra disasm` for the stored listing) and tracked
-every stack slot from its write to its read across each `SUB ESP` and callee-pop `RET`. Landing evidence is
-GUNNERY_OPEN_ITEMS 178.1, 181 and 193 and SHIP_AI 213. I read those rows by line range only.
+**Method.** I read each switch's ON path on `origin/main`. I compared it with the image listing (`bsp.py disasm-raw`
+on disk bytes, `bsp.py ghidra disasm` for the stored listing) and followed every stack slot and x87 stack entry from
+its write to its read. Landing evidence is GUNNERY_OPEN_ITEMS 178.1, 181, 182, 183, 184 and 193 and SHIP_AI 213,
+read by line range only. For P2, the per-thread control words come from `docs/CC13_FPU_PRECISION.md` and the
+thread of each phase from `docs/CC13_HOST_PRECISION_CENSUS.md`.
 
 **Checklist.**
 - Rule 2 (boundary before attribution): `tools/verify_report_calls.py reports/cc13_audit12_recent_flips.json`
-  checked 14 call rows, 0 failed.
-- x87 register forms: `tools/x87_dc_form_scan.py --include-st0` over the four ranges. `009C4F80-009C5177` and
-  `009C5DB8-009C6080` have no DC-form sites. `009C6E10-009C6F91` has one, `009C6F33 dc c0 FADD ST0,ST0`, which is
-  the term `kDiveFlyAboveTermsBound` binds (section 5). `009C5180-009C580A` has three `FMUL ST0,ST0` squares at
-  `009C528D/52CF/5311`; these are the planar-distance squares upstream of the audited arms, not under any switch.
-- Callee-pop widths: `00419010` ends `RET 14h` (`00419030`) and `00438B10` ends `RET 8` (`00438B4C`). Every slot
-  offset below was rebased with those widths.
-- Operand widths: every constant the switched paths load was read from the image. The width of each load (FLD
-  dword or qword, MOVSS) matches the host's `float` or `double` (section 5 lists them).
+  checked every call row with 0 failures (the count is in the commit message).
+- x87 register forms: `tools/x87_dc_form_scan.py --include-st0` over the dive ranges:
+  - `009C4F80-009C5177` and `009C5DB8-009C6080` have no DC-form sites;
+  - `009C6E10-009C6F91` has one, `009C6F33 dc c0 FADD ST0,ST0`, which is the term `kDiveFlyAboveTermsBound` binds
+    (E5);
+  - `009C5180-009C580A` has three `FMUL ST0,ST0` squares upstream of the audited arms (`009C528D/52CF/5311`).
 
-**Status vocabulary.** Every switch audited is reconstructed and build-tested on main. cc9 game-validated each one
-with pairs: 178.1, 181.2, 193 and SHIP_AI 213. This audit is a static second reading and adds no runs (RUN SLOTS
-rule). There are no diffs.
+  For `00C4DE40` and `00C42530`, I walked the x87 stack by hand over the chains named in P2.
+- Callee-pop widths: `00419010` `RET 14h`, `00438B10` `RET 8`, `006DEF30` `RET 4`. Every slot offset below was
+  rebased with them.
+- Operand widths: every constant the switched paths load was read from the image bytes. For example `00D7A270`,
+  the 0.05 that `00C4E67C` loads with `FADD qword`, and the dive constants in E5.
+
+**Status vocabulary.** Every switch audited is reconstructed and build-tested on main, and cc9 game-validated it
+with pairs. This audit is a static second reading and adds no runs (RUN SLOTS rule). The P3 diff is build-tested
+only.
 
 ## Verdicts
 
 | # | switch | verdict | one line |
 | --- | --- | --- | --- |
-| 1 | `kAimDiveBrakeRatioBound` (GUNNERY 181.2) | FAITHFUL | `009C5F79 FSTP [ESP+38h]` under `SUB ESP,14h` is the frame's `[ESP+24h]`. `00419010` pops 14h, so `009C5FA7 FLD [ESP+24h]` reloads `AimPitchRatio x |pitch|`, as the host passes |
-| 2 | `kDiveAimHeadingBlendBound` (GUNNERY 178.1) | FAITHFUL | `009C5090` gate, the `+pi` correction, `SubtractWrapped(B,E)`, `IC(-60 deg,0,-40 deg,1,pitch)`, `FMUL d` and `SubtractWrapped(B,t*d)` all match, slot for slot and argument for argument |
-| 3 | `kDiveYawModeZeroBound` (GUNNERY 189 B / 193) | FAITHFUL | `009C5420` stores the immediate 0 and `009C5E63` stores EBX, which is 0 from `009C58DE XOR EBX,EBX`. The host sets the flag before `0099E756`'s read in the same think and clears it there |
-| 4 | `kDiveAimGlideArmsBound` (189 A, C / 193) | FAITHFUL | Bank scale: `IC(100,1,250,1.5,[ESP+1Ch])` on the heading arm only (`009C542C`). Arm B: `0.6 > ratio`, `0 > pitch`, `p2 > p1`, with `p1 = [ESP+6Ch]` from `009C5563` and `p2 = [ESP+28h]` from `009C55B0`, neither rewritten before `009C57F1` |
-| 5 | `kDiveFlyAboveTermsBound` (189 C2, D, E / 193) | FAITHFUL; one pre-existing gap noted (5a) | `C = ctl+398h` (`009C64A8`) equals `approach+ACh` this think (`009C7AA7-7AAD`). The numerator is `FADD ST0,ST0` of the error (`009C6F33`). `2E8h = 1.5` with `+18h` clear |
-| 6 | `kStrafeAttackrunSeedDrawBound` (190 / 193) | FAITHFUL | `009CACDA` draws `U(0,1)` with `ECX = 1`, and `009CACDF FCHS` then `FSTP +1Ch`. The host's keyed draw follows the host-wide convention for 00BD2F10 |
-| 7 | `kPartyChangeRefreshesGunneryBound` (SHIP_AI 213) | FAITHFUL (host consolidation) | The image has one field, written by `00923B80` (`00928F7D`). The gunnery host's copy is the only split copy, and every other host reads `unit_side_0054` live |
+| P1 | `kSubmergedTorpedoLaunchSwimBound` (GUNNERY 182) | FAITHFUL; superseded on main by P5 (P1a) | `0084B380` tests only the segment END (`0084B3FD-0084B405`), and `00856420` makes no medium choice at spawn. With `kGunneryLiveWaterSurfaceBound` ON, the live trace replaces `crossed`, so this term now moves only a counter |
+| P2 | `kDynWorkerPrecisionBound` + `kDynListingAssociationBound` (GUNNERY 183) | FAITHFUL on the chains read | Dyn tasks run only on 53-bit workers. The host's scope covers the narrow phase and the LCP and leaves `ManifoldUpdate` (main thread, 24-bit) outside. The spill points match `00C4DE40` and `00C42530` |
+| P3 | `kAaKind6GateBound` (GUNNERY 184) | gate order and refusal FAITHFUL; **DEFECT in the angles** (P3a) | `00955630` carries the gravity-lifted world direction into the mount frame. The host adds the world lift to the unlifted hull-frame elevation and keeps the unlifted bearing. On a rolling hull the bearing is off by up to about 2.4 deg. Diff P3 |
+| P4 | `kAimDiveBrakeRatioBound` (GUNNERY 181.2) | FAITHFUL; it is exactly cc13's fix | This is `docs/CC13_AUDIT_PLANE_BOT_STATES.md` row 6, diff 6. The host comment cites "cc13 plane-bot audit row 6", and the read is E1 |
+| P5 | `kGunneryLiveWaterSurfaceBound` (the crossing wiring) | FAITHFUL | `0084B380` samples `0078CF20(end.x, end.y)` (the image's axis defect) and compares `end.y <= h`. The crossing is `0078D1B0(from, to)`. The host's `static_trace_0084b380` matches all three, and runs only in medium 0 |
+| E1 | `kAimDiveBrakeRatioBound` (GUNNERY 181.2) | FAITHFUL | `009C5F79 FSTP [ESP+38h]` under `SUB ESP,14h` is the frame's `[ESP+24h]`. `00419010` pops 14h, so `009C5FA7 FLD [ESP+24h]` reloads `AimPitchRatio x |pitch|`, as the host passes |
+| E2 | `kDiveAimHeadingBlendBound` (GUNNERY 178.1) | FAITHFUL | `009C5090` gate, the `+pi` correction, `SubtractWrapped(B,E)`, `IC(-60 deg,0,-40 deg,1,pitch)`, `FMUL d` and `SubtractWrapped(B,t*d)` all match, slot for slot and argument for argument |
+| E3 | `kDiveYawModeZeroBound` (GUNNERY 189 B / 193) | FAITHFUL | `009C5420` stores the immediate 0 and `009C5E63` stores EBX, which is 0 from `009C58DE XOR EBX,EBX`. The host sets the flag before `0099E756`'s read in the same think and clears it there |
+| E4 | `kDiveAimGlideArmsBound` (189 A, C / 193) | FAITHFUL | Bank scale: `IC(100,1,250,1.5,[ESP+1Ch])` on the heading arm only (`009C542C`). Arm B: `0.6 > ratio`, `0 > pitch`, `p2 > p1`, with `p1 = [ESP+6Ch]` from `009C5563` and `p2 = [ESP+28h]` from `009C55B0`, neither rewritten before `009C57F1` |
+| E5 | `kDiveFlyAboveTermsBound` (189 C2, D, E / 193) | FAITHFUL; one pre-existing gap noted (E5a) | `C = ctl+398h` (`009C64A8`) equals `approach+ACh` this think (`009C7AA7-7AAD`). The numerator is `FADD ST0,ST0` of the error (`009C6F33`). `2E8h = 1.5` with `+18h` clear |
+| E6 | `kStrafeAttackrunSeedDrawBound` (190 / 193) | FAITHFUL | `009CACDA` draws `U(0,1)` with `ECX = 1`, and `009CACDF FCHS` then `FSTP +1Ch`. The host's keyed draw follows the host-wide convention for 00BD2F10 |
+| E7 | `kPartyChangeRefreshesGunneryBound` (SHIP_AI 213) | FAITHFUL (host consolidation) | The image has one field, written by `00923B80` (`00928F7D`). The gunnery host's copy is the only split copy, and every other host reads `unit_side_0054` live |
 
-No defect, so there is no diff section.
+The one defect diff (P3) is OFF and reverted here. It was built with `./scripts/build.ps1` and checked with
+`git apply --check` against `origin/main`. It is listed in the Diffs section, after E7.
 
-## 1. `kAimDiveBrakeRatioBound` (GUNNERY 181.2)
+## P1. `kSubmergedTorpedoLaunchSwimBound` (GUNNERY 182)
+
+**Host** (`src/game_hosts_gunnery.cpp` ~9200):
+- `crossed = end.y <= 0 && (from.y > 0 || (ON && medium 0))`, where medium 0 is `!swimming && !depth_charge_in_water`;
+- ON also counts `submerged_launch_entries`.
+
+**Image** (`disasm-raw 0084B380`, `BSP_Projectile_TraceWaterSurfaceEntry`). Each 18h-byte segment record is
+`from` at `-14h..-0Ch` and `to` at `-8..0` from ESI.
+- `0084B3A1..0084B3F2` push `(to.x, to.y)` and call `0078CF20`.
+- `0084B3FD FLD [ESP+10h]` (`to.y`), `FCOMIP` against the height, then `0084B405 JBE` to the hit. A segment hits
+  when its END is at or below the sampled surface.
+- The start is never read for the test. It is read only as `0078D1B0`'s first vector at `0084B485`.
+
+So a round in medium 0 that starts below the surface enters on its first step, which is what ON allows.
+
+**The spawn-time medium.**
+- `00856420` (`BSP_TorpedoClass_CreateProjectile`) has ten calls: nine direct ones (`operator_new`, `_memset`,
+  `00856050`, `0085DC80`, `0042ED50`, `006952A0` x2, `00694A60`, `00414DB0`) and one indirect one, `00856530
+  CALL EDX`. That indirect call is `vtable[98h]` (`008564AB`), not `vtable[24h]`/`[28h]`.
+- There is no `0078CF20` call.
+
+So a torpedo is created in medium 0, as GUNNERY 182 says.
+
+**P1a. Superseded on main.** Since `ecb1c55d1`, `kGunneryLiveWaterSurfaceBound` is ON. In medium 0 its block
+recomputes `crossed = static_trace_0084b380(...).hit`, an end-only test against the live surface, and in the water
+it sets `crossed = false`. Either way it overwrites the value this switch shapes. On main the switch therefore
+changes only the `submerged_launch_entries` counter, which counts flat-surface (`y = 0`) crossings rather than the
+live ones. This is a diagnostic inaccuracy, not a gameplay one. It matters for behaviour only if the live surface is
+switched OFF again.
+
+**Verdict: FAITHFUL.**
+
+## P2. `kDynWorkerPrecisionBound` and `kDynListingAssociationBound` (GUNNERY 183)
+
+**The precision control word.**
+- `docs/CC13_FPU_PRECISION.md` section 3: the Dyn tasks run only on the `_beginthreadex` Dyn workers, whose
+  `_FPmtinit` is a `RET`, so they run at `027Fh` (53-bit). The submitting thread waits (`00C33140`).
+- `ManifoldUpdate` `00C549D0` is not a task. It is called directly from `Dyn_Scene_RunCollisionPass` at
+  `00C5756C`, on the main thread at 24 bits (CC13_HOST_PRECISION_CENSUS row 24).
+- The host's `DynWorkerPrecisionScope` (`src/hull_terrain_contact.cpp:33`) saves the word with
+  `_controlfp_s(&saved,0,0)`, sets `_PC_53` under `_MCW_PC`, and restores `saved & _MCW_PC` on scope exit (RAII, so
+  every return path restores it).
+- In `HullTerrainContactSolver::step` the scope opens after the `refresh_native_dyn_manifold_00c4b9b0` loop, at
+  the comment "From here on the image is on a Dyn worker". The manifold refresh therefore stays at the caller's
+  24 bits, which matches the image's thread split.
+- The world-step entry splits the span in two: the narrow phase in one scope (line 1491, `IntersectTask2`
+  `00403CC0`) and each group's solve in another (line 1627, `LCPSolverTask` `00403720`). Group formation
+  (`00C4B610`) runs between them at 24 bits, which matches the census's main-thread phases (broad phase,
+  `ManifoldUpdate`, group formation, contact report).
+- `_MCW_PC` touches only the x87 word. The build is `/fp:strict` with SSE2 (`CMakeLists.txt:223`), so the C++
+  `double` template arm (`R = double`) is IEEE double. It equals the x87 at PC 53 except at the extended exponent
+  range, which these magnitudes never reach.
+
+**The association** (`build_contact_rows_listing<R>`, `src/dyn_lcp_impulse_math.cpp:72`). I checked these chains
+against the disk bytes, following the x87 stack entry by entry:
+
+| chain | listing | spills | host |
+| --- | --- | --- | --- |
+| `to_world`, x | `00C4DFBA..00C4DFE6`: `((m14*L1 + m8*L0) + m20*L2) + pos`, one `FSTP` | 1 | `((row0*l0 + row1*l1) + row2*l2) + pos`, one `sp()`: the same sum (the first `+` is commutative) |
+| relative velocity | `00C4E568..00C4E63B`: `+vb` spilled (`110h..118h`), `-va` spilled (`B4h..BCh`), `-w x ra` spilled (`68h..70h`) | 3 per axis | three float operations, each rounding |
+| normal velocity | `00C4E655..00C4E671`: `(r0*n0 + r1*n1) + r2*n2`, one spill | 1 | `sp((R(r0)*n0 + R(r1)*n1) + R(r2)*n2)` |
+| bounce | `00C4E675 FLD nv` / `FMUL [eax+4]` (float) / `00C4E67C FADD qword [00D7A270]` / `FSTP` float | 1 | `float(double(R(nv)*rest) + 0.05)`; at R = double the product is exact, so a single rounding to 53 bits and then to float, as the listing |
+| target clamp | `00C4E68A FLDZ` / `FCOMIP` (ST0 = 0) / `JBE` takes XMM1 (0) | - | `if (!(target < 0)) target = 0`; NaN goes to 0 on both |
+| rhs velocity | `00C4E6B2 FLD` / `FCHS` keeps `-target` on the stack. Four group dots are each spilled (`00C4E6E0`, `00C4E700`, `00C4E721`, `00C4E745`) and summed on the stack, `((G1 + G0) + G2) + G3`. `00C4E74F FSUBRP` gives `-target - sum`, and `00C4E751` spills | 4 + 1 | `sp(R(-0 - target) - (((R(G1) + G0) + G2) + G3))` |
+| effective mass | `00C4E773..00C4E7AE`: `dot3(j+3, m+3)` spilled, `dot3(j, m)` spilled, `FADD` on the stack | per group | `R(1) / (((R(G1') + G0') + G2') + G3')` |
+| LCP residual | `00C42622..00C4265B`: the group dot is spilled at `00C4264F`, then `acc - G` is spilled at `00C4265B`. The same holds at `00C42683` / `00C42687` and onwards | every op | `dyn_row_residual`: float `acc` minus each spilled `dyn_row_group_dot` |
+
+Two details of the stack walk:
+- The `FLD ST0 / FADDP ST2 / FXCH / FSTP` idiom at `00C4E568..00C4E5CA` leaves one velocity component on the x87
+  stack each time. These are `vb0..vb2` and `va0`, and the rhs chain consumes them later (`00C4E6F1 FMULP ST4`,
+  `00C4E70D FMULP ST4`, `00C4E712 FMULP ST5`, `00C4E71B FMULP ST2`). They are loads of float spills, so they are
+  exact, and the host's reload of the same floats is equivalent.
+- The OFF-precision arm (`R = float`) rounds the bounce twice: first to double, then to float. The image at 24 bits
+  rounds once. A tie could differ by 1 ulp. Both switches are ON together, so this arm is not live.
+
+**Evidence.** GUNNERY 183's pairs moved the hull-terrain rows as predicted. I did not re-read them beyond the
+section header.
+
+**Verdict: FAITHFUL on every chain read.** I did not walk all of the friction-direction chain (`00C4E828..00C4EF99`)
+step by step. Its host form uses the same `dot3` / `jacobian_dot` / `effective_mass` lambdas, which do match.
+
+## P3. `kAaKind6GateBound` (GUNNERY 184)
+
+**Gate order and refusal: FAITHFUL.** From `006DEF30` (stored listing, `RET 4`):
+- `006DEF36` and `006DEF44..006DEF50` refuse when the target, `[bot+50h]` or `[[bot+50h]+3Ch]` is null. The host
+  takes the last as present, which is labelled.
+- `006DEFA8 CALL 00955630` with `ECX = [[bot+50h]+3Ch]`, `EDX = target+FCh` and stack `(gun+FCh, speed
+  [[[gun+3F8h]+34h]+50h], &[E+18h], &[E+10h])`, where E is ESP after the four pushes. `006DEFAD TEST AL` refuses on
+  0. The host's `reach = arc.solved` matches.
+- `006DEFB3..006DEFC8` call `0085A8B0([E+10h], [E+18h])`, that is (horz, vert), and refuse on 0. The host's
+  `gun_traverse_allowed_007f5fc0(arcs, wrap(horz), wrap(vert))` matches.
+- Only then does `006DEFDD` call `vtable[1D4h](target)` = `0072F6E0`, the line of fire. The host makes its
+  line-of-fire query and expiry draw only past both gates, and a refusal becomes a window refusal.
+- The plane arm goes to the window `0085A9A0` and then the line of fire, as kind 5.
+- No RNG draw sits in either gate. The only draw is the line-of-fire expiry inside `0072F6E0`, and both builds
+  reach it on the same condition.
+
+**P3a. DEFECT: the angles handed to `0085A8B0`.**
+- `00955630` (`src/gun_gravity_arc.cpp` 200-252, the image's own walk) builds the solved world direction
+  `004B4D80(pitch, yaw)` at `00955752..00955765`.
+- With a mount, it then transforms that vector into the mount frame (`0095576A..009557F3`: `0042D0D0`, `asin`
+  of local y, `atan2(local x, local z)`) and negates the yaw at `009557F8`.
+- The mount is `[gun+3Ch]`, the gun's parent entity. It is oriented as the hull: `docs/AA_FIRE_WINDOW_MOUNT.md`
+  section 2, 336 slot frames on USN02 and USN04 with `forward = +z` in model space.
+- So the image's (horz, vert) are the hull-frame bearing and elevation of the gravity-lifted direction.
+
+The host asks the solve with `mount_frame = nullptr`. It then sets:
+- `horz` to the hull-frame bearing of the unlifted line of sight `u`;
+- `vert = asin(u . up) + (arc.vert - world elevation of u)`, the world lift added to the hull-frame elevation.
+
+Both are exact for a level hull. On a heeled or pitched hull, lifting the line in the world vertical moves its
+hull-frame bearing. The live sea has been ON since `ecb1c55d1`, so every hull rolls. Worked numbers
+(`local/a12_frame.py`, a hull rolled by phi about its forward axis, target bearing b, lift L):
+
+| phi | b | L | horz error | vert error |
+| --- | --- | --- | --- | --- |
+| 3 deg | 60 deg | 10 deg | 0.26 deg | 0.00 deg |
+| 5 deg | 45 deg | 15 deg | 0.93 deg | -0.03 deg |
+| 8 deg | 45 deg | 20 deg | 2.00 deg | -0.10 deg |
+| 5 deg | 30 deg | 30 deg | 2.44 deg | -0.09 deg |
+
+So a target within about 1-2 deg of a mount's traverse limit is accepted or refused on the wrong side. That changes
+which surface targets a dual-purpose mount keeps, and so when the line-of-fire cache and its expiry draw are first
+reached.
+- **Which missions it moves:** every row with kind-6 mounts that see ships and a non-zero sea state. GUNNERY 184.3
+  counted 15-1576 `kind6_gate_rejects` per row on USN01, USN02 and USN13. USN04 E2 has no surface contact.
+- **What it does not touch:** the plane arm and kinds 1 and 5.
+- **Remaining labels:** the fix takes unit scale for the mount (`docs/MOUNT_FRAME_SCALE.md`: the image does not
+  normalise the transformed direction). It also takes the hull's axes for `[gun+3Ch]`, as the fire window does.
+
+**The fix** (diff P3, `kAaKind6GateMountFrameBound`, OFF):
+1. Rebuild the world direction from the solve's own angles. With mount NULL these are `(pitch, -0 - yaw)`, and
+   `004B4D80` gives `(sin y cos p, sin p, cos y cos p)`.
+2. Project it on the hull's `right` / `up` / `forward`, with the existing `kGunHorzSign` for the image's negate.
+
+**Verdict: the gate is faithful; the angle pair is a DEFECT (small, and live on every rolling hull).**
+
+Two things I left unresolved:
+- In the host, a non-plane kind-6 slot with `row.arcs.empty()` or `len <= 0` returns without refusing and without a
+  line-of-fire query, "as kind 5 below". The image has no such early return in `006DEF30`, and `0085A8B0` with an
+  empty arc list was not read here. UNCERTAIN, and probably unreachable (every dual-purpose mount has arcs).
+- `[[bot+50h]+3Ch] == 0` refuses in the image (`006DEF50`). The host never refuses on it. This is labelled by cc9.
+
+## P4. `kAimDiveBrakeRatioBound` and cc13's brake-floor finding
+
+`docs/CC13_AUDIT_PLANE_BOT_STATES.md` row 6 ("aimdive tail, air brake `009C5FA7`: DEFECT ... the brake floor's x is
+`AimPitchRatio x |pitch|` (slot `[ESP+24h]`, overwritten at `009C5F79`), not `|pitch|`", diff 6) is the finding.
+`kAimDiveBrakeRatioBound` binds it. The switch's comment in `src/dive_bomb_aimdive_tail.cpp` reads "GUNNERY 181.2
+(cc13 plane-bot audit row 6): 009C5F79's FSTP float writes AimPitchRatio x |pitch| over [ESP+24h]". ON passes
+`x1`, which is that diff's change. The independent re-read of the bytes is E1: FAITHFUL.
+
+## P5. The live-sea gunnery crossing (`kGunneryLiveWaterSurfaceBound`)
+
+**Prior audits.** `docs/CC13_AUDIT_CC9_RECENT.md` item 7 and `docs/CC13_AUDIT_CC9_RECENT_2.md` item 1 covered the
+wave-damp region and the amplitude side of `kWaveFieldLiveAmplitudeBound`, so I skipped them. No CC13 audit had
+read the gunnery crossing wiring, so I read only that.
+
+**Image.** `0084B380`, read in P1:
+- The sample is `0078CF20(to.x, to.y)`. These are the end point's first two components, the image's axis defect
+  (`docs/PROJECTILE_HELPERS.md` 1).
+- The test is `to.y <= h`.
+- On a hit, the two vectors pushed at `0084B42A..0084B474` are `to` first (the higher address) and `from` last, so
+  the call is `0078D1B0(from, to)`. The result is stored to the record's `+0/+4/+8` with `+0Ch = 1`
+  (`0084B48A..0084B496`).
+- On a miss, `0084B41D` clears `+0Ch` and leaves the point untouched.
+
+**Host.**
+- `static_trace_0084b380` (`src/projectile_helpers.cpp`) = `walk_segments(..., true)`. It samples
+  `water_height_0078cf20(to.x, to.y)`, tests `to.y <= surface`, and computes the crossing with
+  `water_crossing_point_0078d1b0(from, to)`. On a miss the point is not written.
+- The gunnery wiring (~9205) runs the trace only in medium 0 (`!swimming && !depth_charge_in_water`), the image's
+  `0084C11C` choice. Its sampler is `ocean_live_field_water_height_0078cf20`. On a hit it replaces the segment end
+  in all three host copies of the position (`0084C15F..0084C16B`). In the water it sets `crossed = false`.
+- The crossing draws nothing from the RNG.
+
+**Verdict: FAITHFUL.** P1a records the one interaction (the swim switch is now only a counter).
+
+# Extra sections (my own selection, before cc9's list)
+
+## E1. `kAimDiveBrakeRatioBound` (GUNNERY 181.2)
 
 **Host.** `src/dive_bomb_aimdive_tail.cpp`: ON passes `x1 = aim_pitch_ratio_54 * |pitch_command|` as the brake
 floor's argument. OFF passes `|pitch_command|`.
@@ -99,7 +281,7 @@ floor's argument. OFF passes `|pitch_command|`.
 **Verdict: FAITHFUL.** One limit on scope: the fold's source is the frame's `[ESP+10h]`, which the host maps to
 `r.pitch_29c`. That mapping predates this switch (packet `cc9_aimdive_response`), and I did not re-derive it.
 
-## 2. `kDiveAimHeadingBlendBound` (GUNNERY 178.1)
+## E2. `kDiveAimHeadingBlendBound` (GUNNERY 178.1)
 
 **Host.** `dive_bomb_aim_heading_009c4f80` (`src/dive_bomb_task.cpp`), the `mid_pitch_blend` arm. All four call
 sites set it: the approach feed (`game_hosts_units.cpp` 4730 and 4858), aimdive (23024) and aimglide (23924).
@@ -124,7 +306,7 @@ The USN04 loss is therefore a consequence of other paths (175(a)'s roll response
 
 **Verdict: FAITHFUL.**
 
-## 3. `kDiveYawModeZeroBound` (GUNNERY 189 B, ON in 193)
+## E3. `kDiveYawModeZeroBound` (GUNNERY 189 B, ON in 193)
 
 **Host.** The aimglide yaw arm (`game_hosts_units.cpp` 23947) and the aimdive tail (24546) set
 `gl_yaw_mode_2d4_zero`. `plan_yaw_0099d300` (30798) reads the flag and clears it. Both yaw-arm writers (30919,
@@ -149,7 +331,7 @@ the yaw command surviving the planner.
 
 **Verdict: FAITHFUL.**
 
-## 4. `kDiveAimGlideArmsBound` (189 A and C, ON in 193)
+## E4. `kDiveAimGlideArmsBound` (189 A and C, ON in 193)
 
 **4.1 The bank scale (`009C542C-009C547E`).**
 - The selector `009C53D8` `JBE 009C542C` takes the heading arm when `[00D04A24] <= [ESP+1Ch]`. The bank-scale
@@ -186,14 +368,14 @@ The feed's bearing uses the same blended aim heading (4730).
 
 **Verdict: FAITHFUL.**
 
-## 5. `kDiveFlyAboveTermsBound` (189 C2, D and E, ON in 193)
+## E5. `kDiveFlyAboveTermsBound` (189 C2, D and E, ON in 193)
 
 **5.1 C (`009C64A6-009C64C9`).** With a control block, `C = [EAX+398h]` (`009C64A8`). Without one,
 `C = approach+ACh + approach+50h`. `009C7A80` (`009C7AA4-009C7AAD`) runs every think before the flyabove tick and
 copies `[approach+0Ch]+398h` to `approach+ACh`, so ON's `cruise_altitude_398 = db_begin_alt_ac` is the right value
 whenever the host's `db_begin_alt_ac` follows `ctl+398h`.
 
-**5a. Gap noted, pre-existing.** The host updates `db_begin_alt_ac` from the squadron block (`game_hosts_units.cpp`
+**E5a. Gap noted, pre-existing.** The host updates `db_begin_alt_ac` from the squadron block (`game_hosts_units.cpp`
 3998-4020: the Lua attack altitude or `sq_profile_398`). Otherwise it keeps the `009C3EA0` seed, tuning `+4CCh`
 (22625). The image's `ctl+398h` for an unfed squadron is the profile's value, whose `00BD2F10` draw at `009C899B`
 is labelled unmodelled in that block. This is the same gap that already applied to the OFF build's `ACh`. The
@@ -219,9 +401,9 @@ match the image bytes: `kLeaveSpanScale` double `0.800000011920929`, `kDiveRefer
 cap). The USN01 convoy loss is the 193 "convoy strike" casualty that every plane-path change re-rolls. The lead
 ruled it a plan casualty, so the pair cannot attribute it to this switch.
 
-**Verdict: FAITHFUL**, with 5a as an inherited gap.
+**Verdict: FAITHFUL**, with E5a as an inherited gap.
 
-## 6. `kStrafeAttackrunSeedDrawBound` (190, ON in 193)
+## E6. `kStrafeAttackrunSeedDrawBound` (190, ON in 193)
 
 **Image** (`ghidra disasm 009CAC80`).
 
@@ -247,7 +429,7 @@ The verdict there was "image-faithful and inert here", which agrees with this re
 
 **Verdict: FAITHFUL.**
 
-## 7. `kPartyChangeRefreshesGunneryBound` (SHIP_AI 213)
+## E7. `kPartyChangeRefreshesGunneryBound` (SHIP_AI 213)
 
 **Host.** `GameUnitsHost::set_unit_side_0054` writes `row.party`, then
 `GameGunneryHost::refresh_unit_side` copies `unit_side_0054` into the gunnery `UnitState.row.side`.
@@ -265,12 +447,66 @@ gameplay-identical, which is what you would expect where no captured unit fires 
 
 **Verdict: FAITHFUL (host consolidation).**
 
+## Diffs
+
+### Diff P3: `kAaKind6GateMountFrameBound` (OFF)
+
+Applied in this tree, built with `./scripts/build.ps1` (pass), reverted. `git apply --check` against `origin/main`
+is clean.
+
+```diff
+diff --git a/src/game_hosts_gunnery.cpp b/src/game_hosts_gunnery.cpp
+index 09d6fa565..34e97df76 100644
+--- a/src/game_hosts_gunnery.cpp
++++ b/src/game_hosts_gunnery.cpp
+@@ -617,6 +617,15 @@ constexpr bool kTailGunnerNoArmourTestBound = true;   // ON: GUNNERY_OPEN_ITEMS
+ //    and a gate refusal refuses the slot (as a window refusal). OFF: kind 6
+ //    goes straight to the line-of-fire query (the host before section 184).
+ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
++//  * kAaKind6GateMountFrameBound (cc13-audit12 section P3): 00955630 builds the
++//    solved WORLD direction (004B4D80 of its pitch and yaw, 00955752..00955765) and
++//    carries that vector into the mount frame [[bot+50h]+3Ch] (0095576A..009557F3:
++//    0042D0D0, then asin of local y and atan2(local x, local z), negated at
++//    009557F8). [gun+3Ch] is oriented as the hull (docs/AA_FIRE_WINDOW_MOUNT.md 2);
++//    unit scale is taken (docs/MOUNT_FRAME_SCALE.md). ON: horz and vert are the
++//    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
++//    the world lift added to the hull-frame elevation (184.1's substitution).
++constexpr bool kAaKind6GateMountFrameBound = false;
+ //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
+ //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
+ //    query as a loose entry after the units (00884078 attaches its collision
+@@ -5688,9 +5697,18 @@ public:
+                 if (reach) {
+                     const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                     const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+-                    const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+-                    const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
++                    float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
++                    float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                         + (arc.angles.vert - direct);
++                    if constexpr (kAaKind6GateMountFrameBound) {
++                        // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
++                        const float p = arc.angles.vert;
++                        const float y = -arc.angles.horz;
++                        const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
++                            std::cos(y) * std::cos(p)};
++                        horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
++                        vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
++                    }
+                     const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                     reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                         bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+```
+
 ## Summary for cc9
 
-- All seven switches read faithful against the listing. No diff is proposed.
-- Two notes need no action from this audit:
-  - 5a: `ctl+398h` for an unfed squadron is the unmodelled `009C899B` profile draw. This is pre-existing.
-  - Section 1: the aimdive tail's `|pitch|` source mapping predates 181.2 and was not re-derived here.
-- The dive-group outcome changes in 193 (JM08 release counts, the USN01 convoy re-roll) follow from faithful
-  mechanisms. If a dive row is still wrong, the cause lies elsewhere: the latched `approach+D8h` aim point, the
-  175(a) roll response, or the unmodelled profile draw.
+- P1, P2, P4 and P5 are faithful.
+- P1a: on main, `kSubmergedTorpedoLaunchSwimBound` changes only the `submerged_launch_entries` counter, because the
+  live surface trace overwrites `crossed`. The counter counts flat-surface crossings. This is diagnostic only.
+- P3a is the one DEFECT. The kind-6 surface gate hands `0085A8B0` the world lift added to the hull-frame elevation,
+  plus the unlifted bearing. The image uses the lifted direction's hull-frame pair. On a rolling hull the bearing
+  is wrong by up to about 2.4 deg, so targets within about 1-2 deg of a traverse limit flip. To validate it, pair
+  diff P3 on USN02 and USN13, the rows with the most `kind6_gate_rejects` in 184.3. The prediction is that
+  `kind6_gate_rejects` moves in both directions while the plane arm stays identical.
+- E1-E7 (my own selection) are faithful. E5a, the unmodelled `009C899B` profile draw behind an unfed squadron's
+  `ctl+398h`, is inherited and predates the switch.
