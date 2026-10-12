@@ -6316,17 +6316,17 @@ struct GameUnitsHost::Impl {
     // its pair runs. The draws use release_altitude_draw_00bd2f10 with a per-site
     // key, never stream 0; the image draws all four on stream 1 (ECX = 1).
     // 009C6CAE-009C6D3B: the fly-over latches its roll side +20h (task+798h).
-    static constexpr bool kDiveTurnSideLatchBound = false;
+    static constexpr bool kDiveTurnSideLatchBound = true;  // GUNNERY 193: ON by pair verdict
     // 009C8531/009C855B: the bank thresholds +-20 deg (00CE398C, 00D1FBC0).
-    static constexpr bool kDiveTurnSideBankBound = false;
+    static constexpr bool kDiveTurnSideBankBound = true;  // GUNNERY 193: ON by pair verdict
     // 009C8587-009C85B6: the coin trunc(U(0, 1024)) >= 512 -> +1, else -1.
-    static constexpr bool kDiveTurnSideCoinBound = false;
+    static constexpr bool kDiveTurnSideCoinBound = true;  // GUNNERY 193: ON by pair verdict
     // 009C7839: the turndown roll magnitude U(0.8, 1.0), pinned at 0.8 before.
-    static constexpr bool kDiveTurnRollDrawBound = false;
+    static constexpr bool kDiveTurnRollDrawBound = true;  // GUNNERY 193: ON by pair verdict
     // 009C579E: the aimglide re-arm U(0.2, 0.5), pinned at 0.2 before.
-    static constexpr bool kAimGlideRearmDrawBound = false;
+    static constexpr bool kAimGlideRearmDrawBound = true;  // GUNNERY 193: ON by pair verdict
     // 009C6114: the aimdive re-arm U(0.5, 1.0), pinned at 0.5 before.
-    static constexpr bool kAimDiveRearmDrawBound = false;
+    static constexpr bool kAimDiveRearmDrawBound = true;  // GUNNERY 193: ON by pair verdict
     // Packet cc9_fighter_gun_lead (docs/FIGHTER_GUN_LEAD.md): the gun's lead
     // point +5Ch from 009FC931-009FC9F6 (two passes of the target's vtable[48h]
     // 00954650, both arms, t = d / 007C2610), the envelope against it, and the
@@ -7232,7 +7232,7 @@ struct GameUnitsHost::Impl {
 // True: the install makes both draws on "#mt" keys after the construction
 // draws and refreshes again. False: +68h stays 50.0 and +2Ch keeps its
 // construction draw U(0, MaxAltOffset).
-static constexpr bool kMoveToActivationDrawsBound = false;
+static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by pair verdict
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};
