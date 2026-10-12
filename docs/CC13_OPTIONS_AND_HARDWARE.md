@@ -134,11 +134,26 @@ in every host projection, so a C++ version would only restate the standard destr
 
 ## Verification
 
-- `./scripts/build.ps1` in this worktree (result recorded in the handoff below).
+- `./scripts/build.ps1` in this worktree: exit 0, `options_hardware_cc13.cpp` compiled, 2/2 CTest
+  suites passed (run after each source change).
+- `python tools/verify_report_calls.py reports/cc13_options1_calls.json`: 15 call rows, 0 failed.
+- Ghidra: function defined at `008D6B70..008D6BFF` (`reports/cc13_options1_defined_functions.json`)
+  and the 14 ledger names applied through `tools/ghidra_annotate.py --apply`. The prior values
+  are in the worktree's `local/ghidra-annotations-*.json`.
 - No test was added. The comparator is a table over the listing, and the save mirrors an existing
   fixture-tested restore. Neither body has a concrete regression risk that a test would catch
   better than the listing citations.
 
 ## Handoff
 
-See the final section appended at close.
+Segment 56 has no options or hardware-settings body left open, by the triage above. Open items:
+
+1. `PcStorageBackend` has no vtable `+10h` (`00BEB630`). A host that saves settings with no
+   profile save name needs it. Wire `newest_valid_storage_slot_00beb630` to a Win32 walk in
+   `src/storage_backend.cpp` (owned by the storage-backend lane, not this packet).
+2. `save_profile_settings_008d6c00` is not called by any host yet. Its seven native call sites, in
+   (`0055F9B0`, `005EFDC0`, `005F0090`, `005F0B90`, `005F65C0`) are options/front-end screens and
+   are still `FUN_` except `005F65C0`.
+3. For cc9: `PlaneSetMovieCollision` (`0089F360`) and `SortByDistance` (`008CCEB0`) are
+   unregistered, unreferenced gameplay natives.
+4. `008D8F10` (scene property bag) is still open, in the cc12 scene lane.
