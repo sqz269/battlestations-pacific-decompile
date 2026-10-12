@@ -215,8 +215,8 @@ inline constexpr float kGlidePullOutRatio = 0.6000000238418579f;    // 00CE3D30
 //    approach+0Ch unconditionally), and the descent reference's numerator
 //    2 * err (009C6F33), not 2 * A. OFF: the host before section 189.
 inline constexpr bool kDiveYawModeZeroBound = true;  // GUNNERY 193: ON by pair verdict
-inline constexpr bool kDiveAimGlideArmsBound = false;
-inline constexpr bool kDiveFlyAboveTermsBound = false;
+inline constexpr bool kDiveAimGlideArmsBound = true;  // GUNNERY 193: ON by pair verdict
+inline constexpr bool kDiveFlyAboveTermsBound = true;  // GUNNERY 193: ON by pair verdict
 // GUNNERY 192 (cc13-audit9, docs/CC13_AUDIT_PLANE_BOT_STATES_3.md section 6,
 // ported onto the switches above), each OFF until its pair:
 //  * kDiveFlyAboveCarriedFlagsBound (items 8-12, diff parts 3 and 4): the

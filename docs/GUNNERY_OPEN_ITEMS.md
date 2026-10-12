@@ -12926,4 +12926,8 @@ plane/task line classes.
   USN12 1589.38 -> 1742.97 s, USN02 identical, BSM01 767.94 s; USN01 lost (above); ESMP08 no completion on either side.- **Torpedo-aim group (190): ON.** First divergence `torpedo Mav3 aim census tick=51` on USN01 (cmd_2C0 -2.0110 ->
   -2.0104, yaw_desired -0.0709 -> -0.0551), its own path. USN04 phase 2 torpedo releases 2/36 -> 1/36 alone, but 6/60
   with the roll arm (above), whose pairing the lead asked for; USNRM01 exit 3. USN01 lost (convoy strike, above). The
-  leave-one-out was dropped with the ruling.
+  leave-one-out was dropped with the ruling.- **`kDiveAimGlideArmsBound` + `kDiveFlyAboveTermsBound` (189 A, C, C2, D, E): ON.** JM08 first divergence is an
+  `aimglide -> goaway` exit of `MainAirFieldEntity 01_sqn02|.-2` at tick 1606 (the pull-out latch's arm B), USN01's is
+  the `ScoutDauntless` aim lead (projtime 10.02 -> 10.10): both on the switched paths. JM08 dive releases 26/33 ->
+  20/33. USN04 phase 2 is identical with zero native counts moved: there `plan+2E8h` is capped by the turn-roll limit
+  (`plane_ai_control.cpp` `max_bank = min(2E8h * TurnRoll, cap)`) and no arm-B latch fires. USN01 lost (convoy strike).
