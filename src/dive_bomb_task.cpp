@@ -778,10 +778,16 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
         out.level_arm = true;
         return out;
     }
+    // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV. ST0 there is the height error:
+    // 009C6F11 FCOMI / 009C6F13 FSTP ST1 keep err in ST0, and 009C6F17 FLD A is
+    // popped again by 009C6F1D FCOMIP and 009C6F1F FSTP ST0 (cc13-audit7,
+    // tools/x87_sym.py 009C6E10: `(v9c6e44 + v9c6e44) / divisor`).
     const float v = static_cast<float>(
-        (static_cast<double>(in.planar_distance) +
-         static_cast<double>(in.planar_distance)) /
-        static_cast<double>(divisor));  // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV
+        (static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                 ? out.height_error : in.planar_distance) +
+         static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                 ? out.height_error : in.planar_distance)) /
+        static_cast<double>(divisor));
     // 009C6F4D FCOMIP against the 0.8 at 00CE3D40, 009C6F51 `76` JBE.
     out.reference = (static_cast<double>(v) <=
                      dive_bomb_flyabove_constant::kLeaveSpanScale)
@@ -941,6 +947,17 @@ bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept {
     // 009C57CA COMISS XMM0,[00CE380C] with XMM0 = [ESP+18h] and 009C57D1 `77`
     // JA: only a strictly wider error latches on this arm.
     return bearing_error_abs > dive_bomb_constant::kGlidePullOutBearing;
+}
+
+// 009C57D3-009C57FD, arm B.
+bool dive_bomb_aimglide_pull_out_arm_b_009c57d3(float ratio_24, float pitch_c64,
+                                                float p1, float p2) noexcept {
+    // 009C57DB COMISS 0.6,[ESP+24h] / 009C57E0 JBE.
+    if (!(dive_bomb_constant::kGlidePullOutRatio > ratio_24)) return false;
+    // 009C57E8 COMISS 0,unit+C64h / 009C57EF JBE.
+    if (!(0.0f > pitch_c64)) return false;
+    // 009C57F1 FLD p1, 009C57F5 FLD p2, 009C57F9 FCOMIP / 009C57FD JBE.
+    return p2 > p1;
 }
 
 // 009C6A37-009C6A7F.
