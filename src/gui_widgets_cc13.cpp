@@ -1168,4 +1168,79 @@ std::uint32_t vector_size(const void* vector, std::uint32_t element_bytes) noexc
 
 } // namespace msvc9_containers
 
+void gui_manager_set_cursor_position_00aa1fa0(void* manager, float x, float y, GuiCursorHost& host) {
+    write_field<float>(manager, 0x5C, x);
+    write_field<float>(manager, 0x60, y);
+    host.set_local_xy_00aa7d00(read_field<void*>(manager, 0x50), read_field<float>(manager, 0x5C),
+        read_field<float>(manager, 0x60));
+}
+
+void gui_reset_render_command_queue_00aa2b80(GuiRenderQueueHost& host) {
+    host.reset_queue_00b1c4b0(host.render_command_queue_004c11f0());
+}
+
+void gui_curve_set_texture_00abdd80(void* curve, const void* name, GuiCurveTextureHost& host,
+    GuiNativeStringHost& strings) {
+    void* own = static_cast<std::byte*>(curve) + 0x104;
+    if (host.names_equal_00435c40(own, name)) return;
+    copy_native_string(own, name, strings);
+    float uv[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+    for (int i = 0; i < 4; ++i) write_field<float>(curve, 0x11C + 4 * i, uv[i]);
+    float size[2] = {0.0f, 0.0f}; // an uninitialized local in the image
+    // The resolver gets the widget's own +11Ch rect (it may rewrite it).
+    float* live_uv = reinterpret_cast<float*>(static_cast<std::byte*>(curve) + 0x11C);
+    void* texture = host.resolve_texture_00aa2660(own, *reinterpret_cast<float(*)[4]>(live_uv), size, 1.0f);
+    host.set_texture_slot_00b189f0(read_field<void*>(curve, 0x12C), 0, texture);
+    if (texture != nullptr) {
+        auto* count = reinterpret_cast<volatile long*>(static_cast<std::byte*>(texture) + 4);
+        if (_InterlockedDecrement(count) == 0) host.release_ref_object(texture);
+    }
+}
+
+void gui_curve_destroy_00abde90(void* curve, GuiCurveDestroyHost& host) {
+    write_field<std::uint32_t>(curve, 0, 0x00D5C7F8);
+    if (auto* material = read_field<std::byte*>(curve, 0x12C)) {
+        if (_InterlockedDecrement(reinterpret_cast<volatile long*>(material + 4)) == 0)
+            host.release_ref_object(material);
+        write_field<void*>(curve, 0x12C, nullptr);
+    }
+    if (auto* block = read_field<void*>(curve, 0x134)) ::operator delete(block);
+    zero_range(curve, 0x134, 0x13C);
+    // Mit qword vector +10Ch.
+    void* points = static_cast<std::byte*>(curve) + 0x10C;
+    if (read_field<std::int32_t>(points, 8) < 0) host.reserve_qword_vector_0086a350(points, 0);
+    write_field<std::int32_t>(points, 4, 0);
+    std::free(read_field<void*>(points, 0));
+    if (auto* buffer = read_field<void*>(curve, 0x108))
+        host.release_string_buffer(buffer, read_field<std::uint32_t>(curve, 0x104) + 1u);
+    void* widths = static_cast<std::byte*>(curve) + 0xF8;
+    resize_native_float_array_00818030(widths, 0);
+    std::free(read_field<void*>(widths, 0));
+    void* control = static_cast<std::byte*>(curve) + 0xEC;
+    if (read_field<std::int32_t>(control, 8) < 0) host.reserve_qword_vector_0086a350(control, 0);
+    write_field<std::int32_t>(control, 4, 0);
+    std::free(read_field<void*>(control, 0));
+    host.destroy_widget_base_00aa9730(curve);
+}
+
+void* gui_model_copy_construct_00accf70(void* self, const void* source, GuiModelCopyHost& host,
+    GuiNativeStringHost& strings) {
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, 0x00D5CF38);
+    write_field<std::uint32_t>(self, 0xEC, 0);
+    write_field<std::uint32_t>(self, 0xF0, 0);
+    for (std::size_t offset = 0xF4; offset <= 0x108; offset += 4)
+        write_field<float>(self, offset, read_field<float>(source, offset));
+    auto* name = static_cast<std::byte*>(self) + 0x10C;
+    auto* texture_override = static_cast<std::byte*>(self) + 0x114;
+    write_field<std::uint32_t>(name, 0, 0);
+    write_field<std::uint32_t>(name, 4, 0);
+    copy_native_string(name, static_cast<const std::byte*>(source) + 0x10C, strings);
+    write_field<std::uint32_t>(texture_override, 0, 0);
+    write_field<std::uint32_t>(texture_override, 4, 0);
+    copy_native_string(texture_override, static_cast<const std::byte*>(source) + 0x114, strings);
+    host.load_model_00acccf0(self, name, texture_override);
+    return self;
+}
+
 } // namespace bsp::gui_widgets_cc13

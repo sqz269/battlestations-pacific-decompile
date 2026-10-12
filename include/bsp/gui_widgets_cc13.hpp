@@ -1273,4 +1273,68 @@ std::uint32_t vector_size(const void* vector, std::uint32_t element_bytes) noexc
 
 } // namespace msvc9_containers
 
+// ---------------------------------------------------------------------------
+// Manager cursor, render queue, Curve texture/destructor, Model copy
+// ---------------------------------------------------------------------------
+
+// 00AA1FA0, __thiscall(manager, float x, float y), RET 8: +5Ch = x, +60h = y,
+// then the cursor widget at +50h gets 00AA7D00(x, y) (the local XY setter).
+struct GuiCursorHost {
+    virtual ~GuiCursorHost() = default;
+    virtual void set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+};
+void gui_manager_set_cursor_position_00aa1fa0(void* manager, float x, float y, GuiCursorHost& host);
+
+// 00AA2B80, cdecl: 004C11F0 (the render command queue singleton) then tail-jump
+// 00B1C4B0 on it.
+struct GuiRenderQueueHost {
+    virtual ~GuiRenderQueueHost() = default;
+    virtual void* render_command_queue_004c11f0() = 0;
+    virtual void reset_queue_00b1c4b0(void* queue) = 0;
+};
+void gui_reset_render_command_queue_00aa2b80(GuiRenderQueueHost& host);
+
+// 00ABDD80 Curve SetTexture, __thiscall(curve, const native string* name),
+// RET 4. Nothing when 00435C40 says +104h already equals name. Otherwise copy
+// the name into +104h (self-assignment skipped), reset the UV rect +11Ch..+128h
+// to (0,0,1,1), resolve with 00AA2660(name, uv, size, 1.0f) (size is an
+// uninitialized local), set the texture into slot 0 of the material at +12Ch
+// (00B189F0), then drop the resolver's reference (LOCK DEC +4h; vtable +0 at
+// zero).
+struct GuiCurveTextureHost {
+    virtual ~GuiCurveTextureHost() = default;
+    virtual bool names_equal_00435c40(const void* a, const void* b) = 0;
+    virtual void* resolve_texture_00aa2660(const void* name, float (&uv)[4], float (&size)[2], float scale) = 0;
+    virtual void set_texture_slot_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    virtual void release_ref_object(void* object) = 0;
+};
+void gui_curve_set_texture_00abdd80(void* curve, const void* name, GuiCurveTextureHost& host,
+    GuiNativeStringHost& strings);
+
+// 00ABDE90 Curve destructor, __fastcall(ECX = curve): vtable 00D5C7F8; release
+// the material ref +12Ch; operator delete of the +134h vector block and zero
+// +134h..+13Ch; the Mit qword vector +10Ch (reserve(0) when its capacity is
+// negative, count 0, free); the +104h texture name buffer; widths +F8h
+// (resize 0, free); the Mit qword vector +ECh likewise; base destructor.
+struct GuiCurveDestroyHost {
+    virtual ~GuiCurveDestroyHost() = default;
+    virtual void release_ref_object(void* object) = 0;
+    virtual void reserve_qword_vector_0086a350(void* header, std::int32_t capacity) = 0;
+    virtual void release_string_buffer(void* buffer, std::uint32_t bytes) = 0;
+    virtual void destroy_widget_base_00aa9730(void* self) = 0;
+};
+void gui_curve_destroy_00abde90(void* curve, GuiCurveDestroyHost& host);
+
+// 00ACCF70 Model copy constructor, __thiscall(this, source), RET 4: base copy,
+// vtable 00D5CF38, the scene +ECh/+F0h NOT copied (zeroed), ScaleVector and
+// RotationEuler (+F4h..+108h) copied, both strings copied, then 00ACCCF0
+// LoadModel(+10Ch, +114h) on the copy.
+struct GuiModelCopyHost {
+    virtual ~GuiModelCopyHost() = default;
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    virtual void load_model_00acccf0(void* model, void* name, void* texture_override) = 0;
+};
+void* gui_model_copy_construct_00accf70(void* self, const void* source, GuiModelCopyHost& host,
+    GuiNativeStringHost& strings);
+
 } // namespace bsp::gui_widgets_cc13
