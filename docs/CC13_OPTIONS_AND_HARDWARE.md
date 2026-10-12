@@ -263,7 +263,7 @@ category.
 | Lua listener subscriptions | `0096AA90..00972FE0` | cc9, not touched | `BSP_KillSubscription_*`, `BSP_ReconSubscription_Load`, `00972FE0` (callback/entity/reason), `0096E850`, `0096AAD0` (min/max). These are mission-script plumbing. |
 | Manager core | `0096D540`, `00973F20`, `009763E0`, `00979730..`, `009870A0..0098A020` | done earlier | `mission_events.cpp`, `warning_owner.cpp`, `WARNING_MESSAGE_TABLE.md`. |
 | Voice/text report helpers and Warning constructors | `0096E8F0..0096F08F`, `00973A90..00975AC0`, `00977050..0097781F` | **this packet** | Event-to-voice/text mapping (message ids, guards, HUD text colours). These functions only read unit state. |
-| Larger report builders | `00974C70` (`weareunderattack`, `planesquadron`), `009744C0` (`neutral`/`unknown`/`own`), `00977DA0` (captureship), `009781E0` (capture point), `00978A70` (command building), `0096E5E0` ("Message from"), `009766D0`, `009768F0`, `00976C60`, `0096CF10`, `0096DD30` | open | Same family as the reconstructed constructors. Each needs its own listing pass: `00977DA0` mixes x87 distance tests with string building. |
+| Larger report builders | `00974C70` (`weareunderattack`, `planesquadron`), `009744C0` (`neutral`/`unknown`/`own`), `00977DA0` (captureship), `009781E0` (capture point), `00978A70` (command building), `0096E5E0` ("Message from"), `009766D0`, `009768F0`, `00976C60`, `0096CF10`, `0096DD30` | cc13-warnings1, `CC13_WARNING_REPORTS.md` | Same family as the reconstructed constructors. Each needs its own listing pass: `00977DA0` mixes x87 distance tests with string building. |
 | Spatial index / collision | `0098A2C0..0098C510` | done earlier | `SPATIAL_INDEX.md`, `COLLISION_SHAPES.md`. |
 
 ### Reconstructed (build-tested, reconstruct-only)
@@ -315,7 +315,7 @@ section 2 and `mission_events.hpp` (`air_raid_*`, `collision_*`) attribute these
 `009870A0` (init), `00968550` (clear), `0096EF60` and `0096E8F0`. `00980380` has no literal-offset write to
 either word. In the image they are the hit-feedback deadline and kind, and `+17Ch`/`+180h` are
 its text latch. The sound in `00968550`'s `+180h` expiry path still fits a "collision"/hit
-sound. The two Lua keys must therefore land in other fields, not yet located.
+sound. The two Lua keys land elsewhere: in the per-ship record of the manager map at `+184h`, saved as `shipNoiseInfo` (cc13-warnings1, `docs/CC13_WARNING_REPORTS.md`).
 
 ### Named only
 
@@ -344,5 +344,5 @@ Segment 56 has no options or hardware-settings body left open, by the triage abo
    needs a units-lane packet. The `+34h` consumers of the weather setter are cc9's.
 6. Segment 0: nobody has checked whether a save reaches the bot-task `WriteCurrent` callers
    (the -1 `stateIndex`). A breakpoint on `00411450` during a checkpoint save would settle it.
-7. Segments 64/65: the larger report builders listed as open above, and where the Lua keys
-   `airRaidSoundExpires`/`collisionSoundDisableTime` (`00980380`) actually land.
+7. Segments 64/65: done by cc13-warnings1, which reconstructed the larger report builders and
+   located the two Lua keys; see `docs/CC13_WARNING_REPORTS.md`.
