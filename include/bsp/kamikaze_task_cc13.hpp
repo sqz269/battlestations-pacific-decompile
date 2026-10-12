@@ -510,7 +510,7 @@ DropKamikazeGoAwayTick drop_kamikaze_goaway_tick_009ad480(DropKamikazeGoAwayStat
                                                           bool reload_enabled) noexcept;
 
 struct DropKamikazeEntryInputs {
-    bool unit_c25 = false;           // unit+C25h, the carried body already released
+    bool unit_c25 = false;           // unit+C25h release pending (007C0D90 sets it at 007C0EE2)
     int attack_mode_370 = 0;
     bool has_ordnance_4b9 = false;
     bool inside_4b8 = false;
@@ -583,7 +583,7 @@ struct DropKamikazeTaskHost {
     virtual float roll_c68() = 0;
     virtual float speed_b1c() = 0;
     virtual float level_flight_speed_007c47f0() = 0;
-    virtual bool unit_c25() = 0;                  // the carried body was released
+    virtual bool unit_c25() = 0;                  // release pending (007C0EE2 sets it)
     virtual bool has_drop_ordnance_007b93e0() = 0;
     virtual bool reload_enabled_007b58d0() = 0;   // ctl+369h && [00E17BF2]
     virtual bool flight_leader_007b8ad0() = 0;

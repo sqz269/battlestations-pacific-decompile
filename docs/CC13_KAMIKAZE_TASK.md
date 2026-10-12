@@ -369,8 +369,13 @@ host's cadence (the strafe host records that cadence as unread).
 - Precision: intermediates are computed in double and rounded at the image's float stores; at the
   main thread's 24-bit control word (CC13_FPU_PRECISION.md) the image rounds intermediates to float,
   which this code does not reproduce bit for bit.
-- unit+C25h (the drop entry and the release timer) is read as "a release in progress" from its use
-  only; its writer was not read. ctl+370h (attack mode) is the strafe arm's `st_attack_mode_370`.
+- unit+C25h (the drop entry and the release timer) is the release-pending byte: its only writer
+  (scan `c6 ?? 25 0c 00 00`, positive control: the readers `009AD668`, `009AE539`, `009B5AC9` of
+  `80 ?? 25 0c 00 00 00`) is `007C0EE2` in `007C0D90 BSP_Plane_TickReleaseOrderIssue`
+  (docs/TORPEDO_RELEASE_ORDERS.md; `release_pending_c25` in plane_level_bomb_task.hpp). So the
+  release state's 3 s timer runs only once the release order has gone out. ctl+370h (attack mode)
+  is the strafe arm's `st_attack_mode_370`. (unit+72Ch) vtable[38h] is the free-flight test
+  (`plane_control_mode_900 == 7` in the host).
 - `009AF2B0` (set gotowards) has no reader traced; `009AF030` (the kamikaze attack-state test, no
   Ghidra function) was read but not named. The property-bag (save/load) twins are named, not
   reconstructed.
@@ -388,7 +393,7 @@ recommended as `BSP_DummyKamikazePlane_TickSpawnKamikaze` for its owner.
 
 ## 9. Handoff
 
-Open: run `x87_sym` on the two big ticks; read unit+C25h's writer; decide with cc9 whether the
+Open: decide with cc9 whether the
 gunnery host's drop spawns the dummy at all (without it the drop path ends at the release and no
 Ohka exists). Scripts: `local/kz1_cat.py`, `kz1_pe.py`, `kz1_consts.py`, `kz1_names.py`; listings
 `local/kz1_*.asm`.
