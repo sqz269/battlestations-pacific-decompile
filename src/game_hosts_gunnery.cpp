@@ -465,8 +465,8 @@ inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
 //    water on its first step. MTorpedo's create 00856420 does not run 006E8430's
 //    spawn-time medium choice (no 0078CF20 call, no vtable[24h]/[28h]). The host's
 //    `from > 0` term kept a submerged launch from ever starting its swim.
-//    OFF: the crossing needs from.y > 0, as before.
-inline constexpr bool kSubmergedTorpedoLaunchSwimBound = false;
+//    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
+inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
