@@ -3165,7 +3165,8 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 const char* why = "";
                 if (pick >= host.units->count()) {
                     why = " (no created unit has that name)";
-                } else if (!host.units->unit_alive_and_visible(pick)) {
+                } else if (!host.units->unit_alive_and_visible(pick)
+                           && bsp::plane_squadron_live_fused_slot(pick) == nullptr) {
                     why = " (0064A057..0064A079: the four byte filters fail)";
                 } else {
                     accepted = bsp::game::hud_set_selected_unit_00647300(pick, reached);
@@ -3356,6 +3357,11 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 const std::string picked = picked_row != nullptr ? picked_row->name : order.target;
                 const bsp::PlaneSquadronHostRecord* squadron = idx < count
                     ? bsp::plane_squadron_registry().find_by_member_unit(idx) : nullptr;
+                // CC13 item A (OFF): the fused slot's own plane has left +3D0h
+                // at its death; the squadron is still the record that names it.
+                if (squadron == nullptr && idx < count) {
+                    squadron = bsp::plane_squadron_live_fused_slot(idx);
+                }
                 std::vector<std::size_t> members;
                 if (squadron != nullptr) {
                     for (const std::size_t m : squadron->member_units) {
