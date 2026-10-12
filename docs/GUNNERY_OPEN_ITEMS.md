@@ -12579,3 +12579,26 @@ mount-frame round trip.
 - The win holds and completes earlier.
 
 **Verdict: the mechanism matches the read; flipped ON.**
+
+## 183. `unit+1130h`, the shipyard-launch sentinel, is a five-tick countdown (lead queue item 6, GUNNERY 176.1; cc9-gunnery36, 2026-10-12, read only)
+
+- **The set.** `00844FC0` (the shipyard build) puts `"ShipYardLaunch" = 1` into the new unit's init table
+  (`0084509C PUSH 1; PUSH 00D0659C; CALL 008F3940`; the string is read from the PE). `BSP_UnitInstance_SEntityInit`
+  reads it back (`0082356C..0082357F`: `008F2260(table, "ShipYardLaunch")`, `BL = [entry+0Ch]`; the native init
+  struct's arm takes `BL = [desc+11Ch]` at `00823555`), and `0082373D..00823742` store `BL ? 5 : 0` to `+1130h`.
+- **The countdown.** `BSP_UnitInstance_UpdateShipMotion` runs with `EDI = this` and `ESI = EDI - 310h`
+  (`00825F2A`, `00825F32`): it is entered on the unit's `+310h` sub-object. So its `[EDI+E20h]` is **unit+1130h**
+  itself. `0082639C..008263B5`: when non-zero, decrement, and on reaching 0 call `00813830(unit)`, which sends
+  message 7Ah with byte 0; `0082227B` then stores `byte ? 5 : 0` = 0 (already 0).
+- **The other 7Ah senders.** `0080F960` (the constructor taking the byte) has no caller: a rel32 and absolute-dword
+  scan of the PE (`local\g36_rel32.py`) finds none. `009CFBA4` (inside `BSP_TakeoffStateSlow_ShouldLeave`) sends
+  byte 0. `007604C0` is the default constructor (vtable `00D03310`, the deserialiser's).
+- **Readers.** `0081DE31` (the hangar test: `> 0` answers 1, so the ship is blind as an LOS observer), `00813AA2`
+  (copies `!= 0` into an init struct's `+11Ch`, the respawn/replication arm), `0081FDB7` (a Lua property
+  `shipYardLaunch`, `00BD6830`), `00818651` (a property dump), and `0064B97D` (the HUD order controls).
+- **Reach.** A shipyard-built ship is blind for its first five ship-motion ticks. `00864680` refreshes the cached
+  answer every 0.5 s, so this decides at most the first refresh after a build, and only when that refresh falls in
+  the five-tick window. UNCERTAIN: whether every ship-motion call reaches the join at `0082639C`.
+- **Not bound.** The reach is a fraction of a second per build; the host's units lane owns the ship-motion tick. If
+  it is bound, the host needs a per-unit counter set to 5 by `shipyard_build_00844fc0`, decremented on each
+  ship-motion tick, and `ship_in_shipyard_hangar_0081de10` answering 1 while it is non-zero.
