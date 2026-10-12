@@ -212,6 +212,25 @@ inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs
 // JM13 9000 frames identical (55 / 58 / 0 second passes, none matched).
 inline constexpr bool kLuaHitSquadronSecondPassBound = true;
 
+// Packet cc9_lua51_listener_args (docs/SQUADRON_LAND_TASK.md 5fu, from
+// docs/CC13_EVENT_CHANNELS.md section 3). The image calls every matched callback
+// through 00887E50 with the boxed values as Lua arguments: `kill` (009813A0,
+// 009818E8..00981977) passes (victim entity, lastAttacker entity, lastAttackerPlayerIndex
+// number); `hit` (00988510, 00988D87..00988F2C) passes (target, targetDevice, attacker
+// entities, attackType string, attackerPlayerIndex number, damage, fire, leak numbers).
+// True: the host pushes them. False: callbacks are called with no argument, as before.
+inline constexpr bool kLuaListenerCallbackArgsBound = false;
+
+// Packet cc9_lua51_listener_args. 009813A0 boxes the victim's last attacker (the
+// handle copied from victim+2B0h at 009816CA; its id word is +2C8h, which 0077CC80
+// fills) and +2D8h, and 0096ACE0 tests them against the subscription's lastAttacker
+// (+1Ch) and lastAttackerPlayerIndex (+2Ch) sets. When nothing matched (+105h clear,
+// 00981AA4) and the attacker answers IsKindOf(0Fh) (00981AC2), the attacker is
+// replaced by vtable[140h]() (the plane's squadron, 007B97E0) and the channel is
+// evaluated again (00981C31). True: the host matches both sets and runs that second
+// pass. False: a subscription with either set non-empty is skipped (counted).
+inline constexpr bool kLuaKillAttackerBound = false;
+
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,
 // 0071E050 sends session message 5Ah sub-kind 4 with the flag, which the director
@@ -645,6 +664,12 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_unmodelled{0};
     unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
     unsigned long long listener_hit_second_pass_fires{0};
+    // Packet cc9_lua51_listener_args.
+    unsigned long long listener_kill_with_attacker{0};     // deaths with +2C8h set
+    unsigned long long listener_kill_attacker_matched{0};  // filtered entries that held
+    unsigned long long listener_kill_second_passes{0};
+    unsigned long long listener_kill_second_pass_fires{0};
+    unsigned long long listener_args_pushed{0};            // callbacks called with arguments
     // Packet cc9_set_invincible_native.
     unsigned long long invincible_calls{0};
     unsigned long long invincible_units{0};
@@ -1454,6 +1479,12 @@ private:
         std::string callback;                 // subscription+4h
         std::vector<int> entity_ids;          // the `entity` set (+0Ch)
         bool attacker_filters_set{false};     // +1Ch or +2Ch not empty
+        // `kill` under kLuaKillAttackerBound: lastAttacker (+1Ch, 009721C0) and
+        // lastAttackerPlayerIndex (+2Ch, 009722D0). A non-empty set whose members
+        // carry no entity id keeps last_attacker_set and matches nothing.
+        bool last_attacker_set{false};
+        std::vector<int> last_attacker_ids;
+        std::vector<int> last_attacker_player_indices;
         // `recon` (00972450): oldLevel +1Ch, newLevel +2Ch, party +3Ch.
         std::vector<int> old_levels;
         std::vector<int> new_levels;

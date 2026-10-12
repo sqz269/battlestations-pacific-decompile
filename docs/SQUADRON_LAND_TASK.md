@@ -15223,3 +15223,67 @@ Open, in the lead's order:
    time and what `luaEngineMovieInit`'s timers do before the stop.
 4. JM08 stays parked until gunnery35's dive-bomb fix lands. Then rerun r7 (`local\l50_j8_r7.txt`, deterministic to
    1637 s), whose only survivor is TT04.
+
+## 5fu. Callback arguments and the kill attacker, `kLuaListenerCallbackArgsBound` / `kLuaKillAttackerBound` (packet `cc9_lua51_listener_args`, cc9-lua51, 2026-10-12)
+
+**The image** (read from the listings; `local/output/ghidra-disasm-009813a0-*`, `-00988510-*` in the cc9-lua51 tree):
+- `kill`, `009813A0`. At `009816CA` the dispatcher copies the victim's handle at `+2B0h` (`006E6670`); the handle's
+  id word is `+2C8h`, the field `0077CC80` fills from the shot's owner (`kill_credit.cpp`, `attacker_id`). The box
+  (`00975EA0` x3) is the victim (`+174h`), that id, and `+2D8h`. `0096ACE0` tests them against `entity` (+0Ch),
+  `lastAttacker` (+1Ch) and `lastAttackerPlayerIndex` (+2Ch). Every matched callback is called through `00887E50`
+  with three Lua arguments built at `009818E8..00981977`: `00884A90(victim)`, `00884AC0(handle)` (id 0 boxes a
+  null entity), `00884A00([victim+2D8h])`. Second pass: `00981AA4` `+105h` clear (nothing matched), the attacker
+  non-null, `vtable[5Ch](0Fh)` (a plane), then `vtable[140h]()` (`007B97E0`, plane `+9D4h`, the squadron)
+  re-points the handle (`006E1B90`) and the channel is evaluated again (`00981C31`) with the same three arguments.
+- `hit`, `00988510`. Eight arguments at `00988D87..00988F2C` (`00887E50` at `00988F5D`, again at `0098952A` in the
+  second pass): target, targetDevice, attacker (`00884A90` x3), attackType (`00884FC0`, a string from the char*
+  table `00E08E58` indexed by the ordnance kind: NONE, BULLET, MACHINEGUN, AAMACHINEGUN, ARTILLERY,
+  LIGHTARTILLERY, MEDIUMARTILLERY, HEAVYARTILLERY, EXTRAPOLATED, BOMB, TORPEDO, DEPTHCHARGE, DUMMYTARGET,
+  DUMMYKAMIKAZEPLANE, DUMMYSUBMARINE, PARATROOPER, FLAK, KAMIKAZE, ROCKET, WATERMINE, read from the PE),
+  attackerPlayerIndex (`00884A00`), then damage, fire, leak (`008849D0`, floats).
+
+**The host before this packet**: both dispatchers call `lua_pcall(state, 0, 0, 0)`; the kill death row carries no
+attacker, so every `kill` entry with `lastAttacker` or `lastAttackerPlayerIndex` is skipped
+(`listener_attacker_filtered`).
+
+**The binds** (`include/bsp/game_hosts_lua.hpp`, committed OFF):
+- `kLuaListenerCallbackArgsBound`: kill callbacks get (victim, lastAttacker or nil, +2D8h); hit callbacks get
+  (target, nil, attacker, attackType, attackerPlayerIndex, damage, fire, leak). Substitutions: the hit target is
+  the hit unit (the image boxes `hitEntity->vtable[140h]()`, the squadron for a plane); targetDevice is always nil
+  (no device entities); the kamikaze's forced attackType 11h is not modelled; +2D8h is the host's credited slot
+  (0 when no attributed hit reached the victim).
+- `kLuaKillAttackerBound`: the loader keeps the two sets, the matcher tests them, and the second pass replaces a
+  squadron member's attacker id with its squadron's (the wing-0 plane shares its squadron's slot, so it already
+  matches as the squadron).
+- The attacker and slot come from two read-only accessors on `GameGunneryHost` (`kill_last_attacker`,
+  `kill_credited_slot`: `UnitState::last_attacker` and `attribution.credited_slot`), routed to the gunnery lane.
+
+**Which scripts read the arguments** (`local/l51_listener_args.py` over this installation's `scripts/`, 526 kill/hit
+subscriptions, 195 of them with a callback that reads a parameter or `arg`; 38 with an attacker set). On the rows
+the menu reaches (`scripts/datatables/missiontree.lua` ids):
+- USN03 (`usn/LOMP/02_holding_ceylon.lua`): `luaGroundInstallationHit(target)` on BOMB hits on `Mission.GroundTargets`
+  indexes `target.Class.ID`, so with no argument every call raises; `luaForceBShipSunk(entity)`, `luaJPCVSunk(entity)`
+  store the entity for the end screens.
+- JM06 (`COTP-IJN/PRCPIJN/jm06.lua`): `luaJM6CVHitByPlayer(...)` sets `Mission.CVHitByPlayer` only when
+  `arg[4] == "TORPEDO"`; `ambush` (kill, `lastAttacker = {Mission.PlayerUnit}`, entity `Mission.Cargos`) is skipped
+  today and stores `arg[1]`.
+- BSM01 (`bsm/bsm_01_stationed_at_pearl.lua`): `DonaldKillListener` (kill, `lastAttacker = {Mission.Donald}`) counts
+  `Mission.DonaldShotDown`, whose `>= 10` ends the Zero phase early (line 859) and whose `> 0 / > 3 / > 5` play three
+  dialogs. It is skipped today.
+- BSM04 (`bsm/bsm_04_vengance_at_luzon.lua`): `CatKillListener` (`lastAttacker = {Mission.Cat}`, entity
+  `Mission.ZeroGang`) counts to 3 for the `GOTONE` dialog. Skipped today.
+- ESMP08 (`ijn/ESMP/08_engano.lua`): `luaUSNSunk(entity)` stores `Mission.VictoryShip`, which `luaVictory` hands to
+  `luaMissionCompletedNew`; the l46 win logs `mission end ... entity=""`.
+
+**Predictions, written before any ON run.**
+- USN03 (both ON): the `luaGroundInstallationHit` script errors disappear and its Effect / DisablePhysics /
+  SetInvincible / AddMatrixInterpolator calls appear (the AddMatrixInterpolator calls only for class 429 or 25);
+  pair_diff 3 if a bomb hits a ground target in 9000 frames, else 0/1.
+- JM06: `CVHitByPlayer` can only change if the player torpedoes the Hornet (the reference row gives no orders,
+  so expect no change from cvhit); `ambush` fires only when the player unit kills a cargo. Expect 0/1 unless one
+  occurs.
+- BSM01 (win row, orders `l50_b1_a.txt`): `attacker_matched > 0` and `DonaldShotDown` counts Donald's kills, so
+  dialogs GOODGUYS/GREAT/DOWN appear and, at 10 kills, the Zero phase ends earlier than OFF. The win should hold
+  (the early end is the authored path); the completion moves earlier if Donald reaches 10.
+- BSM04: `luaSweetMaryAnne` fires once per Zero the Cat kills; GOTONE at 3. Dialog only: 0/1 or 3 by dialog lines.
+- ESMP08 (win row): identical play to completion, then `mission end ... entity="<the last sunk US ship>"`.
