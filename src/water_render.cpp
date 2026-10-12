@@ -286,7 +286,7 @@ bool compute_projector_matrices_00b9ae00(ProjectorCamera& camera, float displace
         forward_up = -0.0f - forward_up;  // SUBSS from [00D7A208]
     }
     const float cos_limit = static_cast<float>(std::cos(static_cast<double>(1.55334306f)));  // FCOS [00CEC400]
-    if (!(cos_limit < forward_up)) {
+    if (cos_limit >= forward_up) {  // FCOMIP / JB 00B9B7E0: unordered (NaN) skips the nudge
         const double nudge = static_cast<double>(0.01f);  // [00D7A358]
         Float3 t;
         t.x = forward.x + 0.0f;
@@ -317,11 +317,13 @@ bool compute_projector_matrices_00b9ae00(ProjectorCamera& camera, float displace
 
     // B9BA2A..B9BB65: the forward ray from the camera, reflected in y = 0 when
     // camera and forward lie on the same side, cut by the water plane.
-    const bool anchor_not_above = !(0.0f < static_cast<float>(up_dot(anchor)));
+    // B9BA48 / B9BA74: FCOMI then JB to "flag = 0", so an unordered (NaN) dot gives 0: the
+    // flags are the ordered d <= 0, not !(0 < d).
+    const bool anchor_not_above = static_cast<float>(up_dot(anchor)) <= 0.0f;
     float forward_level = static_cast<float>(
         (static_cast<double>(forward.y) + static_cast<double>(forward.x) * 0.0) +
         static_cast<double>(forward.z) * 0.0);
-    const bool forward_not_up = !(0.0f < forward_level);
+    const bool forward_not_up = forward_level <= 0.0f;
     Float3 ray_end;
     if (forward_not_up == anchor_not_above) {
         const float d = static_cast<float>(static_cast<double>(forward.z) * 0.0 +

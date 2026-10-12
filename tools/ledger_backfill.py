@@ -40,7 +40,7 @@ def load_index():
         sys.exit('no index; run: python tools/bsp.py index')
     db = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True)
     entries = {a: n for a, n in db.execute(
-        "select address, name from functions where name not like 'Unwind@%' and name not like 'Catch_All@%' and name not like 'thunk_%'")}
+        "select address, name from functions where name not like 'Unwind@%' and name not like 'Catch_All@%' and name not like 'EHHandler@%' and name not like 'thunk_%'")}
     docs = {}
     for p, a in db.execute('select path, address from doc_addresses'):
         docs.setdefault(a, []).append(p.replace('\\', '/'))

@@ -56,6 +56,2948 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a60990",
+    "end_address": "00a609ba"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a60990",
+    "end_address": "00a609b9",
+    "bytes_disassembled": 42,
+    "message": "Successfully disassembled 42 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a60990",
+    "disassemble_first": false,
+    "name": "getthread"
+   },
+   "result": {
+    "success": true,
+    "address": "00a60990",
+    "function_name": "getthread",
+    "entry_point": "00a60990",
+    "body_size": 42,
+    "message": "Function created successfully at 00a60990",
+    "warnings": [
+     "Function name 'getthread' \u2014 main part 'getthread' is not PascalCase. Expected: Getthread"
+    ]
+   }
+  },
+  {
+   "defined": "00a60990",
+   "end": "00a609ba",
+   "name": "getthread",
+   "after": "Function: getthread at 00a60990\nSignature: undefined getthread(void)\nEntry: 00a60990\nBody: 00a60990 - 00a609b9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a60e10",
+    "end_address": "00a60e77"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a60e10",
+    "end_address": "00a60e76",
+    "bytes_disassembled": 103,
+    "message": "Successfully disassembled 103 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a60e10",
+    "disassemble_first": false,
+    "name": "auxupvalue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a60e10",
+    "function_name": "auxupvalue",
+    "entry_point": "00a60e10",
+    "body_size": 103,
+    "message": "Function created successfully at 00a60e10",
+    "warnings": [
+     "Function name 'auxupvalue' \u2014 main part 'auxupvalue' is not PascalCase. Expected: Auxupvalue"
+    ]
+   }
+  },
+  {
+   "defined": "00a60e10",
+   "end": "00a60e77",
+   "name": "auxupvalue",
+   "after": "Function: auxupvalue at 00a60e10\nSignature: undefined auxupvalue(void)\nEntry: 00a60e10\nBody: 00a60e10 - 00a60e76"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a61d10",
+    "end_address": "00a61d19"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a61d10",
+    "end_address": "00a61d18",
+    "bytes_disassembled": 9,
+    "message": "Successfully disassembled 9 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a61d10",
+    "disassemble_first": false,
+    "name": "posrelat"
+   },
+   "result": {
+    "success": true,
+    "address": "00a61d10",
+    "function_name": "posrelat",
+    "entry_point": "00a61d10",
+    "body_size": 9,
+    "message": "Function created successfully at 00a61d10",
+    "warnings": [
+     "Function name 'posrelat' \u2014 main part 'posrelat' is not PascalCase. Expected: Posrelat"
+    ]
+   }
+  },
+  {
+   "defined": "00a61d10",
+   "end": "00a61d19",
+   "name": "posrelat",
+   "after": "Function: posrelat at 00a61d10\nSignature: undefined posrelat(void)\nEntry: 00a61d10\nBody: 00a61d10 - 00a61d18"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a621e0",
+    "end_address": "00a62203"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a621e0",
+    "end_address": "00a62202",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a621e0",
+    "disassemble_first": false,
+    "name": "check_capture"
+   },
+   "result": {
+    "success": true,
+    "address": "00a621e0",
+    "function_name": "check_capture",
+    "entry_point": "00a621e0",
+    "body_size": 35,
+    "message": "Function created successfully at 00a621e0",
+    "warnings": [
+     "Function name 'check_capture' \u2014 main part 'check_capture' is not PascalCase. Expected: CheckCapture",
+     "Function name 'check_capture' \u2014 main part 'check_capture' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a621e0",
+   "end": "00a62203",
+   "name": "check_capture",
+   "after": "Function: check_capture at 00a621e0\nSignature: undefined check_capture(void)\nEntry: 00a621e0\nBody: 00a621e0 - 00a62202"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a62210",
+    "end_address": "00a62241"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a62210",
+    "end_address": "00a62240",
+    "bytes_disassembled": 49,
+    "message": "Successfully disassembled 49 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a62210",
+    "disassemble_first": false,
+    "name": "capture_to_close"
+   },
+   "result": {
+    "success": true,
+    "address": "00a62210",
+    "function_name": "capture_to_close",
+    "entry_point": "00a62210",
+    "body_size": 49,
+    "message": "Function created successfully at 00a62210",
+    "warnings": [
+     "Function name 'capture_to_close' \u2014 main part 'capture_to_close' is not PascalCase. Expected: CaptureToClose",
+     "Function name 'capture_to_close' \u2014 main part 'capture_to_close' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a62210",
+   "end": "00a62241",
+   "name": "capture_to_close",
+   "after": "Function: capture_to_close at 00a62210\nSignature: undefined capture_to_close(void)\nEntry: 00a62210\nBody: 00a62210 - 00a62240"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a635c0",
+    "end_address": "00a635e6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a635c0",
+    "end_address": "00a635e5",
+    "bytes_disassembled": 38,
+    "message": "Successfully disassembled 38 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a635c0",
+    "disassemble_first": false,
+    "name": "addintlen"
+   },
+   "result": {
+    "success": true,
+    "address": "00a635c0",
+    "function_name": "addintlen",
+    "entry_point": "00a635c0",
+    "body_size": 38,
+    "message": "Function created successfully at 00a635c0",
+    "warnings": [
+     "Function name 'addintlen' \u2014 main part 'addintlen' is not PascalCase. Expected: Addintlen"
+    ]
+   }
+  },
+  {
+   "defined": "00a635c0",
+   "end": "00a635e6",
+   "name": "addintlen",
+   "after": "Function: addintlen at 00a635c0\nSignature: undefined addintlen(void)\nEntry: 00a635c0\nBody: 00a635c0 - 00a635e5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a63970",
+    "end_address": "00a6397a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a63970",
+    "end_address": "00a63979",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a63970",
+    "disassemble_first": false,
+    "name": "gmtime"
+   },
+   "result": {
+    "success": true,
+    "address": "00a63970",
+    "function_name": "gmtime",
+    "entry_point": "00a63970",
+    "body_size": 10,
+    "message": "Function created successfully at 00a63970",
+    "warnings": [
+     "Function name 'gmtime' \u2014 main part 'gmtime' is not PascalCase. Expected: Gmtime",
+     "Function name 'gmtime' is too short (main part 'gmtime' is 6 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a63970",
+   "end": "00a6397a",
+   "name": "gmtime",
+   "after": "Function: gmtime at 00a63970\nSignature: undefined gmtime(void)\nEntry: 00a63970\nBody: 00a63970 - 00a63979"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a63980",
+    "end_address": "00a6398a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a63980",
+    "end_address": "00a63989",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a63980",
+    "disassemble_first": false,
+    "name": "localtime"
+   },
+   "result": {
+    "success": true,
+    "address": "00a63980",
+    "function_name": "localtime",
+    "entry_point": "00a63980",
+    "body_size": 10,
+    "message": "Function created successfully at 00a63980",
+    "warnings": [
+     "Function name 'localtime' \u2014 main part 'localtime' is not PascalCase. Expected: Localtime"
+    ]
+   }
+  },
+  {
+   "defined": "00a63980",
+   "end": "00a6398a",
+   "name": "localtime",
+   "after": "Function: localtime at 00a63980\nSignature: undefined localtime(void)\nEntry: 00a63980\nBody: 00a63980 - 00a63989"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a63990",
+    "end_address": "00a6399a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a63990",
+    "end_address": "00a63999",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a63990",
+    "disassemble_first": false,
+    "name": "mktime"
+   },
+   "result": {
+    "success": true,
+    "address": "00a63990",
+    "function_name": "mktime",
+    "entry_point": "00a63990",
+    "body_size": 10,
+    "message": "Function created successfully at 00a63990",
+    "warnings": [
+     "Function name 'mktime' \u2014 main part 'mktime' is not PascalCase. Expected: Mktime",
+     "Function name 'mktime' is too short (main part 'mktime' is 6 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a63990",
+   "end": "00a6399a",
+   "name": "mktime",
+   "after": "Function: mktime at 00a63990\nSignature: undefined mktime(void)\nEntry: 00a63990\nBody: 00a63990 - 00a63999"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a639a0",
+    "end_address": "00a639aa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a639a0",
+    "end_address": "00a639a9",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a639a0",
+    "disassemble_first": false,
+    "name": "time"
+   },
+   "result": {
+    "success": true,
+    "address": "00a639a0",
+    "function_name": "time",
+    "entry_point": "00a639a0",
+    "body_size": 10,
+    "message": "Function created successfully at 00a639a0",
+    "warnings": [
+     "Function name 'time' \u2014 main part 'time' is not PascalCase. Expected: Time",
+     "Function name 'time' is too short (main part 'time' is 4 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a639a0",
+   "end": "00a639aa",
+   "name": "time",
+   "after": "Function: time at 00a639a0\nSignature: undefined time(void)\nEntry: 00a639a0\nBody: 00a639a0 - 00a639a9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a63b90",
+    "end_address": "00a63bd7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a63b90",
+    "end_address": "00a63bd6",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a63b90",
+    "disassemble_first": false,
+    "name": "getboolfield"
+   },
+   "result": {
+    "success": true,
+    "address": "00a63b90",
+    "function_name": "getboolfield",
+    "entry_point": "00a63b90",
+    "body_size": 71,
+    "message": "Function created successfully at 00a63b90",
+    "warnings": [
+     "Function name 'getboolfield' \u2014 main part 'getboolfield' is not PascalCase. Expected: Getboolfield"
+    ]
+   }
+  },
+  {
+   "defined": "00a63b90",
+   "end": "00a63bd7",
+   "name": "getboolfield",
+   "after": "Function: getboolfield at 00a63b90\nSignature: undefined getboolfield(void)\nEntry: 00a63b90\nBody: 00a63b90 - 00a63bd6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a63be0",
+    "end_address": "00a63c2d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a63be0",
+    "end_address": "00a63c2c",
+    "bytes_disassembled": 77,
+    "message": "Successfully disassembled 77 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a63be0",
+    "disassemble_first": false,
+    "name": "getfield"
+   },
+   "result": {
+    "success": true,
+    "address": "00a63be0",
+    "function_name": "getfield",
+    "entry_point": "00a63be0",
+    "body_size": 77,
+    "message": "Function created successfully at 00a63be0",
+    "warnings": [
+     "Function name 'getfield' \u2014 main part 'getfield' is not PascalCase. Expected: Getfield"
+    ]
+   }
+  },
+  {
+   "defined": "00a63be0",
+   "end": "00a63c2d",
+   "name": "getfield",
+   "after": "Function: getfield at 00a63be0\nSignature: undefined getfield(void)\nEntry: 00a63be0\nBody: 00a63be0 - 00a63c2c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a64310",
+    "end_address": "00a6433b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a64310",
+    "end_address": "00a6433a",
+    "bytes_disassembled": 43,
+    "message": "Successfully disassembled 43 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a64310",
+    "disassemble_first": false,
+    "name": "tofile"
+   },
+   "result": {
+    "success": true,
+    "address": "00a64310",
+    "function_name": "tofile",
+    "entry_point": "00a64310",
+    "body_size": 43,
+    "message": "Function created successfully at 00a64310",
+    "warnings": [
+     "Function name 'tofile' \u2014 main part 'tofile' is not PascalCase. Expected: Tofile",
+     "Function name 'tofile' is too short (main part 'tofile' is 6 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a64310",
+   "end": "00a6433b",
+   "name": "tofile",
+   "after": "Function: tofile at 00a64310\nSignature: undefined tofile(void)\nEntry: 00a64310\nBody: 00a64310 - 00a6433a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a64340",
+    "end_address": "00a64376"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a64340",
+    "end_address": "00a64375",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a64340",
+    "disassemble_first": false,
+    "name": "newfile"
+   },
+   "result": {
+    "success": true,
+    "address": "00a64340",
+    "function_name": "newfile",
+    "entry_point": "00a64340",
+    "body_size": 54,
+    "message": "Function created successfully at 00a64340",
+    "warnings": [
+     "Function name 'newfile' \u2014 main part 'newfile' is not PascalCase. Expected: Newfile",
+     "Function name 'newfile' is too short (main part 'newfile' is 7 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a64340",
+   "end": "00a64376",
+   "name": "newfile",
+   "after": "Function: newfile at 00a64340\nSignature: undefined newfile(void)\nEntry: 00a64340\nBody: 00a64340 - 00a64375"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a64800",
+    "end_address": "00a64838"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a64800",
+    "end_address": "00a64837",
+    "bytes_disassembled": 56,
+    "message": "Successfully disassembled 56 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a64800",
+    "disassemble_first": false,
+    "name": "getiofile"
+   },
+   "result": {
+    "success": true,
+    "address": "00a64800",
+    "function_name": "getiofile",
+    "entry_point": "00a64800",
+    "body_size": 56,
+    "message": "Function created successfully at 00a64800",
+    "warnings": [
+     "Function name 'getiofile' \u2014 main part 'getiofile' is not PascalCase. Expected: Getiofile"
+    ]
+   }
+  },
+  {
+   "defined": "00a64800",
+   "end": "00a64838",
+   "name": "getiofile",
+   "after": "Function: getiofile at 00a64800\nSignature: undefined getiofile(void)\nEntry: 00a64800\nBody: 00a64800 - 00a64837"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a65200",
+    "end_address": "00a65236"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a65200",
+    "end_address": "00a65235",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a65200",
+    "disassemble_first": false,
+    "name": "createmeta"
+   },
+   "result": {
+    "success": true,
+    "address": "00a65200",
+    "function_name": "createmeta",
+    "entry_point": "00a65200",
+    "body_size": 54,
+    "message": "Function created successfully at 00a65200",
+    "warnings": [
+     "Function name 'createmeta' \u2014 main part 'createmeta' is not PascalCase. Expected: Createmeta"
+    ]
+   }
+  },
+  {
+   "defined": "00a65200",
+   "end": "00a65236",
+   "name": "createmeta",
+   "after": "Function: createmeta at 00a65200\nSignature: undefined createmeta(void)\nEntry: 00a65200\nBody: 00a65200 - 00a65235"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a65a90",
+    "end_address": "00a65af7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a65a90",
+    "end_address": "00a65af6",
+    "bytes_disassembled": 103,
+    "message": "Successfully disassembled 103 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a65a90",
+    "disassemble_first": false,
+    "name": "sort_comp"
+   },
+   "result": {
+    "success": true,
+    "address": "00a65a90",
+    "function_name": "sort_comp",
+    "entry_point": "00a65a90",
+    "body_size": 103,
+    "message": "Function created successfully at 00a65a90",
+    "warnings": [
+     "Function name 'sort_comp' \u2014 main part 'sort_comp' is not PascalCase. Expected: SortComp",
+     "Function name 'sort_comp' \u2014 main part 'sort_comp' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a65a90",
+   "end": "00a65af7",
+   "name": "sort_comp",
+   "after": "Function: sort_comp at 00a65a90\nSignature: undefined sort_comp(void)\nEntry: 00a65a90\nBody: 00a65a90 - 00a65af6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a666e0",
+    "end_address": "00a66715"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a666e0",
+    "end_address": "00a66714",
+    "bytes_disassembled": 53,
+    "message": "Successfully disassembled 53 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a666e0",
+    "disassemble_first": false,
+    "name": "luaB_pairs"
+   },
+   "result": {
+    "success": true,
+    "address": "00a666e0",
+    "function_name": "luaB_pairs",
+    "entry_point": "00a666e0",
+    "body_size": 53,
+    "message": "Function created successfully at 00a666e0",
+    "warnings": [
+     "Function name 'luaB_pairs' \u2014 main part 'luaB_pairs' is not PascalCase. Expected: LuabPairs",
+     "Function name 'luaB_pairs' \u2014 main part 'luaB_pairs' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a666e0",
+   "end": "00a66715",
+   "name": "luaB_pairs",
+   "after": "Function: luaB_pairs at 00a666e0\nSignature: undefined luaB_pairs(void)\nEntry: 00a666e0\nBody: 00a666e0 - 00a66714"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a66720",
+    "end_address": "00a6676b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a66720",
+    "end_address": "00a6676a",
+    "bytes_disassembled": 75,
+    "message": "Successfully disassembled 75 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a66720",
+    "disassemble_first": false,
+    "name": "ipairsaux"
+   },
+   "result": {
+    "success": true,
+    "address": "00a66720",
+    "function_name": "ipairsaux",
+    "entry_point": "00a66720",
+    "body_size": 75,
+    "message": "Function created successfully at 00a66720",
+    "warnings": [
+     "Function name 'ipairsaux' \u2014 main part 'ipairsaux' is not PascalCase. Expected: Ipairsaux"
+    ]
+   }
+  },
+  {
+   "defined": "00a66720",
+   "end": "00a6676b",
+   "name": "ipairsaux",
+   "after": "Function: ipairsaux at 00a66720\nSignature: undefined ipairsaux(void)\nEntry: 00a66720\nBody: 00a66720 - 00a6676a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a66770",
+    "end_address": "00a667a7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a66770",
+    "end_address": "00a667a6",
+    "bytes_disassembled": 55,
+    "message": "Successfully disassembled 55 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a66770",
+    "disassemble_first": false,
+    "name": "luaB_ipairs"
+   },
+   "result": {
+    "success": true,
+    "address": "00a66770",
+    "function_name": "luaB_ipairs",
+    "entry_point": "00a66770",
+    "body_size": 55,
+    "message": "Function created successfully at 00a66770",
+    "warnings": [
+     "Function name 'luaB_ipairs' \u2014 main part 'luaB_ipairs' is not PascalCase. Expected: LuabIpairs",
+     "Function name 'luaB_ipairs' \u2014 main part 'luaB_ipairs' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a66770",
+   "end": "00a667a7",
+   "name": "luaB_ipairs",
+   "after": "Function: luaB_ipairs at 00a66770\nSignature: undefined luaB_ipairs(void)\nEntry: 00a66770\nBody: 00a66770 - 00a667a6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a66cb0",
+    "end_address": "00a66d93"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a66cb0",
+    "end_address": "00a66d92",
+    "bytes_disassembled": 227,
+    "message": "Successfully disassembled 227 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a66cb0",
+    "disassemble_first": false,
+    "name": "luaB_newproxy"
+   },
+   "result": {
+    "success": true,
+    "address": "00a66cb0",
+    "function_name": "luaB_newproxy",
+    "entry_point": "00a66cb0",
+    "body_size": 227,
+    "message": "Function created successfully at 00a66cb0",
+    "warnings": [
+     "Function name 'luaB_newproxy' \u2014 main part 'luaB_newproxy' is not PascalCase. Expected: LuabNewproxy",
+     "Function name 'luaB_newproxy' \u2014 main part 'luaB_newproxy' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a66cb0",
+   "end": "00a66d93",
+   "name": "luaB_newproxy",
+   "after": "Function: luaB_newproxy at 00a66cb0\nSignature: undefined luaB_newproxy(void)\nEntry: 00a66cb0\nBody: 00a66cb0 - 00a66d92"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a66ed0",
+    "end_address": "00a66f30"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a66ed0",
+    "end_address": "00a66f2f",
+    "bytes_disassembled": 96,
+    "message": "Successfully disassembled 96 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a66ed0",
+    "disassemble_first": false,
+    "name": "luaB_auxwrap"
+   },
+   "result": {
+    "success": true,
+    "address": "00a66ed0",
+    "function_name": "luaB_auxwrap",
+    "entry_point": "00a66ed0",
+    "body_size": 96,
+    "message": "Function created successfully at 00a66ed0",
+    "warnings": [
+     "Function name 'luaB_auxwrap' \u2014 main part 'luaB_auxwrap' is not PascalCase. Expected: LuabAuxwrap",
+     "Function name 'luaB_auxwrap' \u2014 main part 'luaB_auxwrap' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a66ed0",
+   "end": "00a66f30",
+   "name": "luaB_auxwrap",
+   "after": "Function: luaB_auxwrap at 00a66ed0\nSignature: undefined luaB_auxwrap(void)\nEntry: 00a66ed0\nBody: 00a66ed0 - 00a66f2f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a672b0",
+    "end_address": "00a672c5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a672b0",
+    "end_address": "00a672c4",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a672b0",
+    "disassemble_first": false,
+    "name": "getcurrenv"
+   },
+   "result": {
+    "success": true,
+    "address": "00a672b0",
+    "function_name": "getcurrenv",
+    "entry_point": "00a672b0",
+    "body_size": 21,
+    "message": "Function created successfully at 00a672b0",
+    "warnings": [
+     "Function name 'getcurrenv' \u2014 main part 'getcurrenv' is not PascalCase. Expected: Getcurrenv"
+    ]
+   }
+  },
+  {
+   "defined": "00a672b0",
+   "end": "00a672c5",
+   "name": "getcurrenv",
+   "after": "Function: getcurrenv at 00a672b0\nSignature: undefined getcurrenv(void)\nEntry: 00a672b0\nBody: 00a672b0 - 00a672c4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a67660",
+    "end_address": "00a6767d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a67660",
+    "end_address": "00a6767c",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a67660",
+    "disassemble_first": false,
+    "name": "lua_isuserdata"
+   },
+   "result": {
+    "success": true,
+    "address": "00a67660",
+    "function_name": "lua_isuserdata",
+    "entry_point": "00a67660",
+    "body_size": 29,
+    "message": "Function created successfully at 00a67660",
+    "warnings": [
+     "Function name 'lua_isuserdata' \u2014 main part 'lua_isuserdata' is not PascalCase. Expected: LuaIsuserdata",
+     "Function name 'lua_isuserdata' \u2014 main part 'lua_isuserdata' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a67660",
+   "end": "00a6767d",
+   "name": "lua_isuserdata",
+   "after": "Function: lua_isuserdata at 00a67660\nSignature: undefined lua_isuserdata(void)\nEntry: 00a67660\nBody: 00a67660 - 00a6767c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a680d0",
+    "end_address": "00a680dc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a680d0",
+    "end_address": "00a680db",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a680d0",
+    "disassemble_first": false,
+    "name": "f_call"
+   },
+   "result": {
+    "success": true,
+    "address": "00a680d0",
+    "function_name": "f_call",
+    "entry_point": "00a680d0",
+    "body_size": 12,
+    "message": "Function created successfully at 00a680d0",
+    "warnings": [
+     "Function name 'f_call' \u2014 main part 'f_call' is not PascalCase. Expected: FCall",
+     "Function name 'f_call' \u2014 main part 'f_call' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'f_call' is too short (main part 'f_call' is 6 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a680d0",
+   "end": "00a680dc",
+   "name": "f_call",
+   "after": "Function: f_call at 00a680d0\nSignature: undefined f_call(void)\nEntry: 00a680d0\nBody: 00a680d0 - 00a680db"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a68440",
+    "end_address": "00a6845a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a68440",
+    "end_address": "00a68459",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a68440",
+    "disassemble_first": false,
+    "name": "lua_getallocf"
+   },
+   "result": {
+    "success": true,
+    "address": "00a68440",
+    "function_name": "lua_getallocf",
+    "entry_point": "00a68440",
+    "body_size": 26,
+    "message": "Function created successfully at 00a68440",
+    "warnings": [
+     "Function name 'lua_getallocf' \u2014 main part 'lua_getallocf' is not PascalCase. Expected: LuaGetallocf",
+     "Function name 'lua_getallocf' \u2014 main part 'lua_getallocf' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a68440",
+   "end": "00a6845a",
+   "name": "lua_getallocf",
+   "after": "Function: lua_getallocf at 00a68440\nSignature: undefined lua_getallocf(void)\nEntry: 00a68440\nBody: 00a68440 - 00a68459"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a684d0",
+    "end_address": "00a6851e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a684d0",
+    "end_address": "00a6851d",
+    "bytes_disassembled": 78,
+    "message": "Successfully disassembled 78 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a684d0",
+    "disassemble_first": false,
+    "name": "aux_upvalue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a684d0",
+    "function_name": "aux_upvalue",
+    "entry_point": "00a684d0",
+    "body_size": 78,
+    "message": "Function created successfully at 00a684d0",
+    "warnings": [
+     "Function name 'aux_upvalue' \u2014 main part 'aux_upvalue' is not PascalCase. Expected: AuxUpvalue",
+     "Function name 'aux_upvalue' \u2014 main part 'aux_upvalue' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a684d0",
+   "end": "00a6851e",
+   "name": "aux_upvalue",
+   "after": "Function: aux_upvalue at 00a684d0\nSignature: undefined aux_upvalue(void)\nEntry: 00a684d0\nBody: 00a684d0 - 00a6851d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a686f0",
+    "end_address": "00a6871d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a686f0",
+    "end_address": "00a6871c",
+    "bytes_disassembled": 45,
+    "message": "Successfully disassembled 45 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a686f0",
+    "disassemble_first": false,
+    "name": "freestack"
+   },
+   "result": {
+    "success": true,
+    "address": "00a686f0",
+    "function_name": "freestack",
+    "entry_point": "00a686f0",
+    "body_size": 45,
+    "message": "Function created successfully at 00a686f0",
+    "warnings": [
+     "Function name 'freestack' \u2014 main part 'freestack' is not PascalCase. Expected: Freestack"
+    ]
+   }
+  },
+  {
+   "defined": "00a686f0",
+   "end": "00a6871d",
+   "name": "freestack",
+   "after": "Function: freestack at 00a686f0\nSignature: undefined freestack(void)\nEntry: 00a686f0\nBody: 00a686f0 - 00a6871c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a687a0",
+    "end_address": "00a687db"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a687a0",
+    "end_address": "00a687da",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a687a0",
+    "disassemble_first": false,
+    "name": "preinit_state"
+   },
+   "result": {
+    "success": true,
+    "address": "00a687a0",
+    "function_name": "preinit_state",
+    "entry_point": "00a687a0",
+    "body_size": 59,
+    "message": "Function created successfully at 00a687a0",
+    "warnings": [
+     "Function name 'preinit_state' \u2014 main part 'preinit_state' is not PascalCase. Expected: PreinitState",
+     "Function name 'preinit_state' \u2014 main part 'preinit_state' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a687a0",
+   "end": "00a687db",
+   "name": "preinit_state",
+   "after": "Function: preinit_state at 00a687a0\nSignature: undefined preinit_state(void)\nEntry: 00a687a0\nBody: 00a687a0 - 00a687da"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a68a80",
+    "end_address": "00a68a85"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a68a80",
+    "end_address": "00a68a84",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a68a80",
+    "disassemble_first": false,
+    "name": "callallgcTM"
+   },
+   "result": {
+    "success": true,
+    "address": "00a68a80",
+    "function_name": "callallgcTM",
+    "entry_point": "00a68a80",
+    "body_size": 5,
+    "message": "Function created successfully at 00a68a80",
+    "warnings": [
+     "Function name 'callallgcTM' \u2014 main part 'callallgcTM' is not PascalCase. Expected: Callallgctm"
+    ]
+   }
+  },
+  {
+   "defined": "00a68a80",
+   "end": "00a68a85",
+   "name": "callallgcTM",
+   "after": "Function: callallgcTM at 00a68a80\nSignature: undefined callallgcTM(void)\nEntry: 00a68a80\nBody: 00a68a80 - 00a68a84"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a69270",
+    "end_address": "00a692a5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a69270",
+    "end_address": "00a692a4",
+    "bytes_disassembled": 53,
+    "message": "Successfully disassembled 53 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a69270",
+    "disassemble_first": false,
+    "name": "restore_stack_limit"
+   },
+   "result": {
+    "success": true,
+    "address": "00a69270",
+    "function_name": "restore_stack_limit",
+    "entry_point": "00a69270",
+    "body_size": 53,
+    "message": "Function created successfully at 00a69270",
+    "warnings": [
+     "Function name 'restore_stack_limit' \u2014 main part 'restore_stack_limit' is not PascalCase. Expected: RestoreStackLimit",
+     "Function name 'restore_stack_limit' \u2014 main part 'restore_stack_limit' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a69270",
+   "end": "00a692a5",
+   "name": "restore_stack_limit",
+   "after": "Function: restore_stack_limit at 00a69270\nSignature: undefined restore_stack_limit(void)\nEntry: 00a69270\nBody: 00a69270 - 00a692a4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a69a40",
+    "end_address": "00a69a52"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a69a40",
+    "end_address": "00a69a51",
+    "bytes_disassembled": 18,
+    "message": "Successfully disassembled 18 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a69a40",
+    "disassemble_first": false,
+    "name": "libsize"
+   },
+   "result": {
+    "success": true,
+    "address": "00a69a40",
+    "function_name": "libsize",
+    "entry_point": "00a69a40",
+    "body_size": 18,
+    "message": "Function created successfully at 00a69a40",
+    "warnings": [
+     "Function name 'libsize' \u2014 main part 'libsize' is not PascalCase. Expected: Libsize",
+     "Function name 'libsize' is too short (main part 'libsize' is 7 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a69a40",
+   "end": "00a69a52",
+   "name": "libsize",
+   "after": "Function: libsize at 00a69a40\nSignature: undefined libsize(void)\nEntry: 00a69a40\nBody: 00a69a40 - 00a69a51"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a69b50",
+    "end_address": "00a69b75"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a69b50",
+    "end_address": "00a69b74",
+    "bytes_disassembled": 37,
+    "message": "Successfully disassembled 37 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a69b50",
+    "disassemble_first": false,
+    "name": "emptybuffer"
+   },
+   "result": {
+    "success": true,
+    "address": "00a69b50",
+    "function_name": "emptybuffer",
+    "entry_point": "00a69b50",
+    "body_size": 37,
+    "message": "Function created successfully at 00a69b50",
+    "warnings": [
+     "Function name 'emptybuffer' \u2014 main part 'emptybuffer' is not PascalCase. Expected: Emptybuffer"
+    ]
+   }
+  },
+  {
+   "defined": "00a69b50",
+   "end": "00a69b75",
+   "name": "emptybuffer",
+   "after": "Function: emptybuffer at 00a69b50\nSignature: undefined emptybuffer(void)\nEntry: 00a69b50\nBody: 00a69b50 - 00a69b74"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a69ca0",
+    "end_address": "00a69cbb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a69ca0",
+    "end_address": "00a69cba",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a69ca0",
+    "disassemble_first": false,
+    "name": "luaL_addstring"
+   },
+   "result": {
+    "success": true,
+    "address": "00a69ca0",
+    "function_name": "luaL_addstring",
+    "entry_point": "00a69ca0",
+    "body_size": 27,
+    "message": "Function created successfully at 00a69ca0",
+    "warnings": [
+     "Function name 'luaL_addstring' \u2014 main part 'luaL_addstring' is not PascalCase. Expected: LualAddstring",
+     "Function name 'luaL_addstring' \u2014 main part 'luaL_addstring' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a69ca0",
+   "end": "00a69cbb",
+   "name": "luaL_addstring",
+   "after": "Function: luaL_addstring at 00a69ca0\nSignature: undefined luaL_addstring(void)\nEntry: 00a69ca0\nBody: 00a69ca0 - 00a69cba"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a69da0",
+    "end_address": "00a69e3f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a69da0",
+    "end_address": "00a69e3e",
+    "bytes_disassembled": 159,
+    "message": "Successfully disassembled 159 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a69da0",
+    "disassemble_first": false,
+    "name": "luaL_ref"
+   },
+   "result": {
+    "success": true,
+    "address": "00a69da0",
+    "function_name": "luaL_ref",
+    "entry_point": "00a69da0",
+    "body_size": 159,
+    "message": "Function created successfully at 00a69da0",
+    "warnings": [
+     "Function name 'luaL_ref' \u2014 main part 'luaL_ref' is not PascalCase. Expected: LualRef",
+     "Function name 'luaL_ref' \u2014 main part 'luaL_ref' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a69da0",
+   "end": "00a69e3f",
+   "name": "luaL_ref",
+   "after": "Function: luaL_ref at 00a69da0\nSignature: undefined luaL_ref(void)\nEntry: 00a69da0\nBody: 00a69da0 - 00a69e3e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6a230",
+    "end_address": "00a6a254"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6a230",
+    "end_address": "00a6a253",
+    "bytes_disassembled": 36,
+    "message": "Successfully disassembled 36 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6a230",
+    "disassemble_first": false,
+    "name": "panic"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6a230",
+    "function_name": "panic",
+    "entry_point": "00a6a230",
+    "body_size": 36,
+    "message": "Function created successfully at 00a6a230",
+    "warnings": [
+     "Function name 'panic' \u2014 main part 'panic' is not PascalCase. Expected: Panic",
+     "Function name 'panic' is too short (main part 'panic' is 5 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a6a230",
+   "end": "00a6a254",
+   "name": "panic",
+   "after": "Function: panic at 00a6a230\nSignature: undefined panic(void)\nEntry: 00a6a230\nBody: 00a6a230 - 00a6a253"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6a380",
+    "end_address": "00a6a3b8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6a380",
+    "end_address": "00a6a3b7",
+    "bytes_disassembled": 56,
+    "message": "Successfully disassembled 56 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6a380",
+    "disassemble_first": false,
+    "name": "tag_error"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6a380",
+    "function_name": "tag_error",
+    "entry_point": "00a6a380",
+    "body_size": 56,
+    "message": "Function created successfully at 00a6a380",
+    "warnings": [
+     "Function name 'tag_error' \u2014 main part 'tag_error' is not PascalCase. Expected: TagError",
+     "Function name 'tag_error' \u2014 main part 'tag_error' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a6a380",
+   "end": "00a6a3b8",
+   "name": "tag_error",
+   "after": "Function: tag_error at 00a6a380\nSignature: undefined tag_error(void)\nEntry: 00a6a380\nBody: 00a6a380 - 00a6a3b7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6aa20",
+    "end_address": "00a6aa54"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6aa20",
+    "end_address": "00a6aa53",
+    "bytes_disassembled": 52,
+    "message": "Successfully disassembled 52 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6aa20",
+    "disassemble_first": false,
+    "name": "currentpc"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6aa20",
+    "function_name": "currentpc",
+    "entry_point": "00a6aa20",
+    "body_size": 52,
+    "message": "Function created successfully at 00a6aa20",
+    "warnings": [
+     "Function name 'currentpc' \u2014 main part 'currentpc' is not PascalCase. Expected: Currentpc"
+    ]
+   }
+  },
+  {
+   "defined": "00a6aa20",
+   "end": "00a6aa54",
+   "name": "currentpc",
+   "after": "Function: currentpc at 00a6aa20\nSignature: undefined currentpc(void)\nEntry: 00a6aa20\nBody: 00a6aa20 - 00a6aa53"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6ab90",
+    "end_address": "00a6aba8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6ab90",
+    "end_address": "00a6aba7",
+    "bytes_disassembled": 24,
+    "message": "Successfully disassembled 24 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6ab90",
+    "disassemble_first": false,
+    "name": "getluaproto"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6ab90",
+    "function_name": "getluaproto",
+    "entry_point": "00a6ab90",
+    "body_size": 24,
+    "message": "Function created successfully at 00a6ab90",
+    "warnings": [
+     "Function name 'getluaproto' \u2014 main part 'getluaproto' is not PascalCase. Expected: Getluaproto"
+    ]
+   }
+  },
+  {
+   "defined": "00a6ab90",
+   "end": "00a6aba8",
+   "name": "getluaproto",
+   "after": "Function: getluaproto at 00a6ab90\nSignature: undefined getluaproto(void)\nEntry: 00a6ab90\nBody: 00a6ab90 - 00a6aba7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6ad30",
+    "end_address": "00a6ad68"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6ad30",
+    "end_address": "00a6ad67",
+    "bytes_disassembled": 56,
+    "message": "Successfully disassembled 56 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6ad30",
+    "disassemble_first": false,
+    "name": "info_tailcall"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6ad30",
+    "function_name": "info_tailcall",
+    "entry_point": "00a6ad30",
+    "body_size": 56,
+    "message": "Function created successfully at 00a6ad30",
+    "warnings": [
+     "Function name 'info_tailcall' \u2014 main part 'info_tailcall' is not PascalCase. Expected: InfoTailcall",
+     "Function name 'info_tailcall' \u2014 main part 'info_tailcall' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a6ad30",
+   "end": "00a6ad68",
+   "name": "info_tailcall",
+   "after": "Function: info_tailcall at 00a6ad30\nSignature: undefined info_tailcall(void)\nEntry: 00a6ad30\nBody: 00a6ad30 - 00a6ad67"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6ae10",
+    "end_address": "00a6ae43"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6ae10",
+    "end_address": "00a6ae42",
+    "bytes_disassembled": 51,
+    "message": "Successfully disassembled 51 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6ae10",
+    "disassemble_first": false,
+    "name": "precheck"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6ae10",
+    "function_name": "precheck",
+    "entry_point": "00a6ae10",
+    "body_size": 51,
+    "message": "Function created successfully at 00a6ae10",
+    "warnings": [
+     "Function name 'precheck' \u2014 main part 'precheck' is not PascalCase. Expected: Precheck"
+    ]
+   }
+  },
+  {
+   "defined": "00a6ae10",
+   "end": "00a6ae43",
+   "name": "precheck",
+   "after": "Function: precheck at 00a6ae10\nSignature: undefined precheck(void)\nEntry: 00a6ae10\nBody: 00a6ae10 - 00a6ae42"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6b5a0",
+    "end_address": "00a6b5c4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6b5a0",
+    "end_address": "00a6b5c3",
+    "bytes_disassembled": 36,
+    "message": "Successfully disassembled 36 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6b5a0",
+    "disassemble_first": false,
+    "name": "isinstack"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6b5a0",
+    "function_name": "isinstack",
+    "entry_point": "00a6b5a0",
+    "body_size": 36,
+    "message": "Function created successfully at 00a6b5a0",
+    "warnings": [
+     "Function name 'isinstack' \u2014 main part 'isinstack' is not PascalCase. Expected: Isinstack"
+    ]
+   }
+  },
+  {
+   "defined": "00a6b5a0",
+   "end": "00a6b5c4",
+   "name": "isinstack",
+   "after": "Function: isinstack at 00a6b5a0\nSignature: undefined isinstack(void)\nEntry: 00a6b5a0\nBody: 00a6b5a0 - 00a6b5c3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6c0e0",
+    "end_address": "00a6c0ee"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6c0e0",
+    "end_address": "00a6c0ed",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6c0e0",
+    "disassemble_first": false,
+    "name": "removeentry"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6c0e0",
+    "function_name": "removeentry",
+    "entry_point": "00a6c0e0",
+    "body_size": 14,
+    "message": "Function created successfully at 00a6c0e0",
+    "warnings": [
+     "Function name 'removeentry' \u2014 main part 'removeentry' is not PascalCase. Expected: Removeentry"
+    ]
+   }
+  },
+  {
+   "defined": "00a6c0e0",
+   "end": "00a6c0ee",
+   "name": "removeentry",
+   "after": "Function: removeentry at 00a6c0e0\nSignature: undefined removeentry(void)\nEntry: 00a6c0e0\nBody: 00a6c0e0 - 00a6c0ed"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6c5c0",
+    "end_address": "00a6c62f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6c5c0",
+    "end_address": "00a6c62e",
+    "bytes_disassembled": 111,
+    "message": "Successfully disassembled 111 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6c5c0",
+    "disassemble_first": false,
+    "name": "checkstacksizes"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6c5c0",
+    "function_name": "checkstacksizes",
+    "entry_point": "00a6c5c0",
+    "body_size": 111,
+    "message": "Function created successfully at 00a6c5c0",
+    "warnings": [
+     "Function name 'checkstacksizes' \u2014 main part 'checkstacksizes' is not PascalCase. Expected: Checkstacksizes"
+    ]
+   }
+  },
+  {
+   "defined": "00a6c5c0",
+   "end": "00a6c62f",
+   "name": "checkstacksizes",
+   "after": "Function: checkstacksizes at 00a6c5c0\nSignature: undefined checkstacksizes(void)\nEntry: 00a6c5c0\nBody: 00a6c5c0 - 00a6c62e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6c810",
+    "end_address": "00a6c82b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6c810",
+    "end_address": "00a6c82a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6c810",
+    "disassemble_first": false,
+    "name": "propagateall"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6c810",
+    "function_name": "propagateall",
+    "entry_point": "00a6c810",
+    "body_size": 27,
+    "message": "Function created successfully at 00a6c810",
+    "warnings": [
+     "Function name 'propagateall' \u2014 main part 'propagateall' is not PascalCase. Expected: Propagateall"
+    ]
+   }
+  },
+  {
+   "defined": "00a6c810",
+   "end": "00a6c82b",
+   "name": "propagateall",
+   "after": "Function: propagateall at 00a6c810\nSignature: undefined propagateall(void)\nEntry: 00a6c810\nBody: 00a6c810 - 00a6c82a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a6f430",
+    "end_address": "00a6f457"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a6f430",
+    "end_address": "00a6f456",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a6f430",
+    "disassemble_first": false,
+    "name": "getfreepos"
+   },
+   "result": {
+    "success": true,
+    "address": "00a6f430",
+    "function_name": "getfreepos",
+    "entry_point": "00a6f430",
+    "body_size": 39,
+    "message": "Function created successfully at 00a6f430",
+    "warnings": [
+     "Function name 'getfreepos' \u2014 main part 'getfreepos' is not PascalCase. Expected: Getfreepos"
+    ]
+   }
+  },
+  {
+   "defined": "00a6f430",
+   "end": "00a6f457",
+   "name": "getfreepos",
+   "after": "Function: getfreepos at 00a6f430\nSignature: undefined getfreepos(void)\nEntry: 00a6f430\nBody: 00a6f430 - 00a6f456"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a70020",
+    "end_address": "00a70033"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a70020",
+    "end_address": "00a70032",
+    "bytes_disassembled": 19,
+    "message": "Successfully disassembled 19 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a70020",
+    "disassemble_first": false,
+    "name": "unlinkupval"
+   },
+   "result": {
+    "success": true,
+    "address": "00a70020",
+    "function_name": "unlinkupval",
+    "entry_point": "00a70020",
+    "body_size": 19,
+    "message": "Function created successfully at 00a70020",
+    "warnings": [
+     "Function name 'unlinkupval' \u2014 main part 'unlinkupval' is not PascalCase. Expected: Unlinkupval"
+    ]
+   }
+  },
+  {
+   "defined": "00a70020",
+   "end": "00a70033",
+   "name": "unlinkupval",
+   "after": "Function: unlinkupval at 00a70020\nSignature: undefined unlinkupval(void)\nEntry: 00a70020\nBody: 00a70020 - 00a70032"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a70450",
+    "end_address": "00a70466"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a70450",
+    "end_address": "00a70465",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a70450",
+    "disassemble_first": false,
+    "name": "DumpBlock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a70450",
+    "function_name": "DumpBlock",
+    "entry_point": "00a70450",
+    "body_size": 22,
+    "message": "Function created successfully at 00a70450"
+   }
+  },
+  {
+   "defined": "00a70450",
+   "end": "00a70466",
+   "name": "DumpBlock",
+   "after": "Function: DumpBlock at 00a70450\nSignature: undefined DumpBlock(void)\nEntry: 00a70450\nBody: 00a70450 - 00a70465"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a70c40",
+    "end_address": "00a70c69"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a70c40",
+    "end_address": "00a70c68",
+    "bytes_disassembled": 41,
+    "message": "Successfully disassembled 41 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a70c40",
+    "disassemble_first": false,
+    "name": "txtToken"
+   },
+   "result": {
+    "success": true,
+    "address": "00a70c40",
+    "function_name": "txtToken",
+    "entry_point": "00a70c40",
+    "body_size": 41,
+    "message": "Function created successfully at 00a70c40",
+    "warnings": [
+     "Function name 'txtToken' \u2014 main part 'txtToken' is not PascalCase. Expected: Txttoken"
+    ]
+   }
+  },
+  {
+   "defined": "00a70c40",
+   "end": "00a70c69",
+   "name": "txtToken",
+   "after": "Function: txtToken at 00a70c40\nSignature: undefined txtToken(void)\nEntry: 00a70c40\nBody: 00a70c40 - 00a70c68"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a70ed0",
+    "end_address": "00a70ef0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a70ed0",
+    "end_address": "00a70eef",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a70ed0",
+    "disassemble_first": false,
+    "name": "buffreplace"
+   },
+   "result": {
+    "success": true,
+    "address": "00a70ed0",
+    "function_name": "buffreplace",
+    "entry_point": "00a70ed0",
+    "body_size": 32,
+    "message": "Function created successfully at 00a70ed0",
+    "warnings": [
+     "Function name 'buffreplace' \u2014 main part 'buffreplace' is not PascalCase. Expected: Buffreplace"
+    ]
+   }
+  },
+  {
+   "defined": "00a70ed0",
+   "end": "00a70ef0",
+   "name": "buffreplace",
+   "after": "Function: buffreplace at 00a70ed0\nSignature: undefined buffreplace(void)\nEntry: 00a70ed0\nBody: 00a70ed0 - 00a70eef"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a72220",
+    "end_address": "00a72241"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a72220",
+    "end_address": "00a72240",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a72220",
+    "disassemble_first": false,
+    "name": "anchor_token"
+   },
+   "result": {
+    "success": true,
+    "address": "00a72220",
+    "function_name": "anchor_token",
+    "entry_point": "00a72220",
+    "body_size": 33,
+    "message": "Function created successfully at 00a72220",
+    "warnings": [
+     "Function name 'anchor_token' \u2014 main part 'anchor_token' is not PascalCase. Expected: AnchorToken",
+     "Function name 'anchor_token' \u2014 main part 'anchor_token' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a72220",
+   "end": "00a72241",
+   "name": "anchor_token",
+   "after": "Function: anchor_token at 00a72220\nSignature: undefined anchor_token(void)\nEntry: 00a72220\nBody: 00a72220 - 00a72240"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a72250",
+    "end_address": "00a72272"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a72250",
+    "end_address": "00a72271",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a72250",
+    "disassemble_first": false,
+    "name": "error_expected"
+   },
+   "result": {
+    "success": true,
+    "address": "00a72250",
+    "function_name": "error_expected",
+    "entry_point": "00a72250",
+    "body_size": 34,
+    "message": "Function created successfully at 00a72250",
+    "warnings": [
+     "Function name 'error_expected' \u2014 main part 'error_expected' is not PascalCase. Expected: ErrorExpected",
+     "Function name 'error_expected' \u2014 main part 'error_expected' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a72250",
+   "end": "00a72272",
+   "name": "error_expected",
+   "after": "Function: error_expected at 00a72250\nSignature: undefined error_expected(void)\nEntry: 00a72250\nBody: 00a72250 - 00a72271"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a722f0",
+    "end_address": "00a72318"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a722f0",
+    "end_address": "00a72317",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a722f0",
+    "disassemble_first": false,
+    "name": "check"
+   },
+   "result": {
+    "success": true,
+    "address": "00a722f0",
+    "function_name": "check",
+    "entry_point": "00a722f0",
+    "body_size": 40,
+    "message": "Function created successfully at 00a722f0",
+    "warnings": [
+     "Function name 'check' \u2014 main part 'check' is not PascalCase. Expected: Check",
+     "Function name 'check' is too short (main part 'check' is 5 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a722f0",
+   "end": "00a72318",
+   "name": "check",
+   "after": "Function: check at 00a722f0\nSignature: undefined check(void)\nEntry: 00a722f0\nBody: 00a722f0 - 00a72317"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a72320",
+    "end_address": "00a7234e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a72320",
+    "end_address": "00a7234d",
+    "bytes_disassembled": 46,
+    "message": "Successfully disassembled 46 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a72320",
+    "disassemble_first": false,
+    "name": "checknext"
+   },
+   "result": {
+    "success": true,
+    "address": "00a72320",
+    "function_name": "checknext",
+    "entry_point": "00a72320",
+    "body_size": 46,
+    "message": "Function created successfully at 00a72320",
+    "warnings": [
+     "Function name 'checknext' \u2014 main part 'checknext' is not PascalCase. Expected: Checknext"
+    ]
+   }
+  },
+  {
+   "defined": "00a72320",
+   "end": "00a7234e",
+   "name": "checknext",
+   "after": "Function: checknext at 00a72320\nSignature: undefined checknext(void)\nEntry: 00a72320\nBody: 00a72320 - 00a7234d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a723c0",
+    "end_address": "00a723fb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a723c0",
+    "end_address": "00a723fa",
+    "bytes_disassembled": 59,
+    "message": "Successfully disassembled 59 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a723c0",
+    "disassemble_first": false,
+    "name": "str_checkname"
+   },
+   "result": {
+    "success": true,
+    "address": "00a723c0",
+    "function_name": "str_checkname",
+    "entry_point": "00a723c0",
+    "body_size": 59,
+    "message": "Function created successfully at 00a723c0",
+    "warnings": [
+     "Function name 'str_checkname' \u2014 main part 'str_checkname' is not PascalCase. Expected: StrCheckname",
+     "Function name 'str_checkname' \u2014 main part 'str_checkname' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a723c0",
+   "end": "00a723fb",
+   "name": "str_checkname",
+   "after": "Function: str_checkname at 00a723c0\nSignature: undefined str_checkname(void)\nEntry: 00a723c0\nBody: 00a723c0 - 00a723fa"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a72420",
+    "end_address": "00a7243b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a72420",
+    "end_address": "00a7243a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a72420",
+    "disassemble_first": false,
+    "name": "codestring"
+   },
+   "result": {
+    "success": true,
+    "address": "00a72420",
+    "function_name": "codestring",
+    "entry_point": "00a72420",
+    "body_size": 27,
+    "message": "Function created successfully at 00a72420",
+    "warnings": [
+     "Function name 'codestring' \u2014 main part 'codestring' is not PascalCase. Expected: Codestring"
+    ]
+   }
+  },
+  {
+   "defined": "00a72420",
+   "end": "00a7243b",
+   "name": "codestring",
+   "after": "Function: codestring at 00a72420\nSignature: undefined codestring(void)\nEntry: 00a72420\nBody: 00a72420 - 00a7243a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a727a0",
+    "end_address": "00a727d0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a727a0",
+    "end_address": "00a727cf",
+    "bytes_disassembled": 48,
+    "message": "Successfully disassembled 48 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a727a0",
+    "disassemble_first": false,
+    "name": "searchvar"
+   },
+   "result": {
+    "success": true,
+    "address": "00a727a0",
+    "function_name": "searchvar",
+    "entry_point": "00a727a0",
+    "body_size": 48,
+    "message": "Function created successfully at 00a727a0",
+    "warnings": [
+     "Function name 'searchvar' \u2014 main part 'searchvar' is not PascalCase. Expected: Searchvar"
+    ]
+   }
+  },
+  {
+   "defined": "00a727a0",
+   "end": "00a727d0",
+   "name": "searchvar",
+   "after": "Function: searchvar at 00a727a0\nSignature: undefined searchvar(void)\nEntry: 00a727a0\nBody: 00a727a0 - 00a727cf"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a727d0",
+    "end_address": "00a727eb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a727d0",
+    "end_address": "00a727ea",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a727d0",
+    "disassemble_first": false,
+    "name": "markupval"
+   },
+   "result": {
+    "success": true,
+    "address": "00a727d0",
+    "function_name": "markupval",
+    "entry_point": "00a727d0",
+    "body_size": 27,
+    "message": "Function created successfully at 00a727d0",
+    "warnings": [
+     "Function name 'markupval' \u2014 main part 'markupval' is not PascalCase. Expected: Markupval"
+    ]
+   }
+  },
+  {
+   "defined": "00a727d0",
+   "end": "00a727eb",
+   "name": "markupval",
+   "after": "Function: markupval at 00a727d0\nSignature: undefined markupval(void)\nEntry: 00a727d0\nBody: 00a727d0 - 00a727ea"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a729b0",
+    "end_address": "00a729d0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a729b0",
+    "end_address": "00a729cf",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a729b0",
+    "disassemble_first": false,
+    "name": "enterlevel"
+   },
+   "result": {
+    "success": true,
+    "address": "00a729b0",
+    "function_name": "enterlevel",
+    "entry_point": "00a729b0",
+    "body_size": 32,
+    "message": "Function created successfully at 00a729b0",
+    "warnings": [
+     "Function name 'enterlevel' \u2014 main part 'enterlevel' is not PascalCase. Expected: Enterlevel"
+    ]
+   }
+  },
+  {
+   "defined": "00a729b0",
+   "end": "00a729d0",
+   "name": "enterlevel",
+   "after": "Function: enterlevel at 00a729b0\nSignature: undefined enterlevel(void)\nEntry: 00a729b0\nBody: 00a729b0 - 00a729cf"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a729d0",
+    "end_address": "00a729ee"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a729d0",
+    "end_address": "00a729ed",
+    "bytes_disassembled": 30,
+    "message": "Successfully disassembled 30 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a729d0",
+    "disassemble_first": false,
+    "name": "enterblock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a729d0",
+    "function_name": "enterblock",
+    "entry_point": "00a729d0",
+    "body_size": 30,
+    "message": "Function created successfully at 00a729d0",
+    "warnings": [
+     "Function name 'enterblock' \u2014 main part 'enterblock' is not PascalCase. Expected: Enterblock"
+    ]
+   }
+  },
+  {
+   "defined": "00a729d0",
+   "end": "00a729ee",
+   "name": "enterblock",
+   "after": "Function: enterblock at 00a729d0\nSignature: undefined enterblock(void)\nEntry: 00a729d0\nBody: 00a729d0 - 00a729ed"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a729f0",
+    "end_address": "00a72a32"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a729f0",
+    "end_address": "00a72a31",
+    "bytes_disassembled": 66,
+    "message": "Successfully disassembled 66 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a729f0",
+    "disassemble_first": false,
+    "name": "leaveblock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a729f0",
+    "function_name": "leaveblock",
+    "entry_point": "00a729f0",
+    "body_size": 66,
+    "message": "Function created successfully at 00a729f0",
+    "warnings": [
+     "Function name 'leaveblock' \u2014 main part 'leaveblock' is not PascalCase. Expected: Leaveblock"
+    ]
+   }
+  },
+  {
+   "defined": "00a729f0",
+   "end": "00a72a32",
+   "name": "leaveblock",
+   "after": "Function: leaveblock at 00a729f0\nSignature: undefined leaveblock(void)\nEntry: 00a729f0\nBody: 00a729f0 - 00a72a31"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a72f00",
+    "end_address": "00a72f35"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a72f00",
+    "end_address": "00a72f34",
+    "bytes_disassembled": 53,
+    "message": "Successfully disassembled 53 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a72f00",
+    "disassemble_first": false,
+    "name": "closelistfield"
+   },
+   "result": {
+    "success": true,
+    "address": "00a72f00",
+    "function_name": "closelistfield",
+    "entry_point": "00a72f00",
+    "body_size": 53,
+    "message": "Function created successfully at 00a72f00",
+    "warnings": [
+     "Function name 'closelistfield' \u2014 main part 'closelistfield' is not PascalCase. Expected: Closelistfield"
+    ]
+   }
+  },
+  {
+   "defined": "00a72f00",
+   "end": "00a72f35",
+   "name": "closelistfield",
+   "after": "Function: closelistfield at 00a72f00\nSignature: undefined closelistfield(void)\nEntry: 00a72f00\nBody: 00a72f00 - 00a72f34"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a73a20",
+    "end_address": "00a73a44"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a73a20",
+    "end_address": "00a73a43",
+    "bytes_disassembled": 36,
+    "message": "Successfully disassembled 36 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a73a20",
+    "disassemble_first": false,
+    "name": "getunopr"
+   },
+   "result": {
+    "success": true,
+    "address": "00a73a20",
+    "function_name": "getunopr",
+    "entry_point": "00a73a20",
+    "body_size": 36,
+    "message": "Function created successfully at 00a73a20",
+    "warnings": [
+     "Function name 'getunopr' \u2014 main part 'getunopr' is not PascalCase. Expected: Getunopr"
+    ]
+   }
+  },
+  {
+   "defined": "00a73a20",
+   "end": "00a73a44",
+   "name": "getunopr",
+   "after": "Function: getunopr at 00a73a20\nSignature: undefined getunopr(void)\nEntry: 00a73a20\nBody: 00a73a20 - 00a73a43"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a73d00",
+    "end_address": "00a73d08"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a73d00",
+    "end_address": "00a73d07",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a73d00",
+    "disassemble_first": false,
+    "name": "expr"
+   },
+   "result": {
+    "success": true,
+    "address": "00a73d00",
+    "function_name": "expr",
+    "entry_point": "00a73d00",
+    "body_size": 8,
+    "message": "Function created successfully at 00a73d00",
+    "warnings": [
+     "Function name 'expr' \u2014 main part 'expr' is not PascalCase. Expected: Expr",
+     "Function name 'expr' is too short (main part 'expr' is 4 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a73d00",
+   "end": "00a73d08",
+   "name": "expr",
+   "after": "Function: expr at 00a73d00\nSignature: undefined expr(void)\nEntry: 00a73d00\nBody: 00a73d00 - 00a73d07"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a73d10",
+    "end_address": "00a73d31"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a73d10",
+    "end_address": "00a73d30",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a73d10",
+    "disassemble_first": false,
+    "name": "block_follow"
+   },
+   "result": {
+    "success": true,
+    "address": "00a73d10",
+    "function_name": "block_follow",
+    "entry_point": "00a73d10",
+    "body_size": 27,
+    "message": "Function created successfully at 00a73d10",
+    "warnings": [
+     "Function name 'block_follow' \u2014 main part 'block_follow' is not PascalCase. Expected: BlockFollow",
+     "Function name 'block_follow' \u2014 main part 'block_follow' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a73d10",
+   "end": "00a73d31",
+   "name": "block_follow",
+   "after": "Function: block_follow at 00a73d10\nSignature: undefined block_follow(void)\nEntry: 00a73d10\nBody: 00a73d10 - 00a73d30"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75010",
+    "end_address": "00a75031"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75010",
+    "end_address": "00a75030",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75010",
+    "disassemble_first": false,
+    "name": "error"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75010",
+    "function_name": "error",
+    "entry_point": "00a75010",
+    "body_size": 33,
+    "message": "Function created successfully at 00a75010",
+    "warnings": [
+     "Function name 'error' \u2014 main part 'error' is not PascalCase. Expected: Error",
+     "Function name 'error' is too short (main part 'error' is 5 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a75010",
+   "end": "00a75031",
+   "name": "error",
+   "after": "Function: error at 00a75010\nSignature: undefined error(void)\nEntry: 00a75010\nBody: 00a75010 - 00a75030"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75040",
+    "end_address": "00a75073"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75040",
+    "end_address": "00a75072",
+    "bytes_disassembled": 51,
+    "message": "Successfully disassembled 51 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75040",
+    "disassemble_first": false,
+    "name": "LoadBlock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75040",
+    "function_name": "LoadBlock",
+    "entry_point": "00a75040",
+    "body_size": 51,
+    "message": "Function created successfully at 00a75040"
+   }
+  },
+  {
+   "defined": "00a75040",
+   "end": "00a75073",
+   "name": "LoadBlock",
+   "after": "Function: LoadBlock at 00a75040\nSignature: undefined LoadBlock(void)\nEntry: 00a75040\nBody: 00a75040 - 00a75072"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75b60",
+    "end_address": "00a75b7b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75b60",
+    "end_address": "00a75b7a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75b60",
+    "disassemble_first": false,
+    "name": "isnumeral"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75b60",
+    "function_name": "isnumeral",
+    "entry_point": "00a75b60",
+    "body_size": 27,
+    "message": "Function created successfully at 00a75b60",
+    "warnings": [
+     "Function name 'isnumeral' \u2014 main part 'isnumeral' is not PascalCase. Expected: Isnumeral"
+    ]
+   }
+  },
+  {
+   "defined": "00a75b60",
+   "end": "00a75b7b",
+   "name": "isnumeral",
+   "after": "Function: isnumeral at 00a75b60\nSignature: undefined isnumeral(void)\nEntry: 00a75b60\nBody: 00a75b60 - 00a75b7a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75be0",
+    "end_address": "00a75bfd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75be0",
+    "end_address": "00a75bfc",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75be0",
+    "disassemble_first": false,
+    "name": "getjump"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75be0",
+    "function_name": "getjump",
+    "entry_point": "00a75be0",
+    "body_size": 29,
+    "message": "Function created successfully at 00a75be0",
+    "warnings": [
+     "Function name 'getjump' \u2014 main part 'getjump' is not PascalCase. Expected: Getjump",
+     "Function name 'getjump' is too short (main part 'getjump' is 7 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a75be0",
+   "end": "00a75bfd",
+   "name": "getjump",
+   "after": "Function: getjump at 00a75be0\nSignature: undefined getjump(void)\nEntry: 00a75be0\nBody: 00a75be0 - 00a75bfc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75c00",
+    "end_address": "00a75c22"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75c00",
+    "end_address": "00a75c21",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75c00",
+    "disassemble_first": false,
+    "name": "getjumpcontrol"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75c00",
+    "function_name": "getjumpcontrol",
+    "entry_point": "00a75c00",
+    "body_size": 34,
+    "message": "Function created successfully at 00a75c00",
+    "warnings": [
+     "Function name 'getjumpcontrol' \u2014 main part 'getjumpcontrol' is not PascalCase. Expected: Getjumpcontrol"
+    ]
+   }
+  },
+  {
+   "defined": "00a75c00",
+   "end": "00a75c22",
+   "name": "getjumpcontrol",
+   "after": "Function: getjumpcontrol at 00a75c00\nSignature: undefined getjumpcontrol(void)\nEntry: 00a75c00\nBody: 00a75c00 - 00a75c21"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75e40",
+    "end_address": "00a75e5b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75e40",
+    "end_address": "00a75e5a",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75e40",
+    "disassemble_first": false,
+    "name": "dischargejpc"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75e40",
+    "function_name": "dischargejpc",
+    "entry_point": "00a75e40",
+    "body_size": 27,
+    "message": "Function created successfully at 00a75e40",
+    "warnings": [
+     "Function name 'dischargejpc' \u2014 main part 'dischargejpc' is not PascalCase. Expected: Dischargejpc"
+    ]
+   }
+  },
+  {
+   "defined": "00a75e40",
+   "end": "00a75e5b",
+   "name": "dischargejpc",
+   "after": "Function: dischargejpc at 00a75e40\nSignature: undefined dischargejpc(void)\nEntry: 00a75e40\nBody: 00a75e40 - 00a75e5a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a75f20",
+    "end_address": "00a75f34"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a75f20",
+    "end_address": "00a75f33",
+    "bytes_disassembled": 20,
+    "message": "Successfully disassembled 20 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a75f20",
+    "disassemble_first": false,
+    "name": "freereg"
+   },
+   "result": {
+    "success": true,
+    "address": "00a75f20",
+    "function_name": "freereg",
+    "entry_point": "00a75f20",
+    "body_size": 20,
+    "message": "Function created successfully at 00a75f20",
+    "warnings": [
+     "Function name 'freereg' \u2014 main part 'freereg' is not PascalCase. Expected: Freereg",
+     "Function name 'freereg' is too short (main part 'freereg' is 7 chars, minimum 8)."
+    ]
+   }
+  },
+  {
+   "defined": "00a75f20",
+   "end": "00a75f34",
+   "name": "freereg",
+   "after": "Function: freereg at 00a75f20\nSignature: undefined freereg(void)\nEntry: 00a75f20\nBody: 00a75f20 - 00a75f33"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a76e20",
+    "end_address": "00a76e8c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a76e20",
+    "end_address": "00a76e8b",
+    "bytes_disassembled": 108,
+    "message": "Successfully disassembled 108 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a76e20",
+    "disassemble_first": false,
+    "name": "jumponcond"
+   },
+   "result": {
+    "success": true,
+    "address": "00a76e20",
+    "function_name": "jumponcond",
+    "entry_point": "00a76e20",
+    "body_size": 108,
+    "message": "Function created successfully at 00a76e20",
+    "warnings": [
+     "Function name 'jumponcond' \u2014 main part 'jumponcond' is not PascalCase. Expected: Jumponcond"
+    ]
+   }
+  },
+  {
+   "defined": "00a76e20",
+   "end": "00a76e8c",
+   "name": "jumponcond",
+   "after": "Function: jumponcond at 00a76e20\nSignature: undefined jumponcond(void)\nEntry: 00a76e20\nBody: 00a76e20 - 00a76e8b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b6d400",
+    "end_address": "00b6d433"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b6d400",
+    "end_address": "00b6d432",
+    "bytes_disassembled": 51,
+    "message": "Successfully disassembled 51 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b6d400",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b6d400",
+    "function_name": "FUN_00b6d400",
+    "entry_point": "00b6d400",
+    "body_size": 51,
+    "message": "Function created successfully at 00b6d400"
+   }
+  },
+  {
+   "defined": "00b6d400",
+   "end": "00b6d433",
+   "name": null,
+   "after": "Function: FUN_00b6d400 at 00b6d400\nSignature: undefined FUN_00b6d400(void)\nEntry: 00b6d400\nBody: 00b6d400 - 00b6d432"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

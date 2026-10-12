@@ -125,10 +125,22 @@ struct WarningSubscription {
 struct WarningManagerState {
     float periodic_accumulator{0.0f}; // +198h
     bool suppressed{false}; // +D0h
-    float air_raid_deadline{0.0f}; // +174h
-    bool air_raid_active{false}; // +178h
-    float collision_deadline{0.0f}; // +17Ch
-    bool collision_active{false}; // +180h
+    // Correction (cc13-warnings1, 2026-10-11): despite their names, these four
+    // words are the hit-feedback state, not the Lua keys airRaidSoundExpires /
+    // collisionSoundDisableTime. Byte scans find writers only in 009870A0 (init),
+    // 00968550 (clear), 0096EF60 and 0096E8F0. +174h is the hit-feedback
+    // deadline (clock + 0.25), +178h its kind (1 damaging, 2 ineffective),
+    // +17Ch the hit-text deadline and +180h the text state (1 ineffective,
+    // 2 friendly). The two Lua keys belong to the per-ship record of the manager
+    // map at +184h, saved by 0096DD30 as "shipNoiseInfo" and loaded by 00980380:
+    // record +0h is collisionSoundDisableTime (00977820 sets it to clock + 30 s),
+    // +4h is airRaidSoundExpires (00977990 sets it to clock + 2 s) and +8h is
+    // the effect handle. See docs/CC13_OPTIONS_AND_HARDWARE.md and
+    // docs/CC13_WARNING_REPORTS.md. Renaming these fields is cc9's call.
+    float air_raid_deadline{0.0f}; // +174h: hit-feedback deadline
+    bool air_raid_active{false}; // +178h: hit-feedback kind (an int in the image)
+    float collision_deadline{0.0f}; // +17Ch: hit-text deadline
+    bool collision_active{false}; // +180h: hit-text state (an int in the image)
     std::string prompt_callback{}; // +19Ch
     std::vector<WarningRecord> pending{}; // the +E0h list
     std::vector<WarningRecord> applied{}; // the +ECh list
@@ -156,7 +168,9 @@ bool advance_warning_periodic(float& accumulator, float scaled_delta) noexcept;
 
 // 00968550. Both tests are a strict less-than against the clock, so a flag
 // clears on the first frame past its deadline. The collision flag additionally
-// drives a virtual call, reported through the return value.
+// drives a virtual call, reported through the return value. The flags are the
+// hit-feedback (+174h/+178h) and hit-text (+17Ch/+180h) pairs, not the air-raid
+// and collision sounds (see WarningManagerState).
 struct WarningDeadlineResult {
     bool air_raid_expired{false};
     bool collision_expired{false}; // true means [[[00e198c4]+C4h]+60h]->vtable[34h](0) ran
@@ -199,7 +213,7 @@ struct WarningManagerHost {
     virtual void raise_prompt_hud(int slot) = 0; // [game+1ED4h] vtable +5Ch then +390h = 1
     virtual void call_mission_lua(const std::string& name) = 0; // 00887e50
 
-    // 00968550's collision branch.
+    // 00968550's "collision" branch, which is really the +17Ch/+180h hit-text expiry.
     virtual void stop_collision_sound() = 0; // [[[00e198c4]+C4h]+60h] vtable +34h with 0
 
     // 009763e0's decision points.

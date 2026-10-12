@@ -64,6 +64,8 @@
 #include "bsp/legacy_crt_math.hpp"
 
 namespace bsp::game {
+// Harness only (src/game_hosts_mission.cpp): --stop-after-end has stopped the mission.
+bool harness_stopped_after_end() noexcept;
 namespace {
 
 // Verified loader-zero CRT publication. Process lifetime is required because
@@ -1209,6 +1211,12 @@ void GameLoopCallbacks::frame() {
     ++frames_;
     if (frame_limit_ >= 0 && frames_ >= static_cast<unsigned long long>(frame_limit_)) {
         log_.notef("frame limit %ld reached, requesting loop exit", frame_limit_);
+        frame_host_.request_loop_exit();
+    }
+    // Harness only: --stop-after-end stopped the mission, so the run ends here too.
+    if (harness_stopped_after_end() && !stop_after_end_exit_) {
+        stop_after_end_exit_ = true;
+        log_.notef("harness stop-after-end: requesting loop exit at frame %llu", frames_);
         frame_host_.request_loop_exit();
     }
     static_cast<void>(loop_);

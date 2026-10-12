@@ -26,6 +26,7 @@
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
@@ -66,6 +67,12 @@ MissionFrameJitter g_mission_frame_jitter;
 // trigger (-1 disarmed). Neither is read by the simulation.
 volatile long g_harness_mission_frame = -1;
 long g_harness_crash_test_frame = -1;
+// Harness only (--stop-after-end S): the in-mission frame on which the script-orders host
+// first saw the mission end (Mission.MissionStatus or Mission.EndMission), and how many
+// further frames to run before stopping (-1: never, the default). Not read by the simulation.
+long g_harness_mission_end_frame = -1;
+long g_harness_stop_after_end_frames = -1;
+bool g_harness_stopped_after_end = false;
 
 // A real write through a null pointer, so the record shows a genuine access violation at a
 // known instruction in bsp_game.exe. noinline keeps the faulting instruction in this body.
@@ -1254,6 +1261,20 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
             }
             ai_publish_scene_slot_parties(parties);
         }
+        // Packet cc9_physics1_sea: the g_Ocean/Waves keys 0078C9B0 (called at
+        // 004DF87F) loads into the ocean object; a no-op while
+        // kWaveFieldLiveAmplitudeBound is off.
+        {
+            const bsp::OceanSceneWaves waves =
+                bsp::ocean_live_field_publish_scene(document.header.properties);
+            if (bsp::kWaveFieldLiveAmplitudeBound) {
+                log.notef("ocean waves: path=%s authored=%d simple=%d height_scale=%.3f "
+                    "wave_height=%.3f wind_speed=%.3f choppy=%.3f time_scale=%.3f",
+                    scene_path.c_str(), waves.authored ? 1 : 0, waves.simple_ocean ? 1 : 0,
+                    waves.height_scale_5c, waves.wave_height_54, waves.wind_speed_50,
+                    waves.choppy_58, waves.time_scale_34);
+            }
+        }
         log.notef("scene participant scalar: path=%s available=1 max_players=%d "
             "authored=%d", scene_path.c_str(), table.max_player_num,
             table.max_player_num_authored ? 1 : 0);
@@ -1941,7 +1962,17 @@ bool GameMissionHost::advance(float seconds) {
         const bool budget_spent = host.frame_host->in_mission_phase()
             && host.summary.mission_frames_run
                 >= static_cast<unsigned long long>(host.mission_frames);
-        if (!more || budget_spent) {
+        // Harness only: --stop-after-end ends the run that many frames after the mission's end
+        // was recorded, instead of simulating on to the frame budget.
+        const bool end_spent = g_harness_stop_after_end_frames >= 0
+            && g_harness_mission_end_frame >= 0
+            && g_harness_mission_frame >= g_harness_mission_end_frame + g_harness_stop_after_end_frames;
+        if (end_spent) {
+            g_harness_stopped_after_end = true;
+            host.log.notef("harness stop-after-end: mission end recorded at mission frame %ld, "
+                "stopping at mission frame %ld", g_harness_mission_end_frame, g_harness_mission_frame);
+        }
+        if (!more || budget_spent || end_spent) {
             host.frame_host->report(host.mission_frames);
             host.publish_frame_summary();
             host.step = GameMissionStep::Stopped;
@@ -1958,6 +1989,12 @@ bool GameMissionHost::advance(float seconds) {
 // Harness only (packet cc9_tooling_1); declared in src/game_main.cpp, the only caller.
 long harness_mission_frame() noexcept { return g_harness_mission_frame; }
 void arm_harness_crash_test(long mission_frame) noexcept { g_harness_crash_test_frame = mission_frame; }
+// Harness only: --stop-after-end (src/game_main.cpp) and the script-orders host's end record.
+void arm_harness_stop_after_end(long frames) noexcept { g_harness_stop_after_end_frames = frames; }
+bool harness_stopped_after_end() noexcept { return g_harness_stopped_after_end; }
+void harness_note_mission_end() noexcept {
+    if (g_harness_mission_end_frame < 0) g_harness_mission_end_frame = g_harness_mission_frame;
+}
 
 void set_mission_frame_jitter(float percent, std::uint32_t seed) noexcept {
     g_mission_frame_jitter.armed = percent > 0.0f;

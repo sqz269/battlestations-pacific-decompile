@@ -482,3 +482,17 @@ Combined verification is recorded in reports/warning_voice_order_integration.jso
 - **Was:** 00977500 BSP_WarningManager_ReportSubmarinePeriscopeBroken raises submarineperiscopebroken.
   **Is:** It does, but nothing calls it. ghidra xrefs finds no reference and a scan of the whole .text section for the absolute value 00977500 finds none either, so it is not reached through a table. Both break sites, 009373C0 and its reference-free twin 009327F0, set periscopeState to 2 without reporting. The reporter is complete and dead: the only feedback a player gets for a broken periscope is the mast disappearing.
   **Evidence:** ghidra xrefs 00977500 returns nothing; local/scan_disp.py over .text for the value 00977500 returns 0 hits, against 1 hit for the live comparison address 00D196EC. The three sibling reporters are live: 00977050 at 00855375, 009771E0 at 0085533b and 00977370 at 0085523c.
+
+## Correction (2026-10-11, cc13-warnings1): `+174h..+180h` are not the two sound keys
+
+The `airRaidSoundExpires` / `collisionSoundDisableTime` attribution above (the field table and the
+`00980380` bullet) is wrong. Byte scans find writers of `+174h..+180h` only in `009870A0` (init),
+`00968550` (clear), `0096EF60` and `0096E8F0`: that block is hit feedback, see
+`docs/CC13_OPTIONS_AND_HARDWARE.md`. The two archive keys belong to the per-ship map at manager
+`+184h` (`00975D00` finds or creates the record). `0096DD30` saves it as the table `shipNoiseInfo`,
+one sub-table per ship named by the ship's word `+174h`. Record `+0h` is
+`collisionSoundDisableTime` (field type 2, float; `0096E2E4`). Record `+4h` is `airRaidSoundExpires`,
+written only when the effect handle at record `+8h` is set (`0096E314`). `00980380` reads them back at
+`00980ABC..00980BF0` (default `-1.0e10`, `00CE4ADC`) and calls `0096C070` when the air-raid value is
+not the default. `00977820` arms record `+0h` and `00977990` arms record `+4h`. Details:
+`docs/CC13_WARNING_REPORTS.md`.

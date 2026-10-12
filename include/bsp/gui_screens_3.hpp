@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cstdint>
+#include <map>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -99,7 +100,7 @@ struct HudHintsHost {
     // screens 28h, 55h, 57h, 5Dh, 34h with the flag to 004D6480.
     virtual void game_hint_pause_004d94f0(bool paused) = 0;
     virtual void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool p4) = 0;
-    virtual void game_004d9830(bool flag) = 0;        // ledger tag says scalar deleting dtor; called on the game with 1
+    virtual void game_set_gui_layers_visible_004d9830(bool visible) = 0;  // restores the GUI layers
     // Input manager 004BEC00.
     virtual bool input_action_pressed_00535ee0(std::int32_t action) = 0;
     virtual void input_action_reset_00a91e20(std::int32_t action) = 0;
@@ -289,6 +290,42 @@ struct IdleCameraHost {
     virtual void invalidate_subtree_0042ed50(std::uintptr_t camera) = 0;
 };
 
+// Idle camera shot loader 00551440: the scene header property "IdleCameraPos" (applier
+// 004F1D70 at 004F220A..004F2218, owned by cc9's mission-load lane) fills both shot arrays.
+inline constexpr std::string_view kIdleCameraPosProperty = "IdleCameraPos";  // 00CEA420
+inline constexpr std::array<std::string_view, 8> kIdleCameraModeKeys{
+    "Capture1",     // 00CEE480, mode 0
+    "Capture2",     // 00CEE474
+    "Capture3",     // 00CEE468
+    "Capture4",     // 00CEE45C
+    "Duel",         // 00CE73BC
+    "Escort",       // 00CE73B4
+    "Siege",        // 00CE73AC
+    "Competitive",  // 00CE73A0, mode 7
+};
+inline constexpr std::string_view kIdleCameraAlliedKey = "Allied";     // 00CEE454 -> 00E19328
+inline constexpr std::string_view kIdleCameraJapaneseKey = "Japanese";  // 00CEE430 -> 00E193A8
+inline constexpr std::string_view kIdleCameraPairFormat = "Pair%02d";  // 00CEE448
+inline constexpr std::string_view kIdleCameraFromKey = "From";         // 00CEE440, eye
+inline constexpr std::string_view kIdleCameraToKey = "To";             // 00CEE43C, target
+inline constexpr std::int32_t kIdleCameraMaxPairs = 4;                 // 0055183A / 00551AB3 CMP EAX,4
+
+// A scene property table as 00551440 reads it: 008F2260 find, then the found node's +0Ch for a
+// sub-table or 008F0DF0 for a string. The image tests neither the find result nor the kind
+// below the root.
+struct IdleCameraPosTable {
+    virtual ~IdleCameraPosTable() = default;
+    virtual const IdleCameraPosTable* table(std::string_view key) const = 0;
+    virtual const char* string(std::string_view key) const = 0;  // may be null
+};
+
+using IdleCameraShotArray = std::array<std::vector<IdleCameraShot>, 8>;
+
+// 00551440: __fastcall(property node or null /*ECX*/), RET. `root` is the node's +0Ch table and
+// is used only when the node exists and its kind (+4) is 6.
+void idle_camera_load_shots_00551440(IdleCameraShotArray& allied_e19328, IdleCameraShotArray& japanese_e193a8,
+                                     const IdleCameraPosTable* root, std::int32_t root_kind);
+
 // 0054F900: slot +18h of vtable 00CEE408, __thiscall(screen), RET; SEH frame.
 void idle_camera_enter_0054f900(IdleCameraState& screen, IdleCameraHost& host);
 // 0054EFC0: slot +1Ch, __thiscall(screen), RET.
@@ -376,8 +413,8 @@ struct HintTableHost {
 };
 
 // 0068F030: __thiscall(tracker, LuaObject table by value, char other_category), RET 18h.
-// `carry` holds the stack definition between entries (see the cooldowntime note in the source).
-void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category, HintDefinition& carry);
+// A missing cooldowntime gives 0 (0068FFF4 stores EDI = 0); nothing carries between entries.
+void hint_tracker_load_definitions_0068f030(HintTableHost& host, bool other_category);
 
 struct HintReloadHost {
     virtual ~HintReloadHost() = default;
@@ -445,5 +482,129 @@ struct GamePauseHost : GuiParkHost {
 void game_set_hint_pause_004d94f0(GamePauseState& game, GamePauseHost& host, bool paused);
 // 004D95F0: __thiscall(game, char paused), RET 4.
 void game_set_system_pause_004d95f0(GamePauseState& game, GamePauseHost& host, bool paused);
+
+// ---------------------------------------------------------------------------
+// 004D9830: GUI layer visibility (game+61Eh flag, saved factors in the map game+628h).
+// The cg_scalar_deleting_dtor tag is wrong: it is a direct-call game method, called with 0 by
+// the hi-res screenshot 004DC020 and with 1 by the hints screen (0054E674, 0054EA52).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kGuiKeepConsoleNode = "_Console";  // 00CE7AA0, 004D99B5
+inline constexpr std::string_view kGuiKeepFpsNode = "_Fps";          // 00CE7A98, 004D9A19
+
+struct GuiLayerVisibilityHost {
+    virtual ~GuiLayerVisibilityHost() = default;
+    // GuiManager 004C12B0, map at +8 in order; for each value v the nodes start at
+    // *(*(v+1Ch)+0Ch) and chain through node+3Ch.
+    virtual std::vector<std::uintptr_t> gui_layer_nodes() = 0;
+    virtual std::string node_name_00b6d800(std::uintptr_t node) = 0;
+    virtual float node_visibility_ac(std::uintptr_t node) = 0;
+    virtual void node_set_visibility_00b6da70(std::uintptr_t node, float value, bool recurse) = 0;
+};
+
+struct GuiLayerVisibilityState {
+    bool gui_visible_61e{};                       // game+61Eh
+    std::map<std::uintptr_t, float> saved_628;    // game+628h (head +62Ch, size +630h), 004D69D0 operator[]
+};
+
+// 004D9830: __thiscall(game, char visible), RET 4; SEH 00C665F2.
+void game_set_gui_layers_visible_004d9830(GuiLayerVisibilityState& game, GuiLayerVisibilityHost& host,
+                                          bool visible);
+
+// ---------------------------------------------------------------------------
+// 004E7220: scene header "Cloud" areas (004F1D70 at 004F2368 with the "Cloud" table 00CE7524,
+// and 004EE450 at 004EE481 passing its own table). Fills record+C84h/+C88h, then tail-calls
+// 004BA870 BSP_SceneRecord_ScatterClouds (docs/SCENE_CONTENTS_HOSTS.md calls +C84h a gate; it
+// is this area count).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::string_view kCloudAreaFormat = "Area%02d";  // 00CE8B98
+inline constexpr std::int32_t kCloudAreaSlots = 5;                 // 004E73F1 CMP EBP,5
+
+// One 28h-byte area at record+C88h + n*28h.
+struct SceneCloudArea {
+    std::array<float, 3> box_min{};  // +00h BoxMinX/Y/Z (00CE8B8C, 00CE8B84, 00CE8B7C)
+    std::array<float, 3> box_max{};  // +0Ch BoxMaxX/Y/Z (00CE8B74, 00CE8B6C, 00CE8B64)
+    std::int32_t num{};              // +18h Num (00CE8B94), copied raw
+    float small_weight{};            // +1Ch SmallWeight (00CE8B58)
+    float medium_weight{};           // +20h MediumWeight (00CE8B48)
+    float big_weight{};              // +24h BigWeight (00CE8B3C)
+};
+
+struct SceneCloudRecord {
+    std::int32_t area_count_c84{};                          // +C84h
+    std::array<SceneCloudArea, kCloudAreaSlots> areas{};    // +C88h
+};
+
+// A scene property node as 004E7220 reads it: kind +4 (0 int, else float bits; 6 table) and
+// the value +0Ch. find() is 008F2260 on a table.
+struct ScenePropertyValue {
+    std::int32_t kind{};
+    std::int32_t int_value{};
+    float float_value{};
+};
+struct ScenePropertyTable {
+    virtual ~ScenePropertyTable() = default;
+    virtual ScenePropertyValue value(std::string_view key) const = 0;        // unchecked find
+    virtual const ScenePropertyTable* table(std::string_view key) const = 0;  // kind 6 and +0Ch != 0, else null
+};
+
+struct SceneCloudHost {
+    virtual ~SceneCloudHost() = default;
+    virtual void scatter_clouds_004ba870() = 0;  // ECX = record, tail call at 004E7403
+};
+
+// 004E7220: __fastcall(table /*ECX*/, record /*EDX*/), RET (the tail JMP).
+void scene_load_cloud_areas_004e7220(SceneCloudRecord& record, SceneCloudHost& host, const ScenePropertyTable& cloud);
+
+// ---------------------------------------------------------------------------
+// HintSystem mission-Lua wrappers (binding table 00E0B7B8, rows at 00E0B7F0..00E0B830; the
+// host registration list is src/mission_lua_host.cpp, owned by cc9). Every wrapper is
+// __fastcall(lua_State* L /*ECX*/) returning the number of results: it borrows L
+// (00B66C00), opens a call frame (00B679B0), works, and returns 00B66400 (values pushed
+// above the arguments). Each first builds a dead "luaMW_<Name> failed:" NativeString and a
+// function-static "luakod" string; neither is used afterwards.
+// ---------------------------------------------------------------------------
+
+struct HintLuaHost {
+    virtual ~HintLuaHost() = default;
+    virtual std::int32_t argument_count_00b663f0() = 0;           // frame+0Ch
+    virtual std::string argument_string(std::int32_t index) = 0;  // 00B677E0 then 00B662B0
+    virtual std::int32_t game_termination_reason_624() = 0;       // game+624h
+    // Tracker singleton 004E1CA0 (00E198D0).
+    virtual void tracker_trigger_hint_00690fd0(const std::string& name, bool requested) = 0;
+    virtual void tracker_trigger_forced_00692fb0(const std::string& name) = 0;
+    virtual void tracker_add_stored_00690b20(const std::string& name) = 0;
+    virtual void tracker_remove_stored_00690c30(const std::string& name) = 0;
+    virtual std::string tracker_active_hint_0068e5b0() = 0;
+    virtual bool tracker_definition_critical_00690b00(const std::string& name) = 0;
+    virtual bool tracker_has_been_shown_0068e600(const std::string& name) = 0;
+    // 00770870 on game+1EF0h (the session): mode 1 (host) sends message 34 with the name.
+    virtual void session_send_hint_00770870(const std::string& name) = 0;
+    // The hints screen *(*(00E198C4)+A8h).
+    virtual void hints_dismiss_0054e610() = 0;
+    virtual std::int32_t hints_seconds_left_0054d3c0() = 0;
+    // Results.
+    virtual void push_boolean(bool value) = 0;                         // 00B66450
+    virtual void push_integer(std::int32_t value) = 0;                 // 00B664B0
+    virtual void push_hint_table(const std::string& id, std::int32_t duration) = 0;  // 00B67930 + fields
+    virtual std::int32_t result_count_00b66400() = 0;
+};
+
+// 008D1F50 ShowHint(name): ignored once game+624h is set; else TriggerHint(name, 1) and the
+// session copy.
+std::int32_t lua_show_hint_008d1f50(HintLuaHost& host);
+// 008D2190 ShowHintForced(name): 00692FB0 (tracker+4 = 1, then TriggerHint(name, 1)); no gate.
+std::int32_t lua_show_hint_forced_008d2190(HintLuaHost& host);
+// 008D24F0 AddStoredHint(name) / 008D2340 RemoveStoredHint(name).
+std::int32_t lua_add_stored_hint_008d24f0(HintLuaHost& host);
+std::int32_t lua_remove_stored_hint_008d2340(HintLuaHost& host);
+// 0088CEC0 HideHint(): dismisses the hints screen.
+std::int32_t lua_hide_hint_0088cec0(HintLuaHost& host);
+// 008D2850 IsHintActive([name]).
+std::int32_t lua_is_hint_active_008d2850(HintLuaHost& host);
+// 008D26A0 IsHintCritical(name) / 008D2BB0 IsHintStored(name).
+std::int32_t lua_is_hint_critical_008d26a0(HintLuaHost& host);
+std::int32_t lua_is_hint_stored_008d2bb0(HintLuaHost& host);
 
 }  // namespace bsp

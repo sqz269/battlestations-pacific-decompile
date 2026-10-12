@@ -50,6 +50,7 @@
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
+#include "bsp/ocean_spectrum.hpp"
 #include "bsp/mission_state_frame.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
@@ -260,6 +261,9 @@ struct GameMissionFrameHost::Impl {
     bool cinematic_hidden{false};             // game+634h
     bool cinematic_allow_simulation{false};   // game+635h
     int script_reentry_depth{0};              // game+644h
+    // kEngineMovieEntryBound: the load took the mode-9 arm, so the first
+    // in-mission frame owes 0045F600's tail (the player's skip).
+    bool engine_movie_skip_pending{false};
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
     float world_clock{0.0f};                  // 00f876a4
     // Packet cc9_warning_manager_tick: the manager's fields this process holds.
@@ -1337,6 +1341,42 @@ public:
         InMissionTickBinding tick(owner_);
         bsp::run_in_mission_subsystem_tick_004c40a0(owner_.frame_state.scaled_delta, tick);
         owner_.done("MissionFrame::update_in_mission_subsystems", 0x004c40a0u);
+        if (owner_.engine_movie_skip_pending) {
+            // kEngineMovieEntryBound. LABELLED: 004C9E1D's latch (+1EE0h, no
+            // checkpoint in this process) makes 004E5147 call 004CCE50 on the
+            // first simulated frame, and the player skips the movie at once
+            // (004C6B20 -> 0045F600). The tail of 0045F600 in its order:
+            // 0046B730 (SetGameMode 8 at 0046B99B), 004518B0, luaPrecacheUnits
+            // (0045F520), the class-table resets, collectgarbage, then under
+            // block 4_<short name> luaStageInitMulti (0045F520) and
+            // luaStageInit (0045F440). The resets and the GC stay records.
+            owner_.engine_movie_skip_pending = false;
+            owner_.record("EngineMovie::begin_004cce50", 0x004cce50u);
+            // 0046B730's kill pass (0046B795-0046B91B): every root entity, and
+            // every child of a kept root, whose class +C4h is not in the scene
+            // database's +158h set (44h, 5Eh, 1Dh, 47h, 3Dh) is killed with
+            // 00926D90(2) at 0046B906. CreateScript entities are class 3, so
+            // every luaDelay timer luaEngineMovieInit made dies here.
+            // LABELLED: the scene units' kill and re-create from the +28h
+            // records (0046BA7B-0046BBCD) stays a record; on a skip at the first
+            // frame nothing has moved. The ten 00874D00 calls (five CL=0 before
+            // the mode-8 set, five CL=1 after) stay records too: 00874D00 does
+            // not advance the mission clock, and its CL=0 think-list pass
+            // (00929460) finds only the entities just killed.
+            const std::size_t killed = owner_.lua.script_orders() != nullptr
+                ? owner_.lua.script_orders()->kill_live_script_entities(2) : 0;
+            owner_.log.notef("engine movie stop: 0046B730 killed %zu script entit%s "
+                "(class 3, not in the scene database's +158h set)", killed,
+                killed == 1 ? "y" : "ies");
+            owner_.record("EngineMovieStop::scene_database_reset_0046b730", 0x0046b730u);
+            owner_.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
+            owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
+            owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
+            owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
+            owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
+                "luaStageInitMulti and luaStageInit on the first in-mission frame "
+                "(kEngineMovieEntryBound)");
+        }
     }
     void begin_engine_movie_004cce50() override {
         owner_.record("MissionFrame::begin_engine_movie", 0x004cce50u);
@@ -1542,6 +1582,11 @@ public:
     void begin_render_profile_block() override { begin_block(kRenderBlockSlot, "render"); }
     void render_004ca440() override {
         owner_.record("MissionFrame::render", 0x004ca440u);
+        // Packet cc9_physics1_sea: render job B 004B4820 -> 0068A0D0 -> 0078CFF0 ->
+        // 00BA0090 steps the ocean after this frame's fixed steps; the time is
+        // [00F876A4], the mission clock. A no-op while kWaveFieldLiveAmplitudeBound
+        // is off.
+        bsp::ocean_live_field_render_job_0068a0d0(owner_.fixed_clock.simulation_clock);
     }
     void end_render_profile_block() override { end_block(kRenderBlockSlot, "render"); }
     void finish_render_frame_004ca1f0() override {
@@ -2369,6 +2414,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "lua_call_entry_point_a") {
+            // kEngineMovieEntryBound: 004D4DF0 forced game+614h to 9, and
+            // 004E0A50 reads the raw mode, so the precache and stage-init arm
+            // (004E0A75..004E0E03) is skipped and _b runs luaEngineMovieInit.
+            if (bsp::game::kEngineMovieEntryBound && host.scene_contents
+                && host.scene_contents->summary().game_mode_forced_to_9) {
+                host.load.engine_movie_arm = true;
+                host.engine_movie_skip_pending = true;
+                host.log.notef("engine movie entry: scene contents forced mode 9, so the load "
+                    "takes 004E0A50's mode-9 arm (luaEngineMovieInit only); 0045F600's tail "
+                    "runs on the first in-mission frame (kEngineMovieEntryBound, player skip)");
+                ++host.load.concrete;
+                continue;
+            }
             host.lua.call_entry_point(bsp::kLuaPrecacheUnits, false);
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;

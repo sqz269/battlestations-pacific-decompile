@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008d6b70",
+    "end_address": "008d6c00"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008d6b70",
+    "end_address": "008d6bff",
+    "bytes_disassembled": 144,
+    "message": "Successfully disassembled 144 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008d6b70",
+    "disassemble_first": false,
+    "name": "BSP_Settings_CompleteProfileSave"
+   },
+   "result": {
+    "success": true,
+    "address": "008d6b70",
+    "function_name": "BSP_Settings_CompleteProfileSave",
+    "entry_point": "008d6b70",
+    "body_size": 144,
+    "message": "Function created successfully at 008d6b70",
+    "warnings": [
+     "Function name 'BSP_Settings_CompleteProfileSave' \u2014 main part 'Settings_CompleteProfileSave' is not PascalCase. Expected: SettingsCompleteprofilesave",
+     "Function name 'BSP_Settings_CompleteProfileSave' \u2014 main part 'Settings_CompleteProfileSave' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Settings_CompleteProfileSave' does not start with a recognized verb. First word 'Settings_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008d6b70",
+   "end": "008d6c00",
+   "name": "BSP_Settings_CompleteProfileSave",
+   "after": "Function: BSP_Settings_CompleteProfileSave at 008d6b70\nSignature: undefined BSP_Settings_CompleteProfileSave(void)\nEntry: 008d6b70\nBody: 008d6b70 - 008d6bff"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

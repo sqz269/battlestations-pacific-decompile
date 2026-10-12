@@ -61,6 +61,326 @@
       "native": "00b17e10",
       "function": "00b18b40",
       "note": "16 words, matrix"
+    },
+    {
+      "address": "00b15831",
+      "native": "00b0db00",
+      "function": "00b156c0",
+      "note": "camera history update"
+    },
+    {
+      "address": "00b15bcd",
+      "native": "00b0eb10",
+      "function": "00b156c0",
+      "note": "frustum corners to +B4h"
+    },
+    {
+      "address": "00b1607b",
+      "native": "00b10500",
+      "function": "00b156c0",
+      "note": "excluded node pass after DRSH"
+    },
+    {
+      "address": "00b164ab",
+      "native": "00b10500",
+      "function": "00b156c0",
+      "note": "excluded node pass in POST"
+    },
+    {
+      "address": "00b160a2",
+      "native": "00b13510",
+      "function": "00b156c0",
+      "note": "DRSH label reset"
+    },
+    {
+      "address": "00b16349",
+      "native": "00b13510",
+      "function": "00b156c0",
+      "note": "SCNE label reset"
+    },
+    {
+      "address": "00b16f60",
+      "native": "00b13510",
+      "function": "00b156c0",
+      "note": "POST label reset"
+    },
+    {
+      "address": "00b165d0",
+      "native": "00b3cda0",
+      "function": "00b156c0",
+      "note": "copy +58h to +5Ch"
+    },
+    {
+      "address": "00b16638",
+      "native": "00b3c960",
+      "function": "00b156c0",
+      "note": "reflection begin"
+    },
+    {
+      "address": "00b167d5",
+      "native": "00b3c6e0",
+      "function": "00b156c0",
+      "note": "reflection end"
+    },
+    {
+      "address": "00b16a14",
+      "native": "00b50050",
+      "function": "00b156c0",
+      "note": "luminance with +90h"
+    },
+    {
+      "address": "00b16a59",
+      "native": "00b548c0",
+      "function": "00b156c0",
+      "note": "tone map params +84h..+9Ch"
+    },
+    {
+      "address": "00b16b9a",
+      "native": "00b4f1c0",
+      "function": "00b156c0",
+      "note": "distortion render"
+    },
+    {
+      "address": "00b16e22",
+      "native": "00b529a0",
+      "function": "00b156c0",
+      "note": "old film"
+    },
+    {
+      "address": "00b16f4c",
+      "native": "00b151e0",
+      "function": "00b156c0",
+      "note": "stats overlay"
+    },
+    {
+      "address": "00b1527a",
+      "native": "00b148e0",
+      "function": "00b151e0",
+      "note": "sort records"
+    },
+    {
+      "address": "00b152e6",
+      "native": "00b105b0",
+      "function": "00b151e0",
+      "note": "filter find"
+    },
+    {
+      "address": "00b1532f",
+      "native": "00b172d0",
+      "function": "00b151e0",
+      "note": "effect name"
+    },
+    {
+      "address": "00b103ff",
+      "native": "00b1f170",
+      "function": "00b101c0",
+      "note": "command construct"
+    },
+    {
+      "address": "00b10466",
+      "native": "00b70410",
+      "function": "00b101c0",
+      "note": "underwater clip plane"
+    },
+    {
+      "address": "00b1047e",
+      "native": "00b1eb80",
+      "function": "00b101c0",
+      "note": "queue append"
+    },
+    {
+      "address": "00b104a3",
+      "native": "00b1cb50",
+      "function": "00b101c0",
+      "note": "queue metadata 0/24h/5Ch"
+    },
+    {
+      "address": "00b10576",
+      "native": "00b1f5e0",
+      "function": "00b10500",
+      "note": "push node command"
+    },
+    {
+      "address": "00b10582",
+      "native": "00b1e6d0",
+      "function": "00b10500",
+      "note": "execute last command"
+    },
+    {
+      "address": "00b0ec80",
+      "native": "00b642f0",
+      "function": "00b0eb10",
+      "note": "perspective"
+    },
+    {
+      "address": "00b0ec8e",
+      "native": "00b632d0",
+      "function": "00b0eb10",
+      "note": "invert"
+    },
+    {
+      "address": "00b0ecef",
+      "native": "00b62d10",
+      "function": "00b0eb10",
+      "note": "transform corner"
+    },
+    {
+      "address": "00b0e35d",
+      "native": "005803e0",
+      "function": "00b0db00",
+      "note": "position lerp"
+    },
+    {
+      "address": "00b0e826",
+      "native": "00b642f0",
+      "function": "00b0db00",
+      "note": "perspective with lerped fov"
+    },
+    {
+      "address": "00b0e842",
+      "native": "00b63b30",
+      "function": "00b0db00",
+      "note": "invert rebuilt world"
+    },
+    {
+      "address": "00b0e849",
+      "native": "00413920",
+      "function": "00b0db00",
+      "note": "view times projection"
+    },
+    {
+      "address": "004e876a",
+      "native": "00b0e9b0",
+      "function": "004e8510",
+      "note": "HDR bag"
+    },
+    {
+      "address": "004e88a5",
+      "native": "00b0ea20",
+      "function": "004e8510",
+      "note": "MotionBlur bag"
+    },
+    {
+      "address": "004e8a78",
+      "native": "00b0ea70",
+      "function": "004e8510",
+      "note": "UnderWaterWave bag"
+    },
+    {
+      "address": "0088e738",
+      "native": "00b0ea20",
+      "function": "0088e560",
+      "note": "SetMotionBlurParams"
+    },
+    {
+      "address": "00acc937",
+      "native": "00b172e0",
+      "function": "00acc8a0",
+      "note": "effect priority 0"
+    },
+    {
+      "address": "00b33a1a",
+      "native": "00b19a60",
+      "function": "00b33a10",
+      "note": "clock listeners slot 28h"
+    },
+    {
+      "address": "00b1f626",
+      "native": "00b1f170",
+      "function": "00b1f5e0",
+      "note": "construct command"
+    },
+    {
+      "address": "00b1f653",
+      "native": "00b1c6c0",
+      "function": "00b1f5e0",
+      "note": "grow pointers"
+    },
+    {
+      "address": "00b1f696",
+      "native": "00b1e990",
+      "function": "00b1f5e0",
+      "note": "upload collected node"
+    },
+    {
+      "address": "00b1f51a",
+      "native": "00b1f170",
+      "function": "00b1f4d0",
+      "note": "construct command"
+    },
+    {
+      "address": "00b1f593",
+      "native": "00b72190",
+      "function": "00b1f4d0",
+      "note": "traverse scene"
+    },
+    {
+      "address": "00b1e6fa",
+      "native": "00b1ddd0",
+      "function": "00b1e6d0",
+      "note": "destroy last command"
+    },
+    {
+      "address": "00b1efd1",
+      "native": "00b62d10",
+      "function": "00b1ef60",
+      "note": "project label"
+    },
+    {
+      "address": "00b1f139",
+      "native": "00b1e7f0",
+      "function": "00b1ef60",
+      "note": "clear rows"
+    },
+    {
+      "address": "00b1ed54",
+      "native": "00b1e770",
+      "function": "00b1eca0",
+      "note": "push label"
+    },
+    {
+      "address": "00b3cb2a",
+      "native": "00b71490",
+      "function": "00b3c960",
+      "note": "cockpit view matrix"
+    },
+    {
+      "address": "00b3cc60",
+      "native": "00a8e180",
+      "function": "00b3c960",
+      "note": "cockpit shadow"
+    },
+    {
+      "address": "00b3c739",
+      "native": "00b6fdf0",
+      "function": "00b3c6e0",
+      "note": "render mode 12"
+    },
+    {
+      "address": "00b3c75d",
+      "native": "00b1f5e0",
+      "function": "00b3c6e0",
+      "note": "submit cockpit node"
+    },
+    {
+      "address": "00b21649",
+      "native": "00b3f630",
+      "function": "00b215d0",
+      "note": "wrap system-memory surface"
+    }
+  ],
+  "corrections": [
+    {
+      "address": "00b0d6a0",
+      "was": "+238h/+23Ch/+240h start, rate, duration; +244h..+24Ch three words",
+      "is": "MinSpeed, Divider, MaxBlur; +244h..+24Ch the velocity impulse 00B101C0 adds once",
+      "evidence": "004E8510 MotionBlur bag keys into 00B0EA20 (+230h..+24Ch); 00B101C0 B102AA..B102F8"
+    },
+    {
+      "address": "00b50050",
+      "was": "second argument a clear colour",
+      "is": "service+90h, the HDR 1 - AdaptationPercent/100 (float)",
+      "evidence": "00B16A07 FLD [ESI+90h]; 004E8510 AdaptationPercent into block[3] -> 00B0E9B0 +90h"
     }
   ]
 }

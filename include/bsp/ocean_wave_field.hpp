@@ -10,9 +10,11 @@
 // 0078DB03. Its height grid is the 64x64 inverse-FFT output of the spectrum
 // object at field+BCh (00B95750 seeds it from a local Mersenne state with 1105h;
 // 00B95D30 advances it in time and runs 00B95AA0), which is simulation state no
-// file carries. Its amplitude field+24h is stored once, 0.0f, by the base
-// constructor (00BA19C6 XORPS, 00BA19C9 MOVSS), and a store census found no
-// other writer, so 0078C890 returns h * 0.0f.
+// file carries. Its amplitude field+24h starts at 0.0f (base constructor,
+// 00BA19C6 XORPS, 00BA19C9 MOVSS) and 00BA0090 sets it to field+B8h
+// (Waves.HeightScale) on every in-mission render frame (00BA0B90 FLD [ESI+2Ch],
+// 00BA0B93 FSTP [ESI+24h]); docs/OCEAN_WAVE_FIELD.md section 8 corrects the
+// earlier "stored once" census.
 
 #include <cstddef>
 #include <cstdint>
@@ -24,7 +26,7 @@ namespace bsp {
 struct OceanWaveFieldState {
     bool flat_f9{false};        // +F9h, 00BA6C40's third argument, [[game+5FCh]+0C20h]
     float inv_tile_b4{0.01f};   // +B4h, 1 / tile, 00B9A4C0 at 00B9A4F1
-    float amplitude_24{0.0f};   // +24h, 0.0f from 00BA19C9
+    float amplitude_24{0.0f};   // +24h, 0.0f from 00BA19C9 until 00BA0B93 stores +2Ch
 };
 
 // The grid 00B960C0 samples at the field+BCh spectrum object: 64 x 64 cells of

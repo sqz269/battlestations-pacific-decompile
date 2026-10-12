@@ -14786,3 +14786,328 @@ Branch `agent/cc9-lua49`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
 | `l49_j8sum.py` | summarizes a run's deaths and outcome |
 | `l49_dispscan.py` | lists the operands with a given displacement |
 | `l49_diag_dive*.py` | the dive trace patches (diagnostic, never committed) |
+
+## 5fm. USN01 completes again, JM08 strike runs with the airfield's order lines, and the engine-movie stop `0045F600` (cc9-lua50, 2026-10-11, runs and reads only)
+
+All runs are on main `1c265b5c9` (clean build, snapshot `local\l50_M` in the cc9-lua50 tree), reference AF's launch
+form (`local\l50_lane.ps1`; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, 0.05 s frames).
+
+### USN01: a completion at 702.85 s (`local\l50_u1_u2.txt`, generator `local\l50_u1gen.py`)
+
+- **p8 on this main** (variant a) is identical to cc9-ships42's `s42_koff_u1`. It fails at 920.60 s, with only
+  Convoy6 and Convoy1 dead.
+  - ConTBD2's retarget to Convoy5 lands at 165 s, about 10 s before its drop. All three of its torpedoes run into
+    Convoy6, which ConTBD3 (the script's own Convoy[6]) is also attacking.
+  - Every SBD bomb lands about 20 m from `009C7D71`'s own prediction and dies at the sea surface. The scout has no
+    second bomb.
+- **u2.**
+  - ConTBD2 keeps the script's target (Convoy3).
+  - ConTBD3 is moved to Convoy5 at frame 2904/2905 (select, then target).
+  - ConTBD1 goes to Convoy2 at 2900 and back to Convoy1 at 3650.
+  - Phase 3 uses 3 F4F per slot: every 200 frames, each of slots 1-4 falls through a Nell list rotated by slot.
+- **u2's outcome.**
+  - The convoy dies 181.66-198.46 s.
+  - The Nells die 282.65-698.15 s: five to Enterprise F4F, Nell6 to SaltLakeCity.
+  - **"Mission Complete!" at 702.85 s**, with `bsp: refused a mission script's process launch: sus_prog.exe` in the
+    log.
+- **The switch-back frame is the chaotic lever.** 3300-3650 give 3 to 6 first-pass convoy kills.
+  - With 3400, 3550 and 3600, C1 and C2 are left to Northampton's guns at about 890-925 s, and phase 3 opens at
+    about 930 s.
+  - **t2 (3550) kills all six Nells by 1096.94 s but has not completed at 1800 s (`EndMission=nil`). Not chased.**
+- **What did not help.**
+  - Enterprise F4F launched in phase 2 are refused: its stock is 0 until phase 3.
+  - The scout's second `release` cannot fire: the script reselects ConTBD2 at 208 s.
+
+### JM08: the airfield's slots jam, and the `order` lines unjam them
+
+- **t5 and t6 replay unchanged on this main.** t5 fails at 1364.51 s.
+- **Without order lines the airfield stops launching at about 650 s.**
+  - No JM08 squadron ever gets `returntobase`.
+  - A squadron whose launch target died keeps resolving the dead name (`command target 0071EBF0 ...
+    token="USTroopTransport 02"` after TT02 sank) and loiters, so its slot stays in state 3.
+  - From then on every launch line answers "the slot is not in state 1 or 5".
+- **`--air-order P`** (generator `local\l50_j8gen.py`; `local\l50_j8re.py` rebuilds an order file from another's
+  header with options overridden). Every P frames from 2150, each slot gets `order <base> <s> 1`, then one
+  `order <base> <s> 3 <target>` per frame in priority order.
+  - This is AIROPS_LAUNCH_TICK's recipe for `kAirOpsHeldSlotOrdersBound`.
+  - Order 3 alone answers 2 on a squadron that is still attacking. That is `006CCDA0`'s state-3 refusal, run t5o:
+    no effect.
+  - With order 1 first, the airfield cycles to the end of the run (t5p: sqn14-25).
+
+| run | base | change | dead by HQ fall | HQ falls |
+| --- | --- | --- | --- | --- |
+| t5 | t5 | - | Nevada, Missouri 701.95, TT01-03, LST02-03, LSM01 | 1364.51 |
+| t5r | t5 | recall slots 1-2 every 1200 from 9000 | Nevada, Missouri 703.50, TT01-03, LST01, LSM01-02 | 1248.49 |
+| t6p | t6 | `--air-order 1200` | Nevada, TT01-06, LST01-03 | 1064.96 |
+| h1 | t6 | `--air-order 900` | Nevada, TT01-06, LST01-03 (by 933.00) | 1061.16 |
+| **k1** | t6 | h1 + air list TT06..01, LSM01-02 first among the rest | **Nevada, TT01-06, LST01-03, LSM01 (by 984.18)** | 1066.87 |
+| k2 | t6 | h1 + Isokaze/Fubuki LSM first | Nevada, TT01/04-06, LST01, LSM01-02 | 1050.70 |
+| m4 | t5 | `--air-order 900 --air-every 150` | Nevada, TT01-06, LST01-03 (by 969.74) | 1110.61 |
+
+- Also run, with fewer kills: h2-h6, k3, k5, k6, t5p, m1, m2, m3, m5, m6. Their order files are `local\l50_j8_<run>.txt`.
+- **What stands between these and a win.**
+  - Missouri dies only on t5-family orders without order lines (a Gyoraitei tube at about 700 s).
+  - With Missouri alive, the HQ falls at 1030-1110 s.
+  - In t5 the boats also kill Helena and Auilick at 694-706 s, and the HQ holds to 1364 s.
+  - `CheckCompletion` sends the `InvasionForce` (Missouri, the destroyers, Helena, Auilick and the landships) to the
+    RetreatPoint once primaries 1 and 2 are done. The HQ must then outlast the three bomber waves (`luaBomberWave1`
+    + 180 s + 180 s) to the Dakotas.
+- In k1, Isokaze's and Fubuki's guns kill most of the landships (Fubuki: TT05, LST01, TT02; Isokaze: TT04, LST02,
+  TT03, TT01, LST03).
+
+### `BSP_EngineMovie_Stop` `0045F600` and the engine-movie entry (read; not bound)
+
+**What `0045F600` is.** It is the end of the `.ema` engine movie, not of the Lua in-game movies.
+- The `luaXxxMovieEnd` callbacks are pure Lua: `luaIngameMovie` -> Blackout -> `luaCamIngameMovieAuto` ->
+  `luaDelay` (MISSION_BLACKOUT, "The camera movie in between" and "Two movies on one frame").
+- `0045F600`'s callers are `BSP_EngineMovie_Advance` `0045F970` (the clock passes `Movielen`),
+  `BSP_Game_UpdateCutscenePlayback` `004C6B20` (the skip), `BSP_Game_TeardownSessionState` and `00427190`.
+
+**Which missions reach it.** The chain:
+1. `BSP_Game_LoadSceneContents` `004D4DF0` forces game mode 9 (`004BC890`) when all of these hold:
+   - the effective mode is 8;
+   - the scene path with `.ema` resolves (`00BDF4C0`);
+   - the mission key has no checkpoint (`007F8D60` over the profile's set at `+94h`, the set the main menu's
+     checkpoint prompt reads).
+2. `004E0A50` reads the raw mode. Mode 9 runs only `luaEngineMovieInit` (block `5_`), not the precache and stage-init
+   arm.
+3. The mission entry `004C9CA0` writes `game+1EE0h = !checkpoint` (`004C9E1D`).
+4. `BSP_Game_OnMove` then calls `BSP_Game_BeginEngineMovie` `004CCE50` once (`004E5147`). It loads
+   `<scene path>.ema`, starts it (`0045DB40`) and pushes `INTF_ENGINEMOVIE`. A missing file (state 5) tears the movie
+   object down and returns.
+
+Of the reference rows, only **JM05 and JM06** qualify. Their PRCPIJN scenes have `ijn_05_invasion_of_port_moresby.ema`
+and `ijn_06_prelude_to_midway.ema`:
+- `Movielen` 90 s and 43 s;
+- entity tracks on real units (JM05: five Fubuki-class, four F4F, five troop transports, Kuma, Mogami, Clemson and
+  Fletcher);
+- actions including `aSetGunFireDisabled/Enabled`, `sForceArtilleryTarget`, `pTakeOffHack` and `aHideEntity`.
+
+USNOS, USN01, JM08 and the other rows have no `.ema` for their scene, so the movie is never begun and a USNOS pair
+would be identical.
+
+**`0045F600`'s body, in order:**
+1. `time = Movielen`, state 4, `00A77760(1)`, and the sound level reset.
+2. `0046B730` when the scene database exists. It walks the scene database and calls `BSP_Game_SetGameMode(8)` at
+   `0046B99B`.
+3. `004518B0`, then `luaPrecacheUnits` (`0045F520`, forced) when the scene database exists.
+4. Twelve class and table resets: `0095CA70`, `004423A0`, `006E9C50`, `0084EB60`, `004B1890`, `004AF930`,
+   `BSP_BuoyClass_ResetLuaTable`, `BSP_CloudClass_ResetLuaTable`, `004708A0`, `004A7120`, `006D74B0` and
+   `00869D20` (segment keywords: vehicle, device, bullet, stock, land-vehicle and hangar classes).
+5. `collectgarbage("collect")` in script mode, then `00E188A8+193Ch = 0`, then `BSP_Game_BuildLocalPlayerUnitLists`.
+6. When `luaStageInit` is a function: under file block `4_<short name>`, `luaStageInitMulti` (forced) and
+   `luaStageInit` (`0045F440`).
+7. The two interface `+34h(0)` calls, `00A77760(0)`, `00B72030` and `BSP_AllocatorList_TrimAll`.
+
+So the image runs the mission's stage init when the movie ends or is skipped, in mode 8, after reloading the class
+tables.
+
+**The host.**
+- On JM05 the scene contents host already takes the force: the log says `scene contents: mode=9`, and the summary's
+  `game_mode_forced_to_9` is set.
+- But the load arm reads `host.scene_state.script_slot`, which is 8 (`engine_movie_arm=0`). So the host runs
+  `luaPrecacheUnits`, `luaStageInitMulti` and `luaStageInit` at load and never `luaEngineMovieInit`.
+- The entry latch (`MissionEntry::engine_movie_check`) and `004CCE50` are records, so the movie never starts and
+  `0045F600` never runs.
+
+**The bind, `kEngineMovieEntryBound`** (`include/bsp/game_hosts_scene_contents.hpp`, packet
+`cc9_lua50_engine_movie`; the edits are in `src/game_hosts_mission_frame.cpp`, on loan from the cc9-ships42 lane).
+It is committed OFF with these predictions:
+- On a load whose scene contents forced mode 9, the `lua_call_entry_point_a/b` steps take the image's mode-9 arm:
+  `luaEngineMovieInit` only.
+- At the first in-mission frame, the host runs `0045F600`'s tail as the player skipping the movie (LABELLED: the
+  `004C6B20` skip path, taken at once): `luaPrecacheUnits`, `collectgarbage`, `luaStageInitMulti`, `luaStageInit`.
+  The class resets stay records.
+- Predictions:
+  - JM05 and JM06 move: stage init runs one frame later, after `luaEngineMovieInit`'s own globals.
+  - Every other row is identical (pair_diff 0), because no other reference scene has a `.ema`.
+  - A mechanism failure would be any row other than JM05/JM06 moving, or JM05 losing its phase-1 objectives.
+**Pairs on `7ae13124b`** (`local\l50_E0` OFF, `local\l50_E1` ON; 3000 frames each):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | deaths 16 = 16, but the airfield's sqn01 dies 0.3-1.9 s later to other killers; 71 unit rows; shots 2028 -> 2214 |
+| JM06 | 3, moved | the scripted Gato kill moves from 0.00 to 0.05 s; hits 149 -> 150 |
+| USNOS (control) | 1, gameplay identical | - |
+
+- **What moves JM05.** Stage init now runs one frame later. `luaEngineMovieInit`'s own `luaDelay` chain also runs:
+  `luaJM5EMDlgA` at 10 s, then B, C and D.
+  - So `Intro_dlg_a..c` play. That doubles the dialog starts (4 -> 8) and the sequencer messages (8 -> 17).
+  - The mission's own dialogs, and the scripts that wait on them, shift as a result, and the ships' paths follow.
+- **Verdict: OFF, a mechanism mismatch.**
+  - `0046B730` (read from the snapshot export, which predates the `_free` truncation) is not only the mode reset.
+  - It walks the entity list at `[game+19CCh]+8` (next pointer at `+44h`). It kills (`BSP_MissionEntity_Kill(2)`)
+    every entity whose class `+C4h` is not in the scene database's class map at `+158h`.
+  - It then steps the world (`BSP_Game_RunExtraFixedStep` x4, `BSP_EntityWorld_FlushActivations`), sets mode 8, and
+    re-resolves the scene's entities by name (`BSP_EntityRegistry_FindEntityByName`, `BSP_SEntity_InitAll` x2,
+    `BSP_SceneDatabase_ResolveDeferredReferences`).
+  - The script entities `luaEngineMovieInit` created (its `luaDelay` timers among them) are very probably among the
+    killed, since a script entity's class is not a scene class. If so, the image's skip never plays the intro
+    dialogs that the ON run plays.
+  - Before this can flip, the stand-in must:
+    - read which classes `+158h` holds;
+    - kill the non-scene entities;
+    - re-initialise the scene ones.
+- **The next step is the faithful no-skip path: playing the movie.** That means cc13's Advance `0045F970` and the
+  per-track dispatch `004560E0` in `src/engine_movie_actions.cpp`, reconstructed but not wired.
+  - Its tracks move real units and fire guns for 90 s on JM05 and 43 s on JM06.
+  - Stage init would run only when the clock passes `Movielen`.
+  - The skip path is the player's choice to skip, so it is only a stand-in for that.
+
+### Oddities left for later
+
+1. **USN01 t2** (`local\l50_u1_t2.txt`, switch-back at 3550) kills all six Nells by 1096.94 s but has not completed at
+   1800 s (`MissionPhase=3`, `EndMission=nil`).
+2. **The SBD bombs.** Every SBD bomb in the USN01 runs lands about 20 m from `009C7D71`'s own predicted point (the
+   "vs predicted" column of the bomb lines), for the AI dive bombers and the Nells alike. This may be a systematic
+   release or drag bias; the lead routes it to gunnery.
+3. **A queued run dies silently.** `tools/run_game.ps1` waits at most `-WaitSeconds` (default 2400 s) for a slot, then
+   throws. The log file is never created, and the `.out` stays empty. With three slots held by long runs, four of
+   this packet's JM08 runs vanished that way. `local\l50_lane.ps1` now passes `-WaitSeconds 14400`.
+
+## 5fn. JM08: the HQ holds once Nevada and Missouri die (cc9-lua50, 2026-10-11/12, runs only)
+
+Runs on main `e423cd42b`'s build (the 5fm launch form, 48000 frames = 2400 s unless noted). Order files are
+`local\l50_j8_<run>.txt` (generator `local\l50_j8gen.py`, header line = its arguments); the per-run table is
+`local\l50_j8tab.py <logs>`. STD below is the landship list TT01-06, LST01-03, LSM01-02.
+
+**The win condition** (this installation's `prcpjm08.lua`, read whole for this): `CheckPrim1` (all 11 `LandShips`
+dead) and `CheckPrim2` (`Flagship` = Missouri dead) -> `CheckCompletion` sends the `InvasionForce` to the
+RetreatPoint and plays the "Run" dialog, whose callback `FadeIn` -> `PreparePhase2` -> `luaBomberWave1`, then waves 2
+and 3 at +180 s each. Wave 3 carries the C47 wing (`Mission.C47Count` 3-5, class 136, `PilotSetTarget` the HQ);
+`CheckPrim3` waits for every class-136 plane to die, then `Victory` -> `luaMissionCompletedNew`. `CheckHQ` fails the
+mission when the HQ changes party.
+
+| run | change from n1 | landships dead | alive | Missouri | Nevada | HQ |
+| --- | --- | --- | --- | --- | --- | --- |
+| n1 | (ships STD+Missouri, boats Missouri+STD, period 800, `--air-order 900`) | 9 by 963.69 | LSM01-02 | 691.05 | - | falls 1099.65 |
+| r1 | boats LSM first | 3 | 8 | - | - | falls 993.70 |
+| r2 | `--air-order 600` | 8 | LST02, LSM01-02 | - | - | falls 995.85 |
+| r3 | ships list LSM before LST | 9 | LSM01-02 | 691.05 | - | falls 1078.30 |
+| **r5** | boat/ship period 600 | **10 by 1549.59** | **LST03** | 756.44 | 980.33 | **holds 2400 s** |
+| r6 | boats from frame 300 | 9 | TT03, LSM02 | - | - | falls 1000.35 |
+| **r7** | boat/ship period 1000 | **10 by 1637.17** | **TT04** | 740.29 | 996.88 | **holds 2400 s** |
+| w1-w3 | r7 to 3600 / 4800 / 4800 s (w3 adds C47, B-17, B-25, SBD, CAP to the air list) | identical to r7 | TT04 | | | holds 4800 s |
+| x4 | r7, TT04 first in the Hosho list | identical to r7 (the Hosho dies at 456.61 s) | TT04 | | | holds |
+| y3 | r5, LST03 first in the air list | 7 | LST01-02, LSM01-02 | - | 973.04 | falls 1210.85 |
+
+- **What holds the HQ.** It holds only in the runs where both Missouri (740-756 s) and Nevada (secondary 1, to the
+  HQ's own guns at 980-997 s) die. With only Missouri dead (n1, r3) or only Nevada dead (y3) it falls at 1078-1211 s.
+  This is a correlation over these runs, not a read mechanism.
+- **TT04 in r7/w.** At w3's last bomb release it is at about (-324, 3949), under way at 8.7 m/s, heading pi. Airfield level bombers keep attacking it to the end of w3 (37 releases in the closing table, along-course miss
+  at impact 5-167 m, mean 81 m), but only nine blasts land in 4800 s (25-65 each), and damage control brings it back to
+  4000/4000 by 1784 s. Its earlier hull damage came from boats and guns before Isokaze (887.71) and Fubuki (771.54)
+  died. In r5 TT04 dies at 585.73 s (killer TT01, cat 1), and LST03 is the survivor instead.
+- **y2** (r5, LST03 first in the ships list) had all of TT02-06, LST02-03 and LSM01 dead by 739.89 s when the outage
+  cut it; y1 (r5, LST03 second in the boat list) and x1-x3 (r7 with TT04 promoted in the boat, ship and air lists)
+  never started (queued behind the slots at the outage). They are rerun next.
+- The w runs never reach phase 2, so C47 targeting (w3) is untested.
+- **x1-x3 on the rerun** (r7 with TT04 first in the boat list, first in the ship list, first in the air list): all
+  three lose the HQ (990.25, 1080.65, 1009.65 s) with Missouri alive; 9, 7 and 5 landships dead. Promoting TT04
+  costs the early Missouri kill each time.
+- **y1, y2, y4 on the rerun** (r5 with LST03 second in the boat list, first in the ship list, and r5 with period 650):
+  all lose the HQ (1137.85, 1031.00, 1016.65 s). y1 kills Missouri but not Nevada; y2 kills Nevada but not Missouri;
+  y4 kills neither. Same split as above: both battleships dead, or the HQ falls.
+- **Why TT04 outlives r7 and w1-w3.** After 1637 s the air list's only live name is TT04, so every airfield
+  sortie goes to it: sqn20-27 are dive bombers (`divebomb ai:close_attack`) except the level bomber sqn25. The
+  shipyard's stock is spent (12 Gyoraitei, all dead by 745.84 s; every later `build` answers "no idle entry"), the
+  Hosho is dead, and Isokaze and Fubuki are dead. Late in w3 the aim-lead lines show TT04 stopped (`v=0`), yet only
+  nine blasts land on it in 4800 s (the last at 2421 s), against its repair. Launching on to 3200 s (w2) does not change that. So the
+  r7 prefix (identical to 1637 s across r7, w1-w3 and x4) has no remaining lever in the order file; a win needs
+  TT04 dead before Isokaze (887.71 s) and Fubuki (771.54 s) are, which x1-x3 show breaks the early Missouri kill.
+
+## 5fo. Post-`_free` audit of the 22 functions only this doc owns (cc9-lua50, 2026-10-12, reads only)
+
+docs/CC13_FREE_FLOW_REPAIR.md lists 22 repaired functions whose only owning doc is this one. For each, the code
+after every `_free`-family call (`00BF65AC`, `00BF6989`, `00BF9DC8`) was read from the live listing
+(`local\l50_postfree.py`, one `local\l50_postfree_<addr>.txt` per function) and compared with the host.
+
+| function | what the newly visible code does | host |
+| --- | --- | --- |
+| `006B0000`, `007B6810`, `007F1140`, `007F1EE0`, `009B2E30`, `009CC000` (scalar deleting dtors) | the `ADD ESP`/`POP`/`RET` epilogue | no host effect |
+| `006D3B10` (dtor body, caller `006D40D0`) | frees `+830h`, releases `+828h` (vtable `+4`(1)), then `006CA410` and the base dtor `00959940` | no host effect (memory only) |
+| `006C48F0` (air-ops list erase, from `006CC5C0` and three others) | decrements the count `+8h` and continues the walk | no host effect: the host's container erase |
+| `006CADD0` `BSP_AirOps_LoadFromScene` | the next property-name string builds (`0065CAF0`, `006952A0`, `00695870`) after each free; the loads past them were already visible | no host effect |
+| `00733D50`, `00733FF0`, `007340A0` (HUD countdown) | `00733FF0`/`007340A0`: destroy the old callback holder `+54h` and store the new one (or 0) | covered: `game_hosts_script_orders.cpp` Countdown / `countdown_stop_007340a0` already cite `0073405E`-`00734083` and `00734110`-`0073412E`; `00733D50` zeroes its `[EDI]` the same way |
+| `00759120` (mothership model bind) | `"runwaycenter"` (`00D018BC`) model node -> class `+814h..+81Ch` | covered: `carrier_runway_class_00759120` (`00759237`-`00759265`) |
+| `007F0280` `BSP_Bot_NearFieldUnitAvoidanceProbe` | after a vector grow: store the element, count + 1, back into the walk | no host effect: the host's push_back |
+| `00929800` `BSP_MissionEntity_PublishLuaDead` | frees the script object `+1D8h` and zeroes it, the Lua ref dtor `00B67700`, then `LeaveCriticalSection` | no host effect: `entity_kill_00926d90` already erases the entity from both think lists |
+| `0094C900` | frees two locals and returns (`RET 20h`) | no host effect |
+| `00982120` (the `exitzone` warning, from `BSP_Plane_OutOfActionCountdown` and `BSP_PlaneSquadron_OnPlaneLeftMap`) | sets warning-manager byte `+105h` = 1 and frees the argument vector | no gameplay effect: HUD warning state (cc13's warning lane) |
+| `009B4D00`, `009B6D20` (level-bomb attack run / move-to ticks) | after a vector grow in the spacing pass: store the peer, count + 1, back into the walk | no host effect: `lb_spacing_pass` uses a vector |
+| `009CA200` | the epilogue, `RET 4` | no host effect |
+| `00A287C0` (from `BSP_AiPlanner_CaptureThink`) | map `operator[]`: insert through `00A215D0` when the key is missing, return `node+10h` | no host effect: std::map default-inserts the same |
+| `00A32500` `BSP_Ai_ForcedTargetWeightInsert` | after a grow: copy the 20h-byte record (`REP MOVSD`), count + 1, then `00A038C0` | no new behaviour: the non-grow path (`00A327CD`) was visible and reaches the same `00A038C0` call. `00A038C0` empties the map at `[00F8A738]` (a cache, through `00A01340`); the host keeps no such cache |
+
+So no function on this list needs a new bind. Uncertainty: the comparison is against the post-free fragments only;
+the rest of each body was visible before the repair and is not re-audited here.
+
+## 5fp. `kEngineMovieEntryBound`: 0046B730's kill pass over the script entities (cc9-lua50, 2026-10-12)
+
+**The live re-read of `0046B730`** (decompile and listing, intact after the `_free` repair):
+1. `0046B795`-`0046B8E1`: walk the root entities `[[00E188A8]+19CCh]+8h` (next `+44h`). A root whose class
+   `+C4h` is not in the scene database's set at `+158h` (end node `+15Ch`, the test at `0046B7CA`) is queued;
+   for a root whose class is in the set, every child (`+48h` list, count `+50h`) whose class is not in it is
+   queued. GAME_EXECUTABLE.md: the constructor fills `+158h` with 44h (Landscape), 5Eh, 1Dh, 47h (Path) and 3Dh.
+2. `0046B8ED`-`0046B91B`: `00926D90(2)` on each queued entity (`PUSH 2` at `0046B904`, call at `0046B906`).
+3. Five `00874D00` calls with `CL = 0` (`0046B916`-`0046B98D`) around `00903670` and three world-vtable
+   `+0Ch(0)` calls, then `BSP_Game_SetGameMode(8)` at `0046B99B`.
+4. `0046BA7B`-`0046BBAA`: for each `+28h` record whose class is not in the set, create the entity again by name
+   through the class factory and attach a new property-bag ref at `+C0h`.
+5. `BSP_SEntity_InitAll` x2, `0046AAB0`, five `00874D00` calls with `CL = 1` (`0046BBD4`-`0046BC4B`),
+   then each record's deleting destructor and the vector cleared.
+
+`CreateScript` entities are class 3 (`00898892`) and roots, so every `luaDelay` timer that `luaEngineMovieInit`
+made is killed in step 2.
+
+**The bind (still OFF).**
+- The skip block now kills every live script entity through `00926D90` with cause 2
+  (`GameScriptOrdersHost::kill_live_script_entities`) before `luaPrecacheUnits`.
+- The scene units' kill and re-create (steps 1 and 4 for non-script classes) stay a LABELLED record. On a skip at
+  the first frame nothing has moved, so the re-created units would match the loaded ones.
+- **The ten `00874D00` calls stay records; the clock is not advanced.** `00874D00` re-runs nine rows of the fixed-step
+  fan-out outside the driver `00875BB0` and writes no mission clock. Its `CL = 0` think-list pass `00929460`
+  (0.05 s) runs over a list whose script entities were all just killed. Its world block is behind
+  `[[game+19CCh]+4ACh]` (session pump, replication, InitAll), not read here. `CL = 1` passes 0 dt and skips the
+  think list. Uncertain: `BSP_MissionLuaHost_DrainQueuedCalls` at the head of each call may run Lua calls queued
+  before the skip; none is modelled.
+
+**Predictions for the ON pairs** (JM05, JM06 3000 frames; USNOS control):
+- JM05: the `luaJM5EMDlgA`..D chain no longer runs, so the dialog starts and sequencer messages go back to OFF's
+  4 and 8 (E1 had 8 and 17). The one-frame stage-init shift remains, so the row may still move slightly (exit 3).
+- JM06: as in E1, the scripted Gato kill moves by one frame; nothing else.
+- USNOS: identical (exit 0 or 1). A mechanism failure is JM05 still playing `Intro_dlg_a..c`, or USNOS moving.
+
+**Pairs on `ca93f2dcb`** (`local\l50_F0` OFF, `local\l50_F1` ON; 3000 frames, `local\l50_F{0,1}_{j5,j6,usnos}.log`):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 | 3, moved | `StartDialog` calls 4 = 4 (Intro2, Cap_range, Map_hint1, RadarHint1; E1 had 8 with `Intro_dlg_a..d`); `engine movie stop: 0046B730 killed 1 script entity`; deaths 16 = 16, the airfield's sqn01 dies 0.3-1.9 s later; shots 2028 -> 2214 (the same numbers as E1) |
+| JM06 | 3, moved | one script entity killed; the scripted Gato kill moves 0.00 -> 0.05 s; hits 149 -> 150 |
+| USNOS (control) | 1, gameplay identical | only the known ShipAiClearance / ShipAiSectorScan noise |
+
+- **What still moves JM05.** Not the dialogs: every stage-init action is one frame later (`AddUntouchableUnit` at
+  t 0.05 instead of 0.00, the ships' first AI state picks), plus `luaEngineMovieInit`'s own `MissionNarrative` and
+  music level. That is the LABELLED skip at the first frame, which the prediction allowed.
+- **Verdict: ON.** The mechanism matches every prediction: the intro timers die, the dialog count returns to OFF's,
+  and the control is identical. Remaining substitutions, all LABELLED: the player skips on the movie's first frame
+  (the no-skip path plays the 90 s / 43 s movie, `0045F970` and `004560E0`, not wired); the scene units are not
+  killed and re-created; the ten `00874D00` steps and the class-table resets are records.
+
+## 5fq. BSM01 completes again (cc9-lua50, 2026-10-12, runs only)
+
+On main `6d9a8515f`'s build (`local\l50_lane.ps1` row `b1`, 30000 frames, `--stop-after-end 40`):
+- **Why gunnery35's v3 fails on AG** (`g35_b1v3_ag.log`). The last leg (frame 6850, toward the halted MiniSub at
+  (1072, -3017)) is given before HenryPT reaches the previous waypoint (1915, -3084). The boat cuts the corner and,
+  at about (1700, -2785), runs into Raleigh, which is on `pt_path3` (`NavigatorMoveOnPath`). The hull contact
+  census has HenryPT against Raleigh from step 7553 for 25079 steps (depth 11.9 m). HenryPT sits there at 0 m/s
+  under 1086 blasts from Raleigh's AA, and dies at 1501.74 s. On AF the same contact happens at the same place, but
+  the boat works free and the depth charge hits.
+- **a** (`local\l50_b1_a.txt`): v3 with the last leg moved to frame 7250, after the waypoint is reached, so the
+  approach runs west along y of about -3050.
+  - The depth charge hits the MiniSub (`hit listener 00988510 ... type "Depthcharge"`), then
+    `AddDamage("MiniSub", 9999)`.
+  - Phase 4 runs, `EndMission` at 773.93 s, and `"Donald is heading home - Mission Complete"` at 785.53 s.
+  - `bsp: refused a mission script's process launch: sus_prog.exe` is in the log.
+- **b** (`l50_b1_b.txt`, two legs west via (1500, -3080)) stops at (1421, -3260), 426 m short, and is still in phase 3
+  at 1500 s. **c** (`l50_b1_c.txt`, last leg at 7100) was not judged.
