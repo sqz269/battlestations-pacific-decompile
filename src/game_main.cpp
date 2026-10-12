@@ -25,6 +25,7 @@
 #include <cstdlib>
 #include <array>
 #include <cstdio>
+#include <cmath>
 #include <cstring>
 #include <cwchar>
 #include <filesystem>
@@ -67,6 +68,8 @@ namespace bsp::game {
 // src/game_hosts_mission.cpp and declared here, their only caller, so no shared header changes.
 long harness_mission_frame() noexcept;
 void arm_harness_crash_test(long mission_frame) noexcept;
+void arm_harness_stop_after_end(long frames) noexcept;
+bool harness_stopped_after_end() noexcept;
 }  // namespace bsp::game
 
 namespace {
@@ -177,6 +180,27 @@ long take_crash_test_option(std::vector<char*>& argv) {
         }
     }
     return frame;
+}
+
+// Remove `--stop-after-end S` (hidden, harness only): stop the run S seconds of mission
+// time after the script-orders host records the mission's end, instead of simulating on to
+// the frame budget. Returns S, or -1 when absent. The bootstrap child strips it the same way.
+double take_stop_after_end_option(std::vector<char*>& argv) {
+    double seconds = -1.0;
+    for (auto it = argv.begin(); it != argv.end();) {
+        if (std::strcmp(*it, "--stop-after-end") != 0) { ++it; continue; }
+        it = argv.erase(it);
+        seconds = 0.0;
+        if (it != argv.end() && **it != '\0') {
+            char* end = nullptr;
+            const double v = std::strtod(*it, &end);
+            if (end != nullptr && *end == '\0' && v >= 0.0) {
+                seconds = v;
+                it = argv.erase(it);
+            }
+        }
+    }
+    return seconds;
 }
 
 // The bootstrap appends this token last. Exclude it before the public parser
@@ -942,6 +966,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     const bool handoff_child = is_handoff_child();
     std::vector<char*> public_argv(__argv, __argv + __argc);
     const long crash_test_frame = take_crash_test_option(public_argv);
+    const double stop_after_end_seconds = take_stop_after_end_option(public_argv);
     bsp::game::GameExecutableOptions options;
     std::string error;
     if (!options.parse(static_cast<int>(public_argv.size()) - (handoff_child ? 1 : 0),
@@ -1018,6 +1043,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         }
         ~DisplayRequiredScope() { SetThreadExecutionState(ES_CONTINUOUS); }
     } display_required_scope(log);
+    if (stop_after_end_seconds >= 0.0) {
+        const double step = options.mission_frame_seconds > 0.0f ? options.mission_frame_seconds : 0.05;
+        const long frames = static_cast<long>(std::ceil(stop_after_end_seconds / step));
+        bsp::game::arm_harness_stop_after_end(frames);
+        log.notef("harness stop-after-end armed: %.2f s (%ld mission frames) after the mission end",
+            stop_after_end_seconds, frames);
+    }
     if (crash_test_frame > 0) {
         bsp::game::arm_harness_crash_test(crash_test_frame);
         log.notef("harness crash test armed: null write before mission frame %ld",
@@ -1230,7 +1262,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     // A reached Present with a failed HRESULT counts in neither category.
     // Milestone 2g is the one exception: a mission that ended through the debrief path
     // finishes the run where the game does, which is before the frame count is reached.
+    // The harness-only --stop-after-end stop is another such end.
     if (options.frame_limit > 0 && !summary.mission_exit_completed
+        && !bsp::game::harness_stopped_after_end()
         && summary.frames_presented + summary.presents_skipped
             < static_cast<unsigned long long>(options.frame_limit)) {
         summary.exit_code = 1;
