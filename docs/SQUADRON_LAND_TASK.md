@@ -14995,7 +14995,7 @@ mission when the HQ changes party.
   HQ's own guns at 980-997 s) die. With only Missouri dead (n1, r3) or only Nevada dead (y3) it falls at 1078-1211 s.
   This is a correlation over these runs, not a read mechanism.
 - **TT04 in r7/w.** At w3's last bomb release it is at about (-324, 3949), under way at 8.7 m/s, heading pi. Airfield level bombers keep attacking it to the end of w3 (37 releases in the closing table, along-course miss
-  at impact 5-167 m, mean 81 m), but only six blasts land in 4800 s, 65 each, and damage control brings it back to
+  at impact 5-167 m, mean 81 m), but only nine blasts land in 4800 s (25-65 each), and damage control brings it back to
   4000/4000 by 1784 s. Its earlier hull damage came from boats and guns before Isokaze (887.71) and Fubuki (771.54)
   died. In r5 TT04 dies at 585.73 s (killer TT01, cat 1), and LST03 is the survivor instead.
 - **y2** (r5, LST03 first in the ships list) had all of TT02-06, LST02-03 and LSM01 dead by 739.89 s when the outage
@@ -15005,6 +15005,16 @@ mission when the HQ changes party.
 - **x1-x3 on the rerun** (r7 with TT04 first in the boat list, first in the ship list, first in the air list): all
   three lose the HQ (990.25, 1080.65, 1009.65 s) with Missouri alive; 9, 7 and 5 landships dead. Promoting TT04
   costs the early Missouri kill each time.
+- **y1, y2, y4 on the rerun** (r5 with LST03 second in the boat list, first in the ship list, and r5 with period 650):
+  all lose the HQ (1137.85, 1031.00, 1016.65 s). y1 kills Missouri but not Nevada; y2 kills Nevada but not Missouri;
+  y4 kills neither. Same split as above: both battleships dead, or the HQ falls.
+- **Why TT04 outlives r7 and w1-w3.** After 1637 s the air list's only live name is TT04, so every airfield
+  sortie goes to it: sqn20-27 are dive bombers (`divebomb ai:close_attack`) except the level bomber sqn25. The
+  shipyard's stock is spent (12 Gyoraitei, all dead by 745.84 s; every later `build` answers "no idle entry"), the
+  Hosho is dead, and Isokaze and Fubuki are dead. Late in w3 the aim-lead lines show TT04 stopped (`v=0`), yet only
+  nine blasts land on it in 4800 s (the last at 2421 s), against its repair. Launching on to 3200 s (w2) does not change that. So the
+  r7 prefix (identical to 1637 s across r7, w1-w3 and x4) has no remaining lever in the order file; a win needs
+  TT04 dead before Isokaze (887.71 s) and Fubuki (771.54 s) are, which x1-x3 show breaks the early Missouri kill.
 
 ## 5fo. Post-`_free` audit of the 22 functions only this doc owns (cc9-lua50, 2026-10-12, reads only)
 
