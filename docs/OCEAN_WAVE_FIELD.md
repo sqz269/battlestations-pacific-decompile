@@ -645,3 +645,27 @@ Per entity:
 
 Net: main holds six of seven (all but ESMP08); main + the flip holds five (USN02, USN12, ESMP08, LOMP06, BSM01).
 Lost by the flip: USN01 and LOMP10. Gained: ESMP08.
+
+## 19. classDesc+74h over the bullet classes, and 006E8680's (x, y) (cc9-physics3, 2026-10-12, read-only)
+
+**+74h.** `0084C11C..0084C14C` runs the exit trace `0084B4B0` only when the shot's vtable[2Ch] (its medium) is
+non-zero and `0084C133 cmp byte [edi+74h], 0` finds zero; otherwise the entry trace `0084B380`. The vtable[30h]
+accessor `006E2580` reads the same byte (`mov eax,[ecx+4]; mov al,[eax+74h]; ret`). The byte is the weapon class's
+`ExplWaterHit` (include/bsp/projectile_kinds.hpp `kWeaponClassOffExplWaterHit`, read with default false at
+projectile_kinds.cpp 191). Census of this installation's bulletclasses.lua (local\p3_explwater.py; realistic
+105 entries, mtime 2025-06-02; arcade 119 entries, mtime 2026-05-09, locally modified like vehicleclasses.lua):
+
+| Type | realistic | arcade |
+|---|---|---|
+| Artillery, Bomb, Bullet, Flak, Rocket, Kamikaze, DummyKamikazePlane, DummySubmarine, DummyTarget | all `true` (83) | all `true` (96) |
+| Torpedo, Depthcharge, WaterMine, Paratrooper | all absent, so false (22) | all absent (23) |
+
+So the exit trace can run only for a torpedo, depth charge, mine or paratrooper already in the water; every
+other round ends at the water whichever medium it is in. That is what the host does (GUNNERY 182).
+
+**006E8680.** `006E8673` stores `[esi+100h]` as the second argument and `006E867D` `[esi+0FCh]` as the first, then
+`006E8680` calls `0078CF20` (which passes both straight to `0078C890` and `00B9CF50`) and `006E8685` compares
+`[esi+100h]` with the result: y <= h selects vtable[28h], else [24h]. The spawn-time medium test therefore samples
+(x, y), the same axis defect as `0084B3D8` and `0078D29D` (docs/PROJECTILE_HELPERS.md section 1). The host's
+`create_projectile_006e8430` (projectile_kinds.cpp 339) samples (x, z); it has no caller in src, so nothing moves.
+The one-line correction was routed to the lead (not this lane's file).
