@@ -1,0 +1,224 @@
+{
+ "events": [
+  {
+   "delete_inside": "00b40a20",
+   "range": [
+    "00b40a10",
+    "00b40a2f"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b40a20"
+   },
+   "result": {
+    "success": true,
+    "address": "00b40a20",
+    "deleted_function": "FUN_00b40a20",
+    "body_size": 15,
+    "message": "Function 'FUN_00b40a20' deleted at 00b40a20"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b40a10",
+    "end_address": "00b40a2f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b40a10",
+    "end_address": "00b40a2e",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b40a10",
+    "disassemble_first": false,
+    "name": "BSP_MaterialPassSlab_StampSlabIndex_Unreferenced"
+   },
+   "result": {
+    "success": true,
+    "address": "00b40a10",
+    "function_name": "BSP_MaterialPassSlab_StampSlabIndex_Unreferenced",
+    "entry_point": "00b40a10",
+    "body_size": 31,
+    "message": "Function created successfully at 00b40a10",
+    "warnings": [
+     "Function name 'BSP_MaterialPassSlab_StampSlabIndex_Unreferenced' \u2014 main part 'MaterialPassSlab_StampSlabIndex_Unreferenced' is not PascalCase. Expected: MaterialpassslabStampslabindexUnreferenced",
+     "Function name 'BSP_MaterialPassSlab_StampSlabIndex_Unreferenced' \u2014 main part 'MaterialPassSlab_StampSlabIndex_Unreferenced' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MaterialPassSlab_StampSlabIndex_Unreferenced' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b40a10",
+   "end": "00b40a2f",
+   "name": "BSP_MaterialPassSlab_StampSlabIndex_Unreferenced",
+   "after": "Function: BSP_MaterialPassSlab_StampSlabIndex_Unreferenced at 00b40a10\nSignature: undefined BSP_MaterialPassSlab_StampSlabIndex_Unreferenced(void)\nEntry: 00b40a10\nBody: 00b40a10 - 00b40a2e"
+  },
+  {
+   "delete_inside": "00b47e90",
+   "range": [
+    "00b47e80",
+    "00b47e9f"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b47e90"
+   },
+   "result": {
+    "success": true,
+    "address": "00b47e90",
+    "deleted_function": "FUN_00b47e90",
+    "body_size": 15,
+    "message": "Function 'FUN_00b47e90' deleted at 00b47e90"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b47e80",
+    "end_address": "00b47e9f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b47e80",
+    "end_address": "00b47e9e",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b47e80",
+    "disassemble_first": false,
+    "name": "BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced"
+   },
+   "result": {
+    "success": true,
+    "address": "00b47e80",
+    "function_name": "BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced",
+    "entry_point": "00b47e80",
+    "body_size": 31,
+    "message": "Function created successfully at 00b47e80",
+    "warnings": [
+     "Function name 'BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced' \u2014 main part 'NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced' is not PascalCase. Expected: NativevertexdeclarationslabStampslabindexUnreferenced",
+     "Function name 'BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced' \u2014 main part 'NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced' does not start with a recognized verb. First word 'Native' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b47e80",
+   "end": "00b47e9f",
+   "name": "BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced",
+   "after": "Function: BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced at 00b47e80\nSignature: undefined BSP_NativeVertexDeclarationSlab_StampSlabIndex_Unreferenced(void)\nEntry: 00b47e80\nBody: 00b47e80 - 00b47e9e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b405e0",
+    "end_address": "00b406aa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b405e0",
+    "end_address": "00b406a9",
+    "bytes_disassembled": 202,
+    "message": "Successfully disassembled 202 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b405e0",
+    "disassemble_first": false,
+    "name": "BSP_Float4Block_SetMatrixRowsAt_Unreferenced"
+   },
+   "result": {
+    "success": true,
+    "address": "00b405e0",
+    "function_name": "BSP_Float4Block_SetMatrixRowsAt_Unreferenced",
+    "entry_point": "00b405e0",
+    "body_size": 202,
+    "message": "Function created successfully at 00b405e0",
+    "warnings": [
+     "Function name 'BSP_Float4Block_SetMatrixRowsAt_Unreferenced' \u2014 main part 'Float4Block_SetMatrixRowsAt_Unreferenced' is not PascalCase. Expected: Float4blockSetmatrixrowsatUnreferenced",
+     "Function name 'BSP_Float4Block_SetMatrixRowsAt_Unreferenced' \u2014 main part 'Float4Block_SetMatrixRowsAt_Unreferenced' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Float4Block_SetMatrixRowsAt_Unreferenced' does not start with a recognized verb. First word 'Float4' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b405e0",
+   "end": "00b406aa",
+   "name": "BSP_Float4Block_SetMatrixRowsAt_Unreferenced",
+   "after": "Function: BSP_Float4Block_SetMatrixRowsAt_Unreferenced at 00b405e0\nSignature: undefined BSP_Float4Block_SetMatrixRowsAt_Unreferenced(void)\nEntry: 00b405e0\nBody: 00b405e0 - 00b406a9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b48460",
+    "end_address": "00b48476"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b48460",
+    "end_address": "00b48475",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b48460",
+    "disassemble_first": false,
+    "name": "BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced"
+   },
+   "result": {
+    "success": true,
+    "address": "00b48460",
+    "function_name": "BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced",
+    "entry_point": "00b48460",
+    "body_size": 22,
+    "message": "Function created successfully at 00b48460",
+    "warnings": [
+     "Function name 'BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced' \u2014 main part 'HardwareLayoutRecordQuad_PushAssign_Unreferenced' is not PascalCase. Expected: HardwarelayoutrecordquadPushassignUnreferenced",
+     "Function name 'BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced' \u2014 main part 'HardwareLayoutRecordQuad_PushAssign_Unreferenced' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced' does not start with a recognized verb. First word 'Hardware' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b48460",
+   "end": "00b48476",
+   "name": "BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced",
+   "after": "Function: BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced at 00b48460\nSignature: undefined BSP_HardwareLayoutRecordQuad_PushAssign_Unreferenced(void)\nEntry: 00b48460\nBody: 00b48460 - 00b48475"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

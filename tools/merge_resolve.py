@@ -1,7 +1,8 @@
 """Mechanical resolution of worker-branch merge conflicts.
 
 Handles: cmake/startup.cmake (union of complete registration commands), config/names shards (union by address,
-incoming side wins for records it changed), and any text file where both sides inserted at the same
+incoming side wins for records it changed), config/tags shards (three-way by row: a row one side deleted stays
+deleted; see three_way_rows), and any text file where both sides inserted at the same
 spot relative to the merge base (independent test cases added before the same closing line, appends).
 Usage as CLI: python tools/merge_resolve.py <worktree>  -> resolves and stages what it can, reports the rest.
 """
@@ -169,6 +170,12 @@ def resolve(worktree, path):
             (worktree / path).write_text(text, encoding='utf-8', newline='\n')
             return 'reconstruction append union'
         return None  # refused on purpose; see the docstring
+    if path.startswith('config/tags/') and path.endswith('.jsonl'):
+        text = three_way_rows(base, ours, theirs, path)
+        if text is not None:
+            (worktree / path).write_text(text, encoding='utf-8', newline='\n')
+            return 'three-way row merge (deletions kept)'
+        return None  # refused on purpose; see the docstring
     text = same_spot_insertions(base, ours, theirs)
     if text is not None:
         (worktree / path).write_text(text, encoding='utf-8', newline='')
@@ -258,6 +265,83 @@ def union_reconstruction_shard(worktree, path, base, ours, theirs):
         merged.append(r)
     merged.sort(key=lambda r: (int(r['address'], 16), r.get('kind') or '', r.get('name') or ''))
     return ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in merged)
+
+
+def three_way_rows(base, ours, theirs, path=''):
+    """Three-way merge of a config/tags shard as a multiset of rows, or refuse.
+
+    A row is a whole line, matched by its canonical JSON. A base row survives only when both sides
+    still have it: a row one side deleted stays deleted. A plain union does not do that; the
+    hand-resolved merge 044466966 kept every line from both sides and brought back 19 rows that
+    cc13-stlreview1 had dropped (docs/CC13_MERGE_TOMBSTONES.md). Rows either side added are kept,
+    and a row both sides added byte for byte is kept once, so pure appends union as before.
+
+    Refused, leaving the conflict staged:
+      - the two sides changed one address differently and the changes include both a deletion and
+        an addition (an edit is a delete plus an add, so delete-versus-edit lands here; deletions
+        alone on both sides compose),
+      - a base row present more than once whose count both sides changed differently,
+      - any line that is not JSON carrying an address.
+    Output keeps our order with their additions appended, or address order when all three inputs
+    were already sorted.
+    """
+    def rows(text):
+        out = []
+        for line in text.splitlines():
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except ValueError:
+                return None
+            if not isinstance(record, dict) or 'address' not in record:
+                return None
+            out.append((json.dumps(record, ensure_ascii=False, sort_keys=True), record['address'].lower(), line.rstrip('\r')))
+        return out
+
+    parsed = [rows(t) for t in (base, ours, theirs)]
+    if any(p is None for p in parsed):
+        return None
+    base_rows, our_rows, their_rows = parsed
+    counts = [collections.Counter(k for k, _, _ in side) for side in parsed]
+    address_of = {k: a for side in parsed for k, a, _ in side}
+    keep = {}
+    deltas = ({}, {})  # per side: address -> {row: count change}
+    for key in set(address_of):
+        b, o, t = (c[key] for c in counts)
+        for side, n in enumerate((o, t)):
+            if n != b:
+                deltas[side].setdefault(address_of[key], {})[key] = n - b
+        if o == t or t == b:
+            keep[key] = o
+        elif o == b:
+            keep[key] = t
+        elif b == 0:
+            keep[key] = max(o, t)  # both added it; the same row reached twice is one row
+        else:
+            print(f'{path}: row count of a repeated base row changed on both sides: {key}', file=sys.stderr)
+            return None
+    ours_d, theirs_d = deltas
+    for address in set(ours_d) & set(theirs_d):
+        o, t = ours_d[address], theirs_d[address]
+        changes = list(o.values()) + list(t.values())
+        # deletions alone compose; a deletion beside any addition is someone's edit of that address
+        if o != t and any(v < 0 for v in changes) and any(v > 0 for v in changes):
+            print(f'{path}: {address} deleted on one side and changed on the other; resolve by hand',
+                  file=sys.stderr)
+            return None
+    merged, emitted = [], collections.Counter()
+    for key, address, line in our_rows + their_rows:
+        if emitted[key] < keep[key]:
+            emitted[key] += 1
+            merged.append((address, line))
+
+    def is_sorted(side):
+        values = [int(a, 16) for _, a, _ in side]
+        return values == sorted(values)
+    if all(is_sorted(side) for side in parsed):
+        merged.sort(key=lambda r: int(r[0], 16))  # stable: ours before theirs within an address
+    return ''.join(line + '\n' for _, line in merged)
 
 
 def keep_both_pure_insertions(worktree, path, base, ours, theirs):
