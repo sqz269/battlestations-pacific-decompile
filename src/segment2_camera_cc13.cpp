@@ -281,4 +281,49 @@ void bomb_view_update_velocity_00430970(WeaponViewCamera& camera, WeaponViewHost
         camera.f_3d8 = f32(static_cast<double>(camera.f_3d8) - host.tuning_float(0xF0));
 }
 
+void airfield_camera_step_00433590(Mat4Rows& pose, bool active_380, const Mat4Rows& matrix_2b8,
+                                   float dt, MoverHost& host) {
+    if (!active_380) return;
+    pose = matrix_2b8;
+    host.apply_shake_and_publish_004329d0(dt);
+}
+
+void bomber_view_step_004335c0(BomberViewCamera& camera, BomberViewOverride& override_state,
+                               float dt, MoverHost& host) {
+    if (override_state.flag_e17670 != 0.0f) {
+        camera.yaw_384 = override_state.yaw_e17678;
+        camera.pitch_388 = override_state.pitch_e17674;
+        override_state.flag_e17670 = 0.0f;
+    }
+    host.update_focus_0042dcd0(dt, 1);
+    if (camera.target_3ac != nullptr) {
+        Vec3 target;
+        float fx = 0.0f, fz = 0.0f;
+        host.entity_world_pose(camera.target_3ac, target, fx, fz);
+        const float eye_y = f32(target.y + 10.0);   // 00CE3DC0, FSTP float
+        camera.pose.forward_94 = Vec3{fx, 0.0f, fz};
+        camera.pose.up_84 = Vec3{0.0f, 1.0f, 0.0f};
+        host.orthonormalize_0085dc80(camera.pose);
+        host.premultiply_rotation_y(camera.pose, -0.0f - camera.yaw_384);   // SUBSS from -0.0
+        host.premultiply_rotation_x(camera.pose, -0.0f - camera.pitch_388);
+        const float d = camera.distance_38c;
+        const Vec3& f = camera.pose.forward_94;
+        const float ox = f32(static_cast<double>(d) * f.x), oy = f32(static_cast<double>(f.y) * d),
+                    oz = f32(static_cast<double>(d) * f.z);
+        camera.pose.position_a4 = Vec3{f32(static_cast<double>(target.x) - ox),
+                                       f32(static_cast<double>(eye_y) - oy),
+                                       f32(static_cast<double>(target.z) - oz)};
+        host.apply_zoom_0042c610();
+    }
+    host.apply_shake_and_publish_004329d0(dt);
+}
+
+void contact_point_list_append_0042b570(ContactPointList& list, const Vec3& point,
+                                        const Vec3& normal) noexcept {
+    if (list.count_c0 >= 8) return;
+    list.point_normal[list.count_c0][0] = point;
+    list.point_normal[list.count_c0][1] = normal;
+    ++list.count_c0;
+}
+
 }  // namespace bsp::seg2_cc13
