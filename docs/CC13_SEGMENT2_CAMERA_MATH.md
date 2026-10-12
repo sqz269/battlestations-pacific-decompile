@@ -230,3 +230,151 @@ Remaining, in order: `00434810` (plane step, 1.6 KB, calls `0042DAF0` which uses
 `disasm-raw`; the misaligned instruction at `00434F52` is still unrepaired), `00434140` with
 `00433800`/`00433CB0`, then `0042C750`, `0042C940`, `0042E180`. All five provisional names above
 should be revisited when their bodies are read.
+
+
+## Continuation by cc13-camera2 (2026-10-12)
+
+cc13-render5 retired; cc13-camera2 took its handoff. All new code is in the same two files,
+**reconstructed and Win32 build-tested only** (no fixture, no original-ABI check, not game-validated).
+x87 was read with `tools/x87_sym.py` and checked instruction by instruction against the listing where
+branches move values between the FPU stack and spilled slots. Ghidra renames applied through
+`tools/ghidra_annotate.py` (prior values in the tree's `local/ghidra-annotations-20261012T065507Z.json`).
+
+| address | name (Ghidra / ledger) | C++ | notes |
+|---|---|---|---|
+| `00434810` | **BSP_PlaneCockpitCamera_Step** (was BSP_PlaneCamera_Step) | `plane_cockpit_camera_step_00434810` | below |
+| `0042DAF0` | BSP_RandomWander_Advance (new) | `random_wander_advance_0042daf0` | below |
+| `0042C090` | BSP_RandomWander_Evaluate (new) | `random_wander_evaluate_0042c090` | below |
+| `0042C1B0` | BSP_RandomWander_Retarget | `random_wander_retarget_0042c1b0` | RNG, below |
+| `00434E50` | BSP_DefaultUnitCamera_Step | `default_unit_camera_step_00434e50` | body read past 00434F52 with `disasm-raw` |
+| `00431480` | BSP_DefaultUnitCamera_UpdateChase | `default_unit_camera_update_chase_00431480` | below |
+| `0042F800` | **BSP_PlaneChaseCamera_UpdateOffsets** (was BSP_UnitCamera_EvaluateChaseTunables) | `chase_camera_update_offsets_0042f800` | below |
+| `0042B6E0` | BSP_Matrix_PremultiplyYawThenPitch (new) | `rotate_yaw_then_pitch_0042b6e0` | m = RotY(-0-yaw) x m, then RotX(-0-pitch) x m |
+| `00434140` | BSP_SubmarineCamera_Step | `submarine_camera_step_00434140` | below |
+| `00433800` | **BSP_SubmarineCamera_PlaceSurfaced** (was StepMode0) | `submarine_camera_step_mode0_00433800` | below |
+| `00433CB0` | **BSP_SubmarineCamera_PlaceSubmerged** (was StepMode1) | `submarine_camera_step_mode1_00433cb0` | below |
+| `0042D5E0` | BSP_Matrix_SetForwardOrthonormalize (new) | `set_forward_orthonormalize_0042d5e0` | row +20h = v, 0085DC80 |
+| `0042C750` | **BSP_CameraMover_TurnTowardAngles** (was AnglesWithinTolerance) | `camera_mover_turn_toward_0042c750` | below |
+| `0042C940` | BSP_CameraMover_OrbitTargetFromYaw | `orbit_target_from_yaw_0042c940` | below |
+| `0042E180` | BSP_CameraMover_BuildFrustumPlanes (new) | `mover_build_frustum_planes_0042e180` | below |
+
+Reused, not duplicated: `normalize_camera_basis_0042b260`, `force_event_vector_length_0042b2f0`,
+`dive_bomb_interpolate_clamped_00419010`, `max_native_float_by_ref_00415550`,
+`wrapped_angle_add_00438aa0` / `wrapped_angle_subtract_00438b10`. Matrix builds/multiplies,
+orthonormalize, direction transforms, entity/node pose refreshes and the tuning/settings singletons are
+host calls.
+
+### RNG: the random wander (cc9 deterministic pairs)
+
+`0042C1B0` is reached from the cockpit step through `0042DAF0` (three records per step) and from the
+plane code `007C7800` (not read here). Every draw is `00BD2F10` BSP_Random_UniformFloatRange with
+`XOR ECX,ECX`, i.e. the **shared gameplay stream 0**. Per retarget, in order:
+
+| site | draws | condition | use |
+|---|---|---|---|
+| `0042C1F9` | U(+40h, +44h) | only when +40h != +44h (FUCOMIP; NaN draws) | period +28h (else +40h) |
+| `0042C23D` | U(+34h, +38h) | only when +34h != +38h | radius (else +34h) |
+| `0042C26C` | U(0.5 `00CE3800`, 5.7831855 `00CE3CB0`) | always | azimuth step, added to +3Ch with 00438AA0 |
+| `0042C2A6` | U(0, 3.1415927 `00D7A264`) | always | elevation |
+
+So a retarget draws 2 to 4 values, and `0042DAF0` retargets once per elapsed period while the budget
++2Ch lasts (possibly several times in one step, none once elapsed passes the life +30h). The C++ takes a
+caller-supplied `WanderRandom`; it never touches stream 0. A host that wires the cockpit camera in must
+give it a separate presentation stream (or keep it behind an OFF switch), per the cc13 RNG rule.
+
+Record (48h): +0 start, +0Ch target = r (sin az sin el, cos az sin el, cos el), +18h output, +24h
+elapsed, +28h period, +2Ch budget, +30h life, +34h/+38h radius range, +3Ch azimuth, +40h/+44h period
+range. Evaluate (`0042C090`): output = target + (1 - t^2)(start - target), t = min(elapsed / period, 1),
+then times 1 - u^2, u = min(elapsed / life, 1) (both clamps take 1.0 for NaN).
+
+### `00434810` the plane cockpit camera
+
+The tuning copy at entry (`0042E740()+84h`, 13 dwords) is read only at `+ACh`,
+PlaneCamera/CockpitMaxHeadMoveDist, which is why the class is taken to be the cockpit view (provisional;
+the tuning doc's consumer column did not list this function). With the counted reference +3C0h set
+(released through `0042D9A0(&+3C0h, 0)` when the plane's byte +44h is set): advance the three wanders;
+head move +3DCh = their sum scaled by r / InterpolateClamped(0.7, 0.7, 2.0, 1.2, r), r = |sum| /
+CockpitMaxHeadMoveDist; when dt != 0 (NaN counts) ease the three 14h-byte angles (current += dt * rate /
+period * (target - current)); pose = the plane's world matrix (+F0h), eye moved by the 0042D0D0
+direction transform of +3C4h + head move; rotate about the eye by Y(+38Ch), X(+3A0h), Z(-+3B4h), each only
+when |angle| > 1e-4 (double compare), then the +514h modifier (vtable 8Ch gate, 94h matrix); the look
+frame +3E8h = plane matrix with position + transform(+3D0h + head move). Always: +2B8h = pose, 004329D0.
+
+### `00434E50` / `00431480` / `0042F800`: the chase camera
+
+`00434E50` (vtable 00CF4238): optional `[mover+170h]->vtable[4]([game+21ECh])` when `[game+635h]`;
+timer +3ECh -= 0.08 dt (floor 0); target state +900h == 6 clears +3F0h; target position into +38Ch when
++911h is clear; `00431480`; ground clamp **inside the stretch Ghidra misses** (00434F50..00434FF1:
+y >= ground + 5.0, written back to +2E8h); pose = chase; when +380h: below height 10, floor
+max(water + 2, 2) (0078CF20), publish, and the sink +1B8h gets the target's vtable[34h] vector;
++3F8h counts down.
+
+`00431480` runs sub-steps of min(rest, 0.01) and keeps going while rest - 0.01 >= 0 (so dt = 0.025
+runs three passes). Live target (non-null, +5Dh and +911h clear): `0042F800(step)` first, chase = target
+pose +CCh, `0042B6E0(+3D0h, +3CCh)`, RotZ(-0 - +3B0h), position += right x +3B4h + up x (+3B8h +
+[class+16Ch]) - forward x (+3BCh + [class+168h] / +384h) (right/up from the target, forward from the
+rotated chase), `0042B6E0(+3E0h, +3DCh)`. Otherwise (+3E4h/+3E8h zeroed): within 20 of +38Ch the eye is
+put at 20; forward eases to the unit direction at 4.25/s, up to world up at 1.5/s; with a non-null
+target whose +911h is clear (one with +5Dh set lands here) the eye moves by dir x step x speed
+(vtable 38h) x +3F4h (+3F4h eases to 0.25 at 0.1/s) and is pushed out by (d - 60) x step when
+horizontally closer than 60; with no target it drifts sideways 5/s along the right row and the push-out
+radius is 100; height pulled toward 45 at (45 - y) x step when below. 0085DC80 each pass.
+
+`0042F800` reads the target's rotation rates +B50h (roll) / +B54h (pitch) / +B58h (yaw), +B28h, +900h,
++970h, +9B4h and `[class+200h]`, so its target is a plane; the class at 00CF4238 may be the plane
+chase camera rather than a generic default (open). Wanted offsets: +39Ch = ZRotMul x (-roll), +3A0h =
+XDistMul x yaw - YDistRollMul x (-roll), +3A4h = -YDistMul x (-pitch) + +3C0h, +3A8h = ZDistMul x
+[+B28h], each eased at its smooth rate x dt, then +3B0h..+3BCh eased toward them at the same rates.
+States 4/5 below height 3.0 raise +3ECh to InterpolateClamped(1.0, 0.6, 4.0, 0, height) x
+[class+200h]. Without flag +3F0h: +3C0h = 0, +3D4h/+3D8h decay at 3/s, +3C4h eases to -+3E4h along the
+short arc (LookAroundSmoothRate) and is fmod-wrapped into [-pi, pi], +3C8h eases to -m (m = +3E8h biased
+by +3ECh). With the flag and +970h != 12h, when +3E8h in degrees is at most BombSubDistLimit: mode 10
+picks TorpedoSubDist/Angle (or the "2" pair when vtable[5Ch](16h)) for +3C0h and +3D8h, any other mode
+sets +3C0h = -min(BombSubDistMin, (limit - degrees) x BombSubDistMul). Tail: +3DCh/+3E0h ease to
++3D4h/+3D8h at 3/s; +3CCh becomes +3C4h - kl x w (w = wrapped +3C4h - +3CCh, kl = dt x
+LookAroundSmoothRate), fmod-wrapped: the listing computes w + (0 - w) x kl + +3CCh, so the yaw lands kl x w
+**short** of the wanted value rather than easing by kl x w (literal, flagged); +3D0h eases to +3C8h.
+
+### `00434140` the submarine camera
+
+`0042DCD0(dt, 1)`; latch +405h (and +408h = chase y) once the target is null or its +5Dh set;
++3E8h counts down. Mode +40Ch 2 (periscope): pitch clamped to +-0.2094 rad (12 deg), chase = (RotX x
+RotY) x target pose, eye = node +3F4h's world point +3F8h with y + 2 (x 1.1 when above 0). Modes 0/1:
+h = [target+1204h] + 2 (at least -8); surfaced -> submerged when h - 0.5 > target y, back when
+target y > h + 0.5. Submerged: `00433CB0(dt, 1)`. Surfaced: `00433800`, and below h + 2.5 the surfaced
+and `00433CB0(dt, 0)` poses are blended by t = InterpolateClamped(h + 0.5, 0, h + 2.5, 1, y): eye and the
+point 150 ahead are mixed, the forward is the normalized difference (0042D5E0, then 0085DC80). Then
+0042C610. After a latch the chase y is floored at -125 (latched height <= 0) or max(latched, 3). When
++380h: pose = chase, 004329D0.
+
+Both placement helpers split the chase forward F into its part along the target's flattened heading,
+its world-up part (`00F8758C`) and the rest, scaled by `[class+53Ch]`, `[class+544h]`, `[class+540h]`
+times ShipCamera.LengthMult (`[00424C40()]+454h`), and subtract the sum from the anchor. Surfaced
+anchor y = target y - 0.3 x forward.y x [class+A0h] + [class+538h]; negative pitch is applied before the
+offset (the eye follows it), non-negative after (look only). Submerged: pitch >= target y / 50 (stored
+only when the flag is set), both rotations first, y + min([class+538h], 10) then capped at -3.0.
+
+### Mover helpers
+
+- `0042C750` turns +384h/+388h toward (yaw, pitch) by at most the two steps, scaling the axis with the
+  smaller error so both arrive together; an axis within its step snaps; returns 1 only when both snap;
+  does nothing when both steps are below 0.001. **Ghidra splits the function**: the pitch-step tail
+  0042C8F3..0042C931 is a separate bogus `FUN_0042C8F3` with no callers (reached by the JBE at
+  0042C8D8), so the decompile of 0042C750 omits it. Not repaired in Ghidra (lead's call).
+- `0042C940`: pitch = clamp(pitch, +3ECh + (+3F0h - +3ECh) / 4, 0); chase = RotX(-0.075) x
+  RotY(-(+384h + offset)); eye = target - 2 x +38Ch x forward; RotX(-0 - pitch); 0042C610; +400h = 1.
+- `0042E180` (once, byte +1F4h): local planes at +258h: near (0, 0, -1, node+1D4h), far (0, 0, 1,
+  300 / [[game+19FCh]+1C4h]), top/bottom (0, +-cos v, -sin v, 0) with v = node+1C4h / 2, sides
+  (+-cos h, 0, -sin h, 0) with h = 00B6FC30 / 2; world planes at +1F8h: 0042D0D0 normal, d = n . node
+  position + local d.
+
+### Handoff (cc13-camera2)
+
+Done: the whole render5 packet. Open:
+- The 00434F52 misaligned unit and the bogus `FUN_0042C8F3` are listing/function-boundary repairs
+  for whoever owns Ghidra structure edits; behaviour is already read around both.
+- Which class 00CF4238 really is (generic default vs plane chase camera): read 00605130 and the
+  EnsureCamera kind table.
+- `007C7800` (plane code) also calls `0042C1B0`; it is gameplay-side and draws stream 0 there too.
+- The `+3CCh` "short by kl x w" yaw update in `0042F800` is literal; confirm in game before anyone
+  "fixes" it.
