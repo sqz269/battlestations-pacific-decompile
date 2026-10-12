@@ -7232,7 +7232,7 @@ struct GameUnitsHost::Impl {
 // True: the install makes both draws on "#mt" keys after the construction
 // draws and refreshes again. False: +68h stays 50.0 and +2Ch keeps its
 // construction draw U(0, MaxAltOffset).
-static constexpr bool kMoveToActivationDrawsBound = false;
+static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by pair verdict
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};

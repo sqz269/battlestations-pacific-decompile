@@ -12885,4 +12885,8 @@ plane/task line classes.
 - **`kDiveYawModeZeroBound` (189 B): ON.** USN04 phase 2: dive-bomb releases 0/32 -> 12/32 (the prediction), deaths
   68 -> 67; first divergence `aim lead D3A Val #1.1|.-4` projtime 19.01 -> 19.32, the yaw command surviving the
   planner; in ON the aimglide gate passes (e.g. `#1.1|.-2` passed=1, lead -5.89 m). JM08 exit 3 (dive releases
-  26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173). USN01 win held (425.72 -> 396.03 s).
+  26/33 -> 18/12, torpedo 0/13 -> 4/61, deaths 154 -> 173). USN01 win held (425.72 -> 396.03 s).- **`kMoveToActivationDrawsBound` (187): ON.** E2 (USN04 9000) exit 3, first divergence `moveto task A6M Zero
+  #1.2|.-2: arrived d=1111.9 -> 1149.1`, the activation draws; JM08 first divergence `Movie Mavis` dying 9 m lower
+  (762 -> 753 m), the moveto flying lower as predicted. USN04 4500 exit 3 (torpedo releases 5/16 -> 2/16). USN01 win
+  identical. **Recorded:** JM08 `l50_j8_r7` now FAILS at 993.68 s ("The HQ has been destroyed!"; OFF has no end in
+  1000 s; deaths 154 -> 139, dive releases 26/33 -> 11/22): an outcome of the moved air battle on a non-win row.
