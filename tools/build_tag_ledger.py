@@ -79,7 +79,8 @@ def main():
     name_addresses = {}
     for row in functions.values():
         name_addresses.setdefault(row['name'], set()).add(row['address'])
-    reviewed = {row['address'] for row in load_names()}
+    reviewed_names = {row['address']: row['name'] for row in load_names()}
+    reviewed = set(reviewed_names)
     ledger = load_reconstruction()
     reviewed |= {row['address'] for row in ledger['functions']} | {row['address'] for row in ledger.get('fragments', [])}
     # Existing tag records: a function already renamed to its tag (or created by the tag run) stays taggable,
@@ -225,7 +226,13 @@ def main():
     derived = {e['address'] for e in entries}
     # Keep applied tags the reports no longer derive, but never for an address that has since
     # received a reviewed name or a reconstruction record: the review supersedes the tag.
-    kept = [row for address, row in existing_tags.items() if address not in derived and address not in reviewed]
+    # A review that adopted the tag's name (library review passes such as CC13_EMBEDDED_LUA_LIBRARY and
+    # CC13_DYN_LIBRARY, or a ledger name copied from an inventory tag) supersedes nothing: keep that tag
+    # while the reviewed name is still the tag's name.
+    def review_pass_row(address, row):
+        return bool(row.get('name')) and reviewed_names.get(address) == row['name']
+    kept = [row for address, row in existing_tags.items()
+            if address not in derived and (address not in reviewed or review_pass_row(address, row))]
     entries.extend(kept)
     entries.sort(key=lambda e: int(e['address'], 16))
     shards, evidence_ids = write_tags(entries)

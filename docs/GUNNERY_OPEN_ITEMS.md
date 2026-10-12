@@ -12344,6 +12344,52 @@ consequence.
 - `g35_queue.ps1` and `g35_ref_jobs.py` (run queue)
 - the env-gated `BSP_HANGAR_CENSUS=1`
 
+## 181. Handoff: the live sea and the Dyn worker precision (cc9-physics1, 2026-10-12, at about 70% context)
+
+**Branch `agent/cc9-physics1`.** Held off main by the lead: `126f79f83` (`kWaveFieldLiveAmplitudeBound = true`) and
+the docs after it. On the branch since: `e0e3afc4e` (the NaN fix in 00B9CF50, docs/CC13_AUDIT_CC9_RECENT.md 6) and
+the uncommitted-then-committed Dyn precision work below. The sea's record is docs/OCEAN_WAVE_FIELD.md sections 8-13.
+Pair builds: `local\p1_on` (e103dabd0 + flip) and `local\p1_off` (3c7a5ade9, flip false). Both export trees carry
+LOCAL diagnostics that must not be reused for reference rows: a per-round `p1diag` hit/water log in
+src/game_hosts_gunnery.cpp (both) and a control-word dump in src/hull_terrain_contact.cpp (`p1_off`). Re-export
+before any measured pair.
+
+**Waiting on the lead:** cc13-audit8's answer on the wave-damp meshes and frame (00ADE820 / 00BA1370 / 00BA0C00;
+the host walks every hierarchy item with its composed translation, the image passes one terrain node +3CCh), then
+the combined pair: `kWaveFieldLiveAmplitudeBound` + `kGunneryLiveWaterSurfaceBound` (main ec19522f3, GUNNERY 179)
+both ON against both OFF on USN04 3000, JM06, USN01 l50_u1_u2, LOMP10, plus the seven wins (BSM01 l50_b1_a too),
+reference form (BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, `--stop-after-end 40`; local\p1_pairs.ps1 and
+p1_wins.ps1 are the launchers). The USN01 loss is one Convoy6 Explosion roll (lead accepted the explanation).
+
+**Dyn worker precision (`kDynWorkerPrecisionBound`, include/bsp/hull_terrain_contact.hpp, committed OFF).**
+- Measured: the host's main thread is at x87 control word `007Fh` (24 bits) inside the first
+  `HullTerrainContactSolver::world_step` (local export diagnostic, USN04).
+- (a) Done: `DynWorkerPrecisionScope` sets `_PC_53` around the narrow phase (IntersectTask2) and around each
+  group's solve (LCPSolverTask) in `world_step`, and around the narrow phase and solve of the legacy `step`. The
+  ManifoldUpdate, group formation and event pass stay at 24 bits (main thread in the image).
+- (b) Started in src/dyn_lcp_impulse_math.cpp, both under the switch:
+  - `dyn_row_group_dot`: one rounding of the whole 3-term dot (00C4264F; the same pattern in 00C42230 and in the
+    build's J.u groups 00C4E6E0/00C4E721/00C4E745). Checked: the residual's subtractions, the `res*eff + impulse`
+    chain, the clamp, `dyn_row_apply_impulse` and the warm start 00C42BA0 all spill each step to float, so they
+    need no change.
+  - `transform_point`: one rounding per component, ((row0*l0 + row1*l1) + row2*l2) + position
+    (00C4DFBA..00C4E0A8).
+- (b) Left, with what the listing showed:
+  - 00C4E6BE..00C4E759, J.u: each group dot is spilled, but the running sum of the four dots stays on the stack,
+    and FSUBRP with the target precedes the one FSTP. So `jacobian_dot_velocity` and its caller must keep the sum
+    and the subtraction in double.
+  - 00C4E773.., the effective mass: group dots are spilled at 00C4E78E..; check whether the sum of groups and the
+    FDIVRP at 00C4E7FA stay on the stack. The term order in the C++ (5,3,4 / 2,0,1 ...) needs re-checking against
+    the operand offsets (EDX may be a row offset).
+  - The rest of 00C4DE40 (cross 00C4E4A6.., restitution 00C4E675, bias 00C4E0DC, friction direction with its
+    sqrt), and 00C37B50 and 00C35020: not yet read. The 29 FSTP spill points in 00C4E125..00C4E4A6 are listed by
+    `python local\p1_x87.py <listing> 00C4E125 00C4E4A6`.
+- **A defect at 24 bits too (not fixed, OFF unchanged):** `transform_point`'s OFF code adds world[1] and world[2]
+  as (row2*l2 + row0*l0) + row1*l1, but the listing associates ((row0*l0 + row1*l1) + row2*l2). At 24 bits each add
+  rounds, so the association matters. Fixing it moves OFF; it needs its own pair.
+- Then pair the contact-heavy rows: USNOS long, JM08, BSM01 l50_b1_a.
+- Also asked by the lead: cc13 audit residual 11a (docs/CC13_AUDIT_CC9_SWITCHES.md), whether 00C535E0 maps local
+  points by the transpose of the fort frame. Not started.
 ## 181. `kAimDiveBrakeRatioBound`: the aimdive air-brake floor reads AimPitchRatio x |pitch| (lead queue item 1, cc13 plane-bot audit row 6; cc9-gunnery36, 2026-10-12; committed OFF)
 
 **The read** (`009C5F50`-`009C5FCB`, disk bytes through `disasm-raw`; frame base `E`, the ESP after the prologue):
@@ -12402,6 +12448,89 @@ A 300-frame USN04 smoke of the copied OFF binary against the tree's own is exit 
 
 **Verdict: the mechanism matches the read; flipped ON.**
 
+## 182. `kSubmergedTorpedoLaunchSwimBound`: a torpedo launched below the surface starts its swim (cc9-physics2, 2026-10-12; src/game_hosts_gunnery.cpp on loan; committed OFF)
+
+Found in 181's combined pair: with the live crossing ON, JM06's player-sub torpedoes swim and sink eight US ships.
+The question is whether the image does that with a flat sea too. It does; the evidence is all from disk bytes.
+
+- **No spawn-time medium for a torpedo.** The base create 006E8430 (class vtable slot at 00CFA158) samples
+  0078CF20 at 006E8680 and calls the shot's vtable[24h] or [28h] at 006E8694..006E869E. MTorpedo's class table
+  00CFA56C puts 00856420 in that slot. 00856420..008566A0 (RET 1Ch) has no 0078CF20 call and no vtable[24h]/[28h]
+  call. A torpedo leaves its create with the base underwater byte (shot+44h) clear.
+- **The first step decides.** 0084C11C calls vtable[2Ch] (MTorpedo 00855F00: 2 when 2*[+47Ch] > [+100h], otherwise
+  [+354h] != 0). In medium 0, 0084C146..0084C14C runs 0084B380, which samples at the segment END and hits when
+  end.y <= surface (0084B3F8). The start point is never tested. On the hit, 0084C356..0084C3F5: vtable[2Ch] still 0,
+  then vtable[30h]. A round that survives the water (the torpedo) gets vtable[28h](1) = 008568E0, the water entry:
+  the MaxWaterHitVel/MaxFall break-up test, otherwise 006E6450 sets +44h. So a torpedo launched at y < 0 enters the
+  water on its first step. A torpedo deeper than twice its swim depth already reads as in-water through 00855F00's
+  depth arm. That is a second route to the same result. LABELLED: vtable[30h]'s torpedo body is not read; the
+  existing host already treats a torpedo crossing as an entry.
+- **Host defect.** `crossed = position.y <= 0 && from.y > 0`. `from > 0` has no counterpart in 0084B380, so a
+  submerged launch never swam: it fell ballistically under the sea until it expired. The bound drops `from > 0`
+  for a round that is neither swimming nor a depth charge in the water (the 0084C11C medium gate). Every other
+  round with end.y <= 0 and start.y <= 0 now takes the existing water branch: a torpedo enters its swim (or breaks
+  up), a depth charge takes its entry, and a shell dies on the water, as 0084C3CF's static impact does. Counter:
+  `summary mission gunnery submerged launch entries=N bound=b`.
+
+Prediction, flat sea (kWaveFieldLiveAmplitudeBound and kGunneryLiveWaterSurfaceBound OFF):
+- JM06 3000: the player subs' torpedoes swim. The `swims_started` count rises from 0, entries > 0, and US deaths
+  rise toward the combined pair's 10. The ON pair already showed this mechanism.
+- LOMP06 l50_l6_q6: entries > 0 if the Narwhal launches submerged. The win should hold; the time may move.
+- Rows without a submerged launcher: entries = 0, gameplay identical.
+
+**Pair and verdict (e51fe76e2, local\p2s_off vs local\p2s; reference form; logs local\p2s_{off,on}_*.log): ON.**
+
+| Row | OFF | ON |
+|---|---|---|
+| JM06 3000 | rounds 233, entity impacts 134, water 4, swims 0, deaths 2 | rounds 155, entries **155**, water 155, entity impacts 12, swims **18**, deaths 8 (two troop transports, two tankers, a cargo ship and two Fletchers, all to PlayerSub torpedoes, cat 7) |
+| LOMP06 l50_l6_q6 | completed 520.05 s, swims 27 | entries 40, swims 33, completed **389.93 s**, guard line logged |
+
+pair_diff exit 3 on both rows. The mechanism matches. Every JM06 round is launched below y = 0. With OFF, 134 of
+them flew ballistically under the sea and struck hulls from below. With ON, each enters the water on its first step:
+a torpedo swims, and any other round dies on the water, the host's existing water branch. Only the image's
+classDesc+74h decides the other rounds, through vtable[30h] = 006E2580 `MOV AL,[[ECX+4]+74h]`: set means a static
+impact, clear means vtable[28h]. The host already ends every non-torpedo round at the water. The JM06 deaths are
+2 -> 8, against 10 in 181's combined pair. Flipped ON.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+
+Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
+disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of
+FSUB(R)P/FDIV(R)P from the opcode byte. A chain without a spill stays on the stack, so it is double at a worker's
+53 bits. Chains in 00C4DE40, for one point. "sp" is a float spill. g(j,v) = sp((j1 v1 + j0 v0) + j2 v2).
+
+| Piece | Listing | OFF C++ before |
+|---|---|---|
+| transform 00C4DFBA..4E0A8 | sp(((r0 l0 + r1 l1) + r2 l2) + p) per component | y, z added as (r2 l2 + r0 l0) + r1 l1 |
+| lever arm, warm start | single operations | same |
+| contact Jacobian 00C4E1F7..4E31E | each angular entry sp(a b - c d) | same order, rounded products |
+| angular mass Jacobian 00C4E380..4E499 | sp((I[3+c] J1 + I[c] J0) + I[6+c] J2) | (I[6+c] J2 + ...) + I[3+c] J1, reversed |
+| w x r, relative velocity 00C4E4A6..4E63B | sp(a b - c d), then each add spilled | same |
+| normal velocity 00C4E655..4E671 | sp((rx nx + ry ny) + rz nz) | (rz nz + ry ny) + rx nx |
+| restitution 00C4E675..4E690 | sp(sp(nv e) + 0.05 **double** at 00D7A270); zero unless < 0 (NaN -> 0) | + 0.05f; NaN kept |
+| bias 00C4E63F..4E651 | sp((c d) / dt) | same |
+| normal J.u 00C4E6B2..4E759 | sp(-t - ((g(angA) + g(linA)) + g(linB)) + g(angB)), the sum on the stack | same order, sum rounded per add |
+| effective mass 00C4E773..4E7FC | sp(1 / (((g(J,M) angA + linA) + linB) + angB)) | one 12-term chain 5,3,4,2,0,1,... |
+| perpendicular length 00C4E90F..4E92B | sp((p1^2 + p0^2) + p2^2) | (p2^2 + p0^2) + p1^2 |
+| along_q, along_p 00C4E9D0..4EA49 | sp((qx vx + qy vy) + qz vz), sp((vx px + vy py) + pz vz) | z-first order |
+| tangent 00C4EA82..4EAA6 | each product and the sum spilled | same |
+| tangent length 00C4EAC6 | sp((tx^2 + ty^2) + tz^2) | z-first |
+| friction J.u 00C4EE84..4EEFB, eff. mass 00C4EF2D..4EF99 | as the normal row; rhs sp(-sum) | as above |
+
+The solve loops 00C42530, 00C42230 and the warm start 00C42BA0 (checked the same way) keep only the group dots on
+the stack, which `dyn_row_group_dot` already rounds once under the switch. 00C37B50 is single adds and 00C35020
+is copies, so neither needs a change.
+
+**Two switches.** `kDynListingAssociationBound` (new, include/bsp/hull_terrain_contact.hpp) runs the builder in
+the listing's association at float. That is the image at 24 bits, and it moves OFF rows by itself because the
+before-order rounds differently. `kDynWorkerPrecisionBound` runs the same template with the stack in double and
+implies the association. The OFF arm is the old code, unchanged. LABELLED: at 24 bits the restitution add is
+`float(double(product) + 0.05)`; the x87 rounds the exact sum once, which differs only on a double-rounding tie.
+
+Prediction: per-ULP differences in every Dyn contact row. Rows with no hull contact are identical (gameplay exit
+0/1). Contact-heavy rows (USNOS long, JM08, BSM01 l50_b1_a) move after their first contact solve, and the moves are
+chaotic, not directional. The verdict is mechanism-only: the first moved line must come after a contact census
+entry.
+
+**00C535E0 (cc13 audit residual 11a).** Not read in this pass.
 ## 182. cc13 switch audit 2a and 9b: the kind-6 gates before the line of fire, and the player torpedo heading (lead queue item 4; cc9-gunnery36, 2026-10-12)
 
 ### 182.1 2a: `kAaKind6GateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
@@ -12486,3 +12615,28 @@ mount-frame round trip.
 - **Not bound.** The reach is a fraction of a second per build; the host's units lane owns the ship-motion tick. If
   it is bound, the host needs a per-unit counter set to 5 by `shipyard_build_00844fc0`, decremented on each
   ship-motion tick, and `ship_in_shipyard_hangar_0081de10` answering 1 while it is non-zero.
+**00C535E0 (cc13 audit residual 11a): yes, by the transpose.** 00C535E0 is a 68-byte thunk to 00C53010, whose
+contact projection 00C48BE0 writes the body-local witnesses. 00C48D15..00C48D89 for A and 00C48D8C..00C48E0A for B
+first form d = p - t, with t the body frame's +2Ch row (B's frame is reached as [[work+4]+4]+8). They then store
+local_k = row_k . d, where row_k is the frame's k-th row at +08h/+14h/+20h. That is the transpose. It inverts the
+frame only when the rows are orthonormal. With rows s*u_k it gives local = s^2 x the true local point, and
+00C4DE40's transform (and 00C4B9B0's refresh) map that back to t + s^2 d. For a static fort the solve does not see
+it, because body B's angular terms multiply a zero velocity and a zero mass Jacobian. 00C4B9B0's depth and drift
+tests on the refreshed points do see it. Not quantified: what 00C4B9B0's thresholds then do with an s = 1.415 fort
+(the length-2.003 direction in the audit). The host's normalized `rigid_fort` frame gives undistorted points, so it
+differs from the image here. It is the correct geometry, and the image is not.
+
+**Pairs and verdict (local\p2s_off = e51fe76e2 both OFF; local\p2a = 323f072ba association ON; local\p2p = bee576619
+precision ON; reference form; logs local\p2d_{off,asc,prc}_*.log): both ON.** Every row is pair_diff exit 3. The
+first moved gameplay line (local\p2_firstdiff.py over the ship-AI step lines) always comes after the row's first
+Dyn contact, and it differs in the last printed digit:
+
+| Row | First contact | First move, association | First move, precision | Deaths OFF / asc / prc | End |
+|---|---|---|---|---|---|
+| JM08 3000 | Helena-Missouri pair, step 353 | step 490 (Helena's line) | step 460, LSM 01 throttle 0.526 -> 0.525 | 19 / 19 / 19 | - |
+| USNOS 9000 | Enterprise-DM1 pair, step 365 | step 420, DM1 target -1.5338 -> -1.5339 | step 380, Midway throttle 0.355 -> 0.356 | 108 / 108 / 108 | - |
+| BSM01 l50_b1_a | Raleigh terrain, t = 0.05 | step 400, HenryPT d32c 400.81 -> 400.82 | step 60, Cassin heading 0.5197 -> 0.5198 | 191 / 197 / 191 | EndMission 770.94 / 770.94 / 767.94 |
+
+The mechanism matches: the ULP-level divergence starts at a contact and then spreads chaotically. USNOS keeps its
+headline numbers. BSM01's EndMission holds on all three. Both flipped ON (precision implies the association).
+Wins check: the next pair, below.

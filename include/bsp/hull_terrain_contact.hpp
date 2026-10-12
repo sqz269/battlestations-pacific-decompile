@@ -149,6 +149,24 @@ inline constexpr bool kSunkHullTerrainMaskBound = true;
 // ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 109.4).
 inline constexpr bool kAvoidZoneDraftBodiesBound = true;
 
+// Packet cc9_physics1_dyn_precision (docs/CC13_HOST_PRECISION_CENSUS.md, class B). The image
+// runs the Dyn contact phase's narrow phase (IntersectTask2: 00C53630, 00C535E0, the insert
+// 00C3F760) and its LCP solve (LCPSolverTask 00403720: 00C4DE40, 00C42BA0, 00C42530,
+// 00C42230, 00C37B50, 00C35020) on Dyn worker threads at x87 precision 53 bits; the host
+// runs them inline on the main thread, measured at control word 007Fh (24 bits) inside
+// world_step. True: world_step runs that span at 53 bits (_controlfp_s _PC_53, restored
+// after), and the LCP C++ keeps in double what the listing keeps on the x87 stack between
+// float spills. False: both at 24 bits as before.
+inline constexpr bool kDynWorkerPrecisionBound = true;  // ON: GUNNERY 183 pairs
+// Packet cc9_physics1_dyn_precision, the association half (docs/GUNNERY_OPEN_ITEMS.md 183).
+// 00C4DE40's sums and differences are associated as the listing does, and the row
+// builder's 0.05 restitution offset is the double at 00D7A270. This changes results at 24
+// bits too: the OFF C++ sums several chains in another order, among them transform_point,
+// the angular mass Jacobian, the normal velocity, the effective mass and the friction
+// direction's projections and lengths. True: the listing's association at 24 bits (implied
+// by kDynWorkerPrecisionBound, which adds the 53-bit stack). False: the order used before.
+inline constexpr bool kDynListingAssociationBound = true;  // ON: GUNNERY 183 pairs
+
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
     int manifolds{0};         // manifolds holding a point after the insert

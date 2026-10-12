@@ -725,5 +725,7 @@
  "st1_ptrarray": "cc13-stl1 shape: pointer-array capacity management: operator new(cap*4), copy elements, _free old (template pointer array reserve/grow/push_back; not std::vector)",
  "st1_treeerase": "cc13-stl1 shape: recursive post-order _Erase(right) / _free(node) loop guarded by node _Isnil byte (std::_Tree::_Erase)",
  "st1_treeinsert": "cc13-stl1 shape: walk from root comparing keys, _Isnil checks, then _Insert / iterator decrement (std::_Tree::insert(value) unique)",
- "cc13dy1": "Segment-0 Dyn/Mit header code, STL and CRT helpers identified by cc13-dyn1: rel32 + absolute-dword reference scan of the PE, live decompile and shape review of every raw FUN_ in 00401010-004138D0; per-address evidence in config/names and docs/CC13_DYN_LIBRARY.md"
+ "cc13dy1": "Segment-0 Dyn/Mit header code, STL and CRT helpers identified by cc13-dyn1: rel32 + absolute-dword reference scan of the PE, live decompile and shape review of every raw FUN_ in 00401010-004138D0; per-address evidence in config/names and docs/CC13_DYN_LIBRARY.md",
+ "cc13dy1h": "Body after INT3 padding (696 of the 717 so defined have no rel32 or absolute reference), defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md, 'Defined bodies'): inside 00401010-00410240, the first object's Dyn/Mit header-instantiation run; generic name, class not identified",
+ "cc13dy1s": "Body after INT3 padding defined by cc13-dyn1 (docs/CC13_DYN_LIBRARY.md); STL/CRT shape: memcpy_s/memmove_s wrapper, std exception construction or throw, _Allocate overflow check, free(p) or char_traits::assign"
 }

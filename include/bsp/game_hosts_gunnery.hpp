@@ -1005,6 +1005,11 @@ public:
     // * kill_unit_00926d90(): 007CE3A7's BSP_MissionEntity_Kill(unit, 1), the
     //   plane tick's depth kill, through the same funnel a gunfire death takes.
     bool unit_dead(std::size_t unit_index) const noexcept;
+    // Packet cc9_lua51_kill_args: the victim's kill attribution as 0077CE60 left it,
+    // for 009813A0's callback arguments and lastAttacker filter: the last attacker
+    // (victim+2C4h/+2C8h, one based, 0 = none) and the credited slot (+2D8h).
+    std::size_t kill_last_attacker(std::size_t unit_index) const noexcept;
+    int kill_credited_slot(std::size_t unit_index) const noexcept;
     // Packet cc9_command_building_capture_bind (ship AI host's capture):
     // * refresh_unit_side(): re-reads unit+54h into the unit's gunnery row after a
     //   CommandBuilding's neutralize or flip (00928F50 SetPartyRace);

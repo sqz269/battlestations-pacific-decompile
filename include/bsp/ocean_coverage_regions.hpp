@@ -28,10 +28,10 @@
 //
 // Host representation (not the native layout or ABI):
 //   * The model is the landscape's `models/terrain/<FilePath>.mmod`; each
-//     Hierarchy item is one node, its world frame local x parent (row
-//     vectors), the top items' parent being the landscape's world frame.
-//     LABELLED: the terrain render node is taken to sit at that frame, and the
-//     items are walked in file order (only the order of overlapping regions
+//     Hierarchy item with a damp section yields its regions. The translation
+//     added is always the landscape frame's (the cloned root node's [+120h] /
+//     [+128h], 00ADE820 -> 00B6F8F0; cc13 audit8): item translations are never
+//     applied. LABELLED: items are walked in file order (only the order of overlapping regions
 //     depends on it; every terrain model of this installation has at most one
 //     damp section).
 //   * The texture goes through the VFS resolver (the 00B31C20 route); when it

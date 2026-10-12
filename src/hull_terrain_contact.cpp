@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <float.h>
 
 #include "bsp/avoid_zone_dyn_hull.hpp"
 #include "bsp/dyn_collision_pass.hpp"
@@ -25,6 +26,29 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;   // game_hos
 
 namespace bsp {
 namespace {
+
+// kDynWorkerPrecisionBound: the x87 precision a Dyn worker thread runs at (53 bits) for the
+// span of the contact phase the image hands to its workers; restored on scope exit. SSE code
+// is unaffected; only the inline-asm natives and x87 helpers see it.
+class DynWorkerPrecisionScope {
+public:
+    DynWorkerPrecisionScope() noexcept {
+        if (!kDynWorkerPrecisionBound) return;
+        _controlfp_s(&saved_, 0, 0);
+        unsigned int ignored = 0;
+        _controlfp_s(&ignored, _PC_53, _MCW_PC);
+    }
+    ~DynWorkerPrecisionScope() {
+        if (!kDynWorkerPrecisionBound) return;
+        unsigned int ignored = 0;
+        _controlfp_s(&ignored, saved_ & _MCW_PC, _MCW_PC);
+    }
+    DynWorkerPrecisionScope(const DynWorkerPrecisionScope&) = delete;
+    DynWorkerPrecisionScope& operator=(const DynWorkerPrecisionScope&) = delete;
+
+private:
+    unsigned int saved_{0};
+};
 
 constexpr float kTerrainCell = 9.375f;       // +1Ch [00D0E658], the Dyn tile spacing too
 constexpr int kTileCells = 32;               // [00D5D658]
@@ -442,6 +466,8 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
         }
     }
 
+    // From here on the image is on a Dyn worker (IntersectTask2, then LCPSolverTask).
+    const DynWorkerPrecisionScope worker;
     // The narrow phase: 00C53630 per (shape, tile), then 00C3F760 per candidate.
     // 00C44104..00C44110, the shape filter. A hull shape's group is 1 (009394DD) and its mask
     // 0Dh | the class bit (009394A9, 009395E2); NavigatorSetAvoidLandCollision(false) resets it
@@ -1459,7 +1485,10 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
             ++it;
         }
     }
-    // The narrow phase: terrain per hull (section 87), then the hull pairs.
+    // The narrow phase: terrain per hull (section 87), then the hull pairs. IntersectTask2
+    // (00403CC0) on a Dyn worker in the image.
+    {
+    const DynWorkerPrecisionScope worker;
     for (HullWorldEntry& e : hulls) {
         ++census_.steps;
         // 00C44104..00C44110 with the hull mask 0Dh & ~8 (00826410..0082643B) and the terrain's
@@ -1480,6 +1509,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     if (hull_hull) hull_hull_narrow_phase(hulls, true);
     hull_fort_narrow_phase(hulls, forts, hull_fort);
     hull_draft_narrow_phase(hulls);
+    }
     // 00C35480 (the collision pass's last step, 00C57827), per queued hull-pair event: the
     // manifold's point 0 on A in world space (00C354E6..00C35542; the listener reads the first
     // of the transformed points at record+8h), then each listener in turn, A with (A, B) and B
@@ -1593,6 +1623,8 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     const DynSolverWorldSettings settings{};   // 0.1, 1.0, 0.5, 10: the shipped world
     for (const std::vector<DynHandle>& group : formation.groups) {
         if (group.empty()) continue;
+        // LCPSolverTask (00403720) on a Dyn worker in the image.
+        const DynWorkerPrecisionScope worker;
         std::map<std::size_t, std::int16_t> index_of;
         std::vector<HullWorldEntry*> indexed{nullptr};
         const auto index = [&](std::size_t unit) -> std::int16_t {

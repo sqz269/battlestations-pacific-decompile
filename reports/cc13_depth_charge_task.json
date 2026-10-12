@@ -1,0 +1,632 @@
+{
+ "packet": "cc13-depthcharge1",
+ "doc": "docs/CC13_DEPTH_CHARGE_TASK.md",
+ "source": "src/depth_charge_task_cc13.cpp",
+ "header": "include/bsp/depth_charge_task_cc13.hpp",
+ "status": "reconstructed, build-tested; not host-bound, not fixture-tested, not game-validated",
+ "steps": [
+  {
+   "address": "009a5266",
+   "native": "0099c6f0",
+   "function": "009a5240",
+   "note": "task base"
+  },
+  {
+   "address": "009a5281",
+   "native": "009a4dc0",
+   "function": "009a5240",
+   "note": "approach and states"
+  },
+  {
+   "address": "009a52a7",
+   "native": "007b8ad0",
+   "function": "009a5240",
+   "note": "initial state choice"
+  },
+  {
+   "address": "009a52cc",
+   "native": "009f9980",
+   "function": "009a5240",
+   "note": "bind to task"
+  },
+  {
+   "address": "009a69ad",
+   "native": "009a5240",
+   "function": "009a6970",
+   "note": "factory -> constructor"
+  },
+  {
+   "address": "009a33c8",
+   "native": "009f9ce0",
+   "function": "009a3390",
+   "note": "approach base with ReferenceSpeed"
+  },
+  {
+   "address": "009a33f8",
+   "native": "00bd2f10",
+   "function": "009a3390",
+   "note": "approach +30h draw"
+  },
+  {
+   "address": "009a3403",
+   "native": "007c47f0",
+   "function": "009a3390",
+   "note": "level flight speed"
+  },
+  {
+   "address": "009a3440",
+   "native": "00bd2f10",
+   "function": "009a3390",
+   "note": "approach +34h draw"
+  },
+  {
+   "address": "009a346f",
+   "native": "00bd2f10",
+   "function": "009a3390",
+   "note": "approach +38h draw"
+  },
+  {
+   "address": "009a34aa",
+   "native": "00bd2f10",
+   "function": "009a3390",
+   "note": "approach +40h draw"
+  },
+  {
+   "address": "009a3530",
+   "native": "009fb200",
+   "function": "009a3390",
+   "note": "target ref construct"
+  },
+  {
+   "address": "009a3573",
+   "native": "009a31a0",
+   "function": "009a3390",
+   "note": "aim offset pick"
+  },
+  {
+   "address": "009a357a",
+   "native": "009a3300",
+   "function": "009a3390",
+   "note": "fall lead"
+  },
+  {
+   "address": "009a3581",
+   "native": "009a3290",
+   "function": "009a3390",
+   "note": "stick half length"
+  },
+  {
+   "address": "009a31d1",
+   "native": "00bd2f10",
+   "function": "009a31a0",
+   "note": "bias x draw"
+  },
+  {
+   "address": "009a3201",
+   "native": "00bd2f10",
+   "function": "009a31a0",
+   "note": "bias z draw"
+  },
+  {
+   "address": "009a322d",
+   "native": "009fa380",
+   "function": "009a31a0",
+   "note": "store bias"
+  },
+  {
+   "address": "009a3252",
+   "native": "009fa260",
+   "function": "009a31a0",
+   "note": "pick"
+  },
+  {
+   "address": "009a3281",
+   "native": "00bd2f10",
+   "function": "009a31a0",
+   "note": "approach +6Ch draw"
+  },
+  {
+   "address": "009a332f",
+   "native": "007bcc80",
+   "function": "009a3300",
+   "note": "drop fall time"
+  },
+  {
+   "address": "009a3297",
+   "native": "007c1db0",
+   "function": "009a3290",
+   "note": "remaining rounds"
+  },
+  {
+   "address": "009a36fa",
+   "native": "00bd2f10",
+   "function": "009a36a0",
+   "note": "attackrun +1Ch draw"
+  },
+  {
+   "address": "009a3805",
+   "native": "007f0280",
+   "function": "009a3770",
+   "note": "attackrun near-field probe"
+  },
+  {
+   "address": "009a383a",
+   "native": "00438aa0",
+   "function": "009a3770",
+   "note": "attackrun heading"
+  },
+  {
+   "address": "009a388c",
+   "native": "009fba50",
+   "function": "009a3770",
+   "note": "attackrun cruise altitude"
+  },
+  {
+   "address": "009a38e6",
+   "native": "0099b630",
+   "function": "009a3770",
+   "note": "gun pitch"
+  },
+  {
+   "address": "009a38f1",
+   "native": "009a1a20",
+   "function": "009a3770",
+   "note": "gun heading"
+  },
+  {
+   "address": "009a38fc",
+   "native": "009fabe0",
+   "function": "009a3770",
+   "note": "gun direction"
+  },
+  {
+   "address": "009a39de",
+   "native": "00bd2f10",
+   "function": "009a39c0",
+   "note": "leave +18h draw"
+  },
+  {
+   "address": "009a3cd3",
+   "native": "00bd2f10",
+   "function": "009a3c60",
+   "note": "goaway +1Ch draw"
+  },
+  {
+   "address": "009a3d2d",
+   "native": "009fd570",
+   "function": "009a3cf0",
+   "note": "goaway fly-to heading"
+  },
+  {
+   "address": "009a3d95",
+   "native": "007f0280",
+   "function": "009a3cf0",
+   "note": "goaway near-field probe"
+  },
+  {
+   "address": "009a3dc7",
+   "native": "00438b10",
+   "function": "009a3cf0",
+   "note": "goaway heading error"
+  },
+  {
+   "address": "009a3e5c",
+   "native": "00438aa0",
+   "function": "009a3cf0",
+   "note": "goaway heading"
+  },
+  {
+   "address": "009a3ff6",
+   "native": "009a31a0",
+   "function": "009a3fe0",
+   "note": "aim enter re-pick"
+  },
+  {
+   "address": "009a407c",
+   "native": "00419010",
+   "function": "009a4010",
+   "note": "aim probe extent A"
+  },
+  {
+   "address": "009a4122",
+   "native": "007f0280",
+   "function": "009a4010",
+   "note": "aim near-field probe"
+  },
+  {
+   "address": "009a422c",
+   "native": "00438aa0",
+   "function": "009a4010",
+   "note": "aim desired heading"
+  },
+  {
+   "address": "009a4247",
+   "native": "00438b10",
+   "function": "009a4010",
+   "note": "aim heading error"
+  },
+  {
+   "address": "009a42a1",
+   "native": "00438aa0",
+   "function": "009a4010",
+   "note": "aim commanded heading"
+  },
+  {
+   "address": "009a43df",
+   "native": "009fba50",
+   "function": "009a4010",
+   "note": "aim cruise altitude"
+  },
+  {
+   "address": "009a4518",
+   "native": "007c47f0",
+   "function": "009a4010",
+   "note": "aim level flight speed"
+  },
+  {
+   "address": "009a45e5",
+   "native": "009a3fa0",
+   "function": "009a4010",
+   "note": "release window"
+  },
+  {
+   "address": "009a45fb",
+   "native": "00427eb0",
+   "function": "009a4010",
+   "note": "release ceiling position"
+  },
+  {
+   "address": "009a4620",
+   "native": "007bbba0",
+   "function": "009a4010",
+   "note": "release request"
+  },
+  {
+   "address": "009a4646",
+   "native": "00bd2f10",
+   "function": "009a4010",
+   "note": "aim cooldown draw"
+  },
+  {
+   "address": "009a48a3",
+   "native": "009bed80",
+   "function": "009a4890",
+   "note": "follow enter"
+  },
+  {
+   "address": "009a48b8",
+   "native": "007ed260",
+   "function": "009a4890",
+   "note": "formation indices"
+  },
+  {
+   "address": "009a48ea",
+   "native": "007bbba0",
+   "function": "009a48d0",
+   "note": "exit drop"
+  },
+  {
+   "address": "009a4950",
+   "native": "009c1fd0",
+   "function": "009a4940",
+   "note": "follow tick"
+  },
+  {
+   "address": "009a4a43",
+   "native": "00415690",
+   "function": "009a4940",
+   "note": "bearing clamp"
+  },
+  {
+   "address": "009a4a5e",
+   "native": "00438aa0",
+   "function": "009a4940",
+   "note": "salvo heading"
+  },
+  {
+   "address": "009a4a89",
+   "native": "007bbba0",
+   "function": "009a4940",
+   "note": "salvo drop"
+  },
+  {
+   "address": "009a4aba",
+   "native": "009a3290",
+   "function": "009a4940",
+   "note": "stick half length after a drop"
+  },
+  {
+   "address": "009a4ba5",
+   "native": "00414eb0",
+   "function": "009a4940",
+   "note": "leader bearing"
+  },
+  {
+   "address": "009a4bbb",
+   "native": "00438b10",
+   "function": "009a4940",
+   "note": "leader heading error"
+  },
+  {
+   "address": "009a4bfa",
+   "native": "00414c60",
+   "function": "009a4940",
+   "note": "leader distance"
+  },
+  {
+   "address": "009a4cc7",
+   "native": "00419010",
+   "function": "009a4940",
+   "note": "speed factor +8Ch"
+  },
+  {
+   "address": "009a5360",
+   "native": "00bd2f10",
+   "function": "009a5330",
+   "note": "prepare gate draw"
+  },
+  {
+   "address": "009a5624",
+   "native": "009a19b0",
+   "function": "009a5610",
+   "note": "heading diff"
+  },
+  {
+   "address": "009a587b",
+   "native": "009a5420",
+   "function": "009a5870",
+   "note": "attack state set"
+  },
+  {
+   "address": "009a58af",
+   "native": "007b8ad0",
+   "function": "009a5870",
+   "note": "approach state choice"
+  },
+  {
+   "address": "009a594f",
+   "native": "009a57d0",
+   "function": "009a5870",
+   "note": "entry chooser"
+  },
+  {
+   "address": "009a5a02",
+   "native": "009a5610",
+   "function": "009a5870",
+   "note": "turnto -> aim"
+  },
+  {
+   "address": "009a5a1c",
+   "native": "009a5390",
+   "function": "009a5870",
+   "note": "turnto -> goaway"
+  },
+  {
+   "address": "009a5a48",
+   "native": "009a53b0",
+   "function": "009a5870",
+   "note": "goaway done"
+  },
+  {
+   "address": "009a5d3c",
+   "native": "009a5330",
+   "function": "009a5d00",
+   "note": "prepare arm"
+  },
+  {
+   "address": "009a5ff7",
+   "native": "007b94f0",
+   "function": "009a5f50",
+   "note": "has depth charges"
+  },
+  {
+   "address": "009a6043",
+   "native": "009fada0",
+   "function": "009a5f50",
+   "note": "target ref update"
+  },
+  {
+   "address": "009a609d",
+   "native": "00414c60",
+   "function": "009a5f50",
+   "note": "range +48h"
+  },
+  {
+   "address": "009a60a9",
+   "native": "00414eb0",
+   "function": "009a5f50",
+   "note": "bearing +4Ch"
+  },
+  {
+   "address": "009a60c8",
+   "native": "00438b10",
+   "function": "009a5f50",
+   "note": "relative bearing +50h"
+  },
+  {
+   "address": "009a60f3",
+   "native": "007b58d0",
+   "function": "009a5f50",
+   "note": "alt loadout"
+  },
+  {
+   "address": "009a6111",
+   "native": "009a3300",
+   "function": "009a5f50",
+   "note": "fall lead"
+  },
+  {
+   "address": "009a6141",
+   "native": "00415550",
+   "function": "009a5f50",
+   "note": "max(1, speed)"
+  },
+  {
+   "address": "009a6164",
+   "native": "00415510",
+   "function": "009a5f50",
+   "note": "min(20, t)"
+  },
+  {
+   "address": "009a617b",
+   "native": "007b5350",
+   "function": "009a5f50",
+   "note": "projtime"
+  },
+  {
+   "address": "009a6256",
+   "native": "00414c60",
+   "function": "009a5f50",
+   "note": "release point distance"
+  },
+  {
+   "address": "009a6266",
+   "native": "00414eb0",
+   "function": "009a5f50",
+   "note": "release point bearing"
+  },
+  {
+   "address": "009a627c",
+   "native": "00438b10",
+   "function": "009a5f50",
+   "note": "off-track angle"
+  },
+  {
+   "address": "009a62d2",
+   "native": "009fb5e0",
+   "function": "009a5f50",
+   "note": "drop the lost target"
+  },
+  {
+   "address": "009a6341",
+   "native": "00415550",
+   "function": "009a5f50",
+   "note": "max(60, +58h)"
+  },
+  {
+   "address": "009a63fb",
+   "native": "007b5350",
+   "function": "009a5f50",
+   "note": "projtime 0"
+  },
+  {
+   "address": "009a6449",
+   "native": "007b58d0",
+   "function": "009a5f50",
+   "note": "alt loadout"
+  },
+  {
+   "address": "009a6461",
+   "native": "00427eb0",
+   "function": "009a5f50",
+   "note": "leader position"
+  },
+  {
+   "address": "009a64a9",
+   "native": "00414c60",
+   "function": "009a5f50",
+   "note": "leader distance"
+  },
+  {
+   "address": "009a6506",
+   "native": "0099b660",
+   "function": "009a6500",
+   "note": "base profile"
+  },
+  {
+   "address": "009a6511",
+   "native": "007b8ad0",
+   "function": "009a6500",
+   "note": "leader test"
+  },
+  {
+   "address": "009a65d6",
+   "native": "009a5f50",
+   "function": "009a6500",
+   "note": "approach update dt 0"
+  },
+  {
+   "address": "009a65f6",
+   "native": "0099c230",
+   "function": "009a65f0",
+   "note": "base break-off gate"
+  },
+  {
+   "address": "009a663f",
+   "native": "009a5420",
+   "function": "009a65f0",
+   "note": "attack state set"
+  },
+  {
+   "address": "009a6658",
+   "native": "00427eb0",
+   "function": "009a65f0",
+   "note": "unit position"
+  },
+  {
+   "address": "009a669b",
+   "native": "0042b2f0",
+   "function": "009a65f0",
+   "note": "distance to aim point"
+  },
+  {
+   "address": "009a66df",
+   "native": "009a5f50",
+   "function": "009a66c0",
+   "note": "approach update"
+  },
+  {
+   "address": "009a671a",
+   "native": "009bde80",
+   "function": "009a66c0",
+   "note": "moveto ranges"
+  },
+  {
+   "address": "009a6729",
+   "native": "009a5870",
+   "function": "009a66c0",
+   "note": "rule"
+  },
+  {
+   "address": "009a67ab",
+   "native": "007bbba0",
+   "function": "009a66c0",
+   "note": "manual release passthrough"
+  },
+  {
+   "address": "009a3fff",
+   "native": "009a3290",
+   "function": "009a3fe0",
+   "kind": "tail_jump",
+   "note": "aim enter tail"
+  },
+  {
+   "address": "009a48f9",
+   "native": "009bde40",
+   "function": "009a48d0",
+   "kind": "tail_jump",
+   "note": "follow exit"
+  },
+  {
+   "address": "009a65e1",
+   "native": "0099b740",
+   "function": "009a6500",
+   "kind": "tail_jump",
+   "note": "abandon if stale"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "address": "009a39f0",
+   "note": "leave tick (vtable 00D1F668 +Ch); calls 009FB800 at 009A3A20"
+  },
+  {
+   "address": "009a3b70",
+   "note": "turnto tick (vtable 00D1F684 +Ch); calls 009FBA50 at 009A3BEF"
+  },
+  {
+   "address": "009a3e70",
+   "note": "goaway tick (vtable 00D1F6A0 +Ch); calls 009FB800 at 009A3EC2, 009A3CF0 at 009A3ECE and 009A3F09, 0099B630 at 009A3EFE, 009FABE0 at 009A3F14"
+  }
+ ]
+}

@@ -15177,3 +15177,220 @@ subscription whose squadron lands hits moves, with `fired > 0` and that callback
 | USNOS (control) | 0/1, gameplay identical | nothing dropped |
 
 **Verdict: ON.** Every prediction holds and no dropped entity is named by its mission script.
+
+**5fs pairs on `442393418`** (`local\l50_H0` OFF, `local\l50_H1` ON; 9000 frames): BSM04, USNRM01 and JM13 are all
+gameplay-identical. The second pass runs 55 times on BSM04 and 58 on USNRM01, and matches nothing. BSM04's two hit
+subscriptions log `attacker_filters=0`. In these 450 s neither USNRM01 nor JM13 registers a hit subscription.
+**Verdict: ON**, because the mechanism is the image's and it is inert on every row run. No reference row yet fires a
+squadron-keyed hit subscription, so the firing arm is unexercised.
+
+## 5ft. Handoff (cc9-lua50, 2026-10-12, at about 72% context)
+
+Landed in this packet (all on `agent/cc9-lua50`):
+- 5fn/5fo/5fq: JM08 runs (parked; the TT04 lever and the dive-bomb misses went to gunnery35), the post-free audit,
+  and BSM01 completing at 773.93 s (`local\l50_b1_a.txt`).
+- 5fp: `kEngineMovieEntryBound` ON, with 0046B730's kill pass over the script entities.
+- 5fr: `kEngineMovieStopRosterBound` ON, which drops the mode-9 movie-only admits.
+- 5fs: `kLuaHitSquadronSecondPassBound` ON. MISSION_EVENTS_UPDATE got cc13's corrections.
+
+Open, in the lead's order:
+1. **Event-channel diff, the rest** (docs/CC13_EVENT_CHANNELS.md section 3 against `src/game_hosts_lua.cpp`):
+   - The `kill` second pass needs the attacker. The host's `dispatch_kill_listeners_009813a0` has none (the
+     victim's `+2B0h` handle and `+2D8h` player index), so every attacker-filtered kill subscription is skipped.
+     Carry the killer from the gunnery death row into `destroyed_units()` first.
+   - Callback arguments: the image pushes them (section 3, "Lua args"); the host calls with none, for kill and hit
+     alike. Grep the installation's scripts for callbacks that read their parameters before binding.
+   - Not yet diffed: `recon`, `exitzone` (the entity is replaced through `vtable[140h]`, the squadron for a
+     plane), `command`/`target`, `ammoType`, `stock`, `gui`/`musicOver` (the hooks), `entityKilled`/
+     `shipLanded`/`hpEvent` (the kind-44h parent gate; `hpEvent`'s strict threshold crossing) and `failure`/
+     `leak`/`fire`/`repair`.
+   - cc13's image bugs (unknown-channel AddListener dereferences null; only 5 of 23 subscription types save their
+     filters) are still to check against the host's loader.
+2. **docs/CC13_LUA_SCRIPT_LOADER.md** (the lead's queue, security-sensitive). Find which library mask
+   `00B6A020` gives the MISSION Lua state and whether `os` exists in it at all. Report before proposing anything.
+   Never touch `include/bsp/lua_exec_guard.hpp` or the guarded openers without the lead's explicit OK. Then
+   `math.random` absent, `loadfile`/`loadstring`, syntax errors surfacing as "attempt to call a string value",
+   `exit(1)` on unprotected errors, and `luaMW_init.lua`/`unlocks.lua`.
+3. **2b, the no-skip movie playback**, a scoped RE packet:
+   - the `.ema` loader (`0045DB40` and the track readers: Animations/Animation/PointList/ActionList, as in
+     `universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.ema`: 22 tracks, 120 points,
+     51 actions);
+   - the entity-track Hermite interpolation `00459020`/`004581E0` (PointPos/InTangent/OutTangent);
+   - the camera track `0045BD90`;
+   - the remaining action run bodies (`pTakeOffHack`, `sForceArtilleryTarget`, `cCameraShake`, the camera
+     actions).
+   Since the stop's 0046B730 undoes the tracks' unit motion, playing the movie leaves behind only the elapsed
+   time and what `luaEngineMovieInit`'s timers do before the stop.
+4. JM08 stays parked until gunnery35's dive-bomb fix lands. Then rerun r7 (`local\l50_j8_r7.txt`, deterministic to
+   1637 s), whose only survivor is TT04.
+
+## 5fu. Callback arguments and the kill attacker, `kLuaListenerCallbackArgsBound` / `kLuaKillAttackerBound` (packet `cc9_lua51_listener_args`, cc9-lua51, 2026-10-12)
+
+**The image** (read from the listings; `local/output/ghidra-disasm-009813a0-*`, `-00988510-*` in the cc9-lua51 tree):
+- `kill`, `009813A0`. At `009816CA` the dispatcher copies the victim's handle at `+2B0h` (`006E6670`); the handle's
+  id word is `+2C8h`, the field `0077CC80` fills from the shot's owner (`kill_credit.cpp`, `attacker_id`). The box
+  (`00975EA0` x3) is the victim (`+174h`), that id, and `+2D8h`. `0096ACE0` tests them against `entity` (+0Ch),
+  `lastAttacker` (+1Ch) and `lastAttackerPlayerIndex` (+2Ch). Every matched callback is called through `00887E50`
+  with three Lua arguments built at `009818E8..00981977`: `00884A90(victim)`, `00884AC0(handle)` (id 0 boxes a
+  null entity), `00884A00([victim+2D8h])`. Second pass: `00981AA4` `+105h` clear (nothing matched), the attacker
+  non-null, `vtable[5Ch](0Fh)` (a plane), then `vtable[140h]()` (`007B97E0`, plane `+9D4h`, the squadron)
+  re-points the handle (`006E1B90`) and the channel is evaluated again (`00981C31`) with the same three arguments.
+- `hit`, `00988510`. Eight arguments at `00988D87..00988F2C` (`00887E50` at `00988F5D`, again at `0098952A` in the
+  second pass): target, targetDevice, attacker (`00884A90` x3), attackType (`00884FC0`, a string from the char*
+  table `00E08E58` indexed by the ordnance kind: NONE, BULLET, MACHINEGUN, AAMACHINEGUN, ARTILLERY,
+  LIGHTARTILLERY, MEDIUMARTILLERY, HEAVYARTILLERY, EXTRAPOLATED, BOMB, TORPEDO, DEPTHCHARGE, DUMMYTARGET,
+  DUMMYKAMIKAZEPLANE, DUMMYSUBMARINE, PARATROOPER, FLAK, KAMIKAZE, ROCKET, WATERMINE, read from the PE),
+  attackerPlayerIndex (`00884A00`), then damage, fire, leak (`008849D0`, floats).
+
+**The host before this packet**: both dispatchers call `lua_pcall(state, 0, 0, 0)`; the kill death row carries no
+attacker, so every `kill` entry with `lastAttacker` or `lastAttackerPlayerIndex` is skipped
+(`listener_attacker_filtered`).
+
+**The binds** (`include/bsp/game_hosts_lua.hpp`, committed OFF):
+- `kLuaListenerCallbackArgsBound`: kill callbacks get (victim, lastAttacker or nil, +2D8h); hit callbacks get
+  (target, nil, attacker, attackType, attackerPlayerIndex, damage, fire, leak). Substitutions: the hit target is
+  the hit unit (the image boxes `hitEntity->vtable[140h]()`, the squadron for a plane); targetDevice is always nil
+  (no device entities); the kamikaze's forced attackType 11h is not modelled; +2D8h is the host's credited slot
+  (0 when no attributed hit reached the victim).
+- `kLuaKillAttackerBound`: the loader keeps the two sets, the matcher tests them, and the second pass replaces a
+  squadron member's attacker id with its squadron's (the wing-0 plane shares its squadron's slot, so it already
+  matches as the squadron).
+- The attacker and slot come from two read-only accessors on `GameGunneryHost` (`kill_last_attacker`,
+  `kill_credited_slot`: `UnitState::last_attacker` and `attribution.credited_slot`), routed to the gunnery lane.
+
+**Which scripts read the arguments** (`local/l51_listener_args.py` over this installation's `scripts/`, 526 kill/hit
+subscriptions, 195 of them with a callback that reads a parameter or `arg`; 38 with an attacker set). On the rows
+the menu reaches (`scripts/datatables/missiontree.lua` ids):
+- USN03 (`usn/LOMP/02_holding_ceylon.lua`): `luaGroundInstallationHit(target)` on BOMB hits on `Mission.GroundTargets`
+  indexes `target.Class.ID`, so with no argument every call raises; `luaForceBShipSunk(entity)`, `luaJPCVSunk(entity)`
+  store the entity for the end screens.
+- JM06 (`COTP-IJN/PRCPIJN/jm06.lua`): `luaJM6CVHitByPlayer(...)` sets `Mission.CVHitByPlayer` only when
+  `arg[4] == "TORPEDO"`; `ambush` (kill, `lastAttacker = {Mission.PlayerUnit}`, entity `Mission.Cargos`) is skipped
+  today and stores `arg[1]`.
+- BSM01 (`bsm/bsm_01_stationed_at_pearl.lua`): `DonaldKillListener` (kill, `lastAttacker = {Mission.Donald}`) counts
+  `Mission.DonaldShotDown`, whose `>= 10` ends the Zero phase early (line 859) and whose `> 0 / > 3 / > 5` play three
+  dialogs. It is skipped today.
+- BSM04 (`bsm/bsm_04_vengance_at_luzon.lua`): `CatKillListener` (`lastAttacker = {Mission.Cat}`, entity
+  `Mission.ZeroGang`) counts to 3 for the `GOTONE` dialog. Skipped today.
+- ESMP08 (`ijn/ESMP/08_engano.lua`): `luaUSNSunk(entity)` stores `Mission.VictoryShip`, which `luaVictory` hands to
+  `luaMissionCompletedNew`; the l46 win logs `mission end ... entity=""`.
+
+**Predictions, written before any ON run.**
+- USN03 (both ON): the `luaGroundInstallationHit` script errors disappear and its Effect / DisablePhysics /
+  SetInvincible / AddMatrixInterpolator calls appear (the AddMatrixInterpolator calls only for class 429 or 25);
+  pair_diff 3 if a bomb hits a ground target in 9000 frames, else 0/1.
+- JM06: `CVHitByPlayer` can only change if the player torpedoes the Hornet (the reference row gives no orders,
+  so expect no change from cvhit); `ambush` fires only when the player unit kills a cargo. Expect 0/1 unless one
+  occurs.
+- BSM01 (win row, orders `l50_b1_a.txt`): `attacker_matched > 0` and `DonaldShotDown` counts Donald's kills, so
+  dialogs GOODGUYS/GREAT/DOWN appear and, at 10 kills, the Zero phase ends earlier than OFF. The win should hold
+  (the early end is the authored path); the completion moves earlier if Donald reaches 10.
+- BSM04: `luaSweetMaryAnne` fires once per Zero the Cat kills; GOTONE at 3. Dialog only: 0/1 or 3 by dialog lines.
+- ESMP08 (win row): identical play to completion, then `mission end ... entity="<the last sunk US ship>"`.
+
+## 5fv. cc13 audit 10a: non-script roots at the engine-movie skip (cc9-lua51, 2026-10-12, reads and logs only)
+
+The question (docs/CC13_AUDIT_CC9_SWITCHES.md, 10a): 0046B730 kills every queued root, then re-creates only the
+`+28h` scene records; the host kills only the class-3 script entities. A root that `luaEngineMovieInit` creates at
+run time would die in the image and survive in the host.
+
+- **Scripts** (`local/l51_movieinit.py`: every `luaEngineMovieInit` body in this installation's `scripts/missions`,
+  from the definition to the next top-level `function`, comments stripped). Of 151 bodies, exactly two create a
+  root: `COTP-USN/usn_03_battle_of_santa_cruz.lua` and its `PRCPUS` copy (menu id PRCP01), which call
+  `GenerateObject` on Junyo, Kuroshio, Hayashio, Zuiho, Kumano, Hamakaze, Yukikaze and Hatsukaze. Every other body
+  calls only `Music_Control_SetLevel`, `EnableMessages`, `LoadMessageMap`, `MissionNarrative`, `Blackout`,
+  `FindEntity`, `Effect`, `AddUntouchableUnit`, `SetNumbering`, `UnitHoldFire`, `ArtilleryEnable`,
+  `SetSimplifiedReconMultiplier`, `LandConvoySetSpeed`/`LandConvoyStop` and `luaDelay` (a class-3 script entity).
+- **Runs** (the 5fr ON logs `cc9-lua50\local\l50_G1_j5.log`, `l50_G1_j6.log`, between the `engine movie entry` line
+  and the `engine movie stop` line): JM05 and JM06 call `Music_Control_SetLevel`, `EnableMessages`, `LoadMessageMap`,
+  `MissionNarrative` and the `luaDelay` chain (`CreateScript`, `SetThink`, `SetWait`, `SETLOG`); the stop kills 1
+  script entity on each. No unit is spawned in the window. The mode-9 movie-only admits are the other non-`+28h`
+  roots, and `kEngineMovieStopRosterBound` (5fr) already drops them.
+- **Verdict**: on JM05 and JM06 the host's "killed and re-created unchanged" holds; 10a is exact there. The only
+  row where it can differ is PRCP01: the eight `GenerateObject`'d ships are created before the skip. Whether they
+  are `+28h` records (and so re-created by `0046BA7B..`) or die for good, and whether `luaStageInit`'s own
+  `luaUS03GenerateObjects` (lines 1233-1259) then regenerates them, is unread. Open, as a PRCP01 run plus a read of
+  GenerateObject's record path (`0046D96F`) against `0046BA7B`.
+
+## 5fw. The mission Lua state's libraries, against docs/CC13_LUA_SCRIPT_LOADER.md (cc9-lua51, 2026-10-12, reads only)
+
+**Report only; no host change proposed.** `include/bsp/lua_exec_guard.hpp` and the guarded openers are untouched.
+
+- **The mission state is not an `00B6A020` owner.** `BSP_MissionLuaHost_Initialize 00884BE0` calls
+  `BSP_LuaMachine_Construct 006B8740` (`00884C16`). That walks the `{name, luaopen}` table at `00CF8350` (read from
+  the PE): `""`/`00A67210` base, `table`/`00A66010`, `io`/`00A652B0`, `os`/`00A64190`, `string`/`00A63910`,
+  `math`/`00A61C50`, `debug`/`00A61620`, then a null terminator. There is no package. Each is called through
+  `lua_pushcclosure` + `lua_pushstring` + `lua_call` (`006B8780..006B87AB`). `00884BE0` then runs `PC=true`
+  (`00D0E714`, `006B8AD0`) and `Scripts\fundamentals.lua` (`00D0E6F8`, `006B89F0`), and registers natives
+  (`006B8610`). Nothing removes a library afterwards.
+- **`os` exists in the image's mission state, and `os.execute` is live.** `luaopen_os 00A64190` registers the
+  `luaL_Reg` array at `00D576F0` (read from the PE): clock, date, difftime, **execute `00A63A10`**, exit, getenv,
+  remove, rename, setlocale, time, tmpname. `00A63A10` is stock `os_execute`: `luaL_optlstring(L, 1, NULL)`
+  (`00A6A540`), then CRT `system` (`00BFFC8A`), then `lua_pushinteger`. `io` (`00A652B0`) is opened too. So in the
+  original game this installation's `commandhelpers.lua:10411` `os.execute("sus_prog.exe")` would run the program
+  on every `luaMissionCompleted`.
+- **The host matches the image's set** (`src/game_hosts_lua.cpp` `kLibraryOpeners`: base, table, io, os, string,
+  math, debug, with no package), except that `io`/`os` go through `bsp::luaopen_io_guarded`/`luaopen_os_guarded`,
+  which replace `io.popen` and `os.execute` with refusals. That is a deliberate, labelled departure from the image
+  and stays. The private tuning state (`LuaGameTuningHost`, 007E2A20's owner) uses the same seven, including the
+  guarded pair.
+- **The other loader differences, against the host** (doc rows):
+  - Row 1 (silent `exit(1)` on an unprotected error): stock 5.1's `luaD_throw` also calls `exit` after the panic
+    function. The image's panic `00B669C0` and the host's `panic_trampoline` both print nothing. Every host mission
+    path runs under `lua_pcall`, so the host logs errors where the image would end the process. The host is more
+    tolerant; no script in a reference row is known to rely on the exit.
+  - Row 8 (syntax error surfacing as `attempt to call a string value`): the host's own loaders (the tuning
+    state's `run_script`, the helper chunks) check the `luaL_loadbuffer` status. The mission-script path through
+    the reconstructed machine was not re-read here. Either way a broken script fails; only the message differs,
+    and no script in this installation is known to have a syntax error.
+  - Row 15 (`math.random`/`randomseed` absent in the image): the host opens stock `luaopen_math`, so both exist.
+    In this installation the only use is `commandhelpers.lua:2540`, inside a `--[[ ... ]]` block, so it is inert.
+  - luaMW_init.lua unprotected: the host runs it under `lua_pcall` (`LuaGameTuningHost::run_script`). An error
+    there is logged (`plane globals: ... failed`) instead of ending the process.
+
+### 5fu, the pairs and the verdict (cc9-lua51, 2026-10-12)
+
+Pairs on `98eb4dd89` (`local\l51_A0` OFF, `local\l51_A1` both ON), 9000 frames unless noted; ESMP03 again on
+`129c418c5` (`l51_B0`/`l51_B1`) after the fix below.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| BSM01 (orders `l50_b1_a.txt`, 17000) | 1, gameplay identical | `attacker_filtered` 52 -> 0, `kill_with_attacker` 133, `attacker_matched` 0, 2 second passes. Donald (the controlled plane) kills nothing in this harness run (death-row killers: Raleigh 29, Sacramento 24, Nevada 19, ...), so `DonaldKillListener` correctly matches nothing. The win holds at 767.94 s, and both sides log the sus_prog.exe refusal |
+| BSM04 | 0/1 | 13 deaths with an attacker and 12 second passes, none matched: the Cat kills nothing before Donald dies at 114.05 s |
+| USN03 (LOMP02) | 1 | 11 deaths with an attacker. The row fails at 221.96 s (the commandhelpers.lua:330 Party hole) before the bomber phase that registers `luaGroundInstallationHit` |
+| JM06 | 1 | 10 deaths with an attacker. No player torpedo, no cargo kill by the player |
+| LOMP05 | 1 | no combat in 450 s |
+| ESMP03 | 1 on A; 1 on B | A: 13 `luaUSPlaneShotDown` calls with arguments, 12 of them for planes that died with **no** attacker (six USScouts at 271.06 s, six SBDs) matching `lastAttackerPlayerIndex = {PLAYER_1}` (= 0) because the host defaulted +2D8h to 0. **Fix** (`129c418c5`): the unit constructor `0077EED0` leaves `+2C8h = 0` (`0077EFDD`) and `+2D8h = -1` (`0077EFEF` `OR EAX,-1`, `0077F012`), so an unattributed victim boxes (nil, -1). B: no match, no call; gameplay identical |
+| ESMP08 (orders `l46_e8_orders2.txt`, 72000) | 3, presentation only | Deaths, hits, death rows and the unit table are identical, and the win holds at 3456.80 s with the refusal logged on both sides. `mission end ... entity=""` becomes `entity="Case"`, which `luaUSNSunk(entity)` stored as `Mission.VictoryShip`. The end camera then has a target: movie camera builds 2 -> 3, keyframes 24 -> 27, publishes 1020 -> 1821, with GetCameraState / GetRotation / TrulyDead called once or twice. The GuiText / UnitPickScreen / ocean-height call counts move by about 1%, in the same frames; the cause was not traced beyond the camera change |
+
+**Verdict: both ON.** The argument mechanism is the image's and visibly right on ESMP08. The attacker filter and
+the second pass are inert on every row run, because no subscription's named attacker lands a kill there, and the
+first ESMP03 run found the one default that was wrong. Still open: the hit target is the hit unit, not
+`vtable[140h]()` (a plane's squadron) — for a plane victim a `target = {squadron}` subscription does not match;
+targetDevice is always nil; the credited slot rides on the gunnery host's side stand-in for `unit+180h`.
+
+**The other channels** (census of `AddListener` in this installation's `scripts/missions`): kill 335, hit 235,
+recon 219, surrender 76, entityKilled 44, input 37, exitzone 36, gui 19, command 17, generate 17, hpEvent 12,
+ammoType 9, repair 6, shipLanded 5, target 2. The host dispatches only kill, hit and recon. On the reference rows:
+JM06 (`PRCPIJN/jm06.lua:1205`) subscribes `command` (`moveonpath` / `finish` on `Mission.IJNSubsGrp1`, sets
+`Mission.PathEnd`), JM05 subscribes `gui`, and the COTP-USN rows use `exitzone` and `hpEvent`. None was reached in
+the 450 s runs above (JM06 never registers `submove`). cc13's image bugs (unknown-channel AddListener, the re-add
+leak, RemoveListener of a missing id, filter save/load) were not re-checked against the host in this packet.
+
+**cc13's subscription-path findings against the host** (docs/CC13_EVENT_CHANNELS.md section 2; cc9-lua51, reads only):
+- Unknown channel: the image faults in `0097E360` (ESI = 0, `[0]` read). The host stores the entry and never
+  dispatches it. All 15 channel names this installation's mission scripts pass to AddListener are among the 23,
+  so the crash cannot trigger here. No change.
+- Re-add of a (channel, id): the image overwrites the slot and leaks the old object. The host replaces the entry.
+  The behaviour is the same.
+- RemoveListener of a missing id: the image's checked iterator reaches `00BF6713`, the CRT invalid-parameter
+  path. The host ignores the call. Whether any script does it on a reference row is not censused (most calls are
+  guarded by `IsListenerActive`).
+- The range filters (`damageCaused`, `fireCaused`, `leakCaused`, `duration`): `0096AAD0` reads the **keys**
+  `min` (`00D15F48`, default `-1e10` `00CE4ADC`) and `max` (`00D1AF48`, default `+1e10` `00CE4970`). The host
+  reads the first two **array** numbers. The two disagree on `{5, 100}` (the host filters, the image matches all)
+  and on `{min = 5, max = 100}` (the reverse). The installation's only non-empty forms are `{10}` (PRCPIJN
+  `jm13.lua:2401`; both match all) and `{["1000"] = minValue, [""] = maxValue}` (COTP `usn_14` / `usn_09`, nil
+  values; both match all). It is latent here, recorded and not bound.
+- Filter save/load: 18 of 23 subscription types save only `callback` in the image. The host's listeners are not
+  part of its checkpoint (5fk), so there is nothing to compare yet.

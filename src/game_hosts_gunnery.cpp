@@ -456,6 +456,17 @@ constexpr bool kShipyardHangarHiddenBound = true;  // ON: GUNNERY 176.1
 //    +100h with -|+470h| and -5.0; its 0078D1B0 only moves the record for effects).
 //    OFF: y = 0 throughout, as before.
 inline constexpr bool kGunneryLiveWaterSurfaceBound = false;
+//  * kSubmergedTorpedoLaunchSwimBound: packet cc9_physics2_submerged_swim (loan,
+//    docs/GUNNERY_OPEN_ITEMS.md 182). While a round is in medium 0 (vtable[2Ch] == 0),
+//    0084C11C runs 0084B380, which hits when the segment END is at or below the
+//    surface; it never tests the start. On the hit, 0084C356..0084C3F5 call the
+//    vtable[30h] test and, for a round that survives the water (the torpedo), the
+//    water entry vtable[28h] (008568E0). So a round launched below y = 0 enters the
+//    water on its first step. MTorpedo's create 00856420 does not run 006E8430's
+//    spawn-time medium choice (no 0078CF20 call, no vtable[24h]/[28h]). The host's
+//    `from > 0` term kept a submerged launch from ever starting its swim.
+//    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
+inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -2170,6 +2181,7 @@ struct GameGunneryHost::Impl {
     double scatter_max_turn_deg{0.0};
     unsigned long long bomb_drift_drops{0};        // packet cc9_bomb_drift
     unsigned long long live_water_crossings{0};    // packet cc9_physics1_sea
+    unsigned long long submerged_launch_entries{0}; // packet cc9_physics2_submerged_swim
     unsigned long long bomb_drift_steps{0};
     double bomb_drift_max{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
@@ -9019,7 +9031,12 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             }
         }
 
-        bool crossed = shot.position[1] <= 0.0f && from[1] > 0.0f;
+        bool crossed = shot.position[1] <= 0.0f
+            && (from[1] > 0.0f || (kSubmergedTorpedoLaunchSwimBound && !shot.swimming
+                                   && !shot.depth_charge_in_water));  // 0084B380: end only
+        if (kSubmergedTorpedoLaunchSwimBound && crossed && from[1] <= 0.0f) {
+            ++submerged_launch_entries;
+        }
         if constexpr (kGunneryLiveWaterSurfaceBound) {
             if (!shot.swimming && !shot.depth_charge_in_water) {  // medium 0: 0084C11C picks 0084B380
                 struct LiveWater final : bsp::WaterSurfaceSampler {
@@ -12178,6 +12195,16 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     return state.dead || state.health <= 0.0f;
 }
 
+std::size_t GameGunneryHost::kill_last_attacker(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return 0;
+    return impl_->unit_state[unit_index].last_attacker;
+}
+
+int GameGunneryHost::kill_credited_slot(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return 0;
+    return impl_->unit_state[unit_index].attribution.credited_slot;
+}
+
 void GameGunneryHost::refresh_unit_side(std::size_t unit_index) {
     if (unit_index >= impl_->unit_state.size()) return;
     impl_->unit_state[unit_index].row.side = impl_->units.unit_side_0054(unit_index);
@@ -13259,6 +13286,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery live water crossings=%llu bound=%d "
             "(0084B380 -> 0078D1B0 on 0078CF20, packet cc9_physics1_sea)",
             host.live_water_crossings, kGunneryLiveWaterSurfaceBound ? 1 : 0);
+        host.log.notef("summary mission gunnery submerged launch entries=%llu bound=%d "
+            "(0084B380 tests the end only, packet cc9_physics2_submerged_swim)",
+            host.submerged_launch_entries, kSubmergedTorpedoLaunchSwimBound ? 1 : 0);
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
                 "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "
