@@ -1,0 +1,268 @@
+{
+ "packet": "cc13-sweepA1",
+ "document": "docs/CC13_BAND_00A1_00A4.md",
+ "source": "src/network_online_cc13.cpp",
+ "functions": [
+  {
+   "address_entry": "00a45010",
+   "cpp": "set_voice_mask_by_name_00a45010",
+   "steps": [
+    {
+     "address": "00a45045",
+     "native": "004beb60",
+     "function": "00a45010"
+    },
+    {
+     "address": "00a45067",
+     "native": "00408120",
+     "function": "00a45010"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a44ec0",
+   "cpp": "last_error_text_00a44ec0",
+   "steps": [
+    {
+     "address": "00a44eff",
+     "native": "00408720",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44f53",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44f64",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44f72",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44f80",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44f8e",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44fc0",
+     "native": "00429fd0",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44fc9",
+     "native": "00a44840",
+     "function": "00a44ec0"
+    },
+    {
+     "address": "00a44fd9",
+     "native": "00408720",
+     "function": "00a44ec0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49110",
+   "cpp": "apply_talker_priority_00a49110",
+   "steps": []
+  },
+  {
+   "address_entry": "00a49180",
+   "cpp": "set_mute_all_and_reapply_00a49180",
+   "steps": []
+  },
+  {
+   "address_entry": "00a49340",
+   "cpp": "find_remote_talker_00a49340",
+   "steps": []
+  },
+  {
+   "address_entry": "00a49680",
+   "cpp": "remove_remote_talker_00a49680",
+   "steps": [
+    {
+     "address": "00a49696",
+     "native": "00a49340",
+     "function": "00a49680"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49710",
+   "cpp": "set_talker_priority_00a49710",
+   "steps": [
+    {
+     "address": "00a49724",
+     "native": "00a49340",
+     "function": "00a49710"
+    },
+    {
+     "address": "00a4975b",
+     "native": "00a49110",
+     "function": "00a49710"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49780",
+   "cpp": "set_talker_mute_list_flag_00a49780",
+   "steps": [
+    {
+     "address": "00a49794",
+     "native": "00a49340",
+     "function": "00a49780"
+    },
+    {
+     "address": "00a497cb",
+     "native": "00a49110",
+     "function": "00a49780"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a497e0",
+   "cpp": "set_talker_game_mute_flag_00a497e0",
+   "steps": [
+    {
+     "address": "00a497f4",
+     "native": "00a49340",
+     "function": "00a497e0"
+    },
+    {
+     "address": "00a4982b",
+     "native": "00a49110",
+     "function": "00a497e0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49070",
+   "cpp": "unregister_all_remote_talkers_00a49070",
+   "steps": []
+  },
+  {
+   "address_entry": "00a49270",
+   "cpp": "shutdown_00a49270",
+   "steps": [
+    {
+     "address": "00a49274",
+     "native": "00a49070",
+     "function": "00a49270"
+    },
+    {
+     "address": "00a49286",
+     "native": "00bf6989",
+     "function": "00a49270"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49a00",
+   "cpp": "flag_restart_00a49a00",
+   "steps": []
+  },
+  {
+   "address_entry": "00a49b00",
+   "cpp": "start_00a49b00",
+   "steps": [
+    {
+     "address": "00a49b25",
+     "native": "00a4d50c",
+     "function": "00a49b00"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a49b30",
+   "cpp": "end_00a49b30",
+   "steps": [
+    {
+     "address": "00a49b61",
+     "native": "00a4d50c",
+     "function": "00a49b30"
+    },
+    {
+     "address": "00a49b80",
+     "native": "00a4d512",
+     "function": "00a49b30"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a4adc0",
+   "cpp": "delete_00a4adc0",
+   "steps": [
+    {
+     "address": "00a4adce",
+     "native": "00a49b30",
+     "function": "00a4adc0"
+    },
+    {
+     "address": "00a4adf3",
+     "native": "00a4d416",
+     "function": "00a4adc0"
+    },
+    {
+     "address": "00a4ae30",
+     "native": "004254b0",
+     "function": "00a4adc0"
+    },
+    {
+     "address": "00a4ae48",
+     "native": "00a4d51e",
+     "function": "00a4adc0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00a4b1f0",
+   "cpp": "poll_overlapped_00a4b1f0",
+   "steps": [
+    {
+     "address": "00a4b20d",
+     "native": "00a4b030",
+     "function": "00a4b1f0"
+    },
+    {
+     "address": "00a4b214",
+     "native": "00a49c80",
+     "function": "00a4b1f0"
+    },
+    {
+     "address": "00a4b21b",
+     "native": "00a4af20",
+     "function": "00a4b1f0"
+    },
+    {
+     "address": "00a4b228",
+     "native": "00a4a790",
+     "function": "00a4b1f0"
+    }
+   ]
+  },
+  {
+   "address_entry": "00994100",
+   "cpp": "is_live_mode_00994100",
+   "steps": []
+  },
+  {
+   "address_entry": "00994110",
+   "cpp": "is_system_link_mode_00994110",
+   "steps": []
+  },
+  {
+   "address_entry": "00a47900",
+   "cpp": "is_session_active_00a47900",
+   "steps": []
+  }
+ ]
+}
