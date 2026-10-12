@@ -12420,7 +12420,20 @@ Prediction, flat sea (kWaveFieldLiveAmplitudeBound and kGunneryLiveWaterSurfaceB
   rise toward the combined pair's 10. The ON pair already showed this mechanism.
 - LOMP06 l50_l6_q6: entries > 0 if the Narwhal launches submerged. The win should hold; the time may move.
 - Rows without a submerged launcher: entries = 0, gameplay identical.
-## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
+
+**Pair and verdict (e51fe76e2, local\p2s_off vs local\p2s; reference form; logs local\p2s_{off,on}_*.log): ON.**
+
+| Row | OFF | ON |
+|---|---|---|
+| JM06 3000 | rounds 233, entity impacts 134, water 4, swims 0, deaths 2 | rounds 155, entries **155**, water 155, entity impacts 12, swims **18**, deaths 8 (two troop transports, two tankers, a cargo ship and two Fletchers, all to PlayerSub torpedoes, cat 7) |
+| LOMP06 l50_l6_q6 | completed 520.05 s, swims 27 | entries 40, swims 33, completed **389.93 s**, guard line logged |
+
+pair_diff exit 3 on both rows. The mechanism matches. Every JM06 round is launched below y = 0. With OFF, 134 of
+them flew ballistically under the sea and struck hulls from below. With ON, each enters the water on its first step:
+a torpedo swims, and any other round dies on the water, the host's existing water branch. Only the image's
+classDesc+74h decides the other rounds, through vtable[30h] = 006E2580 `MOV AL,[[ECX+4]+74h]`: set means a static
+impact, clear means vtable[28h]. The host already ends every non-torpedo round at the water. The JM06 deaths are
+2 -> 8, against 10 in 181's combined pair. Flipped ON.## 183. 181(b) closed: 00C4DE40 read whole; `kDynListingAssociationBound` (cc9-physics2, 2026-10-12; committed OFF)
 
 Method: `local\p2_x87sym.py <start> <end>` (in the cc9-physics1 tree) evaluates the x87 stack symbolically over
 disk bytes. It prints each store as an expression tree, names every float spill, and takes the direction of

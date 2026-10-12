@@ -582,3 +582,25 @@ The OFF wins moved from AG on current main (USN01 702.85 -> 475.21, LOMP10 957.5
 3456.80); these are other lanes' commits, so compare within the pair only. Wins with both ON: USN02, ESMP08, LOMP06
 and BSM01 hold; USN01, LOMP10 and USN12 are lost. USN02 came back: it was lost with the sea alone and completes with
 the crossing too. The LOMP10 and USN12 losses are not explained per entity yet.
+
+## 16. The LOMP10 and USN12 losses, per entity (cc9-physics2, 2026-10-12)
+
+Logs from section 15's pair (local\p1c_*); per-entity tools are local\p1_deaths.py and local\p2_health.py.
+
+**USN12 (s38_u12_p2): a knife-edge on a one-ship plan.** Phase 3 completes when `luaRemoveDeadsFromTable(MontGrp)[1]`
+comes within 1000 of ClEscape (usn_12_augusta.lua, this installation, 2024-07-13). The orders steer only
+Montpelier. Both runs have Agano launch the same 8-torpedo salvo at Charles (OFF 818.87..822.67 s, ON
+812.73..816.52 s). In OFF it sinks Charles at 830.67 s; in ON it sinks Montpelier at 824.07 s. Haguro's next salvo
+likewise sinks Claxton in OFF and Columbia in ON. With Montpelier dead, the escape test runs on Cleveland, which
+nothing steers. Systematic damage is not what changed: deaths are 20 / 20, and only the victims of one salvo
+differ.
+
+**LOMP10 (s37_l10_p2): a stalemate after a chaotic divergence.** The win is MonitorSanJoseForce's
+`getn(alive) == 3` over 8 ships (10_san_jose.lua), polled each second. OFF loses 5 (Kasumi 472.96 s, Asashimo
+938.14, Sugi 968.69, Oyodo 1044.49, Kaya 1111.71). ON loses 4 (Kasumi 442.52, Kaya 474.31, Asashimo 954.79, Sugi
+1044.84). The killers and times line up: the same CB4 squadrons, CB4 itself, and Coastal Gun 02 at about 1044.5 s.
+The gun takes Oyodo in OFF and Sugi in ON, because in ON Sugi survived the CB4 strike that sank it at 968 s. An ON
+run extended to 40000 frames (local\p2s_on_l10x.log) has no fifth death and no completion. The four survivors
+(Ashigara, Oyodo at hull-water health 0.073, Kiyoshimo, Kashi) take no damage after the 1500 s cap, so this is not a
+frame-cap artefact. The first moved entity is Kasumi, 30 s earlier, to the same squadron. Verdict: chance, not a
+directional effect of the sea; the plan has no margin for one kill fewer.
